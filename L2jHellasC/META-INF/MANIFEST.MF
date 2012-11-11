@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: L2jHellasC
+Bundle-SymbolicName: L2jHellasC
+Bundle-Version: 1.0.0.qualifier
