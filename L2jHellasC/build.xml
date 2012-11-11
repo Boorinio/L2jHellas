@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="l2jhellas_GS" default="dist" basedir=".">
+    <description>
+        This script will build the l2jhellas_GS Server.
+        
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation; either version 2, or (at your option)
+        any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+        02111-1307, USA.
+        
+        http://www.gnu.org/copyleft/gpl.html      
+        
+    </description>
+    
+    <property name="src" location="java"/>
+    <property name="lib" location="lib"/>
+    <property name="build" location="build"/>
+    <property name="build.classes" location="${build}/classes"/>
+    <property name="build.dist" location="${build}/dist"/>
+	<property name="build.dist.doc" location="${build.dist}/doc"/>
+	<property name="build.dist.login" location="${build.dist}/login"/>
+	<property name="build.dist.login.lib" location="${build.dist}/login/lib"/>
+	<property name="build.dist.game" location="${build.dist}/gameserver"/>
+	<property name="build.dist.game.lib" location="${build.dist}/gameserver/lib"/>
+    
+    <path id="classpath">
+        <fileset dir="${lib}">
+			<include name="*.jar"/>
+        </fileset>
+    </path>   
+    
+    <target name="init"
+    	depends="clean"
+        description="Create the output directories.">
+
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build.classes}"/>
+        <mkdir dir="${build.dist}" />
+    	<mkdir dir="${build.dist.doc}" />
+    	<mkdir dir="${build.dist.login}" />
+    	<mkdir dir="${build.dist.login.lib}" />
+		<mkdir dir="${build.dist.game}" />
+    	<mkdir dir="${build.dist.game.lib}" />
+    </target>
+    
+    
+    <target name="compile"
+            depends="version"
+            description="Compile the source.">
+
+        <javac destdir="${build.classes}"
+               optimize="on"
+               debug="on"
+               source="1.5"
+               target="1.5"
+               nowarn="off">
+            <src path="${src}"/>
+            <classpath refid="classpath"/>   
+        </javac>
+    </target>
+    
+    
+    <target name="jar"
+            depends="compile"
+            description="Create the jar file">
+
+        <jar destfile="${build}/l2jhellas.jar">
+            <fileset dir="${build.classes}"/>
+            <manifest>
+                <attribute name="Main-Class" value="com.l2jhellas.Server"/>
+                <attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.0.7-bin.jar javolution.jar mmocore.jar"/>
+            </manifest>
+        </jar>
+        
+    	<copy todir="${build.dist.login.lib}">
+            <fileset dir="${build}">
+                <include name="l2jhellas.jar"/>
+			</fileset>
+        </copy>
+    	<copy todir="${build.dist.game.lib}">
+            <fileset dir="${build}">
+                <include name="l2jhellas.jar"/>
+			</fileset>
+        </copy>
+        
+	</target>
+    
+
+    <target name="compile.gcj"
+            depends="jar"
+            description="Build machine executable binary">  
+            
+        <exec dir="." executable="gcj" failifexecutionfails="false" os="linux:Linux:freebsd:FreeBSD" >
+            <arg line="-O3 ${build.dist}/l2jhellas.jar  -o ${build.dist}/l2jhellas --main=com.l2jhellas.Server"/>
+        </exec>
+    </target>
+ 
+ 
+    <target name="dist" depends="jar">
+    	
+    	<copy todir="${build.dist.login}">
+            <fileset dir="config">
+                <include name="log.cfg"/>
+                <include name="banned_ip.cfg"/>
+                <include name="console.cfg"/>
+			</fileset>
+        </copy>
+    	
+    	<copy todir="${build.dist.game}">
+            <fileset dir="config">
+                <include name="log.cfg"/>
+                <include name="console.cfg"/>
+			</fileset>
+        </copy>
+    	
+    	<copy todir="${build.dist.login.lib}">
+			<fileset dir="${src}/../lib">
+				<include name="c3p0-0.9.1.2.jar"/>
+				<include name="mysql-connector-java-5.0.7-bin.jar"/>
+				<include name="javolution.jar"/>
+				<include name="mmocore.jar"/>
+			</fileset>
+		</copy>
+    	
+	   	<copy todir="${build.dist.game.lib}">
+			<fileset dir="${src}/../lib">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+        
+        <copy todir="${build.dist.login}">
+            <fileset dir="dist">
+                <include name="startAccountManager.*"/>
+                <include name="startSQLAccountManager.*"/>
+            	<include name="classpath.*"/>
+                <include name="LoginServer_loop.sh"/>
+            	<include name="setenv.sh"/>
+                <include name="startLoginServer.*"/>
+            	<include name="RegisterGameServer.*"/>
+            </fileset>
+        </copy>
+    	<copy todir="${build.dist.game}">
+            <fileset dir="dist">
+                <include name="GameServer_loop.sh"/>
+            	<include name="setenv.sh"/>
+                <include name="startGameServer.*"/>
+            	<include name="classpath.*"/>
+            	<include name="hibernate.cfg.xml"/>
+            </fileset>
+        </copy>
+    	<copy todir="${build.dist.doc}">
+    	    <fileset dir="doc">
+    	        <include name="Info.txt"/>
+    	    </fileset>
+    	</copy>
+    	
+		<fixcrlf 	srcdir="${build.dist.game}"
+					eol="lf"
+					eof="remove"
+					includes="**/*.sh">
+		</fixcrlf>
+    	<fixcrlf 	srcdir="${build.dist.login}"
+					eol="lf"
+					eof="remove"
+					includes="**/*.sh">
+		</fixcrlf>
+		
+		<fixcrlf 	srcdir="${build.dist.game}"
+					eol="crlf"
+					eof="remove"
+					includes="**/*.bat">
+		</fixcrlf>
+    	<fixcrlf 	srcdir="${build.dist.login}"
+					eol="crlf"
+					eof="remove"
+					includes="**/*.bat">
+		</fixcrlf>
+
+        
+        <mkdir dir="${build.dist.game}/log" />
+    	<mkdir dir="${build.dist.login}/log" />
+        <mkdir dir="${build.dist.game}/hibernate-mapping" />
+
+        <mkdir dir="${build.dist.game}/config" />
+    	<mkdir dir="${build.dist.login}/config" />
+    	<copy todir="${build.dist.game}/config">
+			<fileset dir="config">
+				<include name="*.properties"/>
+				<include name="*.txt"/>
+				<exclude name="LoginServer.properties" />
+			</fileset>
+        </copy>
+    	<copy todir="${build.dist.login}/config">
+			<fileset dir="config">
+				<include name="mmocore.properties"/>
+				<include name="LoginServer.properties"/>
+				<include name="Telnet.properties"/>
+			</fileset>
+		</copy>
+
+        <mkdir dir="${build.dist.game}/data" />
+        <copy todir="${build.dist.game}/data">
+            <fileset dir="data">
+                <include name="*.csv"/>
+            	<include name="*.txt"/>
+			</fileset>
+        </copy>
+    	
+        <mkdir dir="${build.dist.game}/data/geodata" />
+        <copy todir="${build.dist.game}/data/geodata">
+            <fileset dir="data/geodata">
+                <include name="*.txt"/>
+                <include name="*.l2j"/>
+            </fileset>
+        </copy>
+    	
+    	<mkdir dir="${build.dist.game}/data/pathnode" />
+    	<copy todir="${build.dist.game}/data/pathnode">
+    	    <fileset dir="data/pathnode">
+    	        <include name="*.txt"/>
+    	        <include name="*.pn"/>
+    	    </fileset>
+    	</copy>
+    	
+    	<copy todir="${build.dist.game}/config/Admin">
+    				<fileset dir="config/Admin">
+    					<include name="*.properties"/>
+    					<include name="*.txt"/>
+    				</fileset>
+    	        </copy>
+    	    	    	
+    	    	<copy todir="${build.dist.game}/config/Main">
+    				<fileset dir="config/Main">
+    					<include name="*.properties"/>
+    				    <include name="*.txt"/>
+    				</fileset>
+    	        </copy>
+    	    	
+    	    	<copy todir="${build.dist.game}/config/Mods">
+    				<fileset dir="config/Mods">
+    					<include name="*.properties"/>
+    					<include name="*.txt"/>
+    				</fileset>
+    	        </copy>
+    	    	
+    	    	<copy todir="${build.dist.game}/config/Network">
+    				<fileset dir="config/Network">
+    					<include name="*.properties"/>
+    					<include name="*.txt"/>
+    				</fileset>
+    	        </copy>
+
+        <zip destfile="${build}/l2jhellas_GS.zip"
+             basedir="${build.dist}" />
+    </target>   
+    
+	<target name="version" 
+		depends="init"
+		description="Create l2jhellas-GS-Ver.properties file">
+		
+    	<tstamp>
+    	  <format property="build.tstamp"
+    	              pattern="yyyyMMdd_HHmm"/>
+    	</tstamp>
+    	<exec dir="." executable="svnversion" outputproperty="l2jhellas.revision" failifexecutionfails="false">
+    	  <arg line="-n ."/>
+    	</exec>
+    	<concat destfile="${build.dist.game}/config/Network/l2jhellas-GS-Ver.properties">
+    	version=${l2jhellas.revision}
+    	builddate=${build.tstamp} 
+      detailed info:
+     </concat>
+      <concat destfile="${build.dist.game}/config/Network/l2jhellas-GS-Ver.properties" append="true">
+        <filelist dir="${src}/../.svn/" files="entries"/>
+        <filterchain>
+          <prefixlines prefix="          "/>
+          <headfilter lines="8" skip="4"/>
+          <tokenfilter>
+             <ignoreblank/>
+          </tokenfilter>
+        </filterchain>
+</concat>
+</target>
+	
+    
+    <target name="clean"
+            description="Remove the output directories">
+
+    	<delete dir="${build}"/>
+    </target>
+</project>
