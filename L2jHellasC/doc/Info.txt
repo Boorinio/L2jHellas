@@ -1,5 +1,14 @@
 L2JHellas:
-Gs:
+
+11/11/12
+DeathMatch Working 100%
+Phx Exploits Protection finished
+More Flood Protectors
+Fixed Armorsets table error
+added custom enchant system
+Removed unused codes
+
+10/9/12
 Oly Working fine
 Grandboss instance
 flood protectors
