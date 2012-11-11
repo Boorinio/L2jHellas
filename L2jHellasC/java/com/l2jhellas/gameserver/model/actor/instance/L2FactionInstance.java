@@ -1,0 +1,271 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.l2jhellas.gameserver.model.actor.instance;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
+import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
+import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
+import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.Rnd;
+
+
+/** Mod Faction Good vs Evil */
+public class L2FactionInstance extends L2FolkInstance
+{
+	public L2FactionInstance(int objectId, L2NpcTemplate template)
+	{
+		super(objectId, template);
+    }
+
+	private final static Logger _log = Logger.getLogger(L2FactionInstance.class.getName());
+
+    @Override
+    public void onBypassFeedback(L2PcInstance player, String command)
+    {
+    	player.sendPacket(new ActionFailed());
+	    StringTokenizer st = new StringTokenizer(command, " ");
+	    String actualCommand = st.nextToken();
+	    @SuppressWarnings("unused")
+		String val = "";
+	    if (st.countTokens() >= 1)
+	    {
+	        val = st.nextToken();
+	    }
+    
+	    else if (actualCommand.equalsIgnoreCase("setgood"))
+	    {
+	    	setTarget(player);
+	    	if (player.isgood())
+	        {
+		        player.sendMessage("You already are in " + Config.MOD_GVE_NAME_TEAM_GOOD + " faction ");
+		        player.sendPacket(new ActionFailed());
+	        } 
+	    	else
+	        {
+	    		if (player.isevil())
+	    		{
+	    			player.sendMessage("You cant change faction.");
+	    			player.sendPacket(new ActionFailed());
+	    		} 
+	    		else
+	    		{
+	    			int getevils = L2World.getInstance().getAllevilPlayers().size();
+	    			int getgoods = L2World.getInstance().getAllgoodPlayers().size();
+	    			if (getgoods > getevils)
+	    			{
+	    				player.sendMessage("You Cant Use "+ Config.MOD_GVE_NAME_TEAM_GOOD + " Faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");
+	    				player.sendPacket(new ActionFailed());
+	    			} 
+	    			else
+	    			{
+	    				player.setgood(true);
+	    				Connection connection = null;
+	    				try
+	    				{
+	    					connection = L2DatabaseFactory.getInstance().getConnection();
+	    					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
+	    					statement.setString(1, player.getName());
+	    					ResultSet rset = statement.executeQuery();
+	    					int objId = 0;
+	    					if (rset.next())
+	    					{
+	    						objId = rset.getInt(1);
+	    					}
+	    					rset.close();
+	    					statement.close();
+	    					if (objId == 0)
+	    					{
+	    						connection.close();
+	    						return;
+	    					}
+	    					statement = connection.prepareStatement("UPDATE characters SET good=1 WHERE obj_Id=?");
+	    					statement.setInt(1, objId);
+	    					statement.execute();
+	    					statement.close();
+	    					connection.close();
+	    				} 
+	    				catch (Exception e)
+	    				{
+	    					_log.info("could not set good status of char:");
+	    				} 
+	    				finally
+	    				{
+	    					try
+	    					{
+	    						connection.close();
+	    					} 
+	    					catch (Exception e)
+	    					{
+	    					}
+	    				}
+	    				System.out.println("##GvE Engine## : player " + player.getName() + " Has Choose " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction");
+	    				if (player.isgood() == true)
+	    				{
+	    					player.broadcastUserInfo();
+	    					player.sendMessage("You Are fighiting Now for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction ");
+	    					player.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
+	    					player.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ);
+	    					player.setTitle(Config.MOD_GVE_NAME_TEAM_GOOD);
+	    				}
+	    			}
+	    		}
+	        }
+	    }
+	    else if (actualCommand.equalsIgnoreCase("setevil"))
+	    {
+	        setTarget(player);
+	        if (player.isevil())
+	        {
+		        player.sendMessage("You already are in " + Config.MOD_GVE_NAME_TEAM_EVIL + " faction ");
+		        player.sendPacket(new ActionFailed());
+	        } 
+	        else
+	        {
+	        	if (player.isgood())
+	        	{
+	        		player.sendMessage("You Cant Change Faction.");
+	        		player.sendPacket(new ActionFailed());
+	        	} 
+	        	else
+	        	{
+	        		int getevils = L2World.getInstance().getAllevilPlayers().size();
+	        		int getgoods = L2World.getInstance().getAllgoodPlayers().size();
+	        		if (getevils > getgoods)
+	        		{
+	        			player.sendMessage("You Cant Use " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");
+	        			player.sendPacket(new ActionFailed());
+	        		} 
+	        		else
+	        		{
+	        			player.setevil(true);
+	        			Connection connection = null;
+	        			try
+	        			{
+	        				connection = L2DatabaseFactory.getInstance().getConnection();
+	        				PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
+	        				statement.setString(1, player.getName());
+	        				ResultSet rset = statement.executeQuery();
+	        				int objId = 0;
+	        				if (rset.next())
+	        				{
+	        					objId = rset.getInt(1);
+	        				}
+	        				rset.close();
+	        				statement.close();
+	        				if (objId == 0)
+	        				{
+	        					connection.close();
+	        					return;
+	        				}
+	        				statement = connection.prepareStatement("UPDATE characters SET evil=1 WHERE obj_Id=?");
+	        				statement.setInt(1, objId);
+	        				statement.execute();
+	        				statement.close();
+	        				connection.close();
+	        			} 
+	        			catch (Exception e)
+	        			{
+	        				_log.info("could not set evil status of char:");
+	        			} 
+	        			finally
+	        			{
+	        				try
+	        				{
+	        					connection.close();
+	        				} 
+	        				catch (Exception e)
+	        				{
+	        				}
+	        			}
+	        			System.out.println("##GvE Engine## : player " + player.getName() + " Has Choose " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction");
+	        			if (player.isevil() == true)
+	        			{
+	        				player.broadcastUserInfo();
+	        				player.sendMessage("You Are fighiting Now for " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction ");
+	        				player.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
+	        				player.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ);
+	        				player.setTitle(Config.MOD_GVE_NAME_TEAM_EVIL);
+	        			}
+	        		}
+	        	}
+	        }
+	    } 
+	    else if (actualCommand.equalsIgnoreCase("setnobless"))
+	    {
+	    	if(!(player instanceof L2PcInstance))
+                return;
+            L2PcInstance activeChar = player;
+            if(activeChar.isNoble())
+                activeChar.sendMessage("You Are Already A Noblesse!.");
+            else
+            {
+                activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 16));
+                activeChar.setNoble(true);
+                activeChar.sendMessage("You Are Now a Noble,You Are Granted With Noblesse Status , And Noblesse Skills.");
+                activeChar.broadcastUserInfo();
+                activeChar.getInventory().addItem("Tiara", 7694, 1, activeChar, null);
+            }
+	    }
+	    else
+	    {
+	    	super.onBypassFeedback(player, command);
+	    }
+    }
+
+    @Override
+    public void onAction(L2PcInstance player)
+    {
+	    if (this != player.getTarget())
+	    {
+	        player.setTarget(this);
+	        player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
+	        player.sendPacket(new ValidateLocation(this));
+	    }
+	    else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+	    {
+	        SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
+	        broadcastPacket(sa);
+	        player.setLastFolkNPC(this);
+	        showMessageWindow(player);
+	        player.sendPacket(new ActionFailed());
+	    }
+	    else
+	    {
+	        player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+	        player.sendPacket(new ActionFailed());
+	    }
+    }
+
+    private void showMessageWindow(L2PcInstance player)
+    {
+	    NpcHtmlMessage html = new NpcHtmlMessage(1);
+	    html.setFile("data/html/mods/AvD_faction.htm");
+	    html.replace("%objectId%", String.valueOf(getObjectId()));
+	    html.replace("%npcname%", getName());
+	    player.sendPacket(html);
+    }
+}

@@ -1,0 +1,62 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.l2jhellas.gameserver.network.serverpackets;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+
+/**
+ * Format: ch
+ * Trigger packet
+ * @author  KenM
+ */
+public class ExShowVariationMakeWindow extends L2GameServerPacket
+{
+	private static final String _S__FE_50_EXSHOWVARIATIONMAKEWINDOW = "[S] FE:50 ExShowVariationMakeWindow";
+
+	boolean _safety = true;
+	 	       
+	public ExShowVariationMakeWindow(L2PcInstance player, L2NpcInstance npc)
+	{
+	 if(player == null)
+	   _safety = false;
+	 if(npc == null)
+	  _safety = false;
+	 	
+	 if(_safety)
+	 player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION));
+	}
+	
+	/**
+	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
+	 */
+	@Override
+	protected void writeImpl()
+	{
+		writeC(0xfe);
+		writeH(0x50);
+	}
+
+	/**
+	 * @see com.l2jhellas.gameserver.BasePacket#getType()
+	 */
+	@Override
+	public String getType()
+	{
+		return _S__FE_50_EXSHOWVARIATIONMAKEWINDOW;
+	}
+
+}
