@@ -77,15 +77,14 @@ public final class Config
 	public static final String GM_ACCESS_FILE = "./config/Admin/GMAccess.properties"; /** Properties file for GM access configurations */
 	public static final String ADMIN_CONFIG_FILE = "./config/Admin/Admin.properties"; /** Properties file for Admin configurations */
 	public static final String COMMAND_PRIVILEGES_FILE = "./config/Admin/Privileges.properties"; /** Properties file for alternative configure GM commands access level.*/
-	public static final String DATAPACK_VERSION_FILE = "./config/Network/l2jhellas-DP-Ver.properties"; /** Properties file for l2jhellas datapack version configurations */
-	public static final String SERVER_VERSION_FILE = "./config/Network/l2jhellas-GS-Ver.properties"; /** Properties file for l2jhellas server version configurations */
-	public static final String CONFIGURATION_FILE = "./config/Network/Network.properties"; /** Properties file for game server (connection and ingame) configurations */
+	public static final String SERVER_VERSION_FILE = "./config/Version/L2J Hellas Version.properties"; /** Properties file for l2jhellas server version configurations */
+	public static final String CONFIGURATION_FILE = "./config/Network/Gameserver.properties"; /** Properties file for game server (connection and ingame) configurations */
 	public static final String TELNET_FILE = "./config/Telnet.properties"; /** Properties file for telnet configuration */
 	public static final String  MMOCORE_CONFIG_FILE = "./config/Network/mmocore.properties";  
 	public static final String HEXID_FILE = "./config/Network/hexid.txt"; /** Text file containing hexadecimal value of server ID */
     //LoginServer
 	/** Properties file for login server configurations */
-	public static final String LOGIN_CONFIGURATION_FILE = "./config/LoginServer.properties";
+	public static final String LOGIN_CONFIGURATION_FILE = "./config/Network/LoginServer.properties";
 	
 	//GameServer && LoginServer
 	
@@ -295,9 +294,6 @@ public final class Config
 	public static int  CH_FRONT2_FEE; /** Interier costs */
 
 	//COMMAND_PRIVILEGES_FILE --> empty - cheking elsewere.
-	
-	//DATAPACK_VERSION_FILE
-	public static String DATAPACK_VERSION; /** Datapack version */
 	
 	//SERVER_VERSION_FILE
 	public static String SERVER_VERSION; /** Server version */
@@ -1177,20 +1173,7 @@ public final class Config
 				e.printStackTrace();
 				throw new Error("Failed to Load " + CLANHALL_CONFIG_FILE + " File.");
 			}
-			try
-			{
-				Properties serverVersion = new Properties();
-				InputStream is = new FileInputStream(new File(DATAPACK_VERSION_FILE));
-				serverVersion.load(is);
-				is.close();
-
-				DATAPACK_VERSION = serverVersion.getProperty("version", "Unsupported Custom Version.");
-				_log.info("# " + DATAPACK_VERSION_FILE + " Sucessfully LOADED #");
-			}
-			catch (Exception e)
-			{
-				DATAPACK_VERSION = "Unsupported Custom Version.";
-			}
+			// Server Version
 			try
 			{
 				Properties serverVersion = new Properties();

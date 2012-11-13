@@ -1,7 +1,10 @@
 L2JHellas:
+13/11/12
+build.xml is fixed
 
 11/11/12
 DeathMatch Working 100%
+No enchant near warehouse
 Phx Exploits Protection finished
 More Flood Protectors
 Fixed Armorsets table error

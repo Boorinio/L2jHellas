@@ -44,7 +44,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed reading: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: "+getClient().toString()+" - Failed reading: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION);
 			t.printStackTrace();
 		}
 		return false;
@@ -96,7 +96,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed running: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: "+getClient().toString()+" - Failed running: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION);
 			t.printStackTrace();
 		}
 	}

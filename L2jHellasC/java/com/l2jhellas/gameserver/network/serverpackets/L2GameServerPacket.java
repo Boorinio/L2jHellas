@@ -40,7 +40,7 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed writing: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION+" - DP Revision: "+Config.DATAPACK_VERSION);
+			_log.severe("Client: "+getClient().toString()+" - Failed writing: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION);
 			t.printStackTrace();
 		}
 	}
