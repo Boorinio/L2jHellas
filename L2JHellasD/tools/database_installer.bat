@@ -530,6 +530,7 @@ castle_door.sql
 castle_doorupgrade.sql
 castle_siege_guards.sql
 char_templates.sql
+characters_colors.sql
 character_friends.sql
 character_hennas.sql
 character_macroses.sql
