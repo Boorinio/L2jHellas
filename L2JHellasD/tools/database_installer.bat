@@ -811,7 +811,7 @@ echo   Please download and install a copy from :
 echo   http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91
 echo.
 )
-set dpvf="..\config\l2jdp-version.properties" 
+set dpvf="..\config\Version\L2J Hellas Version.ini" 
 echo Datapack revision reported by properties file :
 if NOT EXIST %dpvf% (
 echo   Your %dpvf% file is missing!
