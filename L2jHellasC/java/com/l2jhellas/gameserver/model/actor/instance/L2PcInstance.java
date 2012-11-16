@@ -7420,7 +7420,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Exclude sa / enchant bonus / penality etc. skills
 			if (skillid >= 3000 && skillid < 7000)
 				continue skill_loop;
-			// Exclude Skills from AllowedSkills in options.properties
+			// Exclude Skills from AllowedSkills in options.ini
 			if (Config.ALLOWED_SKILLS_LIST.contains(skillid))
 				continue skill_loop;
 			// Exclude VIP character

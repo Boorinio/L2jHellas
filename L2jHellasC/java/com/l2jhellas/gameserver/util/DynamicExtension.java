@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 public class DynamicExtension {
 	private static Logger _log = Logger.getLogger(DynamicExtension.class.getCanonicalName());
 	private JarClassLoader _classLoader;
-	private static final String CONFIG = "config/Main/Extensions.properties";
+	private static final String CONFIG = "config/Main/Extensions.ini";
 	private Properties _prop;
 	private ConcurrentHashMap<String, Object> _loadedExtensions;
 	private static DynamicExtension _instance;
@@ -38,7 +38,7 @@ public class DynamicExtension {
 
 	/**
 	 * create an instance of DynamicExtension
-	 * this will be done by GameServer according to the altsettings.properties
+	 * this will be done by GameServer according to the altsettings.ini
 	 *
 	 */
 	private DynamicExtension() {

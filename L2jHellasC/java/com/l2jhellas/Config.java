@@ -48,48 +48,49 @@ public final class Config
 {
 	protected static final Logger _log = Logger.getLogger(Config.class.getName());
 	
-	// Configuration files
-	/**
-	 * Properties file that allows selection of new Classes for storage of World
-	 * Objects.
-	 * This may help servers with large amounts of players receiving error
-	 * messages related to the L2ObjectHashMap and L2ObejctHashSet
-	 * classes.
-	 */
+	/********************************
+	 *  GameServer Config locations *
+	 ********************************/
+	// Main Folder
+	public static final String ALT_SETTINGS_FILE = "./config/Main/Altsettings.ini";
+	public static final String CLANHALL_CONFIG_FILE = "./config/Main/Clanhall.ini";
+	public static final String GEO_FILE = "./config/Main/Geo.ini";
+	public static final String OPTIONS_FILE = "./config/Main/Options.ini";
+	public static final String ID_CONFIG_FILE = "./config/Main/IDfactory.ini";
+	public static final String SEVENSIGNS_FILE = "./config/Main/Sevensigns.ini";
+	public static final String SIEGE_CONFIGURATION_FILE = "./config/Main/Siege.ini";
+	public static final String CHAT_FILTER_FILE = "./config/Main/ChatFilter.txt";
+	public static final String RATES_CONFIG_FILE = "./config/Main/Rates.ini";
+	public static final String OTHER_CONFIG_FILE = "./config/Main/Other.ini";
+	public static final String FLOOD_PROTECTORS_FILE = "./config/Main/AntiFlood.ini";
+	// Mods Folder
+	public static final String OLYMPIAD_FILE = "./config/Mods/OlySettings.ini";
+	public static final String L2JHellas_CONFIG_FILE = "./config/Mods/L2JHellas.ini";
+	public static final String CHAMPION_FILE	= "./config/Mods/Champions.ini";
+	public static final String EVENT_CONFIG_FILE = "./config/Mods/Event.ini";
+	public static final String GRANDBOSS_CONFIG_FILE = "./config/Mods/GrandBoss.ini";
+	// Admin Folder
+	public static final String GM_ACCESS_FILE = "./config/Admin/GMAccess.ini";
+	public static final String ADMIN_CONFIG_FILE = "./config/Admin/Admin.ini";
+	public static final String COMMAND_PRIVILEGES_FILE = "./config/Admin/Privileges.ini";
+	// Version Folder
+	public static final String SERVER_VERSION_FILE = "./config/Version/L2J Hellas Version.ini";
+	// Network Folder
+	public static final String CONFIGURATION_FILE = "./config/Network/Gameserver.ini";
+	public static final String  MMOCORE_CONFIG_FILE = "./config/Network/mmocore.ini";
+	public static final String HEXID_FILE = "./config/Network/hexid.txt";
+	// Telnet
+	public static final String TELNET_FILE = "./config/Telnet.ini";
 	
-	//GameServer
-	public static final String ALT_SETTINGS_FILE = "./config/Main/Altsettings.properties"; /** Properties file for alternative configuration */
-	public static final String CLANHALL_CONFIG_FILE = "./config/Main/Clanhall.properties"; /** Properties file for clan hall options */
-	public static final String GEO_FILE = "./config/Main/Geo.properties"; /** Properties file for geo data configuration */
-	public static final String OPTIONS_FILE = "./config/Main/Options.properties"; /** Properties file for game server options */
-	public static final String ID_CONFIG_FILE = "./config/Main/IDfactory.properties"; /** Properties file for the ID factory */
-	public static final String SEVENSIGNS_FILE = "./config/Main/Sevensigns.properties"; /** Properties file for 7 Signs Festival */
-	public static final String SIEGE_CONFIGURATION_FILE = "./config/Main/Siege.properties"; /** Properties file for siege configuration */
-	public static final String CHAT_FILTER_FILE = "./config/Main/ChatFilter.txt"; /** Word list for chat filter */
-	public static final String RATES_CONFIG_FILE = "./config/Main/Rates.properties"; /** Properties file for rates configurations */
-	public static final String OTHER_CONFIG_FILE = "./config/Main/Other.properties"; /** Properties file for other configurations */
-	public static final String FLOOD_PROTECTORS_FILE = "./config/Main/AntiFlood.properties"; /** Properties file for anti flood configurations */
-	public static final String OLYMPIAD_FILE = "./config/Mods/OlySettings.properties"; /** Properties file for olympiad options */
-	public static final String L2JHellas_CONFIG_FILE = "./config/Mods/L2JHellas.properties"; /** Properties file for server Mods */
-	public static final String CHAMPION_FILE	= "./config/Mods/Champions.properties"; /** Properties file for champion mobs */
-	public static final String EVENT_CONFIG_FILE = "./config/Mods/Event.properties"; /** Properties file for CTF Engine */
-	public static final String GRANDBOSS_CONFIG_FILE = "./config/Mods/GrandBoss.properties"; /** Properties file for grand boss config */
-	public static final String GM_ACCESS_FILE = "./config/Admin/GMAccess.properties"; /** Properties file for GM access configurations */
-	public static final String ADMIN_CONFIG_FILE = "./config/Admin/Admin.properties"; /** Properties file for Admin configurations */
-	public static final String COMMAND_PRIVILEGES_FILE = "./config/Admin/Privileges.properties"; /** Properties file for alternative configure GM commands access level.*/
-	public static final String SERVER_VERSION_FILE = "./config/Version/L2J Hellas Version.properties"; /** Properties file for l2jhellas server version configurations */
-	public static final String CONFIGURATION_FILE = "./config/Network/Gameserver.properties"; /** Properties file for game server (connection and ingame) configurations */
-	public static final String TELNET_FILE = "./config/Telnet.properties"; /** Properties file for telnet configuration */
-	public static final String  MMOCORE_CONFIG_FILE = "./config/Network/mmocore.properties";  
-	public static final String HEXID_FILE = "./config/Network/hexid.txt"; /** Text file containing hexadecimal value of server ID */
-    //LoginServer
-	/** Properties file for login server configurations */
-	public static final String LOGIN_CONFIGURATION_FILE = "./config/Network/LoginServer.properties";
+	/*********************************
+	 *  LoginServer Config locations *
+	 *********************************/
+	public static final String LOGIN_CONFIGURATION_FILE = "./config/Network/LoginServer.ini";
 	
-	//GameServer && LoginServer
-	
-	/* .PROPERTIES FILES */
-	//ALT_SETTINGS_FILE
+	//================================
+	//    GameServer && LoginServer
+	//================================
+	// ALT_SETTINGS_FILE
 	public static boolean BANKING2_SYSTEM_ENABLED; /** Banking system */
 	public static int     BANKING2_SYSTEM_GOLDBARS; /** Banking system */
 	public static int     BANKING2_SYSTEM_ADENA; /** Banking system */
@@ -215,13 +216,13 @@ public final class Config
 	public static byte    FRONT_BLOW_SUCCESS; /** Daggers skills success rate config */
 	public static byte    BACK_BLOW_SUCCESS; /** Daggers skills success rate config */
 	public static byte    SIDE_BLOW_SUCCESS; /** Daggers skills success rate config */
-	//MMocore
+	// MMocore
 	public static int MMO_SELECTOR_SLEEP_TIME; 
 	public static int MMO_MAX_SEND_PER_PASS; 
     public static int MMO_MAX_READ_PER_PASS; 
     public static int MMO_HELPER_BUFFER_COUNT; 
     public static int MMO_IO_SELECTOR_THREAD_COUNT; 
-	//GRAND BOSS SETTINGS         
+	// GRAND BOSS SETTINGS         
  	public static int Antharas_Wait_Time; 
  	public static int Valakas_Wait_Time; 
  	public static int Interval_Of_Antharas_Spawn; 
@@ -238,7 +239,7 @@ public final class Config
  	public static int Interval_Of_Sailren_Spawn; 
  	public static int Random_Of_Sailren_Spawn;
 
-	//CLANHALL_CONFIG_FILE
+	// CLANHALL_CONFIG_FILE
 	public static long CH_TELE_FEE_RATIO; /** Teleports costs */
 	public static int  CH_TELE1_FEE; /** Teleports costs */
 	public static int  CH_TELE2_FEE; /** Teleports costs */
@@ -293,13 +294,13 @@ public final class Config
 	public static int  CH_FRONT1_FEE; /** Interier costs */
 	public static int  CH_FRONT2_FEE; /** Interier costs */
 
-	//COMMAND_PRIVILEGES_FILE --> empty - cheking elsewere.
+	// COMMAND_PRIVILEGES_FILE --> empty - cheking elsewere.
 	
-	//SERVER_VERSION_FILE
+	// SERVER_VERSION_FILE
 	public static String SERVER_VERSION; /** Server version */
 	public static String SERVER_BUILD_DATE; /** Date of server build */
 
-	//GM_ACCESS_FILE
+	// GM_ACCESS_FILE
 	public static int     GM_ACCESSLEVEL; /** General GM access level */
 	public static int     GM_MIN; /** General GM Minimal AccessLevel */
 	public static int     GM_ALTG_MIN_LEVEL; /** Minimum privileges level for a GM to do Alt+G */
@@ -360,13 +361,13 @@ public final class Config
 	public static int	  ADMIN_TITLE_COLOR;
 	public static int	  GM_TITLE_COLOR;
 	
-	//ID_CONFIG_FILE
+	// ID_CONFIG_FILE
 	public static ObjectMapType MAP_TYPE; /** Type of map object */
 	public static ObjectSetType SET_TYPE; /** Type of set object */
 	public static IdFactoryType IDFACTORY_TYPE; /** ID Factory type */
 	public static boolean 		BAD_ID_CHECKING; /** Check for bad ID ? */
 
-	//l2jhellas_CONFIG_FILE
+	// l2jhellas_CONFIG_FILE
 	public static boolean MOD_ALLOW_WEDDING; /** Wedding system */
 	public static int     MOD_WEDDING_PRICE; /** Wedding system */
 	public static boolean MOD_WEDDING_PUNISH_INFIDELITY; /** Wedding system */
@@ -515,7 +516,7 @@ public final class Config
 	public static int     GEODATA; /** GeoData 0/1/2 */
 	public static boolean FORCE_GEODATA; /** Force loading GeoData to psychical memory */
 	
- 	//OLYMPIAD_FILE
+ 	// OLYMPIAD_FILE
  	public static int     OLY_START_TIME; /** Olympiad Competition Starting time */
 	public static int     OLY_MIN; /** Olympiad Minutes */
 	public static long    OLY_CPERIOD; /** Olympiad Competition Period */
@@ -528,7 +529,7 @@ public final class Config
 	public static int     OLY_ENCHANT_LIMIT; /** Olympiad max enchant limitation */
 	public static FastList<Integer> OLY_RESTRICTED_ITEMS_LIST = new FastList<Integer>(); /** Items IDs, that can't be used in oly */
 	
-	//OPTIONS_FILE
+	// OPTIONS_FILE
 	public static boolean TEST_SERVER; /** Set if this server is a test server used for development */
 	public static boolean SERVER_LIST_TESTSERVER; /** Display test server in the list of servers ? */
 	public static boolean EVERYBODY_HAS_ADMIN_RIGHTS; /** For test servers - everybody has admin rights */
@@ -615,7 +616,7 @@ public final class Config
 	public static int     GRID_NEIGHBOR_TURNOFF_TIME; /** Grid Options */
 	public static int     FLOODPROTECTOR_INITIALSIZE;
 	
-	//OTHER_CONFIG_FILE
+	// OTHER_CONFIG_FILE
 	public static int     STARTING_ADENA; /** Amount of adenas when starting a new character */
 	public static int     STARTING_ANCIENT; /** Amount of ancient adenas when starting a new character */
 	public static int     WYVERN_SPEED; /** Speed of Weverns */
@@ -680,7 +681,7 @@ public final class Config
 	public static final FloodProtectorConfig FLOOD_PROTECTOR_MULTISELL = new FloodProtectorConfig("MultiSellFloodProtector");
 	public static final FloodProtectorConfig FLOOD_PROTECTOR_TRANSACTION = new FloodProtectorConfig("TransactionFloodProtector");
 
-	//PVP_PK_CONFIG_FILE
+	// PVP_PK_CONFIG_FILE
 	public static boolean ALLOW_POTS_IN_PVP; /** Allow pots in PvP */
  	public static boolean ALLOW_SOE_IN_PVP; /** Allow SOE in PvP */
     public static boolean PVP_PK_TITLE;
@@ -801,7 +802,7 @@ public final class Config
 	public static int	   VIP_MAX_LEVEL;
 	public static int	   VIP_MIN_PARTICIPANTS;
 	
-	//RATES_CONFIG_FILE
+	// RATES_CONFIG_FILE
 	public static float   RATE_XP; /** Rate for eXperience Point rewards */
 	public static float   RATE_SP; /** Rate for Skill Point rewards */
 	public static float   RATE_PARTY_XP; /** Rate for party eXperience Point rewards */
@@ -858,7 +859,7 @@ public final class Config
 	public static int     ENCHANT_SAFE_MAX; /** Maximum level of safe enchantment for normal items */
 	public static int     ENCHANT_SAFE_MAX_FULL; /** Maximum level of safe enchantment for full body armor */
 	
-	//CONFIGURATION_FILE
+	// CONFIGURATION_FILE
 	public static String  GAMESERVER_HOSTNAME; /** Hostname of the Game Server */
 	public static int     PORT_GAME; /** Game Server ports */
 	public static String  EXTERNAL_HOSTNAME; /** External Hostname */
@@ -883,7 +884,7 @@ public final class Config
 	public static int     MAX_UNKNOWN_PACKETS; /** Unknown Packet handler protection */
  	public static int     UNKNOWN_PACKETS_PUNISHMENT; /** Unknown Packet handler protection */
 	
- 	//SEVENSIGNS_FILE
+ 	// SEVENSIGNS_FILE
 	public static boolean ALT_GAME_REQUIRE_CASTLE_DAWN; /** Player must be in a castle-owning clan or ally to sign up for Dawn. */
 	public static boolean ALT_GAME_REQUIRE_CLAN_CASTLE; /** Alternative gaming - allow clan-based castle ownage check rather than ally-based. */
 	public static int     ALT_FESTIVAL_MIN_PLAYER; /** Minimum number of player to participate in SevenSigns Festival */
@@ -897,13 +898,13 @@ public final class Config
 	public static long    ALT_FESTIVAL_SECOND_SWARM; /** Festival Second Swarm */
 	public static long    ALT_FESTIVAL_CHEST_SPAWN; /** Festival Chest Spawn */
 	
-	//SIEGE_CONFIGURATION_FILE empty -> cheking elsewere.
+	// SIEGE_CONFIGURATION_FILE empty -> cheking elsewere.
 		
-	//HEXID_FILE
+	// HEXID_FILE
 	public static int     SERVER_ID; /** Server ID used with the HexID */
 	public static byte[]  HEX_ID; /** Hexadecimal ID of the game server */
 	
-	//LOGIN_CONFIGURATION_FILE some of info in CONFIGURATION_FILE
+	// LOGIN_CONFIGURATION_FILE some of info in CONFIGURATION_FILE
 	public static String  LOGIN_BIND_ADDRESS; /** Login Server bind ip */
 	public static int     PORT_LOGIN; /** Login Server port */
 	public static int     LOGIN_TRY_BEFORE_BAN; /** Number of login tries before IP ban gets activated, default 10 */
@@ -921,7 +922,7 @@ public final class Config
 	public static int     FAST_CONNECTION_TIME; /** Login flood protection */
 	public static int     MAX_CONNECTION_PER_IP; /** Login flood protection */
 	
-	//TELNET_FILE
+	// TELNET_FILE
 	public static boolean IS_TELNET_ENABLED; /** Is telnet enabled ? */
 	public static enum IdFactoryType /** Enumeration for type of ID Factory */
 	{
@@ -935,12 +936,12 @@ public final class Config
 	{
 		L2ObjectHashSet, WorldObjectSet
 	}
-	//StatusPort and ListOfHosts checked elsewere.
+	// StatusPort and ListOfHosts checked elsewere.
 	
-	//Found in more than one file
+	// Found in more than one file
 	public static boolean DEBUG; /** Enable/disable debugging */
 	
-	//Variables doesn't found in any .properties file. If added look at altsettings.properties bottom
+	// Variables doesn't found in any .ini file. If added look at altsettings.ini bottom
 	public static int     MAX_ITEM_IN_PACKET;
 	public static boolean CHECK_KNOWN;
 	public static int     NEW_NODE_ID;
@@ -951,15 +952,16 @@ public final class Config
 
 	/**
 	 * This class initializes all global variables for configuration.<br>
-	 * If key doesn't appear in properties file, a default value is setting on
+	 * If key doesn't appear in ini file, a default value is setting on
 	 * by this class.
 	 * 
-	 * @see CONFIGURATION_FILE (propertie file) for configuring your server.
+	 * @see CONFIGURATION_FILE (ini file) for configuring your server.
 	 */
 	public static void load()
 	{
 		if (Server.serverMode == Server.MODE_GAMESERVER)
-		{		
+		{
+			// Try to load ALT_SETTINGS_FILE (if exist)
 			try
 			{
 				Properties altSettings = new Properties();
@@ -1099,13 +1101,14 @@ public final class Config
 				FRONT_BLOW_SUCCESS = Byte.parseByte(altSettings.getProperty("FrontBlow", "40")); 
 				BACK_BLOW_SUCCESS = Byte.parseByte(altSettings.getProperty("BackBlow", "60")); 
 				SIDE_BLOW_SUCCESS = Byte.parseByte(altSettings.getProperty("SideBlow", "50"));
-				_log.info("# " + ALT_SETTINGS_FILE + " Sucessfully LOADED #");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + ALT_SETTINGS_FILE + " File.");
 			}
+			
+			// Try to load CLANHALL_CONFIG_FILE (if exist)
 			try
 			{
 				
@@ -1166,14 +1169,14 @@ public final class Config
 				CH_FRONT_FEE_RATIO = Long.valueOf(clanhallSettings.getProperty("ClanHallFrontPlatformFunctionFeeRation", "86400000"));
 				CH_FRONT1_FEE = Integer.valueOf(clanhallSettings.getProperty("ClanHallFrontPlatformFunctionFeeLvl1", "86400000"));
 				CH_FRONT2_FEE = Integer.valueOf(clanhallSettings.getProperty("ClanHallFrontPlatformFunctionFeeLvl2", "86400000"));
-				_log.info("# " + CLANHALL_CONFIG_FILE + " Sucessfully LOADED #");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + CLANHALL_CONFIG_FILE + " File.");
 			}
-			// Server Version
+			
+			// Try to load SERVER_VERSION_FILE (if exist)
 			try
 			{
 				Properties serverVersion = new Properties();
@@ -1183,13 +1186,15 @@ public final class Config
 
 				SERVER_VERSION = serverVersion.getProperty("version", "Unsupported Custom Version.");
 				SERVER_BUILD_DATE = serverVersion.getProperty("builddate", "Undefined Date.");
-				_log.info("# " + SERVER_VERSION_FILE + " Sucessfully LOADED #");
+				_log.info("# " + SERVER_VERSION_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				SERVER_VERSION = "Unsupported Custom Version.";
 				SERVER_BUILD_DATE = "Undefined Date.";
 			}
+			
+			// Try to load GM_ACCESS_FILE (if exist)
 			try
 			{
 				Properties gmSettings = new Properties();
@@ -1246,13 +1251,15 @@ public final class Config
 				GM_CAN_GIVE_DAMAGE = Integer.parseInt(gmSettings.getProperty("GMCanGiveDamage", "90"));
 				GM_DONT_TAKE_AGGRO = Integer.parseInt(gmSettings.getProperty("GMDontTakeAggro", "90"));
 				GM_DONT_TAKE_EXPSP = Integer.parseInt(gmSettings.getProperty("GMDontGiveExpSp", "90"));
-				_log.info("# " + GM_ACCESS_FILE + " Sucessfully LOADED #");
+				_log.info("# " + GM_ACCESS_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + GM_ACCESS_FILE + " File.");
 			}
+			
+			// Try to load ADMIN_CONFIG_FILE (if exist)
 			try
 			{
 				Properties AdminSettings = new Properties();
@@ -1278,13 +1285,15 @@ public final class Config
 				GM_TITLE_COLOR_ENABLED = Boolean.parseBoolean(AdminSettings.getProperty("GMTitleColorEnabled", "False"));
 				ADMIN_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("AdminTitleColor", "00FF00"));
 				GM_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("GMTitleColor", "FFFF00"));
-				_log.info("# " + ADMIN_CONFIG_FILE + " Sucessfully LOADED #");
+				_log.info("# " + ADMIN_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + ADMIN_CONFIG_FILE + " File.");
 			}
+			
+			// Try to load ID_CONFIG_FILE (if exist)
 			try
 			{
 				Properties idSettings = new Properties();
@@ -1296,13 +1305,15 @@ public final class Config
 				SET_TYPE = ObjectSetType.valueOf(idSettings.getProperty("L2Set", "WorldObjectSet"));
 				IDFACTORY_TYPE = IdFactoryType.valueOf(idSettings.getProperty("IDFactory", "Compaction"));
 				BAD_ID_CHECKING = Boolean.valueOf(idSettings.getProperty("BadIdChecking", "True"));
-				_log.info("# " + ID_CONFIG_FILE + " Sucessfully LOADED #");
+				_log.info("# " + ID_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + ID_CONFIG_FILE + " File.");
 			}
+			
+			// Try to load L2JHellas_CONFIG_FILE (if exist)
 			try
 			{
 				Properties L2JHellasSettings = new Properties();
@@ -1310,8 +1321,6 @@ public final class Config
 				L2JHellasSettings.load(is);
 				is.close();
 				
-				
-
 				CHAMPION_PASSIVE = Boolean.parseBoolean(L2JHellasSettings.getProperty("ChampionPassive", "False"));
 				CHAMPION_TITLE = L2JHellasSettings.getProperty("ChampionTitle", "Champion").trim();
 				CHAMPION_ENABLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("ChampionEnable", "False"));
@@ -1393,8 +1402,7 @@ public final class Config
 				PVP_PVP_TIME = Integer.parseInt(L2JHellasSettings.getProperty("PvPVsPvPTime", "30000"));
 				ANNOUNCE_PVP_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePvPKill", "False"));
 				ANNOUNCE_PK_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePkKill", "False"));
-	
-
+				
 				MOD_ALLOW_WEDDING = Boolean.valueOf(L2JHellasSettings.getProperty("AllowWedding", "False"));
 				MOD_WEDDING_PRICE = Integer.parseInt(L2JHellasSettings.getProperty("WeddingPrice", "250000000"));
 				MOD_WEDDING_PUNISH_INFIDELITY = Boolean.parseBoolean(L2JHellasSettings.getProperty("WeddingPunishInfidelity", "True"));
@@ -1459,7 +1467,7 @@ public final class Config
                 PVPEXPSP_SYSTEM = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowAddExpSpAtPvP", "False"));
 				ADD_EXP = Integer.parseInt(L2JHellasSettings.getProperty("AddExpAtPvp", "0"));
 				ADD_SP = Integer.parseInt(L2JHellasSettings.getProperty("AddSpAtPvp", "0"));
-				ABORT_RR = L2JHellasSettings.getProperty("AbortRestart", "L2JAnarion");
+				ABORT_RR = L2JHellasSettings.getProperty("AbortRestart", "L2JHellas");
 				SPAWN_CHAR = Boolean.parseBoolean(L2JHellasSettings.getProperty("CustomSpawn", "False"));
 				SPAWN_X = Integer.parseInt(L2JHellasSettings.getProperty("SpawnX", ""));
 				SPAWN_Y = Integer.parseInt(L2JHellasSettings.getProperty("SpawnY", ""));
@@ -1514,7 +1522,7 @@ public final class Config
 								continue;
 							FILTER_LIST.add(line.trim());
 						}
-						_log.info("# Chat Filter: Loaded " + FILTER_LIST.size() + " words #");
+						_log.info("# Chat Filter: Loaded " + FILTER_LIST.size() + " words ");
 					}
 					catch (Exception e)
 					{
@@ -1524,7 +1532,7 @@ public final class Config
 				}
 				ALLOW_USE_HERO_ITEM_ON_SUBCLASS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowUseHeroItemOnSub", "False"));
 				MAX_LVL_AFTER_SUB = Boolean.parseBoolean(L2JHellasSettings.getProperty("MaxLvLAfterSub", "False"));
-				_log.info("# " + L2JHellas_CONFIG_FILE + " Sucessfully LOADED #");
+				_log.info("# " + L2JHellas_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -1532,8 +1540,7 @@ public final class Config
 				throw new Error("Failed to Load " + L2JHellas_CONFIG_FILE + " File.");
 			}
 			
-		
-			
+			// Try to load OLYMPIAD_FILE (if exist)
 			try
 			{
 				Properties OlySettings = new Properties();
@@ -1556,7 +1563,7 @@ public final class Config
 				{
 					OLY_RESTRICTED_ITEMS_LIST.add(Integer.parseInt(id));
 				}
-				_log.info("# " + OLYMPIAD_FILE + " Sucessfully LOADED #");
+				_log.info("# " + OLYMPIAD_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -1564,6 +1571,7 @@ public final class Config
 				throw new Error("Failed to Load " + L2JHellas_CONFIG_FILE + " File.");
 			}
 			
+			// Try to load GEO_FILE (if exist)
 			try
 			{
 				Properties geoSettings = new Properties();
@@ -1575,7 +1583,7 @@ public final class Config
 				COORD_SYNCHRONIZE = Integer.parseInt(geoSettings.getProperty("CoordSynchronize", "-1"));
 				GEODATA = Integer.parseInt(geoSettings.getProperty("GeoData", "0"));
 				FORCE_GEODATA = Boolean.parseBoolean(geoSettings.getProperty("ForceGeoData", "True"));
-				_log.info("# " + GEO_FILE + " Sucessfully LOADED #");
+				_log.info("# " + GEO_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -1583,7 +1591,7 @@ public final class Config
 				throw new Error("Failed to Load " + GEO_FILE + " File.");
 			}
 			
-			 // MMOCORE
+			// Try to load MMOCORE_CONFIG_FILE (if exist)
 			try
 			{
 				Properties mmoSettings = new Properties();
@@ -1602,7 +1610,7 @@ public final class Config
 				throw new Error("Failed to Load " + MMOCORE_CONFIG_FILE + " File.");
 			}
 
-			
+			// Try to load OPTIONS_FILE (if exist)
 			try
 			{
 				Properties optionsSettings = new Properties();
@@ -1705,13 +1713,15 @@ public final class Config
 				SELECTED_NODE_ID = Integer.parseInt(optionsSettings.getProperty("NewNodeId", "7952"));
 				LINKED_NODE_ID = Integer.parseInt(optionsSettings.getProperty("NewNodeId", "7952"));
 				NEW_NODE_TYPE = optionsSettings.getProperty("NewNodeType", "npc");
-				_log.info("# " + OPTIONS_FILE + " Sucessfully LOADED #");
+				_log.info("# " + OPTIONS_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + OPTIONS_FILE + " File.");
 			}
+			
+			// Try to load OTHER_CONFIG_FILE (if exist)
 			try
 			{
 				Properties otherSettings = new Properties();
@@ -1774,13 +1784,15 @@ public final class Config
 				AUGMENT_SKILL = Integer.parseInt(otherSettings.getProperty("AugmentSkill", "11"));
 				AUGMENT_EXCLUDE_NOTDONE = Boolean.parseBoolean(otherSettings.getProperty("AugmentExcludeNotdone", "False"));
 				MAX_ITEM_IN_PACKET = Math.max(INVENTORY_MAXIMUM_NO_DWARF, Math.max(INVENTORY_MAXIMUM_DWARF, INVENTORY_MAXIMUM_GM));
-				_log.info("# " + OTHER_CONFIG_FILE + " Sucessfully LOADED #");
+				_log.info("# " + OTHER_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + OTHER_CONFIG_FILE + " File.");
 			}
+			
+			// Try to load FLOOD_PROTECTORS_FILE (if exist)
 			try
 			{
 				Properties antiflood = new Properties();
@@ -1788,7 +1800,7 @@ public final class Config
 				antiflood.load(is);
 				is.close();
 				loadFloodProtectorConfigs(antiflood);
-				_log.info("# " + FLOOD_PROTECTORS_FILE + " Sucessfully LOADED #");
+				_log.info("# " + FLOOD_PROTECTORS_FILE + " Sucessfully loaded.");
 				}
 			    catch (Exception e)
 				{
@@ -1796,6 +1808,7 @@ public final class Config
 				throw new Error("Failed to Load " + FLOOD_PROTECTORS_FILE + " File.");			
 			}	
 
+			// Try to load EVENT_CONFIG_FILE (if exist)
 			try
 			{
 				Properties EventSettings = new Properties();
@@ -1817,7 +1830,6 @@ public final class Config
 					VIP_MIN_PARTICIPANTS = 10; //can't be set less then lvl 10
 			
 				ALLOW_LHE_EVENT = Boolean.parseBoolean(EventSettings.getProperty("Allowlhe", "false"));
-				
 				
 				FIRST_TVT_DELAY = Integer.parseInt(EventSettings.getProperty("FirstEventDelay", "10"));
 				TVT_AURA = Boolean.parseBoolean(EventSettings.getProperty("TvTAura", "true"));
@@ -1845,12 +1857,10 @@ public final class Config
 				TVT_REVIVE_DELAY = Long.parseLong(EventSettings.getProperty("TVTReviveDelay", "20000"));
 				if (TVT_REVIVE_DELAY < 1000)
 					TVT_REVIVE_DELAY = 1000; //can't be set less then 1 second
-			
 				
 				ENABLE_HITMAN_EVENT = Boolean.parseBoolean(EventSettings.getProperty("EnableHitmanEvent", "False"));
 				HITMAN_TAKE_KARMA = Boolean.parseBoolean(EventSettings.getProperty("HitmansTakekarma", "True"));
 
-				
 				DM_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventSettings.getProperty("DMAllowInterference", "false"));
 				DM_ALLOW_POTIONS = Boolean.parseBoolean(EventSettings.getProperty("DMAllowPotions", "false"));
 				DM_ALLOW_SUMMON = Boolean.parseBoolean(EventSettings.getProperty("DMAllowSummon", "false"));
@@ -1860,7 +1870,6 @@ public final class Config
 				if (DM_REVIVE_DELAY < 1000)
 					DM_REVIVE_DELAY = 1000; //can't be set less then 1 second
 
-				
 				CTF_EVEN_TEAMS = EventSettings.getProperty("CTFEvenTeams", "BALANCE");
 				CTF_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventSettings.getProperty("CTFAllowInterference", "false"));
 				CTF_ALLOW_POTIONS = Boolean.parseBoolean(EventSettings.getProperty("CTFAllowPotions", "false"));
@@ -1874,7 +1883,7 @@ public final class Config
 				CTF_REVIVE_DELAY = Long.parseLong(EventSettings.getProperty("CTFReviveDelay", "20000"));
 				if (CTF_REVIVE_DELAY < 1000)
 				CTF_REVIVE_DELAY = 1000; //can't be set less then 1 second
-				_log.info("# " + EVENT_CONFIG_FILE + " Sucessfully LOADED #");
+				_log.info("# " + EVENT_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -1882,7 +1891,7 @@ public final class Config
 				throw new Error("Failed to Load " + EVENT_CONFIG_FILE + " File.");
 			}
 		
-			
+			// Try to load RATES_CONFIG_FILE (if exist)
 			try
 			{	
 				Properties ratesSettings = new Properties();
@@ -1939,109 +1948,147 @@ public final class Config
 				ENCHANT_MAX_JEWELRY = Integer.parseInt(ratesSettings.getProperty("EnchantMaxJewelry", "25"));
 				ENCHANT_SAFE_MAX = Integer.parseInt(ratesSettings.getProperty("EnchantSafeMax", "3"));
 				ENCHANT_SAFE_MAX_FULL = Integer.parseInt(ratesSettings.getProperty("EnchantSafeMaxFull", "4"));
-						String[] propertySplitWeapon = ratesSettings.getProperty("EnchantChanceWeaponList", "").split(";");
-										String[] propertySplitArmor = ratesSettings.getProperty("EnchantChanceArmorList", "").split(";");
-										String[] propertySplitJewelry = ratesSettings.getProperty("EnchantChanceJewelryList", "").split(";");
-										String[] propertySplitBlessedWeapon = ratesSettings.getProperty("BlessedEnchantChanceWeaponList", "").split(";");
-										String[] propertySplitBlessedArmor = ratesSettings.getProperty("BlessedEnchantChanceArmorList", "").split(";");
-										String[] propertySplitBlessedJewelry = ratesSettings.getProperty("BlessedEnchantChanceJewelryList", "").split(";");
-										ENCHANT_CHANCE_WEAPON_LIST = new FastMap<Integer, Integer>(propertySplitWeapon.length);
-										ENCHANT_CHANCE_ARMOR_LIST = new FastMap<Integer, Integer>(propertySplitArmor.length);
-										ENCHANT_CHANCE_JEWELRY_LIST = new FastMap<Integer, Integer>(propertySplitJewelry.length);
-										BLESSED_ENCHANT_CHANCE_WEAPON_LIST = new FastMap<Integer, Integer>(propertySplitBlessedWeapon.length);
-										BLESSED_ENCHANT_CHANCE_ARMOR_LIST = new FastMap<Integer, Integer>(propertySplitBlessedArmor.length);
-										BLESSED_ENCHANT_CHANCE_JEWELRY_LIST = new FastMap<Integer, Integer>(propertySplitBlessedJewelry.length);
-									if (propertySplitWeapon.length > 1)
-									{
-										for (String enchant : propertySplitWeapon)
-										{
-										String[] enchantSplit = enchant.split(",");
-											if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
-											else
-											{
-											try{ENCHANT_CHANCE_WEAPON_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));}
-												catch (NumberFormatException nfe){
-												if (!enchant.isEmpty())_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));}
-											}
-										}
-									}
-									if (propertySplitArmor.length > 1)
-									{
-										for (String enchant : propertySplitArmor)
-										{
-											String[] enchantSplit = enchant.split(",");
-											if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
-											else
-											{
-												try{ENCHANT_CHANCE_ARMOR_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));}
-												catch (NumberFormatException nfe){
-												if (!enchant.isEmpty())_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));}
-											}
-										}
-									}
-									if (propertySplitJewelry.length > 1)
-									{
-										for (String enchant : propertySplitJewelry)
-										{
-											String[] enchantSplit = enchant.split(",");
-											if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
-											else
-											{
-											try{ENCHANT_CHANCE_JEWELRY_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));}
-												catch (NumberFormatException nfe){
-												if (!enchant.isEmpty())_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));}
-											}
-										}
-									}
-									if (propertySplitBlessedWeapon.length > 1)
-									{
-										for (String enchant : propertySplitBlessedWeapon)
-										{
-											String[] enchantSplit = enchant.split(",");
-											if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
-											else
-											{
-												try{BLESSED_ENCHANT_CHANCE_WEAPON_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));}
-												catch (NumberFormatException nfe){
-												if (!enchant.isEmpty())_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));}
-											}
-										}
-									}
-									if (propertySplitBlessedArmor.length > 1)
-									{
-										for (String enchant : propertySplitBlessedArmor)
-										{
-											String[] enchantSplit = enchant.split(",");
-											if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
-											else
-											{
-												try{BLESSED_ENCHANT_CHANCE_ARMOR_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));}
-												catch (NumberFormatException nfe){
-												if (!enchant.isEmpty())_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));}
-											}
-										}
-									}
-									if (propertySplitBlessedJewelry.length > 1)
-									{
-										for (String enchant : propertySplitBlessedJewelry)
-										{
-											String[] enchantSplit = enchant.split(",");
-											if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
-											else
-											{
-												try{BLESSED_ENCHANT_CHANCE_JEWELRY_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));}
-												catch (NumberFormatException nfe){
-												if (!enchant.isEmpty())_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));}
-											}
-										}
-									}
-				_log.info("# " + RATES_CONFIG_FILE + " Sucessfully LOADED #");
+				String[] propertySplitWeapon = ratesSettings.getProperty("EnchantChanceWeaponList", "").split(";");
+				String[] propertySplitArmor = ratesSettings.getProperty("EnchantChanceArmorList", "").split(";");
+				String[] propertySplitJewelry = ratesSettings.getProperty("EnchantChanceJewelryList", "").split(";");
+				String[] propertySplitBlessedWeapon = ratesSettings.getProperty("BlessedEnchantChanceWeaponList", "").split(";");
+				String[] propertySplitBlessedArmor = ratesSettings.getProperty("BlessedEnchantChanceArmorList", "").split(";");
+				String[] propertySplitBlessedJewelry = ratesSettings.getProperty("BlessedEnchantChanceJewelryList", "").split(";");
+				ENCHANT_CHANCE_WEAPON_LIST = new FastMap<Integer, Integer>(propertySplitWeapon.length);
+				ENCHANT_CHANCE_ARMOR_LIST = new FastMap<Integer, Integer>(propertySplitArmor.length);
+				ENCHANT_CHANCE_JEWELRY_LIST = new FastMap<Integer, Integer>(propertySplitJewelry.length);
+				BLESSED_ENCHANT_CHANCE_WEAPON_LIST = new FastMap<Integer, Integer>(propertySplitBlessedWeapon.length);
+				BLESSED_ENCHANT_CHANCE_ARMOR_LIST = new FastMap<Integer, Integer>(propertySplitBlessedArmor.length);
+				BLESSED_ENCHANT_CHANCE_JEWELRY_LIST = new FastMap<Integer, Integer>(propertySplitBlessedJewelry.length);
+				if (propertySplitWeapon.length > 1)
+				{
+					for (String enchant : propertySplitWeapon)
+					{
+						String[] enchantSplit = enchant.split(",");
+						if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						else
+						{
+							try
+							{
+								ENCHANT_CHANCE_WEAPON_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!enchant.isEmpty())
+									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+							}
+						}
+					}
+				}
+				if (propertySplitArmor.length > 1)
+				{
+					for (String enchant : propertySplitArmor)
+					{
+						String[] enchantSplit = enchant.split(",");
+						if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						else
+						{
+							try
+							{
+								ENCHANT_CHANCE_ARMOR_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!enchant.isEmpty())
+									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+							}
+						}
+					}
+				}
+				if (propertySplitJewelry.length > 1)
+				{
+					for (String enchant : propertySplitJewelry)
+					{
+						String[] enchantSplit = enchant.split(",");
+						if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						else
+						{
+							try
+							{
+								ENCHANT_CHANCE_JEWELRY_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!enchant.isEmpty())
+									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+							}
+						}
+					}
+				}
+				if (propertySplitBlessedWeapon.length > 1)
+				{
+					for (String enchant : propertySplitBlessedWeapon)
+					{
+						String[] enchantSplit = enchant.split(",");
+						if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						else
+						{
+							try
+							{
+								BLESSED_ENCHANT_CHANCE_WEAPON_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!enchant.isEmpty())
+									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+							}
+						}
+					}
+				}
+				if (propertySplitBlessedArmor.length > 1)
+				{
+					for (String enchant : propertySplitBlessedArmor)
+					{
+						String[] enchantSplit = enchant.split(",");
+						if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						else
+						{
+							try
+							{
+								BLESSED_ENCHANT_CHANCE_ARMOR_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!enchant.isEmpty())
+									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+							}
+						}
+					}
+				}
+				if (propertySplitBlessedJewelry.length > 1)
+				{
+					for (String enchant : propertySplitBlessedJewelry)
+					{
+						String[] enchantSplit = enchant.split(",");
+						if (enchantSplit.length != 2)_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						else
+						{
+							try
+							{
+								BLESSED_ENCHANT_CHANCE_JEWELRY_LIST.put(Integer.valueOf(enchantSplit[0]), Integer.valueOf(enchantSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!enchant.isEmpty())
+									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+							}
+						}
+					}
+				}
+				_log.info("# " + RATES_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + RATES_CONFIG_FILE + " File.");
 			}
+			
+			// Try to load CONFIGURATION_FILE (if exist)
 			try
 			{
 				Properties serverSettings = new Properties();
@@ -2077,68 +2124,65 @@ public final class Config
 				{
 					throw new Error("MinProtocolRevision is bigger than MaxProtocolRevision in server configuration file.");
 				}
-				_log.info("# " + CONFIGURATION_FILE + " Sucessfully LOADED #");
+				_log.info("# " + CONFIGURATION_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
-				throw new Error("Failed to Load " + CONFIGURATION_FILE
-						+ " File.");
-		 	    }
-	          
-
-		
-			    // Grandboss
-				try
-				{
+				throw new Error("Failed to Load " + CONFIGURATION_FILE + " File.");
+			}
+			
+			// Try to load GRANDBOSS_CONFIG_FILE (if exist)
+			try
+			{
 				Properties grandbossSettings = new Properties();
 				InputStream is = new FileInputStream(new File(GRANDBOSS_CONFIG_FILE));
 				grandbossSettings.load(is);
 				is.close();
-	                                       
+				
 				Antharas_Wait_Time = Integer.parseInt(grandbossSettings.getProperty("AntharasWaitTime", "10"));
 				if (Antharas_Wait_Time < 3 || Antharas_Wait_Time > 60)
-				Antharas_Wait_Time = 10;
+					Antharas_Wait_Time = 10;
 				Antharas_Wait_Time = Antharas_Wait_Time * 60000;
- 	            Interval_Of_Antharas_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfAntharasSpawn", "192"));
+				Interval_Of_Antharas_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfAntharasSpawn", "192"));
 				if (Interval_Of_Antharas_Spawn < 1 || Interval_Of_Antharas_Spawn > 192)
-				Interval_Of_Antharas_Spawn = 192;
+					Interval_Of_Antharas_Spawn = 192;
 				Interval_Of_Antharas_Spawn = Interval_Of_Antharas_Spawn * 3600000;
 				Random_Of_Antharas_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfAntharasSpawn", "145"));
 				if (Random_Of_Antharas_Spawn < 1 || Random_Of_Antharas_Spawn > 192)
-				Random_Of_Antharas_Spawn = 145;
+					Random_Of_Antharas_Spawn = 145;
 				Random_Of_Antharas_Spawn = Random_Of_Antharas_Spawn * 3600000;
 				Interval_Of_Core_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfCoreSpawn", "27"));
 				if (Interval_Of_Core_Spawn < 1 || Interval_Of_Core_Spawn > 192)
-				Interval_Of_Core_Spawn = 27;
+					Interval_Of_Core_Spawn = 27;
 				Interval_Of_Core_Spawn = Interval_Of_Core_Spawn * 3600000;
 				Random_Of_Core_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfCoreSpawn", "47"));
 				if (Random_Of_Core_Spawn < 1 || Random_Of_Core_Spawn > 192)
-				Random_Of_Core_Spawn = 47;
+					Random_Of_Core_Spawn = 47;
 				Random_Of_Core_Spawn = Random_Of_Core_Spawn * 3600000;
 				Interval_Of_Orfen_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfOrfenSpawn", "28"));
 				if (Interval_Of_Orfen_Spawn < 1 || Interval_Of_Orfen_Spawn > 192)
-				Interval_Of_Orfen_Spawn = 28;
+					Interval_Of_Orfen_Spawn = 28;
 				Interval_Of_Orfen_Spawn = Interval_Of_Orfen_Spawn * 3600000;
 				Random_Of_Orfen_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfOrfenSpawn", "41"));
 				if (Random_Of_Orfen_Spawn < 1 || Random_Of_Orfen_Spawn > 192)
-				Random_Of_Orfen_Spawn = 41;
+					Random_Of_Orfen_Spawn = 41;
 				Random_Of_Orfen_Spawn = Random_Of_Orfen_Spawn * 3600000;
 				Interval_Of_QueenAnt_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfQueenAntSpawn", "19"));
 				if (Interval_Of_QueenAnt_Spawn < 1 || Interval_Of_QueenAnt_Spawn > 192)
-				Interval_Of_QueenAnt_Spawn = 19;
+					Interval_Of_QueenAnt_Spawn = 19;
 				Interval_Of_QueenAnt_Spawn = Interval_Of_QueenAnt_Spawn * 3600000;
 				Random_Of_QueenAnt_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfQueenAntSpawn", "35"));
 				if (Random_Of_QueenAnt_Spawn < 1 || Random_Of_QueenAnt_Spawn > 192)
-				Random_Of_QueenAnt_Spawn = 35;
+					Random_Of_QueenAnt_Spawn = 35;
 				Random_Of_QueenAnt_Spawn = Random_Of_QueenAnt_Spawn * 3600000;
 				Interval_Of_Zaken_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfZakenSpawn", "19"));
 				if (Interval_Of_Zaken_Spawn < 1 || Interval_Of_Zaken_Spawn > 192)
-				Interval_Of_Zaken_Spawn = 19;
+					Interval_Of_Zaken_Spawn = 19;
 				Interval_Of_Zaken_Spawn = Interval_Of_Zaken_Spawn * 3600000;
 				Random_Of_Zaken_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfZakenSpawn", "35"));
 				if (Random_Of_Zaken_Spawn < 1 || Random_Of_Zaken_Spawn > 192)
-				Random_Of_Zaken_Spawn = 35;
+					Random_Of_Zaken_Spawn = 35;
 				Random_Of_Zaken_Spawn = Random_Of_Zaken_Spawn * 3600000;
 				Interval_Of_Sailren_Spawn     = Integer.parseInt(grandbossSettings.getProperty("IntervalOfSailrenSpawn","12"));
 				if (Interval_Of_Sailren_Spawn < 1 || Interval_Of_Sailren_Spawn > 192)                                           Interval_Of_Sailren_Spawn = 12;
@@ -2146,12 +2190,14 @@ public final class Config
 				Random_Of_Sailren_Spawn     = Integer.parseInt(grandbossSettings.getProperty("RandomOfSailrenSpawn","24"));
 				if (Random_Of_Sailren_Spawn < 1 || Random_Of_Sailren_Spawn > 192)                                               Random_Of_Sailren_Spawn = 24;
 				Random_Of_Sailren_Spawn = Random_Of_Sailren_Spawn * 3600000;
-				}
-				catch (Exception e)
-				{
+			}
+			catch (Exception e)
+			{
 				e.printStackTrace();
 				throw new Error("Failed to Load "+GRANDBOSS_CONFIG_FILE+" File.");
 			}
+			
+			// Try to load SEVENSIGNS_FILE (if exist)
 			try
 			{
 				Properties SevenSettings = new Properties();
@@ -2171,13 +2217,15 @@ public final class Config
 				ALT_FESTIVAL_SECOND_SPAWN = Long.parseLong(SevenSettings.getProperty("AltFestivalSecondSpawn", "540000"));
 				ALT_FESTIVAL_SECOND_SWARM = Long.parseLong(SevenSettings.getProperty("AltFestivalSecondSwarm", "720000"));
 				ALT_FESTIVAL_CHEST_SPAWN = Long.parseLong(SevenSettings.getProperty("AltFestivalChestSpawn", "900000"));
-				_log.info("# " + SEVENSIGNS_FILE + " Sucessfully LOADED #");
+				_log.info("# " + SEVENSIGNS_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + SEVENSIGNS_FILE + " File.");
 			}
+			
+			// Try to load HEXID_FILE (if exist)
 			try
 			{
 				Properties Settings = new Properties();
@@ -2187,12 +2235,14 @@ public final class Config
 				
 				SERVER_ID = Integer.parseInt(Settings.getProperty("ServerID"));
 				HEX_ID = new BigInteger(Settings.getProperty("HexID"), 16).toByteArray();
-				_log.info("# " + HEXID_FILE + " Sucessfully LOADED #");
+				_log.info("# " + HEXID_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				_log.warning("Could not load HexID file (" + HEXID_FILE	+ "). Hopefully login will give us one.");
 			}
+			
+			// Try to load TELNET_FILE (if exist)
 			try
 			{
 				Properties telnetSettings = new Properties();
@@ -2201,7 +2251,7 @@ public final class Config
 				is.close();
 
 				IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
-				_log.info("# " + TELNET_FILE + " Sucessfully LOADED #");
+				_log.info("# " + TELNET_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2211,6 +2261,7 @@ public final class Config
 		}
 		else if (Server.serverMode == Server.MODE_LOGINSERVER)
 		{
+			// Try to load LOGIN_CONFIGURATION_FILE (if exist)
 			try
 			{
 				Properties serverSettings = new Properties();
@@ -2248,13 +2299,15 @@ public final class Config
 				NORMAL_CONNECTION_TIME = Integer.parseInt(serverSettings.getProperty("NormalConnectionTime", "700"));
 				FAST_CONNECTION_TIME = Integer.parseInt(serverSettings.getProperty("FastConnectionTime", "350"));
 				MAX_CONNECTION_PER_IP = Integer.parseInt(serverSettings.getProperty("MaxConnectionPerIP", "50"));
-				_log.info("# " + CONFIGURATION_FILE + " Sucessfully LOADED #");
+				_log.info("# " + CONFIGURATION_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + CONFIGURATION_FILE + " File.");
 			}
+			
+			// Try to load TELNET_FILE (if exist)
 			try
 			{
 				Properties telnetSettings = new Properties();
@@ -2263,14 +2316,15 @@ public final class Config
 				is.close();
 
 				IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
-				_log.info("# " + TELNET_FILE + " Sucessfully LOADED #");
+				_log.info("# " + TELNET_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				throw new Error("Failed to Load " + TELNET_FILE + " File.");
 			}
-			// MMOCORE
+
+			// Try to load MMOCORE_CONFIG_FILE (if exist)
 			try
 			{
 				Properties mmoSettings = new Properties();
@@ -2564,30 +2618,30 @@ public final class Config
 		else return false;
 		return true;
 		
-        }
+	}
 	
-	    private static void loadFloodProtectorConfigs(final Properties properties) 
-	   { 
-	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_USE_ITEM, "UseItem", "4"); 
-       	 loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_ROLL_DICE, "RollDice", "42"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_FIREWORK, "Firework", "42"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_ITEM_PET_SUMMON, "ItemPetSummon", "16"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_HERO_VOICE, "HeroVoice", "100"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_GLOBAL_CHAT, "GlobalChat", "5"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SUBCLASS, "Subclass", "20"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_DROP_ITEM, "DropItem", "10"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SERVER_BYPASS, "ServerBypass", "5"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_MULTISELL, "MultiSell", "1"); 
- 	     loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_TRANSACTION, "Transaction", "10");
-	   } 
+	private static void loadFloodProtectorConfigs(final Properties properties) 
+	{ 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_USE_ITEM, "UseItem", "4"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_ROLL_DICE, "RollDice", "42"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_FIREWORK, "Firework", "42"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_ITEM_PET_SUMMON, "ItemPetSummon", "16"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_HERO_VOICE, "HeroVoice", "100"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_GLOBAL_CHAT, "GlobalChat", "5"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SUBCLASS, "Subclass", "20"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_DROP_ITEM, "DropItem", "10"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SERVER_BYPASS, "ServerBypass", "5"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_MULTISELL, "MultiSell", "1"); 
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_TRANSACTION, "Transaction", "10");
+	} 
  	private static void loadFloodProtectorConfig(final Properties properties, final FloodProtectorConfig config, final String configString, final String defaultInterval) 
- 	  { 
- 	    config.FLOOD_PROTECTION_INTERVAL = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "Interval"), defaultInterval)); 
- 	    config.LOG_FLOODING = Boolean.parseBoolean(properties.getProperty(StringUtil.concat("FloodProtector", configString, "LogFlooding"), "False")); 
-       	config.PUNISHMENT_LIMIT = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentLimit"), "0")); 
- 	    config.PUNISHMENT_TYPE = properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentType"), "none"); 
- 	    config.PUNISHMENT_TIME = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentTime"), "0")); 
- 	  }
+ 	{ 
+ 		config.FLOOD_PROTECTION_INTERVAL = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "Interval"), defaultInterval)); 
+ 		config.LOG_FLOODING = Boolean.parseBoolean(properties.getProperty(StringUtil.concat("FloodProtector", configString, "LogFlooding"), "False")); 
+ 		config.PUNISHMENT_LIMIT = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentLimit"), "0")); 
+ 		config.PUNISHMENT_TYPE = properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentType"), "none"); 
+ 		config.PUNISHMENT_TIME = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentTime"), "0")); 
+ 	}
 	
 	/**
 	 * Allow the player to use L2Walker ?
@@ -2608,7 +2662,7 @@ public final class Config
 	}
 
 	/**
-	 * Save hexadecimal ID of the server in the properties file.
+	 * Save hexadecimal ID of the server in the ini file.
 	 * 
 	 * @param string
 	 *            (String) : hexadecimal ID of the server to store
@@ -2622,12 +2676,12 @@ public final class Config
 	}
 
 	/**
-	 * Save hexadecimal ID of the server in the properties file.
+	 * Save hexadecimal ID of the server in the ini file.
 	 * 
 	 * @param hexId
 	 *            (String) : hexadecimal ID of the server to store
 	 * @param fileName
-	 *            (String) : name of the properties file
+	 *            (String) : name of the ini file
 	 */
 	public static void saveHexid(int serverId, String hexId, String fileName)
 	{

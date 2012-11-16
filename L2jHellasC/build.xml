@@ -153,14 +153,14 @@
 		<mkdir dir="${build.dist.login}/config/Version" />
 		<copy todir="${build.dist.game}/config">
 			<fileset dir="config">
-				<include name="*.properties"/>
+				<include name="*.ini"/>
 				<include name="*.txt"/>
-				<exclude name="LoginServer.properties" />
+				<exclude name="LoginServer.ini" />
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config">
 			<fileset dir="config">
-				<include name="Telnet.properties"/>
+				<include name="Telnet.ini"/>
 			</fileset>
 		</copy>
 		<mkdir dir="${build.dist.game}/data" />
@@ -186,36 +186,36 @@
 		</copy>
 		<copy todir="${build.dist.game}/config/Admin">
 			<fileset dir="config/Admin">
-				<include name="*.properties"/>
+				<include name="*.ini"/>
 				<include name="*.txt"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Main">
 			<fileset dir="config/Main">
-				<include name="*.properties"/>
+				<include name="*.ini"/>
 				<include name="*.txt"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Mods">
 			<fileset dir="config/Mods">
-				<include name="*.properties"/>
+				<include name="*.ini"/>
 				<include name="*.txt"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Network">
 			<fileset dir="config/Network">
-				<include name="*.properties"/>
+				<include name="*.ini"/>
 				<include name="*.txt"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config/Network">
 			<fileset dir="config/Network">
-				<include name="mmocore.properties"/>
+				<include name="mmocore.ini"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config/Network">
 			<fileset dir="config">
-				<include name="LoginServer.properties"/>
+				<include name="LoginServer.ini"/>
 			</fileset>
 		</copy>
     	
@@ -233,14 +233,14 @@
     	<exec dir="." executable="svnversion" outputproperty="revision" failifexecutionfails="false">
     		<arg line="-n ."/>
     	</exec>
-    	<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.properties">
+    	<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini">
 			version = ${revision}
 			builddate = ${build.tstamp}
     		Forum = http://5.135.126.46/index.php
     		Svn = https://subversion.assembla.com/svn/l2hellas/trunk/
     		Timeline = https://www.assembla.com/spaces/l2hellas/stream
 		</concat>
-		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.properties" append="true">
+		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini" append="true">
 			<filelist dir="${build}/../../.svn/" files="entries"/>
 				<filterchain>
 					<prefixlines prefix="          "/>

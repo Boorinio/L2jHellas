@@ -67,7 +67,7 @@ public class Olympiad
     protected static List<L2PcInstance> _nonClassBasedRegisters;
     protected static Map<Integer, List<L2PcInstance>> _classBasedRegisters;
 
-    private static final String OLYMPIAD_DATA_FILE = "config/Mods/olympiad_cycle.properties";
+    private static final String OLYMPIAD_DATA_FILE = "config/Mods/olympiad_cycle.ini";
     public static final String OLYMPIAD_HTML_FILE = "data/html/olympiad/";
     private static final String OLYMPIAD_LOAD_NOBLES = "SELECT * from olympiad_nobles";
     private static final String OLYMPIAD_SAVE_NOBLES = "INSERT INTO olympiad_nobles " +
