@@ -34,15 +34,17 @@ package com.l2jhellas.gameserver.network.serverpackets;
 public class PledgeCrest extends L2GameServerPacket
 {
 	private static final String _S__84_PLEDGECREST = "[S] 6c PledgeCrest";
-	private int _crestId;
-	private int _crestSize;
+	private final int _crestId;
+	private final int _crestSize;
 	private byte[] _data;
 
-	public PledgeCrest(int crestId,byte[] data)
+	// public PledgeCrest(int crestId,byte[] data)
+	public PledgeCrest(int crestId, byte[] data)
 	{
 		_crestId = crestId;
-        _data = data;
-        _crestSize = _data.length;
+		// _data = data;
+		_data = data;
+		_crestSize = _data.length;
 	}
 
 	@Override

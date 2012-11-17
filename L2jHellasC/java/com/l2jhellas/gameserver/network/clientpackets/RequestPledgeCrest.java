@@ -3,12 +3,10 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,10 +18,9 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 
-
 /**
  * This class ...
- *
+ * 
  * @version $Revision: 1.4.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestPledgeCrest extends L2GameClientPacket
@@ -42,24 +39,29 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
+		// sendPacket(new PledgeCrest(_crestId));
 		if (_crestId == 0)
-		    return;
-		if (Config.DEBUG) _log.fine("crestid " + _crestId + " requested");
-
-        byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
+		{
+			return;
+		}
+		
+		byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
 
 		if (data != null)
 		{
 			PledgeCrest pc = new PledgeCrest(_crestId, data);
 			sendPacket(pc);
 		}
+
 		else
 		{
-			if (Config.DEBUG) _log.fine("crest is missing:" + _crestId);
+			if (Config.DEBUG)
+				_log.fine("crest is missing:" + _crestId);
 		}
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
 	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

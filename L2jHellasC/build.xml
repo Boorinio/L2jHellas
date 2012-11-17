@@ -54,7 +54,7 @@
 	
     <target name="Compile" depends="Version" description="Compile the source.">
     	<echo>Compiling L2J Hellas.</echo>
-		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.5" target="1.5" nowarn="on" includeantruntime="false">
+		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.7" target="1.7" nowarn="on" includeantruntime="false">
 			<src path="${src}"/>
 			<classpath refid="classpath"/>   
 		</javac>
