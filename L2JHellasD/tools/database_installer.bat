@@ -75,7 +75,7 @@ REM #######################################################
 REM MYSQL PATH.
 REM DEFAULT:
 REM mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.0\bin
-set mysqlBinPath=C:\L2\Programms\xampp\mysql\bin
+set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.0\bin
 
 REM LOGIN SERVER
 set lsuser=root
@@ -396,7 +396,6 @@ for %%i in (..\sql\login\*.sql) do call :dump %%i
 echo done...
 echo.
 REM goto cs_backup
-
 goto gs_backup
 
 REM :cs_backup
@@ -724,7 +723,7 @@ if /i %full% == 1 (set action=Installing) else (set action=Upgrading)
 echo %action% %1>>"%output%"
 echo %action% %~nx1
 if "%dest%"=="ls" set cmdline="%mysqlPath%" -h %lshost% -u %lsuser% --password=%lspass% -D %lsdb% ^< %1 2^>^>"%output%"
-if "%dest%"=="cb" set cmdline="%mysqlPath%" -h %cbhost% -u %cbuser% --password=%cbpass% -D %cbdb% ^< %1 2^>^>"%output%"
+REM if "%dest%"=="cb" set cmdline="%mysqlPath%" -h %cbhost% -u %cbuser% --password=%cbpass% -D %cbdb% ^< %1 2^>^>"%output%"
 if "%dest%"=="gs" set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< %1 2^>^>"%output%"
 %cmdline%
 if %logging%==0 if NOT %ERRORLEVEL%==0 call :omfg2 %1

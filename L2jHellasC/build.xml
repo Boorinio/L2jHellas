@@ -238,7 +238,7 @@ L2jHellas Project details:
 			${line.separator}
 			builddate = ${build.tstamp}
 			${line.separator}
-			Forum = http://5.135.126.46/index.php
+			Forum = http://l2jhellas.tk
 			${line.separator}
 			Svn = https://subversion.assembla.com/svn/l2hellas/trunk/
 			${line.separator}

@@ -116,8 +116,7 @@ walker_routes,
 weapon,
 zone,
 zone_vertices,
-topic
 -- CS
+topic,
 forums,
-posts,
-topic;
+posts;
