@@ -1,25 +1,5 @@
 @echo off
-REM ##############################################
-REM ##         l2jhellas Database Installer        ##
-REM ##############################################
-REM ## Interactive script setup - l2jhellas Team   ##
-REM ##############################################
-REM Copyright (C) 2012 l2jhellas ServerPack
-REM This program is free software; you can redistribute it and/or modify 
-REM it under the terms of the GNU General Public License as published by 
-REM the Free Software Foundation; either version 2 of the License, or (at
-REM your option) any later version.
-REM
-REM This program is distributed in the hope that it will be useful, but 
-REM WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-REM or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
-REM for more details.
-REM
-REM You should have received a copy of the GNU General Public License along 
-REM with this program; if not, write to the Free Software Foundation, Inc., 
-REM 675 Mass Ave, Cambridge, MA 02139, USA. Or contact the Official l2jhellas
-REM DataPack / ServerPack Project at http://gamemasters.superforo.net
-
+REM VARS
 set config_file=vars.txt
 set config_version=0
 
@@ -36,14 +16,14 @@ set cmode=c
 set fresh_setup=0
 
 :loadconfig
-title l2jhellas installer - Reading configuration from file...
 cls
+title L2JHellas Datapack Installer - Reading Configuration from File...
 if not exist %config_file% goto configure
 ren %config_file% vars.bat
 call vars.bat
 ren vars.bat %config_file%
 call :colors 17
-if /i %config_version% == 1 goto ls_section
+if /i %config_version% == 2 goto ls_backup
 set upgrade_mode=2
 echo It seems to be the first time you run this version of
 echo database_installer but I found a settings file already.
@@ -52,23 +32,23 @@ echo.
 echo Configuration upgrade options:
 echo.
 echo (1) Import and continue: I'll read your old settings and
-echo    continue execution, but since no new settings will be
-echo    saved, you'll see this menu again next time.
+echo     continue execution, but since no new settings will be
+echo     saved, you'll see this menu again next time.
 echo.
-echo (2) Import and configure: This tool has some new options
-echo    available, you choose the values that fit your needs
-echo    using former settings as a base.
+echo (2) Import and configure: This tool has some new available
+echo     options, you choose the values that fit your needs
+echo     using former settings as a base.
 echo.
-echo (3) Ignose stored settings: I'll let you configure me 
-echo    with a fresh set of default values as a base.
+echo (3) Ignose stored settings: I'll let you configure me
+echo     with a fresh set of default values as a base.
 echo.
-echo (4) View saved settings: See the contents of the config 
-echo    file.
+echo (4) View saved settings: See the contents of the config
+echo     file.
 echo.
 echo (5) Quit: Did you came here by mistake?
 echo.
 set /P upgrade_mode="Type a number, press Enter (default is '%upgrade_mode%'): "
-if %upgrade_mode%==1 goto ls_section
+if %upgrade_mode%==1 goto ls_backup
 if %upgrade_mode%==2 goto configure
 if %upgrade_mode%==3 goto configure
 if %upgrade_mode%==4 (cls&type %config_file%&pause&goto loadconfig)
@@ -82,24 +62,46 @@ if not "%1"=="17" (	color F	) else ( color )
 goto :eof
 
 :configure
-call :colors 17
-title l2jhellas installer - Setup
 cls
-set config_version=1
+call :colors 17
+title L2JHellas Datapack Installer - Setup
+set config_version=2
 if NOT %upgrade_mode% == 2 (
 set fresh_setup=1
-set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.0\bin
+REM #######################################################
+REM #     CHANGE THIS OR SETUP WILL NOT BE SUCCESSFULL    #
+REM #            L2JHELLAS DATABASE CONFIGS               #
+REM #######################################################
+REM MYSQL PATH.
+REM DEFAULT:
+REM mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.0\bin
+set mysqlBinPath=C:\L2\Programms\xampp\mysql\bin
+
+REM LOGIN SERVER
 set lsuser=root
 set lspass=
-set lsdb=l2jhellas
+set lsdb=l2jhellasls
 set lshost=localhost
+
+REM GAME SERVER
 set gsuser=root
 set gspass=
-set gsdb=l2jhellas
+set gsdb=l2jhellasgs
 set gshost=localhost
+
+REM OTHERS
 set cmode=c
 set backup=.
 set logdir=.
+
+REM UNUSED CS...
+REM set cbuser=root
+REM set cbpass=
+REM set cbdb=l2jhellascs
+REM set cbhost=localhost
+
+REM /DATABASE CONFIGS
+
 )
 set mysqlPath=%mysqlBinPath%\mysql.exe
 echo New settings will be created for this tool to run in
@@ -125,12 +127,12 @@ echo.
 path|find "MySQL">NUL
 if %errorlevel% == 0 (
 echo I found MySQL is in your PATH, this will be used by default.
-echo If you want to use something different, change 'use path' for 
+echo If you want to use something different, change 'use path' for
 echo something else.
 set mysqlBinPath=use path
 ) else (
 echo Look, I can't find "MYSQL" in your PATH environment variable.
-echo It would be good if you go and find out where "mysql.exe" and 
+echo It would be good if you go and find out where "mysql.exe" and
 echo "mysqldump.exe" are.
 echo.
 echo If you have no idea about the meaning of words such as MYSQL
@@ -143,40 +145,57 @@ echo Write the path to your MySQL binaries (no trailing slash needed):
 set /P mysqlBinPath="(default %mysqlBinPath%): "
 cls
 echo.
-echo 2-LoginServer settings
-echo --------------------
-echo I will connect to the MySQL server you specify, and setup a
-echo Loginserver database there, most people use a single MySQL
-echo server and database for both Login and Gameserver tables.
+echo 2-Login Server settings
+echo -----------------------
+echo I order to connect to the MySQL Server, you should
+echo specify the Login Server DataBase parameters here.
 echo.
 set /P lsuser="MySQL Username (default is '%lsuser%'): "
-set /P lspass="Password (will be shown as you type, default '%lspass%'): "
+set /P lspass="Password (default is '%lspass%'): "
 set /P lsdb="Database (default is '%lsdb%'): "
 set /P lshost="Host (default is '%lshost%'): "
-if NOT "%lsuser%"=="%gsuser%" set gsuser=%lsuser%
-if NOT "%lspass%"=="%gspass%" set gspass=%lspass%
-if NOT "%lsdb%"=="%gsdb%" set gsdb=%lsdb%
-if NOT "%lshost%"=="%gshost%" set gshost=%lshost%
 echo.
-echo 3-GameServer settings
-echo --------------------
+cls
+REM echo.
+REM echo 3-Community Server settings
+REM echo ---------------------------
+REM echo I order to connect to the MySQL Server, you should
+REM echo specify the Community Server DataBase parameters here.
+REM echo.
+REM set /P cbuser="MySQL Username (default is '%cbuser%'): "
+REM set /P cbpass="Password (default is '%cbpass%'): "
+REM set /P cbdb="Database (default is '%cbdb%'): "
+REM set /P cbhost="Host (default is '%cbhost%'): "
+REM echo.
+REM cls
+echo.
+echo 4-Game Server settings
+echo ----------------------
+echo I order to connect to the MySQL Server, you should
+echo specify the Game Server DataBase parameters here.
+echo.
 set /P gsuser="User (default is '%gsuser%'): "
 set /P gspass="Pass (default is '%gspass%'): "
 set /P gsdb="Database (default is '%gsdb%'): "
 set /P gshost="Host (default is '%gshost%'): "
 echo.
-echo 4-Misc. settings
+cls
+echo.
+echo 5-Misc. settings
 echo --------------------
 set /P cmode="Color mode (c)olor or (n)on-color, default %cmode% : "
 set /P backup="Path for your backups (default '%backup%'): "
 set /P logdir="Path for your logs (default '%logdir%'): "
+
 :safe1
 set safemode=y
 set /P safemode="Debugging messages and increase verbosity a lil bit (y/n, default '%safemode%'): "
 if /i %safemode%==y (set safe_mode=1&goto safe2)
 if /i %safemode%==n (set safe_mode=0&goto safe2)
 goto safe1
+
 :safe2
+cls
 echo.
 if "%mysqlBinPath%" == "use path" (
 set mysqlBinPath=
@@ -197,6 +216,10 @@ echo set lsuser=%lsuser%>> %config_file%
 echo set lspass=%lspass%>> %config_file%
 echo set lsdb=%lsdb%>> %config_file%
 echo set lshost=%lshost% >> %config_file%
+echo set cbuser=%cbuser%>> %config_file%
+echo set cbpass=%cbpass%>> %config_file%
+echo set cbdb=%cbdb%>> %config_file%
+echo set cbhost=%cbhost% >> %config_file%
 echo set gsuser=%gsuser%>> %config_file%
 echo set gspass=%gspass%>> %config_file%
 echo set gsdb=%gsdb%>> %config_file%
@@ -208,442 +231,510 @@ echo Script setup complete, your settings were saved in the
 echo '%config_file%' file. Remember: your passwords are stored
 echo as clear text.
 echo.
-echo press any key to continue...
-pause> nul
+pause
 goto loadconfig
 
-:ls_section
+:ls_backup
 cls
 call :colors 17
 set cmdline=
 set stage=1
-title l2jhellas installer - Login Server database setup
+title L2JHellas Datapack Installer - Login Server DataBase Backup
 echo.
-echo Trying to make a backup of your loginserver database.
-set cmdline="%mysqldumpPath%" --add-drop-table -h %lshost% -u %lsuser% --password=%lspass% %lsdb% ^> "%backup%\loginserver_backup.sql" 2^> NUL
+echo Trying to make a backup of your Login Server DataBase.
+set cmdline="%mysqldumpPath%" --add-drop-table -h %lshost% -u %lsuser% --password=%lspass% %lsdb% ^> "%backup%\ls_backup.sql" 2^> NUL
 %cmdline%
-if %ERRORLEVEL% == 0 goto lsdbok
-REM if %safe_mode% == 1 goto omfg
+if %ERRORLEVEL% == 0 goto ls_db_ok
+
 :ls_err1
-call :colors 47
-title l2jhellas installer - Login Server database setup ERROR!!!
 cls
-echo.
-echo Backup attempt failed! A possible reason for this to 
-echo happen, is that your DB doesn't exist yet. I could 
-echo try to create %lsdb% for you, or maybe you prefer to
-echo proceed with the GameServer part of this tool.
-echo.
-:ls_ask1
 set lsdbprompt=y
+call :colors 47
+title L2JHellas Datapack Installer - Login Server DataBase Backup ERROR!
+echo.
+echo Backup attempt failed! A possible reason for this to
+echo happen, is that your DB doesn't exist yet. I could
+echo try to create %lsdb% for you, or maybe you prefer to
+echo contunue with the Community Server part of this tool.
+echo.
 echo ATTEMPT TO CREATE LOGINSERVER DATABASE:
 echo.
-echo (y)es
+echo (y) Yes
 echo.
-echo (n)o
+echo (n) No
 echo.
-echo (r)econfigure
+echo (r) Reconfigure
 echo.
-echo (q)uit
+echo (q) Quit
 echo.
-set /p lsdbprompt= Choose (default yes):
-if /i %lsdbprompt%==y goto lsdbcreate
-if /i %lsdbprompt%==n goto gs_backup
+set /p lsdbprompt=Choose (default yes):
+if /i %lsdbprompt%==y goto ls_db_create
+if /i %lsdbprompt%==n goto cs_backup
 if /i %lsdbprompt%==r goto configure
 if /i %lsdbprompt%==q goto end
-goto ls_ask1
+goto ls_err1
 
-:omfg
+:ls_db_create
 cls
-call :colors 57
-title l2jhellas installer - potential PICNIC detected at stage %stage%
-echo.
-echo There was some problem while executing:
-echo.
-echo "%cmdline%"
-echo.
-echo I'd suggest you to look for correct values and try this
-echo script again later. But maybe you'd prefer to go on now.
-echo.
-if %stage% == 1 set label=ls_err1
-if %stage% == 2 set label=ls_err2
-if %stage% == 3 set label=gs_backup
-if %stage% == 4 set label=gs_err1
-if %stage% == 5 set label=gs_err2
-if %stage% == 6 set label=horrible_end
-if %stage% == 7 set label=horrible_end
-:omfgask1
-set omfgprompt=q
-echo (c)ontinue running the script
-echo.
-echo (r)econfigure
-echo.
-echo (q)uit now
-echo.
-set /p omfgprompt= Choose (default quit):
-if  /i %omfgprompt%==c goto %label%
-if  /i %omfgprompt%==r goto configure
-if  /i %omfgprompt%==q goto horrible_end
-goto omfgask1
-
-:lsdbcreate
 call :colors 17
 set cmdline=
 set stage=2
-title l2jhellas installer - Login Server database setup - DB Creation
+title L2JHellas Datapack Installer - Login Server DataBase Creation
 echo.
-echo Trying to create a Login Server database...
+echo Trying to create a Login Server DataBase.
 set cmdline="%mysqlPath%" -h %lshost% -u %lsuser% --password=%lspass% -e "CREATE DATABASE %lsdb%" 2^> NUL
 %cmdline%
-if %ERRORLEVEL% == 0 goto logininstall
+if %ERRORLEVEL% == 0 goto ls_db_ok
 if %safe_mode% == 1 goto omfg
+
 :ls_err2
-call :colors 47
-title L2JDP installer - Login Server database setup - DB Creation error
 cls
-echo An error occured while trying to create a database for 
+set omfgprompt=q
+call :colors 47
+title L2JHellas Datapack Installer - Login Server DataBase Creation ERROR!
+echo.
+echo An error occured while trying to create a database for
 echo your login server.
 echo.
 echo Possible reasons:
 echo 1-You provided innacurate info , check user, password, etc.
-echo 2-User %lsuser% don't have enough privileges for 
+echo 2-User %lsuser% don't have enough privileges for
 echo database creation. Check your MySQL privileges.
 echo 3-Database exists already...?
 echo.
-echo Unless you're sure that the pending actions of this tool 
+echo Unless you're sure that the pending actions of this tool
 echo could work, i'd suggest you to look for correct values
 echo and try this script again later.
 echo.
-:ls_ask2
-set omfgprompt=q
-echo (c)ontinue running
+echo (c) Continue running
 echo.
-echo (r)econfigure
+echo (r) Reconfigure
 echo.
-echo (q)uit now
+echo (q) Quit now
 echo.
-set /p omfgprompt= Choose (default quit):
-if /i %omfgprompt%==c goto gs_backup
-if /i %omfgprompt%==q goto horrible_end
+set /p omfgprompt=Choose (default quit):
+if /i %omfgprompt%==c goto cs_backup
 if /i %omfgprompt%==r goto configure
-goto ls_ask2
+if /i %omfgprompt%==q goto end
+goto ls_err2
 
-:lsdbok
+:ls_db_ok
+cls
+set loginprompt=u
 call :colors 17
-title l2jhellas installer - Login Server database setup - WARNING!!!
+title L2JHellas Datapack Installer - Login Server DataBase WARNING!
 echo.
-:asklogin
-if %fresh_setup%==0 (
-set loginprompt=s
-set msg=default skip
-) else (
-set loginprompt=x
-set msg=no default for fresh install
-)
 echo LOGINSERVER DATABASE install type:
 echo.
-echo (f)ull: I will destroy data in your `accounts` and 
-echo    and `gameserver` tables.
+echo (f) Full: WARNING! I'll destroy ALL of your existing login
+echo     data.
 echo.
-echo (s)kip: I'll take you to the gameserver database
-echo    installation and upgrade options.
+echo (u) Upgrade: I'll do my best to preserve all login data.
 echo.
-echo (r)econfigure: You'll be able to redefine MySQL path,
-echo    user and database information and start over with
-echo    those fresh values.
+echo (s) Skip: I'll take you to the communityserver database
+echo     installation and upgrade options.
 echo.
-echo (q)uit
+echo (r) Reconfigure: You'll be able to redefine MySQL path,
+echo     user and database information and start over with
+echo     those fresh values.
 echo.
-set /p loginprompt= Choose (%msg%) : 
-if /i %loginprompt%==f goto logininstall
-if /i %loginprompt%==s goto gs_backup
+echo (q) Quit
+echo.
+set /p loginprompt=Choose (default upgrade):
+if /i %loginprompt%==f goto ls_cleanup
+if /i %loginprompt%==u goto ls_upgrade
+if /i %loginprompt%==s goto cs_backup
 if /i %loginprompt%==r goto configure
 if /i %loginprompt%==q goto end
-goto asklogin
+goto ls_db_ok
 
-:logininstall
-set stage=3
+:ls_cleanup
 call :colors 17
 set cmdline=
-title L2JDP installer - Login Server database setup - Full install
-echo Deleting loginserver tables for new content.
-set cmdline="%mysqlPath%" -h %lshost% -u %lsuser% --password=%lspass% -D %lsdb% ^< login_install.sql 2^> NUL
+title L2JHellas Datapack Installer - Login Server DataBase Full Install
+echo.
+echo Deleting Login Server tables for new content.
+set cmdline="%mysqlPath%" -h %lshost% -u %lsuser% --password=%lspass% -D %lsdb% ^< ls_cleanup.sql 2^> NUL
 %cmdline%
 if not %ERRORLEVEL% == 0 goto omfg
 set full=1
+echo.
+echo Login Server tables has been deleted.
+goto ls_install
+
+:ls_upgrade
+cls
+echo.
+echo Upgrading structure of Login Server tables.
+echo.
+echo @echo off> temp.bat
+if exist ls_errors.log del ls_errors.log
+for %%i in (..\sql\login\updates\*.sql) do echo "%mysqlPath%" -h %lshost% -u %lsuser% --password=%lspass% -D %lsdb% --force ^< %%i 2^>^> ls_errors.log >> temp.bat
+call temp.bat> nul
+del temp.bat
+move ls_errors.log %workdir%
+goto ls_install
+
+:ls_install
+cls
+set cmdline=
+if %full% == 1 (
+title L2JHellas Datapack Installer - Login Server DataBase Installing...
+echo.
+echo Installing new Login Server content.
+echo.
+) else (
+title L2JHellas Datapack Installer - Login Server DataBase Upgrading...
+echo.
+echo Upgrading Login Server content.
+echo.
+)
+if %logging% == 0 set output=NUL
+set dest=ls
+for %%i in (..\sql\login\*.sql) do call :dump %%i
+
+echo done...
+echo.
+REM goto cs_backup
+
 goto gs_backup
 
+REM :cs_backup
+REM cls
+REM call :colors 17
+REM set cmdline=
+REM set stage=3
+REM title L2JHellas Datapack Installer - Community Server DataBase Backup
+REM echo.
+REM echo Trying to make a backup of your Comunity Server DataBase.
+REM set cmdline="%mysqldumpPath%" --add-drop-table -h %cbhost% -u %cbuser% --password=%cbpass% %cbdb% ^> "%backup%\cs_backup.sql" 2^> NUL
+REM %cmdline%
+REM if %ERRORLEVEL% == 0 goto cs_db_ok
+
+REM :cs_err1
+REM cls
+REM set cbdbprompt=y
+REM call :colors 47
+REM title L2JHellas Datapack Installer - Community Server DataBase Backup ERROR!
+REM echo.
+REM echo Backup attempt failed! A possible reason for this to
+REM echo happen, is that your DB doesn't exist yet. I could
+REM echo try to create %cbdb% for you, or maybe you prefer to
+REM echo continue with the GameServer part of this tool.
+REM echo.
+REM echo ATTEMPT TO CREATE COMMUNITY SERVER DATABASE:
+REM echo.
+REM echo (y) Yes
+REM echo.
+REM echo (n) No
+REM echo.
+REM echo (r) Reconfigure
+REM echo.
+REM echo (q) Quit
+REM echo.
+REM set /p cbdbprompt=Choose (default yes):
+REM if /i %cbdbprompt%==y goto cs_db_create
+REM if /i %cbdbprompt%==n goto gs_backup
+REM if /i %cbdbprompt%==r goto configure
+REM if /i %cbdbprompt%==q goto end
+REM goto cs_err1
+
+REM :cs_db_create
+REM cls
+REM call :colors 17
+REM set cmdline=
+REM set stage=4
+REM title L2JHellas Datapack Installer - Community Server DataBase Creation
+REM echo.
+REM echo Trying to create a Community Server DataBase...
+REM set cmdline="%mysqlPath%" -h %cbhost% -u %cbuser% --password=%cbpass% -e "CREATE DATABASE %cbdb%" 2^> NUL
+REM %cmdline%
+REM if %ERRORLEVEL% == 0 goto cs_db_ok
+REM if %safe_mode% == 1 goto omfg
+REM 
+REM :cs_err2
+REM cls
+REM set omfgprompt=q
+REM call :colors 47
+REM title L2JHellas Datapack Installer - Community Server DataBase Creation ERROR!
+REM echo.
+REM echo An error occured while trying to create a database for
+REM echo your Community Server.
+REM echo.
+REM echo Possible reasons:
+REM echo 1-You provided innacurate info , check user, password, etc.
+REM echo 2-User %cbuser% don't have enough privileges for
+REM echo database creation. Check your MySQL privileges.
+REM echo 3-Database exists already...?
+REM echo.
+REM echo Unless you're sure that the pending actions of this tool
+REM echo could work, i'd suggest you to look for correct values
+REM echo and try this script again later.
+REM echo.
+REM echo (c) Continue running
+REM echo.
+REM echo (r) Reconfigure
+REM echo.
+REM echo (q) Quit now
+REM echo.
+REM set /p omfgprompt=Choose (default quit):
+REM if /i %omfgprompt%==c goto gs_backup
+REM if /i %omfgprompt%==r goto configure
+REM if /i %omfgprompt%==q goto end
+REM goto cs_err2
+
+REM :cs_db_ok
+REM cls
+REM set communityprompt=u
+REM call :colors 17
+REM title L2JHellas Datapack Installer - Community Server DataBase WARNING!
+REM echo.
+REM echo COMMUNITY SERVER DATABASE install type:
+REM echo.
+REM echo (f) Full: WARNING! I'll destroy ALL of your existing community
+REM echo     data (i really mean it: mail, forum, memo.. ALL)
+REM echo.
+REM echo (u) Upgrade: I'll do my best to preserve all of your community
+REM echo     data.
+REM echo.
+REM echo (s) Skip: I'll take you to the gameserver database
+REM echo     installation and upgrade options.
+REM echo.
+REM echo (r) Reconfigure: You'll be able to redefine MySQL path,
+REM echo     user and database information and start over with
+REM echo     those fresh values.
+REM echo.
+REM echo (q) Quit
+REM echo.
+REM set /p communityprompt=Choose (default upgrade):
+REM if /i %communityprompt%==f goto cs_cleanup
+REM if /i %communityprompt%==u goto cs_upgrade
+REM if /i %communityprompt%==s goto gs_backup
+REM if /i %communityprompt%==r goto configure
+REM if /i %communityprompt%==q goto end
+REM goto cs_db_ok
+
+REM :cs_cleanup
+REM call :colors 17
+REM set cmdline=
+REM title L2JHellas Datapack Installer - Community Server DataBase Full Install
+REM echo.
+REM echo Deleting Community Server tables for new content.
+REM set cmdline="%mysqlPath%" -h %cbhost% -u %cbuser% --password=%cbpass% -D %cbdb% ^< cs_cleanup.sql 2^> NUL
+REM %cmdline%
+REM if not %ERRORLEVEL% == 0 goto omfg
+REM set full=1
+REM echo.
+REM echo Community Server tables has been deleted.
+REM goto cs_install
+
+REM :cs_upgrade
+REM cls
+REM echo.
+REM echo Upgrading structure of Community Server tables.
+REM echo.
+REM echo @echo off> temp.bat
+REM if exist cs_errors.log del cs_errors.log
+REM for %%i in (..\sql\community\updates\*.sql) do echo "%mysqlPath%" -h %cbhost% -u %cbuser% --password=%cbpass% -D %cbdb% --force ^< %%i 2^>^> cs_errors.log >> temp.bat
+REM call temp.bat> nul
+REM del temp.bat
+REM move cs_errors.log %workdir%
+REM goto cs_install
+
+REM :cs_install
+REM cls
+REM set cmdline=
+REM if %full% == 1 (
+REM title L2JHellas Datapack Installer - Community Server DataBase Installing...
+REM echo.
+REM echo Installing new Community Server content.
+REM echo.
+REM ) else (
+REM title L2JHellas Datapack Installer - Community Server DataBase Upgrading...
+REM echo.
+REM echo Upgrading Community Server content.
+REM echo.
+REM )
+REM if %logging% == 0 set output=NUL
+REM set dest=cb
+REM for %%i in (..\sql\community\*.sql) do call :dump %%i
+
+REM echo done...
+REM echo.
+REM goto gs_backup
+
 :gs_backup
+cls
 call :colors 17
 set cmdline=
-if %full% == 1 goto fullinstall
-set stage=4
-title l2jhellas installer - Game server database setup
-cls
+set stage=5
+title L2JHellas Datapack Installer - Game Server DataBase Backup
 echo.
-echo Making a backup of the original gameserver database.
-set cmdline="%mysqldumpPath%" --add-drop-table -h %gshost% -u %gsuser% --password=%gspass% %gsdb% ^> "%backup%\gameserver_backup.sql" 2^> NUL
+echo Trying to make a backup of your Game Server DataBase.
+set cmdline="%mysqldumpPath%" --add-drop-table -h %gshost% -u %gsuser% --password=%gspass% %gsdb% ^> "%backup%\gs_backup.sql" 2^> NUL
 %cmdline%
-if %ERRORLEVEL% == 0 goto gsdbok
-if %safe_mode% == 1 goto omfg
+if %ERRORLEVEL% == 0 goto gs_db_ok
+
 :gs_err1
-call :colors 47
-title l2jhellas installer - Game Server database setup - Backup failed!
 cls
-echo.
-echo Backup attempt failed! A possible reason for this to happen,
-echo is that your DB doesn't exist yet. I could try to create 
-echo %gsdb% for you, but maybe you prefer me to continue with 
-echo last part of the script.
-echo.
-:askgsdb
 set gsdbprompt=y
-echo ATTEMPT TO CREATE GAMESERVER DATABASE?
+call :colors 47
+title L2JHellas Datapack Installer - Game Server DataBase Backup ERROR!
 echo.
-echo (y)es
+echo Backup attempt failed! A possible reason for this to
+echo happen, is that your DB doesn't exist yet. I could
+echo try to create %gsdb% for you, but maybe you prefer to
+echo continue with last part of the script.
 echo.
-echo (n)o
+echo ATTEMPT TO CREATE GAME SERVER DATABASE?
 echo.
-echo (r)econfigure
+echo (y) Yes
 echo.
-echo (q)uit
+echo (n) No
 echo.
-set /p gsdbprompt= Choose (default yes):
-if /i %gsdbprompt%==y goto gsdbcreate
-if /i %gsdbprompt%==n goto horrible_end
+echo (r) Reconfigure
+echo.
+echo (q) Quit
+echo.
+set /p gsdbprompt=Choose (default yes):
+if /i %gsdbprompt%==y goto gs_db_create
+if /i %gsdbprompt%==n goto eof
 if /i %gsdbprompt%==r goto configure
 if /i %gsdbprompt%==q goto end
-goto askgsdb
+goto gs_err1
 
-:gsdbcreate
-call :colors 17
-set stage=5
-set cmdline=
-title l2jhellas installer - Game Server database setup - DB Creation
+:gs_db_create
 cls
-echo Trying to create Game Server database...
+call :colors 17
+set stage=6
+set cmdline=
+title L2JHellas Datapack Installer - Game Server DataBase Creation
+echo.
+echo Trying to create a Game Server DataBase...
 set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -e "CREATE DATABASE %gsdb%" 2^> NUL
 %cmdline%
-if %ERRORLEVEL% == 0 goto fullinstall
+if %ERRORLEVEL% == 0 goto gs_db_ok
 if %safe_mode% == 1 goto omfg
+
 :gs_err2
-call :colors 47
-title L2JDP installer - Game Server database setup - DB Creation failed!
 cls
+set omfgprompt=q
+call :colors 47
+title L2JHellas Datapack Installer - Game Server DataBase Creation ERROR!
 echo.
-echo An error occured while trying to create a database for 
-echo your game server.
+echo An error occured while trying to create a database for
+echo your Game Server.
 echo.
 echo Possible reasons:
 echo 1-You provided innacurate info, check username, pass, etc.
-echo 2-User %gsuser% don't have enough privileges for 
+echo 2-User %gsuser% don't have enough privileges for
 echo database creation.
 echo 3-Database exists already...?
 echo.
 echo I'd suggest you to look for correct values and try this
 echo script again later. But you can try to reconfigure it now.
 echo.
-:askgsdbcreate
-set omfgprompt=q
-echo (r)estart script with fresh configuration values
+echo (r) Reconfigure
 echo.
-echo (q)uit now
+echo (q) Quit now
 echo.
-set /p omfgprompt=  Choose (default quit):
+set /p omfgprompt=Choose (default quit):
 if /i %omfgprompt%==r goto configure
-if /i %omfgprompt%==q goto horrible_end
-goto askgsdbcreate
+if /i %omfgprompt%==q goto end
+goto gs_err2
 
-:gsdbok
-call :colors 17
-title l2jhellas installer - Game Server database setup - WARNING!!!
+:gs_db_ok
 cls
-echo.
-:asktype
 set installtype=u
-echo GAMESERVER DATABASE install:
-echo.
-echo (f)ull: WARNING! I'll destroy ALL of your existing character
-echo    data (i really mean it: items, pets.. ALL)
-echo.
-echo (u)pgrade: I'll do my best to preserve all of your character
-echo    data.
-echo.
-echo (s)kip: We'll get into the last set of questions (cummulative
-echo    updates, experimental stuff...)
-echo.
-echo (q)uit
-echo.
-set /p installtype= Choose (default upgrade):
-if /i %installtype%==f goto fullinstall
-if /i %installtype%==u goto upgradeinstall
-if /i %installtype%==s goto experimental
-if /i %installtype%==q goto end
-goto asktype
-
-:fullinstall
 call :colors 17
-set stage=6
+title L2JHellas Datapack Installer - Game Server DataBase WARNING!
+echo.
+echo GAME SERVER DATABASE install:
+echo.
+echo (f) Full: WARNING! I'll destroy ALL of your existing character
+echo     data (i really mean it: items, pets.. ALL)
+echo.
+echo (u) Upgrade: I'll do my best to preserve all of your character
+echo     data.
+echo.
+echo (s) Skip: We'll get into the last set of questions (cummulative
+echo     updates, custom stuff...)
+echo.
+echo (q) Quit
+echo.
+set /p installtype=Choose (default upgrade):
+if /i %installtype%==f goto gs_cleanup
+if /i %installtype%==u goto gs_upgrade
+if /i %installtype%==s goto custom_ask
+if /i %installtype%==q goto end
+goto gs_db_ok
+
+:gs_cleanup
+call :colors 17
 set cmdline=
-title l2jhellas installer - Game Server database setup - Full install
-echo Deleting all gameserver tables for new content...
-set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< full_install.sql 2^> NUL
+title L2JHellas Datapack Installer - Game Server DataBase Full Install
+echo.
+echo Deleting all Game Server tables for new content.
+set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< gs_cleanup.sql 2^> NUL
 %cmdline%
 if not %ERRORLEVEL% == 0 goto omfg
 set full=1
 echo.
-echo Game Server tables were deleted.
-goto upgradeinstall
+echo Game Server tables has been deleted.
+goto gs_install
 
-:upgradeinstall
-set stage=6
+:gs_upgrade
+cls
+echo.
+echo Upgrading structure of Game Server tables (this could take awhile, be patient).
+echo.
+echo @echo off> temp.bat
+if exist gs_errors.log del gs_errors.log
+for %%i in (..\sql\game\updates\*.sql) do echo "%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% --force ^< %%i 2^>^> gs_errors.log >> temp.bat
+call temp.bat> nul
+del temp.bat
+move gs_errors.log %workdir%
+goto gs_install
+
+:gs_install
+cls
 set cmdline=
 if %full% == 1 (
-title l2jhellas installer - Game Server database setup - Installing...
-echo Installing new gameserver content.
+title L2JHellas Datapack Installer - Game Server DataBase Installing...
+echo.
+echo Installing new Game Server content.
+echo.
 ) else (
-title l2jhellas installer - Game Server database setup - Upgrading...
-echo Upgrading gameserver content.
+title L2JHellas Datapack Installer - Game Server DataBase Upgrading...
+echo.
+echo Upgrading Game Server content.
+echo.
 )
 if %logging% == 0 set output=NUL
-set dest=ls
-for %%i in (
-accounts.sql
-gameservers.sql
-) do call :dump %%i
 set dest=gs
-for %%i in (
-account_data.sql
-armor.sql
-armorsets.sql
-auction.sql
-auction_bid.sql
-auction_watch.sql
-augmentations.sql
-auto_announcements.sql
-auto_chat.sql
-auto_chat_text.sql
-boxaccess.sql
-boxes.sql
-castle.sql
-castle_door.sql
-castle_doorupgrade.sql
-castle_siege_guards.sql
-char_templates.sql
-characters_colors.sql
-character_friends.sql
-character_hennas.sql
-character_macroses.sql
-character_quests.sql
-character_recipebook.sql
-character_recommends.sql
-character_shortcuts.sql
-character_skills.sql
-character_skills_save.sql
-character_subclasses.sql
-character_raid_points.sql
-characters.sql
-clan_data.sql
-clan_notices.sql
-clan_privs.sql
-clan_skills.sql
-clan_subpledges.sql
-clan_wars.sql
-clanhall.sql
-clanhall_functions.sql
-class_list.sql
-ctf.sql
-ctf_teams.sql
-cursed_weapons.sql
-custom_armor.sql
-custom_droplist.sql
-custom_etcitem.sql
-custom_npc.sql
-custom_teleport.sql
-custom_weapon.sql
-dimensional_rift.sql
-dm.sql
-droplist.sql
-enchant_skill_trees.sql
-etcitem.sql
-fish.sql
-fishing_skill_trees.sql
-forums.sql
-games.sql
-global_tasks.sql
-grandboss_data.sql
-grandboss_list.sql
-four_sepulchers_spawnlist.sql
-helper_buff_list.sql
-henna.sql
-henna_trees.sql
-heroes.sql
-hitman_list.sql
-items.sql
-itemsonground.sql
-locations.sql
-lvlupgain.sql
-mapregion.sql
-max_poly.sql
-merchant_areas_list.sql
-merchant_buylists.sql
-merchant_lease.sql
-merchant_shopids.sql
-merchants.sql
-minions.sql
-mods_wedding.sql
-npc.sql
-npcskills.sql
-olympiad_nobles.sql
-pets.sql
-pets_stats.sql
-pledge_skill_trees.sql
-posts.sql
-quest_global_data.sql
-raidboss_spawnlist.sql
-random_spawn.sql
-random_spawn_loc.sql
-seven_signs.sql
-seven_signs_festival.sql
-seven_signs_status.sql
-siege_clans.sql
-skill_learn.sql
-skill_spellbooks.sql
-skill_trees.sql
-spawnlist.sql
-teleport.sql
-topic.sql
-tvt_teams.sql
-tvt.sql
-vipinfo.sql
-walker_routes.sql
-weapon.sql
-zone.sql
-npc_buffer.sql
-mods_buffer.sql
-zone_vertices.sql
-castle_manor_procure.sql
-castle_manor_production.sql
-) do call :dump %%i
+for %%i in (..\sql\game\*.sql) do call :dump %%i
+
 echo done...
 echo.
-goto experimental
+goto custom_ask
 
 :dump
 set cmdline=
 if /i %full% == 1 (set action=Installing) else (set action=Upgrading)
 echo %action% %1>>"%output%"
 echo %action% %~nx1
-if "%dest%"=="ls" set cmdline="%mysqlPath%" -h %lshost% -u %lsuser% --password=%lspass% -D %lsdb% ^< ..\sql\%1 2^>^>"%output%"
-if "%dest%"=="gs" set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< ..\sql\%1 2^>^>"%output%"
+if "%dest%"=="ls" set cmdline="%mysqlPath%" -h %lshost% -u %lsuser% --password=%lspass% -D %lsdb% ^< %1 2^>^>"%output%"
+if "%dest%"=="cb" set cmdline="%mysqlPath%" -h %cbhost% -u %cbuser% --password=%cbpass% -D %cbdb% ^< %1 2^>^>"%output%"
+if "%dest%"=="gs" set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< %1 2^>^>"%output%"
 %cmdline%
 if %logging%==0 if NOT %ERRORLEVEL%==0 call :omfg2 %1
 goto :eof
 
 :omfg2
 cls
+set ntpebcak=c
 call :colors 47
-title l2jhellas installer - potential database issue at stage %stage%
+title L2JHellas Datapack Installer - Potential DataBase Issue at stage %stage%
 echo.
 echo Something caused an error while executing instruction :
 echo %mysqlPath% -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb%
@@ -652,31 +743,29 @@ echo with file %~nx1
 echo.
 echo What we should do now?
 echo.
-:askomfg2
-set ntpebcak=c
-echo (l)og it: I will create a log for this file, then continue
-echo    with the rest of the list in non-logging mode.
+echo (l) Log it: I will create a log for this file, then continue
+echo     with the rest of the list in non-logging mode.
 echo.
-echo (c)ontinue: Let's pretend that nothing happened and continue with
-echo    the rest of the list.
+echo (c) Continue: Let's pretend that nothing happened and continue with
+echo     the rest of the list.
 echo.
-echo (r)econfigure: Perhaps these errors were caused by a typo.
-echo    you can restart from scratch and redefine paths, databases
-echo    and user info again.
+echo (r) Reconfigure: Perhaps these errors were caused by a typo.
+echo     you can restart from scratch and redefine paths, databases
+echo     and user info again.
 echo.
-echo (q)uit now
+echo (q) Quit now
 echo.
-set /p ntpebcak= Choose (default continue):
-if  /i %ntpebcak%==c (call :colors 17 & goto :eof)
-if  /i %ntpebcak%==l (call :logginon %1 & goto :eof)
-if  /i %ntpebcak%==r (call :configure & exit)
-if  /i %ntpebcak%==q (call :horrible_end & exit)
-goto askomfg2
+set /p ntpebcak=Choose (default continue):
+if /i %ntpebcak%==c (call :colors 17 & goto :eof)
+if /i %ntpebcak%==l (call :logginon %1 & goto :eof)
+if /i %ntpebcak%==r (call :configure & exit)
+if /i %ntpebcak%==q (call :end)
+goto omfg2
 
 :logginon
 cls
 call :colors 17
-title l2jhellas installer - Game Server database setup - Logging options turned on
+title L2JHellas Datapack Installer - Game Server Logging Options turned on
 set logging=1
 if %full% == 1 (
   set output=%logdir%\install-%~nx1.log
@@ -692,8 +781,7 @@ echo If you already have such a file and would like to keep a copy.
 echo go now and read it or back it up, because it's not going to be rotated
 echo or anything, instead i'll just overwrite it.
 echo.
-echo When you're done or if you don't mind, press any key to start.
-pause>NUL
+pause
 set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^<..\sql\%1 2^>^>"%output%"
 date /t >"%output%"
 time /t >>"%output%"
@@ -704,147 +792,113 @@ set logging=0
 set output=NUL
 goto :eof
 
-:experimental
-REM echo.
-:askexp
-REM set expprompt=x
-REM set /p expprompt=Install experimental gameserver DB tables: (y) yes or (n) no or (q) quit? 
-REM if /i %expprompt%==y goto expinstall
-REM if /i %expprompt%==n goto newbie_helper
-REM if /i %expprompt%==q goto end
-REM goto end
-:expinstall
-REM echo Installing new content.
-REM %mysqlPath% -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% < ../sql/experimental/npc.sql
-goto newbie_helper
-
-:newbie_helper
-call :colors 17
-set stage=7
-title l2jhellas installer - Game Server database setup - update SQL files
+:custom_ask
+title L2JHellas Datapack Installer - Custom Server Tables
 cls
-if %full% == 1 goto end
+set cstprompt=n
 echo.
-echo In the sql/updates folder, we use to store cummulative
-echo changes needed by the database structures.
+echo L2JHellas provides some "Custom Server Tables" for non-retail modifications
+echo in order to avoid override the original Server Tables.
 echo.
-echo Usually these SQL files are created whenever some new
-echo feature implementation requires it.
+echo Remember that in order to get these additions actually working
+echo you need to edit your configuration files.
 echo.
-echo If you're too lame to know what these changes are about,
-echo i can try to apply these patches for you.
-:asknb
-set nbprompt=a
+set /p cstprompt=Install Custom Server Tables: (y) yes or (n) no (default no):
+if /i %cstprompt%==y goto custom_install
+if /i %cstprompt%==n goto mod_ask
+
+:custom_install
+cls
 echo.
-echo What we do with the files in sql/updates folder?
-echo.
-echo (a)utomagic processing: I'll get into the folder and 
-echo    try to dump _every_ '.sql' file i find there, into 
-echo    your database. A fresh setup wouldn't usually need 
-echo    such a thing. And, as any automagic task, this may
-echo    pose a risk on your data.
-echo.
-echo (s)kip: I'll do nothing, it's up to you to find out
-echo    which file does what, which one could be of use for
-echo    you, etc.
-echo.
-set /p nbprompt= Choose (default auto):
-if /i %nbprompt%==a goto nbinstall
-if /i %nbprompt%==s goto end
-goto asknb
-:nbinstall
-cd ..\sql\updates\
+echo Installing Custom content.
 echo @echo off> temp.bat
-if exist errors.txt del errors.txt
-for %%i in (*.sql) do echo "%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< %%i 2^>^> errors.txt >> temp.bat
+if exist custom_errors.log del custom_errors.log
+for %%i in (..\sql\game\custom\*.sql) do echo "%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< %%i 2^>^> custom_errors.log >> temp.bat
 call temp.bat> nul
 del temp.bat
-move errors.txt %workdir%
-cd %workdir%
-title l2jhellas installer - Game Server database setup - updates processing complete
+move custom_errors.log %workdir%
+goto mod_ask
+
+:mod_ask
+title L2JHellas Datapack Installer - Mod Server Tables
 cls
-echo Automagic processing finished, i'm leaving an 'errors.txt'
-echo file for your consideration.
+set cstprompt=n
 echo.
-echo Remember that some of these files could have tried to add stuff that were 
-echo in the database already, so don't go out yelling about 
+echo L2JHellas Datapack provides a basic infraestructure for some non-retail features
+echo (aka L2JHellas mods) to get enabled with a minimum of changes.
 echo.
-echo 'Duplicate column name'
+echo Some of these mods would require extra tables in order to work
+echo and those tables could be created now if you wanted to.
 echo.
-echo messages you may find there.
+echo Remember that in order to get these additions actually working
+echo you need to edit your configuration files.
 echo.
-echo Rather you should focus in those that say 
+set /p cstprompt=Install Mod Server Tables: (y) yes or (n) no (default no):
+if /i %cstprompt%==y goto mod_install
+if /i %cstprompt%==n goto end
+
+:mod_install
+cls
 echo.
-echo 'Table doesn't exist'
-echo.
-echo for example.
-echo.
-pause
+echo Installing Mods content.
+echo @echo off> temp.bat
+if exist mods_errors.log del mods_errors.log
+for %%i in (..\sql\game\mods\*.sql) do echo "%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< %%i 2^>^> mods_errors.log >> temp.bat
+call temp.bat> nul
+del temp.bat
+move mods_errors.log %workdir%
 goto end
+
+:omfg
+set omfgprompt=q
+call :colors 57
+cls
+title L2JHellas Datapack Installer - Potential PICNIC detected at stage %stage%
+echo.
+echo There was some problem while executing:
+echo.
+echo "%cmdline%"
+echo.
+echo I'd suggest you to look for correct values and try this
+echo script again later. But maybe you'd prefer to go on now.
+REM if %stage% == 1 set label=ls_err1
+REM if %stage% == 2 set label=ls_err2
+if %stage% == 3 set label=cs_err1
+if %stage% == 4 set label=cs_err2
+if %stage% == 5 set label=gs_err1
+if %stage% == 6 set label=gs_err2
+echo.
+echo (c) Continue running the script
+echo.
+echo (r) Reconfigure
+echo.
+echo (q) Quit now
+echo.
+set /p omfgprompt=Choose (default quit):
+if /i %omfgprompt%==c goto %label%
+if /i %omfgprompt%==r goto configure
+if /i %omfgprompt%==q goto end
+goto omfg
 
 :binaryfind
 if EXIST "%mysqlBinPath%" (echo Found) else (echo Not Found)
 goto :eof
 
-:horrible_end
-call :colors 47
-title l2jhellas installer - Oops!
-cls
-echo This wasn't a clean run, but don't worry.
-echo You can get help and support:
-echo.
-echo 1- Go To Our Forum :
-echo                                      
-echo 2- Visit MaxCheaters Forum
-echo                                    
-echo.
-echo.
-echo I'll try to gather some versioning information that you
-echo may find useful when asking for support :
-echo.
-echo Datapack revision reported by 'SVN version':
-svnversion -n 2>NUL
-echo.
-if %ERRORLEVEL% == 9009 (
-echo   SVN commandline tools not found!
-echo   Please download and install a copy from :
-echo   http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91
-echo.
-)
-set dpvf="..\config\Version\L2J Hellas Version.ini" 
-echo Datapack revision reported by properties file :
-if NOT EXIST %dpvf% (
-echo   Your %dpvf% file is missing!
-echo   Use eclipse/ant to build one from your DP SVN copy.
-echo   With it we'll be able to help you better.
-) else (
-type %dpvf% | find "version" 2> NUL
-if not %ERRORLEVEL% == 0 (
-echo   An error occured while trying to read
-echo   your %dpvf% file!
-echo   Make sure you keep it up to date
-echo   and in the correct place.
-echo %ERRORLEVEL%
-))
-echo.
-rem del %config_file%
-pause
-goto end
-
 :end
 call :colors 17
-title l2jhellas installer - Script execution finished
+title L2JHELLAS DataPack Installer - Script Execution Finished
 cls
 echo.
-echo l2jhellas database_installer version 2.0.1
-echo (C) 2012 l2jhellas Datapack Team
-echo database_installer comes with ABSOLUTELY NO WARRANTY;
+echo L2JHellas Datapack Database Installer 2012
+echo.
+echo (C) 2012 L2JHellas DataPack Team
+echo L2JHellas DataPack DB Installer comes with ABSOLUTELY NO WARRANTY
 echo This is free software, and you are welcome to redistribute it
 echo under certain conditions; See the file gpl.txt for further
 echo details.
 echo.
 echo Thanks for using our software.
-echo visit http://www.secretexperience.net for more info about
+echo visit http://l2jhellas.tk/ for more info about
+echo the L2JHellas DataPack Project.
 echo.
 pause
-color

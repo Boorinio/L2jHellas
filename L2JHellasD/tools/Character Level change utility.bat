@@ -4,15 +4,9 @@ REM ################################################
 REM ## You can change here your own DB parameters ##
 REM ################################################
 REM MYSQL BIN PATH
-set mysqlBinPath=D:\L2\Programms\xampp\mysql\bin
+set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.5\bin
 
-REM LOGINSERVER
-set lsuser=root
-set lspass=
-set lsdb=l2jhellasgs
-set lshost=localhost
-
-REM GAMESERVER
+REM DB INFO
 set gsuser=root
 set gspass=
 set gsdb=l2jhellasgs

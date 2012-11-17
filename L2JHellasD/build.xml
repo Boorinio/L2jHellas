@@ -26,16 +26,26 @@
 	<property name="build.dist" location="${build}/dist"/>
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
 	<property name="build.dist.login" location="${build.dist}/login"/>
-	<property name="build.dist.sql" location="${build.dist}/sql"/>
 	<property name="build.dist.tools" location="${build.dist}/tools"/>
 	<property name="build.dist.doc" location="${build.dist}/doc"/>
 	
-	<target name="init"	description="Create the output directories. Do nothing if dirs were already created">
+	<property name="build.dist.sql.game" location="${build.dist}/sql/game"/>
+	<property name="build.dist.sql.login" location="${build.dist}/sql/login"/>
+	<property name="build.dist.sql.maintenance" location="${build.dist}/sql/maintenance"/>
+	
+	<target name="init" description="Create the output directories. Do nothing if dirs were already created">
 		<mkdir dir="${build}"/>
 		<mkdir dir="${build.dist}"/>
 		<mkdir dir="${build.dist.game}"/>
 		<mkdir dir="${build.dist.doc}" />
 		<mkdir dir="${build.dist.login}" />
+		<mkdir dir="${build.dist.sql.game}" />
+		<mkdir dir="${build.dist.sql.game.custom}" />
+		<mkdir dir="${build.dist.sql.game.mods}" />
+		<mkdir dir="${build.dist.sql.game.updates}" />
+		<mkdir dir="${build.dist.sql.login}" />
+		<mkdir dir="${build.dist.sql.login.updates}" />
+		<mkdir dir="${build.dist.sql.maintenance}" />
 	</target>
 	<echo>Creating L2J Hellas DataPack please wait..</echo>
 	<target name="export" description="Syncronizes build space contents with project.">
@@ -60,11 +70,23 @@
 				<include name="**/*.*"/>
 			</fileset>
 		</sync>
-		<sync todir="${build.dist.sql}">
-			<fileset dir="${basedir}/sql">
+		<sync todir="${build.dist.sql.game}">
+			<fileset dir="${basedir}/sql/game">
 				<include name="*.*"/>
-				<include name="experimental/*.*"/>
+				<include name="custom/*.*"/>
+				<include name="mods/*.*"/>
 				<include name="updates/*.*"/>
+			</fileset>
+		</sync>
+		<sync todir="${build.dist.sql.login}">
+			<fileset dir="${basedir}/sql/login">
+				<include name="*.*"/>
+				<include name="updates/*.*"/>
+			</fileset>
+		</sync>
+		<sync todir="${build.dist.sql.maintenance}">
+			<fileset dir="${basedir}/sql/maintenance">
+				<include name="*.*"/>
 			</fileset>
 		</sync>
 		<sync todir="${build.dist.tools}">
