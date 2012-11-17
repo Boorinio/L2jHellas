@@ -4,18 +4,18 @@ REM ################################################
 REM ## You can change here your own DB parameters ##
 REM ################################################
 REM MYSQL BIN PATH
-set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.1\bin
+set mysqlBinPath=D:\L2\Programms\xampp\mysql\bin
 
 REM LOGINSERVER
 set lsuser=root
 set lspass=
-set lsdb=l2jhellas
+set lsdb=l2jhellasgs
 set lshost=localhost
 
 REM GAMESERVER
 set gsuser=root
 set gspass=
-set gsdb=l2jhellas
+set gsdb=l2jhellasgs
 set gshost=localhost
 REM ################################################
 
@@ -24,10 +24,10 @@ set mysqlPath="%mysqlBinPath%\mysql"
 
 :ChooseChar2Lvl
 
-echo("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-echo("             You Are Running an l2jhellas ServerPack Interlude Version");
-echo("                            Copyright 2012");
-echo("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+echo              You Are Running an l2jhellas ServerPack Interlude Version
+echo                             Copyright 2012
+echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo.
 echo.                              
@@ -40,15 +40,24 @@ del Chars.sql
 echo.
 set char=0
 echo Type the name of the character you want to level up.
-echo Close the window to exit.
+echo You can close the window to exit.
 echo.
-set /p char=": "
+set /p char="Player Name: "
+cls
+
+echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+echo              You Are Running an l2jhellas ServerPack Interlude Version
+echo                             Copyright 2012
+echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 echo.
+echo. 
+echo Type the desire level you want for %char%
+echo (Values 1-81 81=Full exp bar of 80 lvl).
 if "%char%"=="0" goto ChooseChar2Lvl
 set lvl=0
-echo Set character "%char%" to what lvl?
 echo.
-set /p lvl=": "
+set /p lvl="Level: "
 echo.
 if "%lvl%"=="0" goto ChooseChar2Lvl
 if "%lvl%"=="1" set exp=1
@@ -135,7 +144,9 @@ if "%lvl%"=="81" set exp=6300000000
 echo Updating database...
 echo UPDATE characters SET  level='%lvl%', exp='%exp%' WHERE char_name='%char%'; > charLvl.sql
 %mysqlPath% -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% < charLvl.sql
-echo Done.
+echo Character level for %char% changed successfully in your database.
+echo close this window if you dont want to change other levels or press any key to continue.
+del charLvl.sql
 pause
 cls
 goto ChooseChar2Lvl
