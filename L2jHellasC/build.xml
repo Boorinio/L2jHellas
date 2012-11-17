@@ -227,28 +227,22 @@
     </target>   
     
 	<target name="Version" depends="Building Dirs" description="Create L2J Hellas version file">
-    	<tstamp>
-    		<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
-    	</tstamp>
-    	<exec dir="." executable="svnversion" outputproperty="revision" failifexecutionfails="false">
-    		<arg line="-n ."/>
-    	</exec>
-    	<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini">
+		<tstamp>
+			<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
+		</tstamp>
+		<exec dir="." executable="svnversion" outputproperty="revision" />
+		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Core Version.ini">
+L2jHellas Project details:
+			${line.separator}
 			version = ${revision}
+			${line.separator}
 			builddate = ${build.tstamp}
-    		Forum = http://5.135.126.46/index.php
-    		Svn = https://subversion.assembla.com/svn/l2hellas/trunk/
-    		Timeline = https://www.assembla.com/spaces/l2hellas/stream
-		</concat>
-		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini" append="true">
-			<filelist dir="${build}/../../.svn/" files="entries"/>
-				<filterchain>
-					<prefixlines prefix="          "/>
-						<headfilter lines="8" skip="4"/>
-							<tokenfilter>
-					<ignoreblank/>
-				</tokenfilter>
-			</filterchain>
+			${line.separator}
+			Forum = http://5.135.126.46/index.php
+			${line.separator}
+			Svn = https://subversion.assembla.com/svn/l2hellas/trunk/
+			${line.separator}
+			Timeline = https://www.assembla.com/code/l2hellas/subversion/changesets
 		</concat>
 		<echo>version = ${revision}</echo>
 	</target>
