@@ -21,6 +21,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import Extensions.Balancer.Balancer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminAdmin;
@@ -98,7 +99,7 @@ public class AdminCommandHandler
 
 	private static AdminCommandHandler _instance;
 
-	private Map<String, IAdminCommandHandler> _datatable;
+	private final Map<String, IAdminCommandHandler> _datatable;
 
     //Alt privileges setting
     private static Logger _priviLog = Logger.getLogger("AltPrivilegesAdmin");
@@ -178,6 +179,7 @@ public class AdminCommandHandler
         registerAdminCommandHandler(new AdminVIPEngine());
         registerAdminCommandHandler(new AdminHero());
         registerAdminCommandHandler(new AdminNoble());
+		registerAdminCommandHandler(new Balancer());
         _log.config("AdminCommandHandler: Loaded " + _datatable.size() + " handlers.");
 
 	}

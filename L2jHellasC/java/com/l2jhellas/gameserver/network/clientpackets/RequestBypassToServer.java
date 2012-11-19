@@ -15,6 +15,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Extensions.Balancer.BalancerMain;
 import Extensions.RankSystem.RankPvpSystemPlayerInfo;
 
 import com.l2jhellas.Config;
@@ -225,8 +226,15 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				else
 					player.processQuestEvent(p.substring(0, idx), p.substring(idx).trim());
 			}
+			// Balancer: ->
+			// -------------------------------------------------------------------------------
+			else if (_command.startsWith("Balance "))
+			{
+				BalancerMain.handleCommands(getClient(), _command.substring(8));
+			}
+			// -------------------------------------------------------------------------------
 			// Custom PvP System (CPS) by Masterio
-			// --------------------------------------------
+			// -------------------------------------------------------------------------------
 			else if (_command.equals("_cprs_equip"))
 			{ // for "details" button
 				try

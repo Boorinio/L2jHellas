@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import Extensions.Balancer.BalanceLoad;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
@@ -409,6 +411,8 @@ public class GameServer
 			_log.info("Away System");
 			AwayManager.getInstance();
 		}
+		// Balancer
+		BalanceLoad.loadBalance();
 
 		System.gc();
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of
