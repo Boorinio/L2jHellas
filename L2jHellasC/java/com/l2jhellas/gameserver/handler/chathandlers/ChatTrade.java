@@ -3,12 +3,10 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +27,10 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
  */
 public class ChatTrade implements IChatHandler
 {
-	private static final int[] COMMAND_IDS ={8};
+	private static final int[] COMMAND_IDS =
+	{
+		8
+	};
 	
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
@@ -39,11 +40,11 @@ public class ChatTrade implements IChatHandler
 		
 		if (Config.DEFAULT_TRADE_CHAT.equalsIgnoreCase("on") || (Config.DEFAULT_TRADE_CHAT.equalsIgnoreCase("gm") && activeChar.isGM()))
 		{
-			if (!activeChar.isGM() && !activeChar.getAntiFlood().getGlobalChat().tryPerformAction("global chat") && !activeChar.isGM()) 
-			 	{ 
-			 	  activeChar.sendMessage("Do not spam trade channel."); 
-			 	  return; 
-			 	}
+			if (!activeChar.isGM() && !activeChar.getAntiFlood().getGlobalChat().tryPerformAction("global chat") && !activeChar.isGM())
+			{
+				activeChar.sendMessage("Do not spam trade channel.");
+				return;
+			}
 			for (L2PcInstance player : pls)
 			{
 				if (!BlockList.isBlocked(player, activeChar))

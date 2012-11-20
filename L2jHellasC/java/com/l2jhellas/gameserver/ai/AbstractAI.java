@@ -66,7 +66,8 @@ abstract class AbstractAI implements Ctrl
         	_range = range;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             try
             {
@@ -143,7 +144,8 @@ abstract class AbstractAI implements Ctrl
     /**
      * Return the L2Character managed by this Accessor AI.<BR><BR>
      */
-    public L2Character getActor()
+    @Override
+	public L2Character getActor()
     {
         return _actor;
     }
@@ -151,7 +153,8 @@ abstract class AbstractAI implements Ctrl
     /**
      * Return the current Intention.<BR><BR>
      */
-    public CtrlIntention getIntention()
+    @Override
+	public CtrlIntention getIntention()
     {
         return _intention;
     }
@@ -177,7 +180,8 @@ abstract class AbstractAI implements Ctrl
     /**
      * Return current attack target.<BR><BR>
      */
-    public L2Character getAttackTarget()
+    @Override
+	public L2Character getAttackTarget()
     {
         return _attackTarget;
     }
@@ -216,7 +220,8 @@ abstract class AbstractAI implements Ctrl
      * @param intention The new Intention to set to the AI
      *
      */
-    public final void setIntention(CtrlIntention intention)
+    @Override
+	public final void setIntention(CtrlIntention intention)
     {
         setIntention(intention, null, null);
     }
@@ -230,7 +235,8 @@ abstract class AbstractAI implements Ctrl
      * @param arg0 The first parameter of the Intention (optional target)
      *
      */
-    public final void setIntention(CtrlIntention intention, Object arg0)
+    @Override
+	public final void setIntention(CtrlIntention intention, Object arg0)
     {
         setIntention(intention, arg0, null);
     }
@@ -245,7 +251,8 @@ abstract class AbstractAI implements Ctrl
      * @param arg1 The second parameter of the Intention (optional target)
      *
      */
-    public final void setIntention(CtrlIntention intention, Object arg0, Object arg1)
+    @Override
+	public final void setIntention(CtrlIntention intention, Object arg0, Object arg1)
     {
         if (!_actor.isVisible() || !_actor.hasAI()) return;
 
@@ -303,7 +310,8 @@ abstract class AbstractAI implements Ctrl
      * @param evt The event whose the AI must be notified
      *
      */
-    public final void notifyEvent(CtrlEvent evt)
+    @Override
+	public final void notifyEvent(CtrlEvent evt)
     {
         notifyEvent(evt, null, null);
     }
@@ -318,7 +326,8 @@ abstract class AbstractAI implements Ctrl
      * @param arg0 The first parameter of the Event (optional target)
      *
      */
-    public final void notifyEvent(CtrlEvent evt, Object arg0)
+    @Override
+	public final void notifyEvent(CtrlEvent evt, Object arg0)
     {
         notifyEvent(evt, arg0, null);
     }
@@ -334,7 +343,9 @@ abstract class AbstractAI implements Ctrl
      * @param arg1 The second parameter of the Event (optional target)
      *
      */
-    public final void notifyEvent(CtrlEvent evt, Object arg0, Object arg1)
+	@Override
+	@SuppressWarnings("incomplete-switch")
+	public final void notifyEvent(CtrlEvent evt, Object arg0, Object arg1)
     {
         if (!_actor.isVisible() || !_actor.hasAI()) return;
 

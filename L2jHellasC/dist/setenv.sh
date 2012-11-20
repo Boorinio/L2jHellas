@@ -9,7 +9,7 @@ CLASSPATH=${CLASSPATH}:./lib/javolution.jar
 CLASSPATH=${CLASSPATH}:./lib/l2jhellas.jar
 
 # For SQL use
-CLASSPATH=${CLASSPATH}:./lib/mysql-connector-java-5.1.5.jar
+CLASSPATH=${CLASSPATH}:./lib/mysql-connector-java-5.1.22-bin.jar
 
 # for configuration
 CLASSPATH=${CLASSPATH}:./config/

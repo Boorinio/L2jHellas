@@ -213,35 +213,44 @@ import com.l2jhellas.util.Rnd;
  */
 public final class L2PcInstance extends L2PlayableInstance
 {
-	
+	// Character Skills
 	private static final String RESTORE_SKILLS_FOR_CHAR = "SELECT skill_id,skill_level FROM character_skills WHERE char_obj_id=? AND class_index=?";
 	private static final String RESTORE_SKILLS_FOR_CHAR_ALT_SUBCLASS = "SELECT skill_id,skill_level FROM character_skills WHERE char_obj_id=?";
 	private static final String ADD_NEW_SKILL = "INSERT INTO character_skills (char_obj_id,skill_id,skill_level,skill_name,class_index) VALUES (?,?,?,?,?)";
 	private static final String UPDATE_CHARACTER_SKILL_LEVEL = "UPDATE character_skills SET skill_level=? WHERE skill_id=? AND char_obj_id=? AND class_index=?";
 	private static final String DELETE_SKILL_FROM_CHAR = "DELETE FROM character_skills WHERE skill_id=? AND char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SKILLS = "DELETE FROM character_skills WHERE char_obj_id=? AND class_index=?";
-	
 	private static final String ADD_SKILL_SAVE = "INSERT INTO character_skills_save (char_obj_id,skill_id,skill_level,effect_count,effect_cur_time,reuse_delay,restore_type,class_index,buff_index) VALUES (?,?,?,?,?,?,?,?,?)";
 	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=? ORDER BY buff_index ASC";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 	
+	// Character Character
 	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=?,chat_filter_count=?,good=?,evil=?,hitman_target=? WHERE obj_id=?";
-	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally,clan_join_expiry_time,clan_create_expiry_time,death_penalty_level,hero,donator,chatban_timer,chatban_reason,chat_filter_count,good,evil,hitman_target FROM characters WHERE obj_id=?";
+	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, good,evil, hitman_target, hasSubEmail, answer, secCode, emailchangecode, hasSubSec FROM characters WHERE obj_id=?";
 	private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
-	// -------------------------- l2jhellas ------------------------- //
+	
+	// Character PremiumService
+	private static final String INSERT_PREMIUMSERVICE = "INSERT INTO character_premium (account_name,premium_service,enddate) values(?,?,?) ON DUPLICATE KEY UPDATE premium_service = ?, enddate = ?";
+	private static final String RESTORE_PREMIUMSERVICE = "SELECT premium_service,enddate FROM account_premium WHERE account_name=?";
+	private static final String UPDATE_PREMIUMSERVICE = "UPDATE character_premium SET premium_service=?,enddate=? WHERE account_name=?";
+	
+	// Character Ban chat
 	private static final String BAN_CHAT_SET = "UPDATE characters SET chatban_timer=?, chatban_reason=? WHERE char_name LIKE ?";
 	private static final String BAN_CHAT_GET = "SELECT chatban_timer, chatban_reason FROM characters WHERE char_name LIKE ?";
-	// ----------------------------------------------------------- //
+
+	// Character Subclasses
 	private static final String ADD_CHAR_SUBCLASS = "INSERT INTO character_subclasses (char_obj_id,class_id,exp,sp,level,class_index) VALUES (?,?,?,?,?,?)";
 	private static final String UPDATE_CHAR_SUBCLASS = "UPDATE character_subclasses SET exp=?,sp=?,level=?,class_id=? WHERE char_obj_id=? AND class_index =?";
 	private static final String DELETE_CHAR_SUBCLASS = "DELETE FROM character_subclasses WHERE char_obj_id=? AND class_index=?";
 	
+	// Character Hennas
 	private static final String RESTORE_CHAR_HENNAS = "SELECT slot,symbol_id FROM character_hennas WHERE char_obj_id=? AND class_index=?";
 	private static final String ADD_CHAR_HENNA = "INSERT INTO character_hennas (char_obj_id,symbol_id,slot,class_index) VALUES (?,?,?,?)";
 	private static final String DELETE_CHAR_HENNA = "DELETE FROM character_hennas WHERE char_obj_id=? AND slot=? AND class_index=?";
 	private static final String DELETE_CHAR_HENNAS = "DELETE FROM character_hennas WHERE char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SHORTCUTS = "DELETE FROM character_shortcuts WHERE char_obj_id=? AND class_index=?";
 	
+	// Character Recommentations
 	private static final String RESTORE_CHAR_RECOMS = "SELECT char_id,target_id FROM character_recommends WHERE char_id=?";
 	private static final String ADD_CHAR_RECOM = "INSERT INTO character_recommends (char_id,target_id) VALUES (?,?)";
 	private static final String DELETE_CHAR_RECOMS = "DELETE FROM character_recommends WHERE char_id=?";
@@ -561,6 +570,128 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** Faction Good vs Evil */
 	private boolean _isgood = false;
 	private boolean _isevil = false;
+	
+	/** Account Manager */
+	private String _email = null;
+	private int _emailcode = 0;
+	private int _hasSubEmail = 0;
+	private String _answer = null;
+	private int _secCode = 0;
+	private int _emailchangecode = 0;
+	private int _hasSubSec = 0;
+	
+	/** Premium Service */
+	private void createPSdb()
+	{
+		Connection con = null;
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement(INSERT_PREMIUMSERVICE);
+			statement.setString(1, _accountName);
+			statement.setInt(2, 0);
+			statement.setLong(3, 0);
+			statement.setInt(4, 0);
+			statement.setLong(5, 0);
+			statement.executeUpdate();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.warning("Could not insert char data: "+e);
+			e.printStackTrace();
+			return;
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+	}
+	
+	private static void PStimeOver(String account)
+	{
+		Connection con = null;
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE);
+			statement.setInt(1, 0);
+			statement.setLong(2, 0);
+			statement.setString(3, account);
+			statement.execute();
+			statement.close();
+		}
+		catch (SQLException e)
+		{
+			_log.warning("PremiumService:  Could not increase data");
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+	}
+	
+	private static void restorePremServiceData(L2PcInstance player, String account)
+	{
+		boolean sucess = false;
+		Connection con = null;
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement(RESTORE_PREMIUMSERVICE);
+			statement.setString(1, account);
+			ResultSet rset = statement.executeQuery();
+			while (rset.next())
+			{
+				sucess = true;
+				if (Config.USE_PREMIUMSERVICE)
+				{
+					if (rset.getLong("enddate") <= System.currentTimeMillis())
+					{
+						PStimeOver(account);
+						player.setPremiumService(0);
+					}
+					else
+						player.setPremiumService(rset.getInt("premium_service"));
+				}
+				else
+					player.setPremiumService(0);
+			}
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.warning("PremiumService: Could not restore PremiumService data for:" + account + "."+e);
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+		if (sucess==false)
+		{
+			player.createPSdb();
+			player.setPremiumService(0);
+		}
+	}
 	
 	/**
 	 * The L2FolkInstance corresponding to the last Folk wich one the player
@@ -6865,7 +6996,15 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 				player = new L2PcInstance(objectId, template, rset.getString("account_name"), app);
 				player.setName(rset.getString("char_name"));
+				restorePremServiceData(player, rset.getString("account_name"));
 				player._lastAccess = rset.getLong("lastAccess");
+				player._email = rset.getString("email");
+				player._emailcode = rset.getInt("emailcode");
+				player._hasSubEmail = rset.getInt("hasSubEmail");
+				player._answer = rset.getString("answer");
+				player._secCode = rset.getInt("secCode");
+				player._emailchangecode = rset.getInt("emailchangecode");
+				player._hasSubSec = rset.getInt("hasSubSec");
 				
 				player.getStat().setExp(rset.getLong("exp"));
 				player.setExpBeforeDeath(rset.getLong("expBeforeDeath"));
@@ -12963,5 +13102,40 @@ public final class L2PcInstance extends L2PlayableInstance
 	public FloodProtectors getAntiFlood()
 	{
 		return _floodProtectors;
+	}
+	
+	public int hasSubEmail()
+	{
+		return _hasSubEmail;
+	}
+	
+	public String email()
+	{
+		return _email;
+	}
+	
+	public int emailCode()
+	{
+		return _emailcode;
+	}
+	
+	public String answer()
+	{
+		return _answer;
+	}
+	
+	public int secCode()
+	{
+		return _secCode;
+	}
+	
+	public int emailchangecode()
+	{
+		return _emailchangecode;
+	}
+	
+	public int hasSubSec()
+	{
+		return _hasSubSec;
 	}
 }

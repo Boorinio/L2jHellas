@@ -149,7 +149,8 @@ public class L2NpcInstance extends L2Character
     /** Task launching the function onRandomAnimation() */
     protected class RandomAnimationTask implements Runnable
     {
-        public void run()
+        @Override
+		public void run()
         {
             try
             {
@@ -217,14 +218,15 @@ public class L2NpcInstance extends L2Character
 
     public class destroyTemporalNPC implements Runnable
     {
-        private L2Spawn _oldSpawn;
+        private final L2Spawn _oldSpawn;
 
         public destroyTemporalNPC(L2Spawn spawn)
         {
             _oldSpawn = spawn;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             try
             {
@@ -249,7 +251,8 @@ public class L2NpcInstance extends L2Character
             _player = player;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             _summon.unSummon(_player);
         }
@@ -267,7 +270,8 @@ public class L2NpcInstance extends L2Character
      * @param template The L2NpcTemplate to apply to the NPC
      *
      */
-    public L2NpcInstance(int objectId, L2NpcTemplate template)
+	@SuppressWarnings("unused")
+	public L2NpcInstance(int objectId, L2NpcTemplate template)
     {
         // Call the L2Character constructor to set the _template of the L2Character, copy skills from template to object
         // and link _calculators to NPC_STD_CALCULATOR
@@ -1287,85 +1291,88 @@ public class L2NpcInstance extends L2Character
      * @param questId The Identifier of the quest to display the message
      * 
      */
-    public void showQuestWindow(L2PcInstance player, String questId) 
-    {
-    	String content = null;
-        
-        Quest q = QuestManager.getInstance().getQuest(questId);
-        
-        // Get the state of the selected quest
-        QuestState qs = player.getQuestState(questId);
-        
-        if (q == null)  
-         { 
-        // no quests found 
-       content = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>"; 
-       } 
-       else 
-       { 
-       if ((q.getQuestIntId() >= 1 && q.getQuestIntId() < 1000) && (player.getWeightPenalty()>=3 || player.GetInventoryLimit()*0.8 <= player.getInventory().getSize())) 
-       {    
-       player.sendPacket(new SystemMessage(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT)); 
-       return; 
-       } 
-       	             
-       if (qs == null) 
-       { 
-          if (q.getQuestIntId() >= 1 && q.getQuestIntId() < 1000) 
-       { 
-          Quest[] questList = player.getAllActiveQuests(); 
-	      if (questList.length >= 25) 
-	   { 
-	      return; 
-	      } 
-	   } 
-	   // check for start point 
-	   Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START); 
-	                     
-	   if (qlst != null && qlst.length > 0)  
-	   { 
-	      for (int i=0; i < qlst.length; i++)  
-	   { 
-	      if (qlst[i] == q)  
-	   { 
-	      qs = q.newQuestState(player); 
-	      break; 
-	     } 
-	    } 
-	   } 
-	  } 
-	 } 
-	     if (qs != null) 
-        {
-            // If the quest is alreday started, no need to show a window
-            if (!qs.getQuest().notifyTalk(this, qs))
-            return;
-        
-            questId = qs.getQuest().getName();
-            String stateId = State.getStateName(qs.getState());
-            String path = "data/scripts/quests/"+questId+"/"+stateId+".htm";
-            content = HtmCache.getInstance().getHtm(path); //TODO path for quests html
-            
-            if (Config.DEBUG)
-            {
-                if (content != null)
-                {
-                    _log.fine("Showing quest window for quest "+questId+" html path: " + path);
-                }
-                else
-                {
-                    _log.fine("File not exists for quest "+questId+" html path: " + path);
-                }
-            }
-        }
-        
-        // Send a Server->Client packet NpcHtmlMessage to the L2PcInstance in order to display the message of the L2NpcInstance
-        if (content != null)
-            insertObjectIdAndShowChatWindow(player, content);
-        
-        // Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-        player.sendPacket(new ActionFailed());
-    }
+	public void showQuestWindow(L2PcInstance player, String questId)
+	{
+		String content = null;
+		
+		Quest q = QuestManager.getInstance().getQuest(questId);
+		
+		// Get the state of the selected quest
+		QuestState qs = player.getQuestState(questId);
+		
+		if (q == null)
+		{
+			// no quests found
+			content = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
+		}
+		else
+		{
+			if ((q.getQuestIntId() >= 1 && q.getQuestIntId() < 1000) && (player.getWeightPenalty() >= 3 || player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize()))
+			{
+				player.sendPacket(new SystemMessage(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT));
+				return;
+			}
+			
+			if (qs == null)
+			{
+				if (q.getQuestIntId() >= 1 && q.getQuestIntId() < 1000)
+				{
+					Quest[] questList = player.getAllActiveQuests();
+					if (questList.length >= 25)
+					{
+						return;
+					}
+				}
+				// check for start point
+				Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+				
+				if (qlst != null && qlst.length > 0)
+				{
+					for (int i = 0; i < qlst.length; i++)
+					{
+						if (qlst[i] == q)
+						{
+							qs = q.newQuestState(player);
+							break;
+						}
+					}
+				}
+			}
+		}
+		if (qs != null)
+		{
+			// If the quest is alreday started, no need to show a window
+			if (!qs.getQuest().notifyTalk(this, qs))
+				return;
+			
+			questId = qs.getQuest().getName();
+			String stateId = State.getStateName(qs.getState());
+			String path = "data/scripts/quests/" + questId + "/" + stateId + ".htm";
+			content = HtmCache.getInstance().getHtm(path); // TODO path for
+															// quests html
+			
+			if (Config.DEBUG)
+			{
+				if (content != null)
+				{
+					_log.fine("Showing quest window for quest " + questId + " html path: " + path);
+				}
+				else
+				{
+					_log.fine("File not exists for quest " + questId + " html path: " + path);
+				}
+			}
+		}
+		
+		// Send a Server->Client packet NpcHtmlMessage to the L2PcInstance in
+		// order to display the message of the L2NpcInstance
+		if (content != null)
+			insertObjectIdAndShowChatWindow(player, content);
+		
+		// Send a Server->Client ActionFailed to the L2PcInstance in order to
+		// avoid that the client wait another packet
+		player.sendPacket(new ActionFailed());
+	}
     
     /**
      * Collect awaiting quests/start points and display a QuestChooseWindow (if several available) or QuestWindow.<BR><BR>
@@ -2162,19 +2169,25 @@ public class L2NpcInstance extends L2Character
     /**
      * Return the Exp Reward of this L2NpcInstance contained in the L2NpcTemplate (modified by RATE_XP).<BR><BR>
      */
-    public int getExpReward()
+	public int getExpReward(int isPremium)
     {
     	double rateXp = getStat().calcStat(Stats.MAX_HP , 1, this, null);
-        return (int)(getTemplate().rewardExp * rateXp * Config.RATE_XP);
+		if (isPremium == 1)
+			return (int) (getTemplate().rewardExp * rateXp * Config.PREMIUM_RATE_XP);
+		else
+			return (int) (getTemplate().rewardExp * rateXp * Config.RATE_XP);
     }
     
     /**
      * Return the SP Reward of this L2NpcInstance contained in the L2NpcTemplate (modified by RATE_SP).<BR><BR>
      */
-    public int getSpReward()
+	public int getSpReward(int isPremium)
     {
     	double rateSp = getStat().calcStat(Stats.MAX_HP , 1, this, null);
-        return (int)(getTemplate().rewardSp * rateSp * Config.RATE_SP);
+		if (isPremium == 1)
+			return (int) (getTemplate().rewardSp * rateSp * Config.PREMIUM_RATE_SP);
+		else
+			return (int) (getTemplate().rewardSp * rateSp * Config.RATE_SP);
     }
     
     /**
@@ -2244,15 +2257,16 @@ public class L2NpcInstance extends L2Character
     @Override
 	public void onDecay()
     {
-   	 if (isDecayed()) return;
-	 setDecayed(true);
+		if (isDecayed())
+			return;
+		setDecayed(true);
 	 
-	// reset champion status if the thing is a mob
-	setChampion(false);
+		// reset champion status if the thing is a mob
+		setChampion(false);
 	 
-	 // Manage Life Control Tower
-	 if (this instanceof L2ControlTowerInstance)
-            ((L2ControlTowerInstance)this).onDeath();
+		// Manage Life Control Tower
+		if (this instanceof L2ControlTowerInstance)
+			((L2ControlTowerInstance) this).onDeath();
         
         // Remove the L2NpcInstance from the world when the decay task is launched
         super.onDecay();

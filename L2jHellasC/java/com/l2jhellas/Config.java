@@ -642,6 +642,9 @@ public final class Config
 	/** Check for bad ID ? */
 	
 	// l2jhellas_CONFIG_FILE
+	public static String EMAIL_USER;
+	public static String EMAIL_PASS;
+	/** Account Manager Mail */
 	public static boolean MOD_ALLOW_WEDDING;
 	/** Wedding system */
 	public static int MOD_WEDDING_PRICE;
@@ -719,8 +722,6 @@ public final class Config
 	public static float ALT_DAGGER_DMG_VS_LIGHT;
 	/** Damage for dagger skills VS light */
 	public static boolean ONLINE_VOICE_ALLOW;
-	/** Custom voice comands */
-	public static boolean ALLOW_RES_COMMAND;
 	/** Custom voice comands */
 	public static boolean ALLOW_CLAN_LEADER_COMMAND;
 	/** Custom voice comands */
@@ -1236,6 +1237,8 @@ public final class Config
 	public static final FloodProtectorConfig FLOOD_PROTECTOR_MULTISELL = new FloodProtectorConfig("MultiSellFloodProtector");
 	public static final FloodProtectorConfig FLOOD_PROTECTOR_TRANSACTION = new FloodProtectorConfig("TransactionFloodProtector");
 	
+	public static final boolean DROP_MULTI_ADENA = false;
+	
 	// PVP_PK_CONFIG_FILE
 	public static boolean LEAVE_BUFFS_ON_DIE;
 	public static boolean ALLOW_POTS_IN_PVP;
@@ -1324,6 +1327,7 @@ public final class Config
 	/** Announce PvP */
 	public static boolean ANNOUNCE_PK_KILL;
 	/** Announce PK */
+	public static boolean CUSTOM_MSG_ON_PVP;
 	
 	// CLASS_MASTER_FILE
 	public static boolean ALLOW_CLASS_MASTER;
@@ -1395,6 +1399,16 @@ public final class Config
 	public static int VIP_MAX_LEVEL;
 	public static int VIP_MIN_PARTICIPANTS;
 	
+	// Premium Settings
+	public static boolean USE_PREMIUMSERVICE;
+	public static float PREMIUM_RATE_XP;
+	public static float PREMIUM_RATE_SP;
+	public static Map<Integer, Integer> PR_RATE_DROP_ITEMS_ID;
+	public static float PREMIUM_RATE_DROP_SPOIL;
+	public static float PREMIUM_RATE_DROP_ITEMS;
+	public static float PREMIUM_RATE_DROP_QUEST;
+	public static float PREMIUM_RATE_DROP_ITEMS_BY_RAID;
+
 	// RATES_CONFIG_FILE
 	public static float RATE_XP;
 	/** Rate for eXperience Point rewards */
@@ -1901,7 +1915,6 @@ public final class Config
 				
 				SERVER_VERSION = serverVersion.getProperty("version", "Unsupported Custom Version.");
 				SERVER_BUILD_DATE = serverVersion.getProperty("builddate", "Undefined Date.");
-				_log.info("# " + SERVER_VERSION_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -1966,7 +1979,6 @@ public final class Config
 				GM_CAN_GIVE_DAMAGE = Integer.parseInt(gmSettings.getProperty("GMCanGiveDamage", "90"));
 				GM_DONT_TAKE_AGGRO = Integer.parseInt(gmSettings.getProperty("GMDontTakeAggro", "90"));
 				GM_DONT_TAKE_EXPSP = Integer.parseInt(gmSettings.getProperty("GMDontGiveExpSp", "90"));
-				_log.info("# " + GM_ACCESS_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2000,7 +2012,6 @@ public final class Config
 				GM_TITLE_COLOR_ENABLED = Boolean.parseBoolean(AdminSettings.getProperty("GMTitleColorEnabled", "False"));
 				ADMIN_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("AdminTitleColor", "00FF00"));
 				GM_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("GMTitleColor", "FFFF00"));
-				_log.info("# " + ADMIN_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2020,7 +2031,6 @@ public final class Config
 				SET_TYPE = ObjectSetType.valueOf(idSettings.getProperty("L2Set", "WorldObjectSet"));
 				IDFACTORY_TYPE = IdFactoryType.valueOf(idSettings.getProperty("IDFactory", "Compaction"));
 				BAD_ID_CHECKING = Boolean.valueOf(idSettings.getProperty("BadIdChecking", "True"));
-				_log.info("# " + ID_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2036,6 +2046,9 @@ public final class Config
 				L2JHellasSettings.load(is);
 				is.close();
 				
+				EMAIL_USER = L2JHellasSettings.getProperty("EmailUsername", "null");
+				EMAIL_PASS = L2JHellasSettings.getProperty("EmailPassword", "null");
+
 				CHAMPION_PASSIVE = Boolean.parseBoolean(L2JHellasSettings.getProperty("ChampionPassive", "False"));
 				CHAMPION_TITLE = L2JHellasSettings.getProperty("ChampionTitle", "Champion").trim();
 				CHAMPION_ENABLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("ChampionEnable", "False"));
@@ -2118,6 +2131,7 @@ public final class Config
 				PVP_PVP_TIME = Integer.parseInt(L2JHellasSettings.getProperty("PvPVsPvPTime", "30000"));
 				ANNOUNCE_PVP_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePvPKill", "False"));
 				ANNOUNCE_PK_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePkKill", "False"));
+				CUSTOM_MSG_ON_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("PvPCustomMessages", "False"));
 				
 				MOD_ALLOW_WEDDING = Boolean.valueOf(L2JHellasSettings.getProperty("AllowWedding", "False"));
 				MOD_WEDDING_PRICE = Integer.parseInt(L2JHellasSettings.getProperty("WeddingPrice", "250000000"));
@@ -2157,7 +2171,6 @@ public final class Config
 				SOUL_CRYSTAL_LEVEL_CHANCE = Integer.parseInt(L2JHellasSettings.getProperty("SoulCrystalLevelChance", "32"));
 				ONLINE_VOICE_ALLOW = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowOnlineCommand", "False"));
 				ALTERNATIVE_ENCHANT_VALUE = Integer.parseInt(L2JHellasSettings.getProperty("AlternativeEnchantValue", "1"));
-				ALLOW_RES_COMMAND = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowResCommand", "False"));
 				ALLOW_CLAN_LEADER_COMMAND = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowClanLeaderCommand", "False"));
 				ALLOW_VERSION_COMMAND = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowVersionCommand", "False"));
 				ALLOW_STAT_COMMAND = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowStatCommand", "False"));
@@ -2238,7 +2251,7 @@ public final class Config
 								continue;
 							FILTER_LIST.add(line.trim());
 						}
-						_log.info("# Chat Filter: Loaded " + FILTER_LIST.size() + " words ");
+						_log.info("Chat Filter: Loaded " + FILTER_LIST.size() + " words ");
 					}
 					catch (Exception e)
 					{
@@ -2248,7 +2261,6 @@ public final class Config
 				}
 				ALLOW_USE_HERO_ITEM_ON_SUBCLASS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowUseHeroItemOnSub", "False"));
 				MAX_LVL_AFTER_SUB = Boolean.parseBoolean(L2JHellasSettings.getProperty("MaxLvLAfterSub", "False"));
-				_log.info("# " + L2JHellas_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2279,7 +2291,6 @@ public final class Config
 				{
 					OLY_RESTRICTED_ITEMS_LIST.add(Integer.parseInt(id));
 				}
-				_log.info("# " + OLYMPIAD_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2299,7 +2310,6 @@ public final class Config
 				COORD_SYNCHRONIZE = Integer.parseInt(geoSettings.getProperty("CoordSynchronize", "-1"));
 				GEODATA = Integer.parseInt(geoSettings.getProperty("GeoData", "0"));
 				FORCE_GEODATA = Boolean.parseBoolean(geoSettings.getProperty("ForceGeoData", "True"));
-				_log.info("# " + GEO_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2429,7 +2439,6 @@ public final class Config
 				SELECTED_NODE_ID = Integer.parseInt(optionsSettings.getProperty("NewNodeId", "7952"));
 				LINKED_NODE_ID = Integer.parseInt(optionsSettings.getProperty("NewNodeId", "7952"));
 				NEW_NODE_TYPE = optionsSettings.getProperty("NewNodeType", "npc");
-				_log.info("# " + OPTIONS_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2500,7 +2509,6 @@ public final class Config
 				AUGMENT_SKILL = Integer.parseInt(otherSettings.getProperty("AugmentSkill", "11"));
 				AUGMENT_EXCLUDE_NOTDONE = Boolean.parseBoolean(otherSettings.getProperty("AugmentExcludeNotdone", "False"));
 				MAX_ITEM_IN_PACKET = Math.max(INVENTORY_MAXIMUM_NO_DWARF, Math.max(INVENTORY_MAXIMUM_DWARF, INVENTORY_MAXIMUM_GM));
-				_log.info("# " + OTHER_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2516,7 +2524,6 @@ public final class Config
 				antiflood.load(is);
 				is.close();
 				loadFloodProtectorConfigs(antiflood);
-				_log.info("# " + FLOOD_PROTECTORS_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2600,7 +2607,6 @@ public final class Config
 				CTF_REVIVE_DELAY = Long.parseLong(EventSettings.getProperty("CTFReviveDelay", "20000"));
 				if (CTF_REVIVE_DELAY < 1000)
 					CTF_REVIVE_DELAY = 1000; // can't be set less then 1 second
-				_log.info("# " + EVENT_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2616,6 +2622,40 @@ public final class Config
 				ratesSettings.load(is);
 				is.close();
 				
+				// Premium Service
+				USE_PREMIUMSERVICE = Boolean.parseBoolean(ratesSettings.getProperty("UsePremiumServices", "False"));
+				PREMIUM_RATE_XP = Float.parseFloat(ratesSettings.getProperty("PremiumRateXp", "2"));
+				PREMIUM_RATE_SP = Float.parseFloat(ratesSettings.getProperty("PremiumRateSp", "2"));
+				PREMIUM_RATE_DROP_SPOIL = Float.parseFloat(ratesSettings.getProperty("PremiumRateDropSpoil", "2"));
+				PREMIUM_RATE_DROP_ITEMS = Float.parseFloat(ratesSettings.getProperty("PremiumRateDropItems", "2"));
+				PREMIUM_RATE_DROP_QUEST = Float.parseFloat(ratesSettings.getProperty("PremiumRateDropQuest", "2"));
+				PREMIUM_RATE_DROP_ITEMS_BY_RAID = Float.parseFloat(ratesSettings.getProperty("PremiumRateRaidDropItems", "2"));
+				String[] propertySplitPRRateDropItemsID = ratesSettings.getProperty("PremiumRateRaidDropItemsIDs", "").split(";");
+				PR_RATE_DROP_ITEMS_ID = new FastMap<Integer, Integer>(propertySplitPRRateDropItemsID.length);
+				
+				// For Premium Service
+				if (propertySplitPRRateDropItemsID.length > 1)
+				{
+					for (String PremiumIDs : propertySplitPRRateDropItemsID)
+					{
+						String[] PremSplit = PremiumIDs.split(",");
+						if (PremSplit.length != 2)
+							_log.warning(StringUtil.concat("[PremiumRate]: invalid config property -> EnchantList \"", PremiumIDs, "\""));
+						else
+						{
+							try
+							{
+								PR_RATE_DROP_ITEMS_ID.put(Integer.valueOf(PremSplit[0]), Integer.valueOf(PremSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!PremiumIDs.isEmpty())
+									_log.warning(StringUtil.concat("[PremiumRate]: invalid config property -> EnchantList \"", PremSplit[0], "\"", PremSplit[1]));
+							}
+						}
+					}
+				}
+
 				RATE_XP = Float.parseFloat(ratesSettings.getProperty("RateXp", "1"));
 				RATE_SP = Float.parseFloat(ratesSettings.getProperty("RateSp", "1"));
 				RATE_PARTY_XP = Float.parseFloat(ratesSettings.getProperty("RatePartyXp", "1"));
@@ -2803,7 +2843,6 @@ public final class Config
 						}
 					}
 				}
-				_log.info("# " + RATES_CONFIG_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2847,7 +2886,6 @@ public final class Config
 				{
 					throw new Error("MinProtocolRevision is bigger than MaxProtocolRevision in server configuration file.");
 				}
-				_log.info("# " + CONFIGURATION_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2942,7 +2980,6 @@ public final class Config
 				ALT_FESTIVAL_SECOND_SPAWN = Long.parseLong(SevenSettings.getProperty("AltFestivalSecondSpawn", "540000"));
 				ALT_FESTIVAL_SECOND_SWARM = Long.parseLong(SevenSettings.getProperty("AltFestivalSecondSwarm", "720000"));
 				ALT_FESTIVAL_CHEST_SPAWN = Long.parseLong(SevenSettings.getProperty("AltFestivalChestSpawn", "900000"));
-				_log.info("# " + SEVENSIGNS_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -2960,11 +2997,10 @@ public final class Config
 				
 				SERVER_ID = Integer.parseInt(Settings.getProperty("ServerID"));
 				HEX_ID = new BigInteger(Settings.getProperty("HexID"), 16).toByteArray();
-				_log.info("# " + HEXID_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
-				_log.warning("Could not load HexID file (" + HEXID_FILE + "). Hopefully login will give us one.");
+				_log.warning("I cant fint HexID file (" + HEXID_FILE + "). Hopefully login will give us one.");
 			}
 			
 			// Try to load TELNET_FILE (if exist)
@@ -2976,7 +3012,6 @@ public final class Config
 				is.close();
 				
 				IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
-				_log.info("# " + TELNET_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -3024,7 +3059,6 @@ public final class Config
 				NORMAL_CONNECTION_TIME = Integer.parseInt(serverSettings.getProperty("NormalConnectionTime", "700"));
 				FAST_CONNECTION_TIME = Integer.parseInt(serverSettings.getProperty("FastConnectionTime", "350"));
 				MAX_CONNECTION_PER_IP = Integer.parseInt(serverSettings.getProperty("MaxConnectionPerIP", "50"));
-				_log.info("# " + CONFIGURATION_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -3041,7 +3075,6 @@ public final class Config
 				is.close();
 				
 				IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
-				_log.info("# " + TELNET_FILE + " Sucessfully loaded.");
 			}
 			catch (Exception e)
 			{
@@ -3090,7 +3123,19 @@ public final class Config
 	public static boolean setParameterValue(String pName, String pValue)
 	{
 		// Server settings
-		if (pName.equalsIgnoreCase("RateXp"))
+		if (pName.equalsIgnoreCase("PremiumRateXp"))
+			PREMIUM_RATE_XP = Float.parseFloat(pValue);
+		else if (pName.equalsIgnoreCase("PremiumRateSp"))
+			PREMIUM_RATE_SP = Float.parseFloat(pValue);
+		else if (pName.equalsIgnoreCase("PremiumRateDropSpoil"))
+			PREMIUM_RATE_DROP_SPOIL = Float.parseFloat(pValue);
+		else if (pName.equalsIgnoreCase("PremiumRateDropItems"))
+			PREMIUM_RATE_DROP_ITEMS = Float.parseFloat(pValue);
+		else if (pName.equalsIgnoreCase("PremiumRateDropQuest"))
+			PREMIUM_RATE_DROP_QUEST = Float.parseFloat(pValue);
+		else if (pName.equalsIgnoreCase("PremiumRateRaidDropItems"))
+			PREMIUM_RATE_DROP_ITEMS_BY_RAID = Float.parseFloat(pValue);
+		else if (pName.equalsIgnoreCase("RateXp"))
 			RATE_XP = Float.parseFloat(pValue);
 		else if (pName.equalsIgnoreCase("RateSp"))
 			RATE_SP = Float.parseFloat(pValue);

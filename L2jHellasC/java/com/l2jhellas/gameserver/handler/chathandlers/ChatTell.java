@@ -3,12 +3,10 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,19 +26,22 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class ChatTell implements IChatHandler
 {
-	private static final int[] COMMAND_IDS ={2};
+	private static final int[] COMMAND_IDS =
+	{
+		2
+	};
 	
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
-
-		//Return if player is chat banned
+		
+		// Return if player is chat banned
 		if (activeChar.isChatBanned())
 		{
 			activeChar.sendMessage("You are currently banned from chat");
 			return;
 		}
 		
-		//return if player is in jail
+		// return if player is in jail
 		if (Config.JAIL_DISABLE_CHAT && activeChar.isInJail())
 		{
 			activeChar.sendMessage("You are currently in jail and cannot chat.");
@@ -63,16 +64,16 @@ public class ChatTell implements IChatHandler
 				activeChar.sendMessage("Player is in jail.");
 				return;
 			}
-
+			
 			if (receiver.isAway())
 			{
 				receiver.sendPacket(new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text));
-				activeChar.sendPacket(new CreatureSay(activeChar.getObjectId(),  type, "->" + receiver.getName(), text));
+				activeChar.sendPacket(new CreatureSay(activeChar.getObjectId(), type, "->" + receiver.getName(), text));
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				sm.addString(target + " is Away try again later");
 				activeChar.sendPacket(sm);
 			}
-
+			
 			if (receiver.isChatBanned())
 			{
 				activeChar.sendMessage("Player is chat banned.");

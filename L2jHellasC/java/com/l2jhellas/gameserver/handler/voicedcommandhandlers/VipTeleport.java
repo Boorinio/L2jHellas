@@ -3,12 +3,10 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,72 +23,74 @@ public class VipTeleport implements IVoicedCommandHandler
 		"areavip",
 	};
 	
+	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		if (command.equalsIgnoreCase("areavip"))
 		{
-			if(activeChar.atEvent)
+			if (activeChar.atEvent)
 			{
-				activeChar.sendMessage("Voce esta em um Evento.");
+				activeChar.sendMessage("You cant teleport right now.");
 				return false;
 			}
-			else if(activeChar.isInDuel())
+			else if (activeChar.isInDuel())
 			{
-				activeChar.sendMessage("Voce esta em Duel.");
+				activeChar.sendMessage("You cant teleport while you are in duel.");
 				return false;
 			}
-			else if(activeChar.isInOlympiadMode())
+			else if (activeChar.isInOlympiadMode())
 			{
- 				activeChar.sendMessage("Voce esta na Olympiad");
+				activeChar.sendMessage("You cant teleport while you are in Olympiad.");
 				return false;
 			}
-			else if(activeChar.isInCombat())
+			else if (activeChar.isInCombat())
 			{
-				activeChar.sendMessage("Voce nao pode teleportar no Modo de Combate");
+				activeChar.sendMessage("You cant teleport while you're fighting.");
 				return false;
 			}
-			else if(activeChar.getParty().isInDimensionalRift())
+			else if (activeChar.getParty().isInDimensionalRift())
 			{
-				activeChar.sendMessage("Voce esta em um Dimensional Rift");
+				activeChar.sendMessage("You cant teleport while you are in Dimensional Rift.");
 				return false;
 			}
 			else if (activeChar.isFestivalParticipant())
 			{
-				activeChar.sendMessage("Voce esta em um festival.");
+				activeChar.sendMessage("You cant teleport while you're in festival.");
 				return false;
 			}
 			else if (activeChar.isInJail())
 			{
-				activeChar.sendMessage("Voce esta na Jail.");
+				activeChar.sendMessage("You are in Jail..");
 				return false;
 			}
 			else if (activeChar.inObserverMode())
 			{
-				activeChar.sendMessage("Voce esta em Observer Mode.");
+				activeChar.sendMessage("You cant teleport while in Observer Mode.");
 				return false;
 			}
 			else if (activeChar.isDead())
 			{
-				activeChar.sendMessage("Voce esta Morto! Nao e possivel teleportar.");
+				activeChar.sendMessage("You are dead! You cant teleport.");
 				return false;
 			}
 			else if (activeChar.isFakeDeath())
 			{
-				activeChar.sendMessage("Voce esta morto? Levante-se!");
+				activeChar.sendMessage("You are dead? get up first!");
 				return false;
 			}
 			else if (activeChar._donator = false)
 			{
-				activeChar.sendMessage("E necessario ser um Doador para Teleportar.");
+				activeChar.sendMessage("You must be donator to use this service.");
 				return false;
 			}
-
+			
 			activeChar.teleToLocation(Config.VIP_X, Config.VIP_Y, Config.VIP_Z);
-			activeChar.sendMessage("Voce foi teleportado para a Area Vip!");
+			activeChar.sendMessage("You have been teleported in Vip Area!");
 		}
 		return true;
 	}
 	
+	@Override
 	public String[] getVoicedCommandList()
 	{
 		return _voicedCommands;

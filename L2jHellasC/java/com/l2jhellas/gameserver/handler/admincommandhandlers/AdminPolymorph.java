@@ -3,12 +3,10 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,18 +24,21 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-
 /**
  * This class handles following admin commands: polymorph
- *
+ * 
  * @version $Revision: 1.2.2.1.2.4 $ $Date: 2007/07/31 10:05:56 $
  */
 public class AdminPolymorph implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = { "admin_polymorph", "admin_unpolymorph", "admin_polymorph_menu", "admin_unpolymorph_menu" };
+	private static final String[] ADMIN_COMMANDS =
+	{
+	"admin_polymorph", "admin_unpolymorph", "admin_polymorph_menu", "admin_unpolymorph_menu"
+	};
 
 	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (!Config.ALT_PRIVILEGES_ADMIN)
@@ -60,20 +61,21 @@ public class AdminPolymorph implements IAdminCommandHandler
 				else
 					doPolymorph(activeChar, target, p1, "npc");
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				activeChar.sendMessage("Usage: //polymorph [type] <id>");
 			}
 		}
 		else if (command.equals("admin_unpolymorph"))
 		{
-			doUnpoly(activeChar,activeChar.getTarget());
+			doUnpoly(activeChar, activeChar.getTarget());
 		}
 		if (command.contains("menu"))
 			showMainPage(activeChar);
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
@@ -95,8 +97,8 @@ public class AdminPolymorph implements IAdminCommandHandler
 		if (obj != null)
 		{
 			obj.getPoly().setPolyInfo(type, id);
-			//animation
-			if(obj instanceof L2Character)
+			// animation
+			if (obj instanceof L2Character)
 			{
 				L2Character Char = (L2Character) obj;
 				MagicSkillUse msk = new MagicSkillUse(Char, 1008, 1, 4000, 0);
@@ -104,9 +106,9 @@ public class AdminPolymorph implements IAdminCommandHandler
 				SetupGauge sg = new SetupGauge(0, 4000);
 				Char.sendPacket(sg);
 			}
-			//end of animation
+			// end of animation
 			obj.decayMe();
-			obj.spawnMe(obj.getX(),obj.getY(),obj.getZ());
+			obj.spawnMe(obj.getX(), obj.getY(), obj.getZ());
 			activeChar.sendMessage("Polymorph succeed");
 		}
 		else
@@ -119,11 +121,11 @@ public class AdminPolymorph implements IAdminCommandHandler
 	 */
 	private void doUnpoly(L2PcInstance activeChar, L2Object target)
 	{
-		if (target !=null)
+		if (target != null)
 		{
 			target.getPoly().setPolyInfo(null, "1");
 			target.decayMe();
-			target.spawnMe(target.getX(),target.getY(),target.getZ());
+			target.spawnMe(target.getX(), target.getY(), target.getZ());
 			activeChar.sendMessage("Unpolymorph succeed");
 		}
 		else

@@ -28,7 +28,7 @@ public class PcColorTable
 	/** The one and only instance of this class */
     public static PcColorTable _instance = null;
 	/** List of names and color values container */
-	private FastMap<String, PcColorContainer> _pcColors = new FastMap<String, PcColorContainer>();
+	private static FastMap<String, PcColorContainer> _pcColors = new FastMap<String, PcColorContainer>();
 
     PcColorTable()
     {
@@ -97,7 +97,7 @@ public class PcColorTable
 	 * Sets the name color of the L2PcInstance if it name is on the list
 	 * @param activeChar
 	 */
-    public synchronized void process(L2PcInstance activeChar)
+	public synchronized static void process(L2PcInstance activeChar)
     {
         PcColorContainer colorContainer = _pcColors.get(activeChar.getName());
 
@@ -163,7 +163,7 @@ public class PcColorTable
 	 * @param charName
 	 * @return boolean
 	 */
-    public synchronized boolean delete(String charName)
+	public synchronized static boolean delete(String charName)
     {
         PcColorContainer colorContainer = _pcColors.get(charName);
         

@@ -16,8 +16,7 @@ package com.l2jhellas.gameserver;
 
 import java.util.logging.Logger;
 
-
-@SuppressWarnings("unused")
+import com.l2jhellas.Config;
 
 public class L2JHellasInfo 
 {
@@ -27,21 +26,7 @@ public class L2JHellasInfo
 	private static final Logger _log = Logger.getLogger(GameServer.class.getName());
 	public static final void showInfo()
 	{
-		_log.info("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-		_log.info("                             Interlude Project");
-		_log.info("                                    Developer");
-		_log.info("                                    Boorinio");
-		_log.info("                                                                                  ");
-		_log.info("            II    II  IIIIIII  II       II          I      IIIIIII      ");
-		_log.info("            II    II  II       II       II         I I     II           ");
-		_log.info("            II    II  II       II       II        II  II   II          ");
-		_log.info("            IIIIIIII  IIIIII   II       II        II  II   IIIIIII   ");
-		_log.info("            II    II  II       II       II       IIIIIIII       II   ");
-		_log.info("            II    II  II       II       II       II    II       II   ");
-		_log.info("            II    II  IIIIIII  IIIIIII  IIIIIII  II    II  IIIIIII    ");
+		_log.info("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -                              Interlude Project                                                                      Owner                                                                           Boorinio                                                ======================================================                          ====  ====  ============  ===  ============      =====                          ====  ====  ============  ===  ===========  ====  ====                          ====  ====  ============  ===  ===========  ====  ====                          ====  ====  ====   =====  ===  ====   =====  =========                          ====        ===  =  ====  ===  ===  =  ======  =======                          ====  ====  ===     ====  ===  ======  ========  =====                          ====  ====  ===  =======  ===  ====    ===  ====  ====                          ====  ====  ===  =  ====  ===  ===  =  ===  ====  ====                          ====  ====  ====   =====  ===  ====    ====      =====                          ======================================================                                        Contact: tzou_08@yahoo.gr                                                      Forum: http://l2jhellas.tk/                            - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -             Server Version: " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE);
 		_log.info("");
-		_log.info("                       Contact: tzou_08@yahoo.gr");
-		_log.info("                         ");
-		_log.info("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 	}
 }

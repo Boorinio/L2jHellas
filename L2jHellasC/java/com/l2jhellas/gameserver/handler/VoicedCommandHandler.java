@@ -24,7 +24,7 @@ import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Away;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Banking;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Cl;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.OnlinePlayers;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Res;
+import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Premium;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VipTeleport;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VoiceInfo;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Wedding;
@@ -42,11 +42,11 @@ import com.l2jhellas.gameserver.handler.voicedcommandhandlers.version;
 public class VoicedCommandHandler
 {
 	private static Logger _log = Logger.getLogger(ItemHandler.class.getName());
-
+	
 	private static VoicedCommandHandler _instance;
-
+	
 	private final Map<String, IVoicedCommandHandler> _datatable;
-
+	
 	public static VoicedCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -55,16 +55,13 @@ public class VoicedCommandHandler
 		}
 		return _instance;
 	}
-
+	
 	private VoicedCommandHandler()
 	{
 		_datatable = new FastMap<String, IVoicedCommandHandler>();
 		registerVoicedCommandHandler(new stats());
 		if (Config.MOD_ALLOW_WEDDING)
 			registerVoicedCommandHandler(new Wedding());
-		
-		if (Config.ALLOW_RES_COMMAND)
-			registerVoicedCommandHandler(new Res());
 		if (Config.ALLOW_AWAY_STATUS)
 			registerVoicedCommandHandler(new Away());
 		if (Config.ALLOW_TRADEOFF_COMMAND)
@@ -87,7 +84,7 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new Banking());
 		if (ExternalConfig.RANK_PVP_INFO_COMMAND_ENABLED)
 			registerVoicedCommandHandler(new RankPvpSystemCmd());
-		
+		registerVoicedCommandHandler(new Premium());
 		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers.");
 	}
 	
@@ -101,7 +98,7 @@ public class VoicedCommandHandler
 			_datatable.put(ids[i], handler);
 		}
 	}
-
+	
 	public IVoicedCommandHandler getVoicedCommandHandler(String voicedCommand)
 	{
 		String command = voicedCommand;

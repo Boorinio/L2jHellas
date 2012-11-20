@@ -65,7 +65,7 @@
 			<fileset dir="${build.classes}"/>
 				<manifest>
 					<attribute name="Main-Class" value="com.l2jhellas.Server"/>
-					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.0.7-bin.jar javolution.jar mmocore.jar"/>
+					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.1.22-bin.jar javolution.jar mmocore.jar"/>
 			</manifest>
 		</jar>
 		<copy todir="${build.dist.login.lib}">
@@ -104,7 +104,7 @@
 		<copy todir="${build.dist.login.lib}">
 			<fileset dir="${src}/../lib">
 				<include name="c3p0-0.9.1.2.jar"/>
-				<include name="mysql-connector-java-5.0.7-bin.jar"/>
+				<include name="mysql-connector-java-5.1.22-bin.jar"/>
 				<include name="javolution.jar"/>
 				<include name="mmocore.jar"/>
 			</fileset>
@@ -231,7 +231,7 @@
 			<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
 		</tstamp>
 		<exec dir="." executable="svnversion" outputproperty="revision" />
-		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Core Version.ini">
+		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini">
 L2jHellas Project details:
 			${line.separator}
 			version = ${revision}

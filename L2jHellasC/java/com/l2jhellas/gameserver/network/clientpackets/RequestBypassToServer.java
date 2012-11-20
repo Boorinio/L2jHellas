@@ -12,6 +12,9 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +22,7 @@ import Extensions.Balancer.BalancerMain;
 import Extensions.RankSystem.RankPvpSystemPlayerInfo;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.CommunityBoard;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
@@ -26,6 +30,7 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.instance.L2AccountManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -95,6 +100,65 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			else if (_command.startsWith("player_help "))
 			{
 				playerHelp(activeChar, _command.substring(12));
+			}
+			else if (_command.startsWith("submitemail"))
+			{
+				try
+				{
+					String value = _command.substring(11);
+					StringTokenizer s = new StringTokenizer(value, " ");
+					String email1 = null;
+					// String email2 = null;
+					
+					try
+					{
+						email1 = s.nextToken();
+						// email2 = s.nextToken();
+						
+						try
+						{
+							Connection con = null;
+							try
+							{
+								con = L2DatabaseFactory.getInstance().getConnection();
+								
+								PreparedStatement statement = con.prepareStatement("UPDATE characters SET email=? WHERE obj_Id=?");
+								statement.setString(1, email1);
+								statement.setInt(2, activeChar.getObjectId());
+								statement.execute();
+								statement.close();
+								
+							}
+							catch (Exception e)
+							{
+							}
+							finally
+							{
+								try
+								{
+									con.close();
+								}
+								catch (Exception e)
+								{
+								}
+							}
+							activeChar.sendMessage("We successfully added your email " + email1 + " to our database");
+							L2AccountManagerInstance.setHasSubEmail(activeChar);
+						}
+						catch (Exception e)
+						{
+						}
+						
+					}
+					catch (Exception e)
+					{
+						activeChar.sendMessage("Something went wrong.");
+					}
+				}
+				catch (Exception e)
+				{
+					activeChar.sendMessage("Something went wrong.");
+				}
 			}
 			else if (_command.startsWith("npc_"))
 			{

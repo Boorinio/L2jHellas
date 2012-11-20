@@ -52,7 +52,7 @@ public class GameServerRegister
 			System.exit(1);
 		}
 		GameServerTable gameServerTable = GameServerTable.getInstance();
-		System.out.println("Welcome to L2Dot GameServer Registering");
+		System.out.println("Welcome to L2Jhellas GameServer Registering.");
 		System.out.println("Enter The id of the server you want to register");
 		System.out.println("Type 'help' to get a list of ids.");
 		System.out.println("Type 'clean' to unregister all currently registered gameservers on this LoginServer.");

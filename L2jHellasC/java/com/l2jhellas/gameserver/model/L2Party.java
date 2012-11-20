@@ -46,7 +46,8 @@ import com.l2jhellas.util.Rnd;
  * @author nuocnam
  * @version $Revision: 1.6.2.2.2.6 $ $Date: 2005/04/11 19:12:16 $
  */
-public class L2Party {
+public class L2Party
+{
 	private static final double[] BONUS_EXP_SP = {1, 1.30, 1.39, 1.50, 1.54, 1.58, 1.63, 1.67, 1.71};
 
 	//private static Logger _log = Logger.getLogger(L2Party.class.getName());
@@ -593,17 +594,23 @@ public class L2Party {
 	 * @param rewardedMembers The list of L2PcInstance to reward
 	 *
 	 */
-	public void distributeXpAndSp(long xpReward, int spReward, List<L2PlayableInstance> rewardedMembers, int topLvl, boolean isChampion)
+	public void distributeXpAndSp(long xpReward_pr, int spReward_pr, long xpReward, int spReward, List<L2PlayableInstance> rewardedMembers, int topLvl, boolean isChampion)
 	{
 		L2SummonInstance summon = null;
 		List<L2PlayableInstance> validMembers = getValidMembers(rewardedMembers, topLvl);
 
 		float penalty;
 		double sqLevel;
+		int temp_sp;
+		long temp_exp;
 		double preCalculation;
 
 		xpReward *= getExpBonus(validMembers.size());
 		spReward *= getSpBonus(validMembers.size());
+		xpReward_pr *= getExpBonus(validMembers.size());
+		spReward_pr *= getSpBonus(validMembers.size());
+		temp_exp = xpReward;
+		temp_sp = spReward;
 
 		double sqLevelSum = 0;
 		for (L2PlayableInstance character : validMembers)
@@ -615,6 +622,17 @@ public class L2Party {
 			for (L2Character member : rewardedMembers)
 			{
 				if(member.isDead()) continue;
+				
+				if (member.getPremiumService() == 1)
+				{
+					xpReward = xpReward_pr;
+					spReward = spReward_pr;
+				}
+				else
+				{
+					xpReward = temp_exp;
+					spReward = temp_sp;
+				}
 
 				penalty = 0;
 
@@ -643,7 +661,7 @@ public class L2Party {
 					// Add the XP/SP points to the requested party member
 					if (!member.isDead())
 						member.addExpAndSp(Math.round(member.calcStat(Stats.EXPSP_RATE, xpReward * preCalculation, null, null)),
-						                  (int)member.calcStat(Stats.EXPSP_RATE, spReward * preCalculation, null, null));
+ (int) member.calcStat(Stats.EXPSP_RATE, spReward * preCalculation, null, null));
 				}
 				else
 				{

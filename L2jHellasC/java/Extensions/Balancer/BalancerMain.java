@@ -2139,5130 +2139,4136 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus118 = val;
 	}
-	//Doombringer mods
-	public static int accplus131 = 0;
-	public static int evasionplus131 = 0;
-	public static int hpplus131 = 0;
-	public static int cpplus131 = 0;
-	public static int mpplus131 = 0;
-	public static int matkplus131 = 0;
-	public static int matksplus131 = 0;
-	public static int mdefplus131 = 0;
-	public static int patkplus131 = 0;
-	public static int patksplus131 = 0;
-	public static int pdefplus131 = 0;
 	
-	public static void setAccplus131(int val)
+	public static void handleCommands(L2GameClient client, String command)
 	{
-		accplus131 = val;
-	}
-	 	
-	public static void setEvasionplus131(int val)
-	{
-		evasionplus131 = val;
-	}
-
-	public static void setCpplus131(int val)
-	{
-		cpplus131 = val;
-	}
-	
-	public static void setHpplus131(int val)
-	{
-		hpplus131 = val;
-	}
-	
-	public static void setMpplus131(int val)
-	{
-		mpplus131 = val;
-	}
-	
-	public static void setMatkplus131(int val)
-	{
-		matkplus131 = val;
-	}
-
-	public static void setMatksplus131(int val)
-	{
-		matksplus131 = val;
-	}
-
-	public static void setMdefplus131(int val)
-	{
-		mdefplus131 = val;
-	}
-
-	public static void setPatkplus131(int val)
-	{
-		patkplus131 = val;
-	}
-
-	public static void setPatksplus131(int val)
-	{
-		patksplus131 = val;
-	}
-
-	public static void setPdefplus131(int val)
-	{
-		pdefplus131 = val;
-	}
-	//Male Soul Hound mods
-	public static int accplus132 = 0;
-	public static int evasionplus132 = 0;
-	public static int hpplus132 = 0;
-	public static int cpplus132 = 0;
-	public static int mpplus132 = 0;
-	public static int matkplus132 = 0;
-	public static int matksplus132 = 0;
-	public static int mdefplus132 = 0;
-	public static int patkplus132 = 0;
-	public static int patksplus132 = 0;
-	public static int pdefplus132 = 0;
-	
-	public static void setAccplus132(int val)
-	{
-		accplus132 = val;
-	}
-	 	
-	public static void setEvasionplus132(int val)
-	{
-		evasionplus132 = val;
-	}
-
-	public static void setCpplus132(int val)
-	{
-		cpplus132 = val;
-	}
-	
-	public static void setHpplus132(int val)
-	{
-		hpplus132 = val;
-	}
-	
-	public static void setMpplus132(int val)
-	{
-		mpplus132 = val;
-	}
-	
-	public static void setMatkplus132(int val)
-	{
-		matkplus132 = val;
-	}
-
-	public static void setMatksplus132(int val)
-	{
-		matksplus132 = val;
-	}
-
-	public static void setMdefplus132(int val)
-	{
-		mdefplus132 = val;
-	}
-
-	public static void setPatkplus132(int val)
-	{
-		patkplus132 = val;
-	}
-
-	public static void setPatksplus132(int val)
-	{
-		patksplus132 = val;
-	}
-
-	public static void setPdefplus132(int val)
-	{
-		pdefplus132 = val;
-	}
-	//Female Soul Hound mods
-	public static int accplus133 = 0;
-	public static int evasionplus133 = 0;
-	public static int hpplus133 = 0;
-	public static int cpplus133 = 0;
-	public static int mpplus133 = 0;
-	public static int matkplus133 = 0;
-	public static int matksplus133 = 0;
-	public static int mdefplus133 = 0;
-	public static int patkplus133 = 0;
-	public static int patksplus133 = 0;
-	public static int pdefplus133 = 0;
-	
-	public static void setAccplus133(int val)
-	{
-		accplus133 = val;
-	}
-	 	
-	public static void setEvasionplus133(int val)
-	{
-		evasionplus133 = val;
-	}
-
-	public static void setCpplus133(int val)
-	{
-		cpplus133 = val;
-	}
-	
-	public static void setHpplus133(int val)
-	{
-		hpplus133 = val;
-	}
-	
-	public static void setMpplus133(int val)
-	{
-		mpplus133 = val;
-	}
-	
-	public static void setMatkplus133(int val)
-	{
-		matkplus133 = val;
-	}
-
-	public static void setMatksplus133(int val)
-	{
-		matksplus133 = val;
-	}
-
-	public static void setMdefplus133(int val)
-	{
-		mdefplus133 = val;
-	}
-
-	public static void setPatkplus133(int val)
-	{
-		patkplus133 = val;
-	}
-
-	public static void setPatksplus133(int val)
-	{
-		patksplus133 = val;
-	}
-
-	public static void setPdefplus133(int val)
-	{
-		pdefplus133 = val;
-	}
-	//Trickster mods
-	public static int accplus134 = 0;
-	public static int evasionplus134 = 0;
-	public static int hpplus134 = 0;
-	public static int cpplus134 = 0;
-	public static int mpplus134 = 0;
-	public static int matkplus134 = 0;
-	public static int matksplus134 = 0;
-	public static int mdefplus134 = 0;
-	public static int patkplus134 = 0;
-	public static int patksplus134 = 0;
-	public static int pdefplus134 = 0;
-	
-	public static void setAccplus134(int val)
-	{
-		accplus134 = val;
-	}
-	 	
-	public static void setEvasionplus134(int val)
-	{
-		evasionplus134 = val;
-	}
-
-	public static void setCpplus134(int val)
-	{
-		cpplus134 = val;
-	}
-	
-	public static void setHpplus134(int val)
-	{
-		hpplus134 = val;
-	}
-	
-	public static void setMpplus134(int val)
-	{
-		mpplus134 = val;
-	}
-	
-	public static void setMatkplus134(int val)
-	{
-		matkplus134 = val;
-	}
-
-	public static void setMatksplus134(int val)
-	{
-		matksplus134 = val;
-	}
-
-	public static void setMdefplus134(int val)
-	{
-		mdefplus134 = val;
-	}
-
-	public static void setPatkplus134(int val)
-	{
-		patkplus134 = val;
-	}
-
-	public static void setPatksplus134(int val)
-	{
-		patksplus134 = val;
-	}
-
-	public static void setPdefplus134(int val)
-	{
-		pdefplus134 = val;
-	}
-	//Judicator mods
-	public static int accplus136 = 0;
-	public static int evasionplus136 = 0;
-	public static int hpplus136 = 0;
-	public static int cpplus136 = 0;
-	public static int mpplus136 = 0;
-	public static int matkplus136 = 0;
-	public static int matksplus136 = 0;
-	public static int mdefplus136 = 0;
-	public static int patkplus136 = 0;
-	public static int patksplus136 = 0;
-	public static int pdefplus136 = 0;
-	
-	public static void setAccplus136(int val)
-	{
-		accplus136 = val;
-	}
-	 	
-	public static void setEvasionplus136(int val)
-	{
-		evasionplus136 = val;
-	}
-
-	public static void setCpplus136(int val)
-	{
-		cpplus136 = val;
-	}
-	
-	public static void setHpplus136(int val)
-	{
-		hpplus136 = val;
-	}
-	
-	public static void setMpplus136(int val)
-	{
-		mpplus136 = val;
-	}
-	
-	public static void setMatkplus136(int val)
-	{
-		matkplus136 = val;
-	}
-
-	public static void setMatksplus136(int val)
-	{
-		matksplus136 = val;
-	}
-
-	public static void setMdefplus136(int val)
-	{
-		mdefplus136 = val;
-	}
-
-	public static void setPatkplus136(int val)
-	{
-		patkplus136 = val;
-	}
-
-	public static void setPatksplus136(int val)
-	{
-		patksplus136 = val;
-	}
-
-	public static void setPdefplus136(int val)
-	{
-		pdefplus136 = val;
-	}
-	
- 	public static void handleCommands(L2GameClient client, String command)
- 	{
- 		final L2PcInstance activeChar = client.getActiveChar();
- 		if (activeChar == null)
- 			return;
-
- 		if (command.equals("addmatk88"))
+		final L2PcInstance activeChar = client.getActiveChar();
+		if (activeChar == null)
+			return;
+		
+		if (command.equals("addmatk88"))
  		{
- 			setMatkplus88(matkplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMatkplus88(matkplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk88"))
+		else if (command.equals("addpatk88"))
  		{
- 			setPatkplus88(patkplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setPatkplus88(patkplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef88"))
+		else if (command.equals("addmdef88"))
  		{
- 			setMdefplus88(mdefplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMdefplus88(mdefplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef88"))
+		else if (command.equals("addpdef88"))
  		{
- 			setPdefplus88(pdefplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setPdefplus88(pdefplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc88"))
+		else if (command.equals("addacc88"))
  		{
- 			setAccplus88(accplus88 + 1);
- 			Balancer.mainHtml(activeChar, 88);
+			setAccplus88(accplus88 + 1);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev88"))
+		else if (command.equals("addev88"))
  		{
- 			setEvasionplus88(evasionplus88 + 1);
- 			Balancer.mainHtml(activeChar, 88);
+			setEvasionplus88(evasionplus88 + 1);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp88"))
+		else if (command.equals("addmatksp88"))
  		{
- 			setMatksplus88(matksplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMatksplus88(matksplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp88"))
+		else if (command.equals("addpatksp88"))
  		{
- 			setPatksplus88(patksplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setPatksplus88(patksplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp88"))
+		else if (command.equals("addcp88"))
  		{
- 			setCpplus88(cpplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setCpplus88(cpplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp88"))
+		else if (command.equals("addhp88"))
  		{
- 			setHpplus88(hpplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setHpplus88(hpplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp88"))
+		else if (command.equals("addmp88"))
  		{
- 			setMpplus88(mpplus88 + 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMpplus88(mpplus88 + 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk88"))
+		else if (command.equals("remmatk88"))
  		{
- 			setMatkplus88(matkplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMatkplus88(matkplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk88"))
+		else if (command.equals("rempatk88"))
  		{
- 			setPatkplus88(patkplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setPatkplus88(patkplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef88"))
+		else if (command.equals("remmdef88"))
  		{
- 			setMdefplus88(mdefplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMdefplus88(mdefplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef88"))
+		else if (command.equals("rempdef88"))
  		{
- 			setPdefplus88(pdefplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setPdefplus88(pdefplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc88"))
+		else if (command.equals("remacc88"))
  		{
- 			setAccplus88(accplus88 - 1);
- 			Balancer.mainHtml(activeChar, 88);
+			setAccplus88(accplus88 - 1);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev88"))
+		else if (command.equals("remev88"))
  		{
- 			setEvasionplus88(evasionplus88 - 1);
- 			Balancer.mainHtml(activeChar, 88);
+			setEvasionplus88(evasionplus88 - 1);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp88"))
+		else if (command.equals("remmatksp88"))
  		{
- 			setMatksplus88(matksplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMatksplus88(matksplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp88"))
+		else if (command.equals("rempatksp88"))
  		{
- 			setPatksplus88(patksplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setPatksplus88(patksplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp88"))
+		else if (command.equals("remcp88"))
  		{
- 			setCpplus88(cpplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setCpplus88(cpplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp88"))
+		else if (command.equals("remhp88"))
  		{
- 			setHpplus88(hpplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setHpplus88(hpplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp88"))
+		else if (command.equals("remmp88"))
  		{
- 			setMpplus88(mpplus88 - 100);
- 			Balancer.mainHtml(activeChar, 88);
+			setMpplus88(mpplus88 - 100);
+			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("addmatk89"))
+		else if (command.equals("addmatk89"))
  		{
- 			setMatkplus89(matkplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMatkplus89(matkplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk89"))
+		else if (command.equals("addpatk89"))
  		{
- 			setPatkplus89(patkplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setPatkplus89(patkplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef89"))
+		else if (command.equals("addmdef89"))
  		{
- 			setMdefplus89(mdefplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMdefplus89(mdefplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef89"))
+		else if (command.equals("addpdef89"))
  		{
- 			setPdefplus89(pdefplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setPdefplus89(pdefplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc89"))
+		else if (command.equals("addacc89"))
  		{
- 			setAccplus89(accplus89 + 1);
- 			Balancer.mainHtml(activeChar, 89);
+			setAccplus89(accplus89 + 1);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev89"))
+		else if (command.equals("addev89"))
  		{
- 			setEvasionplus89(evasionplus89 + 1);
- 			Balancer.mainHtml(activeChar, 89);
+			setEvasionplus89(evasionplus89 + 1);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp89"))
+		else if (command.equals("addmatksp89"))
  		{
- 			setMatksplus89(matksplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMatksplus89(matksplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp89"))
+		else if (command.equals("addpatksp89"))
  		{
- 			setPatksplus89(patksplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setPatksplus89(patksplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp89"))
+		else if (command.equals("addcp89"))
  		{
- 			setCpplus89(cpplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setCpplus89(cpplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp89"))
+		else if (command.equals("addhp89"))
  		{
- 			setHpplus89(hpplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setHpplus89(hpplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp89"))
+		else if (command.equals("addmp89"))
  		{
- 			setMpplus89(mpplus89 + 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMpplus89(mpplus89 + 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk89"))
+		else if (command.equals("remmatk89"))
  		{
- 			setMatkplus89(matkplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMatkplus89(matkplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk89"))
+		else if (command.equals("rempatk89"))
  		{
- 			setPatkplus89(patkplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setPatkplus89(patkplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef89"))
+		else if (command.equals("remmdef89"))
  		{
- 			setMdefplus89(mdefplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMdefplus89(mdefplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef89"))
+		else if (command.equals("rempdef89"))
  		{
- 			setPdefplus89(pdefplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setPdefplus89(pdefplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc89"))
+		else if (command.equals("remacc89"))
  		{
- 			setAccplus89(accplus89 - 1);
- 			Balancer.mainHtml(activeChar, 89);
+			setAccplus89(accplus89 - 1);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev89"))
+		else if (command.equals("remev89"))
  		{
- 			setEvasionplus89(evasionplus89 - 1);
- 			Balancer.mainHtml(activeChar, 89);
+			setEvasionplus89(evasionplus89 - 1);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp89"))
+		else if (command.equals("remmatksp89"))
  		{
- 			setMatksplus89(matksplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMatksplus89(matksplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp89"))
+		else if (command.equals("rempatksp89"))
  		{
- 			setPatksplus89(patksplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setPatksplus89(patksplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp89"))
+		else if (command.equals("remcp89"))
  		{
- 			setCpplus89(cpplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setCpplus89(cpplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp89"))
+		else if (command.equals("remhp89"))
  		{
- 			setHpplus89(hpplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setHpplus89(hpplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp89"))
+		else if (command.equals("remmp89"))
  		{
- 			setMpplus89(mpplus89 - 100);
- 			Balancer.mainHtml(activeChar, 89);
+			setMpplus89(mpplus89 - 100);
+			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk90"))
+		else if (command.equals("addmatk90"))
  		{
- 			setMatkplus90(matkplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setMatkplus90(matkplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk90"))
+		else if (command.equals("addpatk90"))
  		{
- 			setPatkplus90(patkplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setPatkplus90(patkplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef90"))
+		else if (command.equals("addmdef90"))
  		{
- 			setMdefplus90(mdefplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setMdefplus90(mdefplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef90"))
+		else if (command.equals("addpdef90"))
  		{
- 			setPdefplus90(pdefplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setPdefplus90(pdefplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc90"))
+		else if (command.equals("addacc90"))
  		{
- 			setAccplus90(accplus90 + 1);
- 			Balancer.mainHtml(activeChar, 90);
+			setAccplus90(accplus90 + 1);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev90"))
+		else if (command.equals("addev90"))
  		{
- 			setEvasionplus90(evasionplus90 + 1);
- 			Balancer.mainHtml(activeChar, 90);
+			setEvasionplus90(evasionplus90 + 1);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp90"))
+		else if (command.equals("addmatksp90"))
  		{
- 			setMatksplus90(matksplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setMatksplus90(matksplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp90"))
+		else if (command.equals("addpatksp90"))
  		{
- 			setPatksplus90(patksplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setPatksplus90(patksplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp90"))
+		else if (command.equals("addcp90"))
  		{
- 			setCpplus90(cpplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setCpplus90(cpplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp90"))
+		else if (command.equals("addhp90"))
  		{
- 			setHpplus90(hpplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setHpplus90(hpplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp90"))
+		else if (command.equals("addmp90"))
  		{
- 			setMpplus90(mpplus90 + 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setMpplus90(mpplus90 + 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk90"))
+		else if (command.equals("remmatk90"))
  		{
- 			setMatkplus90(matkplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setMatkplus90(matkplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk90"))
+		else if (command.equals("rempatk90"))
  		{
- 			setPatkplus90(patkplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setPatkplus90(patkplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef90"))
+		else if (command.equals("remmdef90"))
  		{
- 			setMdefplus90(mdefplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setMdefplus90(mdefplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef90"))
+		else if (command.equals("rempdef90"))
  		{
- 			setPdefplus90(pdefplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setPdefplus90(pdefplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc90"))
+		else if (command.equals("remacc90"))
  		{
- 			setAccplus90(accplus90 - 1);
- 			Balancer.mainHtml(activeChar, 90);
+			setAccplus90(accplus90 - 1);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev90"))
+		else if (command.equals("remev90"))
  		{
- 			setEvasionplus90(evasionplus90 - 1);
- 			Balancer.mainHtml(activeChar, 90);
+			setEvasionplus90(evasionplus90 - 1);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp90"))
+		else if (command.equals("remmatksp90"))
  		{
- 			setMatksplus90(matksplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setMatksplus90(matksplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp90"))
+		else if (command.equals("rempatksp90"))
  		{
- 			setPatksplus90(patksplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setPatksplus90(patksplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp90"))
+		else if (command.equals("remcp90"))
  		{
- 			setCpplus90(cpplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setCpplus90(cpplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp90"))
+		else if (command.equals("remhp90"))
  		{
- 			setHpplus90(hpplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
+			setHpplus90(hpplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp90"))
+		else if (command.equals("remmp90"))
  		{
- 			setMpplus90(mpplus90 - 100);
- 			Balancer.mainHtml(activeChar, 90);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk91"))
- 		{
- 			setMatkplus91(matkplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk91"))
- 		{
- 			setPatkplus91(patkplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef91"))
- 		{
- 			setMdefplus91(mdefplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef91"))
- 		{
- 			setPdefplus91(pdefplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc91"))
- 		{
- 			setAccplus91(accplus91 + 1);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev91"))
- 		{
- 			setEvasionplus91(evasionplus91 + 1);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp91"))
- 		{
- 			setMatksplus91(matksplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp91"))
- 		{
- 			setPatksplus91(patksplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp91"))
- 		{
- 			setCpplus91(cpplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp91"))
- 		{
- 			setHpplus91(hpplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp91"))
- 		{
- 			setMpplus91(mpplus91 + 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk91"))
- 		{
- 			setMatkplus91(matkplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk91"))
- 		{
- 			setPatkplus91(patkplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef91"))
- 		{
- 			setMdefplus91(mdefplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef91"))
- 		{
- 			setPdefplus91(pdefplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc91"))
- 		{
- 			setAccplus91(accplus91 - 1);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev91"))
- 		{
- 			setEvasionplus91(evasionplus91 - 1);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp91"))
- 		{
- 			setMatksplus91(matksplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp91"))
- 		{
- 			setPatksplus91(patksplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp91"))
- 		{
- 			setCpplus91(cpplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp91"))
- 		{
- 			setHpplus91(hpplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp91"))
- 		{
- 			setMpplus91(mpplus91 - 100);
- 			Balancer.mainHtml(activeChar, 91);
+			setMpplus90(mpplus90 - 100);
+			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk92"))
+		else if (command.equals("addmatk91"))
  		{
- 			setMatkplus92(matkplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setMatkplus91(matkplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk92"))
+		else if (command.equals("addpatk91"))
  		{
- 			setPatkplus92(patkplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setPatkplus91(patkplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef92"))
+		else if (command.equals("addmdef91"))
  		{
- 			setMdefplus92(mdefplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setMdefplus91(mdefplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef92"))
+		else if (command.equals("addpdef91"))
  		{
- 			setPdefplus92(pdefplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setPdefplus91(pdefplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc92"))
+		else if (command.equals("addacc91"))
  		{
- 			setAccplus92(accplus92 + 1);
- 			Balancer.mainHtml(activeChar, 92);
+			setAccplus91(accplus91 + 1);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev92"))
+		else if (command.equals("addev91"))
  		{
- 			setEvasionplus92(evasionplus92 + 1);
- 			Balancer.mainHtml(activeChar, 92);
+			setEvasionplus91(evasionplus91 + 1);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp92"))
+		else if (command.equals("addmatksp91"))
  		{
- 			setMatksplus92(matksplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setMatksplus91(matksplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp92"))
+		else if (command.equals("addpatksp91"))
  		{
- 			setPatksplus92(patksplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setPatksplus91(patksplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp92"))
+		else if (command.equals("addcp91"))
  		{
- 			setCpplus92(cpplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setCpplus91(cpplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp92"))
+		else if (command.equals("addhp91"))
  		{
- 			setHpplus92(hpplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setHpplus91(hpplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp92"))
+		else if (command.equals("addmp91"))
  		{
- 			setMpplus92(mpplus92 + 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setMpplus91(mpplus91 + 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk92"))
+		else if (command.equals("remmatk91"))
  		{
- 			setMatkplus92(matkplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setMatkplus91(matkplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk92"))
+		else if (command.equals("rempatk91"))
  		{
- 			setPatkplus92(patkplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setPatkplus91(patkplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef92"))
+		else if (command.equals("remmdef91"))
  		{
- 			setMdefplus92(mdefplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setMdefplus91(mdefplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef92"))
+		else if (command.equals("rempdef91"))
  		{
- 			setPdefplus92(pdefplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setPdefplus91(pdefplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc92"))
+		else if (command.equals("remacc91"))
  		{
- 			setAccplus92(accplus92 - 1);
- 			Balancer.mainHtml(activeChar, 92);
+			setAccplus91(accplus91 - 1);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev92"))
+		else if (command.equals("remev91"))
  		{
- 			setEvasionplus92(evasionplus92 - 1);
- 			Balancer.mainHtml(activeChar, 92);
+			setEvasionplus91(evasionplus91 - 1);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp92"))
+		else if (command.equals("remmatksp91"))
  		{
- 			setMatksplus92(matksplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setMatksplus91(matksplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp92"))
+		else if (command.equals("rempatksp91"))
  		{
- 			setPatksplus92(patksplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setPatksplus91(patksplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp92"))
+		else if (command.equals("remcp91"))
  		{
- 			setCpplus92(cpplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setCpplus91(cpplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp92"))
+		else if (command.equals("remhp91"))
  		{
- 			setHpplus92(hpplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
+			setHpplus91(hpplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp92"))
+		else if (command.equals("remmp91"))
  		{
- 			setMpplus92(mpplus92 - 100);
- 			Balancer.mainHtml(activeChar, 92);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk93"))
- 		{
- 			setMatkplus93(matkplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk93"))
- 		{
- 			setPatkplus93(patkplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef93"))
- 		{
- 			setMdefplus93(mdefplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef93"))
- 		{
- 			setPdefplus93(pdefplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc93"))
- 		{
- 			setAccplus93(accplus93 + 1);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev93"))
- 		{
- 			setEvasionplus93(evasionplus93 + 1);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp93"))
- 		{
- 			setMatksplus93(matksplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp93"))
- 		{
- 			setPatksplus93(patksplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp93"))
- 		{
- 			setCpplus93(cpplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp93"))
- 		{
- 			setHpplus93(hpplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp93"))
- 		{
- 			setMpplus93(mpplus93 + 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk93"))
- 		{
- 			setMatkplus93(matkplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk93"))
- 		{
- 			setPatkplus93(patkplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef93"))
- 		{
- 			setMdefplus93(mdefplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef93"))
- 		{
- 			setPdefplus93(pdefplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc93"))
- 		{
- 			setAccplus93(accplus93 - 1);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev93"))
- 		{
- 			setEvasionplus93(evasionplus93 - 1);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp93"))
- 		{
- 			setMatksplus93(matksplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp93"))
- 		{
- 			setPatksplus93(patksplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp93"))
- 		{
- 			setCpplus93(cpplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp93"))
- 		{
- 			setHpplus93(hpplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp93"))
- 		{
- 			setMpplus93(mpplus93 - 100);
- 			Balancer.mainHtml(activeChar, 93);
+			setMpplus91(mpplus91 - 100);
+			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk94"))
+		else if (command.equals("addmatk92"))
  		{
- 			setMatkplus94(matkplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setMatkplus92(matkplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk94"))
+		else if (command.equals("addpatk92"))
  		{
- 			setPatkplus94(patkplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setPatkplus92(patkplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef94"))
+		else if (command.equals("addmdef92"))
  		{
- 			setMdefplus94(mdefplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setMdefplus92(mdefplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef94"))
+		else if (command.equals("addpdef92"))
  		{
- 			setPdefplus94(pdefplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setPdefplus92(pdefplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc94"))
+		else if (command.equals("addacc92"))
  		{
- 			setAccplus94(accplus94 + 1);
- 			Balancer.mainHtml(activeChar, 94);
+			setAccplus92(accplus92 + 1);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev94"))
+		else if (command.equals("addev92"))
  		{
- 			setEvasionplus94(evasionplus94 + 1);
- 			Balancer.mainHtml(activeChar, 94);
+			setEvasionplus92(evasionplus92 + 1);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp94"))
+		else if (command.equals("addmatksp92"))
  		{
- 			setMatksplus94(matksplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setMatksplus92(matksplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp94"))
+		else if (command.equals("addpatksp92"))
  		{
- 			setPatksplus94(patksplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setPatksplus92(patksplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp94"))
+		else if (command.equals("addcp92"))
  		{
- 			setCpplus94(cpplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setCpplus92(cpplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp94"))
+		else if (command.equals("addhp92"))
  		{
- 			setHpplus94(hpplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setHpplus92(hpplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp94"))
+		else if (command.equals("addmp92"))
  		{
- 			setMpplus94(mpplus94 + 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setMpplus92(mpplus92 + 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk94"))
+		else if (command.equals("remmatk92"))
  		{
- 			setMatkplus94(matkplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setMatkplus92(matkplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk94"))
+		else if (command.equals("rempatk92"))
  		{
- 			setPatkplus94(patkplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setPatkplus92(patkplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef94"))
+		else if (command.equals("remmdef92"))
  		{
- 			setMdefplus94(mdefplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setMdefplus92(mdefplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef94"))
+		else if (command.equals("rempdef92"))
  		{
- 			setPdefplus94(pdefplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setPdefplus92(pdefplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc94"))
+		else if (command.equals("remacc92"))
  		{
- 			setAccplus94(accplus94 - 1);
- 			Balancer.mainHtml(activeChar, 94);
+			setAccplus92(accplus92 - 1);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev94"))
+		else if (command.equals("remev92"))
  		{
- 			setEvasionplus94(evasionplus94 - 1);
- 			Balancer.mainHtml(activeChar, 94);
+			setEvasionplus92(evasionplus92 - 1);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp94"))
+		else if (command.equals("remmatksp92"))
  		{
- 			setMatksplus94(matksplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setMatksplus92(matksplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp94"))
+		else if (command.equals("rempatksp92"))
  		{
- 			setPatksplus94(patksplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setPatksplus92(patksplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp94"))
+		else if (command.equals("remcp92"))
  		{
- 			setCpplus94(cpplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setCpplus92(cpplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp94"))
+		else if (command.equals("remhp92"))
  		{
- 			setHpplus94(hpplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
+			setHpplus92(hpplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp94"))
+		else if (command.equals("remmp92"))
  		{
- 			setMpplus94(mpplus94 - 100);
- 			Balancer.mainHtml(activeChar, 94);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk95"))
- 		{
- 			setMatkplus95(matkplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk95"))
- 		{
- 			setPatkplus95(patkplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef95"))
- 		{
- 			setMdefplus95(mdefplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef95"))
- 		{
- 			setPdefplus95(pdefplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc95"))
- 		{
- 			setAccplus95(accplus95 + 1);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev95"))
- 		{
- 			setEvasionplus95(evasionplus95 + 1);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp95"))
- 		{
- 			setMatksplus95(matksplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp95"))
- 		{
- 			setPatksplus95(patksplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp95"))
- 		{
- 			setCpplus95(cpplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp95"))
- 		{
- 			setHpplus95(hpplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp95"))
- 		{
- 			setMpplus95(mpplus95 + 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk95"))
- 		{
- 			setMatkplus95(matkplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk95"))
- 		{
- 			setPatkplus95(patkplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef95"))
- 		{
- 			setMdefplus95(mdefplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef95"))
- 		{
- 			setPdefplus95(pdefplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc95"))
- 		{
- 			setAccplus95(accplus95 - 1);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev95"))
- 		{
- 			setEvasionplus95(evasionplus95 - 1);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp95"))
- 		{
- 			setMatksplus95(matksplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp95"))
- 		{
- 			setPatksplus95(patksplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp95"))
- 		{
- 			setCpplus95(cpplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp95"))
- 		{
- 			setHpplus95(hpplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp95"))
- 		{
- 			setMpplus95(mpplus95 - 100);
- 			Balancer.mainHtml(activeChar, 95);
+			setMpplus92(mpplus92 - 100);
+			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk96"))
+		else if (command.equals("addmatk93"))
  		{
- 			setMatkplus96(matkplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setMatkplus93(matkplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk96"))
+		else if (command.equals("addpatk93"))
  		{
- 			setPatkplus96(patkplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setPatkplus93(patkplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef96"))
+		else if (command.equals("addmdef93"))
  		{
- 			setMdefplus96(mdefplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setMdefplus93(mdefplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef96"))
+		else if (command.equals("addpdef93"))
  		{
- 			setPdefplus96(pdefplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setPdefplus93(pdefplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc96"))
+		else if (command.equals("addacc93"))
  		{
- 			setAccplus96(accplus96 + 1);
- 			Balancer.mainHtml(activeChar, 96);
+			setAccplus93(accplus93 + 1);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev96"))
+		else if (command.equals("addev93"))
  		{
- 			setEvasionplus96(evasionplus96 + 1);
- 			Balancer.mainHtml(activeChar, 96);
+			setEvasionplus93(evasionplus93 + 1);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp96"))
+		else if (command.equals("addmatksp93"))
  		{
- 			setMatksplus96(matksplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setMatksplus93(matksplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp96"))
+		else if (command.equals("addpatksp93"))
  		{
- 			setPatksplus96(patksplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setPatksplus93(patksplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp96"))
+		else if (command.equals("addcp93"))
  		{
- 			setCpplus96(cpplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setCpplus93(cpplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp96"))
+		else if (command.equals("addhp93"))
  		{
- 			setHpplus96(hpplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setHpplus93(hpplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp96"))
+		else if (command.equals("addmp93"))
  		{
- 			setMpplus96(mpplus96 + 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setMpplus93(mpplus93 + 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk96"))
+		else if (command.equals("remmatk93"))
  		{
- 			setMatkplus96(matkplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setMatkplus93(matkplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk96"))
+		else if (command.equals("rempatk93"))
  		{
- 			setPatkplus96(patkplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setPatkplus93(patkplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef96"))
+		else if (command.equals("remmdef93"))
  		{
- 			setMdefplus96(mdefplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setMdefplus93(mdefplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef96"))
+		else if (command.equals("rempdef93"))
  		{
- 			setPdefplus96(pdefplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setPdefplus93(pdefplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc96"))
+		else if (command.equals("remacc93"))
  		{
- 			setAccplus96(accplus96 - 1);
- 			Balancer.mainHtml(activeChar, 96);
+			setAccplus93(accplus93 - 1);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev96"))
+		else if (command.equals("remev93"))
  		{
- 			setEvasionplus96(evasionplus96 - 1);
- 			Balancer.mainHtml(activeChar, 96);
+			setEvasionplus93(evasionplus93 - 1);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp96"))
+		else if (command.equals("remmatksp93"))
  		{
- 			setMatksplus96(matksplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setMatksplus93(matksplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp96"))
+		else if (command.equals("rempatksp93"))
  		{
- 			setPatksplus96(patksplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setPatksplus93(patksplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp96"))
+		else if (command.equals("remcp93"))
  		{
- 			setCpplus96(cpplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setCpplus93(cpplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp96"))
+		else if (command.equals("remhp93"))
  		{
- 			setHpplus96(hpplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
+			setHpplus93(hpplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp96"))
+		else if (command.equals("remmp93"))
  		{
- 			setMpplus96(mpplus96 - 100);
- 			Balancer.mainHtml(activeChar, 96);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk97"))
- 		{
- 			setMatkplus97(matkplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk97"))
- 		{
- 			setPatkplus97(patkplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef97"))
- 		{
- 			setMdefplus97(mdefplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef97"))
- 		{
- 			setPdefplus97(pdefplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc97"))
- 		{
- 			setAccplus97(accplus97 + 1);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev97"))
- 		{
- 			setEvasionplus97(evasionplus97 + 1);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp97"))
- 		{
- 			setMatksplus97(matksplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp97"))
- 		{
- 			setPatksplus97(patksplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp97"))
- 		{
- 			setCpplus97(cpplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp97"))
- 		{
- 			setHpplus97(hpplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp97"))
- 		{
- 			setMpplus97(mpplus97 + 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk97"))
- 		{
- 			setMatkplus97(matkplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk97"))
- 		{
- 			setPatkplus97(patkplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef97"))
- 		{
- 			setMdefplus97(mdefplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef97"))
- 		{
- 			setPdefplus97(pdefplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc97"))
- 		{
- 			setAccplus97(accplus97 - 1);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev97"))
- 		{
- 			setEvasionplus97(evasionplus97 - 1);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp97"))
- 		{
- 			setMatksplus97(matksplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp97"))
- 		{
- 			setPatksplus97(patksplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp97"))
- 		{
- 			setCpplus97(cpplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp97"))
- 		{
- 			setHpplus97(hpplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp97"))
- 		{
- 			setMpplus97(mpplus97 - 100);
- 			Balancer.mainHtml(activeChar, 97);
+			setMpplus93(mpplus93 - 100);
+			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk98"))
+		else if (command.equals("addmatk94"))
  		{
- 			setMatkplus98(matkplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setMatkplus94(matkplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk98"))
+		else if (command.equals("addpatk94"))
  		{
- 			setPatkplus98(patkplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setPatkplus94(patkplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef98"))
+		else if (command.equals("addmdef94"))
  		{
- 			setMdefplus98(mdefplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setMdefplus94(mdefplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef98"))
+		else if (command.equals("addpdef94"))
  		{
- 			setPdefplus98(pdefplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setPdefplus94(pdefplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc98"))
+		else if (command.equals("addacc94"))
  		{
- 			setAccplus98(accplus98 + 1);
- 			Balancer.mainHtml(activeChar, 98);
+			setAccplus94(accplus94 + 1);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev98"))
+		else if (command.equals("addev94"))
  		{
- 			setEvasionplus98(evasionplus98 + 1);
- 			Balancer.mainHtml(activeChar, 98);
+			setEvasionplus94(evasionplus94 + 1);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp98"))
+		else if (command.equals("addmatksp94"))
  		{
- 			setMatksplus98(matksplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setMatksplus94(matksplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp98"))
+		else if (command.equals("addpatksp94"))
  		{
- 			setPatksplus98(patksplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setPatksplus94(patksplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp98"))
+		else if (command.equals("addcp94"))
  		{
- 			setCpplus98(cpplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setCpplus94(cpplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp98"))
+		else if (command.equals("addhp94"))
  		{
- 			setHpplus98(hpplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setHpplus94(hpplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp98"))
+		else if (command.equals("addmp94"))
  		{
- 			setMpplus98(mpplus98 + 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setMpplus94(mpplus94 + 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk98"))
+		else if (command.equals("remmatk94"))
  		{
- 			setMatkplus98(matkplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setMatkplus94(matkplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk98"))
+		else if (command.equals("rempatk94"))
  		{
- 			setPatkplus98(patkplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setPatkplus94(patkplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef98"))
+		else if (command.equals("remmdef94"))
  		{
- 			setMdefplus98(mdefplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setMdefplus94(mdefplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef98"))
+		else if (command.equals("rempdef94"))
  		{
- 			setPdefplus98(pdefplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setPdefplus94(pdefplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc98"))
+		else if (command.equals("remacc94"))
  		{
- 			setAccplus98(accplus98 - 1);
- 			Balancer.mainHtml(activeChar, 98);
+			setAccplus94(accplus94 - 1);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev98"))
+		else if (command.equals("remev94"))
  		{
- 			setEvasionplus98(evasionplus98 - 1);
- 			Balancer.mainHtml(activeChar, 98);
+			setEvasionplus94(evasionplus94 - 1);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp98"))
+		else if (command.equals("remmatksp94"))
  		{
- 			setMatksplus98(matksplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setMatksplus94(matksplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp98"))
+		else if (command.equals("rempatksp94"))
  		{
- 			setPatksplus98(patksplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setPatksplus94(patksplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp98"))
+		else if (command.equals("remcp94"))
  		{
- 			setCpplus98(cpplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setCpplus94(cpplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp98"))
+		else if (command.equals("remhp94"))
  		{
- 			setHpplus98(hpplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
+			setHpplus94(hpplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp98"))
+		else if (command.equals("remmp94"))
  		{
- 			setMpplus98(mpplus98 - 100);
- 			Balancer.mainHtml(activeChar, 98);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk99"))
- 		{
- 			setMatkplus99(matkplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk99"))
- 		{
- 			setPatkplus99(patkplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef99"))
- 		{
- 			setMdefplus99(mdefplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef99"))
- 		{
- 			setPdefplus99(pdefplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc99"))
- 		{
- 			setAccplus99(accplus99 + 1);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev99"))
- 		{
- 			setEvasionplus99(evasionplus99 + 1);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp99"))
- 		{
- 			setMatksplus99(matksplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp99"))
- 		{
- 			setPatksplus99(patksplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp99"))
- 		{
- 			setCpplus99(cpplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp99"))
- 		{
- 			setHpplus99(hpplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp99"))
- 		{
- 			setMpplus99(mpplus99 + 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk99"))
- 		{
- 			setMatkplus99(matkplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk99"))
- 		{
- 			setPatkplus99(patkplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef99"))
- 		{
- 			setMdefplus99(mdefplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef99"))
- 		{
- 			setPdefplus99(pdefplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc99"))
- 		{
- 			setAccplus99(accplus99 - 1);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev99"))
- 		{
- 			setEvasionplus99(evasionplus99 - 1);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp99"))
- 		{
- 			setMatksplus99(matksplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp99"))
- 		{
- 			setPatksplus99(patksplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp99"))
- 		{
- 			setCpplus99(cpplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp99"))
- 		{
- 			setHpplus99(hpplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp99"))
- 		{
- 			setMpplus99(mpplus99 - 100);
- 			Balancer.mainHtml(activeChar, 99);
+			setMpplus94(mpplus94 - 100);
+			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk100"))
+		else if (command.equals("addmatk95"))
  		{
- 			setMatkplus100(matkplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setMatkplus95(matkplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk100"))
+		else if (command.equals("addpatk95"))
  		{
- 			setPatkplus100(patkplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setPatkplus95(patkplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef100"))
+		else if (command.equals("addmdef95"))
  		{
- 			setMdefplus100(mdefplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setMdefplus95(mdefplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef100"))
+		else if (command.equals("addpdef95"))
  		{
- 			setPdefplus100(pdefplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setPdefplus95(pdefplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc100"))
+		else if (command.equals("addacc95"))
  		{
- 			setAccplus100(accplus100 + 1);
- 			Balancer.mainHtml(activeChar, 100);
+			setAccplus95(accplus95 + 1);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev100"))
+		else if (command.equals("addev95"))
  		{
- 			setEvasionplus100(evasionplus100 + 1);
- 			Balancer.mainHtml(activeChar, 100);
+			setEvasionplus95(evasionplus95 + 1);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp100"))
+		else if (command.equals("addmatksp95"))
  		{
- 			setMatksplus100(matksplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setMatksplus95(matksplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp100"))
+		else if (command.equals("addpatksp95"))
  		{
- 			setPatksplus100(patksplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setPatksplus95(patksplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp100"))
+		else if (command.equals("addcp95"))
  		{
- 			setCpplus100(cpplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setCpplus95(cpplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp100"))
+		else if (command.equals("addhp95"))
  		{
- 			setHpplus100(hpplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setHpplus95(hpplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp100"))
+		else if (command.equals("addmp95"))
  		{
- 			setMpplus100(mpplus100 + 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setMpplus95(mpplus95 + 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk100"))
+		else if (command.equals("remmatk95"))
  		{
- 			setMatkplus100(matkplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setMatkplus95(matkplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk100"))
+		else if (command.equals("rempatk95"))
  		{
- 			setPatkplus100(patkplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setPatkplus95(patkplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef100"))
+		else if (command.equals("remmdef95"))
  		{
- 			setMdefplus100(mdefplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setMdefplus95(mdefplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef100"))
+		else if (command.equals("rempdef95"))
  		{
- 			setPdefplus100(pdefplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setPdefplus95(pdefplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc100"))
+		else if (command.equals("remacc95"))
  		{
- 			setAccplus100(accplus100 - 1);
- 			Balancer.mainHtml(activeChar, 100);
+			setAccplus95(accplus95 - 1);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev100"))
+		else if (command.equals("remev95"))
  		{
- 			setEvasionplus100(evasionplus100 - 1);
- 			Balancer.mainHtml(activeChar, 100);
+			setEvasionplus95(evasionplus95 - 1);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp100"))
+		else if (command.equals("remmatksp95"))
  		{
- 			setMatksplus100(matksplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setMatksplus95(matksplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp100"))
+		else if (command.equals("rempatksp95"))
  		{
- 			setPatksplus100(patksplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setPatksplus95(patksplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp100"))
+		else if (command.equals("remcp95"))
  		{
- 			setCpplus100(cpplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setCpplus95(cpplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp100"))
+		else if (command.equals("remhp95"))
  		{
- 			setHpplus100(hpplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
+			setHpplus95(hpplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp100"))
+		else if (command.equals("remmp95"))
  		{
- 			setMpplus100(mpplus100 - 100);
- 			Balancer.mainHtml(activeChar, 100);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk101"))
- 		{
- 			setMatkplus101(matkplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk101"))
- 		{
- 			setPatkplus101(patkplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef101"))
- 		{
- 			setMdefplus101(mdefplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef101"))
- 		{
- 			setPdefplus101(pdefplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc101"))
- 		{
- 			setAccplus101(accplus101 + 1);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev101"))
- 		{
- 			setEvasionplus101(evasionplus101 + 1);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp101"))
- 		{
- 			setMatksplus101(matksplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp101"))
- 		{
- 			setPatksplus101(patksplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp101"))
- 		{
- 			setCpplus101(cpplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp101"))
- 		{
- 			setHpplus101(hpplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp101"))
- 		{
- 			setMpplus101(mpplus101 + 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk101"))
- 		{
- 			setMatkplus101(matkplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk101"))
- 		{
- 			setPatkplus101(patkplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef101"))
- 		{
- 			setMdefplus101(mdefplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef101"))
- 		{
- 			setPdefplus101(pdefplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc101"))
- 		{
- 			setAccplus101(accplus101 - 1);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev101"))
- 		{
- 			setEvasionplus101(evasionplus101 - 1);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp101"))
- 		{
- 			setMatksplus101(matksplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp101"))
- 		{
- 			setPatksplus101(patksplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp101"))
- 		{
- 			setCpplus101(cpplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp101"))
- 		{
- 			setHpplus101(hpplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp101"))
- 		{
- 			setMpplus101(mpplus101 - 100);
- 			Balancer.mainHtml(activeChar, 101);
+			setMpplus95(mpplus95 - 100);
+			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk102"))
+		else if (command.equals("addmatk96"))
  		{
- 			setMatkplus102(matkplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setMatkplus96(matkplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk102"))
+		else if (command.equals("addpatk96"))
  		{
- 			setPatkplus102(patkplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setPatkplus96(patkplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef102"))
+		else if (command.equals("addmdef96"))
  		{
- 			setMdefplus102(mdefplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setMdefplus96(mdefplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef102"))
+		else if (command.equals("addpdef96"))
  		{
- 			setPdefplus102(pdefplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setPdefplus96(pdefplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc102"))
+		else if (command.equals("addacc96"))
  		{
- 			setAccplus102(accplus102 + 1);
- 			Balancer.mainHtml(activeChar, 102);
+			setAccplus96(accplus96 + 1);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev102"))
+		else if (command.equals("addev96"))
  		{
- 			setEvasionplus102(evasionplus102 + 1);
- 			Balancer.mainHtml(activeChar, 102);
+			setEvasionplus96(evasionplus96 + 1);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp102"))
+		else if (command.equals("addmatksp96"))
  		{
- 			setMatksplus102(matksplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setMatksplus96(matksplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp102"))
+		else if (command.equals("addpatksp96"))
  		{
- 			setPatksplus102(patksplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setPatksplus96(patksplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp102"))
+		else if (command.equals("addcp96"))
  		{
- 			setCpplus102(cpplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setCpplus96(cpplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp102"))
+		else if (command.equals("addhp96"))
  		{
- 			setHpplus102(hpplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setHpplus96(hpplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp102"))
+		else if (command.equals("addmp96"))
  		{
- 			setMpplus102(mpplus102 + 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setMpplus96(mpplus96 + 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk102"))
+		else if (command.equals("remmatk96"))
  		{
- 			setMatkplus102(matkplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setMatkplus96(matkplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk102"))
+		else if (command.equals("rempatk96"))
  		{
- 			setPatkplus102(patkplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setPatkplus96(patkplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef102"))
+		else if (command.equals("remmdef96"))
  		{
- 			setMdefplus102(mdefplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setMdefplus96(mdefplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef102"))
+		else if (command.equals("rempdef96"))
  		{
- 			setPdefplus102(pdefplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setPdefplus96(pdefplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc102"))
+		else if (command.equals("remacc96"))
  		{
- 			setAccplus102(accplus102 - 1);
- 			Balancer.mainHtml(activeChar, 102);
+			setAccplus96(accplus96 - 1);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev102"))
+		else if (command.equals("remev96"))
  		{
- 			setEvasionplus102(evasionplus102 - 1);
- 			Balancer.mainHtml(activeChar, 102);
+			setEvasionplus96(evasionplus96 - 1);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp102"))
+		else if (command.equals("remmatksp96"))
  		{
- 			setMatksplus102(matksplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setMatksplus96(matksplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp102"))
+		else if (command.equals("rempatksp96"))
  		{
- 			setPatksplus102(patksplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setPatksplus96(patksplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp102"))
+		else if (command.equals("remcp96"))
  		{
- 			setCpplus102(cpplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setCpplus96(cpplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp102"))
+		else if (command.equals("remhp96"))
  		{
- 			setHpplus102(hpplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
+			setHpplus96(hpplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp102"))
+		else if (command.equals("remmp96"))
  		{
- 			setMpplus102(mpplus102 - 100);
- 			Balancer.mainHtml(activeChar, 102);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk103"))
- 		{
- 			setMatkplus103(matkplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk103"))
- 		{
- 			setPatkplus103(patkplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef103"))
- 		{
- 			setMdefplus103(mdefplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef103"))
- 		{
- 			setPdefplus103(pdefplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc103"))
- 		{
- 			setAccplus103(accplus103 + 1);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev103"))
- 		{
- 			setEvasionplus103(evasionplus103 + 1);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp103"))
- 		{
- 			setMatksplus103(matksplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp103"))
- 		{
- 			setPatksplus103(patksplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp103"))
- 		{
- 			setCpplus103(cpplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp103"))
- 		{
- 			setHpplus103(hpplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp103"))
- 		{
- 			setMpplus103(mpplus103 + 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk103"))
- 		{
- 			setMatkplus103(matkplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk103"))
- 		{
- 			setPatkplus103(patkplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef103"))
- 		{
- 			setMdefplus103(mdefplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef103"))
- 		{
- 			setPdefplus103(pdefplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc103"))
- 		{
- 			setAccplus103(accplus103 - 1);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev103"))
- 		{
- 			setEvasionplus103(evasionplus103 - 1);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp103"))
- 		{
- 			setMatksplus103(matksplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp103"))
- 		{
- 			setPatksplus103(patksplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp103"))
- 		{
- 			setCpplus103(cpplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp103"))
- 		{
- 			setHpplus103(hpplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp103"))
- 		{
- 			setMpplus103(mpplus103 - 100);
- 			Balancer.mainHtml(activeChar, 103);
+			setMpplus96(mpplus96 - 100);
+			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk104"))
+		else if (command.equals("addmatk97"))
  		{
- 			setMatkplus104(matkplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setMatkplus97(matkplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk104"))
+		else if (command.equals("addpatk97"))
  		{
- 			setPatkplus104(patkplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setPatkplus97(patkplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef104"))
+		else if (command.equals("addmdef97"))
  		{
- 			setMdefplus104(mdefplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setMdefplus97(mdefplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef104"))
+		else if (command.equals("addpdef97"))
  		{
- 			setPdefplus104(pdefplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setPdefplus97(pdefplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc104"))
+		else if (command.equals("addacc97"))
  		{
- 			setAccplus104(accplus104 + 1);
- 			Balancer.mainHtml(activeChar, 104);
+			setAccplus97(accplus97 + 1);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev104"))
+		else if (command.equals("addev97"))
  		{
- 			setEvasionplus104(evasionplus104 + 1);
- 			Balancer.mainHtml(activeChar, 104);
+			setEvasionplus97(evasionplus97 + 1);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp104"))
+		else if (command.equals("addmatksp97"))
  		{
- 			setMatksplus104(matksplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setMatksplus97(matksplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp104"))
+		else if (command.equals("addpatksp97"))
  		{
- 			setPatksplus104(patksplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setPatksplus97(patksplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp104"))
+		else if (command.equals("addcp97"))
  		{
- 			setCpplus104(cpplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setCpplus97(cpplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp104"))
+		else if (command.equals("addhp97"))
  		{
- 			setHpplus104(hpplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setHpplus97(hpplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp104"))
+		else if (command.equals("addmp97"))
  		{
- 			setMpplus104(mpplus104 + 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setMpplus97(mpplus97 + 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk104"))
+		else if (command.equals("remmatk97"))
  		{
- 			setMatkplus104(matkplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setMatkplus97(matkplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk104"))
+		else if (command.equals("rempatk97"))
  		{
- 			setPatkplus104(patkplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setPatkplus97(patkplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef104"))
+		else if (command.equals("remmdef97"))
  		{
- 			setMdefplus104(mdefplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setMdefplus97(mdefplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef104"))
+		else if (command.equals("rempdef97"))
  		{
- 			setPdefplus104(pdefplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setPdefplus97(pdefplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc104"))
+		else if (command.equals("remacc97"))
  		{
- 			setAccplus104(accplus104 - 1);
- 			Balancer.mainHtml(activeChar, 104);
+			setAccplus97(accplus97 - 1);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev104"))
+		else if (command.equals("remev97"))
  		{
- 			setEvasionplus104(evasionplus104 - 1);
- 			Balancer.mainHtml(activeChar, 104);
+			setEvasionplus97(evasionplus97 - 1);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp104"))
+		else if (command.equals("remmatksp97"))
  		{
- 			setMatksplus104(matksplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setMatksplus97(matksplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp104"))
+		else if (command.equals("rempatksp97"))
  		{
- 			setPatksplus104(patksplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setPatksplus97(patksplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp104"))
+		else if (command.equals("remcp97"))
  		{
- 			setCpplus104(cpplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setCpplus97(cpplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp104"))
+		else if (command.equals("remhp97"))
  		{
- 			setHpplus104(hpplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
+			setHpplus97(hpplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp104"))
+		else if (command.equals("remmp97"))
  		{
- 			setMpplus104(mpplus104 - 100);
- 			Balancer.mainHtml(activeChar, 104);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk105"))
- 		{
- 			setMatkplus105(matkplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk105"))
- 		{
- 			setPatkplus105(patkplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef105"))
- 		{
- 			setMdefplus105(mdefplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef105"))
- 		{
- 			setPdefplus105(pdefplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc105"))
- 		{
- 			setAccplus105(accplus105 + 1);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev105"))
- 		{
- 			setEvasionplus105(evasionplus105 + 1);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp105"))
- 		{
- 			setMatksplus105(matksplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp105"))
- 		{
- 			setPatksplus105(patksplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp105"))
- 		{
- 			setCpplus105(cpplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp105"))
- 		{
- 			setHpplus105(hpplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp105"))
- 		{
- 			setMpplus105(mpplus105 + 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk105"))
- 		{
- 			setMatkplus105(matkplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk105"))
- 		{
- 			setPatkplus105(patkplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef105"))
- 		{
- 			setMdefplus105(mdefplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef105"))
- 		{
- 			setPdefplus105(pdefplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc105"))
- 		{
- 			setAccplus105(accplus105 - 1);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev105"))
- 		{
- 			setEvasionplus105(evasionplus105 - 1);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp105"))
- 		{
- 			setMatksplus105(matksplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp105"))
- 		{
- 			setPatksplus105(patksplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp105"))
- 		{
- 			setCpplus105(cpplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp105"))
- 		{
- 			setHpplus105(hpplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp105"))
- 		{
- 			setMpplus105(mpplus105 - 100);
- 			Balancer.mainHtml(activeChar, 105);
+			setMpplus97(mpplus97 - 100);
+			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk106"))
+		else if (command.equals("addmatk98"))
  		{
- 			setMatkplus106(matkplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setMatkplus98(matkplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk106"))
+		else if (command.equals("addpatk98"))
  		{
- 			setPatkplus106(patkplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setPatkplus98(patkplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef106"))
+		else if (command.equals("addmdef98"))
  		{
- 			setMdefplus106(mdefplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setMdefplus98(mdefplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef106"))
+		else if (command.equals("addpdef98"))
  		{
- 			setPdefplus106(pdefplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setPdefplus98(pdefplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc106"))
+		else if (command.equals("addacc98"))
  		{
- 			setAccplus106(accplus106 + 1);
- 			Balancer.mainHtml(activeChar, 106);
+			setAccplus98(accplus98 + 1);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev106"))
+		else if (command.equals("addev98"))
  		{
- 			setEvasionplus106(evasionplus106 + 1);
- 			Balancer.mainHtml(activeChar, 106);
+			setEvasionplus98(evasionplus98 + 1);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp106"))
+		else if (command.equals("addmatksp98"))
  		{
- 			setMatksplus106(matksplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setMatksplus98(matksplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp106"))
+		else if (command.equals("addpatksp98"))
  		{
- 			setPatksplus106(patksplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setPatksplus98(patksplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp106"))
+		else if (command.equals("addcp98"))
  		{
- 			setCpplus106(cpplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setCpplus98(cpplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp106"))
+		else if (command.equals("addhp98"))
  		{
- 			setHpplus106(hpplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setHpplus98(hpplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp106"))
+		else if (command.equals("addmp98"))
  		{
- 			setMpplus106(mpplus106 + 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setMpplus98(mpplus98 + 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk106"))
+		else if (command.equals("remmatk98"))
  		{
- 			setMatkplus106(matkplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setMatkplus98(matkplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk106"))
+		else if (command.equals("rempatk98"))
  		{
- 			setPatkplus106(patkplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setPatkplus98(patkplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef106"))
+		else if (command.equals("remmdef98"))
  		{
- 			setMdefplus106(mdefplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setMdefplus98(mdefplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef106"))
+		else if (command.equals("rempdef98"))
  		{
- 			setPdefplus106(pdefplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setPdefplus98(pdefplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc106"))
+		else if (command.equals("remacc98"))
  		{
- 			setAccplus106(accplus106 - 1);
- 			Balancer.mainHtml(activeChar, 106);
+			setAccplus98(accplus98 - 1);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev106"))
+		else if (command.equals("remev98"))
  		{
- 			setEvasionplus106(evasionplus106 - 1);
- 			Balancer.mainHtml(activeChar, 106);
+			setEvasionplus98(evasionplus98 - 1);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp106"))
+		else if (command.equals("remmatksp98"))
  		{
- 			setMatksplus106(matksplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setMatksplus98(matksplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp106"))
+		else if (command.equals("rempatksp98"))
  		{
- 			setPatksplus106(patksplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setPatksplus98(patksplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp106"))
+		else if (command.equals("remcp98"))
  		{
- 			setCpplus106(cpplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setCpplus98(cpplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp106"))
+		else if (command.equals("remhp98"))
  		{
- 			setHpplus106(hpplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
+			setHpplus98(hpplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp106"))
+		else if (command.equals("remmp98"))
  		{
- 			setMpplus106(mpplus106 - 100);
- 			Balancer.mainHtml(activeChar, 106);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk107"))
- 		{
- 			setMatkplus107(matkplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk107"))
- 		{
- 			setPatkplus107(patkplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef107"))
- 		{
- 			setMdefplus107(mdefplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef107"))
- 		{
- 			setPdefplus107(pdefplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc107"))
- 		{
- 			setAccplus107(accplus107 + 1);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev107"))
- 		{
- 			setEvasionplus107(evasionplus107 + 1);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp107"))
- 		{
- 			setMatksplus107(matksplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp107"))
- 		{
- 			setPatksplus107(patksplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp107"))
- 		{
- 			setCpplus107(cpplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp107"))
- 		{
- 			setHpplus107(hpplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp107"))
- 		{
- 			setMpplus107(mpplus107 + 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk107"))
- 		{
- 			setMatkplus107(matkplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk107"))
- 		{
- 			setPatkplus107(patkplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef107"))
- 		{
- 			setMdefplus107(mdefplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef107"))
- 		{
- 			setPdefplus107(pdefplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc107"))
- 		{
- 			setAccplus107(accplus107 - 1);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev107"))
- 		{
- 			setEvasionplus107(evasionplus107 - 1);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp107"))
- 		{
- 			setMatksplus107(matksplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp107"))
- 		{
- 			setPatksplus107(patksplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp107"))
- 		{
- 			setCpplus107(cpplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp107"))
- 		{
- 			setHpplus107(hpplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp107"))
- 		{
- 			setMpplus107(mpplus107 - 100);
- 			Balancer.mainHtml(activeChar, 107);
+			setMpplus98(mpplus98 - 100);
+			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk108"))
+		else if (command.equals("addmatk99"))
  		{
- 			setMatkplus108(matkplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setMatkplus99(matkplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk108"))
+		else if (command.equals("addpatk99"))
  		{
- 			setPatkplus108(patkplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setPatkplus99(patkplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef108"))
+		else if (command.equals("addmdef99"))
  		{
- 			setMdefplus108(mdefplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setMdefplus99(mdefplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef108"))
+		else if (command.equals("addpdef99"))
  		{
- 			setPdefplus108(pdefplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setPdefplus99(pdefplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc108"))
+		else if (command.equals("addacc99"))
  		{
- 			setAccplus108(accplus108 + 1);
- 			Balancer.mainHtml(activeChar, 108);
+			setAccplus99(accplus99 + 1);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev108"))
+		else if (command.equals("addev99"))
  		{
- 			setEvasionplus108(evasionplus108 + 1);
- 			Balancer.mainHtml(activeChar, 108);
+			setEvasionplus99(evasionplus99 + 1);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp108"))
+		else if (command.equals("addmatksp99"))
  		{
- 			setMatksplus108(matksplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setMatksplus99(matksplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp108"))
+		else if (command.equals("addpatksp99"))
  		{
- 			setPatksplus108(patksplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setPatksplus99(patksplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp108"))
+		else if (command.equals("addcp99"))
  		{
- 			setCpplus108(cpplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setCpplus99(cpplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp108"))
+		else if (command.equals("addhp99"))
  		{
- 			setHpplus108(hpplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setHpplus99(hpplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp108"))
+		else if (command.equals("addmp99"))
  		{
- 			setMpplus108(mpplus108 + 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setMpplus99(mpplus99 + 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk108"))
+		else if (command.equals("remmatk99"))
  		{
- 			setMatkplus108(matkplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setMatkplus99(matkplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk108"))
+		else if (command.equals("rempatk99"))
  		{
- 			setPatkplus108(patkplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setPatkplus99(patkplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef108"))
+		else if (command.equals("remmdef99"))
  		{
- 			setMdefplus108(mdefplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setMdefplus99(mdefplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef108"))
+		else if (command.equals("rempdef99"))
  		{
- 			setPdefplus108(pdefplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setPdefplus99(pdefplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc108"))
+		else if (command.equals("remacc99"))
  		{
- 			setAccplus108(accplus108 - 1);
- 			Balancer.mainHtml(activeChar, 108);
+			setAccplus99(accplus99 - 1);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev108"))
+		else if (command.equals("remev99"))
  		{
- 			setEvasionplus108(evasionplus108 - 1);
- 			Balancer.mainHtml(activeChar, 108);
+			setEvasionplus99(evasionplus99 - 1);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp108"))
+		else if (command.equals("remmatksp99"))
  		{
- 			setMatksplus108(matksplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setMatksplus99(matksplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp108"))
+		else if (command.equals("rempatksp99"))
  		{
- 			setPatksplus108(patksplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setPatksplus99(patksplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp108"))
+		else if (command.equals("remcp99"))
  		{
- 			setCpplus108(cpplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setCpplus99(cpplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp108"))
+		else if (command.equals("remhp99"))
  		{
- 			setHpplus108(hpplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
+			setHpplus99(hpplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp108"))
+		else if (command.equals("remmp99"))
  		{
- 			setMpplus108(mpplus108 - 100);
- 			Balancer.mainHtml(activeChar, 108);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk109"))
- 		{
- 			setMatkplus109(matkplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk109"))
- 		{
- 			setPatkplus109(patkplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef109"))
- 		{
- 			setMdefplus109(mdefplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef109"))
- 		{
- 			setPdefplus109(pdefplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc109"))
- 		{
- 			setAccplus109(accplus109 + 1);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev109"))
- 		{
- 			setEvasionplus109(evasionplus109 + 1);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp109"))
- 		{
- 			setMatksplus109(matksplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp109"))
- 		{
- 			setPatksplus109(patksplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp109"))
- 		{
- 			setCpplus109(cpplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp109"))
- 		{
- 			setHpplus109(hpplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp109"))
- 		{
- 			setMpplus109(mpplus109 + 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk109"))
- 		{
- 			setMatkplus109(matkplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk109"))
- 		{
- 			setPatkplus109(patkplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef109"))
- 		{
- 			setMdefplus109(mdefplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef109"))
- 		{
- 			setPdefplus109(pdefplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc109"))
- 		{
- 			setAccplus109(accplus109 - 1);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev109"))
- 		{
- 			setEvasionplus109(evasionplus109 - 1);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp109"))
- 		{
- 			setMatksplus109(matksplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp109"))
- 		{
- 			setPatksplus109(patksplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp109"))
- 		{
- 			setCpplus109(cpplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp109"))
- 		{
- 			setHpplus109(hpplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp109"))
- 		{
- 			setMpplus109(mpplus109 - 100);
- 			Balancer.mainHtml(activeChar, 109);
+			setMpplus99(mpplus99 - 100);
+			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk110"))
+		else if (command.equals("addmatk100"))
  		{
- 			setMatkplus110(matkplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setMatkplus100(matkplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk110"))
+		else if (command.equals("addpatk100"))
  		{
- 			setPatkplus110(patkplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setPatkplus100(patkplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef110"))
+		else if (command.equals("addmdef100"))
  		{
- 			setMdefplus110(mdefplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setMdefplus100(mdefplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef110"))
+		else if (command.equals("addpdef100"))
  		{
- 			setPdefplus110(pdefplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setPdefplus100(pdefplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc110"))
+		else if (command.equals("addacc100"))
  		{
- 			setAccplus110(accplus110 + 1);
- 			Balancer.mainHtml(activeChar, 110);
+			setAccplus100(accplus100 + 1);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev110"))
+		else if (command.equals("addev100"))
  		{
- 			setEvasionplus110(evasionplus110 + 1);
- 			Balancer.mainHtml(activeChar, 110);
+			setEvasionplus100(evasionplus100 + 1);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp110"))
+		else if (command.equals("addmatksp100"))
  		{
- 			setMatksplus110(matksplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setMatksplus100(matksplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp110"))
+		else if (command.equals("addpatksp100"))
  		{
- 			setPatksplus110(patksplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setPatksplus100(patksplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp110"))
+		else if (command.equals("addcp100"))
  		{
- 			setCpplus110(cpplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setCpplus100(cpplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp110"))
+		else if (command.equals("addhp100"))
  		{
- 			setHpplus110(hpplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setHpplus100(hpplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp110"))
+		else if (command.equals("addmp100"))
  		{
- 			setMpplus110(mpplus110 + 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setMpplus100(mpplus100 + 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk110"))
+		else if (command.equals("remmatk100"))
  		{
- 			setMatkplus110(matkplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setMatkplus100(matkplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk110"))
+		else if (command.equals("rempatk100"))
  		{
- 			setPatkplus110(patkplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setPatkplus100(patkplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef110"))
+		else if (command.equals("remmdef100"))
  		{
- 			setMdefplus110(mdefplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setMdefplus100(mdefplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef110"))
+		else if (command.equals("rempdef100"))
  		{
- 			setPdefplus110(pdefplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setPdefplus100(pdefplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc110"))
+		else if (command.equals("remacc100"))
  		{
- 			setAccplus110(accplus110 - 1);
- 			Balancer.mainHtml(activeChar, 110);
+			setAccplus100(accplus100 - 1);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev110"))
+		else if (command.equals("remev100"))
  		{
- 			setEvasionplus110(evasionplus110 - 1);
- 			Balancer.mainHtml(activeChar, 110);
+			setEvasionplus100(evasionplus100 - 1);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp110"))
+		else if (command.equals("remmatksp100"))
  		{
- 			setMatksplus110(matksplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setMatksplus100(matksplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp110"))
+		else if (command.equals("rempatksp100"))
  		{
- 			setPatksplus110(patksplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setPatksplus100(patksplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp110"))
+		else if (command.equals("remcp100"))
  		{
- 			setCpplus110(cpplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setCpplus100(cpplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp110"))
+		else if (command.equals("remhp100"))
  		{
- 			setHpplus110(hpplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
+			setHpplus100(hpplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp110"))
+		else if (command.equals("remmp100"))
  		{
- 			setMpplus110(mpplus110 - 100);
- 			Balancer.mainHtml(activeChar, 110);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk111"))
- 		{
- 			setMatkplus111(matkplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk111"))
- 		{
- 			setPatkplus111(patkplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef111"))
- 		{
- 			setMdefplus111(mdefplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef111"))
- 		{
- 			setPdefplus111(pdefplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc111"))
- 		{
- 			setAccplus111(accplus111 + 1);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev111"))
- 		{
- 			setEvasionplus111(evasionplus111 + 1);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp111"))
- 		{
- 			setMatksplus111(matksplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp111"))
- 		{
- 			setPatksplus111(patksplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp111"))
- 		{
- 			setCpplus111(cpplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp111"))
- 		{
- 			setHpplus111(hpplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp111"))
- 		{
- 			setMpplus111(mpplus111 + 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk111"))
- 		{
- 			setMatkplus111(matkplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk111"))
- 		{
- 			setPatkplus111(patkplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef111"))
- 		{
- 			setMdefplus111(mdefplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef111"))
- 		{
- 			setPdefplus111(pdefplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc111"))
- 		{
- 			setAccplus111(accplus111 - 1);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev111"))
- 		{
- 			setEvasionplus111(evasionplus111 - 1);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp111"))
- 		{
- 			setMatksplus111(matksplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp111"))
- 		{
- 			setPatksplus111(patksplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp111"))
- 		{
- 			setCpplus111(cpplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp111"))
- 		{
- 			setHpplus111(hpplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp111"))
- 		{
- 			setMpplus111(mpplus111 - 100);
- 			Balancer.mainHtml(activeChar, 111);
+			setMpplus100(mpplus100 - 100);
+			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk112"))
+		else if (command.equals("addmatk101"))
  		{
- 			setMatkplus112(matkplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setMatkplus101(matkplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk112"))
+		else if (command.equals("addpatk101"))
  		{
- 			setPatkplus112(patkplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setPatkplus101(patkplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef112"))
+		else if (command.equals("addmdef101"))
  		{
- 			setMdefplus112(mdefplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setMdefplus101(mdefplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef112"))
+		else if (command.equals("addpdef101"))
  		{
- 			setPdefplus112(pdefplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setPdefplus101(pdefplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc112"))
+		else if (command.equals("addacc101"))
  		{
- 			setAccplus112(accplus112 + 1);
- 			Balancer.mainHtml(activeChar, 112);
+			setAccplus101(accplus101 + 1);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev112"))
+		else if (command.equals("addev101"))
  		{
- 			setEvasionplus112(evasionplus112 + 1);
- 			Balancer.mainHtml(activeChar, 112);
+			setEvasionplus101(evasionplus101 + 1);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp112"))
+		else if (command.equals("addmatksp101"))
  		{
- 			setMatksplus112(matksplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setMatksplus101(matksplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp112"))
+		else if (command.equals("addpatksp101"))
  		{
- 			setPatksplus112(patksplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setPatksplus101(patksplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp112"))
+		else if (command.equals("addcp101"))
  		{
- 			setCpplus112(cpplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setCpplus101(cpplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp112"))
+		else if (command.equals("addhp101"))
  		{
- 			setHpplus112(hpplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setHpplus101(hpplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp112"))
+		else if (command.equals("addmp101"))
  		{
- 			setMpplus112(mpplus112 + 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setMpplus101(mpplus101 + 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk112"))
+		else if (command.equals("remmatk101"))
  		{
- 			setMatkplus112(matkplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setMatkplus101(matkplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk112"))
+		else if (command.equals("rempatk101"))
  		{
- 			setPatkplus112(patkplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setPatkplus101(patkplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef112"))
+		else if (command.equals("remmdef101"))
  		{
- 			setMdefplus112(mdefplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setMdefplus101(mdefplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef112"))
+		else if (command.equals("rempdef101"))
  		{
- 			setPdefplus112(pdefplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setPdefplus101(pdefplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc112"))
+		else if (command.equals("remacc101"))
  		{
- 			setAccplus112(accplus112 - 1);
- 			Balancer.mainHtml(activeChar, 112);
+			setAccplus101(accplus101 - 1);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev112"))
+		else if (command.equals("remev101"))
  		{
- 			setEvasionplus112(evasionplus112 - 1);
- 			Balancer.mainHtml(activeChar, 112);
+			setEvasionplus101(evasionplus101 - 1);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp112"))
+		else if (command.equals("remmatksp101"))
  		{
- 			setMatksplus112(matksplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setMatksplus101(matksplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp112"))
+		else if (command.equals("rempatksp101"))
  		{
- 			setPatksplus112(patksplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setPatksplus101(patksplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp112"))
+		else if (command.equals("remcp101"))
  		{
- 			setCpplus112(cpplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setCpplus101(cpplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp112"))
+		else if (command.equals("remhp101"))
  		{
- 			setHpplus112(hpplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
+			setHpplus101(hpplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp112"))
+		else if (command.equals("remmp101"))
  		{
- 			setMpplus112(mpplus112 - 100);
- 			Balancer.mainHtml(activeChar, 112);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk113"))
- 		{
- 			setMatkplus113(matkplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk113"))
- 		{
- 			setPatkplus113(patkplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef113"))
- 		{
- 			setMdefplus113(mdefplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef113"))
- 		{
- 			setPdefplus113(pdefplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc113"))
- 		{
- 			setAccplus113(accplus113 + 1);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev113"))
- 		{
- 			setEvasionplus113(evasionplus113 + 1);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp113"))
- 		{
- 			setMatksplus113(matksplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp113"))
- 		{
- 			setPatksplus113(patksplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp113"))
- 		{
- 			setCpplus113(cpplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp113"))
- 		{
- 			setHpplus113(hpplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp113"))
- 		{
- 			setMpplus113(mpplus113 + 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk113"))
- 		{
- 			setMatkplus113(matkplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk113"))
- 		{
- 			setPatkplus113(patkplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef113"))
- 		{
- 			setMdefplus113(mdefplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef113"))
- 		{
- 			setPdefplus113(pdefplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc113"))
- 		{
- 			setAccplus113(accplus113 - 1);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev113"))
- 		{
- 			setEvasionplus113(evasionplus113 - 1);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp113"))
- 		{
- 			setMatksplus113(matksplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp113"))
- 		{
- 			setPatksplus113(patksplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp113"))
- 		{
- 			setCpplus113(cpplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp113"))
- 		{
- 			setHpplus113(hpplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp113"))
- 		{
- 			setMpplus113(mpplus113 - 100);
- 			Balancer.mainHtml(activeChar, 113);
+			setMpplus101(mpplus101 - 100);
+			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk114"))
+		else if (command.equals("addmatk102"))
  		{
- 			setMatkplus114(matkplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setMatkplus102(matkplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk114"))
+		else if (command.equals("addpatk102"))
  		{
- 			setPatkplus114(patkplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setPatkplus102(patkplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef114"))
+		else if (command.equals("addmdef102"))
  		{
- 			setMdefplus114(mdefplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setMdefplus102(mdefplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef114"))
+		else if (command.equals("addpdef102"))
  		{
- 			setPdefplus114(pdefplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setPdefplus102(pdefplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc114"))
+		else if (command.equals("addacc102"))
  		{
- 			setAccplus114(accplus114 + 1);
- 			Balancer.mainHtml(activeChar, 114);
+			setAccplus102(accplus102 + 1);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev114"))
+		else if (command.equals("addev102"))
  		{
- 			setEvasionplus114(evasionplus114 + 1);
- 			Balancer.mainHtml(activeChar, 114);
+			setEvasionplus102(evasionplus102 + 1);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp114"))
+		else if (command.equals("addmatksp102"))
  		{
- 			setMatksplus114(matksplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setMatksplus102(matksplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp114"))
+		else if (command.equals("addpatksp102"))
  		{
- 			setPatksplus114(patksplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setPatksplus102(patksplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp114"))
+		else if (command.equals("addcp102"))
  		{
- 			setCpplus114(cpplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setCpplus102(cpplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp114"))
+		else if (command.equals("addhp102"))
  		{
- 			setHpplus114(hpplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setHpplus102(hpplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp114"))
+		else if (command.equals("addmp102"))
  		{
- 			setMpplus114(mpplus114 + 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setMpplus102(mpplus102 + 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk114"))
+		else if (command.equals("remmatk102"))
  		{
- 			setMatkplus114(matkplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setMatkplus102(matkplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk114"))
+		else if (command.equals("rempatk102"))
  		{
- 			setPatkplus114(patkplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setPatkplus102(patkplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef114"))
+		else if (command.equals("remmdef102"))
  		{
- 			setMdefplus114(mdefplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setMdefplus102(mdefplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef114"))
+		else if (command.equals("rempdef102"))
  		{
- 			setPdefplus114(pdefplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setPdefplus102(pdefplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc114"))
+		else if (command.equals("remacc102"))
  		{
- 			setAccplus114(accplus114 - 1);
- 			Balancer.mainHtml(activeChar, 114);
+			setAccplus102(accplus102 - 1);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev114"))
+		else if (command.equals("remev102"))
  		{
- 			setEvasionplus114(evasionplus114 - 1);
- 			Balancer.mainHtml(activeChar, 114);
+			setEvasionplus102(evasionplus102 - 1);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp114"))
+		else if (command.equals("remmatksp102"))
  		{
- 			setMatksplus114(matksplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setMatksplus102(matksplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp114"))
+		else if (command.equals("rempatksp102"))
  		{
- 			setPatksplus114(patksplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setPatksplus102(patksplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp114"))
+		else if (command.equals("remcp102"))
  		{
- 			setCpplus114(cpplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setCpplus102(cpplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp114"))
+		else if (command.equals("remhp102"))
  		{
- 			setHpplus114(hpplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
+			setHpplus102(hpplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp114"))
+		else if (command.equals("remmp102"))
  		{
- 			setMpplus114(mpplus114 - 100);
- 			Balancer.mainHtml(activeChar, 114);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk115"))
- 		{
- 			setMatkplus115(matkplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk115"))
- 		{
- 			setPatkplus115(patkplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef115"))
- 		{
- 			setMdefplus115(mdefplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef115"))
- 		{
- 			setPdefplus115(pdefplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc115"))
- 		{
- 			setAccplus115(accplus115 + 1);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev115"))
- 		{
- 			setEvasionplus115(evasionplus115 + 1);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp115"))
- 		{
- 			setMatksplus115(matksplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp115"))
- 		{
- 			setPatksplus115(patksplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp115"))
- 		{
- 			setCpplus115(cpplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp115"))
- 		{
- 			setHpplus115(hpplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp115"))
- 		{
- 			setMpplus115(mpplus115 + 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk115"))
- 		{
- 			setMatkplus115(matkplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk115"))
- 		{
- 			setPatkplus115(patkplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef115"))
- 		{
- 			setMdefplus115(mdefplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef115"))
- 		{
- 			setPdefplus115(pdefplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc115"))
- 		{
- 			setAccplus115(accplus115 - 1);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev115"))
- 		{
- 			setEvasionplus115(evasionplus115 - 1);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp115"))
- 		{
- 			setMatksplus115(matksplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp115"))
- 		{
- 			setPatksplus115(patksplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp115"))
- 		{
- 			setCpplus115(cpplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp115"))
- 		{
- 			setHpplus115(hpplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp115"))
- 		{
- 			setMpplus115(mpplus115 - 100);
- 			Balancer.mainHtml(activeChar, 115);
+			setMpplus102(mpplus102 - 100);
+			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk116"))
+		else if (command.equals("addmatk103"))
  		{
- 			setMatkplus116(matkplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setMatkplus103(matkplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk116"))
+		else if (command.equals("addpatk103"))
  		{
- 			setPatkplus116(patkplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setPatkplus103(patkplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef116"))
+		else if (command.equals("addmdef103"))
  		{
- 			setMdefplus116(mdefplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setMdefplus103(mdefplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef116"))
+		else if (command.equals("addpdef103"))
  		{
- 			setPdefplus116(pdefplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setPdefplus103(pdefplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc116"))
+		else if (command.equals("addacc103"))
  		{
- 			setAccplus116(accplus116 + 1);
- 			Balancer.mainHtml(activeChar, 116);
+			setAccplus103(accplus103 + 1);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev116"))
+		else if (command.equals("addev103"))
  		{
- 			setEvasionplus116(evasionplus116 + 1);
- 			Balancer.mainHtml(activeChar, 116);
+			setEvasionplus103(evasionplus103 + 1);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp116"))
+		else if (command.equals("addmatksp103"))
  		{
- 			setMatksplus116(matksplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setMatksplus103(matksplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp116"))
+		else if (command.equals("addpatksp103"))
  		{
- 			setPatksplus116(patksplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setPatksplus103(patksplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp116"))
+		else if (command.equals("addcp103"))
  		{
- 			setCpplus116(cpplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setCpplus103(cpplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp116"))
+		else if (command.equals("addhp103"))
  		{
- 			setHpplus116(hpplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setHpplus103(hpplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp116"))
+		else if (command.equals("addmp103"))
  		{
- 			setMpplus116(mpplus116 + 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setMpplus103(mpplus103 + 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk116"))
+		else if (command.equals("remmatk103"))
  		{
- 			setMatkplus116(matkplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setMatkplus103(matkplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk116"))
+		else if (command.equals("rempatk103"))
  		{
- 			setPatkplus116(patkplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setPatkplus103(patkplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef116"))
+		else if (command.equals("remmdef103"))
  		{
- 			setMdefplus116(mdefplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setMdefplus103(mdefplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef116"))
+		else if (command.equals("rempdef103"))
  		{
- 			setPdefplus116(pdefplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setPdefplus103(pdefplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc116"))
+		else if (command.equals("remacc103"))
  		{
- 			setAccplus116(accplus116 - 1);
- 			Balancer.mainHtml(activeChar, 116);
+			setAccplus103(accplus103 - 1);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev116"))
+		else if (command.equals("remev103"))
  		{
- 			setEvasionplus116(evasionplus116 - 1);
- 			Balancer.mainHtml(activeChar, 116);
+			setEvasionplus103(evasionplus103 - 1);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp116"))
+		else if (command.equals("remmatksp103"))
  		{
- 			setMatksplus116(matksplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setMatksplus103(matksplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp116"))
+		else if (command.equals("rempatksp103"))
  		{
- 			setPatksplus116(patksplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setPatksplus103(patksplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp116"))
+		else if (command.equals("remcp103"))
  		{
- 			setCpplus116(cpplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setCpplus103(cpplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp116"))
+		else if (command.equals("remhp103"))
  		{
- 			setHpplus116(hpplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
+			setHpplus103(hpplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp116"))
+		else if (command.equals("remmp103"))
  		{
- 			setMpplus116(mpplus116 - 100);
- 			Balancer.mainHtml(activeChar, 116);
- 			activeChar.broadcastUserInfo();
- 		}
- 		
- 		else if (command.equals("addmatk117"))
- 		{
- 			setMatkplus117(matkplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk117"))
- 		{
- 			setPatkplus117(patkplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef117"))
- 		{
- 			setMdefplus117(mdefplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef117"))
- 		{
- 			setPdefplus117(pdefplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc117"))
- 		{
- 			setAccplus117(accplus117 + 1);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev117"))
- 		{
- 			setEvasionplus117(evasionplus117 + 1);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp117"))
- 		{
- 			setMatksplus117(matksplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp117"))
- 		{
- 			setPatksplus117(patksplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp117"))
- 		{
- 			setCpplus117(cpplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp117"))
- 		{
- 			setHpplus117(hpplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp117"))
- 		{
- 			setMpplus117(mpplus117 + 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk117"))
- 		{
- 			setMatkplus117(matkplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk117"))
- 		{
- 			setPatkplus117(patkplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef117"))
- 		{
- 			setMdefplus117(mdefplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef117"))
- 		{
- 			setPdefplus117(pdefplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc117"))
- 		{
- 			setAccplus117(accplus117 - 1);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev117"))
- 		{
- 			setEvasionplus117(evasionplus117 - 1);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp117"))
- 		{
- 			setMatksplus117(matksplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp117"))
- 		{
- 			setPatksplus117(patksplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp117"))
- 		{
- 			setCpplus117(cpplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp117"))
- 		{
- 			setHpplus117(hpplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp117"))
- 		{
- 			setMpplus117(mpplus117 - 100);
- 			Balancer.mainHtml(activeChar, 117);
+			setMpplus103(mpplus103 - 100);
+			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
  		
- 		else if (command.equals("addmatk118"))
+		else if (command.equals("addmatk104"))
  		{
- 			setMatkplus118(matkplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setMatkplus104(matkplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatk118"))
+		else if (command.equals("addpatk104"))
  		{
- 			setPatkplus118(patkplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setPatkplus104(patkplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmdef118"))
+		else if (command.equals("addmdef104"))
  		{
- 			setMdefplus118(mdefplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setMdefplus104(mdefplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpdef118"))
+		else if (command.equals("addpdef104"))
  		{
- 			setPdefplus118(pdefplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setPdefplus104(pdefplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addacc118"))
+		else if (command.equals("addacc104"))
  		{
- 			setAccplus118(accplus118 + 1);
- 			Balancer.mainHtml(activeChar, 118);
+			setAccplus104(accplus104 + 1);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addev118"))
+		else if (command.equals("addev104"))
  		{
- 			setEvasionplus118(evasionplus118 + 1);
- 			Balancer.mainHtml(activeChar, 118);
+			setEvasionplus104(evasionplus104 + 1);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmatksp118"))
+		else if (command.equals("addmatksp104"))
  		{
- 			setMatksplus118(matksplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setMatksplus104(matksplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addpatksp118"))
+		else if (command.equals("addpatksp104"))
  		{
- 			setPatksplus118(patksplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setPatksplus104(patksplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addcp118"))
+		else if (command.equals("addcp104"))
  		{
- 			setCpplus118(cpplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setCpplus104(cpplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addhp118"))
+		else if (command.equals("addhp104"))
  		{
- 			setHpplus118(hpplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setHpplus104(hpplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("addmp118"))
+		else if (command.equals("addmp104"))
  		{
- 			setMpplus118(mpplus118 + 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setMpplus104(mpplus104 + 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if (command.equals("remmatk118"))
+		else if (command.equals("remmatk104"))
  		{
- 			setMatkplus118(matkplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setMatkplus104(matkplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatk118"))
+		else if (command.equals("rempatk104"))
  		{
- 			setPatkplus118(patkplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setPatkplus104(patkplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmdef118"))
+		else if (command.equals("remmdef104"))
  		{
- 			setMdefplus118(mdefplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setMdefplus104(mdefplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempdef118"))
+		else if (command.equals("rempdef104"))
  		{
- 			setPdefplus118(pdefplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setPdefplus104(pdefplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remacc118"))
+		else if (command.equals("remacc104"))
  		{
- 			setAccplus118(accplus118 - 1);
- 			Balancer.mainHtml(activeChar, 118);
+			setAccplus104(accplus104 - 1);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remev118"))
+		else if (command.equals("remev104"))
  		{
- 			setEvasionplus118(evasionplus118 - 1);
- 			Balancer.mainHtml(activeChar, 118);
+			setEvasionplus104(evasionplus104 - 1);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmatksp118"))
+		else if (command.equals("remmatksp104"))
  		{
- 			setMatksplus118(matksplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setMatksplus104(matksplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("rempatksp118"))
+		else if (command.equals("rempatksp104"))
  		{
- 			setPatksplus118(patksplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setPatksplus104(patksplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remcp118"))
+		else if (command.equals("remcp104"))
  		{
- 			setCpplus118(cpplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setCpplus104(cpplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remhp118"))
+		else if (command.equals("remhp104"))
  		{
- 			setHpplus118(hpplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
+			setHpplus104(hpplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		else if(command.equals("remmp118"))
+		else if (command.equals("remmp104"))
  		{
- 			setMpplus118(mpplus118 - 100);
- 			Balancer.mainHtml(activeChar, 118);
- 			activeChar.broadcastUserInfo();
- 		}
-		else if (command.equals("addmatk131"))
- 		{
- 			setMatkplus131(matkplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk131"))
- 		{
- 			setPatkplus131(patkplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef131"))
- 		{
- 			setMdefplus131(mdefplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef131"))
- 		{
- 			setPdefplus131(pdefplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc131"))
- 		{
- 			setAccplus131(accplus131 + 1);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev131"))
- 		{
- 			setEvasionplus131(evasionplus131 + 1);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp131"))
- 		{
- 			setMatksplus131(matksplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp131"))
- 		{
- 			setPatksplus131(patksplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp131"))
- 		{
- 			setCpplus131(cpplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp131"))
- 		{
- 			setHpplus131(hpplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp131"))
- 		{
- 			setMpplus131(mpplus131 + 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk131"))
- 		{
- 			setMatkplus131(matkplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk131"))
- 		{
- 			setPatkplus131(patkplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef131"))
- 		{
- 			setMdefplus131(mdefplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef131"))
- 		{
- 			setPdefplus131(pdefplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc131"))
- 		{
- 			setAccplus131(accplus131 - 1);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev131"))
- 		{
- 			setEvasionplus131(evasionplus131 - 1);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp131"))
- 		{
- 			setMatksplus131(matksplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp131"))
- 		{
- 			setPatksplus131(patksplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp131"))
- 		{
- 			setCpplus131(cpplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp131"))
- 		{
- 			setHpplus131(hpplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp131"))
- 		{
- 			setMpplus131(mpplus131 - 100);
- 			Balancer.mainHtml(activeChar, 131);
- 			activeChar.broadcastUserInfo();
- 		}
-		else if (command.equals("addmatk132"))
- 		{
- 			setMatkplus132(matkplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk132"))
- 		{
- 			setPatkplus132(patkplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef132"))
- 		{
- 			setMdefplus132(mdefplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef132"))
- 		{
- 			setPdefplus132(pdefplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc132"))
- 		{
- 			setAccplus132(accplus132 + 1);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev132"))
- 		{
- 			setEvasionplus132(evasionplus132 + 1);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp132"))
- 		{
- 			setMatksplus132(matksplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp132"))
- 		{
- 			setPatksplus132(patksplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp132"))
- 		{
- 			setCpplus132(cpplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp132"))
- 		{
- 			setHpplus132(hpplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp132"))
- 		{
- 			setMpplus132(mpplus132 + 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk132"))
- 		{
- 			setMatkplus132(matkplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk132"))
- 		{
- 			setPatkplus132(patkplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef132"))
- 		{
- 			setMdefplus132(mdefplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef132"))
- 		{
- 			setPdefplus132(pdefplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc132"))
- 		{
- 			setAccplus132(accplus132 - 1);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev132"))
- 		{
- 			setEvasionplus132(evasionplus132 - 1);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp132"))
- 		{
- 			setMatksplus132(matksplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp132"))
- 		{
- 			setPatksplus132(patksplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp132"))
- 		{
- 			setCpplus132(cpplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp132"))
- 		{
- 			setHpplus132(hpplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp132"))
- 		{
- 			setMpplus132(mpplus132 - 100);
- 			Balancer.mainHtml(activeChar, 132);
- 			activeChar.broadcastUserInfo();
- 		}
-		else if (command.equals("addmatk133"))
- 		{
- 			setMatkplus133(matkplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk133"))
- 		{
- 			setPatkplus133(patkplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef133"))
- 		{
- 			setMdefplus133(mdefplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef133"))
- 		{
- 			setPdefplus133(pdefplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc133"))
- 		{
- 			setAccplus133(accplus133 + 1);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev133"))
- 		{
- 			setEvasionplus133(evasionplus133 + 1);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp133"))
- 		{
- 			setMatksplus133(matksplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp133"))
- 		{
- 			setPatksplus133(patksplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp133"))
- 		{
- 			setCpplus133(cpplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp133"))
- 		{
- 			setHpplus133(hpplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp133"))
- 		{
- 			setMpplus133(mpplus133 + 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk133"))
- 		{
- 			setMatkplus133(matkplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk133"))
- 		{
- 			setPatkplus133(patkplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef133"))
- 		{
- 			setMdefplus133(mdefplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef133"))
- 		{
- 			setPdefplus133(pdefplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc133"))
- 		{
- 			setAccplus133(accplus133 - 1);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev133"))
- 		{
- 			setEvasionplus133(evasionplus133 - 1);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp133"))
- 		{
- 			setMatksplus133(matksplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp133"))
- 		{
- 			setPatksplus133(patksplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp133"))
- 		{
- 			setCpplus133(cpplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp133"))
- 		{
- 			setHpplus133(hpplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp133"))
- 		{
- 			setMpplus133(mpplus133 - 100);
- 			Balancer.mainHtml(activeChar, 133);
- 			activeChar.broadcastUserInfo();
- 		}
-		else if (command.equals("addmatk134"))
- 		{
- 			setMatkplus134(matkplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk134"))
- 		{
- 			setPatkplus134(patkplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef134"))
- 		{
- 			setMdefplus134(mdefplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef134"))
- 		{
- 			setPdefplus134(pdefplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc134"))
- 		{
- 			setAccplus134(accplus134 + 1);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev134"))
- 		{
- 			setEvasionplus134(evasionplus134 + 1);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp134"))
- 		{
- 			setMatksplus134(matksplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp134"))
- 		{
- 			setPatksplus134(patksplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp134"))
- 		{
- 			setCpplus134(cpplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp134"))
- 		{
- 			setHpplus134(hpplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp134"))
- 		{
- 			setMpplus134(mpplus134 + 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk134"))
- 		{
- 			setMatkplus134(matkplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk134"))
- 		{
- 			setPatkplus134(patkplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef134"))
- 		{
- 			setMdefplus134(mdefplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef134"))
- 		{
- 			setPdefplus134(pdefplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc134"))
- 		{
- 			setAccplus134(accplus134 - 1);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev134"))
- 		{
- 			setEvasionplus134(evasionplus134 - 1);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp134"))
- 		{
- 			setMatksplus134(matksplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp134"))
- 		{
- 			setPatksplus134(patksplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp134"))
- 		{
- 			setCpplus134(cpplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp134"))
- 		{
- 			setHpplus134(hpplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp134"))
- 		{
- 			setMpplus134(mpplus134 - 100);
- 			Balancer.mainHtml(activeChar, 134);
- 			activeChar.broadcastUserInfo();
- 		}
-		else if (command.equals("addmatk136"))
- 		{
- 			setMatkplus136(matkplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatk136"))
- 		{
- 			setPatkplus136(patkplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmdef136"))
- 		{
- 			setMdefplus136(mdefplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpdef136"))
- 		{
- 			setPdefplus136(pdefplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addacc136"))
- 		{
- 			setAccplus136(accplus136 + 1);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addev136"))
- 		{
- 			setEvasionplus136(evasionplus136 + 1);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmatksp136"))
- 		{
- 			setMatksplus136(matksplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addpatksp136"))
- 		{
- 			setPatksplus136(patksplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addcp136"))
- 		{
- 			setCpplus136(cpplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addhp136"))
- 		{
- 			setHpplus136(hpplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("addmp136"))
- 		{
- 			setMpplus136(mpplus136 + 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if (command.equals("remmatk136"))
- 		{
- 			setMatkplus136(matkplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatk136"))
- 		{
- 			setPatkplus136(patkplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmdef136"))
- 		{
- 			setMdefplus136(mdefplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempdef136"))
- 		{
- 			setPdefplus136(pdefplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remacc136"))
- 		{
- 			setAccplus136(accplus136 - 1);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remev136"))
- 		{
- 			setEvasionplus136(evasionplus136 - 1);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmatksp136"))
- 		{
- 			setMatksplus136(matksplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("rempatksp136"))
- 		{
- 			setPatksplus136(patksplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remcp136"))
- 		{
- 			setCpplus136(cpplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remhp136"))
- 		{
- 			setHpplus136(hpplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
- 			activeChar.broadcastUserInfo();
- 		}
- 		else if(command.equals("remmp136"))
- 		{
- 			setMpplus136(mpplus136 - 100);
- 			Balancer.mainHtml(activeChar, 136);
+			setMpplus104(mpplus104 - 100);
+			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
  		
+		else if (command.equals("addmatk105"))
+ 		{
+			setMatkplus105(matkplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk105"))
+ 		{
+			setPatkplus105(patkplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef105"))
+ 		{
+			setMdefplus105(mdefplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef105"))
+ 		{
+			setPdefplus105(pdefplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc105"))
+ 		{
+			setAccplus105(accplus105 + 1);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev105"))
+ 		{
+			setEvasionplus105(evasionplus105 + 1);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp105"))
+ 		{
+			setMatksplus105(matksplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp105"))
+ 		{
+			setPatksplus105(patksplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp105"))
+ 		{
+			setCpplus105(cpplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp105"))
+ 		{
+			setHpplus105(hpplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp105"))
+ 		{
+			setMpplus105(mpplus105 + 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk105"))
+ 		{
+			setMatkplus105(matkplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk105"))
+ 		{
+			setPatkplus105(patkplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef105"))
+ 		{
+			setMdefplus105(mdefplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef105"))
+ 		{
+			setPdefplus105(pdefplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc105"))
+ 		{
+			setAccplus105(accplus105 - 1);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev105"))
+ 		{
+			setEvasionplus105(evasionplus105 - 1);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp105"))
+ 		{
+			setMatksplus105(matksplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp105"))
+ 		{
+			setPatksplus105(patksplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp105"))
+ 		{
+			setCpplus105(cpplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp105"))
+ 		{
+			setHpplus105(hpplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp105"))
+ 		{
+			setMpplus105(mpplus105 - 100);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk106"))
+ 		{
+			setMatkplus106(matkplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk106"))
+ 		{
+			setPatkplus106(patkplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef106"))
+ 		{
+			setMdefplus106(mdefplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef106"))
+ 		{
+			setPdefplus106(pdefplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc106"))
+ 		{
+			setAccplus106(accplus106 + 1);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev106"))
+ 		{
+			setEvasionplus106(evasionplus106 + 1);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp106"))
+ 		{
+			setMatksplus106(matksplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp106"))
+ 		{
+			setPatksplus106(patksplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp106"))
+ 		{
+			setCpplus106(cpplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp106"))
+ 		{
+			setHpplus106(hpplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp106"))
+ 		{
+			setMpplus106(mpplus106 + 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk106"))
+ 		{
+			setMatkplus106(matkplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk106"))
+ 		{
+			setPatkplus106(patkplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef106"))
+ 		{
+			setMdefplus106(mdefplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef106"))
+ 		{
+			setPdefplus106(pdefplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc106"))
+ 		{
+			setAccplus106(accplus106 - 1);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev106"))
+ 		{
+			setEvasionplus106(evasionplus106 - 1);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp106"))
+ 		{
+			setMatksplus106(matksplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp106"))
+ 		{
+			setPatksplus106(patksplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp106"))
+ 		{
+			setCpplus106(cpplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp106"))
+ 		{
+			setHpplus106(hpplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp106"))
+ 		{
+			setMpplus106(mpplus106 - 100);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk107"))
+ 		{
+			setMatkplus107(matkplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk107"))
+ 		{
+			setPatkplus107(patkplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef107"))
+ 		{
+			setMdefplus107(mdefplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef107"))
+ 		{
+			setPdefplus107(pdefplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc107"))
+ 		{
+			setAccplus107(accplus107 + 1);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev107"))
+ 		{
+			setEvasionplus107(evasionplus107 + 1);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp107"))
+ 		{
+			setMatksplus107(matksplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp107"))
+ 		{
+			setPatksplus107(patksplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp107"))
+ 		{
+			setCpplus107(cpplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp107"))
+ 		{
+			setHpplus107(hpplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp107"))
+ 		{
+			setMpplus107(mpplus107 + 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk107"))
+ 		{
+			setMatkplus107(matkplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk107"))
+ 		{
+			setPatkplus107(patkplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef107"))
+ 		{
+			setMdefplus107(mdefplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef107"))
+ 		{
+			setPdefplus107(pdefplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc107"))
+ 		{
+			setAccplus107(accplus107 - 1);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev107"))
+ 		{
+			setEvasionplus107(evasionplus107 - 1);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp107"))
+ 		{
+			setMatksplus107(matksplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp107"))
+ 		{
+			setPatksplus107(patksplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp107"))
+ 		{
+			setCpplus107(cpplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp107"))
+ 		{
+			setHpplus107(hpplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp107"))
+ 		{
+			setMpplus107(mpplus107 - 100);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk108"))
+ 		{
+			setMatkplus108(matkplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk108"))
+ 		{
+			setPatkplus108(patkplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef108"))
+ 		{
+			setMdefplus108(mdefplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef108"))
+ 		{
+			setPdefplus108(pdefplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc108"))
+ 		{
+			setAccplus108(accplus108 + 1);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev108"))
+ 		{
+			setEvasionplus108(evasionplus108 + 1);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp108"))
+ 		{
+			setMatksplus108(matksplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp108"))
+ 		{
+			setPatksplus108(patksplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp108"))
+ 		{
+			setCpplus108(cpplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp108"))
+ 		{
+			setHpplus108(hpplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp108"))
+ 		{
+			setMpplus108(mpplus108 + 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk108"))
+ 		{
+			setMatkplus108(matkplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk108"))
+ 		{
+			setPatkplus108(patkplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef108"))
+ 		{
+			setMdefplus108(mdefplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef108"))
+ 		{
+			setPdefplus108(pdefplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc108"))
+ 		{
+			setAccplus108(accplus108 - 1);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev108"))
+ 		{
+			setEvasionplus108(evasionplus108 - 1);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp108"))
+ 		{
+			setMatksplus108(matksplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp108"))
+ 		{
+			setPatksplus108(patksplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp108"))
+ 		{
+			setCpplus108(cpplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp108"))
+ 		{
+			setHpplus108(hpplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp108"))
+ 		{
+			setMpplus108(mpplus108 - 100);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk109"))
+ 		{
+			setMatkplus109(matkplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk109"))
+ 		{
+			setPatkplus109(patkplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef109"))
+ 		{
+			setMdefplus109(mdefplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef109"))
+ 		{
+			setPdefplus109(pdefplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc109"))
+ 		{
+			setAccplus109(accplus109 + 1);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev109"))
+ 		{
+			setEvasionplus109(evasionplus109 + 1);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp109"))
+ 		{
+			setMatksplus109(matksplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp109"))
+ 		{
+			setPatksplus109(patksplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp109"))
+ 		{
+			setCpplus109(cpplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp109"))
+ 		{
+			setHpplus109(hpplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp109"))
+ 		{
+			setMpplus109(mpplus109 + 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk109"))
+ 		{
+			setMatkplus109(matkplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk109"))
+ 		{
+			setPatkplus109(patkplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef109"))
+ 		{
+			setMdefplus109(mdefplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef109"))
+ 		{
+			setPdefplus109(pdefplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc109"))
+ 		{
+			setAccplus109(accplus109 - 1);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev109"))
+ 		{
+			setEvasionplus109(evasionplus109 - 1);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp109"))
+ 		{
+			setMatksplus109(matksplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp109"))
+ 		{
+			setPatksplus109(patksplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp109"))
+ 		{
+			setCpplus109(cpplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp109"))
+ 		{
+			setHpplus109(hpplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp109"))
+ 		{
+			setMpplus109(mpplus109 - 100);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk110"))
+ 		{
+			setMatkplus110(matkplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk110"))
+ 		{
+			setPatkplus110(patkplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef110"))
+ 		{
+			setMdefplus110(mdefplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef110"))
+ 		{
+			setPdefplus110(pdefplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc110"))
+ 		{
+			setAccplus110(accplus110 + 1);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev110"))
+ 		{
+			setEvasionplus110(evasionplus110 + 1);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp110"))
+ 		{
+			setMatksplus110(matksplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp110"))
+ 		{
+			setPatksplus110(patksplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp110"))
+ 		{
+			setCpplus110(cpplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp110"))
+ 		{
+			setHpplus110(hpplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp110"))
+ 		{
+			setMpplus110(mpplus110 + 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk110"))
+ 		{
+			setMatkplus110(matkplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk110"))
+ 		{
+			setPatkplus110(patkplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef110"))
+ 		{
+			setMdefplus110(mdefplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef110"))
+ 		{
+			setPdefplus110(pdefplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc110"))
+ 		{
+			setAccplus110(accplus110 - 1);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev110"))
+ 		{
+			setEvasionplus110(evasionplus110 - 1);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp110"))
+ 		{
+			setMatksplus110(matksplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp110"))
+ 		{
+			setPatksplus110(patksplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp110"))
+ 		{
+			setCpplus110(cpplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp110"))
+ 		{
+			setHpplus110(hpplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp110"))
+ 		{
+			setMpplus110(mpplus110 - 100);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk111"))
+ 		{
+			setMatkplus111(matkplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk111"))
+ 		{
+			setPatkplus111(patkplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef111"))
+ 		{
+			setMdefplus111(mdefplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef111"))
+ 		{
+			setPdefplus111(pdefplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc111"))
+ 		{
+			setAccplus111(accplus111 + 1);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev111"))
+ 		{
+			setEvasionplus111(evasionplus111 + 1);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp111"))
+ 		{
+			setMatksplus111(matksplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp111"))
+ 		{
+			setPatksplus111(patksplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp111"))
+ 		{
+			setCpplus111(cpplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp111"))
+ 		{
+			setHpplus111(hpplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp111"))
+ 		{
+			setMpplus111(mpplus111 + 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk111"))
+ 		{
+			setMatkplus111(matkplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk111"))
+ 		{
+			setPatkplus111(patkplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef111"))
+ 		{
+			setMdefplus111(mdefplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef111"))
+ 		{
+			setPdefplus111(pdefplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc111"))
+ 		{
+			setAccplus111(accplus111 - 1);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev111"))
+ 		{
+			setEvasionplus111(evasionplus111 - 1);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp111"))
+ 		{
+			setMatksplus111(matksplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp111"))
+ 		{
+			setPatksplus111(patksplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp111"))
+ 		{
+			setCpplus111(cpplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp111"))
+ 		{
+			setHpplus111(hpplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp111"))
+ 		{
+			setMpplus111(mpplus111 - 100);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk112"))
+ 		{
+			setMatkplus112(matkplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk112"))
+ 		{
+			setPatkplus112(patkplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef112"))
+ 		{
+			setMdefplus112(mdefplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef112"))
+ 		{
+			setPdefplus112(pdefplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc112"))
+ 		{
+			setAccplus112(accplus112 + 1);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev112"))
+ 		{
+			setEvasionplus112(evasionplus112 + 1);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp112"))
+ 		{
+			setMatksplus112(matksplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp112"))
+ 		{
+			setPatksplus112(patksplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp112"))
+ 		{
+			setCpplus112(cpplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp112"))
+ 		{
+			setHpplus112(hpplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp112"))
+ 		{
+			setMpplus112(mpplus112 + 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk112"))
+ 		{
+			setMatkplus112(matkplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk112"))
+ 		{
+			setPatkplus112(patkplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef112"))
+ 		{
+			setMdefplus112(mdefplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef112"))
+ 		{
+			setPdefplus112(pdefplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc112"))
+ 		{
+			setAccplus112(accplus112 - 1);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev112"))
+ 		{
+			setEvasionplus112(evasionplus112 - 1);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp112"))
+ 		{
+			setMatksplus112(matksplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp112"))
+ 		{
+			setPatksplus112(patksplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp112"))
+ 		{
+			setCpplus112(cpplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp112"))
+ 		{
+			setHpplus112(hpplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp112"))
+ 		{
+			setMpplus112(mpplus112 - 100);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		else if (command.equals("addmatk113"))
+ 		{
+			setMatkplus113(matkplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk113"))
+ 		{
+			setPatkplus113(patkplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef113"))
+ 		{
+			setMdefplus113(mdefplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef113"))
+ 		{
+			setPdefplus113(pdefplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc113"))
+ 		{
+			setAccplus113(accplus113 + 1);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev113"))
+ 		{
+			setEvasionplus113(evasionplus113 + 1);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp113"))
+ 		{
+			setMatksplus113(matksplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp113"))
+ 		{
+			setPatksplus113(patksplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp113"))
+ 		{
+			setCpplus113(cpplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp113"))
+ 		{
+			setHpplus113(hpplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp113"))
+ 		{
+			setMpplus113(mpplus113 + 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk113"))
+ 		{
+			setMatkplus113(matkplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk113"))
+ 		{
+			setPatkplus113(patkplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef113"))
+ 		{
+			setMdefplus113(mdefplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef113"))
+ 		{
+			setPdefplus113(pdefplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc113"))
+ 		{
+			setAccplus113(accplus113 - 1);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev113"))
+ 		{
+			setEvasionplus113(evasionplus113 - 1);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp113"))
+ 		{
+			setMatksplus113(matksplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp113"))
+ 		{
+			setPatksplus113(patksplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp113"))
+ 		{
+			setCpplus113(cpplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp113"))
+ 		{
+			setHpplus113(hpplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp113"))
+ 		{
+			setMpplus113(mpplus113 - 100);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		
+		else if (command.equals("addmatk114"))
+ 		{
+			setMatkplus114(matkplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk114"))
+ 		{
+			setPatkplus114(patkplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef114"))
+ 		{
+			setMdefplus114(mdefplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef114"))
+ 		{
+			setPdefplus114(pdefplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc114"))
+ 		{
+			setAccplus114(accplus114 + 1);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev114"))
+ 		{
+			setEvasionplus114(evasionplus114 + 1);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp114"))
+ 		{
+			setMatksplus114(matksplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp114"))
+ 		{
+			setPatksplus114(patksplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp114"))
+ 		{
+			setCpplus114(cpplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp114"))
+ 		{
+			setHpplus114(hpplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp114"))
+ 		{
+			setMpplus114(mpplus114 + 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk114"))
+ 		{
+			setMatkplus114(matkplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk114"))
+ 		{
+			setPatkplus114(patkplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef114"))
+ 		{
+			setMdefplus114(mdefplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef114"))
+ 		{
+			setPdefplus114(pdefplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc114"))
+ 		{
+			setAccplus114(accplus114 - 1);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev114"))
+ 		{
+			setEvasionplus114(evasionplus114 - 1);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp114"))
+ 		{
+			setMatksplus114(matksplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp114"))
+ 		{
+			setPatksplus114(patksplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp114"))
+ 		{
+			setCpplus114(cpplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp114"))
+ 		{
+			setHpplus114(hpplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp114"))
+ 		{
+			setMpplus114(mpplus114 - 100);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		
+		else if (command.equals("addmatk115"))
+ 		{
+			setMatkplus115(matkplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk115"))
+ 		{
+			setPatkplus115(patkplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef115"))
+ 		{
+			setMdefplus115(mdefplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef115"))
+ 		{
+			setPdefplus115(pdefplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc115"))
+ 		{
+			setAccplus115(accplus115 + 1);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev115"))
+ 		{
+			setEvasionplus115(evasionplus115 + 1);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp115"))
+ 		{
+			setMatksplus115(matksplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp115"))
+ 		{
+			setPatksplus115(patksplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp115"))
+ 		{
+			setCpplus115(cpplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp115"))
+ 		{
+			setHpplus115(hpplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp115"))
+ 		{
+			setMpplus115(mpplus115 + 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk115"))
+ 		{
+			setMatkplus115(matkplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk115"))
+ 		{
+			setPatkplus115(patkplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef115"))
+ 		{
+			setMdefplus115(mdefplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef115"))
+ 		{
+			setPdefplus115(pdefplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc115"))
+ 		{
+			setAccplus115(accplus115 - 1);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev115"))
+ 		{
+			setEvasionplus115(evasionplus115 - 1);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp115"))
+ 		{
+			setMatksplus115(matksplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp115"))
+ 		{
+			setPatksplus115(patksplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp115"))
+ 		{
+			setCpplus115(cpplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp115"))
+ 		{
+			setHpplus115(hpplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp115"))
+ 		{
+			setMpplus115(mpplus115 - 100);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		
+		else if (command.equals("addmatk116"))
+ 		{
+			setMatkplus116(matkplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk116"))
+ 		{
+			setPatkplus116(patkplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef116"))
+ 		{
+			setMdefplus116(mdefplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef116"))
+ 		{
+			setPdefplus116(pdefplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc116"))
+ 		{
+			setAccplus116(accplus116 + 1);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev116"))
+ 		{
+			setEvasionplus116(evasionplus116 + 1);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp116"))
+ 		{
+			setMatksplus116(matksplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp116"))
+ 		{
+			setPatksplus116(patksplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp116"))
+ 		{
+			setCpplus116(cpplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp116"))
+ 		{
+			setHpplus116(hpplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp116"))
+ 		{
+			setMpplus116(mpplus116 + 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk116"))
+ 		{
+			setMatkplus116(matkplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk116"))
+ 		{
+			setPatkplus116(patkplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef116"))
+ 		{
+			setMdefplus116(mdefplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef116"))
+ 		{
+			setPdefplus116(pdefplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc116"))
+ 		{
+			setAccplus116(accplus116 - 1);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev116"))
+ 		{
+			setEvasionplus116(evasionplus116 - 1);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp116"))
+ 		{
+			setMatksplus116(matksplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp116"))
+ 		{
+			setPatksplus116(patksplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp116"))
+ 		{
+			setCpplus116(cpplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp116"))
+ 		{
+			setHpplus116(hpplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp116"))
+ 		{
+			setMpplus116(mpplus116 - 100);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		
+		else if (command.equals("addmatk117"))
+ 		{
+			setMatkplus117(matkplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk117"))
+ 		{
+			setPatkplus117(patkplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef117"))
+ 		{
+			setMdefplus117(mdefplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef117"))
+ 		{
+			setPdefplus117(pdefplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc117"))
+ 		{
+			setAccplus117(accplus117 + 1);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev117"))
+ 		{
+			setEvasionplus117(evasionplus117 + 1);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp117"))
+ 		{
+			setMatksplus117(matksplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp117"))
+ 		{
+			setPatksplus117(patksplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp117"))
+ 		{
+			setCpplus117(cpplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp117"))
+ 		{
+			setHpplus117(hpplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp117"))
+ 		{
+			setMpplus117(mpplus117 + 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk117"))
+ 		{
+			setMatkplus117(matkplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk117"))
+ 		{
+			setPatkplus117(patkplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef117"))
+ 		{
+			setMdefplus117(mdefplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef117"))
+ 		{
+			setPdefplus117(pdefplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc117"))
+ 		{
+			setAccplus117(accplus117 - 1);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev117"))
+ 		{
+			setEvasionplus117(evasionplus117 - 1);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp117"))
+ 		{
+			setMatksplus117(matksplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp117"))
+ 		{
+			setPatksplus117(patksplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp117"))
+ 		{
+			setCpplus117(cpplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp117"))
+ 		{
+			setHpplus117(hpplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp117"))
+ 		{
+			setMpplus117(mpplus117 - 100);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		
+		else if (command.equals("addmatk118"))
+ 		{
+			setMatkplus118(matkplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatk118"))
+ 		{
+			setPatkplus118(patkplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmdef118"))
+ 		{
+			setMdefplus118(mdefplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpdef118"))
+ 		{
+			setPdefplus118(pdefplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addacc118"))
+ 		{
+			setAccplus118(accplus118 + 1);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addev118"))
+ 		{
+			setEvasionplus118(evasionplus118 + 1);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmatksp118"))
+ 		{
+			setMatksplus118(matksplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addpatksp118"))
+ 		{
+			setPatksplus118(patksplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addcp118"))
+ 		{
+			setCpplus118(cpplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addhp118"))
+ 		{
+			setHpplus118(hpplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("addmp118"))
+ 		{
+			setMpplus118(mpplus118 + 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatk118"))
+ 		{
+			setMatkplus118(matkplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatk118"))
+ 		{
+			setPatkplus118(patkplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmdef118"))
+ 		{
+			setMdefplus118(mdefplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempdef118"))
+ 		{
+			setPdefplus118(pdefplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remacc118"))
+ 		{
+			setAccplus118(accplus118 - 1);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remev118"))
+ 		{
+			setEvasionplus118(evasionplus118 - 1);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmatksp118"))
+ 		{
+			setMatksplus118(matksplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("rempatksp118"))
+ 		{
+			setPatksplus118(patksplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remcp118"))
+ 		{
+			setCpplus118(cpplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remhp118"))
+ 		{
+			setHpplus118(hpplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		else if (command.equals("remmp118"))
+ 		{
+			setMpplus118(mpplus118 - 100);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+ 		
+		// return main html
  		else if(command.equals("edit88"))
  		{
  			Balancer.mainHtml(activeChar, 88);
@@ -7387,211 +6393,191 @@ public class BalancerMain extends CharStat
  		{
  			Balancer.mainHtml(activeChar, 118);
  		}
- 		else if(command.equals("edit131"))
- 		{
- 			Balancer.mainHtml(activeChar, 131);
- 		}
- 		else if(command.equals("edit132"))
- 		{
- 			Balancer.mainHtml(activeChar, 132);
- 		}
- 		else if(command.equals("edit133"))
- 		{
- 			Balancer.mainHtml(activeChar, 133);
- 		}
- 		else if(command.equals("edit134"))
- 		{
- 			Balancer.mainHtml(activeChar, 134);
- 		}
- 		else if(command.equals("edit136"))
- 		{
- 			Balancer.mainHtml(activeChar, 136);
- 		}
- 		
+		// save
  		else if(command.equals("save88"))
  		{
  			BalanceSave.storeBalance88();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Duelist classes.");
  			Balancer.mainHtml(activeChar, 88);
  		}
  		else if(command.equals("save89"))
  		{
  			BalanceSave.storeBalance89();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for DreadNought class.");
  			Balancer.mainHtml(activeChar, 89);
  		}
  		else if(command.equals("save90"))
  		{
  			BalanceSave.storeBalance90();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Phoenix Knight class.");
  			Balancer.mainHtml(activeChar, 90);
  		}
  		else if(command.equals("save91"))
  		{
  			BalanceSave.storeBalance91();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Hell Knight class.");
  			Balancer.mainHtml(activeChar, 91);
  		}
  		else if(command.equals("save92"))
  		{
  			BalanceSave.storeBalance92();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Sagittarius class.");
  			Balancer.mainHtml(activeChar, 92);
  		}
  		else if(command.equals("save93"))
  		{
  			BalanceSave.storeBalance93();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Adventurer class.");
  			Balancer.mainHtml(activeChar, 93);
  		}
  		else if(command.equals("save94"))
  		{
  			BalanceSave.storeBalance94();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Archmage class.");
  			Balancer.mainHtml(activeChar, 94);
  		}
  		else if(command.equals("save95"))
  		{
  			BalanceSave.storeBalance95();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Soultaker class.");
  			Balancer.mainHtml(activeChar, 95);
  		}
  		else if(command.equals("save96"))
  		{
  			BalanceSave.storeBalance96();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Arcana Lord class.");
  			Balancer.mainHtml(activeChar, 96);
  		}
  		else if(command.equals("save97"))
  		{
  			BalanceSave.storeBalance97();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Cardinal class.");
  			Balancer.mainHtml(activeChar, 97);
  		}
  		else if(command.equals("save98"))
  		{
  			BalanceSave.storeBalance98();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Hierophant class.");
  			Balancer.mainHtml(activeChar, 98);
  		}
  		else if(command.equals("save99"))
  		{
  			BalanceSave.storeBalance99();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Eva Templar class.");
  			Balancer.mainHtml(activeChar, 99);
  		}
  		else if(command.equals("save100"))
  		{
  			BalanceSave.storeBalance100();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Sword Muse class.");
  			Balancer.mainHtml(activeChar, 100);
  		}
  		else if(command.equals("save101"))
  		{
  			BalanceSave.storeBalance101();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Wind Rider class.");
  			Balancer.mainHtml(activeChar, 101);
  		}
  		else if(command.equals("save102"))
  		{
  			BalanceSave.storeBalance102();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Moonlight Sentinel class.");
  			Balancer.mainHtml(activeChar, 102);
  		}
  		else if(command.equals("save103"))
  		{
  			BalanceSave.storeBalance103();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Mystic Muse class.");
  			Balancer.mainHtml(activeChar, 103);
  		}
  		else if(command.equals("save104"))
  		{
  			BalanceSave.storeBalance104();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Elemental Master class.");
  			Balancer.mainHtml(activeChar, 104);
  		}
  		else if(command.equals("save105"))
  		{
  			BalanceSave.storeBalance105();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Eva Saint class.");
  			Balancer.mainHtml(activeChar, 105);
  		}
  		else if(command.equals("save106"))
  		{
  			BalanceSave.storeBalance106();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Shillien Templar class.");
  			Balancer.mainHtml(activeChar, 106);
  		}
  		else if(command.equals("save107"))
  		{
  			BalanceSave.storeBalance107();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Spectral Dancer class.");
  			Balancer.mainHtml(activeChar, 107);
  		}
  		else if(command.equals("save108"))
  		{
  			BalanceSave.storeBalance108();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Ghost Hunter class.");
  			Balancer.mainHtml(activeChar, 108);
  		}
  		else if(command.equals("save109"))
  		{
  			BalanceSave.storeBalance109();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Ghost Sentinel class.");
  			Balancer.mainHtml(activeChar, 109);
  		}
  		else if(command.equals("save110"))
  		{
  			BalanceSave.storeBalance110();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Storm Screamer class.");
  			Balancer.mainHtml(activeChar, 110);
  		}
  		else if(command.equals("save111"))
  		{
  			BalanceSave.storeBalance111();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Spectral Master class.");
  			Balancer.mainHtml(activeChar, 111);
  		}
  		else if(command.equals("save112"))
  		{
  			BalanceSave.storeBalance112();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Shillen Saint class.");
  			Balancer.mainHtml(activeChar, 112);
  		}
  		else if(command.equals("save113"))
  		{
  			BalanceSave.storeBalance113();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Titan class.");
  			Balancer.mainHtml(activeChar, 113);
  		}
  		else if(command.equals("save114"))
  		{
  			BalanceSave.storeBalance114();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Grand Khauatari class.");
  			Balancer.mainHtml(activeChar, 114);
  		}
  		else if(command.equals("save115"))
  		{
  			BalanceSave.storeBalance115();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Dominator class.");
  			Balancer.mainHtml(activeChar, 115);
  		}
  		else if(command.equals("save116"))
  		{
  			BalanceSave.storeBalance116();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Doomcryer class.");
  			Balancer.mainHtml(activeChar, 116);
  		}
  		else if(command.equals("save117"))
  		{
  			BalanceSave.storeBalance117();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Fortune Seeker class.");
  			Balancer.mainHtml(activeChar, 117);
  		}
  		else if(command.equals("save118"))
  		{
  			BalanceSave.storeBalance118();
- 			activeChar.sendMessage("Stats saved.");
+			activeChar.sendMessage("Stats saved for Maestro class.");
  			Balancer.mainHtml(activeChar, 118);
  		}
  	}

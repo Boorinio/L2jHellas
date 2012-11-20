@@ -3,12 +3,10 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,14 +27,17 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
  */
 public class ChatShout implements IChatHandler
 {
-	private static final int[] COMMAND_IDS ={1};
+	private static final int[] COMMAND_IDS =
+	{
+		1
+	};
 	
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
 		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 		
 		Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers();
-				
+		
 		if (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("on") || (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("gm") && activeChar.isGM()))
 		{
 			int region = MapRegionTable.getInstance().getMapRegion(activeChar.getX(), activeChar.getY());
@@ -48,11 +49,11 @@ public class ChatShout implements IChatHandler
 		}
 		else if (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("global"))
 		{
-			if (!activeChar.isGM() && !activeChar.getAntiFlood().getGlobalChat().tryPerformAction("global chat") && !activeChar.isGM()) 
-			 	{ 
-			 	  activeChar.sendMessage("Do not spam shout channel."); 
-			 	  return; 
-			 	}
+			if (!activeChar.isGM() && !activeChar.getAntiFlood().getGlobalChat().tryPerformAction("global chat") && !activeChar.isGM())
+			{
+				activeChar.sendMessage("Do not spam shout channel.");
+				return;
+			}
 			for (L2PcInstance player : pls)
 			{
 				if (!BlockList.isBlocked(player, activeChar))

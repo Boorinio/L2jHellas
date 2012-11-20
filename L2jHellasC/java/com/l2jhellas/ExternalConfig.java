@@ -205,8 +205,6 @@ public final class ExternalConfig
 			RANK_PVP_ANTI_FARM_CLAN_ALLY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPvpAntiFarmClanAllyEnabled", "true"));
 			RANK_PVP_ANTI_FARM_PARTY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPvpAntiFarmPartyEnabled", "true"));
 			RANK_PVP_ANTI_FARM_IP_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPvpAntiFarmIpEnabled", "true"));
-			
-			_log.warning("RankPvpSystemConfig initialization complete.");
 		}
 		catch (Exception e)
 		{
