@@ -21,6 +21,8 @@ import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import javolution.text.TextBuilder;
+
 import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
@@ -28,6 +30,7 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.TaskPriority;
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
@@ -42,6 +45,7 @@ import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.instance.L2AccountManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassLevel;
@@ -100,7 +104,23 @@ public class EnterWorld extends L2GameClientPacket
 	{
 		// this is just a trigger packet. it has no content
 	}
-
+	
+	class entermail implements Runnable
+	{
+		private final L2PcInstance p;
+		
+		public entermail(L2PcInstance player)
+		{
+			p = player;
+		}
+		
+		@Override
+		public void run()
+		{
+			subhtml(p);	
+		}
+	}
+	
 	@Override
 	protected void runImpl()
 	{
@@ -341,6 +361,10 @@ public class EnterWorld extends L2GameClientPacket
 		activeChar.checkAllowedSkills();
 		PetitionManager.getInstance().checkPetitionMessages(activeChar);
 		
+		// Account Manager
+		if (!L2AccountManagerInstance.hasSubEmail(activeChar))
+			ThreadPoolManager.getInstance().scheduleGeneral(new entermail(activeChar), 20000);
+
 		if (activeChar.getPremiumService() == 1)
 		{
 			// activeChar.sendPacket(new
@@ -681,5 +705,41 @@ public class EnterWorld extends L2GameClientPacket
 	           pledgeClass = 8;
 
 	    activeChar.setPledgeClass(pledgeClass);
+	}
+	
+	public void subhtml(L2PcInstance player)
+	{
+		TextBuilder tb = new TextBuilder();
+		NpcHtmlMessage html = new NpcHtmlMessage(1);
+		
+		tb.append("<html><head><title>Submit your Email</title></head>");
+		tb.append("<body>");
+		tb.append("<center>");
+		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
+		tb.append("<tr>");
+		tb.append("<td width=\"45\" valign=\"top\" align=\"center\"><img src=\"L2ui_ch3.menubutton4\" width=\"38\" height=\"38\"></td>");
+		tb.append("<td valign=\"top\"><font color=\"FF6600\">Email submitance</font>");
+		tb.append("<br1><font color=\"00FF00\">" + player.getName() + "</font>, please submit here your REAL email address.</td></tr></table></center>");
+		tb.append("<center>");
+		tb.append("<img src=\"l2ui_ch3.herotower_deco\" width=256 height=32 align=center><br>");
+		tb.append("</center>");
+		tb.append("<table width=\"350\" cellpadding=\"5\" bgcolor=\"000000\">");
+		tb.append("<tr>");
+		tb.append("<td width=\"45\" valign=\"top\" align=\"center\"><img src=\"Icon.etc_old_key_i02\" width=\"32\" height=\"32\"></td>");
+		tb.append("<td valign=\"top\">Please enter your Email:<multiedit var=\"email1\" width=180 height=15>");
+		tb.append("<br1>We need this to be your real one.</td>");
+		tb.append("</tr>");
+		tb.append("</table>");
+		tb.append("<br>");
+		tb.append("<center>");
+		tb.append("<button value=\"Submit\" action=\"bypass -h submitemail $email1\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\">");
+		tb.append("</center>");
+		tb.append("<center>");
+		tb.append("<img src=\"l2ui_ch3.herotower_deco\" width=256 height=32 align=center>");
+		tb.append("</center>");
+		tb.append("</body></html>");
+		
+		html.setHtml(tb.toString());
+		player.sendPacket(html);
 	}
 }
