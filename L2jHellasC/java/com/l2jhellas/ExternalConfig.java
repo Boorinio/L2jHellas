@@ -29,7 +29,7 @@ public final class ExternalConfig
 	// L2J Property File Definitions
 	// --------------------------------------------------
 	public static final String Rank_Config = "./config/Mods/Rank PvP System.ini";
-	
+	public static final String Vote_Config = "./config/Mods/Vote System.ini";
 	// --------------------------------------------------
 	// L2J Variable Definitions
 	// --------------------------------------------------
@@ -78,6 +78,18 @@ public final class ExternalConfig
 	public static boolean RANK_PVP_ANTI_FARM_PARTY_ENABLED;
 	public static boolean RANK_PVP_ANTI_FARM_IP_ENABLED;
 
+	public static String VOTE_LINK_HOPZONE;
+	public static String VOTE_LINK_TOPZONE;
+	public static int VOTE_REWARD_ID1;
+	public static int VOTE_REWARD_ID2;
+	public static int VOTE_REWARD_ID3;
+	public static int VOTE_REWARD_ID4;
+	public static int VOTE_REWARD_AMOUNT1;
+	public static int VOTE_REWARD_AMOUNT2;
+	public static int VOTE_REWARD_AMOUNT3;
+	public static int VOTE_REWARD_AMOUNT4;
+	public static int SECS_TO_VOTE;
+	public static int EXTRA_REW_VOTE_AM;
 	/**
 	 * This class initializes all global variables for configuration.<br>
 	 * If the key doesn't appear in properties file, a default value is set by
@@ -210,6 +222,33 @@ public final class ExternalConfig
 		{
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Rank_Config + " File.");
+		}
+		
+		// Load Vote System Config file (if exists)
+		final File Vote = new File(Vote_Config);
+		try
+		{
+			InputStream is = new FileInputStream(Vote);
+			L2Properties VoteSettings = new L2Properties();
+			VoteSettings.load(is);
+			
+			VOTE_LINK_HOPZONE = VoteSettings.getProperty("HopzoneUrl", "null");
+			VOTE_LINK_TOPZONE = VoteSettings.getProperty("TopzoneUrl", "null");
+			VOTE_REWARD_ID1 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId1", "300"));
+			VOTE_REWARD_ID2 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId2", "300"));
+			VOTE_REWARD_ID3 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId3", "300"));
+			VOTE_REWARD_ID4 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId4", "300"));
+			VOTE_REWARD_AMOUNT1 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount1", "300"));
+			VOTE_REWARD_AMOUNT2 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount2", "300"));
+			VOTE_REWARD_AMOUNT3 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount3", "300"));
+			VOTE_REWARD_AMOUNT4 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount4", "300"));
+			SECS_TO_VOTE = Integer.parseInt(VoteSettings.getProperty("SecondsToVote", "20"));
+			EXTRA_REW_VOTE_AM = Integer.parseInt(VoteSettings.getProperty("ExtraRewVoteAm", "20"));
+		}
+		catch (Exception e)
+		{
+			_log.warning("Config: " + e.getMessage());
+			throw new Error("Failed to Load " + Vote_Config + " File.");
 		}
 	}
 }

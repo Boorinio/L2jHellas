@@ -26,6 +26,7 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 public final class RequestPledgeCrest extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestPledgeCrest.class.getName());
+
 	private static final String _C__68_REQUESTPLEDGECREST = "[C] 68 RequestPledgeCrest";
 
 	private int _crestId;

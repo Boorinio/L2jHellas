@@ -97,6 +97,13 @@ CREATE TABLE `characters` (
   `secCode` int(10) unsigned DEFAULT '0',
   `emailchangecode` int(10) unsigned DEFAULT '0',
   `hasSubSec` int(10) unsigned DEFAULT '0',
+  `lastVoteHopzone` bigint(20) unsigned DEFAULT NULL,
+  `lastVoteTopzone` bigint(20) unsigned DEFAULT NULL,
+  `hasVotedHop` int(10) unsigned DEFAULT '0',
+  `hasVotedTop` int(10) unsigned DEFAULT '0',
+  `monthVotes` int(10) unsigned DEFAULT '0',
+  `totalVotes` int(10) unsigned DEFAULT '0',
+  `tries` int(10) unsigned DEFAULT '3',
   PRIMARY KEY (`obj_Id`),
   KEY `clanid` (`clanid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

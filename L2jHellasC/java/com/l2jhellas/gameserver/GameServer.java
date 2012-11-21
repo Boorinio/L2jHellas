@@ -24,6 +24,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import Extensions.Balancer.BalanceLoad;
+import Extensions.Vote.VoteMain;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
@@ -283,6 +284,7 @@ public class GameServer
 		PetitionManager.getInstance();
 		QuestManager.getInstance();
 		Hitman.start();
+		VoteMain.load();
 		
 		try
 		{
@@ -340,7 +342,7 @@ public class GameServer
 		// Spawn the Orators/Preachers if in the Seal Validation period.
 		_sevenSignsEngine.spawnSevenSignsNPC();
 		
-		// Egines
+		// Engines
 		Olympiad.getInstance();
 		Hero.getInstance();
 		FaenorScriptEngine.getInstance();

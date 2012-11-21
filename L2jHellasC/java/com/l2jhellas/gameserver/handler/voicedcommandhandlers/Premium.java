@@ -42,13 +42,13 @@ public class Premium implements IVoicedCommandHandler
 				html3.append("<table>");
 				html3.append("<tr><td><center>Your account :<font color=\"LEVEL\">Normal<br></font></td></tr>");
 				html3.append("<tr><td><center>Details<br1></td></tr>");
-				html3.append("<tr><td>Rate EXP: <font color=\"LEVEL\"> Your Rate <br1></font></td></tr>");
-				html3.append("<tr><td>Rate SP: <font color=\"LEVEL\"> Your Rate  <br1></font></td></tr>");
-				html3.append("<tr><td>Rate Spoil: <font color=\"LEVEL\"> Your Rate <br1></font></td></tr><br>");
+				html3.append("<tr><td>Rate EXP: <font color=\"LEVEL\">" + Config.RATE_XP + "<br1></font></td></tr>");
+				html3.append("<tr><td>Rate SP: <font color=\"LEVEL\">" + Config.RATE_SP + "<br1></font></td></tr>");
+				html3.append("<tr><td>Rate Spoil: <font color=\"LEVEL\">" + Config.RATE_DROP_SPOIL + "<br1></font></td></tr><br>");
 				html3.append("<tr><td>Expires : <font color=\"00A5FF\"> Never (Normal Account)<br1></font></td></tr>");
 				html3.append("<tr><td>Current Date : <font color=\"70FFCA\"> :" + String.valueOf(format.format(System.currentTimeMillis())) + " <br><br></font></td></tr><br><br1><br1>");
 				html3.append("<tr><td><font color=\"LEVEL\"><center>Premium Info & Rules<br1></font></td></tr>");
-				html3.append("<tr><td>Upgrade to Premium Account : <font color=\"70FFCA\"> http://www.l2arcadia.com</font></td></tr>");
+				html3.append("<tr><td>Upgrade to Premium Account :<br1></td></tr>");
 				html3.append("<tr><td>Premium Account : <font color=\"70FFCA\"> Benefits<br1></font></td></tr>");
 				html3.append("<tr><td>Rate EXP: <font color=\"LEVEL\"> " + Config.PREMIUM_RATE_XP + " (Account Premium )<br1></font></td></tr>");
 				html3.append("<tr><td>Rate SP: <font color=\"LEVEL\"> " + Config.PREMIUM_RATE_SP + " (Account Premium )<br1></font></td></tr>");
@@ -65,7 +65,7 @@ public class Premium implements IVoicedCommandHandler
 			else
 			{
 				long _end_prem_date;
-				_end_prem_date = Extensions.PremiumService.Premium.getInstance().getPremServiceData(activeChar.getAccountName());
+				_end_prem_date = Extensions.PremiumService.Prem.getInstance().getPremServiceData(activeChar.getAccountName());
 				NpcHtmlMessage preReply = new NpcHtmlMessage(5);
 				
 				TextBuilder html3 = new TextBuilder("<html><body><title>Premium Account Details</title><center>");

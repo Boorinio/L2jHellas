@@ -19,12 +19,12 @@ import java.sql.ResultSet;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 
-public class Premium
+public class Prem
 {
 	
 	private long _end_pr_date;
 	
-	public static final Premium getInstance()
+	public static final Prem getInstance()
 	{
 		return SingletonHolder._instance;
 	}
@@ -68,6 +68,6 @@ public class Premium
 	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
-		protected static final Premium _instance = new Premium();
+		protected static final Prem _instance = new Prem();
 	}
 }

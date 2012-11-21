@@ -26,7 +26,7 @@ public class AdminPremium implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_premium_menu", "admin_premium_add1", "admin_premium_add2", "admin_premium_add3"
+	"admin_premium_menu", "admin_premium_add1", "admin_premium_add2", "admin_premium_add3", "admin_premium_add4", "admin_premium_add5"
 	};
 	
 	private static final String UPDATE_PREMIUMSERVICE = "UPDATE account_premium SET premium_service=?,enddate=? WHERE account_name=?";

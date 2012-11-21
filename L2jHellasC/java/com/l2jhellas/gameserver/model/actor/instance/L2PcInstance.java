@@ -226,13 +226,13 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	// Character Character
 	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=?,chat_filter_count=?,good=?,evil=?,hitman_target=? WHERE obj_id=?";
-	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, good,evil, hitman_target, hasSubEmail, answer, secCode, emailchangecode, hasSubSec FROM characters WHERE obj_id=?";
+	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, good,evil, hitman_target, email, emailcode, hasSubEmail, answer, secCode, emailchangecode, hasSubSec, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries FROM characters WHERE obj_id=?";
 	private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
 	
 	// Character PremiumService
-	private static final String INSERT_PREMIUMSERVICE = "INSERT INTO character_premium (account_name,premium_service,enddate) values(?,?,?) ON DUPLICATE KEY UPDATE premium_service = ?, enddate = ?";
+	private static final String INSERT_PREMIUMSERVICE = "INSERT INTO account_premium (account_name,premium_service,enddate) values(?,?,?) ON DUPLICATE KEY UPDATE premium_service = ?, enddate = ?";
 	private static final String RESTORE_PREMIUMSERVICE = "SELECT premium_service,enddate FROM account_premium WHERE account_name=?";
-	private static final String UPDATE_PREMIUMSERVICE = "UPDATE character_premium SET premium_service=?,enddate=? WHERE account_name=?";
+	private static final String UPDATE_PREMIUMSERVICE = "UPDATE account_premium SET premium_service=?,enddate=? WHERE account_name=?";
 	
 	// Character Ban chat
 	private static final String BAN_CHAT_SET = "UPDATE characters SET chatban_timer=?, chatban_reason=? WHERE char_name LIKE ?";
@@ -6996,15 +6996,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 				player = new L2PcInstance(objectId, template, rset.getString("account_name"), app);
 				player.setName(rset.getString("char_name"));
-				restorePremServiceData(player, rset.getString("account_name"));
 				player._lastAccess = rset.getLong("lastAccess");
-				player._email = rset.getString("email");
-				player._emailcode = rset.getInt("emailcode");
-				player._hasSubEmail = rset.getInt("hasSubEmail");
-				player._answer = rset.getString("answer");
-				player._secCode = rset.getInt("secCode");
-				player._emailchangecode = rset.getInt("emailchangecode");
-				player._hasSubSec = rset.getInt("hasSubSec");
 				
 				player.getStat().setExp(rset.getLong("exp"));
 				player.setExpBeforeDeath(rset.getLong("expBeforeDeath"));
@@ -7137,6 +7129,16 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 				player.setChatFilterCount(rset.getInt("chat_filter_count"));
 				player.setHitmanTarget(rset.getInt("hitman_target"));
+				player._email = rset.getString("email");
+				player._emailcode = rset.getInt("emailcode");
+				player._hasSubEmail = rset.getInt("hasSubEmail");
+				player._answer = rset.getString("answer");
+				player._secCode = rset.getInt("secCode");
+				player._emailchangecode = rset.getInt("emailchangecode");
+				player._hasSubSec = rset.getInt("hasSubSec");
+				
+				restorePremServiceData(player, rset.getString("account_name"));
+
 				// Add the L2PcInstance object in _allObjects
 				// L2World.getInstance().storeObject(player);
 				
@@ -13137,5 +13139,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	public int hasSubSec()
 	{
 		return _hasSubSec;
+	}
+	
+	private boolean _isVoting = false;
+	
+	public final boolean isVoting()
+	{
+		return _isVoting;
+	}
+	
+	public final void setIsVoting(boolean value)
+	{
+		_isVoting = value;
 	}
 }
