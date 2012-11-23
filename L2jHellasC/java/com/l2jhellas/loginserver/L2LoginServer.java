@@ -29,6 +29,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.Server;
 import com.l2jhellas.status.Status;
@@ -49,6 +50,7 @@ public class L2LoginServer
 	private GameServerListener _gameServerListener;
 	private SelectorThread<L2LoginClient> _selectorThread;
 	private Status _statusServer;
+	private Thread _restartLoginServer;
 
 	public static void main(String[] args)
 	{
@@ -348,8 +350,41 @@ public class L2LoginServer
 		{
 			_log.config("IP Bans file ("+bannedFile.getName()+") is missing or is a directory, skipped.");
 		}
+		if (ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART)
+					{
+						_log.info("Scheduled LS restart after " + ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART_TIME + " hours");
+						_restartLoginServer = new LoginServerRestart();
+						_restartLoginServer.setDaemon(true);
+						_restartLoginServer.start();
+					}
 	}
 
+		class LoginServerRestart extends Thread
+		{
+			public LoginServerRestart()
+			{
+				setName("LoginServerRestart");
+			}
+			
+			@Override
+			public void run()
+		{
+				while (!isInterrupted())
+			{
+					try
+					{
+						Thread.sleep(ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART_TIME * 60 * 60 * 1000);
+					}
+					catch (InterruptedException e)
+				{
+						return;
+					}
+					shutdown(true);
+				}
+			}
+		}
+		
+	
 	public void shutdown(boolean restart)
 	{
 		Runtime.getRuntime().exit(restart ? 2 : 0);

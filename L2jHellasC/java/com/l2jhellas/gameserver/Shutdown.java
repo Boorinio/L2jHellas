@@ -147,6 +147,19 @@ public class Shutdown extends Thread
 			_shutdownMode = GM_SHUTDOWN;
 		}
 	}
+	
+	public void autoRestart(int time)
+	
+	    {
+	
+	        _secondsShut = time;	
+	        countdown();	
+	        _shutdownMode = GM_RESTART;	
+	        _instance.setMode(GM_RESTART);	
+	        System.exit(2);
+	
+	     }
+	
 
 	/**
 	 * get the shutdown-hook instance

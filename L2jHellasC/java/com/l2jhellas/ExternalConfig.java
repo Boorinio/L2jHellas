@@ -30,10 +30,17 @@ public final class ExternalConfig
 	// --------------------------------------------------
 	public static final String Rank_Config = "./config/Mods/Rank PvP System.ini";
 	public static final String Vote_Config = "./config/Mods/Vote System.ini";
+	public static final String Automation_Config = "./config/Mods/Automatation.ini";
 	// --------------------------------------------------
 	// L2J Variable Definitions
 	// --------------------------------------------------
 	
+	/*Automation Config System*/
+	 public static boolean RESTART_BY_TIME_OF_DAY;
+	 public static int RESTART_SECONDS;
+	 public static String[] RESTART_INTERVAL_BY_TIME_OF_DAY; 
+	 public static boolean LOGIN_SERVER_SCHEDULE_RESTART;
+	 public static long LOGIN_SERVER_SCHEDULE_RESTART_TIME;
 	/* CUSTOM PVP/RANK/REWARD SYSTEM */
 	public static boolean RANK_ENABLED;
 	public static boolean RANK_PVP_LEGAL_COUNTER_ALTT_ENABLED;
@@ -223,6 +230,33 @@ public final class ExternalConfig
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Rank_Config + " File.");
 		}
+		
+		
+		
+		
+		// Load Vote System Config file (if exists)
+				final File Auto = new File(Automation_Config);
+				try
+				{
+					InputStream is = new FileInputStream(Auto);
+					L2Properties AutoSettings = new L2Properties();
+					AutoSettings.load(is);
+					
+					RESTART_BY_TIME_OF_DAY = Boolean.parseBoolean(AutoSettings.getProperty("EnableRestartSystem", "false"));
+					 RESTART_SECONDS = Integer.parseInt(AutoSettings.getProperty("RestartSeconds", "360"));
+					 RESTART_INTERVAL_BY_TIME_OF_DAY = (AutoSettings.getProperty("RestartByTimeOfDay", "23:59").split(","));
+					LOGIN_SERVER_SCHEDULE_RESTART = Boolean.parseBoolean(AutoSettings.getProperty("LoginRestartSchedule", "False"));
+					LOGIN_SERVER_SCHEDULE_RESTART_TIME = Long.parseLong(AutoSettings.getProperty("LoginRestartTime", "24"));
+										
+					  
+						}
+				catch (Exception e)
+				{
+					_log.warning("Config: " + e.getMessage());
+					throw new Error("Failed to Load " + Automation_Config + " File.");
+				}
+		
+		
 		
 		// Load Vote System Config file (if exists)
 		final File Vote = new File(Vote_Config);

@@ -342,6 +342,18 @@ public class GameServer
 		// Spawn the Orators/Preachers if in the Seal Validation period.
 		_sevenSignsEngine.spawnSevenSignsNPC();
 		
+		
+		if(ExternalConfig.RESTART_BY_TIME_OF_DAY)
+		{
+		_log.info("[Restart System]: Auto Restart System is Enabled ");
+		Restart.getInstance().StartCalculationOfNextRestartTime();
+		}
+		else
+		{
+		_log.info("[Restart System]: Auto Restart System is Disabled ");
+		}
+	    System.gc();
+		
 		// Engines
 		Olympiad.getInstance();
 		Hero.getInstance();
