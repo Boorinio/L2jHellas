@@ -32,6 +32,7 @@ import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeGuardManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager.SiegeSpawn;
+import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -435,6 +436,10 @@ public class Siege
 
             getCastle().getZone().updateZoneStatusForCharactersInside();
 
+         // Siege Reward Manager
+            if(getCastle().getOwnerId() > 0)
+           SiegeReward.getInstance().notifySiegeEnded(ClanTable.getInstance().getClan(getCastle().getOwnerId()), getCastle().getName());
+            
             // Schedule a task to prepare auto siege end
             _siegeEndDate = Calendar.getInstance();
             _siegeEndDate.add(Calendar.MINUTE, SiegeManager.getInstance().getSiegeLength());

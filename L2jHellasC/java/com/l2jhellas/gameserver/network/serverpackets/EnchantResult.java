@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 public class EnchantResult extends L2GameServerPacket
 {
+	public static final EnchantResult CANCELLED = new EnchantResult(2);	
 	private static final String _S__81_ENCHANTRESULT = "[S] 81 EnchantResult";
 	private int _unknown;
 

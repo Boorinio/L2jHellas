@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 
@@ -88,11 +89,11 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 				{ 
 					_log.warning("Player used L2Walker, and got kicked"); 
 					activeChar.closeNetConnection(); 
-				}  
+				} 
+				
 			}  	 
 		}
-	}
-
+	}	
 
 	@Override
 	protected void runImpl()
@@ -117,6 +118,15 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			activeChar.teleToLocation(_targetX, _targetY, _targetZ, false);
 			return;
 		}
+		
+		if (activeChar.getActiveEnchantItem() != null)
+			
+        {
+            activeChar.setActiveEnchantItem(null);
+            activeChar.sendPacket(EnchantResult.CANCELLED);
+            activeChar.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
+
+        }
 
 		if (_moveMovement == 0 && Config.GEODATA < 1) // cursor movement without geodata is disabled
 		{

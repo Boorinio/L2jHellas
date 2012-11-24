@@ -40,6 +40,7 @@ import com.l2jhellas.gameserver.instancemanager.CrownManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.PetitionManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
+import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -387,6 +388,11 @@ public class EnterWorld extends L2GameClientPacket
         	sendPacket(new PledgeStatusChanged(activeChar.getClan()));
         }
 
+        if(SiegeReward.ACTIVATED_SYSTEM && !SiegeReward.REWARD_ACTIVE_MEMBERS_ONLY)
+        {
+        	 SiegeReward.getInstance().processWorldEnter(activeChar);
+        }
+        
 		if (activeChar.isAlikeDead())
 		{
 			// no broadcast needed since the player will already spawn dead to others

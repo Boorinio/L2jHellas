@@ -34,6 +34,7 @@ import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.datatables.ArmorSetsTable;
+import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.datatables.AugmentationData;
 import com.l2jhellas.gameserver.datatables.CharNameTable;
 import com.l2jhellas.gameserver.datatables.CharTemplateTable;
@@ -282,6 +283,7 @@ public class GameServer
 		CastleManorManager.getInstance();
 		MercTicketManager.getInstance();
 		PetitionManager.getInstance();
+		SiegeReward.getInstance();
 		QuestManager.getInstance();
 		Hitman.start();
 		VoteMain.load();
