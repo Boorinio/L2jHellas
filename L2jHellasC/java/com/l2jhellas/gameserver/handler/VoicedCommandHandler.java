@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Banking;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Cl;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.OnlinePlayers;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Premium;
+import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ServerRestartVote;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VipTeleport;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VoiceInfo;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Wedding;
@@ -78,6 +79,8 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new version());
 		if (Config.ALLOW_PLAYERS_REFUSAL)
 			registerVoicedCommandHandler(new pmoff());
+		if(ExternalConfig.ALLOW_SERVER_RESTART_COMMAND)
+			registerVoicedCommandHandler(new ServerRestartVote());
 		if (Config.ONLINE_VOICE_ALLOW)
 			registerVoicedCommandHandler(new OnlinePlayers());
 		if (Config.BANKING_SYSTEM_ENABLED)

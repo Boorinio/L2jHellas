@@ -36,6 +36,8 @@ public final class ExternalConfig
 	// --------------------------------------------------
 	
 	/*Automation Config System*/
+	 public static boolean ALLOW_SERVER_RESTART_COMMAND;
+	 public static int     VOTES_NEEDED_FOR_RESTART;
 	 public static boolean RESTART_BY_TIME_OF_DAY;
 	 public static int RESTART_SECONDS;
 	 public static String[] RESTART_INTERVAL_BY_TIME_OF_DAY; 
@@ -242,6 +244,8 @@ public final class ExternalConfig
 					L2Properties AutoSettings = new L2Properties();
 					AutoSettings.load(is);
 					
+					ALLOW_SERVER_RESTART_COMMAND = Boolean.parseBoolean(AutoSettings.getProperty("AllowServerRestartCommand", "False"));
+					VOTES_NEEDED_FOR_RESTART     = Integer.parseInt(AutoSettings.getProperty("VotesNeededForRestart", "20"));
 					RESTART_BY_TIME_OF_DAY = Boolean.parseBoolean(AutoSettings.getProperty("EnableRestartSystem", "false"));
 					 RESTART_SECONDS = Integer.parseInt(AutoSettings.getProperty("RestartSeconds", "360"));
 					 RESTART_INTERVAL_BY_TIME_OF_DAY = (AutoSettings.getProperty("RestartByTimeOfDay", "23:59").split(","));

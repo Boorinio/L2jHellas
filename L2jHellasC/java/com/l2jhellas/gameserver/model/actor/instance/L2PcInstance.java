@@ -861,6 +861,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public boolean _isVIP = false, _inEventVIP = false, _isNotVIP = false,
 			_isTheVIP = false;
 	public int _originalNameColourVIP, _originalKarmaVIP;
+	    
+	    /** Server Restart Vote Parameters */
+	    public boolean		_voteRestart		= false;
 	
 	/** DM Engine parameters */
 	public int _originalNameColorDM, _countDMkills, _originalKarmaDM;
