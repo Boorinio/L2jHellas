@@ -66,7 +66,7 @@ public class AdminReload implements IAdminCommandHandler
 			{
 				String type = st.nextToken();
 				
-				if (type.equals("multisell"))
+				if (type.startsWith("multisell"))
 				{
 					L2Multisell.getInstance().reload();
 					sendReloadPage(activeChar);
@@ -84,7 +84,7 @@ public class AdminReload implements IAdminCommandHandler
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All skills has been reloaded.");
 				}
-				else if (type.equals("npc"))
+				else if (type.startsWith("npc"))
 				{
 					NpcTable.getInstance().reloadAllNpc();
 					sendReloadPage(activeChar);
@@ -114,87 +114,87 @@ public class AdminReload implements IAdminCommandHandler
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All NPC walker routes have been reloaded.");
 				}
-				else if (type.equals("quests"))
+				else if (type.startsWith("quests"))
 				{
 					String folder = "quests";
 					QuestManager.getInstance().reload(folder);
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Quests has been Reloaded.");
 				}
-				else if (type.equals("configs"))
+				else if (type.startsWith("configs"))
 				{
 					ExternalConfig.load();
 					Config.load();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Server Configs has been Reloaded.");
 				}
-				else if (type.equals("tradelist"))
+				else if (type.startsWith("tradelist"))
 				{
 					TradeController.reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("TradeList Table has been reloaded.");
 				}
-				else if (type.equals("pccolor"))
+				else if (type.startsWith("pccolor"))
 				{
 					PcColorTable.process(activeChar);
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("PcColor Table has been reloaded.");
 				}
-				else if (type.equals("crest"))
+				else if (type.startsWith("crest"))
 				{
 					CrestCache.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Crest Table has been reloaded.");
 				}
-				else if (type.equals("cw"))
+				else if (type.startsWith("cw"))
 				{
 					CursedWeaponsManager.getInstance().reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Cursed Weapons has been reloaded.");
 				}
-				else if (type.equals("levelupdata"))
+				else if (type.startsWith("levelupdata"))
 				{
 					LevelUpData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Level up Data has been reloaded.");
 				}
-				else if (type.equals("summonitems"))
+				else if (type.startsWith("summonitems"))
 				{
 					SummonItemsData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Summon Items has been reloaded.");
 				}
-				else if (type.equals("balancer"))
+				else if (type.startsWith("balancer"))
 				{
 					BalanceLoad.loadBalance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Balance stats for classes has been reloaded.");
 				}
-				else if (type.equals("nobleskill"))
+				else if (type.startsWith("nobleskill"))
 				{
 					NobleSkillTable.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Noble Skill table has been reloaded.");
 				}
-				else if (type.equals("heroskill"))
+				else if (type.startsWith("heroskill"))
 				{
 					HeroSkillTable.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Hero Skill table has been reloaded.");
 				}
-				else if (type.equals("skilltrees"))
+				else if (type.startsWith("skilltrees"))
 				{
 					SkillTreeTable.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Skill Tree table has been reloaded.");
 				}
-				else if (type.equals("spellbooks"))
+				else if (type.startsWith("spellbooks"))
 				{
 					SkillSpellbookTable.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Spellbooks Table has been reloaded.");
 				}
-				else if (type.equals("extitems"))
+				else if (type.startsWith("extitems"))
 				{
 					ExtractableItemsData.getInstance();
 					sendReloadPage(activeChar);
