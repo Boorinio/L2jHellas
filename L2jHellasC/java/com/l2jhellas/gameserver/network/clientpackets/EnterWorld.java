@@ -365,6 +365,14 @@ public class EnterWorld extends L2GameClientPacket
 		// Account Manager
 		if (!L2AccountManagerInstance.hasSubEmail(activeChar))
 			ThreadPoolManager.getInstance().scheduleGeneral(new entermail(activeChar), 20000);
+		
+		if (activeChar.getFirstEffect(426) != null || activeChar.getFirstEffect(427) != null) 
+		{
+		    activeChar.stopSkillEffects(426);
+		    activeChar.stopSkillEffects(427);
+		    activeChar.updateEffectIcons();
+		    activeChar.broadcastUserInfo();
+		}
 
 		if (activeChar.getPremiumService() == 1)
 		{
