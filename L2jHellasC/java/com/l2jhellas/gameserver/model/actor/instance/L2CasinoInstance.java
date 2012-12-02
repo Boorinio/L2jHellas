@@ -2,14 +2,12 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.util.Broadcast;
 import com.l2jhellas.util.Rnd;
 
@@ -116,7 +114,7 @@ public class L2CasinoInstance extends L2NpcInstance
 
     static class Casino1 implements Runnable
     {
-        private L2PcInstance _player;
+        private final L2PcInstance _player;
         Casino1(L2PcInstance player)
         {
             _player = player;
@@ -166,7 +164,7 @@ public class L2CasinoInstance extends L2NpcInstance
 
     static class Casino2 implements Runnable
     {
-        private L2PcInstance _player;
+        private final L2PcInstance _player;
         Casino2(L2PcInstance player)
         {
            _player = player;
@@ -221,7 +219,7 @@ public class L2CasinoInstance extends L2NpcInstance
 
     static class Casino3 implements Runnable
     {
-        private L2PcInstance _player;
+        private final L2PcInstance _player;
         Casino3(L2PcInstance player)
         {
             _player = player;
@@ -276,7 +274,7 @@ public class L2CasinoInstance extends L2NpcInstance
 
     static class Casino4 implements Runnable
     {
-        private L2PcInstance _player;
+        private final L2PcInstance _player;
         Casino4(L2PcInstance player)
         {
             _player = player;
@@ -331,7 +329,7 @@ public class L2CasinoInstance extends L2NpcInstance
 
     static class Casino5 implements Runnable
     {
-        private L2PcInstance _player;
+        private final L2PcInstance _player;
         Casino5(L2PcInstance player)
         {
             _player = player;
@@ -381,7 +379,7 @@ public class L2CasinoInstance extends L2NpcInstance
 
     static class Casino6 implements Runnable
     {
-        private L2PcInstance _player;
+        private final L2PcInstance _player;
         Casino6(L2PcInstance player)
         {
             _player = player;
@@ -436,7 +434,7 @@ public class L2CasinoInstance extends L2NpcInstance
 
     static class Casino7 implements Runnable
     {
-        private L2PcInstance _player;
+        private final L2PcInstance _player;
         Casino7(L2PcInstance player)
         {
             _player = player;

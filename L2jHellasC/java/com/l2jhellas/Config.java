@@ -704,6 +704,7 @@ public final class Config
 	public static boolean ALLOW_LOW_LEVEL_TRADE;
 	/** 76 lvl trading only */
 	public static boolean SHOW_HTML_WELCOME;
+	public static boolean SHOW_HTML_GM_WELCOME;
 	/** Show HTML welcome screen on login */
 	public static int RUN_SPD_BOOST;
 	/** Increase Running speed by ... */
@@ -1237,8 +1238,6 @@ public final class Config
 	public static final FloodProtectorConfig FLOOD_PROTECTOR_MULTISELL = new FloodProtectorConfig("MultiSellFloodProtector");
 	public static final FloodProtectorConfig FLOOD_PROTECTOR_TRANSACTION = new FloodProtectorConfig("TransactionFloodProtector");
 	
-	public static final boolean DROP_MULTI_ADENA = false;
-	
 	// PVP_PK_CONFIG_FILE
 	public static boolean LEAVE_BUFFS_ON_DIE;
 	public static boolean ALLOW_POTS_IN_PVP;
@@ -1514,6 +1513,7 @@ public final class Config
 	/** Maximum level of safe enchantment for normal items */
 	public static int ENCHANT_SAFE_MAX_FULL;
 	/** Maximum level of safe enchantment for full body armor */
+	public static boolean DROP_MULTI_ADENA;
 	
 	// CONFIGURATION_FILE
 	public static String GAMESERVER_HOSTNAME;
@@ -2046,6 +2046,8 @@ public final class Config
 				L2JHellasSettings.load(is);
 				is.close();
 				
+				DROP_MULTI_ADENA = Boolean.parseBoolean(L2JHellasSettings.getProperty("MultiAdenaDrop", "False"));
+
 				EMAIL_USER = L2JHellasSettings.getProperty("EmailUsername", "null");
 				EMAIL_PASS = L2JHellasSettings.getProperty("EmailPassword", "null");
 
@@ -2159,6 +2161,7 @@ public final class Config
 				GM_OVER_ENCHANT = Integer.parseInt(L2JHellasSettings.getProperty("GMOverEnchant", "0"));
 				ALLOW_LOW_LEVEL_TRADE = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowLowLevelTrade", "True"));
 				SHOW_HTML_WELCOME = Boolean.parseBoolean(L2JHellasSettings.getProperty("ShowWelcomeHTML", "False"));
+				SHOW_HTML_GM_WELCOME = Boolean.parseBoolean(L2JHellasSettings.getProperty("ShowWelcomeGMHTML", "False"));
 				RUN_SPD_BOOST = Integer.parseInt(L2JHellasSettings.getProperty("RunSpeedBoost", "0"));
 				MAX_RUN_SPEED = Integer.parseInt(L2JHellasSettings.getProperty("MaxRunSpeed", "500"));
 				MAX_PCRIT_RATE = Integer.parseInt(L2JHellasSettings.getProperty("MaxPCritRate", "500"));
