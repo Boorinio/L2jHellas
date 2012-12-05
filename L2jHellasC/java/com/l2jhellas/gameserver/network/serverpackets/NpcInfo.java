@@ -15,11 +15,15 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.instancemanager.TownManager;
 import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 /**
  * This class ...
  *
@@ -39,6 +43,10 @@ public final class NpcInfo extends L2GameServerPacket
     private String _name = "";
     private L2Summon _summon;
     private String _title = "";
+    int _clanCrest = 0;
+    int _allyCrest = 0;
+    int _allyId = 0;
+    int _clanId = 0;
 	private int _form = 0;
 
 	/**
@@ -79,6 +87,33 @@ public final class NpcInfo extends L2GameServerPacket
 
 			_title = t;
 	    }
+        
+        		if(Config.SHOW_NPC_CREST)
+        			{
+        				if(cha instanceof L2NpcInstance && cha.isInsideZone(L2Character.ZONE_PEACE) && cha.getCastle().getOwnerId() != 0)
+        				{
+        					int _x,_y,_z;
+        					_x = cha.getX();
+        					_y = cha.getY();
+        					_z = cha.getZ();
+        					L2TownZone Town;
+        					Town = TownManager.getInstance().getTown(_x, _y, _z);
+        					if(Town != null)
+        					{
+        						int townId = Town.getTownId();
+        						if(townId != 33 && townId != 22)
+        						{
+        							L2Clan clan;
+        							clan = ClanTable.getInstance().getClan(cha.getCastle().getOwnerId());
+        							_clanCrest = clan.getCrestId();
+        							_clanId = clan.getClanId();
+        							_allyCrest = clan.getAllyCrestId();
+        							_allyId = clan.getAllyId();
+        					}
+        					}
+        				}
+        			}
+        	
 
         _x = _activeChar.getX();
 		_y = _activeChar.getY();
@@ -215,11 +250,21 @@ public final class NpcInfo extends L2GameServerPacket
 		writeD(0000);  // hmm karma ??
 
 		writeD(_activeChar.getAbnormalEffect());  // C2
-		writeD(0000);  // C2
-		writeD(0000);  // C2
-		writeD(0000);  // C2
-		writeD(0000);  // C2
-		writeC(0000);  // C2
+				if(Config.SHOW_NPC_CREST)
+					{
+						writeD(_clanId);
+						writeD(_clanCrest);
+						writeD(_allyId);
+						writeD(_allyCrest);
+					}
+					else
+					{
+						writeD(0000);
+						writeD(0000);
+						writeD(0000);
+						writeD(0000);
+						writeC(0000);
+					}
 
 		writeC(0x00);  // C3  team circle 1-blue, 2-red
 		writeF(_collisionRadius);

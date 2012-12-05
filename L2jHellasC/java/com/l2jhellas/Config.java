@@ -642,6 +642,7 @@ public final class Config
 	/** Check for bad ID ? */
 	
 	// l2jhellas_CONFIG_FILE
+	public static boolean SHOW_NPC_CREST;
 	public static String EMAIL_USER;
 	public static String EMAIL_PASS;
 	/** Account Manager Mail */
@@ -2070,7 +2071,7 @@ public final class Config
 				CHAMPION_SPCL_ITEM = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemID", "6393"));
 				CHAMPION_SPCL_QTY = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemAmount", "1"));
 				CHAMPION_SPCL_LVL_DIFF = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemLevelDiff", "0"));
-				
+				SHOW_NPC_CREST = Boolean.parseBoolean(L2JHellasSettings.getProperty("ShowNpcCrest", "False"));
 				ALLOW_CLASS_MASTER = Boolean.valueOf(L2JHellasSettings.getProperty("AllowClassMaster", "False"));
 				ALLOW_REMOTE_CLASS_MASTER = Boolean.valueOf(L2JHellasSettings.getProperty("AllowRemoteClassMaster", "False"));
 				LEAVE_BUFFS_ON_DIE = Boolean.parseBoolean(L2JHellasSettings.getProperty("LeaveBuffsOnDie", "True"));

@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.entity;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -82,6 +83,7 @@ public class Castle
 	private int _taxPercent                    = 0;
 	private double _taxRate                    = 0;
 	private int _treasury                      = 0;
+	private boolean _showNpcCrest = false;
     private L2CastleZone _zone;
     private L2Clan _formerOwner				   = null;
     private int _nbArtifact					   = 1;
@@ -433,6 +435,7 @@ public class Castle
 
         	    _taxPercent = rs.getInt("taxPercent");
         	    _treasury = rs.getInt("treasury");
+        	    _showNpcCrest = rs.getBoolean("showNpcCrest");
             }
 
             statement.close();
@@ -690,6 +693,21 @@ public class Castle
 	{
 		return _treasury;
 	}
+	
+		public final boolean getShowNpcCrest()
+		{
+			return _showNpcCrest;
+		}
+	
+	public final void setShowNpcCrest(boolean showNpcCrest)
+		{
+			if(_showNpcCrest != showNpcCrest)
+			{
+				_showNpcCrest = showNpcCrest;
+				updateShowNpcCrest();
+			}
+		}
+	
 
 	public FastList<SeedProduction> getSeedProduction(int period)
 	{
@@ -1053,6 +1071,37 @@ public class Castle
 		}
     }
 
+		public void updateShowNpcCrest()
+		{
+			Connection con = null;
+			PreparedStatement statement;
+			try
+			{
+				con = L2DatabaseFactory.getInstance().getConnection();
+	
+				statement = con.prepareStatement("UPDATE castle SET showNpcCrest = ? WHERE id = ?");
+				statement.setString(1, String.valueOf(getShowNpcCrest()));
+				statement.setInt(2, getCastleId());
+				statement.execute();
+				statement.close();
+			}
+			catch (Exception e)
+			{
+				_log.info("Error saving showNpcCrest for castle " + getName() + ": " + e.getMessage());
+			}
+			finally
+			{
+				try
+				{
+					con.close();
+			}
+				catch (Exception e)
+				{
+				}
+			}
+		}
+	
+	
 	public boolean isNextPeriodApproved()
 	{
 		return _isNextPeriodApproved;
