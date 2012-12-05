@@ -1135,7 +1135,7 @@
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="40"/>
   <set name="effectRange" val="400"/>
-  <set name="reuseDelay" val="15000"/>
+  <set name="reuseDelay" val="16000"/>
   <set name="overHit" val="true"/>
   <set name="condition" val="16"/>
   <set name="lethal1" val="5"/>
