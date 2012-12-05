@@ -100,7 +100,7 @@ public class TvT
 	public static void AnnounceToPlayers(Boolean toall, String announce)
 	{
 		if (toall)
-			Announcements.getInstance().announceToAll(announce);
+			Announcements.getInstance().gameAnnounceToAll(announce);
 		else
 		{
 			CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", announce);
@@ -696,7 +696,7 @@ public class TvT
 						AnnounceToPlayers(true, "TvT: Joinable in " + _joiningLocationName + "!");
 						AnnounceToPlayers(true, "TvT: " + seconds / 60 + " minute(s) till registration ends!");
 						if (Config.TVT_ANNOUNCE_REGISTRATION_LOC_NPC)
-							Announcements.getInstance().announceToAll(
+							Announcements.getInstance().gameAnnounceToAll(
 									"TvT: Registration Period is Active in " + _joiningLocationName + " ! at Npc " + npcManager);
 					}
 					else if (_started)
@@ -1360,7 +1360,7 @@ public class TvT
 		player.sendPacket(html);
 
 		if (Config.TVT_ANNOUNCE_SIGNUPS)
-			Announcements.getInstance().announceToAll("Player " + player.getName() + " has Signed Up in TvT!");
+			Announcements.getInstance().gameAnnounceToAll("Player " + player.getName() + " has Signed Up in TvT!");
 	}
 
 	public synchronized static void removeOfflinePlayers()
@@ -1751,7 +1751,7 @@ public class TvT
 	 */
 	private static void closeColiseumDoors()
 	{
-		Announcements.getInstance().announceToAll("Closing Coliseum Doors, TvT event has just started !");
+		Announcements.getInstance().gameAnnounceToAll("Closing Coliseum Doors, TvT event has just started !");
 		DoorTable.getInstance().getDoor(24190001).closeMe();//west gate out
 		DoorTable.getInstance().getDoor(24190002).closeMe();//west gate in
 		DoorTable.getInstance().getDoor(24190003).closeMe();//east gate out
@@ -1773,7 +1773,7 @@ public class TvT
 	 */
 	private static void openColiseumDoors()
 	{
-		Announcements.getInstance().announceToAll("Opening Coliseum Doors, TvT event has finished!");
+		Announcements.getInstance().gameAnnounceToAll("Opening Coliseum Doors, TvT event has finished!");
 		DoorTable.getInstance().getDoor(24190001).openMe();
 		DoorTable.getInstance().getDoor(24190002).openMe();
 		DoorTable.getInstance().getDoor(24190003).openMe();
@@ -1799,7 +1799,7 @@ public class TvT
 		_inProgress = false;
 		long delay = _intervalBetweenMatchs;
 
-		Announcements.getInstance().announceToAll("TvT: joining period will be avaible again in " + getIntervalBetweenMatchs() + " minute(s)!");
+		Announcements.getInstance().gameAnnounceToAll("TvT: joining period will be avaible again in " + getIntervalBetweenMatchs() + " minute(s)!");
 
 		waiter(delay);
 
@@ -1847,7 +1847,7 @@ public class TvT
 	public static void sendFinalMessages()
 	{
 		if (_finished && !_aborted)
-			Announcements.getInstance().announceToAll("TvT: Thank you For Participating At, " + "TVT Event.");
+			Announcements.getInstance().gameAnnounceToAll("TvT: Thank you For Participating At, " + "TVT Event.");
 	}
 
 	/**

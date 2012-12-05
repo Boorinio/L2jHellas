@@ -222,7 +222,7 @@ public class CTF
 	public static void AnnounceToPlayers(Boolean toall, String announce)
 	{
 		if (toall)
-			Announcements.getInstance().announceToAll(announce);
+			Announcements.getInstance().gameAnnounceToAll(announce);
 		else
 		{
 			CreatureSay cs = new CreatureSay(0, 2, "", "Announcements : " + announce);

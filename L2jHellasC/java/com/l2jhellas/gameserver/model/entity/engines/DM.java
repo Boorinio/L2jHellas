@@ -124,7 +124,7 @@ public class DM
 		
 		_joining = true;
 		spawnEventNpc(activeChar);
-		Announcements.getInstance().announceToAll(_eventName + "(DM): Joinable in " + _joiningLocationName + "!");
+		Announcements.getInstance().gameAnnounceToAll(_eventName + "(DM): Joinable in " + _joiningLocationName + "!");
 	}
 
 	private static boolean startJoinOk()
@@ -177,7 +177,7 @@ public class DM
 			return;
 		
 		_joining = false;
-		Announcements.getInstance().announceToAll(_eventName + "(DM): Teleport to team spot in 20 seconds!");
+		Announcements.getInstance().gameAnnounceToAll(_eventName + "(DM): Teleport to team spot in 20 seconds!");
 
 		setUserData();
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
@@ -237,7 +237,7 @@ public class DM
 		
 		_teleport = false;
 		sit();
-		Announcements.getInstance().announceToAll(_eventName + "(DM): Started. Go to kill your enemies!");
+		Announcements.getInstance().gameAnnounceToAll(_eventName + "(DM): Started. Go to kill your enemies!");
 		_started = true;
 	}
 
@@ -289,10 +289,10 @@ public class DM
 		processTopPlayer();
 
 		if (_topKills == 0)
-			Announcements.getInstance().announceToAll(_eventName + "(DM): No players win the match(nobody killed).");
+			Announcements.getInstance().gameAnnounceToAll(_eventName + "(DM): No players win the match(nobody killed).");
 		else
 		{
-			Announcements.getInstance().announceToAll(_eventName + "(DM): " + _topPlayer.getName() + " wins the match! " + _topKills + " kills.");
+			Announcements.getInstance().gameAnnounceToAll(_eventName + "(DM): " + _topPlayer.getName() + " wins the match! " + _topKills + " kills.");
 			rewardPlayer(activeChar);
 		}
 		
@@ -354,7 +354,7 @@ public class DM
 		_teleport = false;
 		_started = false;
 		unspawnEventNpc();
-		Announcements.getInstance().announceToAll(_eventName + "(DM): Match aborted!");
+		Announcements.getInstance().gameAnnounceToAll(_eventName + "(DM): Match aborted!");
 		teleportFinish();
 	}
 
@@ -715,7 +715,7 @@ public class DM
 	
 	public static void teleportFinish()
 	{
-		Announcements.getInstance().announceToAll(_eventName + "(DM): Teleport back to participation NPC in 20 seconds!");
+		Announcements.getInstance().gameAnnounceToAll(_eventName + "(DM): Teleport back to participation NPC in 20 seconds!");
 
 		removeUserData();
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
