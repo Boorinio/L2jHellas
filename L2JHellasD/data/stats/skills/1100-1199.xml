@@ -1070,9 +1070,9 @@
   11 11 10 10 10 10 10 10 10 10
   </table>
   <table name="#ench1Power">
-  20 20 20 20 20 21 21 21 21 21
-  21 22 22 22 22 22 22 23 23 23
-  23 23 23 24 24 24 24 24 24 25
+  40 41 42 43 44 45 46 47 48 49
+  50 51 52 53 54 55 56 57 58 59
+  60 61 62 63 64 65 66 67 68 69
   </table>
   <table name="#mpConsume_Init"> 8 9 10 11 11 11 12 12 13 13 13 14 14 </table>
   <table name="#mpConsume"> 31 35 38 41 43 44 46 48 49 51 52 53 55 </table>
@@ -1081,13 +1081,14 @@
   <set name="mpConsume" val="#mpConsume"/>
   <set name="save" val="4"/>
   <set name="magicLvl" val="#magicLvl"/>
-  <set name="power" val="20"/>
+  <set name="power" val="40"/>
   <set name="lvlDepend" val="1"/>
   <set name="target" val="TARGET_ONE"/>
   <set name="reuseDelay" val="150000"/>
   <set name="hitTime" val="6000"/>
   <set name="skillType" val="PARALYZE"/>
   <set name="isMagic" val="true"/>
+  <set name="isDebuff" val="true"/>
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="400"/>
   <set name="effectRange" val="900"/>
@@ -1095,7 +1096,7 @@
   <enchant2 name="mpConsume" val="#ench2MpConsume"/>
   <enchant2 name="mpInitialConsume" val="#ench2MpConsume_Init"/>
   <for>
-    <effect count="1" name="Paralyze" time="30" val="0"/>
+    <effect count="1" name="Paralyze" time="10" val="0"/>
   </for>
 </skill>
 <skill id="1171" levels="19" name="Blazing Circle" enchantLevels1="30" enchantLevels2="30" >

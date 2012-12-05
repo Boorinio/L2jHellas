@@ -837,10 +837,10 @@
 <skill id="325" levels="1" name="Strider Siege Assault">
   <!-- SHOULD WORK ONLY DURING SIEGE -->
   <table name="#itemConsumeCount"> 5 </table>
-  <set name="mpConsume" val="168"/>
+  <set name="mpConsume" val="151"/>
   <set name="itemConsumeId" val="3031"/>
   <set name="itemConsumeCount" val="#itemConsumeCount"/>
-  <set name="power" val="15005.0"/>
+  <set name="power" val="15005"/>
   <set name="target" val="TARGET_ONE"/>
   <set name="hitTime" val="1080"/>
   <set name="coolTime" val="720" />
@@ -849,7 +849,7 @@
   <set name="skillType" val="STRSIEGEASSAULT"/>
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="40"/>
-  <set name="effectRange" val="500"/>
+  <set name="effectRange" val="400"/>
   <for>
   </for>
 </skill>
@@ -1547,7 +1547,7 @@
   <set name="weaponsAllowed" val="18444"/>
   <set name="mpConsume" val="35"/>
   <set name="hpConsume" val="338"/>
-  <set name="power" val="2565"/>
+  <set name="power" val="3077"/>
   <set name="target" val="TARGET_ONE"/>
   <set name="skillType" val="PDAM"/>
   <set name="operateType" val="OP_ACTIVE"/>
@@ -1556,6 +1556,7 @@
   <set name="ignoreShld" val="true"/>
   <set name="overHit" val="true"/>
   <set name="SSBoost" val="2.0"/>
+  <set name="coolTime" val="100" />
   <set name="castRange" val="40"/>
   <set name="effectRange" val="400"/>
   <set name="effectType" val="STUN"/>

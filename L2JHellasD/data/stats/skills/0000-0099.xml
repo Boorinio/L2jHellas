@@ -1018,7 +1018,7 @@
   <set name="operateType" val="OP_TOGGLE"/>
   <set name="castRange" val="-1"/>
   <for>
-    <effect count="0x7fffffff" name="FakeDeath" time="5" val="35"/>
+    <effect count="0x7fffffff" name="FakeDeath" time="3" val="30"/>
   </for>
 </skill>
 <skill id="61" levels="3" name="Cure Bleeding">
