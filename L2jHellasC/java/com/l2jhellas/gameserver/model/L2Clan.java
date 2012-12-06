@@ -43,6 +43,7 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListAll;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListDeleteAll;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillListAdd;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
@@ -222,8 +223,13 @@ public class L2Clan
 		_members.put(leader.getName(), leader);
 	}
 
-	public void setNewLeader(L2ClanMember member)
+	public void setNewLeader(L2ClanMember member,L2PcInstance activeChar) 
 	{
+		 if (activeChar.isRiding() || activeChar.isFlying()) 
+		 {    
+			 activeChar.sendPacket(ActionFailed.STATIC_PACKET); 
+			 return; 
+	     }
 	    if (!getLeader().isOnline())
 	    {
 	    	return;
