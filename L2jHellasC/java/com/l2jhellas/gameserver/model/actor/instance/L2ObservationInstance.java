@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
+import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
@@ -49,6 +50,23 @@ public final class L2ObservationInstance extends L2FolkInstance
             String val = command.substring(13);
             StringTokenizer st = new StringTokenizer(val);
             st.nextToken(); // Bypass cost
+            if(Olympiad.getInstance().isRegistered(player) || player.isInOlympiadMode())
+            {
+                player.sendMessage("You already participated in Olympiad!");
+                return;
+            }
+
+            if(player._inEventTvT || player._inEventDM || player._inEventCTF)
+            {
+                player.sendMessage("You already participated in Event!");
+                return;
+            }
+
+            if(player.isInCombat() || player.getPvpFlag() > 0)
+            {
+                player.sendMessage("You are in combat now!");
+                return;
+            }
 
             if (SiegeManager.getInstance().getSiege(Integer.parseInt(st.nextToken()),
                                                          Integer.parseInt(st.nextToken()),
@@ -60,6 +78,23 @@ public final class L2ObservationInstance extends L2FolkInstance
         }
         else if (command.startsWith("observe"))
         {
+        	 if(Olympiad.getInstance().isRegistered(player) || player.isInOlympiadMode())
+             {
+                 player.sendMessage("You already participated in Olympiad!");
+                 return;
+             }
+
+             if(player._inEventTvT || player._inEventDM || player._inEventCTF)
+             {
+                 player.sendMessage("You already participated in Event!");
+                 return;
+             }
+
+             if(player.isInCombat() || player.getPvpFlag() > 0)
+             {
+                 player.sendMessage("You are in combat now!");
+                 return;
+             }
             doObserve(player, command.substring(8));
         }
         else
