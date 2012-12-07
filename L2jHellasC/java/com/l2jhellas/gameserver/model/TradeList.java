@@ -217,15 +217,35 @@ public class TradeList
      * @param item : L2ItemInstance to be adjusted
      * @return TradeItem representing adjusted item
      */
-    public TradeItem adjustAvailableItem(L2ItemInstance item)
-    {
-        if (item.isStackable())
-            for (TradeItem exclItem : _items)
-                if (exclItem.getItem().getItemId() == item.getItemId())
-                    if (item.getCount() <= exclItem.getCount()) return null;
-                    else return new TradeItem(item, item.getCount() - exclItem.getCount(), item.getReferencePrice());
-        return new TradeItem(item, item.getCount(), item.getReferencePrice());
-    }
+    public TradeItem adjustAvailableItem(L2ItemInstance item) 
+ 	    { 
+ 		        if (item.isStackable()) 
+ 		        { 
+ 		            for (TradeItem exclItem : _items) 
+ 		            { 
+ 		                if (exclItem.getItem().getItemId() == item.getItemId()) 
+ 		                { 
+ 		                    if (item.getCount() <= exclItem.getCount()) 
+ 		                    { 
+ 		                        return null; 
+ 		                    } 
+ 		 
+ 		                    return new TradeItem(item, item.getCount() - exclItem.getCount(), item.getReferencePrice()); 
+ 		                } 
+ 		            } 
+ 		        } 
+ 		        else 
+ 		        { 
+ 		            for (TradeItem exclItem : _items) 
+ 		            { 
+ 		                if (item.getObjectId() == exclItem.getObjectId()) 
+ 	                { 
+ 		                    return null; 
+ 		                } 
+ 		            } 
+ 		        } 
+ 		        return new TradeItem(item, item.getCount(), item.getReferencePrice()); 
+     } 
 
     /**
      * Adjust ItemRequest by corresponding item in this list using its <b>ObjectId</b>

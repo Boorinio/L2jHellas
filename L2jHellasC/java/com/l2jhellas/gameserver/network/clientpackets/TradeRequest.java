@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -137,6 +138,12 @@ public final class TradeRequest extends L2GameClientPacket
      	 	player.sendPacket(sm); 
      	 	return; 
      	} 
+     	if(BlockList.isBlocked(partner, player)) 
+     		
+     	{  
+     		player.sendMessage("Target has added you in his/her blocklist.");  
+     		return;  
+     	}  
      	
      	if (partner.getAllowTrade() == false)
      	{  
