@@ -364,11 +364,12 @@ public class CharStatus
             double maxHp = getActiveChar().getStat().getMaxHp();
 
             if (newHp >= maxHp)
+            	if (getActiveChar().isKilledAlready()) return; 
+         	 if (newHp >= maxHp) 
             {
                 // Set the RegenActive flag to false
                 _currentHp = maxHp;
                 _flagsRegenActive &= ~REGEN_FLAG_HP;
-                getActiveChar().setIsKilledAlready(false);
 
                 // Stop the HP/MP/CP Regeneration task
                 if (_flagsRegenActive == 0) stopHpMpRegeneration();

@@ -1672,9 +1672,11 @@ public abstract class L2Character extends L2Object
 	/** Sets HP, MP and CP and revives the L2Character. */
 	public void doRevive()
 	{
+		if (!isKilledAlready()) return; 
 		if (!isTeleporting())
 		{
 			setIsPendingRevive(false);
+			setIsKilledAlready(false); 
 			
 			if (Config.MOD_GVE_ENABLE_FACTION && this.isDead())
 			{
@@ -1955,10 +1957,12 @@ public abstract class L2Character extends L2Object
 	 * Return True if the L2Character can't move (stun, root, sleep, overload,
 	 * paralyzed).
 	 */
-	public boolean isMovementDisabled()
-	{
-		return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImmobilized() || isFakeDeath();
-	}
+	public boolean isMovementDisabled()  
+ 		        {  
+ 		                // check for isTeleporting to prevent teleport cheating (if appear packet not received) 
+ 		                return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed()  
+ 		                        || isImmobilized() || isFakeDeath() || isTeleporting();  
+ 		        } 
 
 	/**
 	 * Return True if the L2Character can be controlled by the player (confused,
