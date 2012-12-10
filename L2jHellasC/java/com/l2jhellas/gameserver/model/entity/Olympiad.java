@@ -1831,7 +1831,7 @@ public class Olympiad
 				ip1 = _playerOne.getClient().getConnection().getInetAddress().getHostAddress();
 			if (_playerTwo != null && _playerTwo.isOnline() != 0)
 				ip2 = _playerTwo.getClient().getConnection().getInetAddress().getHostAddress();
-			if (ip1 == ip2)
+			if (ip1 == ip2 && !Config.OLY_SAME_IP)
 			{
 				_log.config("Match from same ip " + _playerOneName + "(IP : " + _playerOne.getClient().getConnection().getInetAddress() + " )" +  " vs " + _playerTwoName + "(IP : " + _playerOne.getClient().getConnection().getInetAddress()+ " )"    );
 				@SuppressWarnings("unused")
