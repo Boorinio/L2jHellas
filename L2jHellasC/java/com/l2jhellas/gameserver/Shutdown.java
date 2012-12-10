@@ -438,8 +438,9 @@ public class Shutdown extends Thread
 		} catch (Throwable t) 
 		{
 			_log.log(Level.INFO, "", t);
-		}
-
+		}		
+		TimeCounter tc = new TimeCounter(); 
+	 	TimeCounter tc1 = new TimeCounter(); 
 		// we cannt abort shutdown anymore, so i removed the "if"
 		disconnectAllCharacters();
 
@@ -454,36 +455,36 @@ public class Shutdown extends Thread
      	RaidBossSpawnManager.getInstance().cleanUp(); 
      	_log.info("RaidBossSpawnManager: All RBoss info saved!!"); 
      	GrandBossManager.getInstance().cleanUp(); 
-     	_log.info("GrandBossManager: All GBoss info saved!!");
+     	_log.info("GrandBossManager: All GBoss info saved!!("+tc.getEstimatedTimeAndRestartCounter()+"ms");
         TradeController.getInstance().dataCountStore();
-        System.err.println("TradeController: All count Item Saved");
+        System.err.println("TradeController: All count Item Saved("+tc.getEstimatedTimeAndRestartCounter()+"ms).");
         try
         {
             Olympiad.getInstance().save();
         }
         catch(Exception e){e.printStackTrace();}
-        System.err.println("Olympiad System: Data saved!!");
-        
+        System.err.println("Olympiad System: Data saved!!("+tc.getEstimatedTimeAndRestartCounter()+"ms).");
         // Save Cursed Weapons data before closing.
         CursedWeaponsManager.getInstance().saveData();
-        
         // Save all manor data
         CastleManorManager.getInstance().save();
-        
         // Save all global (non-player specific) Quest data that needs to persist after reboot
         QuestManager.getInstance().save();
 		// Start Hitman Event.
 		if(Hitman.start())
+		{
 			Hitman.getInstance().save();
+		System.out.println("Hitman: List Saved.("+tc.getEstimatedTimeAndRestartCounter()+"ms).");
+		}		
         //Save items on ground before closing
         if(Config.SAVE_DROPPED_ITEM)
         {
         ItemsOnGroundManager.getInstance().saveInDb();        
         ItemsOnGroundManager.getInstance().cleanUp();
-        System.err.println("ItemsOnGroundManager: All items on ground saved!!");
+        System.err.println("ItemsOnGroundManager: All items on ground saved!!("+tc.getEstimatedTimeAndRestartCounter()+"ms).");
         }
-		System.err.println("Data saved. All players disconnected, shutting down.");
-		
+		System.err.println("Data saved. All players disconnected, shutting down.("+tc.getEstimatedTimeAndRestartCounter()+"ms).");
+		System.err.println("The server has been successfully shut down in "+tc1.getEstimatedTime()+" ms."); 
 		try {
 			int delay = 5000;
 			Thread.sleep(delay);
@@ -493,6 +494,37 @@ public class Shutdown extends Thread
 			//never happens :p
 		}
 	}
+	/** 
+ 		         * A simple class used to track down the estimated time of method executions. 
+ 		         * Once this class is created, it saves the start time, and when you want to get 
+ 		         * the estimated time, use the getEstimatedTime() method. 
+     */ 
+ 		        private static final class TimeCounter 
+ 		        { 
+ 	                private long _startTime; 
+ 		                 
+ 		                private TimeCounter() 
+ 		                { 
+ 		                        restartCounter(); 
+ 	                } 
+ 		                 
+ 		                private void restartCounter() 
+ 		                { 
+ 	                        _startTime = System.currentTimeMillis(); 
+ 		                } 
+ 	                 
+ 	                private long getEstimatedTimeAndRestartCounter() 
+ 		                { 
+ 		                        final long toReturn = System.currentTimeMillis() - _startTime; 
+ 		                        restartCounter(); 
+ 		                        return toReturn; 
+ 		                } 
+ 		                 
+ 		                private long getEstimatedTime() 
+ 		                { 
+                         return System.currentTimeMillis() - _startTime; 
+ 	                } 
+ 		        } 
 
 	/**
 	 * this disconnects all clients from the server

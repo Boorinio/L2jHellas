@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.concurrent.locks.ReentrantLock; 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -152,6 +153,7 @@ public abstract class L2Character extends L2Object
 	protected boolean _showSummonAnimation                  = false;
 	protected boolean _isTeleporting                        = false;
 	private L2Character _lastBuffer							= null;
+	private ReentrantLock _teleportLock; 
 	protected boolean _isInvul                              = false;
 	private int _lastHealAmount								= 0;
 	private CharStat _stat;
@@ -171,6 +173,8 @@ public abstract class L2Character extends L2Object
 	
 	/** FastMap containing the active chance skills on this character */
 	protected ChanceSkillList _chanceSkills;
+	
+	 
 
 	/** Zone system */
 	public static final int ZONE_PVP = 1;
@@ -292,15 +296,25 @@ public abstract class L2Character extends L2Object
 		this.revalidateZone();
 	}
 
-	public void onTeleported()
+	public void onTeleported()	
 	{
+		_teleportLock = new ReentrantLock();
+		 
+		if (!_teleportLock.tryLock()) 
+		 	return; 
+		 	 try 
+		 	 {
 		if (!isTeleporting())
 			return;
 		
 		spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
 
 		setIsTeleporting(false);
-		
+		 	 }
+		 	finally 
+		 	 { 
+		   _teleportLock.unlock(); 
+		 	 }
 		if (_isPendingRevive)
 			doRevive();
 
@@ -2117,6 +2131,7 @@ public abstract class L2Character extends L2Object
 	public void setIsInvul(boolean b)
 	{
 		_isInvul = b;
+
 	}
 	
 	public boolean isInvul()
@@ -4316,7 +4331,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final boolean isInCombat()
 	{
-		return (getAI().getAttackTarget() != null);
+		return hasAI() && (getAI().getAttackTarget() != null || getAI().isAutoAttacking()); 
 	}
 	
 	/**

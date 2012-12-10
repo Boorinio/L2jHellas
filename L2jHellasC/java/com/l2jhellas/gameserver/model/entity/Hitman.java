@@ -166,7 +166,7 @@ public class Hitman
                 {
                         _log.warning("Hitman: "+e);
                 }
-                System.out.println("Hitman: List Saved.");
+                
         }
         
         public void putHitOn(L2PcInstance client, String playerName, int bounty)
