@@ -281,6 +281,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile(filename);
 				html.replace("%objectId%", String.valueOf(getObjectId()));
+				html.replace("%npcId%", String.valueOf(getNpcId())); 
 				html.replace("%npcname%", getName());
 				html.replace("%tax_income%", Util.formatAdena(getCastle().getTreasury()));
 				html.replace("%withdraw_amount%", Util.formatAdena(amount));

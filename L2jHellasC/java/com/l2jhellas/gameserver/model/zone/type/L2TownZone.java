@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.MapRegionTable; 
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
@@ -127,10 +128,9 @@ public class L2TownZone extends L2ZoneType
 	 * Returns this town zones name
 	 * @return
 	 */
-	@Deprecated
 	public String getName()
 	{
-		return _townName;
+		return MapRegionTable.getInstance().getClosestTownName(_townId); 
 	}
 
 	/**

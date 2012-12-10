@@ -228,12 +228,25 @@ public class MapRegionTable
         return getMapRegion(activeChar.getX(), activeChar.getY());
     }
 
+	/** 
+ 	 * Get town name by character position 
+ 	 * @param activeChar 
+ 	 * @return String 
+ 	 */ 
     public String getClosestTownName(L2Character activeChar)
     {
-        int nearestTownId = getMapRegion(activeChar.getX(), activeChar.getY());
-        String nearestTown;
-
-        switch (nearestTownId)
+    	return getClosestTownName(getMapRegion(activeChar.getX(), activeChar.getY())); 
+    } 
+     	 
+     		        /** 
+     		         * Get town name by town id 
+     		         * @param townId 
+     		         * @return String 
+     		         */ 
+     	        public String getClosestTownName(int townId)     
+     	        { 
+                     String nearestTown = null; 
+     		                switch (townId) 
         {
             case 0: nearestTown = "Talking Island Village"; break;
             case 1: nearestTown = "Elven Village"; break;
