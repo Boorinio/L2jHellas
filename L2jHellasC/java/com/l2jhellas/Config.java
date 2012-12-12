@@ -366,11 +366,6 @@ public final class Config
 	/** View npc stats/drop by shift-cliking it for nongm-players */
 	public static boolean USE_3D_MAP;
 	/** Use 3D Map ? */
-	public static boolean ALLOW_DUALBOX /**
-	 * Allow to log in with more than one
-	 * account per ip
-	 */
-	;
 	public static boolean ALLOW_HIT_OWNER;
 	/** Allows summons/pets hit its' master */
 	public static byte FRONT_BLOW_SUCCESS;
@@ -666,7 +661,6 @@ public final class Config
 	/** Wedding system */
 	public static boolean MOD_WEDDING_ANNOUNCE;
 	/** Announce The Wedding? */
-	public static boolean ALLOW_LHE_EVENT;
 	/* ----------------------------------------------------------- */
 	public static boolean BANKING_SYSTEM_ENABLED;
 	/** Banking system */
@@ -1553,6 +1547,11 @@ public final class Config
 	/** Maximum number of characters per account */
 	public static int MAXIMUM_ONLINE_USERS;
 	/** Maximum number of players allowed to play simultaneously on server */
+	public static boolean ALLOW_DUALBOX;
+	/**
+	 * Allow to log in with more than one
+	 * account per ip
+	 */
 	public static int MIN_PROTOCOL_REVISION;
 	/** Minimal protocol revision */
 	public static int MAX_PROTOCOL_REVISION;
@@ -1826,7 +1825,6 @@ public final class Config
 				BUFFS_MAX_AMOUNT = Byte.parseByte(altSettings.getProperty("MaxBuffAmount", "24"));
 				ALT_GAME_VIEWNPC = Boolean.parseBoolean(altSettings.getProperty("AltGameViewNpc", "False"));
 				USE_3D_MAP = Boolean.valueOf(altSettings.getProperty("Use3DMap", "False"));
-				ALLOW_DUALBOX = Boolean.parseBoolean(altSettings.getProperty("AllowDualBox", "True"));
 				ALLOW_HIT_OWNER = Boolean.valueOf(altSettings.getProperty("AllowHitOwner", "True"));
 				FRONT_BLOW_SUCCESS = Byte.parseByte(altSettings.getProperty("FrontBlow", "40"));
 				BACK_BLOW_SUCCESS = Byte.parseByte(altSettings.getProperty("BackBlow", "60"));
@@ -2556,8 +2554,6 @@ public final class Config
 				VIP_MIN_PARTICIPANTS = Integer.parseInt(EventSettings.getProperty("VIPMinParticipants", "10"));
 				if (VIP_MIN_PARTICIPANTS < 10)
 					VIP_MIN_PARTICIPANTS = 10; // can't be set less then lvl 10
-					
-				ALLOW_LHE_EVENT = Boolean.parseBoolean(EventSettings.getProperty("Allowlhe", "false"));
 				
 				FIRST_TVT_DELAY = Integer.parseInt(EventSettings.getProperty("FirstEventDelay", "10"));
 				TVT_AURA = Boolean.parseBoolean(EventSettings.getProperty("TvTAura", "true"));
@@ -2883,6 +2879,7 @@ public final class Config
 				MAXIMUM_ONLINE_USERS = Integer.parseInt(serverSettings.getProperty("MaximumOnlineUsers", "100"));
 				MIN_PROTOCOL_REVISION = Integer.parseInt(serverSettings.getProperty("MinProtocolRevision", "660"));
 				MAX_PROTOCOL_REVISION = Integer.parseInt(serverSettings.getProperty("MaxProtocolRevision", "665"));
+				ALLOW_DUALBOX = Boolean.parseBoolean(serverSettings.getProperty("AllowDualBox", "True"));
 				ENABLE_PACKET_PROTECTION = Boolean.parseBoolean(serverSettings.getProperty("PacketProtection", "False"));
 				MAX_UNKNOWN_PACKETS = Integer.parseInt(serverSettings.getProperty("UnknownPacketsBeforeBan", "5"));
 				UNKNOWN_PACKETS_PUNISHMENT = Integer.parseInt(serverSettings.getProperty("UnknownPacketsPunishment", "2"));

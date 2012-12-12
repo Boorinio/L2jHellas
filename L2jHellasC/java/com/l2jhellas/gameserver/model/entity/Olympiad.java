@@ -1826,13 +1826,14 @@ public class Olympiad
 
 			String ip1 = "";
 			String ip2 = "";
-				
+			
+	if(ip1 == ip2 && !Config.OLY_SAME_IP)
+		{
 			if (_playerOne != null && _playerOne.isOnline() != 0)
 				ip1 = _playerOne.getClient().getConnection().getInetAddress().getHostAddress();
 			if (_playerTwo != null && _playerTwo.isOnline() != 0)
-				ip2 = _playerTwo.getClient().getConnection().getInetAddress().getHostAddress();
-			if (ip1 == ip2 && !Config.OLY_SAME_IP)
-			{
+				ip2 = _playerTwo.getClient().getConnection().getInetAddress().getHostAddress();	
+			
 				_log.config("Match from same ip " + _playerOneName + "(IP : " + _playerOne.getClient().getConnection().getInetAddress() + " )" +  " vs " + _playerTwoName + "(IP : " + _playerOne.getClient().getConnection().getInetAddress()+ " )"    );
 				@SuppressWarnings("unused")
 				String gmBroadcastMsg = "";
@@ -1841,11 +1842,12 @@ public class Olympiad
 				_sm = new SystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
 				broadcastMessage(_sm, true);
 				_playerOne.sendMessage("Match suspected of Illegal Violation: GM informed!");
-				_playerTwo.sendMessage("Match suspected of Illegal Violation: GM informed!");
-			}
-				
+				_playerTwo.sendMessage("Match suspected of Illegal Violation: GM informed!");			
+			}			
+	else
+	{
             if ( !Olympiad.getInstance().playerInStadia(_playerTwo) || _playerTwo.isOnline() == 0 || playerTwoHp==0 || hpDiffOne < hpDiffTwo)
-    		{
+            {
             	int pointDiff;
             	pointDiff = (playerTwoPoints / 3);
     			playerOneStat.set(POINTS, playerOnePoints + pointDiff);
@@ -1873,7 +1875,7 @@ public class Olympiad
         			sm.addNumber(30);
         			_playerOne.sendPacket(sm);
                 } catch (Exception e) { }
-    		}
+            }
             else if ( !Olympiad.getInstance().playerInStadia(_playerOne) || _playerOne.isOnline() == 0 || playerOneHp==0 || hpDiffOne > hpDiffTwo)
     		{
             	int pointDiff;
@@ -1924,8 +1926,8 @@ public class Olympiad
             _sm = new SystemMessage(SystemMessageId.YOU_WILL_GO_BACK_TO_THE_VILLAGE_IN_S1_SECOND_S);
             _sm.addNumber(20);
             broadcastMessage(_sm, true);
-    	}
-    	
+	}
+    }
     	protected void additions()
     	{
     		for (L2PcInstance player : _players)
