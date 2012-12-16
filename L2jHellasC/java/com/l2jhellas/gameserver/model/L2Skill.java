@@ -1116,7 +1116,8 @@ public abstract class L2Skill
      * @param activeChar The L2Character who use the skill
      *
      */
-    public final L2Object[] getTargetList(L2Character activeChar, boolean onlyFirst)
+	@SuppressWarnings("incomplete-switch")
+	public final L2Object[] getTargetList(L2Character activeChar, boolean onlyFirst)
     {
         List<L2Character> targetList = new FastList<L2Character>();
 

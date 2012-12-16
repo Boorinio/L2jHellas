@@ -102,7 +102,7 @@ public class L2Spawn
 	{
 		//L2NpcInstance _instance;
 		//int _objId;
-        private L2NpcInstance _oldNpc;
+        private final L2NpcInstance _oldNpc;
 
 		public SpawnTask(/*int objid*/L2NpcInstance pOldNpc)
 		{
@@ -110,6 +110,7 @@ public class L2Spawn
             _oldNpc = pOldNpc;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -148,7 +149,7 @@ public class L2Spawn
 	 * @param mobTemplate The L2NpcTemplate to link to this L2Spawn
 	 *
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public L2Spawn(L2NpcTemplate mobTemplate) throws SecurityException, ClassNotFoundException, NoSuchMethodException
 	{
 		// Set the _template of the L2Spawn

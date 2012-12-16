@@ -54,9 +54,11 @@ public class Disablers implements ISkillHandler
 	
 	protected static final Logger _log = Logger.getLogger(L2Skill.class.getName());
 	private String[] _negateStats = null;
-	private float _negatePower = 0.f;
+	private final float _negatePower = 0.f;
 	private int _negateId = 0;
 	
+	@Override
+	@SuppressWarnings("incomplete-switch")
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2SkillType type = skill.getSkillType();
@@ -646,6 +648,7 @@ public class Disablers implements ISkillHandler
 			}
 	}
 	
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

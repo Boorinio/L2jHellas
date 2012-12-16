@@ -484,7 +484,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private SystemMessageId _noDuelReason = SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL;
 	
 	/** Rank PvP System */
-	private RankPvpSystem _RankPvpSystem = null;
+	// private RankPvpSystem _RankPvpSystem = null;
 	public RankPvpSystemDeathMgr _RankPvpSystemDeathMgr = null;
 	public RankPvpSystemPointsReward _RankPvpSystemPointsReward = null;
 	
@@ -5118,16 +5118,12 @@ public final class L2PcInstance extends L2PlayableInstance
 			@SuppressWarnings("unused")
 			boolean playerKill = false;
 			// Custom PvP System
-			if (ExternalConfig.RANK_PVP_ENABLED || ExternalConfig.RANK_PVP_REWARD_ENABLED || ExternalConfig.RANK_ENABLED)
+			if (ExternalConfig.CUSTOM_PVP_ENABLED || ExternalConfig.CUSTOM_PVP_REWARD_ENABLED || ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
 			{
-				if (_RankPvpSystem == null)
-				{
-					_RankPvpSystem = new RankPvpSystem();
-				}
-				
 				if (killer != null && killer instanceof L2PcInstance)
 				{
-					_RankPvpSystem.doRankPvp((L2PcInstance) killer, this);
+					RankPvpSystem cps = new RankPvpSystem((L2PcInstance) killer, this);
+					cps.doPvp();
 				}
 			}
 			if (pk != null && pk._inEventTvT && _inEventTvT)
@@ -5653,7 +5649,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void increasePvpKills()
 	{
-		if ((TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF) || !ExternalConfig.RANK_PVP_LEGAL_COUNTER_ALTT_ENABLED)
+		if ((TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF) || !ExternalConfig.CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED)
 			return;
 		
 		// Add karma to attacker and increase its PK counter
@@ -8584,6 +8580,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private class SchedChatUnban implements Runnable
 	{
 		L2PcInstance _player;
+		@SuppressWarnings("unused")
 		protected long _startedAt;
 		
 		protected SchedChatUnban(L2PcInstance player)
@@ -11616,6 +11613,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * connection with the client</li><BR>
 	 * <BR>
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public void deleteMe()
 	{
 		// Check if the L2PcInstance is in observer mode to set its position to
@@ -12466,6 +12464,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private class JailTask implements Runnable
 	{
 		L2PcInstance _player;
+		@SuppressWarnings("unused")
 		protected long _startedAt;
 		
 		protected JailTask(L2PcInstance player)
@@ -12921,6 +12920,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * @param delayInMinutes
 	 *        0 - Indefinite
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public void setPunishLevel(PunishLevel state, int delayInMinutes)
 	{
 		long delayInMilliseconds = delayInMinutes * 60000L;
@@ -13074,6 +13074,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private class PunishTask implements Runnable
 	{
 		L2PcInstance _player;
+		@SuppressWarnings("unused")
 		protected long _startedAt;
 		
 		protected PunishTask(L2PcInstance player)

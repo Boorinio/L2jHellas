@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class RestartTheServer
 {
-
 	public static void playerRestart(L2PcInstance activeChar, boolean restart)
 	{
 		RestartVoteVariable e = new RestartVoteVariable();

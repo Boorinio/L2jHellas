@@ -57,7 +57,7 @@ public class RecipeController
 	protected static final Logger _log = Logger.getLogger(RecipeController.class.getName());
 
 	private static RecipeController _instance;
-	private Map<Integer, L2RecipeList> _lists;
+	private final Map<Integer, L2RecipeList> _lists;
 	protected static final Map<L2PcInstance, RecipeItemMaker> _activeMakers = Collections.synchronizedMap(new WeakHashMap<L2PcInstance, RecipeItemMaker>());
 
 	public static RecipeController getInstance()
@@ -321,6 +321,7 @@ public class RecipeController
 		protected double _manaRequired;
 		protected int _price;
 		protected int _totalItems;
+		@SuppressWarnings("unused")
 		protected int _materialsRefPrice;
 		protected int _delay;
 
@@ -444,6 +445,7 @@ public class RecipeController
 			_isValid = true;
 		}
 
+		@Override
 		public void run()
 		{
 			if (!Config.IS_CRAFTING_ENABLED)
@@ -699,11 +701,11 @@ public class RecipeController
 		 */
 		private class TempItem
 		{ // no object id stored, this will be only "list" of items with it's owner
-			private int _itemId;
+			private final int _itemId;
 			private int _quantity;
-			private int _ownerId;
-			private int _referencePrice;
-			private String _itemName;
+			private final int _ownerId;
+			private final int _referencePrice;
+			private final String _itemName;
 
 			/**
 			 * @param item
@@ -751,6 +753,7 @@ public class RecipeController
 			/**
 			 * @return Returns the ownerId.
 			 */
+			@SuppressWarnings("unused")
 			public int getOwnerId()
 			{
 				return _ownerId;

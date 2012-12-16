@@ -132,7 +132,6 @@ public abstract class L2Item
 	private final boolean _destroyable;
 	private final boolean _tradeable;
 
-	@SuppressWarnings("unchecked")
 	protected final Enum _type;
 
 	protected FuncTemplate[] _funcTemplates;
@@ -160,7 +159,6 @@ public abstract class L2Item
 	 * @param type : Enum designating the type of the item
 	 * @param set : StatsSet corresponding to a set of couples (key,value) for description of the item
 	 */
-	@SuppressWarnings("unchecked")
 	protected L2Item(Enum type, StatsSet set)
 	{
 		_type = type;
@@ -187,7 +185,6 @@ public abstract class L2Item
 	 * Returns the itemType.
 	 * @return Enum
 	 */
-	@SuppressWarnings("unchecked")
 	public Enum getItemType()
 	{
 		return _type;

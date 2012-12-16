@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
-import java.util.concurrent.locks.ReentrantLock; 
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -174,8 +174,6 @@ public abstract class L2Character extends L2Object
 	/** FastMap containing the active chance skills on this character */
 	protected ChanceSkillList _chanceSkills;
 	
-	 
-
 	/** Zone system */
 	public static final int ZONE_PVP = 1;
 	public static final int ZONE_PEACE = 2;
@@ -199,6 +197,7 @@ public abstract class L2Character extends L2Object
 	{
 		return ((_currentZones & zone) != 0);
 	}
+
 	public void setInsideZone(int zone, boolean state)
 	{
 		if (state)
@@ -334,9 +333,10 @@ public abstract class L2Character extends L2Object
 	 * Add L2Character instance that is attacking to the attacker list.<BR><BR>
 	 * @param player The L2Character that attcks this one
 	 */
-	public void addAttackerToAttackByList (L2Character player)
+	public void addAttackerToAttackByList(L2Character player)
 	{
-		if (player == null || player == this || getAttackByList() == null || getAttackByList().contains(player)) return;
+		if (player == null || player == this || getAttackByList() == null || getAttackByList().contains(player))
+			return;
 		getAttackByList().add(player);
 	}
 
@@ -367,8 +367,11 @@ public abstract class L2Character extends L2Object
 						player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
         		}
 				//if(Config.DEVELOPER && !isInsideRadius(player, 3500, false, false)) _log.warning("broadcastPacket: Too far player see event!");
-        	} catch (NullPointerException e) { }
-        }
+			}
+			catch (NullPointerException e)
+			{
+			}
+		}
 	}
 
 	/**
@@ -386,20 +389,24 @@ public abstract class L2Character extends L2Object
 
 		//if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
 
-        for (L2PcInstance player : getKnownList().getKnownPlayers().values())
-        {
-        	try
-        	{
-        		if (!isInsideRadius(player, radiusInKnownlist, false, false)) continue;
-        		player.sendPacket(mov);
+		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+		{
+			try
+			{
+				if (!isInsideRadius(player, radiusInKnownlist, false, false))
+					continue;
+				player.sendPacket(mov);
 				if (mov instanceof CharInfo && this instanceof L2PcInstance)
 				{
-        			int relation = ((L2PcInstance)this).getRelation(player);
-        			if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
-        				player.sendPacket(new RelationChanged((L2PcInstance)this, relation, player.isAutoAttackable(this)));
-        		}
-        	} catch (NullPointerException e) {}
-        }
+					int relation = ((L2PcInstance) this).getRelation(player);
+					if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
+						player.sendPacket(new RelationChanged((L2PcInstance) this, relation, player.isAutoAttackable(this)));
+				}
+			}
+			catch (NullPointerException e)
+			{
+			}
+		}
 	}
 
 	/**
@@ -409,30 +416,30 @@ public abstract class L2Character extends L2Object
 	protected boolean needHpUpdate(int barPixels)
 	{
 		double currentHp = getCurrentHp();
-
-	    if (currentHp <= 1.0 || getMaxHp() < barPixels)
-	        return true;
-
-	    if (currentHp <= _hpUpdateDecCheck || currentHp >= _hpUpdateIncCheck)
-	    {
-	    	if (currentHp == getMaxHp())
-	    	{
-	    		_hpUpdateIncCheck = currentHp + 1;
-	    		_hpUpdateDecCheck = currentHp - _hpUpdateInterval;
-	    	}
-	    	else
-	    	{
-	    		double doubleMulti = currentHp / _hpUpdateInterval;
-		    	int intMulti = (int)doubleMulti;
-
-	    		_hpUpdateDecCheck = _hpUpdateInterval * (doubleMulti < intMulti ? intMulti-- : intMulti);
-	    		_hpUpdateIncCheck = _hpUpdateDecCheck + _hpUpdateInterval;
-	    	}
-
-	    	return true;
-	    }
-
-	    return false;
+		
+		if (currentHp <= 1.0 || getMaxHp() < barPixels)
+			return true;
+		
+		if (currentHp <= _hpUpdateDecCheck || currentHp >= _hpUpdateIncCheck)
+		{
+			if (currentHp == getMaxHp())
+			{
+				_hpUpdateIncCheck = currentHp + 1;
+				_hpUpdateDecCheck = currentHp - _hpUpdateInterval;
+			}
+			else
+			{
+				double doubleMulti = currentHp / _hpUpdateInterval;
+				int intMulti = (int) doubleMulti;
+				
+				_hpUpdateDecCheck = _hpUpdateInterval * (doubleMulti < intMulti ? intMulti-- : intMulti);
+				_hpUpdateIncCheck = _hpUpdateDecCheck + _hpUpdateInterval;
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 
 	/**
@@ -451,7 +458,8 @@ public abstract class L2Character extends L2Object
 	 */
 	public void broadcastStatusUpdate()
 	{
-		if (getStatus().getStatusListener().isEmpty()) return;
+		if (getStatus().getStatusListener().isEmpty())
+			return;
 
 		if (!needHpUpdate(352))
 			return;
@@ -461,8 +469,8 @@ public abstract class L2Character extends L2Object
 
 		// Create the Server->Client packet StatusUpdate with current HP and MP
 		StatusUpdate su = new StatusUpdate(getObjectId());
-		su.addAttribute(StatusUpdate.CUR_HP, (int)getCurrentHp());
-		su.addAttribute(StatusUpdate.CUR_MP, (int)getCurrentMp());
+		su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
+		su.addAttribute(StatusUpdate.CUR_MP, (int) getCurrentMp());
 
 		// Go through the StatusListener
 		// Send the Server->Client packet StatusUpdate with current HP and MP
@@ -471,7 +479,13 @@ public abstract class L2Character extends L2Object
 		{
 			for (L2Character temp : getStatus().getStatusListener())
 			{
-				try { temp.sendPacket(su); } catch (NullPointerException e) {}
+				try
+				{
+					temp.sendPacket(su);
+				}
+				catch (NullPointerException e)
+				{
+				}
 			}
 		}
 	}
@@ -694,44 +708,46 @@ public abstract class L2Character extends L2Object
 		// Check for a bow
 		if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.BOW))
 		{
-			//Check for arrows and MP
+			// Check for arrows and MP
 			if (this instanceof L2PcInstance)
 			{
 				// Checking if target has moved to peace zone - only for player-bow attacks at the moment 
 	 	        // Other melee is checked in movement code and for offensive spells a check is done every time 
-	 	    if (target.isInsidePeaceZone((L2PcInstance)this)) 
-	 	        { 
-	 	        getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE); 
-	 	        sendPacket(new ActionFailed()); 
-	 	        return; 
-	 	      }
+				if (target.isInsidePeaceZone((L2PcInstance) this))
+				{
+					getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+					sendPacket(new ActionFailed());
+					return;
+				}
 				
 				// Verify if the bow can be use
 				if (_disableBowAttackEndTime <= GameTimeController.getGameTicks())
 				{
-				    // Verify if L2PcInstance owns enough MP
-					int saMpConsume = (int)getStat().calcStat(Stats.MP_CONSUME, 0, null, null);
+					// Verify if L2PcInstance owns enough MP
+					int saMpConsume = (int) getStat().calcStat(Stats.MP_CONSUME, 0, null, null);
 					int mpConsume = saMpConsume == 0 ? weaponItem.getMpConsume() : saMpConsume;
-
-				    if (getCurrentMp() < mpConsume)
-				    {
-				        // If L2PcInstance doesn't have enough MP, stop the attack
-
-				        ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), 1000);
-
-				        sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
-				        sendPacket(new ActionFailed());
-				        return;
-				    }
-				    // If L2PcInstance have enough MP, the bow consummes it
-				    getStatus().reduceMp(mpConsume);
+					
+					if (getCurrentMp() < mpConsume)
+					{
+						// If L2PcInstance doesn't have enough MP, stop the
+						// attack
+						
+						ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), 1000);
+						
+						sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
+						sendPacket(new ActionFailed());
+						return;
+					}
+					// If L2PcInstance have enough MP, the bow consummes it
+					getStatus().reduceMp(mpConsume);
 
 					// Set the period of bow non re-use
 					_disableBowAttackEndTime = 5 * GameTimeController.TICKS_PER_SECOND + GameTimeController.getGameTicks();
 				}
 				else
 				{
-					// Cancel the action because the bow can't be re-use at this moment
+					// Cancel the action because the bow can't be re-use at this
+					// moment
 					ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), 1000);
 
 					sendPacket(new ActionFailed());
@@ -752,7 +768,7 @@ public abstract class L2Character extends L2Object
 			else if (this instanceof L2NpcInstance)
 			{
 				if (_disableBowAttackEndTime > GameTimeController.getGameTicks())
-				    return;
+					return;
 			}
 		}
 
@@ -1199,6 +1215,7 @@ public abstract class L2Character extends L2Object
 	 * @param skill The L2Skill to use
 	 *
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public void doCast(L2Skill skill)
 	{
 		if (skill == null)
@@ -1444,13 +1461,13 @@ public abstract class L2Character extends L2Object
 				//I must 'eat' them here so players don't take advantage of infinite speed increase
 				switch (skill.getSkillType())
 				{
-					 case BUFF:
-					 case MANAHEAL:
-					 case RESURRECT:
-					 case RECALL:
-					 case DOT:
-						 weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
-						 break;
+					case BUFF:
+					case MANAHEAL:
+					case RESURRECT:
+					case RECALL:
+					case DOT:
+						weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+					break;
 				}
 			}
 		}
@@ -1462,14 +1479,14 @@ public abstract class L2Character extends L2Object
 		// Init the reuse time of the skill
 		int reuseDelay;
 		
-		if(skill.isMagic())
-			reuseDelay = (int)(skill.getReuseDelay() * getStat().getMReuseRate(skill));
+		if (skill.isMagic())
+			reuseDelay = (int) (skill.getReuseDelay() * getStat().getMReuseRate(skill));
 		else
-			reuseDelay = (int)(skill.getReuseDelay() * getStat().getPReuseRate(skill));
+			reuseDelay = (int) (skill.getReuseDelay() * getStat().getPReuseRate(skill));
 		
 		reuseDelay *= 333.0 / (skill.isMagic() ? getMAtkSpd() : getPAtkSpd());
-	        
-        boolean skillMastery = Formulas.getInstance().calcSkillMastery(this);
+		
+		boolean skillMastery = Formulas.getInstance().calcSkillMastery(this);
 
 		// Send a Server->Client packet MagicSkillUser with target, displayId, level, skillTime, reuseDelay
 		// to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
@@ -3935,7 +3952,6 @@ public abstract class L2Character extends L2Object
 	 */
 	public final synchronized void addStatFuncs(Func[] funcs)
 	{
-		
 		FastList<Stats> modifiedStats = new FastList<Stats>();
 		
 		for (Func f : funcs)
@@ -4032,7 +4048,6 @@ public abstract class L2Character extends L2Object
 	 */
 	public final synchronized void removeStatFuncs(Func[] funcs)
 	{
-		
 		FastList<Stats> modifiedStats = new FastList<Stats>();
 		
 		for (Func f : funcs)
@@ -4040,9 +4055,7 @@ public abstract class L2Character extends L2Object
 			modifiedStats.add(f.stat);
 			removeStatFunc(f);
 		}
-		
 		broadcastModifiedStats(modifiedStats);
-		
 	}
 	
 	/**

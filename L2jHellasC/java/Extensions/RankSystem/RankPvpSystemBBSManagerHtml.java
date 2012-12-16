@@ -12,16 +12,10 @@
  */
 package Extensions.RankSystem;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Calendar;
-
 import javolution.text.TextBuilder;
+import javolution.util.FastMap;
 
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -30,34 +24,16 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class RankPvpSystemBBSManagerHtml
 {
-	/*
-	 * define static fields for H5 CB Style
-	 * private static final int width_table = 770;
-	 * private static final int width_index = 80;
-	 * private static final int width_name = 180;
-	 * private static final int width_level = 60;
-	 * private static final int width_class = 150;
-	 * private static final int width_col5 = 150;
-	 * private static final int width_col6 = 150;
-	 */
+	// define static fields for IL CB Style
 	private static final int width_table = 610;
-	private static final int width_index = 40;
+	private static final int width_index = 60;
 	private static final int width_name = 150;
 	private static final int width_level = 40;
-	private static final int width_class = 140;
-	private static final int width_col5 = 120;
-	private static final int width_col6 = 120;
+	private static final int width_class = 180;
+	private static final int width_col5 = 180;
 	
 	public String prepareHtmlResponse(L2PcInstance activeChar, int page)
 	{
-		// calendar variable require for CommBoard //
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		
-		long date_from = calendar.getTimeInMillis();
 		
 		String content = null;
 		
@@ -69,7 +45,7 @@ public final class RankPvpSystemBBSManagerHtml
 		else
 		{
 			content = content.replace("%header%", headerHtml(page));
-			if (ExternalConfig.RANK_PVP_ENABLED)
+			if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
 			{
 				content = content.replace("%button_1%", nextButton(page));
 				content = content.replace("%button_2%", previousButton(page));
@@ -79,21 +55,25 @@ public final class RankPvpSystemBBSManagerHtml
 				content = content.replace("%button_1%", " ");
 				content = content.replace("%button_2%", " ");
 			}
-			content = content.replace("%top_10_list%", topListHtml(activeChar, page, date_from).toString());
-			// content = content.replace("%player_data%",
-			// playerInfoHtml(activeChar, page, date_from).toString());
+			content = content.replace("%top_10_list%", topListHtml(activeChar, page).toString());
+			content = content.replace("%refresh_time%", getRefreshTime());
 		}
 		return content;
 	}
 	
 	private String headerHtml(int page)
 	{
-		if (page == 1)
+		if (!TopTable.getInstance().isUpdating())
 		{
-			return "TOP 10 Rank Point Gatherers";
+			if (page == 1)
+			{
+				return "TOP 10 Rank Point Gatherers";
+			}
+			
+			return "TOP 10 PvP Killers";
 		}
 		
-		return "TOP 10 PvP Killers";
+		return "TOP 10";
 	}
 	
 	private TextBuilder topListHeaderHtml(int page)
@@ -108,135 +88,128 @@ public final class RankPvpSystemBBSManagerHtml
 		if (page == 1)
 		{
 			tb.append("<td FIXWIDTH=" + width_col5 + " height=24 align=center><font color=AE9977>Total Rank Points</font></td>");
-			tb.append("<td FIXWIDTH=" + width_col6 + " height=24 align=center><font color=AE9977>Rank Points Today</font></td>");
 		}
 		else
 		{
 			tb.append("<td FIXWIDTH=" + width_col5 + " height=24 align=center><font color=AE9977>Total Legal Kills</font></td>");
-			tb.append("<td FIXWIDTH=" + width_col6 + " height=24 align=center><font color=AE9977>Legal Kills Today</font></td>");
 		}
 		tb.append("</tr>");
 		tb.append("</table>");
 		return tb;
 	}
 	
-	private TextBuilder topListHtml(L2PcInstance activeChar, int page, long date_from)
+	private TextBuilder topListHtml(L2PcInstance activeChar, int page)
 	{
+		
 		TextBuilder tb = new TextBuilder();
-		tb.append("<table border=0 cellspacing=0 cellpadding=2 width=" + width_table + ">");
+		TextBuilder tb2 = new TextBuilder();
+		tb2.append(playerInfoHeaderHtml());
 		
-		tb.append("<tr><td width=" + width_table + ">");
-		tb.append(topListHeaderHtml(page));
-		tb.append("</td></tr>");
-		tb.append("<tr>");
-		tb.append("<td FIXWIDTH=" + width_table + " HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"" + width_table + "\" height=\"1\"></td>");
-		tb.append("</tr>");
-
-		boolean isEmpty = true;
+		tb.append("<table border=0 cellspacing=0 cellpadding=2 width=" + width_table + " bgcolor=000000>");
 		
-		// for store activeChar position/info
-		int killer_id = 0;
-		int level = 0;
-		long col5 = 0;
-		long col6 = 0;
-		String char_name = "";
-		int base_class = 0;
-		int killer_idx = 0;
-		
-		Connection con = null;
-		PreparedStatement statement = null;
-		ResultSet rset = null;
-		
-		try
+		if (!TopTable.getInstance().isUpdating())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("CALL CPS_BBS_top(?,?)"); // query
-																		// update
-																		// points
-			statement.setInt(1, page);
-			statement.setLong(2, date_from);
 			
-			rset = statement.executeQuery();
+			tb.append("<tr><td width=" + width_table + ">");
+			tb.append(topListHeaderHtml(page));
+			tb.append("</td></tr>");
+			tb.append("<tr>");
+			tb.append("<td FIXWIDTH=" + width_table + " HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"" + width_table + "\" height=\"1\"></td>");
+			tb.append("</tr>");
 
-			int idx = 0;
+			boolean isEmpty = true;
+			boolean playerInfo = false;
+			int pos = 0;
 			
-			while (rset.next())
+			if (page == 0)
 			{
-				idx++; // counts current player position.
-				
-				if (activeChar.getObjectId() == rset.getInt("killer_id"))
-				{ // store killer position and data.
-					killer_id = rset.getInt("killer_id");
-					level = rset.getInt("level");
-					col5 = rset.getLong("col5");
-					col6 = rset.getLong("col6");
-					char_name = rset.getString("char_name");
-					base_class = rset.getInt("base_class");
-					killer_idx = idx;
-				}
-				
-				if (idx <= 10)
+				for (FastMap.Entry<Integer, TopField> e = TopTable.getInstance().getTopKillsTable().head(), end = TopTable.getInstance().getTopKillsTable().tail(); (e = e.getNext()) != end;)
 				{
-					tb.append(itemHtml(idx, rset.getString("char_name"), rset.getInt("level"), RankPvpSystemUtil.getClassName(rset.getInt("base_class")), rset.getLong("col5"), rset.getLong("col6")));
+					pos++;
 					
-					if (isEmpty)
+					if (activeChar.getObjectId() == e.getValue().getCharacterId())
 					{
-						isEmpty = false;
+						// Player position and data:
+						tb2.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						playerInfo = true;
+					}
+					
+					if (pos <= 10)
+					{
+						tb.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						
+						if (isEmpty)
+						{
+							isEmpty = false;
+						}
+					}
+					else if (pos > 10 && playerInfo)
+					{
+						break;
 					}
 				}
-				else if (idx > 10 && killer_id > 0)
-				{
-					break;
-				}
 			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try
+			else
 			{
-				if (rset != null)
+				for (FastMap.Entry<Integer, TopField> e = TopTable.getInstance().getTopGatherersTable().head(), end = TopTable.getInstance().getTopGatherersTable().tail(); (e = e.getNext()) != end;)
 				{
-					rset.close();
-					rset = null;
-				}
-				if (statement != null)
-				{
-					statement.close();
-					statement = null;
-				}
-				if (con != null)
-				{
-					con.close();
-					con = null;
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		
-		if (isEmpty)
-		{
-			tb.append("<tr>");
-			tb.append("<td FIXWIDTH=" + width_table + " HEIGHT=22 align=center>List clear</td>");
-			tb.append("</tr>");
-		}
+					pos++;
+					
+					if (activeChar.getObjectId() == e.getValue().getCharacterId())
+					{
+						// Player position and data:
+						tb2.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						playerInfo = true;
+					}
+					
+					if (pos <= 10)
+					{
+						tb.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						
+						if (isEmpty)
+						{
+							isEmpty = false;
+						}
+					}
+					else if (pos > 10 && playerInfo)
+					{
+						break;
+					}
 
-		// Player position and data:
-		tb.append(playerInfoHeaderHtml());
-		if (killer_id > 0)
-		{
-			tb.append(itemHtml(killer_idx, char_name, level, RankPvpSystemUtil.getClassName(base_class), col5, col6));
+				}
+			}
+			
+			if (!playerInfo)
+			{
+				tb2.append("<tr>");
+				tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You have not killed yet</td></tr></table></td>");
+				tb2.append("</tr>");
+			}
+			
+			if (isEmpty)
+			{
+				tb.append("<tr>");
+				tb.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center>List clear</td>");
+				tb.append("</tr>");
+			}
+			
+			tb.append(tb2);
+			
 		}
 		else
-		{
-			tb.append("<tr>");
-			tb.append("<td FIXWIDTH=" + width_table + " HEIGHT=22 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You have not kill yet</td></tr></table></td>");
+		{ // if is updating:
+			tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=130></td></tr>");
+			tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><font color=FF8000>Updating... try again for few seconds</font></td></tr>");
+			tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=12></td></tr>");
+			if (page == 1)
+			{
+				tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><button value=\"Refresh\" action=\"bypass _bbscprs;1\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
+			}
+			else
+			{
+				tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><button value=\"Refresh\" action=\"bypass _bbscprs;0\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
+			}
+			tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=130></td></tr>");
 			tb.append("</tr>");
 		}
 		
@@ -244,7 +217,7 @@ public final class RankPvpSystemBBSManagerHtml
 		return tb;
 	}
 	
-	private TextBuilder itemHtml(int indexNo, String name, int lvl, String className, long col5, long col6)
+	private TextBuilder itemHtml(int indexNo, String name, int lvl, String className, long col5)
 	{
 		TextBuilder tb = new TextBuilder();
 		
@@ -263,8 +236,6 @@ public final class RankPvpSystemBBSManagerHtml
 		tb.append("<td width=" + width_class + " height=20 align=center>" + className + "</td>");
 		// col5, kills or points
 		tb.append("<td width=" + width_col5 + " height=20 align=center>" + col5 + "</td>");
-		// col6
-		tb.append("<td width=" + width_col6 + " height=20 align=center>" + col6 + "</td>");
 		
 		tb.append("</tr>");
 		tb.append("</table>");
@@ -298,23 +269,43 @@ public final class RankPvpSystemBBSManagerHtml
 	
 	private String nextButton(int page)
 	{
-		if (page == 1)
+		if (!TopTable.getInstance().isUpdating())
 		{
-			return "<button value=\">>\" action=\"bypass _bbscprs;0\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
+			if (page == 0)
+			{
+				return "<button value=\">>\" action=\"bypass _bbscprs;1\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
+			}
+			
+			return "&nbsp;";
 		}
 		
-		return "<button value=\">>\" action=\"bypass _bbscprs;1\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
-		
+		return "&nbsp;";
 	}
 	
 	private String previousButton(int page)
 	{
-		if (page == 1)
+		if (!TopTable.getInstance().isUpdating())
 		{
-			return "<button value=\"<<\" action=\"bypass _bbscprs;0\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
+			if (page == 1)
+			{
+				return "<button value=\"<<\" action=\"bypass _bbscprs;0\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
+			}
+			
+			return "&nbsp;";
 		}
 		
-		return "<button value=\"<<\" action=\"bypass _bbscprs;1\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
+		return "&nbsp;";
+	}
+	
+	private String getRefreshTime()
+	{
+		if (ExternalConfig.TOP_TABLE_UPDATE_INTERVAL > 60000)
+		{
+			double time = (double) ExternalConfig.TOP_TABLE_UPDATE_INTERVAL / 60000;
+			return ((int) Math.floor(time)) + " minutes";
+		}
+		
+		return "less than 1 minute";
 		
 	}
 }

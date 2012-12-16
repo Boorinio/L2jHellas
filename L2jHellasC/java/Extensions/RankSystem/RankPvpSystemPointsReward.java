@@ -12,12 +12,8 @@
  */
 package Extensions.RankSystem;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javolution.util.FastMap;
 
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -26,123 +22,97 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class RankPvpSystemPointsReward
 {
 	/** Important for reward integrity */
-	public L2PcInstance _player = null;
-	public int _currentRankPoints = 0;
-	public int _rankRewardsCount = 0;
+	private L2PcInstance _player = null;
+
+	private long _rankPoints = 0;
+	private int _rankRewardsCount = 0;
 	
 	public RankPvpSystemPointsReward(L2PcInstance player)
 	{
+		// set handler:
 		_player = player;
 		
-		Connection con = null;
-		PreparedStatement statement = null;
-		ResultSet rset = null;
+		// get total rank points:
+		setRankPoints(PvpTable.getInstance().getPvpStats(_player.getObjectId()).getTotalRankPoints());
 		
-		try
-		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("CALL CPS_get_rank_reward_count(?)");
-			statement.setInt(1, player.getObjectId());
-			rset = statement.executeQuery();
-			
-			while (rset.next())
-			{
-				_rankRewardsCount = rset.getInt("rank_reward_count");
-				_currentRankPoints = rset.getInt("current_rank_points");
-				break;
-			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				if (rset != null)
-				{
-					rset.close();
-					rset = null;
-				}
-				if (statement != null)
-				{
-					statement.close();
-					statement = null;
-				}
-				if (con != null)
-				{
-					con.close();
-					con = null;
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+		// get reward list length:
+		setRankRewardsCount(CharacterRankRewardTable.getInstance().getRewardsCount(player.getObjectId(), _rankPoints));
 	}
 	
-	public void getRankPointsRewardToInventory()
+	public void addRankRewardsToInventory()
 	{
+
+		// get reward list:
+		FastMap<Integer, CharacterRankReward> rewardsAwarded = CharacterRankRewardTable.getInstance().getRewardsList(_player.getObjectId(), getRankPoints());
 		
-		if (_player.getObjectId() > 0)
+		// queries:
+		String[] queries = new String[rewardsAwarded.size() + 1];
+		
+		// give rewards and update information about that in singleton:
+		int i = 0;
+		for (FastMap.Entry<Integer, CharacterRankReward> e = rewardsAwarded.head(), end = rewardsAwarded.tail(); (e = e.getNext()) != end;)
 		{
 			
-			Connection con = null;
-			PreparedStatement statement = null;
-			ResultSet rset = null;
+			_player.addItem("RankReward", e.getValue().getItemId(), e.getValue().getItemAmount(), null, true);
+			CharacterRankRewardTable.getInstance().addReward(e.getValue());
 			
-			try
-			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				// get item list:
-				statement = con.prepareStatement("CALL CPS_get_rank_reward_list(?,?)");
-				statement.setInt(1, _player.getObjectId());
-				statement.setInt(2, _currentRankPoints);
-				rset = statement.executeQuery();
-				
-				while (rset.next())
-				{
-					_player.addItem("RankReward", rset.getInt("item_id"), rset.getInt("item_amount"), null, true);
-				}
-				
-				// save information about given items:
-				statement = con.prepareStatement("CALL CPS_add_rank_reward(?,?)");
-				statement.setInt(1, _player.getObjectId());
-				statement.setInt(2, _currentRankPoints);
-				rset = statement.executeQuery();
-				
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				try
-				{
-					if (rset != null)
-					{
-						rset.close();
-						rset = null;
-					}
-					if (statement != null)
-					{
-						statement.close();
-						statement = null;
-					}
-					if (con != null)
-					{
-						con.close();
-						con = null;
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
+			queries[i] = "INSERT INTO custom_pvp_system_characters_rank_rewards (charId, reward_id) values (" + getPlayer().getObjectId() + ", " + e.getValue().getRewardId() + ")";
+			i++;
 		}
+		
+		// update database:
+		CharacterRankRewardTable.getInstance().insertCharacterRewardListIntoDB(queries);
+		
+	}
+	
+	/**
+	 * @return the _player
+	 */
+	public L2PcInstance getPlayer()
+	{
+		return _player;
+	}
+
+	/**
+	 * @param _player
+	 *        the _player to set
+	 */
+	public void setPlayer(L2PcInstance _player)
+	{
+		this._player = _player;
+	}
+
+	/**
+	 * @return the _rankPoints
+	 */
+	public long getRankPoints()
+	{
+		return _rankPoints;
+	}
+
+	/**
+	 * @param _rankPoints
+	 *        the _rankPoints to set
+	 */
+	public void setRankPoints(long _rankPoints)
+	{
+		this._rankPoints = _rankPoints;
+	}
+
+	/**
+	 * @return the _rankRewardsCount
+	 */
+	public int getRankRewardsCount()
+	{
+		return _rankRewardsCount;
+	}
+
+	/**
+	 * @param _rankRewardsCount
+	 *        the _rankRewardsCount to set
+	 */
+	public void setRankRewardsCount(int _rankRewardsCount)
+	{
+		this._rankRewardsCount = _rankRewardsCount;
 	}
 }

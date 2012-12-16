@@ -562,6 +562,7 @@ public class GeoEngine extends GeoData
     }
 
 	//GeoEngine
+	@SuppressWarnings("resource")
 	private static void nInitGeodata()
 	{
 		LineNumberReader lnr = null;
@@ -617,6 +618,7 @@ public class GeoEngine extends GeoData
 		_geodata.remove(regionoffset);
 	}
 	
+	@SuppressWarnings("resource")
 	public static boolean loadGeodataFile(byte rx, byte ry)
 	{
 		String fname = "./data/geodata/"+rx+"_"+ry+".l2j";

@@ -394,7 +394,6 @@ public final class L2ItemInstance extends L2Object
 	 * Returns the type of item
 	 * @return Enum
 	 */
-	@SuppressWarnings("unchecked")
 	public Enum getItemType()
 	{
 		return _item.getItemType();
@@ -673,13 +672,14 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public class ScheduleConsumeManaTask implements Runnable
 	{
-		private L2ItemInstance _shadowItem;
+		private final L2ItemInstance _shadowItem;
 
 		public ScheduleConsumeManaTask(L2ItemInstance item)
 		{
 			_shadowItem = item;
 		}
 
+		@Override
 		public void run()
 		{
 			try

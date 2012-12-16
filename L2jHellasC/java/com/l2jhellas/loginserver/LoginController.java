@@ -29,9 +29,9 @@ import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 
+import javolution.util.FastCollection.Record;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
-import javolution.util.FastCollection.Record;
 
 import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
@@ -63,9 +63,9 @@ public class LoginController
 	/** Authed Clients on LoginServer*/
 	protected FastMap<String, L2LoginClient> _loginServerClients = new FastMap<String, L2LoginClient>().setShared(true);
 
-	private Map<InetAddress, BanInfo> _bannedIps = new FastMap<InetAddress, BanInfo>().setShared(true);
+	private final Map<InetAddress, BanInfo> _bannedIps = new FastMap<InetAddress, BanInfo>().setShared(true);
 
-	private Map<InetAddress, FailedLoginAttempt> _hackProtection;
+	private final Map<InetAddress, FailedLoginAttempt> _hackProtection;
 
 	protected ScrambledKeyPair[] _keyPairs;
 
@@ -515,6 +515,7 @@ public class LoginController
 	 * @param address
 	 * @return
 	 */
+	@SuppressWarnings("resource")
 	public boolean loginValid(String user, String password, L2LoginClient client )// throws HackingException
 	{
 		boolean ok = false;
@@ -748,9 +749,9 @@ public class LoginController
 
 	class BanInfo
 	{
-		private InetAddress _ipAddress;
+		private final InetAddress _ipAddress;
 		// Expiration
-		private long _expiration;
+		private final long _expiration;
 
 		public BanInfo(InetAddress ipAddress, long expiration)
 		{

@@ -158,7 +158,8 @@ public enum PlayerClass {
         _type = pType;
     }
 
-    public final Set<PlayerClass> getAvailableSubclasses(L2PcInstance player)
+	@SuppressWarnings("incomplete-switch")
+	public final Set<PlayerClass> getAvailableSubclasses(L2PcInstance player)
     {
         Set<PlayerClass> subclasses = null;
 

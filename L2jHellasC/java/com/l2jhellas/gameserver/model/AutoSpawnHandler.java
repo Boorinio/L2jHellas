@@ -74,12 +74,12 @@ public class AutoSpawnHandler
 	private static final int DEFAULT_DESPAWN = 3600000; // 1 hour in millisecs
 
 	protected Map<Integer, AutoSpawnInstance> _registeredSpawns;
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected Map<Integer, ScheduledFuture> _runningSpawns;
 
 	protected boolean _activeState = true;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private AutoSpawnHandler()
 	{
 		_registeredSpawns = new FastMap<Integer, AutoSpawnInstance>();
@@ -443,13 +443,14 @@ public class AutoSpawnHandler
 	 */
 	private class AutoSpawner implements Runnable
 	{
-		private int _objectId;
+		private final int _objectId;
 
 		protected AutoSpawner(int objectId)
 		{
 			_objectId = objectId;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -585,13 +586,14 @@ public class AutoSpawnHandler
 	 */
 	private class AutoDespawner implements Runnable
 	{
-		private int _objectId;
+		private final int _objectId;
 
 		protected AutoDespawner(int objectId)
 		{
 			_objectId = objectId;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -648,9 +650,9 @@ public class AutoSpawnHandler
 
 		protected int _lastLocIndex = -1;
 
-		private List<L2NpcInstance> _npcList = new FastList<L2NpcInstance>();
+		private final List<L2NpcInstance> _npcList = new FastList<L2NpcInstance>();
 
-		private List<Location> _locList = new FastList<Location>();
+		private final List<Location> _locList = new FastList<Location>();
 
 		private boolean _spawnActive;
 

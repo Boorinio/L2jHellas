@@ -36,8 +36,8 @@ import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState;
-import com.l2jhellas.gameserver.skills.conditions.ConditionUsingItemType;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState.CheckPlayerState;
+import com.l2jhellas.gameserver.skills.conditions.ConditionUsingItemType;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
@@ -1116,6 +1116,7 @@ public final class Formulas
 	 * @param ss if weapon item was charged by soulshot
 	 * @return damage points
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public final static double calcPhysDam(L2Character attacker, L2Character target, L2Skill skill,
 									byte shld, boolean crit, boolean dual, boolean ss)
 	{
@@ -1533,6 +1534,7 @@ public final class Formulas
 		return d > 0;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public static double calcSkillVulnerability(L2Character target, L2Skill skill)
 	{
 		double multiplier = 1;	// initialize...

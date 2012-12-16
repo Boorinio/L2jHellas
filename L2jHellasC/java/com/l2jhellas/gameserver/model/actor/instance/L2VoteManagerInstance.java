@@ -28,7 +28,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.DDSConverter;
 
-public class L2VoteManagerInstance extends L2NpcInstance
+public class L2VoteManagerInstance extends L2FolkInstance
 {
 	public L2VoteManagerInstance(int objectId, L2NpcTemplate template)
 	{

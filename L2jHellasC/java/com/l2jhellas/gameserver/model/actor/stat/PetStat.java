@@ -131,7 +131,8 @@ public class PetStat extends SummonStat
     @Override
 	public int getMaxMp() { return (int)calcStat(Stats.MAX_MP, getActiveChar().getPetData().getPetMaxMP(), null, null); }
 
-    @Override
+	@SuppressWarnings("incomplete-switch")
+	@Override
 	public int getMAtk(L2Character target, L2Skill skill)
     {
         double attack = getActiveChar().getPetData().getPetMAtk();

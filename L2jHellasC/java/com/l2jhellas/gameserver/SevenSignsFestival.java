@@ -1748,7 +1748,8 @@ public class SevenSignsFestival implements SpawnListener
      *
      * @param npc
      */
-    public void npcSpawned(L2NpcInstance npc)
+    @Override
+	public void npcSpawned(L2NpcInstance npc)
     {
         if (npc == null)
             return;
@@ -1797,7 +1798,8 @@ public class SevenSignsFestival implements SpawnListener
             setNextFestivalStart(Config.ALT_FESTIVAL_CYCLE_LENGTH - FESTIVAL_SIGNUP_TIME);
         }
 
-        public synchronized void run()
+        @Override
+		public synchronized void run()
         {
             // The manager shouldn't be running if Seal Validation is in effect.
             if (SevenSigns.getInstance().isSealValidationPeriod())
@@ -1996,7 +1998,8 @@ public class SevenSignsFestival implements SpawnListener
          *
          * @return int Count
          */
-        public final int getInstanceCount()
+		@SuppressWarnings("unused")
+		public final int getInstanceCount()
         {
             return _festivalInstances.size();
         }
@@ -2020,10 +2023,10 @@ public class SevenSignsFestival implements SpawnListener
         private FestivalSpawn _witchSpawn;
 
         private L2NpcInstance _witchInst;
-        private List<L2FestivalMonsterInstance> _npcInsts;
+        private final List<L2FestivalMonsterInstance> _npcInsts;
 
         private List<L2PcInstance> _participants;
-        private Map<L2PcInstance, FestivalSpawn> _originalLocations;
+        private final Map<L2PcInstance, FestivalSpawn> _originalLocations;
 
         protected L2DarknessFestival(int cabal, int levelRange)
         {
@@ -2197,7 +2200,8 @@ public class SevenSignsFestival implements SpawnListener
             }
         }
 
-        public void setSpawnRate(int respawnDelay)
+		@SuppressWarnings("unused")
+		public void setSpawnRate(int respawnDelay)
         {
             if (Config.DEBUG)
                 _log.info("SevenSignsFestival: Modifying spawn rate of festival mobs to " + respawnDelay + " ms for festival " + SevenSigns.getCabalShortName(_cabal) + " (" + getFestivalName(_levelRange) + ")");

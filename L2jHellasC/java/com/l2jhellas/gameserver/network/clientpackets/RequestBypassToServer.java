@@ -296,9 +296,8 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				BalancerMain.handleCommands(getClient(), _command.substring(8));
 			}
-			// -------------------------------------------------------------------------------
-			// Custom PvP System (CPS) by Masterio
-			// -------------------------------------------------------------------------------
+			// Custom PvP System (CPS) by Masterio ->
+			// --------------------------------------------
 			else if (_command.equals("_cprs_equip"))
 			{ // for "details" button
 				try
@@ -340,9 +339,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{ // for "get reward" button
 				try
 				{
-					if (activeChar._RankPvpSystemPointsReward != null && activeChar._RankPvpSystemPointsReward._rankRewardsCount > 0)
+					if (activeChar._RankPvpSystemPointsReward != null && activeChar._RankPvpSystemPointsReward.getRankRewardsCount() > 0 && activeChar._RankPvpSystemPointsReward.getPlayer() != null)
 					{
-						activeChar._RankPvpSystemPointsReward.getRankPointsRewardToInventory();
+						activeChar._RankPvpSystemPointsReward.addRankRewardsToInventory();
 						activeChar._RankPvpSystemPointsReward = null;
 					}
 				}

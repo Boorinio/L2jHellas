@@ -40,10 +40,10 @@ public class AiManager
 {
 	protected static final Logger _log = Logger.getLogger( AiManager.class.getName());
 	private static AiManager _instance;
-	private List<AiInstance> _aiList;
-	private Map<Integer, AiInstance> _aiMap;
-	private ThreadPoolManager _tpm;
-	private Map<String,String> _paramcache;
+	private final List<AiInstance> _aiList;
+	private final Map<Integer, AiInstance> _aiMap;
+	private final ThreadPoolManager _tpm;
+	private final Map<String,String> _paramcache;
 
 	public static AiManager getInstance()
 	{
@@ -63,6 +63,7 @@ public class AiManager
 		load();
 	}
 
+	@SuppressWarnings("resource")
 	public void load()
 	{
 		try

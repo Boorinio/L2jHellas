@@ -61,6 +61,7 @@ public class AdminEventEngine implements IAdminCommandHandler
 	private static String tempName2 = "";
 	private static boolean npcsDeleted = false;
 	
+	@SuppressWarnings("resource")
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{

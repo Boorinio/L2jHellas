@@ -28,14 +28,14 @@ public class Topic
 	public static final int MORMAL = 0;
 	public static final int MEMO = 1;
 
-	private int _id;
-	private int _forumId;
-	private String _topicName;
-	private long _date;
-	private String _ownerName;
-	private int _ownerId;
-	private int _type;
-	private int _cReply;
+	private final int _id;
+	private final int _forumId;
+	private final String _topicName;
+	private final long _date;
+	private final String _ownerName;
+	private final int _ownerId;
+	private final int _type;
+	private final int _cReply;
 
 	/**
 	 * @param restaure
@@ -68,9 +68,6 @@ public class Topic
 		}
 	}
 
-	/**
-	 *
-	 */
 	public void insertindb()
 	{
 		java.sql.Connection con = null;
@@ -116,10 +113,12 @@ public class Topic
 	{
 		return _id;
 	}
+
 	public int getForumID()
 	{
 		return _forumId;
 	}
+
 	/**
 	 * @return
 	 */
@@ -128,15 +127,13 @@ public class Topic
 		// TODO Auto-generated method stub
 		return _topicName;
 	}
+
 	public String getOwnerName()
 	{
 		// TODO Auto-generated method stub
 		return _ownerName;
 	}
 
-	/**
-	 *
-	 */
 	public void deleteme(Forum f)
 	{
 		TopicBBSManager.getInstance().delTopic(this);

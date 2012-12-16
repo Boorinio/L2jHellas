@@ -372,6 +372,7 @@ public class SkillTreeTable
         return result.toArray(new L2SkillLearn[result.size()]);
 	}
 
+	@SuppressWarnings("unused")
 	public L2SkillLearn[] getAvailableSkills(L2PcInstance cha)
 	{
 	    List<L2SkillLearn> result = new FastList<L2SkillLearn>();
@@ -424,7 +425,8 @@ public class SkillTreeTable
         return result.toArray(new L2SkillLearn[result.size()]);
 	}
 
-    public L2EnchantSkillLearn[] getAvailableEnchantSkills(L2PcInstance cha)
+	@SuppressWarnings("unused")
+	public L2EnchantSkillLearn[] getAvailableEnchantSkills(L2PcInstance cha)
     {
         List<L2EnchantSkillLearn> result = new FastList<L2EnchantSkillLearn>();
         List<L2EnchantSkillLearn> skills = new FastList<L2EnchantSkillLearn>();
@@ -545,7 +547,8 @@ public class SkillTreeTable
 		return minLevel;
 	}
 
-    public int getMinLevelForNewSkill(L2PcInstance cha)
+	@SuppressWarnings("unused")
+	public int getMinLevelForNewSkill(L2PcInstance cha)
     {
         int minLevel = 0;
         List<L2SkillLearn> skills = new FastList<L2SkillLearn>();

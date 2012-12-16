@@ -49,11 +49,11 @@ public class Duel
 
 	// =========================================================
 	// Data Field
-	private int _duelId;
+	private final int _duelId;
 	private L2PcInstance _playerA;
 	private L2PcInstance _playerB;
-	private boolean _partyDuel;
-	private Calendar _duelEndTime;
+	private final boolean _partyDuel;
+	private final Calendar _duelEndTime;
 	private int _surrenderRequest=0;
 	private int _countdown=4;
 	private boolean _finished=false;
@@ -172,13 +172,14 @@ public class Duel
 	// Schedule task
 	public class ScheduleDuelTask implements Runnable
 	{
-		private Duel _duel;
+		private final Duel _duel;
 
 		public ScheduleDuelTask(Duel duel)
 		{
 			_duel = duel;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -207,13 +208,14 @@ public class Duel
 
 	public class ScheduleStartDuelTask implements Runnable
 	{
-		private Duel _duel;
+		private final Duel _duel;
 
 		public ScheduleStartDuelTask(Duel duel)
 		{
 			_duel = duel;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -245,8 +247,8 @@ public class Duel
 
 	public class ScheduleEndDuelTask implements Runnable
 	{
-		private Duel _duel;
-		private DuelResultEnum _result;
+		private final Duel _duel;
+		private final DuelResultEnum _result;
 
 		public ScheduleEndDuelTask(Duel duel, DuelResultEnum result)
 		{
@@ -254,6 +256,7 @@ public class Duel
 			_result = result;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -664,6 +667,7 @@ public class Duel
 	 * The duel has reached a state in which it can no longer continue
 	 * @param duel result
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public void endDuel(DuelResultEnum result)
 	{
 		if (_playerA == null || _playerB == null)

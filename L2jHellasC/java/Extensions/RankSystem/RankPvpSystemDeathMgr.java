@@ -15,6 +15,7 @@ package Extensions.RankSystem;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
+import javolution.util.FastList;
 
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -70,14 +71,15 @@ public class RankPvpSystemDeathMgr
 		_killerMaxHP = killer.getMaxHp();
 		_killerMaxMP = killer.getMaxMp();
 		
-		if (_killer != null)
+		// load item list:
+		if (_killer != null && ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS)
 		{
 			int j = 0;
 			for (int i = 0; i < _killerItems.length; i++)
 			{
 				_killerItems[j] = new KillerItem();
 				L2ItemInstance item = _killer.getInventory().getItemByObjectId(_killer.getInventory().getPaperdollObjectId(i));
-				if (item != null)
+				if (item != null && !isItemInsideKillerItemsArray(item))
 				{
 					int b = item.getItem().getBodyPart();
 					// item slot id:
@@ -86,6 +88,8 @@ public class RankPvpSystemDeathMgr
 					_killerItems[j]._itemName = item.getItemName();
 					// item Enchant:
 					_killerItems[j]._itemEnchantLevel = item.getEnchantLevel();
+					// item object id:
+					_killerItems[j]._itemObjId = item.getObjectId();
 					
 					// item group:
 					if (b == L2Item.SLOT_R_HAND || b == L2Item.SLOT_L_HAND || b == L2Item.SLOT_LR_HAND || b == L2Item.SLOT_LR_HAND)
@@ -109,6 +113,27 @@ public class RankPvpSystemDeathMgr
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Return true if item exists. Searched by item id.
+	 * 
+	 * @param item
+	 * @return
+	 */
+	private boolean isItemInsideKillerItemsArray(L2ItemInstance item)
+	{
+		for (int i = 0; i < _killerItems.length; i++)
+		{
+			if (_killerItems[i] != null)
+			{
+				if (_killerItems[i]._itemObjId == item.getObjectId())
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -139,55 +164,56 @@ public class RankPvpSystemDeathMgr
 		tb.append("<tr><td width=270 height=12></td></tr>");
 		tb.append("</table>");
 		
-		tb.append("<table width=270 border=0 cellspacing=0 cellpadding=2 bgcolor=000000>");
-		if (getKiller() != null)
+		// show item list:
+		if (ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS)
 		{
-			for (int group = 1; group <= 4; group++)
+			tb.append("<table width=270 border=0 cellspacing=0 cellpadding=2 bgcolor=000000>");
+			if (getKiller() != null)
 			{
-				if (group == 1)
+				for (int group = 1; group <= 4; group++)
 				{
-					tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Weapon / Shield</font></td></tr>");
-				}
-				else if (group == 2)
-				{
-					tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Armor</font></td></tr>");
-				}
-				else if (group == 3)
-				{
-					tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Jewellery</font></td></tr>");
-				}
-				else
-				{
-					tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Other</font></td></tr>");
-				}
-				tb.append("<tr><td FIXWIDTH=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
-				for (int i = 0; i < _killerItems.length; i++)
-				{
-					if (_killerItems[i] != null && _killerItems[i]._group == group && _killerItems[i]._itemName != null)
+					if (group == 1)
 					{
-						tb.append("<tr><td width=270 height=16 align=center><font color=808080>" + _killerItems[i]._itemName + " (</font><font color=FF8000>+" + _killerItems[i]._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
-						tb.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
-						// _log.info("itemname: "+
-						// _killerItems[i]._itemName+", slotId: "+_killerItems[i]._slotId);
+						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Weapon / Shield</font></td></tr>");
+					}
+					else if (group == 2)
+					{
+						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Armor</font></td></tr>");
+					}
+					else if (group == 3)
+					{
+						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Jewellery</font></td></tr>");
+					}
+					else
+					{
+						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Other</font></td></tr>");
+					}
+					tb.append("<tr><td FIXWIDTH=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+					for (int i = 0; i < _killerItems.length; i++)
+					{
+						if (_killerItems[i] != null && _killerItems[i]._group == group && _killerItems[i]._itemName != null)
+						{
+							tb.append("<tr><td width=270 height=16 align=center><font color=808080>" + _killerItems[i]._itemName + " (</font><font color=FF8000>+" + _killerItems[i]._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
+							tb.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+							// _log.info("itemname: "+
+							// _killerItems[i]._itemName+", slotId: "+_killerItems[i]._slotId);
+						}
 					}
 				}
 			}
+			else
+			{
+				tb.append("<tr><td>21055</td></tr>");
+				_log.info("DeathManager::killer is null!");
+			}
+			tb.append("</table>");
 		}
-		else
-		{
-			tb.append("<tr><td>21055</td></tr>");
-			_log.info("DeathManager::killer is null!");
-		}
-		tb.append("</table>");
 		
-		// button show equipment:
+		// footer and back button:
 		tb.append("<table border=0 cellspacing=0 cellpadding=0>");
-		
-		tb.append("<tr><td width=270 height=12><font color=808080>*show items for kill moment only.</font></td></tr>");
+		tb.append("<tr><td width=270 height=12 align=center><font color=808080>- killer state in kill moment -</font></td></tr>");
 		tb.append("<tr><td width=270 height=12></td></tr>");
-		
 		tb.append("<tr><td width=270 align=center><button value=\"Back\" action=\"bypass -h _cprs_info\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
-		
 		tb.append("</table>");
 		
 		tb.append("</center></body></html>");
@@ -219,20 +245,12 @@ public class RankPvpSystemDeathMgr
 	 */
 	public static final boolean isInRestrictedZone(L2PcInstance activeChar)
 	{
-		for (int i = 0; i < ExternalConfig.RANK_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.size(); i++)
+		for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
 		{
-			try
+			if (activeChar.isInsideZone(n.getValue().byteValue()))
 			{
-				if (activeChar.isInsideZone(ExternalConfig.RANK_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.get(i).byteValue()))
-				{
-					return true;
-				}
+				return true;
 			}
-			catch (Exception e)
-			{
-				return false;
-			}
-			
 		}
 		return false;
 	}
@@ -242,6 +260,7 @@ public class RankPvpSystemDeathMgr
 		int _slotId = -1;
 		String _itemName = null;
 		int _itemEnchantLevel = 0;
+		int _itemObjId = 0;
 		/** Groups like WEAPON(1), ARMOR(2), JEWELLERY(3), OTHER(4) */
 		int _group = 4;
 	}

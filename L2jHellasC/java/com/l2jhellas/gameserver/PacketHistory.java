@@ -22,7 +22,7 @@ import javolution.xml.stream.XMLStreamException;
 
 class PacketHistory
 {
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected Map<Class, Long> _info;
     protected long _timeStamp;
 
@@ -31,7 +31,7 @@ class PacketHistory
         /**
 		 * @see javolution.xml.XMLFormat#read(javolution.xml.XMLFormat.InputElement, java.lang.Object)
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		@Override
 		public void read(InputElement xml, PacketHistory packetHistory) throws XMLStreamException
 		{

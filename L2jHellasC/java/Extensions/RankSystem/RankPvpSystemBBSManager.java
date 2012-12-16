@@ -15,7 +15,7 @@
  */
 package Extensions.RankSystem;
 
-import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.communitybbs.Manager.BaseBBSManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
@@ -25,31 +25,7 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
-		if (command.equals("_bbstop"))
-		{
-			String content = HtmCache.getInstance().getHtm("data/html/CommunityBoard/index.htm");
-			
-			if (content == null)
-			{
-				content = "<html><body><br><br><center>404 :File Not found: 'data/html/CommunityBoard/index.htm' </center></body></html>";
-			}
-
-			separateAndSend(content, activeChar);
-			content = null;
-		}
-		else if (command.equals("_bbshome"))
-		{
-			String content = HtmCache.getInstance().getHtm("data/html/CommunityBoard/index.htm");
-			
-			if (content == null)
-			{
-				content = "<html><body><br><br><center>404 :File Not found: 'data/html/CommunityBoard/index.htm' </center></body></html>";
-			}
-
-			separateAndSend(content, activeChar);
-			content = null;
-		}
-		else if (command.startsWith("_bbscprs;"))
+		if (command.startsWith("_bbscprs;") && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 		{
 			int page = 0;
 			try
@@ -68,7 +44,16 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 		}
 		else
 		{
-			ShowBoard sb = new ShowBoard("<html><body><br><br><center>the command: " + command + " is not implemented yet</center><br><br></body></html>", "101");
+			ShowBoard sb = null;
+			if (command.startsWith("_bbscprs;") && !ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+			{
+				sb = new ShowBoard("<html><body><br><br><center>Community Board Top List is disabled in config file</center><br><br></body></html>", "101");
+			}
+			else
+			{
+				sb = new ShowBoard("<html><body><br><br><center>the command: " + command + " is not implemented yet</center><br><br></body></html>", "101");
+			}
+			
 			activeChar.sendPacket(sb);
 			sb = null;
 			activeChar.sendPacket(new ShowBoard(null, "102"));
@@ -81,7 +66,7 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 	{
 		//
 	}
-
+	
 	private static RankPvpSystemBBSManager _instance = new RankPvpSystemBBSManager();
 
 	/**

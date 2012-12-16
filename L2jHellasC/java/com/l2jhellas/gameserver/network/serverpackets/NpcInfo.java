@@ -97,7 +97,7 @@ public final class NpcInfo extends L2GameServerPacket
         					_y = cha.getY();
         					_z = cha.getZ();
         					L2TownZone Town;
-        					Town = TownManager.getInstance().getTown(_x, _y, _z);
+				Town = TownManager.getTown(_x, _y, _z);
         					if(Town != null)
         					{
         						int townId = Town.getTownId();

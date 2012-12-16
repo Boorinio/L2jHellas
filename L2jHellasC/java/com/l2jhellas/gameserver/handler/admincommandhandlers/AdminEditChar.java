@@ -461,7 +461,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			if (activeChar.isGM())
 				return false;
 			String charName = command.substring(19);
-			PcColorTable.getInstance().delete(charName);
+			PcColorTable.delete(charName);
 		}
 		else if (command.startsWith("admin_fullfood"))
 		{

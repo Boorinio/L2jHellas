@@ -34,8 +34,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
 public class TopicBBSManager extends BaseBBSManager
 {
-	private List<Topic> _table;
-	private Map<Forum, Integer> _maxId;
+	private final List<Topic> _table;
+	private final Map<Forum, Integer> _maxId;
 	private static TopicBBSManager _instance;
 
 	public static TopicBBSManager getInstance()
@@ -490,5 +490,4 @@ public class TopicBBSManager extends BaseBBSManager
 		html.append("</html>");
 		separateAndSend(html.toString(), activeChar);
 	}
-
 }

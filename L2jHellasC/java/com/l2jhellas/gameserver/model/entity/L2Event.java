@@ -130,7 +130,8 @@ public class L2Event
         return killers;
     }
 
-    public static void showEventHtml(L2PcInstance player, String objectid)
+	@SuppressWarnings("resource")
+	public static void showEventHtml(L2PcInstance player, String objectid)
     {
         try
         {

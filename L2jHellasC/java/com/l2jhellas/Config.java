@@ -2245,6 +2245,7 @@ public final class Config
 				{
 					try
 					{
+						@SuppressWarnings("resource")
 						LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(CHAT_FILTER_FILE))));
 						String line = null;
 						while ((line = lnr.readLine()) != null)
@@ -3724,6 +3725,7 @@ public final class Config
 	{
 		try
 		{
+			@SuppressWarnings("resource")
 			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(FILTER_FILE))));
 			String line = null;
 			while ((line = lnr.readLine()) != null)

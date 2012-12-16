@@ -54,7 +54,7 @@ public class GameServerTable
 	private static Map<Integer, String> _serverNames = new FastMap<Integer, String>();
 
 	// Game Server Table
-	private Map<Integer, GameServerInfo> _gameServerTable = new FastMap<Integer, GameServerInfo>().setShared(true);
+	private final Map<Integer, GameServerInfo> _gameServerTable = new FastMap<Integer, GameServerInfo>().setShared(true);
 
 	// RSA Config
 	private static final int KEYS_SIZE = 10;
@@ -102,6 +102,7 @@ public class GameServerTable
 		}
 	}
 
+	@SuppressWarnings("resource")
 	private void loadServerNames()
 	{
 		InputStream in = null;
@@ -267,7 +268,7 @@ public class GameServerTable
 	{
 		// auth
 		private int _id;
-		private byte[] _hexId;
+		private final byte[] _hexId;
 		private boolean _isAuthed;
 
 		// status
@@ -281,7 +282,7 @@ public class GameServerTable
 		private int _port;
 
 		// config
-		private boolean _isPvp = true;
+		private final boolean _isPvp = true;
 		private boolean _isTestServer;
 		private boolean _isShowingClock;
 		private boolean _isShowingBrackets;

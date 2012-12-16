@@ -27,15 +27,15 @@ import com.l2jhellas.gameserver.datatables.NpcTable;
 public class AiPlugingParameters
 {
 	//here is order of priority
-	private Set<String> _npcClassTypes;
-	@SuppressWarnings("unchecked")
-	private Set<Class> _npcL2jClasses;
-	private Set<String> _aiTypes;
+	private final Set<String> _npcClassTypes;
+	@SuppressWarnings("rawtypes")
+	private final Set<Class> _npcL2jClasses;
+	private final Set<String> _aiTypes;
 	private Set<Integer> _npcIDs;
 	private boolean _converted;
-	private AiPlugingParameters _but;
+	private final AiPlugingParameters _but;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public AiPlugingParameters(Set<String> npcClassTypes, Set<Class> npcL2jClasses, Set<String> aiTypes, Set<Integer> npcIDs, AiPlugingParameters but)
 	{
 		_npcClassTypes = npcClassTypes;
@@ -48,7 +48,7 @@ public class AiPlugingParameters
 	}
 
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public void convertToIDs()
 	{
 		if(_but != null && !_but.isEmpty())

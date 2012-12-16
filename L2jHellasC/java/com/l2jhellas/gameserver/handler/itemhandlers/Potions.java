@@ -47,9 +47,9 @@ public class Potions implements IItemHandler
 	/** Task for Herbs */
 	private class HerbTask implements Runnable
 	{
-		private L2PcInstance _activeChar;
-		private int _magicId;
-		private int _level;
+		private final L2PcInstance _activeChar;
+		private final int _magicId;
+		private final int _level;
 		
 		HerbTask(L2PcInstance activeChar, int magicId, int level)
 		{
@@ -58,6 +58,7 @@ public class Potions implements IItemHandler
 			_level = level;
 		}
 		
+		@Override
 		public void run()
 		{
 			try
@@ -82,6 +83,7 @@ public class Potions implements IItemHandler
 	8634, 8635, 8636, 8637, 8638, 8639
 	};
 	
+	@Override
 	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
@@ -407,7 +409,6 @@ public class Potions implements IItemHandler
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private boolean isEffectReplaceable(L2PcInstance activeChar, Enum effectType, int itemId)
 	{
 		L2Effect[] effects = activeChar.getAllEffects();
@@ -455,6 +456,7 @@ public class Potions implements IItemHandler
 		return false;
 	}
 	
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

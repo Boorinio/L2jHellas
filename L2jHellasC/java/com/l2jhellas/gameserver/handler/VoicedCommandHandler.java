@@ -85,7 +85,7 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new OnlinePlayers());
 		if (Config.BANKING_SYSTEM_ENABLED)
 			registerVoicedCommandHandler(new Banking());
-		if (ExternalConfig.RANK_PVP_INFO_COMMAND_ENABLED)
+		if (ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_ENABLED)
 			registerVoicedCommandHandler(new RankPvpSystemCmd());
 		registerVoicedCommandHandler(new Premium());
 		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers.");

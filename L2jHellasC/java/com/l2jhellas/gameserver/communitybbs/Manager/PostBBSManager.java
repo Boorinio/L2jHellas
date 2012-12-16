@@ -25,16 +25,16 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.BB.Post;
-import com.l2jhellas.gameserver.communitybbs.BB.Topic;
 import com.l2jhellas.gameserver.communitybbs.BB.Post.CPost;
+import com.l2jhellas.gameserver.communitybbs.BB.Topic;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
 public class PostBBSManager extends BaseBBSManager
 {
-
-	private Map<Topic,Post> _postByTopic;
+	private final Map<Topic,Post> _postByTopic;
 	private static PostBBSManager _instance;
+
 	public static PostBBSManager getInstance()
 	{
 		if (_instance == null)
@@ -43,10 +43,12 @@ public class PostBBSManager extends BaseBBSManager
 		}
 		return _instance;
 	}
+
 	public PostBBSManager()
 	{
 		_postByTopic = new FastMap<Topic,Post>();
 	}
+
 	public Post getGPosttByTopic(Topic t)
 	{
 		Post post = null;
@@ -58,6 +60,7 @@ public class PostBBSManager extends BaseBBSManager
 		}
 		return post;
 	}
+
 	/**
 	 * @param t
 	 */
@@ -65,6 +68,7 @@ public class PostBBSManager extends BaseBBSManager
 	{
 		_postByTopic.remove(t);
 	}
+
 	public void addPostByTopic(Post p,Topic t)
 	{
 		if(_postByTopic.get(t) == null)
@@ -72,6 +76,7 @@ public class PostBBSManager extends BaseBBSManager
 			_postByTopic.put(t,p);
 		}
 	}
+
 	/**
 	 * @param t
 	 * @return
@@ -82,6 +87,7 @@ public class PostBBSManager extends BaseBBSManager
 		p = new Post(t);
 		return p;
 	}
+
 	/* (non-Javadoc)
 	 * @see com.l2jhellas.gameserver.communitybbs.Manager.BaseBBSManager#parsecmd(java.lang.String, com.l2jhellas.gameserver.model.actor.instance.L2PcInstance)
 	 */

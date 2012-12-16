@@ -65,5 +65,4 @@ public class RankPvpSystemCmd implements IVoicedCommandHandler
 	{
 		return VOICED_COMMANDS;
 	}
-
 }

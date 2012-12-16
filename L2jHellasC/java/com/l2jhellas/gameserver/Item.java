@@ -25,8 +25,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 public class Item
 {
     public int      id;
-    @SuppressWarnings("unchecked")
-	public Enum     type;
+	public Enum type;
     public String   name;
     public StatsSet set;
     public int      currentLevel;

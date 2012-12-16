@@ -32,10 +32,10 @@ public class NpcBufferTable
 	private class NpcBufferSkills
 	{
 		private int _npcId = 0;
-		private Map<Integer, Integer> _skillId = new FastMap<Integer, Integer>();
-		private Map<Integer, Integer> _skillLevels = new FastMap<Integer, Integer>();
-		private Map<Integer, Integer> _skillFeeIds = new FastMap<Integer, Integer>();
-		private Map<Integer, Integer> _skillFeeAmounts = new FastMap<Integer, Integer>();
+		private final Map<Integer, Integer> _skillId = new FastMap<Integer, Integer>();
+		private final Map<Integer, Integer> _skillLevels = new FastMap<Integer, Integer>();
+		private final Map<Integer, Integer> _skillFeeIds = new FastMap<Integer, Integer>();
+		private final Map<Integer, Integer> _skillFeeAmounts = new FastMap<Integer, Integer>();
 		
 		public NpcBufferSkills(int npcId)
 		{
@@ -66,6 +66,7 @@ public class NpcBufferTable
 			};
 		}
 		
+		@SuppressWarnings("unused")
 		public int getNpcId()
 		{
 			return _npcId;
@@ -73,7 +74,7 @@ public class NpcBufferTable
 	}
 	
 	private static NpcBufferTable _instance = null;
-	private Map<Integer, NpcBufferSkills> _buffers = new FastMap<Integer, NpcBufferSkills>();
+	private final Map<Integer, NpcBufferSkills> _buffers = new FastMap<Integer, NpcBufferSkills>();
 	
 	private NpcBufferTable()
 	{

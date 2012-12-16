@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.pathfinding.geonodes.GeoPathFinding;
 import com.l2jhellas.gameserver.pathfinding.utils.BinaryNodeHeap;
 import com.l2jhellas.gameserver.pathfinding.utils.FastNodeList;
 
-
 /**
  *
  * @author -Nemesiss-
@@ -31,18 +30,19 @@ public abstract class PathFinding
 {
 	private static PathFinding _instance;
 
+	@SuppressWarnings("unused")
 	public static PathFinding getInstance()
 	{
 		if (_instance == null)
 		{
 			if (true /*Config.GEODATA_PATHFINDING*/)
 			{
-				//Smaler Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)
+				// Smaller Memory Usage, Higher Cpu Usage (CalculatedOnTheFly)
 				return GeoPathFinding.getInstance();
 			}
 			else // WORLD_PATHFINDING
 			{
-				//Higher Memoru Usage, Lower Cpu Usage (PreCalculated)
+				// Higher Memory Usage, Lower Cpu Usage (PreCalculated)
 			}
 		}
 		return _instance;

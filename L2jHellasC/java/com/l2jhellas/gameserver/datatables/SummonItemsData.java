@@ -51,6 +51,7 @@ public class SummonItemsData
 			return;
 		}
 
+		@SuppressWarnings("unused")
 		int lineCount = 0,
 			commentLinesCount = 0;
 

@@ -32,6 +32,7 @@ import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
 public class Post
 {
 	private static Logger _log = Logger.getLogger(Post.class.getName());
+
 	public class CPost
 	{
 		public int postId;
@@ -42,7 +43,8 @@ public class Post
 		public int postForumId;
 		public String postTxt;
 	}
-	private List<CPost> _post;
+
+	private final List<CPost> _post;
 	/**
 	 * @param restore
 	 * @param t
@@ -63,6 +65,7 @@ public class Post
 			insertindb(cp);
 
 	}
+
 	public void insertindb(CPost cp)
 	{
 		java.sql.Connection con = null;
@@ -96,6 +99,7 @@ public class Post
 		}
 
 	}
+
 	public Post(Topic t)
 	{
 		_post = new FastList<CPost>();
@@ -115,6 +119,7 @@ public class Post
 		}
 		return null;
 	}
+
 	public void deleteme(Topic t)
 	{
 		PostBBSManager.getInstance().delPostByTopic(t);
@@ -143,6 +148,7 @@ public class Post
 			}
 		}
 	}
+
 	/**
 	 * @param t
 	 */
@@ -187,6 +193,7 @@ public class Post
 			}
 		}
 	}
+
 	/**
 	 * @param i
 	 */
@@ -221,12 +228,4 @@ public class Post
 		}
 
 	}
-	/**
-	 *
-	 */
-
-
-
-
-
 }

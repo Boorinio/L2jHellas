@@ -30,7 +30,6 @@ public class FuncEnchant extends Func
         super(pStat, pOrder, owner);
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
 	public void calc(Env env)
     {

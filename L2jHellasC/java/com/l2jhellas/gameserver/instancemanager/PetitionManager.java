@@ -46,8 +46,8 @@ public final class PetitionManager
 	protected static final Logger _log = Logger.getLogger(PetitionManager.class.getName());
 	private static PetitionManager _instance;
 
-	private Map<Integer, Petition> _pendingPetitions;
-	private Map<Integer, Petition> _completedPetitions;
+	private final Map<Integer, Petition> _pendingPetitions;
+	private final Map<Integer, Petition> _completedPetitions;
 
 	private static enum PetitionState
 	{
@@ -88,17 +88,17 @@ public final class PetitionManager
 
 	private class Petition
 	{
-		private long _submitTime = System.currentTimeMillis();
+		private final long _submitTime = System.currentTimeMillis();
 		private long _endTime = -1;
 
-		private int _id;
-		private PetitionType _type;
+		private final int _id;
+		private final PetitionType _type;
 		private PetitionState _state = PetitionState.Pending;
-		private String _content;
+		private final String _content;
 
-		private List<CreatureSay> _messageLog = new FastList<CreatureSay>();
+		private final List<CreatureSay> _messageLog = new FastList<CreatureSay>();
 
-		private L2PcInstance _petitioner;
+		private final L2PcInstance _petitioner;
 		private L2PcInstance _responder;
 
 		public Petition(L2PcInstance petitioner, String petitionText, int petitionType)
@@ -181,6 +181,7 @@ public final class PetitionManager
 			return _responder;
 		}
 
+		@SuppressWarnings("unused")
 		public long getEndTime()
 		{
 			return _endTime;

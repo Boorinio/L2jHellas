@@ -64,7 +64,7 @@ public class Universe implements java.io.Serializable
 
     protected List<Coord> _coordList;
 
-    private HashSet<Integer> _logPlayers;
+    private final HashSet<Integer> _logPlayers;
     private boolean _logAll = true;
 
 
@@ -87,7 +87,8 @@ public class Universe implements java.io.Serializable
         protected int _y;
         protected int _z;
 
-        public Position(int x, int y, int z, int flag)
+		@SuppressWarnings("unused")
+		public Position(int x, int y, int z, int flag)
         {
             _x = x;
             _y = y;
@@ -95,7 +96,8 @@ public class Universe implements java.io.Serializable
             _flag = flag;
         }
 
-        public Position(L2CharPosition pos)
+		@SuppressWarnings("unused")
+		public Position(L2CharPosition pos)
         {
             _x = pos.x;
             _y = pos.y;
@@ -103,13 +105,15 @@ public class Universe implements java.io.Serializable
             _flag = 0;
         }
 
-        @Deprecated
+		@SuppressWarnings("unused")
+		@Deprecated
         public L2CharPosition l2CP()
         {
             return new L2CharPosition(_x, _y, _z, 0);
         }
 
-        public int compareTo(Object obj)
+        @Override
+		public int compareTo(Object obj)
         {
             Position o = (Position) obj;
             int res = Integer.valueOf(_x).compareTo(o._x);
@@ -146,14 +150,16 @@ public class Universe implements java.io.Serializable
             _z = z;
         }
 
-        public Coord(L2CharPosition pos)
+		@SuppressWarnings("unused")
+		public Coord(L2CharPosition pos)
         {
             _x = pos.x;
             _y = pos.y;
             _z = pos.z;
         }
 
-        public int compareTo(Object obj)
+        @Override
+		public int compareTo(Object obj)
         {
             Position o = (Position) obj;
             int res = Integer.valueOf(_x).compareTo(o._x);
@@ -306,7 +312,8 @@ public class Universe implements java.io.Serializable
         /* (non-Javadoc)
          * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
          */
-        public boolean accept(File arg0, String name)
+        @Override
+		public boolean accept(File arg0, String name)
         {
             return name.startsWith("universe") && name.endsWith("." + _ext);
         }
@@ -417,7 +424,8 @@ public class Universe implements java.io.Serializable
         /* (non-Javadoc)
          * @see java.lang.Runnable#run()
          */
-        public void run()
+        @Override
+		public void run()
         {
             int size = _coordList.size();
             //System.out.println("Univere Map has " + _map.size() + " nodes.");

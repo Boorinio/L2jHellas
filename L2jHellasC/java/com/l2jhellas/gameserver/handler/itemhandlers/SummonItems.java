@@ -38,6 +38,8 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class SummonItems implements IItemHandler
 {
+	@Override
+	@SuppressWarnings("unused")
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar = (L2PcInstance) playable;
@@ -181,8 +183,8 @@ public class SummonItems implements IItemHandler
 	
 	static class PetSummonFeedWait implements Runnable
 	{
-		private L2PcInstance _activeChar;
-		private L2PetInstance _petSummon;
+		private final L2PcInstance _activeChar;
+		private final L2PetInstance _petSummon;
 		
 		PetSummonFeedWait(L2PcInstance activeChar, L2PetInstance petSummon)
 		{
@@ -190,6 +192,7 @@ public class SummonItems implements IItemHandler
 			_petSummon = petSummon;
 		}
 		
+		@Override
 		public void run()
 		{
 			try
@@ -207,8 +210,8 @@ public class SummonItems implements IItemHandler
 	
 	static class PetSummonFinalizer implements Runnable
 	{
-		private L2PcInstance _activeChar;
-		private L2PetInstance _petSummon;
+		private final L2PcInstance _activeChar;
+		private final L2PetInstance _petSummon;
 		
 		PetSummonFinalizer(L2PcInstance activeChar, L2PetInstance petSummon)
 		{
@@ -216,6 +219,7 @@ public class SummonItems implements IItemHandler
 			_petSummon = petSummon;
 		}
 		
+		@Override
 		public void run()
 		{
 			try
@@ -230,6 +234,7 @@ public class SummonItems implements IItemHandler
 		}
 	}
 	
+	@Override
 	public int[] getItemIds()
 	{
 		return SummonItemsData.getInstance().itemIDs();

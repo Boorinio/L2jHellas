@@ -617,6 +617,7 @@ public class CharStat
 	 * @param skill
 	 *        The L2Skill used against the target
 	 */
+	@SuppressWarnings("incomplete-switch")
 	public int getMAtk(L2Character target, L2Skill skill)
 	{
 		if (_activeChar == null)

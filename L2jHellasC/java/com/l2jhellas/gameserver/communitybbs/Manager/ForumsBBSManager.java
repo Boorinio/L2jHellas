@@ -30,8 +30,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class ForumsBBSManager extends BaseBBSManager
 {
 	private static Logger _log = Logger.getLogger(ForumsBBSManager.class.getName());
-	private Map<Integer, Forum> _root;
-	private List<Forum> _table;
+	private final Map<Integer, Forum> _root;
+	private final List<Forum> _table;
 	private static ForumsBBSManager _instance;
 	private int _lastid = 1;
 
@@ -48,7 +48,7 @@ public class ForumsBBSManager extends BaseBBSManager
 		return _instance;
 	}
 
-	public ForumsBBSManager()
+	private ForumsBBSManager()
 	{
 		_root = new FastMap<Integer, Forum>();
 		_table = new FastList<Forum>();

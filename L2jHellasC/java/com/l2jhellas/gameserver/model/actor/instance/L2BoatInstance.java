@@ -133,6 +133,7 @@ public class L2BoatInstance extends L2Character
 		/**
 		 *
 		 */
+		@SuppressWarnings("resource")
 		private void loadBoatPath()
 		{
 			LineNumberReader lnr = null;
@@ -209,7 +210,7 @@ public class L2BoatInstance extends L2Character
 		}
 
 	}
-	private String _name;
+	private final String _name;
 	protected L2BoatTrajet _t1;
 	protected L2BoatTrajet _t2;
 	protected int _cycle = 0;
@@ -301,8 +302,8 @@ public class L2BoatInstance extends L2Character
 
 	class BoatCaptain implements Runnable
 	{
-		private int _state;
-		private L2BoatInstance _boat;
+		private final int _state;
+		private final L2BoatInstance _boat;
 		/**
 		 * @param i
 		 * @param instance
@@ -313,6 +314,7 @@ public class L2BoatInstance extends L2Character
 			_boat = instance;
 		}
 
+		@Override
 		public void run()
 		{
 			BoatCaptain bc;
@@ -343,7 +345,7 @@ public class L2BoatInstance extends L2Character
 	class Boatrun implements Runnable
 	{
 		private int _state;
-		private L2BoatInstance _boat;
+		private final L2BoatInstance _boat;
 		/**
 		 * @param i
 		 * @param instance
@@ -354,6 +356,7 @@ public class L2BoatInstance extends L2Character
 			_boat = instance;
 		}
 
+		@Override
 		public void run()
 		{
 			_boat._vd = null;

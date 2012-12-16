@@ -16,12 +16,14 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import java.util.List;
 
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
 public class ShowBoard extends L2GameServerPacket
 {
 	private static final String _S__6E_SHOWBOARD = "[S] 6e ShowBoard";
 
-	private String _htmlCode;
-	private String _id;
+	private final String _htmlCode;
+	private final String _id;
 	private List<String> _arg;
 
 	public ShowBoard(String htmlCode, String id)
@@ -137,5 +139,30 @@ public class ShowBoard extends L2GameServerPacket
 	public String getType()
 	{
 		return _S__6E_SHOWBOARD;
+	}
+	
+	public static void separateAndSend(String html, L2PcInstance player)
+	{
+		if (html.length() < 4090)
+		{
+			player.sendPacket(new ShowBoard(html, "101"));
+			player.sendPacket(new ShowBoard(null, "102"));
+			player.sendPacket(new ShowBoard(null, "103"));
+			
+		}
+		else if (html.length() < 8180)
+		{
+			player.sendPacket(new ShowBoard(html.substring(0, 4090), "101"));
+			player.sendPacket(new ShowBoard(html.substring(4090, html.length()), "102"));
+			player.sendPacket(new ShowBoard(null, "103"));
+			
+		}
+		else if (html.length() < 12270)
+		{
+			player.sendPacket(new ShowBoard(html.substring(0, 4090), "101"));
+			player.sendPacket(new ShowBoard(html.substring(4090, 8180), "102"));
+			player.sendPacket(new ShowBoard(html.substring(8180, html.length()), "103"));
+			
+		}
 	}
 }

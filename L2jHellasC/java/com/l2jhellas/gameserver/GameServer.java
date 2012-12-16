@@ -24,6 +24,10 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import Extensions.Balancer.BalanceLoad;
+import Extensions.RankSystem.CharacterRankRewardTable;
+import Extensions.RankSystem.PvpTable;
+import Extensions.RankSystem.RankRewardTable;
+import Extensions.RankSystem.TopTable;
 import Extensions.Vote.VoteMain;
 
 import com.l2jhellas.Config;
@@ -34,7 +38,6 @@ import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.datatables.ArmorSetsTable;
-import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.datatables.AugmentationData;
 import com.l2jhellas.gameserver.datatables.CharNameTable;
 import com.l2jhellas.gameserver.datatables.CharTemplateTable;
@@ -89,6 +92,7 @@ import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
+import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.L2Manor;
@@ -287,6 +291,10 @@ public class GameServer
 		QuestManager.getInstance();
 		Hitman.start();
 		VoteMain.load();
+		PvpTable.getInstance();
+		CharacterRankRewardTable.getInstance();
+		RankRewardTable.getInstance();
+		TopTable.getInstance();
 		
 		try
 		{
@@ -405,7 +413,7 @@ public class GameServer
 		}
 		catch (NullPointerException e)
 		{
-			_log.warning("Contem erros on Door.csv. Check door.csv");
+			_log.warning("You have errors on Door.csv!");
 			if (Config.DEBUG)
 				e.printStackTrace();
 		}
