@@ -121,12 +121,12 @@ public class Olympiad
 	protected static boolean _isOlympiadEnd;
 	protected static boolean _compStarted;
 	protected static boolean _battleStarted;
-	protected ScheduledFuture _scheduledCompStart;
-	protected ScheduledFuture _scheduledCompEnd;
-	protected ScheduledFuture _scheduledOlympiadEnd;
-	protected ScheduledFuture _scheduledManagerTask;
-	protected ScheduledFuture _scheduledWeeklyTask;
-	protected ScheduledFuture _scheduledValdationTask;
+	protected ScheduledFuture<?> _scheduledCompStart;
+	protected ScheduledFuture<?> _scheduledCompEnd;
+	protected ScheduledFuture<?> _scheduledOlympiadEnd;
+	protected ScheduledFuture<?> _scheduledManagerTask;
+	protected ScheduledFuture<?> _scheduledWeeklyTask;
+	protected ScheduledFuture<?> _scheduledValdationTask;
 
 	protected static final int[][] STADIUMS =
 	{

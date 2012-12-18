@@ -382,8 +382,6 @@ public class PvpTable
 	
 	private static class PvpTableSchedule implements Runnable
 	{
-		private static final Logger _log = Logger.getLogger(PvpTableSchedule.class.getName());
-
 		public PvpTableSchedule()
 		{
 			

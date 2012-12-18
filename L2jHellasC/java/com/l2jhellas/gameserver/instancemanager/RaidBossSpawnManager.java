@@ -193,7 +193,7 @@ public class RaidBossSpawnManager {
 
             _log.info("RaidBossSpawnManager: Updated " + boss.getName() + " respawn time to " + respawnTime);
 
-            ScheduledFuture futureSpawn;
+			ScheduledFuture<?> futureSpawn;
             futureSpawn = ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(boss.getNpcId()), respawn_delay);
 
             _schedules.put(boss.getNpcId(), futureSpawn);
@@ -250,7 +250,7 @@ public class RaidBossSpawnManager {
         }
         else
         {
-            ScheduledFuture futureSpawn;
+			ScheduledFuture<?> futureSpawn;
             long spawnTime = respawnTime - Calendar.getInstance().getTimeInMillis();
 
             futureSpawn = ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(bossId), spawnTime);
@@ -307,7 +307,7 @@ public class RaidBossSpawnManager {
 
         if (_schedules.containsKey(bossId))
         {
-           	ScheduledFuture f = _schedules.get(bossId);
+			ScheduledFuture<?> f = _schedules.get(bossId);
            	f.cancel(true);
            	_schedules.remove(bossId);
         }
