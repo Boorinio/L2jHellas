@@ -41,13 +41,15 @@ public final class EffectImmobileBuff extends L2Effect {
 	public boolean onStart()
 	{
 		getEffector().setIsImmobilized(true);
-		return true;
+		return super.onStart();
 	}
 
 	/** Notify exited */
 	@Override
-	public void onExit() {
+	public void onExit() 
+	{
 		getEffector().setIsImmobilized(false);
+		super.onExit(); 
 	}
 
 	@Override

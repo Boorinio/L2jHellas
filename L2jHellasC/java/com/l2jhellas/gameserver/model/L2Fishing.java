@@ -354,13 +354,13 @@ public class L2Fishing implements Runnable
 			try
 			{
 				L2Spawn spawn = new L2Spawn(temp);
-				spawn.setLocx(_fisher.GetFishx());
-				spawn.setLocy(_fisher.GetFishy());
-				spawn.setLocz(_fisher.GetFishz());
+				spawn.setLocx(_fisher.getX()); 
+			 	spawn.setLocy(_fisher.getY()); 
+			 	spawn.setLocz(_fisher.getZ()+20); 
 				spawn.setAmount(1);
 				spawn.setHeading(_fisher.getHeading());
 				spawn.stopRespawn();
-				((L2PenaltyMonsterInstance)spawn.doSpawn()).setPlayerToKill(_fisher);
+				((L2PenaltyMonsterInstance)spawn.doSpawn().scheduleDespawn(3*60*1000)).setPlayerToKill(_fisher);
 			}
 			catch (Exception e)
 			{

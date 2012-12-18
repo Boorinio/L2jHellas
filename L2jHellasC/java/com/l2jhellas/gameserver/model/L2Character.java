@@ -5657,7 +5657,12 @@ public abstract class L2Character extends L2Object
 					L2Skill skill = SkillTable.getInstance().getInfo(4515, 1);
 					
 					if (skill != null)
+					{ 
+					 	abortAttack(); 
+					 	abortCast(); 
+					 	getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE); 
 						skill.getEffects(target, this);
+					}
 					else
 						_log.warning("Skill 4515 at level 1 is missing in DP.");
 					

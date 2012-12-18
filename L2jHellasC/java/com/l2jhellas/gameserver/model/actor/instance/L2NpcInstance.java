@@ -239,7 +239,7 @@ public class L2NpcInstance extends L2Character
             }
         }
     }
-
+    
     public class destroyTemporalSummon implements Runnable
     {
         L2Summon _summon;
@@ -2369,4 +2369,25 @@ public class L2NpcInstance extends L2Character
     {
     	return _mxcModel;
     }
+    public L2NpcInstance scheduleDespawn(long delay) 
+    { 
+            ThreadPoolManager.getInstance().scheduleGeneral(this.new DespawnTask(this), delay); 
+	                return this; 
+    } 
+public class DespawnTask implements Runnable
+    {
+            L2NpcInstance _npc;
+           
+            public DespawnTask(L2NpcInstance npc)
+            {
+                   _npc = npc;
+            }
+
+            @Override
+            public void run()
+           {
+                    if (_npc != null)
+                            _npc.deleteMe();
+           }               
+   }
 }
