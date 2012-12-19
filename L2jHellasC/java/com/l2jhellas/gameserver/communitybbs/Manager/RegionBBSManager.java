@@ -326,6 +326,7 @@ public class RegionBBSManager extends BaseBBSManager
 			addOnlinePlayer(player);
 		}
 
+		sortedPlayers = null;
 		_communityPages.clear();
 		writeCommunityPages();
 	}
