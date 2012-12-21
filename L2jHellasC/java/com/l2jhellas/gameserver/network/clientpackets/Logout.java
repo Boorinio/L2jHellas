@@ -114,6 +114,9 @@ public final class Logout extends L2GameClientPacket
 
 		player.deleteMe();
 		notifyFriends(player);
+		
+		// Remove From Boss 
+	 	player.removeFromBossZone(); 
 	}
 
 	private void notifyFriends(L2PcInstance cha)

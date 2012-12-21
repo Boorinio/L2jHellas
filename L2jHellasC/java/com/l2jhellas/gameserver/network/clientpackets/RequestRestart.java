@@ -128,6 +128,9 @@ public final class RequestRestart extends L2GameClientPacket
         }
 
         L2GameClient client = getClient();
+        
+         // Remove From Boss 
+     	player.removeFromBossZone();
 
         // detach the client from the char so that the connection isnt closed in the deleteMe
         player.setClient(null);

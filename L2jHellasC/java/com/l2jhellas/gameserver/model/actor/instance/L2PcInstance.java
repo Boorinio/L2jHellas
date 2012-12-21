@@ -72,6 +72,7 @@ import com.l2jhellas.gameserver.handler.skillhandlers.SiegeFlag;
 import com.l2jhellas.gameserver.handler.skillhandlers.StrSiegeAssault;
 import com.l2jhellas.gameserver.handler.skillhandlers.TakeCastle;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
+import com.l2jhellas.gameserver.instancemanager.GrandBossManager; 
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -137,6 +138,7 @@ import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.quest.State;
+import com.l2jhellas.gameserver.model.zone.type.L2BossZone; 
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -8749,7 +8751,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (isDead())
 		{
-			abortCast();
+
 			sendPacket(new ActionFailed());
 			return;
 		}
@@ -9533,6 +9535,23 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		ThreadPoolManager.getInstance().scheduleGeneral(new InventoryEnable(), 1500);
 	}
+	/** 
+ 	 * Remove player from BossZones (used on char logout/exit) 
+ 	*/ 
+ 		        public void removeFromBossZone() 
+ 		        { 
+ 		                try 
+ 		                { 
+ 		                        for (L2BossZone _zone : GrandBossManager.getInstance().getZones()) 
+ 		                        { 
+ 		                                _zone.removePlayer(this); 
+ 		                        } 
+ 		                } 
+ 		                catch (Exception e) 
+ 	                { 
+ 		                        _log.log(Level.WARNING, "Exception on removeFromBossZone(): " + e.getMessage(), e); 
+ 		                }        
+ 		        } 
 	
 	/**
 	 * Return True if the Inventory is disabled.<BR>

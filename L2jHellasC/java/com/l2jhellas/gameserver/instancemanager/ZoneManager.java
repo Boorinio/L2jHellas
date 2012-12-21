@@ -449,6 +449,9 @@ public class ZoneManager
 	
 	public final L2ArenaZone getArena(L2Character character)
 	{
+		if (character == null) 
+		 return null; 
+		
 		for (L2ZoneType temp : ZoneManager.getInstance().getZones(character.getX(), character.getY(), character.getZ()))
 		{
 			if (temp instanceof L2ArenaZone && temp.isCharacterInZone(character))
@@ -460,6 +463,9 @@ public class ZoneManager
 	
 	public final L2OlympiadStadiumZone getOlympiadStadium(L2Character character)
 	{
+		if(character == null)
+			return null;
+		
 		for (L2ZoneType temp : ZoneManager.getInstance().getZones(character.getX(), character.getY(), character.getZ()))
 		{
 			if (temp instanceof L2OlympiadStadiumZone && temp.isCharacterInZone(character))

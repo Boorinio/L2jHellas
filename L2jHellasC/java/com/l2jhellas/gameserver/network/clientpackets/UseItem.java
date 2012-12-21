@@ -81,6 +81,13 @@ public final class UseItem extends L2GameClientPacket
 		if (activeChar.getActiveTradeList() != null)
 			activeChar.cancelActiveTrade();
 
+		// cannot use items during Fear 
+	 	if (activeChar.isAfraid()) 
+	 	{  
+	 	activeChar.sendPacket(ActionFailed.STATIC_PACKET); 
+	 	return; 
+	 	 } 
+		
 		// NOTE: disabled due to deadlocks
 		// synchronized (activeChar.getInventory())
 		// {

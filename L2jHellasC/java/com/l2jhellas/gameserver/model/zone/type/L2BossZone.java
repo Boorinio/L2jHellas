@@ -287,6 +287,14 @@ public class L2BossZone extends L2ZoneType
 			}
 		}
 	}
+	public void removePlayer(L2PcInstance player) 
+ { 
+ 	  if(!player.isGM()) 
+ 	 { 
+ 	       _playersAllowed.remove(Integer.valueOf(player.getObjectId())); 
+ 	       _playerAllowedReEntryTimes.remove(player.getObjectId()); 
+ 	 } 
+  } 
 	
 	/**
 	 * Occasionally, all players need to be sent out of the zone (for example,
