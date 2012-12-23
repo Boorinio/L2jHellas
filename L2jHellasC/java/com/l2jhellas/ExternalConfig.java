@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -35,6 +36,7 @@ public final class ExternalConfig
 	public static final String Vote_Config = "./config/Mods/Vote System.ini";
 	public static final String Automation_Config = "./config/Mods/Automatation.ini";
 	public static final String Smart_CB = "./config/Mods/Smart Community Board.ini";
+	public static final String Custom_Npc = "./config/Mods/Custom Npcs.ini";
 
 	// --------------------------------------------------
 	// L2J Variable Definitions
@@ -132,6 +134,17 @@ public final class ExternalConfig
 	public static int VOTE_REWARD_AMOUNT4;
 	public static int SECS_TO_VOTE;
 	public static int EXTRA_REW_VOTE_AM;
+
+	/* Noblesse Manager */
+	public static boolean NPC_NOBLES_ENABLE;
+	public static int NPC_NOBLESS_ID1;
+	public static int NPC_NOBLESS_QUANTITY1;
+	public static String NPC_NOBLESS_NAME1;
+	
+	/* Boss Spawn Info Npc */
+	public static int BOSS_RESPAWN_NPC_ID;
+	public static int[] BOSS_RESPAWN_INFO;
+	public static boolean RAID_INFO_SHOW_TIME;
 
 	/**
 	 * This class initializes all global variables for configuration.<br>
@@ -412,5 +425,34 @@ public final class ExternalConfig
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Smart_CB + " File.");
 		}
+		
+		// Load Custom Npc's Config file (if exists)
+		final File CustomNpc = new File(Custom_Npc);
+		try (InputStream is = new FileInputStream(CustomNpc))
+		{
+			L2Properties CustomNpcs = new L2Properties();
+			CustomNpcs.load(is);
+			/* Noblesse Manager */
+			NPC_NOBLES_ENABLE = Boolean.parseBoolean(CustomNpcs.getProperty("NobleManager", "false"));
+			NPC_NOBLESS_ID1 = Integer.parseInt(CustomNpcs.getProperty("NobleID", "57"));
+			NPC_NOBLESS_QUANTITY1 = Integer.parseInt(CustomNpcs.getProperty("NobleQuantity", "10000"));
+			NPC_NOBLESS_NAME1 = CustomNpcs.getProperty("NobleItemName", "adena");
+			
+			/* Boss Info Npc */
+			String[] notenchantable = CustomNpcs.getProperty("BossList", "29028,29019,29020,29045,29022,29001,29014,29006").split(",");
+			BOSS_RESPAWN_INFO = new int[notenchantable.length];
+			for (int i = 0; i < notenchantable.length; i++)
+			{
+				BOSS_RESPAWN_INFO[i] = Integer.parseInt(notenchantable[i]);
+			}
+			Arrays.sort(BOSS_RESPAWN_INFO);
+			RAID_INFO_SHOW_TIME = Boolean.parseBoolean(CustomNpcs.getProperty("InfoShowTime", "False"));
+		}
+		catch (Exception e)
+		{
+			_log.warning("Config: " + e.getMessage());
+			throw new Error("Failed to Load " + Custom_Npc + " File.");
+		}
+
 	}
 }

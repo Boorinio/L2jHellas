@@ -48,7 +48,7 @@ CREATE TABLE `custom_npc`(
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 -- 
--- Dumping data for table `npc`
+-- Dumping data for table `custom_npc`
 -- 
 INSERT INTO custom_npc
    (`id`, `idTemplate`, `name`, `serverSideName`, `title`, `serverSideTitle`, `class`, `collision_radius`, `collision_height`, `level`, `sex`, `type`, `attackrange`, `hp`, `mp`, `hpreg`, `mpreg`, `str`, `con`, `dex`, `int`, `wit`, `men`, `exp`, `sp`, `patk`, `pdef`, `matk`, `mdef`, `atkspd`, `aggro`, `matkspd`, `rhand`, `lhand`, `armor`, `walkspd`, `runspd`, `faction_id`, `faction_range`, `isUndead`, `absorb_level`, `absorb_type`)
@@ -64,4 +64,6 @@ VALUES
 	('70006', '31309', 'Raul', '1', 'Vote Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2VoteManager', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
 	('70007', '31309', 'Paul', '1', 'Casino', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2Casino', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
 	('70008', '31309', 'Zaon', '1', 'Donate Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2Donate', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
+	('70009', '31309', 'Philip', '1', 'Boss Info', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2BossSpawn', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
+	('70010', '31309', 'Lee', '1', 'Noble Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2CharNobles', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
 	
