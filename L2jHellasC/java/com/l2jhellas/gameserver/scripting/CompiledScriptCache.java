@@ -111,7 +111,6 @@ public class CompiledScriptCache implements Serializable
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	public void save() throws FileNotFoundException, IOException
 	{
 		synchronized (_compiledScriptCache)

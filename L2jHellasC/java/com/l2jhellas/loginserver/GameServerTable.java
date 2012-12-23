@@ -102,7 +102,6 @@ public class GameServerTable
 		}
 	}
 
-	@SuppressWarnings("resource")
 	private void loadServerNames()
 	{
 		InputStream in = null;

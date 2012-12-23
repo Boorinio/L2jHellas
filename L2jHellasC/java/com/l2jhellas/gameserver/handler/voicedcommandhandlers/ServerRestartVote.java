@@ -36,7 +36,7 @@ public class ServerRestartVote implements IVoicedCommandHandler
 	{
 		RestartVoteVariable e = new RestartVoteVariable();
 		
-		if(command.startsWith("vote_restart"))
+		if(command.startsWith(VOICED_COMMANDS[0]))
 		{
 			if (activeChar._voteRestart == false)
 			{
@@ -46,9 +46,7 @@ public class ServerRestartVote implements IVoicedCommandHandler
 				Announcements.getInstance().announceToAll("Player: "+activeChar.getName()+" has voted for server restart. If you whant to support him type .vote_restart !");
 			}
 			else
-			{
 				activeChar.sendMessage("You have already voted for an server restart.");
-			}
 		}
 		return false;
 	}

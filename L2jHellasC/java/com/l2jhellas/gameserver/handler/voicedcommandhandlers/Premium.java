@@ -32,7 +32,7 @@ public class Premium implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.startsWith("premium"))
+		if (command.startsWith(VOICED_COMMANDS[0]))
 		{
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			if (activeChar.getPremiumService() == 0)
@@ -64,7 +64,7 @@ public class Premium implements IVoicedCommandHandler
 			}
 			else
 			{
-				long _end_prem_date;
+				long _end_prem_date = 0L;
 				_end_prem_date = Extensions.PremiumService.Prem.getInstance().getPremServiceData(activeChar.getAccountName());
 				NpcHtmlMessage preReply = new NpcHtmlMessage(5);
 				

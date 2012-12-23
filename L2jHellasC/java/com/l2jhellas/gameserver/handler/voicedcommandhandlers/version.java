@@ -32,7 +32,7 @@ public class version implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("version"))
+		if (command.equalsIgnoreCase(_voicedCommands[0]))
 		{
 			activeChar.sendMessage("L2JHellas Rev " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE + " Forum: http://l2jhellas.tk/");
 		}

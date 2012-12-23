@@ -30,7 +30,7 @@ public class pmoff implements IVoicedCommandHandler
 	
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if ((command.startsWith("pmoff")))
+		if ((command.startsWith(VOICED_COMMANDS[0])))
 		{
 			if (activeChar.getMessageRefusal()) // already in message refusal
 												// mode

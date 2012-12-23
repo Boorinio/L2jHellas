@@ -133,7 +133,6 @@ public class L2BoatInstance extends L2Character
 		/**
 		 *
 		 */
-		@SuppressWarnings("resource")
 		private void loadBoatPath()
 		{
 			LineNumberReader lnr = null;

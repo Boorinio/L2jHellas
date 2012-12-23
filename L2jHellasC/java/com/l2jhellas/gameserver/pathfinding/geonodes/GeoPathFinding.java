@@ -238,7 +238,6 @@ public class GeoPathFinding extends PathFinding
 		return new Node(new GeoNodeLoc(node_x, node_y, last_z), idx2);
 	}
 	
-	@SuppressWarnings("resource")
 	private GeoPathFinding()
 	{
 		LineNumberReader lnr = null;
@@ -276,7 +275,6 @@ public class GeoPathFinding extends PathFinding
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	private void LoadPathNodeFile(byte rx, byte ry)
 	{
 		String fname = "./data/pathnode/" + rx + "_" + ry + ".pn";

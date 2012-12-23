@@ -17,10 +17,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- *
- *
- */
 public class set implements IVoicedCommandHandler
 {
 	private static final String[] VOICED_COMMANDS =
@@ -43,9 +39,7 @@ public class set implements IVoicedCommandHandler
 					sm.addString("Your clan privileges have been set to " + n + " by " + activeChar.getName());
 					activeChar.sendPacket(sm);
 				}
-				
 			}
-			
 		}
 		
 		return true;

@@ -12,6 +12,7 @@
  */
 package com.l2jhellas.gameserver.handler.voicedcommandhandlers;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -48,19 +49,14 @@ public class Wedding implements IVoicedCommandHandler
 	"divorce", "engage", "gotolove"
 	};
 	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IUserCommandHandler#useUserCommand(int,
-	 * com.l2jhellas.gameserver.model.L2PcInstance)
-	 */
+
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.startsWith("engage"))
+		if (command.startsWith(_voicedCommands[1]))
 			return Engage(activeChar);
-		else if (command.startsWith("divorce"))
+		else if (command.startsWith(_voicedCommands[0]))
 			return Divorce(activeChar);
-		else if (command.startsWith("gotolove"))
+		else if (command.startsWith(_voicedCommands[2]))
 			return GoToLove(activeChar);
 		return false;
 	}
@@ -118,7 +114,6 @@ public class Wedding implements IVoicedCommandHandler
 		if (!(activeChar.getTarget() instanceof L2PcInstance))
 		{
 			activeChar.sendMessage("You can only ask another player to engage you.");
-			
 			return false;
 		}
 		
@@ -203,8 +198,8 @@ public class Wedding implements IVoicedCommandHandler
 		
 		// check if target has player on friendlist
 		boolean FoundOnFriendList = false;
-		int objectId;
-		java.sql.Connection con = null;
+		int objectId = 0;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -300,9 +295,7 @@ public class Wedding implements IVoicedCommandHandler
 			return false;
 		}
 		else if (partner.inObserverMode())
-		{
 			activeChar.sendMessage("Your partner is in the observation.");
-		}
 		else if (partner.getClan() != null && CastleManager.getInstance().getCastleByOwner(partner.getClan()) != null && CastleManager.getInstance().getCastleByOwner(partner.getClan()).getSiege().getIsInProgress())
 		{
 			activeChar.sendMessage("Your partner is in siege, you can't go to your partner.");
@@ -330,9 +323,7 @@ public class Wedding implements IVoicedCommandHandler
 			return false;
 		}
 		else if (activeChar.inObserverMode())
-		{
 			activeChar.sendMessage("You are in the observation.");
-		}
 		else if (activeChar.getClan() != null && CastleManager.getInstance().getCastleByOwner(activeChar.getClan()) != null && CastleManager.getInstance().getCastleByOwner(activeChar.getClan()).getSiege().getIsInProgress())
 		{
 			activeChar.sendMessage("You are in siege, you can't go to your partner.");

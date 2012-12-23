@@ -20,13 +20,13 @@ public class VipTeleport implements IVoicedCommandHandler
 {
 	private static final String[] _voicedCommands =
 	{
-		"areavip",
+		"areavip"
 	};
 	
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("areavip"))
+		if (command.equalsIgnoreCase(_voicedCommands[0]))
 		{
 			if (activeChar.atEvent)
 			{

@@ -32,16 +32,12 @@ public class OnlinePlayers implements IVoicedCommandHandler
 	
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.startsWith("online"))
+		if (command.startsWith(VOICED_COMMANDS[0]))
 			showPlayers(activeChar, target);
 		return true;
 	}
 	
-	public String[] getVoicedCommandList()
-	{
-		return VOICED_COMMANDS;
-	}
-	
+
 	public void showPlayers(L2PcInstance player, String target)
 	{
 		{
@@ -59,4 +55,10 @@ public class OnlinePlayers implements IVoicedCommandHandler
 			player.sendPacket(sm);
 		}
 	}
+	
+	public String[] getVoicedCommandList()
+	{
+		return VOICED_COMMANDS;
+	}
+	
 }

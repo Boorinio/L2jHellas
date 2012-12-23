@@ -31,15 +31,13 @@ public class Cl implements IVoicedCommandHandler
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		
-		if (command.equalsIgnoreCase("cl"))
+		if (command.equalsIgnoreCase(VOICED_COMMANDS[0]))
 		{
 			
 			if (activeChar.getClan() == null)
-			{
 				return false;
-			}
 			
-			L2PcInstance leader;
+			L2PcInstance leader = null;
 			leader = (L2PcInstance) L2World.getInstance().findObject(activeChar.getClan().getLeaderId());
 			
 			if (leader == null)
@@ -86,7 +84,6 @@ public class Cl implements IVoicedCommandHandler
 				activeChar.sendMessage("Your leader is in siege, you can't go to your leader.");
 				return false;
 			}
-			
 			else if (activeChar.isInJail())
 			{
 				activeChar.sendMessage("You are in Jail!");
@@ -136,9 +133,9 @@ public class Cl implements IVoicedCommandHandler
 				activeChar.sendMessage("You need one or more Gold Bars to use the cl-teleport system.");
 				return false;
 			}
-			int leaderx;
-			int leadery;
-			int leaderz;
+			int leaderx = 0;
+			int leadery = 0;
+			int leaderz = 0;
 			
 			leaderx = leader.getX();
 			leadery = leader.getY();

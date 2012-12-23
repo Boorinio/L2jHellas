@@ -29,12 +29,12 @@ public class tradeoff implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.startsWith("tradeoff"))
+		if (command.startsWith(VOICED_COMMANDS[0]))
 		{
 			activeChar.setTradeRefusal(true);
 			activeChar.sendMessage("Trade refusal enabled");
 		}
-		if (command.startsWith("tradeon"))
+		if (command.startsWith(VOICED_COMMANDS[1]))
 		{
 			activeChar.setTradeRefusal(false);
 			activeChar.sendMessage("Trade refusal disabled");

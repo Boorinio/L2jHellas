@@ -28,30 +28,16 @@ public class Away implements IVoicedCommandHandler
 	{
 	"away", "back"
 	};
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IVoicedCommandHandler#useVoicedCommand
-	 * (String, com.l2jhellas.gameserver.model.L2PcInstance), String)
-	 */
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String text)
 	{
-		if (command.startsWith("away"))
+		if (command.startsWith(VOICED_COMMANDS[0])) //away
 			return away(activeChar, text);
-		else if (command.startsWith("back"))
+		else if (command.startsWith(VOICED_COMMANDS[1])) //back
 			return back(activeChar);
 		return false;
 	}
 	
 	public static final int ZONE_PEACE = 2;
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IVoicedCommandHandler#getVoicedCommandList
-	 * ()
-	 */
 	
 	private boolean away(L2PcInstance activeChar, String text)
 	{

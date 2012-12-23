@@ -515,7 +515,6 @@ public class LoginController
 	 * @param address
 	 * @return
 	 */
-	@SuppressWarnings("resource")
 	public boolean loginValid(String user, String password, L2LoginClient client )// throws HackingException
 	{
 		boolean ok = false;

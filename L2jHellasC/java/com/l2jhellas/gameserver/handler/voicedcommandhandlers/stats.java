@@ -34,7 +34,7 @@ public class stats implements IVoicedCommandHandler
 	
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("stats"))
+		if (command.equalsIgnoreCase(VOICED_COMMANDS[0]))
 		{
 			L2PcInstance pc = L2World.getInstance().getPlayer(target);
 			if (pc != null)

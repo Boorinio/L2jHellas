@@ -27,14 +27,6 @@ public class VoiceInfo implements IVoicedCommandHandler
 		"info"
 	};
 	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IVoicedCommandHandler#useVoicedCommand
-	 * (java.lang.String,
-	 * com.l2jhellas.gameserver.model.actor.instance.L2PcInstance,
-	 * java.lang.String)
-	 */
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		String htmFile = "data/html/mods/VoicedInfo.htm";

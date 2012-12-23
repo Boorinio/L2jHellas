@@ -19,10 +19,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 
-/**
- *
- *
- */
+
 public class castle implements IVoicedCommandHandler
 {
 	private static final String[] VOICED_COMMANDS =
@@ -32,7 +29,7 @@ public class castle implements IVoicedCommandHandler
 	
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.startsWith("open doors") && target.equals("castle") && (activeChar.isClanLeader()))
+		if (command.startsWith(VOICED_COMMANDS[0]) && target.equals("castle") && (activeChar.isClanLeader()))
 		{
 			L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
 			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
@@ -44,7 +41,7 @@ public class castle implements IVoicedCommandHandler
 			}
 			
 		}
-		else if (command.startsWith("close doors") && target.equals("castle") && (activeChar.isClanLeader()))
+		else if (command.startsWith(VOICED_COMMANDS[1]) && target.equals("castle") && (activeChar.isClanLeader()))
 		{
 			L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
 			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
@@ -56,7 +53,7 @@ public class castle implements IVoicedCommandHandler
 			}
 			
 		}
-		else if (command.startsWith("ride wyvern") && target.equals("castle"))
+		else if (command.startsWith(VOICED_COMMANDS[2]) && target.equals("castle"))
 		{
 			if (activeChar.getClan().getHasCastle() > 0 && activeChar.isClanLeader())
 			{

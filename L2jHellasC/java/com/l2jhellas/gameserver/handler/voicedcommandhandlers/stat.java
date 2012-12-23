@@ -28,7 +28,7 @@ public class stat implements IVoicedCommandHandler
 	
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("stat"))
+		if (command.equalsIgnoreCase(VOICED_COMMANDS[0]))
 		{
 			if (activeChar.getTarget() == null)
 			{
@@ -60,22 +60,14 @@ public class stat implements IVoicedCommandHandler
 			activeChar.sendMessage("Adena: " + targetp.getAdena());
 			
 			if (activeChar.getInventory().getItemByItemId(6393) == null)
-			{
 				activeChar.sendMessage("Medals : 0");
-			}
 			else
-			{
 				activeChar.sendMessage("Medals : " + targetp.getInventory().getItemByItemId(6393).getCount());
-			}
-			
+
 			if (activeChar.getInventory().getItemByItemId(3470) == null)
-			{
 				activeChar.sendMessage("Gold Bars : 0");
-			}
 			else
-			{
 				activeChar.sendMessage("Gold Bars : " + targetp.getInventory().getItemByItemId(3470).getCount());
-			}
 			
 			activeChar.sendMessage("PvP Kills: " + targetp.getPvpKills());
 			activeChar.sendMessage("PvP Flags: " + targetp.getPvpFlag());

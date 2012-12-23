@@ -52,7 +52,6 @@ public class JarClassLoader extends ClassLoader
 		}
 	}
 
-	@SuppressWarnings("resource")
 	private byte[] loadClassData(String name) throws IOException
 	{
 		byte[] classData = null;

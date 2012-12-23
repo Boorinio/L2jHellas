@@ -63,7 +63,6 @@ public class AiManager
 		load();
 	}
 
-	@SuppressWarnings("resource")
 	public void load()
 	{
 		try
