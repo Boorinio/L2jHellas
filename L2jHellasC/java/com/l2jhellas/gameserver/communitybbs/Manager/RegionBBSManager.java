@@ -458,8 +458,6 @@ public class RegionBBSManager extends BaseBBSManager
 					htmlCode.append("<font color=\"a3f6f9\">" + player.getName() + "</font>");
 				else if (player.getKarma() > 0)
 					htmlCode.append("<font color=\"ff0000\">" + player.getName() + "</font>");
-				else if (player.getClient().isDetached())
-					htmlCode.append("<font color=\"ffba00\">" + player.getName() + "</font>");
 				else
 					htmlCode.append(player.getName());
 				
@@ -578,8 +576,6 @@ public class RegionBBSManager extends BaseBBSManager
 					htmlCode.append("<font color=\"a3f6f9\">" + player.getName() + "</font>");
 				else if (player.getKarma() > 0)
 					htmlCode.append("<font color=\"ff0000\">" + player.getName() + "</font>");
-				else if (player.getClient().isDetached())
-					htmlCode.append("<font color=\"ffba00\">" + player.getName() + "</font>");
 				else
 					htmlCode.append(player.getName());
 				
@@ -629,6 +625,8 @@ public class RegionBBSManager extends BaseBBSManager
 			communityPage.put("pl", htmlCode.toString());
 			
 			_communityPages.put(page, communityPage);
+			communityPage = null;
+			htmlCode = null;
 		}
 	}
 
