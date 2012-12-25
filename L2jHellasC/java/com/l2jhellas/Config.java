@@ -637,10 +637,6 @@ public final class Config
 	/** Check for bad ID ? */
 	
 	// l2jhellas_CONFIG_FILE
-	public static boolean SHOW_NPC_CREST;
-	public static String EMAIL_USER;
-	public static String EMAIL_PASS;
-	/** Account Manager Mail */
 	public static boolean MOD_ALLOW_WEDDING;
 	/** Wedding system */
 	public static int MOD_WEDDING_PRICE;
@@ -735,10 +731,6 @@ public final class Config
 	/** Custom voice comands */
 	public static boolean ALLOW_TRADEOFF_COMMAND;
 	/** Custom voice comands */
-	public static boolean NPCBUFFER_FEATURE_ENABLED;
-	/** GoodT buffer rework */
-	public static int NPCBUFFER_STATIC_BUFF_COST;
-	/** GoodT buffer rework */
 	public static boolean ALT_SUBCLASS_SKILLS;
 	/** Skills stuck in all subs */
 	public static boolean DONATOR_NAME_COLOR_ENABLED;
@@ -1322,12 +1314,6 @@ public final class Config
 	public static boolean ANNOUNCE_PK_KILL;
 	/** Announce PK */
 	public static boolean CUSTOM_MSG_ON_PVP;
-	
-	// CLASS_MASTER_FILE
-	public static boolean ALLOW_CLASS_MASTER;
-	/** Allow use Event Managers for change occupation ? */
-	public static boolean ALLOW_REMOTE_CLASS_MASTER;
-	/** Remote Class Change */
 	
 	// HITMAN_CONFIG_FILE
 	public static boolean ENABLE_HITMAN_EVENT;
@@ -2046,10 +2032,6 @@ public final class Config
 				is.close();
 				
 				DROP_MULTI_ADENA = Boolean.parseBoolean(L2JHellasSettings.getProperty("MultiAdenaDrop", "False"));
-
-				EMAIL_USER = L2JHellasSettings.getProperty("EmailUsername", "null");
-				EMAIL_PASS = L2JHellasSettings.getProperty("EmailPassword", "null");
-
 				CHAMPION_PASSIVE = Boolean.parseBoolean(L2JHellasSettings.getProperty("ChampionPassive", "False"));
 				CHAMPION_TITLE = L2JHellasSettings.getProperty("ChampionTitle", "Champion").trim();
 				CHAMPION_ENABLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("ChampionEnable", "False"));
@@ -2069,9 +2051,6 @@ public final class Config
 				CHAMPION_SPCL_ITEM = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemID", "6393"));
 				CHAMPION_SPCL_QTY = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemAmount", "1"));
 				CHAMPION_SPCL_LVL_DIFF = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemLevelDiff", "0"));
-				SHOW_NPC_CREST = Boolean.parseBoolean(L2JHellasSettings.getProperty("ShowNpcCrest", "False"));
-				ALLOW_CLASS_MASTER = Boolean.valueOf(L2JHellasSettings.getProperty("AllowClassMaster", "False"));
-				ALLOW_REMOTE_CLASS_MASTER = Boolean.valueOf(L2JHellasSettings.getProperty("AllowRemoteClassMaster", "False"));
 				LEAVE_BUFFS_ON_DIE = Boolean.parseBoolean(L2JHellasSettings.getProperty("LeaveBuffsOnDie", "True"));
 				ALLOW_POTS_IN_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowPotsInPvP", "True"));
 				ALLOW_SOE_IN_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowSoEInPvP", "True"));
@@ -2181,8 +2160,6 @@ public final class Config
 				ALLOW_PLAYERS_REFUSAL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowPlayersRefusal", "False"));
 				ALLOW_INFO_COMMAND = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowVoiceInfoCommand", "False"));
 				ALLOW_TRADEOFF_COMMAND = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowTradeoffCommand", "False"));
-				NPCBUFFER_FEATURE_ENABLED = Boolean.valueOf(L2JHellasSettings.getProperty("NPCBufferEnabled", "False"));
-				NPCBUFFER_STATIC_BUFF_COST = Integer.parseInt(L2JHellasSettings.getProperty("NPCBufferStaticCostPerBuff", "-1"));
 				ALT_SUBCLASS_SKILLS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AltSubClassSkills", "False"));
 				DONATOR_NAME_COLOR_ENABLED = Boolean.parseBoolean(L2JHellasSettings.getProperty("DonatorNameColorEnabled", "False"));
 				DONATOR_NAME_COLOR = Integer.decode("0x" + L2JHellasSettings.getProperty("DonatorColorName", "00FFFF"));
@@ -3373,8 +3350,6 @@ public final class Config
 			ALT_GAME_EXPONENT_XP = Float.parseFloat(pValue);
 		else if (pName.equalsIgnoreCase("AltGameExponentSp"))
 			ALT_GAME_EXPONENT_SP = Float.parseFloat(pValue);
-		else if (pName.equalsIgnoreCase("AllowClassMasters"))
-			ALLOW_CLASS_MASTER = Boolean.valueOf(pValue);
 		else if (pName.equalsIgnoreCase("AltGameFreights"))
 			ALT_GAME_FREIGHTS = Boolean.valueOf(pValue);
 		else if (pName.equalsIgnoreCase("AltGameFreightPrice"))

@@ -135,12 +135,17 @@ public final class ExternalConfig
 	public static int SECS_TO_VOTE;
 	public static int EXTRA_REW_VOTE_AM;
 
-	/* Noblesse Manager */
+	/* Npc Config */
+	public static boolean SHOW_NPC_CREST;
+	public static boolean ALLOW_CLASS_MASTER;
+	public static boolean ALLOW_REMOTE_CLASS_MASTER;
+	public static String EMAIL_USER;
+	public static String EMAIL_PASS;
+	public static boolean NPCBUFFER_FEATURE_ENABLED;
+	public static int NPCBUFFER_STATIC_BUFF_COST;
 	public static boolean NPC_NOBLES_ENABLE;
 	public static int NPC_NOBLESS_ID1;
 	public static int NPC_NOBLESS_QUANTITY1;
-	
-	/* Boss Spawn Info Npc */
 	public static int BOSS_RESPAWN_NPC_ID;
 	public static int[] BOSS_RESPAWN_INFO;
 	public static boolean RAID_INFO_SHOW_TIME;
@@ -432,6 +437,13 @@ public final class ExternalConfig
 			L2Properties CustomNpcs = new L2Properties();
 			CustomNpcs.load(is);
 			/* Noblesse Manager */
+			SHOW_NPC_CREST = Boolean.parseBoolean(CustomNpcs.getProperty("ShowNpcCrest", "False"));
+			EMAIL_USER = CustomNpcs.getProperty("EmailUsername", "null");
+			EMAIL_PASS = CustomNpcs.getProperty("EmailPassword", "null");
+			NPCBUFFER_FEATURE_ENABLED = Boolean.valueOf(CustomNpcs.getProperty("NPCBufferEnabled", "False"));
+			NPCBUFFER_STATIC_BUFF_COST = Integer.parseInt(CustomNpcs.getProperty("NPCBufferStaticCostPerBuff", "-1"));
+			ALLOW_CLASS_MASTER = Boolean.valueOf(CustomNpcs.getProperty("AllowClassMaster", "False"));
+			ALLOW_REMOTE_CLASS_MASTER = Boolean.valueOf(CustomNpcs.getProperty("AllowRemoteClassMaster", "False"));
 			NPC_NOBLES_ENABLE = Boolean.parseBoolean(CustomNpcs.getProperty("NobleManager", "false"));
 			NPC_NOBLESS_ID1 = Integer.parseInt(CustomNpcs.getProperty("NobleID", "57"));
 			NPC_NOBLESS_QUANTITY1 = Integer.parseInt(CustomNpcs.getProperty("NobleQuantity", "10000"));

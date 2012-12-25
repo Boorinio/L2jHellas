@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
@@ -161,7 +162,7 @@ public class PcStat extends PlayableStat
 
         boolean levelIncreased = super.addLevel(value);
                 
-        if(Config.ALLOW_REMOTE_CLASS_MASTER)
+        if(ExternalConfig.ALLOW_REMOTE_CLASS_MASTER)
         {
         	ClassLevel lvlnow = PlayerClass.values()[getActiveChar().getClassId().getId()].getLevel();
         	if(getLevel() >= 20 && lvlnow == ClassLevel.First)

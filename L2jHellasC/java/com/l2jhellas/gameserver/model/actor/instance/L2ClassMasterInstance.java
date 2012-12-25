@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.datatables.CharTemplateTable;
 import com.l2jhellas.gameserver.datatables.NpcTable;
 import com.l2jhellas.gameserver.model.Inventory;
@@ -85,10 +86,10 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 		if(player.isGM())
 			showChatWindowChooseClass(player);
 
-		else if (((level >= 20 && jobLevel == 1 ) || (level >= 40 && jobLevel == 2 )) && Config.ALLOW_CLASS_MASTER)
+		else if (((level >= 20 && jobLevel == 1 ) || (level >= 40 && jobLevel == 2 )) && ExternalConfig.ALLOW_CLASS_MASTER)
 			showChatWindow(player, classId.getId());
 			
-		else if (level >= 76 && Config.ALLOW_CLASS_MASTER && classId.getId() < 88)
+		else if (level >= 76 && ExternalConfig.ALLOW_CLASS_MASTER && classId.getId() < 88)
 		{
 			for (int i = 0; i < SECONDN_CLASS_IDS.length; i++)
 			{

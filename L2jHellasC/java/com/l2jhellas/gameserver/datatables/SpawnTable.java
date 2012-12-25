@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -91,7 +92,7 @@ public class SpawnTable
 					{
 						// You got the idea...
 					}
-                    else if (!Config.ALLOW_CLASS_MASTER && template1.type.equals("L2ClassMaster"))
+                    else if (!ExternalConfig.ALLOW_CLASS_MASTER && template1.type.equals("L2ClassMaster"))
                     {
                         // Dont' spawn class masters
                     }

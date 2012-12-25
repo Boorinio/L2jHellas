@@ -23,6 +23,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GmListTable;
@@ -501,7 +502,7 @@ public class EnterWorld extends L2GameClientPacket
 		if (VIP._savePlayers.contains(activeChar.getName()))
 			VIP.addDisconnectedPlayer(activeChar);
 		
-		if (Config.ALLOW_REMOTE_CLASS_MASTER)
+		if (ExternalConfig.ALLOW_REMOTE_CLASS_MASTER)
 		{
 			ClassLevel lvlnow = PlayerClass.values()[activeChar.getClassId().getId()].getLevel();
 			if (activeChar.getLevel() >= 20 && lvlnow == ClassLevel.First)

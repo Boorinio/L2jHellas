@@ -21,15 +21,15 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 
 public class L2Emailer
 {
 	public static void sendL2Mail(String[] towho, String sub, String text) throws MessagingException
 	{
 		String host = "smtp.gmail.com";
-		String from = Config.EMAIL_USER;
-		String pass = Config.EMAIL_PASS;
+		String from = ExternalConfig.EMAIL_USER;
+		String pass = ExternalConfig.EMAIL_PASS;
 		String[] email = towho;
 		String subject = sub;
 		String content = text;
