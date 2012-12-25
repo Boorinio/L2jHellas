@@ -21,6 +21,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.gameserver.datatables.ItemTable;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -35,7 +36,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 public class L2CharNoblesInstance extends L2NpcInstance
 {
 	/* Main Menu */
-	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>" + "<center><img src=\"Apotheosis.herotower_deco\" width=\"256\" height=\"32\"><br><br><br>" + "<button value=\"Nobles\" action=\"bypass -h npc_%objectId%_showwindow 1\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br><br>" + "</body></html>";
+	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>" + "<center><img src=\"noico.herotower_deco\" width=\"256\" height=\"32\"><br><br><br>" + "<button value=\"Nobles\" action=\"bypass -h npc_%objectId%_showwindow 1\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br><br>" + "</body></html>";
 	
 	public L2CharNoblesInstance(int objectId, L2NpcTemplate template)
 	{
@@ -152,7 +153,7 @@ public class L2CharNoblesInstance extends L2NpcInstance
 			tb.append("Here you can get a nobleman's status.<br>");
 			tb.append("<a action=\"bypass -h npc_%objectId%_setstatus 1\">Get the status of a nobleman</a>");
 			tb.append("Price:<br><table>");
-			tb.append("<tr><td>" + ExternalConfig.NPC_NOBLESS_QUANTITY1 + " <font color=\"LEVEL\">" + ExternalConfig.NPC_NOBLESS_NAME1 + "</font></td></tr><br>");
+			tb.append("<tr><td>" + ExternalConfig.NPC_NOBLESS_QUANTITY1 + " <font color=\"LEVEL\">" + ItemTable.getInstance().getTemplate(ExternalConfig.NPC_NOBLESS_ID1).getName() + "</font></td></tr><br>");
 			tb.append("</table><br>This items can be droped by <font color=\"LEVEL\">RB's</font><br>For More info click on <a action=\"bypass -h npc_%objectId%_info\">List</a><br><button value=\"Back\" action=\"bypass -h npc_%objectId%_showwindow 0\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br>");
 			
 			tb.append("</center></body></html>");
@@ -164,7 +165,7 @@ public class L2CharNoblesInstance extends L2NpcInstance
 		{
 			tb = new TextBuilder();
 			tb.append("<html><title>Becoming a Nobles</title>");
-			tb.append("<body><center><br><br><br><br><br><br><br><br><br><br><br><br><br><font color=\"LEVEL\"> Service is courently Disabled.</font><br><button value=\"Back\" action=\"bypass -h npc_%objectId%_showwindow 0\" width=\"96\" height=\"19\" back=\"Apotheosis.bi2\" fore=\"Apotheosis.bi2\">");
+			tb.append("<body><center><br><br><br><br><br><br><br><br><br><br><br><br><br><font color=\"LEVEL\"> Service is courently Disabled.</font><br><button value=\"Back\" action=\"bypass -h npc_%objectId%_showwindow 0\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\">");
 			tb.append("</center></body></html>");
 			html = new NpcHtmlMessage(1);
 			html.setHtml(tb.toString());

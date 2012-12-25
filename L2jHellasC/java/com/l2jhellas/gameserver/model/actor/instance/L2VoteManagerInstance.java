@@ -28,7 +28,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.DDSConverter;
 
-public class L2VoteManagerInstance extends L2FolkInstance
+public class L2VoteManagerInstance extends L2NpcInstance
 {
 	public L2VoteManagerInstance(int objectId, L2NpcTemplate template)
 	{
@@ -96,14 +96,14 @@ public class L2VoteManagerInstance extends L2FolkInstance
 	}
 	
 	@Override
-	public void showChatWindow(L2PcInstance player)
+	public void onAction(L2PcInstance player)
 	{
 		if (this != player.getTarget())
 		{
 			player.setTarget(this);
 			
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
-			
+
 			player.sendPacket(new ValidateLocation(this));
 		}
 		else if (!canInteract(player))
@@ -129,7 +129,7 @@ public class L2VoteManagerInstance extends L2FolkInstance
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
 		
-		tb.append("<html><head><title>Vote reward Panel</title></head><body>");
+		tb.append("<html><head><title>Vote reward Manager</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
 		tb.append("<tr>");
@@ -237,6 +237,7 @@ public class L2VoteManagerInstance extends L2FolkInstance
 		}
 		catch (Exception e)
 		{
+			activeChar.sendMessage("Could not genarate vote manager logo.");
 		}
 		
 	}
@@ -246,12 +247,12 @@ public class L2VoteManagerInstance extends L2FolkInstance
 		TextBuilder tb = new TextBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		
-		tb.append("<html><head><title>Vote Reward Panel</title></head><body>");
+		tb.append("<html><head><title>Vote Reward Manager</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
 		tb.append("<tr>");
 		tb.append("<td width=\"45\" valign=\"top\" align=\"center\"><img src=\"L2ui_ch3.menubutton4\" width=\"38\" height=\"38\"></td>");
-		tb.append("<td valign=\"top\"><font color=\"FF6600\">Vote Panel</font>");
+		tb.append("<td valign=\"top\"><font color=\"FF6600\">Vote Manager</font>");
 		tb.append("<br1><font color=\"00FF00\">" + player.getName() + "</font>, get your reward here.</td>");
 		tb.append("</tr>");
 		tb.append("</table>");
@@ -272,5 +273,4 @@ public class L2VoteManagerInstance extends L2FolkInstance
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
 	}
-	
 }

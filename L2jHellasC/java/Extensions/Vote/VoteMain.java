@@ -125,7 +125,7 @@ public class VoteMain
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("SELECT lastVoteHopzone FROM characters WHERE charId=?");
+			statement = con.prepareStatement("SELECT lastVoteHopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
 			
 			ResultSet rset = statement.executeQuery();
@@ -151,7 +151,7 @@ public class VoteMain
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("SELECT lastVoteTopzone FROM characters WHERE charId=?");
+			statement = con.prepareStatement("SELECT lastVoteTopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
 			
 			ResultSet rset = statement.executeQuery();
@@ -223,7 +223,7 @@ public class VoteMain
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("SELECT lastVoteHopzone FROM characters WHERE charId=?");
+			statement = con.prepareStatement("SELECT lastVoteHopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
 			
 			ResultSet rset = statement.executeQuery();
@@ -323,7 +323,7 @@ public class VoteMain
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("SELECT lastVoteTopzone FROM characters WHERE charId=?");
+			statement = con.prepareStatement("SELECT lastVoteTopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
 			
 			ResultSet rset = statement.executeQuery();
@@ -384,7 +384,7 @@ public class VoteMain
 		int hasVotedHop = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT hasVotedHop FROM characters WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("SELECT hasVotedHop FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
 			
 			ResultSet rset = statement.executeQuery();
@@ -414,7 +414,7 @@ public class VoteMain
 		int hasVotedTop = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT hasVotedTop FROM characters WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("SELECT hasVotedTop FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
 			
 			ResultSet rset = statement.executeQuery();
@@ -443,7 +443,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET monthVotes=?, totalVotes=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET monthVotes=?, totalVotes=? WHERE obj_Id=?");
 			
 			statement.setInt(1, getMonthVotes(activeChar) + 1);
 			statement.setInt(2, getTotalVotes(activeChar) + 1);
@@ -461,7 +461,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE obj_Id=?");
 			
 			statement.setInt(1, 1);
 			statement.setInt(2, activeChar.getObjectId());
@@ -478,7 +478,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE obj_Id=?");
 			
 			statement.setInt(1, 1);
 			statement.setInt(2, activeChar.getObjectId());
@@ -495,7 +495,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE obj_Id=?");
 			
 			statement.setInt(1, 0);
 			statement.setInt(2, activeChar.getObjectId());
@@ -512,7 +512,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE obj_Id=?");
 			
 			statement.setInt(1, 0);
 			statement.setInt(2, activeChar.getObjectId());
@@ -530,7 +530,7 @@ public class VoteMain
 		int tries = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT tries FROM characters WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("SELECT tries FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
 			for (ResultSet rset = statement.executeQuery(); rset.next();)
 			{
@@ -549,7 +549,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET tries=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET tries=? WHERE obj_Id=?");
 			
 			statement.setInt(1, tries);
 			statement.setInt(2, player.getObjectId());
@@ -567,7 +567,7 @@ public class VoteMain
 		int monthVotes = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT monthVotes FROM characters WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("SELECT monthVotes FROM characters WHERE obj_Id=?");
 			
 			statement.setInt(1, player.getObjectId());
 			for (ResultSet rset = statement.executeQuery(); rset.next();)
@@ -588,7 +588,7 @@ public class VoteMain
 		int totalVotes = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT totalVotes FROM characters WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("SELECT totalVotes FROM characters WHERE obj_Id=?");
 			
 			statement.setInt(1, player.getObjectId());
 			for (ResultSet rset = statement.executeQuery(); rset.next();)
@@ -647,7 +647,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET lastVoteHopzone=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET lastVoteHopzone=? WHERE obj_Id=?");
 			statement.setLong(1, System.currentTimeMillis());
 			statement.setInt(2, player.getObjectId());
 			statement.execute();
@@ -662,7 +662,7 @@ public class VoteMain
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET lastVoteTopzone=? WHERE charId=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET lastVoteTopzone=? WHERE obj_Id=?");
 			statement.setLong(1, System.currentTimeMillis());
 			statement.setInt(2, player.getObjectId());
 			statement.execute();

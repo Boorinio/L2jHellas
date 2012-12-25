@@ -139,7 +139,6 @@ public final class ExternalConfig
 	public static boolean NPC_NOBLES_ENABLE;
 	public static int NPC_NOBLESS_ID1;
 	public static int NPC_NOBLESS_QUANTITY1;
-	public static String NPC_NOBLESS_NAME1;
 	
 	/* Boss Spawn Info Npc */
 	public static int BOSS_RESPAWN_NPC_ID;
@@ -436,7 +435,6 @@ public final class ExternalConfig
 			NPC_NOBLES_ENABLE = Boolean.parseBoolean(CustomNpcs.getProperty("NobleManager", "false"));
 			NPC_NOBLESS_ID1 = Integer.parseInt(CustomNpcs.getProperty("NobleID", "57"));
 			NPC_NOBLESS_QUANTITY1 = Integer.parseInt(CustomNpcs.getProperty("NobleQuantity", "10000"));
-			NPC_NOBLESS_NAME1 = CustomNpcs.getProperty("NobleItemName", "adena");
 			
 			/* Boss Info Npc */
 			String[] notenchantable = CustomNpcs.getProperty("BossList", "29028,29019,29020,29045,29022,29001,29014,29006").split(",");
