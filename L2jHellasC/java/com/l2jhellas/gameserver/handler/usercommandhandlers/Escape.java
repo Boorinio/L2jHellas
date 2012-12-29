@@ -43,6 +43,7 @@ public class Escape implements IUserCommandHandler
 	 * com.l2jhellas.gameserver.handler.IUserCommandHandler#useUserCommand(int,
 	 * com.l2jhellas.gameserver.model.L2PcInstance)
 	 */
+	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
 		if (activeChar.isCastingNow() || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isInOlympiadMode())
@@ -80,6 +81,12 @@ public class Escape implements IUserCommandHandler
 			return false;
 		}
 		
+		if (activeChar.inClanEvent || activeChar.inPartyEvent || activeChar.inSoloEvent)
+		{
+			activeChar.sendPacket(SystemMessage.sendString("You can't escape while in Event."));
+			return false;
+		}
+
 		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 		sm.addString("After " + unstuckTimer / 60000 + " min. you be returned to near village.");
 		
@@ -104,13 +111,14 @@ public class Escape implements IUserCommandHandler
 	
 	static class EscapeFinalizer implements Runnable
 	{
-		private L2PcInstance _activeChar;
+		private final L2PcInstance _activeChar;
 		
 		EscapeFinalizer(L2PcInstance activeChar)
 		{
 			_activeChar = activeChar;
 		}
 		
+		@Override
 		public void run()
 		{
 			if (_activeChar.isDead())
@@ -137,6 +145,7 @@ public class Escape implements IUserCommandHandler
 	 * @see
 	 * com.l2jhellas.gameserver.handler.IUserCommandHandler#getUserCommandList()
 	 */
+	@Override
 	public int[] getUserCommandList()
 	{
 		return COMMAND_IDS;

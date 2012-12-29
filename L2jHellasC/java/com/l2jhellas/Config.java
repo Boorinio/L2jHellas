@@ -1355,6 +1355,13 @@ public final class Config
 	public static boolean CTF_REVIVE_RECOVERY;
 	public static long CTF_REVIVE_DELAY;
 	
+	/* Raid Event Engine */
+	public static boolean RAID_SYSTEM_ENABLED;
+	public static int RAID_SYSTEM_MAX_EVENTS;
+	public static boolean RAID_SYSTEM_GIVE_BUFFS;
+	public static boolean RAID_SYSTEM_RESURRECT_PLAYER;
+	public static int RAID_SYSTEM_FIGHT_TIME;
+	
 	// DM_CONFIG_FILE
 	public static boolean DM_ALLOW_INTERFERENCE;
 	public static boolean DM_ALLOW_POTIONS;
@@ -2584,6 +2591,12 @@ public final class Config
 				CTF_REVIVE_DELAY = Long.parseLong(EventSettings.getProperty("CTFReviveDelay", "20000"));
 				if (CTF_REVIVE_DELAY < 1000)
 					CTF_REVIVE_DELAY = 1000; // can't be set less then 1 second
+				RAID_SYSTEM_ENABLED = Boolean.parseBoolean(EventSettings.getProperty("RaidEnginesEnabled", "false"));
+				RAID_SYSTEM_GIVE_BUFFS = Boolean.parseBoolean(EventSettings.getProperty("RaidGiveBuffs", "true"));
+				RAID_SYSTEM_RESURRECT_PLAYER = Boolean.parseBoolean(EventSettings.getProperty("RaidResurrectPlayer", "true"));
+				RAID_SYSTEM_MAX_EVENTS = Integer.parseInt(EventSettings.getProperty("RaidMaxNumEvents", "3"));
+				RAID_SYSTEM_FIGHT_TIME = Integer.parseInt(EventSettings.getProperty("RaidSystemFightTime", "60"));
+				
 			}
 			catch (Exception e)
 			{

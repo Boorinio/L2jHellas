@@ -28,6 +28,7 @@ import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.gameserver.datatables.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.CharTemplateTable;
 import com.l2jhellas.gameserver.datatables.ClanTable;
 import com.l2jhellas.gameserver.datatables.HelperBuffTable;
@@ -134,6 +135,7 @@ public class L2NpcInstance extends L2Character
     public boolean _isEventMobVIP = false;
     public String  _CTF_FlagTeamName;
     public boolean _isEventVIPNPC = false, _isEventVIPNPCEnd = false;
+	public boolean isPrivateEventMob = false;
     
     private boolean _isInTown = false;
 
@@ -1060,6 +1062,10 @@ public class L2NpcInstance extends L2Character
                         break;
                 }
             }
+			else if (command.startsWith("MakeBuffs"))
+			{
+				makeBuffs(player, command.substring(9).trim());
+			}
             else if (command.startsWith("npcfind_byid"))
             {
                 try
@@ -1193,12 +1199,41 @@ public class L2NpcInstance extends L2Character
     }
     
     /**
-     * Send a Server->Client packet NpcHtmlMessage to the L2PcInstance in order to display the message of the L2NpcInstance.<BR><BR>
-     * 
-     * @param player The L2PcInstance who talks with the L2NpcInstance
-     * @param content The text of the L2NpcMessage
-     * 
-     */
+	 * Throws an action command to L2BufferInstance.<br>
+	 * 
+	 * @param player
+	 *        --> Target player
+	 * @param buffTemplate
+	 *        --> Name of the Buff Template to Add
+	 */
+	public void makeBuffs(L2PcInstance player, String buffTemplate)
+	{
+		int _templateId = 0;
+		
+		try
+		{
+			_templateId = Integer.parseInt(buffTemplate);
+		}
+		catch (NumberFormatException e)
+		{
+			_templateId = BuffTemplateTable.getInstance().getTemplateIdByName(buffTemplate);
+		}
+		if (_templateId > 0)
+		{
+			L2EventBufferInstance.makeBuffs(player, _templateId, this, true);
+		}
+	}
+	
+	/**
+	 * Send a Server->Client packet NpcHtmlMessage to the L2PcInstance in order
+	 * to display the message of the L2NpcInstance.<BR>
+	 * <BR>
+	 * 
+	 * @param player
+	 *        The L2PcInstance who talks with the L2NpcInstance
+	 * @param content
+	 *        The text of the L2NpcMessage
+	 */
     public void insertObjectIdAndShowChatWindow(L2PcInstance player, String content)
     {
         // Send a Server->Client packet NpcHtmlMessage to the L2PcInstance in order to display the message of the L2NpcInstance

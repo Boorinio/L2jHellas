@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 
 
@@ -47,9 +48,16 @@ public final class DlgAnswer extends L2GameClientPacket
 			_log.fine(getType()+": Answer acepted. Message ID "+_messageId+", asnwer "+_answer+", unknown field "+_unk);
 		if (_messageId == SystemMessageId.RESSURECTION_REQUEST.getId())
 			getClient().getActiveChar().reviveAnswer(_answer);
-		else if (_messageId==614 && Config.MOD_ALLOW_WEDDING)
-						getClient().getActiveChar().EngageAnswer(_answer);
-
+		else if (_messageId == 614 && getClient().getActiveChar().awaitingAnswer && Config.MOD_ALLOW_WEDDING)
+		{
+			getClient().getActiveChar().EngageAnswer(_answer);
+			getClient().getActiveChar().awaitingAnswer = false;
+		}
+		else if (_messageId == 614 && L2EventManagerInstance._awaitingplayers.contains(getClient().getActiveChar()))
+		{
+			getClient().getActiveChar().setRaidAnswear(_answer);
+			L2EventManagerInstance._awaitingplayers.remove(getClient().getActiveChar());
+		}
 	}
 
 	@Override

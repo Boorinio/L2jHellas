@@ -18,6 +18,7 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import Extensions.RaidEvent.L2RaidEvent;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
@@ -753,6 +754,17 @@ public class L2Attackable extends L2NpcInstance
 							if (attacker instanceof L2PcInstance)
 							{
 								L2PcInstance player = (L2PcInstance) attacker;
+								if (this.isPrivateEventMob)
+								{
+									L2RaidEvent.expHandOut();
+									exp = L2RaidEvent.exp;
+									sp = L2RaidEvent.sp;
+									if (L2RaidEvent.checkPossibleReward())
+									{
+										L2RaidEvent.chooseReward(player);
+									}
+									this.deleteMe();
+								}
 								if (isOverhit() && attacker == getOverhitAttacker())
 								{
 									player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));
@@ -899,6 +911,17 @@ public class L2Attackable extends L2NpcInstance
 						if (attacker instanceof L2PcInstance)
 						{
 							L2PcInstance player = (L2PcInstance) attacker;
+							if (this.isPrivateEventMob)
+							{
+								L2RaidEvent.expHandOut();
+								exp = L2RaidEvent.exp;
+								sp = L2RaidEvent.sp;
+								if (L2RaidEvent.checkPossibleReward())
+								{
+									L2RaidEvent.chooseReward(player);
+								}
+								this.deleteMe();
+							}
 							if (isOverhit() && attacker == getOverhitAttacker())
 							{
 								player.sendPacket(new SystemMessage(SystemMessageId.OVER_HIT));

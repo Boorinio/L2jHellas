@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS=0;
 --
 -- Table structure for table `custom_npc`
 -- 
@@ -46,24 +47,24 @@ CREATE TABLE `custom_npc`(
   `absorb_level` decimal(2,0) default 0,
   `absorb_type` enum('FULL_PARTY','LAST_HIT','PARTY_ONE_RANDOM') DEFAULT 'LAST_HIT' NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
+)ENGINE=MyISAM;
 -- 
 -- Dumping data for table `custom_npc`
 -- 
 INSERT INTO custom_npc
-   (`id`, `idTemplate`, `name`, `serverSideName`, `title`, `serverSideTitle`, `class`, `collision_radius`, `collision_height`, `level`, `sex`, `type`, `attackrange`, `hp`, `mp`, `hpreg`, `mpreg`, `str`, `con`, `dex`, `int`, `wit`, `men`, `exp`, `sp`, `patk`, `pdef`, `matk`, `mdef`, `atkspd`, `aggro`, `matkspd`, `rhand`, `lhand`, `armor`, `walkspd`, `runspd`, `faction_id`, `faction_range`, `isUndead`, `absorb_level`, `absorb_type`)
+	(`id`, `idTemplate`, `name`, `serverSideName`, `title`, `serverSideTitle`, `class`, `collision_radius`, `collision_height`, `level`, `sex`, `type`, `attackrange`, `hp`, `mp`, `hpreg`, `mpreg`, `str`, `con`, `dex`, `int`, `wit`, `men`, `exp`, `sp`, `patk`, `pdef`, `matk`, `mdef`, `atkspd`, `aggro`, `matkspd`, `rhand`, `lhand`, `armor`, `walkspd`, `runspd`, `faction_id`, `faction_range`, `isUndead`, `absorb_level`, `absorb_type`)
 VALUES
 	('50007','31324','Andromeda',1,'Wedding Manager',1,'NPC.a_casino_FDarkElf',8.00,23.00,70,'female','L2WeddingManager',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,316,0,0,55,132,NULL,0,1,0,'LAST_HIT'),
 	('54', '30767', 'Marion', '1', 'Faction Manager', '1', 'Monster2.queen_of_cat', '8.00', '22.00', '70', 'etc', 'L2Faction', '40', '3892', '1567', '23.00', '1.00', '40', '40', '40', '40', '40', '40', '0', '0', '2314', '2341', '324', '234', '234', '0', '333', '0', '0', '0', '65', '123', null, '0', '0', '0', 'LAST_HIT'),
-	('70010', '31309', 'Aioria', '1', 'TvT Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2Npc', '40', '3862', '1493', '11.85', '2.78', '40', '43', '30', '21', '20', '10', '0', '0', '1314', '470', '780', '382', '278', '0', '333', '0', '0', '0', '28', '132', null, '0', '0', '0', 'LAST_HIT'),
 	('51', '30767', 'Maria', '1', 'Npc Buffer', '1', 'Monster2.queen_of_cat', '8.00', '22.00', '70', 'etc', 'L2NpcBuffer', '40', '3892', '1567', '23.00', '1.00', '40', '40', '40', '40', '40', '40', '0', '0', '2314', '2341', '324', '234', '234', '0', '333', '0', '0', '0', '65', '123', null, '0', '0', '0', 'LAST_HIT'),
 	('52', '30767', 'Agent Guy', '1', 'Hitman Manager', '1', 'Monster2.queen_of_cat', '8.00', '22.00', '70', 'etc', 'L2Hitman', '40', '3892', '1567', '23.00', '1.00', '40', '40', '40', '40', '40', '40', '0', '0', '2314', '2341', '324', '234', '234', '0', '333', '0', '0', '0', '65', '123', null, '0', '0', '0', 'LAST_HIT'),
-    ('25846', '30314', 'Raut', '1', 'Donate Info', '1', 'NPC.a_traderB_MHuman', '8.00', '25.00', '99', 'male', 'L2NpcWalker', '40', '999', '40', '40.00', '40.00', '999', '999', '999', '999', '999', '999', '40', '40', '40', '999', '40', '999', '40', '0', '40', '0', '0', '0', '80', '120', null, null, '0', '0', 'LAST_HIT'),
+	('25846', '30314', 'Raut', '1', 'Donate Info', '1', 'NPC.a_traderB_MHuman', '8.00', '25.00', '99', 'male', 'L2NpcWalker', '40', '999', '40', '40.00', '40.00', '999', '999', '999', '999', '999', '999', '40', '40', '40', '999', '40', '999', '40', '0', '40', '0', '0', '0', '80', '120', null, null, '0', '0', 'LAST_HIT'),
 	('70004', '31309', 'Leon', '1', 'CTF Event Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2Npc', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT'),
 	('70005', '31309', 'Chris', '1', 'Account Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2AccountManager', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT'),
 	('70006', '31309', 'Raul', '1', 'Vote Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2VoteManager', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
 	('70007', '31309', 'Paul', '1', 'Casino', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2Casino', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
 	('70008', '31309', 'Zaon', '1', 'Donate Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2Donate', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
 	('70009', '31309', 'Philip', '1', 'Boss Info', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2BossSpawn', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
-	('70010', '31309', 'Lee', '1', 'Noble Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2CharNobles', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
-	
+	('70010', '31309', 'Aioria', '1', 'TvT Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2Npc', '40', '3862', '1493', '11.85', '2.78', '40', '43', '30', '21', '20', '10', '0', '0', '1314', '470', '780', '382', '278', '0', '333', '0', '0', '0', '28', '132', null, '0', '0', '0', 'LAST_HIT'),
+	('70011', '31309', 'Lee', '1', 'Noble Manager', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2CharNobles', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');
+	('70012', '31309', 'Event Manager', '1', 'Raid Event', '1', 'NPC.a_traderD_Mhuman', '8.00', '25.30', '70', 'male', 'L2EventManager', '40', '2444', '2444', '0.00', '0.00', '10', '10', '10', '10', '10', '10', '0', '0', '500', '500', '500', '500', '278', '0', '333', '9376', '0', '0', '30', '120', 'null', '0', '0', '0', 'LAST_HIT');

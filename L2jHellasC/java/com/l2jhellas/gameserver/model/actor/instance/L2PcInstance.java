@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,8 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import Extensions.RaidEvent.L2EventChecks;
+import Extensions.RaidEvent.L2RaidEvent;
 import Extensions.RankSystem.RankPvpSystem;
 import Extensions.RankSystem.RankPvpSystemDeathMgr;
 import Extensions.RankSystem.RankPvpSystemPointsReward;
@@ -72,11 +75,11 @@ import com.l2jhellas.gameserver.handler.skillhandlers.SiegeFlag;
 import com.l2jhellas.gameserver.handler.skillhandlers.StrSiegeAssault;
 import com.l2jhellas.gameserver.handler.skillhandlers.TakeCastle;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
-import com.l2jhellas.gameserver.instancemanager.GrandBossManager; 
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
+import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
@@ -138,7 +141,7 @@ import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.quest.State;
-import com.l2jhellas.gameserver.model.zone.type.L2BossZone; 
+import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -227,8 +230,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 	
 	// Character Character
-	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?,maxHp=?,curHp=?,maxCp=?,curCp=?,maxMp=?,curMp=?,str=?,con=?,dex=?,_int=?,men=?,wit=?,face=?,hairStyle=?,hairColor=?,heading=?,x=?,y=?,z=?,exp=?,expBeforeDeath=?,sp=?,karma=?,pvpkills=?,pkkills=?,rec_have=?,rec_left=?,clanid=?,maxload=?,race=?,classid=?,deletetime=?,title=?,accesslevel=?,online=?,isin7sdungeon=?,clan_privs=?,wantspeace=?,base_class=?,onlinetime=?,in_jail=?,jail_timer=?,newbie=?,nobless=?,power_grade=?,subpledge=?,last_recom_date=?,lvl_joined_academy=?,apprentice=?,sponsor=?,varka_ketra_ally=?,clan_join_expiry_time=?,clan_create_expiry_time=?,char_name=?,death_penalty_level=?,chat_filter_count=?,good=?,evil=?,hitman_target=? WHERE obj_id=?";
-	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, good,evil, hitman_target, email, emailcode, hasSubEmail, answer, secCode, emailchangecode, hasSubSec, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries FROM characters WHERE obj_id=?";
+	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?, maxHp=?, curHp=?, maxCp=?, curCp=?, maxMp=?, curMp=?, str=?, con=?, dex=?, _int=?, men=?, wit=?, face=?, hairStyle=?, hairColor=?, heading=?, x=?, y=?, z=?, exp=?, expBeforeDeath=?, sp=?, karma=?, pvpkills=?, pkkills=?, rec_have=?, rec_left=?, clanid=?, maxload=?, race=?, classid=?, deletetime=?, title=?, accesslevel=?, online=?, isin7sdungeon=?, clan_privs=?, wantspeace=?, base_class=?, onlinetime=?, in_jail=?, jail_timer=?, newbie=?, nobless=?, power_grade=?, subpledge=?, last_recom_date=?, lvl_joined_academy=?, apprentice=?, sponsor=?, varka_ketra_ally=?, clan_join_expiry_time=?, clan_create_expiry_time=?, char_name=?, death_penalty_level=?, chat_filter_count=?, good=?, evil=?, hitman_target=?, event_points=? WHERE obj_id=?";
+	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, good,evil, hitman_target, email, emailcode, hasSubEmail, answer, secCode, emailchangecode, hasSubSec, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries, event_points FROM characters WHERE obj_id=?";
 	private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
 	
 	// Character PremiumService
@@ -5283,6 +5286,10 @@ public final class L2PcInstance extends L2PlayableInstance
 				clanWarKill = (pk.getClan() != null && getClan() != null && !isAcademyMember() && !pk.isAcademyMember() && _clan.isAtWarWith(pk.getClanId()) && pk.getClan().isAtWarWith(getClanId()));
 				playerKill = true;
 			}
+			if (Config.RAID_SYSTEM_RESURRECT_PLAYER && (inSoloEvent || inPartyEvent || inClanEvent))
+			{
+				L2RaidEvent.onPlayerDeath(this);
+			}
 			if (atEvent && pk != null)
 			{
 				pk.kills.add(getName());
@@ -7020,6 +7027,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				// L2l2jhellas Donator and Hero Mod
 				player.setHero(rset.getInt("hero") == 1);
 				player.setDonator(rset.getInt("donator") == 1);
+				player.setEventPoints(rset.getInt("event_points"));
 				player.setClanJoinExpiryTime(rset.getLong("clan_join_expiry_time"));
 				if (player.getClanJoinExpiryTime() < System.currentTimeMillis())
 				{
@@ -7570,7 +7578,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			statement.setInt(58, isgood() ? 1 : 0);
 			statement.setInt(59, isevil() ? 1 : 0);
 			statement.setInt(60, getHitmanTarget());
-			statement.setInt(61, getObjectId());
+			statement.setInt(61, getEventPoints());
+			statement.setInt(62, getObjectId());
 			
 			statement.execute();
 			statement.close();
@@ -13175,5 +13184,88 @@ public final class L2PcInstance extends L2PlayableInstance
 	public final void setIsVoting(boolean value)
 	{
 		_isVoting = value;
+	}
+	
+	/** Raid Event Parameters */
+	public boolean inClanEvent = false;
+	public boolean inPartyEvent = false;
+	public boolean inSoloEvent = false;
+	public boolean awaitingAnswer = false;
+	private int _event_points;
+	public static int eventType;
+	public static int eventPointsRequired;
+	public static int eventNpcId;
+	public static int eventNpcAmmount;
+	public static int eventMinPlayers;
+	public static int eventBufflist;
+	public static int eventRewardLevel;
+	public static L2Object eventEffector;
+	public static Vector<L2PcInstance> eventParticipatingPlayers;
+	
+	/** Raid Event Related Voids */
+	public void setEventPoints(int points)
+	{
+		_event_points = points;
+	}
+	
+	public int getEventPoints()
+	{
+		return _event_points;
+	}
+	
+	/**
+	 * Set Raid Event Parameters, this is needed to keep track of events while
+	 * waiting for an answear from the Clan Leader.
+	 * 
+	 * @param player
+	 * @param type
+	 * @param points
+	 * @param npcId
+	 * @param npcAm
+	 * @param minPeople
+	 * @param bufflist
+	 * @param rewardLevel
+	 * @param effector
+	 * @param participatingPlayers
+	 */
+	public void setRaidParameters(L2PcInstance player, int type, int points, int npcId, int npcAm, int minPeople, int bufflist, int rewardLevel, L2Object effector, Vector<L2PcInstance> participatingPlayers)
+	{
+		eventType = type;
+		eventPointsRequired = points;
+		eventNpcId = npcId;
+		eventNpcAmmount = npcAm;
+		eventMinPlayers = minPeople;
+		eventBufflist = bufflist;
+		eventRewardLevel = rewardLevel;
+		eventEffector = effector;
+		eventParticipatingPlayers = participatingPlayers;
+	}
+	
+	public void setRaidAnswear(int answer)
+	{
+		if (this == null)
+			return;
+		if (answer == 1)
+		{
+			if (L2EventChecks.checkPlayer(this, eventType, eventPointsRequired, eventMinPlayers, eventParticipatingPlayers))
+			{
+				L2RaidEvent event;
+				event = new L2RaidEvent(this, eventType, eventPointsRequired, eventNpcId, eventNpcAmmount, eventBufflist, eventRewardLevel, eventEffector, eventParticipatingPlayers);
+				sendMessage("You've choosen to continue the event with " + eventParticipatingPlayers + "online Member/s.");
+				try
+				{
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				event.init();
+			}
+		}
+		else if (answer == 0)
+			sendMessage("You don't want to continue with the Event.");
+		else
+			return;
 	}
 }

@@ -16,6 +16,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
+import Extensions.RaidEvent.L2RaidEvent;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
@@ -62,6 +64,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 			activeChar = _activeChar;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -181,6 +184,31 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		{
 			_log.warning("Living player ["+activeChar.getName()+"] called RestartPointPacket! Ban this player!");
 			return;
+		}
+
+		if (activeChar.inClanEvent || activeChar.inPartyEvent || activeChar.inSoloEvent)
+		{
+			activeChar.inClanEvent = false;
+			activeChar.inPartyEvent = false;
+			activeChar.inSoloEvent = false;
+			if (L2RaidEvent._eventType == 2)
+			{
+				if (L2RaidEvent._participatingPlayers.contains(activeChar))
+					// Clear player from Event.
+					L2RaidEvent._participatingPlayers.remove(activeChar);
+			}
+			if (L2RaidEvent._eventType == 3)
+			{
+				if (activeChar.getParty() != null)
+					activeChar.leaveParty();
+				activeChar.sendMessage("You have been kicked from the party");
+			}
+			activeChar.sendMessage("You've been erased from the event!");
+			int num = L2RaidEvent._participatingPlayers.size();
+			if (num > 0 && num != 1)
+				num -= 1;
+			else
+				L2RaidEvent.hardFinish();
 		}
 
 		Castle castle = CastleManager.getInstance().getCastle(activeChar.getX(), activeChar.getY(), activeChar.getZ());

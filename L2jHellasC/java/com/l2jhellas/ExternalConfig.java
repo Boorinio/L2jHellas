@@ -41,7 +41,7 @@ public final class ExternalConfig
 	// --------------------------------------------------
 	// L2J Variable Definitions
 	// --------------------------------------------------
-	
+
 	/* Smart Community Board Definitions */
 	public static int TOP_PLAYER_ROW_HEIGHT;
 	public static int TOP_PLAYER_RESULTS;
@@ -482,6 +482,8 @@ public final class ExternalConfig
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Custom_Npc + " File.");
 		}
+
+		
 
 	}
 }

@@ -50,6 +50,7 @@ public class Wedding implements IVoicedCommandHandler
 	};
 	
 
+	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		if (command.startsWith(_voicedCommands[1]))
@@ -238,6 +239,7 @@ public class Wedding implements IVoicedCommandHandler
 		
 		ptarget.setEngageRequest(true, activeChar.getObjectId());
 		// ptarget.sendMessage("Player "+activeChar.getName()+" wants to engage with you.");
+		activeChar.awaitingAnswer = true;
 		ptarget.sendPacket(new ConfirmDlg(614, activeChar.getName() + " asking you to engage. Do you want to start a new relationship?"));
 		return true;
 	}
@@ -376,11 +378,11 @@ public class Wedding implements IVoicedCommandHandler
 	
 	static class EscapeFinalizer implements Runnable
 	{
-		private L2PcInstance _activeChar;
-		private int _partnerx;
-		private int _partnery;
-		private int _partnerz;
-		private boolean _to7sDungeon;
+		private final L2PcInstance _activeChar;
+		private final int _partnerx;
+		private final int _partnery;
+		private final int _partnerz;
+		private final boolean _to7sDungeon;
 		
 		EscapeFinalizer(L2PcInstance activeChar, int x, int y, int z, boolean to7sDungeon)
 		{
@@ -391,6 +393,7 @@ public class Wedding implements IVoicedCommandHandler
 			_to7sDungeon = to7sDungeon;
 		}
 		
+		@Override
 		public void run()
 		{
 			if (_activeChar.isDead())
@@ -416,6 +419,7 @@ public class Wedding implements IVoicedCommandHandler
 	 * @see
 	 * com.l2jhellas.gameserver.handler.IUserCommandHandler#getUserCommandList()
 	 */
+	@Override
 	public String[] getVoicedCommandList()
 	{
 		return _voicedCommands;

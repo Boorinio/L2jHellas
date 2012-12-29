@@ -39,6 +39,7 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.datatables.ArmorSetsTable;
 import com.l2jhellas.gameserver.datatables.AugmentationData;
+import com.l2jhellas.gameserver.datatables.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.CharNameTable;
 import com.l2jhellas.gameserver.datatables.CharTemplateTable;
 import com.l2jhellas.gameserver.datatables.ClanTable;
@@ -251,6 +252,8 @@ public class GameServer
 		
 		_helperBuffTable = HelperBuffTable.getInstance();
 		
+		BuffTemplateTable.getInstance();
+
 		if (!_helperBuffTable.isInitialized())
 			throw new Exception("Not able to initialize the o *Buffer Helper*");
 		
