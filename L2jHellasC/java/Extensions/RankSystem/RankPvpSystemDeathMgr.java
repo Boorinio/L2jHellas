@@ -47,11 +47,8 @@ public class RankPvpSystemDeathMgr
 	/**
 	 * [0 - itemSlotId] [1 - itemName] [2 - itemEnchantLevel].
 	 */
-	private final KillerItem[] _killerItems = new KillerItem[18]; // l2jFrozen
-																	// 18,
+	private final KillerItem[] _killerItems = new KillerItem[18];
 	
-	// l2jserver H5 25.
-
 	/**
 	 * Always use this constructor as default!
 	 * 
