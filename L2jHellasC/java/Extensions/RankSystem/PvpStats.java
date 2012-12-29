@@ -279,5 +279,4 @@ public class PvpStats
 			setRank(ExternalConfig.CUSTOM_PVP_RANKS.tail().getValue());
 		}
 	}
-	
 }

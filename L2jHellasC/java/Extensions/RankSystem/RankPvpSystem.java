@@ -16,7 +16,6 @@ import java.util.Calendar;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -27,13 +26,10 @@ import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
  */
 public class RankPvpSystem
 {
-	
 	private static final Logger _log = Logger.getLogger(RankPvpSystem.class.getName());
 	
 	private L2PcInstance killer = null;
 	private L2PcInstance victim = null;
-	
-	private static final boolean DEBUG_MODE = true;
 	
 	public RankPvpSystem(L2PcInstance killer, L2PcInstance victim)
 	{
@@ -122,7 +118,7 @@ public class RankPvpSystem
 			
 			if (ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ON_DEATH_ENABLED)
 			{
-				if (!RankPvpSystemDeathMgr.isInRestrictedZone(killer))
+				if (!RankPvpSystemZoneChecker.isInDMRestrictedZone(killer))
 				{
 					RankPvpSystemPlayerInfo playerInfo = new RankPvpSystemPlayerInfo();
 					playerInfo.sendPlayerResponse(victim, killer);
@@ -164,11 +160,14 @@ public class RankPvpSystem
 			
 			if (!timeProtectionOn)
 			{
+				
 				pvp.increaseKillsLegal();
+				
 				if (victim.getClan() != null && killer.getClan() != null && killer.getClan().isAtWarWith(victim.getClanId()))
 				{
 					pvp.increaseWarKillsLegal();
 				}
+				
 				if (pvp.getKillDay() == systemDay)
 				{
 					pvp.increaseKillsLegalToday();
@@ -305,46 +304,46 @@ public class RankPvpSystem
 	 * @param victim
 	 * @return Rank points for kill victim.
 	 */
-	public static int getPointsForKill(Pvp pvp, PvpStats victimPvpStats, L2PcInstance killer, L2PcInstance victim)
+	public int getPointsForKill(Pvp pvp, PvpStats victimPvpStats, L2PcInstance killer, L2PcInstance victim)
 	{
+		
 		int points = 0;
 		int points_war = 0;
 		int points_bonus_zone = 0;
-		
-		if (pvp.getKillsLegal() <= ExternalConfig.CUSTOM_PVP_RANK_PROTECTION || ExternalConfig.CUSTOM_PVP_RANK_PROTECTION == 0)
+
+		// add basic points:
+		if (ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED)
 		{
-			
-			if (ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED)
+			int i = 1;
+			for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN.head(), end = ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN.tail(); (n = n.getNext()) != end;)
 			{
-				int i = 1;
-				for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN.head(), end = ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN.tail(); (n = n.getNext()) != end;)
+				if (pvp.getKillsLegalToday() == i)
 				{
-					if (pvp.getKillsLegalToday() == i)
-					{
-						points = n.getValue();
-					}
-					i++;
+					points = n.getValue();
+					break;
 				}
+				i++;
 			}
-			else
-			{
-				points = victimPvpStats.getRank().getPointsForKill();
-			}
-			
-			// add war points, if Killer's clan and Victim's clan at war:
-			if (ExternalConfig.CUSTOM_PVP_WAR_ENABLED && ExternalConfig.CUSTOM_PVP_WAR_RP_RATIO > 1 && killer.getClan() != null && victim.getClan() != null && killer.getClan().isAtWarWith(victim.getClanId()))
-			{
-				points_war = (int) Math.floor((points * ExternalConfig.CUSTOM_PVP_WAR_RP_RATIO) - points);
-			}
-			
-			// add bonus zone points, if Killer and Victim are inside bonus
-			// zone:
-			double zone_ratio_killer = getZoneBonusRatio(killer);
+		}
+		else
+		{
+			points = victimPvpStats.getRank().getPointsForKill();
+		}
+		
+		// add war points, if Killer's clan and Victim's clan at war:
+		if (ExternalConfig.CUSTOM_PVP_WAR_ENABLED && points > 0 && ExternalConfig.CUSTOM_PVP_WAR_RP_RATIO > 1 && killer.getClan() != null && victim.getClan() != null && killer.getClan().isAtWarWith(victim.getClanId()))
+		{
+			points_war = (int) Math.floor((points * ExternalConfig.CUSTOM_PVP_WAR_RP_RATIO) - points);
+		}
+		
+		// add bonus zone points, if Killer and Victim are inside bonus zone:
+		if (points > 0)
+		{
+			double zone_ratio_killer = RankPvpSystemZoneChecker.getZoneBonusRatio(killer);
 			if (zone_ratio_killer > 1)
 			{
 				points_bonus_zone = (int) Math.floor((points * zone_ratio_killer) - points);
 			}
-
 		}
 		
 		points = points + points_war + points_bonus_zone;
@@ -353,7 +352,7 @@ public class RankPvpSystem
 	}
 
 	/**
-	 * Check Basic conditions for CPRS, it's mean check if can I add +1 into
+	 * Check Basic conditions for CPS, it's mean check if can I add +1 into
 	 * kills and kills_today.<br>
 	 * Basic mean: if killer is: in olympiad, in event, in restricted zone, etc.
 	 * 
@@ -366,46 +365,27 @@ public class RankPvpSystem
 		
 		if (killer == null || victim == null)
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkBasicConditions: 1");
-			}
 			return false;
 		}
 		
 		if (killer.isDead() || killer.isAlikeDead())
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkBasicConditions: 2");
-			}
 			return false;
 		}
 		
 		if (killer.isInOlympiadMode() || killer.isOlympiadStart())
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkBasicConditions: 3");
-			}
 			return false;
 		}
 		
 		if (killer.atEvent)
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkBasicConditions: 4");
-			}
 			return false;
 		}
 		
-		if (isInRestrictedZone(killer))
+		// check if killer is in allowed zone & not in restricted zone:
+		if (!RankPvpSystemZoneChecker.isInPvpAllowedZone(killer) && RankPvpSystemZoneChecker.isInPvpRestrictedZone(killer))
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkBasicConditions: 5");
-			}
 			if (ExternalConfig.CUSTOM_PVP_REWARD_ENABLED && ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
 			{
 				killer.sendMessage("You can't get Reward and Rank Points in restricted zone");
@@ -426,10 +406,6 @@ public class RankPvpSystem
 		
 		if (!antiFarmCheck(killer, victim))
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkBasicConditions: 6");
-			}
 			return false;
 		}
 
@@ -444,69 +420,45 @@ public class RankPvpSystem
 			return false;
 		}
 		
-		// OK if killerKillsLegal on Victim is <= REWARD_PROTECTION and
-		// REWARD_PROTECTION == 0
+		if ((ExternalConfig.CUSTOM_PVP_REWARD_MIN_LVL > victim.getLevel()) || (ExternalConfig.CUSTOM_PVP_REWARD_MIN_LVL > killer.getLevel()))
+		{
+			killer.sendMessage("You or your target have not required level!");
+			return false;
+		}
+		
+		// if PK mode is disabled:
+		if (!ExternalConfig.CUSTOM_PVP_REWARD_PK_MODE_ENABLED && (killer.getKarma() > 0) && (victim.getPvpFlag() == 0) && victim.getKarma() == 0)
+		{
+			killer.sendMessage("You can't earn Reward for kill innocent players!");
+			return false;
+		}
+		
+		// if reward for PK kill is disabled:
+		if (!ExternalConfig.CUSTOM_PVP_RANK_PK_KILLER_AWARD && (victim.getKarma() > 0))
+		{
+			killer.sendMessage("No Reward for kill player with Karma!");
+			return false;
+		}
+		
+		// 1: check total legal kills:
 		if (pvp.getKillsLegal() > ExternalConfig.CUSTOM_PVP_REWARD_PROTECTION && ExternalConfig.CUSTOM_PVP_REWARD_PROTECTION > 0)
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkItemRewardConditions: 2");
-			}
 			killer.sendMessage("Reward has been awarded for kill this player!");
 			return false;
 		}
 		
-		// OK if victim kill time + protection time <= system time
-		if (ExternalConfig.CUSTOM_PVP_PROTECTION_RESET > 0 && ExternalConfig.CUSTOM_PVP_REWARD_PROTECTION == 0)
+		// 2: check total legal kills today:
+		if (pvp.getKillsLegalToday() > ExternalConfig.CUSTOM_PVP_DAILY_REWARD_PROTECTION && ExternalConfig.CUSTOM_PVP_DAILY_REWARD_PROTECTION > 0)
 		{
-			if (timeProtectionOn)
-			{
-				killer.sendMessage("Reward has been awarded for kill this player!");
-				if (!ExternalConfig.CUSTOM_PVP_RANK_REWARD_ENABLED)
-				{
-					killer.sendMessage("Next for " + nextRewardTime);
-				}
-				return false;
-			}
-		}
-		
-		/*
-		 * if(killer_kills_today > Config.CUSTOM_PVP_REWARD_PROTECTION &&
-		 * Config.CUSTOM_PVP_REWARD_PROTECTION > 0){
-		 * if(DEBUG_MODE){
-		 * _log.info("checkItemRewardConditions: 4");
-		 * }
-		 * killer.sendMessage("No more Reward for kill this player today!");
-		 * return false;
-		 * }
-		 */
-		if (!ExternalConfig.CUSTOM_PVP_REWARD_PK_MODE_ENABLED && killer.getKarma() != 0)
-		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkItemRewardConditions: 5");
-			}
-			killer.sendMessage("Reward is awarded only for non Karma players!");
+			killer.sendMessage("Reward has been awarded for kill this player today!");
 			return false;
 		}
 		
-		if (!((killer.getKarma() == 0) && (!ExternalConfig.CUSTOM_PVP_REWARD_PK_MODE_ENABLED) || ((ExternalConfig.CUSTOM_PVP_REWARD_PK_KILLER_AWARD) && (killer.getKarma() == 0) && (victim.getKarma() > 0) && !ExternalConfig.CUSTOM_PVP_REWARD_PK_MODE_ENABLED)))
+		// 3: check time protection:
+		if (timeProtectionOn)
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkItemRewardConditions: 6");
-			}
-			killer.sendMessage("Reward is awarded for kill Flagged players!");
-			return false;
-		}
-		
-		if ((ExternalConfig.CUSTOM_PVP_REWARD_MIN_LVL > victim.getLevel()) || (ExternalConfig.CUSTOM_PVP_REWARD_MIN_LVL > killer.getLevel()))
-		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkItemRewardConditions: 7");
-			}
-			killer.sendMessage("Rewards avaliable on " + ExternalConfig.CUSTOM_PVP_REWARD_MIN_LVL + "+ level.");
+			killer.sendMessage("Reward has been awarded for kill this player!");
+			killer.sendMessage("Next for " + nextRewardTime);
 			return false;
 		}
 
@@ -519,87 +471,53 @@ public class RankPvpSystem
 		if (!ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
 			return false;
 		
-		if (!((ExternalConfig.CUSTOM_PVP_RANK_MIN_LVL <= victim.getLevel()) && (ExternalConfig.CUSTOM_PVP_RANK_MIN_LVL <= killer.getLevel())))
+		if ((ExternalConfig.CUSTOM_PVP_RANK_MIN_LVL > victim.getLevel()) || (ExternalConfig.CUSTOM_PVP_RANK_MIN_LVL > killer.getLevel()))
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkRankPointsConditions: 1");
-			}
 			killer.sendMessage("You or your target have not required level!");
 			return false;
 		}
 		
-		if (pvp.getKillsLegal() > ExternalConfig.CUSTOM_PVP_RANK_PROTECTION && ExternalConfig.CUSTOM_PVP_RANK_PROTECTION > 0 && !ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED)
-		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkRankPointsConditions: 2");
-			}
-			killer.sendMessage("Rank Points has been awarded for kill this player!");
-
-			return false;
-		}
-		
-		if (ExternalConfig.CUSTOM_PVP_PROTECTION_RESET > 0 && (ExternalConfig.CUSTOM_PVP_RANK_PROTECTION == 0 || (ExternalConfig.CUSTOM_PVP_REWARD_PROTECTION == 0 && ExternalConfig.CUSTOM_PVP_REWARD_ENABLED)))
-		{
-			if (timeProtectionOn)
-			{
-				killer.sendMessage("Reward has been awarded for kill this player!");
-				killer.sendMessage("Next for " + nextRewardTime);
-				return false;
-			}
-		}
-		
-		if (pvp.getKillsLegalToday() > ExternalConfig.CUSTOM_PVP_RANK_PROTECTION && ExternalConfig.CUSTOM_PVP_RANK_PROTECTION > 0 && ExternalConfig.CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED)
-		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkRankPointsConditions: 3");
-			}
-			killer.sendMessage("Rank Points has been awarded for kill this player today!");
-			
-			return false;
-		}
-
-		/*
-		 * if(killer_kills_today >
-		 * ExternalConfig.CUSTOM_PVP_RANK_PROTECTION &&
-		 * ExternalConfig.CUSTOM_PVP_RANK_PROTECTION > 0){
-		 * if(DEBUG_MODE){
-		 * _log.info("checkRankPointsConditions: 4");
-		 * }
-		 * killer.sendMessage(
-		 * "Rank Points has been awarded for kill this player today!");
-		 * return false;
-		 * }
-		 */
-		// if PK mode is OFF: (but can kill Flagged players)
+		// if PK mode is disabled:
 		if ((!ExternalConfig.CUSTOM_PVP_RANK_PK_MODE_ENABLED) && (killer.getKarma() > 0) && (victim.getPvpFlag() == 0) && victim.getKarma() == 0)
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkRankPointsConditions: 5");
-			}
 			killer.sendMessage("You can't earn Rank Points on innocent players!");
 			return false;
 		}
 		
-		// if points for PK kill is OFF:
+		// if points for PK kill is disabled:
 		if ((!ExternalConfig.CUSTOM_PVP_RANK_PK_KILLER_AWARD) && (victim.getKarma() > 0))
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkRankPointsConditions: 6");
-			}
 			killer.sendMessage("No Rank Points for kill player with Karma!");
 			return false;
 		}
 		
+		// 1: check total legal kills:
+		if (pvp.getKillsLegal() > ExternalConfig.CUSTOM_PVP_RANK_PROTECTION && ExternalConfig.CUSTOM_PVP_RANK_PROTECTION > 0)
+		{
+			killer.sendMessage("Rank Points has been awarded for kill this player!");
+			return false;
+		}
+		
+		// 2: check total legal kills today:
+		if (pvp.getKillsLegalToday() > ExternalConfig.CUSTOM_PVP_DAILY_RANK_PROTECTION && ExternalConfig.CUSTOM_PVP_DAILY_RANK_PROTECTION > 0)
+		{
+			killer.sendMessage("Rank Points has been awarded for kill this player today!");
+			return false;
+		}
+		
+		// 3: check time protection:
+		if (timeProtectionOn)
+		{
+			killer.sendMessage("Rank Points has been awarded for kill this player!");
+			killer.sendMessage("Next for " + nextRewardTime);
+			return false;
+		}
+
 		return true;
 	}
 	
 	/**
-	 * Return 1 if legal action, 0 illegal.
+	 * Return True if it's Legal Kill.
 	 * 
 	 * @param killer
 	 * @param victim
@@ -609,70 +527,22 @@ public class RankPvpSystem
 	{
 		if ((ExternalConfig.CUSTOM_PVP_LEGAL_MIN_LVL > victim.getLevel()) || (ExternalConfig.CUSTOM_PVP_LEGAL_MIN_LVL > killer.getLevel()))
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkIsLegalKill: 1");
-			}
 			return false;
 		}
 		
 		if ((!ExternalConfig.CUSTOM_PVP_LEGAL_PK_MODE_ENABLED && killer.getKarma() > 0))
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkIsLegalKill: 2");
-			}
 			return false;
 		}
 		
 		if (!ExternalConfig.CUSTOM_PVP_LEGAL_PK_KILLER_AWARD && killer.getKarma() == 0 && victim.getKarma() > 0)
 		{
-			if (DEBUG_MODE)
-			{
-				_log.info("checkIsLegalKill: 3");
-			}
 			return false;
 		}
 		
 		return true;
 	}
-	
-	/**
-	 * Returns true if character is in restricted zone.
-	 * 
-	 * @param activeChar
-	 * @return
-	 */
-	private boolean isInRestrictedZone(L2PcInstance activeChar)
-	{
-		for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.CUSTOM_PVP_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
-		{
-			if (activeChar.isInsideZone(n.getValue().byteValue()))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Returns true if character is in Bonus Ratio zone.
-	 * 
-	 * @param player
-	 * @return
-	 */
-	private static double getZoneBonusRatio(L2PcInstance player)
-	{
-		for (FastMap.Entry<Integer, Double> e = ExternalConfig.CUSTOM_PVP_RANK_POINTS_BONUS_ZONES.head(), end = ExternalConfig.CUSTOM_PVP_RANK_POINTS_BONUS_ZONES.tail(); (e = e.getNext()) != end;)
-		{
-			if (player.isInsideZone(e.getKey().byteValue()))
-			{
-				return e.getValue();
-			}
-		}
-		return 1.0;
-	}
-	
+
 	/**
 	 * If returns TRUE is OK (no farming detected).<BR>
 	 * Checking: Party, Clan/Ally, IP, self-kill.
@@ -698,7 +568,7 @@ public class RankPvpSystem
 		if (ExternalConfig.CUSTOM_PVP_ANTI_FARM_CLAN_ALLY_ENABLED && (player1.getClan() != null && player2.getClan() != null) && (player1.getClan().getClanId() > 0 && player2.getClan().getClanId() > 0 && player1.getClan().getClanId() == player2.getClan().getClanId()) || (player1.getAllyId() > 0 && player2.getAllyId() > 0 && player1.getAllyId() == player2.getAllyId()))
 		{
 			player1.sendMessage("PvP Farm is not allowed!");
-			_log.warning("PVP POINT FARM ATTEMPT, " + player1.getName() + " and " + player2.getName() + ". CLAN or ALLY.");
+			_log.warning("PVP POINT FARM ATTEMPT, " + player1.getName() + " and " + player2.getName() + ". SAME CLAN or ALLY.");
 			return false;
 		}
 		
@@ -763,5 +633,4 @@ public class RankPvpSystem
 	{
 		this.victim = victim;
 	}
-
 }

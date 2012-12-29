@@ -122,19 +122,21 @@ public class RankPvpSystemPlayerInfo
 		tb.append("</td></tr>");
 		
 		// clan
-		/*
-		 * tb.append(
-		 * "<tr><td width=135 height=22 align=left><font color=ae9977>Clan</font></td>"
-		 * );
-		 * tb.append("<td width=135 height=22 align=left>");
-		 * if(playerTarget.getClan() != null){
-		 * tb.append("<font color=ffa000>"+playerTarget.getClan().getName()+
-		 * "</font>");
-		 * }else{
-		 * tb.append("<font color=808080>No clan</font>");
-		 * }
-		 * tb.append("</td></tr>");
-		 */
+		if (player.isDead() && !player.equals(playerTarget))
+		{
+			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Clan</font></td>");
+			tb.append("<td width=135 height=22 align=left>");
+			if (playerTarget.getClan() != null)
+			{
+				tb.append("<font color=ffa000>" + playerTarget.getClan().getName() + "</font>");
+			}
+			else
+			{
+				tb.append("<font color=808080>No clan</font>");
+			}
+			tb.append("</td></tr>");
+		}
+		
 		// span
 		tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 		tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
@@ -178,7 +180,7 @@ public class RankPvpSystemPlayerInfo
 			
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP for kill</font></td>");
 			tb.append("<td width=135 height=22 align=left>");
-			tb.append("<font color=ffa000>" + RankPvpSystem.getPointsForKill(pvp1, targetPvpStats, playerTarget, player) + "</font>");
+			tb.append("<font color=ffa000>" + targetPvpStats.getRank().getPointsForKill() + "</font>");
 			tb.append("</td></tr>");
 			
 			if (ExternalConfig.CUSTOM_PVP_RANK_REWARD_ENABLED)

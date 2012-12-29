@@ -66,7 +66,7 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 	{
 		//
 	}
-	
+
 	private static RankPvpSystemBBSManager _instance = new RankPvpSystemBBSManager();
 
 	/**

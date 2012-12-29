@@ -17,7 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
@@ -30,9 +29,6 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
  */
 public class TopTable
 {
-	@SuppressWarnings("unused")
-	private static final Logger _log = Logger.getLogger(TopTable.class.getName());
-	
 	private static TopTable _instance = null;
 	
 	private boolean _isUpdating = false;
@@ -159,9 +155,6 @@ public class TopTable
 	
 	private static class TopTableSchedule implements Runnable
 	{
-		@SuppressWarnings("unused")
-		private static final Logger _log = Logger.getLogger(TopTableSchedule.class.getName());
-
 		public TopTableSchedule()
 		{
 			
@@ -228,5 +221,4 @@ public class TopTable
 	{
 		this._isUpdating = _isUpdating;
 	}
-	
 }

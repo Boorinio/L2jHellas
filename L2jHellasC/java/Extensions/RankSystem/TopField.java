@@ -107,5 +107,4 @@ public class TopField
 	{
 		this._characterBaseClassId = _characterBaseClassId;
 	}
-	
 }

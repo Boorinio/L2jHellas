@@ -366,5 +366,4 @@ public class Pvp
 		
 		return true;
 	}
-	
 }

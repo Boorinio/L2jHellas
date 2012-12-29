@@ -18,7 +18,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
@@ -29,9 +28,6 @@ import com.l2jhellas.L2DatabaseFactory;
  */
 public class CharacterRankRewardTable
 {
-	
-	private static final Logger _log = Logger.getLogger(CharacterRankRewardTable.class.getName());
-	
 	private static CharacterRankRewardTable _instance = null;
 	
 	/** <id, CharacterRankReward> contains already taken rewards by players */
@@ -85,15 +81,10 @@ public class CharacterRankRewardTable
 		
 		for (FastMap.Entry<Integer, CharacterRankReward> e = getCharacterRankRewardTable().head(), end = getCharacterRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
-			if (e != null)
+			if (e.getValue().getCharacterId() == characterId)
 			{
 				
-				if (e.getValue().getCharacterId() == characterId)
-				{
-					
-					playerRewardsTaken.put(playerRewardsTaken.size() + 1, e.getValue().getRewardId());
-				}
-				
+				playerRewardsTaken.put(playerRewardsTaken.size() + 1, e.getValue().getRewardId());
 			}
 		}
 
@@ -102,29 +93,23 @@ public class CharacterRankRewardTable
 		
 		for (FastMap.Entry<Integer, RankReward> e = RankRewardTable.getInstance().getRankRewardTable().head(), end = RankRewardTable.getInstance().getRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
-			if (e != null)
+			// if player haven't this reward yet, add it to list:
+			if (!playerRewardsTaken.containsValue(e.getValue().getRewardId()) && e.getValue().getMinRankPoints() <= characterRankPoints)
 			{
+				CharacterRankReward crr = new CharacterRankReward();
+				crr.setCharacterId(characterId);
+				crr.setRewardId(e.getValue().getRewardId());
+				crr.setItemId(e.getValue().getItemId());
+				crr.setItemAmount(e.getValue().getItemAmount());
+				crr.setMinRankPoints(e.getValue().getMinRankPoints());
 				
-				// if player haven't this reward yet, add it to list:
-				if (!playerRewardsTaken.containsValue(e.getValue().getRewardId()) && e.getValue().getMinRankPoints() <= characterRankPoints)
-				{
-					CharacterRankReward crr = new CharacterRankReward();
-					crr.setCharacterId(characterId);
-					crr.setRewardId(e.getValue().getRewardId());
-					crr.setItemId(e.getValue().getItemId());
-					crr.setItemAmount(e.getValue().getItemAmount());
-					crr.setMinRankPoints(e.getValue().getMinRankPoints());
-					
-					playerRewardsAwarded.put(playerRewardsAwarded.size() + 1, crr);
-				}
-				
+				playerRewardsAwarded.put(playerRewardsAwarded.size() + 1, crr);
 			}
 		}
 		
 		return playerRewardsAwarded;
 	}
 	
-	@SuppressWarnings("unused")
 	public int getRewardsCount(int characterId, long characterRankPoints)
 	{
 		
@@ -133,31 +118,20 @@ public class CharacterRankRewardTable
 		
 		for (FastMap.Entry<Integer, CharacterRankReward> e = getCharacterRankRewardTable().head(), end = getCharacterRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
-			if (e != null)
+			if (e.getValue().getCharacterId() == characterId)
 			{
-				
-				if (e.getValue().getCharacterId() == characterId)
-				{
-					playerRewardsTaken.put(playerRewardsTaken.size() + 1, e.getValue().getRewardId());
-				}
-				
+				playerRewardsTaken.put(playerRewardsTaken.size() + 1, e.getValue().getRewardId());
 			}
 		}
 
 		// 2. Get list of rewards what will be awarded:
 		int r = 0;
-		FastMap<Integer, RankReward> playerRewardsAwarded = new FastMap<Integer, RankReward>();
 		
 		for (FastMap.Entry<Integer, RankReward> e = RankRewardTable.getInstance().getRankRewardTable().head(), end = RankRewardTable.getInstance().getRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
-			if (e != null)
+			if (!playerRewardsTaken.containsValue(e.getValue().getRewardId()) && e.getValue().getMinRankPoints() <= characterRankPoints)
 			{
-				
-				if (!playerRewardsTaken.containsValue(e.getValue().getRewardId()) && e.getValue().getMinRankPoints() <= characterRankPoints)
-				{
-					r++;
-				}
-				
+				r++;
 			}
 		}
 		
@@ -251,20 +225,5 @@ public class CharacterRankRewardTable
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public void printTableData()
-	{
-		_log.info("=========================================================");
-		int i = 1;
-		for (FastMap.Entry<Integer, CharacterRankReward> e = getCharacterRankRewardTable().head(), end = getCharacterRankRewardTable().tail(); (e = e.getNext()) != end;)
-		{
-			if (e != null)
-			{
-				_log.info("[" + i + "]" + " characterId:" + e.getValue().getCharacterId() + ", rewardId:" + e.getValue().getRewardId());
-			}
-			i++;
-		}
-		_log.info("=========================================================");
 	}
 }

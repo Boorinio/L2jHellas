@@ -201,9 +201,37 @@ public final class RankPvpSystemUtil
 			case 118:
 				return "Maestro";
 				
+			case 123:
+				return "Male Kamael Soldier";
+			case 124:
+				return "Female Kamael Soldier";
+			case 125:
+				return "Trooper";
+			case 126:
+				return "Warder";
+			case 127:
+				return "Berserker";
+			case 128:
+				return "Male Soul Breaker";
+			case 129:
+				return "Female Soul Breaker";
+			case 130:
+				return "Arbalester";
+			case 131:
+				return "Doombringer";
+			case 132:
+				return "Male Soul Hound";
+			case 133:
+				return "Female Soul Hound";
+			case 134:
+				return "Trickster";
+			case 135:
+				return "Inspector";
+			case 136:
+				return "Judicator";
+				
 			default:
 				return "Unknown";
 		}
 	}
-
 }

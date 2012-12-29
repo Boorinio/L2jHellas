@@ -35,5 +35,4 @@ public class CharacterRankReward extends RankReward
 	{
 		this._characterId = _characterId;
 	}
-	
 }

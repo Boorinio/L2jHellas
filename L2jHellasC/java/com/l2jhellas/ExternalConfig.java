@@ -69,6 +69,7 @@ public final class ExternalConfig
 	public static boolean CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED;
 	public static boolean CUSTOM_PVP_REWARD_ENABLED;
 	public static int CUSTOM_PVP_REWARD_PROTECTION;
+	public static int CUSTOM_PVP_DAILY_REWARD_PROTECTION;
 	public static int CUSTOM_PVP_REWARD_ID;
 	public static int CUSTOM_PVP_REWARD_AMOUNT;
 	public static int CUSTOM_PVP_REWARD_MIN_LVL;
@@ -76,10 +77,13 @@ public final class ExternalConfig
 	public static boolean CUSTOM_PVP_REWARD_PK_MODE_ENABLED;
 	public static boolean CUSTOM_PVP_RANK_ENABLED;
 	public static int CUSTOM_PVP_RANK_MIN_LVL;
+
 	/** FastMap (rankId, Rank) */
 	public static FastMap<Integer, Rank> CUSTOM_PVP_RANKS = new FastMap<Integer, Rank>();
+
 	public static boolean CUSTOM_PVP_RANK_REWARD_ENABLED;
 	public static int CUSTOM_PVP_RANK_PROTECTION;
+	public static int CUSTOM_PVP_DAILY_RANK_PROTECTION;
 	public static boolean CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED;
 	public static FastList<Integer> CUSTOM_PVP_RANK_KILL_POINTS_DOWN = new FastList<Integer>();
 	public static boolean CUSTOM_PVP_RANK_SHOUT_INFO;
@@ -87,39 +91,32 @@ public final class ExternalConfig
 	public static boolean CUSTOM_PVP_RANK_PK_MODE_ENABLED;
 	public static boolean CUSTOM_PVP_WAR_ENABLED;
 	public static double CUSTOM_PVP_WAR_RP_RATIO;
+	
+	public static FastList<Integer> CUSTOM_PVP_ALLOWED_ZONES_IDS = new FastList<Integer>();
 	public static FastList<Integer> CUSTOM_PVP_RESTRICTED_ZONES_IDS = new FastList<Integer>();
 	public static int CUSTOM_PVP_LEGAL_MIN_LVL;
 	public static boolean CUSTOM_PVP_LEGAL_PK_KILLER_AWARD;
 	public static boolean CUSTOM_PVP_LEGAL_PK_MODE_ENABLED;
 	public static int CUSTOM_PVP_PROTECTION_RESET;
 	public static boolean CUSTOM_PVP_INFO_COMMAND_ENABLED;
+	public static boolean CUSTOM_PVP_INFO_USER_COMMAND_ENABLED;
+	public static int CUSTOM_PVP_INFO_USER_COMMAND_ID;
+
 	public static boolean CUSTOM_PVP_INFO_COMMAND_ON_DEATH_ENABLED;
 	public static boolean CUSTOM_PVP_DEATH_MANAGER_DETAILS_ENABLED;
 	public static boolean CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS;
 	public static FastList<Integer> CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS = new FastList<Integer>();
 	public static boolean CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED;
 	public static FastMap<Integer, Double> CUSTOM_PVP_RANK_POINTS_BONUS_ZONES;
+
 	public static boolean CUSTOM_PVP_ANTI_FARM_CLAN_ALLY_ENABLED;
 	public static boolean CUSTOM_PVP_ANTI_FARM_PARTY_ENABLED;
 	public static boolean CUSTOM_PVP_ANTI_FARM_IP_ENABLED;
+
 	public static int PVP_TABLE_UPDATE_INTERVAL;
 	public static int TOP_TABLE_UPDATE_INTERVAL;
+
 	public static boolean COMMUNITY_BOARD_TOP_LIST_ENABLED;
-	public static FastList<Integer> RANK_PVP_RESTRICTED_ZONES_IDS = new FastList<Integer>();
-	public static int RANK_PVP_LEGAL_MIN_LVL;
-	public static boolean RANK_PVP_LEGAL_PK_KILLER_AWARD;
-	public static boolean RANK_PVP_LEGAL_PK_MODE_ENABLED;
-	public static int RANK_PVP_PROTECTION_RESET;
-	public static boolean RANK_PVP_INFO_COMMAND_ENABLED;
-	public static boolean RANK_PVP_INFO_COMMAND_ON_DEATH_ENABLED;
-	public static boolean RANK_PVP_DEATH_MANAGER_DETAILS_ENABLED;
-	public static FastList<Integer> RANK_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS = new FastList<Integer>();
-	public static boolean RANK_PVP_POINTS_REWARD_ENABLED;
-	/** Images required client side textures (default: FALSE) */
-	public static boolean RANK_PVP_IMAGES_ENABLED;
-	public static boolean RANK_PVP_ANTI_FARM_CLAN_ALLY_ENABLED;
-	public static boolean RANK_PVP_ANTI_FARM_PARTY_ENABLED;
-	public static boolean RANK_PVP_ANTI_FARM_IP_ENABLED;
 
 	/* Vote Manager */
 	public static String VOTE_LINK_HOPZONE;
@@ -169,7 +166,8 @@ public final class ExternalConfig
 			CUSTOM_PVP_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpEnabled", "false"));
 			CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpLegalCounterAltTEnabled", "false"));
 			CUSTOM_PVP_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRewardEnabled", "false"));
-			CUSTOM_PVP_REWARD_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardProtection", "1"));
+			CUSTOM_PVP_REWARD_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardProtection", "0"));
+			CUSTOM_PVP_DAILY_REWARD_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpDailyRewardProtection", "0"));
 			CUSTOM_PVP_REWARD_ID = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardItemId", "6392"));
 			CUSTOM_PVP_REWARD_AMOUNT = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardAmmount", "1"));
 			CUSTOM_PVP_REWARD_MIN_LVL = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardMinLvl", "76"));
@@ -223,6 +221,7 @@ public final class ExternalConfig
 			}
 			
 			CUSTOM_PVP_RANK_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpRankProtection", "0"));
+			CUSTOM_PVP_DAILY_RANK_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpDailyRankProtection", "0"));
 			CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankKillPointsDownEnabled", "false"));
 			CUSTOM_PVP_RANK_KILL_POINTS_DOWN = new FastList<Integer>();
 			for (String id : ccSettings.getProperty("CustomPvpRankKillPointsDown", "").split(","))
@@ -243,7 +242,25 @@ public final class ExternalConfig
 			}
 			
 			int i = 0;
-			String tempStr = ccSettings.getProperty("CustomPvpRestrictedZonesIds");
+			String tempStr = ccSettings.getProperty("CustomPvpAllowedZonesIds");
+			if (tempStr != null && tempStr.length() > 0)
+			{
+				for (String rZoneId : tempStr.split(","))
+				{
+					try
+					{
+						CUSTOM_PVP_ALLOWED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+					i++;
+				}
+			}
+			
+			i = 0;
+			tempStr = ccSettings.getProperty("CustomPvpRestrictedZonesIds");
 			if (tempStr != null && tempStr.length() > 0)
 			{
 				for (String rZoneId : tempStr.split(","))
@@ -264,6 +281,8 @@ public final class ExternalConfig
 			CUSTOM_PVP_LEGAL_PK_MODE_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpLegalPkModeEnabled", "false"));
 			CUSTOM_PVP_PROTECTION_RESET = Integer.parseInt(ccSettings.getProperty("CustomPvpProtectionReset", "0"));
 			CUSTOM_PVP_INFO_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoCommandEnabled", "true"));
+			CUSTOM_PVP_INFO_USER_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoUserCommandEnabled", "false"));
+			CUSTOM_PVP_INFO_USER_COMMAND_ID = Integer.parseInt(ccSettings.getProperty("CustomPvpInfoUserCommandId", "114"));
 			
 			CUSTOM_PVP_INFO_COMMAND_ON_DEATH_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoCommandShowOnDeathEnabled", "true"));
 			CUSTOM_PVP_DEATH_MANAGER_DETAILS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpDeathManagerDetailsEnabled", "true"));

@@ -15,7 +15,6 @@ package Extensions.RankSystem;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-import javolution.util.FastList;
 
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -48,8 +47,11 @@ public class RankPvpSystemDeathMgr
 	/**
 	 * [0 - itemSlotId] [1 - itemName] [2 - itemEnchantLevel].
 	 */
-	private final KillerItem[] _killerItems = new KillerItem[18];
+	private final KillerItem[] _killerItems = new KillerItem[18]; // l2jFrozen
+																	// 18,
 	
+	// l2jserver H5 25.
+
 	/**
 	 * Always use this constructor as default!
 	 * 
@@ -195,15 +197,13 @@ public class RankPvpSystemDeathMgr
 						{
 							tb.append("<tr><td width=270 height=16 align=center><font color=808080>" + _killerItems[i]._itemName + " (</font><font color=FF8000>+" + _killerItems[i]._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
 							tb.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
-							// _log.info("itemname: "+
-							// _killerItems[i]._itemName+", slotId: "+_killerItems[i]._slotId);
 						}
 					}
 				}
 			}
 			else
 			{
-				tb.append("<tr><td>21055</td></tr>");
+				tb.append("<tr><td>I can't load Killer Data!</td></tr>");
 				_log.info("DeathManager::killer is null!");
 			}
 			tb.append("</table>");
@@ -235,24 +235,6 @@ public class RankPvpSystemDeathMgr
 	public void setKiller(L2PcInstance killer)
 	{
 		this._killer = killer;
-	}
-	
-	/**
-	 * Returns true if character is in restricted zone for death manager.
-	 * 
-	 * @param activeChar
-	 * @return
-	 */
-	public static final boolean isInRestrictedZone(L2PcInstance activeChar)
-	{
-		for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
-		{
-			if (activeChar.isInsideZone(n.getValue().byteValue()))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	class KillerItem

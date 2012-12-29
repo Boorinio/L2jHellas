@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-import Extensions.RankSystem.RankPvpSystemCmd;
+import Extensions.RankSystem.IVoicedCommandHandlerPvpInfo;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
@@ -85,8 +85,9 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new OnlinePlayers());
 		if (Config.BANKING_SYSTEM_ENABLED)
 			registerVoicedCommandHandler(new Banking());
-		if (ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_ENABLED)
-			registerVoicedCommandHandler(new RankPvpSystemCmd());
+		if (ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_ENABLED && !ExternalConfig.CUSTOM_PVP_INFO_USER_COMMAND_ENABLED)
+			registerVoicedCommandHandler(new IVoicedCommandHandlerPvpInfo());
+
 		registerVoicedCommandHandler(new Premium());
 		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers.");
 	}

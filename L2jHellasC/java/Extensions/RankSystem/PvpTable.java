@@ -18,7 +18,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
@@ -31,7 +30,6 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
  */
 public class PvpTable
 {
-	private static final Logger _log = Logger.getLogger(PvpTable.class.getName());
 	
 	private static PvpTable _instance = null;
 	
@@ -394,22 +392,4 @@ public class PvpTable
 			ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), ExternalConfig.PVP_TABLE_UPDATE_INTERVAL);
 		}
 	}
-	
-	// printTableData();
-	
-	public void printTableData()
-	{
-		_log.info("=========================================================");
-		int i = 1;
-		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
-		{
-			if (e != null)
-			{
-				_log.info("[" + i + "]" + " killerId:" + e.getValue().getKillerObjId() + ", victimId:" + e.getValue().getVictimObjId() + ", kills:" + e.getValue().getKills());
-			}
-			i++;
-		}
-		_log.info("=========================================================");
-	}
-
 }

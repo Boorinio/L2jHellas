@@ -17,7 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
@@ -28,9 +27,7 @@ import com.l2jhellas.L2DatabaseFactory;
  */
 public class RankRewardTable
 {
-	
-	private static final Logger _log = Logger.getLogger(RankRewardTable.class.getName());
-	
+
 	private static RankRewardTable _instance = null;
 	
 	private FastMap<Integer, RankReward> _rankRewardTable = new FastMap<Integer, RankReward>();
@@ -79,13 +76,11 @@ public class RankRewardTable
 	{
 		FastMap<Integer, RankReward> rankRewards = new FastMap<Integer, RankReward>();
 		
-		for (int i = 0; i < getRankRewardTable().size(); i++)
+		for (FastMap.Entry<Integer, RankReward> e = getRankRewardTable().head(), end = getRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
-			if (getRankRewardTable().getEntry(i) != null && getRankRewardTable().getEntry(i).getValue().getMinRankPoints() <= rankPoints)
+			if (e.getValue().getMinRankPoints() <= rankPoints)
 			{
-				
-				rankRewards.put(getRankRewardTable().getEntry(i).getKey(), getRankRewardTable().getEntry(i).getValue());
-				
+				rankRewards.put(e.getKey(), e.getValue());
 			}
 		}
 		
@@ -137,28 +132,4 @@ public class RankRewardTable
 			}
 		}
 	}
-	
-	public void printTableData()
-	{
-		_log.info("=========================================================");
-		int i = 1;
-		for (FastMap.Entry<Integer, RankReward> e = getRankRewardTable().head(), end = getRankRewardTable().tail(); (e = e.getNext()) != end;)
-		{
-			if (e != null)
-			{
-				_log.info("[" + i + "]" + " rewardId:" + e.getValue().getRewardId());
-			}
-			i++;
-		}
-		/*
-		 * for(int i=0; i<=getRankRewardTable().size(); i++){
-		 * if(getRankRewardTable().getEntry(i) != null){
-		 * _log.info("["+i+"]"+" rewardId:"+getRankRewardTable().get(i).getRewardId
-		 * ());
-		 * }
-		 * }
-		 */
-		_log.info("=========================================================");
-	}
-	
 }

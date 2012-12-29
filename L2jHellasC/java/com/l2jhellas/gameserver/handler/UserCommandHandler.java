@@ -16,8 +16,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+import Extensions.RankSystem.IUserCommandHandlerPvpInfo;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelDelete;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelLeave;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelListUpdate;
@@ -42,7 +44,7 @@ public class UserCommandHandler
 	
 	private static UserCommandHandler _instance;
 	
-	private Map<Integer, IUserCommandHandler> _datatable;
+	private final Map<Integer, IUserCommandHandler> _datatable;
 	
 	public static UserCommandHandler getInstance()
 	{
@@ -85,6 +87,9 @@ public class UserCommandHandler
 		registerUserCommandHandler(new ChannelLeave());
 		registerUserCommandHandler(new ChannelDelete());
 		registerUserCommandHandler(new ChannelListUpdate());
+		if (ExternalConfig.CUSTOM_PVP_INFO_USER_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED)
+			registerUserCommandHandler(new IUserCommandHandlerPvpInfo());
+
 		_log.config("UserCommandHandler: Loaded " + _datatable.size() + " handlers.");
 		
 		return _datatable.get(new Integer(userCommand));
