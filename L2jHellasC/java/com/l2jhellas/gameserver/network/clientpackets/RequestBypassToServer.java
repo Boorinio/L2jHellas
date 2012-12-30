@@ -102,6 +102,93 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				playerHelp(activeChar, _command.substring(12));
 			}
+			else if (_command.startsWith("sendMsg")) { //Message System By Pauler
+								
+				StringTokenizer st = new StringTokenizer(_command);
+								
+				st.nextToken();
+								
+				String to = st.nextToken();
+				String title = st.nextToken();
+				String message = "";
+								
+				while(st.hasMoreTokens()) {
+									
+					message = message + st.nextToken() + " ";
+									
+				}
+								
+				if (to.equalsIgnoreCase(activeChar.getName())) {
+									
+					activeChar.sendMessage("You cannot send a message to yourself.");
+					return;
+								
+				}
+								
+				if (to.equalsIgnoreCase("") || message.equalsIgnoreCase("")) {
+									
+					activeChar.sendMessage("You have to fill all the fields.");
+					return;
+									
+				}
+								
+				if (title.equalsIgnoreCase(""))
+					title = "(No Subject)";
+								
+				java.sql.Connection con = null;
+								
+					try {
+									
+						con = L2DatabaseFactory.getInstance().getConnection();
+									
+						PreparedStatement statement = con.prepareStatement("INSERT INTO mails VALUES ('0',?,?,?,?)");
+									
+						statement.setString(1, activeChar.getName());
+						statement.setString(2, to);
+						statement.setString(3, title);
+						statement.setString(4, message);
+									
+						statement.execute();
+						activeChar.sendMessage("Your message has been sent.");
+						statement.close();
+									
+					}catch(Exception e) {
+									
+						e.printStackTrace();
+						_log.log(Level.SEVERE, e.getMessage(), e);
+									
+					}
+								
+				}
+			else if (_command.startsWith("delMsg")) {
+								
+					StringTokenizer st = new StringTokenizer(_command);
+					st.nextToken();
+								
+					int messageId = Integer.parseInt(st.nextToken());
+								
+					java.sql.Connection con = null;
+								
+					try {
+									
+						con = L2DatabaseFactory.getInstance().getConnection();
+									
+						PreparedStatement statement = con.prepareStatement("DELETE FROM mails WHERE id=?");
+									
+						statement.setInt(1, messageId);
+									
+						statement.execute();
+						activeChar.sendMessage("The message has been deleted.");
+						statement.close();
+									
+					}catch(Exception e) {
+									
+						e.printStackTrace();
+						_log.log(Level.SEVERE, e.getMessage(), e);
+									
+					}
+								
+			}
 			else if (_command.startsWith("submitemail"))
 			{
 				try

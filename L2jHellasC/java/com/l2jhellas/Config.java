@@ -839,7 +839,8 @@ public final class Config
 	public static int CLAN_LEADER_COLOR;
 	/** Clan leader name color */
 	public static int CLAN_LEADER_COLOR_CLAN_LEVEL;
-	
+	/** Advanced Privated Message System */
+	public static boolean ENABLED_MESSAGE_SYSTEM;
 	/** Clan leader name color */
 	public static enum ClanLeaderColored /** Clan leader name color */
 	{
@@ -2225,6 +2226,7 @@ public final class Config
 				CLAN_LEADER_COLOR_ENABLED = Boolean.parseBoolean(L2JHellasSettings.getProperty("ClanLeaderNameColorEnabled", "True"));
 				CLAN_LEADER_COLOR = Integer.decode("0x" + L2JHellasSettings.getProperty("ClanLeaderColor", "00BFFF"));
 				CLAN_LEADER_COLOR_CLAN_LEVEL = Integer.parseInt(L2JHellasSettings.getProperty("ClanLeaderColorAtClanLevel", "1"));
+				ENABLED_MESSAGE_SYSTEM = Boolean.parseBoolean(L2JHellasSettings.getProperty("EnableMessageSystem", "False"));
 				if (USE_SAY_FILTER)
 				{
 					try

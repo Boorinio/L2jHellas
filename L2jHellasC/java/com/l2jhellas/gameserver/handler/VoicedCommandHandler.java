@@ -23,6 +23,7 @@ import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Away;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Banking;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Cl;
+import com.l2jhellas.gameserver.handler.voicedcommandhandlers.MailCmd;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.OnlinePlayers;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Premium;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ServerRestartVote;
@@ -87,6 +88,8 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new Banking());
 		if (ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_ENABLED && !ExternalConfig.CUSTOM_PVP_INFO_USER_COMMAND_ENABLED)
 			registerVoicedCommandHandler(new IVoicedCommandHandlerPvpInfo());
+		if (Config.ENABLED_MESSAGE_SYSTEM)
+			registerVoicedCommandHandler(new MailCmd());
 
 		registerVoicedCommandHandler(new Premium());
 		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers.");

@@ -421,6 +421,38 @@ public class EnterWorld extends L2GameClientPacket
 			}
 		}
 		
+		if (Config.ENABLED_MESSAGE_SYSTEM) {
+			
+			java.sql.Connection con = null;
+					
+			int results = 0;
+					
+			try {
+						
+				con = L2DatabaseFactory.getInstance().getConnection();
+						
+				PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE `to`=?");
+						
+				statement.setString(1, activeChar.getName());
+						
+				ResultSet result = statement.executeQuery();
+						
+				while (result.next()) {
+							
+					results++;
+							
+				}
+						
+			}catch(Exception e) {
+						
+				e.printStackTrace();		
+				
+			}
+					
+			activeChar.sendMessage("You have " + results + " messages.");
+		
+		}
+		
 		if (Config.ENABLE_HITMAN_EVENT)
 			Hitman.getInstance().onEnterWorld(activeChar);
 		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(activeChar.getObjectId()))
