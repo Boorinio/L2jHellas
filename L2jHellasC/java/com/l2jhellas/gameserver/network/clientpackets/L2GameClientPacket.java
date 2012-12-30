@@ -17,9 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.network.L2GameClient;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jserver.mmocore.network.ReceivablePacket;
 
@@ -57,34 +55,8 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 	{
 		try
 		{
-			if (GameTimeController.getGameTicks() - getClient().packetsSentStartTick > 10)
-			{
-				getClient().packetsSentStartTick = GameTimeController.getGameTicks();
-				getClient().packetsSentInSec = 0;
-			}
-			else
-			{
-				getClient().packetsSentInSec++;
-				if (getClient().packetsSentInSec > 12) 
-				{
-					if (getClient().packetsSentInSec < 100)
-						sendPacket(new ActionFailed()); 
-					return;
-				}
-			}
-			
-		 	if (GameTimeController.getGameTicks() - getClient().packetsSentStartTick > 10) 
-		 	{ 
-		 	  getClient().packetsSentStartTick = GameTimeController.getGameTicks(); 
-		 	  getClient().packetsSentInSec = 0; 
-		 	} 
-		 	else 
-		 	{ 
-		 	  getClient().packetsSentInSec++; 
-		 	  if (getClient().packetsSentInSec > 12) return; 
-		 	}
-			
 			runImpl();
+			//TODO Seth: enchance
             if (this instanceof MoveBackwardToLocation || this instanceof AttackRequest || this instanceof RequestMagicSkillUse)
             	// could include pickup and talk too, but less is better
             {
