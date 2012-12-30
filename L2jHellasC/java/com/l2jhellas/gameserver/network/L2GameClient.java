@@ -448,8 +448,8 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
     {
 		if (Config.DEBUG)
 			_log.info("Client " + toString() + " disconnected abnormally.");
-		if(activeChar.isInOlympiadMode())
-		{
+		
+		if(activeChar != null && activeChar.isInOlympiadMode()) {
 			Olympiad.processPlayer(activeChar);
 		}
 	}
