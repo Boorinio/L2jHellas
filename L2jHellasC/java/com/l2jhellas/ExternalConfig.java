@@ -136,6 +136,7 @@ public final class ExternalConfig
 	public static boolean SHOW_NPC_CREST;
 	public static boolean ALLOW_CLASS_MASTER;
 	public static boolean ALLOW_REMOTE_CLASS_MASTER;
+	public static boolean ALLOW_ACCOUNT_MANAGER;
 	public static String EMAIL_USER;
 	public static String EMAIL_PASS;
 	public static boolean NPCBUFFER_FEATURE_ENABLED;
@@ -457,6 +458,7 @@ public final class ExternalConfig
 			CustomNpcs.load(is);
 			/* Noblesse Manager */
 			SHOW_NPC_CREST = Boolean.parseBoolean(CustomNpcs.getProperty("ShowNpcCrest", "False"));
+			ALLOW_ACCOUNT_MANAGER = Boolean.parseBoolean(CustomNpcs.getProperty("AllowAccManager", "False"));
 			EMAIL_USER = CustomNpcs.getProperty("EmailUsername", "null");
 			EMAIL_PASS = CustomNpcs.getProperty("EmailPassword", "null");
 			NPCBUFFER_FEATURE_ENABLED = Boolean.valueOf(CustomNpcs.getProperty("NPCBufferEnabled", "False"));
