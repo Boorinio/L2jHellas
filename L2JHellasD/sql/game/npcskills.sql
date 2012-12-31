@@ -1,18 +1,19 @@
--- 
--- Table structure for table `npcskills`
--- 
-DROP TABLE IF EXISTS npcskills;
-CREATE TABLE npcskills (
-  npcid int(11) NOT NULL default '0',
-  skillid int(11) NOT NULL default '0',
-  level int(11) NOT NULL default '0',
-  PRIMARY KEY  (npcid,skillid,level)
-) ENGINE=MyISAM;
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `npcskills`
+-- ----------------------------
+DROP TABLE IF EXISTS `npcskills`;
 
--- 
--- Dumping data for table `npcskills`
--- 
+CREATE TABLE `npcskills` (
+  `npcid` int(11) NOT NULL DEFAULT '0',
+  `skillid` int(11) NOT NULL DEFAULT '0',
+  `level` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`npcid`,`skillid`,`level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+-- ----------------------------
+-- Records of `npcskills`
+-- ----------------------------
 INSERT INTO `npcskills` (`npcid`, `skillid`, `level`) VALUES 
 (12077,4121,1),
 (12077,4416,4),

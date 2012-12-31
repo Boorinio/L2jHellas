@@ -1,22 +1,23 @@
-#----------------------------
-# Table structure for helper_buff_list
-#----------------------------
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `helper_buff_list`
+-- ----------------------------
 DROP TABLE IF EXISTS `helper_buff_list`;
+
 CREATE TABLE `helper_buff_list` (
-  `id` int(11) NOT NULL default 0,
-  `skill_id` int(10) unsigned NOT NULL default 0,
-  `name` varchar(25) NOT NULL default '',
-  `skill_level` int(10) unsigned NOT NULL default 0,
-  `lower_level` int(10) unsigned NOT NULL default 0,
-  `upper_level` int(10) unsigned NOT NULL default 0,
-  `is_magic_class` varchar(5) default NULL,
+  `id` int(11) NOT NULL DEFAULT '0',
+  `skill_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `skill_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `lower_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `upper_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `is_magic_class` varchar(5) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-#----------------------------
-# Records for table helper_buff_list
-#----------------------------
-
+-- ----------------------------
+-- Records of `helper_buff_list`
+-- ----------------------------
 INSERT INTO `helper_buff_list` VALUES
 (0, 4322, 'Wind Walk', 1, 6, 62, 'false'),
 (1, 4323, 'Shield', 1, 6, 62, 'false'),

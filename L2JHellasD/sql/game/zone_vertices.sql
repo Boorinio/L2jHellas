@@ -1,17 +1,19 @@
--- 
--- Table structure for table `zone_vertices`
--- 
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `zone_vertices`
+-- ----------------------------
 DROP TABLE IF EXISTS `zone_vertices`;
+
 CREATE TABLE `zone_vertices` (
   `id` int(11) NOT NULL,
   `order` int(11) NOT NULL,
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
   PRIMARY KEY  (`id`,`order`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 
--- Dumping data for table `zone_vertices`
+-- ----------------------------
+-- Records of `zone_vertices`
 -- NOTE: Cuboid shapes only need 2 points in order to be defined.
 -- That is their NorthWest and SouthEast corners suffice to descript a cuboid.
 -- All other shapes require 3 or more vertices.
@@ -19,7 +21,7 @@ CREATE TABLE `zone_vertices` (
 -- care is recommended.  Order doesn't really matter much for cuboids and prisms
 -- (triangular base) but it is best to pay attention to the order there, too,
 -- keeping the definitions as much as possible in a loop from NW to SE.
--- 
+-- ----------------------------
 
 INSERT INTO `zone_vertices` (`id`,`order`,`x`,`y`) VALUES 
 (11000,0,-115600,-250700),

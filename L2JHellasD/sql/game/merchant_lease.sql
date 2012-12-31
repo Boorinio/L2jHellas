@@ -1,11 +1,14 @@
+SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for leasing merchants
+-- Table structure for `merchant_lease`
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS merchant_lease (
-  merchant_id int(11) NOT NULL default 0,
-  player_id int(11) NOT NULL default 0,
-  bid int(11),
-  `type` int(11) NOT NULL default 0,
-  player_name varchar(35),
-  PRIMARY KEY  (merchant_id,player_id,`type`)
-);
+DROP TABLE IF EXISTS `merchant_lease`;
+
+CREATE TABLE `merchant_lease` (
+  `merchant_id` int(11) NOT NULL DEFAULT '0',
+  `player_id` int(11) NOT NULL DEFAULT '0',
+  `bid` int(11) DEFAULT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
+  `player_name` varchar(35) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`merchant_id`,`player_id`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

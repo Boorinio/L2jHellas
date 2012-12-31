@@ -1,53 +1,53 @@
--- 
--- Table structure for table `char_templates`
--- 
-
+SET FOREIGN_KEY_CHECKS=0;
+-- ---------------------------
+-- Table structure for `char_templates`
+-- ---------------------------
 DROP TABLE IF EXISTS `char_templates`;
+
 CREATE TABLE `char_templates` (
-  `ClassId` int(11) NOT NULL default '0',
-  `ClassName` varchar(20) NOT NULL default '',
-  `RaceId` int(1) NOT NULL default '0',
-  `STR` int(2) NOT NULL default '0',
-  `CON` int(2) NOT NULL default '0',
-  `DEX` int(2) NOT NULL default '0',
-  `_INT` int(2) NOT NULL default '0',
-  `WIT` int(2) NOT NULL default '0',
-  `MEN` int(2) NOT NULL default '0',
-  `P_ATK` int(3) NOT NULL default '0',
-  `P_DEF` int(3) NOT NULL default '0',
-  `M_ATK` int(3) NOT NULL default '0',
-  `M_DEF` int(2) NOT NULL default '0',
-  `P_SPD` int(3) NOT NULL default '0',
-  `M_SPD` int(3) NOT NULL default '0',
-  `ACC` int(3) NOT NULL default '0',
-  `CRITICAL` int(3) NOT NULL default '0',
-  `EVASION` int(3) NOT NULL default '0',
-  `MOVE_SPD` int(3) NOT NULL default '0',
-  `_LOAD` int(11) NOT NULL default '0',
-  `x` int(9) NOT NULL default '0',
-  `y` int(9) NOT NULL default '0',
-  `z` int(9) NOT NULL default '0',
-  `canCraft` int(1) NOT NULL default '0',
-  `M_UNK1` decimal(4,2) NOT NULL default '0.00',
-  `M_UNK2` decimal(8,6) NOT NULL default '0.000000',
-  `M_COL_R` decimal(3,1) NOT NULL default '0.0',
-  `M_COL_H` decimal(4,1) NOT NULL default '0.0',
-  `F_UNK1` decimal(4,2) NOT NULL default '0.00',
-  `F_UNK2` decimal(8,6) NOT NULL default '0.000000',
-  `F_COL_R` decimal(3,1) NOT NULL default '0.0',
-  `F_COL_H` decimal(4,1) NOT NULL default '0.0',
-  `items1` int(4) NOT NULL default '0',
-  `items2` int(4) NOT NULL default '0',
-  `items3` int(4) NOT NULL default '0',
-  `items4` int(4) NOT NULL default '0',
-  `items5` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`ClassId`)
-) ENGINE=MyISAM;
+  `ClassId` int(11) NOT NULL DEFAULT '0',
+  `ClassName` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `RaceId` int(1) NOT NULL DEFAULT '0',
+  `STR` int(2) NOT NULL DEFAULT '0',
+  `CON` int(2) NOT NULL DEFAULT '0',
+  `DEX` int(2) NOT NULL DEFAULT '0',
+  `_INT` int(2) NOT NULL DEFAULT '0',
+  `WIT` int(2) NOT NULL DEFAULT '0',
+  `MEN` int(2) NOT NULL DEFAULT '0',
+  `P_ATK` int(3) NOT NULL DEFAULT '0',
+  `P_DEF` int(3) NOT NULL DEFAULT '0',
+  `M_ATK` int(3) NOT NULL DEFAULT '0',
+  `M_DEF` int(2) NOT NULL DEFAULT '0',
+  `P_SPD` int(3) NOT NULL DEFAULT '0',
+  `M_SPD` int(3) NOT NULL DEFAULT '0',
+  `ACC` int(3) NOT NULL DEFAULT '0',
+  `CRITICAL` int(3) NOT NULL DEFAULT '0',
+  `EVASION` int(3) NOT NULL DEFAULT '0',
+  `MOVE_SPD` int(3) NOT NULL DEFAULT '0',
+  `_LOAD` int(11) NOT NULL DEFAULT '0',
+  `x` int(9) NOT NULL DEFAULT '0',
+  `y` int(9) NOT NULL DEFAULT '0',
+  `z` int(9) NOT NULL DEFAULT '0',
+  `canCraft` int(1) NOT NULL DEFAULT '0',
+  `M_UNK1` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `M_UNK2` decimal(8,6) NOT NULL DEFAULT '0.000000',
+  `M_COL_R` decimal(3,1) NOT NULL DEFAULT '0.0',
+  `M_COL_H` decimal(4,1) NOT NULL DEFAULT '0.0',
+  `F_UNK1` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `F_UNK2` decimal(8,6) NOT NULL DEFAULT '0.000000',
+  `F_COL_R` decimal(3,1) NOT NULL DEFAULT '0.0',
+  `F_COL_H` decimal(4,1) NOT NULL DEFAULT '0.0',
+  `items1` int(4) NOT NULL DEFAULT '0',
+  `items2` int(4) NOT NULL DEFAULT '0',
+  `items3` int(4) NOT NULL DEFAULT '0',
+  `items4` int(4) NOT NULL DEFAULT '0',
+  `items5` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ClassId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 
--- Dumping data for table `char_templates`
--- 
-
+-- ----------------------------
+-- Records of `char_templates`
+-- ----------------------------
 INSERT INTO `char_templates` VALUES (0, 'Human Fighter', 0, 40, 43, 30, 21, 11, 25, 4, 80, 6, 41, 300, 333, 33, 44, 33, 115, 81900, -71338, 258271, -3104, 0, 1.10, 1.188000, 9.0, 23.0, 1.10, 1.188000, 8.0, 23.5, 1147, 1146, 10, 2369, 5588);
 INSERT INTO `char_templates` VALUES (1, 'Warrior', 0, 40, 43, 30, 21, 11, 25, 4, 80, 6, 41, 300, 333, 33, 44, 33, 115, 81900, -71338, 258271, -3104, 0, 1.10, 1.188000, 9.0, 23.0, 1.10, 1.188000, 8.0, 23.5, 1147, 1146, 10, 2369, 5588);
 INSERT INTO `char_templates` VALUES (2, 'Gladiator', 0, 40, 43, 30, 21, 11, 25, 4, 80, 6, 41, 300, 333, 33, 44, 33, 115, 81900, -71338, 258271, -3104, 0, 1.10, 1.188000, 9.0, 23.0, 1.10, 1.188000, 8.0, 23.5, 1147, 1146, 10, 2369, 5588);

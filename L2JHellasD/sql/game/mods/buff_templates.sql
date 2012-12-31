@@ -1,27 +1,29 @@
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for buff_templates
+-- Table structure for `buff_templates`
 -- ----------------------------
+DROP TABLE IF EXISTS `buff_templates`;
+
 CREATE TABLE `buff_templates` (
   `id` int(11) unsigned NOT NULL,
-  `name` varchar(35) NOT NULL default '',
+  `name` varchar(35) COLLATE utf8_bin NOT NULL DEFAULT '',
   `skill_id` int(10) unsigned NOT NULL,
-  `skill_name` varchar(35) default NULL,
-  `skill_level` int(10) unsigned NOT NULL default '1',
-  `skill_force` int(1) NOT NULL default '1',
+  `skill_name` varchar(35) COLLATE utf8_bin DEFAULT NULL,
+  `skill_level` int(10) unsigned NOT NULL DEFAULT '1',
+  `skill_force` int(1) NOT NULL DEFAULT '1',
   `skill_order` int(10) unsigned NOT NULL,
-  `char_min_level` int(10) unsigned NOT NULL default '0',
-  `char_max_level` int(10) unsigned NOT NULL default '0',
-  `char_race` int(1) unsigned NOT NULL default '0',
-  `char_class` int(1) NOT NULL default '0',
-  `char_faction` int(10) unsigned NOT NULL default '0',
-  `price_adena` int(10) unsigned NOT NULL default '0',
-  `price_points` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`,`name`,`skill_order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `char_min_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `char_max_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `char_race` int(1) unsigned NOT NULL DEFAULT '0',
+  `char_class` int(1) NOT NULL DEFAULT '0',
+  `char_faction` int(10) unsigned NOT NULL DEFAULT '0',
+  `price_adena` int(10) unsigned NOT NULL DEFAULT '0',
+  `price_points` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`name`,`skill_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records 
+-- Records of `buff_templates`
 -- ----------------------------
 INSERT INTO `buff_templates` VALUES ('1', 'Newbie', '1033', 'Resist Poison', '3', '1', '1', '1', '40', '0', '0', '0', '0', '0');
 INSERT INTO `buff_templates` VALUES ('1', 'Newbie', '1032', 'Invigor', '3', '0', '2', '1', '40', '0', '0', '0', '0', '0');

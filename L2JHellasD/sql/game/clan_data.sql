@@ -1,24 +1,27 @@
+SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
--- Table structure for clan_data
+-- Table structure for `clan_data`
 -- ---------------------------
-CREATE TABLE IF NOT EXISTS clan_data (
-  clan_id INT NOT NULL default 0,
-  clan_name varchar(45) ,
-  clan_level INT,
-  reputation_score INT NOT NULL default 0,
-  hasCastle INT,
-  ally_id INT,
-  ally_name varchar(45),
-  leader_id INT,
-  crest_id INT,
-  crest_large_id INT,
-  ally_crest_id INT,
-  auction_bid_at INT NOT NULL default 0,
-  ally_penalty_expiry_time DECIMAL( 20,0 ) NOT NULL DEFAULT 0,
-  ally_penalty_type DECIMAL( 1 ) NOT NULL DEFAULT 0,
-  char_penalty_expiry_time DECIMAL( 20,0 ) NOT NULL DEFAULT 0,
-  dissolving_expiry_time DECIMAL( 20,0 ) NOT NULL DEFAULT 0,
-  PRIMARY KEY  (clan_id),
+DROP TABLE IF EXISTS `clan_data`;
+
+CREATE TABLE `clan_data` (
+  `clan_id` int(11) NOT NULL DEFAULT '0',
+  `clan_name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `clan_level` int(11) DEFAULT NULL,
+  `reputation_score` int(11) NOT NULL DEFAULT '0',
+  `hasCastle` int(11) DEFAULT NULL,
+  `ally_id` int(11) DEFAULT NULL,
+  `ally_name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `leader_id` int(11) DEFAULT NULL,
+  `crest_id` int(11) DEFAULT NULL,
+  `crest_large_id` int(11) DEFAULT NULL,
+  `ally_crest_id` int(11) DEFAULT NULL,
+  `auction_bid_at` int(11) NOT NULL DEFAULT '0',
+  `ally_penalty_expiry_time` decimal(20,0) NOT NULL DEFAULT '0',
+  `ally_penalty_type` decimal(1,0) NOT NULL DEFAULT '0',
+  `char_penalty_expiry_time` decimal(20,0) NOT NULL DEFAULT '0',
+  `dissolving_expiry_time` decimal(20,0) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`clan_id`),
   KEY `leader_id` (`leader_id`),
   KEY `ally_id` (`ally_id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

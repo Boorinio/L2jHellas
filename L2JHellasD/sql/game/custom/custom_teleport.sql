@@ -1,17 +1,23 @@
--- 
--- Table structure for table `custom_teleport`
--- 
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `custom_teleport`
+-- ----------------------------
 DROP TABLE IF EXISTS custom_teleport;
-CREATE TABLE custom_teleport (
-  Description varchar(75) default NULL,
-  id decimal(11,0) NOT NULL default '0',
-  loc_x decimal(9,0) default NULL,
-  loc_y decimal(9,0) default NULL,
-  loc_z decimal(9,0) default NULL,
-  price decimal(6,0) default NULL,
-  fornoble int(1) NOT NULL default '0',
-  PRIMARY KEY  (id)
-) ENGINE=MyISAM;
+
+CREATE TABLE `custom_teleport` (
+  `Description` varchar(75) COLLATE utf8_bin DEFAULT NULL,
+  `id` decimal(11,0) NOT NULL DEFAULT '0',
+  `loc_x` decimal(9,0) DEFAULT NULL,
+  `loc_y` decimal(9,0) DEFAULT NULL,
+  `loc_z` decimal(9,0) DEFAULT NULL,
+  `price` decimal(6,0) DEFAULT NULL,
+  `fornoble` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `custom_teleport`
+-- ----------------------------
 
 INSERT INTO `custom_teleport` VALUES ('Dark Elven Village', '50001', '9745', '15606', '-4574', '15000', '0');
 INSERT INTO `custom_teleport` VALUES ('Dwarven Village', '50002', '115113', '-178212', '-901', '15000', '0');

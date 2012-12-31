@@ -1,21 +1,24 @@
+SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
--- Table structure for clanhall
+-- Table structure for `clanhall`
 -- ---------------------------
-CREATE TABLE IF NOT EXISTS `clanhall` (
-  `id` int(11) NOT NULL default '0',
-  `name` varchar(40) NOT NULL default '',
-  `ownerId` int(11) NOT NULL default '0',
-  `lease` int(10) NOT NULL default '0',
-  `desc` text NOT NULL,
-  `location` varchar(15) NOT NULL default '',
-  `paidUntil` decimal(20,0) NOT NULL default '0',
-  `Grade` decimal(1,0) NOT NULL default '0',
-  `paid` int( 1 ) NOT NULL default '0',
-  PRIMARY KEY `id` (`id`)
-);
+DROP TABLE IF EXISTS `clanhall`;
+
+CREATE TABLE `clanhall` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `ownerId` int(11) NOT NULL DEFAULT '0',
+  `lease` int(10) NOT NULL DEFAULT '0',
+  `desc` text COLLATE utf8_bin NOT NULL,
+  `location` varchar(15) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `paidUntil` decimal(20,0) NOT NULL DEFAULT '0',
+  `Grade` decimal(1,0) NOT NULL DEFAULT '0',
+  `paid` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records 
+-- Records of `clanhall`
 -- ----------------------------
 INSERT IGNORE INTO `clanhall` VALUES ('21','Fortress of Resistance','0','100000','Ol Mahum Fortress of Resistance','Dion','0','0','0');
 INSERT IGNORE INTO `clanhall` VALUES ('22','Moonstone Hall','0','100000','Clan hall located in the Town of Gludio','Gludio','0','2','0');

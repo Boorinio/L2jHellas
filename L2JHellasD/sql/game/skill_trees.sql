@@ -1,19 +1,24 @@
-DROP TABLE IF EXISTS skill_trees;
-CREATE TABLE skill_trees (
-  class_id int(10) unsigned NOT NULL default '0',
-  skill_id int(10) unsigned NOT NULL default '0',
-  level int(10) unsigned NOT NULL default '0',
-  name varchar(40) NOT NULL default '',
-  sp int(10) unsigned NOT NULL default '0',
-  min_level int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (class_id,skill_id,level)
-) ENGINE=MyISAM;
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `skill_trees`
+-- ----------------------------
+DROP TABLE IF EXISTS `skill_trees`;
 
---
--- Dumping data for table `skill_trees`
---
+CREATE TABLE `skill_trees` (
+  `class_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `skill_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `level` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `sp` int(10) unsigned NOT NULL DEFAULT '0',
+  `min_level` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`class_id`,`skill_id`,`level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- GLOSSARY FOR CLASS ID'S (thx Mr_Pleb_Mgoo) - Updated by DJ MELERIX
+-- ----------------------------
+-- Records of `spawnlist`
+-- ----------------------------
+
+-- GLOSSARY FOR CLASS ID'S (thx Mr_Pleb_Mgoo) - Updated by DJ MELERIX <-- ok thats lol
 
 -- HUMANS
 -- 0=Human Fighter       | 1=Human Warrior    | 2=Gladiator        | 3=Warlord          | 4=Human Knight
@@ -57,9 +62,6 @@ CREATE TABLE skill_trees (
 
 -- DWARVES 3rd Professions
 -- 117=Fortune Seeker   | 118=Maestro
-
-
-
 INSERT INTO skill_trees VALUES (0,3,1,'Power Strike',50,5);
 INSERT INTO skill_trees VALUES (0,3,2,'Power Strike',50,5);
 INSERT INTO skill_trees VALUES (0,3,3,'Power Strike',50,5);

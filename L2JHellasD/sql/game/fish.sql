@@ -1,25 +1,27 @@
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `fish`
+-- ----------------------------
 DROP TABLE IF EXISTS `fish`;
--- 
---  Table structure for fish
--- 
-CREATE TABLE `fish` (
-  `id` int(5) NOT NULL default '0',
-  `level` int(5) NOT NULL default '0',
-  `name` varchar(40) NOT NULL default '',
-  `hp` int(5) NOT NULL default '0',
-  `hpregen` int(3) NOT NULL default '5',
-  `fish_type` int(1) NOT NULL default '0', -- 0 = wide, 1 = swift, 2 = ugly, 3 = box, 4 = easy_wide, 5 = easy_swift, 6 = easy_ugly, 7 = hard_wide, 8 = hard_swift, 9 = hard_ugly
-  `fish_group` int(1) NOT NULL default '0', -- 0 = easy, 1 = normal, 2 = hard
-  `fish_guts` INT(4) NOT NULL default '0',
-  `guts_check_time` INT(4) NOT NULL default '0',
-  `wait_time` INT(5) NOT NULL default '0',
-  `combat_time` INT(5) NOT NULL default '0',
-  PRIMARY KEY  (`id`,`level`)
-) ENGINE=MyISAM;
--- 
---  Records for table fish
--- 
 
+CREATE TABLE `fish` (
+  `id` int(5) NOT NULL DEFAULT '0',
+  `level` int(5) NOT NULL DEFAULT '0',
+  `name` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `hp` int(5) NOT NULL DEFAULT '0',
+  `hpregen` int(3) NOT NULL DEFAULT '5',
+  `fish_type` int(1) NOT NULL DEFAULT '0',
+  `fish_group` int(1) NOT NULL DEFAULT '0',
+  `fish_guts` int(4) NOT NULL DEFAULT '0',
+  `guts_check_time` int(4) NOT NULL DEFAULT '0',
+  `wait_time` int(5) NOT NULL DEFAULT '0',
+  `combat_time` int(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `fish`
+-- ----------------------------
 INSERT INTO `fish` VALUES
 (6411,1,'Small Green Nimble Fish',100,4,1,1,500,5000,20000,24000),
 (6412,1,'Small Green Ugly Fish',116,4,2,1,502,5000,20000,27000),

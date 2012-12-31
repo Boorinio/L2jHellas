@@ -1,21 +1,28 @@
-drop table if exists enchant_skill_trees;
+SET FOREIGN_KEY_CHECKS=0;
+-- ---------------------------
+-- Table structure for `enchant_skill_trees`
+-- ---------------------------
+DROP TABLE IF EXISTS `enchant_skill_trees`;
+
 CREATE TABLE `enchant_skill_trees` (
-  `skill_id` int(10) NOT NULL default '0',
-  `level` int(10) NOT NULL default '0',
-  `name` varchar(25) NOT NULL default '',
-  `base_lvl` int(2) NOT NULL default '0',
-  `enchant_type` varchar(25) default NULL,
-  `sp` int(10) NOT NULL default '0',
-  `exp` int(20) default NULL,
-  `min_skill_lvl` int(2) NOT NULL default '0',
-  `success_rate76` int(3) unsigned NOT NULL default '0',
-  `success_rate77` int(3) NOT NULL default '0',
-  `success_rate78` int(3) NOT NULL default '0',
-  PRIMARY KEY  (`skill_id`,`level`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `skill_id` int(10) NOT NULL DEFAULT '0',
+  `level` int(10) NOT NULL DEFAULT '0',
+  `name` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `base_lvl` int(2) NOT NULL DEFAULT '0',
+  `enchant_type` varchar(25) COLLATE utf8_bin DEFAULT NULL,
+  `sp` int(10) NOT NULL DEFAULT '0',
+  `exp` int(20) DEFAULT NULL,
+  `min_skill_lvl` int(2) NOT NULL DEFAULT '0',
+  `success_rate76` int(3) unsigned NOT NULL DEFAULT '0',
+  `success_rate77` int(3) NOT NULL DEFAULT '0',
+  `success_rate78` int(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`skill_id`,`level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
-INSERT INTO enchant_skill_trees VALUES 
+-- ----------------------------
+-- Records of `enchant_skill_trees`
+-- ----------------------------
+INSERT INTO `enchant_skill_trees` VALUES 
 (1, 101, 'Triple Slash', 37, '+1 Power', 306000, 3060000, 37, 82, 92, 97), 
 (1, 102, 'Triple Slash', 37, '+2 Power', 315000, 3150000, 101, 80, 90, 95), 
 (1, 103, 'Triple Slash', 37, '+3 Power', 325000, 3250000, 102, 78, 88, 93), 

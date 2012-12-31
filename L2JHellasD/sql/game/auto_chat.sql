@@ -1,11 +1,19 @@
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `auto_chat`
+-- ----------------------------
 DROP TABLE IF EXISTS `auto_chat`;
-CREATE TABLE `auto_chat` (
-  `groupId` INT NOT NULL default '0',
-  `npcId` INT NOT NULL default '0',
-  `chatDelay` BIGINT NOT NULL default '-1',
-  PRIMARY KEY  (`groupId`)
-) ENGINE=InnoDB;
 
+CREATE TABLE `auto_chat` (
+  `groupId` int(11) NOT NULL DEFAULT '0',
+  `npcId` int(11) NOT NULL DEFAULT '0',
+  `chatDelay` bigint(20) NOT NULL DEFAULT '-1',
+  PRIMARY KEY (`groupId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `auto_chat`
+-- ----------------------------
 INSERT INTO `auto_chat` VALUES 
 
 -- Preacher of Doom

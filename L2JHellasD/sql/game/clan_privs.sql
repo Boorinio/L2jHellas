@@ -1,7 +1,13 @@
-CREATE TABLE IF NOT EXISTS clan_privs (
-  clan_id INT NOT NULL default 0,
-  rank INT NOT NULL default 0,
-  party INT NOT NULL default 0,
-  privs INT NOT NULL default 0,
-  PRIMARY KEY  (`clan_id`,`rank`,`party`)
-);
+SET FOREIGN_KEY_CHECKS=0;
+-- ---------------------------
+-- Table structure for `clan_privs`
+-- ---------------------------
+DROP TABLE IF EXISTS `clan_privs`;
+
+CREATE TABLE `clan_privs` (
+  `clan_id` int(11) NOT NULL DEFAULT '0',
+  `rank` int(11) NOT NULL DEFAULT '0',
+  `party` int(11) NOT NULL DEFAULT '0',
+  `privs` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`clan_id`,`rank`,`party`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

@@ -1,21 +1,23 @@
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for raid_events_spawnlist
+-- Table structure for `raid_events_spawnlist`
 -- ----------------------------
+DROP TABLE IF EXISTS `raid_event_spawnlist`;
+
 CREATE TABLE `raid_event_spawnlist` (
-  `id` int(11) NOT NULL auto_increment,
-  `location` varchar(40) NOT NULL default '',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `location` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
   `raid_locX` int(9) NOT NULL,
   `raid_locY` int(9) NOT NULL,
   `raid_locZ` int(9) NOT NULL,
   `player_locX` int(9) NOT NULL,
   `player_locY` int(9) NOT NULL,
   `player_locZ` int(9) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records 
+-- Records of `raid_event_spawnlist`
 -- ----------------------------
 INSERT INTO `raid_event_spawnlist` VALUES ('1', 'Test', '-93287', '-251026', '-3336', '-94347', '-251026', '-3136');
 INSERT INTO `raid_event_spawnlist` VALUES ('2', 'Test', '-87131', '-257755', '-3336', '-88020', '-257755', '-3136');

@@ -1,21 +1,25 @@
--- -----------------------------
--- Table structure for vipinfo -
--- -----------------------------
-CREATE TABLE IF NOT EXISTS `vipinfo` (
-  `teamID` int(11) NOT NULL default '0',
-  `endx` int(11) NOT NULL default '0',
-  `endy` int(11) NOT NULL default '0',
-  `endz` int(11) NOT NULL default '0',
-  `startx` int(11) NOT NULL default '0',
-  `starty` int(11) NOT NULL default '0',
-  `startz` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`teamID`)
-) ENGINE=MyISAM;
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `vipinfo`
+-- ----------------------------
+DROP TABLE IF EXISTS `vipinfo`;
 
--- -----------------------------
--- VIP End x y z, Start x y z  - 
--- -----------------------------
+CREATE TABLE `vipinfo` (
+  `teamID` int(11) NOT NULL DEFAULT '0',
+  `endx` int(11) NOT NULL DEFAULT '0',
+  `endy` int(11) NOT NULL DEFAULT '0',
+  `endz` int(11) NOT NULL DEFAULT '0',
+  `startx` int(11) NOT NULL DEFAULT '0',
+  `starty` int(11) NOT NULL DEFAULT '0',
+  `startz` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`teamID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+-- ----------------------------
+-- Records of `vipinfo`
+-- ----------------------------
+-- VIP End x y z, Start x y z 
+-- ----------------------------
 INSERT INTO `vipinfo` VALUES ('1', '-84583', '242788', '-3735', '-115354', '221134', '-3010');
 INSERT INTO `vipinfo` VALUES ('2', '45714', '49703', '-3065', '55782', '81597', '-3610');
 INSERT INTO `vipinfo` VALUES ('3', '11249', '16890', '-4667', '-22732', '12586', '-2996');

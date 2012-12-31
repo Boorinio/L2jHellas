@@ -1,8 +1,9 @@
--- 
--- Table structure for table `weapon`
--- 
-
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `weapon`
+-- ----------------------------
 DROP TABLE IF EXISTS `weapon`;
+
 CREATE TABLE `weapon` (
   `item_id` decimal(11,0) NOT NULL default '0',
   `name` varchar(70) default NULL,
@@ -42,12 +43,11 @@ CREATE TABLE `weapon` (
   `onCrit_skill_lvl` decimal(11,0) NOT NULL default '0',
   `onCrit_skill_chance` decimal(11,0) NOT NULL default '0',
   PRIMARY KEY  (`item_id`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 
--- Dumping data for table `weapon`
--- 
-
+-- ----------------------------
+-- Records of `weapon`
+-- ----------------------------
 INSERT INTO `weapon` VALUES 
  ('1','Short Sword','rhand','false','1600','1','1','steel','none','8','10','sword','8','0.00000','0','0','0','379','0','6','-1','768','0','true','true','true','true','0','0','0','0','0','0','0','0','0','0'),
  ('2','Long Sword','rhand','false','1560','2','2','fine_steel','none','24','10','sword','8','0.00000','0','0','0','379','0','17','-1','136000','0','true','true','true','true','0','0','0','0','0','0','0','0','0','0'),

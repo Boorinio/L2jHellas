@@ -1,10 +1,12 @@
--- ---------------------------------------------
--- Table structure for four_sepulchers_spawnlist
--- ---------------------------------------------
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `four_sepulchers_spawnlist`
+-- ----------------------------
 DROP TABLE IF EXISTS `four_sepulchers_spawnlist`;
+
 CREATE TABLE `four_sepulchers_spawnlist` (
-  `id` int(11) NOT NULL auto_increment,
-  `location` varchar(19) NOT NULL DEFAULT '',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `location` varchar(19) COLLATE utf8_bin NOT NULL DEFAULT '',
   `count` int(9) NOT NULL DEFAULT '0',
   `npc_templateid` int(11) NOT NULL DEFAULT '0',
   `locx` int(9) NOT NULL DEFAULT '0',
@@ -17,11 +19,11 @@ CREATE TABLE `four_sepulchers_spawnlist` (
   `key_npc_id` int(9) NOT NULL DEFAULT '0',
   `spawntype` int(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-);
--- -------------------------------------------
--- Records for table four_sepulchers_spawnlist
--- -------------------------------------------
+) ENGINE=InnoDB AUTO_INCREMENT=1613 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+-- ----------------------------
+-- Records of `four_sepulchers_spawnlist`
+-- ----------------------------
 INSERT INTO `four_sepulchers_spawnlist` VALUES 
 ('1', '', '1', '31468', '182074', '-85579', '-7216', '0', '0', '-32600', '3600', '31921', '0'),
 ('2', '', '1', '31469', '183868', '-85577', '-7216', '0', '0', '-32600', '3600', '31925', '0'),

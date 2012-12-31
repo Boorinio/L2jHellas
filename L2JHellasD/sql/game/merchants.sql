@@ -1,17 +1,18 @@
---
--- Table structure for table `merchants`
---
-DROP TABLE IF EXISTS merchants;
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `merchants`
+-- ----------------------------
+DROP TABLE IF EXISTS `merchants`;
+
 CREATE TABLE `merchants` (
-  `npc_id` int(11) NOT NULL default '0',
-  `merchant_area_id` tinyint(4) default NULL,
-  PRIMARY KEY  (`npc_id`)
-) ENGINE=MyISAM;
+  `npc_id` int(11) NOT NULL DEFAULT '0',
+  `merchant_area_id` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`npc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `merchants`
---
-
+-- ----------------------------
+-- Records of `merchants`
+-- ----------------------------
 INSERT INTO `merchants` VALUES (1030001,1);
 INSERT INTO `merchants` VALUES (1030002,1);
 INSERT INTO `merchants` VALUES (1030003,1);

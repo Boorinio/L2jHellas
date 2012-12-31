@@ -1,27 +1,27 @@
--- 
--- Table structure for table `lvlupgain`
--- 
-
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `lvlupgain`
+-- ----------------------------
 DROP TABLE IF EXISTS `lvlupgain`;
+
 CREATE TABLE `lvlupgain` (
-  `classid` int(3) NOT NULL default '0',
-  `defaulthpbase` decimal(5,1) NOT NULL default '0.0',
-  `defaulthpadd` decimal(4,2) NOT NULL default '0.00',
-  `defaulthpmod` decimal(4,2) NOT NULL default '0.00',
-  `defaultcpbase` decimal(5,1) NOT NULL default '0.0',
-  `defaultcpadd` decimal(4,2) NOT NULL default '0.00',
-  `defaultcpmod` decimal(4,2) NOT NULL default '0.00',
-  `defaultmpbase` decimal(5,1) NOT NULL default '0.0',
-  `defaultmpadd` decimal(4,2) NOT NULL default '0.00',
-  `defaultmpmod` decimal(4,2) NOT NULL default '0.00',
-  `class_lvl` int(3) NOT NULL default '0',
-  PRIMARY KEY  (`classid`)
-) ENGINE=MyISAM;
+  `classid` int(3) NOT NULL DEFAULT '0',
+  `defaulthpbase` decimal(5,1) NOT NULL DEFAULT '0.0',
+  `defaulthpadd` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `defaulthpmod` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `defaultcpbase` decimal(5,1) NOT NULL DEFAULT '0.0',
+  `defaultcpadd` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `defaultcpmod` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `defaultmpbase` decimal(5,1) NOT NULL DEFAULT '0.0',
+  `defaultmpadd` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `defaultmpmod` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `class_lvl` int(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`classid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 
--- Dumping data for table `lvlupgain`
--- 
-
+-- ----------------------------
+-- Records of `lvlupgain`
+-- ----------------------------
 INSERT INTO `lvlupgain` VALUES ('0', '80.0', '11.83', '0.37', '32.0', '4.73', '0.22', '30.0', '5.46', '0.14', '1');
 INSERT INTO `lvlupgain` VALUES ('1', '327.0', '33.00', '0.37', '261.6', '26.40', '0.22', '144.0', '9.90', '0.14', '20');
 INSERT INTO `lvlupgain` VALUES ('2', '1044.0', '49.40', '0.37', '939.6', '44.46', '0.22', '359.1', '19.50', '0.14', '40');

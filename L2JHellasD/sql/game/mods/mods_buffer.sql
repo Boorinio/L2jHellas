@@ -1,32 +1,32 @@
--- 
--- Table structure for table `mods_buffer_skills`
--- 
-
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `mods_buffer_skills`
+-- ----------------------------
 DROP TABLE IF EXISTS `mods_buffer_skills`;
-CREATE TABLE IF NOT EXISTS `mods_buffer_skills` (
-  id int(10) unsigned NOT NULL default '0',
-  level int(10) unsigned NOT NULL default '0',
-  skill_group varchar(20) NOT NULL default 'default',
-  adena int not null default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
 
--- 
--- Table structure for table `mods_buffer_schemes`
--- 
+CREATE TABLE `mods_buffer_skills` (
+  `id` int(10) unsigned NOT NULL DEFAULT '0',
+  `level` int(10) unsigned NOT NULL DEFAULT '0',
+  `skill_group` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT 'default',
+  `adena` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+-- ----------------------------
+-- Table structure for `mods_buffer_schemes`
+-- ----------------------------
 DROP TABLE IF EXISTS `mods_buffer_schemes`;
+
 CREATE TABLE `mods_buffer_schemes` (
- ownerId int unsigned not null default '0',
- id int(10) unsigned not null default '0',
- level int(10) unsigned NOT NULL default '0',
- scheme varchar(20) NOT NULL default 'default' 
-) ENGINE=MyISAM;
+  `ownerId` int(10) unsigned NOT NULL DEFAULT '0',
+  `id` int(10) unsigned NOT NULL DEFAULT '0',
+  `level` int(10) unsigned NOT NULL DEFAULT '0',
+  `scheme` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT 'default'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Default values
---
-
+-- ----------------------------
+-- Records of `mods_buffer_skills`
+-- ----------------------------
 INSERT INTO `mods_buffer_skills` (`id`, `level`, `skill_group`, `adena`) VALUES
 (264,1,'Songs',0),
 (265,1,'Songs',0),

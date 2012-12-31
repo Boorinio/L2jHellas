@@ -1,7 +1,9 @@
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for raid_prizes
+-- Table structure for `raid_prizes`
 -- ----------------------------
+DROP TABLE IF EXISTS `raid_prizes`;
+
 CREATE TABLE `raid_prizes` (
   `prize_package_id` int(11) NOT NULL,
   `first_prize_id` int(11) NOT NULL,
@@ -9,11 +11,11 @@ CREATE TABLE `raid_prizes` (
   `second_prize_id` int(11) NOT NULL,
   `second_prize_ammount` int(11) NOT NULL,
   `event_points_ammount` int(11) NOT NULL,
-  PRIMARY KEY  (`prize_package_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`prize_package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records 
+-- Records of `raid_prizes`
 -- ----------------------------
 INSERT INTO `raid_prizes` VALUES ('1', '3470', '15', '6393', '20', '3');
 INSERT INTO `raid_prizes` VALUES ('2', '3470', '25', '6393', '35', '4');

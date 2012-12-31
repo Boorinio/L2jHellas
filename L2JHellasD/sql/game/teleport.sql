@@ -1,8 +1,10 @@
--- 
--- Table structure for table `teleport`
--- 
-DROP TABLE IF EXISTS teleport;
-CREATE TABLE teleport (
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `teleport`
+-- ----------------------------
+DROP TABLE IF EXISTS `teleport`;
+
+CREATE TABLE `teleport` (
   Description varchar(75) default NULL,
   id decimal(11,0) NOT NULL default '0',
   loc_x decimal(9,0) default NULL,
@@ -11,13 +13,12 @@ CREATE TABLE teleport (
   price decimal(6,0) default NULL,
   fornoble int(1) NOT NULL default '0',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 
--- Dumping data for table `teleport`
--- 
-
-INSERT INTO teleport VALUES 
+-- ----------------------------
+-- Records of `teleport`
+-- ----------------------------
+INSERT INTO `teleport` VALUES 
 ('Dark Elven Town -> Town of Gludio',1,-12672,122776,-3116,10000,0),
 ('Elven Town  -> Town of Gludio',2,-12672,122776,-3116,9200,0),
 ('Elven Village -> Elven Forest',468,21362,51122,-3688,710,0),

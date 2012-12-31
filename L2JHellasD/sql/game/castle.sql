@@ -1,19 +1,25 @@
+SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
--- Table structure for castle
+-- Table structure for `castle`
 -- ---------------------------
-CREATE TABLE IF NOT EXISTS castle (
-  id INT NOT NULL default 0,
-  name varchar(25) NOT NULL,
-  taxPercent INT NOT NULL default 15,
-  treasury INT NOT NULL default 0,
-  siegeDate DECIMAL(20,0) NOT NULL default 0,
-  siegeDayOfWeek INT NOT NULL default 7,
-  siegeHourOfDay INT NOT NULL default 20,
-  showNpcCrest enum('true','false') DEFAULT 'false' NOT NULL,
-  PRIMARY KEY  (name),
-  KEY id (id)
-);
+DROP TABLE IF EXISTS `castle`;
 
+CREATE TABLE `castle` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(25) COLLATE utf8_bin NOT NULL,
+  `taxPercent` int(11) NOT NULL DEFAULT '15',
+  `treasury` int(11) NOT NULL DEFAULT '0',
+  `siegeDate` decimal(20,0) NOT NULL DEFAULT '0',
+  `siegeDayOfWeek` int(11) NOT NULL DEFAULT '7',
+  `siegeHourOfDay` int(11) NOT NULL DEFAULT '20',
+  `showNpcCrest` enum('true','false') COLLATE utf8_bin NOT NULL DEFAULT 'false',
+  PRIMARY KEY (`name`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `castle`
+-- ----------------------------
 INSERT IGNORE INTO `castle` VALUES 
 (1,'Gludio',0,0,0,7,20,false),
 (2,'Dion',0,0,0,7,20,false),

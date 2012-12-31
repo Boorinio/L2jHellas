@@ -1,18 +1,20 @@
--- ---------------------------
--- Table structure for games
--- ---------------------------
-CREATE TABLE IF NOT EXISTS games (
-  id INT NOT NULL default 0,
-  idnr INT NOT NULL default 0,
-  number1 INT NOT NULL default 0,
-  number2 INT NOT NULL default 0,
-  prize  INT NOT NULL default 0,
-  newprize  INT NOT NULL default 0,
-  prize1  INT NOT NULL default 0,
-  prize2  INT NOT NULL default 0,
-  prize3  INT NOT NULL default 0,
-  enddate decimal(20,0) NOT NULL default 0,
-  finished INT NOT NULL default 0,
-  PRIMARY KEY (`id`,`idnr`)
-);
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `games`
+-- ----------------------------
+DROP TABLE IF EXISTS `games`;
 
+CREATE TABLE `games` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `idnr` int(11) NOT NULL DEFAULT '0',
+  `number1` int(11) NOT NULL DEFAULT '0',
+  `number2` int(11) NOT NULL DEFAULT '0',
+  `prize` int(11) NOT NULL DEFAULT '0',
+  `newprize` int(11) NOT NULL DEFAULT '0',
+  `prize1` int(11) NOT NULL DEFAULT '0',
+  `prize2` int(11) NOT NULL DEFAULT '0',
+  `prize3` int(11) NOT NULL DEFAULT '0',
+  `enddate` decimal(20,0) NOT NULL DEFAULT '0',
+  `finished` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`idnr`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

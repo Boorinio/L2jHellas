@@ -1,55 +1,58 @@
---
--- Table structure for table `npc`
--- 
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `npc`
+-- ----------------------------
 DROP TABLE IF EXISTS `npc`;
-CREATE TABLE `npc`(
-  `id` decimal(11,0) NOT NULL default '0',
-  `idTemplate` int(11) NOT NULL default '0',
-  `name` varchar(200) default NULL,
-  `serverSideName` int(1) default '0',
-  `title` varchar(45) default '',
-  `serverSideTitle` int(1) default '0',
-  `class` varchar(200) default NULL,
-  `collision_radius` decimal(5,2) default NULL,
-  `collision_height` decimal(5,2) default NULL,
-  `level` decimal(2,0) default NULL,
-  `sex` varchar(6) default NULL,
-  `type` varchar(20) default NULL,
-  `attackrange` int(11) default NULL,
-  `hp` decimal(8,0) default NULL,
-  `mp` decimal(5,0) default NULL,
-  `hpreg` decimal(8,2) default NULL,
-  `mpreg` decimal(5,2) default NULL,
-  `str` decimal(7,0) default NULL,
-  `con` decimal(7,0) default NULL,
-  `dex` decimal(7,0) default NULL,
-  `int` decimal(7,0) default NULL,
-  `wit` decimal(7,0) default NULL,
-  `men` decimal(7,0) default NULL,
-  `exp` decimal(9,0) default NULL,
-  `sp` decimal(8,0) default NULL,
-  `patk` decimal(5,0) default NULL,
-  `pdef` decimal(5,0) default NULL,
-  `matk` decimal(5,0) default NULL,
-  `mdef` decimal(5,0) default NULL,
-  `atkspd` decimal(3,0) default NULL,
-  `aggro` decimal(6,0) default NULL,
-  `matkspd` decimal(4,0) default NULL,
-  `rhand` decimal(4,0) default NULL,
-  `lhand` decimal(4,0) default NULL,
-  `armor` decimal(1,0) default NULL,
-  `walkspd` decimal(3,0) default NULL,
-  `runspd` decimal(3,0) default NULL,
-  `faction_id` varchar(40) default NULL,
-  `faction_range` decimal(4,0) default NULL,
-  `isUndead` int(11) default 0,
-  `absorb_level` decimal(2,0) default 0,
-  `absorb_type` enum('FULL_PARTY','LAST_HIT','PARTY_ONE_RANDOM') DEFAULT 'LAST_HIT' NOT NULL,
+
+CREATE TABLE `npc` (
+  `id` decimal(11,0) NOT NULL DEFAULT '0',
+  `idTemplate` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `serverSideName` int(1) DEFAULT '0',
+  `title` varchar(45) COLLATE utf8_bin DEFAULT '',
+  `serverSideTitle` int(1) DEFAULT '0',
+  `class` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `collision_radius` decimal(5,2) DEFAULT NULL,
+  `collision_height` decimal(5,2) DEFAULT NULL,
+  `level` decimal(2,0) DEFAULT NULL,
+  `sex` varchar(6) COLLATE utf8_bin DEFAULT NULL,
+  `type` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `attackrange` int(11) DEFAULT NULL,
+  `hp` decimal(8,0) DEFAULT NULL,
+  `mp` decimal(5,0) DEFAULT NULL,
+  `hpreg` decimal(8,2) DEFAULT NULL,
+  `mpreg` decimal(5,2) DEFAULT NULL,
+  `str` decimal(7,0) DEFAULT NULL,
+  `con` decimal(7,0) DEFAULT NULL,
+  `dex` decimal(7,0) DEFAULT NULL,
+  `int` decimal(7,0) DEFAULT NULL,
+  `wit` decimal(7,0) DEFAULT NULL,
+  `men` decimal(7,0) DEFAULT NULL,
+  `exp` decimal(9,0) DEFAULT NULL,
+  `sp` decimal(8,0) DEFAULT NULL,
+  `patk` decimal(5,0) DEFAULT NULL,
+  `pdef` decimal(5,0) DEFAULT NULL,
+  `matk` decimal(5,0) DEFAULT NULL,
+  `mdef` decimal(5,0) DEFAULT NULL,
+  `atkspd` decimal(3,0) DEFAULT NULL,
+  `aggro` decimal(6,0) DEFAULT NULL,
+  `matkspd` decimal(4,0) DEFAULT NULL,
+  `rhand` decimal(4,0) DEFAULT NULL,
+  `lhand` decimal(4,0) DEFAULT NULL,
+  `armor` decimal(1,0) DEFAULT NULL,
+  `walkspd` decimal(3,0) DEFAULT NULL,
+  `runspd` decimal(3,0) DEFAULT NULL,
+  `faction_id` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `faction_range` decimal(4,0) DEFAULT NULL,
+  `isUndead` int(11) DEFAULT '0',
+  `absorb_level` decimal(2,0) DEFAULT '0',
+  `absorb_type` enum('FULL_PARTY','LAST_HIT','PARTY_ONE_RANDOM') COLLATE utf8_bin NOT NULL DEFAULT 'LAST_HIT',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM;
--- 
--- Dumping data for table `npc`
--- 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `npc`
+-- ----------------------------
 INSERT INTO `npc` (`id`,`idTemplate`,`name`,`serverSideName`,`title`,`serverSideTitle`,`class`,`collision_radius`,`collision_height`,`level`,`sex`,`type`,`attackrange`,`hp`,`mp`,`hpreg`,`mpreg`,`str`,`con`,`dex`,`int`,`wit`,`men`,`exp`,`sp`,`patk`,`pdef`,`matk`,`mdef`,`atkspd`,`aggro`,`matkspd`,`rhand`,`lhand`,`armor`,`walkspd`,`runspd`,`faction_id`,`faction_range`,`isUndead`,`absorb_level`,`absorb_type`) VALUES
 	(12077,12077,'Wolf',0,'',0,'Monster.pet_wolf',13.00,11.50,15,'male','L2Pet',40,195,164,3.95,1.21,40,43,30,21,20,25,0,0,9,19,3,17,282,0,333,0,0,0,26,137,NULL,0,0,0,'LAST_HIT'),
 	(12311,12311,'Hatchling of the Wind',0,'',0,'Monster.hatchling',9.00,10.00,35,'male','L2Pet',40,610,433,7.11,1.84,40,43,30,21,20,25,0,0,48,42,22,39,282,0,333,0,0,0,88,154,NULL,0,0,0,'LAST_HIT'),
@@ -69,7 +72,7 @@ INSERT INTO `npc` (`id`,`idTemplate`,`name`,`serverSideName`,`title`,`serverSide
 	(12780,12780,'Baby Buffalo',0,'',0,'Monster2.baby_buffalo',12.00,15.00,25,'male','L2BabyPet',40,751,331,2.37,1.53,40,43,30,21,20,25,0,0,88,119,37,112,282,0,333,0,0,0,33,132,NULL,0,0,0,'LAST_HIT'),
 	(12781,12781,'Baby Kookaburra',0,'',0,'Monster2.baby_ostrich',7.00,15.00,25,'male','L2BabyPet',40,751,331,2.37,1.53,40,43,30,21,20,25,0,0,88,119,37,112,282,0,333,0,0,0,14,132,NULL,0,0,0,'LAST_HIT'),
 	(12782,12782,'Baby Cougar',0,'',0,'Monster2.baby_tiger',11.00,15.70,25,'male','L2BabyPet',40,751,331,2.37,1.53,40,43,30,21,20,25,0,0,88,119,37,112,282,0,333,0,0,0,30,132,NULL,0,0,0,'LAST_HIT'),
-	(13001,13001,'Heart of Warding',0,'',0,'NPC.heart_of_warding',17.00,75.00,70,'etc','L2Teleporter',40,3862,1493,11.85,2.78,40,43,30,21,20,10,490,10,1314,470,780,382,282,0,333,0,0,0,55,132,NULL,0,1,0,'LAST_HIT'),
+	(13001,13001,'Heart of Warding',0,'',0,'NPC.heart_of_warding',17.00,75.00,70,'L2Npc','L2Teleporter',40,3862,1493,11.85,2.78,40,43,30,21,20,10,490,10,1314,470,780,382,282,0,333,0,0,0,55,132,NULL,0,1,0,'LAST_HIT'),
 	(13002,13002,'Life Control Tower',0,'',0,'NPC.broadcasting_tower',13.00,54.00,20,'etc','L2ControlTower',40,541,213,3.95,1.21,40,43,30,21,20,10,40,10,57,94,23,76,282,0,333,0,0,0,55,0,NULL,0,1,0,'LAST_HIT'),
 	(13003,13003,'Life Control Tower',0,'',0,'NPC.dead_castle_aden_controltower_jewel',7.00,35.00,20,'etc','L2ControlTower',40,541,213,3.95,1.21,40,43,30,21,20,10,40,10,57,94,23,76,282,0,333,0,0,0,55,0,NULL,0,1,0,'LAST_HIT'),
 	(13004,13004,'Flame Control Tower',0,'',0,'NPC.broadcasting_tower',13.00,54.00,20,'etc','L2Npc',40,541,213,3.95,1.21,40,43,30,21,20,10,40,10,57,94,23,76,282,0,333,0,0,0,55,0,NULL,0,1,0,'LAST_HIT'),
@@ -6601,6 +6604,7 @@ INSERT INTO `npc` (`id`,`idTemplate`,`name`,`serverSideName`,`title`,`serverSide
 	(35655,35655,'Court Magician',0,'Rune',0,'Monster3.Elite_Mage',6.50,21.96,70,'male','L2Npc',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,0,0,0,88,132,NULL,0,0,0,'LAST_HIT'),
 	(35656,35656,'Court Magician',0,'Schuttgart',0,'Monster3.Elite_Mage',6.50,21.96,70,'male','L2Npc',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,0,0,0,88,132,NULL,0,0,0,'LAST_HIT');
 
+	-- DO Check in this nightwolf
 UPDATE `npc` SET `type` = 'L2NpcWalker' WHERE `id` IN (31358,31359,31360,31361,31362,31363,31357,31356,31364,31365,32070,32072);
 -- Try lowering walkspeed of walking NPC since seems to walk faster than retail
 UPDATE `npc` SET `runspd` = '45', `walkspd` = '45' WHERE `id` = '31360';
@@ -6629,6 +6633,3 @@ UPDATE `npc` SET `collision_radius` = '0.10', `collision_height` = '0.10' WHERE 
 UPDATE `npc` SET `hp` = '1532678', `mp` = '4255', `type` = 'L2GrandBoss', `level` = '87' WHERE `id` IN (29065);
 UPDATE `npc` SET `faction_id` = 'antharas_clan', `faction_range` = '1000' WHERE `id` IN (29019,29069,29070);
 UPDATE `npc` SET `faction_id` = 'baium_clan', `faction_range` = '1000' WHERE `id` IN (29020,29021);
-
--- Update Npc  
-Update npc set `type` = 'L2Npc' Where idTemplate = 13001;

@@ -1,21 +1,22 @@
---
--- Table structure for table `minions`
---
-
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `minions`
+-- ----------------------------
 DROP TABLE IF EXISTS `minions`;
+
 CREATE TABLE `minions` (
-  `boss_id` int(11) NOT NULL default '0',
-  `minion_id` int(11) NOT NULL default '0',
-  `amount_min` int(4) NOT NULL default '0',
-  `amount_max` int(4) NOT NULL default '0',
-  PRIMARY KEY  (`boss_id`,`minion_id`)
-) ENGINE=MyISAM;
+  `boss_id` int(11) NOT NULL DEFAULT '0',
+  `minion_id` int(11) NOT NULL DEFAULT '0',
+  `amount_min` int(4) NOT NULL DEFAULT '0',
+  `amount_max` int(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`boss_id`,`minion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `minions`
---
-
--- c1 mobs
+-- ----------------------------
+-- Records of `minions`
+-- ----------------------------
+-- C1 Mobs
+-- ----------------------------
 INSERT INTO `minions` VALUES
 (20117,20118,1,3),
 (20376,20377,1,2),
@@ -96,10 +97,9 @@ INSERT INTO `minions` VALUES
 (21090,21091,1,1),
 (21090,21092,1,1),
 (21312,21313,2,2);
-
--- 
+-- ----------------------------
 -- work in progress C5 minions - 22xxx mobs
--- 
+-- ----------------------------
 INSERT INTO `minions` VALUES 
 (22028,22027,3,4),
 (22080,22079,3,3),
@@ -128,8 +128,9 @@ INSERT INTO `minions` VALUES
 (27036,27037,2,3),
 (27110,27111,3,5),
 (27113,27111,3,6);
-
--- raid bosses
+-- ----------------------------
+-- Raid Bosses
+-- ----------------------------
 INSERT INTO `minions` VALUES 
 (25001,25002,1,2),
 (25001,25003,1,2),
@@ -233,8 +234,6 @@ INSERT INTO `minions` VALUES
 (25155,25157,1,2),
 (25159,25160,1,2),
 (25159,25161,1,2),
--- (25163,25164,1,3), -- minion npcID removed in interlude
--- (25163,25165,1,2), -- minion npcID removed in interlude
 (25166,25167,1,2),
 (25166,25168,1,2),
 (25170,25171,1,2),
@@ -443,8 +442,9 @@ INSERT INTO `minions` VALUES
 (25517,25519,3,4),
 (25524,25525,2,2),
 (25524,25526,2,2);
-
+-- ----------------------------
 -- Primeval Isle temp mob groups.
+-- ----------------------------
 INSERT INTO `minions` VALUES
 (22196,22197,1,1),
 (22196,22198,1,1),
@@ -461,9 +461,10 @@ INSERT INTO `minions` VALUES
 (22211,22212,1,1),
 (22211,22213,1,1),
 (22211,22222,1,1);
-
--- grand bosses
-INSERT INTO `minions` VALUES 
+-- ----------------------------
+-- Grand Bosses
+-- ----------------------------
+INSERT INTO `minions` VALUES
 (29001,29003,5,8),
 (29001,29004,6,9),
 (29006,29007,10,10),
@@ -473,8 +474,9 @@ INSERT INTO `minions` VALUES
 (29014,29016,4,7),
 (29014,29017,6,8),
 (29014,29018,4,7);
-
+-- ----------------------------
 -- ToI - Binder group
+-- ----------------------------
 INSERT INTO `minions` VALUES 
 (20983,20984,1,1),
 (20983,20985,1,1),

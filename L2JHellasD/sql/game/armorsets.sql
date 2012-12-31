@@ -1,25 +1,28 @@
--- 
-
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
 -- Table structure for table `armorsets`
--- 
+-- ----------------------------
+DROP TABLE IF EXISTS `armorsets`;
 
-DROP TABLE IF EXISTS armorsets;
-CREATE TABLE armorsets (
- id int(3) NOT NULL auto_increment,
- chest decimal(11,0) NOT NULL default '0',
- legs decimal(11,0) NOT NULL default '0',
- head decimal(11,0) NOT NULL default '0',
- gloves decimal(11,0) NOT NULL default '0',
- feet decimal(11,0) NOT NULL default '0',
- skill_id decimal(11,0) NOT NULL default '0',
- skill_lvl decimal(11,0) NOT NULL default '0',
- shield decimal(11,0) NOT NULL default '0',
- shield_skill_id decimal(11,0) NOT NULL default '0',
- enchant6skill decimal(11,0) NOT NULL default '0',
- PRIMARY KEY (id,chest)
-) ENGINE=MyISAM;
+CREATE TABLE `armorsets` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `chest` decimal(11,0) NOT NULL DEFAULT '0',
+  `legs` decimal(11,0) NOT NULL DEFAULT '0',
+  `head` decimal(11,0) NOT NULL DEFAULT '0',
+  `gloves` decimal(11,0) NOT NULL DEFAULT '0',
+  `feet` decimal(11,0) NOT NULL DEFAULT '0',
+  `skill_id` decimal(11,0) NOT NULL DEFAULT '0',
+  `skill_lvl` decimal(11,0) NOT NULL DEFAULT '0',
+  `shield` decimal(11,0) NOT NULL DEFAULT '0',
+  `shield_skill_id` decimal(11,0) NOT NULL DEFAULT '0',
+  `enchant6skill` decimal(11,0) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`chest`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO armorsets VALUES
+-- ----------------------------
+-- Records of `armorsets`
+-- ----------------------------
+INSERT INTO `armorsets` VALUES
 --                 NO GRADE              -------------
 -- ######################## id chest  legs head gloves feet    skill  skill_lvl shield sh_skill enchant6
 (1,  23,   2386, 43,   0,    0,      3500,   1,   0,    0,    0),        -- Wooden Breastplate set (heavy)

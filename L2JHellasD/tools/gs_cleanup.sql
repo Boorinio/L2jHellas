@@ -4,7 +4,9 @@
 -- Queries that create these tables and/or populate them apropiately are
 -- available in the ../sql/ folder. See the documentation.txt file
 -- for more details.
-
+-- ----------------------------
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
 DROP TABLE IF EXISTS
 -- MOD TABLES
 balance,
@@ -90,6 +92,7 @@ items,
 itemsonground,
 locations,
 lvlupgain,
+mails,
 mapregion,
 max_poly,
 merchant_areas_list,

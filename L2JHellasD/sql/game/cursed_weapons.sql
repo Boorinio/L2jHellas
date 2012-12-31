@@ -1,12 +1,15 @@
--- ----------------------------
+SET FOREIGN_KEY_CHECKS=0;
+-- ---------------------------
 -- Table structure for `cursed_weapons`
--- ----------------------------
-CREATE TABLE IF NOT EXISTS `cursed_weapons` (
-  `itemId` INT,
-  `playerId` INT DEFAULT 0,
-  `playerKarma` INT DEFAULT 0,
-  `playerPkKills` INT DEFAULT 0,
-  `nbKills` INT DEFAULT 0,
-  `endTime` DECIMAL(20,0) DEFAULT 0,
+-- ---------------------------
+DROP TABLE IF EXISTS `cursed_weapons`;
+
+CREATE TABLE `cursed_weapons` (
+  `itemId` int(11) NOT NULL DEFAULT '0',
+  `playerId` int(11) DEFAULT '0',
+  `playerKarma` int(11) DEFAULT '0',
+  `playerPkKills` int(11) DEFAULT '0',
+  `nbKills` int(11) DEFAULT '0',
+  `endTime` decimal(20,0) DEFAULT '0',
   PRIMARY KEY (`itemId`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

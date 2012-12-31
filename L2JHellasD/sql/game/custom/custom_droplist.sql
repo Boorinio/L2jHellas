@@ -18,22 +18,19 @@
 -- for drops (i.e. its chance is successful), then exactly 1 item from that category will be selected, with 
 -- such a chance that the overall probability is maintained unchanged. 
 
-
---
--- Table structure for table `custom_droplist`
---
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `custom_droplist`
+-- ----------------------------
 DROP TABLE IF EXISTS `custom_droplist`;
-CREATE TABLE `custom_droplist` (
-  `mobId` INT NOT NULL DEFAULT '0',
-  `itemId` INT NOT NULL DEFAULT '0',
-  `min` INT NOT NULL DEFAULT '0',
-  `max` INT NOT NULL DEFAULT '0',
-  `category` INT NOT NULL DEFAULT '0',
-  `chance` INT NOT NULL DEFAULT '0',
-  PRIMARY KEY  (`mobId`,`itemId`,`category`),
-  KEY `key_mobId` (`mobId`)
-) ENGINE=MyISAM;
 
--- 
--- Dumping data for table `droplist`
--- 
+CREATE TABLE `custom_droplist` (
+  `mobId` int(11) NOT NULL DEFAULT '0',
+  `itemId` int(11) NOT NULL DEFAULT '0',
+  `min` int(11) NOT NULL DEFAULT '0',
+  `max` int(11) NOT NULL DEFAULT '0',
+  `category` int(11) NOT NULL DEFAULT '0',
+  `chance` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`mobId`,`itemId`,`category`),
+  KEY `key_mobId` (`mobId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

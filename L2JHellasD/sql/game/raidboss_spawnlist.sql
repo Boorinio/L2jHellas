@@ -1,24 +1,27 @@
--- ---------------------------
--- Table structure for raidboss_spawnlist
--- ---------------------------
-DROP TABLE IF EXISTS raidboss_spawnlist;
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `raidboss_spawnlist`
+-- ----------------------------
+DROP TABLE IF EXISTS `raidboss_spawnlist`;
 
-CREATE TABLE raidboss_spawnlist (
-  boss_id INT NOT NULL default 0,
-  amount INT NOT NULL default 0,
-  loc_x INT NOT NULL default 0,
-  loc_y INT NOT NULL default 0,
-  loc_z INT NOT NULL default 0,
-  heading INT NOT NULL default 0,
-  respawn_min_delay INT(11) NOT NULL default '43200',
-  respawn_max_delay INT(11) NOT NULL default '129600',
-  respawn_time BIGINT NOT NULL default 0,
-  currentHp decimal(8,0) default NULL,
-  currentMp decimal(8,0) default NULL,
-  PRIMARY KEY  (boss_id,loc_x,loc_y,loc_z)
-);
+CREATE TABLE `raidboss_spawnlist` (
+  `boss_id` int(11) NOT NULL DEFAULT '0',
+  `amount` int(11) NOT NULL DEFAULT '0',
+  `loc_x` int(11) NOT NULL DEFAULT '0',
+  `loc_y` int(11) NOT NULL DEFAULT '0',
+  `loc_z` int(11) NOT NULL DEFAULT '0',
+  `heading` int(11) NOT NULL DEFAULT '0',
+  `respawn_min_delay` int(11) NOT NULL DEFAULT '43200',
+  `respawn_max_delay` int(11) NOT NULL DEFAULT '129600',
+  `respawn_time` bigint(20) NOT NULL DEFAULT '0',
+  `currentHp` decimal(8,0) DEFAULT NULL,
+  `currentMp` decimal(8,0) DEFAULT NULL,
+  PRIMARY KEY (`boss_id`,`loc_x`,`loc_y`,`loc_z`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
+-- ----------------------------
+-- Records of `raidboss_spawnlist`
+-- ----------------------------
 INSERT INTO `raidboss_spawnlist` VALUES 
 (25001,1,-54416,146480,-2887,0,43200,129600,0,95986,545), -- Greyclaw Kutus (23)
 (25004,1,-94208,100240,-3520,0,43200,129600,0,168366,763), -- Turek Mercenary Captain (30)

@@ -1,13 +1,13 @@
 SET FOREIGN_KEY_CHECKS=0;
-
 -- ----------------------------
 -- Table structure for `characters`
 -- ----------------------------
 DROP TABLE IF EXISTS `characters`;
+
 CREATE TABLE `characters` (
-  `account_name` varchar(45) DEFAULT NULL,
+  `account_name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   `obj_Id` decimal(11,0) NOT NULL DEFAULT '0',
-  `char_name` varchar(35) NOT NULL,
+  `char_name` varchar(35) COLLATE utf8_bin NOT NULL,
   `level` decimal(11,0) DEFAULT NULL,
   `maxHp` decimal(11,0) DEFAULT NULL,
   `curHp` decimal(18,0) DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `characters` (
   `base_class` int(2) NOT NULL DEFAULT '0',
   `deletetime` decimal(20,0) DEFAULT NULL,
   `cancraft` decimal(11,0) DEFAULT NULL,
-  `title` varchar(16) DEFAULT NULL,
+  `title` varchar(16) COLLATE utf8_bin DEFAULT NULL,
   `rec_have` int(3) NOT NULL DEFAULT '0',
   `rec_left` int(3) NOT NULL DEFAULT '0',
   `accesslevel` decimal(4,0) DEFAULT NULL,
@@ -85,15 +85,15 @@ CREATE TABLE `characters` (
   `hero` decimal(1,0) DEFAULT '0',
   `donator` decimal(1,0) DEFAULT '0',
   `chatban_timer` decimal(20,0) DEFAULT '0',
-  `chatban_reason` varchar(255) NOT NULL DEFAULT '',
+  `chatban_reason` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   `chat_filter_count` int(1) DEFAULT '0',
   `good` int(1) DEFAULT '0',
   `evil` int(1) DEFAULT '0',
   `hitman_target` int(16) NOT NULL DEFAULT '0',
-  `email` varchar(100) DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `emailcode` int(10) unsigned DEFAULT '0',
   `hasSubEmail` int(10) unsigned DEFAULT '0',
-  `answer` varchar(100) DEFAULT NULL,
+  `answer` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `secCode` int(10) unsigned DEFAULT '0',
   `emailchangecode` int(10) unsigned DEFAULT '0',
   `hasSubSec` int(10) unsigned DEFAULT '0',
@@ -104,12 +104,12 @@ CREATE TABLE `characters` (
   `monthVotes` int(10) unsigned DEFAULT '0',
   `totalVotes` int(10) unsigned DEFAULT '0',
   `tries` int(10) unsigned DEFAULT '3',
-  `event_points` DECIMAL(11,0) DEFAULT NULL,
+  `event_points` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`obj_Id`),
   KEY `clanid` (`clanid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of characters
 -- ----------------------------
-INSERT INTO `characters` VALUES ('admin', '268478914', 'Administrator', '80', '6399', '6399', '5119', '5119', '2208', '2208', '33', '40', '33', '3', '47', '213', '4', '72', '330', '126', '88', '40', '43', '30', '21', '25', '11', '1', '4', '2', '0', '13800', '-71527', '258186', '-3109', '1.00000000', '1.000000000', '9.000', '23.000', '4200000000', '0', '0', '0', '0', '0', '0', '108674', '0', '89', '89', '0', '0', 'l2jhellas', '0', '9', '100', '0', '26956', null, '1', '1353337050921', '0', '0', '0', '0', '0', '0', '0', '0', '1353324267322', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '0', '0', '0', null, '0', '0', null, '0', '0', '0', null, null, '0', '0', '0', '0', '3', 'NULL');
+INSERT INTO `characters` VALUES ('admin', '268478914', 'Administrator', '80', '6399', '6399', '5119', '5119', '2208', '2208', '33', '40', '33', '3', '47', '213', '4', '72', '330', '126', '88', '40', '43', '30', '21', '25', '11', '1', '4', '2', '0', '13800', '-71527', '258186', '-3109', '1.00000000', '1.000000000', '9.000', '23.000', '4200000000', '0', '0', '0', '0', '0', '0', '108674', '0', '89', '89', '0', '0', 'l2jhellas', '0', '9', '100', '0', '26956', null, '1', '1353337050921', '0', '0', '0', '0', '0', '0', '0', '0', '1353324267322', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '0', '0', '0', null, '0', '0', null, '0', '0', '0', null, null, '0', '0', '0', '0', '3', '0');

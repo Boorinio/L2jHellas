@@ -1,17 +1,21 @@
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `random_spawn_loc`
+-- ----------------------------
 DROP TABLE IF EXISTS `random_spawn_loc`;
+
 CREATE TABLE `random_spawn_loc` (
-  `groupId` int(11) NOT NULL default '0',
-  `x` int(11) NOT NULL default '0',
-  `y` int(11) NOT NULL default '0',
-  `z` int(11) NOT NULL default '0',
-  `heading` int(11) NOT NULL default '-1',
-  PRIMARY KEY  (`groupId`,`x`,`y`,`z`,`heading`)
-) ENGINE=InnoDB;
+  `groupId` int(11) NOT NULL DEFAULT '0',
+  `x` int(11) NOT NULL DEFAULT '0',
+  `y` int(11) NOT NULL DEFAULT '0',
+  `z` int(11) NOT NULL DEFAULT '0',
+  `heading` int(11) NOT NULL DEFAULT '-1',
+  PRIMARY KEY (`groupId`,`x`,`y`,`z`,`heading`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `l2jdb`.`random_spawn_loc`
---
-
+-- ----------------------------
+-- Records of `random_spawn_loc`
+-- ----------------------------
 INSERT INTO `random_spawn_loc` VALUES 
 (1,151680,-174891,-1782,-1),
 (1,154153,-220105,-3402,-1),

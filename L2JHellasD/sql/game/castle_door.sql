@@ -1,27 +1,32 @@
+SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
--- Table structure for castle_door
+-- Table structure for `castle_door`
 -- ---------------------------
-DROP TABLE IF EXISTS castle_door;
-CREATE TABLE castle_door (
-  castleId INT NOT NULL default 0,
-  id INT NOT NULL default 0,
-  name varchar(30) NOT NULL,
-  x INT NOT NULL default 0,
-  y INT NOT NULL default 0,
-  z INT NOT NULL default 0,
-  range_xmin INT NOT NULL default 0,
-  range_ymin INT NOT NULL default 0,
-  range_zmin INT NOT NULL default 0,
-  range_xmax INT NOT NULL default 0,
-  range_ymax INT NOT NULL default 0,
-  range_zmax INT NOT NULL default 0,
-  hp INT NOT NULL default 0,
-  pDef INT NOT NULL default 0,
-  mDef INT NOT NULL default 0,
-  PRIMARY KEY  (id),
-  KEY id (castleId)
-);
+DROP TABLE IF EXISTS `castle_door`;
 
+CREATE TABLE `castle_door` (
+  `castleId` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(30) COLLATE utf8_bin NOT NULL,
+  `x` int(11) NOT NULL DEFAULT '0',
+  `y` int(11) NOT NULL DEFAULT '0',
+  `z` int(11) NOT NULL DEFAULT '0',
+  `range_xmin` int(11) NOT NULL DEFAULT '0',
+  `range_ymin` int(11) NOT NULL DEFAULT '0',
+  `range_zmin` int(11) NOT NULL DEFAULT '0',
+  `range_xmax` int(11) NOT NULL DEFAULT '0',
+  `range_ymax` int(11) NOT NULL DEFAULT '0',
+  `range_zmax` int(11) NOT NULL DEFAULT '0',
+  `hp` int(11) NOT NULL DEFAULT '0',
+  `pDef` int(11) NOT NULL DEFAULT '0',
+  `mDef` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `id` (`castleId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `castle_door`
+-- ----------------------------
 INSERT INTO `castle_door` (`castleId`, `id`, `name`, `x`, `y`, `z`, `range_xmin`, `range_ymin`, `range_zmin`, `range_xmax`, `range_ymax`, `range_zmax`, `hp`, `pDef`, `mDef`) VALUES 
   (1,19210001,'Gludio_outer_001',-18481,113065,-2774,-18481,113058,-2799,-18350,113072,-2479,316500,644,518),
   (1,19210002,'Gludio_outer_002',-18219,113065,-2774,-18351,113058,-2799,-18220,113072,-2479,316500,644,518),

@@ -1,19 +1,24 @@
--- ---------------------------
--- Table structure for random_spawn
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `random_spawn`
 -- ---------------------------
 DROP TABLE IF EXISTS random_spawn;
-CREATE TABLE random_spawn (
-  groupId INT NOT NULL default 0,
-  npcId INT NOT NULL default 0,
-  count INT NOT NULL default 0,
-  initialDelay BIGINT NOT NULL default -1,
-  respawnDelay BIGINT NOT NULL default -1,
-  despawnDelay BIGINT NOT NULL default -1,
-  broadcastSpawn VARCHAR(5) NOT NULL default 'false',
-  randomSpawn VARCHAR(5) NOT NULL default 'true',
-  PRIMARY KEY  (groupId)
-);
 
+CREATE TABLE `random_spawn` (
+  `groupId` int(11) NOT NULL DEFAULT '0',
+  `npcId` int(11) NOT NULL DEFAULT '0',
+  `count` int(11) NOT NULL DEFAULT '0',
+  `initialDelay` bigint(20) NOT NULL DEFAULT '-1',
+  `respawnDelay` bigint(20) NOT NULL DEFAULT '-1',
+  `despawnDelay` bigint(20) NOT NULL DEFAULT '-1',
+  `broadcastSpawn` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'false',
+  `randomSpawn` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'true',
+  PRIMARY KEY (`groupId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `random_spawn`
+-- ----------------------------
 INSERT INTO `random_spawn` VALUES 
 (1,30556,1,-1,1800000,1800000,'false','true'),
 -- (2,31092,1,-1,60,0,'false','false'),

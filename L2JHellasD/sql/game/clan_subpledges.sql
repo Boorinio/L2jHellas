@@ -1,7 +1,13 @@
-CREATE TABLE IF NOT EXISTS clan_subpledges (
-  clan_id INT NOT NULL default '0',
-  sub_pledge_id INT NOT NULL default '0',
-  name varchar(45),
-  leader_name varchar(35),
-  PRIMARY KEY  (`clan_id`,`sub_pledge_id`)
-);
+SET FOREIGN_KEY_CHECKS=0;
+-- ---------------------------
+-- Table structure for `clan_subpledges`
+-- ---------------------------
+DROP TABLE IF EXISTS `clan_subpledges`;
+
+CREATE TABLE `clan_subpledges` (
+  `clan_id` int(11) NOT NULL DEFAULT '0',
+  `sub_pledge_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `leader_name` varchar(35) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`clan_id`,`sub_pledge_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

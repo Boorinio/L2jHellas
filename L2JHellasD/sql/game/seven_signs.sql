@@ -1,11 +1,17 @@
-CREATE TABLE IF NOT EXISTS `seven_signs` (
-  `char_obj_id` INT NOT NULL default '0',
-  `cabal` VARCHAR(4) NOT NULL default '',
-  `seal` INT(1) NOT NULL default '0',
-  `red_stones` INT NOT NULL default '0',
-  `green_stones` INT NOT NULL default '0',
-  `blue_stones` INT NOT NULL default '0',
-  `ancient_adena_amount` DECIMAL(20,0) NOT NULL default '0',
-  `contribution_score` DECIMAL(20,0) NOT NULL default '0',
-  PRIMARY KEY  (`char_obj_id`)
-);
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `seven_signs`
+-- ----------------------------
+DROP TABLE IF EXISTS `seven_signs`;
+
+CREATE TABLE `seven_signs` (
+  `char_obj_id` int(11) NOT NULL DEFAULT '0',
+  `cabal` varchar(4) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `seal` int(1) NOT NULL DEFAULT '0',
+  `red_stones` int(11) NOT NULL DEFAULT '0',
+  `green_stones` int(11) NOT NULL DEFAULT '0',
+  `blue_stones` int(11) NOT NULL DEFAULT '0',
+  `ancient_adena_amount` decimal(20,0) NOT NULL DEFAULT '0',
+  `contribution_score` decimal(20,0) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`char_obj_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

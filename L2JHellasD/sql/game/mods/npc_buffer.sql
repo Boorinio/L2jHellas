@@ -1,24 +1,22 @@
-/*
-Alternative Buffer
-*/
-
 SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `npc_buffer`
+-- ----------------------------
 DROP TABLE IF EXISTS `npc_buffer`;
+
 CREATE TABLE `npc_buffer` (
   `npc_id` int(5) NOT NULL,
   `skill_id` int(5) NOT NULL,
-  `skill_level` int(5) NOT NULL default '1',
-  `skill_fee_id` int(5) NOT NULL default '0',
-  `skill_fee_amount` int(5) NOT NULL default '0',
-  PRIMARY KEY  (`npc_id`,`skill_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `skill_level` int(5) NOT NULL DEFAULT '1',
+  `skill_fee_id` int(5) NOT NULL DEFAULT '0',
+  `skill_fee_amount` int(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`npc_id`,`skill_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
--- Records 
+-- Records of `npc_buffer`
 -- ----------------------------
-INSERT INTO npc_buffer
-   (`npc_id`, `skill_id`, `skill_level`, `skill_fee_id`, `skill_fee_amount`)
-VALUES
+INSERT INTO `npc_buffer` (`npc_id`, `skill_id`, `skill_level`, `skill_fee_id`, `skill_fee_amount`) VALUES
    (51, 264, 1, 57, 100),
    (51, 265, 1, 57, 100),
    (51, 266, 1, 57, 100),

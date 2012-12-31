@@ -1,16 +1,19 @@
--- ---------------------------
--- Table structure for pets
--- ---------------------------
-CREATE TABLE IF NOT EXISTS pets (
-  item_obj_id decimal(11) NOT NULL default 0,
-  name varchar(16) ,
-  level decimal(11) ,
-  curHp decimal(18,0) ,
-  curMp decimal(18,0) ,
-  exp decimal(20, 0) ,
-  sp decimal(11) ,
-  karma decimal(11) ,
-  pkkills decimal(11) ,
-  fed decimal(11) ,
-  PRIMARY KEY  (item_obj_id)
-);
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `pets`
+-- ----------------------------
+DROP TABLE IF EXISTS `pets`;
+
+CREATE TABLE `pets` (
+  `item_obj_id` decimal(11,0) NOT NULL DEFAULT '0',
+  `name` varchar(16) COLLATE utf8_bin DEFAULT NULL,
+  `level` decimal(11,0) DEFAULT NULL,
+  `curHp` decimal(18,0) DEFAULT NULL,
+  `curMp` decimal(18,0) DEFAULT NULL,
+  `exp` decimal(20,0) DEFAULT NULL,
+  `sp` decimal(11,0) DEFAULT NULL,
+  `karma` decimal(11,0) DEFAULT NULL,
+  `pkkills` decimal(11,0) DEFAULT NULL,
+  `fed` decimal(11,0) DEFAULT NULL,
+  PRIMARY KEY (`item_obj_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

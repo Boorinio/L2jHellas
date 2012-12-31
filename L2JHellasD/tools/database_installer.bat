@@ -74,8 +74,8 @@ REM #            L2JHELLAS DATABASE CONFIGS               #
 REM #######################################################
 REM MYSQL PATH.
 REM DEFAULT:
-REM mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.0\bin
-set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.0\bin
+REM mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.5\bin
+set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.5\bin
 
 REM LOGIN SERVER
 set lsuser=root

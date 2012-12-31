@@ -1,22 +1,23 @@
---
--- Table structure for table `locations`
--- 
-DROP TABLE IF EXISTS locations;
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `locations`
+-- ----------------------------
+DROP TABLE IF EXISTS `locations`;
+
 CREATE TABLE `locations` (
-  `loc_id` int(9) NOT NULL default '0',
-  `loc_x` int(9) NOT NULL default '0',
-  `loc_y` int(9) NOT NULL default '0',
-  `loc_zmin` int(9) NOT NULL default '0',
-  `loc_zmax` int(9) NOT NULL default '0',
-  `proc` int(3) NOT NULL default '0',
-  PRIMARY KEY  (`loc_id`,`loc_x`,`loc_y`),
+  `loc_id` int(9) NOT NULL DEFAULT '0',
+  `loc_x` int(9) NOT NULL DEFAULT '0',
+  `loc_y` int(9) NOT NULL DEFAULT '0',
+  `loc_zmin` int(9) NOT NULL DEFAULT '0',
+  `loc_zmax` int(9) NOT NULL DEFAULT '0',
+  `proc` int(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`loc_id`,`loc_x`,`loc_y`),
   KEY `proc` (`proc`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 
--- Dumping data for table `locations`
--- 
-
+-- ----------------------------
+-- Records of `locations`
+-- ----------------------------
 INSERT INTO `locations` (`loc_id`, `loc_x`, `loc_y`, `loc_zmin`, `loc_zmax`, `proc`) VALUES 
   (1,42988,109652,-2032,-1032,0),
   (1,43004,108928,-2032,-1032,0),

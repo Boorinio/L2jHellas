@@ -1,23 +1,26 @@
+SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for items
+-- Table structure for `items`
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS items (
-  `owner_id` INT, -- object id of the player or clan,owner of this item
-  `object_id` INT NOT NULL DEFAULT 0,-- object id of the item
-  `item_id` INT,   -- item id
-  `count` INT,
-  `enchant_level` INT,
-  `loc` VARCHAR(10),      -- inventory,paperdoll,npc,clan warehouse,pet,and so on
-  `loc_data` INT, -- depending on location: equiped slot,npc id,pet id,etc
-  `price_sell` INT,
-  `price_buy` INT,
-  `time_of_use` INT, -- time of item use, for calculate of breackages
-  `custom_type1` INT DEFAULT 0,
-  `custom_type2` INT DEFAULT 0,
-  `mana_left` decimal(3,0) NOT NULL default -1,
+DROP TABLE IF EXISTS `items`;
+
+CREATE TABLE `items` (
+  `owner_id` int(11) DEFAULT NULL,
+  `object_id` int(11) NOT NULL DEFAULT '0',
+  `item_id` int(11) DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  `enchant_level` int(11) DEFAULT NULL,
+  `loc` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `loc_data` int(11) DEFAULT NULL,
+  `price_sell` int(11) DEFAULT NULL,
+  `price_buy` int(11) DEFAULT NULL,
+  `time_of_use` int(11) DEFAULT NULL,
+  `custom_type1` int(11) DEFAULT '0',
+  `custom_type2` int(11) DEFAULT '0',
+  `mana_left` decimal(3,0) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`object_id`),
   KEY `key_owner_id` (`owner_id`),
   KEY `key_loc` (`loc`),
   KEY `key_item_id` (`item_id`),
   KEY `key_time_of_use` (`time_of_use`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

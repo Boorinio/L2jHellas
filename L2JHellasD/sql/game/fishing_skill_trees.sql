@@ -1,22 +1,25 @@
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `fishing_skill_trees`
+-- ----------------------------
 DROP TABLE IF EXISTS `fishing_skill_trees`;
---
---  Table structure for fishing_skill_trees
---
-CREATE TABLE IF NOT EXISTS `fishing_skill_trees` (
-  `skill_id` int(10) NOT NULL default '0',
-  `level` int(10) NOT NULL default '0',
-  `name` varchar(25) NOT NULL default '',
-  `sp` int(10) NOT NULL default '0',
-  `min_level` int(10) NOT NULL default '0',
-  `costid` int(10) NOT NULL default '0',
-  `cost` int(10) NOT NULL default '0',
-  `isfordwarf` int(1) NOT NULL default '0',
-  PRIMARY KEY  (`skill_id`,`level`)
-) ENGINE=MyISAM;
---
---  Records for table fishing_skill_trees
---
-INSERT INTO fishing_skill_trees VALUES 
+
+CREATE TABLE `fishing_skill_trees` (
+  `skill_id` int(10) NOT NULL DEFAULT '0',
+  `level` int(10) NOT NULL DEFAULT '0',
+  `name` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `sp` int(10) NOT NULL DEFAULT '0',
+  `min_level` int(10) NOT NULL DEFAULT '0',
+  `costid` int(10) NOT NULL DEFAULT '0',
+  `cost` int(10) NOT NULL DEFAULT '0',
+  `isfordwarf` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`skill_id`,`level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `fishing_skill_trees`
+-- ----------------------------
+INSERT INTO `fishing_skill_trees` VALUES 
 (1313,1,'Pumping',0,10,57,10,0),
 (1313,2,'Pumping',0,12,57,50,0),
 (1313,3,'Pumping',0,15,57,200,0),
@@ -133,6 +136,4 @@ INSERT INTO fishing_skill_trees VALUES
 (1372,6,'Expand Inventory',0,60,7609,60000,0),
 (1372,7,'Expand Inventory',0,70,7609,100000,0),
 (1372,8,'Expand Inventory',0,76,7609,100000,0),
-(1312,1,'Fishing',0,10,57,1000,0); 
-
-
+(1312,1,'Fishing',0,10,57,1000,0);

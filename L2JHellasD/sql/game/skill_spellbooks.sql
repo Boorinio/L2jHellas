@@ -1,16 +1,18 @@
---
--- Table structure for table `skill_spellbooks`
---
-DROP TABLE IF EXISTS skill_spellbooks;
-CREATE TABLE `skill_spellbooks` (
-  `skill_id` int(11) NOT NULL default '-1',
-  `item_id` int(11) NOT NULL default '-1',
-  KEY `skill_id` (`skill_id`,`item_id`)
-) ENGINE=MyISAM;
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `skill_spellbooks`
+-- ----------------------------
+DROP TABLE IF EXISTS `skill_spellbooks`;
 
---
--- Dumping data for table `skill_spellbooks`
---
+CREATE TABLE `skill_spellbooks` (
+  `skill_id` int(11) NOT NULL DEFAULT '-1',
+  `item_id` int(11) NOT NULL DEFAULT '-1',
+  KEY `skill_id` (`skill_id`,`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `skill_spellbooks`
+-- ----------------------------
 
 -- NOTES:
 -- (0,1393),

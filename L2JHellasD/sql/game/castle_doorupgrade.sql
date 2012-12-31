@@ -1,10 +1,13 @@
+SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
--- Table structure for castle_doorupgrade
+-- Table structure for `castle_doorupgrade`
 -- ---------------------------
-CREATE TABLE IF NOT EXISTS castle_doorupgrade (
-  doorId INT NOT NULL default 0,
-  hp INT NOT NULL default 0,
-  pDef INT NOT NULL default 0,
-  mDef INT NOT NULL default 0,
-  PRIMARY KEY  (doorId )
-);
+DROP TABLE IF EXISTS `castle_doorupgrade`;
+
+CREATE TABLE `castle_doorupgrade` (
+  `doorId` int(11) NOT NULL DEFAULT '0',
+  `hp` int(11) NOT NULL DEFAULT '0',
+  `pDef` int(11) NOT NULL DEFAULT '0',
+  `mDef` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`doorId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

@@ -18,25 +18,26 @@
 -- for drops (i.e. its chance is successful), then exactly 1 item from that category will be selected, with 
 -- such a chance that the overall probability is maintained unchanged. 
 
-
---
--- Table structure for table `droplist`
---
+SET FOREIGN_KEY_CHECKS=0;
+-- ---------------------------
+-- Table structure for `droplist`
+-- ---------------------------
 DROP TABLE IF EXISTS `droplist`;
-CREATE TABLE `droplist` (
-  `mobId` INT NOT NULL DEFAULT '0',
-  `itemId` INT NOT NULL DEFAULT '0',
-  `min` INT NOT NULL DEFAULT '0',
-  `max` INT NOT NULL DEFAULT '0',
-  `category` INT NOT NULL DEFAULT '0',
-  `chance` INT NOT NULL DEFAULT '0',
-  PRIMARY KEY  (`mobId`,`itemId`,`category`),
-  KEY `key_mobId` (`mobId`)
-) ENGINE=MyISAM;
 
--- 
--- Dumping data for table `droplist`
--- 
+CREATE TABLE `droplist` (
+  `mobId` int(11) NOT NULL DEFAULT '0',
+  `itemId` int(11) NOT NULL DEFAULT '0',
+  `min` int(11) NOT NULL DEFAULT '0',
+  `max` int(11) NOT NULL DEFAULT '0',
+  `category` int(11) NOT NULL DEFAULT '0',
+  `chance` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`mobId`,`itemId`,`category`),
+  KEY `key_mobId` (`mobId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `droplist`
+-- ----------------------------
 -- Category Explanation (non-RaidBoss & non-GrandBoss)
 --   -1 is sweep
 --    0 is adena and one of the seal stones (your choice)

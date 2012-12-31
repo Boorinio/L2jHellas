@@ -1,10 +1,18 @@
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `auto_chat_text`
+-- ----------------------------
 DROP TABLE IF EXISTS `auto_chat_text`;
-CREATE TABLE `auto_chat_text` (
-  `groupId` INT NOT NULL default '0',
-  `chatText` VARCHAR(255) NOT NULL default '',
-  PRIMARY KEY  (`groupId`,`chatText`(100))
-) ENGINE=InnoDB;
 
+CREATE TABLE `auto_chat_text` (
+  `groupId` int(11) NOT NULL DEFAULT '0',
+  `chatText` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`groupId`,`chatText`(100))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Records of `auto_chat_text`
+-- ----------------------------
 INSERT INTO `auto_chat_text` VALUES 
 (1,'%player_cabal_loser%! All is lost! Prepare to meet the goddess of death!'),
 (1,'%player_cabal_loser%! You bring an ill wind!'),
