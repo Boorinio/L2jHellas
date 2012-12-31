@@ -15,7 +15,7 @@
 ## Based on Tiago Tagliaferri's script    ##
 ## E-mail: tiago_tagliaferri@msn.com      ##
 ## From "L2JHellas-DataPack"              ##
-## Bug reports: http://l2jhellas.tk/      ##
+## Bug reports: http://l2jhellas.eu/      ##
 ############################################
 trap finish 2
 
@@ -518,7 +518,7 @@ echo "under certain conditions; See the file gpl.txt for further"
 echo "details."
 echo ""
 echo "Thanks for using our software."
-echo "visit http://l2jhellas.tk/ for more info about"
+echo "visit http://l2jhellas.eu/ for more info about"
 echo "the L2JHellas DataPack Project."
 exit 0
 }

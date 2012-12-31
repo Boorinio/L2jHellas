@@ -22,5 +22,5 @@ CREATE TABLE `walker_routes` (
 -- ----------------------------
 INSERT INTO `walker_routes` VALUES ('1', '25846', '1', 'Remember to Vote for us every 12 hours!', '45989', '186690', '-3486', '150', '1');
 INSERT INTO `walker_routes` VALUES ('1', '25846', '2', null, '46503', '187469', '-3486', '150', '1');
-INSERT INTO `walker_routes` VALUES ('1', '25846', '3', 'For Donate Info visit our Site www.l2jhellas.tk', '47780', '186886', '-3486', '150', '1');
+INSERT INTO `walker_routes` VALUES ('1', '25846', '3', 'For Donate Info visit our Site www.l2jhellas.eu', '47780', '186886', '-3486', '150', '1');
 INSERT INTO `walker_routes` VALUES ('1', '25846', '4', null, '47363', '186027', '-3486', '150', '1');

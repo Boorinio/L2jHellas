@@ -1,6 +1,6 @@
 @echo off
 color 9f
-title L2J Hellas Login Server Console http://l2jhellas.tk/
+title L2J Hellas Login Server Console http://l2jhellas.eu/
 :start
 REM ----------- Set Class Paths and Calls setenv.bat -----------------
 SET OLDCLASSPATH=%CLASSPATH%
