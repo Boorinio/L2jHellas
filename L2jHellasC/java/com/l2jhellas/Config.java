@@ -863,6 +863,9 @@ public final class Config
 	public static int CHAOS_FIFTH_WINNER_REWARD_ID;
 	/** Fifth Winner Reward Quanity **/
 	public static int CHAOS_FIFTH_WINNER_REWARD_QUANTITY;
+	public static int CHAOS_COLOR;
+	public static int CHAOS_SKILL_ID;
+	public static int CHAOS_SKILL_LVL;
 	
 	/** Clan leader name color */
 	public static enum ClanLeaderColored /** Clan leader name color */
@@ -2632,7 +2635,9 @@ public final class Config
 				CHAOS_FOURTH_WINNER_REWARD_QUANTITY = Integer.parseInt(EventSettings.getProperty("FourthWinnerRewardQuantity", "2000"));
 				CHAOS_FIFTH_WINNER_REWARD_ID = Integer.parseInt(EventSettings.getProperty("FifthWinnerRewardId", "57"));
 				CHAOS_FIFTH_WINNER_REWARD_QUANTITY = Integer.parseInt(EventSettings.getProperty("FifthWinnerRewardQuantity", "1000"));
-				
+				CHAOS_COLOR = Integer.decode("0x" + EventSettings.getProperty("ChaosColor", "000000"));
+				CHAOS_SKILL_ID = Integer.parseInt(EventSettings.getProperty("ChaosSkillID", "7029"));
+				CHAOS_SKILL_LVL = Integer.parseInt(EventSettings.getProperty("ChaosSkillLvL", "4"));
 			}
 			catch (Exception e)
 			{

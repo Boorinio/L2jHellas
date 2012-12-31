@@ -1,18 +1,19 @@
-/* This program is free software; you can redistribute it and/or modify
+/*
+ * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
- *
+ * 
  * http://www.gnu.org/copyleft/gpl.html
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
@@ -23,13 +24,16 @@ import com.l2jhellas.gameserver.model.entity.ChaosEvent;
 import com.l2jhellas.gameserver.network.clientpackets.EnterWorld;
 
 /**
- *
- * @author  Anarchy
+ * @author Anarchy
  */
 public class AdminChaos implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = { "admin_startchaos", "admin_endchaos", "admin_warnchaos" };
+	private static final String[] ADMIN_COMMANDS =
+	{
+	"admin_startchaos", "admin_endchaos", "admin_warnchaos"
+	};
 	
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		ChaosEvent chaos = new ChaosEvent();
@@ -43,42 +47,38 @@ public class AdminChaos implements IAdminCommandHandler
 			}
 			
 			EnterWorld.warnAllPlayers();
-			
 			return true;
 		}
 		if (command.equals("admin_startchaos"))
 		{
-			if(!ChaosEvent._isChaosActive)
+			if (!ChaosEvent._isChaosActive)
 			{
 				chaos.startChaos();
 				activeChar.sendMessage("You have succesfully started Chaos Event. Press //endchaos to stop it.");
 				return true;
 			}
-			else
-			{
-				activeChar.sendMessage("Chaos Event is already active.");
-				return false;
-			}
+			
+			activeChar.sendMessage("Chaos Event is already active.");
+			return false;
 		}
 		if (command.equals("admin_endchaos"))
 		{
-			if(ChaosEvent._isChaosActive)
+			if (ChaosEvent._isChaosActive)
 			{
 				chaos.stopChaos();
 				activeChar.sendMessage("You have succesfully stopped Chaos Event.");
 				return true;
 			}
-			else
-			{
-				activeChar.sendMessage("Chaos Event is not active.");
-				return false;
-			}
+			
+			activeChar.sendMessage("Chaos Event is not active.");
+			return false;
 		}
 
 		return true;
 	}
 	
-	public String[] getAdminCommandList() 
+	@Override
+	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
