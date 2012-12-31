@@ -72,10 +72,6 @@ public class L2EventManagerInstance extends L2NpcInstance
 				int bufflist = Integer.parseInt(st.nextToken());
 				/* Level of The Prize to Hand out */
 				int prizeLevel = Integer.parseInt(st.nextToken());
-				if (player == null)
-				{
-					return;
-				}
 				this.setTarget(player);
 
 				if (_currentEvents >= Config.RAID_SYSTEM_MAX_EVENTS)

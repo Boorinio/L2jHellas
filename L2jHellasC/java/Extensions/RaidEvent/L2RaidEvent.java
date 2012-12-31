@@ -22,13 +22,13 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.ItemTable;
 import com.l2jhellas.gameserver.datatables.NpcTable;
 import com.l2jhellas.gameserver.datatables.SpawnTable;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Spawn;
-import com.l2jhellas.gameserver.model.PcInventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventBufferInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
@@ -445,12 +445,36 @@ public class L2RaidEvent
 	 * @param delay --> Delay to be teleported in
 	 * @param removeBuffs --> Boolean to removeBuffs uponTeleport or not.
 	 */
-	private static void doTeleport(L2PcInstance player, int cox, int coy, int coz, int delay, boolean removeBuffs)
+	private static void doTeleport(L2PcInstance player, final int cox, final int coy, final int coz, int delay, final boolean removeBuffs)
 	{
-		for (L2PcInstance member : _participatingPlayers)
+		for (final L2PcInstance member : _participatingPlayers)
 		{
-			new L2EventTeleporter(member, cox, coy, coz, delay, removeBuffs);
-			member.sendMessage("You will be teleported in 10 Seconds.");
+			
+			//TODO: Have a look again to this mess.
+			
+			member.sendMessage("You will be teleported in 10 seconds.");
+			
+			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					if (removeBuffs) {
+						
+						member.stopAllEffects();
+						member.updateEffectIcons();
+						member.broadcastUserInfo();
+						
+					}
+					
+					member.teleToLocation(cox, coy, coz);
+					
+				}
+				
+				
+				
+			}, 10000);
+			
 		}
 	}
 	
@@ -763,60 +787,13 @@ public class L2RaidEvent
 			hasItem2 = true;
 		if (eventPoints != 0)
 			hasEventPoints = true;
-		PcInventory inv = player.getInventory();
 		if (hasItem1)
 		{
-			if (item1 == 57)
-			{
-				inv.addAdena("Event - Adena", ammount1, player, player);
-				SystemMessage smAdena;
-				smAdena = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
-				smAdena.addItemName(57);
-				smAdena.addNumber(ammount1);
-				player.sendPacket(smAdena);
-			}
-			else
-			{
-				if (ItemTable.getInstance().createDummyItem(item1).isStackable())
-					inv.addItem("Event", item1, ammount1, player, player);
-				else
-				{
-					for (int i = 0; i <= ammount1 - 1; i++)
-						inv.addItem("Event", item1, ammount1, player, player);
-				}
-				SystemMessage smItem;
-				smItem = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
-				smItem.addItemName(item1);
-				smItem.addNumber(ammount1);
-				player.sendPacket(smItem);
-			}
+			player.addItem("Event", item1, ammount1, player, true);	
 		}
 		if (hasItem2)
 		{
-			if (item2 == 57)
-			{
-				inv.addAdena("Event - Adena", ammount2, player, player);
-				SystemMessage smAdena;
-				smAdena = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
-				smAdena.addItemName(57);
-				smAdena.addNumber(ammount2);
-				player.sendPacket(smAdena);
-			}
-			else
-			{
-				if (ItemTable.getInstance().createDummyItem(item2).isStackable())
-					inv.addItem("Event", item2, ammount2, player, player);
-				else
-				{
-					for (int i = 0; i <= ammount2 - 1; i++)
-						inv.addItem("Event", item2, ammount2, player, player);
-				}
-				SystemMessage smItem;
-				smItem = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
-				smItem.addItemName(item2);
-				smItem.addNumber(ammount2);
-				player.sendPacket(smItem);
-			}
+			player.addItem("Eventt", item2, ammount2, player, true);	
 		}
 		if (hasEventPoints)
 		{
