@@ -374,7 +374,7 @@ public class GrandBossManager
 
 			for (Integer bossId : _storedInfo.keySet())
 			{
-				L2GrandBossInstance boss = _bosses.get(bossId);
+				final L2GrandBossInstance boss = _bosses.get(bossId);
 				StatsSet info = _storedInfo.get(bossId);
 				if (boss == null || info == null)
 				{
@@ -402,8 +402,9 @@ public class GrandBossManager
 					statement.setInt(8, _bossStatus.get(bossId));
 					statement.setInt(9, bossId);
 				}
-				statement.executeUpdate();
-				statement.close();
+				statement.executeUpdate(); 
+			 	statement.clearParameters(); 
+			 	statement.close();
 			}
 		}
 		catch (SQLException e)

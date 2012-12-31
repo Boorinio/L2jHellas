@@ -1018,7 +1018,12 @@ public class L2CharacterAI extends AbstractAI
                 return false;
             }
 
-            if (_actor.isMovementDisabled()) return true;
+            if (_actor.isMovementDisabled())
+            {
+            	if (_actor.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK) 
+            	  _actor.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE); 
+            	return true;
+            }
 
             // If not running, set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2PcInstance
             if (!_actor.isRunning() && !(this instanceof L2PlayerAI)) _actor.setRunning();
