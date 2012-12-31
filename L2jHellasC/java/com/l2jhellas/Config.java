@@ -841,6 +841,29 @@ public final class Config
 	public static int CLAN_LEADER_COLOR_CLAN_LEVEL;
 	/** Advanced Privated Message System */
 	public static boolean ENABLED_MESSAGE_SYSTEM;
+	/** Enable Chaos Event **/
+	public static boolean ENABLED_CHAOS_EVENT;
+	/** First Winner Reward Id **/
+	public static int CHAOS_FIRST_WINNER_REWARD_ID;
+	/** First Winner Reward Quanity **/
+	public static int CHAOS_FIRST_WINNER_REWARD_QUANTITY;
+	/** Second Winner Reward Id **/
+	public static int CHAOS_SECOND_WINNER_REWARD_ID;
+	/** Second Winner Reward Quantity **/
+	public static int CHAOS_SECOND_WINNER_REWARD_QUANTITY;
+	/** Third Winner Reward Id **/
+	public static int CHAOS_THIRD_WINNER_REWARD_ID;
+	/** Third Winner Reward Quanity **/
+	public static int CHAOS_THIRD_WINNER_REWARD_QUANTITY;
+	/** Fourth Winner Reward Id **/
+	public static int CHAOS_FOURTH_WINNER_REWARD_ID;
+	/** Fourth Winner Reward Quanity **/
+	public static int CHAOS_FOURTH_WINNER_REWARD_QUANTITY;
+	/** Fifth Winner Reward Id **/
+	public static int CHAOS_FIFTH_WINNER_REWARD_ID;
+	/** Fifth Winner Reward Quanity **/
+	public static int CHAOS_FIFTH_WINNER_REWARD_QUANTITY;
+	
 	/** Clan leader name color */
 	public static enum ClanLeaderColored /** Clan leader name color */
 	{
@@ -2598,6 +2621,17 @@ public final class Config
 				RAID_SYSTEM_RESURRECT_PLAYER = Boolean.parseBoolean(EventSettings.getProperty("RaidResurrectPlayer", "true"));
 				RAID_SYSTEM_MAX_EVENTS = Integer.parseInt(EventSettings.getProperty("RaidMaxNumEvents", "3"));
 				RAID_SYSTEM_FIGHT_TIME = Integer.parseInt(EventSettings.getProperty("RaidSystemFightTime", "60"));
+				ENABLED_CHAOS_EVENT = Boolean.parseBoolean(EventSettings.getProperty("EnableChaosEvent", "False"));
+				CHAOS_FIRST_WINNER_REWARD_ID = Integer.parseInt(EventSettings.getProperty("FirstWinnerRewardId", "57"));
+				CHAOS_FIRST_WINNER_REWARD_QUANTITY = Integer.parseInt(EventSettings.getProperty("FirstWinnerRewardQuantity", "5000"));
+				CHAOS_SECOND_WINNER_REWARD_ID = Integer.parseInt(EventSettings.getProperty("SecondWinnerRewardId", "57"));
+				CHAOS_SECOND_WINNER_REWARD_QUANTITY = Integer.parseInt(EventSettings.getProperty("SecondWinnerRewardQuantity", "4000"));
+				CHAOS_THIRD_WINNER_REWARD_ID = Integer.parseInt(EventSettings.getProperty("ThirdWinnerRewardId", "57"));
+				CHAOS_THIRD_WINNER_REWARD_QUANTITY = Integer.parseInt(EventSettings.getProperty("ThirdWinnerRewardQuantity", "3000"));
+				CHAOS_FOURTH_WINNER_REWARD_ID = Integer.parseInt(EventSettings.getProperty("FourthWinnerRewardId", "57"));
+				CHAOS_FOURTH_WINNER_REWARD_QUANTITY = Integer.parseInt(EventSettings.getProperty("FourthWinnerRewardQuantity", "2000"));
+				CHAOS_FIFTH_WINNER_REWARD_ID = Integer.parseInt(EventSettings.getProperty("FifthWinnerRewardId", "57"));
+				CHAOS_FIFTH_WINNER_REWARD_QUANTITY = Integer.parseInt(EventSettings.getProperty("FifthWinnerRewardQuantity", "1000"));
 				
 			}
 			catch (Exception e)

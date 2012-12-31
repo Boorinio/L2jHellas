@@ -375,7 +375,7 @@ public class GameServer
 
 		_log.config("AutoChatHandler: Loaded " + _autoChatHandler.size() + " handlers in total.");
 		_log.config("AutoSpawnHandler: Loaded " + _autoSpawnHandler.size() + " handlers in total.");
-
+		_log.config("VoicedCommandHandler: Loaded " + VoicedCommandHandler.getInstance().size() + " handlers.");
 		// Handlers
 		AdminCommandHandler.getInstance();
 		ChatHandler.getInstance();

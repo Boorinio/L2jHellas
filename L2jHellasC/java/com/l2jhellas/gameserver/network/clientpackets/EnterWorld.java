@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
@@ -30,6 +31,7 @@ import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
@@ -94,6 +96,22 @@ import com.l2jhellas.gameserver.util.Util;
  */
 public class EnterWorld extends L2GameClientPacket
 {
+	
+	public static void warnAllPlayers()
+	{
+		for (L2PcInstance player : _onlineplayers)
+		{
+			String file = "data/html/chaos/warning.htm";
+			String html = HtmCache.getInstance().getHtm(file);
+			NpcHtmlMessage warning = new NpcHtmlMessage(1);
+			warning.setHtml(html);
+				
+			player.sendPacket(warning);
+		}
+	}
+	
+	public static Vector<L2PcInstance> _onlineplayers = new Vector<L2PcInstance>();
+	
 	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
 	private static Logger _log = Logger.getLogger(EnterWorld.class.getName());
 	
@@ -420,6 +438,8 @@ public class EnterWorld extends L2GameClientPacket
 				sendPacket(html);
 			}
 		}
+		
+		_onlineplayers.add(activeChar);
 		
 		if (Config.ENABLED_MESSAGE_SYSTEM) {
 			

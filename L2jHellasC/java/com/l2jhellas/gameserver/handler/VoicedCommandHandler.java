@@ -22,6 +22,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Away;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Banking;
+import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ChaosCmd;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Cl;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.MailCmd;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.OnlinePlayers;
@@ -90,6 +91,8 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new IVoicedCommandHandlerPvpInfo());
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 			registerVoicedCommandHandler(new MailCmd());
+		if (Config.ENABLED_CHAOS_EVENT)
+			registerVoicedCommandHandler(new ChaosCmd());
 
 		registerVoicedCommandHandler(new Premium());
 		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers.");

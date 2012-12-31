@@ -31,6 +31,7 @@ import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminBanChat;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCTFEngine;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCache;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminChangeAccessLevel;
+import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminChaos;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCreateItem;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCursedWeapons;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminDMEngine;
@@ -180,6 +181,8 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminNoble());
 		registerAdminCommandHandler(new Balancer());
 		registerAdminCommandHandler(new AdminPremium());
+		if (Config.ENABLED_CHAOS_EVENT)
+			registerAdminCommandHandler(new AdminChaos());
 		_log.config("AdminCommandHandler: Loaded " + _datatable.size() + " handlers.");
 		
 	}

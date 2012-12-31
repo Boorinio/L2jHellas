@@ -56,6 +56,11 @@ public final class Logout extends L2GameClientPacket
 	{
 		// Dont allow leaving if player is fighting
 		L2PcInstance player = getClient().getActiveChar();
+		
+		if (EnterWorld._onlineplayers.contains(player) && player!=null)
+		{
+			EnterWorld._onlineplayers.remove(player);
+		}
 
 		if (player == null)
 			return;

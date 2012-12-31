@@ -40,6 +40,7 @@ import Extensions.RankSystem.RankPvpSystemPointsReward;
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.gameserver.model.entity.ChaosEvent;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.GeoData;
@@ -218,6 +219,11 @@ import com.l2jhellas.util.Rnd;
  */
 public final class L2PcInstance extends L2PlayableInstance
 {
+	
+	// Chaos Event.
+	public int _chaosKills;
+	public boolean _inChaosEvent = false;
+	
 	// Character Skills
 	private static final String RESTORE_SKILLS_FOR_CHAR = "SELECT skill_id,skill_level FROM character_skills WHERE char_obj_id=? AND class_index=?";
 	private static final String RESTORE_SKILLS_FOR_CHAR_ALT_SUBCLASS = "SELECT skill_id,skill_level FROM character_skills WHERE char_obj_id=?";
@@ -5600,6 +5606,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		if ((isgood() && targetPlayer.isevil()) || isevil() && targetPlayer.isgood() || (checkIfPvP(target) && targetPlayer.getPvpFlag() != 0) || (isInsideZone(ZONE_PVP) && targetPlayer.isInsideZone(ZONE_PVP)))
 		{
 			increasePvpKills();
+			
+			if (_inChaosEvent && targetPlayer._inChaosEvent)
+				
+            {
+	           	_chaosKills++;
+	           	
+            }
+			
 			if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
 				Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
 			return;
@@ -5615,6 +5629,11 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						// 'Both way war' -> 'PvP Kill'
 						increasePvpKills();
+						if (_inChaosEvent && targetPlayer._inChaosEvent)
+	                    {
+	                    	_chaosKills++;
+	                    }
+						
 						if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL) // Announces
 																						// a
 																						// PvP
@@ -5631,6 +5650,10 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (Config.KARMA_AWARD_PK_KILL)
 				{
 					increasePvpKills();
+					if (_inChaosEvent && targetPlayer._inChaosEvent)
+	                {
+					 	_chaosKills++;
+			       }
 					if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL) // Announces
 																					// a
 																					// PvP
@@ -5641,6 +5664,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			else if (targetPlayer.getPvpFlag() == 0) // Target player doesn't
 														// have karma
 			{
+				
+				
+				
 				if (Config.ENABLE_HITMAN_EVENT && Config.HITMAN_TAKE_KARMA && Hitman.getInstance().exists(targetPlayer.getObjectId()))
 					return;
 				increasePkKillsAndKarma(targetPlayer.getLevel());
@@ -5650,12 +5676,28 @@ public final class L2PcInstance extends L2PlayableInstance
 																				// kill
 					Announcements.getInstance().announceToAll("Player " + this.getName() + " has assassinated Player " + target.getName());
 			}
+			else if (targetPlayer.getPvpFlag() == 0 && !(_inChaosEvent && _inChaosEvent(target)))
+            {
+				increasePkKillsAndKarma(targetPlayer.getLevel());
+            }
+				                        
+			if (targetPlayer.getPvpFlag() == 0 && (_inChaosEvent && targetPlayer._inChaosEvent))
+			{
+				  _chaosKills++;
+			}
 		}
 	}
 	
 	/**
 	 * Increase the pvp kills count and send the info to the player
 	 */
+	
+	public boolean _inChaosEvent(L2Character target)
+	{
+		L2PcInstance targetPlayer = target.getActingPlayer();
+		return targetPlayer._inChaosEvent;
+	}
+	
 	public void increasePvpKills()
 	{
 		if ((TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF) || !ExternalConfig.CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED)
@@ -11131,6 +11173,13 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (!DimensionalRiftManager.getInstance().checkIfInPeaceZone(getX(), getY(), getZ()))
 				getParty().getDimensionalRift().memberRessurected(this);
 		}
+		
+		ChaosEvent chaos = new ChaosEvent();
+		if (_inChaosEvent)
+		{
+			chaos.addSuperHaste(this);
+		}
+		
 		if ((_inEventTvT && TvT._started && Config.TVT_REVIVE_RECOVERY) || (_inEventCTF && CTF._started && Config.CTF_REVIVE_RECOVERY))
 		{
 			getStatus().setCurrentHp(getMaxHp());

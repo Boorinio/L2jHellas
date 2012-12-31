@@ -70,19 +70,57 @@ public class ChatAll implements IChatHandler
 		else
 		{
 			
-			CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
+			boolean vcd_used = false;
 			
-			Collection<L2PcInstance> plrs = activeChar.getKnownList().getKnownPlayers().values();
+			if (text.startsWith("."))	
 			{
-				for (L2PcInstance player : plrs)
-				{
-					if (player != null && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
-					{
-						player.sendPacket(cs);
-					}
-				}
+				StringTokenizer st = new StringTokenizer(text);
+				IVoicedCommandHandler vch;
+				String command = "";
+				String params = "";
+			
+
+			if (st.countTokens() > 1)
+			{
+				command = st.nextToken().substring(1);
+				params = text.substring(command.length() + 2);
+				vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler(command);
 			}
-			activeChar.sendPacket(cs);
+											else
+											{
+												command = text.substring(1);
+												if (Config.DEBUG)
+													_log.info("Command: " + command);
+												vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler(command);
+											}
+											
+											if (vch != null)
+											{
+												vch.useVoicedCommand(command, activeChar, params);
+												vcd_used = true;
+											}
+											else
+											{
+												if (Config.DEBUG)
+													_log.warning("No handler registered for bypass '" + command + "'");
+												vcd_used = false;
+											}
+										}
+										
+										if (!vcd_used)
+										{
+											CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
+											Collection<L2PcInstance> plrs = activeChar.getKnownList().getKnownPlayers().values();
+								
+											for (L2PcInstance player : plrs)
+											{
+												if (player != null && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
+													player.sendPacket(cs);
+											}
+											
+											activeChar.sendPacket(cs);
+										}
+			
 		}
 	}
 	
