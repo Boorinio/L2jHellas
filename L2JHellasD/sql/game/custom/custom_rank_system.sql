@@ -15,7 +15,9 @@ CREATE TABLE `custom_pvp_system` (
   `rank_points` bigint(18) NOT NULL DEFAULT '0',
   `rank_points_today` bigint(18) NOT NULL DEFAULT '0',
   `war_kills_legal` int(10) NOT NULL DEFAULT '0',
-  `war_kills` int(10) NOT NULL DEFAULT '0'
+  `war_kills` int(10) NOT NULL DEFAULT '0',
+  `kill_time`  bigint(18) NOT NULL DEFAULT 0 ,
+`kill_day`  bigint(18) NOT NULL DEFAULT 0 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
