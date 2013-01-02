@@ -18,11 +18,13 @@ import java.util.StringTokenizer;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.Universe;
+import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
+import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class ...
@@ -37,12 +39,6 @@ public class AdminTest implements IAdminCommandHandler
 	"admin_test", "admin_stats", "admin_skill_test", "admin_st", "admin_mp", "admin_known"
 	};
 	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IAdminCommandHandler#useAdminCommand
-	 * (java.lang.String, com.l2jhellas.gameserver.model.L2PcInstance)
-	 */
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -103,6 +99,7 @@ public class AdminTest implements IAdminCommandHandler
 		{
 			Config.CHECK_KNOWN = false;
 		}
+		sendTestPage(activeChar);
 		return true;
 	}
 	
@@ -126,16 +123,20 @@ public class AdminTest implements IAdminCommandHandler
 		
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IAdminCommandHandler#getAdminCommandList
-	 * ()
-	 */
+	// Sends "Test page" server_menu.htm
+	private void sendTestPage(L2PcInstance player)
+	{
+		String html = HtmCache.getInstance().getHtm("data/html/admin/server_menu.htm");
+		if (html == null)
+		{
+			html = "<html><body><br><br><center><font color=LEVEL>404:</font> File Not Found</center></body></html>";
+		}
+		player.sendPacket(new NpcHtmlMessage(1, html));
+	}
+
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
 }

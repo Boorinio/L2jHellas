@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class SpawnTable
 
     private static final SpawnTable _instance = new SpawnTable();
 
-    private Map<Integer, L2Spawn> _spawntable = new FastMap<Integer, L2Spawn>();
+    private final Map<Integer, L2Spawn> _spawntable = new FastMap<Integer, L2Spawn>();
     private int _npcSpawnCount;
 
     private int _highestId;
@@ -64,7 +65,7 @@ public class SpawnTable
 
     private void fillSpawnTable()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {
@@ -173,7 +174,7 @@ public class SpawnTable
 
         if (storeInDb)
         {
-            java.sql.Connection con = null;
+			Connection con = null;
 
             try
             {
@@ -215,7 +216,7 @@ public class SpawnTable
 
         if (updateDb)
         {
-            java.sql.Connection con = null;
+			Connection con = null;
 
             try
             {

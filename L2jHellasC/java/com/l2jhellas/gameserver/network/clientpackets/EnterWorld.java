@@ -14,6 +14,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
@@ -438,7 +439,7 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (Config.ENABLED_MESSAGE_SYSTEM) {
 			
-			java.sql.Connection con = null;
+			Connection con = null;
 					
 			int results = 0;
 					
@@ -633,7 +634,7 @@ public class EnterWorld extends L2GameClientPacket
 	 */
 	private void notifyFriends(L2PcInstance cha)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		
 		try
 		{

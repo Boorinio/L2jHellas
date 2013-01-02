@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -29,7 +30,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class L2ClanMember
 {
-	private L2Clan _clan;
+	private final L2Clan _clan;
 	private int _objectId;
 	private String _name;
 	private String _title;
@@ -206,7 +207,7 @@ public class L2ClanMember
 
 	public void updatePledgeType()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
         {
@@ -256,7 +257,7 @@ public class L2ClanMember
 	 */
 	public void updatePowerGrade()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
         {
@@ -458,7 +459,7 @@ public class L2ClanMember
 
 	public void saveApprenticeAndSponsor(int apprentice, int sponsor)
     {
-		java.sql.Connection con = null;
+		Connection con = null;
 
          try
          {

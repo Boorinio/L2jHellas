@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.idfactory;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +34,7 @@ public class CompactionIDFactory extends IdFactory
 {
     private static Logger _log = Logger.getLogger(CompactionIDFactory.class.getName());
     private int _curOID;
-    private int _freeSize;
+    private final int _freeSize;
 
     protected CompactionIDFactory()
     {
@@ -41,7 +42,7 @@ public class CompactionIDFactory extends IdFactory
         _curOID = FIRST_OID;
         _freeSize = 0;
 
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();

@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.entity;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -44,20 +45,20 @@ public class ClanHall
 {
     protected static final Logger _log = Logger.getLogger(ClanHall.class.getName());
 
-	private int _clanHallId;
+	private final int _clanHallId;
 	private List<L2DoorInstance> _doors;
-	private List<String> _doorDefault;
-    private String _name;
+	private final List<String> _doorDefault;
+    private final String _name;
 	private int _ownerId;
-    private int _lease;
-    private String _desc;
-    private String _location;
+    private final int _lease;
+    private final String _desc;
+    private final String _location;
     protected long _paidUntil;
     private L2ClanHallZone _zone;
-    private int _grade;
+    private final int _grade;
     protected final int _chRate = 604800000;
     protected boolean _isFree = true;
-    private Map<Integer,ClanHallFunction> _functions;
+    private final Map<Integer,ClanHallFunction> _functions;
     protected boolean _paid;
 
     /** Clan Hall Functions */
@@ -72,11 +73,11 @@ public class ClanHall
 
     public class ClanHallFunction
     {
-        private int _type;
+        private final int _type;
         private int _lvl;
         protected int _fee;
         protected int _tempFee;
-        private long _rate;
+        private final long _rate;
         private long _endDate;
         protected boolean _inDebt;
 
@@ -114,7 +115,8 @@ public class ClanHall
         private class FunctionTask implements Runnable
         {
             public FunctionTask(){}
-            public void run()
+            @Override
+			public void run()
             {
                 try
                 {
@@ -147,7 +149,7 @@ public class ClanHall
 
         public void dbSave(boolean newFunction)
         {
-            java.sql.Connection con = null;
+			Connection con = null;
             try
             {
                 PreparedStatement statement;
@@ -399,7 +401,7 @@ public class ClanHall
 	/** Load All Functions */
     private void loadFunctions()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;
@@ -425,7 +427,7 @@ public class ClanHall
     public void removeFunction(int functionType)
     {
     	_functions.remove(functionType);
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;
@@ -482,7 +484,7 @@ public class ClanHall
     /** Update DB */
 	public void updateDb()
 	{
-	    java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -526,7 +528,8 @@ public class ClanHall
     private class FeeTask implements Runnable
     {
         public FeeTask() {}
-        public void run()
+        @Override
+		public void run()
         {
             try
             {

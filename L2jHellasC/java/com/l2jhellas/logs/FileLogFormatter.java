@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas;
+package com.l2jhellas.logs;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,13 +29,9 @@ import javolution.text.TextBuilder;
 
 public class FileLogFormatter extends Formatter
 {
-
-	/* (non-Javadoc)
-	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
-	 */
 	private static final String CRLF = "\r\n";
 	private static final String _ = "\t";
-	private SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss,SSS");
+	private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss,SSS");
 
 	@Override
 	public String format(LogRecord record)

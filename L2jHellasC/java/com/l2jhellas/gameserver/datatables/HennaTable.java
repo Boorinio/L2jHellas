@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
@@ -36,8 +37,8 @@ public class HennaTable
 
 	private static HennaTable _instance;
 
-	private Map<Integer, L2Henna> _henna;
-	private boolean _initialized = true;
+	private final Map<Integer, L2Henna> _henna;
+	private final boolean _initialized = true;
 
 	public static HennaTable getInstance()
 	{
@@ -60,7 +61,7 @@ public class HennaTable
 	 */
 	private void restoreHennaData()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			try {

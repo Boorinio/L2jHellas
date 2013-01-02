@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
@@ -48,7 +49,7 @@ public final class RequestFriendDel extends L2GameClientPacket{
 	protected void runImpl()
 	{
 		SystemMessage sm;
-		java.sql.Connection con = null;
+		Connection con = null;
 		L2PcInstance activeChar = getClient().getActiveChar();
         if (activeChar == null)
             return;

@@ -175,46 +175,30 @@ public class ChaosEvent
 	
 	public void calculateRewards()
 	{
-		if (_topplayer != null)
-		{
-			_topplayer.addItem("Chaos Event Reward", Config.CHAOS_FIRST_WINNER_REWARD_ID, Config.CHAOS_FIRST_WINNER_REWARD_QUANTITY, _topplayer, true);
-		}
-		if (_topplayer2 != null)
-		{
-			_topplayer2.addItem("Chaos Event Reward 2", Config.CHAOS_SECOND_WINNER_REWARD_ID, Config.CHAOS_SECOND_WINNER_REWARD_QUANTITY, _topplayer2, true);
-		}
-		if (_topplayer3 != null)
-		{
-			_topplayer3.addItem("Chaos Event Reward 3", Config.CHAOS_THIRD_WINNER_REWARD_ID, Config.CHAOS_THIRD_WINNER_REWARD_QUANTITY, _topplayer3, true);
-		}
-		if (_topplayer4 != null)
-		{
-			_topplayer4.addItem("Chaos Event Reward 4", Config.CHAOS_FOURTH_WINNER_REWARD_ID, Config.CHAOS_FOURTH_WINNER_REWARD_QUANTITY, _topplayer4, true);
-		}
-		if (_topplayer5 != null)
-		{
-			_topplayer5.addItem("Chaos Event Reward 5", Config.CHAOS_FIFTH_WINNER_REWARD_ID, Config.CHAOS_FIFTH_WINNER_REWARD_QUANTITY, _topplayer5, true);
-		}
-		
 		Announcements.getInstance().announceToAll("Winner of Chaos Event:");
 		if (_topplayer != null)
 		{
+			_topplayer.addItem("Chaos Event Reward", Config.CHAOS_FIRST_WINNER_REWARD_ID, Config.CHAOS_FIRST_WINNER_REWARD_QUANTITY, _topplayer, true);
 			Announcements.getInstance().announceToAll("1) " + _topplayer.getName());
 		}
 		if (_topplayer2 != null)
 		{
+			_topplayer2.addItem("Chaos Event Reward 2", Config.CHAOS_SECOND_WINNER_REWARD_ID, Config.CHAOS_SECOND_WINNER_REWARD_QUANTITY, _topplayer2, true);
 			Announcements.getInstance().announceToAll("2) " + _topplayer2.getName());
 		}
 		if (_topplayer3 != null)
 		{
+			_topplayer3.addItem("Chaos Event Reward 3", Config.CHAOS_THIRD_WINNER_REWARD_ID, Config.CHAOS_THIRD_WINNER_REWARD_QUANTITY, _topplayer3, true);
 			Announcements.getInstance().announceToAll("3) " + _topplayer3.getName());
 		}
 		if (_topplayer4 != null)
 		{
+			_topplayer4.addItem("Chaos Event Reward 4", Config.CHAOS_FOURTH_WINNER_REWARD_ID, Config.CHAOS_FOURTH_WINNER_REWARD_QUANTITY, _topplayer4, true);
 			Announcements.getInstance().announceToAll("4) " + _topplayer4.getName());
 		}
 		if (_topplayer5 != null)
 		{
+			_topplayer5.addItem("Chaos Event Reward 5", Config.CHAOS_FIFTH_WINNER_REWARD_ID, Config.CHAOS_FIFTH_WINNER_REWARD_QUANTITY, _topplayer5, true);
 			Announcements.getInstance().announceToAll("5) " + _topplayer5.getName());
 		}
 	}

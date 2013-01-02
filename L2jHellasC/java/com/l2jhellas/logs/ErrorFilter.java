@@ -12,15 +12,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas;
+package com.l2jhellas.logs;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 
-public class ErrorLogHandler extends FileHandler
+public class ErrorFilter implements Filter
 {
-	public ErrorLogHandler() throws IOException, SecurityException
+	public boolean isLoggable(LogRecord record)
 	{
-		super();
+		return record.getThrown() != null;
 	}
+
 }

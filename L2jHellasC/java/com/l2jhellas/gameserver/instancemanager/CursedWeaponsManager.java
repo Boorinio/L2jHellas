@@ -182,7 +182,7 @@ public class CursedWeaponsManager
 	{
     	if (Config.DEBUG)
     		System.out.print("  Restoring ... ");
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			// Retrieve the L2PcInstance from the characters table of the database
@@ -233,7 +233,7 @@ public class CursedWeaponsManager
     	if (Config.DEBUG)
     		System.out.print("  Checking players ... ");
 
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			// Retrieve the L2PcInstance from the characters table of the database

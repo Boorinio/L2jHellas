@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.LineNumberReader;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -46,17 +47,18 @@ public class TradeController
 	private static TradeController _instance;
 
 	private int _nextListId;
-	private Map<Integer, L2TradeList> _lists;
-	private Map<Integer, L2TradeList> _listsTaskItem;
+	private final Map<Integer, L2TradeList> _lists;
+	private final Map<Integer, L2TradeList> _listsTaskItem;
     /** Task launching the function for restore count of Item (Clan Hall) */
     public class RestoreCount implements Runnable
     {
-    	private int _timer;
+    	private final int _timer;
     	public RestoreCount(int time)
     	{
     		_timer = time;
     	}
-        public void run()
+        @Override
+		public void run()
         {
         	try
         	{
@@ -112,7 +114,7 @@ public class TradeController
 		else
 		{
 			_log.finer("No buylists were found in data folder, using SQL buylist instead");
-			java.sql.Connection con = null;
+			Connection con = null;
 			/*
 			 * Initialize Shop buylist
 			 */
@@ -312,7 +314,7 @@ public class TradeController
 			list.restoreCount(time);
 	}
 	protected void dataTimerSave(int time){
-		java.sql.Connection con = null;
+		Connection con = null;
 		long timerSave = System.currentTimeMillis()+(long)time*60*60*1000;
 		try
 		{
@@ -338,7 +340,7 @@ public class TradeController
 	}
 	public void dataCountStore()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement;
 
 		int listId;

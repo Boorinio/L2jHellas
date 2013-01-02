@@ -12,14 +12,22 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.L2DatabaseFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import com.l2jhellas.gameserver.model.L2ArmorSet;
 
 /**
@@ -47,41 +55,67 @@ public class ArmorSetsTable
 		loadData();
 	}
 	
-	public void loadData()
+	private void loadData()
 	{
-		Connection con;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setValidating(false);
+		factory.setIgnoringComments(true);
+		File f = new File("./data/xml/armorsets.xml");
+		if (!f.exists())
+		{
+			_log.warning("armorsets.xml could not be loaded: file not found");
+			return;
+		}
 		try
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT id, chest, legs, head, gloves, feet, skill_id, skill_lvl, shield, shield_skill_id, enchant6skill FROM armorsets");
-			ResultSet rset = statement.executeQuery();
-			
-			while (rset.next())
+			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+			in.setEncoding("UTF-8");
+			Document doc = factory.newDocumentBuilder().parse(in);
+			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
-				int id = rset.getInt("id");
-				int chest = rset.getInt("chest");
-				int legs = rset.getInt("legs");
-				int head = rset.getInt("head");
-				int gloves = rset.getInt("gloves");
-				int feet = rset.getInt("feet");
-				int skill_id = rset.getInt("skill_id");
-				int shield = rset.getInt("shield");
-				int shield_skill_id = rset.getInt("shield_skill_id");
-				int enchant6skill = rset.getInt("enchant6skill");
-				_armorSets.put(chest, new L2ArmorSet(chest, legs, head, gloves, feet, skill_id, shield, shield_skill_id, enchant6skill));
-				_cusArmorSets.put(id, new ArmorDummy(chest, legs, head, gloves, feet, skill_id, shield));
+				if (n.getNodeName().equalsIgnoreCase("list"))
+				{
+					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					{
+						if (d.getNodeName().equalsIgnoreCase("armorset"))
+						{
+							int id = Integer.valueOf(d.getAttributes().getNamedItem("id").getNodeValue());
+							int chest = Integer.valueOf(d.getAttributes().getNamedItem("chest").getNodeValue());
+							int legs = Integer.valueOf(d.getAttributes().getNamedItem("legs").getNodeValue());
+							int head = Integer.valueOf(d.getAttributes().getNamedItem("head").getNodeValue());
+							int gloves = Integer.valueOf(d.getAttributes().getNamedItem("gloves").getNodeValue());
+							int feet = Integer.valueOf(d.getAttributes().getNamedItem("feet").getNodeValue());
+							int skill_id = Integer.valueOf(d.getAttributes().getNamedItem("skill_id").getNodeValue());
+							int shield = Integer.valueOf(d.getAttributes().getNamedItem("shield").getNodeValue());
+							int shield_skill_id = Integer.valueOf(d.getAttributes().getNamedItem("shield_skill_id").getNodeValue());
+							int enchant6skill = Integer.valueOf(d.getAttributes().getNamedItem("enchant6skill").getNodeValue());
+							
+							_armorSets.put(id, new L2ArmorSet(chest, legs, head, gloves, feet, skill_id, shield, shield_skill_id, enchant6skill));
+							_cusArmorSets.put(id, new ArmorDummy(chest, legs, head, gloves, feet, skill_id, shield));
+						}
+					}
+				}
 			}
 			
-			_log.config("ArmorSetsTable: Loaded " + _armorSets.size() + " armor sets.");
-
-			rset.close();
-			statement.close();
-			con.close();
+		}
+		catch (SAXException e)
+		{
+			_log.warning("ArmorSetsTable: Error while creating table" + e);
+		}
+		catch (IOException e)
+		{
+			_log.warning("ArmorSetsTable: Error while creating table" + e);
+		}
+		catch (ParserConfigurationException e)
+		{
+			_log.warning("ArmorSetsTable: Error while creating table" + e);
 		}
 		catch (Exception e)
 		{
 			_log.severe("ArmorSetsTable: Error reading ArmorSets table: " + e);
 		}
+		_log.info("ArmorSetsTable: Loaded " + _armorSets.size() + " armor sets.");
+		_log.info("CustomArmorSetsTable: Loaded " + _cusArmorSets.size() + " custom armor sets.");
 	}
 
 	public boolean setExists(int chestId)

@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -187,7 +188,7 @@ public class PcStat extends PlayableStat
         	{
 				if (getActiveChar().getLevel() >= Experience.MIN_NEWBIE_LEVEL && getActiveChar().getLevel() < Experience.MAX_NEWBIE_LEVEL && !getActiveChar().isNewbie())
 	        	{
-	        		java.sql.Connection con = null;
+					Connection con = null;
 					try
 					{
 						con = L2DatabaseFactory.getInstance().getConnection();

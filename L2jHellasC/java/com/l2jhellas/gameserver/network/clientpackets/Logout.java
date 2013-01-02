@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
@@ -126,7 +127,7 @@ public final class Logout extends L2GameClientPacket
 
 	private void notifyFriends(L2PcInstance cha)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try {
 			con = L2DatabaseFactory.getInstance().getConnection();

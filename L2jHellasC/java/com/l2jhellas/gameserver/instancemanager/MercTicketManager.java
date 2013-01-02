@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -165,7 +166,7 @@ public class MercTicketManager
     // Method - Private
     private final void load()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         // load merc tickets into the world
         try
         {
@@ -346,7 +347,8 @@ public class MercTicketManager
             if (despawnDelay > 0)
             {
 	            ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-	                public void run()
+	                @Override
+					public void run()
 	                {
 	                	npc.deleteMe();
 	                }

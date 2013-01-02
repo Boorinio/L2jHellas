@@ -12,6 +12,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.StringTokenizer;
@@ -277,7 +278,7 @@ public class AdminMenu implements IAdminCommandHandler
 
 	private void setAccountAccessLevel(String player, L2PcInstance activeChar, int banLevel)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();

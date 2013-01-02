@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,10 +34,10 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2PetDataTable;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
@@ -67,11 +68,11 @@ public class ItemTable
 	private static final Map<String, Integer> _slots = new FastMap<String, Integer>();
 
 	private L2Item[] _allTemplates;
-	private Map<Integer, L2EtcItem> _etcItems;
-	private Map<Integer, L2Armor>   _armors;
-	private Map<Integer, L2Weapon>  _weapons;
+	private final Map<Integer, L2EtcItem> _etcItems;
+	private final Map<Integer, L2Armor>   _armors;
+	private final Map<Integer, L2Weapon>  _weapons;
 
-	private boolean _initialized = true;
+	private final boolean _initialized = true;
 
 	static
 	{
@@ -225,7 +226,7 @@ public class ItemTable
         _armors     = new FastMap<Integer, L2Armor>();
         _weapons    = new FastMap<Integer, L2Weapon>();
 
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -861,7 +862,7 @@ public class ItemTable
 			// if it's a pet control item, delete the pet as well
 			if (L2PetDataTable.isPetItem(item.getItemId()))
 			{
-				java.sql.Connection con = null;
+				Connection con = null;
 				try
 				{
 					// Delete the pet in db
@@ -901,7 +902,8 @@ public class ItemTable
             _item = item;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             _item.setOwnerId(0);
             _item.setItemLootShedule(null);

@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.datatables;
 
 import java.io.File;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
@@ -94,7 +95,7 @@ public class ZoneData
 
 	private final void load()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		int zoneCount = 0;
 
 		// Get the world regions

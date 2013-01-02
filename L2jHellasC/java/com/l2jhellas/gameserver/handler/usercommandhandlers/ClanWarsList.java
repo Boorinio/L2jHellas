@@ -12,6 +12,7 @@
  */
 package com.l2jhellas.gameserver.handler.usercommandhandlers;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -40,6 +41,7 @@ public class ClanWarsList implements IUserCommandHandler
 	 * com.l2jhellas.gameserver.handler.IUserCommandHandler#useUserCommand(int,
 	 * com.l2jhellas.gameserver.model.L2PcInstance)
 	 */
+	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
 		if (id != COMMAND_IDS[0] && id != COMMAND_IDS[1] && id != COMMAND_IDS[2])
@@ -54,7 +56,7 @@ public class ClanWarsList implements IUserCommandHandler
 		}
 		
 		SystemMessage sm;
-		java.sql.Connection con = null;
+		Connection con = null;
 		
 		try
 		{
@@ -138,6 +140,7 @@ public class ClanWarsList implements IUserCommandHandler
 	 * @see
 	 * com.l2jhellas.gameserver.handler.IUserCommandHandler#getUserCommandList()
 	 */
+	@Override
 	public int[] getUserCommandList()
 	{
 		return COMMAND_IDS;

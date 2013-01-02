@@ -1,12 +1,21 @@
 -- For further information on the usage of this table, please refer to the
 -- documentation comments in the access_levels.sql file
 
-CREATE TABLE IF NOT EXISTS `admin_command_access_rights` (
+SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `admin_command_access_rights`
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_command_access_rights`;
+
+CREATE TABLE `admin_command_access_rights` (
   `adminCommand` varchar(255) NOT NULL default 'admin_',
   `accessLevels` varchar(255) NOT NULL,
   PRIMARY KEY (`adminCommand`)
 );
 
+-- ----------------------------
+-- Records of `admin_command_access_rights`
+-- ----------------------------
 INSERT IGNORE INTO `admin_command_access_rights` VALUES
 -- ADMIN
 ('admin_admin','1'),

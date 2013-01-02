@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class L2PetDataTable
 
     public void loadPetsData()
     {
-    	java.sql.Connection con = null;
+		Connection con = null;
 
     	try
         {

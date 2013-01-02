@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -40,11 +41,13 @@ public class CharSelectInfo extends L2GameServerPacket
 
 	private static Logger _log = Logger.getLogger(CharSelectInfo.class.getName());
 
-	private String _loginName;
+	private final String _loginName;
 
-	private int _sessionId, _activeId;
+	private final int _sessionId;
 
-	private CharSelectInfoPackage[] _characterPackages;
+	private int _activeId;
+
+	private final CharSelectInfoPackage[] _characterPackages;
 
 	/**
 	 * @param _characters
@@ -198,7 +201,7 @@ public class CharSelectInfo extends L2GameServerPacket
 		CharSelectInfoPackage charInfopackage;
 		List<CharSelectInfoPackage> characterList = new FastList<CharSelectInfoPackage>();
 
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -233,7 +236,7 @@ public class CharSelectInfo extends L2GameServerPacket
 
 	private void loadCharacterSubclassInfo(CharSelectInfoPackage charInfopackage, int ObjectId, int activeClassId)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -323,7 +326,7 @@ public class CharSelectInfo extends L2GameServerPacket
 
 		if (weaponObjId > 0)
 		{
-			java.sql.Connection con = null;
+			Connection con = null;
 			try
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();

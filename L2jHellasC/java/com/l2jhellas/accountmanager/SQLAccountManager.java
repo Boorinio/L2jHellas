@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -108,7 +109,7 @@ public class SQLAccountManager
 	private static void printAccInfo() throws SQLException
 	{
 		int count = 0;
-		java.sql.Connection con = null;
+		Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();
 		PreparedStatement statement = con.prepareStatement("SELECT login, access_level FROM accounts ORDER BY login ASC");
 		ResultSet rset = statement.executeQuery();
@@ -131,7 +132,7 @@ public class SQLAccountManager
 		newpass = md.digest(newpass);
 
 		// Add to Base
-		java.sql.Connection con = null;
+		Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();
 		PreparedStatement statement = con.prepareStatement("REPLACE	accounts (login, password, access_level) VALUES (?,?,?)");
 		statement.setString(1, account);
@@ -143,7 +144,7 @@ public class SQLAccountManager
 
 	private static void changeAccountLevel(String account, String level) throws SQLException
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();
 
 		// Check Account Exist
@@ -174,7 +175,7 @@ public class SQLAccountManager
 
 	private static void deleteAccount(String account) throws SQLException
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		con = L2DatabaseFactory.getInstance().getConnection();
 
 		// Check Account Exist

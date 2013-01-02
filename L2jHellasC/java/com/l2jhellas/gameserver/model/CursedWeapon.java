@@ -119,7 +119,7 @@ public class CursedWeapon
 	    		// Remove from Db
 	    		_log.info(_name + " being removed offline." );
 
-	    		java.sql.Connection con = null;
+				Connection con = null;
 	    		try
 	    		{
 	    			con = L2DatabaseFactory.getInstance().getConnection();
@@ -228,7 +228,8 @@ public class CursedWeapon
         {
         }
 
-        public void run()
+        @Override
+		public void run()
         {
         	if (System.currentTimeMillis() >= getEndTime())
         		endOfLife();

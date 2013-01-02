@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
@@ -61,7 +62,7 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 
     		if (_response == 1)
             {
-        		java.sql.Connection con = null;
+				Connection con = null;
         		try
         		{
         		    con = L2DatabaseFactory.getInstance().getConnection();
@@ -116,7 +117,7 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 		@SuppressWarnings("unused")
 		private void notifyFriends(L2PcInstance cha)
 		{
-			java.sql.Connection con = null;
+		Connection con = null;
 	
 			try {
 				con = L2DatabaseFactory.getInstance().getConnection();

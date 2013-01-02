@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.network;
 
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
@@ -25,11 +26,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.LoginServerThread;
-import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.LoginServerThread.SessionKey;
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.model.CharSelectInfoPackage;
@@ -40,7 +42,6 @@ import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.util.EventData;
-
 import com.l2jserver.mmocore.network.MMOClient;
 import com.l2jserver.mmocore.network.MMOConnection;
 
@@ -66,11 +67,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	public String accountName;
 	public SessionKey sessionId;
 	public L2PcInstance activeChar;
-	private ReentrantLock _activeCharLock = new ReentrantLock();
+	private final ReentrantLock _activeCharLock = new ReentrantLock();
 
 	private boolean _isAuthedGG;
-	private long _connectionStartTime;
-	private List<Integer> _charSlotMapping = new FastList<Integer>();
+	private final long _connectionStartTime;
+	private final List<Integer> _charSlotMapping = new FastList<Integer>();
 
 	// Task
 	
@@ -203,7 +204,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		if (character.getClanId() != 0)
 			return character;
 
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -258,7 +259,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		int objid = getObjectIdForSlot(charslot);
     		if (objid < 0)
     		    return;
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 		con = L2DatabaseFactory.getInstance().getConnection();
@@ -282,7 +283,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	    if (objid < 0)
 	        return;
 
-	    java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -503,6 +504,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	{
 
 		/*** @see java.lang.Runnable#run()***/
+		@Override
 		public void run()
 		{
 			boolean fast = true;
@@ -553,6 +555,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	class CleanupTask implements Runnable
 	{
 	/*** @see java.lang.Runnable#run()***/
+		@Override
 		public void run()
 		{
 			try
@@ -613,6 +616,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	
 	class AutoSaveTask implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			try

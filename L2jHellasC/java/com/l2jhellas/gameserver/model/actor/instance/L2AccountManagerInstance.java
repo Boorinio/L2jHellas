@@ -1376,26 +1376,6 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 			}
 		}
-		/*
-		 * try
-		 * {
-		 * con = L2DatabaseFactory.getInstance().getConnection();
-		 * PreparedStatement statement = con.prepareStatement(
-		 * "SELECT char_name FROM characters WHERE account_name=?");
-		 * statement.setString(1, acc);
-		 * ResultSet rset = statement.executeQuery();
-		 * while (rset.next())
-		 * {
-		 * char_name = rset.getString("char_name");
-		 * }
-		 * }
-		 * catch (Exception e)
-		 * {}
-		 * finally
-		 * {
-		 * try{con.close();} catch (Exception e){}
-		 * }
-		 */
 		
 		if (!ans.equalsIgnoreCase(answer))
 		{

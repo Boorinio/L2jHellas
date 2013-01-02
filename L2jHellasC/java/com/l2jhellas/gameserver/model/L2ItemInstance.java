@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.model;
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.ScheduledFuture;
@@ -936,7 +937,7 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public static L2ItemInstance restoreFromDb(int objectId) {
 		L2ItemInstance inst = null;
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -1074,7 +1075,7 @@ public final class L2ItemInstance extends L2Object
 		if (_storedInDb)
 			return;
 
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -1111,7 +1112,7 @@ public final class L2ItemInstance extends L2Object
 		if (_wear)
 			return;
 		if (Config.ASSERT) assert !_existsInDb && getObjectId() != 0;
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -1154,7 +1155,7 @@ public final class L2ItemInstance extends L2Object
 		// delete augmentation data
 		if (isAugmented()) _augmentation.deleteAugmentationData();
 
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();

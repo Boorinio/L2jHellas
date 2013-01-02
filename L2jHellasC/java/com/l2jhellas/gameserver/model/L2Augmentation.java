@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +38,7 @@ public final class L2Augmentation
 {
 	private static final Logger _log = Logger.getLogger(L2Augmentation.class.getName());
 
-	private L2ItemInstance _item;
+	private final L2ItemInstance _item;
 	private int _effectsId = 0;
 	private augmentationStatBoni _boni = null;
 	private L2Skill _skill = null;
@@ -63,8 +64,8 @@ public final class L2Augmentation
 
 	public class augmentationStatBoni
 	{
-		private Stats _stats[];
-		private float _values[];
+		private final Stats _stats[];
+		private final float _values[];
 		private boolean _active;
 
 		public augmentationStatBoni(int augmentationId)
@@ -108,7 +109,7 @@ public final class L2Augmentation
 
 	private void saveAugmentationData()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -140,7 +141,7 @@ public final class L2Augmentation
 		if (!_item.isAugmented()) return;
 
 		// delete the augmentation from the database
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();

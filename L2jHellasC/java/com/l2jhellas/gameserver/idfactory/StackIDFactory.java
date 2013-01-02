@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.idfactory;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ public class StackIDFactory extends IdFactory
 	private int _curOID;
 	private int _tempOID;
 
-	private Stack<Integer> _freeOIDStack = new Stack<Integer>();
+	private final Stack<Integer> _freeOIDStack = new Stack<Integer>();
 
 	protected StackIDFactory()
 	{
@@ -44,7 +45,7 @@ public class StackIDFactory extends IdFactory
         _curOID = FIRST_OID;
         _tempOID = FIRST_OID;
 
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();

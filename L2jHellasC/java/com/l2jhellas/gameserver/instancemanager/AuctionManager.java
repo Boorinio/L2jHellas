@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -29,7 +30,7 @@ public class AuctionManager
 {
     protected static final Logger _log = Logger.getLogger(AuctionManager.class.getName());
     private static AuctionManager _instance;
-    private List<Auction> _auctions;
+    private final List<Auction> _auctions;
 	private static final String[] ITEM_INIT_DATA =
 		{
 		    "(23, 0, 'NPC', 'NPC Clan', 'ClanHall', 23, 0, 'Onyx Hall', 1, 20000000, 0, 1164841200000)",
@@ -70,11 +71,11 @@ public class AuctionManager
 		    "(60, 0, 'NPC', 'NPC Clan', 'ClanHall', 60, 0, 'Molten Ore Hall', 1, 50000000, 0, 1164841200000)",
 		    "(61, 0, 'NPC', 'NPC Clan', 'ClanHall', 61, 0, 'Titan Hall', 1, 50000000, 0, 1164841200000)"
 		 };
-		 private static final Integer[] ItemInitDataId =
-		 {
-		     23,24,25,26,27,28,29,30,31,32,33,36,37,38,39,40,41,42,43,44,45,46,47,48
-		     ,49,50,51,52,53,54,55,56,57,58,59,60,61
-		 };
+	private static final Integer[] ItemInitDataId =
+	{
+		23,24,25,26,27,28,29,30,31,32,33,36,37,38,39,40,41,42,43,44,45,46,47,48
+		,49,50,51,52,53,54,55,56,57,58,59,60,61
+	};
     public static final AuctionManager getInstance()
     {
         if (_instance == null)
@@ -96,7 +97,7 @@ public class AuctionManager
     }
     private final void load()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;
@@ -143,7 +144,7 @@ public class AuctionManager
     }
     /** Init Clan NPC aution */
 	public void initNPC(int id){
-        java.sql.Connection con = null;
+		Connection con = null;
         int i = 0;
         for(i=0;i<ItemInitDataId.length;i++)
         	if(ItemInitDataId[i] == id)

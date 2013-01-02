@@ -12,18 +12,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas;
+package com.l2jhellas.logs;
 
-import java.util.logging.Filter;
-import java.util.logging.LogRecord;
+import java.io.IOException;
+import java.util.logging.FileHandler;
 
-/**
- * @author zabbix
- * Lets drink to code!
- */
-public class AuditFilter implements Filter
+public class ErrorLogHandler extends FileHandler
 {
-	public boolean isLoggable(LogRecord record) {
-		return record.getLoggerName().equalsIgnoreCase("audit");
+	public ErrorLogHandler() throws IOException, SecurityException
+	{
+		super();
 	}
 }

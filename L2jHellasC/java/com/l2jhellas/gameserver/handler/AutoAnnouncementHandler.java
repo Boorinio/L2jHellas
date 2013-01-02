@@ -12,6 +12,7 @@
  */
 package com.l2jhellas.gameserver.handler;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
@@ -54,7 +55,7 @@ public class AutoAnnouncementHandler
 	private void restoreAnnouncementData()
 	{
 		int numLoaded = 0;
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 		
@@ -171,7 +172,7 @@ public class AutoAnnouncementHandler
 	{
 		int nextId = nextAutoAnnouncmentId();
 		
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -207,7 +208,7 @@ public class AutoAnnouncementHandler
 		
 		int nextId = 0;
 		
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 		
@@ -277,7 +278,7 @@ public class AutoAnnouncementHandler
 	{
 		AutoAnnouncementInstance announcementInst = _registeredAnnouncements.get(id);
 		
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -358,7 +359,7 @@ public class AutoAnnouncementHandler
 		private long _defaultDelay = DEFAULT_ANNOUNCEMENT_DELAY;
 		private String _defaultTexts;
 		private boolean _defaultRandom = false;
-		private Integer _defaultId;
+		private final Integer _defaultId;
 		
 		private boolean _isActive;
 		
@@ -448,6 +449,7 @@ public class AutoAnnouncementHandler
 				id = pId;
 			}
 			
+			@Override
 			public synchronized void run()
 			{
 				AutoAnnouncementInstance announcementInst = _registeredAnnouncements.get(id);

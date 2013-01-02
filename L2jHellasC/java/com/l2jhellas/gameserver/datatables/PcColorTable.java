@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -33,7 +34,7 @@ public class PcColorTable
     PcColorTable()
     {
         System.out.print("Pc Color Table: ");
-        java.sql.Connection con = null;
+		Connection con = null;
         
         try
         {
@@ -130,7 +131,7 @@ public class PcColorTable
                 return;
         }
 
-        java.sql.Connection con = null;
+		Connection con = null;
         
         try
         {
@@ -172,7 +173,7 @@ public class PcColorTable
         
         colorContainer = null;
         
-        java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{

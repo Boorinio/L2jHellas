@@ -14,16 +14,17 @@
  */
 package com.l2jhellas.gameserver.handler.voicedcommandhandlers;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.L2DatabaseFactory;
 
 /**
  * @author Pauler
@@ -66,7 +67,7 @@ public class MailCmd implements IVoicedCommandHandler
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><head><title>Inbox</title></head><body>");
 		
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();

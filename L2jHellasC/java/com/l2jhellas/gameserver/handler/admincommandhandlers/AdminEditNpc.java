@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,6 +65,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 		"admin_close_window"
 	};
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{//TODO: Tokenize and protect arguments parsing. Externalize HTML.
 		if (command.startsWith("admin_showShop "))
@@ -421,7 +423,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 			replyMSG.append("<td>"+item.getPriceToSell()+"</td>");
 			replyMSG.append("<td><button value=\"Del\" action=\"bypass -h admin_delShopItem "+tradeList.getListId()+" "+item.getItemId()+"\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 			replyMSG.append("</tr>");
-		}//*/
+		}
 		replyMSG.append("<tr>");
 		int min = 1;
 		int max = tradeList.getItems().size() / PAGE_LIMIT + 1;
@@ -479,7 +481,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private void storeTradeList(int itemID, int price, int tradeListID, int order)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -506,7 +508,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private void updateTradeList(int itemID, int price, int tradeListID, int order)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -532,7 +534,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private void deleteTradeList(int tradeListID, int order)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -559,7 +561,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private int  findOrderTradeList(int itemID, int price, int tradeListID)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		int order = 0;
 		try
 		{
@@ -621,6 +623,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 		return tradeLists;
 	}
 
+	@Override
 	public String[] getAdminCommandList() {
 		return ADMIN_COMMANDS;
 	}
@@ -839,7 +842,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private void showEditDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -910,7 +913,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private void updateDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -962,7 +965,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private void addDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -999,7 +1002,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 
 	private void deleteDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -1044,7 +1047,7 @@ public class AdminEditNpc implements IAdminCommandHandler {
 		npcData.clearAllDropData();
 
 		// get the drops
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();

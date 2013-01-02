@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.entity;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -37,9 +38,9 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
+import com.l2jhellas.gameserver.model.L2SiegeClan.SiegeClanType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.L2SiegeClan.SiegeClanType;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControlTowerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
@@ -98,14 +99,15 @@ public class Siege
     // Schedule task
     public class ScheduleEndSiegeTask implements Runnable
     {
-        private Castle _castleInst;
+        private final Castle _castleInst;
 
         public ScheduleEndSiegeTask(Castle pCastle)
         {
         	_castleInst = pCastle;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (!getIsInProgress()) return;
 
@@ -160,14 +162,15 @@ public class Siege
 
     public class ScheduleStartSiegeTask implements Runnable
     {
-        private Castle _castleInst;
+        private final Castle _castleInst;
 
         public ScheduleStartSiegeTask(Castle pCastle)
         {
         	_castleInst = pCastle;
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (getIsInProgress()) return;
 
@@ -232,16 +235,16 @@ public class Siege
     // =========================================================
     // Data Field
     // Attacker and Defender
-    private List<L2SiegeClan> _attackerClans = new FastList<L2SiegeClan>(); // L2SiegeClan
+    private final List<L2SiegeClan> _attackerClans = new FastList<L2SiegeClan>(); // L2SiegeClan
 
-    private List<L2SiegeClan> _defenderClans = new FastList<L2SiegeClan>(); // L2SiegeClan
-    private List<L2SiegeClan> _defenderWaitingClans = new FastList<L2SiegeClan>(); // L2SiegeClan
+    private final List<L2SiegeClan> _defenderClans = new FastList<L2SiegeClan>(); // L2SiegeClan
+    private final List<L2SiegeClan> _defenderWaitingClans = new FastList<L2SiegeClan>(); // L2SiegeClan
     private int _defenderRespawnDelayPenalty;
 
     // Castle setting
     private List<L2ArtefactInstance> _artifacts = new FastList<L2ArtefactInstance>();
     private List<L2ControlTowerInstance> _controlTowers = new FastList<L2ControlTowerInstance>();
-    private Castle[] _castle;
+    private final Castle[] _castle;
     private boolean _isInProgress = false;
     private boolean _isNormalSide = true; // true = Atk is Atk, false = Atk is Def
     protected boolean _isRegistrationOver = false;
@@ -561,7 +564,7 @@ public class Siege
     /** Clear all registered siege clans from database for castle */
     public void clearSiegeClan()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -602,7 +605,7 @@ public class Siege
     /** Clear all siege clans waiting for approval from database for castle */
     public void clearSiegeWaitingClan()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -775,7 +778,7 @@ public class Siege
     {
         if (clanId <= 0) return;
 
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -974,7 +977,7 @@ public class Siege
     /** Load siege clans. */
     private void loadSiegeClan()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             getAttackerClans().clear();
@@ -1084,7 +1087,7 @@ public class Siege
     /** Save siege date to database. */
     private void saveSiegeDate()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -1121,7 +1124,7 @@ public class Siege
     {
         if (clan.getHasCastle() > 0) return;
 
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             if (typeId == 0 || typeId == 2 || typeId == -1)

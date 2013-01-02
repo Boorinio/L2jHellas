@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -117,7 +118,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
                 return;
             }
 
-            java.sql.Connection con = null;
+			Connection con = null;
 
             try
             {

@@ -14,18 +14,22 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import javolution.util.FastMap;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
 
 /**
@@ -66,101 +70,54 @@ public class AccessLevels
 	{
 		_accessLevels = new FastMap<Integer, L2AccessLevel>();
 		
-		Connection con = null;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setValidating(false);
+		factory.setIgnoringComments(true);
+		File f = new File("./data/xml/access_levels.xml");
+		if (!f.exists())
+		{
+			_log.severe("AccessLevels: access_levels.xml could not be loaded: file not found");
+			return;
+		}
 		
 		try
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM `access_levels` ORDER BY `accessLevel` DESC");
-			ResultSet rset = stmt.executeQuery();
-			int accessLevel = 0;
-			String name = null;
-			int nameColor = 0;
-			int titleColor = 0;
-			String childs = null;
-			boolean isGm = false;
-			boolean allowPeaceAttack = false;
-			boolean allowFixedRes = false;
-			boolean allowTransaction = false;
-			boolean allowAltG = false;
-			boolean giveDamage = false;
-			boolean takeAggro = false;
-			boolean gainExp = false;
-			
-			while (rset.next())
+			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+			in.setEncoding("UTF-8");
+			Document doc = factory.newDocumentBuilder().parse(in);
+			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
-				accessLevel = rset.getInt("accessLevel");
-				name = rset.getString("name");
-				
-				if (accessLevel == _userAccessLevelNum)
+				if (n.getNodeName().equalsIgnoreCase("list"))
 				{
-					_log.warning("AccessLevels: Access level with name " + name + " is using reserved user access level " + _userAccessLevelNum + ". Ignoring it!");
-					continue;
-				}
-				else if (accessLevel == _masterAccessLevelNum)
-				{
-					_log.warning("AccessLevels: Access level with name " + name + " is using reserved master access level " + _masterAccessLevelNum + ". Ignoring it!");
-					continue;
-				}
-				else if (accessLevel < 0)
-				{
-					_log.warning("AccessLevels: Access level with name " + name + " is using banned access level state(below 0). Ignoring it!");
-					continue;
-				}
-				
-				try
-				{
-					nameColor = Integer.decode("0x" + rset.getString("nameColor"));
-				}
-				catch (NumberFormatException nfe)
-				{
-					try
+					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 					{
-						nameColor = Integer.decode("0xFFFFFF");
+						if (d.getNodeName().equalsIgnoreCase("accessLevel"))
+						{
+							int level = Integer.valueOf(d.getAttributes().getNamedItem("level").getNodeValue());
+							String name = String.valueOf(d.getAttributes().getNamedItem("name").getNodeValue());
+							int nameColor = Integer.decode("0x" + (d.getAttributes().getNamedItem("nameColor").getNodeValue()));
+							int titleColor = Integer.decode("0x" + (d.getAttributes().getNamedItem("titleColor").getNodeValue()));
+							String childAccess = String.valueOf(d.getAttributes().getNamedItem("childAccess").getNodeValue());
+							boolean isGm = Boolean.valueOf(d.getAttributes().getNamedItem("isGm").getNodeValue());
+							boolean allowPeaceAttack = Boolean.valueOf(d.getAttributes().getNamedItem("allowPeaceAttack").getNodeValue());
+							boolean allowFixedRes = Boolean.valueOf(d.getAttributes().getNamedItem("allowFixedRes").getNodeValue());
+							boolean allowTransaction = Boolean.valueOf(d.getAttributes().getNamedItem("allowTransaction").getNodeValue());
+							boolean allowAltg = Boolean.valueOf(d.getAttributes().getNamedItem("allowAltg").getNodeValue());
+							boolean giveDamage = Boolean.valueOf(d.getAttributes().getNamedItem("giveDamage").getNodeValue());
+							boolean takeAggro = Boolean.valueOf(d.getAttributes().getNamedItem("takeAggro").getNodeValue());
+							boolean gainExp = Boolean.valueOf(d.getAttributes().getNamedItem("gainExp").getNodeValue());
+							
+							_accessLevels.put(level, new L2AccessLevel(level, name, nameColor, titleColor, childAccess.isEmpty() ? null : childAccess, isGm, allowPeaceAttack, allowFixedRes, allowTransaction, allowAltg, giveDamage, takeAggro, gainExp));
+						}
 					}
-					catch (NumberFormatException nfe2) {}
 				}
-				
-				try
-				{
-					titleColor = Integer.decode("0x" + rset.getString("titleColor"));
-					
-				}
-				catch (NumberFormatException nfe)
-				{
-					try
-					{
-						titleColor = Integer.decode("0xFFFF77");
-					}
-					catch (NumberFormatException nfe2) {}
-				}
-				
-				childs = rset.getString("childAccess");
-				isGm = rset.getBoolean("isGm");
-				allowPeaceAttack = rset.getBoolean("allowPeaceAttack");
-				allowFixedRes = rset.getBoolean("allowFixedRes");
-				allowTransaction = rset.getBoolean("allowTransaction");
-				allowAltG = rset.getBoolean("allowAltg");
-				giveDamage = rset.getBoolean("giveDamage");
-				takeAggro = rset.getBoolean("takeAggro");
-				gainExp = rset.getBoolean("gainExp");
-				
-				_accessLevels.put(accessLevel, new L2AccessLevel(accessLevel, name, nameColor, titleColor, childs.isEmpty() ? null : childs, isGm, allowPeaceAttack, allowFixedRes, allowTransaction, allowAltG, giveDamage, takeAggro, gainExp));
 			}
-			
-			rset.close();
-			stmt.close();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "AccessLevels: Error loading from database:" + e.getMessage(), e);
+			_log.log(Level.WARNING, "AccessLevels: Error loading:" + e.getMessage(), e);
 		}
-		finally
-		{
-			try { con.close(); } catch (Exception e) {}
-		}
-		_log.info("AccessLevels: Loaded " + _accessLevels.size() + " from database.");
+		_log.info("AccessLevels: Loaded " + _accessLevels.size() + " from access_levels.xml.");
 	}
 	
 	/**

@@ -148,7 +148,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				if (title.equalsIgnoreCase(""))
 					title = "(No Subject)";
 								
-				java.sql.Connection con = null;
+				Connection con = null;
 								
 					try {
 									
@@ -180,7 +180,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 								
 					int messageId = Integer.parseInt(st.nextToken());
 								
-					java.sql.Connection con = null;
+				Connection con = null;
 								
 					try {
 									

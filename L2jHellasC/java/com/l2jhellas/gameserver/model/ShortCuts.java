@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
@@ -36,8 +37,8 @@ public class ShortCuts
 {
     private static Logger _log = Logger.getLogger(ShortCuts.class.getName());
 
-    private L2PcInstance _owner;
-    private Map<Integer, L2ShortCut> _shortCuts = new TreeMap<Integer, L2ShortCut>();
+    private final L2PcInstance _owner;
+    private final Map<Integer, L2ShortCut> _shortCuts = new TreeMap<Integer, L2ShortCut>();
 
     public ShortCuts(L2PcInstance owner)
     {
@@ -77,7 +78,7 @@ public class ShortCuts
         if (oldShortCut != null)
             deleteShortCutFromDb(oldShortCut);
 
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {
@@ -153,7 +154,7 @@ public class ShortCuts
      */
     private void deleteShortCutFromDb(L2ShortCut shortcut)
     {
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {
@@ -180,7 +181,7 @@ public class ShortCuts
     public void restore()
     {
         _shortCuts.clear();
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {

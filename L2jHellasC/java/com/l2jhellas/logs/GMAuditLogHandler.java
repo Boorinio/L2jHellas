@@ -12,19 +12,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas;
+package com.l2jhellas.logs;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
 
-/**
- * @author zabbix
- * Lets drink to code!
- */
-public class AuditLogHandler extends FileHandler
+public class GMAuditLogHandler extends FileHandler
 {
-	public AuditLogHandler() throws IOException, SecurityException
+	public GMAuditLogHandler() throws IOException, SecurityException 
 	{
 		super();
 	}
 }
+

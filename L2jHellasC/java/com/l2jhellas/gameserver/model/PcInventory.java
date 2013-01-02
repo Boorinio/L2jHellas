@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -507,7 +508,7 @@ public class PcInventory extends Inventory
 	public static int[][] restoreVisibleInventory(int objectId)
     {
     	int[][] paperdoll = new int[0x12][3];
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {

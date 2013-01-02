@@ -262,7 +262,7 @@ public class RaidBossSpawnManager {
 
         if (storeInDb)
         {
-            java.sql.Connection con = null;
+            Connection con = null;
 
             try
             {
@@ -317,7 +317,7 @@ public class RaidBossSpawnManager {
 
         if (updateDb)
         {
-            java.sql.Connection con = null;
+            Connection con = null;
 
             try
             {

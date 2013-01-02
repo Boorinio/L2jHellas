@@ -21,6 +21,7 @@ import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.RSAKeyGenParameterSpec;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
@@ -391,7 +392,7 @@ public class LoginController
 
 			if (loginOk && client.getLastServer() != serverId)
 			{
-				java.sql.Connection con = null;
+				Connection con = null;
 				PreparedStatement statement = null;
 				try
 				{
@@ -422,7 +423,7 @@ public class LoginController
 
 	public void setAccountAccessLevel(String account, int banLevel)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement = null;
 		try
 		{
@@ -455,7 +456,7 @@ public class LoginController
 	public boolean isGM(String user)
 	{
 		boolean ok = false;
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement = null;
 		try
 		{
@@ -528,7 +529,7 @@ public class LoginController
 			return false;
 		}
 
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			MessageDigest md = MessageDigest.getInstance("SHA");
@@ -665,7 +666,7 @@ public class LoginController
 	{
 		boolean ok = false;
 
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();

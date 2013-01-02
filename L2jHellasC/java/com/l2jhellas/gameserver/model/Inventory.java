@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -84,7 +85,8 @@ public abstract class Inventory extends ItemContainer
 
 	final class FormalWearListener implements PaperdollListener
 	{
-	    public void notifyUnequiped(int slot, L2ItemInstance item)
+	    @Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
 	    {
 	        if (!(getOwner() != null && getOwner() instanceof L2PcInstance))
 	            return;
@@ -94,7 +96,8 @@ public abstract class Inventory extends ItemContainer
 	        if (item.getItemId() == 6408)
 	            owner.setIsWearingFormalWear(false);
 	    }
-	    public void notifyEquiped(int slot, L2ItemInstance item)
+	    @Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
 	    {
 	        if (!(getOwner() != null && getOwner() instanceof L2PcInstance))
 	            return;
@@ -136,7 +139,8 @@ public abstract class Inventory extends ItemContainer
     	/**
     	 * Add alteration in inventory when item equiped
     	 */
-        public void notifyEquiped(int slot, L2ItemInstance item) 
+        @Override
+		public void notifyEquiped(int slot, L2ItemInstance item) 
         {
     		if (!_changed.contains(item))
     			_changed.add(item);
@@ -145,7 +149,8 @@ public abstract class Inventory extends ItemContainer
     	/**
     	 * Add alteration in inventory when item unequiped
     	 */
-        public void notifyUnequiped(int slot, L2ItemInstance item) 
+        @Override
+		public void notifyUnequiped(int slot, L2ItemInstance item) 
         {
     		if (!_changed.contains(item))
     			_changed.add(item);
@@ -163,7 +168,8 @@ public abstract class Inventory extends ItemContainer
 
     final class BowListener implements PaperdollListener
     {
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		if (slot != PAPERDOLL_LRHAND)
     			return;
@@ -175,7 +181,8 @@ public abstract class Inventory extends ItemContainer
     				setPaperdollItem(PAPERDOLL_LHAND, null);
     		}
     	}
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
     		if (slot != PAPERDOLL_LRHAND)
     			return;
@@ -191,13 +198,15 @@ public abstract class Inventory extends ItemContainer
 
     final class StatsListener implements PaperdollListener
     {
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		if (slot == PAPERDOLL_LRHAND)
     			return;
     		getOwner().removeStatsOwner(item);
     	}
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
     		if (slot == PAPERDOLL_LRHAND)
     			return;
@@ -207,7 +216,8 @@ public abstract class Inventory extends ItemContainer
 
     final class ItemPassiveSkillsListener implements PaperdollListener
     {
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		L2PcInstance player;
 
@@ -242,7 +252,8 @@ public abstract class Inventory extends ItemContainer
 				player.sendSkillList(); 
 			}
     	}
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
 			L2PcInstance player;
 			
@@ -287,6 +298,7 @@ public abstract class Inventory extends ItemContainer
 		/**
 		 * @see com.l2jhellas.gameserver.model.Inventory.PaperdollListener#notifyEquiped(int, com.l2jhellas.gameserver.model.L2ItemInstance)
 		 */
+		@Override
 		public void notifyEquiped(int slot, L2ItemInstance item)
 		{
 			if(getOwner() instanceof L2PcInstance)
@@ -300,6 +312,7 @@ public abstract class Inventory extends ItemContainer
 		/**
 		 * @see com.l2jhellas.gameserver.model.Inventory.PaperdollListener#notifyUnequiped(int, com.l2jhellas.gameserver.model.L2ItemInstance)
 		 */
+		@Override
 		public void notifyUnequiped(int slot, L2ItemInstance item)
 		{
 			if(getOwner() instanceof L2PcInstance)
@@ -313,7 +326,8 @@ public abstract class Inventory extends ItemContainer
     
     final class ArmorSetListener implements PaperdollListener
     {
-    	public void notifyEquiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyEquiped(int slot, L2ItemInstance item)
     	{
     		if(!(getOwner() instanceof L2PcInstance))
     			return;
@@ -387,7 +401,8 @@ public abstract class Inventory extends ItemContainer
     			}
     		}
     	}
-    	public void notifyUnequiped(int slot, L2ItemInstance item)
+    	@Override
+		public void notifyUnequiped(int slot, L2ItemInstance item)
     	{
     		if(!(getOwner() instanceof L2PcInstance))
     			return;
@@ -1208,7 +1223,7 @@ public abstract class Inventory extends ItemContainer
 	@Override
 	public void restore()
 	{
-	    java.sql.Connection con = null;
+		Connection con = null;
 	    try
 	    {
 	        con = L2DatabaseFactory.getInstance().getConnection();

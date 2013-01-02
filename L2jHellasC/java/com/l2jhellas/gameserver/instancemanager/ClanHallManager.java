@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
@@ -33,8 +34,8 @@ public class ClanHallManager
 {
 	private static ClanHallManager _instance;
 
-	private Map<Integer, ClanHall> _clanHall;
-	private Map<Integer, ClanHall> _freeClanHall;
+	private final Map<Integer, ClanHall> _clanHall;
+	private final Map<Integer, ClanHall> _freeClanHall;
 	private boolean _loaded = false;
 
 	public static ClanHallManager getInstance()
@@ -71,7 +72,7 @@ public class ClanHallManager
 	/** Load All Clan Hall */
 	private final void load()
 	{
-       java.sql.Connection con = null;
+		Connection con = null;
         try
         {
         	int id;

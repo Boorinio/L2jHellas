@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -129,7 +130,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 
 		if (L2PetDataTable.isPetItem(itemId))
 		{
-			java.sql.Connection con = null;
+			Connection con = null;
 			try
 			{
 				if (activeChar.getPet() != null && activeChar.getPet().getControlItemId() == _objectId)

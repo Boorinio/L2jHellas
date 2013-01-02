@@ -12,16 +12,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas;
+package com.l2jhellas.logs;
 
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
-public class ChatFilter implements Filter
+public class GMAuditFilter implements Filter
 {
 	public boolean isLoggable(LogRecord record)
 	{
-		return record.getLoggerName() == "chat";
+		return record.getLoggerName().equalsIgnoreCase("gmaudit");
 	}
-
 }

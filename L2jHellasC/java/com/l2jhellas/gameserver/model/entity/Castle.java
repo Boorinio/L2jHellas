@@ -72,8 +72,8 @@ public class Castle
 	// =========================================================
     // Data Field
 	private int _castleId                      = 0;
-	private List<L2DoorInstance> _doors        = new FastList<L2DoorInstance>();
-	private List<String> _doorDefault          = new FastList<String>();
+	private final List<L2DoorInstance> _doors        = new FastList<L2DoorInstance>();
+	private final List<String> _doorDefault          = new FastList<String>();
 	private String _name                       = "";
 	private int _ownerId                       = 0;
 	private Siege _siege                       = null;
@@ -87,7 +87,7 @@ public class Castle
     private L2CastleZone _zone;
     private L2Clan _formerOwner				   = null;
     private int _nbArtifact					   = 1;
-    private Map<Integer, Integer> _engrave	   = new FastMap<Integer, Integer>();
+    private final Map<Integer, Integer> _engrave	   = new FastMap<Integer, Integer>();
 
 	// =========================================================
 	// Constructor
@@ -171,7 +171,7 @@ public class Castle
         	else _treasury += amount;
         }
 
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -339,7 +339,7 @@ public class Castle
         _taxPercent = taxPercent;
         _taxRate = _taxPercent / 100.0;
 
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -405,7 +405,7 @@ public class Castle
 	// This method loads castle
 	private void load()
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;
@@ -470,7 +470,7 @@ public class Castle
 	// This method loads castle door data from database
 	private void loadDoor()
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -515,7 +515,7 @@ public class Castle
 	// This method loads castle door upgrade data from database
 	private void loadDoorUpgrade()
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -540,7 +540,7 @@ public class Castle
 
 	private void removeDoorUpgrade()
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -559,7 +559,7 @@ public class Castle
 
 	private void saveDoorUpgrade(int doorId, int hp, int pDef, int mDef)
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -589,7 +589,7 @@ public class Castle
 		else
 			_ownerId = 0;					// Remove owner
 
-	    java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -794,7 +794,7 @@ public class Castle
 	//save manor production data
 	public void saveSeedData()
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         PreparedStatement statement;
 
         try
@@ -863,7 +863,7 @@ public class Castle
 	//save manor production data for specified period
 	public void saveSeedData(int period)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement;
 		try
 		{
@@ -911,7 +911,7 @@ public class Castle
 	//save crop procure data
 	public void saveCropData()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement;
 		try
 		{
@@ -976,7 +976,7 @@ public class Castle
 
 	//	save crop procure data for specified period
 	public void saveCropData(int period) {
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement;
 		try
 		{
@@ -1025,7 +1025,7 @@ public class Castle
 
 	public void updateCrop (int cropId, int amount, int period)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement;
 		try
 		{
@@ -1049,7 +1049,7 @@ public class Castle
 
 	public void updateSeed (int seedId, int amount, int period)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		PreparedStatement statement;
 		try
 		{

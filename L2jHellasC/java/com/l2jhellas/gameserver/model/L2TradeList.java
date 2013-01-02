@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.logging.Logger;
@@ -37,8 +38,8 @@ public class L2TradeList
 {
     private static Logger _log = Logger.getLogger(L2TradeList.class.getName());
 
-	private List<L2ItemInstance> _items;
-	private int _listId;
+	private final List<L2ItemInstance> _items;
+	private final int _listId;
 	private boolean _confirmed;
 	private String _buystorename, _sellstorename;
 
@@ -342,7 +343,7 @@ public class L2TradeList
 
     private void changePetItemObjectId(int oldObjectId, int newObjectId)
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -520,21 +521,16 @@ public class L2TradeList
 		            }
 		        }
 
-
 		        if (sellerItem .getLastChange() == L2ItemInstance.MODIFIED)
 		        {
 		            sellerupdate.addModifiedItem(sellerItem);
-
 		        }
 		        else
 		        {
 		            L2World world = L2World.getInstance();
 		            world.removeObject(sellerItem );
 		            sellerupdate.addRemovedItem(sellerItem );
-
 		        }
-
-
 
 		        if (temp.getLastChange() == L2ItemInstance.MODIFIED)
 		        {
@@ -544,10 +540,7 @@ public class L2TradeList
 		        {
 		            buyerupdate.addNewItem(temp);
 		        }
-
-
-		        //}
-
+				// }
 		        sellerItem =  null;
 		    }
 		}
@@ -581,8 +574,4 @@ public class L2TradeList
 			}
 		}
 	}
-
-
-
 }
-

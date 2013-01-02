@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -65,7 +66,7 @@ public class CoupleManager
     // Method - Private
     private final void load()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;

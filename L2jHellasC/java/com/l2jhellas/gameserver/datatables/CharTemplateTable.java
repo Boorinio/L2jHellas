@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,7 +55,7 @@ public class CharTemplateTable
                                                 "Fortune Seeker", "Maestro"
     };
 
-	private Map<Integer, L2PcTemplate> _templates;
+	private final Map<Integer, L2PcTemplate> _templates;
 
 	public static CharTemplateTable getInstance()
 	{
@@ -68,7 +69,7 @@ public class CharTemplateTable
 	private CharTemplateTable()
 	{
 		_templates = new FastMap<Integer, L2PcTemplate>();
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{

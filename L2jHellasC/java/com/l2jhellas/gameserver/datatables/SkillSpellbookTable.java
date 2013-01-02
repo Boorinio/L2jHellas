@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class SkillSpellbookTable
 	private SkillSpellbookTable()
 	{
 		_skillSpellbooks = new FastMap<Integer, Integer>();
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{

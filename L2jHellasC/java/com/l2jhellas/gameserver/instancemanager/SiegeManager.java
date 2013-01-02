@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -123,7 +124,7 @@ public class SiegeManager
 
         if (clan.getHasCastle() > 0) return true;
 
-        java.sql.Connection con = null;
+		Connection con = null;
         boolean register = false;
         try
         {
@@ -301,9 +302,9 @@ public class SiegeManager
     public class  SiegeSpawn
     {
     	Location _location;
-    	private int _npcId;
-    	private int _heading;
-    	private int _castleId;
+    	private final int _npcId;
+    	private final int _heading;
+    	private final int _castleId;
     	private int _hp;
 
     	public SiegeSpawn(int castle_id, int x, int y, int z, int heading, int npc_id)

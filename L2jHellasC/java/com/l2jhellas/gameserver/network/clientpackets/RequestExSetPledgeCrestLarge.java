@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -112,7 +113,7 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
                 crestCache.removePledgeCrestLarge(clan.getCrestLargeId());
             }
 
-            java.sql.Connection con = null;
+			Connection con = null;
 
             try
             {

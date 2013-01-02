@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -206,7 +207,7 @@ public class CharNameTable
 
     public int accountCharNumber (String account)
     {
-        Connection con = null;
+		Connection con = null;
         int number = 0;
 
         try

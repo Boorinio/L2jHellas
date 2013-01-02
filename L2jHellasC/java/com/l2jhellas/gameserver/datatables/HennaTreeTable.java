@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.datatables;
 
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -39,7 +40,7 @@ public class HennaTreeTable
 	private static Logger _log = Logger.getLogger(HennaTreeTable.class.getName());
 	private static final HennaTreeTable _instance = new HennaTreeTable();
 	private Map<ClassId, List<L2HennaInstance>> _hennaTrees;
-	private boolean _initialized = true;
+	private final boolean _initialized = true;
 
 	public static HennaTreeTable getInstance()
 	{
@@ -51,7 +52,7 @@ public class HennaTreeTable
 		_hennaTrees = new FastMap<ClassId, List<L2HennaInstance>>();
 		int classId = 0;
         int count   = 0;
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();

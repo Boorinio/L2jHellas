@@ -37,6 +37,7 @@ import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
+import com.l2jhellas.gameserver.datatables.AccessLevels;
 import com.l2jhellas.gameserver.datatables.ArmorSetsTable;
 import com.l2jhellas.gameserver.datatables.AugmentationData;
 import com.l2jhellas.gameserver.datatables.BuffTemplateTable;
@@ -191,6 +192,8 @@ public class GameServer
 		
 		// start game time control early
 		GameTimeController.getInstance();
+		
+		AccessLevels.getInstance();
 
 		// keep the references of Singletons to prevent garbage collection
 		CharNameTable.getInstance();
@@ -355,17 +358,16 @@ public class GameServer
 		// Spawn the Orators/Preachers if in the Seal Validation period.
 		_sevenSignsEngine.spawnSevenSignsNPC();
 		
-		
-		if(ExternalConfig.RESTART_BY_TIME_OF_DAY)
+		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
 		{
-		_log.info("[Restart System]: Auto Restart System is Enabled ");
-		Restart.getInstance().StartCalculationOfNextRestartTime();
+			_log.info("[Restart System]: Auto Restart System is Enabled ");
+			Restart.getInstance().StartCalculationOfNextRestartTime();
 		}
 		else
 		{
-		_log.info("[Restart System]: Auto Restart System is Disabled ");
+			_log.info("[Restart System]: Auto Restart System is Disabled ");
 		}
-	    System.gc();
+		System.gc();
 		
 		// Engines
 		Olympiad.getInstance();

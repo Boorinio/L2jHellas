@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.entity;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
@@ -38,7 +39,7 @@ public class Auction
 {
     protected static final Logger _log = Logger.getLogger(Auction.class.getName());
 	private int _id								= 0;
-	private int _adenaId						= 57;
+	private final int _adenaId = 57;
 	private long _endDate;
 	private int _highestBidderId				= 0;
 	private String _highestBidderName			= "";
@@ -46,7 +47,7 @@ public class Auction
 	private int _itemId							= 0;
 	private String _itemName					= "";
 	private int _itemObjectId					= 0;
-	private int _itemQuantity					= 0;
+	private final int _itemQuantity = 0;
 	private String _itemType					= "";
 	private int _sellerId						= 0;
 	private String _sellerClanName              = "";
@@ -54,7 +55,7 @@ public class Auction
 	private int _currentBid						= 0;
 	private int _startingBid					= 0;
 
-	private Map<Integer, Bidder> _bidders        = new FastMap<Integer, Bidder>();
+	private final Map<Integer, Bidder> _bidders = new FastMap<Integer, Bidder>();
 	private static final String[] ItemTypeName =
 	{
 	             "ClanHall"
@@ -65,10 +66,10 @@ public class Auction
 	}
 	 public class Bidder
 	 {
-	     private String _name;
-	     private String _clanName;
+	     private final String _name;
+	     private final String _clanName;
 	     private int _bid;
-	     private Calendar _timeBid;
+	     private final Calendar _timeBid;
 	     public Bidder(String name, String clanName, int bid, long timeBid)
 	     {
 	         _name = name;
@@ -106,7 +107,8 @@ public class Auction
     public class AutoEndTask implements Runnable
     {
         public AutoEndTask(){}
-        public void run()
+        @Override
+		public void run()
         {
             try
             {
@@ -137,7 +139,7 @@ public class Auction
     /** Load auctions */
 	private void load()
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;
@@ -175,7 +177,7 @@ public class Auction
 	/** Load bidders **/
 	private void loadBid()
 	{
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;
@@ -226,7 +228,7 @@ public class Auction
 	/** Save Auction Data End */
     private void saveAuctionDate()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -282,7 +284,7 @@ public class Auction
 	/** Update auction in DB */
 	private void updateInDB(L2PcInstance bidder, int bid)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -340,7 +342,7 @@ public class Auction
     /** Remove bids */
     private void removeBids()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -377,7 +379,7 @@ public class Auction
     public void deleteAuctionFromDB()
     {
         AuctionManager.getInstance().getAuctions().remove(this);
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -432,7 +434,7 @@ public class Auction
     /** Cancel bid */
     public void cancelBid(int bidder)
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -468,7 +470,7 @@ public class Auction
     public void confirmAuction()
     {
         AuctionManager.getInstance().getAuctions().add(this);
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             PreparedStatement statement;

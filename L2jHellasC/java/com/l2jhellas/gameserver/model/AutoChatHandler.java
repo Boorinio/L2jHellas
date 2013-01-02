@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -61,7 +62,7 @@ public class AutoChatHandler implements SpawnListener
     private void restoreChatData()
     {
         int numLoaded = 0;
-        java.sql.Connection con = null;
+		Connection con = null;
         PreparedStatement statement = null;
         PreparedStatement statement2 = null;
         ResultSet rs = null;
@@ -249,7 +250,8 @@ public class AutoChatHandler implements SpawnListener
      * If an auto chat instance is set to be "global", all instances matching the registered
      * NPC ID will be added to that chat instance.
      */
-    public void npcSpawned(L2NpcInstance npc)
+    @Override
+	public void npcSpawned(L2NpcInstance npc)
     {
         synchronized (_registeredChats)
         {
@@ -283,7 +285,7 @@ public class AutoChatHandler implements SpawnListener
         private boolean _globalChat = false;
         private boolean _isActive;
 
-        private Map<Integer, AutoChatDefinition> _chatDefinitions = new FastMap<Integer, AutoChatDefinition>();
+        private final Map<Integer, AutoChatDefinition> _chatDefinitions = new FastMap<Integer, AutoChatDefinition>();
         protected ScheduledFuture<?> _chatTask;
 
         protected AutoChatInstance(int npcId, String[] chatTexts, long chatDelay, boolean isGlobal)
@@ -660,8 +662,8 @@ public class AutoChatHandler implements SpawnListener
          */
         private class AutoChatRunner implements Runnable
         {
-            private int _runnerNpcId;
-            private int _objectId;
+            private final int _runnerNpcId;
+            private final int _objectId;
 
             protected AutoChatRunner(int pNpcId, int pObjectId)
             {
@@ -669,7 +671,8 @@ public class AutoChatHandler implements SpawnListener
                 _objectId = pObjectId;
             }
 
-            public synchronized void run()
+            @Override
+			public synchronized void run()
             {
                 AutoChatInstance chatInst = _registeredChats.get(_runnerNpcId);
                 AutoChatDefinition[] chatDefinitions;

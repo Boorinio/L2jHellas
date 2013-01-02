@@ -16,13 +16,13 @@
 package com.l2jhellas.gameserver.model.entity;
 
 /**
- *@author SkyLanceR
+ * @author SkyLanceR
  */
 
 public class RestartVoteVariable
 {
-	public int				_voteCountRestart = 0;
-	private int				_voteCount = 0;
+	public int _voteCountRestart = 0;
+	private int _voteCount = 0;
 	
 	public int getVoteCount(String name)
 	{
@@ -30,14 +30,14 @@ public class RestartVoteVariable
 		{
 			_voteCount = _voteCountRestart;
 		}
-		return  _voteCount;
+		return _voteCount;
 	}
 	
 	public void increaseVoteCount(String name)
 	{
 		if (name == "restart")
 		{
-			_voteCountRestart = _voteCountRestart+1;
+			_voteCountRestart = _voteCountRestart + 1;
 		}
 	}
 }

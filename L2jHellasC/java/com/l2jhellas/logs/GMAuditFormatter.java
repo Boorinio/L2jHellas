@@ -12,19 +12,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas;
+package com.l2jhellas.logs;
 
-import java.io.IOException;
-import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
 
-/**
- * @author Advi
- *
- */
-public class ItemLogHandler extends FileHandler
+public class GMAuditFormatter extends Formatter
 {
-	public ItemLogHandler() throws IOException, SecurityException
+	@Override
+	public String format(LogRecord record)
 	{
-		super();
+		return record.getMessage()+"\r\n";
 	}
+
 }

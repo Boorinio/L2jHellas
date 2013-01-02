@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
@@ -43,7 +45,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListAll;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListDeleteAll;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillListAdd;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
@@ -61,7 +62,7 @@ public class L2Clan
 	private String _name;
 	private int _clanId;
 	private L2ClanMember _leader;
-	private Map<String, L2ClanMember> _members = new FastMap<String, L2ClanMember>();
+	private final Map<String, L2ClanMember> _members = new FastMap<String, L2ClanMember>();
 
 	private String _allyName;
 	private int _allyId;
@@ -88,15 +89,15 @@ public class L2Clan
     /** Leader clan dissolve ally */
     public static final int PENALTY_TYPE_DISSOLVE_ALLY = 4;
 
-    private ItemContainer _warehouse = new ClanWarehouse(this);
-    private List<Integer> _atWarWith = new FastList<Integer>();
-    private List<Integer> _atWarAttackers = new FastList<Integer>();
+    private final ItemContainer _warehouse = new ClanWarehouse(this);
+    private final List<Integer> _atWarWith = new FastList<Integer>();
+    private final List<Integer> _atWarAttackers = new FastList<Integer>();
 
 	private boolean _hasCrestLarge;
 
 	private Forum _forum;
 
-	private List<L2Skill> _skillList = new FastList<L2Skill>();
+	private final List<L2Skill> _skillList = new FastList<L2Skill>();
 
 	//  Clan Privileges
     /** No privilege to manage any clan activity */
@@ -630,7 +631,7 @@ public class L2Clan
 
 	public void updateClanInDB()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -660,7 +661,7 @@ public class L2Clan
 
 	public void store()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
@@ -692,7 +693,7 @@ public class L2Clan
 
     private void removeMemberInDatabase(L2ClanMember member, long clanJoinExpiryTime, long clanCreateExpiryTime)
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -728,7 +729,7 @@ public class L2Clan
     @SuppressWarnings("unused")
     private void updateWarsInDB()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
@@ -760,7 +761,7 @@ public class L2Clan
     private void restore()
     {
         //restorewars();
-    	java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             L2ClanMember member;
@@ -846,7 +847,7 @@ public class L2Clan
 
     private void restoreSkills()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {
@@ -883,7 +884,7 @@ public class L2Clan
 
         private void restoreNotice()
         {
-        	java.sql.Connection con = null;
+		Connection con = null;
         	try
         	{
         		con = L2DatabaseFactory.getInstance().getConnection();
@@ -916,7 +917,7 @@ public class L2Clan
         	if (notice == null)
         		notice = "";
         	
-        	java.sql.Connection con = null;
+		Connection con = null;
     
         	try
        	{
@@ -1015,7 +1016,7 @@ public class L2Clan
     public L2Skill addNewSkill(L2Skill newSkill)
     {
         L2Skill oldSkill    = null;
-        java.sql.Connection con = null;
+		Connection con = null;
 
         if (newSkill != null)
         {
@@ -1289,8 +1290,8 @@ public class L2Clan
 
 	public class SubPledge
     {
-       private int _id;
-       private String _subPledgeName;
+       private final int _id;
+       private final String _subPledgeName;
        private String _leaderName;
 
        public SubPledge(int id, String name, String leaderName)
@@ -1321,8 +1322,8 @@ public class L2Clan
 
     public class RankPrivs
     {
-       private int _rankId;
-       private int _party;// TODO find out what this stuff means and implement it
+       private final int _rankId;
+       private final int _party;// TODO find out what this stuff means and implement it
        private int _rankPrivs;
 
        public RankPrivs(int rank, int party, int privs)
@@ -1352,7 +1353,7 @@ public class L2Clan
 
     private void restoreSubPledges()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {
@@ -1449,7 +1450,7 @@ public class L2Clan
         }
         else
         {
-	        java.sql.Connection con = null;
+			Connection con = null;
 	        try
 	        {
 	            con = L2DatabaseFactory.getInstance().getConnection();
@@ -1520,7 +1521,7 @@ public class L2Clan
 
     public void updateSubPledgeInDB(int pledgeType)
     {
- 	   java.sql.Connection con = null;
+		Connection con = null;
  	   try
  	   {
  		   con = L2DatabaseFactory.getInstance().getConnection();
@@ -1545,7 +1546,7 @@ public class L2Clan
 
     private void restoreRankPrivs()
     {
-        java.sql.Connection con = null;
+		Connection con = null;
 
         try
         {
@@ -1606,7 +1607,7 @@ public class L2Clan
             _privs.get(rank).setPrivs(privs);
 
 
-            java.sql.Connection con = null;
+			Connection con = null;
 
             try
             {
@@ -1647,7 +1648,7 @@ public class L2Clan
         {
             _privs.put(rank, new RankPrivs(rank, 0, privs));
 
-            java.sql.Connection con = null;
+			Connection con = null;
 
             try
             {
@@ -1757,7 +1758,7 @@ public class L2Clan
 
         if(storeInDb)
         {
-        	java.sql.Connection con = null;
+			Connection con = null;
         	try
         	{
         		con = L2DatabaseFactory.getInstance().getConnection();
@@ -2303,7 +2304,7 @@ public class L2Clan
 
     public void changeLevel(int level)
     {
-        java.sql.Connection con = null;
+		Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();

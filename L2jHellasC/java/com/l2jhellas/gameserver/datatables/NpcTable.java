@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -47,7 +48,7 @@ public class NpcTable
 
 	private static NpcTable _instance;
 
-	private Map<Integer, L2NpcTemplate> _npcs;
+	private final Map<Integer, L2NpcTemplate> _npcs;
 	private boolean _initialized = false;
 
 	public static NpcTable getInstance()
@@ -67,7 +68,7 @@ public class NpcTable
 
 	private void restoreNpcData()
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -363,7 +364,7 @@ public class NpcTable
 
 	public void reloadNpc(int id)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{
@@ -435,7 +436,7 @@ public class NpcTable
 
 	public void saveNpc(StatsSet npc)
 	{
-		java.sql.Connection con = null;
+		Connection con = null;
 		String query = "";
 
 		try

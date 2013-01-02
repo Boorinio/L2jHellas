@@ -18,9 +18,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -35,7 +33,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public final class Util
 {
-	private final static Log _log = LogFactory.getLog(Util.class.getName());
+	private final static Logger _log = Logger.getLogger(Util.class.getName());
 	
     public static void handleIllegalPlayerAction(L2PcInstance actor, String message, int punishment)
     {

@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.datatables;
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,7 +47,7 @@ public class PetNameTable
 	public boolean doesPetNameExist(String name, int petNpcId)
 	{
 		boolean result = true;
-		java.sql.Connection con = null;
+		Connection con = null;
 
 		try
 		{

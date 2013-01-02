@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.idfactory;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -219,7 +220,7 @@ public abstract class IdFactory
      */
     protected int[] extractUsedObjectIDTable() throws SQLException
     {
-        java.sql.Connection con = null;
+        Connection con = null;
         try
         {
             con = L2DatabaseFactory.getInstance().getConnection();
