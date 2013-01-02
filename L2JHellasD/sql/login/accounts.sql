@@ -14,8 +14,3 @@ CREATE TABLE `accounts` (
   `lastServer` int(4) DEFAULT '1',
   PRIMARY KEY (`login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- ----------------------------
--- Records of accounts
--- ----------------------------
-INSERT INTO `accounts` VALUES ('admin', '0DPiKuNIrrVmD8IUCuw1hQxNqZc=', null, '1353509245771', '1', '127.0.0.1', '1');
