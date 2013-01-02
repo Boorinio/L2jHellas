@@ -32,7 +32,13 @@
 	<property name="build.dist.login.lib" location="${build.dist}/login/lib"/>
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
 	<property name="build.dist.game.lib" location="${build.dist}/gameserver/lib"/>
-    
+	 <path id="path.svnant">
+	  <pathelement location="${lib}/svnant.jar"/>
+	  <pathelement location="${lib}/svnClientAdapter.jar"/>
+	  <pathelement location="${lib}/svnkit.jar"/>
+	  <pathelement location="${lib}/svnjavahl.jar"/>
+	 </path>
+	<taskdef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
     <path id="classpath">
         <fileset dir="${lib}">
 			<include name="*.jar"/>
@@ -54,6 +60,10 @@
 	
     <target name="Compile" depends="Version" description="Compile the source.">
     	<echo>Compiling L2J Hellas.</echo>
+    	 <svn>
+    	   <status path="${basedir}" revisionProperty="revision" />
+    	  </svn>
+    	<echo>L2jHellas revision: ${revision} Date: ${build.tstamp}</echo>
 		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.7" target="1.7" nowarn="on" includeantruntime="false">
 			<src path="${src}"/>
 			<classpath refid="classpath"/>   
@@ -230,7 +240,6 @@
 		<tstamp>
 			<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
 		</tstamp>
-		<exec dir="." executable="svnversion" outputproperty="revision" />
 		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini">
 L2jHellas Project details:
 			${line.separator}
@@ -244,7 +253,6 @@ L2jHellas Project details:
 			${line.separator}
 			Timeline = https://www.assembla.com/code/l2hellas/subversion/changesets
 		</concat>
-		<echo>version = ${revision}</echo>
 	</target>
 	
 	<target name="Clean" description="Remove the output directories">
