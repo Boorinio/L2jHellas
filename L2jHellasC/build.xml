@@ -59,7 +59,7 @@
     </target>
 	
     <target name="Compile" depends="Version" description="Compile the source.">
-    	<echo>Compiling L2J Hellas. </echo>
+    	<echo>Compiling L2J Hellas.</echo>
     	<echo>Date: ${build.tstamp}</echo>
 		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.7" target="1.7" nowarn="on" includeantruntime="false">
 			<src path="${src}"/>
@@ -72,7 +72,7 @@
 			<fileset dir="${build.classes}"/>
 				<manifest>
 					<attribute name="Main-Class" value="com.l2jhellas.Server"/>
-					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.1.22-bin.jar javolution.jar mmocore.jar"/>
+					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.1.22-bin.jar javolution.jar mmocore.jar"/>
 			</manifest>
 		</jar>
 		<copy todir="${build.dist.login.lib}">
