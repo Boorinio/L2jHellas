@@ -38,7 +38,7 @@
 	  <pathelement location="${lib}/svnkit.jar"/>
 	  <pathelement location="${lib}/svnjavahl.jar"/>
 	 </path>
-	<taskdef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
     <path id="classpath">
         <fileset dir="${lib}">
 			<include name="*.jar"/>
@@ -59,11 +59,8 @@
     </target>
 	
     <target name="Compile" depends="Version" description="Compile the source.">
-    	<echo>Compiling L2J Hellas.</echo>
-    	 <svn>
-    	   <status path="${basedir}" revisionProperty="revision" />
-    	  </svn>
-    	<echo>L2jHellas revision: ${revision} Date: ${build.tstamp}</echo>
+    	<echo>Compiling L2J Hellas. </echo>
+    	<echo>Date: ${build.tstamp}</echo>
 		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.7" target="1.7" nowarn="on" includeantruntime="false">
 			<src path="${src}"/>
 			<classpath refid="classpath"/>   
@@ -232,7 +229,7 @@
         <zip destfile="${build}/L2J Hellas Core.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
 		<unzip src="${build}/L2J Hellas Core.zip" dest="C:/L2JHellas" />
-		<echo>L2J Hellas Server version:${revision} stored in C:/L2JHellas.</echo>
+		<echo>L2J Hellas Server stored in C:/L2JHellas.</echo>
 		<echo>Please visit our forum for bugs.</echo>
     </target>   
     
