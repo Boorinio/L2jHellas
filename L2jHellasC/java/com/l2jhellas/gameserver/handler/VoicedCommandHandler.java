@@ -20,22 +20,7 @@ import Extensions.RankSystem.IVoicedCommandHandlerPvpInfo;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Away;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Banking;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ChaosCmd;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Cl;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.MailCmd;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.OnlinePlayers;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Premium;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ServerRestartVote;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VipTeleport;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VoiceInfo;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Wedding;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.pmoff;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.stat;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.stats;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.tradeoff;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.version;
+import com.l2jhellas.gameserver.handler.voicedcommandhandlers.*;
 
 /**
  * This class ...
@@ -62,7 +47,6 @@ public class VoicedCommandHandler
 	private VoicedCommandHandler()
 	{
 		_datatable = new FastMap<String, IVoicedCommandHandler>();
-		registerVoicedCommandHandler(new stats());
 		if (Config.MOD_ALLOW_WEDDING)
 			registerVoicedCommandHandler(new Wedding());
 		if (Config.ALLOW_AWAY_STATUS)

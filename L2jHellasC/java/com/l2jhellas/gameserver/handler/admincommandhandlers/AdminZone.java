@@ -14,7 +14,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -24,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminZone implements IAdminCommandHandler
 {
-	private static final int REQUIRED_LEVEL = Config.GM_TEST;
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_zone_check", "admin_zone_reload"
@@ -39,13 +37,6 @@ public class AdminZone implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (activeChar == null)
-			return false;
-		
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
-				return false;
-		
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
 		

@@ -32,6 +32,8 @@ custom_rank_system,
 custom_teleport,
 custom_weapon,
 -- GAME SERVER TABLES
+access_levels,
+admin_command_access_rights,
 armor,
 armorsets,
 auction,

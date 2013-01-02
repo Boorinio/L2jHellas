@@ -12,7 +12,6 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -32,15 +31,10 @@ public class AdminHelpPage implements IAdminCommandHandler
 	{
 		"admin_help"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!checkLevel(activeChar.getAccessLevel()))
-				return false;
-
 		if (command.startsWith("admin_help"))
 		{
 			try
@@ -61,11 +55,6 @@ public class AdminHelpPage implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	// FIXME: implement method to send html to player in L2PcInstance directly

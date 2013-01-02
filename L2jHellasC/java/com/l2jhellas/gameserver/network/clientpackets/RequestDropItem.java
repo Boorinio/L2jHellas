@@ -105,9 +105,9 @@ public final class RequestDropItem extends L2GameClientPacket
         }
 
 
-        if (Config.GM_DISABLE_TRANSACTION && activeChar.getAccessLevel() >= Config.GM_TRANSACTION_MIN && activeChar.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
+        if (!activeChar.getAccessLevel().allowTransaction())
         {
-            activeChar.sendMessage("Transactions are disable for your Access Level");
+            activeChar.sendMessage("Transactions are disabled for your Access Level.");
             activeChar.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
             return;
         }

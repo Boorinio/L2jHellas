@@ -14,7 +14,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -26,7 +25,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminLevel implements IAdminCommandHandler
 {
-	private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_add_level", "admin_set_level"
@@ -41,13 +39,6 @@ public class AdminLevel implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (activeChar == null)
-			return false;
-		
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
-				return false;
-
 		L2Object targetChar = activeChar.getTarget();
 		String target = (targetChar != null ? targetChar.getName() : "no-target");
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
@@ -126,5 +117,4 @@ public class AdminLevel implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
 }

@@ -39,15 +39,10 @@ public class AdminRes implements IAdminCommandHandler
 	{
 	"admin_res", "admin_res_monster"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_RES;
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
@@ -67,11 +62,6 @@ public class AdminRes implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 
 	private void handleRes(L2PcInstance activeChar)

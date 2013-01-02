@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -34,9 +33,7 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2TradeList;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoxInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
@@ -63,19 +60,12 @@ public class AdminEditNpc implements IAdminCommandHandler {
 		"admin_showShopList",
 		"admin_addShopItem",
 		"admin_delShopItem",
-		"admin_box_access",
 		"admin_editShopItem",
 		"admin_close_window"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
-	private static final int REQUIRED_LEVEL2 = Config.GM_NPC_VIEW;
 
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{//TODO: Tokenize and protect arguments parsing. Externalize HTML.
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!((checkLevel(activeChar.getAccessLevel()) || checkLevel2(activeChar.getAccessLevel())) && activeChar.isGM()))
-				return false;
-
 		if (command.startsWith("admin_showShop "))
 		{
 			String[] args = command.split(" ");
@@ -116,8 +106,6 @@ public class AdminEditNpc implements IAdminCommandHandler {
 			else
 				activeChar.sendMessage("Usage: //show_droplist <npc_id>");
 		}
-		else if (!Config.ALT_PRIVILEGES_ADMIN && !(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-			return false;
 		else if(command.startsWith("admin_addShopItem "))
 		{
 			String[] args = command.split(" ");
@@ -257,42 +245,6 @@ public class AdminEditNpc implements IAdminCommandHandler {
 				deleteDropData(activeChar, npcId, itemId, category);
 			else
 				activeChar.sendMessage("Usage: //del_drop <npc_id> <item_id> <category>");
-		}
-		else if(command.startsWith("admin_box_access"))
-		{
-			L2Object target = activeChar.getTarget();
-			String[] players = command.split(" ");
-			if (target instanceof L2BoxInstance)
-			{
-				L2BoxInstance box = (L2BoxInstance) target;
-				if (players.length > 1)
-				{
-					boolean access = true;
-					for (int i = 1; i < players.length; i++)
-					{
-						if (players[i].equals("no"))
-						{
-							access = false;
-							continue;
-						}
-						box.grantAccess(players[i],access);
-					}
-				}
-				else
-				{
-					try
-					{
-						String msg = "Access:";
-						for (Object p : box.getAccess())
-							msg += " "+(String)p;
-						activeChar.sendMessage(msg);
-					}
-					catch (Exception e)
-					{
-						_log.info("box_access: "+e);
-					}
-				}
-			}
 		}
 
 		return true;
@@ -667,13 +619,6 @@ public class AdminEditNpc implements IAdminCommandHandler {
 			}
 		}
 		return tradeLists;
-	}
-
-	private boolean checkLevel(int level) {
-		return (level >= REQUIRED_LEVEL);
-	}
-	private boolean checkLevel2(int level) {
-		return (level >= REQUIRED_LEVEL2);
 	}
 
 	public String[] getAdminCommandList() {

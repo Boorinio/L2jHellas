@@ -19,7 +19,6 @@ import java.sql.ResultSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -38,18 +37,10 @@ public class AdminDonator implements IAdminCommandHandler
 		"admin_setdonator",
 	};
 	private final static Log _log = LogFactory.getLog(AdminDonator.class.getName());
-	private static final int REQUIRED_LEVEL = Config.GM_MENU;
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-		{
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-			{
-				return false;
-			}
-		}
 		if (command.startsWith("admin_setdonator"))
 		{
 			L2Object target = activeChar.getTarget();
@@ -176,10 +167,5 @@ public class AdminDonator implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return _adminCommands;
-	}
-
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 }

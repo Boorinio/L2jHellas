@@ -35,8 +35,6 @@ public class AdminLogin implements IAdminCommandHandler
 	{
 	"admin_server_gm_only", "admin_server_all", "admin_server_max_player", "admin_server_list_clock", "admin_server_login"
 	};
-
-	private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
 	
 	/*
 	 * (non-Javadoc)
@@ -47,12 +45,6 @@ public class AdminLogin implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-		{
-			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
-				return false;
-		}
-		
 		if (command.equals("admin_server_gm_only"))
 		{
 			gmOnly();

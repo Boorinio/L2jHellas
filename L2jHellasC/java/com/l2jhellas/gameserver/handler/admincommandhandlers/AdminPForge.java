@@ -16,7 +16,6 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AdminForgePacket;
@@ -34,15 +33,10 @@ public class AdminPForge implements IAdminCommandHandler
 	{
 	"admin_forge", "admin_forge2", "admin_forge3"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
 
 		if (command.equals("admin_forge"))
 		{
@@ -198,10 +192,5 @@ public class AdminPForge implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 }

@@ -47,14 +47,10 @@ public class AdminBan implements IAdminCommandHandler
 	{
 	"admin_ban", "admin_unban", "admin_jail", "admin_unjail"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_BAN;
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel())))
-				return false;
 		StringTokenizer st = new StringTokenizer(command);
 		st.nextToken();
 		String account_name = "";
@@ -261,10 +257,5 @@ public class AdminBan implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 }

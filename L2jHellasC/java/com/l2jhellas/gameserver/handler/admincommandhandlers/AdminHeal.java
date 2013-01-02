@@ -37,15 +37,10 @@ public class AdminHeal implements IAdminCommandHandler
 	{
 		"admin_heal"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_HEAL;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		
 		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
 		
 		if (command.equals("admin_heal"))
@@ -75,11 +70,6 @@ public class AdminHeal implements IAdminCommandHandler
 		return ADMIN_COMMANDS;
 	}
 	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
-	}
-
 	private void handleRes(L2PcInstance activeChar)
 	{
 		handleRes(activeChar, null);

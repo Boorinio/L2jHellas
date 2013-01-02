@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.GMViewCharacterInfo;
@@ -53,7 +52,7 @@ public final class RequestGMCommand extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// prevent non gm or low level GMs from vieweing player stuff
-		if (!getClient().getActiveChar().isGM() || getClient().getActiveChar().getAccessLevel()<Config.GM_ALTG_MIN_LEVEL)
+		if (!getClient().getActiveChar().isGM() || !getClient().getActiveChar().getAccessLevel().allowAltG())
 			return;
 
 		L2PcInstance player = L2World.getInstance().getPlayer(_targetName);

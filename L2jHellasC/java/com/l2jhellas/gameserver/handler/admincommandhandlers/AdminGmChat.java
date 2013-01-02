@@ -12,7 +12,6 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -35,15 +34,10 @@ public class AdminGmChat implements IAdminCommandHandler
 	{
 	"admin_gmchat", "admin_snoop", "admin_gmchat_menu"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-
 		if (command.startsWith("admin_gmchat"))
 			handleGmChat(command, activeChar);
 		else if (command.startsWith("admin_snoop"))
@@ -79,11 +73,6 @@ public class AdminGmChat implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 
 	/**

@@ -53,16 +53,10 @@ public class AdminTeleport implements IAdminCommandHandler
 	{
 	"admin_show_moves", "admin_show_moves_other", "admin_show_teleport", "admin_teleport_to_character", "admin_teleportto", "admin_move_to", "admin_teleport_character", "admin_recall", "admin_walk", "admin_explore", "teleportto", "recall", "admin_recall_npc", "admin_gonorth", "admin_gosouth", "admin_goeast", "admin_gowest", "admin_goup", "admin_godown", "admin_tele", "admin_teleto",
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_TELEPORT;
-	private static final int REQUIRED_LEVEL2 = Config.GM_TELEPORT_OTHER;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		
 		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		
@@ -143,8 +137,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			{
 				String val = command.substring(25);
 				
-				if (activeChar.getAccessLevel() >= REQUIRED_LEVEL2)
-					teleportCharacter(activeChar, val);
+				teleportCharacter(activeChar, val);
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
@@ -172,8 +165,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			{
 				String targetName = command.substring(13);
 				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
-				if (activeChar.getAccessLevel() >= REQUIRED_LEVEL2)
-					teleportCharacter(player, activeChar.getX(), activeChar.getY(), activeChar.getZ());
+				teleportCharacter(player, activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
@@ -222,11 +214,6 @@ public class AdminTeleport implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	private void teleportTo(L2PcInstance activeChar, String Cords)

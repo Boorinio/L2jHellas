@@ -654,7 +654,7 @@ public abstract class L2Summon extends L2PlayableInstance
         // Check if this skill is enabled (ex : reuse time)
         if (isSkillDisabled(skill.getId())
         		&& getOwner() != null
-        		&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
+        		&& (getOwner().getAccessLevel().allowPeaceAttack()))
         {
             SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE);
             sm.addString(skill.getName());
@@ -665,7 +665,7 @@ public abstract class L2Summon extends L2PlayableInstance
         // Check if all skills are disabled
         if (isAllSkillsDisabled()
         		&& getOwner() != null
-        		&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
+        		&& (getOwner().getAccessLevel().allowPeaceAttack()))
         {
             return;
         }
@@ -697,7 +697,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		{
 			if (isInsidePeaceZone(this, target)
 					&& getOwner() != null
-					&& (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
+					&& (getOwner().getAccessLevel().allowPeaceAttack()))
 			{
 				// If summon or target is in a peace zone, send a system message TARGET_IN_PEACEZONE
 	        	sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
@@ -726,7 +726,7 @@ public abstract class L2Summon extends L2PlayableInstance
         	}
 			else
 			{
-				if (!target.isAttackable() && getOwner() != null && (getOwner().getAccessLevel() < Config.GM_PEACEATTACK))
+				if (!target.isAttackable() && getOwner() != null && (getOwner().getAccessLevel().allowPeaceAttack()))
 				{
 					return;
 				}

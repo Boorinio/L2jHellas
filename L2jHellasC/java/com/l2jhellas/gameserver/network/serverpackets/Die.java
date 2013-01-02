@@ -14,7 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import com.l2jhellas.gameserver.datatables.AccessLevels;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
+import com.l2jhellas.gameserver.model.L2AccessLevel;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
@@ -38,9 +40,8 @@ public class Die extends L2GameServerPacket
     private int _charObjId;
     private boolean _fake;
     private boolean _sweepable;
-    private int _access;
+    private L2AccessLevel _access = AccessLevels._userAccessLevel;
     private com.l2jhellas.gameserver.model.L2Clan _clan;
-    private static final int REQUIRED_LEVEL = com.l2jhellas.Config.GM_FIXED;
     L2Character _activeChar;
     private boolean _funEvent;
 
@@ -110,7 +111,7 @@ public class Die extends L2GameServerPacket
         }
 
         writeD(_sweepable ? 0x01 : 0x00);                               // sweepable  (blue glow)
-        writeD(_access >= REQUIRED_LEVEL? 0x01: 0x00);                  // 6d 04 00 00 00 - to FIXED
+        writeD(_access.allowFixedRes() ? 0x01: 0x00);                  // 6d 04 00 00 00 - to FIXED
     }
 
     /* (non-Javadoc)

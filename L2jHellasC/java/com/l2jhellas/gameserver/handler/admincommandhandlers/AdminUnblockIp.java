@@ -14,7 +14,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -33,7 +32,6 @@ public class AdminUnblockIp implements IAdminCommandHandler
 	
 	private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
 	
-	private static final int REQUIRED_LEVEL = Config.GM_UNBLOCK;
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_unblockip"
@@ -48,10 +46,6 @@ public class AdminUnblockIp implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		
 		if (command.startsWith("admin_unblockip "))
 		{
 			try
@@ -80,11 +74,6 @@ public class AdminUnblockIp implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	private boolean unblockIp(String ipAddress, L2PcInstance activeChar)

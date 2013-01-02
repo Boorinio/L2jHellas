@@ -36,7 +36,6 @@ import com.l2jhellas.gameserver.util.Util;
  */
 public final class RequestPrivateStoreBuy extends L2GameClientPacket
 {
-//	private static final String _C__79_SENDPRIVATESTOREBUYLIST = "[C] 79 SendPrivateStoreBuyList";
 	private static final String _C__79_REQUESTPRIVATESTOREBUY = "[C] 79 RequestPrivateStoreBuy";
 	private static Logger _log = Logger.getLogger(RequestPrivateStoreBuy.class.getName());
 
@@ -100,9 +99,9 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 				}
 			}
 
-        if (Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
+        if (!player.getAccessLevel().allowTransaction())
         {
-        	player.sendMessage("Transactions are disable for your Access Level");
+        	player.sendMessage("Transactions are disabled for your Access Level.");
             sendPacket(new ActionFailed());
             return;
         }

@@ -32,7 +32,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 
 public class AdminTest implements IAdminCommandHandler
 {
-	private static final int REQUIRED_LEVEL = Config.GM_TEST;
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_test", "admin_stats", "admin_skill_test", "admin_st", "admin_mp", "admin_known"
@@ -47,10 +46,6 @@ public class AdminTest implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
-				return false;
-		
 		if (command.equals("admin_stats"))
 		{
 			for (String line : ThreadPoolManager.getInstance().getStats())

@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -76,10 +75,9 @@ public final class AddTradeItem extends L2GameClientPacket
             return;
         }
 
-        if (Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN
-            && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
+        if (!player.getAccessLevel().allowTransaction())
         {
-            player.sendMessage("Transactions are disable for your Access Level");
+            player.sendMessage("Transactions are disabled for your Access Level.");
             player.cancelActiveTrade();
             return;
         }

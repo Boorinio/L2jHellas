@@ -12,7 +12,6 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -33,15 +32,10 @@ public class AdminTarget implements IAdminCommandHandler
 	{
 		"admin_target"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		
 		if (command.startsWith("admin_target"))
 			handleTarget(command, activeChar);
 		return true;
@@ -51,11 +45,6 @@ public class AdminTarget implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	private void handleTarget(String command, L2PcInstance activeChar)

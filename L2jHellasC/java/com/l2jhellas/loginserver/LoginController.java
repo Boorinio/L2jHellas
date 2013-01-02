@@ -387,7 +387,7 @@ public class LoginController
 		int access = client.getAccessLevel();
 		if (gsi != null && gsi.isAuthed())
 		{
-			boolean loginOk = (gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access >= Config.GM_MIN;
+			boolean loginOk = (gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access >= 0;
 
 			if (loginOk && client.getLastServer() != serverId)
 			{
@@ -466,7 +466,7 @@ public class LoginController
 			if (rset.next())
 			{
 				int accessLevel = rset.getInt(1);
-				if (accessLevel >= Config.GM_MIN)
+				if (accessLevel >= 0)
 				{
 					ok = true;
 				}

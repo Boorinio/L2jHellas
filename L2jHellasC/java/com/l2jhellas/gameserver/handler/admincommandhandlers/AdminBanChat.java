@@ -15,10 +15,6 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -42,8 +38,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminBanChat implements IAdminCommandHandler
 {
-	private final static Log _log = LogFactory.getLog(AdminBan.class.getName());
-
 	private static String[] ADMIN_COMMANDS = 
 	{
 		"admin_banchat",
@@ -51,19 +45,9 @@ public class AdminBanChat implements IAdminCommandHandler
 		"admin_unbanchat_all",
 		"admin_banchat_all"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_BAN_CHAT;
 
 	public boolean useAdminCommand(String command, L2PcInstance admin)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-		{
-			if (!(checkLevel(admin.getAccessLevel())))
-			{
-				_log.info("Not required level for " + admin.getName());
-				return false;
-			}
-		}
-
 		String[] cmdParams = command.split(" ");
 
 		// checking syntax
@@ -156,14 +140,5 @@ public class AdminBanChat implements IAdminCommandHandler
 	public String[] getAdminCommandList() 
 	{
 		return ADMIN_COMMANDS;
-	}
-	/**
-	 * 
-	 * @param level
-	 * @return
-	 */
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 }

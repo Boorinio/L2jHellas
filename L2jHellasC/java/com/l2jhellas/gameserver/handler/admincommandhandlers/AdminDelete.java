@@ -12,7 +12,6 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.SpawnTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
@@ -39,17 +38,9 @@ public class AdminDelete implements IAdminCommandHandler
 		"admin_delete"
 	};
 	
-	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
-	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-		{
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		}
-		
 		if (command.equals("admin_delete"))
 			handleDelete(activeChar);
 		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
@@ -61,11 +52,6 @@ public class AdminDelete implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	// TODO: add possibility to delete any L2Object (except L2PcInstance)

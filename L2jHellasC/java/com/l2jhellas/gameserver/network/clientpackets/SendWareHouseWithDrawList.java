@@ -86,9 +86,9 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 		L2FolkInstance manager = player.getLastFolkNPC();
 		if ((manager == null || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM()) return;
 
-        if (warehouse instanceof ClanWarehouse && Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
+        if ((warehouse instanceof ClanWarehouse) && !player.getAccessLevel().allowTransaction())
         {
-            player.sendMessage("Transactions are disable for your Access Level");
+            player.sendMessage("Transactions are disabled for your Access Level.");
             return;
         }
 

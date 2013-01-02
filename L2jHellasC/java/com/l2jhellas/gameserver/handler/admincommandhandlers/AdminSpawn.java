@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.datatables.NpcTable;
 import com.l2jhellas.gameserver.datatables.SpawnTable;
@@ -51,16 +50,9 @@ public class AdminSpawn implements IAdminCommandHandler
 	};
 	public static Logger _log = Logger.getLogger(AdminSpawn.class.getName());
 
-	private static final int REQUIRED_LEVEL = Config.GM_NPC_EDIT;
-	private static final int REQUIRED_LEVEL2 = Config.GM_TELEPORT_OTHER;
-
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-
 		if (command.equals("admin_show_spawns"))
 			AdminHelpPage.showHelpPage(activeChar, "spawns.htm");
 		else if (command.startsWith("admin_spawn_index"))
@@ -170,18 +162,13 @@ public class AdminSpawn implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
-	}
 	
 	private void spawnMonster(L2PcInstance activeChar, String monsterId, int respawnTime, int mobCount, boolean permanent)
 	{
 		L2Object target = activeChar.getTarget();
 		if (target == null)
 			target = activeChar;
-		if (target != activeChar && activeChar.getAccessLevel() < REQUIRED_LEVEL2)
+		if (target != activeChar)
 			return;
 
 		L2NpcTemplate template1;

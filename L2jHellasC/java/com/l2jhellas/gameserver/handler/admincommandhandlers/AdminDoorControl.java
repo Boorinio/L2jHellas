@@ -12,7 +12,6 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.DoorTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -43,7 +42,6 @@ public class AdminDoorControl implements IAdminCommandHandler
 {
 	// private static Logger _log =
 	// Logger.getLogger(AdminDoorControl.class.getName());
-	private static final int REQUIRED_LEVEL = Config.GM_DOOR;
 	private static DoorTable _doorTable;
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -56,10 +54,6 @@ public class AdminDoorControl implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-
 		_doorTable = DoorTable.getInstance();
 		
 		try
@@ -147,10 +141,5 @@ public class AdminDoorControl implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 }

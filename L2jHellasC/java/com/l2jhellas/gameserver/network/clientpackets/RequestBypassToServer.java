@@ -26,8 +26,10 @@ import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.CommunityBoard;
+import com.l2jhellas.gameserver.datatables.AdminCommandAccessRights;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
+import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -78,23 +80,34 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		
 		try
 		{
-			if (_command.startsWith("admin_")) // && activeChar.getAccessLevel()
-												// >= Config.GM_ACCESSLEVEL)
+			if (_command.startsWith("admin_"))
 			{
-				if (Config.ALT_PRIVILEGES_ADMIN && !AdminCommandHandler.getInstance().checkPrivileges(activeChar, _command))
+				String command = _command.split(" ")[0];
+						
+				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(command);
+						
+				if (ach == null)
 				{
-					_log.info("<GM>" + activeChar + " does not have sufficient privileges for command '" + _command + "'.");
+					if (activeChar.isGM())
+						activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist.");
+							
+					_log.warning("No handler registered for admin command '" + command + "'");
 					return;
 				}
-
-				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(_command);
-
-				if (ach != null)
-					ach.useAdminCommand(_command, activeChar);
-				else
-					_log.warning("No handler registered for bypass '" + _command + "'");
+						
+				if (!AdminCommandAccessRights.getInstance().hasAccess(command, activeChar.getAccessLevel()))
+				{
+					activeChar.sendMessage("You don't have the access rights to use this command.");
+					_log.warning(activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
+					return;
+				}
+						
+				if (Config.GMAUDIT)
+					GMAudit.auditGMAction(activeChar.getName()+" ["+activeChar.getObjectId()+"]", _command, (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target"));
+							
+				ach.useAdminCommand(_command, activeChar);
 			}
-			else if (_command.equals("come_here") && activeChar.getAccessLevel() >= Config.GM_ACCESSLEVEL)
+			else if (_command.equals("come_here") && activeChar.isGM())
 			{
 				comeHere(activeChar);
 			}

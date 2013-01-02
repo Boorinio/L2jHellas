@@ -73,7 +73,7 @@ public class PcStat extends PlayableStat
             if (karmaLost > 0) activeChar.setKarma(activeChar.getKarma() - karmaLost);
         }
         //Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp
-        if (getActiveChar().isGM() && getActiveChar().getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && getActiveChar().isInParty())
+        if (getActiveChar().isGM() && !getActiveChar().getAccessLevel().canGainExp() && getActiveChar().isInParty())
               return false;
 
 		if (!super.addExp(value)) return false;
@@ -108,7 +108,7 @@ public class PcStat extends PlayableStat
     	float ratioTakenByPet = 0;
     	//Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp/Sp
     	L2PcInstance activeChar = getActiveChar();
-    	if (activeChar.isGM() && activeChar.getAccessLevel() <= Config.GM_DONT_TAKE_EXPSP && activeChar.isInParty())
+    	if (activeChar.isGM() && !activeChar.getAccessLevel().canGainExp() && activeChar.isInParty())
     	     return false;
 
     	// if this player has a pet that takes from the owner's Exp, give the pet Exp now

@@ -90,9 +90,9 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 		L2FolkInstance manager = player.getLastFolkNPC();
         if ((manager == null || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM()) return;
         
-        if ((warehouse instanceof ClanWarehouse) && Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
+        if ((warehouse instanceof ClanWarehouse) && !player.getAccessLevel().allowTransaction())
         {
-            player.sendMessage("Transactions are disable for your Access Level");
+            player.sendMessage("Transactions are disabled for your Access Level.");
             return;
         }
         		
@@ -100,12 +100,6 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
         {
         	player.setAccessLevel(-100); //Thanks Fakoykas
         	Util.handleIllegalPlayerAction(player,"Player "+player.getName()+" Tried To Use Enchant Exploit , And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
-        	return;
-        } 
-  	
-        if ((warehouse instanceof ClanWarehouse) && Config.GM_DISABLE_TRANSACTION && player.getAccessLevel() >= Config.GM_TRANSACTION_MIN && player.getAccessLevel() <= Config.GM_TRANSACTION_MAX)
-        {
-        	player.sendMessage("Transactions are disable for your Access Level");
         	return;
         }
         

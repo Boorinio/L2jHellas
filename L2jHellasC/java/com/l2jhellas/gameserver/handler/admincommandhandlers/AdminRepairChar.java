@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
@@ -37,17 +36,10 @@ public class AdminRepairChar implements IAdminCommandHandler
 	"admin_restore", "admin_repair"
 	};
 	
-	private static final int REQUIRED_LEVEL = Config.GM_CHAR_EDIT;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-		{
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		}
-		
 		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		
@@ -59,11 +51,6 @@ public class AdminRepairChar implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	private void handleRepair(String command)

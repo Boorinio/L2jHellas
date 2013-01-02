@@ -12,14 +12,12 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminQuest implements IAdminCommandHandler
 {
-	private static final int REQUIRED_LEVEL = Config.GM_TEST;
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_quest_reload"
@@ -36,10 +34,6 @@ public class AdminQuest implements IAdminCommandHandler
 	{
 		if (activeChar == null)
 			return false;
-		
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (activeChar.getAccessLevel() < REQUIRED_LEVEL)
-				return false;
 		
 		// syntax will either be:
 		// //quest_reload <id>
@@ -100,5 +94,4 @@ public class AdminQuest implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
 }

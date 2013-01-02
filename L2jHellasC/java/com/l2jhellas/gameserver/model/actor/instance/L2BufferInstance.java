@@ -145,7 +145,7 @@ public class L2BufferInstance extends L2FolkInstance
 		L2PcInstance player = client.getActiveChar();
 		if (player == null) return;
 		
-		if (player.getAccessLevel() >= Config.GM_ACCESSLEVEL)
+		if (player.getAccessLevel().isGm())
 		{
 			TextBuilder tb = new TextBuilder();
 			tb.append("<html><title>NPC Buffer - Admin</title>");

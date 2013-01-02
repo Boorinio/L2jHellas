@@ -55,7 +55,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 	{
 	"admin_event", "admin_event_new", "admin_event_choose", "admin_event_store", "admin_event_set", "admin_event_change_teams_number", "admin_event_announce", "admin_event_panel", "admin_event_control_begin", "admin_event_control_teleport", "admin_add", "admin_event_see", "admin_event_del", "admin_delete_buffer", "admin_event_control_sit", "admin_event_name", "admin_event_control_kill", "admin_event_control_res", "admin_event_control_poly", "admin_event_control_unpoly", "admin_event_control_prize", "admin_event_control_chatban", "admin_event_control_finish"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_MENU;
 	private static String tempBuffer = "";
 	private static String tempName = "";
 	private static String tempName2 = "";
@@ -64,10 +63,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		
 		if (command.equals("admin_event"))
 			showMainPage(activeChar);
 		
@@ -357,11 +352,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	String showStoredEvents()

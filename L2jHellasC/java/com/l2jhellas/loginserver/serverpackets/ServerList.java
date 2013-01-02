@@ -20,10 +20,9 @@ import java.util.List;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable;
-import com.l2jhellas.loginserver.L2LoginClient;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
+import com.l2jhellas.loginserver.L2LoginClient;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 
 /**
@@ -91,7 +90,7 @@ public final class ServerList extends L2LoginServerPacket
 		_lastServer = client.getLastServer();
 		for (GameServerInfo gsi : GameServerTable.getInstance().getRegisteredGameServers().values())
 		{
-			if (gsi.getStatus() == ServerStatus.STATUS_GM_ONLY && client.getAccessLevel() >= Config.GM_MIN)
+			if (gsi.getStatus() == ServerStatus.STATUS_GM_ONLY && client.getAccessLevel() >= 0)
 			{
 				// Server is GM-Only but you've got GM Status
 				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());

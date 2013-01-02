@@ -42,15 +42,9 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 		"admin_changelvl"
 	};
 
-	private static final int REQUIRED_LEVEL = Config.GM_ACCESSLEVEL;
-
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-
 		handleChangeLevel(command, activeChar);
 		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
@@ -61,11 +55,6 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 
 	/**

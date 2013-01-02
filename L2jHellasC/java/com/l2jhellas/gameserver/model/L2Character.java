@@ -5925,7 +5925,7 @@ public abstract class L2Character extends L2Object
 				player.sendPacket(new ActionFailed());
 			}
 		}
-		else if (player.getTarget() != null && !player.getTarget().isAttackable() && (player.getAccessLevel() < Config.GM_PEACEATTACK))
+		else if (player.getTarget() != null && !player.getTarget().isAttackable() && (player.getAccessLevel().allowPeaceAttack()))
 		{
 			// If target is not attackable, send a Server->Client packet
 			// ActionFailed
@@ -5972,7 +5972,7 @@ public abstract class L2Character extends L2Object
 
 	public boolean isInsidePeaceZone(L2PcInstance attacker, L2Object target)
 	{
-		return ((attacker.getAccessLevel() < Config.GM_PEACEATTACK) && isInsidePeaceZone((L2Object) attacker, target));
+		return ((attacker.getAccessLevel().allowPeaceAttack()) && isInsidePeaceZone((L2Object) attacker, target));
 	}
 
 	public boolean isInsidePeaceZone(L2Object attacker, L2Object target)

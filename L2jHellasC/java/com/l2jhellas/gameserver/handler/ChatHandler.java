@@ -17,17 +17,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatAll;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatAlliance;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatClan;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatHeroVoice;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatParty;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatPartyRoomAll;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatPartyRoomCommander;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatPetition;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatShout;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatTell;
-import com.l2jhellas.gameserver.handler.chathandlers.ChatTrade;
+import com.l2jhellas.gameserver.handler.chathandlers.*;
 
 /**
  * This class handles all chat handlers

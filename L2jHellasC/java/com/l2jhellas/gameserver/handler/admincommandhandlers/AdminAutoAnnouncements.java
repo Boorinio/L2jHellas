@@ -14,7 +14,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.AutoAnnouncementHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -37,15 +36,10 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 	{
 	"admin_list_autoannouncements", "admin_add_autoannouncement", "admin_del_autoannouncement", "admin_autoannounce"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_ANNOUNCE;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance admin)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(admin.getAccessLevel()) && admin.isGM()))
-				return false;
-		
 		if (command.equals("admin_list_autoannouncements"))
 		{
 			AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
@@ -106,10 +100,5 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 }

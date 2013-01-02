@@ -12,7 +12,6 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.Manager.AdminBBSManager;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -24,7 +23,6 @@ public class AdminBBS implements IAdminCommandHandler
 	{
 		"admin_bbs"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_MIN;
 	
 	/*
 	 * (non-Javadoc)
@@ -36,14 +34,6 @@ public class AdminBBS implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-		{
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-			{
-				// System.out.println("Not required level");
-				return false;
-			}
-		}
 		AdminBBSManager.getInstance().parsecmd(command, activeChar);
 		return true;
 	}
@@ -58,10 +48,5 @@ public class AdminBBS implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 }

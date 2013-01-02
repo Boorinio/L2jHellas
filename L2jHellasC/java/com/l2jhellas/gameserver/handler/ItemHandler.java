@@ -16,38 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.handler.itemhandlers.BeastSoulShot;
-import com.l2jhellas.gameserver.handler.itemhandlers.BeastSpice;
-import com.l2jhellas.gameserver.handler.itemhandlers.BeastSpiritShot;
-import com.l2jhellas.gameserver.handler.itemhandlers.BlessedSpiritShot;
-import com.l2jhellas.gameserver.handler.itemhandlers.Book;
-import com.l2jhellas.gameserver.handler.itemhandlers.CharChangePotions;
-import com.l2jhellas.gameserver.handler.itemhandlers.ChestKey;
-import com.l2jhellas.gameserver.handler.itemhandlers.CrystalCarol;
-import com.l2jhellas.gameserver.handler.itemhandlers.EnchantScrolls;
-import com.l2jhellas.gameserver.handler.itemhandlers.EnergyStone;
-import com.l2jhellas.gameserver.handler.itemhandlers.ExtractableItems;
-import com.l2jhellas.gameserver.handler.itemhandlers.Firework;
-import com.l2jhellas.gameserver.handler.itemhandlers.FishShots;
-import com.l2jhellas.gameserver.handler.itemhandlers.Harvester;
-import com.l2jhellas.gameserver.handler.itemhandlers.Maps;
-import com.l2jhellas.gameserver.handler.itemhandlers.MercTicket;
-import com.l2jhellas.gameserver.handler.itemhandlers.MysteryPotion;
-import com.l2jhellas.gameserver.handler.itemhandlers.PaganKeys;
-import com.l2jhellas.gameserver.handler.itemhandlers.Potions;
-import com.l2jhellas.gameserver.handler.itemhandlers.Recipes;
-import com.l2jhellas.gameserver.handler.itemhandlers.Remedy;
-import com.l2jhellas.gameserver.handler.itemhandlers.RollingDice;
-import com.l2jhellas.gameserver.handler.itemhandlers.ScrollOfEscape;
-import com.l2jhellas.gameserver.handler.itemhandlers.ScrollOfResurrection;
-import com.l2jhellas.gameserver.handler.itemhandlers.Scrolls;
-import com.l2jhellas.gameserver.handler.itemhandlers.Seed;
-import com.l2jhellas.gameserver.handler.itemhandlers.SevenSignsRecord;
-import com.l2jhellas.gameserver.handler.itemhandlers.SoulCrystals;
-import com.l2jhellas.gameserver.handler.itemhandlers.SoulShots;
-import com.l2jhellas.gameserver.handler.itemhandlers.SpecialXMas;
-import com.l2jhellas.gameserver.handler.itemhandlers.SpiritShot;
-import com.l2jhellas.gameserver.handler.itemhandlers.SummonItems;
+import com.l2jhellas.gameserver.handler.itemhandlers.*;
 
 /**
  * This class manages handlers of items

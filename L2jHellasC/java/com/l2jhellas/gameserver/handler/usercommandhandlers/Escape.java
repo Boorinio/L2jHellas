@@ -35,7 +35,6 @@ public class Escape implements IUserCommandHandler
 	{
 		52
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_ESCAPE;
 	
 	/*
 	 * (non-Javadoc)
@@ -49,7 +48,7 @@ public class Escape implements IUserCommandHandler
 		if (activeChar.isCastingNow() || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isInOlympiadMode())
 			return false;
 		
-		int unstuckTimer = (activeChar.getAccessLevel() >= REQUIRED_LEVEL ? 5000 : Config.UNSTUCK_INTERVAL * 1000);
+		int unstuckTimer = (activeChar.isGM() ? 5000 : Config.UNSTUCK_INTERVAL * 1000);
 		
 		// Check to see if the current player is in TvT , CTF or ViP events.
 		if (activeChar.isInFunEvent())

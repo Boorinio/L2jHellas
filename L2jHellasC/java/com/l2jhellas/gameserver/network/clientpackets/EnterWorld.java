@@ -33,8 +33,8 @@ import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
+import com.l2jhellas.gameserver.datatables.AdminCommandAccessRights;
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
-import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
 import com.l2jhellas.gameserver.instancemanager.CrownManager;
@@ -211,33 +211,25 @@ public class EnterWorld extends L2GameClientPacket
 		
 		if (activeChar.isGM())
 		{
-			if (Config.GM_STARTUP_INVULNERABLE && (!Config.ALT_PRIVILEGES_ADMIN && activeChar.getAccessLevel() >= Config.GM_GODMODE || Config.ALT_PRIVILEGES_ADMIN && AdminCommandHandler.getInstance().checkPrivileges(activeChar, "admin_invul")))
-				activeChar.setIsInvul(true);
-			
-			if (Config.GM_STARTUP_INVISIBLE && (!Config.ALT_PRIVILEGES_ADMIN && activeChar.getAccessLevel() >= Config.GM_GODMODE || Config.ALT_PRIVILEGES_ADMIN && AdminCommandHandler.getInstance().checkPrivileges(activeChar, "admin_invisible")))
-				activeChar.getAppearance().setInvisible();
-			
-			if (Config.GM_STARTUP_SILENCE && (!Config.ALT_PRIVILEGES_ADMIN && activeChar.getAccessLevel() >= Config.GM_MENU || Config.ALT_PRIVILEGES_ADMIN && AdminCommandHandler.getInstance().checkPrivileges(activeChar, "admin_silence")))
-				activeChar.setMessageRefusal(true);
-			
-			if (Config.GM_STARTUP_AUTO_LIST && (!Config.ALT_PRIVILEGES_ADMIN && activeChar.getAccessLevel() >= Config.GM_MENU || Config.ALT_PRIVILEGES_ADMIN && AdminCommandHandler.getInstance().checkPrivileges(activeChar, "admin_gmliston")))
-				GmListTable.getInstance().addGm(activeChar, false);
-			else
-				GmListTable.getInstance().addGm(activeChar, true);
-			
-			if (Config.GM_NAME_COLOR_ENABLED)
-			{
-				if (activeChar.getAccessLevel() >= 100)
-					activeChar.getAppearance().setNameColor(Config.ADMIN_NAME_COLOR);
-				else if (activeChar.getAccessLevel() >= 75)
-					activeChar.getAppearance().setNameColor(Config.GM_NAME_COLOR);
-			}
+			if (Config.GM_STARTUP_INVULNERABLE && AdminCommandAccessRights.getInstance().hasAccess("admin_invul", activeChar.getAccessLevel()))  
+			 	activeChar.setIsInvul(true);  
+			 		                       
+			if (Config.GM_STARTUP_INVISIBLE && AdminCommandAccessRights.getInstance().hasAccess("admin_invisible", activeChar.getAccessLevel()))  
+			 	activeChar.getAppearance().setInvisible();  
+			 		                                                  
+			if (Config.GM_STARTUP_SILENCE && AdminCommandAccessRights.getInstance().hasAccess("admin_silence", activeChar.getAccessLevel()))  
+			 	activeChar.setMessageRefusal(true);  
+			 	                                                  
+			if (Config.GM_STARTUP_AUTO_LIST && AdminCommandAccessRights.getInstance().hasAccess("admin_gmliston", activeChar.getAccessLevel()))  
+			 	GmListTable.getInstance().addGm(activeChar, false);  
+			else  
+			 	GmListTable.getInstance().addGm(activeChar, true); 
 			
 			if (Config.GM_TITLE_COLOR_ENABLED)
 			{
-				if (activeChar.getAccessLevel() >= 100)
+				if (activeChar.getAccessLevel().getLevel() >= 100)
 					activeChar.getAppearance().setTitleColor(Config.ADMIN_TITLE_COLOR);
-				else if (activeChar.getAccessLevel() >= 75)
+				else if (activeChar.getAccessLevel().getLevel() >= 75)
 					activeChar.getAppearance().setTitleColor(Config.GM_TITLE_COLOR);
 			}
 		}
@@ -429,7 +421,7 @@ public class EnterWorld extends L2GameClientPacket
 			}
 		}
 		
-		if (Config.SHOW_HTML_GM_WELCOME && (activeChar.getAccessLevel() > 0 || activeChar.isGM()))
+		if (Config.SHOW_HTML_GM_WELCOME && (activeChar.getAccessLevel().getLevel() > 0 || activeChar.isGM()))
 		{
 			String Welcome_Path = "data/html/welcomeGM.htm";
 			File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);

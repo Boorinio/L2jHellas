@@ -33,15 +33,10 @@ public class AdminInvul implements IAdminCommandHandler
 	{
 	"admin_invul", "admin_setinvul"
 	};
-	private static final int REQUIRED_LEVEL = Config.GM_GODMODE;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (!Config.ALT_PRIVILEGES_ADMIN)
-			if (!(checkLevel(activeChar.getAccessLevel()) && activeChar.isGM()))
-				return false;
-		
 		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
 		
 		if (command.equals("admin_invul"))
@@ -61,11 +56,6 @@ public class AdminInvul implements IAdminCommandHandler
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
-	}
-	
-	private boolean checkLevel(int level)
-	{
-		return (level >= REQUIRED_LEVEL);
 	}
 	
 	private void handleInvul(L2PcInstance activeChar)
