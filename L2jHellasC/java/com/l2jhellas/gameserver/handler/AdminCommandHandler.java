@@ -99,6 +99,7 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminNoble());
 		registerAdminCommandHandler(new Balancer());
 		registerAdminCommandHandler(new AdminPremium());
+		registerAdminCommandHandler(new AdminReload());
 		if (Config.ENABLED_CHAOS_EVENT)
 			registerAdminCommandHandler(new AdminChaos());
 	}
