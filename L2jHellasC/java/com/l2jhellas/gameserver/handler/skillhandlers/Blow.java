@@ -173,7 +173,7 @@ public class Blow implements ISkillHandler
 				activeChar.sendPacket(sm);
 			}
 			// Possibility of a lethal strike
-			if (!target.isRaid() && !target.isBoss() && !(target instanceof L2DoorInstance) && !(target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 35062))
+			if (!target.isRaid() && !target.isBoss() || !(target instanceof L2DoorInstance) || (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() != 35062))
 			{
 				int chance = Rnd.get(100);
 				// 2nd lethal effect activate (cp,hp to 1 or if target is npc
