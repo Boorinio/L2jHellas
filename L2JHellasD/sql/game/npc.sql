@@ -6602,8 +6602,9 @@ INSERT INTO `npc` (`id`,`idTemplate`,`name`,`serverSideName`,`title`,`serverSide
 	(35653,35653,'Court Magician',0,'Innadril',0,'Monster3.Elite_Mage',6.50,21.96,70,'male','L2Npc',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,0,0,0,88,132,NULL,0,0,0,'LAST_HIT'),
 	(35654,35654,'Court Magician',0,'Goddard',0,'Monster3.Elite_Mage',6.50,21.96,70,'male','L2Npc',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,0,0,0,88,132,NULL,0,0,0,'LAST_HIT'),
 	(35655,35655,'Court Magician',0,'Rune',0,'Monster3.Elite_Mage',6.50,21.96,70,'male','L2Npc',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,0,0,0,88,132,NULL,0,0,0,'LAST_HIT'),
-	(35656,35656,'Court Magician',0,'Schuttgart',0,'Monster3.Elite_Mage',6.50,21.96,70,'male','L2Npc',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,0,0,0,88,132,NULL,0,0,0,'LAST_HIT');
-
+	(35656,35656,'Court Magician',0,'Schuttgart',0,'Monster3.Elite_Mage',6.50,21.96,70,'male','L2Npc',40,3862,1493,11.85,2.78,40,43,30,21,20,10,0,0,1314,470,780,382,278,0,333,0,0,0,88,132,NULL,0,0,0,'LAST_HIT'),
+	(36000,29020,'Baium',0,'',0,'Monster.baium',65.00,174.00,75,'male','L2GrandBoss',40,790857,3347,668.78,3.09,60,57,73,76,70,80,10253400,1081544,6559,6282,4378,4601,333,0,3819,0,0,0,129,194,NULL,0,0,12,'FULL_PARTY');
+	
 	-- DO Check in this nightwolf
 UPDATE `npc` SET `type` = 'L2NpcWalker' WHERE `id` IN (31358,31359,31360,31361,31362,31363,31357,31356,31364,31365,32070,32072);
 -- Try lowering walkspeed of walking NPC since seems to walk faster than retail

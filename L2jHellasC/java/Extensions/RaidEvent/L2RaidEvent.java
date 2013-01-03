@@ -598,18 +598,21 @@ public class L2RaidEvent
 	 */
 	public static void onPlayerDeath(L2PcInstance player)
 	{
-		/*
-		 * TODO: Add support for:
-		 * 		- Configurable Death rebirth system including:
-		 * 			- Automatic respawn (Done)
-		 * 			- Track deaths for player.
-		 * 			- doRevive? (Done)
-		 */
-		new L2EventTeleporter(player, _locX, _locY, _locZ, 0, false);
-		player.setTarget(null);
-		player.breakAttack();
-		player.breakCast();
-		player.doRevive();
+		  /*
+		   * TODO: Add support for:
+		   *   - Configurable Death rebirth system including:
+		   *    - Automatic respawn (Done)
+		   *    - Track deaths for player.
+		   *    - doRevive? (Done)
+		   */
+		  if(player != null)
+		  {
+			  player.abortCast();
+			  player.abortAttack();
+			  player.sendMessage("Raid Engine: You will be revived now!");
+			  player.teleToLocation(_locX, _locY, _locZ, false);
+			  player.doRevive();
+		  }
 	}
 	
 	/**
