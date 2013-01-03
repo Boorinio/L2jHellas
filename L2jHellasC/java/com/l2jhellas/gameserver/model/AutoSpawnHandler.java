@@ -83,8 +83,8 @@ public class AutoSpawnHandler
 	@SuppressWarnings("rawtypes")
 	private AutoSpawnHandler()
 	{
-		_registeredSpawns = new FastMap<Integer, AutoSpawnInstance>();
-		_runningSpawns = new FastMap<Integer, ScheduledFuture>();
+		_registeredSpawns = new FastMap<Integer, AutoSpawnInstance>().setShared(true);
+		_runningSpawns = new FastMap<Integer, ScheduledFuture>().setShared(true);
 
 		restoreSpawnData();
 	}
