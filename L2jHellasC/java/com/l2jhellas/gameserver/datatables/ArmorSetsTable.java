@@ -79,7 +79,6 @@ public class ArmorSetsTable
 					{
 						if (d.getNodeName().equalsIgnoreCase("armorset"))
 						{
-							int id = Integer.valueOf(d.getAttributes().getNamedItem("id").getNodeValue());
 							int chest = Integer.valueOf(d.getAttributes().getNamedItem("chest").getNodeValue());
 							int legs = Integer.valueOf(d.getAttributes().getNamedItem("legs").getNodeValue());
 							int head = Integer.valueOf(d.getAttributes().getNamedItem("head").getNodeValue());
@@ -90,8 +89,8 @@ public class ArmorSetsTable
 							int shield_skill_id = Integer.valueOf(d.getAttributes().getNamedItem("shield_skill_id").getNodeValue());
 							int enchant6skill = Integer.valueOf(d.getAttributes().getNamedItem("enchant6skill").getNodeValue());
 							
-							_armorSets.put(id, new L2ArmorSet(chest, legs, head, gloves, feet, skill_id, shield, shield_skill_id, enchant6skill));
-							_cusArmorSets.put(id, new ArmorDummy(chest, legs, head, gloves, feet, skill_id, shield));
+							_armorSets.put(chest, new L2ArmorSet(chest, legs, head, gloves, feet, skill_id, shield, shield_skill_id, enchant6skill));
+							_cusArmorSets.put(chest, new ArmorDummy(chest, legs, head, gloves, feet, skill_id, shield));
 						}
 					}
 				}
