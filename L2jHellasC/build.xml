@@ -32,13 +32,7 @@
 	<property name="build.dist.login.lib" location="${build.dist}/login/lib"/>
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
 	<property name="build.dist.game.lib" location="${build.dist}/gameserver/lib"/>
-	 <path id="path.svnant">
-	  <pathelement location="${lib}/svnant.jar"/>
-	  <pathelement location="${lib}/svnClientAdapter.jar"/>
-	  <pathelement location="${lib}/svnkit.jar"/>
-	  <pathelement location="${lib}/svnjavahl.jar"/>
-	 </path>
-	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant" />
+    
     <path id="classpath">
         <fileset dir="${lib}">
 			<include name="*.jar"/>
@@ -60,7 +54,6 @@
 	
     <target name="Compile" depends="Version" description="Compile the source.">
     	<echo>Compiling L2J Hellas.</echo>
-    	<echo>Date: ${build.tstamp}</echo>
 		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.7" target="1.7" nowarn="on" includeantruntime="false">
 			<src path="${src}"/>
 			<classpath refid="classpath"/>   
@@ -72,7 +65,7 @@
 			<fileset dir="${build.classes}"/>
 				<manifest>
 					<attribute name="Main-Class" value="com.l2jhellas.Server"/>
-					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.1.22-bin.jar javolution.jar mmocore.jar"/>
+					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.1.22-bin.jar javolution.jar mmocore.jar"/>
 			</manifest>
 		</jar>
 		<copy todir="${build.dist.login.lib}">
@@ -229,7 +222,7 @@
         <zip destfile="${build}/L2J Hellas Core.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
 		<unzip src="${build}/L2J Hellas Core.zip" dest="C:/L2JHellas" />
-		<echo>L2J Hellas Server stored in C:/L2JHellas.</echo>
+		<echo>L2J Hellas Server version:${revision} stored in C:/L2JHellas.</echo>
 		<echo>Please visit our forum for bugs.</echo>
     </target>   
     
@@ -237,6 +230,7 @@
 		<tstamp>
 			<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
 		</tstamp>
+		<exec dir="." executable="svnversion" outputproperty="revision" />
 		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini">
 L2jHellas Project details:
 			${line.separator}
@@ -250,6 +244,7 @@ L2jHellas Project details:
 			${line.separator}
 			Timeline = https://www.assembla.com/code/l2hellas/subversion/changesets
 		</concat>
+		<echo>version = ${revision}</echo>
 	</target>
 	
 	<target name="Clean" description="Remove the output directories">
