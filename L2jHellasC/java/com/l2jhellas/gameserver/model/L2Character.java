@@ -5898,13 +5898,12 @@ public abstract class L2Character extends L2Object
 	{
 		if (isInsidePeaceZone(player))
 		{
-			if (!player.isInFunEvent() || !player.getTarget().isInFunEvent())
+			if (!player.isInFunEvent() || !isInFunEvent())
 			{
 				player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
 				player.sendPacket(new ActionFailed());
 				return;
 			}
-			
 			// If L2Character or target is in a peace zone, send a system
 			// message TARGET_IN_PEACEZONE a Server->Client packet ActionFailed
 			player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
@@ -5924,12 +5923,6 @@ public abstract class L2Character extends L2Object
 				// start, send a Server->Client packet ActionFailed
 				player.sendPacket(new ActionFailed());
 			}
-		}
-		else if (player.getTarget() != null && !player.getTarget().isAttackable() && (player.getAccessLevel().allowPeaceAttack()))
-		{
-			// If target is not attackable, send a Server->Client packet
-			// ActionFailed
-			player.sendPacket(new ActionFailed());
 		}
 		else if (player.isConfused())
 		{
@@ -5972,7 +5965,7 @@ public abstract class L2Character extends L2Object
 
 	public boolean isInsidePeaceZone(L2PcInstance attacker, L2Object target)
 	{
-		return ((attacker.getAccessLevel().allowPeaceAttack()) && isInsidePeaceZone((L2Object) attacker, target));
+		return (!attacker.getAccessLevel().allowPeaceAttack() && isInsidePeaceZone((L2Object) attacker, target));
 	}
 
 	public boolean isInsidePeaceZone(L2Object attacker, L2Object target)

@@ -8828,7 +8828,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (isDead())
 		{
-
 			sendPacket(new ActionFailed());
 			return;
 		}
@@ -9011,7 +9010,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// *******************************************
 		
 		// Check if this skill is enabled (ex : reuse time)
-		if (isSkillDisabled(skill.getId()) && getAccessLevel().allowPeaceAttack())
+		if (isSkillDisabled(skill.getId()))
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE);
 			sm.addString(skill.getName());
@@ -9023,7 +9022,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		
 		// Check if all skills are disabled
-		if (isAllSkillsDisabled() && getAccessLevel().allowPeaceAttack())
+		if (isAllSkillsDisabled())
 		{
 			// Send a Server->Client packet ActionFailed to the L2PcInstance
 			sendPacket(new ActionFailed());
@@ -9134,7 +9133,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Check if this is offensive magic skill
 		if (skill.isOffensive())
 		{
-			if ((isInsidePeaceZone(this, target)) && getAccessLevel().allowPeaceAttack())
+			if (isInsidePeaceZone(this, target))
 			{
 				// If L2Character or target is in a peace zone, send a system
 				// message TARGET_IN_PEACEZONE a Server->Client packet
@@ -9154,15 +9153,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			if (!(target instanceof L2MonsterInstance) && sklType == L2SkillType.CONFUSE_MOB_ONLY)
 			{
-				sendPacket(new ActionFailed());
-				return;
-			}
-			
-			// Check if the target is attackable
-			if (!target.isAttackable() && getAccessLevel().allowPeaceAttack())
-			{
-				// If target is not attackable, send a Server->Client packet
-				// ActionFailed
 				sendPacket(new ActionFailed());
 				return;
 			}

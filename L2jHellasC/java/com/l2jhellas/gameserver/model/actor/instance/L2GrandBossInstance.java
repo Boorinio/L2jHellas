@@ -163,6 +163,11 @@ public final class L2GrandBossInstance extends L2MonsterInstance
  	@Override 
  	public boolean hasRandomAnimation() 
  	{ 
- 	return false; 
-  }
+ 		return false; 
+ 	}
+ 	
+ 	@Override
+ 	public boolean isBoss() {
+ 		return true;
+ 	}
 }
