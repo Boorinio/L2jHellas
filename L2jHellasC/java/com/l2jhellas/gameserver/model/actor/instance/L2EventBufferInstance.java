@@ -21,11 +21,7 @@ import com.l2jhellas.gameserver.datatables.BuffTemplateTable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
 
 public class L2EventBufferInstance
@@ -76,52 +72,27 @@ public class L2EventBufferInstance
 			if ( _buff.checkPlayer(player) && _buff.checkPrice(player)) 
 			{
 					if (player.getInventory().getAdena() >= (_priceTotal + _buff.getAdenaPrice())
-							&& player.getEventPoints()>=_buff.getPointsPrice())
+						&& player.getEventPoints()>=_buff.getPointsPrice())
 					{
 						_priceTotal+=_buff.getAdenaPrice();
-						_pricePoints+=_buff.getPointsPrice();
-						if (_buff.forceCast() || (_buff.getSkill()) == null)
-						{
-							// regeneration ^^
+						_pricePoints+=_buff.getPointsPrice();						
 							
-							player.setCurrentHpMp(player.getMaxHp()+5000, player.getMaxMp()+5000);
-							/*
-							 * Mensaje informativo al cliente sobre los buffs dados.
-							 */
-	                    	SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT); 
-	                    	sm.addSkillName(_buff.getSkill().getId());
-	                    	player.sendPacket(sm);
-	                    	sm = null;
-						if (_buff.getSkill().getTargetType() == L2SkillTargetType.TARGET_SELF)
-	                        {
-	                            // Ignora el tiempo de casteo del skill, hay unos 100ms de animacion de casteo
-	                        	MagicSkillUse msu = new MagicSkillUse(player, player, _buff.getSkill().getId(), _buff.getSkill().getLevel(), 100, 0);
-	                            player.broadcastPacket(msu);
-	                            
-	                            for (L2Effect effect : _buff.getSkill().getEffectsSelf(player))
-	                            {
-	                            	player.addEffect(effect);
-	                            }
-	                            // newbie summons
-							if (_buff.getSkill().getSkillType() == L2SkillType.SUMMON)
-	                            {
-	                            	player.doCast(_buff.getSkill());
-	                            }
-	                        }
-	                    	else
-	                    	{   // Ignora el tiempo de casteo del skill, hay unos 5ms de animacion de casteo
-							MagicSkillUse msu = new MagicSkillUse(getbufferType(efector), player, _buff.getSkill().getId(), _buff.getSkill().getLevel(), 5, 0);
-	                            player.broadcastPacket(msu);
-	                    	}
-	                        
-	                    	for (L2Effect effect : _buff.getSkill().getEffects(getbufferType(efector), player))
-	                        {
-	                        	player.addEffect(effect);
-	                        }
-	                        try{
-	                        	Thread.sleep(50);
-	                        }catch (Exception e) {}
-						}
+						player.setCurrentHpMp(player.getMaxHp()+5000, player.getMaxMp()+5000);
+        
+		                for (L2Effect effect : _buff.getSkill().getEffects(player, player))
+		                {
+		                    player.addEffect(effect);
+		                }
+		                            
+						if (_buff.getSkill().getSkillType() == L2SkillType.SUMMON)
+		                {
+							player.doCast(_buff.getSkill());
+		                }           		                         
+		                    
+						try{
+		                	Thread.sleep(50);
+		                }catch (Exception e) {}
+						
 					}
 			}
 		}
