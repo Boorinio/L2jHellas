@@ -234,7 +234,13 @@ public class EnterWorld extends L2GameClientPacket
 					activeChar.getAppearance().setTitleColor(Config.GM_TITLE_COLOR);
 			}
 		}
-
+		if(Config.RAID_SYSTEM_ENABLED)
+		{
+			activeChar.inClanEvent = false;
+			activeChar.inPartyEvent = false;
+			activeChar.inSoloEvent = false;
+		}
+		
 		if (activeChar.isDonator() && Config.DONATOR_NAME_COLOR_ENABLED)
 		{
 			activeChar.getAppearance().setNameColor(Config.DONATOR_NAME_COLOR);

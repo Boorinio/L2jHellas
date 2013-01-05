@@ -5648,7 +5648,7 @@ public abstract class L2Character extends L2Object
 			// Check Raidboss attack
 			// Character will be petrified if attacking a raid that's more
 			// than 8 levels lower
-			if (target.isRaid() && !Config.RAID_DISABLE_CURSE && getActingPlayer() != null)
+			if (target.isRaid() && !Config.RAID_DISABLE_CURSE && getActingPlayer() != null && !getActingPlayer().inSoloEvent && !getActingPlayer().inClanEvent && !getActingPlayer().inPartyEvent)
 			{
 				int level = getActingPlayer().getLevel();
 				

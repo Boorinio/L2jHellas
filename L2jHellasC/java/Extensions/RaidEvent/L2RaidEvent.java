@@ -612,6 +612,9 @@ public class L2RaidEvent
 			  player.sendMessage("Raid Engine: You will be revived now!");
 			  player.teleToLocation(_locX, _locY, _locZ, false);
 			  player.doRevive();
+			  player.setCurrentHp(player.getMaxHp());
+			  player.setCurrentMp(player.getMaxMp());
+			  player.setCurrentCp(player.getMaxCp());
 		  }
 	}
 	
@@ -740,8 +743,7 @@ public class L2RaidEvent
 			{
 				for (L2PcInstance member : _participatingPlayers)
 				{
-					if (member == null)
-						continue;
+					if(member!=null)
 					member.inClanEvent = false;
 				}
 				// Clear Clan Members from event.
@@ -756,8 +758,7 @@ public class L2RaidEvent
 				player.inPartyEvent = false;
 				for (L2PcInstance member : _participatingPlayers)
 				{
-					if (member == null)
-						continue;
+					if(member!=null)
 					member.inPartyEvent = false;
 				}
 			}
