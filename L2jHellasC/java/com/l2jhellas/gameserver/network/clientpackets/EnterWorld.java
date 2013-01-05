@@ -98,19 +98,6 @@ import com.l2jhellas.gameserver.util.Util;
 public class EnterWorld extends L2GameClientPacket
 {
 	
-	public static void warnAllPlayers()
-	{
-		for (L2PcInstance player : _onlineplayers)
-		{
-			String file = "data/html/chaos/warning.htm";
-			String html = HtmCache.getInstance().getHtm(file);
-			NpcHtmlMessage warning = new NpcHtmlMessage(1);
-			warning.setHtml(html);
-				
-			player.sendPacket(warning);
-		}
-	}
-	
 	public static Vector<L2PcInstance> _onlineplayers = new Vector<L2PcInstance>();
 	
 	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
@@ -819,4 +806,18 @@ public class EnterWorld extends L2GameClientPacket
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
 	}
+	
+	public static void warnAllPlayers()
+	{
+		for (L2PcInstance player : _onlineplayers)
+		{
+			String file = "data/html/chaos/warning.htm";
+			String html = HtmCache.getInstance().getHtm(file);
+			NpcHtmlMessage warning = new NpcHtmlMessage(1);
+			warning.setHtml(html);
+				
+			player.sendPacket(warning);
+		}
+	}
+	
 }

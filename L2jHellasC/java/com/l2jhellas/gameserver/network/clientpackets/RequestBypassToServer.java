@@ -138,14 +138,14 @@ public final class RequestBypassToServer extends L2GameClientPacket
 								
 				}
 								
-				if (to.equalsIgnoreCase("") || message.equalsIgnoreCase("")) {
+				if (to.equalsIgnoreCase("") || message.equalsIgnoreCase("") || to == null) {
 									
 					activeChar.sendMessage("You have to fill all the fields.");
 					return;
 									
 				}
 								
-				if (title.equalsIgnoreCase(""))
+				if (title.equalsIgnoreCase("") || title == null)
 					title = "(No Subject)";
 								
 				Connection con = null;
@@ -209,12 +209,10 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					String value = _command.substring(11);
 					StringTokenizer s = new StringTokenizer(value, " ");
 					String email1 = null;
-					// String email2 = null;
 					
 					try
 					{
 						email1 = s.nextToken();
-						// email2 = s.nextToken();
 						
 						try
 						{
@@ -232,6 +230,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 							}
 							catch (Exception e)
 							{
+								e.printStackTrace();
 							}
 							finally
 							{
@@ -241,13 +240,17 @@ public final class RequestBypassToServer extends L2GameClientPacket
 								}
 								catch (Exception e)
 								{
+									e.printStackTrace();
 								}
 							}
+							
 							activeChar.sendMessage("We successfully added your email " + email1 + " to our database");
 							L2AccountManagerInstance.setHasSubEmail(activeChar);
+						
 						}
 						catch (Exception e)
 						{
+							e.printStackTrace();
 						}
 						
 					}
