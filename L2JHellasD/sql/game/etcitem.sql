@@ -8,7 +8,7 @@ CREATE TABLE `etcitem` (
   `item_id` decimal(11,0) NOT NULL DEFAULT '0',
   `name` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `crystallizable` varchar(5) COLLATE utf8_bin DEFAULT NULL,
-  `item_type` varchar(12) COLLATE utf8_bin DEFAULT NULL,
+  `item_type` varchar(14) COLLATE utf8_bin DEFAULT NULL,
   `weight` decimal(4,0) DEFAULT NULL,
   `consume_type` varchar(9) COLLATE utf8_bin DEFAULT NULL,
   `material` varchar(11) COLLATE utf8_bin DEFAULT NULL,
