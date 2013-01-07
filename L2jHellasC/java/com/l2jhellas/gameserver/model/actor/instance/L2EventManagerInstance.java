@@ -84,10 +84,10 @@ public class L2EventManagerInstance extends L2NpcInstance
 					_finalPlayers.add(player);
 				else
 					return;
-				// If the player has passed the checks, then continue.
+				
 				switch (type)
 				{
-				// Case Clan Events.
+			
 					case 2:
 					{
 						if (player.getClan() == null)
@@ -125,7 +125,7 @@ public class L2EventManagerInstance extends L2NpcInstance
 						}
 						break;
 					}
-					// Case Party Events.
+
 					case 3:
 					{
 						if (player.getParty() == null)

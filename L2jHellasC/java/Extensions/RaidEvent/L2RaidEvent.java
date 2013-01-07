@@ -179,19 +179,19 @@ public class L2RaidEvent
 	public void init()
 	{
 		setState(EventState.STARTING);
-		//Increase the number of Current Events.
+		
 		if(!L2EventManagerInstance.addEvent())
 			return;
-		//Set the coordinates for the Event.
+	
 		if (setCoords(_player));
 		else{L2EventManagerInstance.removeEvent();
 			return;}
 		_log.warning("RaidEngine [setCoords]: Players: "+_locX+", "+_locY+", "+_locZ);
-		//Set Player inEvent
+	
 		setInEvent(_player);
-		//Initialize event.
+	
 		startEvent(_player, _npcId, _npcAm);
-		//Call the Function required to buff the player.
+		
 		buffEventMembers(_player,_points, _bufflist,_effector);
 		return;
 	}
@@ -227,7 +227,7 @@ public class L2RaidEvent
 	 */
 	private synchronized void setInEvent(L2PcInstance player)
 	{
-		// Check if the type of event is defined.
+		
 		if (_eventType != 1 && _eventType != 2 && _eventType != 3)
 		{
 			player.sendMessage("Debug: Error in The event type [Function: setInEvent]");
@@ -279,15 +279,13 @@ public class L2RaidEvent
 	 */
 	private synchronized static void buffEventMembers(L2PcInstance player, int eventPoints, int buffList, L2Object efector)
 	{
-		/* Check if the event type has been defined.
-		 * Once the event is fully functional this checks will be taken out */
+		
 		if (_eventType != 1 && _eventType != 2 && _eventType != 3)
 		{
 			player.sendMessage("Debug: Error in The event type [Function: bufEventMembers]");
-			_log.warning("Se corta la funcion de entrega de buffs.");
 			return;
 		}
-		// Single event --> Direct Buffing.
+		
 		if (_eventType == 1)
 		{
 			int previousPoints = player.getEventPoints();
@@ -296,41 +294,25 @@ public class L2RaidEvent
 			player.setEventPoints(player.getEventPoints() - eventPoints);
 			player.sendMessage("Event Manager: " + eventPoints + " Event Points have Been used. " + "You had " + previousPoints + " and now you have " + player.getEventPoints() + "Event Points.");
 		}
-		// Clan Event: Let's buff all the clan members...
+
 		// TODO: Check if the distance of other clan members is important upon member buffing.
 		if (_eventType == 2)
 		{
-			// Define HOW many players are online at this very moment.
+			
 			int cmCount = _participatingPlayers.size();
-			// Define the individual Event Points Price for every player.
+			
 			int individualPrice = eventPoints / cmCount;
-			// Round up the price
-			// individualPrice = Math.round(individualPrice);
-			// Start the Buffing.
+		
 			for (L2PcInstance member : _participatingPlayers)
 			{
-				// Define the previous points for each member of the clan.
+				
 				int previousPoints;
 				if (member == null)
 					continue;
-				// Apply the Buffs if allowed
+				
 				if (Config.RAID_SYSTEM_GIVE_BUFFS)
 					L2EventBufferInstance.makeBuffs(member, buffList, efector, false);
-				/*
-				 * In this case we will generate an HTML to notify the member of the action taken.
-				 * 1. In the first case, we will check if the subject has enough Event Points as to pay the Buffs,
-				 * 		and enroll into the event.
-				 * 2. If that's not the case we will proceed into the first IF:
-				 * 		2a. The even points will be replaced by 0 since the player doesn't have enough event points
-				 * 			to pay the normal quota.
-				 * 		2b. We will notify him of this situation. We will also deduce the missing points 
-				 * 			from other Clan Members. (Sharing is good right? xD)
-				 * 3. If 1 is Affirmative we will proceed onto the second IF:
-				 * 		3a. Deduction of event points = to what's needed to participate in the event/online 
-				 * 			clan members.
-				 * 		3b. Notify this situation and inform the player of the amount of points that he/she has at 
-				 * 			this very moment.
-				 */
+				
 				if (individualPrice > member.getEventPoints())
 				{
 					previousPoints = member.getEventPoints();
@@ -359,12 +341,12 @@ public class L2RaidEvent
 				}
 			}
 		}
-		// Party Event --> The same action as in Clan Events Will be taken.
+	
 		if (_eventType == 3)
 		{
 			int pmCount = player.getParty().getMemberCount();
 			int individualPrice = eventPoints / pmCount;
-			// individualPrice = Math.round(individualPrice);
+			
 			for (L2PcInstance member : _participatingPlayers)
 			{
 				if (member == null)
@@ -427,9 +409,9 @@ public class L2RaidEvent
 		if (currentEvents == 0)
 			return;
 		setState(EventState.STARTED);
-		// Teleport Player or Members depending on the Event Type.
+		
 		doTeleport(player, _locX, _locY, _locZ, 10, false);
-		// Spawn The NPC Monster for the Event.
+	
 		spawnMonster(npcId, 60, ammount, _npcX, _npcY, _npcZ);
 	}
 	
@@ -497,7 +479,7 @@ public class L2RaidEvent
 		if (template == null)
 			return;
 		_eventMobs = mobCount;
-        // Support for multiple spawns.
+       
 		if (mobCount > 1)
 		{
 			int n = 1;
@@ -518,17 +500,14 @@ public class L2RaidEvent
 					else
 						SpawnTable.getInstance().addNewSpawn(spawn, false);
 					spawn.init();
-					/*
-					 * Define the properties of every spawn.
-					 * TODO: Change the Mob statistics according on Event
-					 * Participants and Server Rates.
-					 */
+				
+					 // TODO: Change the Mob statistics according on Event
 					_lastNpcSpawn = spawn.getLastSpawn();
 					_npcSpawn = spawn;
 					_lastNpcSpawn.isPrivateEventMob = true;
 					_lastNpcSpawn.setChampion(false);
 					_lastNpcSpawn.setTitle("Event Monster");
-					// Stop the Respawn of the Mob.
+					
 					_npcSpawn.stopRespawn();
 					_eventMobList.add(_lastNpcSpawn);
 					n++;
@@ -654,20 +633,20 @@ public class L2RaidEvent
 		else
 			return;
 		loadData(_rewardLevel);
-		// Case Single Event
+		
 		if (_eventType == 1)
 		{
-			// Hand Out Items
+			
 			handOutItems(player, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
-			// Genearal Clean-Up of the Event.
+			
 			unSpawnNPC();
 			clearFromEvent(player);
-			// Teleport back to previous-event location.
+			
 			doTeleport(player, _pX, _pY, _pZ, 10, true);
 			if (L2EventManagerInstance._currentEvents != 0)
 				L2EventManagerInstance._currentEvents = L2EventManagerInstance._currentEvents - 1;
 		}
-		// Case Clan Event
+	
 		if (_eventType == 2)
 		{
 			for (L2PcInstance member : _participatingPlayers)
@@ -682,7 +661,7 @@ public class L2RaidEvent
 			if (L2EventManagerInstance._currentEvents != 0)
 				L2EventManagerInstance._currentEvents = L2EventManagerInstance._currentEvents - 1;
 		}
-		// Case Party Event.
+		
 		if (_eventType == 3)
 		{
 			if (player.getParty() != null)
@@ -696,12 +675,12 @@ public class L2RaidEvent
 			else
 			{
 				player.sendMessage("You don't have a party anymore?! Well then the rewards go for you only.");
-				// Hand Out Items
+			
 				handOutItems(player, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
-				// General Clean-Up of the Event.
+			
 				unSpawnNPC();
 				clearFromEvent(player);
-				// Teleport back to previous-event location.
+		
 				doTeleport(player, _pX, _pY, _pZ, 10, true);
 				if (L2EventManagerInstance._currentEvents != 0)
 					L2EventManagerInstance._currentEvents = L2EventManagerInstance._currentEvents - 1;

@@ -120,10 +120,20 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				StringTokenizer st = new StringTokenizer(_command);
 								
 				st.nextToken();
-								
-				String to = st.nextToken();
-				String title = st.nextToken();
-				String message = "";
+				
+				String to;
+				String title;
+				String message = "";;
+				
+				if (st.hasMoreTokens())
+					to = st.nextToken();
+				else
+					return;
+				
+				if (st.hasMoreTokens())
+					title = st.nextToken();
+				else
+					return;
 								
 				while(st.hasMoreTokens()) {
 									

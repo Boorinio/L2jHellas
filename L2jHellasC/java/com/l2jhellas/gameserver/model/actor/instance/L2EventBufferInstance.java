@@ -18,9 +18,9 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.BuffTemplateTable;
-import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.model.L2Effect;
+import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
 
@@ -40,7 +40,6 @@ public class L2EventBufferInstance
 	{
 		if (player == null)
 			return;
-		getbufferType(efector).setTarget(player);
 		
 		FastList<L2BuffTemplate> _templateBuffs = new  FastList<L2BuffTemplate>();
 		_templateBuffs = BuffTemplateTable.getInstance().getBuffTemplate(_templateId);
@@ -53,8 +52,10 @@ public class L2EventBufferInstance
 		
 		for (L2BuffTemplate _buff:_templateBuffs)
 		{
+			
 			if (paymentRequired)
-			{
+			{	
+				
 				if(!_buff.checkPrice(player))
 				{
 					player.sendMessage("Not enough Adena");
@@ -65,23 +66,23 @@ public class L2EventBufferInstance
 					player.sendMessage("Not enough Event Points");
 					return;
 				}
+				
 			}
 			
-			getbufferType(efector).setTarget(player);
-			
-			if ( _buff.checkPlayer(player) && _buff.checkPrice(player) && paymentRequired) 
+			if ( _buff.checkPlayer(player) && _buff.checkPrice(player)) 
 			{							
-							
+					
 					player.setCurrentHpMp(player.getMaxHp()+5000, player.getMaxMp()+5000);
         
-					for (L2Effect effect : _buff.getSkill().getEffects(player, player))
-		            {
-		                    player.addEffect(effect);
-		            }
+					L2Skill skill = SkillTable.getInstance().getInfo(_buff.getSkillId(), _buff.getSkillLevel());
+					if (skill != null)
+					{
+						skill.getEffects(player, player);
+					}
 		                            
 					if (_buff.getSkill().getSkillType() == L2SkillType.SUMMON)
 		            {
-							player.doCast(_buff.getSkill());
+						player.doCast(_buff.getSkill());
 		            }           		                         
 		                    
 					try{
@@ -90,7 +91,8 @@ public class L2EventBufferInstance
 						
 					}
 			
-		}
+			}
+		
 			if (paymentRequired &&(_pricePoints>0 ||_priceTotal>0))
 			{
 				if(_pricePoints>0)
@@ -102,20 +104,6 @@ public class L2EventBufferInstance
 				if (_priceTotal>0)
 				player.reduceAdena("NpcBuffer", _priceTotal, player.getLastFolkNPC(), true);
 			}
-	}
-	private static L2Character getbufferType(L2Object efector)
-	{
-		if (efector instanceof L2PcInstance)
-		{
-			selfBuffer = ((L2PcInstance)efector);
-			efector = selfBuffer;
-		}
-		if (efector instanceof L2NpcInstance)
-		{
-			npcBuffer = ((L2NpcInstance)efector);
-			efector = npcBuffer;
-		}
-		return (L2Character) efector;
 	}
 	static Logger _log = Logger.getLogger(Config.class.getName());
 }
