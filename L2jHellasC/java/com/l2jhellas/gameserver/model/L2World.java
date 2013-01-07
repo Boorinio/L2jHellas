@@ -102,7 +102,10 @@ public final class L2World
     {
         return _instance;
     }
-
+    public void forceObject(L2Object object) 
+   	{ 
+   	_allObjects.put(object); 
+    }
     /**
      * Add L2Object object in _allObjects.<BR><BR>
      *

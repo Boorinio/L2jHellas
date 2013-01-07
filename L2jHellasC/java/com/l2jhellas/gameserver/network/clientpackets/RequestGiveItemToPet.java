@@ -72,7 +72,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		// Exploit Fix for Hero weapons Uses pet Inventory to buy New One.
 		// [L2JOneo Code Modded To L2Dot By Stefoulis15]
 		L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
-		if (item.isAugmented())
+		if (item.isAugmented() && item != null)
 		{
 			player.sendMessage("You cannot give augmented items to pet.");
 			return;
