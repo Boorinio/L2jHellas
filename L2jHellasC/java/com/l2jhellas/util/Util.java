@@ -3,48 +3,43 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.util;
 
-import javolution.text.TextBuilder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Logger;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
+import javolution.text.TextBuilder;
 
 public class Util
 {
-    public static boolean isInternalIP(String ipAddress)
-    {
-        return (ipAddress.startsWith("192.168.") ||
-                ipAddress.startsWith("10.") ||
-				//ipAddress.startsWith("172.16.") ||
-                //Removed because there are some net IPs in this range.
-                //TODO: Use regexp or something to only include 172.16.0.0 => 172.16.31.255
-                ipAddress.startsWith("127.0.0.1"));
-    }
+	protected static final Logger _log = Logger.getLogger(Util.class.getName());
 
-    public static String printData(byte[] data, int len)
+	public static boolean isInternalIP(String ipAddress)
 	{
-        TextBuilder result = new TextBuilder();
+		return (ipAddress.startsWith("192.168.") || ipAddress.startsWith("10.") || ipAddress.startsWith("127.0.0.1"));
+	}
+	
+	public static String printData(byte[] data, int len)
+	{
+		TextBuilder result = new TextBuilder();
 
 		int counter = 0;
-
-		for (int i=0;i< len;i++)
+		
+		for (int i = 0; i < len; i++)
 		{
 			if (counter % 16 == 0)
 			{
-				result.append(fillHex(i,4)+": ");
+				result.append(fillHex(i, 4) + ": ");
 			}
 
 			result.append(fillHex(data[i] & 0xff, 2) + " ");
@@ -52,14 +47,14 @@ public class Util
 			if (counter == 16)
 			{
 				result.append("   ");
-
-				int charpoint = i-15;
-				for (int a=0; a<16;a++)
+				
+				int charpoint = i - 15;
+				for (int a = 0; a < 16; a++)
 				{
 					int t1 = data[charpoint++];
 					if (t1 > 0x1f && t1 < 0x80)
 					{
-						result.append((char)t1);
+						result.append((char) t1);
 					}
 					else
 					{
@@ -73,20 +68,20 @@ public class Util
 		}
 
 		int rest = data.length % 16;
-		if (rest > 0 )
+		if (rest > 0)
 		{
-			for (int i=0; i<17-rest;i++ )
+			for (int i = 0; i < 17 - rest; i++)
 			{
 				result.append("   ");
 			}
-
-			int charpoint = data.length-rest;
-			for (int a=0; a<rest;a++)
+			
+			int charpoint = data.length - rest;
+			for (int a = 0; a < rest; a++)
 			{
 				int t1 = data[charpoint++];
 				if (t1 > 0x1f && t1 < 0x80)
 				{
-					result.append((char)t1);
+					result.append((char) t1);
 				}
 				else
 				{
@@ -97,12 +92,10 @@ public class Util
 			result.append("\n");
 		}
 
-
 		return result.toString();
 	}
-    
-    /**
-	 *
+	
+	/**
 	 * @param s
 	 */
 
@@ -125,8 +118,8 @@ public class Util
 	public static String fillHex(int data, int digits)
 	{
 		String number = Integer.toHexString(data);
-
-		for (int i=number.length(); i< digits; i++)
+		
+		for (int i = number.length(); i < digits; i++)
 		{
 			number = "0" + number;
 		}
@@ -142,13 +135,119 @@ public class Util
 	{
 		return printData(raw, raw.length);
 	}
-	 /**
+	
+	/**
 	 * converts a given time from minutes -> milliseconds
+	 * 
 	 * @param string
 	 * @return
 	 */
 	public static int convertMinutesToMiliseconds(int minutesToConvert)
 	{
 		return minutesToConvert * 60000;
+	}
+	
+	/**
+	 * returns how many processors are installed on this system.
+	 */
+	private static void printCpuInfo()
+	{
+		_log.info("Avaible CPU(s): " + Runtime.getRuntime().availableProcessors());
+		_log.info("Processor(s) Identifier: " + System.getenv("PROCESSOR_IDENTIFIER"));
+	}
+	
+	/**
+	 * returns the operational system server is running on it.
+	 */
+	private static void printOSInfo()
+	{
+		_log.info("OS: " + System.getProperty("os.name") + " Build: " + System.getProperty("os.version"));
+		_log.info("OS Arch: " + System.getProperty("os.arch"));
+	}
+	
+	/**
+	 * returns JAVA Runtime Environment properties
+	 */
+	public static void printJreInfo()
+	{
+		_log.info("Java Platform Information");
+		_log.info("Java Runtime  Name: " + System.getProperty("java.runtime.name"));
+		_log.info("Java Version: " + System.getProperty("java.version"));
+		_log.info("Java Class Version: " + System.getProperty("java.class.version"));
+	}
+	
+	/**
+	 * returns general info related to machine
+	 */
+	public static void printRuntimeInfo()
+	{
+		_log.info("Runtime Information");
+		_log.info("Current Free Heap Size: " + Runtime.getRuntime().freeMemory() / 1024 / 1024 + " mb");
+		_log.info("Current Heap Size: " + Runtime.getRuntime().totalMemory() / 1024 / 1024 + " mb");
+		_log.info("Maximum Heap Size: " + Runtime.getRuntime().maxMemory() / 1024 / 1024 + " mb");
+		
+	}
+	
+	/**
+	 * calls time service to get system time.
+	 */
+	public static void printSystemTime()
+	{
+		// Instantiates Date Object
+		Date dateInfo = new Date();
+		
+		// generates a simple date format
+		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aa");
+		
+		// generates String that will get the formatter info with values
+		String dayInfo = df.format(dateInfo);
+		_log.info("System Time: " + dayInfo);
+	}
+	
+	/**
+	 * gets system JVM properties.
+	 */
+	private static void printJvmInfo()
+	{
+		_log.info("Virtual Machine Information (JVM)");
+		_log.info("JVM Name: " + System.getProperty("java.vm.name"));
+		_log.info("JVM installation directory: " + System.getProperty("java.home"));
+		_log.info("JVM version: " + System.getProperty("java.vm.version"));
+		_log.info("JVM Vendor: " + System.getProperty("java.vm.vendor"));
+		_log.info("JVM Info: " + System.getProperty("java.vm.info"));
+	}
+	
+	/**
+	 * prints all other methods.
+	 */
+	public static void printGeneralSystemInfo()
+	{
+		printSystemTime();
+		printOSInfo();
+		printCpuInfo();
+		printRuntimeInfo();
+		printJreInfo();
+		printJvmInfo();
+	}
+	
+	public static int getAvailableProcessors()
+	{
+		Runtime rt = Runtime.getRuntime();
+		return rt.availableProcessors();
+	}
+	
+	public static String getOSName()
+	{
+		return System.getProperty("os.name");
+	}
+	
+	public static String getOSVersion()
+	{
+		return System.getProperty("os.version");
+	}
+	
+	public static String getOSArch()
+	{
+		return System.getProperty("os.arch");
 	}
 }

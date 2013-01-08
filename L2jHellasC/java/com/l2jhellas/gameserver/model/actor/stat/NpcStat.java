@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,44 +20,40 @@ import com.l2jhellas.gameserver.skills.Stats;
 
 public class NpcStat extends CharStat
 {
-    // =========================================================
-    // Data Field
-
-    // =========================================================
-    // Constructor
-    public NpcStat(L2NpcInstance activeChar)
-    {
-        super(activeChar);
-
-        setLevel(getActiveChar().getTemplate().level);
-    }
-
-    // =========================================================
-    // Method - Public
-
-    // =========================================================
-    // Method - Private
-
-    // =========================================================
-    // Property - Public
-    @Override
-	public L2NpcInstance getActiveChar() { return (L2NpcInstance)super.getActiveChar(); }
-
-    @Override
-	public final int getMaxHp() { return (int)calcStat(Stats.MAX_HP, getActiveChar().getTemplate().baseHpMax * (getActiveChar().isChampion() ? Config.CHAMPION_HP : 1), null, null); }
-        
-    @Override
-    public int getWalkSpeed() { return  getRunSpeed()/2; }
-    
-    @Override
-    public float getMovementSpeedMultiplier()
-    {
-    	if (getActiveChar() == null)
-    		return 1;
-    	float val = getRunSpeed() * 1f / getActiveChar().getTemplate().baseRunSpd;
-    	if (!getActiveChar().isRunning())
-    		val = val/2;
-    	return val;
-    }
-
+	public NpcStat(L2NpcInstance activeChar)
+	{
+		super(activeChar);
+		
+		setLevel(getActiveChar().getTemplate().level);
+	}
+	
+	@Override
+	public L2NpcInstance getActiveChar()
+	{
+		return (L2NpcInstance) super.getActiveChar();
+	}
+	
+	@Override
+	public final int getMaxHp()
+	{
+		return (int) calcStat(Stats.MAX_HP, getActiveChar().getTemplate().baseHpMax * (getActiveChar().isChampion() ? Config.CHAMPION_HP : 1), null, null);
+	}
+	
+	@Override
+	public int getWalkSpeed()
+	{
+		return getRunSpeed() / 2;
+	}
+	
+	@Override
+	public float getMovementSpeedMultiplier()
+	{
+		if (getActiveChar() == null)
+			return 1;
+		float val = getRunSpeed() * 1f / getActiveChar().getTemplate().baseRunSpd;
+		if (!getActiveChar().isRunning())
+			val = val / 2;
+		return val;
+	}
+	
 }

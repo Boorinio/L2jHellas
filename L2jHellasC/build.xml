@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="l2jhellas_GS" default="dist" basedir=".">
+<project name="L2jHellasC" default="Build" basedir=".">
     <description>
         This script will build the l2JHellas Game Server IL.
         
@@ -18,7 +18,7 @@
         Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
         02111-1307, USA.
         
-        http://www.gnu.org/copyleft/gpl.html      
+        http://www.gnu.org/copyleft/gpl.html
         
     </description>
     
@@ -41,7 +41,6 @@
 	
     <echo>Building L2j Hellas.</echo>
     <target name="Building Dirs" depends="Clean" description="Create the output directories.">
-
         <mkdir dir="${build}"/>
         <mkdir dir="${build.classes}"/>
         <mkdir dir="${build.dist}" />
@@ -54,9 +53,16 @@
 	
     <target name="Compile" depends="Version" description="Compile the source.">
     	<echo>Compiling L2J Hellas.</echo>
-		<javac destdir="${build.classes}" optimize="on" debug="on" source="1.7" target="1.7" nowarn="on" includeantruntime="false">
-			<src path="${src}"/>
-			<classpath refid="classpath"/>   
+		<javac destdir="${build.classes}" 
+				optimize="on"
+				encoding="utf-8"
+				debug="on"
+				source="1.7"
+				target="1.7"
+				nowarn="off"
+				includeantruntime="false">
+				<src path="${src}"/>
+				<classpath refid="classpath"/>   
 		</javac>
 	</target>
     
@@ -64,9 +70,13 @@
 		<jar destfile="${build}/l2jhellas.jar" level="9">
 			<fileset dir="${build.classes}"/>
 				<manifest>
+					<attribute name="Built-By" value="L2JHellas" />
+					<attribute name="Built-Date" value="${build.tstamp}" />
+					<attribute name="Implementation-URL" value="http://www.l2jhellas.eu/" />
+					<attribute name="Implementation-Version" value="${revision}" />
 					<attribute name="Main-Class" value="com.l2jhellas.Server"/>
-					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar commons-logging-1.1.jar c3p0-0.9.1.2.jar jython.jar mysql-connector-java-5.1.22-bin.jar javolution.jar mmocore.jar"/>
-			</manifest>
+					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar bsh-engine.jar c3p0-0.9.1.2.jar commons-logging-1.1.1.jar ecj.jar java-engine.jar javolution.jar jython.jar jython-engine.jar mail.jar mmocore.jar mysql-connector-java-5.1.22-bin.jar	worldwind.jar"/>
+				</manifest>
 		</jar>
 		<copy todir="${build.dist.login.lib}">
 			<fileset dir="${build}">
@@ -86,7 +96,7 @@
 		</exec>
 	</target>
  
-	<target name="dist" depends="Jar">
+	<target name="Build" depends="Jar">
 		<echo>Creating L2J Hellas Server:</echo>
 		<copy todir="${build.dist.login}">
 			<fileset dir="config">
@@ -131,7 +141,6 @@
 				<include name="setenv.sh"/>
 				<include name="startGameServer.*"/>
 				<include name="classpath.*"/>
-				<include name="hibernate.cfg.xml"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.doc}">
@@ -144,9 +153,6 @@
 		<fixcrlf srcdir="${build.dist.login}" eol="lf" eof="remove" includes="**/*.sh"></fixcrlf>
 		<fixcrlf srcdir="${build.dist.game}" eol="crlf" eof="remove" includes="**/*.bat"></fixcrlf>
 		<fixcrlf srcdir="${build.dist.login}" eol="crlf" eof="remove" includes="**/*.bat"></fixcrlf>
-		<mkdir dir="${build.dist.game}/log" />
-		<mkdir dir="${build.dist.login}/log" />
-		<mkdir dir="${build.dist.game}/hibernate-mapping" />
 		<mkdir dir="${build.dist.game}/config" />
 		<mkdir dir="${build.dist.login}/config" />
 		<mkdir dir="${build.dist.login}/config/Network" />
@@ -161,27 +167,6 @@
 		<copy todir="${build.dist.login}/config">
 			<fileset dir="config">
 				<include name="Telnet.ini"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${build.dist.game}/data" />
-		<copy todir="${build.dist.game}/data">
-			<fileset dir="data">
-				<include name="*.csv"/>
-				<include name="*.txt"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${build.dist.game}/data/geodata" />
-		<copy todir="${build.dist.game}/data/geodata">
-			<fileset dir="data/geodata">
-				<include name="*.txt"/>
-				<include name="*.l2j"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${build.dist.game}/data/pathnode" />
-		<copy todir="${build.dist.game}/data/pathnode">
-			<fileset dir="data/pathnode">
-				<include name="*.txt"/>
-				<include name="*.pn"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Admin">
@@ -218,12 +203,13 @@
 				<include name="LoginServer.ini"/>
 			</fileset>
 		</copy>
-    	
         <zip destfile="${build}/L2J Hellas Core.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
 		<unzip src="${build}/L2J Hellas Core.zip" dest="C:/L2JHellas" />
+		<copy file="${build}/L2J Hellas Core.zip" todir="C:/L2JHellas"></copy>
 		<echo>L2J Hellas Server version:${revision} stored in C:/L2JHellas.</echo>
-		<echo>Please visit our forum for bugs.</echo>
+		<echo>Please visit our forum http://l2jhellas.eu/ for bugs.</echo>
+		<delete dir="${build}"/>
     </target>   
     
 	<target name="Version" depends="Building Dirs" description="Create L2J Hellas version file">
@@ -247,7 +233,7 @@ L2jHellas Project details:
 		<echo>version = ${revision}</echo>
 	</target>
 	
-	<target name="Clean" description="Remove the output directories">
+	<target name="Clean" description="Remove the build directories before the compile.">
 		<delete dir="${build}"/>
 	</target>
 </project>

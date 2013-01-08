@@ -73,7 +73,7 @@ public class AccessLevels
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File("./data/xml/access_levels.xml");
+		File f = new File("./data/stats/access_levels.xml");
 		if (!f.exists())
 		{
 			_log.severe("AccessLevels: access_levels.xml could not be loaded: file not found");

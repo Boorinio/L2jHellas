@@ -30,7 +30,7 @@ public class SkillHandler
 	
 	private static SkillHandler _instance;
 	
-	private Map<L2SkillType, ISkillHandler> _datatable;
+	private final Map<L2SkillType, ISkillHandler> _datatable;
 	
 	public static SkillHandler getInstance()
 	{
@@ -75,7 +75,8 @@ public class SkillHandler
 		registerSkillHandler(new Sow());
 		registerSkillHandler(new Harvest());
 		registerSkillHandler(new GetPlayer());
-		_log.config("SkillHandler: Loaded " + _datatable.size() + " handlers.");
+		
+		_log.config("SkillHandler: Loaded " + _datatable.size() + " handlers in total.");
 	}
 	
 	public void registerSkillHandler(ISkillHandler handler)

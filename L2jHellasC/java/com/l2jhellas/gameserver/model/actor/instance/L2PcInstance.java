@@ -86,6 +86,7 @@ import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
+import com.l2jhellas.gameserver.lib.Log;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.FishData;
 import com.l2jhellas.gameserver.model.ForceBuff;
@@ -5517,9 +5518,15 @@ public final class L2PcInstance extends L2PlayableInstance
 						dropItem("DieDrop", itemDrop, killer, true);
 						
 						if (isKarmaDrop)
-							_log.warning(getName() + " has karma and dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount());
+						{
+							String text = getName() + " has karma and dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount();
+							Log.add(text, "karma_dieDrop");
+						}
 						else
-							_log.warning(getName() + " dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount());
+						{
+							String text = getName() + " dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount();
+							Log.add(text, "dieDrop");
+						}
 						
 						dropCount++;
 						break;

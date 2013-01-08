@@ -65,7 +65,7 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new version());
 		if (Config.ALLOW_PLAYERS_REFUSAL)
 			registerVoicedCommandHandler(new pmoff());
-		if(ExternalConfig.ALLOW_SERVER_RESTART_COMMAND)
+		if (ExternalConfig.ALLOW_SERVER_RESTART_COMMAND)
 			registerVoicedCommandHandler(new ServerRestartVote());
 		if (Config.ONLINE_VOICE_ALLOW)
 			registerVoicedCommandHandler(new OnlinePlayers());
@@ -77,9 +77,9 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new MailCmd());
 		if (Config.ENABLED_CHAOS_EVENT)
 			registerVoicedCommandHandler(new ChaosCmd());
-
 		registerVoicedCommandHandler(new Premium());
-		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers.");
+		
+		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers in total.");
 	}
 	
 	public void registerVoicedCommandHandler(IVoicedCommandHandler handler)

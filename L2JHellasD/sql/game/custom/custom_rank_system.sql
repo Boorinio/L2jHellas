@@ -1,6 +1,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for `account_premium`
+-- Table structure for `custom_pvp_system`
 -- ----------------------------
 DROP TABLE IF EXISTS `custom_pvp_system`;
 

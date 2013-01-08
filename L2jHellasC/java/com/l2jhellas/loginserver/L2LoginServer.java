@@ -46,7 +46,7 @@ public class L2LoginServer
 	public static final int PROTOCOL_REV = 0x0102;
 
 	private static L2LoginServer _instance;
-	private Logger _log = Logger.getLogger(L2LoginServer.class.getName());
+	private final Logger _log = Logger.getLogger(L2LoginServer.class.getName());
 	private GameServerListener _gameServerListener;
 	private SelectorThread<L2LoginClient> _selectorThread;
 	private Status _statusServer;
@@ -65,7 +65,7 @@ public class L2LoginServer
 	public L2LoginServer()
 	{
 		Server.serverMode = Server.MODE_LOGINSERVER;
-//      Local Constants
+		// Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME   = "./log.cfg"; // Name of log file
 
@@ -181,7 +181,7 @@ public class L2LoginServer
 			}
 		}
 
-		Util.printSection("Login Server [l2jhellas] Status"); 
+		Util.printSection("Login Server Status");
         final SelectorConfig sc = new SelectorConfig();  
 	    sc.MAX_READ_PER_PASS = Config.MMO_MAX_READ_PER_PASS;  
 	    sc.MAX_SEND_PER_PASS = Config.MMO_MAX_SEND_PER_PASS;  

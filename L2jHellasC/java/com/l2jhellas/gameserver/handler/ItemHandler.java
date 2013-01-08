@@ -94,7 +94,7 @@ public class ItemHandler
 		registerItemHandler(new SummonItems());
 		registerItemHandler(new BeastSpice());
 		
-		_log.config("ItemHandler: Loaded " + _datatable.size() + " handlers.");
+		_log.config("ItemHandler: Loaded " + _datatable.size() + " handlers in total.");
 	}
 	
 	/**

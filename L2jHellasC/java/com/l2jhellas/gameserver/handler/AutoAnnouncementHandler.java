@@ -41,8 +41,7 @@ public class AutoAnnouncementHandler
 	protected static Log _log = LogFactory.getLog(AutoAnnouncementHandler.class.getName());
 	private static AutoAnnouncementHandler _instance;
 	
-	private static final long DEFAULT_ANNOUNCEMENT_DELAY = 180000; // 3 mins by
-																	// default
+	private static final long DEFAULT_ANNOUNCEMENT_DELAY = 180000; // 3 mins by default
 	
 	protected Map<Integer, AutoAnnouncementInstance> _registeredAnnouncements;
 	

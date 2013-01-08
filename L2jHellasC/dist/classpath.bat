@@ -5,11 +5,12 @@ SET CLASSPATH=%CLASSPATH%;./lib/bsh-engine.jar
 SET CLASSPATH=%CLASSPATH%;./lib/c3p0-0.9.1.2.jar
 SET CLASSPATH=%CLASSPATH%;./lib/commons-logging-1.1.1.jar
 SET CLASSPATH=%CLASSPATH%;./lib/ecj.jar
-SET CLASSPATH=%CLASSPATH%;./lib/jython-engine.jar
-SET CLASSPATH=%CLASSPATH%;./lib/mail.jar
+SET CLASSPATH=%CLASSPATH%;./lib/java-engine.jar
 SET CLASSPATH=%CLASSPATH%;./lib/javolution.jar
 SET CLASSPATH=%CLASSPATH%;./lib/jython.jar
-SET CLASSPATH=%CLASSPATH%;./lib/java-engine.jar
+SET CLASSPATH=%CLASSPATH%;./lib/jython-engine.jar
+SET CLASSPATH=%CLASSPATH%;./lib/mail.jar
+SET CLASSPATH=%CLASSPATH%;./lib/worldwind.jar
 REM L2JHellas Core
 SET CLASSPATH=%CLASSPATH%;./lib/l2jhellas.jar
 REM MMOCore

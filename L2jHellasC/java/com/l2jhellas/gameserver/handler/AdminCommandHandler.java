@@ -38,6 +38,7 @@ public class AdminCommandHandler
 		_datatable = new FastMap<Integer, IAdminCommandHandler>();
 		registerAdminCommandHandler(new AdminAdmin());
 		registerAdminCommandHandler(new AdminAnnouncements());
+		registerAdminCommandHandler(new AdminAutoAnnouncements());
         registerAdminCommandHandler(new AdminBan());
         registerAdminCommandHandler(new AdminBanChat());
         registerAdminCommandHandler(new AdminBBS());
@@ -102,6 +103,8 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminReload());
 		if (Config.ENABLED_CHAOS_EVENT)
 			registerAdminCommandHandler(new AdminChaos());
+		
+		_log.info("AdminCommandHandler: Loaded " + _datatable.size() + " Handlers in total.");
 	}
 	
 	public void registerAdminCommandHandler(IAdminCommandHandler handler)

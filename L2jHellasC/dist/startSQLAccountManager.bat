@@ -1,5 +1,6 @@
 @color 7f
-echo.
+echo OFF
+CLS
 REM ----------- Set Class Paths and Calls setenv.bat -----------------
 SET OLDCLASSPATH=%CLASSPATH%
 call classpath.bat

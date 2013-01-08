@@ -30,7 +30,7 @@ public class ChatHandler
 	
 	private static ChatHandler _instance;
 	
-	private FastMap<Integer, IChatHandler> _datatable;
+	private final FastMap<Integer, IChatHandler> _datatable;
 	
 	public static ChatHandler getInstance()
 	{
@@ -58,7 +58,7 @@ public class ChatHandler
 		registerChatHandler(new ChatShout());
 		registerChatHandler(new ChatTell());
 		registerChatHandler(new ChatTrade());
-		_log.config("Loaded " + size() + "  ChatHandlers");
+		_log.config("ChatHandler: Loaded " + size() + " Handlers in total.");
 	}
 	
 	/**

@@ -179,6 +179,8 @@ public final class Config
 	public static int ALT_LOTTERY_2_AND_1_NUMBER_PRIZE;
 	public static boolean ALT_DEV_NO_QUESTS;
 	public static boolean ALT_DEV_NO_SPAWNS;
+	public static boolean ALT_DEV_NO_SCRIPT;
+	public static boolean ALT_DEV_NO_RB;
 	public static int FS_TIME_ATTACK;
 	public static int FS_TIME_COOLDOWN;
 	public static int FS_TIME_ENTRY;
@@ -1054,6 +1056,8 @@ public final class Config
 				ALT_LOTTERY_2_AND_1_NUMBER_PRIZE = Integer.parseInt(altSettings.getProperty("AltLottery2and1NumberPrize", "200"));
 				ALT_DEV_NO_QUESTS = Boolean.parseBoolean(altSettings.getProperty("AltDevNoQuests", "False"));
 				ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(altSettings.getProperty("AltDevNoSpawns", "False"));
+				ALT_DEV_NO_SCRIPT = Boolean.parseBoolean(altSettings.getProperty("AltDevNoScripts", "False"));
+				ALT_DEV_NO_RB = Boolean.parseBoolean(altSettings.getProperty("AltDevNoRaidbosses", "False"));
 				FS_TIME_ATTACK = Integer.parseInt(altSettings.getProperty("TimeOfAttack", "50"));
 				FS_TIME_COOLDOWN = Integer.parseInt(altSettings.getProperty("TimeOfCoolDown", "5"));
 				FS_TIME_ENTRY = Integer.parseInt(altSettings.getProperty("TimeOfEntry", "3"));
