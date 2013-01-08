@@ -248,6 +248,9 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 ('admin_event_control_prize','1'),
 ('admin_event_control_chatban','1'),
 ('admin_event_control_finish','1'),
+('admin_startchaos', '1'),
+('admin_endchaos', '1'),
+('admin_warnchaos', '1'),
 
 -- EX & SP
 ('admin_add_exp_sp_to_character','1'),
