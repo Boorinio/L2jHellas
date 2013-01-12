@@ -78,6 +78,7 @@ public class VoicedCommandHandler
 		if (Config.ENABLED_CHAOS_EVENT)
 			registerVoicedCommandHandler(new ChaosCmd());
 		registerVoicedCommandHandler(new Premium());
+		registerVoicedCommandHandler(new QuizCmd());
 		
 		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers in total.");
 	}

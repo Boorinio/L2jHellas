@@ -449,6 +449,11 @@ public final class Config
 	public static int CHAOS_COLOR;
 	public static int CHAOS_SKILL_ID;
 	public static int CHAOS_SKILL_LVL;
+	public static boolean ENABLED_QUIZ_EVENT;
+	public static int QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN;
+	public static int QUIZ_MINUTES_TO_ANSWER;
+	public static int QUIZ_REWARD_ID;
+	public static int QUIZ_REWARD_QUANTITY;
 	public static enum ClanLeaderColored
 	{
 		name, title
@@ -1823,6 +1828,12 @@ public final class Config
 				CHAOS_COLOR = Integer.decode("0x" + EventSettings.getProperty("ChaosColor", "000000"));
 				CHAOS_SKILL_ID = Integer.parseInt(EventSettings.getProperty("ChaosSkillID", "7029"));
 				CHAOS_SKILL_LVL = Integer.parseInt(EventSettings.getProperty("ChaosSkillLvL", "4"));
+				ENABLED_QUIZ_EVENT = Boolean.parseBoolean(EventSettings.getProperty("EnableQuizEvent", "False"));
+				QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN = Integer.parseInt(EventSettings.getProperty("MinutesUntilNextQuestion", "120"));
+				QUIZ_MINUTES_TO_ANSWER = Integer.parseInt(EventSettings.getProperty("MinutesToAnswer", "10"));
+				QUIZ_REWARD_ID= Integer.parseInt(EventSettings.getProperty("QuizRewardId", "57"));
+				QUIZ_REWARD_QUANTITY= Integer.parseInt(EventSettings.getProperty("QuizRewardQuantity", "1000000"));
+			
 			}
 			catch (Exception e)
 			{

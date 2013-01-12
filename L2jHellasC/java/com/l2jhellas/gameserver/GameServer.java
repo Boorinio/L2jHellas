@@ -107,6 +107,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.Hitman;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.QuizEvent;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
 import com.l2jhellas.gameserver.pathfinding.PathFinding;
@@ -447,6 +448,8 @@ public class GameServer
 		CharacterRankRewardTable.getInstance();
 		RankRewardTable.getInstance();
 		TopTable.getInstance();
+		if (Config.ENABLED_QUIZ_EVENT)
+			QuizEvent.getInstance();
 		if (Config.ALLOW_AWAY_STATUS)
 		{
 			_log.info("Away System");
