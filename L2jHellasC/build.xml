@@ -61,8 +61,8 @@
 				target="1.7"
 				nowarn="off"
 				includeantruntime="false">
-				<src path="${src}"/>
-				<classpath refid="classpath"/>   
+			<src path="${src}"/>
+			<classpath refid="classpath"/>   
 		</javac>
 	</target>
     
@@ -205,18 +205,18 @@
 		</copy>
         <zip destfile="${build}/L2J Hellas Core.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
+		<mkdir dir="C:/L2JHellas/Backup" />
 		<unzip src="${build}/L2J Hellas Core.zip" dest="C:/L2JHellas" />
-		<copy file="${build}/L2J Hellas Core.zip" todir="C:/L2JHellas"></copy>
+		<copy file="${build}/L2J Hellas Core.zip" todir="C:/L2JHellas/Backup"></copy>
 		<echo>L2J Hellas Server version:${revision} stored in C:/L2JHellas.</echo>
 		<echo>Please visit our forum http://l2jhellas.eu/ for bugs.</echo>
-		<delete dir="${build}"/>
     </target>   
     
 	<target name="Version" depends="Building Dirs" description="Create L2J Hellas version file">
 		<tstamp>
 			<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
 		</tstamp>
-		<exec dir="." executable="svnversion" outputproperty="revision" />
+		<exec dir="." executable="svnversion" outputproperty="revision" failifexecutionfails="false"/>
 		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini">
 L2jHellas Project details:
 			${line.separator}

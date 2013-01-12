@@ -108,11 +108,11 @@
 	<target name="Build" depends="export" description="Creates a ZIP file. Suitable for distribution but building takes longer. See dist-deflate for faster builds.">
 		<zip destfile="${build}/L2J Hellas DataPack.zip" basedir="${build.dist}" update="true" level="9" />
 		<mkdir dir="C:/L2JHellas" />
+		<mkdir dir="C:/L2JHellas/Backup" />
 		<unzip src="${build}/L2J Hellas DataPack.zip" dest="C:/L2JHellas" />
-		<copy file="${build}/L2J Hellas DataPack.zip" todir="C:/L2JHellas"></copy>
+		<copy file="${build}/L2J Hellas DataPack.zip" todir="C:/L2JHellas/Backup"></copy>
 		<echo>L2J Hellas DataPack stored in C:/L2JHellas.</echo>
 		<echo>Please visit our forum http://l2jhellas.eu for bugs.</echo>
-		<delete dir="${build}"/>
 	</target>
 	
 	<target name="dist-deflate"
