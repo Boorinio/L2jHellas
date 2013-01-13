@@ -189,6 +189,17 @@ public class QuizEvent {
 				
 				e.printStackTrace();
 				
+			}finally{
+				
+				try {
+					
+					con.close();
+					
+				}catch(Exception e) {
+					
+					e.printStackTrace();
+					
+				}
 			}
 			
 		}
@@ -221,6 +232,17 @@ public class QuizEvent {
 				
 			e.printStackTrace();
 				
+		}finally{
+			
+			try {
+				
+				con.close();
+				
+			}catch(Exception e) {
+				
+				e.printStackTrace();
+				
+			}
 		}
 		
 		Announcements.getInstance().gameAnnounceToAll("Type .quiz and then type your answer! The first one who will answer correctly wins.");
