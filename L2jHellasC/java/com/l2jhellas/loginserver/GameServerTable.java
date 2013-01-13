@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,8 +43,7 @@ import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.util.Rnd;
 
 /**
- *
- * @author  KenM
+ * @author KenM
  */
 public class GameServerTable
 {
@@ -81,19 +80,19 @@ public class GameServerTable
 	public GameServerTable() throws SQLException, NoSuchAlgorithmException, InvalidAlgorithmParameterException
 	{
 		loadServerNames();
-		_log.info("Loaded "+_serverNames.size()+" server names");
+		_log.info("Loaded " + _serverNames.size() + " Server Names.");
 
 		loadRegisteredGameServers();
-		_log.info("Loaded "+_gameServerTable.size()+" registered Game Servers");
+		_log.info("Loaded " + _gameServerTable.size() + " registered Game Servers.");
 
 		loadRSAKeys();
-		_log.info("Cached "+_keyPairs.length+" RSA keys for Game Server communication.");
+		_log.info("Cached " + _keyPairs.length + " RSA keys for Game Server communication.");
 	}
 
 	private void loadRSAKeys() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException
 	{
 		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-		RSAKeyGenParameterSpec spec = new RSAKeyGenParameterSpec(512,RSAKeyGenParameterSpec.F4);
+		RSAKeyGenParameterSpec spec = new RSAKeyGenParameterSpec(512, RSAKeyGenParameterSpec.F4);
 		keyGen.initialize(spec);
 
 		_keyPairs = new KeyPair[KEYS_SIZE];
@@ -101,32 +100,40 @@ public class GameServerTable
 		{
 			_keyPairs[i] = keyGen.genKeyPair();
 		}
+		
+		keyGen = null;
+		spec = null;
 	}
 
 	private void loadServerNames()
 	{
+		XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
+		UTF8StreamReader reader = new UTF8StreamReader();
+
 		InputStream in = null;
 		try
 		{
-			in = new FileInputStream("servername.xml");
-			XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
-			xpp.setInput(new UTF8StreamReader().setInput(in));
+			in = new FileInputStream("./config/Network/Server Name.xml");
+			xpp.setInput(reader.setInput(in));
 			for (int e = xpp.getEventType(); e != XMLStreamConstants.END_DOCUMENT; e = xpp.next())
 			{
 				if (e == XMLStreamConstants.START_ELEMENT)
 				{
-					if(xpp.getLocalName().toString().equals("server"))
+					if (xpp.getLocalName().toString().equals("server"))
 					{
-						Integer id = new Integer(xpp.getAttributeValue(null,"id").toString());
-						String name = xpp.getAttributeValue(null,"name").toString();
-						_serverNames.put(id,name);
+						Integer id = new Integer(xpp.getAttributeValue(null, "id").toString());
+						String name = xpp.getAttributeValue(null, "name").toString();
+						_serverNames.put(id, name);
+						
+						id = null;
+						name = null;
 					}
 				}
 			}
 		}
 		catch (FileNotFoundException e)
 		{
-            _log.warning("servername.xml could not be loaded: file not found");
+			_log.warning("servername.xml could not be loaded: file not found");
 		}
 		catch (XMLStreamException xppe)
 		{
@@ -134,7 +141,13 @@ public class GameServerTable
 		}
 		finally
 		{
-			try { in.close(); } catch (Exception e) {}
+			try
+			{
+				in.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 
@@ -157,6 +170,10 @@ public class GameServerTable
 		rset.close();
 		statement.close();
 		con.close();
+		
+		rset = null;
+		statement = null;
+		gsi = null;
 	}
 
 	public Map<Integer, GameServerInfo> getRegisteredGameServers()
@@ -179,7 +196,7 @@ public class GameServerTable
 		// avoid two servers registering with the same "free" id
 		synchronized (_gameServerTable)
 		{
-			for (Entry<Integer,String> entry : _serverNames.entrySet())
+			for (Entry<Integer, String> entry : _serverNames.entrySet())
 			{
 				if (!_gameServerTable.containsKey(entry.getKey()))
 				{
@@ -228,12 +245,24 @@ public class GameServerTable
 		}
 		catch (SQLException e)
 		{
-			_log.warning("SQL error while saving gameserver: "+e);
+			_log.warning("SQL error while saving gameserver: " + e);
 		}
 		finally
 		{
-			try { statement.close();} catch (Exception e) {}
-			try { con.close();} catch (Exception e) {}
+			try
+			{
+				statement.close();
+			}
+			catch (Exception e)
+			{
+			}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 

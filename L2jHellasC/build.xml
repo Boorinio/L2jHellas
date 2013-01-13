@@ -95,13 +95,14 @@
 			<arg line="-O3 ${build.dist}/l2jhellas.jar  -o ${build.dist}/l2jhellas --main=com.l2jhellas.Server"/>
 		</exec>
 	</target>
- 
+	
+	<!-- Basic Build -->
 	<target name="Build" depends="Jar">
 		<echo>Creating L2J Hellas Server:</echo>
 		<copy todir="${build.dist.login}">
 			<fileset dir="config">
 				<include name="log.cfg"/>
-				<include name="banned_ip.cfg"/>
+				<include name="Banned IPs.cfg"/>
 				<include name="console.cfg"/>
 			</fileset>
 		</copy>
@@ -154,9 +155,11 @@
 		<fixcrlf srcdir="${build.dist.game}" eol="crlf" eof="remove" includes="**/*.bat"></fixcrlf>
 		<fixcrlf srcdir="${build.dist.login}" eol="crlf" eof="remove" includes="**/*.bat"></fixcrlf>
 		<mkdir dir="${build.dist.game}/config" />
+		<mkdir dir="${build.dist.game}/config/Others" />
 		<mkdir dir="${build.dist.login}/config" />
 		<mkdir dir="${build.dist.login}/config/Network" />
-		<mkdir dir="${build.dist.login}/config/Version" />
+		<mkdir dir="${build.dist.login}/config/Others" />
+		
 		<copy todir="${build.dist.game}/config">
 			<fileset dir="config">
 				<include name="*.ini"/>
@@ -189,20 +192,34 @@
 		</copy>
 		<copy todir="${build.dist.game}/config/Network">
 			<fileset dir="config/Network">
-				<include name="*.ini"/>
-				<include name="*.txt"/>
+				<include name="Gameserver.ini"/>
+				<include name="hexid.txt"/>
+				<include name="mmocore.ini"/>
+				<include name="Server Name.xml"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config/Network">
 			<fileset dir="config/Network">
+				<include name="Server Name.xml"/>
 				<include name="mmocore.ini"/>
-			</fileset>
-		</copy>
-		<copy todir="${build.dist.login}/config/Network">
-			<fileset dir="config">
 				<include name="LoginServer.ini"/>
 			</fileset>
 		</copy>
+		<copy todir="${build.dist.game}/config/Others">
+			<fileset dir="config/Others">
+				<include name="Banned IPs.cfg"/>
+				<include name="ChatFilter.txt"/>
+				<include name="log.cfg"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dist.login}/config/Others">
+			<fileset dir="config/Others">
+				<include name="Banned IPs.cfg"/>
+				<include name="log.cfg"/>
+			</fileset>
+		</copy>
+		
+		<!-- Finalizing -->
         <zip destfile="${build}/L2J Hellas Core.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
 		<mkdir dir="C:/L2JHellas/Backup" />
@@ -212,6 +229,7 @@
 		<echo>Please visit our forum http://l2jhellas.eu/ for bugs.</echo>
     </target>   
     
+	<!-- Version -->
 	<target name="Version" depends="Building Dirs" description="Create L2J Hellas version file">
 		<tstamp>
 			<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
@@ -233,6 +251,7 @@ L2jHellas Project details:
 		<echo>version = ${revision}</echo>
 	</target>
 	
+	<!-- Clean UP -->
 	<target name="Clean" description="Remove the build directories before the compile.">
 		<delete dir="${build}"/>
 	</target>

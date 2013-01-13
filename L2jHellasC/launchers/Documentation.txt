@@ -1,0 +1,24 @@
+To use Debug mode you should
+1: Compile
+2: Edit GameServer config file and change this lines:
+
+FROM
+DatapackRoot = .
+
+TO
+DatapackRoot = C:/L2JHellas/gameserver/
+Or wherever you have your Datapack this is the default location.
+
+3: After this lines you will find:
+
+Debug = False
+# Don't load quests
+AltDevNoQuests = True
+# Don't load spawntable
+AltDevNoSpawns = True
+# Don't load Scripts
+AltDevNoScripts = True
+# Don't load Raidbosses
+AltDevNoRaidbosses = True
+
+4: L2JHellasC=>launchers=>Run as

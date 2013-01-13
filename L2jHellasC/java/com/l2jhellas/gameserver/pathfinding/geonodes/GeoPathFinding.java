@@ -61,8 +61,7 @@ public class GeoPathFinding extends PathFinding
 	}
 
 	/**
-	 * @see com.l2jhellas.gameserver.pathfinding.PathFinding#FindPath(int, int,
-	 *      short, int, int, short)
+	 * @see com.l2jhellas.gameserver.pathfinding.PathFinding#FindPath(int, int, short, int, int, short)
 	 */
 	@Override
 	public List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gty, short tz)
@@ -79,8 +78,7 @@ public class GeoPathFinding extends PathFinding
 	}
 
 	/**
-	 * @see com.l2jhellas.gameserver.pathfinding.PathFinding#ReadNeighbors(short,
-	 *      short)
+	 * @see com.l2jhellas.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
 	 */
 	@Override
 	public Node[] readNeighbors(short node_x, short node_y, int idx)
@@ -244,7 +242,7 @@ public class GeoPathFinding extends PathFinding
 		try
 		{
 			_log.info("PathFinding Engine: - Loading Path Nodes...");
-			File Data = new File("./data/pathnode/pn_index.txt");
+			File Data = new File(Config.DATAPACK_ROOT, "data/pathnode/pn_index.txt");
 			if (!Data.exists())
 				return;
 
@@ -277,10 +275,10 @@ public class GeoPathFinding extends PathFinding
 	
 	private void LoadPathNodeFile(byte rx, byte ry)
 	{
-		String fname = "./data/pathnode/" + rx + "_" + ry + ".pn";
+		String fname = "data/pathnode/" + rx + "_" + ry + ".pn";
 		short regionoffset = getRegionOffset(rx, ry);
 		_log.info("PathFinding Engine: - Loading: " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
-		File Pn = new File(fname);
+		File Pn = new File(Config.DATAPACK_ROOT, fname);
 		int node = 0, size, index = 0;
 		try
 		{

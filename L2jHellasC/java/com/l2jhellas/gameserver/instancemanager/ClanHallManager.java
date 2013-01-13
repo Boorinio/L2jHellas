@@ -101,7 +101,7 @@ public class ClanHallManager
             	}
             }
             statement.close();
-            System.out.println("Loaded: "+getClanHalls().size() +" clan halls");
+			System.out.println("Loaded: " + getClanHalls().size() + " taken clan halls");
             System.out.println("Loaded: "+getFreeClanHalls().size() +" free clan halls");
             _loaded = true;
         }

@@ -55,7 +55,7 @@ public class DimensionalRiftManager
 
     private static Log _log = LogFactory.getLog(DimensionalRiftManager.class.getName());
     private static DimensionalRiftManager _instance;
-    private FastMap<Byte, FastMap<Byte, DimensionalRiftRoom>> _rooms = new FastMap<Byte, FastMap<Byte, DimensionalRiftRoom>>();
+	private final FastMap<Byte, FastMap<Byte, DimensionalRiftRoom>> _rooms = new FastMap<Byte, FastMap<Byte, DimensionalRiftRoom>>();
     private final short DIMENSIONAL_FRAGMENT_ITEM_ID = 7079;
 
     public static DimensionalRiftManager getInstance()
@@ -146,7 +146,7 @@ public class DimensionalRiftManager
             factory.setValidating(false);
             factory.setIgnoringComments(true);
 
-            File file = new File(Config.DATAPACK_ROOT+"/data/dimensionalRift.xml");
+			File file = new File(Config.DATAPACK_ROOT, "data/dimensionalRift.xml");
             if (!file.exists())
                 throw new IOException();
 

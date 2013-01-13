@@ -67,11 +67,11 @@ public class L2LoginServer
 		Server.serverMode = Server.MODE_LOGINSERVER;
 		// Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
-		final String LOG_NAME   = "./log.cfg"; // Name of log file
+		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
 
 		/*** Main ***/
 		// Create log folder
-		File logFolder = new File(Config.DATAPACK_ROOT, LOG_FOLDER);
+		File logFolder = new File(LOG_FOLDER);
 		logFolder.mkdir();
 
 		// Create input stream for log file -- or store file data into memory
@@ -269,7 +269,7 @@ public class L2LoginServer
 
 	private void loadBanFile()
 	{
-		File bannedFile = new File("./banned_ip.cfg");
+		File bannedFile = new File("./config/Others/Banned IPs.cfg");
 		if (bannedFile.exists() && bannedFile.isFile())
 		{
 			FileInputStream fis = null;

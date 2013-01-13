@@ -60,7 +60,7 @@ public final class L2ScriptEngineManager
     static
     {
         _log = Logger.getLogger(L2ScriptEngineManager.class.getName());
-        SCRIPT_FOLDER = new File(Config.DATAPACK_ROOT.getAbsolutePath(),"data/scripts");
+		SCRIPT_FOLDER = new File(Config.DATAPACK_ROOT, "data/scripts");
         INSTANCE = new L2ScriptEngineManager();
     }
     
@@ -197,7 +197,7 @@ public final class L2ScriptEngineManager
     
     public void executeScriptList(File list) throws IOException
     {
-        if (list.isFile())
+		if (list.isFile())
         {
             LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(list)));
             String line;

@@ -168,10 +168,13 @@ public class GameServer
 		CrestCache.getInstance();
 		
 		if (Config.USE_SAY_FILTER)
-			new File("config/Main/ChatFilter.txt").createNewFile();
+			new File(Config.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 		
-		Util.printSection("Script Engines");
-		L2ScriptEngineManager.getInstance();
+		Util.printSection("Script Engine");
+		if (!Config.ALT_DEV_NO_SCRIPT)
+		{
+			L2ScriptEngineManager.getInstance();
+		}
 		
 		// ===========================================================================
 		Util.printSection("World");
@@ -380,7 +383,7 @@ public class GameServer
 		ChatHandler.getInstance();
 		_log.info("AutoChatHandler : Loaded " + _autoChatHandler.size() + " handlers in total.");
 		_log.info("AutoSpawnHandler : Loaded " + _autoSpawnHandler.size() + " handlers in total.");
-		_log.info("VoicedCommandHandler: Loaded " + VoicedCommandHandler.getInstance().size() + " handlers.");
+		_log.info("VoicedCommandHandler: Loaded " + VoicedCommandHandler.getInstance().size() + " handlers in total.");
 		_log.info("Handler Data: loaded.");
 		
 		Util.printSection("Quests");
@@ -398,7 +401,7 @@ public class GameServer
 			try
 			{
 				_log.info("Loading Scripts");
-				File scripts = new File(Config.DATAPACK_ROOT + "/data/scripts.cfg");
+				File scripts = new File(Config.DATAPACK_ROOT, "data/scripts.cfg");
 				L2ScriptEngineManager.getInstance().executeScriptList(scripts);
 			}
 			catch (IOException ioe)
@@ -543,23 +546,25 @@ public class GameServer
 		Server.serverMode = Server.MODE_GAMESERVER;
 		// Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
-		final String LOG_NAME = "./log.cfg"; // Name of log file
+		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
 		
 		/*** Main ***/
-		// Create log folder
+		// Create directories
 		File logFolder = new File(Config.DATAPACK_ROOT, LOG_FOLDER);
 		logFolder.mkdir();
-		
+		File clans = new File(Config.DATAPACK_ROOT, "data/clans");
+		clans.mkdir();
+		File crests = new File(Config.DATAPACK_ROOT, "data/crests");
+		crests.mkdir();
+		File pathnode = new File(Config.DATAPACK_ROOT, "data/pathnode");
+		pathnode.mkdir();
+		File geodata = new File(Config.DATAPACK_ROOT, "data/geodata");
+		geodata.mkdir();
+
 		// Create input stream for log file -- or store file data into memory
 		InputStream is = new FileInputStream(new File(LOG_NAME));
 		LogManager.getLogManager().readConfiguration(is);
 		is.close();
-		
-		// Create directories
-		new File(Config.DATAPACK_ROOT, "data/clans").mkdirs();
-		new File(Config.DATAPACK_ROOT, "data/crests").mkdirs();
-		new File(Config.DATAPACK_ROOT, "data/pathnode").mkdirs();
-		new File(Config.DATAPACK_ROOT, "data/geodata").mkdirs();
 		
 		Util.printSection("General Info");
 		Util.printGeneralSystemInfo();
@@ -588,7 +593,5 @@ public class GameServer
 		{
 			_log.info("Telnet is disabled by config.");
 		}
-		
-		Util.printSection("Login Server");
 	}
 }

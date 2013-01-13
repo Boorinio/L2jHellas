@@ -301,10 +301,10 @@ public final class Config
 	public static String SERVER_BUILD_DATE;
 	
 	// ADMIN_FILE
-	public static int MASTERACCESS_LEVEL;   
- 	public static int MASTERACCESS_NAME_COLOR;   
- 	public static int MASTERACCESS_TITLE_COLOR;
-
+	public static int MASTERACCESS_LEVEL;
+	public static int MASTERACCESS_NAME_COLOR;
+	public static int MASTERACCESS_TITLE_COLOR;
+	
 	public static boolean GM_HERO_AURA;
 	public static boolean GM_STARTUP_INVULNERABLE;
 	public static boolean GM_STARTUP_INVISIBLE;
@@ -458,6 +458,7 @@ public final class Config
 	{
 		name, title
 	}
+	
 	public static boolean ALLOW_USE_HERO_ITEM_ON_SUBCLASS;
 	public static int SOUL_CRYSTAL_BREAK_CHANCE;
 	public static int SOUL_CRYSTAL_LEVEL_CHANCE;
@@ -564,6 +565,7 @@ public final class Config
 	{
 		True, False, GM
 	}
+	
 	public static L2WalkerAllowed ALLOW_L2WALKER_CLIENT;
 	public static int L2WALKER_REVISION;
 	public static boolean AUTOBAN_L2WALKER_ACC;
@@ -791,7 +793,7 @@ public final class Config
 	public static float PREMIUM_RATE_DROP_ITEMS;
 	public static float PREMIUM_RATE_DROP_QUEST;
 	public static float PREMIUM_RATE_DROP_ITEMS_BY_RAID;
-
+	
 	// RATES_CONFIG_FILE
 	public static float RATE_XP;
 	public static float RATE_SP;
@@ -916,6 +918,7 @@ public final class Config
 	
 	// TELNET_FILE
 	public static boolean IS_TELNET_ENABLED;
+	
 	public static enum IdFactoryType
 	{
 		Compaction, BitSet, Stack
@@ -934,7 +937,7 @@ public final class Config
 	// StatusPort and ListOfHosts checked elsewere.
 	
 	// Found in more than one file
-	//TODO should we delete this?
+	// TODO should we delete this?
 	public static boolean DEBUG;
 	
 	// Variables doesn't found in any .ini file. If added look at
@@ -1059,10 +1062,7 @@ public final class Config
 				ALT_LOTTERY_4_NUMBER_RATE = Float.parseFloat(altSettings.getProperty("AltLottery4NumberRate", "0.2"));
 				ALT_LOTTERY_3_NUMBER_RATE = Float.parseFloat(altSettings.getProperty("AltLottery3NumberRate", "0.2"));
 				ALT_LOTTERY_2_AND_1_NUMBER_PRIZE = Integer.parseInt(altSettings.getProperty("AltLottery2and1NumberPrize", "200"));
-				ALT_DEV_NO_QUESTS = Boolean.parseBoolean(altSettings.getProperty("AltDevNoQuests", "False"));
-				ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(altSettings.getProperty("AltDevNoSpawns", "False"));
-				ALT_DEV_NO_SCRIPT = Boolean.parseBoolean(altSettings.getProperty("AltDevNoScripts", "False"));
-				ALT_DEV_NO_RB = Boolean.parseBoolean(altSettings.getProperty("AltDevNoRaidbosses", "False"));
+
 				FS_TIME_ATTACK = Integer.parseInt(altSettings.getProperty("TimeOfAttack", "50"));
 				FS_TIME_COOLDOWN = Integer.parseInt(altSettings.getProperty("TimeOfCoolDown", "5"));
 				FS_TIME_ENTRY = Integer.parseInt(altSettings.getProperty("TimeOfEntry", "3"));
@@ -1217,10 +1217,10 @@ public final class Config
 				GM_TITLE_COLOR_ENABLED = Boolean.parseBoolean(AdminSettings.getProperty("GMTitleColorEnabled", "False"));
 				ADMIN_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("AdminTitleColor", "00FF00"));
 				GM_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("GMTitleColor", "FFFF00"));
-				MASTERACCESS_LEVEL = Integer.parseInt(AdminSettings.getProperty("MasterAccessLevel", "127"));   
-				MASTERACCESS_NAME_COLOR  = Integer.decode(StringUtil.concat("0x", AdminSettings.getProperty("MasterNameColor", "00FF00")));   
-			 	MASTERACCESS_TITLE_COLOR  = Integer.decode(StringUtil.concat("0x", AdminSettings.getProperty("MasterTitleColor", "00FF00")));   
-			 	GM_HERO_AURA  = Boolean.parseBoolean(AdminSettings.getProperty("GMHeroAura", "False"));
+				MASTERACCESS_LEVEL = Integer.parseInt(AdminSettings.getProperty("MasterAccessLevel", "127"));
+				MASTERACCESS_NAME_COLOR = Integer.decode(StringUtil.concat("0x", AdminSettings.getProperty("MasterNameColor", "00FF00")));
+				MASTERACCESS_TITLE_COLOR = Integer.decode(StringUtil.concat("0x", AdminSettings.getProperty("MasterTitleColor", "00FF00")));
+				GM_HERO_AURA = Boolean.parseBoolean(AdminSettings.getProperty("GMHeroAura", "False"));
 			}
 			catch (Exception e)
 			{
@@ -1756,7 +1756,7 @@ public final class Config
 				VIP_MIN_PARTICIPANTS = Integer.parseInt(EventSettings.getProperty("VIPMinParticipants", "10"));
 				if (VIP_MIN_PARTICIPANTS < 10)
 					VIP_MIN_PARTICIPANTS = 10; // can't be set less then lvl 10
-				
+					
 				FIRST_TVT_DELAY = Integer.parseInt(EventSettings.getProperty("FirstEventDelay", "10"));
 				TVT_AURA = Boolean.parseBoolean(EventSettings.getProperty("TvTAura", "true"));
 				TVT_JOIN_CURSED = Boolean.parseBoolean(EventSettings.getProperty("TvTJoinWithCursedWeapon", "true"));
@@ -1882,7 +1882,7 @@ public final class Config
 						}
 					}
 				}
-
+				
 				RATE_XP = Float.parseFloat(ratesSettings.getProperty("RateXp", "1"));
 				RATE_SP = Float.parseFloat(ratesSettings.getProperty("RateSp", "1"));
 				RATE_PARTY_XP = Float.parseFloat(ratesSettings.getProperty("RatePartyXp", "1"));
@@ -2077,7 +2077,7 @@ public final class Config
 				throw new Error("Failed to Load " + RATES_CONFIG_FILE + " File.");
 			}
 			
-			// Try to load CONFIGURATION_FILE (if exist)
+			// Try to load GAME_SERVER CONFIGURATION_FILE (if exist)
 			try
 			{
 				Properties serverSettings = new Properties();
@@ -2085,7 +2085,14 @@ public final class Config
 				serverSettings.load(is);
 				is.close();
 				
+				// Dev's Config
 				DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
+				DATAPACK_ROOT = new File(serverSettings.getProperty("DatapackRoot", ".")).getCanonicalFile();
+				ALT_DEV_NO_QUESTS = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoQuests", "False"));
+				ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoSpawns", "False"));
+				ALT_DEV_NO_SCRIPT = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoScripts", "False"));
+				ALT_DEV_NO_RB = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoRaidbosses", "False"));
+				
 				GAMESERVER_HOSTNAME = serverSettings.getProperty("GameserverHostname");
 				PORT_GAME = Integer.parseInt(serverSettings.getProperty("GameserverPort", "7777"));
 				EXTERNAL_HOSTNAME = serverSettings.getProperty("ExternalHostname", "*");
@@ -2099,7 +2106,6 @@ public final class Config
 				DATABASE_LOGIN = serverSettings.getProperty("Login", "root");
 				DATABASE_PASSWORD = serverSettings.getProperty("Password", "");
 				DATABASE_MAX_CONNECTIONS = Integer.parseInt(serverSettings.getProperty("MaximumDbConnections", "10"));
-				DATAPACK_ROOT = new File(serverSettings.getProperty("DatapackRoot", ".")).getCanonicalFile();
 				CNAME_TEMPLATE = serverSettings.getProperty("CnameTemplate", ".*");
 				PET_NAME_TEMPLATE = serverSettings.getProperty("PetNameTemplate", ".*");
 				MAX_CHARACTERS_NUMBER_PER_ACCOUNT = Integer.parseInt(serverSettings.getProperty("CharMaxNumber", "0"));
@@ -2249,7 +2255,7 @@ public final class Config
 		}
 		else if (Server.serverMode == Server.MODE_LOGINSERVER)
 		{
-			// Try to load LOGIN_CONFIGURATION_FILE (if exist)
+			// Try to load LOGIN_SERVER CONFIGURATION_FILE (if exist)
 			try
 			{
 				Properties serverSettings = new Properties();
@@ -2261,7 +2267,6 @@ public final class Config
 				GAME_SERVER_LOGIN_PORT = Integer.parseInt(serverSettings.getProperty("LoginPort", "9013"));
 				LOGIN_BIND_ADDRESS = serverSettings.getProperty("LoginserverHostname", "*");
 				PORT_LOGIN = Integer.parseInt(serverSettings.getProperty("LoginserverPort", "2106"));
-				DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
 				DEVELOPER = Boolean.parseBoolean(serverSettings.getProperty("Developer", "False"));
 				ASSERT = Boolean.parseBoolean(serverSettings.getProperty("Assert", "False"));
 				ACCEPT_NEW_GAMESERVER = Boolean.parseBoolean(serverSettings.getProperty("AcceptNewGameServer", "True"));
@@ -2269,7 +2274,6 @@ public final class Config
 				ACCEPT_ALTERNATE_ID = Boolean.parseBoolean(serverSettings.getProperty("AcceptAlternateID", "True"));
 				LOGIN_TRY_BEFORE_BAN = Integer.parseInt(serverSettings.getProperty("LoginTryBeforeBan", "10"));
 				LOGIN_BLOCK_AFTER_BAN = Integer.parseInt(serverSettings.getProperty("LoginBlockAfterBan", "600"));
-				DATAPACK_ROOT = new File(serverSettings.getProperty("DatapackRoot", ".")).getCanonicalFile();
 				INTERNAL_HOSTNAME = serverSettings.getProperty("InternalHostname", "localhost");
 				EXTERNAL_HOSTNAME = serverSettings.getProperty("ExternalHostname", "localhost");
 				DATABASE_DRIVER = serverSettings.getProperty("Driver", "com.mysql.jdbc.Driver");
@@ -2889,12 +2893,12 @@ public final class Config
 	{
 		return (ALLOW_L2WALKER_CLIENT == L2WalkerAllowed.True || (ALLOW_L2WALKER_CLIENT == L2WalkerAllowed.GM && player != null && player.isGM()));
 	}
-
+	
 	// it has no instances
 	private Config()
 	{
 	}
-
+	
 	/**
 	 * Save hexadecimal ID of the server in the ini file.
 	 * 
@@ -2908,7 +2912,7 @@ public final class Config
 	{
 		Config.saveHexid(serverId, string, HEXID_FILE);
 	}
-
+	
 	/**
 	 * Save hexadecimal ID of the server in the ini file.
 	 * 
@@ -2937,7 +2941,7 @@ public final class Config
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Loads all Filter Words
 	 */
@@ -2954,7 +2958,7 @@ public final class Config
 			{
 				if (line.trim().length() == 0 || line.startsWith("#"))
 					continue;
-
+				
 				FILTER_LIST.add(line.trim());
 			}
 			_log.info("Loaded " + FILTER_LIST.size() + " Filter Words.");

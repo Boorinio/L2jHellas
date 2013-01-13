@@ -49,8 +49,8 @@ public class Announcements
 	private static Logger _log = Logger.getLogger(Announcements.class.getName());
 
 	private static Announcements _instance;
-	private List<String> _announcements = new FastList<String>();
-	private List<List<Object>> _eventAnnouncements = new FastList<List<Object>>();
+	private final List<String> _announcements = new FastList<String>();
+	private final List<List<Object>> _eventAnnouncements = new FastList<List<Object>>();
 
 	public Announcements()
 	{
@@ -76,7 +76,7 @@ public class Announcements
 			readFromDisk(file);
 		
 		else
-			_log.config("data/announcements.txt doesn't exist");
+			_log.config("data/announcements.txt doesn't exist.");
 	}
 
 	public void showAnnouncements(L2PcInstance activeChar)
