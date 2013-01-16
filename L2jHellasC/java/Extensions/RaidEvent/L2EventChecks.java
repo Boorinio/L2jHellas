@@ -59,7 +59,7 @@ public class L2EventChecks
 		if (_eventPlayers.size() <= minPeople && eventType == (2 | 3))
 		{
 			// Notify to the requester.
-			player.sendMessage("Not enough " + eType(eventType) + " members of the connected at this mommtent, try again later.");
+			player.sendMessage("Not enough " + eType(eventType) + " members are connected.Minimum:" + minPeople);
 			return false;
 		}
 		for (L2PcInstance member : _eventPlayers)
@@ -191,6 +191,11 @@ public class L2EventChecks
 		if (player.isInJail())
 		{
 			player.sendMessage("Cannot Participate while in Jail.");
+			return false;
+		}
+		if(player.isOlympiadStart())
+		{
+			player.sendMessage("Cannot participate while olympiad is running");
 			return false;
 		}
 		return true;

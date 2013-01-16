@@ -567,7 +567,7 @@ public class L2RaidEvent
 		}
 	else 
 		{
-			_log.warning("L2EventManager: Eception Upon NPC UNSPAWN.");
+			_log.warning("L2EventManager: Exception Upon NPC UNSPAWN.");
 		}
 	}
 	/**

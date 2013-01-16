@@ -30,8 +30,6 @@ public class RaidFightManager
 	public void run()
 	{
 		//TODO: Add initial breaks. And check performance
-		for (;;)
-		{
 			waiter(Config.RAID_SYSTEM_FIGHT_TIME * 60); // in
 																// configuration
 																// given as
@@ -43,8 +41,7 @@ public class RaidFightManager
 				L2EventManagerInstance._currentEvents -= 1;
 			}
 			_log.warning("Raid Engines: All the Members from the Event are now dead or Have Left The event. Event Finished.");
-			break;
-		}
+
 	}
 
 	void waiter(int seconds)
