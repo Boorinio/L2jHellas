@@ -141,6 +141,7 @@
 				<include name="GameServer_loop.sh"/>
 				<include name="setenv.sh"/>
 				<include name="startGameServer.*"/>
+				<include name="RconTool.*"/>
 				<include name="classpath.*"/>
 			</fileset>
 		</copy>

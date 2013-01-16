@@ -69,6 +69,7 @@ public final class Config
 	public static final String GRANDBOSS_CONFIG_FILE = "./config/Mods/GrandBoss.ini";
 	// Admin Folder
 	public static final String ADMIN_CONFIG_FILE = "./config/Admin/Admin.ini";
+	public static final String RCON_CONFIG_FILE = "./config/Admin/Rcon.ini";
 	// Version Folder
 	public static final String SERVER_VERSION_FILE = "./config/Version/L2J Hellas Version.ini";
 	// Network Folder
@@ -320,6 +321,13 @@ public final class Config
 	public static boolean GM_TITLE_COLOR_ENABLED; // TODO Gm color here
 	public static int ADMIN_TITLE_COLOR;
 	public static int GM_TITLE_COLOR;
+	
+	//RCON_FILE
+	public static boolean ENABLED_RCON;
+	
+	public static int RCON_PORT;
+	
+	public static String RCON_PASSWORD;
 	
 	// ID_CONFIG_FILE
 	public static ObjectMapType MAP_TYPE;
@@ -1227,6 +1235,26 @@ public final class Config
 				e.printStackTrace();
 				throw new Error("Failed to Load " + ADMIN_CONFIG_FILE + " File.");
 			}
+			
+			// Try to load RCON_CONFIG_FILE (if exist)
+			try
+			{
+				Properties RconSettings = new Properties();
+				InputStream is = new FileInputStream(new File(RCON_CONFIG_FILE));
+				RconSettings.load(is);
+				is.close();
+				
+				ENABLED_RCON = Boolean.parseBoolean(RconSettings.getProperty("EnableRconTool", "False"));
+				RCON_PORT  = Integer.parseInt(RconSettings.getProperty("RconPort", "7779")); 
+				RCON_PASSWORD = RconSettings.getProperty("RconPassword", "123123");
+				
+				
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				throw new Error("Failed to Load " + RCON_CONFIG_FILE + " File.");
+			}			
 			
 			// Try to load ID_CONFIG_FILE (if exist)
 			try

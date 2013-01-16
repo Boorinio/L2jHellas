@@ -120,6 +120,7 @@ import com.l2jhellas.status.Status;
 import com.l2jhellas.util.Util;
 import com.l2jserver.mmocore.network.SelectorConfig;
 import com.l2jserver.mmocore.network.SelectorThread;
+import com.pauler.Rcon;
 
 public class GameServer
 {
@@ -451,6 +452,8 @@ public class GameServer
 		CharacterRankRewardTable.getInstance();
 		RankRewardTable.getInstance();
 		TopTable.getInstance();
+		if (Config.ENABLED_RCON)
+			Rcon.getInstance();
 		if (Config.ENABLED_QUIZ_EVENT)
 			QuizEvent.getInstance();
 		if (Config.ALLOW_AWAY_STATUS)
