@@ -279,18 +279,16 @@ public class L2RaidEvent
 	 */
 	private synchronized static void buffEventMembers(L2PcInstance player, int eventPoints, int buffList, L2Object efector)
 	{
-		
-		if (_eventType != 1 && _eventType != 2 && _eventType != 3)
+		if(!player.inPartyEvent && !player.inSoloEvent && !player.inSoloEvent)
 		{
-			player.sendMessage("Debug: Error in The event type [Function: bufEventMembers]");
+			player.sendMessage("Debug: Error During buff players");
 			return;
 		}
-		
 		if (_eventType == 1)
 		{
 			int previousPoints = player.getEventPoints();
 			if (Config.RAID_SYSTEM_GIVE_BUFFS)
-				L2EventBufferInstance.makeBuffs(player, buffList, efector, false);
+			L2EventBufferInstance.makeBuffs(player, buffList, efector, false);
 			player.setEventPoints(player.getEventPoints() - eventPoints);
 			player.sendMessage("Event Manager: " + eventPoints + " Event Points have Been used. " + "You had " + previousPoints + " and now you have " + player.getEventPoints() + "Event Points.");
 		}
@@ -306,16 +304,16 @@ public class L2RaidEvent
 			for (L2PcInstance member : _participatingPlayers)
 			{
 				
-				int previousPoints;
+				int previousPoints= player.getEventPoints();
 				if (member == null)
 					continue;
 				
 				if (Config.RAID_SYSTEM_GIVE_BUFFS)
 					L2EventBufferInstance.makeBuffs(member, buffList, efector, false);
-				
+				previousPoints = member.getEventPoints();
 				if (individualPrice > member.getEventPoints())
 				{
-					previousPoints = member.getEventPoints();
+					
 					member.setEventPoints(0);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 					TextBuilder replyMSG = new TextBuilder("<html><body>");
@@ -328,13 +326,12 @@ public class L2RaidEvent
 				}
 				else
 				{
-					previousPoints = member.getEventPoints();
+					
 					member.setEventPoints(member.getEventPoints() - individualPrice);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 					TextBuilder replyMSG = new TextBuilder("<html><body>");
 					replyMSG.append("<tr><td>A total of " + eventPoints + " points have been deduced from your party TOTAL Event Point Score.</td></tr><br>");
 					replyMSG.append("<tr><td>You had " + previousPoints + ", and now you have " + (previousPoints - individualPrice) + " points.</td></tr><br><br><br>");
-
 					replyMSG.append("</body></html>");
 					adminReply.setHtml(replyMSG.toString());
 					member.sendPacket(adminReply);
@@ -349,7 +346,7 @@ public class L2RaidEvent
 			
 			for (L2PcInstance member : _participatingPlayers)
 			{
-				if (member == null)
+				if(member==null)
 					continue;
 				if (Config.RAID_SYSTEM_GIVE_BUFFS)
 					L2EventBufferInstance.makeBuffs(member, buffList, efector, false);
@@ -367,6 +364,7 @@ public class L2RaidEvent
 					replyMSG.append("</body></html>");
 					adminReply.setHtml(replyMSG.toString());
 					member.sendPacket(adminReply);
+				
 				}
 				else
 				{
@@ -505,6 +503,7 @@ public class L2RaidEvent
 					_lastNpcSpawn = spawn.getLastSpawn();
 					_npcSpawn = spawn;
 					_lastNpcSpawn.isPrivateEventMob = true;
+					if(Config.CHAMPION_ENABLE)
 					_lastNpcSpawn.setChampion(false);
 					_lastNpcSpawn.setTitle("Event Monster");
 					
@@ -559,14 +558,14 @@ public class L2RaidEvent
      */
 	private static void unSpawnNPC()
 	{
-		try
+		if(_lastNpcSpawn != null && _npcSpawn !=null)
 		{
 			_lastNpcSpawn.deleteMe();
 			_npcSpawn.stopRespawn();
 			_npcSpawn = null;
 			_lastNpcSpawn = null;
 		}
-		catch (Exception e)
+	else 
 		{
 			_log.warning("L2EventManager: Eception Upon NPC UNSPAWN.");
 		}
@@ -605,20 +604,26 @@ public class L2RaidEvent
 	 */
 	public static boolean checkPossibleReward()
 	{
-		if (_eventMobs == 0)
-			return false;
-		if (_eventMobs < 1)
-		{
-			_eventMobs = 0;
-			return false;
-		}
-		if (_eventMobs > 1)
+		if(_eventMobs>1)
 		{
 			_eventMobs = _eventMobs - 1;
 			return false;
 		}
-		setState(EventState.REWARDING);
-		return true;
+		else if(_eventMobs<1)
+		{
+			_eventMobs = 0;
+			return false;
+		}
+		else if(_eventMobs == 0)
+		{
+			setState(EventState.REWARDING);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	
 	}
 	/**
 	 * This void picks the rewards and launches the hand out system.
@@ -651,10 +656,11 @@ public class L2RaidEvent
 		{
 			for (L2PcInstance member : _participatingPlayers)
 			{
-				if (member == null)
-					continue;
+				if (member != null)
+				{
 				handOutItems(member, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
 				doTeleport(member, _pX, _pY, _pZ, 10, true);
+				}
 			}
 			unSpawnNPC();
 			clearFromEvent(player);
@@ -671,6 +677,10 @@ public class L2RaidEvent
 					handOutItems(member, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
 					doTeleport(member, _pX, _pY, _pZ, 10, true);
 				}
+				unSpawnNPC();
+				clearFromEvent(player);
+				if (L2EventManagerInstance._currentEvents != 0)
+					L2EventManagerInstance._currentEvents = L2EventManagerInstance._currentEvents - 1;
 			}
 			else
 			{
@@ -776,7 +786,7 @@ public class L2RaidEvent
 		}
 		if (hasItem2)
 		{
-			player.addItem("Eventt", item2, ammount2, player, true);	
+			player.addItem("Event", item2, ammount2, player, true);	
 		}
 		if (hasEventPoints)
 		{
