@@ -178,14 +178,14 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			newChar.setXYZInvisible(Config.SPAWN_X, Config.SPAWN_Y, Config.SPAWN_Z);
 		} 
+		else
+		{
+			newChar.setXYZInvisible(template.spawnX, template.spawnY, template.spawnZ);
+		}
 		if(Config.ALLOW_CREATE_LVL)
 		{
 			long tXp = Experience.LEVEL[Config.CUSTOM_START_LVL];
 			newChar.addExpAndSp(tXp , 0);
-		}
-		else
-		{
-			newChar.setXYZInvisible(template.spawnX, template.spawnY, template.spawnZ);
 		}
 		if (Config.CHAR_TITLE)
 			newChar.setTitle(Config.ADD_CHAR_TITLE);
