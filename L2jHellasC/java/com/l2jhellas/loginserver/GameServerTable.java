@@ -113,7 +113,7 @@ public class GameServerTable
 		InputStream in = null;
 		try
 		{
-			in = new FileInputStream("./config/Network/Server Name.xml");
+			in = new FileInputStream("./config/Network/ServerName.xml");
 			xpp.setInput(reader.setInput(in));
 			for (int e = xpp.getEventType(); e != XMLStreamConstants.END_DOCUMENT; e = xpp.next())
 			{

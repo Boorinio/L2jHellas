@@ -102,7 +102,7 @@
 		<copy todir="${build.dist.login}">
 			<fileset dir="config">
 				<include name="log.cfg"/>
-				<include name="Banned IPs.cfg"/>
+				<include name="BannedIPs.cfg"/>
 				<include name="console.cfg"/>
 			</fileset>
 		</copy>
@@ -196,26 +196,26 @@
 				<include name="Gameserver.ini"/>
 				<include name="hexid.txt"/>
 				<include name="mmocore.ini"/>
-				<include name="Server Name.xml"/>
+				<include name="ServerName.xml"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config/Network">
 			<fileset dir="config/Network">
-				<include name="Server Name.xml"/>
+				<include name="ServerName.xml"/>
 				<include name="mmocore.ini"/>
 				<include name="LoginServer.ini"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Others">
 			<fileset dir="config/Others">
-				<include name="Banned IPs.cfg"/>
+				<include name="BannedIPs.cfg"/>
 				<include name="ChatFilter.txt"/>
 				<include name="log.cfg"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config/Others">
 			<fileset dir="config/Others">
-				<include name="Banned IPs.cfg"/>
+				<include name="BannedIPs.cfg"/>
 				<include name="log.cfg"/>
 			</fileset>
 		</copy>

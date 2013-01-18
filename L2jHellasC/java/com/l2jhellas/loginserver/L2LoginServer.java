@@ -269,7 +269,7 @@ public class L2LoginServer
 
 	private void loadBanFile()
 	{
-		File bannedFile = new File("./config/Others/Banned IPs.cfg");
+		File bannedFile = new File("./config/Others/BannedIPs.cfg");
 		if (bannedFile.exists() && bannedFile.isFile())
 		{
 			FileInputStream fis = null;
@@ -279,7 +279,7 @@ public class L2LoginServer
 			}
 			catch (FileNotFoundException e)
 			{
-				_log.warning("WARNING: Failed to load banned IPs file ("+bannedFile.getName()+") for reading. Reason: "+e.getMessage());
+				_log.warning("WARNING: Failed to load bannedIPs file ("+bannedFile.getName()+") for reading. Reason: "+e.getMessage());
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
@@ -338,7 +338,7 @@ public class L2LoginServer
 			}
 			catch (IOException e)
 			{
-				_log.warning("WARNING: Error while reading the banned IPs file ("+bannedFile.getName()+"). Details: "+e.getMessage());
+				_log.warning("WARNING: Error while reading the bannedIPs file ("+bannedFile.getName()+"). Details: "+e.getMessage());
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
