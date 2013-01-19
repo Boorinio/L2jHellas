@@ -103,6 +103,7 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminReload());
 		if (Config.ENABLED_CHAOS_EVENT)
 			registerAdminCommandHandler(new AdminChaos());
+		registerAdminCommandHandler(new AdminClanFull());
 		
 		_log.info("AdminCommandHandler: Loaded " + _datatable.size() + " Handlers in total.");
 	}

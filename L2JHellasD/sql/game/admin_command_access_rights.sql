@@ -147,6 +147,7 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 ('admin_unsummon','1'),
 ('admin_show_pet_inv','1'),
 ('admin_partyinfo','1'),
+('admin_clanfull','1'),
 
 -- EDIT NPC
 ('admin_edit_npc','1'),

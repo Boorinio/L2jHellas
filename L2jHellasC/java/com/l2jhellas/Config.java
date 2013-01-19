@@ -472,7 +472,13 @@ public final class Config
 	public static int SOUL_CRYSTAL_LEVEL_CHANCE;
 	public static int ALTERNATIVE_ENCHANT_VALUE;
 	public static boolean MAX_LVL_AFTER_SUB;
+	/** Clan Full **/
+	public static boolean ENABLE_CLAN_SYSTEM;
+	public static Map<Integer, Integer> CLAN_SKILLS;
+	public static byte CLAN_LEVEL;
+	public static int REPUTATION_QUANTITY;
 	
+
 	// CHAMPION_FILE
 	public static int CHAMPION_FREQUENCY;
 	public static int CHAMPION_HP;
@@ -1493,6 +1499,38 @@ public final class Config
 				}
 				ALLOW_USE_HERO_ITEM_ON_SUBCLASS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowUseHeroItemOnSub", "False"));
 				MAX_LVL_AFTER_SUB = Boolean.parseBoolean(L2JHellasSettings.getProperty("MaxLvLAfterSub", "False"));
+
+			/** Clan Full **/
+			ENABLE_CLAN_SYSTEM = Boolean.parseBoolean(L2JHellasSettings.getProperty("EnableClanSystem", "True"));
+			if(ENABLE_CLAN_SYSTEM)
+			{
+				String AioSkillsSplit[] = L2JHellasSettings.getProperty("ClanSkills", "").split(";");
+				CLAN_SKILLS = new FastMap<Integer, Integer>(AioSkillsSplit.length);
+				String arr[] = AioSkillsSplit;
+				int len = arr.length;
+				for(int i = 0; i < len; i++)
+				{
+					String skill = arr[i];
+					String skillSplit[] = skill.split(",");
+					if(skillSplit.length != 2)
+					{
+						System.out.println((new StringBuilder()).append("[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills \"").append(skill).append("\"").toString());
+						continue;
+					}
+					try
+					{
+						CLAN_SKILLS.put(Integer.valueOf(Integer.parseInt(skillSplit[0])), Integer.valueOf(Integer.parseInt(skillSplit[1])));
+						continue;
+					}
+					catch(NumberFormatException nfe) { }
+					if(!skill.equals(""))
+						System.out.println((new StringBuilder()).append("[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills \"").append(skillSplit[0]).append("\"").append(skillSplit[1]).toString());
+				}
+				
+			}
+			CLAN_LEVEL = Byte.parseByte(L2JHellasSettings.getProperty("ClanSetLevel", "8"));
+			REPUTATION_QUANTITY = Integer.parseInt(L2JHellasSettings.getProperty("ReputationScore", "10000"));
+
 			}
 			catch (Exception e)
 			{
