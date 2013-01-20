@@ -9201,7 +9201,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			case TARGET_SELF:
 			break;
 			default:
-				if (!checkPvpSkill(target, skill) && getAccessLevel().allowPeaceAttack())
+				if (!checkPvpSkill(target, skill))
 				{
 					// Send a System Message to the L2PcInstance
 					sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
@@ -9291,47 +9291,61 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public boolean checkPvpSkill(L2Object target, L2Skill skill)
 	{
-		
-		if ((_inEventTvT && TvT._started) || (_inEventDM && DM._started) || (_inEventCTF && CTF._started) || (_inEventVIP && VIP._started))
-			return true;
-		
-		// l2jhellas Faction Good vs Evil
-		if (isgood() || isevil())
-			return true;
-		
-		// check for PC->PC Pvp status
-		if (target != null && // target not null and
-		target != this && // target is not self and
-		target instanceof L2PcInstance && // target is L2PcInstance and
-		!(isInDuel() && ((L2PcInstance) target).getDuelId() == getDuelId()) && // self is not in a duel and attacking opponent
-		!isInsideZone(ZONE_PVP) && // Pc is not in PvP zone
-		!((L2PcInstance) target).isInsideZone(ZONE_PVP)) // target is not in PvP zone
+		if(target != null && (target instanceof L2PcInstance || target instanceof L2Summon))
 		{
-			if (skill.isPvpSkill()) // pvp skill
+			L2PcInstance character;
+			if(target instanceof L2Summon)
 			{
-				if (getClan() != null && ((L2PcInstance) target).getClan() != null)
+				if(((L2Summon) target).isInsideZone(ZONE_PVP))
 				{
-					if (getClan().isAtWarWith(((L2PcInstance) target).getClan().getClanId()) && ((L2PcInstance) target).getClan().isAtWarWith(getClan().getClanId()))
-						return true; // in clan war player can attack whites
-										// even with sleep etc.
+					return true;
 				}
-				if (((L2PcInstance) target).getPvpFlag() == 0 && // target's pvp
-																	// flag is
-																	// not set
-																	// and
-				((L2PcInstance) target).getKarma() == 0 // target has no
-														// karma
-				)
-					return false;
+				character = ((L2Summon) target).getOwner();
 			}
-			else if (getCurrentSkill() != null && !getCurrentSkill().isCtrlPressed() && skill.isOffensive())
+			else
 			{
-				if (((L2PcInstance) target).getPvpFlag() == 0 && // target's pvp flag is not set and
-				((L2PcInstance) target).getKarma() == 0) // target has no karma
-					return false;
+				character = (L2PcInstance) target;
+			}
+
+			if ((_inEventTvT && TvT._started) || (_inEventDM && DM._started) || (_inEventCTF && CTF._started) || (_inEventVIP && VIP._started)||(_inChaosEvent))
+				return true;
+			if(isgood()||isevil())
+				return true;
+
+			// check for PC->PC Pvp status
+			if(character != this && // target is not self and
+				!(isInDuel() && character.getDuelId() == getDuelId()) && // self is not in a duel and attacking opponent
+				!isInsideZone(ZONE_PVP) && // Pc is not in PvP zone
+				!character.isInsideZone(ZONE_PVP) // target is not in PvP zone
+			)
+			{
+				if(skill.isPvpSkill()) // pvp skill
+				{
+					if(getClan() != null && character.getClan() != null)
+					{
+						if(getClan().isAtWarWith(character.getClan().getClanId()) && character.getClan().isAtWarWith(getClan().getClanId()))
+							return true; // in clan war player can attack whites even with sleep etc.
+					}
+					if(character.getPvpFlag() == 0 && //   target's pvp flag is not set and
+					character.getKarma() == 0 //   target has no karma
+					)
+						return false;
+				}
+				else if(getCurrentSkill() != null && !getCurrentSkill().isCtrlPressed() && skill.isOffensive())
+				{
+					if(getClan() != null && character.getClan() != null)
+					{
+						if(getClan().isAtWarWith(character.getClan().getClanId()) && character.getClan().isAtWarWith(getClan().getClanId()))
+							return true; // in clan war player can attack whites even without ctrl
+					}
+					if(character.getPvpFlag() == 0 && //   target's pvp flag is not set and
+					character.getKarma() == 0 //   target has no karma
+					)
+						return false;
+				}
 			}
 		}
-		
+
 		return true;
 	}
 	
