@@ -186,6 +186,7 @@ public class L2RaidEvent
 		if (setCoords(_player));
 		else{L2EventManagerInstance.removeEvent();
 			return;}
+		if(Config.DEBUG)
 		_log.warning("RaidEngine [setCoords]: Players: "+_locX+", "+_locY+", "+_locZ);
 	
 		setInEvent(_player);

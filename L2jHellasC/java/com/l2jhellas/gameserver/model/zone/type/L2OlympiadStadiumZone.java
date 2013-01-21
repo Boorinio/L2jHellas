@@ -48,7 +48,6 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 	protected void onEnter(L2Character character)
 	{
 		character.setInsideZone(L2Character.ZONE_PVP, true);
-		character.setInsideZone(L2Character.ZONE_NOLANDING, true);
 		if (character instanceof L2PcInstance)
 		{
 			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
@@ -59,8 +58,6 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 	protected void onExit(L2Character character)
 	{
 		character.setInsideZone(L2Character.ZONE_PVP, false);
-		character.setInsideZone(L2Character.ZONE_NOLANDING, false);
-
 		if (character instanceof L2PcInstance)
 		{
 			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));

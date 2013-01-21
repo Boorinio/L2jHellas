@@ -50,6 +50,7 @@ public class RequestManorList extends L2GameClientPacket
 		manorsName.add("rune");
 		manorsName.add("schuttgart");
 		ExSendManorList manorlist = new ExSendManorList(manorsName);
+		if(manorlist!=null)
 		player.sendPacket(manorlist);
 
 	}
