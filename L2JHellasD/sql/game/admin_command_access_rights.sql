@@ -103,6 +103,9 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 -- DELETE
 ('admin_delete','1'),
 
+-- DEPORT
+('admin_deport','1'),
+
 -- DISCONNECT
 ('admin_character_disconnect','1'),
 
@@ -331,6 +334,9 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 ('admin_manor_save','1'),
 ('admin_manor_disable','1'),
 
+-- MASSHERO
+('admin_masshero','1'),
+
 -- MENU
 ('admin_char_manage','1'),
 ('admin_teleport_character_to_menu','1'),
@@ -402,6 +408,8 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 ('admin_quest_reload','1'),
 ('admin_script_load','1'),
 
+-- RECALL ALL
+('admin_recallall', '1'),
 -- REPAIR CHAR
 ('admin_restore','1'),
 ('admin_repair','1'),

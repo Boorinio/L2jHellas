@@ -47,6 +47,7 @@ public class AdminCommandHandler
         registerAdminCommandHandler(new AdminCreateItem());
         registerAdminCommandHandler(new AdminCursedWeapons());
         registerAdminCommandHandler(new AdminDelete());
+        registerAdminCommandHandler(new AdminDeport());
         registerAdminCommandHandler(new AdminDisconnect());
         registerAdminCommandHandler(new AdminDoorControl());
         registerAdminCommandHandler(new AdminEditChar());
@@ -69,6 +70,7 @@ public class AdminCommandHandler
         registerAdminCommandHandler(new AdminLogin());
         registerAdminCommandHandler(new AdminMammon());
         registerAdminCommandHandler(new AdminManor());
+        registerAdminCommandHandler(new AdminMassHero());
         registerAdminCommandHandler(new AdminMenu());
         registerAdminCommandHandler(new AdminMobGroup());
         registerAdminCommandHandler(new AdminMonsterRace());
