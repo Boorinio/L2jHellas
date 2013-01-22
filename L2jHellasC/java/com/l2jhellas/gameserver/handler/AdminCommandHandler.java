@@ -91,7 +91,6 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminSpawn());
 		registerAdminCommandHandler(new AdminTarget());
 		registerAdminCommandHandler(new AdminTeleport());
-        registerAdminCommandHandler(new AdminTest());
         registerAdminCommandHandler(new AdminUnblockIp());
         registerAdminCommandHandler(new AdminZone());
 		registerAdminCommandHandler(new AdminDonator());
