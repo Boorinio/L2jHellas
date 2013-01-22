@@ -80,6 +80,7 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminPledge());
         registerAdminCommandHandler(new AdminPolymorph());
         registerAdminCommandHandler(new AdminQuest());
+        registerAdminCommandHandler(new AdminRecallAll());
         registerAdminCommandHandler(new AdminRepairChar());
         registerAdminCommandHandler(new AdminRes());
         registerAdminCommandHandler(new AdminRideWyvern());
