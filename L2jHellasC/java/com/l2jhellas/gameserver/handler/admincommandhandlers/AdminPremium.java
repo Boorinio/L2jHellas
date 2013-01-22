@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,7 +30,7 @@ public class AdminPremium implements IAdminCommandHandler
 	{
 	"admin_premium_menu", "admin_premium_add1", "admin_premium_add2", "admin_premium_add3", "admin_premium_add4", "admin_premium_add5"
 	};
-	
+
 	private static final String UPDATE_PREMIUMSERVICE = "UPDATE account_premium SET premium_service=?,enddate=? WHERE account_name=?";
 	private static final Logger _log = Logger.getLogger(AdminPremium.class.getName());
 
@@ -106,13 +108,13 @@ public class AdminPremium implements IAdminCommandHandler
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private void addPremiumServices(int Hours, String AccName)
 	{
 		Connection con = null;
@@ -122,7 +124,7 @@ public class AdminPremium implements IAdminCommandHandler
 			finishtime.setTimeInMillis(System.currentTimeMillis());
 			finishtime.set(Calendar.SECOND, 0);
 			finishtime.add(Calendar.HOUR, Hours);
-			
+
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE);
 			statement.setInt(1, 1);

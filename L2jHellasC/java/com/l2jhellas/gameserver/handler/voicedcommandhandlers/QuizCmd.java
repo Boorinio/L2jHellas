@@ -20,37 +20,34 @@ import com.l2jhellas.gameserver.model.entity.QuizEvent;
 
 /**
  * @author Pauler
- **/
-
+ */
 public class QuizCmd implements IVoicedCommandHandler
 {
 	
-	public static final String[] VOICED_COMMANDS = { "quiz", "pauler" };
+	public static final String[] VOICED_COMMANDS = {
+	"quiz", "pauler"
+	};
 	
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("quiz")) {
-			
-			if (QuizEvent.isRunning() && !target.equalsIgnoreCase("") && target != null) {
-				
+		if (command.equalsIgnoreCase(VOICED_COMMANDS[0])) // quiz
+		{
+			if (QuizEvent.isRunning() && !target.equalsIgnoreCase("") && target != null)
+			{
 				QuizEvent.checkAnswer(target, activeChar);
 				activeChar.sendMessage("Your answer has been submitted.");
-				
-			}else{
-				
-				activeChar.sendMessage("Quiz event is not running right now.");
-				
 			}
-			
+			else
+			{
+				activeChar.sendMessage("Quiz event is not running right now.");
+			}
 		}
 		
-		if (command.equalsIgnoreCase("pauler")) {
-			
+		if (command.equalsIgnoreCase(VOICED_COMMANDS[1])) // lol
+		{
 			activeChar.sendMessage("Quiz event by pauler.");
-			
 		}
-		
 		return false;
 	}
 	

@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,7 +28,7 @@ public class MercTicket implements IItemHandler
 	{
 	"To arms!.", "I am ready to serve you my lord when the time comes.", "You summon me."
 	};
-	
+
 	/**
 	 * handler for using mercenary tickets. Things to do:
 	 * 1) Check constraints:
@@ -42,6 +44,7 @@ public class MercTicket implements IItemHandler
 	 * the world
 	 * 3) Remove the item from the person's inventory
 	 */
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		int itemId = item.getItemId();
@@ -50,7 +53,7 @@ public class MercTicket implements IItemHandler
 		int castleId = -1;
 		if (castle != null)
 			castleId = castle.getCastleId();
-		
+
 		// add check that certain tickets can only be placed in certain castles
 		if (MercTicketManager.getInstance().getTicketCastleId(itemId) != castleId)
 		{
@@ -89,19 +92,19 @@ public class MercTicket implements IItemHandler
 					return;
 			}
 		}
-		
+
 		if (!activeChar.isCastleLord(castleId))
 		{
 			activeChar.sendMessage("You are not the lord of this castle!");
 			return;
 		}
-		
+
 		if (castle.getSiege().getIsInProgress())
 		{
 			activeChar.sendMessage("You cannot hire mercenary while siege is in progress!");
 			return;
 		}
-		
+
 		if (MercTicketManager.getInstance().isAtCasleLimit(item.getItemId()))
 		{
 			activeChar.sendMessage("You cannot hire any more mercenaries");
@@ -112,17 +115,14 @@ public class MercTicket implements IItemHandler
 			activeChar.sendMessage("You cannot hire any more mercenaries of this type.  You may still hire other types of mercenaries");
 			return;
 		}
-		
+
 		int npcId = MercTicketManager.getInstance().addTicket(item.getItemId(), activeChar, MESSAGES);
-		activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false); // Remove
-																				// item
-																				// from
-																				// char's
-																				// inventory
+		activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false); // Remove item from char's inventory
 		activeChar.sendMessage("Hired mercenary (" + itemId + "," + npcId + ") at coords:" + activeChar.getX() + "," + activeChar.getY() + "," + activeChar.getZ() + " heading:" + activeChar.getHeading());
 	}
-	
+
 	// left in here for backward compatibility
+	@Override
 	public int[] getItemIds()
 	{
 		return MercTicketManager.getInstance().getItemIds();

@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,7 +22,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2.4.4 $ $Date: 2005/03/27 15:30:07 $
  */
 
@@ -30,7 +32,8 @@ public class CrystalCarol implements IItemHandler
 	{
 	5562, 5563, 5564, 5565, 5566, 5583, 5584, 5585, 5586, 5587, 4411, 4412, 4413, 4414, 4415, 4416, 4417, 5010, 6903, 7061, 7062, 8555
 	};
-	
+
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -171,7 +174,8 @@ public class CrystalCarol implements IItemHandler
 		}
 		activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 	}
-	
+
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

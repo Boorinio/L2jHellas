@@ -15,9 +15,7 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 /**
- *
  * @author: FBIagent / fixed by SqueezeD
- *
  */
 import javolution.text.TextBuilder;
 
@@ -69,6 +67,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			"admin_ctf_minplayers",
 			"admin_ctf_maxplayers"					};
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		try
@@ -270,11 +269,12 @@ public class AdminCTFEngine implements IAdminCommandHandler
 				if (CTF._joinTime > 0 && CTF._eventTime > 0)
 					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 					{
+						@Override
 						public void run()
 						{
 							CTF.autoEvent();
 						}
-					}, 0);		
+					}, 0);
 				else
 					activeChar.sendMessage("Wrong usege: join time or event time invallid.");
 				showMainPage(activeChar);
@@ -296,6 +296,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		}
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

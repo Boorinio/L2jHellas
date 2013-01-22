@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,34 +39,35 @@ public class Spoil implements ISkillHandler
 	{
 		L2SkillType.SPOIL
 	};
-	
+
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (!(activeChar instanceof L2PcInstance))
 			return;
-		
+
 		if (targets == null)
 			return;
-		
+
 		for (int index = 0; index < targets.length; index++)
 		{
 			if (!(targets[index] instanceof L2MonsterInstance))
 				continue;
-			
+
 			L2MonsterInstance target = (L2MonsterInstance) targets[index];
-			
+
 			if (target.isSpoil())
 			{
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.ALREDAY_SPOILED));
 				continue;
 			}
-			
+
 			// SPOIL SYSTEM by Lbaldi
 			boolean spoil = false;
 			if (target.isDead() == false)
 			{
 				spoil = Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character) targets[index], skill);
-				
+
 				if (spoil)
 				{
 					target.setSpoil(true);
@@ -82,7 +85,8 @@ public class Spoil implements ISkillHandler
 			}
 		}
 	}
-	
+
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

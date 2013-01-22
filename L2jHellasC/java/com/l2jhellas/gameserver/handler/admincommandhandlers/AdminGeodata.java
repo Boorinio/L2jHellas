@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
  * @author  -Nemesiss-
  */
 public class AdminGeodata implements IAdminCommandHandler
@@ -40,6 +39,7 @@ public class AdminGeodata implements IAdminCommandHandler
 		"admin_geo_unload"
 		};
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
@@ -100,7 +100,7 @@ public class AdminGeodata implements IAdminCommandHandler
         		{
         			byte rx = Byte.parseByte(v[0]);
         			byte ry = Byte.parseByte(v[1]);
-        			
+
         			boolean result = GeoEngine.loadGeodataFile(rx, ry);
 
         			if(result)
@@ -144,6 +144,7 @@ public class AdminGeodata implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

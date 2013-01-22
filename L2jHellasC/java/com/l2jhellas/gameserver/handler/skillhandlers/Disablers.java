@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -47,8 +49,7 @@ import com.l2jhellas.util.Rnd;
  */
 public class Disablers implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS =
-	{
+	private static final L2SkillType[] SKILL_IDS = {
 	L2SkillType.STUN, L2SkillType.ROOT, L2SkillType.SLEEP, L2SkillType.CONFUSION, L2SkillType.AGGDAMAGE, L2SkillType.AGGREDUCE, L2SkillType.AGGREDUCE_CHAR, L2SkillType.AGGREMOVE, L2SkillType.UNBLEED, L2SkillType.UNPOISON, L2SkillType.MUTE, L2SkillType.FAKE_DEATH, L2SkillType.CONFUSE_MOB_ONLY, L2SkillType.NEGATE, L2SkillType.CANCEL, L2SkillType.PARALYZE, L2SkillType.ERASE, L2SkillType.MAGE_BANE, L2SkillType.WARRIOR_BANE, L2SkillType.BETRAY
 	};
 	
@@ -583,8 +584,7 @@ public class Disablers implements ISkillHandler
 									_log.severe("Couldn't find skill handler for HEAL.");
 									continue;
 								}
-								L2Object tgts[] = new L2Object[]
-								{
+								L2Object tgts[] = new L2Object[] {
 									target
 								};
 								try

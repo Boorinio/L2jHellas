@@ -1,19 +1,16 @@
-/* This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.datatables;
 
@@ -24,6 +21,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
+
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2MaxPolyModel;
 import com.l2jhellas.gameserver.templates.StatsSet;
@@ -34,11 +32,11 @@ import com.l2jhellas.gameserver.templates.StatsSet;
  */
 public class MaxCheatersTable
 {
-	private FastMap<Integer, L2MaxPolyModel> _map;
-	private Logger _log = Logger.getLogger(MaxCheatersTable.class.getName());
+	private final FastMap<Integer, L2MaxPolyModel> _map;
+	private final Logger _log = Logger.getLogger(MaxCheatersTable.class.getName());
 	private static MaxCheatersTable _instance;
 	
-	private String SQL_SELECT = "SELECT * from max_poly";
+	private final String SQL_SELECT = "SELECT * from max_poly";
 	
 	public MaxCheatersTable()
 	{

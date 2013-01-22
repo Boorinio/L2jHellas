@@ -26,8 +26,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 public class AdminVIPEngine implements IAdminCommandHandler
 {
-	private static final String[]	ADMIN_COMMANDS	=
-													{
+	private static final String[] ADMIN_COMMANDS = {
 			"admin_vip",
 			"admin_vip_setteam",
 			"admin_vip_randomteam",
@@ -43,8 +42,10 @@ public class AdminVIPEngine implements IAdminCommandHandler
 			"admin_vip_thevipreward",
 			"admin_vip_theviprewardamount",
 			"admin_vip_notvipreward",
-			"admin_vip_notviprewardamount",		};
+ "admin_vip_notviprewardamount",
+	};
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 
@@ -362,6 +363,7 @@ public class AdminVIPEngine implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

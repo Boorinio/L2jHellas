@@ -54,18 +54,19 @@ public class AdminEnchant implements IAdminCommandHandler
                                             "admin_setba",//13
                                             "admin_enchant"};
 
-    public boolean useAdminCommand(String command, L2PcInstance activeChar)
+    @Override
+	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (command.equals("admin_enchant"))
-        
+
             showMainPage(activeChar);
-        
+
 		else
         {
             int armorType = -1;
 
             if (command.startsWith("admin_seteh"))
-            	armorType = Inventory.PAPERDOLL_HEAD;            
+            	armorType = Inventory.PAPERDOLL_HEAD;
             else if (command.startsWith("admin_setec"))
                 armorType = Inventory.PAPERDOLL_CHEST;
             else if (command.startsWith("admin_seteg"))
@@ -92,7 +93,7 @@ public class AdminEnchant implements IAdminCommandHandler
                 armorType = Inventory.PAPERDOLL_UNDER;
             else if (command.startsWith("admin_setba"))
                 armorType = Inventory.PAPERDOLL_BACK;
-            
+
             if (armorType == Inventory.PAPERDOLL_NULL)
             {
             	activeChar.sendMessage("Your target has no item equipted in your selected slot.");
@@ -114,9 +115,9 @@ public class AdminEnchant implements IAdminCommandHandler
                     	L2PcInstance player = (L2PcInstance) target;
                     	if(ench > Config.GM_OVER_ENCHANT && Config.GM_OVER_ENCHANT !=0 && player != null && !player.isGM())
                     	{
-                    		player.sendMessage("A GM tried to overenchant you. You will both be banned.");  
-                    		Util.handleIllegalPlayerAction(player,"The player "+player.getName()+" has been edited. BAN!", IllegalPlayerAction.PUNISH_KICKBAN);  
-	                    	activeChar.sendMessage("You tried to overenchant somebody. You will both be banned.");  
+                    		player.sendMessage("A GM tried to overenchant you. You will both be banned.");
+                    		Util.handleIllegalPlayerAction(player,"The player "+player.getName()+" has been edited. BAN!", IllegalPlayerAction.PUNISH_KICKBAN);
+	                    	activeChar.sendMessage("You tried to overenchant somebody. You will both be banned.");
 	                    	Util.handleIllegalPlayerAction(activeChar,"The GM "+activeChar.getName()+" has overenchanted the player "+player.getName()+". BAN!", IllegalPlayerAction.PUNISH_KICKBAN);;
                     	}
                     	else
@@ -151,7 +152,7 @@ public class AdminEnchant implements IAdminCommandHandler
         if (target == null)
         	target = activeChar;
         L2PcInstance player = null;
-        
+
         if (target instanceof L2PcInstance)
             player = (L2PcInstance) target;
         else
@@ -201,15 +202,16 @@ public class AdminEnchant implements IAdminCommandHandler
         // log
         GMAudit.auditGMAction(activeChar.getName(), "enchant", player.getName(), itemInstance.getItem().getName() + " from " + curEnchant + " to " + ench);
     }
-    
-    
+
+
 
     private void showMainPage(L2PcInstance activeChar)
     {
     	AdminHelpPage.showHelpPage(activeChar, "enchant.htm");
     }
 
-    public String[] getAdminCommandList()
+    @Override
+	public String[] getAdminCommandList()
     {
         return ADMIN_COMMANDS;
     }

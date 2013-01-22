@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,22 +42,23 @@ public class SiegeFlag implements ISkillHandler
 	{
 		L2SkillType.SIEGEFLAG
 	};
-	
+
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar == null || !(activeChar instanceof L2PcInstance))
 			return;
-		
+
 		L2PcInstance player = (L2PcInstance) activeChar;
-		
+
 		if (player.getClan() == null || player.getClan().getLeaderId() != player.getObjectId())
 			return;
-		
+
 		Castle castle = CastleManager.getInstance().getCastle(player);
-		
+
 		if (castle == null || !checkIfOkToPlaceFlag(player, castle, true))
 			return;
-		
+
 		try
 		{
 			// Spawn a new flag
@@ -71,16 +74,17 @@ public class SiegeFlag implements ISkillHandler
 			player.sendMessage("Error placing flag:" + e);
 		}
 	}
-	
+
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;
 	}
-	
+
 	/**
 	 * Return true if character clan place a flag<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param activeChar
 	 *        The L2Character of the character placing the flag
 	 * @param isCheckOnly
@@ -91,15 +95,15 @@ public class SiegeFlag implements ISkillHandler
 	{
 		return checkIfOkToPlaceFlag(activeChar, CastleManager.getInstance().getCastle(activeChar), isCheckOnly);
 	}
-	
+
 	public static boolean checkIfOkToPlaceFlag(L2Character activeChar, Castle castle, boolean isCheckOnly)
 	{
 		if (activeChar == null || !(activeChar instanceof L2PcInstance))
 			return false;
-		
+
 		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 		L2PcInstance player = (L2PcInstance) activeChar;
-		
+
 		if (castle == null || castle.getCastleId() <= 0)
 			sm.addString("You must be on castle ground to place a flag");
 		else if (!castle.getSiege().getIsInProgress())
@@ -112,7 +116,7 @@ public class SiegeFlag implements ISkillHandler
 			sm.addString("You have already placed the maximum number of flags possible");
 		else
 			return true;
-		
+
 		if (!isCheckOnly)
 		{
 			player.sendPacket(sm);

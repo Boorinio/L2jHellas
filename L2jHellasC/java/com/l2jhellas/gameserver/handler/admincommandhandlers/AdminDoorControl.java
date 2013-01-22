@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,19 +37,18 @@ import com.l2jhellas.gameserver.model.entity.Castle;
  * - closeall = close all coloseum door
  * - open = open selected door
  * - close = close selected door
- * 
+ *
  * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminDoorControl implements IAdminCommandHandler
 {
-	// private static Logger _log =
-	// Logger.getLogger(AdminDoorControl.class.getName());
+	// private static Logger _log = Logger.getLogger(AdminDoorControl.class.getName());
 	private static DoorTable _doorTable;
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_open", "admin_close", "admin_openall", "admin_closeall"
 	};
-	
+
 	// private static final Map<String, Integer> doorMap = new FastMap<String,
 	// Integer>(); //FIXME: should we jute remove this?
 
@@ -55,7 +56,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		_doorTable = DoorTable.getInstance();
-		
+
 		try
 		{
 			if (command.startsWith("admin_open "))
@@ -114,7 +115,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 					activeChar.sendMessage("Incorrect target.");
 				}
 			}
-			
+
 			if (command.equals("admin_close"))
 			{
 				L2Object target = activeChar.getTarget();
@@ -136,7 +137,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{

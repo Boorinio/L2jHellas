@@ -15,9 +15,7 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 /**
- *
  * @author: FBIagent / fixed by SqueezeD
- *
  */
 import java.util.StringTokenizer;
 
@@ -71,6 +69,7 @@ public class AdminTvTEngine implements IAdminCommandHandler
 			"admin_tvt_interval"					};
 			//L2EMU_ADD
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_tvt"))
@@ -231,11 +230,12 @@ public class AdminTvTEngine implements IAdminCommandHandler
 			if (TvT._joinTime > 0 && TvT._eventTime > 0)
 				ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						TvT.autoEvent();
 					}
-				}, 0);		
+				}, 0);
 			else
 				activeChar.sendMessage("Wrong usege: join time or event time invallid.");
 			showMainPage(activeChar);
@@ -267,6 +267,7 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		return true;
 	}
 
+	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;

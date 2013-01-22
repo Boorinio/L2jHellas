@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,7 +24,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class EnchantScrolls implements IItemHandler
 {
-	
+
 	private static final int[] ITEM_IDS =
 	{
 	729, 730, 731, 732, 6569, 6570, // a grade
@@ -32,7 +34,8 @@ public class EnchantScrolls implements IItemHandler
 	959, 960, 961, 962, 6577, 6578
 	// s grade
 	};
-	
+
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
@@ -40,13 +43,14 @@ public class EnchantScrolls implements IItemHandler
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		if (activeChar.isCastingNow())
 			return;
-		
+
 		activeChar.setActiveEnchantItem(item);
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.SELECT_ITEM_TO_ENCHANT));
 		activeChar.sendPacket(new ChooseInventoryItem(item.getItemId()));
 		return;
 	}
-	
+
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

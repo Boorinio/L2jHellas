@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,7 +25,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class handles commands for gm to forge packets
- * 
+ *
  * @author Maktakien
  */
 public class AdminPForge implements IAdminCommandHandler
@@ -137,7 +139,7 @@ public class AdminPForge implements IAdminCommandHandler
 					{
 						val = String.valueOf(((L2PcInstance) activeChar.getTarget()).getHeading());
 					}
-					
+
 					sp.addPart(format.getBytes()[i], val);
 				}
 				if (broadcast == true)
@@ -162,7 +164,7 @@ public class AdminPForge implements IAdminCommandHandler
 	{
 		AdminHelpPage.showHelpPage(activeChar, "pforge1.htm");
 	}
-	
+
 	private void showPage2(L2PcInstance activeChar, String format)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
@@ -178,7 +180,7 @@ public class AdminPForge implements IAdminCommandHandler
 		adminReply.replace("%send%", replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-	
+
 	private void showPage3(L2PcInstance activeChar, String format, String command)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
@@ -187,7 +189,7 @@ public class AdminPForge implements IAdminCommandHandler
 		adminReply.replace("%command%", command);
 		activeChar.sendPacket(adminReply);
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{

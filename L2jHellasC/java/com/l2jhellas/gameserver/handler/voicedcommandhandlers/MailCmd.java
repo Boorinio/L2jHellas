@@ -33,18 +33,22 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 public class MailCmd implements IVoicedCommandHandler
 {
 	
-	public static final String[] VOICED_COMMANDS = { "mailread", "mailsend" };
+	public static final String[] VOICED_COMMANDS = {
+	"mailread", "mailsend"
+	};
 	
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.equalsIgnoreCase("mailread")) {
+		if (command.equalsIgnoreCase(VOICED_COMMANDS[0])) // mailread
+		{
 			
 			mailread(activeChar);
 			
 		}
 		
-		if (command.equalsIgnoreCase("mailsend")) {
+		if (command.equalsIgnoreCase(VOICED_COMMANDS[1])) // mailsend
+		{
 			
 			mailsend(activeChar);
 			
@@ -53,16 +57,18 @@ public class MailCmd implements IVoicedCommandHandler
 		return false;
 	}
 	
-	public void mailread(L2PcInstance activeChar) {
+	public void mailread(L2PcInstance activeChar)
+	{
 		
 		NpcHtmlMessage msg = new NpcHtmlMessage(20);
-        msg.setHtml(showMailReadWindow(activeChar));
-        msg.replace("%objectId%", String.valueOf(20));
-        activeChar.sendPacket(msg);
+		msg.setHtml(showMailReadWindow(activeChar));
+		msg.replace("%objectId%", String.valueOf(20));
+		activeChar.sendPacket(msg);
 		
 	}
 	
-	public String showMailReadWindow(L2PcInstance activeChar) {
+	public String showMailReadWindow(L2PcInstance activeChar)
+	{
 		
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><head><title>Inbox</title></head><body>");
@@ -80,7 +86,8 @@ public class MailCmd implements IVoicedCommandHandler
 			
 			int messageId = 0;
 			
-			while (result.next()) {
+			while (result.next())
+			{
 				
 				tb.append("<font color=\"D6A718\">From:</font> <br>" + result.getString(2) + "<br>");
 				tb.append("<font color=\"D6A718\">Title:</font> <br>" + result.getString(4) + "<br>");
@@ -88,9 +95,8 @@ public class MailCmd implements IVoicedCommandHandler
 				
 				messageId = result.getInt(1);
 				
-				tb.append("<button value=\"Delete\" action=\"bypass -h delMsg " + messageId +"\" width=100 height=20><br>*******************************<br>");
+				tb.append("<button value=\"Delete\" action=\"bypass -h delMsg " + messageId + "\" width=100 height=20><br>*******************************<br>");
 				
-		
 			}
 			
 		}
@@ -105,16 +111,18 @@ public class MailCmd implements IVoicedCommandHandler
 		
 	}
 	
-	public void mailsend(L2PcInstance activeChar) {
+	public void mailsend(L2PcInstance activeChar)
+	{
 		
 		NpcHtmlMessage msg = new NpcHtmlMessage(20);
-        msg.setHtml(showMailSendWindow(activeChar));
-        msg.replace("%objectId%", String.valueOf(20));
-        activeChar.sendPacket(msg);
+		msg.setHtml(showMailSendWindow(activeChar));
+		msg.replace("%objectId%", String.valueOf(20));
+		activeChar.sendPacket(msg);
 		
 	}
 	
-	public String showMailSendWindow(L2PcInstance activeChar) {
+	public String showMailSendWindow(L2PcInstance activeChar)
+	{
 		
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><head><title>Send a Mail</title></head><body>");
@@ -136,7 +144,7 @@ public class MailCmd implements IVoicedCommandHandler
 		tb.append("</center>");
 		
 		tb.append("</body></html>");
-	
+
 		return tb.toString();
 	}
 	

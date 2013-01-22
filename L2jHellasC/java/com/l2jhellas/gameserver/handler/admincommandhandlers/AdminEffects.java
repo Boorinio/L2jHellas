@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -65,10 +67,47 @@ public class AdminEffects implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_invis", "admin_invisible", "admin_vis", "admin_visible", "admin_invis_menu", "admin_earthquake", "admin_earthquake_menu", "admin_bighead", "admin_shrinkhead", "admin_gmspeed", "admin_gmspeed_menu", "admin_unpara_all", "admin_para_all", "admin_unpara", "admin_para", "admin_unpara_all_menu", "admin_para_all_menu", "admin_unpara_menu", "admin_para_menu", "admin_polyself", "admin_unpolyself", "admin_polyself_menu", "admin_unpolyself_menu", "admin_changename", "admin_changename_menu", "admin_clearteams", "admin_setteam_close", "admin_setteam", "admin_social", "admin_effect", "admin_social_menu", "admin_effect_menu", "admin_abnormal", "admin_abnormal_menu", "admin_play_sounds", "admin_play_sound", "admin_atmosphere", "admin_atmosphere_menu"
+	"admin_invis",
+	"admin_invisible",
+	"admin_vis",
+	"admin_visible",
+	"admin_invis_menu",
+	"admin_earthquake",
+	"admin_earthquake_menu",
+	"admin_bighead",
+	"admin_shrinkhead",
+	"admin_gmspeed",
+	"admin_gmspeed_menu",
+	"admin_unpara_all",
+	"admin_para_all",
+	"admin_unpara",
+	"admin_para",
+	"admin_unpara_all_menu",
+	"admin_para_all_menu",
+	"admin_unpara_menu",
+	"admin_para_menu",
+	"admin_polyself",
+	"admin_unpolyself",
+	"admin_polyself_menu",
+	"admin_unpolyself_menu",
+	"admin_changename",
+	"admin_changename_menu",
+	"admin_clearteams",
+	"admin_setteam_close",
+	"admin_setteam",
+	"admin_social",
+	"admin_effect",
+	"admin_social_menu",
+	"admin_effect_menu",
+	"admin_abnormal",
+	"admin_abnormal_menu",
+	"admin_play_sounds",
+	"admin_play_sound",
+	"admin_atmosphere",
+	"admin_atmosphere_menu"
 	};
 
-	
+
 	@Override
 	@SuppressWarnings("unused")
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -652,7 +691,7 @@ public class AdminEffects implements IAdminCommandHandler
 	private void adminAtmosphere(String type, String state, L2PcInstance activeChar)
 	{
 		L2GameServerPacket packet = null;
-		
+
 		if (type.equals("signsky"))
 		{
 			if (state.equals("dawn"))

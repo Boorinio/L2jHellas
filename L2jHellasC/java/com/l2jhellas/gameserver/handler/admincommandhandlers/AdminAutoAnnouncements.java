@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,17 +28,17 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  * - announce_announcements = announce all stored announcements to all players
  * - add_announcement text = adds text to startup announcements
  * - del_announcement id = deletes announcement with respective id
- * 
+ *
  * @version $Revision: 1.4.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminAutoAnnouncements implements IAdminCommandHandler
 {
-	
+
 	private static String[] ADMIN_COMMANDS =
 	{
 	"admin_list_autoannouncements", "admin_add_autoannouncement", "admin_del_autoannouncement", "admin_autoannounce"
 	};
-	
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance admin)
 	{
@@ -55,18 +57,18 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 					StringTokenizer st = new StringTokenizer(command.substring(27));
 					int delay = Integer.parseInt(st.nextToken().trim());
 					String autoAnnounce = st.nextToken();
-					
+
 					if (delay > 30)
 					{
 						while (st.hasMoreTokens())
 						{
 							autoAnnounce = autoAnnounce + " " + st.nextToken();
 						};
-						
+
 						AutoAnnouncementHandler.getInstance().registerAnnouncment(autoAnnounce, delay);
 						AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
 					}
-					
+
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{
@@ -85,17 +87,17 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 			{
 			}
 		}
-		
+
 		// Command is admin autoannounce
 		else if (command.startsWith("admin_autoannounce"))
 		{
 			// Call method from another class
 			AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{

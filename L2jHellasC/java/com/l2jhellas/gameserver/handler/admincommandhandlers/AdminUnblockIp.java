@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,25 +26,19 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * <ul>
  * <li>admin_unblockip</li>
  * </ul>
- * 
+ *
  * @version $Revision: 1.3.2.6.2.4 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminUnblockIp implements IAdminCommandHandler
 {
-	
+
 	private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
-	
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_unblockip"
 	};
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IAdminCommandHandler#useAdminCommand
-	 * (java.lang.String, com.l2jhellas.gameserver.model.L2PcInstance)
-	 */
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -66,16 +62,16 @@ public class AdminUnblockIp implements IAdminCommandHandler
 				activeChar.sendPacket(sm);
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private boolean unblockIp(String ipAddress, L2PcInstance activeChar)
 	{
 		// LoginServerThread.getInstance().unBlockip(ipAddress);

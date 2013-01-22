@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -216,7 +218,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 		int groupId;
 		int templateId;
 		int mobCount;
-		
+
 		try
 		{
 			String[] cmdParams = command.split(" ");
@@ -254,7 +256,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 	private void removeGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -287,12 +289,12 @@ public class AdminMobGroup implements IAdminCommandHandler
 		int posx = 0;
 		int posy = 0;
 		int posz = 0;
-		
+
 		try
 		{
 			String[] cmdParams = command.split(" ");
 			groupId = Integer.parseInt(cmdParams[1]);
-			
+
 			try
 			{ // we try to get a position
 				posx = Integer.parseInt(cmdParams[2]);
@@ -332,7 +334,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 	private void unspawnGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -360,7 +362,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 	private void killGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -386,7 +388,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 	private void setCasting(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -412,7 +414,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 	{
 		int groupId;
 		String enabled;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -450,7 +452,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 	{
 		int groupId;
 		int othGroupId;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -485,7 +487,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 	{
 		int groupId;
 		String enabled;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -518,7 +520,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 		int groupId;
 		String targetPlayerStr = null;
 		L2PcInstance targetPlayer = null;
-		
+
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);

@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,12 +40,12 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * This class handles following admin commands: - show_spawns = shows menu -
  * spawn_index lvl = shows menu for monsters with respective level -
  * spawn_monster id = spawns monster id on target
- * 
+ *
  * @version $Revision: 1.2.2.5.2.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminSpawn implements IAdminCommandHandler
 {
-	
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_show_spawns", "admin_spawn", "admin_spawn_monster", "admin_spawn_index", "admin_unspawnall", "admin_respawnall", "admin_spawn_reload", "admin_npc_index", "admin_spawn_once", "admin_show_npcs", "admin_teleport_reload", "admin_spawnnight", "admin_spawnday"
@@ -162,7 +164,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private void spawnMonster(L2PcInstance activeChar, String monsterId, int respawnTime, int mobCount, boolean permanent)
 	{
 		L2Object target = activeChar.getTarget();

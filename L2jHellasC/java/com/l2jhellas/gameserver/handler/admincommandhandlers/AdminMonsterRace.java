@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,21 +27,20 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands: - invul = turns invulnerability
  * on/off
- * 
+ *
  * @version $Revision: 1.1.6.4 $ $Date: 2007/07/31 10:06:00 $
  */
 public class AdminMonsterRace implements IAdminCommandHandler
 {
-	// private static Logger _log =
-	// Logger.getLogger(AdminMonsterRace.class.getName());
-	
+	// private static Logger _log = Logger.getLogger(AdminMonsterRace.class.getName());
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_mons"
 	};
-	
+
 	protected static int state = -1;
-	
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -49,13 +50,13 @@ public class AdminMonsterRace implements IAdminCommandHandler
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private void handleSendPacket(L2PcInstance activeChar)
 	{
 		/*
@@ -65,7 +66,7 @@ public class AdminMonsterRace implements IAdminCommandHandler
 		 * -1 0 to end the race
 		 * 8003 to 8027
 		 */
-		
+
 		int[][] codes =
 		{
 		{
@@ -82,7 +83,7 @@ public class AdminMonsterRace implements IAdminCommandHandler
 		}
 		};
 		MonsterRace race = MonsterRace.getInstance();
-		
+
 		if (state == -1)
 		{
 			state++;
@@ -107,24 +108,24 @@ public class AdminMonsterRace implements IAdminCommandHandler
 			MonRaceInfo spk = new MonRaceInfo(codes[state][0], codes[state][1], race.getMonsters(), race.getSpeeds());
 			activeChar.sendPacket(spk);
 			activeChar.broadcastPacket(spk);
-			
+
 			ThreadPoolManager.getInstance().scheduleGeneral(new RunRace(codes, activeChar), 5000);
 		}
-		
+
 	}
-	
+
 	class RunRace implements Runnable
 	{
-		
+
 		private final int[][] codes;
 		private final L2PcInstance activeChar;
-		
+
 		public RunRace(int[][] pCodes, L2PcInstance pActiveChar)
 		{
 			codes = pCodes;
 			activeChar = pActiveChar;
 		}
-		
+
 		@Override
 		public void run()
 		{
@@ -144,23 +145,23 @@ public class AdminMonsterRace implements IAdminCommandHandler
 			 * System.out.println("Total speed for "+(i+1)+" = "+speed[i]);
 			 * }
 			 */
-			
+
 			MonRaceInfo spk = new MonRaceInfo(codes[2][0], codes[2][1], MonsterRace.getInstance().getMonsters(), MonsterRace.getInstance().getSpeeds());
 			activeChar.sendPacket(spk);
 			activeChar.broadcastPacket(spk);
 			ThreadPoolManager.getInstance().scheduleGeneral(new RunEnd(activeChar), 30000);
 		}
 	}
-	
+
 	class RunEnd implements Runnable
 	{
 		private final L2PcInstance activeChar;
-		
+
 		public RunEnd(L2PcInstance pActiveChar)
 		{
 			activeChar = pActiveChar;
 		}
-		
+
 		@Override
 		public void run()
 		{

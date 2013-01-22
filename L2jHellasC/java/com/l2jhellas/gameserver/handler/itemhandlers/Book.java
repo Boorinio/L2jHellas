@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,24 +30,25 @@ public class Book implements IItemHandler
 	{
 	5588, 6317, 7561, 7064, 7082, 7083, 7084, 7085, 7086, 7087, 7088, 7089, 7090, 7091, 7092, 7093, 7094, 7095, 7096, 7097, 7098, 7099, 7100, 7101, 7102, 7103, 7104, 7105, 7106, 7107, 7108, 7109, 7110, 7111, 7112
 	};
-	
+
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		final int itemId = item.getItemId();
-		
+
 		String filename = "data/html/help/" + itemId + ".htm";
 		String content = HtmCache.getInstance().getHtm(filename);
-		
+
 		// Quest item: Lidia's diary
 		if (itemId == 7064)
 		{
 			activeChar.sendPacket(new ShowMiniMap(1665));
 			activeChar.sendPacket(new RadarControl(0, 1, 51995, -51265, -3104));
 		}
-		
+
 		if (content == null)
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(1);
@@ -58,10 +61,11 @@ public class Book implements IItemHandler
 			itemReply.setHtml(content);
 			activeChar.sendPacket(itemReply);
 		}
-		
+
 		activeChar.sendPacket(new ActionFailed());
 	}
-	
+
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,20 +46,20 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * - give_all_skills
  * - remove_all_skills
  * - add_clan_skills
- * 
+ *
  * @version $Revision: 1.2.4.7 $ $Date: 2005/04/11 10:06:02 $
  */
 public class AdminSkill implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminSkill.class.getName());
-	
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_show_skills", "admin_remove_skills", "admin_skill_list", "admin_skill_index", "admin_add_skill", "admin_remove_skill", "admin_get_skills", "admin_reset_skills", "admin_give_all_skills", "admin_remove_all_skills", "admin_add_clan_skill"
 	};
 
 	private static L2Skill[] adminSkills;
-	
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -159,7 +161,7 @@ public class AdminSkill implements IAdminCommandHandler
 	/**
 	 * This function will give all the skills that the target can learn at
 	 * his/her level
-	 * 
+	 *
 	 * @param activeChar
 	 *        : the gm char
 	 */
@@ -201,7 +203,7 @@ public class AdminSkill implements IAdminCommandHandler
 		activeChar.sendMessage("You gave " + skillCounter + " skills to " + player.getName());
 		player.sendSkillList();
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{
@@ -226,10 +228,10 @@ public class AdminSkill implements IAdminCommandHandler
 		int MaxPages = skills.length / MaxSkillsPerPage;
 		if (skills.length > MaxSkillsPerPage * MaxPages)
 			MaxPages++;
-		
+
 		if (page > MaxPages)
 			page = MaxPages;
-		
+
 		int SkillsStart = MaxSkillsPerPage * page;
 		int SkillsEnd = skills.length;
 		if (SkillsEnd - SkillsStart > MaxSkillsPerPage)
@@ -464,13 +466,13 @@ public class AdminSkill implements IAdminCommandHandler
 				player.getClan().broadcastToOnlineMembers(sm);
 				player.getClan().addNewSkill(skill);
 				activeChar.sendMessage("You gave the Clan Skill: " + skillname + " to the clan " + player.getClan().getName() + ".");
-				
+
 				activeChar.getClan().broadcastToOnlineMembers(new PledgeSkillList(activeChar.getClan()));
 				for (L2PcInstance member : activeChar.getClan().getOnlineMembers(""))
 				{
 					member.sendSkillList();
 				}
-				
+
 				showMainPage(activeChar);
 				return;
 			}

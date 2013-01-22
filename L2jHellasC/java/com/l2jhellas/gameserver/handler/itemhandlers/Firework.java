@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,7 +25,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.0.0.0.0.0 $ $Date: 2005/09/02 19:41:13 $
  */
 
@@ -34,14 +36,15 @@ public class Firework implements IItemHandler
 	{
 	6403, 6406, 6407
 	};
-	
+
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
 			return; // prevent Class cast exception
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		int itemId = item.getItemId();
-		
+
 		if (activeChar.isInOlympiadMode())
 		{
 			activeChar.sendPacket(new ActionFailed());
@@ -62,7 +65,7 @@ public class Firework implements IItemHandler
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
-		
+
 		if (activeChar.isConfused())
 		{
 			activeChar.sendPacket(new ActionFailed());
@@ -83,7 +86,7 @@ public class Firework implements IItemHandler
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
-		
+
 		/*
 		 * Elven Firecracker
 		 */
@@ -118,7 +121,7 @@ public class Firework implements IItemHandler
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 		}
 	}
-	
+
 	public void useFw(L2PcInstance activeChar, int magicId, int level)
 	{
 		L2Skill skill = SkillTable.getInstance().getInfo(magicId, level);
@@ -127,7 +130,8 @@ public class Firework implements IItemHandler
 			activeChar.useMagic(skill, false, false);
 		}
 	}
-	
+
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

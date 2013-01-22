@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,16 +37,17 @@ public class PaganKeys implements IItemHandler
 	8273, 8274, 8275
 	};
 	public static final int INTERACTION_DISTANCE = 100;
-	
+
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
-		
+
 		int itemId = item.getItemId();
 		if (!(playable instanceof L2PcInstance))
 			return;
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		L2Object target = activeChar.getTarget();
-		
+
 		if (!(target instanceof L2DoorInstance))
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
@@ -52,7 +55,7 @@ public class PaganKeys implements IItemHandler
 			return;
 		}
 		L2DoorInstance door = (L2DoorInstance) target;
-		
+
 		if (!(activeChar.isInsideRadius(door, INTERACTION_DISTANCE, false, false)))
 		{
 			activeChar.sendMessage("Too far.");
@@ -65,12 +68,12 @@ public class PaganKeys implements IItemHandler
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
-		
+
 		int openChance = 35;
-		
+
 		if (!playable.destroyItem("Consume", item.getObjectId(), 1, null, false))
 			return;
-		
+
 		switch (itemId)
 		{
 			case 8273: // AnteroomKey
@@ -147,7 +150,8 @@ public class PaganKeys implements IItemHandler
 			break;
 		}
 	}
-	
+
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

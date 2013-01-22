@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,41 +32,29 @@ import com.l2jhellas.gameserver.skills.Formulas;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.8.2.9 $ $Date: 2005/04/05 19:41:23 $
  */
 
 public class Mdam implements ISkillHandler
 {
 	// private static Logger _log = Logger.getLogger(Mdam.class.getName());
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.handler.IItemHandler#useItem(com.l2jhellas.
-	 * gameserver.model.L2PcInstance,
-	 * com.l2jhellas.gameserver.model.L2ItemInstance)
-	 */
-	private static final L2SkillType[] SKILL_IDS =
-	{
+
+	private static final L2SkillType[] SKILL_IDS = {
 	L2SkillType.MDAM, L2SkillType.DEATHLINK
 	};
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.handler.IItemHandler#useItem(com.l2jhellas.
-	 * gameserver.model.L2PcInstance,
-	 * com.l2jhellas.gameserver.model.L2ItemInstance)
-	 */
+
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
-		
+
 		boolean ss = false;
 		boolean bss = false;
-		
+
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-		
+
 		/*
 		 * if (activeChar instanceof L2PcInstance)
 		 * {
@@ -77,7 +67,7 @@ public class Mdam implements ISkillHandler
 		 * }
 		 * }
 		 */
-		
+
 		if (weaponInst != null)
 		{
 			if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -95,7 +85,7 @@ public class Mdam implements ISkillHandler
 		else if (activeChar instanceof L2Summon)
 		{
 			L2Summon activeSummon = (L2Summon) activeChar;
-			
+
 			if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 			{
 				bss = true;
@@ -107,11 +97,11 @@ public class Mdam implements ISkillHandler
 				activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
 			}
 		}
-		
+
 		for (int index = 0; index < targets.length; index++)
 		{
 			L2Character target = (L2Character) targets[index];
-			
+
 			if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && target.isAlikeDead() && target.isFakeDeath())
 			{
 				target.stopFakeDeath(null);
@@ -123,7 +113,7 @@ public class Mdam implements ISkillHandler
 			// if (skill != null)
 			// if (skill.isOffensive())
 			// {
-			
+
 			// boolean acted;
 			// if (skill.getSkillType() == L2Skill.SkillType.DOT ||
 			// skill.getSkillType() == L2Skill.SkillType.MDOT)
@@ -139,11 +129,11 @@ public class Mdam implements ISkillHandler
 			// }
 			//
 			// }
-			
+
 			boolean mcrit = Formulas.getInstance().calcMCrit(activeChar.getMCriticalHit(target, skill));
-			
+
 			int damage = (int) Formulas.getInstance().calcMagicDam(activeChar, target, skill, ss, bss, mcrit);
-			
+
 			if (damage > 5000 && activeChar instanceof L2PcInstance)
 			{
 				String name = "";
@@ -156,7 +146,7 @@ public class Mdam implements ISkillHandler
 				name += target.getLevel() + " lvl";
 				Log.add(activeChar.getName() + "(" + activeChar.getObjectId() + ") " + activeChar.getLevel() + " lvl did damage " + damage + " with skill " + skill.getName() + "(" + skill.getId() + ") to " + name, "damage_mdam");
 			}
-			
+
 			// Why are we trying to reduce the current target HP here?
 			// Why not inside the below "if" condition, after the effects
 			// processing as it should be?
@@ -164,7 +154,7 @@ public class Mdam implements ISkillHandler
 			// the "if" condition, right after the effects processing...
 			// [changed by nexus - 2006-08-15]
 			// target.reduceCurrentHp(damage, activeChar);
-			
+
 			if (damage > 0)
 			{
 				// Manage attack or cast break of the target (calculating rate,
@@ -174,9 +164,9 @@ public class Mdam implements ISkillHandler
 					target.breakAttack();
 					target.breakCast();
 				}
-				
+
 				activeChar.sendDamageMessage(target, damage, mcrit, false, false);
-				
+
 				if (skill.hasEffects())
 				{
 					if (target.reflectSkill(skill))
@@ -203,7 +193,7 @@ public class Mdam implements ISkillHandler
 						}
 					}
 				}
-				
+
 				target.reduceCurrentHp(damage, activeChar);
 			}
 		}
@@ -215,14 +205,15 @@ public class Mdam implements ISkillHandler
 			effect.exit();
 		}
 		skill.getEffectsSelf(activeChar);
-		
+
 		if (skill.isSuicideAttack())
 		{
 			activeChar.doDie(null);
 			activeChar.setCurrentHp(0);
 		}
 	}
-	
+
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

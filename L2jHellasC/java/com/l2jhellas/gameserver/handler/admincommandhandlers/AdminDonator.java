@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -66,7 +68,7 @@ public class AdminDonator implements IAdminCommandHandler
 				{
 					connection = L2DatabaseFactory.getInstance().getConnection();
 
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_id FROM characters where char_name=?");
+					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;
@@ -76,14 +78,14 @@ public class AdminDonator implements IAdminCommandHandler
 					}
 					rset.close();
 					statement.close();
-					
+
 					if (objId == 0)
 					{
 						connection.close();
 						return false;
 					}
 
-					statement = connection.prepareStatement("UPDATE characters SET donator=0 WHERE obj_id=?");
+					statement = connection.prepareStatement("UPDATE characters SET donator=0 WHERE obj_Id=?");
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
@@ -115,7 +117,7 @@ public class AdminDonator implements IAdminCommandHandler
 				{
 					connection = L2DatabaseFactory.getInstance().getConnection();
 
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_id FROM characters where char_name=?");
+					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;
@@ -125,14 +127,14 @@ public class AdminDonator implements IAdminCommandHandler
 					}
 					rset.close();
 					statement.close();
-					
+
 					if (objId == 0)
 					{
 						connection.close();
 						return false;
 					}
 
-					statement = connection.prepareStatement("UPDATE characters SET donator=1 WHERE obj_id=?");
+					statement = connection.prepareStatement("UPDATE characters SET donator=1 WHERE obj_Id=?");
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
@@ -162,7 +164,7 @@ public class AdminDonator implements IAdminCommandHandler
 		}
 		return false;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{

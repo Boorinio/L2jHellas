@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,22 +32,22 @@ import com.l2jhellas.util.Rnd;
 public class Unlock implements ISkillHandler
 {
 	// private static Logger _log = Logger.getLogger(Unlock.class.getName());
-	private static final L2SkillType[] SKILL_IDS =
-	{
+	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.UNLOCK
 	};
-	
+
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2Object[] targetList = skill.getTargetList(activeChar);
-		
+
 		if (targetList == null)
 			return;
-		
+
 		for (int index = 0; index < targetList.length; index++)
 		{
 			L2Object target = targetList[index];
-			
+
 			boolean success = Formulas.getInstance().calculateUnlockChance(skill);
 			if (target instanceof L2DoorInstance)
 			{
@@ -56,13 +58,13 @@ public class Unlock implements ISkillHandler
 					activeChar.sendPacket(new ActionFailed());
 					return;
 				}
-				
+
 				if (success && (!door.getOpen()))
 				{
 					door.openMe();
 					door.onOpen();
 					SystemMessage systemmessage = new SystemMessage(SystemMessageId.S1_S2);
-					
+
 					systemmessage.addString("Unlock the door!");
 					activeChar.sendPacket(systemmessage);
 				}
@@ -84,7 +86,7 @@ public class Unlock implements ISkillHandler
 					int chestChance = 0;
 					int chestGroup = 0;
 					int chestTrapLimit = 0;
-					
+
 					if (chest.getLevel() > 60)
 						chestGroup = 4;
 					else if (chest.getLevel() > 40)
@@ -93,7 +95,7 @@ public class Unlock implements ISkillHandler
 						chestGroup = 2;
 					else
 						chestGroup = 1;
-					
+
 					switch (chestGroup)
 					{
 						case 1:
@@ -106,7 +108,7 @@ public class Unlock implements ISkillHandler
 								chestChance = 45;
 							else if (skill.getLevel() == 1)
 								chestChance = 40;
-							
+
 							chestTrapLimit = 10;
 						}
 						break;
@@ -124,7 +126,7 @@ public class Unlock implements ISkillHandler
 								chestChance = 35;
 							else if (skill.getLevel() == 3)
 								chestChance = 30;
-							
+
 							chestTrapLimit = 30;
 						}
 						break;
@@ -148,7 +150,7 @@ public class Unlock implements ISkillHandler
 								chestChance = 15;
 							else if (skill.getLevel() == 6)
 								chestChance = 10;
-							
+
 							chestTrapLimit = 50;
 						}
 						break;
@@ -162,7 +164,7 @@ public class Unlock implements ISkillHandler
 								chestChance = 40;
 							else if (skill.getLevel() == 11)
 								chestChance = 35;
-							
+
 							chestTrapLimit = 80;
 						}
 						break;
@@ -188,7 +190,8 @@ public class Unlock implements ISkillHandler
 			}
 		}
 	}
-	
+
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

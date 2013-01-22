@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,7 +46,7 @@ import com.l2jhellas.gameserver.util.Broadcast;
 public class Wedding implements IVoicedCommandHandler
 {
 	static final Log _log = LogFactory.getLog(Wedding.class);
-	private static String[] _voicedCommands =
+	private static String[] VOICED_COMMANDS =
 	{
 	"divorce", "engage", "gotolove"
 	};
@@ -53,11 +55,11 @@ public class Wedding implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		if (command.startsWith(_voicedCommands[1]))
+		if (command.startsWith(VOICED_COMMANDS[1]))
 			return Engage(activeChar);
-		else if (command.startsWith(_voicedCommands[0]))
+		else if (command.startsWith(VOICED_COMMANDS[0]))
 			return Divorce(activeChar);
-		else if (command.startsWith(_voicedCommands[2]))
+		else if (command.startsWith(VOICED_COMMANDS[2]))
 			return GoToLove(activeChar);
 		return false;
 	}
@@ -414,14 +416,9 @@ public class Wedding implements IVoicedCommandHandler
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IUserCommandHandler#getUserCommandList()
-	 */
 	@Override
 	public String[] getVoicedCommandList()
 	{
-		return _voicedCommands;
+		return VOICED_COMMANDS;
 	}
 }

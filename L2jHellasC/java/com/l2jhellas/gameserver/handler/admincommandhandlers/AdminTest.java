@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,7 +30,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
  */
 
@@ -38,7 +40,7 @@ public class AdminTest implements IAdminCommandHandler
 	{
 	"admin_test", "admin_stats", "admin_skill_test", "admin_st", "admin_mp", "admin_known"
 	};
-	
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -102,7 +104,7 @@ public class AdminTest implements IAdminCommandHandler
 		sendTestPage(activeChar);
 		return true;
 	}
-	
+
 	/**
 	 * @param activeChar
 	 * @param id
@@ -120,9 +122,9 @@ public class AdminTest implements IAdminCommandHandler
 			player = (L2Character) target;
 		}
 		player.broadcastPacket(new MagicSkillUse(activeChar, player, id, 1, 1, 1));
-		
+
 	}
-	
+
 	// Sends "Test page" server_menu.htm
 	private void sendTestPage(L2PcInstance player)
 	{

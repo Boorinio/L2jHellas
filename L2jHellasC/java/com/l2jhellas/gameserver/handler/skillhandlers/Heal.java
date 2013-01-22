@@ -37,24 +37,13 @@ public class Heal implements ISkillHandler
 {
 	// all the items ids that this handler knowns
 	// private static Logger _log = Logger.getLogger(Heal.class.getName());
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.handler.IItemHandler#useItem(com.l2jhellas.
-	 * gameserver.model.L2PcInstance,
-	 * com.l2jhellas.gameserver.model.L2ItemInstance)
-	 */
+
 	private static final L2SkillType[] SKILL_IDS =
 	{
 	L2SkillType.HEAL, L2SkillType.HEAL_PERCENT, L2SkillType.HEAL_STATIC
 	};
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.handler.IItemHandler#useItem(com.l2jhellas.
-	 * gameserver.model.L2PcInstance,
-	 * com.l2jhellas.gameserver.model.L2ItemInstance)
-	 */
+
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		// L2Character activeChar = activeChar;
@@ -144,10 +133,7 @@ public class Heal implements ISkillHandler
 				hp = skill.getPower();
 			else if (skill.getSkillType() != L2SkillType.HEAL_PERCENT)
 				hp *= target.calcStat(Stats.HEAL_EFFECTIVNESS, 100, null, null) / 100;
-			hp *= activeChar.calcStat(Stats.HEAL_PROFICIENCY, 100, null, null) / 100; // Healer
-																						// proficiency
-																						// (since
-																						// CT1)
+			hp *= activeChar.calcStat(Stats.HEAL_PROFICIENCY, 100, null, null) / 100; // Healer proficiency (since CT1)
 			
 			target.setCurrentHp(hp + target.getCurrentHp());
 			target.setLastHealAmount((int) hp);
@@ -182,6 +168,7 @@ public class Heal implements ISkillHandler
 		}
 	}
 	
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

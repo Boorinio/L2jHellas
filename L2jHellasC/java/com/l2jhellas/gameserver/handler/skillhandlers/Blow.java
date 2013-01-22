@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,11 +42,11 @@ import com.l2jhellas.util.Rnd;
  */
 public class Blow implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS =
-	{
+	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.BLOW
 	};
 	
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
@@ -182,10 +184,7 @@ public class Blow implements ISkillHandler
 				{
 					if (target instanceof L2NpcInstance)
 						target.reduceCurrentHp(target.getCurrentHp() - 1, activeChar);
-					else if (target instanceof L2PcInstance) // If is a active
-																// player set
-																// his HP and CP
-																// to 1
+					else if (target instanceof L2PcInstance) // If is a active player set his HP and CP to 1
 					{
 						L2PcInstance player = (L2PcInstance) target;
 						if (!player.isInvul())
@@ -204,11 +203,7 @@ public class Blow implements ISkillHandler
 						if (!player.isInvul())
 							player.setCurrentCp(1); // Set CP to 1
 					}
-					else if (target instanceof L2NpcInstance) // If is a monster
-																// remove first
-																// damage and
-																// after 50% of
-																// current hp
+					else if (target instanceof L2NpcInstance) // If is a monster remove first damage and after 50% of current hp
 						target.reduceCurrentHp(target.getCurrentHp() / 2, activeChar);
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
 				}
@@ -221,6 +216,7 @@ public class Blow implements ISkillHandler
 		}
 	}
 	
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

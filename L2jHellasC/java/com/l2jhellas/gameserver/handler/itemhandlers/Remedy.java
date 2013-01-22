@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,7 +27,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.4 $ $Date: 2005/04/06 16:13:51 $
  */
 
@@ -35,7 +37,8 @@ public class Remedy implements IItemHandler
 	{
 	1831, 1832, 1833, 1834, 3889
 	};
-	
+
+	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
@@ -45,13 +48,13 @@ public class Remedy implements IItemHandler
 			activeChar = ((L2PetInstance) playable).getOwner();
 		else
 			return;
-		
+
 		if (activeChar.isInOlympiadMode())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
 			return;
 		}
-		
+
 		int itemId = item.getItemId();
 		if (itemId == 1831) // antidote
 		{
@@ -134,7 +137,8 @@ public class Remedy implements IItemHandler
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 		}
 	}
-	
+
+	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;

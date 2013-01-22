@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +41,7 @@ public class AdminSiege implements IAdminCommandHandler
 {
 	// private static Logger _log =
 	// Logger.getLogger(AdminSiege.class.getName());
-	
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_siege", "admin_add_attacker", "admin_add_defender", "admin_add_guard", "admin_list_siege_clans", "admin_clear_siege_list", "admin_move_defenders", "admin_spawn_doors", "admin_endsiege", "admin_startsiege", "admin_setcastle", "admin_removecastle", "admin_clanhall", "admin_clanhallset", "admin_clanhalldel", "admin_clanhallopendoors", "admin_clanhallclosedoors", "admin_clanhallteleportself"
@@ -266,7 +268,7 @@ public class AdminSiege implements IAdminCommandHandler
 			adminReply.replace("%clanhallOwner%", owner.getName());
 		activeChar.sendPacket(adminReply);
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{

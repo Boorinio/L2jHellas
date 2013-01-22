@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,19 +24,13 @@ public class AdminQuest implements IAdminCommandHandler
 	{
 		"admin_quest_reload"
 	};
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IAdminCommandHandler#useAdminCommand
-	 * (java.lang.String, com.l2jhellas.gameserver.model.L2PcInstance)
-	 */
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (activeChar == null)
 			return false;
-		
+
 		// syntax will either be:
 		// //quest_reload <id>
 		// //quest_reload <questName>
@@ -82,13 +78,7 @@ public class AdminQuest implements IAdminCommandHandler
 		}
 		return true;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.handler.IAdminCommandHandler#getAdminCommandList
-	 * ()
-	 */
+
 	@Override
 	public String[] getAdminCommandList()
 	{

@@ -1,20 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
@@ -26,11 +22,15 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
  */
 public class MxCPolyInfo extends L2GameServerPacket
 {
-	private L2NpcInstance _activeChar;
-	private int _x, _y, _z, _heading;
-	private int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd, _flyWalkSpd;
-	private float _moveMultiplier;
-	private int _maxCp;
+	private final L2NpcInstance _activeChar;
+	private final int _x, _y, _z, _heading;
+	private final int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd;
+	private int _flRunSpd;
+	private int _flWalkSpd;
+	private int _flyRunSpd;
+	private int _flyWalkSpd;
+	private final float _moveMultiplier;
+	private final int _maxCp;
 
 	public MxCPolyInfo(L2NpcInstance cha)
 	{

@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,20 +41,11 @@ import com.l2jhellas.gameserver.skills.Formulas;
 
 public class Continuous implements ISkillHandler
 {
-	// private static Logger _log =
-	// Logger.getLogger(Continuous.class.getName());
-	
-	private static final L2SkillType[] SKILL_IDS =
-	{
+	private static final L2SkillType[] SKILL_IDS = {
 	L2SkillType.BUFF, L2SkillType.DEBUFF, L2SkillType.DOT, L2SkillType.MDOT, L2SkillType.POISON, L2SkillType.BLEED, L2SkillType.HOT, L2SkillType.CPHOT, L2SkillType.MPHOT, L2SkillType.FEAR, L2SkillType.CONT, L2SkillType.WEAKNESS, L2SkillType.REFLECT, L2SkillType.UNDEAD_DEFENSE, L2SkillType.AGGDEBUFF, L2SkillType.FORCE_BUFF
 	};
 	
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.handler.IItemHandler#useItem(com.l2jhellas.
-	 * gameserver.model.L2PcInstance,
-	 * com.l2jhellas.gameserver.model.L2ItemInstance)
-	 */
+	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2Character target = null;
@@ -206,6 +199,7 @@ public class Continuous implements ISkillHandler
 		skill.getEffectsSelf(activeChar);
 	}
 	
+	@Override
 	public L2SkillType[] getSkillIds()
 	{
 		return SKILL_IDS;

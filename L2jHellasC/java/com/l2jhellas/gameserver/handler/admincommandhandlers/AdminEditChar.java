@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -55,33 +57,16 @@ import com.l2jhellas.gameserver.util.Util;
 public class AdminEditChar implements IAdminCommandHandler
 {
 	private final static Log _log = LogFactory.getLog(AdminEditChar.class.getName());
-	
+
 	private static String[] ADMIN_COMMANDS =
 	{
 	"admin_changename", // changes char name
-	"admin_changename_menu", "admin_edit_character", "admin_current_player", "admin_nokarma", "admin_setkarma", "admin_character_list", // same
-																																		// as
-																																		// character_info,
-																																		// kept
-																																		// for
-																																		// compatibility
-																																		// purposes
-	"admin_character_info", // given a player name, displays an information
-							// window
-	"admin_show_characters", "admin_find_character", "admin_find_ip", // find
-																		// all
-																		// the
-																		// player
-																		// connections
-																		// from
-																		// a
-																		// given
-																		// IPv4
-																		// number
-	"admin_find_account", // list all the characters from an account (useful for
-							// GMs w/o DB access)
-	"admin_find_dualbox", // list all the IPs with more than 1 char logged in
-							// (dualbox)
+	"admin_changename_menu", "admin_edit_character", "admin_current_player", "admin_nokarma", "admin_setkarma", "admin_character_list", // same as character_info, kept for
+																																		// compatibility purposes
+	"admin_character_info", // given a player name, displays an information window
+	"admin_show_characters", "admin_find_character", "admin_find_ip", // find all the player connections from a given IPv4 number
+	"admin_find_account", // list all the characters from an account (useful for GMs w/o DB access)
+	"admin_find_dualbox", // list all the IPs with more than 1 char logged in (dualbox)
 	"admin_save_modifications", // consider it deprecated...
 	"admin_rec", "admin_setclass", "admin_settitle", "admin_setsex", "admin_setcolor", "admin_fullfood", "admin_remclanwait", "admin_setcp", "admin_sethp", "admin_setmp", "admin_setchar_cp", "admin_setchar_hp", "admin_setchar_mp"
 	};
@@ -425,7 +410,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			if (activeChar.isGM())
 				return false;
-			
+
 			String[] params = command.split(" ");
 			if (params.length != 3)
 			{
@@ -544,7 +529,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			activeChar.getStatus().setCurrentMp(mp);
 		}
 		// [L2J_JP ADD END]
-		
+
 		// L2Emu ADD: Xyde: Change player Status
 		if (cmand.equals("admin_setchar_cp"))
 		{
@@ -636,11 +621,11 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		if (players.length > MaxCharactersPerPage * MaxPages)
 			MaxPages++;
-		
+
 		// Check if number of users changed
 		if (page > MaxPages)
 			page = MaxPages;
-		
+
 		int CharactersStart = MaxCharactersPerPage * page;
 		int CharactersEnd = players.length;
 		if (CharactersEnd - CharactersStart > MaxCharactersPerPage)
@@ -748,12 +733,12 @@ public class AdminEditChar implements IAdminCommandHandler
 			StatusUpdate su = new StatusUpdate(player.getObjectId());
 			su.addAttribute(StatusUpdate.KARMA, newKarma);
 			player.sendPacket(su);
-			
+
 			// Common character information
 			SystemMessage sm = new SystemMessage(SystemMessageId.GM_S1);
 			sm.addString("Admin has changed your karma from " + oldKarma + " to " + newKarma + ".");
 			player.sendPacket(sm);
-			
+
 			// Admin information
 			if (player != activeChar)
 				activeChar.sendMessage("Successfully Changed karma for " + player.getName() + " from (" + oldKarma + ") to (" + newKarma + ").");
@@ -794,7 +779,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		int pvpflagval = Integer.parseInt(pvpflag);
 		int pvpkillsval = Integer.parseInt(pvpkills);
 		int pkkillsval = Integer.parseInt(pkkills);
-		
+
 		// Common character information
 		player.sendMessage("Admin has changed your stats." + "  HP: " + hpval + "  MP: " + mpval + "  CP: " + cpval + "  PvP Flag: " + pvpflagval + " PvP/PK " + pvpkillsval + "/" + pkkillsval);
 		player.getStatus().setCurrentHp(hpval);
@@ -815,13 +800,13 @@ public class AdminEditChar implements IAdminCommandHandler
 		su.addAttribute(StatusUpdate.CUR_CP, cpval);
 		su.addAttribute(StatusUpdate.MAX_CP, player.getMaxCp());
 		player.sendPacket(su);
-		
+
 		// Admin information
 		player.sendMessage("Changed stats of " + player.getName() + "." + "  HP: " + hpval + "  MP: " + mpval + "  CP: " + cpval + "  PvP: " + pvpflagval + " / " + pvpkillsval);
 
 		if (_log.isDebugEnabled() || Config.DEBUG)
 			_log.debug("[GM]" + activeChar.getName() + " changed stats of " + player.getName() + ". " + " HP: " + hpval + " MP: " + mpval + " CP: " + cpval + " PvP: " + pvpflagval + " / " + pvpkillsval);
-		
+
 		showCharacterInfo(activeChar, null); // Back to start
 
 		player.broadcastUserInfo();
@@ -953,7 +938,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		else
 			throw new IllegalArgumentException("Malformed character name");
 	}
-	
+
 	/**
 	 * @param activeChar
 	 * @throws IllegalArgumentException
@@ -969,7 +954,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		L2GameClient client;
 
 		final Map<String, Integer> dualboxIPs = new HashMap<String, Integer>();
-		
+
 		for (L2PcInstance player : players)
 		{
 			client = player.getClient();
@@ -981,7 +966,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				if (ipMap.get(ip) == null)
 					ipMap.put(ip, new ArrayList<L2PcInstance>());
 				ipMap.get(ip).add(player);
-				
+
 				if (ipMap.get(ip).size() >= multibox)
 				{
 					Integer count = dualboxIPs.get(ip);
@@ -1003,20 +988,20 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 		});
 		Collections.reverse(keys);
-		
+
 		final StringBuilder results = new StringBuilder();
 		for (String dualboxIP : keys)
 		{
 			StringUtil.append(results, "<a action=\"bypass -h admin_find_ip " + dualboxIP + "\">" + dualboxIP + " (" + dualboxIPs.get(dualboxIP) + "</a><br1>");
 		}
-		
+
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/dualbox.htm");
 		adminReply.replace("%multibox%", String.valueOf(multibox));
 		adminReply.replace("%results%", results.toString());
 		activeChar.sendPacket(adminReply);
 	}
-	
+
 	private void showCharacterInfo(L2PcInstance activeChar, L2PcInstance player)
 	{
 		if (player == null)
@@ -1053,7 +1038,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			// ----------------
 			if (player == null)
 				return;
-			
+
 			// Define more variables
 			// ---------------------------------------------
 			String charName = player.getName();
@@ -1070,7 +1055,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			boolean isNoble = player.isNoble();
 			boolean isHero = player.isHero();
 			boolean isDonator = player.isDonator();
-			
+
 			// if it is a new hero insert proper data
 			// ---------------------------------------------
 			if (newHero)
