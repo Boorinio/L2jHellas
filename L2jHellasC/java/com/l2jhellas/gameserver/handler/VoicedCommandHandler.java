@@ -79,7 +79,6 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new ChaosCmd());
 		registerVoicedCommandHandler(new Premium());
 		registerVoicedCommandHandler(new QuizCmd());
-		registerVoicedCommandHandler(new TestCmd());
 		
 		_log.config("VoicedCommandHandler: Loaded " + _datatable.size() + " handlers in total.");
 	}
