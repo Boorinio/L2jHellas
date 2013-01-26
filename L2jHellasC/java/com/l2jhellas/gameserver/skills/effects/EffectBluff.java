@@ -21,6 +21,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.network.serverpackets.StartRotation;
 import com.l2jhellas.gameserver.network.serverpackets.StopRotation;
 import com.l2jhellas.gameserver.skills.Env;
+import com.l2jhellas.util.Rnd;
 
 /**
  * @author decad
@@ -45,22 +46,26 @@ public final class EffectBluff extends L2Effect
     @Override
 	public boolean onStart()
     {
-    	if(getEffected() instanceof L2FolkInstance)
-    		return false;
-    	// if(getEffected() instanceof L2SiegeGuardInstance) return;
-    	// Cannot be used on Headquarters Flag.
-    	// bluff now is a PVE PVP skill
-    	if(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062 || getSkill().getId() != 358)
-    		return false;
-
-    	if(getEffected() instanceof L2SiegeSummonInstance)
-    	    return false;
-
-    	getEffected().broadcastPacket(new StartRotation(getEffected().getObjectId(), getEffected().getHeading(), 1, 65535)); 
-     	getEffected().broadcastPacket(new StopRotation(getEffected().getObjectId(), getEffector().getHeading(), 65535)); 
-     	getEffected().setHeading(getEffector().getHeading());
-        onActionTime();
-        return true;
+    	if (getEffected() instanceof L2NpcInstance)
+			return false;
+    	if (getEffected() instanceof L2FolkInstance)
+			return false;
+		if (getEffected() instanceof L2NpcInstance && ((L2NpcInstance) getEffected()).getNpcId() == 35062 || getSkill().getId() != 358)
+			return false;
+		if (getEffected() instanceof L2SiegeSummonInstance)
+			return false;
+		
+		if (Rnd.get(100) <= 80)
+			getEffected().setTarget(null);
+		if (Rnd.get(100) <= 45)
+		{
+			getEffected().broadcastPacket(new StartRotation(getEffected().getObjectId(), getEffected().getHeading(), 1, 65535));
+			getEffected().broadcastPacket(new StopRotation(getEffected().getObjectId(), getEffector().getHeading(), 65535));
+			getEffected().setHeading(getEffector().getHeading());
+			return true;
+		}
+		else
+			return false;
     }
     @Override
 	public boolean onActionTime()

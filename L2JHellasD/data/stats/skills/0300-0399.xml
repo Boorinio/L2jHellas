@@ -1458,21 +1458,23 @@
 </skill>
 <skill id="358" levels="1" name="Bluff">
   <set name="weaponsAllowed" val="16"/>
-  <set name="magicLvl" val="77"/>
   <set name="mpConsume" val="35"/>
   <set name="power" val="40"/>
+  <set name="saveVs" val="MEN"/>
+  <set name="magicLvl" val="77"/>
+  <set name="lvlDepend" val="1" />
   <set name="target" val="TARGET_ONE"/>
-  <set name="skillType" val="AGGREDUCE_CHAR"/>
-  <set name="lvlDepend" val="1"/>
+  <set name="skillType" val="STUN"/>
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="40"/>
-  <set name="isDebuff" val="true"/>
   <set name="effectRange" val="400"/>
   <set name="reuseDelay" val="30000"/>
   <set name="hitTime" val="1000"/>
+  <set name="isDebuff" val="true" />
   <for>
-    <effect count="1" name="Bluff" time="3" val="0" stackOrder="1" stackType="Stun"/>
-    <effect count="1" name="RemoveTarget" time="1" val="0" noicon="1"/>
+    <effect count="1" name="Stun" time="5" val="0" stackOrder="1" stackType="Stun" effectPower="40" effectType="STUN"/> 
+    <effect count="1" name="Bluff" time="1" val="0" noicon="1"/> 
+    <effect count="1" name="RemoveTarget" time="1" val="0" noicon="1" effectPower="80" effectType="DEBUFF"/>
   </for>
 </skill>
 <skill id="359" levels="1" name="Eye of Hunter">
