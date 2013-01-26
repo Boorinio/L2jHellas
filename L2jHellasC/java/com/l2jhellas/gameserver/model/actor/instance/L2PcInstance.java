@@ -1848,13 +1848,11 @@ public final class L2PcInstance extends L2PlayableInstance
 	@Override
 	public void updatePvPFlag(int value)
 	{
-		if (isgood() || isevil())
-			return;
-		
 		if (getPvpFlag() == value)
 			return;
-		setPvpFlag(value);
-		
+		if (isgood() || isevil())
+			return;
+		setPvpFlag(value);		
 		sendPacket(new UserInfo(this));
 		
 		// If this player has a pet update the pets pvp flag as well
@@ -1863,6 +1861,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		for (L2PcInstance target : getKnownList().getKnownPlayers().values())
 		{
+			if(target==null)
+				continue;
 			target.sendPacket(new RelationChanged(this, getRelation(this), isAutoAttackable(target)));
 			if (getPet() != null)
 				target.sendPacket(new RelationChanged(getPet(), getRelation(this), isAutoAttackable(target)));
@@ -5492,7 +5492,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 		if (!(target instanceof L2PlayableInstance))
 			return;
-		if (_inEventCTF || _inEventTvT || _inEventVIP || _inEventDM)
+		if (_inEventCTF || _inEventTvT || _inEventVIP || _inEventDM||_inChaosEvent)
 			return;
 		
 		L2PcInstance targetPlayer = null;
@@ -5621,7 +5621,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void increasePvpKills()
 	{
-		if ((TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF) || !ExternalConfig.CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED)
+		if ((TvT._started && _inEventTvT) ||(_inChaosEvent && ChaosEvent._isChaosActive)|| (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF) || !ExternalConfig.CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED)
 			return;
 		
 		// Add karma to attacker and increase its PK counter
@@ -5655,7 +5655,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	@Override
 	public boolean isInFunEvent()
 	{
-		return (atEvent || (TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || (VIP._started && _inEventVIP) && !isGM());
+		return (atEvent || (TvT._started && _inEventTvT) ||(_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || (VIP._started && _inEventVIP) && !isGM());
 	}
 	
 	/**
@@ -5666,7 +5666,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void increasePkKillsAndKarma(int targLVL)
 	{
-		if ((TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF))
+		if ((TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF))
 			return;
 		
 		if (Config.MOD_GVE_ENABLE_FACTION)
@@ -5785,7 +5785,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void updatePvPStatus()
 	{
-		if ((TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || (_inEventVIP && VIP._started))
+		if ((TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || (_inEventVIP && VIP._started))
 			return;
 		
 		if (isgood() || isevil())
@@ -5811,7 +5811,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (player_target == null)
 			return;
 		
-		if ((TvT._started && _inEventTvT && player_target._inEventTvT) || (DM._started && _inEventDM && player_target._inEventDM) || (CTF._started && _inEventCTF && player_target._inEventCTF) || (_inEventVIP && VIP._started && player_target._inEventVIP))
+		if ((TvT._started && _inEventTvT && player_target._inEventTvT)||(player_target._inChaosEvent && _inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM && player_target._inEventDM) || (CTF._started && _inEventCTF && player_target._inEventCTF) || (_inEventVIP && VIP._started && player_target._inEventVIP))
 			return;
 		
 		if ((isInDuel() && player_target.getDuelId() == getDuelId()))
@@ -5972,8 +5972,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Set the current HP and MP of the L2Character, Launch/Stop a HP/MP/CP
 		// Regeneration Task and send StatusUpdate packet to all other
 		// L2PcInstance to inform (exclusive broadcast)
+		if(!isDead())
+		{
 		setCurrentHpMp(getMaxHp(), getMaxMp());
 		setCurrentCp(getMaxCp());
+		}
 	}
 	
 	/**
