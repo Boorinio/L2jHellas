@@ -1202,7 +1202,7 @@ public class Siege
         while (getCastle().getSiegeDate().getTimeInMillis() < Calendar.getInstance().getTimeInMillis())
         {
             // Set next siege date if siege has passed
-            getCastle().getSiegeDate().add(Calendar.DAY_OF_MONTH, 14); // Schedule to happen in 14 days
+            getCastle().getSiegeDate().add(Calendar.DAY_OF_MONTH, SiegeManager._daytosiege); // Schedule to happen in 14 days
         }
         _isRegistrationOver = false; // Allow registration for next siege
     }

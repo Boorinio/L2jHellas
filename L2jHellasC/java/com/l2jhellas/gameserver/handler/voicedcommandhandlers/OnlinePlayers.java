@@ -17,8 +17,6 @@ package com.l2jhellas.gameserver.handler.voicedcommandhandlers;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * @author Ombladon1991 Equal
@@ -43,18 +41,9 @@ public class OnlinePlayers implements IVoicedCommandHandler
 	public void showPlayers(L2PcInstance player, String target)
 	{
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-			sm = new SystemMessage(SystemMessageId.S1_S2);
-			sm.addString("====================");
-			player.sendPacket(sm);
-			sm = new SystemMessage(SystemMessageId.S1_S2);
-			sm.addString("There are ");
-			sm.addNumber(L2World.getInstance().getAllPlayers().size());
-			sm.addString(" players online.");
-			player.sendPacket(sm);
-			sm = new SystemMessage(SystemMessageId.S1_S2);
-			sm.addString("====================");
-			player.sendPacket(sm);
+			player.sendMessage("====================\n");
+			player.sendMessage("There are "+L2World.getInstance().getAllPlayers().size()+" players online\n");
+			player.sendMessage("====================");
 		}
 	}
 	

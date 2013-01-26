@@ -32,12 +32,12 @@ public class tradeoff implements IVoicedCommandHandler
 		if (command.startsWith(VOICED_COMMANDS[0]))
 		{
 			activeChar.setTradeRefusal(true);
-			activeChar.sendMessage("Trade refusal enabled");
+			activeChar.sendMessage("Trade refusal is enabled");
 		}
 		if (command.startsWith(VOICED_COMMANDS[1]))
 		{
 			activeChar.setTradeRefusal(false);
-			activeChar.sendMessage("Trade refusal disabled");
+			activeChar.sendMessage("Trade refusal is disabled");
 		}
 		return true;
 	}

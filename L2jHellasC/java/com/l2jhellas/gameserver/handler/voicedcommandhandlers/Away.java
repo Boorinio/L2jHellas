@@ -48,13 +48,13 @@ public class Away implements IVoicedCommandHandler
 		// check char is all ready in away mode
 		if (activeChar.isAway())
 		{
-			activeChar.sendMessage("You are already Away");
+			activeChar.sendMessage("You are already in Away status");
 			return false;
 		}
 		
 		if (!activeChar.isInsideZone(ZONE_PEACE) && Config.AWAY_PEACE_ZONE)
 		{
-			activeChar.sendMessage("You can only Away in Peace Zone");
+			activeChar.sendMessage("You can only change your status in a Peace Zone");
 			return false;
 		}
 		// check player is death/fake death and movement disable
@@ -64,43 +64,43 @@ public class Away implements IVoicedCommandHandler
 		// Check if player is in Siege
 		if (siege != null && siege.getIsInProgress())
 		{
-			activeChar.sendMessage("You are in siege, you can't go Afk.");
+			activeChar.sendMessage("You are in siege, you can't change your status");
 			return false;
 		}
 		// Check if player is a Cursed Weapon owner
 		if (activeChar.isCursedWeaponEquiped())
 		{
-			activeChar.sendMessage("You can't go Afk! You are currently holding a cursed weapon.");
+			activeChar.sendMessage("You can't change your status, You are currently holding a cursed weapon.");
 			return false;
 		}
 		// Check if player is in Duel
 		if (activeChar.isInDuel())
 		{
-			activeChar.sendMessage("You can't go Afk! You are in a duel!");
+			activeChar.sendMessage("You can't change your status, You are in a duel!");
 			return false;
 		}
 		// check is in DimensionsRift
 		if (activeChar.isInParty() && activeChar.getParty().isInDimensionalRift())
 		{
-			activeChar.sendMessage("You can't go Afk! You are in the dimensional rift.");
+			activeChar.sendMessage("You can't change your status, You are in the dimensional rift.");
 			return false;
 		}
 		// Check to see if the player is in an event
 		if (activeChar.isInFunEvent())
 		{
-			activeChar.sendMessage("You can't go Afk! You are in event now.");
+			activeChar.sendMessage("You can't change your status, You are in event now.");
 			return false;
 		}
 		// check player is in Olympiad
 		if (activeChar.isInOlympiadMode() || activeChar.getOlympiadGameId() != -1)
 		{
-			activeChar.sendMessage("You can't go Afk! Your are fighting in Olympiad!");
+			activeChar.sendMessage("You can't change your status, Your are fighting in Olympiad!");
 			return false;
 		}
 		// Check player is in observer mode
 		if (activeChar.inObserverMode())
 		{
-			activeChar.sendMessage("You can't go Afk in Observer mode!");
+			activeChar.sendMessage("You can't change your status, in Observer mode!");
 			return false;
 		}
 		// check player have karma/pk/pvp status

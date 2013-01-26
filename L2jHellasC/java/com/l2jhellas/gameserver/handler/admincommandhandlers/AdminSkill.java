@@ -138,8 +138,8 @@ public class AdminSkill implements IAdminCommandHandler
 				L2PcInstance player = (L2PcInstance) activeChar.getTarget();
 				for (L2Skill skill : player.getAllSkills())
 					player.removeSkill(skill);
-				activeChar.sendMessage("You removed all skills from " + player.getName());
-				player.sendMessage("Admin removed all skills from you.");
+				activeChar.sendMessage("You removed all skills from player: " + player.getName());
+				player.sendMessage("A Gm removed all your skills.");
 				player.sendSkillList();
 			}
 		}
@@ -334,7 +334,7 @@ public class AdminSkill implements IAdminCommandHandler
 			return;
 		}
 		if (adminSkills == null)
-			activeChar.sendMessage("You must get the skills of someone in order to do this.");
+			activeChar.sendMessage("You must get the skills from someone in order to do this.");
 		else
 		{
 			L2Skill[] skills = player.getAllSkills();
@@ -388,7 +388,7 @@ public class AdminSkill implements IAdminCommandHandler
 			if (skill != null)
 			{
 				String name = skill.getName();
-				player.sendMessage("Admin gave you the skill " + name + ".");
+				player.sendMessage("A Gm gave you the skill: " + name + ".");
 				player.addSkill(skill, true);
 				// Admin information
 				activeChar.sendMessage("You gave the skill " + name + " to " + player.getName() + ".");

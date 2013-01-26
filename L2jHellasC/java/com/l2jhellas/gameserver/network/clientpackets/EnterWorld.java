@@ -36,6 +36,7 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.AdminCommandAccessRights;
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
 import com.l2jhellas.gameserver.instancemanager.CrownManager;
@@ -53,6 +54,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassLevel;
 import com.l2jhellas.gameserver.model.base.PlayerClass;
+import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.entity.Couple;
 import com.l2jhellas.gameserver.model.entity.Hero;
@@ -261,6 +263,27 @@ public class EnterWorld extends L2GameClientPacket
 		if ((Config.PK_COLOR_SYSTEM_ENABLED))
 			activeChar.updatePkColor(activeChar.getPkKills());
 		
+		if (Config.ANNOUNCE_HERO_LOGIN && activeChar.isHero())
+			{
+			       Announcements.getInstance().announceToAll("Hero: "+activeChar.getName()+" has been logged in.");
+			}
+					
+		if (Config.ANNOUNCE_CASTLE_LORDS)
+			{
+				L2Clan clan = activeChar.getClan();
+					               
+			    if (clan != null)
+				 {
+				  if (clan.getHasCastle() > 0)
+					{
+					 Castle castle = CastleManager.getInstance().getCastleById(clan.getHasCastle());
+					 if ((castle != null) && (activeChar.getObjectId() == clan.getLeaderId()))
+					  Announcements.getInstance().announceToAll("Lord " + activeChar.getName() + " Ruler Of " + castle.getName() + " Castle is Now Online!");
+				    }
+				 }
+			}       
+					              
+				
 		if (Config.PLAYER_SPAWN_PROTECTION > 0)
 			activeChar.setProtection(true);
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());

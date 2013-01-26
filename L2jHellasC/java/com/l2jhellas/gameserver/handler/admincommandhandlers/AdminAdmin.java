@@ -106,7 +106,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			{
 				e.printStackTrace();
 			}
-			activeChar.sendMessage("olympiad stuff saved!!");
+			activeChar.sendMessage("Olympiad data is saved!");
 		}
 		else if (command.startsWith("admin_manualhero"))
 		{
@@ -118,7 +118,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			{
 				e.printStackTrace();
 			}
-			activeChar.sendMessage("Heroes formed");
+			activeChar.sendMessage("Heroes are formed");
 		}
 		else if (command.startsWith("admin_diet"))
 		{
@@ -129,12 +129,12 @@ public class AdminAdmin implements IAdminCommandHandler
 				if (st.nextToken().equalsIgnoreCase("on"))
 				{
 					activeChar.setDietMode(true);
-					activeChar.sendMessage("Diet mode on");
+					activeChar.sendMessage("Diet mode ON");
 				}
 				else if (st.nextToken().equalsIgnoreCase("off"))
 				{
 					activeChar.setDietMode(false);
-					activeChar.sendMessage("Diet mode off");
+					activeChar.sendMessage("Diet mode OFF");
 				}
 			}
 			catch (Exception ex)
@@ -142,12 +142,12 @@ public class AdminAdmin implements IAdminCommandHandler
 				if (activeChar.getDietMode())
 				{
 					activeChar.setDietMode(false);
-					activeChar.sendMessage("Diet mode off");
+					activeChar.sendMessage("Diet mode OFF");
 				}
 				else
 				{
 					activeChar.setDietMode(true);
-					activeChar.sendMessage("Diet mode on");
+					activeChar.sendMessage("Diet mode ON");
 				}
 			}
 			finally
@@ -163,12 +163,12 @@ public class AdminAdmin implements IAdminCommandHandler
 				if (mode.equalsIgnoreCase("on"))
 				{
 					activeChar.setTradeRefusal(true);
-					activeChar.sendMessage("Trade refusal enabled");
+					activeChar.sendMessage("Trade refusal is enabled");
 				}
 				else if (mode.equalsIgnoreCase("off"))
 				{
 					activeChar.setTradeRefusal(false);
-					activeChar.sendMessage("Trade refusal disabled");
+					activeChar.sendMessage("Trade refusal is disabled");
 				}
 			}
 			catch (Exception ex)
@@ -176,12 +176,12 @@ public class AdminAdmin implements IAdminCommandHandler
 				if (activeChar.getTradeRefusal())
 				{
 					activeChar.setTradeRefusal(false);
-					activeChar.sendMessage("Trade refusal disabled");
+					activeChar.sendMessage("Trade refusal is disabled");
 				}
 				else
 				{
 					activeChar.setTradeRefusal(true);
-					activeChar.sendMessage("Trade refusal enabled");
+					activeChar.sendMessage("Trade refusal is enabled");
 				}
 			}
 		}

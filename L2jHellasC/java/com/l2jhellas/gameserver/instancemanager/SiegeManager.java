@@ -73,6 +73,7 @@ public class SiegeManager
     private int _flagMaxCount                                   = 1; // Changeable in siege.config
     private int _siegeClanMinLevel                             = 4; // Changeable in siege.config
     private int _siegeLength                                    = 120; // Time in minute. Changeable in siege.config
+    public static int _daytosiege;
     private List<Siege> _sieges;
 
     // =========================================================
@@ -180,6 +181,7 @@ public class SiegeManager
             _flagMaxCount = Integer.decode(siegeSettings.getProperty("MaxFlags", "1"));
             _siegeClanMinLevel = Integer.decode(siegeSettings.getProperty("SiegeClanMinLevel", "4"));
             _siegeLength = Integer.decode(siegeSettings.getProperty("SiegeLength", "120"));
+            _daytosiege = Integer.parseInt(siegeSettings.getProperty("DayToSiege", "14"));
 
             // Siege spawns settings
             _controlTowerSpawnList = new FastMap<Integer,FastList<SiegeSpawn>>();

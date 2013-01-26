@@ -42,7 +42,7 @@ public class VoiceInfo implements IVoicedCommandHandler
 		}
 		else
 		{
-			activeChar.sendMessage("OmG! Lame Error! Where Is " + htmFile + "?  Blame The Server's Admin!");
+			activeChar.sendMessage("The html file: " + htmFile + " can't be found inform the Gm.");
 		}
 		return true;
 	}
