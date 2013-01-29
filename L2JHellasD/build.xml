@@ -20,6 +20,7 @@
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
 	<property name="build.dist.login" location="${build.dist}/login"/>
 	<property name="build.dist.tools" location="${build.dist}/tools"/>
+	<property name="build.dist.tools.RemoteConnector" location="${build.dist}/tools/RemoteConnector"/>
 	<property name="build.dist.doc" location="${build.dist}/doc"/>
 	
 	<property name="build.dist.sql.game" location="${build.dist}/sql/game"/>
@@ -85,10 +86,11 @@
 		<sync todir="${build.dist.tools}">
 			<fileset dir="${basedir}/tools">
 				<include name="*.*"/>
-				<exclude name="database_installer.rc"/>
-				<exclude name="*.txt"/>
-				<exclude name="*.log"/>
-				<exclude name="*backup.sql"/>
+			</fileset>
+		</sync>
+		<sync todir="${build.dist.tools.RemoteConnector}">
+			<fileset dir="${basedir}/tools/RemoteConnector">
+				<include name="*.*"/>
 			</fileset>
 		</sync>
 	</target>	

@@ -24,10 +24,10 @@ import javax.imageio.ImageIO;
 public class DDSConverter
 {
 	public static final Logger _log = Logger.getLogger(DDSConverter.class.getName());
-	
+
 	protected static class Color
 	{
-		
+
 		@Override
 		public boolean equals(Object obj)
 		{
@@ -50,7 +50,7 @@ public class DDSConverter
 			}
 			return r == color.r;
 		}
-		
+
 		@Override
 		public int hashCode()
 		{
@@ -59,16 +59,16 @@ public class DDSConverter
 			i = (29 * i) + b;
 			return i;
 		}
-		
+
 		protected int r;
 		protected int g;
 		protected int b;
-		
+
 		public Color()
 		{
 			r = g = b = 0;
 		}
-		
+
 		public Color(int i, int j, int k)
 		{
 			r = i;
@@ -76,7 +76,7 @@ public class DDSConverter
 			b = k;
 		}
 	}
-	
+
 	public static ByteBuffer convertToDDS(File file) throws IOException
 	{
 		if (file == null)
@@ -102,7 +102,7 @@ public class DDSConverter
 		}
 		return convertToDxt1NoTransparency(bufferedimage);
 	}
-	
+
 	public static ByteBuffer convertToDxt1NoTransparency(BufferedImage bufferedimage)
 	{
 		if (bufferedimage == null)
@@ -128,7 +128,7 @@ public class DDSConverter
 					ai[j1] = getPixel565(acolor[j1]);
 					acolor[j1] = getColor565(ai[j1]);
 				}
-				
+
 				int ai1[] = determineExtremeColors(acolor);
 				if (ai[ai1[0]] < ai[ai1[1]])
 				{
@@ -144,7 +144,7 @@ public class DDSConverter
 		}
 		return bytebuffer;
 	}
-	
+
 	public static ByteBuffer convertToDxt3(BufferedImage bufferedimage)
 	{
 		if (bufferedimage == null)
@@ -173,13 +173,13 @@ public class DDSConverter
 				{
 					bytebuffer.put((byte) ((ai[j1] >>> 28) | (ai[j1 + 1] >>> 24)));
 				}
-				
+
 				for (int k1 = 0; k1 < ai.length; k1++)
 				{
 					ai[k1] = getPixel565(acolor[k1]);
 					acolor[k1] = getColor565(ai[k1]);
 				}
-				
+
 				int ai1[] = determineExtremeColors(acolor);
 				if (ai[ai1[0]] < ai[ai1[1]])
 				{
@@ -195,7 +195,7 @@ public class DDSConverter
 		}
 		return bytebuffer;
 	}
-	
+
 	protected static void buildHeaderDxt1(ByteBuffer bytebuffer, int i, int j)
 	{
 		bytebuffer.rewind();
@@ -227,7 +227,7 @@ public class DDSConverter
 		bytebuffer.putInt(0);
 		bytebuffer.position(bytebuffer.position() + 12);
 	}
-	
+
 	protected static void buildHeaderDxt3(ByteBuffer bytebuffer, int i, int j)
 	{
 		bytebuffer.rewind();
@@ -259,7 +259,7 @@ public class DDSConverter
 		bytebuffer.putInt(0);
 		bytebuffer.position(bytebuffer.position() + 12);
 	}
-	
+
 	protected static int[] determineExtremeColors(Color acolor[])
 	{
 		int i = 0x80000000;
@@ -276,16 +276,19 @@ public class DDSConverter
 					ai[1] = k;
 				}
 			}
-			
+
 		}
 		return ai;
 	}
-	
+
 	protected static long computeBitMask(Color acolor[], int ai[])
 	{
 		Color acolor1[] =
 		{
-		null, null, new Color(), new Color()
+			null,
+			null,
+			new Color(),
+			new Color()
 		};
 		acolor1[0] = acolor[ai[0]];
 		acolor1[1] = acolor[ai[1]];
@@ -313,12 +316,12 @@ public class DDSConverter
 					k = i1;
 				}
 			}
-			
+
 			l |= k << (i * 2);
 		}
 		return l;
 	}
-	
+
 	protected static int getPixel565(Color color)
 	{
 		int i = color.r >> 3;
@@ -326,7 +329,7 @@ public class DDSConverter
 		int k = color.b >> 3;
 		return (i << 11) | (j << 5) | k;
 	}
-	
+
 	protected static Color getColor565(int i)
 	{
 		Color color = new Color();
@@ -335,7 +338,7 @@ public class DDSConverter
 		color.b = (int) (i & 31L);
 		return color;
 	}
-	
+
 	protected static Color[] getColors888(int ai[])
 	{
 		Color acolor[] = new Color[ai.length];
@@ -348,7 +351,7 @@ public class DDSConverter
 		}
 		return acolor;
 	}
-	
+
 	protected static int distance(Color color, Color color1)
 	{
 		return ((color1.r - color.r) * (color1.r - color.r)) + ((color1.g - color.g) * (color1.g - color.g)) + ((color1.b - color.b) * (color1.b - color.b));

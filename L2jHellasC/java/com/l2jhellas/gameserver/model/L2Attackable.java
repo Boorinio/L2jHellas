@@ -2782,10 +2782,7 @@ public class L2Attackable extends L2NpcInstance
 			_monster = monster;
 			_channel = channel;
 		}
-
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
+		
 		@Override
 		public void run()
 		{

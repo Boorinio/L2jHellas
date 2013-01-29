@@ -557,10 +557,6 @@ public final class L2ItemInstance extends L2Object
     		);
     }
 
-    /* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Object#onAction(com.l2jhellas.gameserver.model.L2PcInstance)
-	 * also check constraints: only soloing castle owners may pick up mercenary tickets of their castle
-	 */
 	@Override
 	public void onAction(L2PcInstance player)
 	{

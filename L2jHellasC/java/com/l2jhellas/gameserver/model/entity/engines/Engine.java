@@ -35,17 +35,18 @@ public class Engine
 		if (Config.TVT_AUTO_STARTUP_ON_BOOT)
 		{
 			_log.info("TVT Engine Started");
-			_log.info("TVT First event in: "+Config.FIRST_TVT_DELAY+" Minutes");
+			_log.info("TVT First event in: " + Config.FIRST_TVT_DELAY + " Minutes");
 			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 			{
-				//loads data and start a new event.
+				// loads data and start a new event.
 				// -------------------------------------
+				@Override
 				public void run()
 				{
 					TvT.loadData();
 					TvT.autoEvent();
 				}
-				//Config.FIRST_TVT_DELAY  minutes till first event start it.
+				// Config.FIRST_TVT_DELAY minutes till first event start it.
 				// -------------------------------------
 			}, Util.convertMinutesToMiliseconds(Config.FIRST_TVT_DELAY));
 		}

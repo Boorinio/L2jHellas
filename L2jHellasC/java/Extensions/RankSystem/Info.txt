@@ -1,0 +1,98 @@
+Author:
+	Masterio
+	
+Last update:
+	26.01.2013 (patch 3.4.9)
+	
+Describe:
+	Custom PvP/Rank/Reward System allow set Reward or Rank Points for PvP or PK.
+	All options are configurable in config/masterio/CustomPvpSystemConfig.properties file.
+	
+	For show Player PvP Status use command on targeted player (in chat window): .pvpinfo or /pvpinfo
+	
+	Special thanks for valanths1990 who shared Image Converter on MxC.
+
+Added/Fixed:
+	v3.4.9 [26.01.2013]:
+		+ Fixed zone checkers.
+		+ Reworked methods for giving rank rewards (now more safe).
+		+ Reworked Config File.
+		+ Added new folder: Fixes, folder contains solutions for special situations.
+		
+	v3.4.7 [28.12.2012]:
+		+ Added daily protection options, now is possible to set X kill times for day (reset every day 00:00) or total.
+		+ Added Allowed Areas option.
+		+ Fixed protection options.
+		+ Reworked anti-farm checkers.
+		+ Cleaned code.
+		+ Reworked Config file. (check carefully all options on manual update).
+		
+	v3.4.5 [23.12.2012]:
+		+ Added showing Killers clan when Victim die (it was removed in previous revision).
+		+ Added option for /pvpinfo command [it's option because require Client modifications].
+		
+	v3.4.3 [12.12.2012]:
+		+ Reworked core classes, now are faster, cleaner and stability is improved.
+		+ Reworked Database.
+		+ Removed all sql procedures.
+		+ Reworked rank points calculating method.
+		+ Added bonus rank points ratio areas.
+		+ Added Community Board optimizations.
+		+ Reworked top list htm file.
+		+ Reworked config file.
+		+ Removed Daily kills statistics from Top List, now it works faster for 1k+ online.
+		+ Added Daily Kills field, now counter for daily kills work correct (in community board too).
+		+ Added Time Protection for rank/reward gather (independent from daily kills etc.).
+
+	v3.0.5 [21.11.2012]:
+		+ Fixed Interrupt Exception.
+		+ Fixed onCast Exception.
+		
+	v3.0.3 [20.11.2012]:
+		+ Fixed ALT+T counter (counts only legal kills from all pvp's).
+		+ Fixed double items in Death Manager.
+		+ Fixed Community TOP List view.
+		
+	v3.0.2 [16.11.2012]:
+		+ Possible fix for connection problem.
+		+ Changed properties folder.
+		
+	v3.0.0 [31.10.2012]:
+		+ Reworked Community Board Top List.
+		+ Removed MySql Procedure: CPS_BBS_top_user_info.
+		+ Modiffied all procedures and tables (update all pls).
+		+ Fixed character class names.
+		+ Added War Kill Counter and RP ratio for kill war.
+		+ Added Alt+T menu pvp as legal kills, now pvp is counted for CPS rulez [It can be turn off in config].
+		+ Added SERVER-SIDE images, it's mean you not need client modifications anymore [All images in PNG format, easy to edit now].
+		+ Added PK MODE option for reward system.
+		+ Reworked Exp Bar.
+		+ Possible fix for hit task null exception.
+		+ Changed CustomConfig.properties into CustomPvpSystemConfig.properties.
+		+ Reworked all classes, now code is more clear.
+		+ Fixed/Added other small things.
+		- Some images can show gray artifacts. Don't worry, it will be fixed.
+
+	v2.9.2 [15.10.2012]:
+		* FOR INSTALL THIS UPDATE REMOVE ALL PREVIOUS PATCHES. 
+		  DATA FROM MYSQL TABLE CAN BE STORED, BUT TABLE NAME IS CHANGED (ONLY NAME).
+		+ Updated Community Board Top Pvp/Rank Points list (Fixed player position bug).
+		+ Reworked all sql procedures and tables.
+		+ Reworked all classes, now is more clear.
+		+ Added own config file for clear code and clear config files from server.
+		+ Added new features like: Death Manager, Rank Points Rewards.
+		+ Added Rank Points Reward Button. Allow obtain reward for each rank points level. 
+		  Rewards list, amount and minimum rank points required in database. There is loaded example adena rewards.
+		+ Added own Anti-Farm options, now not share with frozen configs.
+		+ Fixed command execution when no target selected.
+		+ Fixed/Added other small things.
+		
+IMPORTANT: 
+	1. If you have big online, or custom_pvp_system table have 100k+ rows you should rise java memory limit:
+	- open StartGameServer.bat.
+	- change -Xms1024m -Xmx1024m for higher:
+	
+		java -Djava.util.logging.manager=com.l2jserver.util.L2LogManager -Xms2048m -Xmx2048m -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
+		
+	- Settings was tested for 1kk rows.
+	- Big servers have this value on 8000-16000, but I wrote this info for test servers.

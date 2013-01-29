@@ -716,9 +716,6 @@ public class L2BoatInstance extends L2Character
 		_t2 = new L2BoatTrajet(idWaypoint1,idWTicket1,ntx1,nty1,ntz1,idnpc1,sysmess10_1,sysmess5_1,sysmess1_1,sysmess0_1,sysmessb_1,_name);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Character#updateAbnormalEffect()
-	 */
 	@Override
 	public void updateAbnormalEffect()
 	{
@@ -726,9 +723,6 @@ public class L2BoatInstance extends L2Character
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Character#getActiveWeaponInstance()
-	 */
 	@Override
 	public L2ItemInstance getActiveWeaponInstance()
 	{
@@ -736,9 +730,6 @@ public class L2BoatInstance extends L2Character
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Character#getActiveWeaponItem()
-	 */
 	@Override
 	public L2Weapon getActiveWeaponItem()
 	{
@@ -746,9 +737,6 @@ public class L2BoatInstance extends L2Character
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Character#getSecondaryWeaponInstance()
-	 */
 	@Override
 	public L2ItemInstance getSecondaryWeaponInstance()
 	{
@@ -756,9 +744,6 @@ public class L2BoatInstance extends L2Character
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Character#getSecondaryWeaponItem()
-	 */
 	@Override
 	public L2Weapon getSecondaryWeaponItem()
 	{
@@ -766,9 +751,6 @@ public class L2BoatInstance extends L2Character
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Character#getLevel()
-	 */
 	@Override
 	public int getLevel()
 	{
@@ -776,9 +758,6 @@ public class L2BoatInstance extends L2Character
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.L2Object#isAutoAttackable(com.l2jhellas.gameserver.model.L2Character)
-	 */
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{

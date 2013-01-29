@@ -108,9 +108,6 @@ public final class Action extends L2GameClientPacket
 			getClient().sendPacket(new ActionFailed());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

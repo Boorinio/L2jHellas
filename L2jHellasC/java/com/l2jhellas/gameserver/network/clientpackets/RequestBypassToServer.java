@@ -47,7 +47,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.12.4.5 $ $Date: 2005/04/11 10:06:11 $
  */
 public final class RequestBypassToServer extends L2GameClientPacket
@@ -74,37 +74,37 @@ public final class RequestBypassToServer extends L2GameClientPacket
 
 		if (activeChar == null)
 			return;
-		
+
 		if (!activeChar.getAntiFlood().getServerBypass().tryPerformAction(_command) && !activeChar.isGM())
 			return;
-		
+
 		try
 		{
 			if (_command.startsWith("admin_"))
 			{
 				String command = _command.split(" ")[0];
-						
+
 				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(command);
-						
+
 				if (ach == null)
 				{
 					if (activeChar.isGM())
 						activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist.");
-							
+
 					_log.warning("No handler registered for admin command '" + command + "'");
 					return;
 				}
-						
+
 				if (!AdminCommandAccessRights.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access rights to use this command.");
 					_log.warning(activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
 					return;
 				}
-						
+
 				if (Config.GMAUDIT)
-					GMAudit.auditGMAction(activeChar.getName()+" ["+activeChar.getObjectId()+"]", _command, (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target"));
-							
+					GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", _command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"));
+
 				ach.useAdminCommand(_command, activeChar);
 			}
 			else if (_command.equals("come_here") && activeChar.isGM())
@@ -115,102 +115,90 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				playerHelp(activeChar, _command.substring(12));
 			}
-			else if (_command.startsWith("sendMsg")) { //Message System By Pauler
-								
+			else if (_command.startsWith("sendMsg"))
+			{ // Message System By Pauler
+
 				StringTokenizer st = new StringTokenizer(_command);
-								
+
 				st.nextToken();
-				
+
 				String to;
 				String title;
 				String message = "";;
-				
+
 				if (st.hasMoreTokens())
 					to = st.nextToken();
 				else
 					return;
-				
+
 				if (st.hasMoreTokens())
 					title = st.nextToken();
 				else
 					return;
-								
-				while(st.hasMoreTokens()) {
-									
+
+				while (st.hasMoreTokens())
+				{
 					message = message + st.nextToken() + " ";
-									
 				}
-								
-				if (to.equalsIgnoreCase(activeChar.getName())) {
-									
+
+				if (to.equalsIgnoreCase(activeChar.getName()))
+				{
 					activeChar.sendMessage("You cannot send a message to yourself.");
 					return;
-								
 				}
-								
-				if (to.equalsIgnoreCase("") || message.equalsIgnoreCase("") || to == null) {
-									
+
+				if (to.equalsIgnoreCase("") || message.equalsIgnoreCase("") || to == null)
+				{
 					activeChar.sendMessage("You have to fill all the fields.");
 					return;
-									
 				}
-								
+
 				if (title.equalsIgnoreCase("") || title == null)
 					title = "(No Subject)";
-								
+
 				Connection con = null;
-								
-					try {
-									
-						con = L2DatabaseFactory.getInstance().getConnection();
-									
-						PreparedStatement statement = con.prepareStatement("INSERT INTO mails VALUES ('0',?,?,?,?)");
-									
-						statement.setString(1, activeChar.getName());
-						statement.setString(2, to);
-						statement.setString(3, title);
-						statement.setString(4, message);
-									
-						statement.execute();
-						activeChar.sendMessage("Your message has been sent.");
-						statement.close();
-									
-					}catch(Exception e) {
-									
-						e.printStackTrace();
-						_log.log(Level.SEVERE, e.getMessage(), e);
-									
-					}
-								
+				try
+				{
+					con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement statement = con.prepareStatement("INSERT INTO mails VALUES ('0',?,?,?,?)");
+					statement.setString(1, activeChar.getName());
+					statement.setString(2, to);
+					statement.setString(3, title);
+					statement.setString(4, message);
+					statement.execute();
+					statement.close();
+
+					activeChar.sendMessage("Your message has been sent.");
 				}
-			else if (_command.startsWith("delMsg")) {
-								
-					StringTokenizer st = new StringTokenizer(_command);
-					st.nextToken();
-								
-					int messageId = Integer.parseInt(st.nextToken());
-								
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					_log.log(Level.SEVERE, e.getMessage(), e);
+				}
+
+			}
+			else if (_command.startsWith("delMsg"))
+			{
+				StringTokenizer st = new StringTokenizer(_command);
+				st.nextToken();
+
+				int messageId = Integer.parseInt(st.nextToken());
 				Connection con = null;
-								
-					try {
-									
-						con = L2DatabaseFactory.getInstance().getConnection();
-									
-						PreparedStatement statement = con.prepareStatement("DELETE FROM mails WHERE id=?");
-									
-						statement.setInt(1, messageId);
-									
-						statement.execute();
-						activeChar.sendMessage("The message has been deleted.");
-						statement.close();
-									
-					}catch(Exception e) {
-									
-						e.printStackTrace();
-						_log.log(Level.SEVERE, e.getMessage(), e);
-									
-					}
-								
+				try
+				{
+					con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement statement = con.prepareStatement("DELETE FROM mails WHERE id=?");
+					statement.setInt(1, messageId);
+					statement.execute();
+					statement.close();
+					activeChar.sendMessage("The message has been deleted.");
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					_log.log(Level.SEVERE, e.getMessage(), e);
+				}
+
 			}
 			else if (_command.startsWith("submitemail"))
 			{
@@ -219,24 +207,23 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					String value = _command.substring(11);
 					StringTokenizer s = new StringTokenizer(value, " ");
 					String email1 = null;
-					
+
 					try
 					{
 						email1 = s.nextToken();
-						
+
 						try
 						{
 							Connection con = null;
 							try
 							{
 								con = L2DatabaseFactory.getInstance().getConnection();
-								
+
 								PreparedStatement statement = con.prepareStatement("UPDATE characters SET email=? WHERE obj_Id=?");
 								statement.setString(1, email1);
 								statement.setInt(2, activeChar.getObjectId());
 								statement.execute();
 								statement.close();
-								
 							}
 							catch (Exception e)
 							{
@@ -253,16 +240,16 @@ public final class RequestBypassToServer extends L2GameClientPacket
 									e.printStackTrace();
 								}
 							}
-							
+
 							activeChar.sendMessage("We successfully added your email " + email1 + " to our database");
 							L2AccountManagerInstance.setHasSubEmail(activeChar);
-						
+
 						}
 						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
-						
+
 					}
 					catch (Exception e)
 					{
@@ -288,7 +275,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				try
 				{
 					L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
-					
+
 					if (_command.substring(endOfId + 1).startsWith("event_participate"))
 						L2Event.inscribePlayer(activeChar);
 					else if (_command.substring(endOfId + 1).startsWith("vip_joinVIPTeam"))
@@ -470,7 +457,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		{
 			_log.log(Level.WARNING, "Bad RequestBypassToServer: ", e);
 		}
-		
+
 		// finally
 		// {
 		// activeChar.clearBypass();
@@ -499,17 +486,13 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	{
 		if (path.indexOf("..") != -1)
 			return;
-		
+
 		String filename = "data/html/help/" + path;
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile(filename);
 		activeChar.sendPacket(html);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+
 	@Override
 	public String getType()
 	{

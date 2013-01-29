@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,252 +28,220 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  * @author Pauler
  */
 
-public class QuizEvent {
-	
+public class QuizEvent
+{
+
 	/** Milliseconds until event starts again **/
-	private static int _delay = Config.QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN*60*1000;
-	
+	private static int _delay = Config.QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN * 60 * 1000;
+
 	/** Milliseconds until event first start **/
 	private static int _initial = 30000;
-	
+
 	/** Milliseconds to answer the question **/
-	private static int _questionDuration = Config.QUIZ_MINUTES_TO_ANSWER*60*1000;
-	
+	private static int _questionDuration = Config.QUIZ_MINUTES_TO_ANSWER * 60 * 1000;
+
 	private static int _rewardId = Config.QUIZ_REWARD_ID;
 	private static int _rewardQuantity = Config.QUIZ_REWARD_QUANTITY;
-	
+
 	private static int _lastQuestionId = 0;
 	private static int _questions = 0;
-	
+
 	private static String _answer1 = "";
 	private static String _answer2 = "";
 	private static String _answer3 = "";
-	
+
 	private static String _rightAnswer = "";
-	
+
 	private static boolean _isRunning = false;
-	
+
 	private static boolean _isRecievingAnswers = true;
 	private static boolean _isStoppedForever = false;
-	
-	private static boolean _hasAlreadyStartedOnce = false;
-	
-	private static L2PcInstance _winner = null;
-	
-	public static void getInstance() {
-		
-		System.out.println("Quiz Event By Pauler Has Started.");
-		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
 
+	private static boolean _hasAlreadyStartedOnce = false;
+
+	private static L2PcInstance _winner = null;
+
+	public static void getInstance()
+	{
+		System.out.println("Quiz Event By Pauler Has Started.");
+		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
+		{
 			@Override
-			public void run() {
-				
+			public void run()
+			{
 				if (_lastQuestionId >= _questions && _hasAlreadyStartedOnce)
 					_isStoppedForever = true;
-				
+
 				if (!_isStoppedForever)
 					startEvent();
-				
 			}
-			
 		}, _initial, _delay);
-		
 	}
-	
-	private static void startEvent() {
-		
+
+	private static void startEvent()
+	{
 		_isRunning = true;
-		
+
 		if (!_hasAlreadyStartedOnce)
 			_hasAlreadyStartedOnce = true;
-		
-		Announcements.getInstance().gameAnnounceToAll("Quiz event just started.");
-		
-		askQuestion();
-		
-		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
 
+		Announcements.getInstance().gameAnnounceToAll("Quiz event just started.");
+		askQuestion();
+		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+		{
 			@Override
-			public void run() {
-				
+			public void run()
+			{
 				if (!_isStoppedForever)
 					endEvent();
-				
 			}
-			
 		}, _questionDuration);
-		
 	}
-	
-	private static void endEvent() {
-		
+
+	private static void endEvent()
+	{
 		_isRunning = false;
-		
-		if (_winner != null) {
-			
+
+		if (_winner != null)
+		{
 			rewardWinner();
 			Announcements.getInstance().gameAnnounceToAll(_winner.getName() + " Is The Winner of the Quiz Event.");
-		
 		}
-			
+
 		Announcements.getInstance().gameAnnounceToAll("Quiz Event just ended.");
-			
 		clearEverything();
-		
 	}
-	
-	private static void clearEverything() {
-		
+
+	private static void clearEverything()
+	{
 		_winner = null;
-		
+
 		_answer1 = "";
 		_answer2 = "";
 		_answer3 = "";
 		_rightAnswer = "";
-		
+
 		_isRecievingAnswers = true;
-		
 	}
-	
-	private static void setWinner(L2PcInstance activeChar) {
-		
-		if (_isRecievingAnswers) {
-			
+
+	private static void setWinner(L2PcInstance activeChar)
+	{
+		if (_isRecievingAnswers)
+		{
 			_winner = activeChar;
 			_isRecievingAnswers = false;
-		
 		}
-		
 	}
-	
-	private static void rewardWinner() {
-		
+
+	private static void rewardWinner()
+	{
 		_winner.sendMessage("You are the winner! Here's your reward.");
 		_winner.addItem("Reward", _rewardId, _rewardQuantity, _winner, true);
-		
 	}
-	
-	public static void checkAnswer(String answer, L2PcInstance player) {
-		
-		if (answer.equalsIgnoreCase(_rightAnswer)) {
-			
+
+	public static void checkAnswer(String answer, L2PcInstance player)
+	{
+		if (answer.equalsIgnoreCase(_rightAnswer))
+		{
 			setWinner(player);
-			
 		}
-		
 	}
-	
-	private static void askQuestion() {
-		
+
+	private static void askQuestion()
+	{
 		String question = "";
-		
+
 		Connection con = null;
-		
-		if (_questions == 0) {
-			
+
+		if (_questions == 0)
+		{
 			try
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();
-				
+
 				PreparedStatement statement = con.prepareStatement("SELECT * FROM questions");
-				
 				ResultSet result = statement.executeQuery();
-				
-				while (result.next()) {
-					
+				while (result.next())
+				{
 					_questions++;
-					
 				}
-				
-			}catch(Exception e) {
-				
+
+			}
+			catch (Exception e)
+			{
 				e.printStackTrace();
-				
-			}finally{
-				
-				try {
-					
+			}
+			finally
+			{
+				try
+				{
 					con.close();
-					
-				}catch(Exception e) {
-					
+				}
+				catch (Exception e)
+				{
 					e.printStackTrace();
-					
 				}
 			}
-			
 		}
-		
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-				
+
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM questions WHERE `id`=? ORDER BY id DESC");
-			
 			_lastQuestionId++;
-			
 			statement.setInt(1, _lastQuestionId);
-				
 			ResultSet result = statement.executeQuery();
-				
-			while (result.next()) {
-					
+			while (result.next())
+			{
 				question = result.getString("question");
-					
+
 				_answer1 = result.getString("answer1");
 				_answer2 = result.getString("answer2");
 				_answer3 = result.getString("answer3");
-				
+
 				_rightAnswer = result.getString("right_answer");
-					
-			}
-				
-		}catch(Exception e) {
-				
-			e.printStackTrace();
-				
-		}finally{
-			
-			try {
-				
-				con.close();
-				
-			}catch(Exception e) {
-				
-				e.printStackTrace();
-				
 			}
 		}
-		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
 		Announcements.getInstance().gameAnnounceToAll("Type .quiz and then type your answer! The first one who will answer correctly wins.");
-		
 		Announcements.getInstance().gameAnnounceToAll("Question: " + question);
-			
+
 		if (_answer1 != null && !_answer1.equalsIgnoreCase(""))
 			Announcements.getInstance().gameAnnounceToAll("1. " + _answer1);
 		if (_answer2 != null && !_answer2.equalsIgnoreCase(""))
 			Announcements.getInstance().gameAnnounceToAll("2. " + _answer2);
 		if (_answer3 != null && !_answer3.equalsIgnoreCase(""))
 			Announcements.getInstance().gameAnnounceToAll("3. " + _answer3);
-			
 	}
-	
-	public static L2PcInstance getWinner() {
-		
+
+	public static L2PcInstance getWinner()
+	{
 		return _winner;
-		
 	}
-	
-	public static boolean isRunning() {
-		
+
+	public static boolean isRunning()
+	{
 		return _isRunning;
-		
 	}
-	
-	public static boolean isRecievingAnswers() {
-		
+
+	public static boolean isRecievingAnswers()
+	{
 		return _isRecievingAnswers;
-		
 	}
-	
 }

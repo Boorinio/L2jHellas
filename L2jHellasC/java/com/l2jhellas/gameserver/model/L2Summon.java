@@ -63,8 +63,8 @@ public abstract class L2Summon extends L2PlayableInstance
 	
 	// TODO: currently, all servitors use 1 shot. However, this value
 	// should vary depending on the servitor template (id and level)!
-	private int _soulShotsPerHit = 1;
-	private int _spiritShotsPerHit = 1;
+	private final int _soulShotsPerHit = 1;
+	private final int _spiritShotsPerHit = 1;
 	protected boolean _showSummonAnimation;
 	
 	public class AIAccessor extends L2Character.AIAccessor
@@ -813,7 +813,6 @@ public abstract class L2Summon extends L2PlayableInstance
 	 * skill level per 5 servitor levels. If the resulting skill level doesn't exist use
 	 * the max that does exist!
 	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Character#doCast(com.l2jhellas.gameserver.model.L2Skill)
 	 */
 	@Override
 	public void doCast(L2Skill skill)

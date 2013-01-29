@@ -29,38 +29,40 @@ public final class AttackRequest extends L2GameClientPacket
 	// cddddc
 	private int _objectId;
 	@SuppressWarnings("unused")
-    private int _originX;
+	private int _originX;
 	@SuppressWarnings("unused")
-    private int _originY;
+	private int _originY;
 	@SuppressWarnings("unused")
-    private int _originZ;
+	private int _originZ;
 	@SuppressWarnings("unused")
-    private int _attackId;
+	private int _attackId;
 
 	private static final String _C__0A_ATTACKREQUEST = "[C] 0A AttackRequest";
 
 	@Override
 	protected void readImpl()
 	{
-		_objectId  = readD();
-		_originX  = readD();
-		_originY  = readD();
-		_originZ  = readD();
-		_attackId  = readC(); 	 // 0 for simple click   1 for shift-click
+		_objectId = readD();
+		_originX = readD();
+		_originY = readD();
+		_originZ = readD();
+		_attackId = readC(); 	 // 0 for simple click 1 for shift-click
 	}
 
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null) return;
+		if (activeChar == null)
+			return;
 		// avoid using expensive operations if not needed
 		L2Object target;
 		if (activeChar.getTargetId() == _objectId)
 			target = activeChar.getTarget();
 		else
 			target = L2World.getInstance().findObject(_objectId);
-		if (target == null) return;
+		if (target == null)
+			return;
 		if (activeChar.getTarget() != target)
 		{
 			target.onAction(activeChar);
@@ -74,9 +76,6 @@ public final class AttackRequest extends L2GameClientPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

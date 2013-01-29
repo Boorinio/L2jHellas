@@ -42,7 +42,7 @@ import com.l2jhellas.gameserver.util.Broadcast;
 /**
  * This class provides the functions for shutting down and restarting the server
  * It closes all open clientconnections and saves all data.
- * 
+ *
  * @version $Revision: 1.2.4.5 $ $Date: 2005/03/27 15:29:09 $
  */
 public class Shutdown extends Thread
@@ -58,12 +58,14 @@ public class Shutdown extends Thread
 	public static final int GM_SHUTDOWN = 1;
 	public static final int GM_RESTART = 2;
 	public static final int ABORT = 3;
-	private static final String[] MODE_TEXT = {"SIGTERM", "shutting down", "restarting", "aborting"};
+	private static final String[] MODE_TEXT = {
+	"SIGTERM", "shutting down", "restarting", "aborting"
+	};
 
 	/**
 	 * This function starts a shutdown countdown from Telnet (Copied from
 	 * Function startShutdown())
-	 * 
+	 *
 	 * @param ip
 	 *        IP Which Issued shutdown command
 	 * @param seconds
@@ -78,7 +80,7 @@ public class Shutdown extends Thread
 		_log.warning("IP: " + IP + " issued shutdown command. " + MODE_TEXT[_shutdownMode] + " in " + seconds + " seconds!");
 		// _an.announceToAll("Server is " + _modeText[shutdownMode] +
 		// " in "+seconds+ " seconds!");
-		
+
 		if (restart)
 		{
 			_shutdownMode = GM_RESTART;
@@ -87,7 +89,7 @@ public class Shutdown extends Thread
 		{
 			_shutdownMode = GM_SHUTDOWN;
 		}
-		
+
 		if (_shutdownMode > 0)
 		{
 			_an.announceToAll("Attention players!");
@@ -98,7 +100,7 @@ public class Shutdown extends Thread
 				_an.announceToAll("during server " + MODE_TEXT[_shutdownMode] + " procedure.");
 			}
 		}
-		
+
 		if (_counterInstance != null)
 		{
 			_counterInstance._abort();
@@ -109,7 +111,7 @@ public class Shutdown extends Thread
 
 	/**
 	 * This function aborts a running countdown
-	 * 
+	 *
 	 * @param IP
 	 *        IP Which Issued shutdown command
 	 */
@@ -118,7 +120,7 @@ public class Shutdown extends Thread
 		Announcements _an = Announcements.getInstance();
 		_log.warning("IP: " + IP + " issued shutdown ABORT. " + MODE_TEXT[_shutdownMode] + " has been stopped!");
 		_an.announceToAll("Server " + Config.ABORT_RR + " aborts " + MODE_TEXT[_shutdownMode] + " and continues normal operation!");
-		
+
 		if (_counterInstance != null)
 		{
 			_counterInstance._abort();
@@ -127,9 +129,8 @@ public class Shutdown extends Thread
 
 	/**
 	 * Default constucter is only used internal to create the shutdown-hook instance
-	 *
 	 */
-	public Shutdown() 
+	public Shutdown()
 	{
 		_secondsShut = -1;
 		_shutdownMode = SIGTERM;
@@ -138,9 +139,10 @@ public class Shutdown extends Thread
 	/**
 	 * This creates a countdown instance of Shutdown.
 	 *
-	 * @param seconds	how many seconds until shutdown
-	 * @param restart	true is the server shall restart after shutdown
-	 *
+	 * @param seconds
+	 *        how many seconds until shutdown
+	 * @param restart
+	 *        true is the server shall restart after shutdown
 	 */
 	public Shutdown(int seconds, boolean restart)
 	{
@@ -158,7 +160,7 @@ public class Shutdown extends Thread
 			_shutdownMode = GM_SHUTDOWN;
 		}
 	}
-	
+
 	public void autoRestart(int time)
 	{
 		_secondsShut = time;
@@ -166,7 +168,7 @@ public class Shutdown extends Thread
 		_shutdownMode = GM_RESTART;
 		_instance.setMode(GM_RESTART);
 		System.exit(2);
-		
+
 	}
 
 	/**
@@ -174,39 +176,34 @@ public class Shutdown extends Thread
 	 * the shutdown-hook instance is created by the first call of this function,
 	 * but it has to be registrered externaly.
 	 *
-	 * @return	instance of Shutdown, to be used as shutdown hook
+	 * @return instance of Shutdown, to be used as shutdown hook
 	 */
 	public static Shutdown getInstance()
 	{
 		if (_instance == null)
 			_instance = new Shutdown();
-		
+
 		return _instance;
 	}
 
 	/**
 	 * this function is called, when a new thread starts
-	 *
 	 * if this thread is the thread of getInstance, then this is the shutdown hook
 	 * and we save all data and disconnect all clients.
-	 *
 	 * after this thread ends, the server will completely exit
-	 *
 	 * if this is not the thread of getInstance, then this is a countdown thread.
 	 * we start the countdown, and when we finished it, and it was not aborted,
 	 * we tell the shutdown-hook why we call exit, and then call exit
-	 *
 	 * when the exit status of the server is 1, startServer.sh / startServer.bat
 	 * will restart the server.
-	 *
 	 */
 	@Override
 	public void run()
 	{
 		// disallow new logins
 		try
-		{ 
-			//Server.gameServer.getLoginController().setMaxAllowedOnlinePlayers(0); Doesnt actually do anything
+		{
+			// Server.gameServer.getLoginController().setMaxAllowedOnlinePlayers(0); Doesnt actually do anything
 		}
 		catch (Throwable t)
 		{
@@ -247,7 +244,7 @@ public class Shutdown extends Thread
 			{
 				// ignore
 			}
-			
+
 			// saveData sends messages to exit players, so sgutdown selector
 			// after it
 			try
@@ -300,9 +297,12 @@ public class Shutdown extends Thread
 	/**
 	 * This functions starts a shutdown countdown
 	 *
-	 * @param activeChar	GM who issued the shutdown command
-	 * @param seconds		seconds until shutdown
-	 * @param restart		true if the server will restart after shutdown
+	 * @param activeChar
+	 *        GM who issued the shutdown command
+	 * @param seconds
+	 *        seconds until shutdown
+	 * @param restart
+	 *        true if the server will restart after shutdown
 	 */
 	public void startShutdown(L2PcInstance activeChar, int seconds, boolean restart)
 	{
@@ -317,7 +317,7 @@ public class Shutdown extends Thread
 		{
 			_shutdownMode = GM_SHUTDOWN;
 		}
-		
+
 		if (_shutdownMode > 0)
 		{
 			_an.announceToAll("Attention players!");
@@ -328,12 +328,12 @@ public class Shutdown extends Thread
 				_an.announceToAll("during server " + MODE_TEXT[_shutdownMode] + " procedure.");
 			}
 		}
-		
+
 		if (_counterInstance != null)
 		{
 			_counterInstance._abort();
 		}
-		
+
 		// the main instance should only run for shutdown hook, so we start a
 		// new instance
 		_counterInstance = new Shutdown(seconds, restart);
@@ -343,15 +343,16 @@ public class Shutdown extends Thread
 	/**
 	 * This function aborts a running countdown
 	 *
-	 * @param activeChar	GM who issued the abort command
+	 * @param activeChar
+	 *        GM who issued the abort command
 	 */
-	public void abort(L2PcInstance activeChar) 
+	public void abort(L2PcInstance activeChar)
 	{
 		Announcements _an = Announcements.getInstance();
-		_log.warning("GM: "+activeChar.getName()+"("+activeChar.getObjectId()+") issued shutdown ABORT. " + MODE_TEXT[_shutdownMode] + " has been stopped!");
+		_log.warning("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") issued shutdown ABORT. " + MODE_TEXT[_shutdownMode] + " has been stopped!");
 		_an.announceToAll("Server " + Config.ABORT_RR + " aborts " + MODE_TEXT[_shutdownMode] + " and continues normal operation!");
 
-		if (_counterInstance != null) 
+		if (_counterInstance != null)
 		{
 			_counterInstance._abort();
 		}
@@ -359,18 +360,19 @@ public class Shutdown extends Thread
 
 	/**
 	 * set the shutdown mode
-	 * @param mode	what mode shall be set
+	 *
+	 * @param mode
+	 *        what mode shall be set
 	 */
-	private void setMode(int mode) 
+	private void setMode(int mode)
 	{
 		_shutdownMode = mode;
 	}
 
 	/**
 	 * set shutdown mode to ABORT
-	 *
 	 */
-	private void _abort() 
+	private void _abort()
 	{
 		_shutdownMode = ABORT;
 	}
@@ -379,7 +381,7 @@ public class Shutdown extends Thread
 	 * this counts the countdown and reports it to all players
 	 * countdown is aborted if mode changes to ABORT
 	 */
-	private void countdown() 
+	private void countdown()
 	{
 		Announcements _an = Announcements.getInstance();
 
@@ -415,12 +417,7 @@ public class Shutdown extends Thread
 						_an.announceToAll("Server " + Config.ABORT_RR + " is " + MODE_TEXT[_shutdownMode] + " in 2 minutes.");
 					break;
 					case 60:
-						LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_DOWN); // avoids
-																									// new
-																									// players
-																									// from
-																									// logging
-																									// in
+						LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_DOWN); // avoids new players from logging in
 						_an.announceToAll("Server " + Config.ABORT_RR + " is " + MODE_TEXT[_shutdownMode] + " in 1 minute.");
 					break;
 					case 30:
@@ -437,10 +434,10 @@ public class Shutdown extends Thread
 				}
 
 				_secondsShut--;
-				
+
 				int delay = 1000; // milliseconds
-				Thread.sleep(delay);
-				
+				wait(delay);
+
 				if (_shutdownMode == ABORT)
 					break;
 			}
@@ -482,27 +479,27 @@ public class Shutdown extends Thread
 		}
 		TimeCounter tc = new TimeCounter();
 		TimeCounter tc1 = new TimeCounter();
-		// we cannt abort shutdown anymore, so i removed the "if"
+		// we can't abort shutdown anymore, so i removed the "if"
 		disconnectAllCharacters();
-		
+
 		// Seven Signs data is now saved along with Festival data.
 		if (!SevenSigns.getInstance().isSealValidationPeriod())
 			SevenSignsFestival.getInstance().saveFestivalData(false);
-		
+
 		// Save Seven Signs data before closing. :)
 		SevenSigns.getInstance().saveSevenSignsData(null, true);
 
-        // Save all raidboss and GrandBoss status ^_^ 
-     	RaidBossSpawnManager.getInstance().cleanUp(); 
-     	_log.info("RaidBossSpawnManager: All RBoss info saved!!"); 
-     	GrandBossManager.getInstance().cleanUp(); 
-     	_log.info("GrandBossManager: All GBoss info saved!!("+tc.getEstimatedTimeAndRestartCounter()+"ms");
-        TradeController.getInstance().dataCountStore();
-        System.err.println("TradeController: All count Item Saved("+tc.getEstimatedTimeAndRestartCounter()+"ms).");
-        try
-        {
-            Olympiad.getInstance().save();
-        }
+		// Save all raidboss and GrandBoss status ^_^
+		RaidBossSpawnManager.getInstance().cleanUp();
+		_log.info("RaidBossSpawnManager: All RBoss info saved!!");
+		GrandBossManager.getInstance().cleanUp();
+		_log.info("GrandBossManager: All GBoss info saved!!(" + tc.getEstimatedTimeAndRestartCounter() + "ms");
+		TradeController.getInstance().dataCountStore();
+		System.err.println("TradeController: All count Item Saved(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		try
+		{
+			Olympiad.getInstance().save();
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
@@ -521,14 +518,14 @@ public class Shutdown extends Thread
 			Hitman.getInstance().save();
 			System.out.println("Hitman: List Saved.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		}
-		
+
 		// Save PvpTable Data:
 		if (ExternalConfig.CUSTOM_PVP_ENABLED || ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
 		{
 			PvpTable.getInstance().updateDB();
 			_log.info("PvpTable Data Updated.");
 		}
-		
+
 		// Save items on ground before closing
 		if (Config.SAVE_DROPPED_ITEM)
 		{
@@ -541,14 +538,14 @@ public class Shutdown extends Thread
 		try
 		{
 			int delay = 5000;
-			Thread.sleep(delay);
+			wait(delay);
 		}
 		catch (InterruptedException e)
 		{
 			// never happens :p
 		}
 	}
-	
+
 	/**
 	 * A simple class used to track down the estimated time of method
 	 * executions.
@@ -559,24 +556,24 @@ public class Shutdown extends Thread
 	private static final class TimeCounter
 	{
 		private long _startTime;
-		
+
 		private TimeCounter()
 		{
 			restartCounter();
 		}
-		
+
 		private void restartCounter()
 		{
 			_startTime = System.currentTimeMillis();
 		}
-		
+
 		private long getEstimatedTimeAndRestartCounter()
 		{
 			final long toReturn = System.currentTimeMillis() - _startTime;
 			restartCounter();
 			return toReturn;
 		}
-		
+
 		private long getEstimatedTime()
 		{
 			return System.currentTimeMillis() - _startTime;
@@ -585,18 +582,15 @@ public class Shutdown extends Thread
 
 	/**
 	 * this disconnects all clients from the server
-	 *
 	 */
 	private void disconnectAllCharacters()
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
-			//Logout Character
+			// Logout Character
 			try
 			{
 				L2GameClient.saveCharToDisk(player);
-				//SystemMessage sm = new SystemMessage(SystemMessage.YOU_HAVE_WON_THE_WAR_OVER_THE_S1_CLAN);
-				//player.sendPacket(sm);
 				ServerClose ql = new ServerClose();
 				player.sendPacket(ql);
 			}
@@ -606,13 +600,13 @@ public class Shutdown extends Thread
 		}
 		try
 		{
-			Thread.sleep(1000);
+			wait(1000);
 		}
 		catch (Throwable t)
 		{
 			_log.log(Level.INFO, "", t);
 		}
-		
+
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
 			try

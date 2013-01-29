@@ -295,9 +295,6 @@ public abstract class Inventory extends ItemContainer
     
     final class ItemAugmentationSkillsListener implements PaperdollListener
     {
-		/**
-		 * @see com.l2jhellas.gameserver.model.Inventory.PaperdollListener#notifyEquiped(int, com.l2jhellas.gameserver.model.L2ItemInstance)
-		 */
 		@Override
 		public void notifyEquiped(int slot, L2ItemInstance item)
 		{
@@ -309,9 +306,6 @@ public abstract class Inventory extends ItemContainer
 			}
 		}
 
-		/**
-		 * @see com.l2jhellas.gameserver.model.Inventory.PaperdollListener#notifyUnequiped(int, com.l2jhellas.gameserver.model.L2ItemInstance)
-		 */
 		@Override
 		public void notifyUnequiped(int slot, L2ItemInstance item)
 		{

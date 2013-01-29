@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -38,9 +39,15 @@ public final class ExternalConfig
 	public static final String Smart_CB = "./config/Mods/Smart Community Board.ini";
 	public static final String Custom_Npc = "./config/Mods/Custom Npcs.ini";
 
+	public static final String RCON_CONFIG_FILE = "./config/Admin/Rcon.ini";
 	// --------------------------------------------------
 	// L2J Variable Definitions
 	// --------------------------------------------------
+
+	/* RCON_FILE */
+	public static boolean ENABLED_RCON;
+	public static int RCON_PORT;
+	public static String RCON_PASSWORD;
 
 	/* Smart Community Board Definitions */
 	public static int TOP_PLAYER_ROW_HEIGHT;
@@ -54,7 +61,7 @@ public final class ExternalConfig
 	public static int CLASS_MASTERS_PRICE_ITEMCB;
 	public static int[] CLASS_MASTERS_PRICE_LISTCB = new int[4];
 	public static ArrayList<Integer> ALLOW_CLASS_MASTERS_LISTCB = new ArrayList<>();
-	
+
 	/* Automation Config System */
 	public static boolean ALLOW_SERVER_RESTART_COMMAND;
 	public static int VOTES_NEEDED_FOR_RESTART;
@@ -91,7 +98,7 @@ public final class ExternalConfig
 	public static boolean CUSTOM_PVP_RANK_PK_MODE_ENABLED;
 	public static boolean CUSTOM_PVP_WAR_ENABLED;
 	public static double CUSTOM_PVP_WAR_RP_RATIO;
-	
+
 	public static FastList<Integer> CUSTOM_PVP_ALLOWED_ZONES_IDS = new FastList<Integer>();
 	public static FastList<Integer> CUSTOM_PVP_RESTRICTED_ZONES_IDS = new FastList<Integer>();
 	public static int CUSTOM_PVP_LEGAL_MIN_LVL;
@@ -162,7 +169,7 @@ public final class ExternalConfig
 			InputStream is = new FileInputStream(cc);
 			L2Properties ccSettings = new L2Properties();
 			ccSettings.load(is);
-			
+
 			/* CUSTOM PVP/RANK/REWARD SYSTEM */
 			CUSTOM_PVP_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpEnabled", "false"));
 			CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpLegalCounterAltTEnabled", "false"));
@@ -176,51 +183,51 @@ public final class ExternalConfig
 			CUSTOM_PVP_REWARD_PK_MODE_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRewardPkModeEnabled", "false"));
 			CUSTOM_PVP_RANK_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankEnabled", "false"));
 			CUSTOM_PVP_RANK_MIN_LVL = Integer.parseInt(ccSettings.getProperty("CustomPvpRankMinLvl", "76"));
-			
+
 			CUSTOM_PVP_RANK_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankRewardEnabled", "false"));
-			
+
 			// set rank's:
 			String id1[] = ccSettings.getProperty("CustomPvpRankName", "").split(",");
 			String id2[] = ccSettings.getProperty("CustomPvpRankMinPoints", "").split(",");
 			String id3[] = ccSettings.getProperty("CustomPvpRankPointsForKill", "").split(",");
 			String id4[] = ccSettings.getProperty("CustomPvpRankRewardIds", "").split(",");
 			String id5[] = ccSettings.getProperty("CustomPvpRankRewardAmounts", "").split(",");
-			
+
 			if (CUSTOM_PVP_ENABLED || CUSTOM_PVP_REWARD_ENABLED || CUSTOM_PVP_RANK_ENABLED)
 			{
 				if (id1.length != id2.length || id1.length != id3.length || id1.length != id4.length || id1.length != id5.length)
 				{
 					_log.info("ERROR: Custom PvP System Config: Arrays sizes should be the same!");
-					
+
 					_log.info("CUSTOM_PVP_RANK_NAME           :" + id1.length);
 					_log.info("CUSTOM_PVP_RANK_MIN_POINTS     :" + id2.length);
 					_log.info("CUSTOM_PVP_RANK_POINTS_FOR_KILL:" + id3.length);
 					_log.info("CUSTOM_PVP_RANK_REWARD_IDS     :" + id4.length);
 					_log.info("CUSTOM_PVP_RANK_REWARD_AMOUNTS :" + id5.length);
-					
+
 				}
 				else
 				{
 					for (int i = 0; i < id1.length; i++)
 					{
 						Rank rank = new Rank();
-						
+
 						rank.setName(id1[i]);
 						rank.setMinPoints(Long.parseLong(id2[i]));
 						rank.setPointsForKill(Integer.parseInt(id3[i]));
 						rank.setRewardId(Integer.parseInt(id4[i]));
 						rank.setRewardAmount(Integer.parseInt(id5[i]));
-						
+
 						rank.setId(id1.length - i);
-						
+
 						CUSTOM_PVP_RANKS.put(id1.length - i, rank);
-						
+
 						// _log.info("rankId:"+(id1.length -
 						// i)+", rankName:"+id1[i]+", rankMinPoints:"+id2[i]+", rankPointsForKill:"+id3[i]+", rankRewardId:"+id4[i]+", rankRewardCount:"+id5[i]);
 					}
 				}
 			}
-			
+
 			CUSTOM_PVP_RANK_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpRankProtection", "0"));
 			CUSTOM_PVP_DAILY_RANK_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpDailyRankProtection", "0"));
 			CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankKillPointsDownEnabled", "false"));
@@ -241,7 +248,7 @@ public final class ExternalConfig
 			{
 				CUSTOM_PVP_WAR_RP_RATIO = 1.0;
 			}
-			
+
 			int i = 0;
 			String tempStr = ccSettings.getProperty("CustomPvpAllowedZonesIds");
 			if (tempStr != null && tempStr.length() > 0)
@@ -259,7 +266,7 @@ public final class ExternalConfig
 					i++;
 				}
 			}
-			
+
 			i = 0;
 			tempStr = ccSettings.getProperty("CustomPvpRestrictedZonesIds");
 			if (tempStr != null && tempStr.length() > 0)
@@ -284,11 +291,11 @@ public final class ExternalConfig
 			CUSTOM_PVP_INFO_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoCommandEnabled", "true"));
 			CUSTOM_PVP_INFO_USER_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoUserCommandEnabled", "false"));
 			CUSTOM_PVP_INFO_USER_COMMAND_ID = Integer.parseInt(ccSettings.getProperty("CustomPvpInfoUserCommandId", "114"));
-			
+
 			CUSTOM_PVP_INFO_COMMAND_ON_DEATH_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoCommandShowOnDeathEnabled", "true"));
 			CUSTOM_PVP_DEATH_MANAGER_DETAILS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpDeathManagerDetailsEnabled", "true"));
 			CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpDeathManagerShowItems", "true"));
-			
+
 			i = 0;
 			tempStr = ccSettings.getProperty("CustomPvpDeathManagerRestrictedZonesIds");
 			if (tempStr != null && tempStr.length() > 0)
@@ -306,25 +313,24 @@ public final class ExternalConfig
 					i++;
 				}
 			}
-			
+
 			String[] propertySplit = ccSettings.getProperty("CustomPvpRankPointsBonusZones", "").split(";");
 			CUSTOM_PVP_RANK_POINTS_BONUS_ZONES = new FastMap<Integer, Double>(propertySplit.length);
 			if (propertySplit.length > 0)
 			{
 				for (String skill : propertySplit)
 				{
-					
+
 					String[] skillSplit = skill.split(",");
 					if (skillSplit.length != 2)
 					{
-						// _log.warning(StringUtil.concat("[CustomPvpRankPointsBonusArea]: invalid config property -> CustomPvpRankPointsBonusArea \"",
-						// skill, "\""));
+						// _log.warning(StringUtil.concat("[CustomPvpRankPointsBonusArea]: invalid config property -> CustomPvpRankPointsBonusArea \"", skill, "\""));
 					}
 					else
 					{
 						try
 						{
-							
+
 							CUSTOM_PVP_RANK_POINTS_BONUS_ZONES.put(Integer.parseInt(skillSplit[0]), Double.parseDouble(skillSplit[1]));
 						}
 						catch (NumberFormatException nfe)
@@ -338,31 +344,32 @@ public final class ExternalConfig
 				}
 			}
 			CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankPointsRewardEnabled", "true"));
-			
+
 			CUSTOM_PVP_ANTI_FARM_CLAN_ALLY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpAntiFarmClanAllyEnabled", "true"));
 			CUSTOM_PVP_ANTI_FARM_PARTY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpAntiFarmPartyEnabled", "true"));
 			CUSTOM_PVP_ANTI_FARM_IP_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpAntiFarmIpEnabled", "true"));
-			
+
 			PVP_TABLE_UPDATE_INTERVAL = Integer.parseInt(ccSettings.getProperty("PvpTableUpdateInterval", "10000"));
 			if (PVP_TABLE_UPDATE_INTERVAL < 10000)
 			{
 				PVP_TABLE_UPDATE_INTERVAL = 10000;
 			}
-			
+
 			TOP_TABLE_UPDATE_INTERVAL = Integer.parseInt(ccSettings.getProperty("TopTableUpdateInterval", "60000"));
 			if (TOP_TABLE_UPDATE_INTERVAL < 60000)
 			{
 				TOP_TABLE_UPDATE_INTERVAL = 60000;
 			}
-			
+
 			COMMUNITY_BOARD_TOP_LIST_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CommunityBoardTopListEnabled", "true"));
+
 		}
 		catch (Exception e)
 		{
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Rank_Config + " File.");
 		}
-		
+
 		// Load Vote System Config file (if exists)
 		final File Auto = new File(Automation_Config);
 		try
@@ -370,7 +377,7 @@ public final class ExternalConfig
 			InputStream is = new FileInputStream(Auto);
 			L2Properties AutoSettings = new L2Properties();
 			AutoSettings.load(is);
-			
+
 			ALLOW_SERVER_RESTART_COMMAND = Boolean.parseBoolean(AutoSettings.getProperty("AllowServerRestartCommand", "False"));
 			VOTES_NEEDED_FOR_RESTART = Integer.parseInt(AutoSettings.getProperty("VotesNeededForRestart", "20"));
 			RESTART_BY_TIME_OF_DAY = Boolean.parseBoolean(AutoSettings.getProperty("EnableRestartSystem", "false"));
@@ -384,7 +391,7 @@ public final class ExternalConfig
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Automation_Config + " File.");
 		}
-		
+
 		// Load Vote System Config file (if exists)
 		final File Vote = new File(Vote_Config);
 		try
@@ -392,7 +399,7 @@ public final class ExternalConfig
 			InputStream is = new FileInputStream(Vote);
 			L2Properties VoteSettings = new L2Properties();
 			VoteSettings.load(is);
-			
+
 			VOTE_LINK_HOPZONE = VoteSettings.getProperty("HopzoneUrl", "null");
 			VOTE_LINK_TOPZONE = VoteSettings.getProperty("TopzoneUrl", "null");
 			VOTE_REWARD_ID1 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId1", "300"));
@@ -411,7 +418,7 @@ public final class ExternalConfig
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Vote_Config + " File.");
 		}
-		
+
 		// Load Smart CB Config file (if exists)
 		final File smartcb = new File(Smart_CB);
 		try (InputStream is = new FileInputStream(smartcb))
@@ -449,7 +456,7 @@ public final class ExternalConfig
 			_log.warning("Config: " + e.getMessage());
 			throw new Error("Failed to Load " + Smart_CB + " File.");
 		}
-		
+
 		// Load Custom Npc's Config file (if exists)
 		final File CustomNpc = new File(Custom_Npc);
 		try (InputStream is = new FileInputStream(CustomNpc))
@@ -468,7 +475,7 @@ public final class ExternalConfig
 			NPC_NOBLES_ENABLE = Boolean.parseBoolean(CustomNpcs.getProperty("NobleManager", "false"));
 			NPC_NOBLESS_ID1 = Integer.parseInt(CustomNpcs.getProperty("NobleID", "57"));
 			NPC_NOBLESS_QUANTITY1 = Integer.parseInt(CustomNpcs.getProperty("NobleQuantity", "10000"));
-			
+
 			/* Boss Info Npc */
 			String[] notenchantable = CustomNpcs.getProperty("BossList", "29028,29019,29020,29045,29022,29001,29014,29006").split(",");
 			BOSS_RESPAWN_INFO = new int[notenchantable.length];
@@ -485,7 +492,23 @@ public final class ExternalConfig
 			throw new Error("Failed to Load " + Custom_Npc + " File.");
 		}
 
-		
+		// Try to load RCON_CONFIG_FILE (if exist)
+		try
+		{
+			Properties RconSettings = new Properties();
+			InputStream is = new FileInputStream(new File(RCON_CONFIG_FILE));
+			RconSettings.load(is);
+			is.close();
 
+			ENABLED_RCON = Boolean.parseBoolean(RconSettings.getProperty("EnableRconTool", "False"));
+			RCON_PORT = Integer.parseInt(RconSettings.getProperty("RconPort", "7779"));
+			RCON_PASSWORD = RconSettings.getProperty("RconPassword", "123123");
+
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new Error("Failed to Load " + RCON_CONFIG_FILE + " File.");
+		}
 	}
 }

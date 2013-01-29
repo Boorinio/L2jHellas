@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -17,15 +19,14 @@ import javolution.util.FastMap;
 import com.l2jhellas.ExternalConfig;
 
 /**
- * Class contains Character PvP statistics like sum of kills, sum of rank
- * points, etc.
- * 
+ * Class contains Character PvP statistics like sum of kills, sum of rank points, etc.
+ *
  * @author Masterio
  */
 public class PvpStats
 {
 	private int _characterId = 0;
-	
+
 	private int _totalKills = 0;
 	private int _totalKillsToday = 0;
 	private int _totalKillsLegal = 0;
@@ -36,30 +37,30 @@ public class PvpStats
 	private int _totalWarKillsLegal = 0;
 
 	private Rank _rank = new Rank();
-	
+
 	public void addTotalKills(int kills)
 	{
 		_totalKills += kills;
 	}
-	
+
 	public void addTotalKillsToday(int killsToday)
 	{
 		_totalKillsToday += killsToday;
 	}
-	
+
 	public void addTotalKillsLegal(int killsLegal)
 	{
 		_totalKillsLegal += killsLegal;
 	}
-	
+
 	public void addTotalKillsLegalToday(int killsLegalToday)
 	{
 		_totalKillsLegalToday += killsLegalToday;
 	}
-	
+
 	/**
 	 * Add Rank Points to Total Rank Points and update Rank.
-	 * 
+	 *
 	 * @param rankPoints
 	 */
 	public void addTotalRankPoints(long rankPoints)
@@ -67,22 +68,22 @@ public class PvpStats
 		_totalRankPoints += rankPoints;
 		onUpdateRankPoints();
 	}
-	
+
 	public void addTotalRankPointsToday(long rankPointsToday)
 	{
 		_totalRankPointsToday += rankPointsToday;
 	}
-	
+
 	public void addTotalWarKills(int warKills)
 	{
 		_totalWarKills += warKills;
 	}
-	
+
 	public void addTotalWarKillsLegal(int warKillsLegal)
 	{
 		_totalWarKillsLegal += warKillsLegal;
 	}
-	
+
 	/**
 	 * @return the _characterId
 	 */
@@ -178,7 +179,7 @@ public class PvpStats
 
 	/**
 	 * Set Total Rank Points and update Rank.
-	 * 
+	 *
 	 * @param _totalRankPoints
 	 *        the _totalRankPoints to set
 	 */
@@ -255,14 +256,14 @@ public class PvpStats
 	{
 		this._rank = _rank;
 	}
-	
+
 	/**
 	 * Update current Rank values for this character,<br>
 	 * should be executed always when total rank points was updated.
 	 */
 	public void onUpdateRankPoints()
 	{
-		
+
 		for (FastMap.Entry<Integer, Rank> e = ExternalConfig.CUSTOM_PVP_RANKS.head(), end = ExternalConfig.CUSTOM_PVP_RANKS.tail(); (e = e.getNext()) != end;)
 		{
 			// set up rank for current rank points:
@@ -272,11 +273,13 @@ public class PvpStats
 				return;
 			}
 		}
-		
+
 		// if not set any rank, set minimum rank:
 		if (ExternalConfig.CUSTOM_PVP_RANKS.tail() != null)
 		{
 			setRank(ExternalConfig.CUSTOM_PVP_RANKS.tail().getValue());
 		}
+
 	}
+
 }

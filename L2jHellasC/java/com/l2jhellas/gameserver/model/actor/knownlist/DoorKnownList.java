@@ -21,43 +21,35 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 
 public class DoorKnownList extends CharKnownList
 {
-    // =========================================================
-    // Data Field
+	public DoorKnownList(L2DoorInstance activeChar)
+	{
+		super(activeChar);
+	}
 
-    // =========================================================
-    // Constructor
-    public DoorKnownList(L2DoorInstance activeChar)
-    {
-        super(activeChar);
-    }
+	@Override
+	public final L2DoorInstance getActiveChar()
+	{
+		return (L2DoorInstance) super.getActiveChar();
+	}
 
-    // =========================================================
-    // Method - Public
-
-    // =========================================================
-    // Method - Private
-
-    // =========================================================
-    // Property - Public
-    @Override
-	public final L2DoorInstance getActiveChar() { return (L2DoorInstance)super.getActiveChar(); }
-
-    @Override
+	@Override
 	public int getDistanceToForgetObject(L2Object object)
-    {
-        if (object instanceof L2SiegeGuardInstance) return 800;
-    	if (!(object instanceof L2PcInstance))
-            return 0;
+	{
+		if (object instanceof L2SiegeGuardInstance)
+			return 800;
+		if (!(object instanceof L2PcInstance))
+			return 0;
 
-        return 4000;
-    }
+		return 4000;
+	}
 
-    @Override
+	@Override
 	public int getDistanceToWatchObject(L2Object object)
-    {
-    	if (object instanceof L2SiegeGuardInstance) return 600;
-    	if (!(object instanceof L2PcInstance))
-            return 0;
-        return 2000;
-    }
+	{
+		if (object instanceof L2SiegeGuardInstance)
+			return 600;
+		if (!(object instanceof L2PcInstance))
+			return 0;
+		return 2000;
+	}
 }

@@ -18,7 +18,6 @@ import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.Shutdown;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
 /**
  * @author SkyLanceR
  */

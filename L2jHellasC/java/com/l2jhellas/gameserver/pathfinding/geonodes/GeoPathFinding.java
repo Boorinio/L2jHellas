@@ -51,18 +51,12 @@ public class GeoPathFinding extends PathFinding
 		return _instance;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.pathfinding.PathFinding#PathNodesExist(short)
-	 */
 	@Override
 	public boolean pathNodesExist(short regionoffset)
 	{
 		return _pathNodesIndex.containsKey(regionoffset);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.pathfinding.PathFinding#FindPath(int, int, short, int, int, short)
-	 */
 	@Override
 	public List<AbstractNodeLoc> findPath(int gx, int gy, short z, int gtx, int gty, short tz)
 	{
@@ -72,14 +66,11 @@ public class GeoPathFinding extends PathFinding
 			return null;
 		if (start == end)
 			return null;
-		
+
 		// return searchAStar(start, end);
 		return searchByClosest(start, end);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.pathfinding.PathFinding#ReadNeighbors(short, short)
-	 */
 	@Override
 	public Node[] readNeighbors(short node_x, short node_y, int idx)
 	{
@@ -89,7 +80,7 @@ public class GeoPathFinding extends PathFinding
 		List<Node> Neighbors = new FastList<Node>(8);
 		Node newNode;
 		short new_node_x, new_node_y;
-		
+
 		// Region for sure will change, we must read from correct file
 		byte neighbor = pn.get(idx); // N
 		idx++;
@@ -182,8 +173,6 @@ public class GeoPathFinding extends PathFinding
 		Node[] result = new Node[Neighbors.size()];
 		return Neighbors.toArray(result);
 	}
-	
-	// Private
 
 	private Node readNode(short node_x, short node_y, byte layer)
 	{
@@ -235,7 +224,7 @@ public class GeoPathFinding extends PathFinding
 		}
 		return new Node(new GeoNodeLoc(node_x, node_y, last_z), idx2);
 	}
-	
+
 	private GeoPathFinding()
 	{
 		LineNumberReader lnr = null;
@@ -272,7 +261,7 @@ public class GeoPathFinding extends PathFinding
 			throw new Error("Failed to Read pn_index File.");
 		}
 	}
-	
+
 	private void LoadPathNodeFile(byte rx, byte ry)
 	{
 		String fname = "data/pathnode/" + rx + "_" + ry + ".pn";
@@ -296,7 +285,7 @@ public class GeoPathFinding extends PathFinding
 
 			// Indexing pathnode files, so we will know where each block starts
 			IntBuffer indexs = IntBuffer.allocate(65536);
-			
+
 			while (node < 65536)
 			{
 				byte layer = nodes.get(index);

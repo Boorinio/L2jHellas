@@ -55,21 +55,21 @@ public class TvT
 {
 	private final static Log _log = LogFactory.getLog(TvT.class.getName());
 	public static String _eventName = "";
-	public static String _eventDesc	= "";
+	public static String _eventDesc = "";
 	public static String _topTeam = "";
 	public static String _joiningLocationName = "";
-	public static Vector<String> _teams	= new Vector<String>();
+	public static Vector<String> _teams = new Vector<String>();
 	public static Vector<String> _savePlayers = new Vector<String>();
 	public static Vector<String> _savePlayerTeams = new Vector<String>();
 
-	public static Vector<L2PcInstance>_players = new Vector<L2PcInstance>();
-	public static Vector<L2PcInstance>_playersShuffle = new Vector<L2PcInstance>();
-	public static Vector<Integer>_teamPlayersCount = new Vector<Integer>();
-	public static Vector<Integer>_teamKillsCount = new Vector<Integer>();
-	public static Vector<Integer>_teamColors = new Vector<Integer>();
-	public static Vector<Integer>_teamsX = new Vector<Integer>();
-	public static Vector<Integer>_teamsY = new Vector<Integer>();
-	public static Vector<Integer>_teamsZ = new Vector<Integer>();
+	public static Vector<L2PcInstance> _players = new Vector<L2PcInstance>();
+	public static Vector<L2PcInstance> _playersShuffle = new Vector<L2PcInstance>();
+	public static Vector<Integer> _teamPlayersCount = new Vector<Integer>();
+	public static Vector<Integer> _teamKillsCount = new Vector<Integer>();
+	public static Vector<Integer> _teamColors = new Vector<Integer>();
+	public static Vector<Integer> _teamsX = new Vector<Integer>();
+	public static Vector<Integer> _teamsY = new Vector<Integer>();
+	public static Vector<Integer> _teamsZ = new Vector<Integer>();
 	public static boolean _joining = false;
 	public static boolean _teleport = false;
 	public static boolean _started = false;
@@ -78,18 +78,18 @@ public class TvT
 
 	public static int _npcId = 0;
 	public static int _npcX = 0;
-	public static int _npcY	= 0;
-	public static int _npcZ	= 0;
+	public static int _npcY = 0;
+	public static int _npcZ = 0;
 	public static int _npcHeading = 0;
 
-	public static int _rewardId	= 0;
-	public static int _rewardAmount	= 0;
+	public static int _rewardId = 0;
+	public static int _rewardAmount = 0;
 
-	public static int _topKills	= 0;
+	public static int _topKills = 0;
 	public static int _minlvl = 0;
 	public static int _maxlvl = 0;
 
-	public static int _joinTime	= 0;
+	public static int _joinTime = 0;
 	public static int _eventTime = 0;
 
 	public static int _minPlayers = 0;
@@ -332,9 +332,7 @@ public class TvT
 
 	public static boolean startJoinOk()
 	{
-		return !(_started || _teleport || _joining || _teams.size() < 2 || _eventName.isEmpty() || _joiningLocationName.isEmpty() || _eventDesc.isEmpty()
-				|| _npcId == 0 || _npcX == 0 || _npcY == 0 || _npcZ == 0 || _rewardId == 0 || _rewardAmount == 0 || _teamsX.contains(0) || _teamsY.contains(0)
-				|| _teamsZ.contains(0));
+		return !(_started || _teleport || _joining || _teams.size() < 2 || _eventName.isEmpty() || _joiningLocationName.isEmpty() || _eventDesc.isEmpty() || _npcId == 0 || _npcX == 0 || _npcY == 0 || _npcZ == 0 || _rewardId == 0 || _rewardAmount == 0 || _teamsX.contains(0) || _teamsY.contains(0) || _teamsZ.contains(0));
 	}
 
 	private static void spawnEventNpc(L2PcInstance activeChar)
@@ -425,6 +423,7 @@ public class TvT
 		setUserData();
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				TvT.sit();
@@ -435,7 +434,7 @@ public class TvT
 					{
 						if (Config.TVT_ON_START_UNSUMMON_PET)
 						{
-							//Remove Summon's buffs
+							// Remove Summon's buffs
 							if (player.getPet() != null)
 							{
 								L2Summon summon = player.getPet();
@@ -459,7 +458,7 @@ public class TvT
 							}
 						}
 
-						//Remove player from his party
+						// Remove player from his party
 						if (player.getParty() != null)
 						{
 							L2Party party = player.getParty();
@@ -467,8 +466,7 @@ public class TvT
 						}
 
 						player.setTitle("Kills: " + player._countTvTkills);
-						player.teleToLocation(_teamsX.get(_teams.indexOf(player._teamNameTvT)), _teamsY.get(_teams.indexOf(player._teamNameTvT)), _teamsZ
-								.get(_teams.indexOf(player._teamNameTvT)));
+						player.teleToLocation(_teamsX.get(_teams.indexOf(player._teamNameTvT)), _teamsY.get(_teams.indexOf(player._teamNameTvT)), _teamsZ.get(_teams.indexOf(player._teamNameTvT)));
 					}
 				}
 			}
@@ -498,6 +496,7 @@ public class TvT
 		setUserData();
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				TvT.sit();
@@ -508,7 +507,7 @@ public class TvT
 					{
 						if (Config.TVT_ON_START_UNSUMMON_PET)
 						{
-							//Remove Summon's buffs
+							// Remove Summon's buffs
 							if (player.getPet() != null)
 							{
 								L2Summon summon = player.getPet();
@@ -532,15 +531,14 @@ public class TvT
 							}
 						}
 
-						//Remove player from his party
+						// Remove player from his party
 						if (player.getParty() != null)
 						{
 							L2Party party = player.getParty();
 							party.removePartyMember(player);
 						}
 						player.setTitle("Kills: " + player._countTvTkills);
-						player.teleToLocation(_teamsX.get(_teams.indexOf(player._teamNameTvT)), _teamsY.get(_teams.indexOf(player._teamNameTvT)), _teamsZ
-								.get(_teams.indexOf(player._teamNameTvT)));
+						player.teleToLocation(_teamsX.get(_teams.indexOf(player._teamNameTvT)), _teamsY.get(_teams.indexOf(player._teamNameTvT)), _teamsZ.get(_teams.indexOf(player._teamNameTvT)));
 					}
 				}
 			}
@@ -632,12 +630,12 @@ public class TvT
 					finishEvent();
 
 					_log.info("TvT: waiting... delay for final messages ");
-					waiter(60000);//just a give a delay delay for final messages
+					waiter(60000);// just a give a delay delay for final messages
 					sendFinalMessages();
 
 					if (_finished && _eventType == 2)
 						_log.info("TVT: waiting.....delay for restart event  " + TvT.getIntervalBetweenMatchs() + " minutes.");
-					waiter(60000);//just a give a delay to next restart
+					waiter(60000);// just a give a delay to next restart
 
 					try
 					{
@@ -673,47 +671,46 @@ public class TvT
 			{
 				switch (seconds)
 				{
-				case 3600: // 1 hour left
-					if (_joining)
-					{
-						AnnounceToPlayers(true, "TvT: Joinable in " + _joiningLocationName + "!");
-						AnnounceToPlayers(true, "TvT: " + seconds / 60 / 60 + " hour(s) till registration ends!");
-						if (Config.TVT_ANNOUNCE_REGISTRATION_LOC_NPC)
-							AnnounceToPlayers(true, "TvT: Registration Period is Active in " + _joiningLocationName + " ! at Npc " + npcManager);
-					}
-					else if (_started)
-						AnnounceToPlayers(false, "TvT: " + seconds / 60 / 60 + " hour(s) till event ends!");
+					case 3600: // 1 hour left
+						if (_joining)
+						{
+							AnnounceToPlayers(true, "TvT: Joinable in " + _joiningLocationName + "!");
+							AnnounceToPlayers(true, "TvT: " + seconds / 60 / 60 + " hour(s) till registration ends!");
+							if (Config.TVT_ANNOUNCE_REGISTRATION_LOC_NPC)
+								AnnounceToPlayers(true, "TvT: Registration Period is Active in " + _joiningLocationName + " ! at Npc " + npcManager);
+						}
+						else if (_started)
+							AnnounceToPlayers(false, "TvT: " + seconds / 60 / 60 + " hour(s) till event ends!");
 
 					break;
-				case 1800: // 30 minutes left
-				case 900: // 15 minutes left
-				case 600: //  10 minutes left
-				case 300: // 5 minutes left
-				case 60: // 1 minute left
-					if (_joining)
-					{
-						removeOfflinePlayers();
-						AnnounceToPlayers(true, "TvT: Joinable in " + _joiningLocationName + "!");
-						AnnounceToPlayers(true, "TvT: " + seconds / 60 + " minute(s) till registration ends!");
-						if (Config.TVT_ANNOUNCE_REGISTRATION_LOC_NPC)
-							Announcements.getInstance().gameAnnounceToAll(
-									"TvT: Registration Period is Active in " + _joiningLocationName + " ! at Npc " + npcManager);
-					}
-					else if (_started)
-						AnnounceToPlayers(false, "TvT: " + seconds / 60 + " minute(s) till event ends!");
+					case 1800: // 30 minutes left
+					case 900: // 15 minutes left
+					case 600: // 10 minutes left
+					case 300: // 5 minutes left
+					case 60: // 1 minute left
+						if (_joining)
+						{
+							removeOfflinePlayers();
+							AnnounceToPlayers(true, "TvT: Joinable in " + _joiningLocationName + "!");
+							AnnounceToPlayers(true, "TvT: " + seconds / 60 + " minute(s) till registration ends!");
+							if (Config.TVT_ANNOUNCE_REGISTRATION_LOC_NPC)
+								Announcements.getInstance().gameAnnounceToAll("TvT: Registration Period is Active in " + _joiningLocationName + " ! at Npc " + npcManager);
+						}
+						else if (_started)
+							AnnounceToPlayers(false, "TvT: " + seconds / 60 + " minute(s) till event ends!");
 
 					break;
-				case 30: // 30 seconds left
-				case 10: // 10 seconds left
-				case 3: // 3 seconds left
-				case 2: // 2 seconds left
-				case 1: // 1 seconds left
-					if (_joining)
-						AnnounceToPlayers(true, "TvT: " + seconds + " second(s) till registration ends!");
-					else if (_teleport)
-						AnnounceToPlayers(false, "TvT: " + seconds + " seconds(s) till fight starts!");
-					else if (_started)
-						AnnounceToPlayers(false, "TvT: " + seconds + " second(s) till event ends!");
+					case 30: // 30 seconds left
+					case 10: // 10 seconds left
+					case 3: // 3 seconds left
+					case 2: // 2 seconds left
+					case 1: // 1 seconds left
+						if (_joining)
+							AnnounceToPlayers(true, "TvT: " + seconds + " second(s) till registration ends!");
+						else if (_teleport)
+							AnnounceToPlayers(false, "TvT: " + seconds + " seconds(s) till fight starts!");
+						else if (_started)
+							AnnounceToPlayers(false, "TvT: " + seconds + " second(s) till event ends!");
 
 					break;
 				}
@@ -848,7 +845,7 @@ public class TvT
 		teleportFinish();
 	}
 
-	//show loosers and winners animations
+	// show loosers and winners animations
 	public static void playKneelAnimation(String teamName)
 	{
 		for (L2PcInstance player : _players)
@@ -1169,8 +1166,7 @@ public class TvT
 			statement.execute();
 			statement.close();
 
-			statement = con
-					.prepareStatement("INSERT INTO tvt (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, npcHeading, rewardId, rewardAmount, teamsCount, joinTime, eventTime, minPlayers, maxPlayers, delayForNextEvent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			statement = con.prepareStatement("INSERT INTO tvt (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, npcHeading, rewardId, rewardAmount, teamsCount, joinTime, eventTime, minPlayers, maxPlayers, delayForNextEvent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			statement.setString(1, _eventName);
 			statement.setString(2, _eventDesc);
 			statement.setString(3, _joiningLocationName);
@@ -1265,8 +1261,7 @@ public class TvT
 
 					replyMSG.append("<table border=\"0\"><tr>");
 					replyMSG.append("<td width=\"200\">Wait till event start or</td>");
-					replyMSG.append("<td width=\"60\"><center><button value=\"remove\" action=\"bypass -h npc_" + objectId
-							+ "_tvt_player_leave\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></center></td>");
+					replyMSG.append("<td width=\"60\"><center><button value=\"remove\" action=\"bypass -h npc_" + objectId + "_tvt_player_leave\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></center></td>");
 					replyMSG.append("<td width=\"100\">your participation!</td>");
 					replyMSG.append("</tr></table>");
 				}
@@ -1284,8 +1279,7 @@ public class TvT
 						for (String team : _teams)
 						{
 							replyMSG.append("<tr><td width=\"100\"><font color=\"LEVEL\">" + team + "</font>&nbsp;(" + teamPlayersCount(team) + " joined)</td>");
-							replyMSG.append("<td width=\"60\"><button value=\"Join\" action=\"bypass -h npc_" + objectId + "_tvt_player_join " + team
-									+ "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+							replyMSG.append("<td width=\"60\"><button value=\"Join\" action=\"bypass -h npc_" + objectId + "_tvt_player_join " + team + "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
 						}
 
 						replyMSG.append("</table></center>");
@@ -1299,8 +1293,7 @@ public class TvT
 
 						replyMSG.append("</table></center><br>");
 
-						replyMSG.append("<button value=\"Join\" action=\"bypass -h npc_" + objectId
-								+ "_tvt_player_join eventShuffle\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
+						replyMSG.append("<button value=\"Join\" action=\"bypass -h npc_" + objectId + "_tvt_player_join eventShuffle\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
 						replyMSG.append("Teams will be randomly generated!");
 					}
 				}
@@ -1354,7 +1347,7 @@ public class TvT
 		player._inEventTvT = true;
 		player._countTvTkills = 0;
 
-		//notify player that he signed up in event
+		// notify player that he signed up in event
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile("data/html/mods/Participation.htm");
 		player.sendPacket(html);
@@ -1403,7 +1396,7 @@ public class TvT
 					eventPlayer._countTvTkills = 0;
 					return true;
 				}
-				//this 1 is incase player got new objectid after DC or reconnect
+				// this 1 is incase player got new objectid after DC or reconnect
 				else if (player.getName().equals(eventPlayer.getName()))
 				{
 					_playersShuffle.remove(player);
@@ -1516,8 +1509,7 @@ public class TvT
 
 	public static synchronized void addDisconnectedPlayer(L2PcInstance player)
 	{
-		if ((Config.TVT_EVEN_TEAMS.equals("SHUFFLE") && (_teleport || _started))
-				|| (Config.TVT_EVEN_TEAMS.equals("NO") || Config.TVT_EVEN_TEAMS.equals("BALANCE") && (_teleport || _started)))
+		if ((Config.TVT_EVEN_TEAMS.equals("SHUFFLE") && (_teleport || _started)) || (Config.TVT_EVEN_TEAMS.equals("NO") || Config.TVT_EVEN_TEAMS.equals("BALANCE") && (_teleport || _started)))
 		{
 			if (Config.TVT_ON_START_REMOVE_ALL_EFFECTS)
 			{
@@ -1533,7 +1525,7 @@ public class TvT
 			{
 				if (p == null)
 					continue;
-				//check by name incase player got new objectId
+				// check by name incase player got new objectId
 				else if (p.getName().equals(player.getName()))
 				{
 					player._originalNameColorTvT = player.getAppearance().getNameColor();
@@ -1541,8 +1533,8 @@ public class TvT
 					player._originalKarmaTvT = player.getKarma();
 					player._inEventTvT = true;
 					player._countTvTkills = p._countTvTkills;
-					_players.remove(p); //removing old object id from vector
-					_players.add(player); //adding new objectId to vector
+					_players.remove(p); // removing old object id from vector
+					_players.add(player); // adding new objectId to vector
 					break;
 				}
 			}
@@ -1555,8 +1547,7 @@ public class TvT
 					player.setTeam(_teams.indexOf(player._teamNameTvT) + 1);
 			}
 			player.broadcastUserInfo();
-			player.teleToLocation(_teamsX.get(_teams.indexOf(player._teamNameTvT)), _teamsY.get(_teams.indexOf(player._teamNameTvT)), _teamsZ.get(_teams
-					.indexOf(player._teamNameTvT)));
+			player.teleToLocation(_teamsX.get(_teams.indexOf(player._teamNameTvT)), _teamsY.get(_teams.indexOf(player._teamNameTvT)), _teamsZ.get(_teams.indexOf(player._teamNameTvT)));
 		}
 	}
 
@@ -1645,6 +1636,7 @@ public class TvT
 
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				for (L2PcInstance player : _players)
@@ -1744,7 +1736,7 @@ public class TvT
 
 	private static boolean _inProgress = false;
 	private static boolean _finished = false;
-	private static boolean _aborted	= false;
+	private static boolean _aborted = false;
 
 	/**
 	 * Opens All Coliseum Doors
@@ -1752,14 +1744,14 @@ public class TvT
 	private static void closeColiseumDoors()
 	{
 		Announcements.getInstance().gameAnnounceToAll("Closing Coliseum Doors, TvT event has just started !");
-		DoorTable.getInstance().getDoor(24190001).closeMe();//west gate out
-		DoorTable.getInstance().getDoor(24190002).closeMe();//west gate in
-		DoorTable.getInstance().getDoor(24190003).closeMe();//east gate out
-		DoorTable.getInstance().getDoor(24190004).closeMe();//east gate in
+		DoorTable.getInstance().getDoor(24190001).closeMe();// west gate out
+		DoorTable.getInstance().getDoor(24190002).closeMe();// west gate in
+		DoorTable.getInstance().getDoor(24190003).closeMe();// east gate out
+		DoorTable.getInstance().getDoor(24190004).closeMe();// east gate in
 
 		try
 		{
-			//just to give a lil delay :P
+			// just to give a lil delay :P
 			Thread.sleep(20);
 		}
 		catch (InterruptedException ie)
@@ -1805,7 +1797,7 @@ public class TvT
 
 		try
 		{
-			autoEvent(); //start a new event
+			autoEvent(); // start a new event
 		}
 		catch (Exception e)
 		{
@@ -1816,6 +1808,7 @@ public class TvT
 
 	/**
 	 * Returns the event type by name.
+	 *
 	 * @param value
 	 * @return
 	 */
@@ -1825,16 +1818,16 @@ public class TvT
 
 		switch (value)
 		{
-		case 0:
-			type = ("None");
+			case 0:
+				type = ("None");
 			break;
 
-		case 1:
-			type = ("Manual");
+			case 1:
+				type = ("Manual");
 			break;
 
-		case 2:
-			type = ("Automatic");
+			case 2:
+				type = ("Automatic");
 			break;
 		}
 		return type;
@@ -1842,7 +1835,6 @@ public class TvT
 
 	/**
 	 * just an announcer to send termination messages
-	 *
 	 */
 	public static void sendFinalMessages()
 	{
@@ -1852,6 +1844,7 @@ public class TvT
 
 	/**
 	 * returns the interval between each event
+	 *
 	 * @return
 	 */
 	public static int getIntervalBetweenMatchs()

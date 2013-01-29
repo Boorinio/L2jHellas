@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,52 +33,52 @@ public class Hitman
 	private static Hitman _instance;
 	private FastMap<Integer, PlayerToAssasinate> _targets;
 	private final Logger _log = Logger.getLogger(Hitman.class.getName());
-	
+
 	// Data Strings
 	private static String SQL_SELECT = "SELECT targetId, clientId, target_name, bounty, pending_delete FROM hitman_list";
 	private static String SQL_DELETE = "DELETE FROM hitman_list WHERE targetId=?";
 	private static String SQL_SAVEING = "REPLACE INTO `hitman_list` VALUES (?, ?, ?, ?, ?)";
 	private static String[] SQL_OFFLINE =
 	{
-	"SELECT * FROM characters WHERE char_name=?", "SELECT * from characters WHERE charId=?"
+	"SELECT * FROM characters WHERE char_name=?", "SELECT * from characters WHERE obj_Id=?"
 	};
-	
+
 	// Clean every 15 mins ^^
 	private final int MIN_MAX_CLEAN_RATE = 15 * 60000;
-	
+
 	// Fancy lookin
 	public static boolean start()
 	{
 		if (Config.ENABLE_HITMAN_EVENT)
 			getInstance();
-		
+
 		return _instance != null;
 	}
-	
+
 	public static Hitman getInstance()
 	{
 		if (_instance == null)
 			_instance = new Hitman();
-		
+
 		return _instance;
 	}
-	
+
 	public Hitman()
 	{
 		_targets = load();
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new AISystem(), MIN_MAX_CLEAN_RATE, MIN_MAX_CLEAN_RATE);
 	}
-	
+
 	private FastMap<Integer, PlayerToAssasinate> load()
 	{
 		FastMap<Integer, PlayerToAssasinate> map = new FastMap<Integer, PlayerToAssasinate>();
-		
+
 		try
 		{
 			Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement(SQL_SELECT);
 			ResultSet rs = st.executeQuery();
-			
+
 			while (rs.next())
 			{
 				int targetId = rs.getInt("targetId");
@@ -86,7 +86,7 @@ public class Hitman
 				String target_name = rs.getString("target_name");
 				int bounty = rs.getInt("bounty");
 				boolean pending = rs.getInt("pending_delete") == 1;
-				
+
 				if (pending)
 					removeTarget(targetId, false);
 				else
@@ -102,10 +102,10 @@ public class Hitman
 			_log.warning("Hitman: " + e.getCause());
 			return new FastMap<Integer, PlayerToAssasinate>();
 		}
-		
+
 		return map;
 	}
-	
+
 	public void onDeath(L2PcInstance assassin, L2PcInstance target)
 	{
 		if (_targets.containsKey(target.getObjectId()))
@@ -113,21 +113,21 @@ public class Hitman
 			PlayerToAssasinate pta = _targets.get(target.getObjectId());
 			String name = getOfflineData(null, pta.getClientId())[1];
 			L2PcInstance client = L2World.getInstance().getPlayer(name);
-			
+
 			target.sendMessage("You have been assassinated. Your bounty is 0.");
-			
+
 			if (client != null)
 			{
 				client.sendMessage("Your assassination request to kill " + target.getName() + " has been fulfilled.");
 				client.setHitmanTarget(0);
 			}
-			
+
 			assassin.sendMessage("You assassinated " + target.getName() + ", his bounty will be converted in Adena!");
 			assassin.addAdena("Hitman", pta.getBounty(), target, true);
 			removeTarget(pta.getObjectId(), true);
 		}
 	}
-	
+
 	public void onEnterWorld(L2PcInstance activeChar)
 	{
 		if (_targets.containsKey(activeChar.getObjectId()))
@@ -135,7 +135,7 @@ public class Hitman
 			PlayerToAssasinate pta = _targets.get(activeChar.getObjectId());
 			activeChar.sendMessage("There is a hit on you. Worth " + pta.getBounty() + " Adena(s).");
 		}
-		
+
 		if (activeChar.getHitmanTarget() > 0)
 		{
 			if (!_targets.containsKey(activeChar.getHitmanTarget()))
@@ -147,7 +147,7 @@ public class Hitman
 				activeChar.sendMessage("Your target is still at large.");
 		}
 	}
-	
+
 	public void save()
 	{
 		try
@@ -170,13 +170,13 @@ public class Hitman
 		{
 			_log.warning("Hitman: " + e);
 		}
-		
+
 	}
-	
+
 	public void putHitOn(L2PcInstance client, String playerName, int bounty)
 	{
 		L2PcInstance player = L2World.getInstance().getPlayer(playerName);
-		
+
 		if (client.getHitmanTarget() > 0)
 		{
 			client.sendMessage("You are already a client here, you can place a request only for a single player.");
@@ -190,7 +190,7 @@ public class Hitman
 		else if (player == null && CharNameTable.getInstance().doesCharNameExist(playerName))
 		{
 			Integer targetId = Integer.parseInt(getOfflineData(playerName, 0)[0]);
-			
+
 			if (_targets.containsKey(targetId))
 			{
 				client.sendMessage("There is already a hit on that player.");
@@ -215,7 +215,7 @@ public class Hitman
 		else
 			client.sendMessage("Player name invalid. The user does not exist.");
 	}
-	
+
 	public class AISystem implements Runnable
 	{
 		@Override
@@ -223,7 +223,7 @@ public class Hitman
 		{
 			if (Config.DEBUG)
 				_log.info("Cleaning sequance initiated.");
-			
+
 			for (PlayerToAssasinate target : _targets.values())
 			{
 				if (target.isPendingDelete())
@@ -232,7 +232,7 @@ public class Hitman
 			save();
 		}
 	}
-	
+
 	public void removeTarget(int obId, boolean live)
 	{
 		try
@@ -243,7 +243,7 @@ public class Hitman
 			st.execute();
 			st.close();
 			con.close();
-			
+
 			if (live)
 				_targets.remove(obId);
 		}
@@ -252,11 +252,11 @@ public class Hitman
 			_log.warning("Hitman: " + e);
 		}
 	}
-	
+
 	public void cancelAssasination(String name, L2PcInstance client)
 	{
 		L2PcInstance target = L2World.getInstance().getPlayer(name);
-		
+
 		if (client.getHitmanTarget() <= 0)
 		{
 			client.sendMessage("You don't own a hit.");
@@ -265,13 +265,13 @@ public class Hitman
 		else if (target == null && CharNameTable.getInstance().doesCharNameExist(name))
 		{
 			PlayerToAssasinate pta = _targets.get(client.getHitmanTarget());
-			
+
 			if (!_targets.containsKey(pta.getObjectId()))
 				client.sendMessage("There is no hit on that player.");
 			else if (pta.getClientId() == client.getObjectId())
 			{
 				removeTarget(pta.getObjectId(), true);
-				client.sendMessage("The hit has been canceld.");
+				client.sendMessage("The hit has been canceled.");
 				client.setHitmanTarget(0);
 			}
 			else
@@ -280,7 +280,7 @@ public class Hitman
 		else if (target != null && CharNameTable.getInstance().doesCharNameExist(name))
 		{
 			PlayerToAssasinate pta = _targets.get(target.getObjectId());
-			
+
 			if (!_targets.containsKey(pta.getObjectId()))
 				client.sendMessage("There is no hit on that player.");
 			else if (pta.getClientId() == client.getObjectId())
@@ -296,10 +296,10 @@ public class Hitman
 		else
 			client.sendMessage("Player name invalid. The user does not exist.");
 	}
-	
+
 	/**
 	 * Its useing a array in case in a future update more values will be added
-	 * 
+	 *
 	 * @param name
 	 */
 	public String[] getOfflineData(String name, int objId)
@@ -309,20 +309,20 @@ public class Hitman
 		{
 			Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement(objId > 0 ? SQL_OFFLINE[1] : SQL_OFFLINE[0]);
-			
+
 			if (objId > 0)
 				st.setInt(1, objId);
 			else
 				st.setString(1, name);
-			
+
 			ResultSet rs = st.executeQuery();
-			
+
 			while (rs.next())
 			{
 				set[0] = String.valueOf(rs.getInt("charId"));
 				set[1] = rs.getString("char_name");
 			}
-			
+
 			rs.close();
 			st.close();
 			con.close();
@@ -331,20 +331,20 @@ public class Hitman
 		{
 			_log.warning("Hitman: " + e);
 		}
-		
+
 		return set;
 	}
-	
+
 	public boolean exists(int objId)
 	{
 		return _targets.containsKey(objId);
 	}
-	
+
 	public PlayerToAssasinate getTarget(int objId)
 	{
 		return _targets.get(objId);
 	}
-	
+
 	/**
 	 * @return the _targets
 	 */
@@ -352,7 +352,7 @@ public class Hitman
 	{
 		return _targets;
 	}
-	
+
 	/**
 	 * @param targets
 	 *        the _targets to set

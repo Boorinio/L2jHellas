@@ -1,0 +1,32 @@
+1. PvP System:
+	- Added other method for pvp counting. Its secured by time limiter, and basic protections like same IP, clan etc. 
+	  This Time Limiter allow kill player every part of time (default 24h). 
+	  If killer kill victim and time is OK, so then I call it "Legal Kill", if killer kill again victim, 
+	  PvP count rise but not Legall Kill (Time Protection). All informations are stored in DB. 
+	  This "Time Protection" should reduce farming.
+	  (More: if we set min pvp lvl on 76+ so then it will be hard to farm on bots, anyway protection should
+	  reduce farm on low rate servers. If we set max player kills on: 1, it lock Legal Kills counter after 1 kill, 
+	  it's mean killer can kill victim only once in game, option can be useful on servers with high online).
+
+	- System works in every place, but is possible to deactivate it in specific areas like: PEACEFUL ZONE.
+
+2. Rank System:
+	- Based on PvP System, it's mean, killer can earn exp for kill player, then he rise his rank too if earn 100%. 
+	  (exp is based on current Rank Points [RP]).
+	- Default 42 ranks.
+	- Reward for rise up the Rank can be awarded for each level of Rank Points. 
+	  (List of rewards and minimum rank points for obtain reward in database).
+	- Included images for ranks and exp bar (loaded from server side).
+
+3. Reward System:
+	- Based on PvP System, and each killer rewarded only for Legal Kill. 
+	  There is 2 reward types: for Legal Kill player, and for Legal Kill player with Rank
+	  (Players with higher ranks can give other rewards or more rewards or both of this option).
+	- Each reward types are totally configurable.
+
+4. DeathManager:
+	- Is allowed to enable Death Manager, it's mean additional buttons in Death PvP Status Window showing details of killer like 
+	  (CP, HP, MP, equipment (enchant) only for kill moment).
+
+5. War Counter:
+	- Count kills if target is in War Clan. Legal kills rulez are used. 

@@ -36,21 +36,13 @@ import com.l2jhellas.gameserver.util.Broadcast;
 public class BlessedSpiritShot implements IItemHandler
 {
 	// all the items ids that this handler knowns
-	private static final int[] ITEM_IDS =
-	{
+	private static final int[] ITEM_IDS = {
 	3947, 3948, 3949, 3950, 3951, 3952
 	};
-	private static final int[] SKILL_IDS =
-	{
+	private static final int[] SKILL_IDS = {
 	2061, 2160, 2161, 2162, 2163, 2164
 	};
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.handler.IItemHandler#useItem(com.l2jhellas.
-	 * gameserver.model.L2PcInstance,
-	 * com.l2jhellas.gameserver.model.L2ItemInstance)
-	 */
 	@Override
 	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{

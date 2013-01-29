@@ -26,8 +26,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ShowXMasSeal;
  */
 public class SpecialXMas implements IItemHandler
 {
-	private static int[] _itemIds =
-	{
+	private static int[] _itemIds = {
 		5555
 	};
 
@@ -53,9 +52,6 @@ public class SpecialXMas implements IItemHandler
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.handler.IItemHandler#getItemIds()
-	 */
 	@Override
 	public int[] getItemIds()
 	{

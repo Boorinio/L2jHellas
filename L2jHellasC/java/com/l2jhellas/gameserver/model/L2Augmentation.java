@@ -32,7 +32,7 @@ import com.l2jhellas.gameserver.skills.funcs.LambdaConst;
 /**
  * Used to store an augmentation and its boni
  *
- * @author  durgus
+ * @author durgus
  */
 public final class L2Augmentation
 {
@@ -51,16 +51,14 @@ public final class L2Augmentation
 		_skill = skill;
 
 		// write to DB if save is true
-		if (save) saveAugmentationData();
+		if (save)
+			saveAugmentationData();
 	}
 
 	public L2Augmentation(L2ItemInstance item, int effects, int skill, int skillLevel, boolean save)
 	{
 		this(item, effects, SkillTable.getInstance().getInfo(skill, skillLevel), save);
 	}
-
-	// =========================================================
-	// Nested Class
 
 	public class augmentationStatBoni
 	{
@@ -71,12 +69,12 @@ public final class L2Augmentation
 		public augmentationStatBoni(int augmentationId)
 		{
 			_active = false;
-			FastList <AugmentationData.AugStat> as = AugmentationData.getInstance().getAugStatsById(augmentationId);
+			FastList<AugmentationData.AugStat> as = AugmentationData.getInstance().getAugStatsById(augmentationId);
 
 			_stats = new Stats[as.size()];
 			_values = new float[as.size()];
 
-			int i=0;
+			int i = 0;
 			for (AugmentationData.AugStat aStat : as)
 			{
 				_stats[i] = aStat.getStat();
@@ -88,10 +86,11 @@ public final class L2Augmentation
 		public void applyBoni(L2PcInstance player)
 		{
 			// make sure the boni are not applyed twice..
-			if (_active) return;
+			if (_active)
+				return;
 
-			for (int i=0; i < _stats.length; i++)
-				((L2Character)player).addStatFunc(new FuncAdd(_stats[i], 0x40, this, new LambdaConst(_values[i])));
+			for (int i = 0; i < _stats.length; i++)
+				((L2Character) player).addStatFunc(new FuncAdd(_stats[i], 0x40, this, new LambdaConst(_values[i])));
 
 			_active = true;
 		}
@@ -99,9 +98,10 @@ public final class L2Augmentation
 		public void removeBoni(L2PcInstance player)
 		{
 			// make sure the boni is not removed twice
-			if (!_active) return;
+			if (!_active)
+				return;
 
-			((L2Character)player).removeStatsOwner(this);
+			((L2Character) player).removeStatsOwner(this);
 
 			_active = false;
 		}
@@ -121,7 +121,8 @@ public final class L2Augmentation
 			{
 				statement.setInt(3, _skill.getId());
 				statement.setInt(4, _skill.getLevel());
-			} else
+			}
+			else
 			{
 				statement.setInt(3, 0);
 				statement.setInt(4, 0);
@@ -129,16 +130,27 @@ public final class L2Augmentation
 
 			statement.executeUpdate();
 			statement.close();
-		} catch (Exception e) {
-			_log.log(Level.SEVERE, "Could not save augmentation for item: "+_item.getObjectId()+" from DB:", e);
-		} finally {
-			try { con.close(); } catch (Exception e) {}
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.SEVERE, "Could not save augmentation for item: " + _item.getObjectId() + " from DB:", e);
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 
 	public void deleteAugmentationData()
 	{
-		if (!_item.isAugmented()) return;
+		if (!_item.isAugmented())
+			return;
 
 		// delete the augmentation from the database
 		Connection con = null;
@@ -149,15 +161,26 @@ public final class L2Augmentation
 			statement.setInt(1, _item.getObjectId());
 			statement.executeUpdate();
 			statement.close();
-		} catch (Exception e) {
-			_log.log(Level.SEVERE, "Could not delete augmentation for item: "+_item.getObjectId()+" from DB:", e);
-		} finally {
-			try { con.close(); } catch (Exception e) {}
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.SEVERE, "Could not delete augmentation for item: " + _item.getObjectId() + " from DB:", e);
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 
 	/**
 	 * Get the augmentation "id" used in serverpackets.
+	 *
 	 * @return augmentationId
 	 */
 	public int getAugmentationId()
@@ -172,40 +195,42 @@ public final class L2Augmentation
 
 	/**
 	 * Applys the boni to the player.
+	 *
 	 * @param player
 	 */
 	public void applyBoni(L2PcInstance player)
 	{
 		_boni.applyBoni(player);
-	
+
 		// add the skill if any
 		if (_skill != null)
 		{
 			player.addSkill(_skill);
 			player.sendSkillList();
-            
-			// Iterate through all effects currently on the character. 
-             for (L2Effect currenteffect : player.getAllEffects()) 
-             { 
-                     L2Skill effectSkill = currenteffect.getSkill(); 
 
-                     if (effectSkill.getId() == _skill.getId()) 
-                     { 
-                             player.sendMessage("You feel the power of "+effectSkill.getName()+" leaving yourself."); 
-                             currenteffect.exit(); 
-                     } 
-             } 
+			// Iterate through all effects currently on the character.
+			for (L2Effect currenteffect : player.getAllEffects())
+			{
+				L2Skill effectSkill = currenteffect.getSkill();
+
+				if (effectSkill.getId() == _skill.getId())
+				{
+					player.sendMessage("You feel the power of " + effectSkill.getName() + " leaving yourself.");
+					currenteffect.exit();
+				}
+			}
 		}
 	}
-	
+
 	/**
 	 * Removes the augmentation boni from the player.
+	 *
 	 * @param player
 	 */
 	public void removeBoni(L2PcInstance player)
 	{
 		_boni.removeBoni(player);
-		
+
 		// remove the skill if any
 		if (_skill != null)
 		{

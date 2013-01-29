@@ -29,140 +29,157 @@ import com.l2jhellas.gameserver.util.Util;
 
 public class CharKnownList extends ObjectKnownList
 {
-    // =========================================================
-    // Data Field
-    private Map<Integer, L2PcInstance> _knownPlayers;
-    private Map<Integer, Integer> _knownRelations;
+	private Map<Integer, L2PcInstance> _knownPlayers;
+	private Map<Integer, Integer> _knownRelations;
 
-    // =========================================================
-    // Constructor
-    public CharKnownList(L2Character activeChar)
-    {
-        super(activeChar);
-    }
+	public CharKnownList(L2Character activeChar)
+	{
+		super(activeChar);
+	}
 
-    // =========================================================
-    // Method - Public
-    @Override
-	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
-    @Override
+	@Override
+	public boolean addKnownObject(L2Object object)
+	{
+		return addKnownObject(object, null);
+	}
+
+	@Override
 	public boolean addKnownObject(L2Object object, L2Character dropper)
-    {
-        if (!super.addKnownObject(object, dropper)) return false;
-        if (object instanceof L2PcInstance) {
-        	getKnownPlayers().put(object.getObjectId(), (L2PcInstance)object);
-        	getKnownRelations().put(object.getObjectId(), -1);
-        }
-        return true;
-    }
+	{
+		if (!super.addKnownObject(object, dropper))
+			return false;
+		if (object instanceof L2PcInstance)
+		{
+			getKnownPlayers().put(object.getObjectId(), (L2PcInstance) object);
+			getKnownRelations().put(object.getObjectId(), -1);
+		}
+		return true;
+	}
 
-    /**
-     * Return True if the L2PcInstance is in _knownPlayer of the L2Character.<BR><BR>
-     * @param player The L2PcInstance to search in _knownPlayer
-     */
-    public final boolean knowsThePlayer(L2PcInstance player) { return getActiveChar() == player || getKnownPlayers().containsKey(player.getObjectId()); }
+	/**
+	 * Return True if the L2PcInstance is in _knownPlayer of the L2Character.<BR>
+	 * <BR>
+	 *
+	 * @param player
+	 *        The L2PcInstance to search in _knownPlayer
+	 */
+	public final boolean knowsThePlayer(L2PcInstance player)
+	{
+		return getActiveChar() == player || getKnownPlayers().containsKey(player.getObjectId());
+	}
 
-    /** Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI. */
-    @Override
+	/** Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI. */
+	@Override
 	public final void removeAllKnownObjects()
-    {
-        super.removeAllKnownObjects();
-        getKnownPlayers().clear();
-        getKnownRelations().clear();
+	{
+		super.removeAllKnownObjects();
+		getKnownPlayers().clear();
+		getKnownRelations().clear();
 
-        // Set _target of the L2Character to null
-        // Cancel Attack or Cast
-        getActiveChar().setTarget(null);
+		// Set _target of the L2Character to null
+		// Cancel Attack or Cast
+		getActiveChar().setTarget(null);
 
-        // Cancel AI Task
-        if (getActiveChar().hasAI()) getActiveChar().setAI(null);
-    }
+		// Cancel AI Task
+		if (getActiveChar().hasAI())
+			getActiveChar().setAI(null);
+	}
 
-    @Override
+	@Override
 	public boolean removeKnownObject(L2Object object)
-    {
-        if (!super.removeKnownObject(object)) return false;
-        if (object instanceof L2PcInstance) {
-        	getKnownPlayers().remove(object.getObjectId());
-        	getKnownRelations().remove(object.getObjectId());
-        }
-        // If object is targeted by the L2Character, cancel Attack or Cast
-        if (object == getActiveChar().getTarget()) getActiveChar().setTarget(null);
+	{
+		if (!super.removeKnownObject(object))
+			return false;
+		if (object instanceof L2PcInstance)
+		{
+			getKnownPlayers().remove(object.getObjectId());
+			getKnownRelations().remove(object.getObjectId());
+		}
+		// If object is targeted by the L2Character, cancel Attack or Cast
+		if (object == getActiveChar().getTarget())
+			getActiveChar().setTarget(null);
 
-        return true;
-    }
+		return true;
+	}
 
-    // =========================================================
-    // Method - Private
+	public L2Character getActiveChar()
+	{
+		return (L2Character) super.getActiveObject();
+	}
 
-    // =========================================================
-    // Property - Public
-    public L2Character getActiveChar() { return (L2Character)super.getActiveObject(); }
+	@Override
+	public int getDistanceToForgetObject(L2Object object)
+	{
+		return 0;
+	}
 
-    @Override
-	public int getDistanceToForgetObject(L2Object object) { return 0; }
+	@Override
+	public int getDistanceToWatchObject(L2Object object)
+	{
+		return 0;
+	}
 
-    @Override
-	public int getDistanceToWatchObject(L2Object object) { return 0; }
+	public Collection<L2Character> getKnownCharacters()
+	{
+		FastList<L2Character> result = new FastList<L2Character>();
 
-    public Collection<L2Character> getKnownCharacters()
-    {
-        FastList<L2Character> result = new FastList<L2Character>();
+		for (L2Object obj : getKnownObjects().values())
+		{
+			if (obj != null && obj instanceof L2Character)
+				result.add((L2Character) obj);
+		}
 
-        for (L2Object obj : getKnownObjects().values())
-        {
-            if (obj != null && obj instanceof L2Character) result.add((L2Character) obj);
-        }
+		return result;
+	}
 
-        return result;
-    }
+	public Collection<L2Character> getKnownCharactersInRadius(long radius)
+	{
+		FastList<L2Character> result = new FastList<L2Character>();
 
-    public Collection<L2Character> getKnownCharactersInRadius(long radius)
-    {
-       FastList<L2Character> result = new FastList<L2Character>();
+		for (L2Object obj : getKnownObjects().values())
+		{
+			if (obj instanceof L2PcInstance)
+			{
+				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
+					result.add((L2PcInstance) obj);
+			}
+			else if (obj instanceof L2MonsterInstance)
+			{
+				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
+					result.add((L2MonsterInstance) obj);
+			}
+			else if (obj instanceof L2NpcInstance)
+			{
+				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
+					result.add((L2NpcInstance) obj);
+			}
+		}
 
-       for (L2Object obj : getKnownObjects().values())
-       {
-           if (obj instanceof L2PcInstance)
-           {
-               if (Util.checkIfInRange((int)radius, getActiveChar(), obj, true))
-                   result.add((L2PcInstance)obj);
-           }
-           else if (obj instanceof L2MonsterInstance)
-           {
-               if (Util.checkIfInRange((int)radius, getActiveChar(), obj, true))
-                   result.add((L2MonsterInstance)obj);
-           }
-           else if (obj instanceof L2NpcInstance)
-           {
-               if (Util.checkIfInRange((int)radius, getActiveChar(), obj, true))
-                   result.add((L2NpcInstance)obj);
-           }
-       }
+		return result;
+	}
 
-       return result;
-    }
+	public final Map<Integer, L2PcInstance> getKnownPlayers()
+	{
+		if (_knownPlayers == null)
+			_knownPlayers = new FastMap<Integer, L2PcInstance>().setShared(true);
+		return _knownPlayers;
+	}
 
-    public final Map<Integer, L2PcInstance> getKnownPlayers()
-    {
-        if (_knownPlayers == null) _knownPlayers = new FastMap<Integer, L2PcInstance>().setShared(true);
-        return _knownPlayers;
-    }
+	public final Map<Integer, Integer> getKnownRelations()
+	{
+		if (_knownRelations == null)
+			_knownRelations = new FastMap<Integer, Integer>().setShared(true);
+		return _knownRelations;
+	}
 
-    public final Map<Integer, Integer> getKnownRelations()
-    {
-        if (_knownRelations == null) _knownRelations = new FastMap<Integer, Integer>().setShared(true);
-        return _knownRelations;
-    }
+	public final Collection<L2PcInstance> getKnownPlayersInRadius(long radius)
+	{
+		FastList<L2PcInstance> result = new FastList<L2PcInstance>();
 
-    public final Collection<L2PcInstance> getKnownPlayersInRadius(long radius)
-    {
-        FastList<L2PcInstance> result = new FastList<L2PcInstance>();
+		for (L2PcInstance player : getKnownPlayers().values())
+			if (Util.checkIfInRange((int) radius, getActiveChar(), player, true))
+				result.add(player);
 
-        for (L2PcInstance player : getKnownPlayers().values())
-            if (Util.checkIfInRange((int)radius, getActiveChar(), player, true))
-                result.add(player);
-
-        return result;
-    }
+		return result;
+	}
 }

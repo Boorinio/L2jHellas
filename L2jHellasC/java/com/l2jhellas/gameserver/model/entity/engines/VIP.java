@@ -44,13 +44,16 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
 /**
- * @author  CubicVirtuoso - William McMahon
+ * @author CubicVirtuoso - William McMahon
  */
 public class VIP
 {
 	private final static Log _log = LogFactory.getLog(VIP.class.getName());
 	public static String _teamName = "", _joinArea = "", _theVIPName = "";
-	public static int _time	= 0, _winners = 0, _minPlayers = Config.VIP_MIN_PARTICIPANTS, _vipReward = 0, _vipRewardAmount = 0, _notVipReward = 0, _notVipRewardAmount = 0, _theVipReward = 0, _theVipRewardAmount = 0, _endNPC = 0, _joinNPC = 0, _delay = 0, _endX = 0, _endY = 0, _endZ = 0, _startX = 0, _startY = 0, _startZ = 0, _joinX = 0, _joinY = 0, _joinZ = 0, _team = 0;
+	public static int _time = 0, _winners = 0, _minPlayers = Config.VIP_MIN_PARTICIPANTS, _vipReward = 0,
+			_vipRewardAmount = 0, _notVipReward = 0, _notVipRewardAmount = 0, _theVipReward = 0,
+			_theVipRewardAmount = 0, _endNPC = 0, _joinNPC = 0, _delay = 0, _endX = 0, _endY = 0, _endZ = 0,
+			_startX = 0, _startY = 0, _startZ = 0, _joinX = 0, _joinY = 0, _joinZ = 0, _team = 0;
 
 	// Human = 1
 	// Elf = 2
@@ -63,7 +66,8 @@ public class VIP
 	public static L2Spawn _endSpawn, _joinSpawn;
 
 	public static Vector<String> _savePlayers = new Vector<String>();
-	public static Vector<L2PcInstance> _playersVIP = new Vector<L2PcInstance>(), _playersNotVIP = new Vector<L2PcInstance>();
+	public static Vector<L2PcInstance> _playersVIP = new Vector<L2PcInstance>(),
+			_playersNotVIP = new Vector<L2PcInstance>();
 
 	public static void setTeam(String team, L2PcInstance activeChar)
 	{
@@ -142,32 +146,32 @@ public class VIP
 
 		switch (random)
 		{
-		case 1:
-			_team = 1;
-			_teamName = "Human";
-			setLoc();
+			case 1:
+				_team = 1;
+				_teamName = "Human";
+				setLoc();
 			break;
-		case 2:
-			_team = 2;
-			_teamName = "Elf";
-			setLoc();
+			case 2:
+				_team = 2;
+				_teamName = "Elf";
+				setLoc();
 			break;
-		case 3:
-			_team = 3;
-			_teamName = "Dark";
-			setLoc();
+			case 3:
+				_team = 3;
+				_teamName = "Dark";
+				setLoc();
 			break;
-		case 4:
-			_team = 4;
-			_teamName = "Orc";
-			setLoc();
+			case 4:
+				_team = 4;
+				_teamName = "Orc";
+				setLoc();
 			break;
-		case 5:
-			_team = 5;
-			_teamName = "Dwarf";
-			setLoc();
+			case 5:
+				_team = 5;
+				_teamName = "Dwarf";
+				setLoc();
 			break;
-		default:
+			default:
 			break;
 		}
 	}
@@ -181,22 +185,32 @@ public class VIP
 
 		switch (random)
 		{
-		case 1:
-			_team = 1; _teamName = "Human"; setLoc();
+			case 1:
+				_team = 1;
+				_teamName = "Human";
+				setLoc();
 			break;
-		case 2:
-			_team = 2; _teamName = "Elf"; setLoc();
+			case 2:
+				_team = 2;
+				_teamName = "Elf";
+				setLoc();
 			break;
-		case 3:
-			_team = 3; _teamName = "Dark"; setLoc();
+			case 3:
+				_team = 3;
+				_teamName = "Dark";
+				setLoc();
 			break;
-		case 4:
-			_team = 4; _teamName = "Orc"; setLoc();
+			case 4:
+				_team = 4;
+				_teamName = "Orc";
+				setLoc();
 			break;
-		case 5:
-			_team = 5; _teamName = "Dwarf"; setLoc();
+			case 5:
+				_team = 5;
+				_teamName = "Dwarf";
+				setLoc();
 			break;
-		default:
+			default:
 			break;
 		}
 	}
@@ -427,7 +441,7 @@ public class VIP
 			return "";
 
 		L2Item itemtmp = ItemTable.getInstance().getTemplate(id);
-		if(itemtmp == null)
+		if (itemtmp == null)
 		{
 			activeChar.sendMessage("VIP Engine[joinNPC(" + activeChar.getName() + ")]: exception: wrong item Id");
 			return "";
@@ -442,7 +456,7 @@ public class VIP
 			return "";
 
 		L2Item itemtmp = ItemTable.getInstance().getTemplate(id);
-		if(itemtmp == null)
+		if (itemtmp == null)
 			return "";
 
 		return itemtmp.getName();
@@ -457,9 +471,7 @@ public class VIP
 
 	public static void startJoin(L2PcInstance activeChar)
 	{
-		if (_teamName.isEmpty() || _joinArea.isEmpty() || _time == 0 || _vipReward == 0 || _vipRewardAmount == 0 || _notVipReward == 0 || 
-				_theVipReward == 0 || _theVipRewardAmount == 0 || _endNPC == 0 || _joinNPC == 0 || _delay == 0 || _endX == 0 || _endY == 0 || _endZ == 0 || 
-				_startX == 0 || _startY == 0 || _startZ == 0 || _joinX == 0 || _joinY == 0 || _joinZ == 0 || _team == 0)
+		if (_teamName.isEmpty() || _joinArea.isEmpty() || _time == 0 || _vipReward == 0 || _vipRewardAmount == 0 || _notVipReward == 0 || _theVipReward == 0 || _theVipRewardAmount == 0 || _endNPC == 0 || _joinNPC == 0 || _delay == 0 || _endX == 0 || _endY == 0 || _endZ == 0 || _startX == 0 || _startY == 0 || _startZ == 0 || _joinX == 0 || _joinY == 0 || _joinZ == 0 || _team == 0)
 		{
 			activeChar.sendMessage("Cannot initiate join status of event, not all the values are filled in");
 			return;
@@ -488,6 +500,7 @@ public class VIP
 
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				_joining = false;
@@ -499,10 +512,7 @@ public class VIP
 
 	public static void startAutoJoin()
 	{
-		if (_teamName.isEmpty() || _joinArea.isEmpty() || _time == 0 || _vipReward == 0 || _vipRewardAmount == 0 || _notVipReward == 0 || 
-				_notVipRewardAmount == 0 || _theVipReward == 0 || _theVipRewardAmount == 0 ||
-				_endNPC == 0 || _joinNPC == 0 || _delay == 0 || _endX == 0 || _endY == 0 || _endZ == 0 ||
-				_startX == 0 || _startY == 0 || _startZ == 0 || _joinX == 0 || _joinY == 0 || _joinZ == 0 || _team == 0 )
+		if (_teamName.isEmpty() || _joinArea.isEmpty() || _time == 0 || _vipReward == 0 || _vipRewardAmount == 0 || _notVipReward == 0 || _notVipRewardAmount == 0 || _theVipReward == 0 || _theVipRewardAmount == 0 || _endNPC == 0 || _joinNPC == 0 || _delay == 0 || _endX == 0 || _endY == 0 || _endZ == 0 || _startX == 0 || _startY == 0 || _startZ == 0 || _joinX == 0 || _joinY == 0 || _joinZ == 0 || _team == 0)
 		{
 			_log.error("VIP Engine : Cannot initiate join status of event, not all the values are filled in");
 			return;
@@ -522,7 +532,7 @@ public class VIP
 
 		_joining = true;
 		Announcements.getInstance().gameAnnounceToAll("Attention all players. An event is about to start!");
-		Announcements.getInstance().gameAnnounceToAll("At this time you are able to join a VIP event which will start in " + _delay/1000/60 + " mins.");
+		Announcements.getInstance().gameAnnounceToAll("At this time you are able to join a VIP event which will start in " + _delay / 1000 / 60 + " mins.");
 		Announcements.getInstance().gameAnnounceToAll("In this event the " + _teamName + " characters must safely escort a certain player from one location to their starter town");
 		Announcements.getInstance().gameAnnounceToAll("Players will automatically be assigned to their respective teams");
 		Announcements.getInstance().gameAnnounceToAll("Please find " + getNPCName(VIP._joinNPC) + " located in " + _joinArea + " to sign up.");
@@ -531,6 +541,7 @@ public class VIP
 
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				_joining = false;
@@ -558,6 +569,7 @@ public class VIP
 
 			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					teleportPlayers();
@@ -569,14 +581,16 @@ public class VIP
 
 					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 					{
+						@Override
 						public void run()
 						{
 							Announcements.getInstance().gameAnnounceToAll("VIP event has started. " + _teamName + "'s VIP must get to the starter city and talk with " + getNPCName(_endNPC, null) + ". The opposing team must kill the VIP. All players except the VIP will respawn at their current locations.");
-							Announcements.getInstance().gameAnnounceToAll("VIP event will end if the " + _teamName + " team makes it to their town or when " + _time/1000/60 + " mins have elapsed.");
+							Announcements.getInstance().gameAnnounceToAll("VIP event will end if the " + _teamName + " team makes it to their town or when " + _time / 1000 / 60 + " mins have elapsed.");
 							VIP.sit();
 
 							ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 							{
+								@Override
 								public void run()
 								{
 									endEventTime();
@@ -614,8 +628,7 @@ public class VIP
 
 		_started = false;
 		unspawnEventNpcs();
-		Announcements.getInstance().gameAnnounceToAll(
-				"The time has run out and the " + _teamName + "'s have not made it to their goal. Everybody on the opposing team wins.");
+		Announcements.getInstance().gameAnnounceToAll("The time has run out and the " + _teamName + "'s have not made it to their goal. Everybody on the opposing team wins.");
 		rewardNotVIP();
 		teleportFinish();
 	}
@@ -654,8 +667,7 @@ public class VIP
 			{
 				replyMSG.append("You have made it to the end. All you have to do is hit the finish button to reward yourself and your team. Congrats!<br>");
 				replyMSG.append("<center>");
-				replyMSG.append("<button value=\"Finish\" action=\"bypass -h npc_" + objectId
-						+ "_vip_finishVIP\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
+				replyMSG.append("<button value=\"Finish\" action=\"bypass -h npc_" + objectId + "_vip_finishVIP\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
 				replyMSG.append("</center>");
 			}
 			else
@@ -760,6 +772,7 @@ public class VIP
 
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
+			@Override
 			public void run()
 			{
 				for (L2PcInstance player : _playersVIP)
@@ -1087,22 +1100,22 @@ public class VIP
 				{
 					if (p == null)
 						continue;
-					//check by name incase player got new objectId
+					// check by name incase player got new objectId
 					else if (p.getName().equals(player.getName()))
 					{
 						player._isVIP = true;
 						player._originalNameColourVIP = player.getAppearance().getNameColor();
 						player._originalKarmaVIP = player.getKarma();
 						player._inEventVIP = true;
-						_playersVIP.remove(p); //removing old object id from vector
-						_playersVIP.add(player); //adding new objectId to vector
-						if(_theVIPName.equals(player.getName()))
+						_playersVIP.remove(p); // removing old object id from vector
+						_playersVIP.add(player); // adding new objectId to vector
+						if (_theVIPName.equals(player.getName()))
 						{
-							player.getAppearance().setNameColor(255,255,0);
+							player.getAppearance().setNameColor(255, 255, 0);
 							player._isTheVIP = true;
 						}
 						else
-							player.getAppearance().setNameColor(255,0,0);
+							player.getAppearance().setNameColor(255, 0, 0);
 						player.setKarma(0);
 						player.broadcastUserInfo();
 						player.teleToLocation(_startX, _startY, _startZ);
@@ -1114,16 +1127,16 @@ public class VIP
 				{
 					if (p == null)
 						continue;
-					//check by name incase player got new objectId
+					// check by name incase player got new objectId
 					else if (p.getName().equals(player.getName()))
 					{
 						player._isNotVIP = true;
 						player._originalNameColourVIP = player.getAppearance().getNameColor();
 						player._originalKarmaVIP = player.getKarma();
 						player._inEventVIP = true;
-						_playersNotVIP.remove(p); //removing old object id from vector
-						_playersNotVIP.add(player); //adding new objectId to vector
-						player.getAppearance().setNameColor(0,255,0);
+						_playersNotVIP.remove(p); // removing old object id from vector
+						_playersNotVIP.add(player); // adding new objectId to vector
+						player.getAppearance().setNameColor(0, 255, 0);
 						player.setKarma(0);
 						player.broadcastUserInfo();
 						player.teleToLocation(_endX, _endY, _endZ);

@@ -35,14 +35,6 @@ public class TopBBSManager extends BaseBBSManager
 	private TopBBSManager()
 	{
 	}
-	
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see com.l2jhellas.gameserver.communitybbs.Manager.BaseBBSManager#parsecmd
-	 *      (java.lang.String,
-	 *      com.l2jhellas.gameserver.model.actor.instance.L2PcInstance)
-	 */
 
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
@@ -50,7 +42,7 @@ public class TopBBSManager extends BaseBBSManager
 		String path = "data/html/CommunityBoard/";
 		String filepath = "";
 		String content = "";
-		
+
 		if (command.equals("_bbstop") | command.equals("_bbshome"))
 		{
 			filepath = path + "index.htm";
@@ -64,7 +56,7 @@ public class TopBBSManager extends BaseBBSManager
 			String file = st.nextToken();
 			filepath = path + file + ".htm";
 			File filecom = new File(filepath);
-			
+
 			if (!(filecom.exists()))
 			{
 				content = "<html><body><br><br><center>The command " + command + " points to file(" + filepath + ") that NOT exists.</center></body></html>";
@@ -72,10 +64,10 @@ public class TopBBSManager extends BaseBBSManager
 				return;
 			}
 			content = HtmCache.getInstance().getHtm(filepath);
-			
+
 			if (content.isEmpty())
 				content = "<html><body><br><br><center>Content Empty: The command " + command + " points to an invalid or empty html file(" + filepath + ").</center></body></html>";
-			
+
 			switch (file)
 			{
 				case "toppvp":
@@ -121,7 +113,7 @@ public class TopBBSManager extends BaseBBSManager
 				break;
 				default:
 				break;
-			
+
 			}
 			if (file.startsWith("clan"))
 			{
@@ -149,15 +141,7 @@ public class TopBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.communitybbs.Manager.BaseBBSManager#parsewrite
-	 * (java.lang.String, java.lang.String, java.lang.String, java.lang.String,
-	 * java.lang.String,
-	 * com.l2jhellas.gameserver.model.actor.instance.L2PcInstance)
-	 */
+
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
@@ -173,7 +157,7 @@ public class TopBBSManager extends BaseBBSManager
 	{
 		return _instance;
 	}
-	
+
 	public String getServerRunTime()
 	{
 		int timeSeconds = (GameTimeController.getGameTicks() - 36000) / 10;
@@ -184,7 +168,7 @@ public class TopBBSManager extends BaseBBSManager
 			timeResult = Integer.toString(timeSeconds / 3600) + " Hours " + Integer.toString((timeSeconds % 3600) / 60) + " mins";
 		return timeResult;
 	}
-	
+
 	public String getRealOnline()
 	{
 		int counter = 0;

@@ -39,15 +39,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 public class RegionBBSManager extends BaseBBSManager
 {
 	private static Logger _logChat = Logger.getLogger("chat");
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.communitybbs.Manager.BaseBBSManager#parsecmd
-	 * (java.lang.String,
-	 * com.l2jhellas.gameserver.model.actor.instance.L2PcInstance)
-	 */
-	
+
 	private RegionBBSManager()
 	{
 	}
@@ -127,7 +119,7 @@ public class RegionBBSManager extends BaseBBSManager
 			htmlCode.append("<table border=0><tr><td>" + player.getName() + " (" + sex + " " + player.getTemplate().className + "):</td></tr>");
 			htmlCode.append("<tr><td>Level: " + levelApprox + "</td></tr>");
 			htmlCode.append("<tr><td><br></td></tr>");
-			
+
 			if (activeChar != null && (activeChar.isGM() || player.getObjectId() == activeChar.getObjectId() || Config.SHOW_LEVEL_COMMUNITYBOARD))
 			{
 				long nextLevelExp = 0;
@@ -137,27 +129,27 @@ public class RegionBBSManager extends BaseBBSManager
 					nextLevelExp = Experience.LEVEL[player.getLevel() + 1];
 					nextLevelExpNeeded = nextLevelExp - player.getExp();
 				}
-				
+
 				htmlCode.append("<tr><td>Level: " + player.getLevel() + "</td></tr>");
 				htmlCode.append("<tr><td>Experience: " + player.getExp() + "/" + nextLevelExp + "</td></tr>");
 				htmlCode.append("<tr><td>Experience needed for level up: " + nextLevelExpNeeded + "</td></tr>");
 				htmlCode.append("<tr><td><br></td></tr>");
 			}
-			
+
 			int uptime = (int) player.getUptime() / 1000;
 			int h = uptime / 3600;
 			int m = (uptime - (h * 3600)) / 60;
 			int s = ((uptime - (h * 3600)) - (m * 60));
-			
+
 			htmlCode.append("<tr><td>Uptime: " + h + "h " + m + "m " + s + "s</td></tr>");
 			htmlCode.append("<tr><td><br></td></tr>");
-			
+
 			if (player.getClan() != null)
 			{
 				htmlCode.append("<tr><td>Clan: " + player.getClan().getName() + "</td></tr>");
 				htmlCode.append("<tr><td><br></td></tr>");
 			}
-			
+
 			htmlCode.append("<tr><td><multiedit var=\"pm\" width=240 height=40><button value=\"Send PM\" action=\"Write Region PM " + player.getName() + " pm pm pm\" width=110 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr><tr><td><br><button value=\"Back\" action=\"bypass _bbsloc\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr></table>");
 			htmlCode.append("</td></tr></table>");
 			htmlCode.append("</body></html>");
@@ -179,15 +171,7 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 		separateAndSend(getCommunityPage(page, activeChar.isGM() ? "gm" : "pl"), activeChar);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.l2jhellas.gameserver.communitybbs.Manager.BaseBBSManager#parsewrite
-	 * (java.lang.String, java.lang.String, java.lang.String, java.lang.String,
-	 * java.lang.String,
-	 * com.l2jhellas.gameserver.model.actor.instance.L2PcInstance)
-	 */
+
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
@@ -198,10 +182,10 @@ public class RegionBBSManager extends BaseBBSManager
 		{
 			TextBuilder htmlCode = new TextBuilder("<html><body><br>");
 			htmlCode.append("<table border=0><tr><td FIXWIDTH=15></td><td align=center>L2JHellas Community Board<img src=\"sek.cbui355\" width=610 height=1></td></tr><tr><td FIXWIDTH=15></td><td>");
-			
+
 			try
 			{
-				
+
 				L2PcInstance receiver = L2World.getInstance().getPlayer(ar2);
 				if (receiver == null)
 				{
@@ -225,19 +209,18 @@ public class RegionBBSManager extends BaseBBSManager
 					activeChar.sendMessage("You can not chat while in jail.");
 					return;
 				}
-				
+
 				if (receiver.isAway())
 				{
 					activeChar.sendMessage(receiver.getName() + " is Away please try again later.");
 					return;
 				}
-				
+
 				if (Config.LOG_CHAT)
 				{
 					LogRecord record = new LogRecord(Level.INFO, ar3);
 					record.setLoggerName("chat");
-					record.setParameters(new Object[]
-					{
+					record.setParameters(new Object[] {
 					"TELL", "[" + activeChar.getName() + " to " + receiver.getName() + "]"
 					});
 					_logChat.log(record);
@@ -381,35 +364,35 @@ public class RegionBBSManager extends BaseBBSManager
 			String trClose = "</tr>";
 			String trOpen = "<tr>";
 			String colSpacer = "<td FIXWIDTH=15></td>";
-			
+
 			htmlCode.append("<table>");
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.dateTimeServerStarted.getTime() + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append("</table>");
-			
+
 			htmlCode.append("<table>");
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append(tdOpen + "XP Rate: x" + Config.RATE_XP + tdClose);
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "Party XP Rate: x" + Config.RATE_XP * Config.RATE_PARTY_XP + tdClose);
-			
+
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "XP Exponent: " + Config.ALT_GAME_EXPONENT_XP + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append(tdOpen + "SP Rate: x" + Config.RATE_SP + tdClose);
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "Party SP Rate: x" + Config.RATE_SP * Config.RATE_PARTY_SP + tdClose);
-			
+
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "SP Exponent: " + Config.ALT_GAME_EXPONENT_SP + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append(tdOpen + "Drop Rate: " + Config.RATE_DROP_ITEMS + tdClose);
 			htmlCode.append(colSpacer);
@@ -417,37 +400,37 @@ public class RegionBBSManager extends BaseBBSManager
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "Adena Rate: " + Config.RATE_DROP_ADENA + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append("</table>");
-			
+
 			htmlCode.append("<table>");
 			htmlCode.append(trOpen);
 			htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append(tdOpen + L2World.getInstance().getAllVisibleObjectsCount() + " Object count</td>");
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append("<td>" + getOnlineCount("gm") + " Player(s) Online</td>");
 			htmlCode.append("<td>Color legend: <font color=\"ffe400\">GM</font>, <font color=\"f9f8a3\">Hero</font>, <font color=\"a3f6f9\">Nooble</font>, <font color=\"ff0000\">Karma</font>, <font color=\"ffba00\">OffTrade</font></td>");
 			htmlCode.append(trClose);
 			htmlCode.append("</table>");
-			
+
 			htmlCode.append("<table border=0>");
 			htmlCode.append("<tr><td><table border=0>");
-			
+
 			int cell = 0;
 			for (L2PcInstance player : getOnlinePlayers(page))
 			{
 				cell++;
-				
+
 				if (cell == 1)
 					htmlCode.append(trOpen);
-				
+
 				htmlCode.append("<td align=left valign=top FIXWIDTH=110><a action=\"bypass _bbsloc;playerinfo;" + player.getName() + "\">");
-				
+
 				if (player.isGM())
 					htmlCode.append("<font color=\"ffe400\">" + player.getName() + "</font>");
 				else if (player.isAway() && Config.ALLOW_AWAY_STATUS)
@@ -460,12 +443,12 @@ public class RegionBBSManager extends BaseBBSManager
 					htmlCode.append("<font color=\"ff0000\">" + player.getName() + "</font>");
 				else
 					htmlCode.append(player.getName());
-				
+
 				htmlCode.append("</a></td>");
-				
+
 				if (cell < Config.NAME_PER_ROW_COMMUNITYBOARD)
 					htmlCode.append(colSpacer);
-				
+
 				if (cell == Config.NAME_PER_ROW_COMMUNITYBOARD)
 				{
 					cell = 0;
@@ -475,17 +458,17 @@ public class RegionBBSManager extends BaseBBSManager
 			if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD)
 				htmlCode.append(trClose);
 			htmlCode.append("</table><br></td></tr>");
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append("</table>");
-			
+
 			if (getOnlineCount("gm") > Config.NAME_PAGE_SIZE_COMMUNITYBOARD)
 			{
 				htmlCode.append("<table border=0 width=600>");
-				
+
 				htmlCode.append("<tr>");
 				if (page == 1)
 					htmlCode.append("<td align=right width=190><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
@@ -501,22 +484,22 @@ public class RegionBBSManager extends BaseBBSManager
 				htmlCode.append("</tr>");
 				htmlCode.append("</table>");
 			}
-			
+
 			htmlCode.append("</body></html>");
-			
+
 			communityPage.put("gm", htmlCode.toString());
-			
+
 			htmlCode = new TextBuilder("<html><body><br>");
 			htmlCode.append("<table>");
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append("<td align=left valign=top>Server Restarted: " + GameServer.dateTimeServerStarted.getTime() + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append("</table>");
-			
+
 			htmlCode.append("<table>");
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append(tdOpen + "XP Rate: " + Config.RATE_XP + tdClose);
 			htmlCode.append(colSpacer);
@@ -524,7 +507,7 @@ public class RegionBBSManager extends BaseBBSManager
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "XP Exponent: " + Config.ALT_GAME_EXPONENT_XP + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append(tdOpen + "SP Rate: " + Config.RATE_SP + tdClose);
 			htmlCode.append(colSpacer);
@@ -532,7 +515,7 @@ public class RegionBBSManager extends BaseBBSManager
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "SP Exponent: " + Config.ALT_GAME_EXPONENT_SP + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append(tdOpen + "Drop Rate: " + Config.RATE_DROP_ITEMS + tdClose);
 			htmlCode.append(colSpacer);
@@ -540,32 +523,32 @@ public class RegionBBSManager extends BaseBBSManager
 			htmlCode.append(colSpacer);
 			htmlCode.append(tdOpen + "Adena Rate: " + Config.RATE_DROP_ADENA + tdClose);
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append("</table>");
-			
+
 			htmlCode.append("<br1><table>");
 			htmlCode.append("<tr>");
 			htmlCode.append("<td><br>" + getOnlineCount("pl") + " Player(s) Online</td>");
 			htmlCode.append("<td><br>Color legend: <font color=\"ffe400\">GM</font> <font color=\"f9f8a3\">Hero</font> <font color=\"a3f6f9\">Nooble</font> <font color=\"ff0000\">Karma</font> <font color=\"ffba00\">OffTrade</font></td>");
 			htmlCode.append("</tr>");
 			htmlCode.append("</table><br1>");
-			
+
 			htmlCode.append("<table border=0>");
 			htmlCode.append("<tr><td><table border=0>");
-			
+
 			cell = 0;
 			for (L2PcInstance player : getOnlinePlayers(page))
 			{
 				if ((player == null) || (player.getAppearance().getInvisible()))
 					continue;                           // Go to next
-					
+
 				cell++;
-				
+
 				if (cell == 1)
 					htmlCode.append(trOpen);
-				
+
 				htmlCode.append("<td align=left valign=top FIXWIDTH=110><a action=\"bypass _bbsloc;playerinfo;" + player.getName() + "\">");
-				
+
 				if (player.isGM())
 					htmlCode.append("<font color=\"ffe400\">" + player.getName() + "</font>");
 				else if (player.isAway() && Config.ALLOW_AWAY_STATUS)
@@ -578,12 +561,12 @@ public class RegionBBSManager extends BaseBBSManager
 					htmlCode.append("<font color=\"ff0000\">" + player.getName() + "</font>");
 				else
 					htmlCode.append(player.getName());
-				
+
 				htmlCode.append("</a></td>");
-				
+
 				if (cell < Config.NAME_PER_ROW_COMMUNITYBOARD)
 					htmlCode.append(colSpacer);
-				
+
 				if (cell == Config.NAME_PER_ROW_COMMUNITYBOARD)
 				{
 					cell = 0;
@@ -593,17 +576,17 @@ public class RegionBBSManager extends BaseBBSManager
 			if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD)
 				htmlCode.append(trClose);
 			htmlCode.append("</table><br></td></tr>");
-			
+
 			htmlCode.append(trOpen);
 			htmlCode.append("<td><img src=\"sek.cbui355\" width=600 height=1><br></td>");
 			htmlCode.append(trClose);
-			
+
 			htmlCode.append("</table>");
-			
+
 			if (getOnlineCount("pl") > Config.NAME_PAGE_SIZE_COMMUNITYBOARD)
 			{
 				htmlCode.append("<table border=0 width=600>");
-				
+
 				htmlCode.append("<tr>");
 				if (page == 1)
 					htmlCode.append("<td align=right width=190><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
@@ -619,11 +602,11 @@ public class RegionBBSManager extends BaseBBSManager
 				htmlCode.append("</tr>");
 				htmlCode.append("</table>");
 			}
-			
+
 			htmlCode.append("</body></html>");
-			
+
 			communityPage.put("pl", htmlCode.toString());
-			
+
 			_communityPages.put(page, communityPage);
 			communityPage = null;
 			htmlCode = null;

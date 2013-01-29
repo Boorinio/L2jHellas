@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,30 +31,30 @@ import com.l2jhellas.L2DatabaseFactory;
 public class CharacterRankRewardTable
 {
 	private static CharacterRankRewardTable _instance = null;
-	
+
 	/** <id, CharacterRankReward> contains already taken rewards by players */
 	private FastMap<Integer, CharacterRankReward> _characterRankRewardTable = new FastMap<Integer, CharacterRankReward>();
-	
+
 	private CharacterRankRewardTable()
 	{
 		Calendar c = Calendar.getInstance();
 		long startTime = c.getTimeInMillis();
-		
+
 		load();
-		
+
 		c = Calendar.getInstance();
 		long endTime = c.getTimeInMillis();
 		System.out.println("CharacterRankRewardTable loaded " + (this.getCharacterRankRewardTable().size()) + " objects in " + (endTime - startTime) + " ms.");
 
 	}
-	
+
 	public static CharacterRankRewardTable getInstance()
 	{
 		if (_instance == null)
 		{
 			_instance = new CharacterRankRewardTable();
 		}
-		
+
 		return _instance;
 	}
 
@@ -72,25 +74,25 @@ public class CharacterRankRewardTable
 	{
 		this._characterRankRewardTable = _characterRankRewardTable;
 	}
-	
+
 	public FastMap<Integer, CharacterRankReward> getRewardsList(int characterId, long characterRankPoints)
 	{
-		
+
 		// 1. Get list of rewards taken by characterId:
 		FastMap<Integer, Integer> playerRewardsTaken = new FastMap<Integer, Integer>();
-		
+
 		for (FastMap.Entry<Integer, CharacterRankReward> e = getCharacterRankRewardTable().head(), end = getCharacterRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
 			if (e.getValue().getCharacterId() == characterId)
 			{
-				
+
 				playerRewardsTaken.put(playerRewardsTaken.size() + 1, e.getValue().getRewardId());
 			}
 		}
 
 		// 2. Get list of rewards what will be awarded:
 		FastMap<Integer, CharacterRankReward> playerRewardsAwarded = new FastMap<Integer, CharacterRankReward>();
-		
+
 		for (FastMap.Entry<Integer, RankReward> e = RankRewardTable.getInstance().getRankRewardTable().head(), end = RankRewardTable.getInstance().getRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
 			// if player haven't this reward yet, add it to list:
@@ -102,20 +104,20 @@ public class CharacterRankRewardTable
 				crr.setItemId(e.getValue().getItemId());
 				crr.setItemAmount(e.getValue().getItemAmount());
 				crr.setMinRankPoints(e.getValue().getMinRankPoints());
-				
+
 				playerRewardsAwarded.put(playerRewardsAwarded.size() + 1, crr);
 			}
 		}
-		
+
 		return playerRewardsAwarded;
 	}
-	
+
 	public int getRewardsCount(int characterId, long characterRankPoints)
-	{
-		
+	{// TODO doac to zliczanie do pola w tej klasie w powyzszej metodzie.
+
 		// 1. Get list of rewards by characterId:
 		FastMap<Integer, Integer> playerRewardsTaken = new FastMap<Integer, Integer>();
-		
+
 		for (FastMap.Entry<Integer, CharacterRankReward> e = getCharacterRankRewardTable().head(), end = getCharacterRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
 			if (e.getValue().getCharacterId() == characterId)
@@ -126,7 +128,7 @@ public class CharacterRankRewardTable
 
 		// 2. Get list of rewards what will be awarded:
 		int r = 0;
-		
+
 		for (FastMap.Entry<Integer, RankReward> e = RankRewardTable.getInstance().getRankRewardTable().head(), end = RankRewardTable.getInstance().getRankRewardTable().tail(); (e = e.getNext()) != end;)
 		{
 			if (!playerRewardsTaken.containsValue(e.getValue().getRewardId()) && e.getValue().getMinRankPoints() <= characterRankPoints)
@@ -134,17 +136,17 @@ public class CharacterRankRewardTable
 				r++;
 			}
 		}
-		
+
 		return r;
 	}
-	
+
 	public void addReward(CharacterRankReward characterRankReward)
 	{
-		
+
 		getCharacterRankRewardTable().put(getCharacterRankRewardTable().size() + 1, characterRankReward);
-		
+
 	}
-	
+
 	private void load()
 	{
 		Connection con = null;
@@ -152,15 +154,15 @@ public class CharacterRankRewardTable
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM custom_pvp_system_characters_rank_rewards");
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				CharacterRankReward crr = new CharacterRankReward();
 				crr.setCharacterId(rset.getInt("charId"));
 				crr.setRewardId(rset.getInt("reward_id"));
-				
+
 				_characterRankRewardTable.put(_characterRankRewardTable.size() + 1, crr);
 			}
 
@@ -185,39 +187,57 @@ public class CharacterRankRewardTable
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
-	public void insertCharacterRewardListIntoDB(String[] queries)
+
+	public boolean insertCharacterRewardListIntoDB(String[] queries)
 	{
-		Connection con = null;
-		Statement statement = null;
-		
+
+		boolean ok = false;
+
+		Connection conn = null;
+		Statement stat = null;
+
 		try
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.createStatement();
-			
+			conn = L2DatabaseFactory.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			stat = conn.createStatement();
+
 			for (String query : queries)
 			{
-				statement.addBatch(query);
+				stat.addBatch(query);
 			}
-			statement.executeBatch();
 
-			statement.close();
+			stat.executeBatch();
+
+			conn.commit();
+
+			stat.close();
+
+			ok = true;
+
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
+			try
+			{
+				conn.rollback();
+			}
+			catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			}
 		}
 		finally
 		{
 			try
 			{
-				if (con != null)
+				if (conn != null)
 				{
-					con.close();
-					con = null;
+					conn.setAutoCommit(true);
+					conn.close();
 				}
 			}
 			catch (Exception e)
@@ -225,5 +245,8 @@ public class CharacterRankRewardTable
 				e.printStackTrace();
 			}
 		}
+
+		return ok;
 	}
+
 }

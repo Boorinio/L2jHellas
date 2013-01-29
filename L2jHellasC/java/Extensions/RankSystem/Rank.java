@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,10 +23,10 @@ public class Rank
 	private String _name = null; // rank name
 	private long _minPoints = 0; // for get this rank
 	private int _pointsForKill = 0; // for kill player with this rank
-	
+
 	private int _rewardId = 0; // reward for kill this player
 	private int _rewardAmount = 0; // reward amount
-	
+
 	/**
 	 * @return the _id
 	 */
@@ -61,7 +63,7 @@ public class Rank
 
 	/**
 	 * Store information about minimum Rank Points for obtain this Rank.
-	 * 
+	 *
 	 * @return the _minPoints
 	 */
 	public long getMinPoints()

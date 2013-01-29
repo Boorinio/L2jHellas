@@ -23,18 +23,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class MonsterKnownList extends AttackableKnownList
 {
-    // =========================================================
-    // Data Field
-
-    // =========================================================
-    // Constructor
     public MonsterKnownList(L2MonsterInstance activeChar)
     {
         super(activeChar);
     }
 
-    // =========================================================
-    // Method - Public
     @Override
 	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
     @Override
@@ -85,11 +78,6 @@ public class MonsterKnownList extends AttackableKnownList
         return true;
     }
 
-    // =========================================================
-    // Method - Private
-
-    // =========================================================
-    // Property - Public
     @Override
 	public final L2MonsterInstance getActiveChar() { return (L2MonsterInstance)super.getActiveChar(); }
 }

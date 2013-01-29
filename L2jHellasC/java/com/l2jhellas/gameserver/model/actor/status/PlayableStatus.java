@@ -17,18 +17,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 
 public class PlayableStatus extends CharStatus
 {
-	// =========================================================
-	// Data Field
-	
-	// =========================================================
-	// Constructor
 	public PlayableStatus(L2PlayableInstance activeChar)
 	{
 		super(activeChar);
 	}
 	
-	// =========================================================
-	// Method - Public
 	@Override
 	public void reduceHp(double value, L2Character attacker)
 	{
@@ -56,11 +49,6 @@ public class PlayableStatus extends CharStatus
 		 */
 	}
 	
-	// =========================================================
-	// Method - Private
-	
-	// =========================================================
-	// Property - Public
 	@Override
 	public L2PlayableInstance getActiveChar()
 	{

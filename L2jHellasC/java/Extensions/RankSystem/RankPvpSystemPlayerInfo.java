@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +22,7 @@ import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.datatables.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.util.ServerSideImage;
 
 /**
  * @author Masterio
@@ -27,37 +30,30 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 public class RankPvpSystemPlayerInfo
 {
 	private static final Logger _log = Logger.getLogger(RankPvpSystemPlayerInfo.class.getName());
-	
+
 	public void sendPlayerResponse(L2PcInstance player, L2PcInstance playerTarget)
 	{
 		NpcHtmlMessage n = new NpcHtmlMessage(0);
 		n.setHtml(playerResponseHtml(player, playerTarget).toString());
 		player.sendPacket(n);
 	}
-	
+
 	private TextBuilder playerResponseHtml(L2PcInstance player, L2PcInstance playerTarget)
 	{
 		TextBuilder tb = new TextBuilder();
-		
-		// get PvP object with target. (for get how many times he killed
-		// player):
+
+		// get PvP object with target. (for get how many times he killed player):
 		Pvp pvp1 = new Pvp();
 		Pvp pvp2 = new Pvp();
 		if (!player.equals(playerTarget))
 		{
-			pvp1 = PvpTable.getInstance().getPvp(playerTarget.getObjectId(), player.getObjectId()); // pvp:
-																									// target
-																									// -
-																									// player
-			pvp2 = PvpTable.getInstance().getPvp(player.getObjectId(), playerTarget.getObjectId()); // pvp:
-																									// player
-																									// -
-																									// target
+			pvp1 = PvpTable.getInstance().getPvp(playerTarget.getObjectId(), player.getObjectId()); // pvp: target - player
+			pvp2 = PvpTable.getInstance().getPvp(player.getObjectId(), playerTarget.getObjectId()); // pvp: player - target
 		}
 
 		// get target PvpStats:
 		PvpStats targetPvpStats = PvpTable.getInstance().getPvpStats(playerTarget.getObjectId());
-		
+
 		tb.append("<html><title>" + playerTarget.getName() + " PvP Status</title><body>");
 
 		tb.append(rankImgTableHtml(player, targetPvpStats));
@@ -70,22 +66,22 @@ public class RankPvpSystemPlayerInfo
 			// span
 			tb.append("<br>");
 		}
-		
+
 		// about player target:
 		tb.append("<center><table border=0 cellspacing=0 cellpadding=0>");
-		
+
 		// name [level]
 		tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Name [lvl]</font></td>");
 		tb.append("<td width=135 height=22 align=left>");
 		tb.append("<font color=ffa000>" + playerTarget.getName() + " [" + playerTarget.getLevel() + "]</font>");
 		tb.append("</td></tr>");
-		
+
 		// current class
 		tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Current class</font></td>");
 		tb.append("<td width=135 height=22 align=left>");
 		tb.append("<font color=ffa000>" + RankPvpSystemUtil.getClassName(playerTarget.getClassId().getId()) + "</font>");
 		tb.append("</td></tr>");
-		
+
 		// main class
 		if (playerTarget.getBaseClass() != playerTarget.getClassId().getId())
 		{
@@ -94,7 +90,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<font color=ffa000>" + RankPvpSystemUtil.getClassName(playerTarget.getBaseClass()) + "</font>");
 			tb.append("</td></tr>");
 		}
-		
+
 		// nobles
 		tb.append("<tr><td width=135 height=22 align=rigth><font color=ae9977>Nobles</font></td>");
 		tb.append("<td width=135 height=22 align=left>");
@@ -107,7 +103,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<font color=808080>No</font>");
 		}
 		tb.append("</td></tr>");
-		
+
 		// hero
 		tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Hero</font></td>");
 		tb.append("<td width=135 height=22 align=left>");
@@ -120,7 +116,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<font color=808080>No</font>");
 		}
 		tb.append("</td></tr>");
-		
+
 		// clan
 		if (player.isDead() && !player.equals(playerTarget))
 		{
@@ -136,11 +132,11 @@ public class RankPvpSystemPlayerInfo
 			}
 			tb.append("</td></tr>");
 		}
-		
+
 		// span
 		tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 		tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
-		
+
 		if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
 		{
 
@@ -153,7 +149,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<td width=135 height=22 align=left>");
 			tb.append("<font color=ffa000>" + targetPvpStats.getTotalRankPoints() + "</font>");
 			tb.append("</td></tr>");
-			
+
 		}
 
 		// legal/total kills
@@ -161,7 +157,7 @@ public class RankPvpSystemPlayerInfo
 		tb.append("<td width=135 height=22 align=left>");
 		tb.append("<font color=ffa000>" + targetPvpStats.getTotalKillsLegal() + " / " + targetPvpStats.getTotalKills() + "</font>");
 		tb.append("</td></tr>");
-		
+
 		if (ExternalConfig.CUSTOM_PVP_WAR_ENABLED)
 		{
 			// war legal/total kills
@@ -170,19 +166,19 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<font color=2080D0>" + targetPvpStats.getTotalWarKillsLegal() + " / " + targetPvpStats.getTotalWarKills() + "</font>");
 			tb.append("</td></tr>");
 		}
-		
+
 		// span
 		tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 		tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
-		
+
 		if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
 		{
-			
+
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP for kill</font></td>");
 			tb.append("<td width=135 height=22 align=left>");
 			tb.append("<font color=ffa000>" + targetPvpStats.getRank().getPointsForKill() + "</font>");
 			tb.append("</td></tr>");
-			
+
 			if (ExternalConfig.CUSTOM_PVP_RANK_REWARD_ENABLED)
 			{
 				tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank Reward</font></td>");
@@ -190,9 +186,9 @@ public class RankPvpSystemPlayerInfo
 				tb.append("<font color=ffa000>" + targetPvpStats.getRank().getRewardAmount() + "x " + ItemTable.getInstance().getTemplate(targetPvpStats.getRank().getRewardId()).getName() + "</font>");
 				tb.append("</td></tr>");
 			}
-			
+
 		}
-		
+
 		if (ExternalConfig.CUSTOM_PVP_REWARD_ENABLED)
 		{
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>PvP Reward</font></td>");
@@ -200,7 +196,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<font color=ffa000>" + ExternalConfig.CUSTOM_PVP_REWARD_AMOUNT + "x " + ItemTable.getInstance().getTemplate(ExternalConfig.CUSTOM_PVP_REWARD_ID).getName() + "</font>");
 			tb.append("</td></tr>");
 		}
-		
+
 		if (!player.equals(playerTarget) && ExternalConfig.CUSTOM_PVP_PROTECTION_RESET > 0)
 		{
 			long sys_time = System.currentTimeMillis();
@@ -243,16 +239,16 @@ public class RankPvpSystemPlayerInfo
 		}
 
 		tb.append("</table>");
-		
+
 		if (!player.equals(playerTarget))
 		{
 			// about player
 			tb.append("<table border=0 cellspacing=0 cellpadding=0>");
-			
+
 			// span
 			tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 			tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
-			
+
 			// name
 			tb.append("<tr><td width=135 height=22 align=left>");
 			tb.append("<font color=ae9977>Legal/Total Kills on Me</font>");
@@ -260,59 +256,58 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<td width=135 height=22 align=left>");
 			tb.append("<font color=FF00FF>" + pvp1.getKillsLegal() + " / " + pvp1.getKills() + "</font>");
 			tb.append("</td></tr>");
-			
+
 			tb.append("</table>");
 		}
-		
+
 		if (player.equals(playerTarget) && ExternalConfig.CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED)
 		{
 			if (ExternalConfig.CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED)
 			{
 				player._RankPvpSystemPointsReward = new RankPvpSystemPointsReward(player);
 			}
-			
+
 			if (player._RankPvpSystemPointsReward != null && player._RankPvpSystemPointsReward.getRankRewardsCount() > 0)
 			{
 				// button Get Reward:
 				tb.append("<table border=0 cellspacing=0 cellpadding=0>");
-				
+
 				// span
 				tb.append("<tr><td width=270 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></img></td></tr>");
 				tb.append("<tr><td width=270 height=12></td></tr>");
-				
+
 				tb.append("<tr><td width=270 align=center><button value=\"Get Reward\" action=\"bypass -h _cprs_reward\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
-				
+
 				tb.append("</table>");
 			}
 		}
-		
+
 		if (ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_DETAILS_ENABLED && player._RankPvpSystemDeathMgr != null && player.isDead() && playerTarget.getObjectId() == player._RankPvpSystemDeathMgr.getKiller().getObjectId())
-		{ // playerTarget is not real target its handler to current killer.
-			// //getKiller() store last killer.
+		{ // playerTarget is not real target its handler to current killer. //getKiller() store last killer.
 			// button show equipment:
 			tb.append("<table border=0 cellspacing=0 cellpadding=0>");
-			
+
 			// span
 			tb.append("<tr><td width=270 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></img></td></tr>");
 			tb.append("<tr><td width=270 height=12></td></tr>");
-			
+
 			tb.append("<tr><td width=270 align=center><button value=\"Details\" action=\"bypass -h _cprs_equip\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
-			
+
 			tb.append("</table>");
 		}
 		else
 		{
 			player._RankPvpSystemDeathMgr = null;
 		}
-		
+
 		tb.append("</center></body></html>");
-		
+
 		return tb;
 	}
 
 	/**
 	 * Generate HTML table for images.
-	 * 
+	 *
 	 * @param player
 	 * @param targetPvpStats
 	 * @return
@@ -338,16 +333,16 @@ public class RankPvpSystemPlayerInfo
 		}
 		return tb;
 	}
-	
+
 	private TextBuilder expBelt(L2PcInstance player, PvpStats targetPvpStats)
 	{
 		int percent = calculatePercent(targetPvpStats);
 
 		TextBuilder tb = new TextBuilder();
-		
+
 		// percent belt
 		tb.append("<table border=0 cellspacing=0 cellpadding=0>");
-		
+
 		tb.append("<tr>");
 		tb.append("<td width=292 height=20 align=left>");
 		if (percent >= 0)
@@ -368,7 +363,7 @@ public class RankPvpSystemPlayerInfo
 
 		return tb;
 	}
-	
+
 	private int calculatePercent(PvpStats targetPvpStats)
 	{
 		long nextRP = 0;
@@ -381,7 +376,7 @@ public class RankPvpSystemPlayerInfo
 		{ // check if next rank exists
 			nextRP = ExternalConfig.CUSTOM_PVP_RANKS.get(rankId + 1).getMinPoints();
 		}
-		
+
 		if (nextRP >= minRP)
 		{
 			double a = (currentRP - minRP);
@@ -393,10 +388,9 @@ public class RankPvpSystemPlayerInfo
 		{
 			percent = 100;
 		}
-		
-		// _log.info("NRP:"+nextRP+", CRP:"+currentRP+", MRP:"+minRP+", %:"+
-		// percent);
-		
+
+		// _log.info("NRP:"+nextRP+", CRP:"+currentRP+", MRP:"+minRP+", %:"+ percent);
+
 		return percent;
 	}
 }

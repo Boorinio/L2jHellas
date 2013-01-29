@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,21 +32,21 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class CharNameTable
 {
 	private static Logger _log = Logger.getLogger(CharNameTable.class.getName());
-	
+
 	private final Map<Integer, String> _chars;
 	private final Map<Integer, Integer> _accessLevels;
-	
+
 	private CharNameTable()
 	{
 		_chars = new FastMap<Integer, String>();
 		_accessLevels = new FastMap<Integer, Integer>();
 	}
-	
+
 	public static CharNameTable getInstance()
 	{
 		return SingletonHolder._instance;
 	}
-	
+
 	public final void addName(L2PcInstance player)
 	{
 		if (player != null)
@@ -55,7 +55,7 @@ public class CharNameTable
 			_accessLevels.put(player.getObjectId(), player.getAccessLevel().getLevel());
 		}
 	}
-	
+
 	private final void addName(int objId, String name)
 	{
 		if (name != null)
@@ -64,7 +64,7 @@ public class CharNameTable
 				_chars.put(objId, name);
 		}
 	}
-	
+
 	public final void removeName(int objId)
 	{
 		_chars.remove(objId);
@@ -75,9 +75,9 @@ public class CharNameTable
 	{
 		if (name == null || name.isEmpty())
 			return -1;
-		
+
 		Iterator<Entry<Integer, String>> it = _chars.entrySet().iterator();
-		
+
 		Map.Entry<Integer, String> pair;
 		while (it.hasNext())
 		{
@@ -85,9 +85,8 @@ public class CharNameTable
 			if (pair.getValue().equalsIgnoreCase(name))
 				return pair.getKey();
 		}
-		
+
 		int id = -1;
-		int accessLevel = 0;
 		Connection con = null;
 		PreparedStatement statement = null;
 		try
@@ -96,11 +95,11 @@ public class CharNameTable
 			statement = con.prepareStatement("SELECT obj_Id,accesslevel FROM characters WHERE char_name=?");
 			statement.setString(1, name);
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				id = rset.getInt(1);
-				accessLevel = rset.getInt(2);
+				rset.getInt(2);
 			}
 			rset.close();
 			statement.close();
@@ -113,32 +112,32 @@ public class CharNameTable
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
-		
+
 		if (id > 0)
 		{
 			_chars.put(id, name);
 			return id;
 		}
-		
+
 		return -1; // not found
 	}
-	
+
 	public final String getNameById(int id)
 	{
 		if (id <= 0)
 			return null;
-		
+
 		String name = _chars.get(id);
 		if (name != null)
 			return name;
-		
+
 		int accessLevel = 0;
 		Connection con = null;
 		PreparedStatement statement = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("SELECT char_name,accesslevel FROM characters WHERE charId=?");
+			statement = con.prepareStatement("SELECT char_name,accesslevel FROM characters WHERE obj_Id=?");
 			statement.setInt(1, id);
 			ResultSet rset = statement.executeQuery();
 			while (rset.next())
@@ -163,10 +162,10 @@ public class CharNameTable
 			_accessLevels.put(id, accessLevel);
 			return name;
 		}
-		
+
 		return null; //not found
 	}
-	
+
 	public final int getAccessLevelById(int objectId)
 	{
 		if (getNameById(objectId) != null)
@@ -174,7 +173,7 @@ public class CharNameTable
 		else
 			return 0;
 	}
-	
+
 	public boolean doesCharNameExist(String name)
 	{
 		boolean result = true;
@@ -230,7 +229,7 @@ public class CharNameTable
 
         return number;
     }
-    
+
 	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{

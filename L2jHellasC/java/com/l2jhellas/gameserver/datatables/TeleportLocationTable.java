@@ -49,8 +49,9 @@ public class TeleportLocationTable
 
 	private TeleportLocationTable()
 	{
-	    reloadAll();
+		reloadAll();
 	}
+
 	public void reloadAll()
 	{
 		_teleports = new FastMap<Integer, L2TeleportLocation>();
@@ -72,7 +73,7 @@ public class TeleportLocationTable
 				teleport.setLocY(rset.getInt("loc_y"));
 				teleport.setLocZ(rset.getInt("loc_z"));
 				teleport.setPrice(rset.getInt("price"));
-				teleport.setIsForNoble(rset.getInt("fornoble")==1);
+				teleport.setIsForNoble(rset.getInt("fornoble") == 1);
 
 				_teleports.put(teleport.getTeleId(), teleport);
 			}
@@ -84,11 +85,17 @@ public class TeleportLocationTable
 		}
 		catch (Exception e)
 		{
-			_log.warning("error while creating teleport table "+e);
+			_log.warning("error while creating teleport table " + e);
 		}
 		finally
 		{
-			try { con.close(); } catch (Exception e) {}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 		{
 			try
@@ -114,26 +121,27 @@ public class TeleportLocationTable
 				_cTeleCount = _teleports.size() - _cTeleCount;
 				if (_cTeleCount > 0)
 					_log.config("TeleportLocationTable: Loaded " + _cTeleCount + " Custom Teleport Location Templates.");
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				_log.warning("error while creating custom teleport table " + e);
-			} finally
+			}
+			finally
 			{
 				try
 				{
 					con.close();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 				}
 			}
 		}
 	}
 
-	
-
-
 	/**
-	 * @param template id
+	 * @param template
+	 *        id
 	 * @return
 	 */
 	public L2TeleportLocation getTemplate(int id)

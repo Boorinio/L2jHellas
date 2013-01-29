@@ -22,25 +22,15 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 
 public class L2SiegeClan
 {
-	// ==========================================================================================
-	// Instance
-	// ===============================================================
-	// Data Field
-	private int _clanId                = 0;
-	private List<L2NpcInstance> _flag  = new FastList<L2NpcInstance>();
+	private int _clanId = 0;
+	private List<L2NpcInstance> _flag = new FastList<L2NpcInstance>();
 	private int _numFlagsAdded = 0;
 	private SiegeClanType _type;
 
 	public enum SiegeClanType
 	{
-		OWNER,
-		DEFENDER,
-		ATTACKER,
-		DEFENDER_PENDING
+		OWNER, DEFENDER, ATTACKER, DEFENDER_PENDING
 	}
-
-	// =========================================================
-	// Constructor
 
 	public L2SiegeClan(int clanId, SiegeClanType type)
 	{
@@ -48,8 +38,6 @@ public class L2SiegeClan
 		_type = type;
 	}
 
-	// =========================================================
-	// Method - Public
 	public int getNumFlags()
 	{
 		return _numFlagsAdded;
@@ -63,14 +51,15 @@ public class L2SiegeClan
 
 	public boolean removeFlag(L2NpcInstance flag)
 	{
-		if (flag == null) return false;
+		if (flag == null)
+			return false;
 		boolean ret = getFlag().remove(flag);
-		//flag.deleteMe();
-		//check if null objects or dups remain in the list.
-		//for some reason, this might be happenning sometimes...
+		// flag.deleteMe();
+		// check if null objects or dups remain in the list.
+		// for some reason, this might be happenning sometimes...
 		// delete false dupplicates: if this flag got deleted, delete its copies too.
 		if (ret)
-			while (getFlag().remove(flag)) ;
+			while (getFlag().remove(flag));
 
 		// now delete nulls
 		int n;
@@ -79,9 +68,9 @@ public class L2SiegeClan
 		{
 			more = false;
 			n = getFlag().size();
-			if (n>0)
-				for(int i=0; i<n;i++)
-					if(getFlag().get(i)==null)
+			if (n > 0)
+				for (int i = 0; i < n; i++)
+					if (getFlag().get(i) == null)
 					{
 						getFlag().remove(i);
 						more = true;
@@ -95,21 +84,29 @@ public class L2SiegeClan
 
 	public void removeFlags()
 	{
-		for (L2NpcInstance flag: getFlag())
+		for (L2NpcInstance flag : getFlag())
 			removeFlag(flag);
 	}
 
-	// =========================================================
-	// Proeprty
-	public final int getClanId() { return _clanId; }
+	public final int getClanId()
+	{
+		return _clanId;
+	}
 
 	public final List<L2NpcInstance> getFlag()
 	{
-		if (_flag == null) _flag  = new FastList<L2NpcInstance>();
+		if (_flag == null)
+			_flag = new FastList<L2NpcInstance>();
 		return _flag;
 	}
 
-	public SiegeClanType getType() { return _type; }
+	public SiegeClanType getType()
+	{
+		return _type;
+	}
 
-    public void setType(SiegeClanType setType) { _type = setType; }
+	public void setType(SiegeClanType setType)
+	{
+		_type = setType;
+	}
 }

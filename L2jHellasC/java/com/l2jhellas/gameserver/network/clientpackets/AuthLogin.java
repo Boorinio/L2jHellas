@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.LoginServerThread.SessionKey;
 import com.l2jhellas.gameserver.network.L2GameClient;
 
-
 /**
  * This class ...
  *
@@ -34,10 +33,12 @@ public final class AuthLogin extends L2GameClientPacket
 
 	// loginName + keys must match what the loginserver used.
 	private String _loginName;
-	/*private final long _key1;
-	private final long _key2;
-	private final long _key3;
-	private final long _key4;*/
+	/*
+	 * private final long _key1;
+	 * private final long _key2;
+	 * private final long _key3;
+	 * private final long _key4;
+	 */
 	private int _playKey1;
 	private int _playKey2;
 	private int _loginKey1;
@@ -77,10 +78,6 @@ public final class AuthLogin extends L2GameClientPacket
 		}
 	}
 
-
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

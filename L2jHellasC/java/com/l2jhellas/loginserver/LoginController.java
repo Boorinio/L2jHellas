@@ -56,12 +56,12 @@ public class LoginController
 	private static LoginController _instance;
 
 	/** Time before kicking the client if he didnt logged yet */
-	private final static int LOGIN_TIMEOUT = 60*1000;
+	private final static int LOGIN_TIMEOUT = 60 * 1000;
 
-	/** Clients that are on the LS but arent assocated with a account yet*/
+	/** Clients that are on the LS but arent assocated with a account yet */
 	protected FastSet<L2LoginClient> _clients = new FastSet<L2LoginClient>();
 
-	/** Authed Clients on LoginServer*/
+	/** Authed Clients on LoginServer */
 	protected FastMap<String, L2LoginClient> _loginServerClients = new FastMap<String, L2LoginClient>().setShared(true);
 
 	private final Map<InetAddress, BanInfo> _bannedIps = new FastMap<InetAddress, BanInfo>().setShared(true);
@@ -104,7 +104,7 @@ public class LoginController
 		RSAKeyGenParameterSpec spec = new RSAKeyGenParameterSpec(1024, RSAKeyGenParameterSpec.F4);
 		keygen.initialize(spec);
 
-		//generate the initial set of keys
+		// generate the initial set of keys
 		for (int i = 0; i < 10; i++)
 		{
 			_keyPairs[i] = new ScrambledKeyPair(keygen.generateKeyPair());
@@ -120,8 +120,11 @@ public class LoginController
 	/**
 	 * This is mostly to force the initialization of the Crypto Implementation, avoiding it being done on runtime when its first needed.<BR>
 	 * In short it avoids the worst-case execution time on runtime by doing it on loading.
-	 * @param key Any private RSA Key just for testing purposes.
-	 * @throws GeneralSecurityException if a underlying exception was thrown by the Cipher
+	 *
+	 * @param key
+	 *        Any private RSA Key just for testing purposes.
+	 * @throws GeneralSecurityException
+	 *         if a underlying exception was thrown by the Cipher
 	 */
 	private void testCipher(RSAPrivateKey key) throws GeneralSecurityException
 	{
@@ -138,10 +141,10 @@ public class LoginController
 		{
 			for (int j = 0; j < _blowfishKeys[i].length; j++)
 			{
-				_blowfishKeys[i][j] = (byte) (Rnd.nextInt(255)+1);
+				_blowfishKeys[i][j] = (byte) (Rnd.nextInt(255) + 1);
 			}
 		}
-		_log.info("Stored "+_blowfishKeys.length+" keys for Blowfish communication");
+		_log.info("Stored " + _blowfishKeys.length + " keys for Blowfish communication");
 	}
 
 	/**
@@ -149,7 +152,7 @@ public class LoginController
 	 */
 	public byte[] getBlowfishKey()
 	{
-		return _blowfishKeys[(int) (Math.random()*BLOWFISH_KEYS)];
+		return _blowfishKeys[(int) (Math.random() * BLOWFISH_KEYS)];
 	}
 
 	public void addLoginClient(L2LoginClient client)
@@ -192,7 +195,10 @@ public class LoginController
 		return _loginServerClients.get(account);
 	}
 
-	public static enum AuthLoginResult { INVALID_PASSWORD, ACCOUNT_BANNED, ALREADY_ON_LS, ALREADY_ON_GS, AUTH_SUCCESS };
+	public static enum AuthLoginResult
+	{
+		INVALID_PASSWORD, ACCOUNT_BANNED, ALREADY_ON_LS, ALREADY_ON_GS, AUTH_SUCCESS
+	};
 
 	public AuthLoginResult tryAuthLogin(String account, String password, L2LoginClient client) throws HackingException
 	{
@@ -234,25 +240,30 @@ public class LoginController
 	/**
 	 * Adds the address to the ban list of the login server, with the given duration.
 	 *
-	 * @param address The Address to be banned.
-	 * @param expiration Timestamp in miliseconds when this ban expires
-	 * @throws UnknownHostException if the address is invalid.
+	 * @param address
+	 *        The Address to be banned.
+	 * @param expiration
+	 *        Timestamp in miliseconds when this ban expires
+	 * @throws UnknownHostException
+	 *         if the address is invalid.
 	 */
 	public void addBanForAddress(String address, long expiration) throws UnknownHostException
 	{
 		InetAddress netAddress = InetAddress.getByName(address);
-		_bannedIps.put(netAddress, new BanInfo(netAddress,  expiration));
+		_bannedIps.put(netAddress, new BanInfo(netAddress, expiration));
 	}
 
 	/**
 	 * Adds the address to the ban list of the login server, with the given duration.
 	 *
-	 * @param address The Address to be banned.
-	 * @param duration is miliseconds
+	 * @param address
+	 *        The Address to be banned.
+	 * @param duration
+	 *        is miliseconds
 	 */
 	public void addBanForAddress(InetAddress address, long duration)
 	{
-		_bannedIps.put(address, new BanInfo(address,  System.currentTimeMillis() + duration));
+		_bannedIps.put(address, new BanInfo(address, System.currentTimeMillis() + duration));
 	}
 
 	public boolean isBannedAddress(InetAddress address)
@@ -278,10 +289,11 @@ public class LoginController
 		return _bannedIps;
 	}
 
-
 	/**
 	 * Remove the specified address from the ban list
-	 * @param address The address to be removed from the ban list
+	 *
+	 * @param address
+	 *        The address to be removed from the ban list
 	 * @return true if the ban was removed, false if there was no ban for this ip
 	 */
 	public boolean removeBanForAddress(InetAddress address)
@@ -291,7 +303,9 @@ public class LoginController
 
 	/**
 	 * Remove the specified address from the ban list
-	 * @param address The address to be removed from the ban list
+	 *
+	 * @param address
+	 *        The address to be removed from the ban list
 	 * @return true if the ban was removed, false if there was no ban for this ip or the address was invalid.
 	 */
 	public boolean removeBanForAddress(String address)
@@ -379,7 +393,6 @@ public class LoginController
 	}
 
 	/**
-	 *
 	 * @return
 	 */
 	public boolean isLoginPossible(L2LoginClient client, int serverId)
@@ -407,13 +420,24 @@ public class LoginController
 				}
 				catch (Exception e)
 				{
-					_log.warning("WARNING: Could not set lastServer: "+e);
+					_log.warning("WARNING: Could not set lastServer: " + e);
 				}
 				finally
 				{
-					try { con.close(); } catch (Exception e) { }
-					try { statement.close(); }
-					catch (Exception e) { }
+					try
+					{
+						con.close();
+					}
+					catch (Exception e)
+					{
+					}
+					try
+					{
+						statement.close();
+					}
+					catch (Exception e)
+					{
+					}
 				}
 			}
 			return loginOk;
@@ -438,7 +462,7 @@ public class LoginController
 		}
 		catch (Exception e)
 		{
-			_log.warning("WARNING: Could not set accessLevel: "+e);
+			_log.warning("WARNING: Could not set accessLevel: " + e);
 		}
 		finally
 		{
@@ -501,7 +525,10 @@ public class LoginController
 	}
 
 	/**
-	 * <p>This method returns one of the cached {@link ScrambledKeyPair ScrambledKeyPairs} for communication with Login Clients.</p>
+	 * <p>
+	 * This method returns one of the cached {@link ScrambledKeyPair ScrambledKeyPairs} for communication with Login Clients.
+	 * </p>
+	 *
 	 * @return a scrambled keypair
 	 */
 	public ScrambledKeyPair getScrambledRSAKeyPair()
@@ -511,12 +538,13 @@ public class LoginController
 
 	/**
 	 * user name is not case sensitive any more
+	 *
 	 * @param user
 	 * @param password
 	 * @param address
 	 * @return
 	 */
-	public boolean loginValid(String user, String password, L2LoginClient client )// throws HackingException
+	public boolean loginValid(String user, String password, L2LoginClient client)// throws HackingException
 	{
 		boolean ok = false;
 		InetAddress address = client.getConnection().getInetAddress();
@@ -549,8 +577,10 @@ public class LoginController
 				expected = Base64.decode(rset.getString("password"));
 				access = rset.getInt("access_level");
 				lastServer = rset.getInt("lastServer");
-				if (lastServer <= 0) lastServer = 1; // minServerId is 1 in Interlude
-				if (Config.DEBUG) _log.fine("account exists");
+				if (lastServer <= 0)
+					lastServer = 1; // minServerId is 1 in Interlude
+				if (Config.DEBUG)
+					_log.fine("account exists");
 			}
 			rset.close();
 			statement.close();
@@ -649,8 +679,8 @@ public class LoginController
 
 			if (failedCount >= Config.LOGIN_TRY_BEFORE_BAN)
 			{
-				_log.info("Banning '"+address.getHostAddress()+"' for "+Config.LOGIN_BLOCK_AFTER_BAN+" seconds due to "+failedCount+" invalid user/pass attempts");
-				this.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN*1000);
+				_log.info("Banning '" + address.getHostAddress() + "' for " + Config.LOGIN_BLOCK_AFTER_BAN + " seconds due to " + failedCount + " invalid user/pass attempts");
+				this.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN * 1000);
 			}
 		}
 		else
@@ -676,7 +706,8 @@ public class LoginController
 			if (rset.next())
 			{
 				int accessLevel = rset.getInt(1);
-				if (accessLevel < 0) ok = true;
+				if (accessLevel < 0)
+					ok = true;
 			}
 			rset.close();
 			statement.close();
@@ -704,14 +735,14 @@ public class LoginController
 
 	class FailedLoginAttempt
 	{
-		//private InetAddress _ipAddress;
+		// private InetAddress _ipAddress;
 		private int _count;
 		private long _lastAttempTime;
 		private String _lastPassword;
 
 		public FailedLoginAttempt(InetAddress address, String lastPassword)
 		{
-			//_ipAddress = address;
+			// _ipAddress = address;
 			_count = 1;
 			_lastAttempTime = System.currentTimeMillis();
 			_lastPassword = lastPassword;
@@ -722,7 +753,7 @@ public class LoginController
 			if (!_lastPassword.equals(password))
 			{
 				// check if theres a long time since last wrong try
-				if (System.currentTimeMillis() - _lastAttempTime < 300*1000)
+				if (System.currentTimeMillis() - _lastAttempTime < 300 * 1000)
 				{
 					_count++;
 				}
@@ -735,7 +766,8 @@ public class LoginController
 				_lastPassword = password;
 				_lastAttempTime = System.currentTimeMillis();
 			}
-			else //trying the same password is not brute force
+			else
+			// trying the same password is not brute force
 			{
 				_lastAttempTime = System.currentTimeMillis();
 			}
@@ -803,7 +835,7 @@ public class LoginController
 
 				try
 				{
-					Thread.sleep(2*LOGIN_TIMEOUT);
+					wait(2 * LOGIN_TIMEOUT);
 				}
 				catch (InterruptedException e)
 				{

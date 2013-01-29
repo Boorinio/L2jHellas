@@ -30,18 +30,11 @@ public class GuardKnownList extends AttackableKnownList
 {
     private static Logger _log = Logger.getLogger(GuardKnownList.class.getName());
 
-    // =========================================================
-    // Data Field
-
-    // =========================================================
-    // Constructor
     public GuardKnownList(L2GuardInstance activeChar)
     {
         super(activeChar);
     }
 
-    // =========================================================
-    // Method - Public
     @Override
 	public boolean addKnownObject(L2Object object) { return addKnownObject(object, null); }
     @Override
@@ -103,11 +96,6 @@ public class GuardKnownList extends AttackableKnownList
         return true;
     }
 
-    // =========================================================
-    // Method - Private
-
-    // =========================================================
-    // Property - Public
     @Override
 	public final L2GuardInstance getActiveChar() { return (L2GuardInstance)super.getActiveChar(); }
 }

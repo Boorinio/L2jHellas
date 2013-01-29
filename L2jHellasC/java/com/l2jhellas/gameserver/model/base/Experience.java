@@ -14,10 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.base;
 
-/**
- *
- *
- */
 public class Experience
 {
     public final static long LEVEL[]=

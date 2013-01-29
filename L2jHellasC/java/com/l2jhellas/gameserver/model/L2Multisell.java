@@ -41,7 +41,7 @@ import com.l2jhellas.gameserver.templates.L2Weapon;
 public class L2Multisell
 {
     private static Logger _log = Logger.getLogger(L2Multisell.class.getName());
-    private List<MultiSellListContainer> _entries = new FastList<MultiSellListContainer>();
+    private final List<MultiSellListContainer> _entries = new FastList<MultiSellListContainer>();
     private static L2Multisell _instance = new L2Multisell();
 
     public MultiSellListContainer getList(int id)
@@ -100,7 +100,6 @@ public class L2Multisell
      * 		  be at +0
      * 3) apply taxes: Uses the "taxIngredient" entry in order to add a certain amount of adena to the ingredients
      *
-     * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#runImpl()
      */
     private MultiSellListContainer generateMultiSell(int listId, boolean inventoryOnly, L2PcInstance player, double taxRate)
     {
@@ -252,8 +251,8 @@ public class L2Multisell
     {
         private int _entryId;
 
-        private List<MultiSellIngredient> _products = new FastList<MultiSellIngredient>();
-        private List<MultiSellIngredient> _ingredients = new FastList<MultiSellIngredient>();
+        private final List<MultiSellIngredient> _products = new FastList<MultiSellIngredient>();
+        private final List<MultiSellIngredient> _ingredients = new FastList<MultiSellIngredient>();
 
         /**
          * @param entryId The entryId to set.

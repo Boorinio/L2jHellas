@@ -18,24 +18,14 @@ import com.l2jhellas.gameserver.model.L2Summon;
 
 public class SummonStatus extends PlayableStatus
 {
-    // =========================================================
-    // Data Field
+	public SummonStatus(L2Summon activeChar)
+	{
+		super(activeChar);
+	}
 
-    // =========================================================
-    // Constructor
-    public SummonStatus(L2Summon activeChar)
-    {
-        super(activeChar);
-    }
-
-    // =========================================================
-    // Method - Public
-
-    // =========================================================
-    // Method - Private
-
-    // =========================================================
-    // Property - Public
-    @Override
-	public L2Summon getActiveChar() { return (L2Summon)super.getActiveChar(); }
+	@Override
+	public L2Summon getActiveChar()
+	{
+		return (L2Summon) super.getActiveChar();
+	}
 }

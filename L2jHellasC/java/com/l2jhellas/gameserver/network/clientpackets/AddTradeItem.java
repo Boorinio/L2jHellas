@@ -96,9 +96,6 @@ public final class AddTradeItem extends L2GameClientPacket
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-     */
     @Override
 	public String getType()
     {

@@ -20,7 +20,7 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.4.4.4 $ $Date: 2005/03/27 15:29:30 $
  */
 public final class RequestPledgeCrest extends L2GameClientPacket
@@ -45,7 +45,7 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 		{
 			return;
 		}
-		
+
 		byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
 
 		if (data != null)
@@ -60,11 +60,7 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 				_log.fine("crest is missing:" + _crestId);
 		}
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
+
 	@Override
 	public String getType()
 	{

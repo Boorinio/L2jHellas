@@ -31,8 +31,8 @@ import com.l2jhellas.util.Rnd;
  */
 public final class L2GrandBossInstance extends L2MonsterInstance
 {
-    private static final int BOSS_MAINTENANCE_INTERVAL = 10000;
-    private boolean _teleportedToNest; 
+	private static final int BOSS_MAINTENANCE_INTERVAL = 10000;
+	private boolean _teleportedToNest;
 
 	protected boolean _isInSocialAction = false;
 
@@ -46,88 +46,90 @@ public final class L2GrandBossInstance extends L2MonsterInstance
 		_isInSocialAction = value;
 	}
 
-     /**
-     * Constructor for L2GrandBossInstance. This represent all grandbosses.
-     * 
-     * @param objectId ID of the instance
-     * @param template L2NpcTemplate of the instance
-     */
+	/**
+	 * Constructor for L2GrandBossInstance. This represent all grandbosses.
+	 *
+	 * @param objectId
+	 *        ID of the instance
+	 * @param template
+	 *        L2NpcTemplate of the instance
+	 */
 	public L2GrandBossInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
 
-    @Override
-	protected int getMaintenanceInterval() { return BOSS_MAINTENANCE_INTERVAL; }
-    
-    /** 
-     * Used by Orfen to set 'teleported' flag, when hp goes to <50% 
-     * @param flag 
-     */ 
-    public void setTeleported(boolean flag) 
-    { 
-    	_teleportedToNest = flag; 
-    } 
-    
-    public boolean getTeleported() 
-    { 
-    	return _teleportedToNest; 
-    }     
+	@Override
+	protected int getMaintenanceInterval()
+	{
+		return BOSS_MAINTENANCE_INTERVAL;
+	}
 
-    @Override
+	/**
+	 * Used by Orfen to set 'teleported' flag, when hp goes to <50%
+	 *
+	 * @param flag
+	 */
+	public void setTeleported(boolean flag)
+	{
+		_teleportedToNest = flag;
+	}
+
+	public boolean getTeleported()
+	{
+		return _teleportedToNest;
+	}
+
+	@Override
 	public void onSpawn()
-    {
-    	if (getNpcId() == 29028) // baium and valakas are all the time in passive mode, theirs attack AI handled in AI scripts
-    		super.disableCoreAI(true);
-    	super.onSpawn();
-    }
+	{
+		if (getNpcId() == 29028) // baium and valakas are all the time in passive mode, theirs attack AI handled in AI scripts
+			super.disableCoreAI(true);
+		super.onSpawn();
+	}
 
-    /**
-     * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR><BR>
-     *
-     */
-    @Override
+	/**
+	 * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.<BR>
+	 * <BR>
+	 */
+	@Override
 	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
-    {		// [L2J_JP ADD SANDMAN]
-        switch (getTemplate().npcId) 
-        {
-        case 29014: // Orfen 
-            if ((getCurrentHp() - damage) < getMaxHp() / 2 && !getTeleported()) 
-            {
-                clearAggroList(); 
-                getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE); 
-                teleToLocation(43577,15985,-4396, false); 
-                setTeleported(true); 
-                setCanReturnToSpawnPoint(false);   
-            }
-            break; 
-        default: 
-        }
+	{		// [L2J_JP ADD SANDMAN]
+		switch (getTemplate().npcId)
+		{
+			case 29014: // Orfen
+				if ((getCurrentHp() - damage) < getMaxHp() / 2 && !getTeleported())
+				{
+					clearAggroList();
+					getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+					teleToLocation(43577, 15985, -4396, false);
+					setTeleported(true);
+					setCanReturnToSpawnPoint(false);
+				}
+			break;
+			default:
+		}
 		if (IsInSocialAction() || isInvul())
 			return;
-        super.reduceCurrentHp(damage, attacker, awake);
-    }
+		super.reduceCurrentHp(damage, attacker, awake);
+	}
 
-    /**
-     * 
-     * @see com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance#doDie(com.l2jhellas.gameserver.model.L2Character)
-     */
-    @Override
-    public boolean doDie(L2Character killer)
+	@Override
+	public boolean doDie(L2Character killer)
 	{
 		if (!super.doDie(killer))
 			return false;
 		L2PcInstance player = null;
-		
+
 		if (killer instanceof L2PcInstance)
 			player = (L2PcInstance) killer;
 		else if (killer instanceof L2Summon)
 			player = ((L2Summon) killer).getOwner();
-		
+
 		if (player != null)
 		{
 			broadcastPacket(new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL));
-	        if (player.getParty() != null)
+			if (player.getParty() != null)
 			{
 				for (L2PcInstance member : player.getParty().getPartyMembers())
 				{
@@ -157,17 +159,20 @@ public final class L2GrandBossInstance extends L2MonsterInstance
 		else
 			super.doCast(skill);
 	}
-	/** 
- 	* Check if the server allows Random Animation.<BR><BR> 
- 	*/ 
- 	@Override 
- 	public boolean hasRandomAnimation() 
- 	{ 
- 		return false; 
- 	}
- 	
- 	@Override
- 	public boolean isBoss() {
- 		return true;
- 	}
+
+	/**
+	 * Check if the server allows Random Animation.<BR>
+	 * <BR>
+	 */
+	@Override
+	public boolean hasRandomAnimation()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isBoss()
+	{
+		return true;
+	}
 }

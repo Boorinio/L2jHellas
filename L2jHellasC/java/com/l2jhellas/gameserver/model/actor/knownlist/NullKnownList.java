@@ -29,63 +29,41 @@ public class NullKnownList extends ObjectKnownList
 		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList#addKnownObject(com.l2jhellas.gameserver.model.L2Object, com.l2jhellas.gameserver.model.L2Character)
-	 */
 	@Override
 	public boolean addKnownObject(L2Object object, L2Character dropper)
 	{
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList#addKnownObject(com.l2jhellas.gameserver.model.L2Object)
-	 */
 	@Override
 	public boolean addKnownObject(L2Object object)
 	{
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList#getActiveObject()
-	 */
 	@Override
 	public L2Object getActiveObject()
 	{
 		return super.getActiveObject();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList#getDistanceToForgetObject(com.l2jhellas.gameserver.model.L2Object)
-	 */
 	@Override
 	public int getDistanceToForgetObject(L2Object object)
 	{
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList#getDistanceToWatchObject(com.l2jhellas.gameserver.model.L2Object)
-	 */
 	@Override
 	public int getDistanceToWatchObject(L2Object object)
 	{
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList#removeAllKnownObjects()
-	 *
-	 * no-op
-	 */
 	@Override
 	public void removeAllKnownObjects()
-	{ }
+	{
+	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList#removeKnownObject(com.l2jhellas.gameserver.model.L2Object)
-	 */
 	@Override
 	public boolean removeKnownObject(L2Object object)
 	{

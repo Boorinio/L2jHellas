@@ -30,7 +30,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 public final class AnswerTradeRequest extends L2GameClientPacket
 {
 	private static final String _C__40_ANSWERTRADEREQUEST = "[C] 40 AnswerTradeRequest";
-	//private static Logger _log = Logger.getLogger(AnswerTradeRequest.class.getName());
+	// private static Logger _log = Logger.getLogger(AnswerTradeRequest.class.getName());
 
 	private int _response;
 
@@ -44,50 +44,48 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-        if (player == null) return;
+		if (player == null)
+			return;
 
-        if (!player.getAccessLevel().allowTransaction())
-        {
-        	player.sendMessage("Transactions are disabled for your Access Level.");
-            sendPacket(new ActionFailed());
-            return;
-        }
-             // MODS Faction Good vs Evil
-                L2PcInstance player2 = player.getActiveRequester();
-                if (player2.isevil() && player.isgood()
-                && Config.MOD_GVE_ENABLE_FACTION)
-                {
-                player.sendMessage("You Cant Trade with Different Faction");
-                return;
-                }
-                if (player2.isgood() && player.isevil()
-                && Config.MOD_GVE_ENABLE_FACTION)
-                {
-                player.sendMessage("You Cant Trade with Different Faction");
-                return;
-                }
-         
+		if (!player.getAccessLevel().allowTransaction())
+		{
+			player.sendMessage("Transactions are disabled for your Access Level.");
+			sendPacket(new ActionFailed());
+			return;
+		}
+		// MODS Faction Good vs Evil
+		L2PcInstance player2 = player.getActiveRequester();
+		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			player.sendMessage("You Cant Trade with Different Faction");
+			return;
+		}
+		if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			player.sendMessage("You Cant Trade with Different Faction");
+			return;
+		}
 
-        L2PcInstance partner = player.getActiveRequester();
-        if (partner == null || L2World.getInstance().findObject(partner.getObjectId()) == null)
-        {
-            // Trade partner not found, cancel trade
+		L2PcInstance partner = player.getActiveRequester();
+		if (partner == null || L2World.getInstance().findObject(partner.getObjectId()) == null)
+		{
+			// Trade partner not found, cancel trade
 			player.sendPacket(new SendTradeDone(0));
-            SystemMessage msg = new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
-            player.sendPacket(msg);
+			SystemMessage msg = new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+			player.sendPacket(msg);
 			player.setActiveRequester(null);
-			player.setAllowTrade(true); 
+			player.setAllowTrade(true);
 			partner.setAllowTrade(true);
 			player.sendPacket(new ActionFailed());
-            return;
-        }
+			return;
+		}
 
-        if (_response == 1 && !partner.isRequestExpired())  
-        {  
-        	player.startTrade(partner);  
-        	partner.setAllowTrade(true);  
-        	player.setAllowTrade(true);  
-        }
+		if (_response == 1 && !partner.isRequestExpired())
+		{
+			player.startTrade(partner);
+			partner.setAllowTrade(true);
+			player.setAllowTrade(true);
+		}
 		else
 		{
 			SystemMessage msg = new SystemMessage(SystemMessageId.S1_DENIED_TRADE_REQUEST);
@@ -102,9 +100,6 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 		partner.onTransactionResponse();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

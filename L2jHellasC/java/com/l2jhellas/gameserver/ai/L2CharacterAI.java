@@ -346,9 +346,6 @@ public class L2CharacterAI extends AbstractAI
         moveTo(pos.x, pos.y, pos.z);
     }
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.ai.AbstractAI#onIntentionMoveToInABoat(com.l2jhellas.gameserver.model.L2CharPosition, com.l2jhellas.gameserver.model.L2CharPosition)
-     */
     @Override
     protected void onIntentionMoveToInABoat(L2CharPosition destination, L2CharPosition origin)
     {

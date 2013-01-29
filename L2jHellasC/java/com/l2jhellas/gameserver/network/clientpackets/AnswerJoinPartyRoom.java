@@ -16,38 +16,32 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
  * Format: (ch) d
- * @author  -Wooden-
  *
+ * @author -Wooden-
  */
 public final class AnswerJoinPartyRoom extends L2GameClientPacket
 {
-    private static final String _C__D0_15_ANSWERJOINPARTYROOM = "[C] D0:15 AnswerJoinPartyRoom";
-    @SuppressWarnings("unused")
+	private static final String _C__D0_15_ANSWERJOINPARTYROOM = "[C] D0:15 AnswerJoinPartyRoom";
+	@SuppressWarnings("unused")
 	private int _requesterID; // not tested, just guessed
 
-    @Override
+	@Override
 	protected void readImpl()
-    {
-        _requesterID = readD();
-    }
+	{
+		_requesterID = readD();
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
-    @Override
-    protected void runImpl()
-    {
-        // TODO
-        //System.out.println("C5:AnswerJoinPartyRoom: d: "+_requesterID);
-    }
+	@Override
+	protected void runImpl()
+	{
+		// TODO
+		// System.out.println("C5:AnswerJoinPartyRoom: d: "+_requesterID);
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.BasePacket#getType()
-     */
-    @Override
-    public String getType()
-    {
-        return _C__D0_15_ANSWERJOINPARTYROOM;
-    }
+	@Override
+	public String getType()
+	{
+		return _C__D0_15_ANSWERJOINPARTYROOM;
+	}
 
 }
