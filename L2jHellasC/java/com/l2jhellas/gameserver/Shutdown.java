@@ -436,7 +436,7 @@ public class Shutdown extends Thread
 				_secondsShut--;
 
 				int delay = 1000; // milliseconds
-				wait(delay);
+				Thread.sleep(delay);
 
 				if (_shutdownMode == ABORT)
 					break;

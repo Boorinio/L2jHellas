@@ -78,7 +78,7 @@ public class UserCommandHandler
 		registerUserCommandHandler(new ChannelListUpdate());
 		if (ExternalConfig.CUSTOM_PVP_INFO_USER_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED)
 			registerUserCommandHandler(new IUserCommandHandlerPvpInfo());
-		
+		if(Config.DEBUG)
 		_log.info("UserCommandHandler: Loaded " + _datatable.size() + " handlers in total.");
 		
 		return _datatable.get(new Integer(userCommand));
