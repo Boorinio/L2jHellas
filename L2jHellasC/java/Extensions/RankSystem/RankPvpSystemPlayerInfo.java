@@ -152,19 +152,42 @@ public class RankPvpSystemPlayerInfo
 
 		}
 
-		// legal/total kills
-		tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal/Total Kills</font></td>");
-		tb.append("<td width=135 height=22 align=left>");
-		tb.append("<font color=ffa000>" + targetPvpStats.getTotalKillsLegal() + " / " + targetPvpStats.getTotalKills() + "</font>");
-		tb.append("</td></tr>");
+		if (ExternalConfig.TOTAL_KILLS_IN_PVPINFO_ENABLED)
+		{
+			// legal/total kills:
+			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal/Total Kills</font></td>");
+			tb.append("<td width=135 height=22 align=left>");
+			tb.append("<font color=ffa000>" + targetPvpStats.getTotalKillsLegal() + " / " + targetPvpStats.getTotalKills() + "</font>");
+			tb.append("</td></tr>");
+		}
+		else
+		{
+			// legal kills:
+			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal Kills</font></td>");
+			tb.append("<td width=135 height=22 align=left>");
+			tb.append("<font color=ffa000>" + targetPvpStats.getTotalKillsLegal() + "</font>");
+			tb.append("</td></tr>");
+		}
 
 		if (ExternalConfig.CUSTOM_PVP_WAR_ENABLED)
 		{
-			// war legal/total kills
-			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal/Total War Kills</font></td>");
-			tb.append("<td width=135 height=22 align=left>");
-			tb.append("<font color=2080D0>" + targetPvpStats.getTotalWarKillsLegal() + " / " + targetPvpStats.getTotalWarKills() + "</font>");
-			tb.append("</td></tr>");
+
+			if (ExternalConfig.TOTAL_KILLS_IN_PVPINFO_ENABLED)
+			{
+				// war legal/total kills:
+				tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal/Total War Kills</font></td>");
+				tb.append("<td width=135 height=22 align=left>");
+				tb.append("<font color=2080D0>" + targetPvpStats.getTotalWarKillsLegal() + " / " + targetPvpStats.getTotalWarKills() + "</font>");
+				tb.append("</td></tr>");
+			}
+			else
+			{
+				// war legal kills:
+				tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal War Kills</font></td>");
+				tb.append("<td width=135 height=22 align=left>");
+				tb.append("<font color=2080D0>" + targetPvpStats.getTotalWarKillsLegal() + "</font>");
+				tb.append("</td></tr>");
+			}
 		}
 
 		// span
@@ -242,20 +265,32 @@ public class RankPvpSystemPlayerInfo
 
 		if (!player.equals(playerTarget))
 		{
-			// about player
 			tb.append("<table border=0 cellspacing=0 cellpadding=0>");
 
 			// span
 			tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 			tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
 
-			// name
-			tb.append("<tr><td width=135 height=22 align=left>");
-			tb.append("<font color=ae9977>Legal/Total Kills on Me</font>");
-			tb.append("</td>");
-			tb.append("<td width=135 height=22 align=left>");
-			tb.append("<font color=FF00FF>" + pvp1.getKillsLegal() + " / " + pvp1.getKills() + "</font>");
-			tb.append("</td></tr>");
+			if (ExternalConfig.TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED)
+			{
+				// legal/total kills on me:
+				tb.append("<tr><td width=135 height=22 align=left>");
+				tb.append("<font color=ae9977>Legal/Total Kills on Me</font>");
+				tb.append("</td>");
+				tb.append("<td width=135 height=22 align=left>");
+				tb.append("<font color=FF00FF>" + pvp1.getKillsLegal() + " / " + pvp1.getKills() + "</font>");
+				tb.append("</td></tr>");
+			}
+			else
+			{
+				// legal kills on me:
+				tb.append("<tr><td width=135 height=22 align=left>");
+				tb.append("<font color=ae9977>Legal Kills on Me</font>");
+				tb.append("</td>");
+				tb.append("<td width=135 height=22 align=left>");
+				tb.append("<font color=FF00FF>" + pvp1.getKillsLegal() + "</font>");
+				tb.append("</td></tr>");
+			}
 
 			tb.append("</table>");
 		}

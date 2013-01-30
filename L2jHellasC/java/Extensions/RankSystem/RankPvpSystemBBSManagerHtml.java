@@ -183,7 +183,7 @@ public final class RankPvpSystemBBSManagerHtml
 			if (!playerInfo)
 			{
 				tb2.append("<tr>");
-				tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You have not killed yet</td></tr></table></td>");
+				tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You are out of 500 or you have not killed yet</td></tr></table></td>");
 				tb2.append("</tr>");
 			}
 
@@ -300,7 +300,7 @@ public final class RankPvpSystemBBSManagerHtml
 
 	private String getRefreshTime()
 	{
-		if (ExternalConfig.TOP_TABLE_UPDATE_INTERVAL > 60000)
+		if (ExternalConfig.TOP_TABLE_UPDATE_INTERVAL >= 60000)
 		{
 			double time = (double) ExternalConfig.TOP_TABLE_UPDATE_INTERVAL / 60000;
 			return ((int) Math.floor(time)) + " minutes";

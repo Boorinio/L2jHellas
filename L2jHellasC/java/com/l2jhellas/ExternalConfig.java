@@ -116,6 +116,10 @@ public final class ExternalConfig
 	public static boolean CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED;
 	public static FastMap<Integer, Double> CUSTOM_PVP_RANK_POINTS_BONUS_ZONES;
 
+	public static boolean TOTAL_KILLS_IN_SHOUT_ENABLED;
+	public static boolean TOTAL_KILLS_IN_PVPINFO_ENABLED;
+	public static boolean TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED;
+
 	public static boolean CUSTOM_PVP_ANTI_FARM_CLAN_ALLY_ENABLED;
 	public static boolean CUSTOM_PVP_ANTI_FARM_PARTY_ENABLED;
 	public static boolean CUSTOM_PVP_ANTI_FARM_IP_ENABLED;
@@ -343,6 +347,11 @@ public final class ExternalConfig
 					}
 				}
 			}
+
+			TOTAL_KILLS_IN_SHOUT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TotalKillsInShoutEnabled", "true"));
+			TOTAL_KILLS_IN_PVPINFO_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TotalKillsInPvpInfoEnabled", "true"));
+			TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TotalKillsOnMeInPvpInfoEnabled", "true"));
+
 			CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankPointsRewardEnabled", "true"));
 
 			CUSTOM_PVP_ANTI_FARM_CLAN_ALLY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpAntiFarmClanAllyEnabled", "true"));

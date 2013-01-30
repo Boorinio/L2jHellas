@@ -91,7 +91,7 @@ public class TopTable
 			con = L2DatabaseFactory.getInstance().getConnection();
 
 			// get top killers:
-			statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(kills_legal) as col5 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 ORDER BY col5 DESC;");
+			statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(kills_legal) as col5 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 ORDER BY col5 DESC LIMIT 500;");
 			rset = statement.executeQuery();
 
 			while (rset.next())
@@ -110,7 +110,7 @@ public class TopTable
 			}
 
 			// get top RP gatherers:
-			statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(rank_points) as col5 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 ORDER BY col5 DESC;");
+			statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(rank_points) as col5 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 ORDER BY col5 DESC LIMIT 500;");
 			rset = statement.executeQuery();
 
 			while (rset.next())
@@ -165,11 +165,14 @@ public class TopTable
 		@Override
 		public void run()
 		{
-			if (true)
+			if (!TopTable.getInstance().isUpdating())
 			{
 				TopTable.getInstance().updateTopTable();
 			}
-			ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), ExternalConfig.TOP_TABLE_UPDATE_INTERVAL);
+			else
+			{
+				ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), ExternalConfig.TOP_TABLE_UPDATE_INTERVAL);
+			}
 		}
 	}
 

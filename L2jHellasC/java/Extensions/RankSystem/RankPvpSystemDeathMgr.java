@@ -13,6 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package Extensions.RankSystem;
+
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
@@ -22,7 +23,6 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-
 
 /**
  * @author Masterio

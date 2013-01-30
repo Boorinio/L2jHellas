@@ -20,7 +20,10 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 /**
@@ -33,10 +36,32 @@ public class RankPvpSystem
 	private L2PcInstance killer = null;
 	private L2PcInstance victim = null;
 
-	public RankPvpSystem(L2PcInstance killer, L2PcInstance victim)
+	public RankPvpSystem(L2Character killer, L2PcInstance victim)
 	{
-		this.setKiller(killer);
-		this.setVictim(victim);
+
+		// killer can be a Player, Pet or Summon:
+		if (killer != null && killer instanceof L2PcInstance)
+		{
+			setKiller((L2PcInstance) killer);
+
+		}
+		else if (killer != null && killer instanceof L2PetInstance && ((L2PetInstance) killer).getOwner() != null)
+		{
+			setKiller(((L2PetInstance) killer).getOwner());
+
+		}
+		else if (killer != null && killer instanceof L2SummonInstance && ((L2SummonInstance) killer).getOwner() != null)
+		{
+			setKiller(((L2SummonInstance) killer).getOwner());
+
+		}
+		else
+		{
+			return;
+
+		}
+
+		setVictim(victim);
 	}
 
 	/**
@@ -200,33 +225,67 @@ public class RankPvpSystem
 	private void shoutPvpMessage(Pvp pvp)
 	{
 
-		if (pvp.getKills() > 1)
+		if (ExternalConfig.TOTAL_KILLS_IN_SHOUT_ENABLED)
 		{
-			String timeStr1 = " times";
-			if (pvp.getKillsToday() == 1)
+			if (pvp.getKills() > 1)
 			{
-				timeStr1 = "st time";
-			}
-			String msgVictim1 = killer.getName() + " killed you " + pvp.getKills() + " times.";
-			String msgVictim2 = killer.getName() + " killed you " + pvp.getKills() + " times ( " + pvp.getKillsToday() + "" + timeStr1 + " today ).";
-			String msgKiller1 = "You have killed " + victim.getName() + " " + pvp.getKills() + " times.";
-			String msgKiller2 = "You have killed " + victim.getName() + " " + pvp.getKills() + " times ( " + pvp.getKillsToday() + "" + timeStr1 + " today ).";
+				String timeStr1 = " times";
+				if (pvp.getKillsToday() == 1)
+				{
+					timeStr1 = "st time";
+				}
+				String msgVictim1 = killer.getName() + " killed you " + pvp.getKills() + " times.";
+				String msgVictim2 = killer.getName() + " killed you " + pvp.getKills() + " times ( " + pvp.getKillsToday() + "" + timeStr1 + " today ).";
+				String msgKiller1 = "You have killed " + victim.getName() + " " + pvp.getKills() + " times.";
+				String msgKiller2 = "You have killed " + victim.getName() + " " + pvp.getKills() + " times ( " + pvp.getKillsToday() + "" + timeStr1 + " today ).";
 
-			if (ExternalConfig.CUSTOM_PVP_PROTECTION_RESET == 0)
-			{
-				victim.sendMessage(msgVictim1);
-				killer.sendMessage(msgKiller1);
+				if (ExternalConfig.CUSTOM_PVP_PROTECTION_RESET == 0)
+				{
+					victim.sendMessage(msgVictim1);
+					killer.sendMessage(msgKiller1);
+				}
+				else
+				{
+					victim.sendMessage(msgVictim2);
+					killer.sendMessage(msgKiller2);
+				}
 			}
 			else
 			{
-				victim.sendMessage(msgVictim2);
-				killer.sendMessage(msgKiller2);
+				victim.sendMessage("This is the first time you have been killed by " + killer.getName() + ".");
+				killer.sendMessage("You have killed " + victim.getName() + " for the first time.");
 			}
 		}
 		else
 		{
-			victim.sendMessage("This is the first time you have been killed by " + killer.getName() + ".");
-			killer.sendMessage("You have killed " + victim.getName() + " for the first time.");
+			if (pvp.getKillsLegal() > 1)
+			{
+				String timeStr1 = " times";
+				if (pvp.getKillsLegalToday() == 1)
+				{
+					timeStr1 = "st time";
+				}
+				String msgVictim1 = killer.getName() + " killed you " + pvp.getKillsLegal() + " times legally.";
+				String msgVictim2 = killer.getName() + " killed you " + pvp.getKillsLegal() + " times ( " + pvp.getKillsLegalToday() + "" + timeStr1 + " today ) legally.";
+				String msgKiller1 = "You have killed " + victim.getName() + " " + pvp.getKillsLegal() + " times legally.";
+				String msgKiller2 = "You have killed " + victim.getName() + " " + pvp.getKillsLegal() + " times ( " + pvp.getKillsLegalToday() + "" + timeStr1 + " today ) legally.";
+
+				if (ExternalConfig.CUSTOM_PVP_PROTECTION_RESET == 0)
+				{
+					victim.sendMessage(msgVictim1);
+					killer.sendMessage(msgKiller1);
+				}
+				else
+				{
+					victim.sendMessage(msgVictim2);
+					killer.sendMessage(msgKiller2);
+				}
+			}
+			else
+			{
+				victim.sendMessage("This is the first time you have been killed by " + killer.getName() + " legally.");
+				killer.sendMessage("You have killed " + victim.getName() + " for the first time legally.");
+			}
 		}
 
 	}
@@ -458,8 +517,7 @@ public class RankPvpSystem
 		// 3: check time protection:
 		if (timeProtectionOn)
 		{
-			killer.sendMessage("Reward has been awarded for kill this player!");
-			killer.sendMessage("Next for " + nextRewardTime);
+			killer.sendMessage("Reward protection is on for " + nextRewardTime);
 			return false;
 		}
 
@@ -509,8 +567,7 @@ public class RankPvpSystem
 		// 3: check time protection:
 		if (timeProtectionOn)
 		{
-			killer.sendMessage("Rank Points has been awarded for kill this player!");
-			killer.sendMessage("Next for " + nextRewardTime);
+			killer.sendMessage("Rank Points protection is on for " + nextRewardTime);
 			return false;
 		}
 

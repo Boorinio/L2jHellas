@@ -38,14 +38,14 @@ public class RankPvpSystemPointsReward
 		setRankPoints(PvpTable.getInstance().getPvpStats(_player.getObjectId()).getTotalRankPoints());
 
 		// get reward list length:
-		setRankRewardsCount(CharacterRankRewardTable.getInstance().getRewardsCount(player.getObjectId(), _rankPoints));
+		setRankRewardsCount(RankCharacterRewardTable.getInstance().getRewardsCount(player.getObjectId(), _rankPoints));
 	}
 
 	public void addRankRewardsToInventory()
 	{
 
 		// get reward list:
-		FastMap<Integer, CharacterRankReward> rewardsAwarded = CharacterRankRewardTable.getInstance().getRewardsList(_player.getObjectId(), getRankPoints());
+		FastMap<Integer, CharacterRankReward> rewardsAwarded = RankCharacterRewardTable.getInstance().getRewardsList(_player.getObjectId(), getRankPoints());
 
 		// queries:
 		String[] queries = new String[rewardsAwarded.size() + 1];
@@ -58,13 +58,13 @@ public class RankPvpSystemPointsReward
 		}
 
 		// try update database and give rewards to player:
-		if (CharacterRankRewardTable.getInstance().insertCharacterRewardListIntoDB(queries))
+		if (RankCharacterRewardTable.getInstance().insertCharacterRewardListIntoDB(queries))
 		{
 			for (FastMap.Entry<Integer, CharacterRankReward> e = rewardsAwarded.head(), end = rewardsAwarded.tail(); (e = e.getNext()) != end;)
 			{
 
 				_player.addItem("RankReward", e.getValue().getItemId(), e.getValue().getItemAmount(), null, true);
-				CharacterRankRewardTable.getInstance().addReward(e.getValue());
+				RankCharacterRewardTable.getInstance().addReward(e.getValue());
 			}
 		}
 	}

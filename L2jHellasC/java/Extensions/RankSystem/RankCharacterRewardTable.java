@@ -28,14 +28,14 @@ import com.l2jhellas.L2DatabaseFactory;
 /**
  * @author Masterio
  */
-public class CharacterRankRewardTable
+public class RankCharacterRewardTable
 {
-	private static CharacterRankRewardTable _instance = null;
+	private static RankCharacterRewardTable _instance = null;
 
 	/** <id, CharacterRankReward> contains already taken rewards by players */
 	private FastMap<Integer, CharacterRankReward> _characterRankRewardTable = new FastMap<Integer, CharacterRankReward>();
 
-	private CharacterRankRewardTable()
+	private RankCharacterRewardTable()
 	{
 		Calendar c = Calendar.getInstance();
 		long startTime = c.getTimeInMillis();
@@ -48,11 +48,11 @@ public class CharacterRankRewardTable
 
 	}
 
-	public static CharacterRankRewardTable getInstance()
+	public static RankCharacterRewardTable getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new CharacterRankRewardTable();
+			_instance = new RankCharacterRewardTable();
 		}
 
 		return _instance;
@@ -223,7 +223,10 @@ public class CharacterRankRewardTable
 			e.printStackTrace();
 			try
 			{
-				conn.rollback();
+				if (conn != null)
+				{
+					conn.rollback();
+				}
 			}
 			catch (SQLException e1)
 			{

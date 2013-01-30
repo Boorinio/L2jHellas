@@ -24,7 +24,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import Extensions.Balancer.BalanceLoad;
-import Extensions.RankSystem.CharacterRankRewardTable;
+import Extensions.RankSystem.RankCharacterRewardTable;
 import Extensions.RankSystem.PvpTable;
 import Extensions.RankSystem.RankRewardTable;
 import Extensions.RankSystem.TopTable;
@@ -449,7 +449,7 @@ public class GameServer
 		Hitman.start();
 		VoteMain.load();
 		PvpTable.getInstance();
-		CharacterRankRewardTable.getInstance();
+		RankCharacterRewardTable.getInstance();
 		RankRewardTable.getInstance();
 		TopTable.getInstance();
 		if (ExternalConfig.ENABLED_RCON)

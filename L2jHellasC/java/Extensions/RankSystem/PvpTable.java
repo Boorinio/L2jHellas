@@ -379,8 +379,15 @@ public class PvpTable
 		@Override
 		public void run()
 		{
-			PvpTable.getInstance().updateDB();
-			ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), ExternalConfig.PVP_TABLE_UPDATE_INTERVAL);
+			if (!TopTable.getInstance().isUpdating())
+			{
+				PvpTable.getInstance().updateDB();
+				ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), ExternalConfig.PVP_TABLE_UPDATE_INTERVAL);
+			}
+			else
+			{
+				ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), 30000);
+			}
 		}
 	}
 }
