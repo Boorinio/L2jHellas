@@ -18,6 +18,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.CharTemplateTable;
 import com.l2jhellas.gameserver.datatables.NpcTable;
 import com.l2jhellas.gameserver.model.Inventory;
@@ -30,8 +31,10 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
@@ -61,6 +64,14 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 	@Override
 	public void onAction(L2PcInstance player)
 	{
+		if (this != player.getTarget())
+	    {
+	        player.setTarget(this);
+	        player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
+	        player.sendPacket(new ValidateLocation(this));
+	    }
+	    else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+	    {
 		if (Config.DEBUG)
 			_log.fine("ClassMaster activated");
 
@@ -135,6 +146,12 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 			player.sendPacket(html);
 		}
 		player.sendPacket(new ActionFailed());
+	    }
+	    else
+	    {
+	        player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+	        player.sendPacket(new ActionFailed());
+	    }
 	}
 
 	@Override

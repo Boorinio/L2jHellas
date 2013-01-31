@@ -20,9 +20,15 @@ import java.io.FileWriter;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
+import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
+import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.Rnd;
 
 import javolution.text.TextBuilder;
 
@@ -105,10 +111,26 @@ public class L2DonateInstance extends L2FolkInstance
 	  @Override
 	public void onAction(L2PcInstance player)
 	  {
-	    if (!canTarget(player)) {
-	      return;
-	    }
-	      showHtmlWindow(player);
+		  if (this != player.getTarget())
+		    {
+		        player.setTarget(this);
+		        player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
+		        player.sendPacket(new ValidateLocation(this));
+		    }
+		    else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+		    {
+		        SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
+		        broadcastPacket(sa);
+		        player.setLastFolkNPC(this);
+		        showHtmlWindow(player);
+		        player.sendPacket(new ActionFailed());
+		    }
+		    else
+		    {
+		        player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+		        player.sendPacket(new ActionFailed());
+		    }
+	      
 	  }
 	
 	  private void showHtmlWindow(L2PcInstance activeChar)

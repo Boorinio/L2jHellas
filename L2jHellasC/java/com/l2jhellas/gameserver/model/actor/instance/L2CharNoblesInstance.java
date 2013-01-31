@@ -19,14 +19,17 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.ItemTable;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.Rnd;
 
 /**
  * @author Unknown
@@ -35,7 +38,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 public class L2CharNoblesInstance extends L2NpcInstance
 {
 	/* Main Menu */
-	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>" + "<center><img src=\"noico.herotower_deco\" width=\"256\" height=\"32\"><br><br><br>" + "<button value=\"Nobles\" action=\"bypass -h npc_%objectId%_showwindow 1\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br><br>" + "</body></html>";
+	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>" + "<center><br><br><br>" + "<button value=\"Nobles\" action=\"bypass -h npc_%objectId%_showwindow 1\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br><br>" + "</body></html>";
 	
 	public L2CharNoblesInstance(int objectId, L2NpcTemplate template)
 	{
@@ -64,29 +67,28 @@ public class L2CharNoblesInstance extends L2NpcInstance
 	@Override
 	public void onAction(L2PcInstance player)
 	{
-		if (!canTarget(player))
-			return;
 		if (this != player.getTarget())
-		{
-			player.setTarget(this);
-			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
-			player.sendPacket(my);
-			player.sendPacket(new ValidateLocation(this));
-		}
-		else
-		{
-			if (!canInteract(player))
-			{
+	    {
+	        player.setTarget(this);
+	        player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
+	        player.sendPacket(new ValidateLocation(this));
+	    }
+	    else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+	    {
+	        SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
+	        broadcastPacket(sa);
+	        NpcHtmlMessage html = new NpcHtmlMessage(1);
+			html.setHtml(NPC_MENU);
+			sendHtmlMessage(player, html);
+	        player.sendPacket(new ActionFailed());
+	    }
+	    else
+	    {
+	        player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+	        player.sendPacket(new ActionFailed());
+	    }
 				
-			}
-			else
-			{
-				NpcHtmlMessage html = new NpcHtmlMessage(1);
-				html.setHtml(NPC_MENU);
-				sendHtmlMessage(player, html);
-			}
-		}
-		player.sendPacket(ActionFailed.STATIC_PACKET);
+	
 	}
 	
 	private void sendHtmlMessage(L2PcInstance player, NpcHtmlMessage html)

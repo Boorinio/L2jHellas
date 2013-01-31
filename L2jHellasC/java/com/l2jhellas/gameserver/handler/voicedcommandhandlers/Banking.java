@@ -18,6 +18,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 
 /**
  * This class trades Gold Bars for Adena and vice versa.
@@ -47,6 +48,8 @@ public class Banking implements IVoicedCommandHandler
 				activeChar.getInventory().updateDatabase();
 				activeChar.sendPacket(iu);
 				activeChar.sendMessage("Thank you, you now have " + Config.BANKING_SYSTEM_GOLDBARS + " Goldbar(s), and " + Config.BANKING_SYSTEM_ADENA + " less adena.");
+				ItemList il = new ItemList(activeChar.getClient().getActiveChar(), true);
+				activeChar.sendPacket(il);
 			}
 			else
 			{
@@ -63,6 +66,8 @@ public class Banking implements IVoicedCommandHandler
 				activeChar.getInventory().updateDatabase();
 				activeChar.sendPacket(iu);
 				activeChar.sendMessage("Thank you, you now have " + Config.BANKING_SYSTEM_ADENA + " Adena, and " + Config.BANKING_SYSTEM_GOLDBARS + " less Goldbar(s).");
+				ItemList il = new ItemList(activeChar.getClient().getActiveChar(), true);
+				activeChar.sendPacket(il);
 			}
 			else
 			{
