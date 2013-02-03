@@ -325,9 +325,12 @@ public class L2Party
 
 			if (getPartyMembers().size() == 1)
 			{
+				if(getLeader()!=null)
+				{
 				getLeader().setParty(null);
 				if (getLeader().isInDuel())
 					DuelManager.getInstance().onRemoveFromParty(getLeader());
+				}
 			}
 		}
 	}

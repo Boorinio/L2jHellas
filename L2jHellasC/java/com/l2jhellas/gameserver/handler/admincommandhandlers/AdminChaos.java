@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.ChaosEvent;
+import com.l2jhellas.gameserver.model.entity.engines.ChaosEvent;
 import com.l2jhellas.gameserver.network.clientpackets.EnterWorld;
 
 /**

@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.handler.voicedcommandhandlers;
 
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.QuizEvent;
+import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 
 /**
  * @author Pauler

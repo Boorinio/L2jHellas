@@ -19,8 +19,8 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.entity.Hitman;
 import com.l2jhellas.gameserver.model.entity.PlayerToAssasinate;
+import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 

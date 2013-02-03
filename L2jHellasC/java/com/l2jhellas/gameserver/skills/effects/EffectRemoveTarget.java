@@ -15,6 +15,8 @@
 package com.l2jhellas.gameserver.skills.effects;
 
 import com.l2jhellas.gameserver.model.L2Effect;
+import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.skills.Env;
 
 /**
@@ -38,6 +40,11 @@ public class EffectRemoveTarget extends L2Effect
     @Override
 	public boolean onStart()
     {
+    	if (getEffected() instanceof L2GrandBossInstance||getEffected() instanceof L2RaidBossInstance )
+    	{
+    		return false;
+    	}
+			
         getEffected().setTarget(null);
         getEffected().abortAttack();
         getEffected().abortCast();
