@@ -538,7 +538,7 @@ public class Shutdown extends Thread
 		try
 		{
 			int delay = 5000;
-			wait(delay);
+			 Thread.sleep(delay);
 		}
 		catch (InterruptedException e)
 		{

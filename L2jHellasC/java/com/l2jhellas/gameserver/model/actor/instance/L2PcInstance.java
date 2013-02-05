@@ -43,7 +43,6 @@ import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
-import com.l2jhellas.gameserver.GeoData;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.LoginServerThread;
@@ -73,6 +72,7 @@ import com.l2jhellas.gameserver.datatables.NobleSkillTable;
 import com.l2jhellas.gameserver.datatables.NpcTable;
 import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.handler.skillhandlers.SiegeFlag;
@@ -9176,23 +9176,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		// GeoData Los Check here
-		if (skill.getCastRange() > 0)
+		if(skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
 		{
-			if (sklTargetType == L2SkillTargetType.TARGET_SIGNET_GROUND)
-			{
-				if (!GeoData.getInstance().canSeePosition(this, worldPosition))
-				{
-					sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
-					sendPacket(new ActionFailed());
-					return;
-				}
-			}
-			else if (!GeoData.getInstance().canSeeTarget(this, target))
-			{
-				sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
-				sendPacket(new ActionFailed());
-				return;
-			}
+			sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
+			sendPacket(ActionFailed.STATIC_PACKET);
+			return;
 		}
 
 		// If all conditions are checked, create a new SkillDat object and set

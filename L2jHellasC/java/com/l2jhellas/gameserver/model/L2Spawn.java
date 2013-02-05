@@ -22,9 +22,9 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GeoData;
 import com.l2jhellas.gameserver.Territory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
@@ -439,9 +439,9 @@ public class L2Spawn
 			// L2FeedableBeastInstance, L2TamedBeastInstance, L2FolkInstance or L2TvTEventNpcInstance)
 			Object  tmp = _constructor.newInstance(parameters);
 
-			// Must be done before object is spawned into visible world 
+			// Must be done before object is spawned into visible world
 		 	((L2Object) tmp).setInstanceId(_instanceId);
-			
+
 			// Check if the Instance is a L2NpcInstance
 			if (!(tmp instanceof L2NpcInstance))
 				return mob;
@@ -521,7 +521,7 @@ public class L2Spawn
 		{
 			mob.setChampion(false);
 		}
-        
+
         // Reset decay info
         mob.setDecayed(false);
 
@@ -602,13 +602,13 @@ public class L2Spawn
     {
 	    return _template;
     }
-    public int getInstanceId() 
-    { 
-       return _instanceId; 
-    } 
-	 
-    public void setInstanceId(int instanceId) 
-     { 
-       _instanceId = instanceId; 
+    public int getInstanceId()
+    {
+       return _instanceId;
+    }
+
+    public void setInstanceId(int instanceId)
+     {
+       _instanceId = instanceId;
      }
 }

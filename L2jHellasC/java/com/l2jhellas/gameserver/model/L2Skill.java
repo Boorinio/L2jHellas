@@ -22,10 +22,10 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GeoData;
 import com.l2jhellas.gameserver.datatables.HeroSkillTable;
 import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ChestInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
@@ -74,11 +74,11 @@ public abstract class L2Skill
     public static final int SKILL_FAKE_DEX = 9005;
     public static final int SKILL_FAKE_STR = 9006;
 
-    public static enum SkillOpType 
+    public static enum SkillOpType
     {
-        OP_PASSIVE, 
-        OP_ACTIVE, 
-        OP_TOGGLE, 
+        OP_PASSIVE,
+        OP_ACTIVE,
+        OP_TOGGLE,
         OP_CHANCE
     }
 
@@ -254,7 +254,7 @@ public abstract class L2Skill
     private final boolean _ispotion;
     private final int _element;
     private final int _savevs;
-	
+
 	private final int _initialEffectDelay;
 
     private final boolean _isSuicideAttack;
@@ -327,7 +327,7 @@ public abstract class L2Skill
 
         _castRange = set.getInteger("castRange", 0);
         _effectRange = set.getInteger("effectRange", -1);
-        
+
         _hitTime = set.getInteger("hitTime", 0);
         _coolTime = set.getInteger("coolTime", 0);
         _isDebuff = set.getBool("isDebuff", false);
@@ -379,7 +379,7 @@ public abstract class L2Skill
         _bestow = set.getBool("bestowTriggered", false);
         _bestowed = set.getBool("bestowed", false);
         _forceId = set.getInteger("forceId", 0);
-        
+
         if (_operateType == SkillOpType.OP_CHANCE)
         	_chanceCondition = ChanceCondition.parse(set);
 
@@ -492,10 +492,10 @@ public abstract class L2Skill
     {
         return _overhit;
     }
-    
+
     public final boolean isCancelIfHit()
     {
-        return _cancelIfHit; 
+        return _cancelIfHit;
     }
 
     public final boolean isSuicideAttack()
@@ -516,12 +516,12 @@ public abstract class L2Skill
     {
         return _power;
     }
-    
+
     public final double getAbnormal()
     {
         return _abnormalLvl;
     }
-    
+
     public final double getNegateLvl()
     {
         return _negateLvl;
@@ -569,7 +569,7 @@ public abstract class L2Skill
     {
         return _effectId;
     }
-    
+
     /**
      * Return the additional effect level.<BR><BR>
      */
@@ -625,7 +625,7 @@ public abstract class L2Skill
     {
         return _id;
     }
-    
+
     /**
      * @return Returns the boolean _isDebuff.
      */
@@ -658,22 +658,22 @@ public abstract class L2Skill
     {
     	 return _bestow;
     }
-    
+
     public boolean bestowed()
     {
     	return _bestowed;
     }
-    
+
     public boolean triggerAnotherSkill()
     {
     	return _triggeredId > 1;
     }
-    
+
     public int getForceId()
     {
         return _forceId;
     }
-    
+
     /**
      * Return the additional Skill end time. <BR><BR>
      */
@@ -845,7 +845,7 @@ public abstract class L2Skill
     {
         return _operateType == SkillOpType.OP_TOGGLE;
     }
-    
+
     public final boolean isChance()
     {
         return _operateType == SkillOpType.OP_CHANCE;
@@ -875,7 +875,7 @@ public abstract class L2Skill
     {
         return _aggroPoints;
     }
-    
+
     public final boolean useSoulShot()
     {
         return ((getSkillType() == L2SkillType.PDAM) || (getSkillType() == L2SkillType.STUN) || (getSkillType() == L2SkillType.CHARGEDAM) || (getSkillType() == L2SkillType.BLOW));
@@ -924,8 +924,8 @@ public abstract class L2Skill
         return _teachers == null || _teachers.contains(npcId);
     }
 
-    public int getMinPledgeClass() 
-    { 
+    public int getMinPledgeClass()
+    {
     	return _minPledgeClass;
     }
 
@@ -980,7 +980,7 @@ public abstract class L2Skill
     {
     	return _baseCritRate;
     }
-    
+
     public final int getLethalChance1()
     {
     	return _lethalEffect1;
@@ -1149,23 +1149,23 @@ public abstract class L2Skill
                 boolean canTargetSelf = false;
                 switch(skillType)
                 {
-                    case BUFF: 
-                    case HEAL: 
-                    case HOT: 
+                    case BUFF:
+                    case HEAL:
+                    case HOT:
                     case HEAL_PERCENT:
-                    case MANARECHARGE: 
-                    case MANAHEAL: 
+                    case MANARECHARGE:
+                    case MANAHEAL:
                     case NEGATE:
-                    case REFLECT: 
-                    case UNBLEED: 
+                    case REFLECT:
+                    case UNBLEED:
                     case UNPOISON:
-                    case SEED: 
-                    case COMBATPOINTHEAL: 
-                    case MAGE_BANE: 
+                    case SEED:
+                    case COMBATPOINTHEAL:
+                    case MAGE_BANE:
                     case WARRIOR_BANE:
-                    case BETRAY: 
-                    case BALANCE_LIFE: 
-                    case FORCE_BUFF: 
+                    case BETRAY:
+                    case BALANCE_LIFE:
+                    case FORCE_BUFF:
                     case GIVE_SP:
                     canTargetSelf = true;
                     break;
@@ -1247,7 +1247,7 @@ public abstract class L2Skill
 	                    	if (src.isevil() && (obj instanceof L2PcInstance && ((L2PcInstance)obj).isevil() || obj instanceof L2Summon && ((L2Summon)obj).getOwner().isevil()))
 	                    		continue;
                     	}
-                    		
+
                         // Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met
                         if (obj == activeChar || obj == src) continue;
                     	if (src != null)
@@ -1336,7 +1336,7 @@ public abstract class L2Skill
 	                	if (src.isevil() && (obj instanceof L2PcInstance && ((L2PcInstance)obj).isevil() || obj instanceof L2Summon && ((L2Summon)obj).getOwner().isevil()))
 	                		continue;
                     }
-                    
+
                     if (!GeoData.getInstance().canSeeTarget(activeChar, target))
             			continue;
 
@@ -1357,7 +1357,7 @@ public abstract class L2Skill
                                     continue;
 
                                 if(trg.isInsideZone(L2Character.ZONE_PEACE)) continue;
-                                
+
                                 if(!srcInArena && !(trg.isInsideZone(L2Character.ZONE_PVP) && !trg.isInsideZone(L2Character.ZONE_SIEGE)))
                                 {
                                     if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
@@ -1396,7 +1396,7 @@ public abstract class L2Skill
                                 	if(!src.checkPvpSkill(trg, this))
                                 		continue;
                                 }
-                                
+
                             	if (((L2Summon)obj).isInsideZone(L2Character.ZONE_PEACE)) continue;
                             }
                         }
@@ -1573,9 +1573,9 @@ public abstract class L2Skill
                             continue;
                             if ((((L2PcInstance) newTarget).getAllyId() == 0 || ((L2PcInstance) newTarget).getAllyId() != player.getAllyId()) && (((L2PcInstance) newTarget).getClan() == null || ((L2PcInstance) newTarget).getClanId() != player.getClanId()))
                                 continue;
-                            if (player.isInDuel() && (player.getDuelId() != ((L2PcInstance)newTarget).getDuelId() || (player.getParty() != null && !player.getParty().getPartyMembers().contains(newTarget)))) 
+                            if (player.isInDuel() && (player.getDuelId() != ((L2PcInstance)newTarget).getDuelId() || (player.getParty() != null && !player.getParty().getPartyMembers().contains(newTarget))))
                             	continue;
-                            
+
                           //check if allow interference is allowed if player is not on event but target is on event
     						if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE)) && !player.isGM())
     						{
@@ -1583,10 +1583,10 @@ public abstract class L2Skill
     							if ((newTarget._inEventCTF && !player._inEventCTF) || (!newTarget._inEventCTF && player._inEventCTF)) continue;
     							else if ((newTarget._inEventDM && !player._inEventDM) || (!newTarget._inEventDM && player._inEventDM)) continue;
     						}
-    						
+
                             if (targetType == L2SkillTargetType.TARGET_CORPSE_ALLY)
                             {
-                                if (!((L2PcInstance) newTarget).isDead()) 
+                                if (!((L2PcInstance) newTarget).isDead())
                                 	continue;
                             	if (getSkillType() == L2SkillType.RESURRECT)
                             	{
@@ -1647,9 +1647,9 @@ public abstract class L2Skill
                                  		continue;
                             	}
                             }
-                            if (player.isInDuel() && (player.getDuelId() != newTarget.getDuelId() || (player.getParty() != null && !player.getParty().getPartyMembers().contains(newTarget)))) 
+                            if (player.isInDuel() && (player.getDuelId() != newTarget.getDuelId() || (player.getParty() != null && !player.getParty().getPartyMembers().contains(newTarget))))
                             	continue;
-                            
+
                             if (!Util.checkIfInRange(radius, activeChar, newTarget, true)) continue;
 
                             // Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met
@@ -1779,7 +1779,7 @@ public abstract class L2Skill
                         		continue;
 
                     		if(trg.isInsideZone(L2Character.ZONE_PEACE)) continue;
-                    		
+
                         	if(!srcInArena && !(trg.isInsideZone(L2Character.ZONE_PVP) && !trg.isInsideZone(L2Character.ZONE_SIEGE)))
                         	{
                         		if(src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
@@ -1817,7 +1817,7 @@ public abstract class L2Skill
                         		if(!src.checkPvpSkill(trg, this))
                         			continue;
                         	}
-                        	
+
                         	if (((L2Summon)obj).isInsideZone(L2Character.ZONE_PEACE)) continue;
                         }
 
@@ -2012,9 +2012,9 @@ public abstract class L2Skill
             return _emptyEffectSet;
 
         List<L2Effect> effects = new FastList<L2Effect>();
-        
+
         boolean skillMastery = false;
-        
+
         if (!isToggle() && Formulas.getInstance().calcSkillMastery(effector))
         	skillMastery = true;
 
@@ -2033,7 +2033,7 @@ public abstract class L2Skill
 
         return effects.toArray(new L2Effect[effects.size()]);
     }
-   
+
     public final L2Effect[] getEffectsSelf(L2Character effector)
     {
         if (isPassive()) return _emptyEffectSet;

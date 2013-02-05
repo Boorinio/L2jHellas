@@ -18,8 +18,8 @@ import java.util.List;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.gameserver.GeoData;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -96,7 +96,7 @@ public class L2ControlTowerInstance extends L2NpcInstance {
 			{
 				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
 				player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-				
+
 				// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 				player.sendPacket(new ActionFailed());
 			}

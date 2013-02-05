@@ -17,11 +17,12 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.List;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.geodata.pathfinding.AbstractNodeLoc;
+import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.geonodes.GeoPathFinding;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.pathfinding.AbstractNodeLoc;
-import com.l2jhellas.gameserver.pathfinding.geonodes.GeoPathFinding;
 
 public class AdminPathNode implements IAdminCommandHandler
 {
@@ -62,13 +63,13 @@ public class AdminPathNode implements IAdminCommandHandler
 				int gy = (activeChar.getY() - L2World.MAP_MIN_Y) >> 4;
 				int gtx = (activeChar.getTarget().getX() - L2World.MAP_MIN_X) >> 4;
 				int gty = (activeChar.getTarget().getY() - L2World.MAP_MIN_Y) >> 4;
-				List<AbstractNodeLoc> path = GeoPathFinding.getInstance().findPath(gx, gy, (short) activeChar.getZ(), gtx, gty, (short) activeChar.getTarget().getZ());
+				Node[] path = GeoPathFinding.getInstance().findPath(gx, gy, (short) activeChar.getZ(), gtx, gty, (short) activeChar.getTarget().getZ());
 				if (path == null)
 				{
 					activeChar.sendMessage("No Route!");
 					return true;
 				}
-				for (AbstractNodeLoc a : path)
+				for (Node a : path)
 				{
 					activeChar.sendMessage("x:" + a.getX() + " y:" + a.getY() + " z:" + a.getZ());
 				}

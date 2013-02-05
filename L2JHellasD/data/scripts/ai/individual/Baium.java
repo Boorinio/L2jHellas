@@ -22,7 +22,7 @@ import java.util.Collection;
 import javolution.util.FastList;
 import ai.group_template.L2AttackableAIScript;
 
-import com.l2jhellas.gameserver.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;

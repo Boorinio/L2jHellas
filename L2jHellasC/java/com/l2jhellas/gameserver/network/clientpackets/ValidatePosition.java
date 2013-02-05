@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.Universe;
-import com.l2jhellas.gameserver.geoeditorcon.GeoEditorListener;
+import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;

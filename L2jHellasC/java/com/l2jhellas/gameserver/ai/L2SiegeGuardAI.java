@@ -22,8 +22,8 @@ import java.util.concurrent.Future;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameTimeController;
-import com.l2jhellas.gameserver.GeoData;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;

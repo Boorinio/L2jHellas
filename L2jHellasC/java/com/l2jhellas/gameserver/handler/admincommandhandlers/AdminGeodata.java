@@ -15,8 +15,8 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GeoData;
-import com.l2jhellas.gameserver.GeoEngine;
+import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;

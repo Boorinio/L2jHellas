@@ -1,50 +1,52 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * http://www.gnu.org/copyleft/gpl.html
  */
-package com.l2jhellas.gameserver.geoeditorcon;
+package com.l2jhellas.gameserver.geodata.geoeditorcon;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * @author Luno, Dezmond
- */
 public class GeoEditorThread extends Thread
 {
-	private static Logger _log = Logger.getLogger(GeoEditorThread.class
-			.getName());
+	protected static final Logger _log = Logger.getLogger(GeoEditorThread.class.getName());
 
 	private boolean _working = false;
 
-	private int _mode = 0; // 0 - don't send coords, 1 - send each
+	private int _mode = 0;	// 0 - don't send coords, 1 - send each
 
 	// validateposition from client, 2 - send in
 	// intervals of _sendDelay ms.
-	private int _sendDelay = 1000; // default - once in second
+	private int _sendDelay = 1000;	// default - once in second
 
-	private Socket _geSocket;
+	private final Socket _geSocket;
 
 	private OutputStream _out;
 
-	private FastList<L2PcInstance> _gms;
+	private final FastList<L2PcInstance> _gms;
 
 	public GeoEditorThread(Socket ge)
 	{
@@ -59,8 +61,12 @@ public class GeoEditorThread extends Thread
 		try
 		{
 			_geSocket.close();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
+			if (Config.DEBUG)
+				e.printStackTrace();
+
 		}
 		super.interrupt();
 	}
@@ -76,15 +82,23 @@ public class GeoEditorThread extends Thread
 			while (_working)
 			{
 				if (!isConnected())
+				{
 					_working = false;
+				}
 
 				if (_mode == 2 && timer > _sendDelay)
 				{
 					for (L2PcInstance gm : _gms)
-						if (!gm.getClient().getConnection().isClosed())
+					{
+						if (gm.isOnline() == 1)
+						{
 							sendGmPosition(gm);
+						}
 						else
+						{
 							_gms.remove(gm);
+						}
+					}
 					timer = 0;
 				}
 
@@ -92,24 +106,43 @@ public class GeoEditorThread extends Thread
 				{
 					sleep(100);
 					if (_mode == 2)
+					{
 						timer += 100;
-				} catch (Exception e)
+					}
+				}
+				catch (Exception e)
 				{
+					if (Config.DEBUG)
+						e.printStackTrace();
+
 				}
 			}
-		} catch (SocketException e)
+		}
+		catch (SocketException e)
 		{
-			_log.warning("GeoEditor disconnected. " + e.getMessage());
-		} catch (Exception e)
+			if (Config.DEBUG)
+				e.printStackTrace();
+
+			_log.log(Level.WARNING, "GeoEditor disconnected. ", e);
+		}
+		catch (Exception e)
 		{
-			e.printStackTrace();
-		} finally
+			if (Config.DEBUG)
+				e.printStackTrace();
+
+			_log.log(Level.SEVERE, e.getMessage(), e);
+		}
+		finally
 		{
 			try
 			{
 				_geSocket.close();
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
+				if (Config.DEBUG)
+					e.printStackTrace();
+
 			}
 			_working = false;
 		}
@@ -118,7 +151,9 @@ public class GeoEditorThread extends Thread
 	public void sendGmPosition(int gx, int gy, short z)
 	{
 		if (!isConnected())
+		{
 			return;
+		}
 		try
 		{
 			synchronized (_out)
@@ -130,18 +165,30 @@ public class GeoEditorThread extends Thread
 				writeH(z); // Coord Z;
 				_out.flush();
 			}
-		} catch (SocketException e)
+		}
+		catch (SocketException e)
 		{
-			_log.warning("GeoEditor disconnected. " + e.getMessage());
+			if (Config.DEBUG)
+				e.printStackTrace();
+
+			_log.log(Level.WARNING, "GeoEditor disconnected. ", e);
 			_working = false;
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
-			e.printStackTrace();
+			if (Config.DEBUG)
+				e.printStackTrace();
+
+			_log.log(Level.SEVERE, e.getMessage(), e);
 			try
 			{
 				_geSocket.close();
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
+				if (Config.DEBUG)
+					e.printStackTrace();
+
 			}
 			_working = false;
 		}
@@ -155,28 +202,41 @@ public class GeoEditorThread extends Thread
 	public void sendPing()
 	{
 		if (!isConnected())
+		{
 			return;
+		}
 		try
 		{
 			synchronized (_out)
 			{
 				writeC(0x01); // length 1 byte!
-				writeC(0x02); // Cmd = ping (dummy packet for connection
-								// test);
+				writeC(0x02); // Cmd = ping (dummy packet for connection test);
 				_out.flush();
 			}
-		} catch (SocketException e)
+		}
+		catch (SocketException e)
 		{
-			_log.warning("GeoEditor disconnected. " + e.getMessage());
+			if (Config.DEBUG)
+				e.printStackTrace();
+
+			_log.log(Level.WARNING, "GeoEditor disconnected. ", e);
 			_working = false;
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
-			e.printStackTrace();
+			if (Config.DEBUG)
+				e.printStackTrace();
+
+			_log.log(Level.SEVERE, e.getMessage(), e);
 			try
 			{
 				_geSocket.close();
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
+				if (Config.DEBUG)
+					ex.printStackTrace();
+
 			}
 			_working = false;
 		}
@@ -209,30 +269,38 @@ public class GeoEditorThread extends Thread
 	public void setTimer(int value)
 	{
 		if (value < 500)
+		{
 			_sendDelay = 500; // maximum - 2 times per second!
+		}
 		else if (value > 60000)
+		{
 			_sendDelay = 60000; // Minimum - 1 time per minute.
+		}
 		else
+		{
 			_sendDelay = value;
+		}
 	}
 
 	public void addGM(L2PcInstance gm)
 	{
 		if (!_gms.contains(gm))
+		{
 			_gms.add(gm);
+		}
 	}
 
 	public void removeGM(L2PcInstance gm)
 	{
 		if (_gms.contains(gm))
+		{
 			_gms.remove(gm);
+		}
 	}
 
 	public boolean isSend(L2PcInstance gm)
 	{
-		if (_mode == 1 && _gms.contains(gm))
-			return true;
-		return false;
+		return _mode == 1 && _gms.contains(gm);
 	}
 
 	private boolean isConnected()

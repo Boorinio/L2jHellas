@@ -32,7 +32,6 @@ import javolution.util.FastTable;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameTimeController;
-import com.l2jhellas.gameserver.GeoData;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -42,6 +41,11 @@ import com.l2jhellas.gameserver.datatables.DoorTable;
 import com.l2jhellas.gameserver.datatables.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.pathfinding.AbstractNodeLoc;
+import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
+import com.l2jhellas.gameserver.geodata.pathfinding.geonodes.GeoPathFinding;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -87,8 +91,6 @@ import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.TargetUnselected;
 import com.l2jhellas.gameserver.network.serverpackets.TeleportToLocation;
-import com.l2jhellas.gameserver.pathfinding.AbstractNodeLoc;
-import com.l2jhellas.gameserver.pathfinding.geonodes.GeoPathFinding;
 import com.l2jhellas.gameserver.skills.Calculator;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.Stats;
@@ -3757,7 +3759,7 @@ public abstract class L2Character extends L2Object
 		public float _xSpeedTicks;
 		public float _ySpeedTicks;
 		public int onGeodataPathIndex;
-		public List<AbstractNodeLoc> geoPath;
+		public Node[] geoPath;
 		public int geoPathAccurateTx;
 		public int geoPathAccurateTy;
 		public int geoPathGtx;
@@ -4340,21 +4342,28 @@ public abstract class L2Character extends L2Object
 	 */
 	public final boolean isOnGeodataPath()
 	{
-		if (_move == null)
+		final MoveData move = _move;
+		
+		if(move == null)
 			return false;
+
 		try
 		{
-			if (_move.onGeodataPathIndex == -1)
+			if(move.onGeodataPathIndex == -1)
 				return false;
-			if (_move.onGeodataPathIndex == _move.geoPath.size() - 1)
+
+			if(move.onGeodataPathIndex == move.geoPath.length - 1)
 				return false;
 		}
-		catch (NullPointerException e)
+		catch(NullPointerException e)
 		{
+			e.printStackTrace();
 			return false;
 		}
+
 		return true;
 	}
+
 
 	/**
 	 * Return True if the L2Character is casting.<BR>
@@ -4908,14 +4917,10 @@ public abstract class L2Character extends L2Object
 			if (Config.GEODATA == 2 && originalDistance - distance > 100 && distance < 2000)
 			{
 				// Path calculation
-				// Overrides previous movement check
-				if (this instanceof L2PlayableInstance || this.isInCombat())
+				if( ((this instanceof L2PcInstance) || !(this instanceof L2PcInstance)) && Config.GEODATA == 2 && originalDistance - distance > 100 && distance < 2000 && !isAfraid())
 				{
-					int gx = (curX - L2World.MAP_MIN_X) >> 4;
-					int gy = (curY - L2World.MAP_MIN_Y) >> 4;
-
-					m.geoPath = GeoPathFinding.getInstance().findPath(gx, gy, (short) curZ, gtx, gty, (short) originalZ);
-					if (m.geoPath == null || m.geoPath.size() < 2) // No path
+					m.geoPath = PathFinding.getInstance().findPath(curX, curY, curZ, originalX, originalY, originalZ);
+					if (m.geoPath == null || m.geoPath.length < 2) // No path
 																	// found
 					{
 						// Even though there's no path found (remember geonodes
@@ -4945,48 +4950,30 @@ public abstract class L2Character extends L2Object
 						m.geoPathAccurateTx = originalX;
 						m.geoPathAccurateTy = originalY;
 
-						x = m.geoPath.get(m.onGeodataPathIndex).getX();
-						y = m.geoPath.get(m.onGeodataPathIndex).getY();
-						z = m.geoPath.get(m.onGeodataPathIndex).getZ();
+						x = m.geoPath[m.onGeodataPathIndex].getX();
+						y = m.geoPath[m.onGeodataPathIndex].getY();
+						z = m.geoPath[m.onGeodataPathIndex].getZ();
 
 						// check for doors in the route
-						if (DoorTable.getInstance().checkIfDoorsBetween(curX, curY, curZ, x, y, z))
+						if(DoorTable.getInstance().checkIfDoorsBetween(curX, curY, curZ, x, y, z))
 						{
 							m.geoPath = null;
 							getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 							return;
 						}
-						for (int i = 0; i < m.geoPath.size() - 1; i++)
+
+						for(int i = 0; i < m.geoPath.length - 1; i++)
 						{
-							if (DoorTable.getInstance().checkIfDoorsBetween(m.geoPath.get(i), m.geoPath.get(i + 1)))
+							if(DoorTable.getInstance().checkIfDoorsBetween(m.geoPath[i], m.geoPath[i+1]))
 							{
 								m.geoPath = null;
-                				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+								getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 								return;
 							}
 						}
 
-						// not in use: final check if we can indeed reach first
-						// path node (path nodes sometimes aren't accurate
-						// enough)
-						// but if the node is very far, then a shorter check
-						// (like 3 blocks) would be enough
-						// something similar might be needed for end
-						/*
-						 * Location destiny =
-						 * GeoData.getInstance().moveCheck(curX, curY, curZ, x,
-						 * y, z);
-						 * if (destiny.getX() != x || destiny.getY() != y)
-						 * {
-						 * m.geoPath = null;
-						 * getAI().stopFollow();
-						 * getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-						 * return;
-						 * }
-						 */
-
-						dx = (x - curX);
-						dy = (y - curY);
+						dx = x - curX;
+						dy = y - curY;
 						distance = Math.sqrt(dx * dx + dy * dy);
 						sin = dy / distance;
 						cos = dx / distance;
@@ -5062,7 +5049,7 @@ public abstract class L2Character extends L2Object
 
 	public boolean moveToNextRoutePoint()
 	{
-		if (!this.isOnGeodataPath())
+		if(!isOnGeodataPath())
 		{
 			// Cancel the move action
 			_move = null;
@@ -5071,67 +5058,61 @@ public abstract class L2Character extends L2Object
 
 		// Get the Move Speed of the L2Charcater
 		float speed = getStat().getMoveSpeed();
-		if (speed <= 0 || isMovementDisabled())
+
+		if(speed <= 0 || isMovementDisabled())
 		{
 			// Cancel the move action
 			_move = null;
 			return false;
 		}
 
+		MoveData md = _move;
+		if(md == null)
+			return false;
+
 		// Create and Init a MoveData object
 		MoveData m = new MoveData();
 
 		// Update MoveData object
-		m.onGeodataPathIndex = _move.onGeodataPathIndex + 1; // next segment
-		m.geoPath = _move.geoPath;
-		m.geoPathGtx = _move.geoPathGtx;
-		m.geoPathGty = _move.geoPathGty;
-		m.geoPathAccurateTx = _move.geoPathAccurateTx;
-		m.geoPathAccurateTy = _move.geoPathAccurateTy;
+		m.onGeodataPathIndex = md.onGeodataPathIndex + 1; // next segment
+		m.geoPath = md.geoPath;
+		m.geoPathGtx = md.geoPathGtx;
+		m.geoPathGty = md.geoPathGty;
+		m.geoPathAccurateTx = md.geoPathAccurateTx;
+		m.geoPathAccurateTy = md.geoPathAccurateTy;
 
-		// Get current position of the L2Character
-		m._xMoveFrom = super.getX();
-		m._yMoveFrom = super.getY();
-		m._zMoveFrom = super.getZ();
-
-		if (_move.onGeodataPathIndex == _move.geoPath.size() - 2)
+		if(md.onGeodataPathIndex == md.geoPath.length - 2)
 		{
-			m._xDestination = _move.geoPathAccurateTx;
-			m._yDestination = _move.geoPathAccurateTy;
-			m._zDestination = _move.geoPath.get(m.onGeodataPathIndex).getZ();
+			m._xDestination = md.geoPathAccurateTx;
+			m._yDestination = md.geoPathAccurateTy;
+			m._zDestination = md.geoPath[m.onGeodataPathIndex].getZ();
 		}
 		else
 		{
-			m._xDestination = _move.geoPath.get(m.onGeodataPathIndex).getX();
-			m._yDestination = _move.geoPath.get(m.onGeodataPathIndex).getY();
-			m._zDestination = _move.geoPath.get(m.onGeodataPathIndex).getZ();
+			m._xDestination = md.geoPath[m.onGeodataPathIndex].getX();
+			m._yDestination = md.geoPath[m.onGeodataPathIndex].getY();
+			m._zDestination = md.geoPath[m.onGeodataPathIndex].getZ();
 		}
-		double dx = (m._xDestination - m._xMoveFrom);
-		double dy = (m._yDestination - m._yMoveFrom);
+
+		double dx = m._xDestination - super.getX();
+		double dy = m._yDestination - super.getY();
 		double distance = Math.sqrt(dx * dx + dy * dy);
 		double sin = dy / distance;
 		double cos = dx / distance;
 
-		// Caclulate the Nb of ticks between the current position and the
-		// destination
+		// Caclulate the Nb of ticks between the current position and the destination
 		// One tick added for rounding reasons
-		m._ticksToMove = 1 + (int) (GameTimeController.TICKS_PER_SECOND * distance / speed);
+		int ticksToMove = 1 + (int) (GameTimeController.TICKS_PER_SECOND * distance / speed);
 
-		// Calculate the xspeed and yspeed in unit/ticks in function of the
-		// movement speed
-		m._xSpeedTicks = (float) (cos * speed / GameTimeController.TICKS_PER_SECOND);
-		m._ySpeedTicks = (float) (sin * speed / GameTimeController.TICKS_PER_SECOND);
-
-		// Calculate and set the heading of the L2Character
-		int heading = (int) (Math.atan2(-sin, -cos) * 10430.378350470452724949566316381);
-		heading += 32768;
-		setHeading(heading);
+		setHeading((int) (Math.atan2(-sin, -cos) * 10430.37835) + 32768);
 		m._heading = 0; // ?
 
 		m._moveStartTime = GameTimeController.getGameTicks();
 
-		if (Config.DEBUG)
-			_log.fine("time to target:" + m._ticksToMove);
+		if(Config.DEBUG)
+		{
+			_log.fine("time to target:" + ticksToMove);
+		}
 
 		// Set the L2Character _move object to MoveData object
 		_move = m;
@@ -5140,21 +5121,22 @@ public abstract class L2Character extends L2Object
 		// The GameTimeController manage objects movement
 		GameTimeController.getInstance().registerMovingObject(this);
 
-		int tm = m._ticksToMove * GameTimeController.MILLIS_IN_TICK;
-
-		// Create a task to notify the AI that L2Character arrives at a check
-		// point of the movement
-		if (tm > 3000)
+		// Create a task to notify the AI that L2Character arrives at a check point of the movement
+		if(ticksToMove * GameTimeController.MILLIS_IN_TICK > 3000)
+		{
 			ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_ARRIVED_REVALIDATE), 2000);
+		}
 
-		// the CtrlEvent.EVT_ARRIVED will be sent when the character will
-		// actually arrive
+		// the CtrlEvent.EVT_ARRIVED will be sent when the character will actually arrive
 		// to destination by GameTimeController
 
-		// Send a Server->Client packet CharMoveToLocation to the actor and all
-		// L2PcInstance in its _knownPlayers
+		// Send a Server->Client packet CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
 		CharMoveToLocation msg = new CharMoveToLocation(this);
 		broadcastPacket(msg);
+
+		msg = null;
+		m = null;
+		md = null;
 
 		return true;
 	}
