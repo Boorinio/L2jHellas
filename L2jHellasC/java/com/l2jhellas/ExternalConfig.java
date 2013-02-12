@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -31,7 +32,7 @@ public final class ExternalConfig
 {
 	private static Logger _log = Logger.getLogger(ExternalConfig.class.getName());
 	// --------------------------------------------------
-	// L2J Property File Definitions
+	// File Definitions
 	// --------------------------------------------------
 	public static final String Rank_Config = "./config/Mods/Rank PvP System.ini";
 	public static final String Vote_Config = "./config/Mods/Vote System.ini";
@@ -41,7 +42,7 @@ public final class ExternalConfig
 
 	public static final String RCON_CONFIG_FILE = "./config/Admin/Rcon.ini";
 	// --------------------------------------------------
-	// L2J Variable Definitions
+	// Variable Definitions
 	// --------------------------------------------------
 
 	/* RCON_FILE */
@@ -341,7 +342,7 @@ public final class ExternalConfig
 						{
 							if (!skill.isEmpty())
 							{
-								_log.warning(StringUtil.concat("[CustomPvpRankPointsBonusArea]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
+								_log.log(Level.WARNING, StringUtil.concat("[CustomPvpRankPointsBonusArea]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
 							}
 						}
 					}
@@ -375,8 +376,11 @@ public final class ExternalConfig
 		}
 		catch (Exception e)
 		{
-			_log.warning("Config: " + e.getMessage());
-			throw new Error("Failed to Load " + Rank_Config + " File.");
+			_log.log(Level.WARNING, "Config: Failed to Load " + Rank_Config + " File.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		// Load Vote System Config file (if exists)
@@ -397,8 +401,11 @@ public final class ExternalConfig
 		}
 		catch (Exception e)
 		{
-			_log.warning("Config: " + e.getMessage());
-			throw new Error("Failed to Load " + Automation_Config + " File.");
+			_log.log(Level.WARNING, "Config: Failed to Load " + Automation_Config + " File.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		// Load Vote System Config file (if exists)
@@ -424,8 +431,11 @@ public final class ExternalConfig
 		}
 		catch (Exception e)
 		{
-			_log.warning("Config: " + e.getMessage());
-			throw new Error("Failed to Load " + Vote_Config + " File.");
+			_log.log(Level.WARNING, "Config: Failed to Load " + Vote_Config + " File.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		// Load Smart CB Config file (if exists)
@@ -462,8 +472,11 @@ public final class ExternalConfig
 		}
 		catch (Exception e)
 		{
-			_log.warning("Config: " + e.getMessage());
-			throw new Error("Failed to Load " + Smart_CB + " File.");
+			_log.log(Level.WARNING, "Config: Failed to Load " + Smart_CB + " File.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		// Load Custom Npc's Config file (if exists)
@@ -497,8 +510,11 @@ public final class ExternalConfig
 		}
 		catch (Exception e)
 		{
-			_log.warning("Config: " + e.getMessage());
-			throw new Error("Failed to Load " + Custom_Npc + " File.");
+			_log.log(Level.WARNING, "Config: Failed to Load " + Custom_Npc + " File.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		// Try to load RCON_CONFIG_FILE (if exist)
@@ -516,11 +532,11 @@ public final class ExternalConfig
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			throw new Error("Failed to Load " + RCON_CONFIG_FILE + " File.");
+			_log.log(Level.WARNING, "Config: Failed to Load " + RCON_CONFIG_FILE + " File.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
-		
-		_log.severe("External Config's: loaded.");
 	}
-
 }

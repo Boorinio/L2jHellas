@@ -14,6 +14,7 @@ package com.l2jhellas.gameserver.handler;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.handler.skillhandlers.BalanceLife;
@@ -51,17 +52,17 @@ import com.l2jhellas.gameserver.model.L2SkillType;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.4.4 $ $Date: 2005/04/03 15:55:06 $
  */
 public class SkillHandler
 {
 	private static Logger _log = Logger.getLogger(SkillHandler.class.getName());
-	
+
 	private static SkillHandler _instance;
-	
+
 	private final Map<L2SkillType, ISkillHandler> _datatable;
-	
+
 	public static SkillHandler getInstance()
 	{
 		if (_instance == null)
@@ -70,7 +71,7 @@ public class SkillHandler
 		}
 		return _instance;
 	}
-	
+
 	private SkillHandler()
 	{
 		_datatable = new TreeMap<L2SkillType, ISkillHandler>();
@@ -105,10 +106,10 @@ public class SkillHandler
 		registerSkillHandler(new Sow());
 		registerSkillHandler(new Harvest());
 		registerSkillHandler(new GetPlayer());
-		
-		_log.config("SkillHandler: Loaded " + _datatable.size() + " handlers in total.");
+
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}
-	
+
 	public void registerSkillHandler(ISkillHandler handler)
 	{
 		L2SkillType[] types = handler.getSkillIds();
@@ -117,12 +118,12 @@ public class SkillHandler
 			_datatable.put(t, handler);
 		}
 	}
-	
+
 	public ISkillHandler getSkillHandler(L2SkillType skillType)
 	{
 		return _datatable.get(skillType);
 	}
-	
+
 	/**
 	 * @return
 	 */

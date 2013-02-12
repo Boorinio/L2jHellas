@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -46,9 +47,9 @@ public final class Config
 {
 	protected static final Logger _log = Logger.getLogger(Config.class.getName());
 
-	/********************************
+	/*******************************
 	 * GameServer Config locations *
-	 ********************************/
+	 *******************************/
 	// Main Folder
 	public static final String ALT_SETTINGS_FILE = "./config/Main/Altsettings.ini";
 	public static final String CLANHALL_CONFIG_FILE = "./config/Main/Clanhall.ini";
@@ -454,6 +455,7 @@ public final class Config
 	public static int QUIZ_MINUTES_TO_ANSWER;
 	public static int QUIZ_REWARD_ID;
 	public static int QUIZ_REWARD_QUANTITY;
+
 	public static enum ClanLeaderColored
 	{
 		name, title
@@ -469,7 +471,6 @@ public final class Config
 	public static Map<Integer, Integer> CLAN_SKILLS;
 	public static byte CLAN_LEVEL;
 	public static int REPUTATION_QUANTITY;
-
 
 	// CHAMPION_FILE
 	public static int CHAMPION_FREQUENCY;
@@ -499,7 +500,6 @@ public final class Config
 	public static boolean FORCE_GEODATA;
 	public static boolean GEODATA_CELLFINDING;
 	public static int GEOEDITOR_PORT;
-
 
 	// OLYMPIAD_FILE
 	public static int OLY_START_TIME;
@@ -570,6 +570,7 @@ public final class Config
 	public static boolean ALLOW_CURSED_WEAPONS;
 	public static boolean ALLOW_MANOR;
 	public static boolean ALLOW_NPC_WALKERS;
+
 	public static enum L2WalkerAllowed
 	{
 		True, False, GM
@@ -1116,8 +1117,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + ALT_SETTINGS_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + ALT_SETTINGS_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load CLANHALL_CONFIG_FILE (if exist)
@@ -1184,8 +1188,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + CLANHALL_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + CLANHALL_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load SERVER_VERSION_FILE (if exist)
@@ -1231,8 +1238,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + ADMIN_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + ADMIN_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load ID_CONFIG_FILE (if exist)
@@ -1250,8 +1260,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + ID_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + ID_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load L2JHellas_CONFIG_FILE (if exist)
@@ -1469,8 +1482,11 @@ public final class Config
 					}
 					catch (Exception e)
 					{
-						e.printStackTrace();
-						throw new Error("Failed to Load " + CHAT_FILTER_FILE + " File.");
+						_log.log(Level.WARNING, "Config: Failed to Load " + CHAT_FILTER_FILE + " File.");
+						if (Config.DEVELOPER)
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 				ALLOW_USE_HERO_ITEM_ON_SUBCLASS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowUseHeroItemOnSub", "False"));
@@ -1485,7 +1501,7 @@ public final class Config
 					String arr[] = AioSkillsSplit;
 					int len = arr.length;
 					for (int i = 0; i < len; i++)
-				{
+					{
 						String skill = arr[i];
 						String skillSplit[] = skill.split(",");
 						if (skillSplit.length != 2)
@@ -1494,16 +1510,16 @@ public final class Config
 							continue;
 						}
 						try
-					{
+						{
 							CLAN_SKILLS.put(Integer.valueOf(Integer.parseInt(skillSplit[0])), Integer.valueOf(Integer.parseInt(skillSplit[1])));
 							continue;
-					}
+						}
 						catch (NumberFormatException nfe)
 						{
 						}
 						if (!skill.equals(""))
 							System.out.println((new StringBuilder()).append("[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills \"").append(skillSplit[0]).append("\"").append(skillSplit[1]).toString());
-				}
+					}
 
 				}
 				CLAN_LEVEL = Byte.parseByte(L2JHellasSettings.getProperty("ClanSetLevel", "8"));
@@ -1512,8 +1528,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + L2JHellas_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + L2JHellas_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load OLYMPIAD_FILE (if exist)
@@ -1542,8 +1561,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + L2JHellas_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + L2JHellas_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load GEO_FILE (if exist)
@@ -1564,8 +1586,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + GEO_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + GEO_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load MMOCORE_CONFIG_FILE (if exist)
@@ -1583,8 +1608,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + MMOCORE_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + MMOCORE_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load OPTIONS_FILE (if exist)
@@ -1693,8 +1721,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + OPTIONS_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + OPTIONS_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load OTHER_CONFIG_FILE (if exist)
@@ -1763,8 +1794,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + OTHER_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + OTHER_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load FLOOD_PROTECTORS_FILE (if exist)
@@ -1778,8 +1812,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + FLOOD_PROTECTORS_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + FLOOD_PROTECTORS_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load EVENT_CONFIG_FILE (if exist)
@@ -1884,8 +1921,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + EVENT_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + EVENT_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load RATES_CONFIG_FILE (if exist)
@@ -2120,8 +2160,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + RATES_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + RATES_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load GAME_SERVER CONFIGURATION_FILE (if exist)
@@ -2165,13 +2208,16 @@ public final class Config
 				UNKNOWN_PACKETS_PUNISHMENT = Integer.parseInt(serverSettings.getProperty("UnknownPacketsPunishment", "2"));
 				if (MIN_PROTOCOL_REVISION > MAX_PROTOCOL_REVISION)
 				{
-					throw new Error("MinProtocolRevision is bigger than MaxProtocolRevision in server configuration file.");
+					_log.log(Level.WARNING, "Config: MinProtocolRevision is bigger than MaxProtocolRevision in server configuration file.");
 				}
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + CONFIGURATION_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + CONFIGURATION_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load GRANDBOSS_CONFIG_FILE (if exist)
@@ -2237,8 +2283,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + GRANDBOSS_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + GRANDBOSS_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load SEVENSIGNS_FILE (if exist)
@@ -2264,8 +2313,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + SEVENSIGNS_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + SEVENSIGNS_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load HEXID_FILE (if exist)
@@ -2281,7 +2333,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.warning("I cant fint HexID file (" + HEXID_FILE + "). Hopefully login will give us one.");
+				_log.log(Level.WARNING, "Config: I cant fint HexID file (" + HEXID_FILE + "). Hopefully login will give us one.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load TELNET_FILE (if exist)
@@ -2296,8 +2352,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + TELNET_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + TELNET_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		else if (Server.serverMode == Server.MODE_LOGINSERVER)
@@ -2340,8 +2399,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + CONFIGURATION_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + CONFIGURATION_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load TELNET_FILE (if exist)
@@ -2356,8 +2418,11 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + TELNET_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + TELNET_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 			// Try to load MMOCORE_CONFIG_FILE (if exist)
@@ -2375,17 +2440,18 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				throw new Error("Failed to Load " + MMOCORE_CONFIG_FILE + " File.");
+				_log.log(Level.WARNING, "Config: Failed to Load " + MMOCORE_CONFIG_FILE + " File.");
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 		}
-
 		else
 		{
 			_log.severe("Could not Load Config: server mode was not set");
 		}
-		_log.severe("Config's: loaded.");
 	}
 
 	/**
@@ -2979,13 +3045,16 @@ public final class Config
 			OutputStream out = new FileOutputStream(file);
 			hexSetting.setProperty("ServerID", String.valueOf(serverId));
 			hexSetting.setProperty("HexID", hexId);
-			hexSetting.store(out, "the hexID to auth into login");
+			hexSetting.store(out, "the hexID to auth into login.");
 			out.close();
 		}
 		catch (Exception e)
 		{
-			_log.warning("Failed to save hex id to " + fileName + " File.");
-			e.printStackTrace();
+			_log.log(Level.WARNING, "Config: Failed to save hex id to " + fileName + " File.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -2994,7 +3063,6 @@ public final class Config
 	 */
 	public static String FILTER_FILE = "./config/chatfilter.txt";
 
-	// ==============================================================
 	public static void loadFilter()
 	{
 		try
@@ -3013,8 +3081,11 @@ public final class Config
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			throw new Error("Failed to Load " + FILTER_FILE + " File.");
+			_log.log(Level.WARNING, "Config: Failed to Load " + FILTER_FILE + " File." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

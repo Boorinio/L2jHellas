@@ -128,65 +128,40 @@ import com.l2jserver.mmocore.network.SelectorThread;
 public class GameServer
 {
 	private static final Logger _log = Logger.getLogger(GameServer.class.getName());
+
 	private final SelectorThread<L2GameClient> _selectorThread;
 	public static boolean _instanceOk = false;
 	public static GameServer gameServer;
-	private static ClanHallManager _cHManager;
-	private final Shutdown _shutdownHandler;
-	private final DoorTable _doorTable;
-	private final SevenSigns _sevenSignsEngine;
-	private final AutoChatHandler _autoChatHandler;
-	private final AutoSpawnHandler _autoSpawnHandler;
 	private final LoginServerThread _loginThread;
-
 	private static Status _statusServer;
-	@SuppressWarnings("unused")
-	private final ThreadPoolManager _threadpools;
-
 	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
-
-	public long getUsedMemoryMB()
-	{
-		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
-	}
 
 	public SelectorThread<L2GameClient> getSelectorThread()
 	{
 		return _selectorThread;
 	}
 
-	public ClanHallManager getCHManager()
-	{
-		return _cHManager;
-	}
-
 	public GameServer() throws Exception
 	{
 		long serverLoadStart = System.currentTimeMillis();
 		gameServer = this;
-		_threadpools = ThreadPoolManager.getInstance();
+		ThreadPoolManager.getInstance();
 
 		Util.printSection("Chache");
 		// Call to load caches
 		HtmCache.getInstance();
 		CrestCache.getInstance();
 
-		if (Config.USE_SAY_FILTER)
-			new File(Config.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
-
-		// ===========================================================================
 		Util.printSection("World");
 		L2World.getInstance();
 		MapRegionTable.getInstance();
 		Announcements.getInstance();
 		AutoAnnouncementHandler.getInstance();
+		AutoSpawnHandler.getInstance();
+		DayNightSpawnManager.getInstance().notifyChangeMode();
+		AutoChatHandler.getInstance();
 		Universe.getInstance();
 		FloodProtector.getInstance();
-		if (!IdFactory.getInstance().isInitialized())
-		{
-			_log.info("Could not read object IDs from DB. Please Check Your Data.");
-			throw new Exception("Could not initialize the ID factory");
-		}
 		StaticObjects.getInstance();
 		TeleportLocationTable.getInstance();
 		GameTimeController.getInstance();
@@ -237,18 +212,9 @@ public class GameServer
 		AdminCommandAccessRights.getInstance();
 		CrownManager.getInstance();
 		GmListTable.getInstance();
-		if (!HennaTable.getInstance().isInitialized())
-		{
-			throw new Exception("Could not initialize the Henna Table");
-		}
-		if (!HennaTreeTable.getInstance().isInitialized())
-		{
-			throw new Exception("Could not initialize the Henna Tree Table");
-		}
-		if (!HelperBuffTable.getInstance().isInitialized())
-		{
-			throw new Exception("Could not initialize the Helper Buff Table");
-		}
+		HennaTable.getInstance();
+		HennaTreeTable.getInstance();
+		HelperBuffTable.getInstance();
 		BuffTemplateTable.getInstance();
 
 		Util.printSection("Geodata");
@@ -291,7 +257,6 @@ public class GameServer
 		{
 			_log.info("RaidBoss: disable load.");
 		}
-		DayNightSpawnManager.getInstance().notifyChangeMode();
 
 		Util.printSection("Dimensional Rift");
 		DimensionalRiftManager.getInstance();
@@ -313,60 +278,28 @@ public class GameServer
 			ItemsOnGroundManager.getInstance();
 		if (Config.AUTODESTROY_ITEM_AFTER > 0 || Config.HERB_AUTO_DESTROY_TIME > 0)
 			ItemsAutoDestroy.getInstance();
+		DoorTable.getInstance();
+		BoatManager.getInstance();
 
 		Util.printSection("Manor");
 		L2Manor.getInstance();
 		CastleManorManager.getInstance();
 
-		Util.printSection("Boat");
-		BoatManager.getInstance();
-
-		Util.printSection("Doors");
-		_doorTable = DoorTable.getInstance();
-		_doorTable.parseData();
-		try
-		{
-			_doorTable.getDoor(24190001).openMe();
-			_doorTable.getDoor(24190002).openMe();
-			_doorTable.getDoor(24190003).openMe();
-			_doorTable.getDoor(24190004).openMe();
-			_doorTable.getDoor(23180001).openMe();
-			_doorTable.getDoor(23180002).openMe();
-			_doorTable.getDoor(23180003).openMe();
-			_doorTable.getDoor(23180004).openMe();
-			_doorTable.getDoor(23180005).openMe();
-			_doorTable.getDoor(23180006).openMe();
-			_doorTable.checkAutoOpen();
-		}
-		catch (NullPointerException e)
-		{
-			_log.warning("You have errors on Door.csv!");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-
-
 		Util.printSection("Seven Signs");
-		_sevenSignsEngine = SevenSigns.getInstance();
-		_autoSpawnHandler = AutoSpawnHandler.getInstance();
-		_autoChatHandler = AutoChatHandler.getInstance();
 		SevenSignsFestival.getInstance();
-		_sevenSignsEngine.spawnSevenSignsNPC();// Spawn the Orators/Preachers if in the Seal Validation period.
+		SevenSigns.getInstance().spawnSevenSignsNPC();// Spawn the Orators/Preachers if in the Seal Validation period.
 
 		Util.printSection("Olympiad System");
 		Olympiad.getInstance();
 		Hero.getInstance();
 
 		Util.printSection("Handlers");
+		AdminCommandHandler.getInstance();
+		ChatHandler.getInstance();
 		ItemHandler.getInstance();
 		SkillHandler.getInstance();
-		AdminCommandHandler.getInstance();
 		UserCommandHandler.getInstance();
 		VoicedCommandHandler.getInstance();
-		ChatHandler.getInstance();
-		_log.log(Level.INFO, "AutoChatHandler : Loaded " + _autoChatHandler.size() + " handlers in total.");
-		_log.log(Level.INFO, "AutoSpawnHandler : Loaded " + _autoSpawnHandler.size() + " handlers in total.");
-		_log.log(Level.INFO, "VoicedCommandHandler: Loaded " + VoicedCommandHandler.getInstance().size() + " handlers in total.");
 
 		Util.printSection("Quests");
 		if (!Config.ALT_DEV_NO_QUESTS)
@@ -375,20 +308,20 @@ public class GameServer
 			QuestManager.getInstance().report();
 		}
 		else
-			_log.info("Quests: Disabled by Config.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Quests are disabled by Config.");
 
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
 			try
 			{
-				_log.info("Loading Scripts");
+				_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Scripts.");
 				File scripts = new File(Config.DATAPACK_ROOT, "data/scripts.cfg");
 				L2ScriptEngineManager.getInstance().executeScriptList(scripts);
 			}
 			catch (IOException ioe)
 			{
-				_log.log(Level.SEVERE, "Failed to load!!" + ioe);
+				_log.log(Level.SEVERE, getClass().getSimpleName() + ": Failed to load!!" + ioe);
 				if (Config.DEVELOPER)
 				{
 					ioe.printStackTrace();
@@ -452,18 +385,15 @@ public class GameServer
 		BalanceLoad.loadBalance();
 		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Restart System: Auto Restart System is Enabled.");
+			_log.log(Level.INFO, "Restart System: Auto Restart System is Enabled.");
 			Restart.getInstance().StartCalculationOfNextRestartTime();
 		}
 		else
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Restart System: Auto Restart System is Disabled.");
+			_log.log(Level.INFO, "Restart System: Auto Restart System is Disabled.");
 		}
 		if (Config.MOD_ALLOW_WEDDING)
 			CoupleManager.getInstance();
-
-		_shutdownHandler = Shutdown.getInstance();
-		Runtime.getRuntime().addShutdownHook(_shutdownHandler);
 
 		Util.printSection("Dynamic Extensions");
 		// initialize the dynamic extension loader
@@ -473,7 +403,7 @@ public class GameServer
 		}
 		catch (Exception ex)
 		{
-			_log.log(Level.WARNING, "Dynamic Extension initials", ex);
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Dynamic Extension initials", ex);
 			if (Config.DEVELOPER)
 			{
 				ex.printStackTrace();
@@ -481,20 +411,23 @@ public class GameServer
 		}
 
 		Util.printSection("Info");
-		_log.log(Level.INFO, "Maximum Numbers of Connected Players: " + Config.MAXIMUM_ONLINE_USERS);
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Maximum Numbers of Connected Players: " + Config.MAXIMUM_ONLINE_USERS);
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of
 		// the current allocation pool, freeMemory the unused memory in the
 		// allocation pool
 		long freeMem = (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
 		long totalMem = Runtime.getRuntime().maxMemory() / 1048576;
-		_log.log(Level.INFO, "GameServer Initiated, Used Memory " + freeMem + " Mb from total " + totalMem + " Mb");
-		_loginThread = LoginServerThread.getInstance();
-		_loginThread.start();
+		_log.log(Level.INFO, getClass().getSimpleName() + ": GameServer Initiated, Used Memory " + freeMem + " Mb from total " + totalMem + " Mb");
 		Util.printRuntimeInfo();
 
 		Util.printSection("Game Server");
+		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 		_log.log(Level.INFO, getClass().getSimpleName() + ": IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
-
+		if (!IdFactory.getInstance().isInitialized())
+		{
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Could not read object IDs from DB. Please Check Your Data.");
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not initialize the ID factory.");
+		}
 		final SelectorConfig sc = new SelectorConfig();
 		sc.MAX_READ_PER_PASS = Config.MMO_MAX_READ_PER_PASS;
 		sc.MAX_SEND_PER_PASS = Config.MMO_MAX_SEND_PER_PASS;
@@ -532,6 +465,20 @@ public class GameServer
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
 		long serverLoadEnd = System.currentTimeMillis();
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Server Started in: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
+
+		Util.printSection("Telnet");
+		if (Config.IS_TELNET_ENABLED)
+		{
+			_statusServer = new Status(Server.serverMode);
+			_statusServer.start();
+		}
+		else
+		{
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Telnet is disabled by config.");
+		}
+
+		_loginThread = LoginServerThread.getInstance();
+		_loginThread.start();
 	}
 
 	public static void main(String[] args) throws Exception
@@ -540,6 +487,9 @@ public class GameServer
 		// Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
+
+		if (Config.USE_SAY_FILTER)
+			new File(Config.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 
 		/*** Main ***/
 		// Create directories
@@ -558,9 +508,11 @@ public class GameServer
 		InputStream is = new FileInputStream(new File(LOG_NAME));
 		LogManager.getLogManager().readConfiguration(is);
 		is.close();
+
 		Util.printSection("Configs");
 		Config.load();
 		ExternalConfig.load();
+		_log.log(Level.INFO, "Configs Loaded.");
 
 		Util.printSection("Script Engine");
 		if (!Config.ALT_DEV_NO_SCRIPT)
@@ -579,16 +531,5 @@ public class GameServer
 		L2JHellasInfo.showInfo();
 
 		gameServer = new GameServer();
-
-		Util.printSection("Telnet");
-		if (Config.IS_TELNET_ENABLED)
-		{
-			_statusServer = new Status(Server.serverMode);
-			_statusServer.start();
-		}
-		else
-		{
-			_log.info("Telnet is disabled by config.");
-		}
 	}
 }

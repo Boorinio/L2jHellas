@@ -13,6 +13,7 @@
 package com.l2jhellas.gameserver.handler;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
@@ -33,20 +34,19 @@ import com.l2jhellas.gameserver.handler.usercommandhandlers.OlympiadStat;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.PartyInfo;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.Time;
 
-
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.1.2.1.2.5 $ $Date: 2005/03/27 15:30:09 $
  */
 public class UserCommandHandler
 {
 	private static Logger _log = Logger.getLogger(UserCommandHandler.class.getName());
-	
+
 	private static UserCommandHandler _instance;
-	
+
 	private final Map<Integer, IUserCommandHandler> _datatable;
-	
+
 	public static UserCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -55,12 +55,12 @@ public class UserCommandHandler
 		}
 		return _instance;
 	}
-	
+
 	private UserCommandHandler()
 	{
 		_datatable = new FastMap<Integer, IUserCommandHandler>();
 	}
-	
+
 	public void registerUserCommandHandler(IUserCommandHandler handler)
 	{
 		int[] ids = handler.getUserCommandList();
@@ -71,7 +71,7 @@ public class UserCommandHandler
 			_datatable.put(new Integer(ids[i]), handler);
 		}
 	}
-	
+
 	public IUserCommandHandler getUserCommandHandler(int userCommand)
 	{
 		if (Config.DEBUG)
@@ -90,14 +90,14 @@ public class UserCommandHandler
 		registerUserCommandHandler(new ChannelListUpdate());
 		if (ExternalConfig.CUSTOM_PVP_INFO_USER_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED)
 			registerUserCommandHandler(new IUserCommandHandlerPvpInfo());
-		if(Config.DEBUG)
-		_log.info("UserCommandHandler: Loaded " + _datatable.size() + " handlers in total.");
-		
+
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
+
 		return _datatable.get(new Integer(userCommand));
 	}
-	
+
 	/**
-	 * @return
+	 * @return the size()
 	 */
 	public int size()
 	{

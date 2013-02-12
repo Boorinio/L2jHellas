@@ -131,8 +131,8 @@ public class ArmorSetsTable
 				e.printStackTrace();
 			}
 		}
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": Loaded " + _armorSets.size() + " armor sets.");
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": Loaded " + _cusArmorSets.size() + " custom armor sets.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _armorSets.size() + " armor sets.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _cusArmorSets.size() + " custom armor sets.");
 	}
 
 	public boolean setExists(int chestId)

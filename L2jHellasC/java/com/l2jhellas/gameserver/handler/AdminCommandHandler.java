@@ -3,18 +3,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.handler;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
@@ -90,17 +91,16 @@ import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminUnblockIp;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminVIPEngine;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminZone;
 
-
 public class AdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminCommandHandler.class.getName());
-	private Map<Integer, IAdminCommandHandler> _datatable;
-	
+	private final Map<Integer, IAdminCommandHandler> _datatable;
+
 	public static AdminCommandHandler getInstance()
 	{
 		return SingletonHolder._instance;
 	}
-	
+
 	private AdminCommandHandler()
 	{
 		_datatable = new FastMap<Integer, IAdminCommandHandler>();
@@ -174,10 +174,10 @@ public class AdminCommandHandler
 		if (Config.ENABLED_CHAOS_EVENT)
 			registerAdminCommandHandler(new AdminChaos());
 		registerAdminCommandHandler(new AdminClanFull());
-		
-		_log.info("AdminCommandHandler: Loaded " + _datatable.size() + " Handlers in total.");
+
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}
-	
+
 	public void registerAdminCommandHandler(IAdminCommandHandler handler)
 	{
 		String[] ids = handler.getAdminCommandList();
@@ -188,27 +188,27 @@ public class AdminCommandHandler
 			_datatable.put(ids[i].hashCode(), handler);
 		}
 	}
-	
+
 	public IAdminCommandHandler getAdminCommandHandler(String adminCommand)
 	{
 		String command = adminCommand;
-		
+
 		if (adminCommand.indexOf(" ") != -1)
 			command = adminCommand.substring(0, adminCommand.indexOf(" "));
-		
+
 		if (Config.DEBUG)
 			_log.fine("getting handler for command: " + command + " -> " + (_datatable.get(command.hashCode()) != null));
 		return _datatable.get(command.hashCode());
 	}
-	
+
 	/**
-	 * @return
+	 * @return the size()
 	 */
 	public int size()
 	{
 		return _datatable.size();
 	}
-	
+
 	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{

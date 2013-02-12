@@ -14,6 +14,7 @@ package com.l2jhellas.gameserver.handler;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.handler.itemhandlers.BeastSoulShot;
@@ -23,6 +24,10 @@ import com.l2jhellas.gameserver.handler.itemhandlers.BlessedSpiritShot;
 import com.l2jhellas.gameserver.handler.itemhandlers.Book;
 import com.l2jhellas.gameserver.handler.itemhandlers.CharChangePotions;
 import com.l2jhellas.gameserver.handler.itemhandlers.ChestKey;
+import com.l2jhellas.gameserver.handler.itemhandlers.ChristmasTree;
+import com.l2jhellas.gameserver.handler.itemhandlers.CompBlessedSpiritShotPacks;
+import com.l2jhellas.gameserver.handler.itemhandlers.CompShotPacks;
+import com.l2jhellas.gameserver.handler.itemhandlers.CompSpiritShotPacks;
 import com.l2jhellas.gameserver.handler.itemhandlers.CrystalCarol;
 import com.l2jhellas.gameserver.handler.itemhandlers.EnchantScrolls;
 import com.l2jhellas.gameserver.handler.itemhandlers.EnergyStone;
@@ -30,6 +35,7 @@ import com.l2jhellas.gameserver.handler.itemhandlers.ExtractableItems;
 import com.l2jhellas.gameserver.handler.itemhandlers.Firework;
 import com.l2jhellas.gameserver.handler.itemhandlers.FishShots;
 import com.l2jhellas.gameserver.handler.itemhandlers.Harvester;
+import com.l2jhellas.gameserver.handler.itemhandlers.HeroCustomItem;
 import com.l2jhellas.gameserver.handler.itemhandlers.Maps;
 import com.l2jhellas.gameserver.handler.itemhandlers.MercTicket;
 import com.l2jhellas.gameserver.handler.itemhandlers.MysteryPotion;
@@ -49,24 +55,22 @@ import com.l2jhellas.gameserver.handler.itemhandlers.SpecialXMas;
 import com.l2jhellas.gameserver.handler.itemhandlers.SpiritShot;
 import com.l2jhellas.gameserver.handler.itemhandlers.SummonItems;
 
-
-
 /**
  * This class manages handlers of items
- * 
+ *
  * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:30:09 $
  */
 public class ItemHandler
 {
 	private static final Logger _log = Logger.getLogger(ItemHandler.class.getName());
-	
+
 	private static ItemHandler _instance;
-	
-	private Map<Integer, IItemHandler> _datatable;
-	
+
+	private final Map<Integer, IItemHandler> _datatable;
+
 	/**
 	 * Create ItemHandler if doesn't exist and returns ItemHandler
-	 * 
+	 *
 	 * @return ItemHandler
 	 */
 	public static ItemHandler getInstance()
@@ -77,17 +81,17 @@ public class ItemHandler
 		}
 		return _instance;
 	}
-	
+
 	/**
 	 * Returns the number of elements contained in datatable
-	 * 
+	 *
 	 * @return int : Size of the datatable
 	 */
 	public int size()
 	{
 		return _datatable.size();
 	}
-	
+
 	/**
 	 * Constructor of ItemHandler
 	 */
@@ -102,6 +106,12 @@ public class ItemHandler
 		registerItemHandler(new BeastSoulShot());
 		registerItemHandler(new BeastSpiritShot());
 		registerItemHandler(new ChestKey());
+		registerItemHandler(new ChristmasTree());
+		registerItemHandler(new CompBlessedSpiritShotPacks());
+		registerItemHandler(new CompBlessedSpiritShotPacks());
+		registerItemHandler(new CompShotPacks());
+		registerItemHandler(new CompSpiritShotPacks());
+		registerItemHandler(new HeroCustomItem());
 		registerItemHandler(new PaganKeys());
 		registerItemHandler(new Maps());
 		registerItemHandler(new Potions());
@@ -126,10 +136,10 @@ public class ItemHandler
 		registerItemHandler(new SpecialXMas());
 		registerItemHandler(new SummonItems());
 		registerItemHandler(new BeastSpice());
-		
-		_log.config("ItemHandler: Loaded " + _datatable.size() + " handlers in total.");
+
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}
-	
+
 	/**
 	 * Adds handler of item type in <I>datatable</I>.<BR>
 	 * <BR>
@@ -137,7 +147,7 @@ public class ItemHandler
 	 * This handler is put in <I>datatable</I> Map &lt;Integer ; IItemHandler
 	 * &gt; for each ID corresponding to an item type
 	 * (existing in classes of package itemhandlers) sets as key of the Map.
-	 * 
+	 *
 	 * @param handler
 	 *        (IItemHandler)
 	 */
@@ -151,10 +161,10 @@ public class ItemHandler
 			_datatable.put(new Integer(ids[i]), handler);
 		}
 	}
-	
+
 	/**
 	 * Returns the handler of the item
-	 * 
+	 *
 	 * @param itemId
 	 *        : int designating the itemID
 	 * @return IItemHandler

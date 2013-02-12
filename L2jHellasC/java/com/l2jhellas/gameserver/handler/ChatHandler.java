@@ -12,26 +12,37 @@
  */
 package com.l2jhellas.gameserver.handler;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.handler.chathandlers.*;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatAll;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatAlliance;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatClan;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatHeroVoice;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatParty;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatPartyRoomAll;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatPartyRoomCommander;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatPetition;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatShout;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatTell;
+import com.l2jhellas.gameserver.handler.chathandlers.ChatTrade;
 
 /**
  * This class handles all chat handlers
- * 
+ *
  * @author durgus
  */
 public class ChatHandler
 {
 	private static Logger _log = Logger.getLogger(ChatHandler.class.getName());
-	
+
 	private static ChatHandler _instance;
-	
+
 	private final FastMap<Integer, IChatHandler> _datatable;
-	
+
 	public static ChatHandler getInstance()
 	{
 		if (_instance == null)
@@ -40,7 +51,7 @@ public class ChatHandler
 		}
 		return _instance;
 	}
-	
+
 	/**
 	 * Singleton constructor
 	 */
@@ -58,12 +69,12 @@ public class ChatHandler
 		registerChatHandler(new ChatShout());
 		registerChatHandler(new ChatTell());
 		registerChatHandler(new ChatTrade());
-		_log.config("ChatHandler: Loaded " + size() + " Handlers in total.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}
-	
+
 	/**
 	 * Register a new chat handler
-	 * 
+	 *
 	 * @param handler
 	 */
 	public void registerChatHandler(IChatHandler handler)
@@ -76,10 +87,10 @@ public class ChatHandler
 			_datatable.put(ids[i], handler);
 		}
 	}
-	
+
 	/**
 	 * Get the chat handler for the given chat type
-	 * 
+	 *
 	 * @param chatType
 	 * @return
 	 */
@@ -87,11 +98,9 @@ public class ChatHandler
 	{
 		return _datatable.get(chatType);
 	}
-	
+
 	/**
-	 * Returns the size
-	 * 
-	 * @return
+	 * @return the size()
 	 */
 	public int size()
 	{

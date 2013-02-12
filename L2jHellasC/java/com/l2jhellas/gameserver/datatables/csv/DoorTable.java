@@ -56,7 +56,8 @@ public class DoorTable
 	public DoorTable()
 	{
 		_staticItems = new FastMap<Integer,L2DoorInstance>();
-		//parseData();
+		parseData();
+		onStart();
 	}
 
 	public void reloadAll()
@@ -65,7 +66,7 @@ public class DoorTable
 	}
 	public void respawn()
 	{
-//	    L2DoorInstance[] currentDoors = getDoors();
+		// L2DoorInstance[] currentDoors = getDoors();
 	    _staticItems = null;
 	    _instance = null;
 	    _instance = new DoorTable();
@@ -80,7 +81,6 @@ public class DoorTable
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
 
 			String line = null;
-			_log.warning("Searching clan halls doors:");
 
 			while ((line = lnr.readLine()) != null)
 			{
@@ -96,11 +96,11 @@ public class DoorTable
 				    clanhall.getDoors().add(door);
 				    door.setClanHall(clanhall);
                     if (Config.DEBUG)
-                        _log.warning("door "+door.getDoorName()+" attached to ch "+clanhall.getName());
+						_log.log(Level.WARNING, getClass().getName() + ": door " + door.getDoorName() + " attached to ch " + clanhall.getName());
 				}
 			}
 
-			_log.config("DoorTable: Loaded " + _staticItems.size() + " Door Templates.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _staticItems.size() + " Door Templates.");
 		}
 		catch (FileNotFoundException e)
 		{
@@ -343,5 +343,28 @@ public class DoorTable
 			}
 		}
 		return false;
+	}
+
+	private void onStart()
+	{
+		try
+		{
+			getDoor(24190001).openMe();
+			getDoor(24190002).openMe();
+			getDoor(24190003).openMe();
+			getDoor(24190004).openMe();
+			getDoor(23180001).openMe();
+			getDoor(23180002).openMe();
+			getDoor(23180003).openMe();
+			getDoor(23180004).openMe();
+			getDoor(23180005).openMe();
+			getDoor(23180006).openMe();
+
+			checkAutoOpen();
+		}
+		catch (NullPointerException e)
+		{
+			_log.log(Level.WARNING, "There are errors in your Door.csv file. Update door.csv", e);
+		}
 	}
 }

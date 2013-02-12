@@ -27,7 +27,6 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.GameServer;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -659,7 +658,7 @@ public class ClanHall
 					_paid = false;
 					if (System.currentTimeMillis() > _paidUntil + _chRate)
 					{
-						if (GameServer.gameServer.getCHManager() != null && GameServer.gameServer.getCHManager().loaded())
+						if (ClanHallManager.getInstance().loaded())
 						{
 							AuctionManager.getInstance().initNPC(getId());
 							ClanHallManager.getInstance().setFree(getId());
