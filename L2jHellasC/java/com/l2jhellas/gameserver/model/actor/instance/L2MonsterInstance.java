@@ -23,7 +23,7 @@ import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.knownlist.MonsterKnownList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.util.MinionList;
+import com.l2jhellas.util.MinionList;
 import com.l2jhellas.util.Rnd;
 
 

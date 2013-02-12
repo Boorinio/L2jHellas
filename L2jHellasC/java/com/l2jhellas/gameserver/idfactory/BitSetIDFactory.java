@@ -16,16 +16,12 @@ package com.l2jhellas.gameserver.idfactory;
 
 import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.util.PrimeFinder;
-
-/**
- * This class ..
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
 
 public class BitSetIDFactory extends IdFactory
 {
@@ -53,7 +49,7 @@ public class BitSetIDFactory extends IdFactory
 		super();
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new BitSetCapacityCheck(), 30000, 30000);
 		initialize();
-		_log.info("IDFactory: " + _freeIds.size() + " id's available.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": " + _freeIds.size() + " id's available.");
 	}
 
 	public synchronized void initialize()
@@ -69,7 +65,7 @@ public class BitSetIDFactory extends IdFactory
 				int objectID = usedObjectId - FIRST_OID;
 				if (objectID < 0)
 				{
-					_log.warning("Object ID " + usedObjectId + " in DB is less than minimum ID of " + FIRST_OID);
+					_log.log(Level.WARNING, getClass().getName() + ": Object ID " + usedObjectId + " in DB is less than minimum ID of " + FIRST_OID);
 					continue;
 				}
 				_freeIds.set(usedObjectId - FIRST_OID);
@@ -82,8 +78,11 @@ public class BitSetIDFactory extends IdFactory
 		catch (Exception e)
 		{
 			_initialized = false;
-			_log.severe("BitSet ID Factory could not be initialized correctly");
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": BitSet ID Factory could not be initialized correctly" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -96,7 +95,7 @@ public class BitSetIDFactory extends IdFactory
 			_freeIdCount.incrementAndGet();
 		}
 		else
-			_log.warning("BitSet ID Factory: release objectID " + objectID + " failed (< " + FIRST_OID + ")");
+			_log.log(Level.WARNING, getClass().getName() + ": BitSet ID Factory: release objectID " + objectID + " failed (< " + FIRST_OID + ")");
 	}
 
 	@Override

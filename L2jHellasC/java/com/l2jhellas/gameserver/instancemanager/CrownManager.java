@@ -15,8 +15,7 @@
 package com.l2jhellas.gameserver.instancemanager;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.CrownTable;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -31,7 +30,7 @@ import com.l2jhellas.gameserver.model.entity.Castle;
  */
 public class CrownManager
 {
-	private static final Log	_log	= LogFactory.getLog(CrownManager.class.getName());
+	protected static final Logger _log = Logger.getLogger(CrownManager.class.getName());
 	private static CrownManager	_instance;
 
 	public static final CrownManager getInstance()

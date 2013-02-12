@@ -18,8 +18,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -135,7 +137,11 @@ public class AdminPremium implements IAdminCommandHandler
 		}
 		catch (SQLException e)
 		{
-			_log.info("PremiumService:  Could not increase data");
+			_log.log(Level.WARNING, getClass().getName() + " Could not increase data." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

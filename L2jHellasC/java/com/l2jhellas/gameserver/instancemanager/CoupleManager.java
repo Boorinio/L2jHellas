@@ -17,12 +17,12 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -33,7 +33,7 @@ import com.l2jhellas.gameserver.model.entity.Couple;
  */
 public class CoupleManager
 {
-	private static final Log _log = LogFactory.getLog(CoupleManager.class.getName());
+	protected static final Logger _log = Logger.getLogger(CoupleManager.class.getName());
 
 	private static CoupleManager _instance;
 
@@ -80,7 +80,11 @@ public class CoupleManager
 		}
 		catch (Exception e)
 		{
-			_log.error("Exception: CoupleManager.load(): " + e.getMessage(), e);
+			_log.log(Level.WARNING, getClass().getName() + ": CoupleManager.load(): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		finally

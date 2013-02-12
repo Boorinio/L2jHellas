@@ -14,12 +14,12 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 

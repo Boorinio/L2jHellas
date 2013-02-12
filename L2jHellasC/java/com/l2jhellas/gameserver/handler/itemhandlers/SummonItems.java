@@ -16,8 +16,8 @@ package com.l2jhellas.gameserver.handler.itemhandlers;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SummonItemsData;
+import com.l2jhellas.gameserver.datatables.csv.SummonItemsData;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;

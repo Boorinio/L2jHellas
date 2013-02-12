@@ -17,9 +17,7 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -34,7 +32,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
  */
 public final class AwayManager
 {
-	private static final Log				_log	= LogFactory.getLog(AwayManager.class.getName());
+	protected static final Logger _log = Logger.getLogger(AwayManager.class.getName());
 	private static AwayManager				_instance;
 	Map<L2PcInstance, RestoreData>	_awayPlayers;
 
@@ -43,7 +41,6 @@ public final class AwayManager
 		if (_instance == null)
 		{
 			_instance = new AwayManager();
-			_log.info("AwayManager: initialized.");
 		}
 		return _instance;
 	}
@@ -116,6 +113,7 @@ public final class AwayManager
 			_awayText = awayText;
 		}
 
+		@Override
 		public void run()
 		{
 			if (_activeChar == null)
@@ -165,6 +163,7 @@ public final class AwayManager
 			_activeChar = activeChar;
 		}
 
+		@Override
 		public void run()
 		{
 			if (_activeChar == null)

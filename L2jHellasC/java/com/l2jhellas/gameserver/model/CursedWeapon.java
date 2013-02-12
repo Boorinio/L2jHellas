@@ -18,12 +18,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
@@ -36,6 +36,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
@@ -471,7 +472,11 @@ public class CursedWeapon
 		}
 		catch (SQLException e)
 		{
-			_log.severe("CursedWeapon: Failed to save data: " + e);
+			_log.log(Level.WARNING, getClass().getName() + " Failed to save data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

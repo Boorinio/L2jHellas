@@ -6,19 +6,19 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 public class ClassBBSManager extends BaseBBSManager
 {
 	private static ClassBBSManager _Instance = null;
-	
+
 	public static ClassBBSManager getInstance()
 	{
 		if (_Instance == null)
@@ -27,7 +27,7 @@ public class ClassBBSManager extends BaseBBSManager
 		}
 		return _Instance;
 	}
-	
+
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
@@ -88,14 +88,14 @@ public class ClassBBSManager extends BaseBBSManager
 					html.append("For you are no jobs available, or master class is currently not available.<br>");
 			}
 		}
-		
+
 		html.append("</center>");
 		html.append("<br>");
 		html.append("<br>");
 		String content = HtmCache.getInstance().getHtmForce("data/html/CommunityBoard/classmaster.htm");
 		content = content.replace("%classmaster%", html.toString());
 		separateAndSend(content, activeChar);
-		
+
 		if (command.startsWith("_bbsclass;change_class;"))
 		{
 			StringTokenizer st = new StringTokenizer(command, ";");
@@ -121,7 +121,7 @@ public class ClassBBSManager extends BaseBBSManager
 			}
 		}
 	}
-	
+
 	private void changeClass(L2PcInstance activeChar, short val)
 	{
 		int prof = activeChar.getClassId().level();
@@ -138,7 +138,7 @@ public class ClassBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CLASS_TRANSFER));
 		}
 		activeChar.setClassId(val);
-		
+
 		if (prof == 2)
 		{
 			activeChar.getInventory().addItem("bbsClassManager", 6622, 1, activeChar, null);
@@ -173,7 +173,7 @@ public class ClassBBSManager extends BaseBBSManager
 		}
 		activeChar.broadcastUserInfo();
 	}
-	
+
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{

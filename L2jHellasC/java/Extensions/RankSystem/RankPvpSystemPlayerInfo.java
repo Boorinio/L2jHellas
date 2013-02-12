@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.ServerSideImage;

@@ -26,7 +26,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.templates.L2Item;
 
 /**

@@ -16,8 +16,8 @@ package com.l2jhellas.gameserver.handler.itemhandlers;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.datatables.ExtractableItemsData;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ExtractableItem;
 import com.l2jhellas.gameserver.model.L2ExtractableProductItem;

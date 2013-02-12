@@ -15,6 +15,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.logging.Level;
 
 import Extensions.RaidEvent.L2EventChecks;
 
@@ -25,7 +26,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
  * This Class manages all the Requests to join a Raid Event.
- * 
+ *
  * @author polbat02
  */
 public class L2EventManagerInstance extends L2NpcInstance
@@ -38,12 +39,12 @@ public class L2EventManagerInstance extends L2NpcInstance
 	public static Vector<L2PcInstance> _awaitingplayers = new Vector<L2PcInstance>();
 	/** Players that will finally get inside the Event */
 	public static Vector<L2PcInstance> _finalPlayers = new Vector<L2PcInstance>();
-	
+
 	public L2EventManagerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-	
+
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -51,7 +52,7 @@ public class L2EventManagerInstance extends L2NpcInstance
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken();
 		_finalPlayers = new Vector<L2PcInstance>();
-		
+
 		if (actualCommand.equalsIgnoreCase("iEvent"))
 		{
 			try
@@ -79,15 +80,15 @@ public class L2EventManagerInstance extends L2NpcInstance
 					player.sendMessage("There's alredy " + _currentEvents + " events in progress. " + "Wait untill one of them ends to get into another one.");
 					return;
 				}
-				
+
 				if (L2EventChecks.usualChecks(player, minLevel))
 					_finalPlayers.add(player);
 				else
 					return;
-				
+
 				switch (type)
 				{
-			
+
 					case 2:
 					{
 						if (player.getClan() == null)
@@ -163,7 +164,7 @@ public class L2EventManagerInstance extends L2NpcInstance
 						}
 						break;
 					}
-					
+
 					default:
 					{
 						player.setRaidParameters(player, type, eventPoints, npcId, npcAm, minPeople, bufflist, prizeLevel, this, _finalPlayers);
@@ -171,17 +172,20 @@ public class L2EventManagerInstance extends L2NpcInstance
 					}
 				}
 				return;
-				
+
 			}
 			catch (Exception e)
 			{
-				_log.warning("L2EventManagerInstance: Error while getting html command");
-				e.printStackTrace();
+				_log.log(Level.WARNING, getClass().getName() + ": Error while getting html command." + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		super.onBypassFeedback(player, command);
 	}
-	
+
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -194,10 +198,10 @@ public class L2EventManagerInstance extends L2NpcInstance
 		{
 			pom = npcId + "-" + val;
 		}
-		
+
 		return "data/html/mods/event/" + pom + ".htm";
 	}
-	
+
 	public static boolean addEvent()
 	{
 		if (_currentEvents >= Config.RAID_SYSTEM_MAX_EVENTS)
@@ -208,7 +212,7 @@ public class L2EventManagerInstance extends L2NpcInstance
 			return true;
 		}
 	}
-	
+
 	public static boolean removeEvent()
 	{
 		if (_currentEvents > 0)

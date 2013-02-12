@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.MapRegionTable; 
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;

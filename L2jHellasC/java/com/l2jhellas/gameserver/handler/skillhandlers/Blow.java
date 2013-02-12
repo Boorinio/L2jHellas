@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,8 +34,8 @@ import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.gameserver.util.Util;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 /**
  * @author Steuf
@@ -45,28 +45,28 @@ public class Blow implements ISkillHandler
 	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.BLOW
 	};
-	
+
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
-		
+
 		for (L2Character target : (L2Character[]) targets)
 		{
 			if (target.isAlikeDead())
 				continue;
-			
+
 			// Check firstly if target dodges skill
 			final boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, skill);
-			
+
 			byte _successChance = Config.SIDE_BLOW_SUCCESS;
-			
+
 			if (activeChar.isBehindTarget())
 				_successChance = Config.BACK_BLOW_SUCCESS;
 			else if (activeChar.isFrontTarget())
 				_successChance = Config.FRONT_BLOW_SUCCESS;
-			
+
 			// If skill requires Crit or skill requires behind,
 			// calculate chance based on DEX, Position and on self BUFF
 			boolean success = true;
@@ -90,7 +90,7 @@ public class Blow implements ISkillHandler
 				L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
 				boolean soul = (weapon != null && weapon.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT && weapon.getItemType() == L2WeaponType.DAGGER);
 				byte shld = Formulas.calcShldUse(activeChar, target);
-				
+
 				// Crit rate base crit rate for skill, modified with STR bonus
 				boolean crit = false;
 				if (Formulas.calcCrit(skill.getBaseCritRate() * 10 * Formulas.getSTRBonus(activeChar)))
@@ -117,7 +117,7 @@ public class Blow implements ISkillHandler
 						}
 					}
 				}
-				
+
 				if (soul && weapon != null)
 					weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 				if (skill.getDmgDirectlyToHP() && target instanceof L2PcInstance)
@@ -130,7 +130,7 @@ public class Blow implements ISkillHandler
 						if (summon != null && summon instanceof L2SummonInstance && Util.checkIfInRange(900, player, summon, true))
 						{
 							int tDmg = (int) damage * (int) player.getStat().calcStat(Stats.TRANSFER_DAMAGE_PERCENT, 0, null, null) / 100;
-							
+
 							// Only transfer dmg up to current HP, it should not
 							// be killed
 							if (summon.getCurrentHp() < tDmg)
@@ -215,7 +215,7 @@ public class Blow implements ISkillHandler
 			skill.getEffectsSelf(activeChar);
 		}
 	}
-	
+
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

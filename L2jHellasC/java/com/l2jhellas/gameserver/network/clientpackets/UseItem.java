@@ -35,7 +35,7 @@ import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.gameserver.util.FloodProtector;
+import com.l2jhellas.util.FloodProtector;
 
 /**
  * This class ...

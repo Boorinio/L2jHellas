@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.skills.l2skills;
 
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;

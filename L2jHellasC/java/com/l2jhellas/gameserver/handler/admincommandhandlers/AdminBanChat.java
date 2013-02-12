@@ -46,6 +46,7 @@ public class AdminBanChat implements IAdminCommandHandler
 		"admin_banchat_all"
 	};
 
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance admin)
 	{
 		String[] cmdParams = command.split(" ");
@@ -137,6 +138,7 @@ public class AdminBanChat implements IAdminCommandHandler
 		return true;
 	}
 	
+	@Override
 	public String[] getAdminCommandList() 
 	{
 		return ADMIN_COMMANDS;

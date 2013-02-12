@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
@@ -102,7 +103,11 @@ public class AdminRepairChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "could not delete characters shortcuts:", e);
+				_log.log(Level.WARNING, getClass().getName() + ": could not delete characters shortcuts:" + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			try
 			{
@@ -115,7 +120,11 @@ public class AdminRepairChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "could not delete characters inventory items:", e);
+				_log.log(Level.WARNING, getClass().getName() + ": could not delete characters inventory items:" + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			// /need test
 		}

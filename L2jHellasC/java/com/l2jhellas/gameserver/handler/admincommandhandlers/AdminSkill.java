@@ -20,8 +20,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -32,6 +31,7 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
  * This class handles following admin commands:

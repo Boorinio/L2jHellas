@@ -20,18 +20,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler.AutoSpawnInstance;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SignsSky;
@@ -120,11 +121,11 @@ public class SevenSigns
     protected int _compWinner;
     protected int _previousWinner;
 
-	private Map<Integer, StatsSet> _signsPlayerData;
+	private final Map<Integer, StatsSet> _signsPlayerData;
 
-	private Map<Integer, Integer> _signsSealOwners;
-	private Map<Integer, Integer> _signsDuskSealTotals;
-	private Map<Integer, Integer> _signsDawnSealTotals;
+	private final Map<Integer, Integer> _signsSealOwners;
+	private final Map<Integer, Integer> _signsDuskSealTotals;
+	private final Map<Integer, Integer> _signsDawnSealTotals;
 
     private static AutoSpawnInstance _merchantSpawn;
     private static AutoSpawnInstance _blacksmithSpawn;
@@ -132,8 +133,8 @@ public class SevenSigns
     private static AutoSpawnInstance _spiritOutSpawn;
     private static AutoSpawnInstance _lilithSpawn;
     private static AutoSpawnInstance _anakimSpawn;
-    private static Map<Integer, AutoSpawnInstance> _crestofdawnspawns; 
- 	private static Map<Integer, AutoSpawnInstance> _crestofduskspawns; 
+    private static Map<Integer, AutoSpawnInstance> _crestofdawnspawns;
+ 	private static Map<Integer, AutoSpawnInstance> _crestofduskspawns;
     private static Map<Integer, AutoSpawnInstance> _oratorSpawns;
     private static Map<Integer, AutoSpawnInstance> _preacherSpawns;
     private static Map<Integer, AutoSpawnInstance> _marketeerSpawns;
@@ -173,7 +174,7 @@ public class SevenSigns
             setCalendarForNextPeriodChange();
             long milliToChange = getMilliToPeriodChange();
 
-            // Schedule a time for the next period change.  
+            // Schedule a time for the next period change.
 			SevenSignsPeriodChange sspc = new SevenSignsPeriodChange();
 			ThreadPoolManager.getInstance().scheduleGeneral(sspc, milliToChange);
 
@@ -204,7 +205,7 @@ public class SevenSigns
 		_spiritOutSpawn = AutoSpawnHandler.getInstance().getAutoSpawnInstance(SPIRIT_OUT_ID, false);
 		_lilithSpawn = AutoSpawnHandler.getInstance().getAutoSpawnInstance(LILITH_NPC_ID, false);
 		_anakimSpawn = AutoSpawnHandler.getInstance().getAutoSpawnInstance(ANAKIM_NPC_ID, false);
-		_crestofdawnspawns = AutoSpawnHandler.getInstance().getAutoSpawnInstances(CREST_OF_DAWN_ID); 
+		_crestofdawnspawns = AutoSpawnHandler.getInstance().getAutoSpawnInstances(CREST_OF_DAWN_ID);
 	 	_crestofduskspawns = AutoSpawnHandler.getInstance().getAutoSpawnInstances(CREST_OF_DUSK_ID);
 		_oratorSpawns = AutoSpawnHandler.getInstance().getAutoSpawnInstances(ORATOR_NPC_ID);
 		_preacherSpawns = AutoSpawnHandler.getInstance().getAutoSpawnInstances(PREACHER_NPC_ID);
@@ -267,18 +268,18 @@ public class SevenSigns
 				        	AutoSpawnHandler.getInstance().setSpawnActive(_lilithSpawn, true);
 
 		        		AutoSpawnHandler.getInstance().setSpawnActive(_anakimSpawn, false);
-		        		 for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values()) 
-		        		  { 
-		        			 	if(!AutoSpawnHandler.getInstance().getAutoSpawnInstance(dawnCrest.getObjectId(), true).isSpawnActive()) 
-		        			 	 { 
-		        			 	   AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, true); 
-		        			 	 } 
-		        		  } 
-		        			                                                 
-		        		 for (AutoSpawnInstance duskCrest : _crestofduskspawns.values()) 
-		        		  { 
-		        			 	AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, false); 
-		        		  } 
+		        		 for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values())
+		        		  {
+		        			 	if(!AutoSpawnHandler.getInstance().getAutoSpawnInstance(dawnCrest.getObjectId(), true).isSpawnActive())
+		        			 	 {
+		        			 	   AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, true);
+		        			 	 }
+		        		  }
+
+		        		 for (AutoSpawnInstance duskCrest : _crestofduskspawns.values())
+		        		  {
+		        			 	AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, false);
+		        		  }
 		        		break;
 
 		        	case CABAL_DUSK:
@@ -286,18 +287,18 @@ public class SevenSigns
 				        	AutoSpawnHandler.getInstance().setSpawnActive(_anakimSpawn, true);
 
 		        		AutoSpawnHandler.getInstance().setSpawnActive(_lilithSpawn, false);
-		        		for (AutoSpawnInstance duskCrest : _crestofduskspawns.values()) 
-		        		{ 
-		        		 	if(!AutoSpawnHandler.getInstance().getAutoSpawnInstance(duskCrest.getObjectId(), true).isSpawnActive()) 
-		        		 	{ 
-		        		 	 AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, true); 
-		        		 	} 
-		        		} 
-		        		 	                                                 
-		        		 for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values()) 
-		        		 { 
-		        		 	AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, false); 
-		        		 } 
+		        		for (AutoSpawnInstance duskCrest : _crestofduskspawns.values())
+		        		{
+		        		 	if(!AutoSpawnHandler.getInstance().getAutoSpawnInstance(duskCrest.getObjectId(), true).isSpawnActive())
+		        		 	{
+		        		 	 AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, true);
+		        		 	}
+		        		}
+
+		        		 for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values())
+		        		 {
+		        		 	AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, false);
+		        		 }
 		        		break;
 		        }
 	        }
@@ -306,14 +307,14 @@ public class SevenSigns
 				AutoSpawnHandler.getInstance().setSpawnActive(_merchantSpawn, false);
 				AutoSpawnHandler.getInstance().setSpawnActive(_lilithSpawn, false);
 				AutoSpawnHandler.getInstance().setSpawnActive(_anakimSpawn, false);
-				for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values()) 
-				 { 
-				 	AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, false); 
-				 } 
-				for (AutoSpawnInstance duskCrest : _crestofduskspawns.values()) 
-				 { 
-				 	AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, false); 
-				 } 
+				for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values())
+				 {
+				 	AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, false);
+				 }
+				for (AutoSpawnInstance duskCrest : _crestofduskspawns.values())
+				 {
+				 	AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, false);
+				 }
 				AutoSpawnHandler.getInstance().setSpawnActive(_spiritInSpawn, false);
 				AutoSpawnHandler.getInstance().setSpawnActive(_spiritOutSpawn, false);
 	        }
@@ -324,14 +325,14 @@ public class SevenSigns
 			AutoSpawnHandler.getInstance().setSpawnActive(_blacksmithSpawn, false);
 			AutoSpawnHandler.getInstance().setSpawnActive(_lilithSpawn, false);
 			AutoSpawnHandler.getInstance().setSpawnActive(_anakimSpawn, false);
-			for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values()) 
-			{ 
-			 	AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, false); 
-			} 
-			for (AutoSpawnInstance duskCrest : _crestofduskspawns.values()) 
-			 { 
-			 	AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, false); 
-			 } 
+			for (AutoSpawnInstance dawnCrest : _crestofdawnspawns.values())
+			{
+			 	AutoSpawnHandler.getInstance().setSpawnActive(dawnCrest, false);
+			}
+			for (AutoSpawnInstance duskCrest : _crestofduskspawns.values())
+			 {
+			 	AutoSpawnHandler.getInstance().setSpawnActive(duskCrest, false);
+			 }
 			AutoSpawnHandler.getInstance().setSpawnActive(_spiritInSpawn, false);
 			AutoSpawnHandler.getInstance().setSpawnActive(_spiritOutSpawn, false);
 
@@ -731,7 +732,11 @@ public class SevenSigns
     	}
     	catch (SQLException e)
     	{
-    		_log.severe("SevenSigns: Unable to load Seven Signs data from database: " + e);
+			_log.log(Level.WARNING, getClass().getName() + " Unable to load Seven Signs data from database: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
     	}
     	finally
     	{
@@ -841,7 +846,11 @@ public class SevenSigns
 		}
 		catch (SQLException e)
 		{
-			_log.severe("SevenSigns: Unable to save data to database: " + e);
+			_log.log(Level.WARNING, getClass().getName() + "  Unable to save data to database: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
         {
@@ -949,7 +958,11 @@ public class SevenSigns
 			}
 			catch (SQLException e)
 			{
-				_log.severe("SevenSigns: Failed to save data: " + e);
+				_log.log(Level.WARNING, getClass().getName() + " Failed to save data: " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			finally
 			{
@@ -1329,7 +1342,8 @@ public class SevenSigns
 	 */
 	protected class SevenSignsPeriodChange implements Runnable
 	{
-        public void run()
+        @Override
+		public void run()
         {
             /*
              * Remember the period check here refers to the period just ENDED!
@@ -1347,7 +1361,7 @@ public class SevenSigns
                     // Send message that Competition has begun.
                     sendMessageToAll(SystemMessageId.QUEST_EVENT_PERIOD_BEGUN);
 	                break;
-	                
+
 	            case PERIOD_COMPETITION: // Results Calculation
 
 	                // Send message that Competition has ended.
@@ -1371,7 +1385,7 @@ public class SevenSigns
                     }
                     _previousWinner = compWinner;
 	                break;
-	                
+
 	            case PERIOD_COMP_RESULTS: // Seal Validation
 
                     // Perform initial Seal Validation set up.
@@ -1382,10 +1396,10 @@ public class SevenSigns
 
                     _log.info("SevenSigns: The " + getCabalName(_previousWinner) + " have won the competition with " + getCurrentScore(_previousWinner) + " points!");
 	                break;
-	                
+
 	            case PERIOD_SEAL_VALIDATION: // Reset for New Cycle
-	            	
-	            	SevenSignsFestival.getInstance().rewardHighestRanked(); // reward highest ranking members from cycle 
+
+	            	SevenSignsFestival.getInstance().rewardHighestRanked(); // reward highest ranking members from cycle
 
 	                // Ensure a cycle restart when this period ends.
                     _activePeriod = PERIOD_COMP_RECRUITING;
@@ -1406,7 +1420,7 @@ public class SevenSigns
 
 	                _dawnFestivalScore = 0;
 	                _duskFestivalScore = 0;
-	                
+
 	                _currentCycle++;
 	                break;
 	        }

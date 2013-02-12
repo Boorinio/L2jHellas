@@ -29,8 +29,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -213,7 +213,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 				iu.addNewItem(createditem);
 
 			activeChar.sendPacket(iu);
-		} 
+		}
 		else
 			activeChar.sendPacket(new ItemList(activeChar, false));
 

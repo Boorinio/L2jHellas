@@ -22,20 +22,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.DoorTable;
-import com.l2jhellas.gameserver.datatables.ItemTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -53,7 +52,7 @@ import com.l2jhellas.util.Rnd;
 
 public class TvT
 {
-	private final static Log _log = LogFactory.getLog(TvT.class.getName());
+	protected static final Logger _log = Logger.getLogger(TvT.class.getName());
 	public static String _eventName = "";
 	public static String _eventDesc = "";
 	public static String _topTeam = "";
@@ -164,8 +163,8 @@ public class TvT
 	{
 		if (!checkTeamOk())
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[addTeam(" + teamName + ")]: checkTeamOk() = false");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[addTeam(" + teamName + ")]: checkTeamOk() = false");
 			return;
 		}
 
@@ -207,15 +206,15 @@ public class TvT
 	{
 		if (!checkTeamOk() || _teams.isEmpty())
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[removeTeam(" + teamName + ")]: checkTeamOk() = false");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[removeTeam(" + teamName + ")]: checkTeamOk() = false");
 			return;
 		}
 
 		if (teamPlayersCount(teamName) > 0)
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[removeTeam(" + teamName + ")]: teamPlayersCount(teamName) > 0");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[removeTeam(" + teamName + ")]: teamPlayersCount(teamName) > 0");
 			return;
 		}
 
@@ -280,8 +279,8 @@ public class TvT
 		if (!startJoinOk())
 		{
 			activeChar.sendMessage("Event not setted propertly.");
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[startJoin(" + activeChar.getName() + ")]: startJoinOk() = false");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[startJoin(" + activeChar.getName() + ")]: startJoinOk() = false");
 			return;
 		}
 		_joining = true;
@@ -297,9 +296,9 @@ public class TvT
 	{
 		if (!startJoinOk())
 		{
-			_log.warn("Event not setted propertly.");
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[startJoin(startJoinOk() = false");
+			_log.log(Level.WARNING, " Event not setted propertly.");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[startJoin(startJoinOk() = false");
 			return;
 		}
 		_joining = true;
@@ -315,8 +314,8 @@ public class TvT
 	{
 		if (!startJoinOk())
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[startJoin]: startJoinOk() = false");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[startJoin]: startJoinOk() = false");
 			return false;
 		}
 
@@ -364,7 +363,7 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.error("TvT Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
+			_log.log(Level.WARNING, " TvT Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
 		}
 	}
 
@@ -397,7 +396,7 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.error("TvT Engine[spawnEventNpc(exception: " + e.getMessage());
+			_log.log(Level.WARNING, " TvT Engine[spawnEventNpc(exception: " + e.getMessage());
 		}
 	}
 
@@ -557,8 +556,8 @@ public class TvT
 
 		if (!startEventOk())
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[startEvent(" + activeChar.getName() + ")]: startEventOk() = false");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[startEvent(" + activeChar.getName() + ")]: startEventOk() = false");
 			return;
 		}
 
@@ -587,8 +586,8 @@ public class TvT
 	{
 		if (!startEventOk())
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[startEvent]: startEventOk() = false");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[startEvent]: startEventOk() = false");
 			return false;
 		}
 
@@ -624,7 +623,7 @@ public class TvT
 				waiter(30 * 1000); // 30 sec wait time untill start fight after teleported
 				if (startAutoEvent())
 				{
-					_log.debug("TvT: waiting.....minutes for event time " + TvT._eventTime);
+					_log.log(Level.FINER, "TvT: waiting.....minutes for event time " + TvT._eventTime);
 
 					waiter(_eventTime * 60 * 1000); // minutes for event time
 					finishEvent();
@@ -643,7 +642,7 @@ public class TvT
 					}
 					catch (Exception e)
 					{
-						_log.error("Error while tying to Restart Event", e);
+						_log.log(Level.WARNING, " Error while tying to Restart Event", e);
 						e.printStackTrace();
 					}
 				}
@@ -814,8 +813,8 @@ public class TvT
 	{
 		if (!finishEventOk())
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("TvT Engine[finishEvent]: finishEventOk() = false");
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "TvT Engine[finishEvent]: finishEventOk() = false");
 			return;
 		}
 
@@ -1138,7 +1137,7 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.error("Exception: TvT.loadData(): " + e.getMessage());
+			_log.log(Level.WARNING, " Exception: TvT.loadData(): " + e.getMessage());
 		}
 		finally
 		{
@@ -1211,7 +1210,7 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.error("Exception: TvT.saveData(): " + e.getMessage());
+			_log.log(Level.WARNING, " Exception: TvT.saveData(): " + e.getMessage());
 		}
 		finally
 		{
@@ -1326,7 +1325,7 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.warn("TvT Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
+			_log.log(Level.WARNING, " TvT Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
 		}
 	}
 
@@ -1374,7 +1373,7 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.error(e.getMessage(), e);
+			_log.log(Level.WARNING, "" + e);
 		}
 	}
 
@@ -1454,7 +1453,7 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.warn("TvT Engine exception: " + e.getMessage());
+			_log.log(Level.WARNING, " TvT Engine exception: " + e.getMessage());
 		}
 
 		if (Config.TVT_EVEN_TEAMS.equals("NO"))
@@ -1662,7 +1661,7 @@ public class TvT
 							}
 							catch (SQLException se)
 							{
-								_log.error(se.getMessage(), se);
+								_log.log(Level.WARNING, "" + se);
 							}
 							finally
 							{
@@ -1756,7 +1755,11 @@ public class TvT
 		}
 		catch (InterruptedException ie)
 		{
-			_log.fatal("Error, " + ie.getMessage());
+			_log.log(Level.WARNING, "Error, " + ie.getMessage());
+			if (Config.DEVELOPER)
+			{
+				ie.printStackTrace();
+			}
 		}
 	}
 
@@ -1781,7 +1784,7 @@ public class TvT
 	{
 		if (_aborted)
 		{
-			_log.debug("TvT: restart skipped, event was aborted.");
+			_log.log(Level.FINER, "TvT: restart skipped, event was aborted.");
 			return;
 		}
 		_log.info("TvT: Event has been restarted...");
@@ -1801,8 +1804,11 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.fatal("TvT: Error While Trying to restart Event...", e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, "TvT: Error While Trying to restart Event...", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -17,9 +17,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.SkillSpellbookTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillSpellbookTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
 import com.l2jhellas.gameserver.model.L2ShortCut;
@@ -36,8 +35,9 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutRegister;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -117,7 +117,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 
 			if (counts == 0 && !Config.ALT_GAME_SKILL_LEARN)
 			{
-			  player.sendMessage("You are trying to learn skill that u can't.."); 
+			  player.sendMessage("You are trying to learn skill that u can't..");
 			  Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " tried to learn skill that he can't!!!", IllegalPlayerAction.PUNISH_KICK);
 			  return;
 			}
@@ -177,7 +177,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 
 			if (counts == 0)
 			{
-				player.sendMessage("You are trying to learn skill that u can't.."); 
+				player.sendMessage("You are trying to learn skill that u can't..");
 				Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " tried to learn skill that he can't!!!", IllegalPlayerAction.PUNISH_KICK);
 				return;
 			}
@@ -196,7 +196,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 				sm.addItemName(costid);
 				sendPacket(sm);
 				sm = null;
-			} 
+			}
 			else
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
@@ -276,18 +276,18 @@ public class RequestAquireSkill extends L2GameClientPacket
             sm.addSkillName(_id);
             player.sendPacket(sm);
             sm = null;
-            
+
             player.getClan().broadcastToOnlineMembers(new PledgeSkillList(player.getClan()));
-            
-            for(L2PcInstance member: player.getClan().getOnlineMembers("")) 
+
+            for(L2PcInstance member: player.getClan().getOnlineMembers(""))
             {
             	member.sendSkillList();
             }
             ((L2VillageMasterInstance)trainer).showPledgeSkillList(player); //Maybe we shoud add a check here...
-            
+
             return;
         }
-		
+
 		else
 		{
 			_log.warning("Recived Wrong Packet Data in Aquired Skill - unk1:" + _skillType);
@@ -313,7 +313,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 		sm.addSkillName(_id);
 		player.sendPacket(sm);
 		sm = null;
-		
+
 		// update all the shortcuts to this skill
 		if (_level > 1)
 		{
@@ -345,7 +345,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
 	 */
 	@Override

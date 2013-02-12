@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Character;

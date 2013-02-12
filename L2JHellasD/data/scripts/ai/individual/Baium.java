@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -22,9 +22,8 @@ import java.util.Collection;
 import javolution.util.FastList;
 import ai.group_template.L2AttackableAIScript;
 
-import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -40,13 +39,14 @@ import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.Earthquake;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.gameserver.util.Util;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 /**
  * Baium AI
- * 
+ *
  * Note1: if the server gets rebooted while players are still fighting Baium, there is no lock, but
  *   players also lose their ability to wake baium up.  However, should another person
  *   enter the room and wake him up, the players who had stayed inside may join the raid.
@@ -63,15 +63,15 @@ import com.l2jhellas.util.Rnd;
  *       [ha, ha] you or someone else will have to wake Baium. There is a good chance that Baium
  *       will automatically kill whoever wakes him. There are some people that have been able to
  *       wake him and not die, however if you've already gone through the trouble of getting the
- *       bloody fabric and camped him out and researched his spawn time, are you willing to take that 
+ *       bloody fabric and camped him out and researched his spawn time, are you willing to take that
  *       chance that you'll wake him and not be able to finish your quest? Doubtful.
  *       [ this powerful attack vs the player who wakes him up is NOT yet implemented here]
  *   * once someone starts attacking Baium no one else can port into the chamber where he is.
  *       Unlike with the other raid bosses, you can just show up at any time as long as you are there
  *       when they die. Not true with Baium. Once he gets attacked, the port to Baium closes. byebye,
- *       see you in 5 days.  If nobody attacks baium for 30 minutes, he auto-despawns and unlocks the 
+ *       see you in 5 days.  If nobody attacks baium for 30 minutes, he auto-despawns and unlocks the
  *       vortex
- * 
+ *
  * @author Fulminus version 0.1
  */
 public class Baium extends L2AttackableAIScript
@@ -96,14 +96,14 @@ public class Baium extends L2AttackableAIScript
 
 	private static long _LastAttackVsBaiumTime = 0;
 	private static L2BossZone _Zone;
-	
+
 	public Baium (int questId, String name, String descr)
 	{
 		super(questId, name, descr);
-		
+
         int[] mob = {LIVE_BAIUM};
         this.registerMobs(mob);
-        
+
         // Quest NPC starter initialization
         addStartNpc(STONE_BAIUM);
         addStartNpc(ANGELIC_VORTEX);
@@ -143,6 +143,7 @@ public class Baium extends L2AttackableAIScript
             GrandBossManager.getInstance().addBoss(baium);
             final L2NpcInstance _baium = baium;
             ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
+				@Override
 				public void run()
 				{
 					try
@@ -165,6 +166,7 @@ public class Baium extends L2AttackableAIScript
             addSpawn(STONE_BAIUM,116015,17425,10106,41740,false,0);
 	}
 
+	@Override
 	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
 	{
         if (event.equalsIgnoreCase("baium_unlock"))
@@ -192,7 +194,8 @@ public class Baium extends L2AttackableAIScript
                 startQuestTimer("skill_range", 500, npc, null, true);
                 final L2NpcInstance baium = npc;
                 ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-    				public void run()
+    				@Override
+					public void run()
     				{
     					try
     		            {
@@ -240,7 +243,8 @@ public class Baium extends L2AttackableAIScript
         return super.onAdvEvent(event, npc, player);
 	}
 
-    public String onTalk(L2NpcInstance npc,L2PcInstance player)
+    @Override
+	public String onTalk(L2NpcInstance npc,L2PcInstance player)
     {
         int npcId = npc.getNpcId();
         String htmltext = "";
@@ -252,7 +256,7 @@ public class Baium extends L2AttackableAIScript
         {
             if (_Zone.isPlayerAllowed(player))
             {
-                // once Baium is awaken, no more people may enter until he dies, the server reboots, or 
+                // once Baium is awaken, no more people may enter until he dies, the server reboots, or
                 // 30 minutes pass with no attacks made against Baium.
                 GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM,AWAKE);
                 npc.deleteMe();
@@ -261,7 +265,8 @@ public class Baium extends L2AttackableAIScript
 				player.reduceCurrentHp(player.getCurrentHp(),player);
                 final L2NpcInstance _baium = baium;
                 ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-    				public void run()
+    				@Override
+					public void run()
     				{
     					try
     		            {
@@ -304,8 +309,9 @@ public class Baium extends L2AttackableAIScript
         }
         return htmltext;
     }
-    
-    public String onSpellFinished(L2NpcInstance npc, L2PcInstance player, L2Skill skill)
+
+    @Override
+	public String onSpellFinished(L2NpcInstance npc, L2PcInstance player, L2Skill skill)
     {
 		if (npc.isInvul())
 		{
@@ -318,7 +324,8 @@ public class Baium extends L2AttackableAIScript
     	}
     	return super.onSpellFinished(npc, player, skill);
     }
-    public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+    @Override
+	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
     {
     	if (!_Zone.isInsideZone(attacker))
     	{
@@ -356,9 +363,10 @@ public class Baium extends L2AttackableAIScript
     	}
 		return super.onAttack(npc, attacker, damage, isPet);
     }
-    
-    public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet) 
-    { 
+
+    @Override
+	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+    {
         cancelQuestTimer("baium_despawn", npc, null);
         npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
         // spawn the "Teleportation Cubic" for 15 minutes (to allow players to exit the lair)
@@ -535,6 +543,7 @@ public class Baium extends L2AttackableAIScript
 		return skill;
 	}
 
+	@Override
 	public String onSkillSee (L2NpcInstance npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
 		if (npc.isInvul())

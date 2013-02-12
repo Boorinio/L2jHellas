@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -17,24 +17,25 @@ package ai.individual;
 import java.util.List;
 
 import javolution.util.FastList;
+import ai.group_template.L2AttackableAIScript;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
+import com.l2jhellas.gameserver.model.L2Attackable;
+import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
-import ai.group_template.L2AttackableAIScript;
 
 /**
  * Orfen AI
@@ -57,7 +58,7 @@ public class Orfen extends L2AttackableAIScript
 	private static final int RAIKEL_LEOS = 29016;
 	//private static final int RIBA = 29017;
 	private static final int RIBA_IREN = 29018;
-	
+
 	private static boolean _IsTeleported;
 	private static List<L2Attackable> _Minions = new FastList<L2Attackable>();
 	private static L2BossZone _Zone;
@@ -125,7 +126,7 @@ public class Orfen extends L2AttackableAIScript
             this.spawnBoss(orfen);
         }
 	}
-        
+
     public void setSpawnPoint(L2NpcInstance npc,int index)
     {
     	((L2Attackable) npc).clearAggroList();
@@ -162,10 +163,11 @@ public class Orfen extends L2AttackableAIScript
         this.startQuestTimer("check_minion_loc",10000,npc,null,true);
     }
 
+	@Override
 	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
 	{
         if (event.equalsIgnoreCase("orfen_unlock"))
-        {                
+        {
             int i = Rnd.get(10);
             int x = 0;
             int y = 0;
@@ -234,8 +236,9 @@ public class Orfen extends L2AttackableAIScript
         return super.onAdvEvent(event, npc, player);
 	}
 
-	public String onSkillSee (L2NpcInstance npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet) 
-    { 
+	@Override
+	public String onSkillSee (L2NpcInstance npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+    {
         if (npc.getNpcId() == ORFEN)
         {
             L2Character originalCaster = isPet? caster.getPet(): caster;
@@ -250,8 +253,9 @@ public class Orfen extends L2AttackableAIScript
         return super.onSkillSee(npc,caster,skill,targets,isPet);
     }
 
-    public String onFactionCall (L2NpcInstance npc, L2NpcInstance caller, L2PcInstance attacker, boolean isPet) 
-    { 
+    @Override
+	public String onFactionCall (L2NpcInstance npc, L2NpcInstance caller, L2PcInstance attacker, boolean isPet)
+    {
         if (caller == null || npc == null)
         	return super.onFactionCall(npc, caller, attacker, isPet);
         int npcId = npc.getNpcId();
@@ -275,9 +279,10 @@ public class Orfen extends L2AttackableAIScript
         }
         return super.onFactionCall(npc, caller, attacker, isPet);
     }
-        
-    public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
-    {	
+
+    @Override
+	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+    {
         int npcId = npc.getNpcId();
         if (npcId == ORFEN)
         {
@@ -305,8 +310,9 @@ public class Orfen extends L2AttackableAIScript
         return super.onAttack(npc, attacker, damage, isPet);
     }
 
-    public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet) 
-    { 
+    @Override
+	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+    {
         if (npc.getNpcId() == ORFEN)
         {
             npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));

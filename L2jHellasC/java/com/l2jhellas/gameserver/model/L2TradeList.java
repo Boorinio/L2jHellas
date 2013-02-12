@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;

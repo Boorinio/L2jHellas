@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.l2jhellas.gameserver.util.ArrayUtils;
+import com.l2jhellas.util.ArrayUtils;
 
 /**
  * @author ProGramMoS

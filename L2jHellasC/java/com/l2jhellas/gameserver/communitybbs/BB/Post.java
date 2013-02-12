@@ -19,10 +19,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
 
@@ -86,7 +88,11 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.warning("error while saving new Post to db " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": error while saving new Post to db " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -136,7 +142,11 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": could not delete post", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -180,8 +190,11 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.warning("data error on Post " + t.getForumID() + "/"+t.getID()+" : " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": data error on Post " + t.getForumID() + "/" + t.getID() + " : " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -215,7 +228,11 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.warning("error while saving new Post to db " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": error while saving new Post to db " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

@@ -20,7 +20,7 @@ import Extensions.RaidEvent.L2RaidEvent;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
@@ -31,8 +31,8 @@ import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.Revive;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
 
 
@@ -148,7 +148,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 
 					default:
 						 if (Config.ALT_RESPAWN_POINT) loc = new Location(Config.ALT_RESPAWN_POINT_X, Config.ALT_RESPAWN_POINT_Y, Config.ALT_RESPAWN_POINT_Z);
-					 else 
+					 else
 						loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Town);
 					break;
 				}

@@ -19,7 +19,6 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.GameTimeController;
@@ -73,20 +72,20 @@ abstract class AbstractAI implements Ctrl
             {
                 if (_followTask == null) return;
 
-                if (_followTarget == null) 
-                 { 
-                   stopFollow(); 
-                   return; 
+                if (_followTarget == null)
+                 {
+                   stopFollow();
+                   return;
                  }
-                
+
                 if (!_actor.isInsideRadius(_followTarget, _range, true, false))
                 {
-                	moveToPawn(_followTarget, _range); 
+                	moveToPawn(_followTarget, _range);
                 }
             }
             catch (Throwable t)
             {
-                _log.log(Level.WARNING, "", t);
+				_log.warning("" + t);
             }
         }
     }
@@ -494,22 +493,22 @@ abstract class AbstractAI implements Ctrl
             if (offset < 10)
             	offset = 10;
 
-            // prevent possible extra calls to this function (there is none?), 
+            // prevent possible extra calls to this function (there is none?),
             // also don't send movetopawn packets too often
             boolean sendPacket = true;
-            if (_clientMoving && _target == pawn) 
+            if (_clientMoving && _target == pawn)
             {
             	if (_clientMovingToPawnOffset == offset)
             	{
             		if (GameTimeController.getGameTicks() < _moveToPawnTimeout)
             			return;
-                    sendPacket = false;	
+                    sendPacket = false;
             	}
-            	else if (_actor.isOnGeodataPath()) 
+            	else if (_actor.isOnGeodataPath())
             	{
             		// minimum time to calculate new route is 2 seconds
             		if (GameTimeController.getGameTicks() < (_moveToPawnTimeout + 10))
-            			return;            		
+            			return;
             	}
             }
 
@@ -526,7 +525,7 @@ abstract class AbstractAI implements Ctrl
             // Calculate movement data for a move to location action and add the actor to movingObjects of GameTimeController
             _accessor.moveTo(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
 
-            if (!_actor.isMoving()) 
+            if (!_actor.isMoving())
             {
             	_actor.sendPacket(new ActionFailed());
             	return;
@@ -543,7 +542,7 @@ abstract class AbstractAI implements Ctrl
             	else if (sendPacket) // don't repeat unnecessarily
             		_actor.broadcastPacket(new MoveToPawn(_actor, (L2Character) pawn, offset));
             }
-            else 
+            else
             	_actor.broadcastPacket(new CharMoveToLocation(_actor));
         }
         else

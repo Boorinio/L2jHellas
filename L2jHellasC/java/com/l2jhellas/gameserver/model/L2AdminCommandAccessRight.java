@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.datatables.AccessLevels;
+import com.l2jhellas.gameserver.datatables.sql.AccessLevels;
 
 /**
  * @author FBIagent<br>

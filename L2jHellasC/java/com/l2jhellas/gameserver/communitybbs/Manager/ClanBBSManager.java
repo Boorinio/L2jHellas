@@ -18,12 +18,12 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.StringUtil;
+import com.l2jhellas.util.StringUtil;
 
 public class ClanBBSManager extends BaseBBSManager
 {

@@ -3,7 +3,7 @@ import sys
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState
 from com.l2jhellas.gameserver.model.quest.jython import QuestJython as JQuest
-from com.l2jhellas.gameserver.datatables import ItemTable
+from com.l2jhellas.gameserver.datatables.sql import ItemTable
 qn = "7000_HeroItems"
 MONUMENTS=[31690]+range(31769,31773)
 

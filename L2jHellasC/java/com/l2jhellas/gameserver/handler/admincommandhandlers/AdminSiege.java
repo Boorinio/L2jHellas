@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -39,9 +39,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class AdminSiege implements IAdminCommandHandler
 {
-	// private static Logger _log =
-	// Logger.getLogger(AdminSiege.class.getName());
-
 	private static final String[] ADMIN_COMMANDS =
 	{
 	"admin_siege", "admin_add_attacker", "admin_add_defender", "admin_add_guard", "admin_list_siege_clans", "admin_clear_siege_list", "admin_move_defenders", "admin_spawn_doors", "admin_endsiege", "admin_startsiege", "admin_setcastle", "admin_removecastle", "admin_clanhall", "admin_clanhallset", "admin_clanhalldel", "admin_clanhallopendoors", "admin_clanhallclosedoors", "admin_clanhallteleportself"

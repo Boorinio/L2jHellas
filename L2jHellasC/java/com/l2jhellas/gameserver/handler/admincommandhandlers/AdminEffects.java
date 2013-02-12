@@ -18,7 +18,6 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -44,6 +43,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SunRise;
 import com.l2jhellas.gameserver.network.serverpackets.SunSet;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
  * This class handles following admin commands:

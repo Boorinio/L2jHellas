@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Clan;
 
@@ -118,7 +118,11 @@ public class CrestCache
 				}
 				catch (Exception e)
 				{
-					_log.warning("problem with crest bmp file " + e);
+					_log.log(Level.WARNING, getClass().getName() + " problem with crest bmp file " + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 				finally
 				{
@@ -132,7 +136,7 @@ public class CrestCache
 				}
 			}
 		}
-		
+
 		_log.info("Cache[Crest]: " + String.format("%.3f", getMemoryUsage()) + "MB on " + getLoadedFiles() + " files loaded. (Forget Time: " + (_cachePledge.getForgetTime() / 1000) + "s , Capacity: " + _cachePledge.capacity() + ")");
 	}
 
@@ -145,7 +149,7 @@ public class CrestCache
 		for (File file : files)
 		{
 			int clanId = Integer.parseInt(file.getName().substring(7, file.getName().length() - 4));
-			
+
 			_log.info("Found old crest file \"" + file.getName() + "\" for clanId " + clanId);
 
 			int newId = IdFactory.getInstance().getNextId();
@@ -155,7 +159,7 @@ public class CrestCache
 			if (clan != null)
 			{
 				removeOldPledgeCrest(clan.getCrestId());
-				
+
 				file.renameTo(new File(Config.DATAPACK_ROOT, "data/crests/Crest_" + newId + ".bmp"));
 				_log.info("Renamed Clan crest to new format: Crest_" + newId + ".bmp");
 
@@ -172,7 +176,11 @@ public class CrestCache
 				}
 				catch (SQLException e)
 				{
-					_log.warning("could not update the crest id:" + e.getMessage());
+					_log.log(Level.WARNING, getClass().getName() + " could not update the crest id:" + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 				finally
 				{
@@ -190,7 +198,7 @@ public class CrestCache
 			}
 			else
 			{
-				_log.info("Clan Id: " + clanId + " does not exist in table.. deleting.");
+				_log.log(Level.WARNING, getClass().getName() + " Clan Id: " + clanId + " does not exist in table.. deleting.");
 				file.delete();
 			}
 		}
@@ -231,6 +239,11 @@ public class CrestCache
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + " Could not delete Crest: " + crestFile + ":", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -244,6 +257,11 @@ public class CrestCache
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + " Could not delete Crest Large: " + crestFile + ":", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -256,6 +274,11 @@ public class CrestCache
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + " Could not delete Pledge: " + crestFile + ":", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -269,6 +292,11 @@ public class CrestCache
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + " Could not delete Ally Crest: " + crestFile + ":", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -285,7 +313,11 @@ public class CrestCache
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.INFO, "Error saving pledge crest" + crestFile + ":", e);
+			_log.log(Level.WARNING, getClass().getName() + " Error saving pledge crest: " + crestFile + ":", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -303,7 +335,11 @@ public class CrestCache
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.INFO, "Error saving Large pledge crest" + crestFile + ":", e);
+			_log.log(Level.WARNING, getClass().getName() + " Error saving Large pledge crest" + crestFile + ":", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -321,7 +357,11 @@ public class CrestCache
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.INFO, "Error saving ally crest" + crestFile + ":", e);
+			_log.log(Level.WARNING, getClass().getName() + " Error saving ally crest" + crestFile + ":", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}

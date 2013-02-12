@@ -31,8 +31,8 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.util.StringUtil;
 import com.l2jhellas.shield.antiflood.FloodProtectorConfig;
+import com.l2jhellas.util.StringUtil;
 
 /**
  * This class contains global server configuration.
@@ -499,7 +499,7 @@ public final class Config
 	public static boolean FORCE_GEODATA;
 	public static boolean GEODATA_CELLFINDING;
 	public static int GEOEDITOR_PORT;
-	
+
 
 	// OLYMPIAD_FILE
 	public static int OLY_START_TIME;
@@ -1465,6 +1465,7 @@ public final class Config
 							FILTER_LIST.add(line.trim());
 						}
 						_log.info("Chat Filter: Loaded " + FILTER_LIST.size() + " words ");
+						lnr.close();
 					}
 					catch (Exception e)
 					{
@@ -1503,7 +1504,7 @@ public final class Config
 						if (!skill.equals(""))
 							System.out.println((new StringBuilder()).append("[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills \"").append(skillSplit[0]).append("\"").append(skillSplit[1]).toString());
 				}
-					
+
 				}
 				CLAN_LEVEL = Byte.parseByte(L2JHellasSettings.getProperty("ClanSetLevel", "8"));
 				REPUTATION_QUANTITY = Integer.parseInt(L2JHellasSettings.getProperty("ReputationScore", "10000"));
@@ -1559,7 +1560,7 @@ public final class Config
 				FORCE_GEODATA = Boolean.parseBoolean(geoSettings.getProperty("ForceGeoData", "True"));
 				GEODATA_CELLFINDING = Boolean.parseBoolean(geoSettings.getProperty("GeoCellFinding", "False"));
 				GEOEDITOR_PORT = Integer.parseInt(geoSettings.getProperty("GeoPort", "2109"));
-				
+
 			}
 			catch (Exception e)
 			{
@@ -2384,7 +2385,7 @@ public final class Config
 		{
 			_log.severe("Could not Load Config: server mode was not set");
 		}
-
+		_log.severe("Config's: loaded.");
 	}
 
 	/**
@@ -3008,6 +3009,7 @@ public final class Config
 				FILTER_LIST.add(line.trim());
 			}
 			_log.info("Loaded " + FILTER_LIST.size() + " Filter Words.");
+			lnr.close();
 		}
 		catch (Exception e)
 		{

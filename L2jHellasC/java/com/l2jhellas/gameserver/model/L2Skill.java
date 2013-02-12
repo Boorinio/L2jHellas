@@ -22,9 +22,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.HeroSkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ChestInstance;
@@ -43,6 +41,8 @@ import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Formulas;
+import com.l2jhellas.gameserver.skills.HeroSkillTable;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
@@ -50,7 +50,7 @@ import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 /**
  * This class...

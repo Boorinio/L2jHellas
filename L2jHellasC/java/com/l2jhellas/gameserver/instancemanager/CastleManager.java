@@ -18,9 +18,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -32,6 +35,8 @@ import com.l2jhellas.gameserver.model.entity.Castle;
 
 public class CastleManager
 {
+	protected static final Logger _log = Logger.getLogger(CastleManager.class.getName());
+
 	private static CastleManager _instance;
 
 	public static final CastleManager getInstance()
@@ -99,12 +104,15 @@ public class CastleManager
 
 			statement.close();
 
-			System.out.println("Loaded: " + getCastles().size() + " castles");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getCastles().size() + " castles");
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: loadCastleData(): " + e.getMessage());
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": loadCastleData(): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		finally
@@ -283,8 +291,11 @@ public class CastleManager
 			}
 			catch (Exception e)
 			{
-				System.out.println("Failed to remove castle circlets offline for player " + member.getName());
-				e.printStackTrace();
+				_log.log(Level.WARNING, getClass().getName() + ": Failed to remove castle circlets offline for player " + member.getName());
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			finally
 			{

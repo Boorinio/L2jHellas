@@ -36,7 +36,6 @@ public class QuestManager extends ScriptManager<Quest>
 	{
 		if (_instance == null)
 		{
-			_log.info("Initializing QuestManager");
 			_instance = new QuestManager();
 		}
 		return _instance;

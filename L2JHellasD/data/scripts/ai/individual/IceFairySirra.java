@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,11 +19,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
+import ai.group_template.L2AttackableAIScript;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.DoorTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -35,7 +37,6 @@ import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import ai.group_template.L2AttackableAIScript;
 
 public class IceFairySirra extends L2AttackableAIScript
 {
@@ -214,7 +215,7 @@ public class IceFairySirra extends L2AttackableAIScript
 		}
 		else
 			cleanUp();
-	}	          
+	}
 
 	public void doSpawns()
 	{
@@ -264,7 +265,7 @@ public class IceFairySirra extends L2AttackableAIScript
 			pom = "32029";
 
         String temp = "data/html/default/" + pom + ".htm";
-        
+
         if (!Config.LAZY_CACHE)
         {
         	// If not running lazy cache the file must be in the cache or it doesnt exist
@@ -276,7 +277,7 @@ public class IceFairySirra extends L2AttackableAIScript
         	if (HtmCache.getInstance().isLoadable(temp))
         		return temp;
         }
-        
+
         // If the file is not found, the standard message "I have nothing to say to you" is returned
         return "data/html/npcdefault.htm";
     }
@@ -290,6 +291,7 @@ public class IceFairySirra extends L2AttackableAIScript
         player.sendPacket( new ActionFailed() );
 	}
 
+	@Override
 	public String onFirstTalk (L2NpcInstance npc, L2PcInstance player)
 	{
 		if (player.getQuestState("IceFairySirra") == null)
@@ -304,6 +306,7 @@ public class IceFairySirra extends L2AttackableAIScript
 		return null;
 	}
 
+	@Override
 	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
 	{
 		if (event.equalsIgnoreCase("check_condition"))

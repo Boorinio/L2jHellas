@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.model;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.datatables.AccessLevels;
+import com.l2jhellas.gameserver.datatables.sql.AccessLevels;
 
 /**
  * @author FBIagent<br>

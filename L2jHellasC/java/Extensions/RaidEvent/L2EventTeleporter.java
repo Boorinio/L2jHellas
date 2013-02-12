@@ -13,11 +13,11 @@
 package Extensions.RaidEvent;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 public class L2EventTeleporter implements Runnable
 {

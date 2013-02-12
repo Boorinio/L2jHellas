@@ -17,8 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2ShortCut;
@@ -30,9 +29,10 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutRegister;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -181,7 +181,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         	{
         		_skillLvl = _baseLvl;
         		player.addSkill(SkillTable.getInstance().getInfo(_skillId, _skillLvl), true);
-        		player.sendSkillList(); 
+        		player.sendSkillList();
         	}
         	SystemMessage sm = new SystemMessage(SystemMessageId.YOU_HAVE_FAILED_TO_ENCHANT_THE_SKILL_S1);
         	sm.addSkillName(_skillId);
@@ -203,13 +203,9 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
         }
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_07_REQUESTEXENCHANTSKILL;
 	}
-
 }

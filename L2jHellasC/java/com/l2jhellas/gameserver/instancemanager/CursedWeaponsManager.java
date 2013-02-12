@@ -70,7 +70,6 @@ public class CursedWeaponsManager
 
 	public CursedWeaponsManager()
 	{
-		_log.info("Initializing CursedWeaponsManager");
 		_cursedWeapons = new FastMap<Integer, CursedWeapon>();
 
 		if (!Config.ALLOW_CURSED_WEAPONS)
@@ -169,8 +168,11 @@ public class CursedWeaponsManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error parsing cursed weapons file.", e);
-
+			_log.log(Level.WARNING, getClass().getName() + ": Error parsing cursed weapons file." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			if (Config.DEBUG)
 				System.out.println("ERROR");
 			return;
@@ -216,8 +218,11 @@ public class CursedWeaponsManager
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not restore CursedWeapons data: " + e);
-
+			_log.log(Level.WARNING, getClass().getName() + ": Could not restore CursedWeapons data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			if (Config.DEBUG)
 				System.out.println("ERROR");
 			return;
@@ -322,8 +327,11 @@ public class CursedWeaponsManager
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not check CursedWeapons data: " + e);
-
+			_log.log(Level.WARNING, getClass().getName() + ": Could not check CursedWeapons data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			if (Config.DEBUG)
 				System.out.println("ERROR");
 			return;
@@ -446,6 +454,7 @@ public class CursedWeaponsManager
 
 	public static void removeFromDb(int itemId)
 	{
+
 		Connection con = null;
 		try
 		{
@@ -461,7 +470,11 @@ public class CursedWeaponsManager
 		}
 		catch (SQLException e)
 		{
-			_log.severe("CursedWeaponsManager: Failed to remove data: " + e);
+			_log.log(Level.WARNING, "CursedWeaponsManager: Failed to remove data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

@@ -25,10 +25,13 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
@@ -51,6 +54,7 @@ import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
  */
 public class AdminEventEngine implements IAdminCommandHandler
 {
+	protected static final Logger _log = Logger.getLogger(AdminEventEngine.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -94,10 +98,15 @@ public class AdminEventEngine implements IAdminCommandHandler
 				replyMSG.append("</body></html>");
 				adminReply.setHtml(replyMSG.toString());
 				activeChar.sendPacket(adminReply);
+				inbr.close();
 			}
 			catch (Exception e)
 			{
-				System.out.println(e);
+				_log.log(Level.WARNING, getClass().getName() + ": Error " + eventName, e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 
 		}
@@ -143,7 +152,11 @@ public class AdminEventEngine implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				System.out.println(e);
+				_log.log(Level.WARNING, getClass().getName() + ": could not store data/events/" + tempName, e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			tempBuffer = "";
 			tempName = "";

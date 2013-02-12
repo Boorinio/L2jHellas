@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -29,10 +30,10 @@ import javolution.util.FastMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -51,8 +52,8 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeShowInfoUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.gameserver.util.Util;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 /**
  *  Seven Signs Festival of Darkness Engine
@@ -1024,7 +1025,11 @@ public class SevenSignsFestival implements SpawnListener
         }
         catch (SQLException e)
         {
-            _log.severe("SevenSignsFestival: Failed to load configuration: " + e);
+			_log.log(Level.WARNING, getClass().getName() + " Failed to load configuration: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
         }
         finally
         {
@@ -1110,7 +1115,11 @@ public class SevenSignsFestival implements SpawnListener
         }
         catch (SQLException e)
         {
-        	_log.severe("SevenSignsFestival: Failed to save configuration: " + e);
+			_log.log(Level.WARNING, getClass().getName() + " Failed to save configuration: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
         }
         finally
         {
@@ -1221,8 +1230,8 @@ public class SevenSignsFestival implements SpawnListener
         	finally
         	{
         		try
-        		{ 
-        			con.close(); 
+        		{
+        			con.close();
         		}
         		catch (Exception e) {}
         	}
@@ -2070,13 +2079,13 @@ public class SevenSignsFestival implements SpawnListener
 		            for (L2PcInstance participant : _participants)
 		            {
 		    		_originalLocations.put(participant, new FestivalSpawn(participant.getX(), participant.getY(), participant.getZ(), participant.getHeading()));
-		
+
 		    		// Randomize the spawn point around the specific centerpoint for each player.
 		    		int x = _startLocation._x;
 		            int y = _startLocation._y;
-		
+
 		            isPositive = (Rnd.nextInt(2) == 1);
-		
+
 		            if (isPositive)
 		            {
 		                x += Rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
@@ -2087,13 +2096,13 @@ public class SevenSignsFestival implements SpawnListener
 		                x -= Rnd.nextInt(FESTIVAL_MAX_OFFSET_X);
 		                y -= Rnd.nextInt(FESTIVAL_MAX_OFFSET_Y);
 		            }
-		
+
 		            participant.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		            participant.teleToLocation(x, y, _startLocation._z, true);
-		
+
 		            // Remove all buffs from all participants on entry. Works like the skill Cancel.
 		            participant.stopAllEffects();
-		
+
 		            // Remove any stray blood offerings in inventory
 		            L2ItemInstance bloodOfferings = participant.getInventory().getItemByItemId(FESTIVAL_OFFERING_ID);
 		            if (bloodOfferings != null)

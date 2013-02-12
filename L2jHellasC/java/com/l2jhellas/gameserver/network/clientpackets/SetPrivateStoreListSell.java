@@ -21,7 +21,7 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListSell;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 /**
  * This class ...
@@ -98,7 +98,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
             	 return;
             	 }
 
-            
+
             tradeList.addItem(objectId, count, price);
         }
 

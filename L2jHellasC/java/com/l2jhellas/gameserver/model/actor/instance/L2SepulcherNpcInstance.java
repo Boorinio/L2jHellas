@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -17,13 +17,14 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
 
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.DoorTable;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.instancemanager.FourSepulchersManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
@@ -37,11 +38,11 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.util.Util;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 /**
- * 
+ *
  * @author sandman
  */
 public class L2SepulcherNpcInstance extends L2NpcInstance
@@ -51,7 +52,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 	protected Future<?> _closeTask = null;
 	protected Future<?> _spawnNextMysteriousBoxTask = null;
 	protected Future<?> _spawnMonsterTask = null;
-	
+
 	private final static String HTML_FILE_PATH = "data/html/SepulcherNpc/";
 	private final static int HALLS_KEY = 7260;
 
@@ -110,11 +111,11 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 		{
 			if (Config.DEBUG)
 				_log.info("new target selected:" + getObjectId());
-			
+
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
-			
-			
+
+
 			// Check if the player is attackable (without a forced attack)
 			if (isAutoAttackable(player))
 			{
@@ -125,7 +126,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 				MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel()
 				        - getLevel());
 				player.sendPacket(my);
-				
+
 				// Send a Server->Client packet StatusUpdate of the
 				// L2NpcInstance to the L2PcInstance to update its HP bar
 				StatusUpdate su = new StatusUpdate(getObjectId());
@@ -140,7 +141,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 				MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 				player.sendPacket(my);
 			}
-			
+
 			// Send a Server->Client packet ValidateLocation to correct the
 			// L2NpcInstance position and heading on the client
 			player.sendPacket(new ValidateLocation(this));
@@ -166,7 +167,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 					player.sendPacket(new ActionFailed());
 				}
 			}
-			
+
 			if (!isAutoAttackable(player))
 			{
 				// Calculate the distance between the L2PcInstance and the
@@ -184,7 +185,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 					// client
 					SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
 					broadcastPacket(sa);
-					
+
 					doAction(player);
 				}
 			}
@@ -200,7 +201,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 			player.sendPacket(new ActionFailed());
 			return;
 		}
-		
+
 		switch (getNpcId())
 		{
 			case 31468:
@@ -229,7 +230,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 					_spawnMonsterTask.cancel(true);
 				_spawnMonsterTask = ThreadPoolManager.getInstance().scheduleEffect(new SpawnMonster(getNpcId()), 3500);
 				break;
-			
+
 			case 31455:
 			case 31456:
 			case 31457:
@@ -249,7 +250,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 					player = player.getParty().getLeader();
 				player.addItem("Quest", HALLS_KEY, 1, player, true);
 				break;
-			
+
 			default:
 			{
             	Quest[] qlsa = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
@@ -264,8 +265,8 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 		}
 		player.sendPacket(new ActionFailed());
 	}
-	
-	
+
+
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -278,11 +279,11 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 		{
 			pom = npcId + "-" + val;
 		}
-		
+
 		return HTML_FILE_PATH + pom + ".htm";
 	}
-	
-	
+
+
 	@Override
 	public void showChatWindow(L2PcInstance player, int val)
 	{
@@ -293,8 +294,8 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 		player.sendPacket(html);
 		player.sendPacket(new ActionFailed());
 	}
-	
-	
+
+
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -360,14 +361,14 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 			super.onBypassFeedback(player, command);
 		}
 	}
-	
-	
+
+
 	public void openNextDoor(int npcId)
 	{
 		int doorId = FourSepulchersManager.getInstance().getHallGateKeepers().get(npcId).intValue();
 		DoorTable _doorTable = DoorTable.getInstance();
 		_doorTable.getDoor(doorId).openMe();
-		
+
 		if (_closeTask != null)
 			_closeTask.cancel(true);
 		_closeTask = ThreadPoolManager.getInstance().scheduleEffect(new CloseNextDoor(doorId), 10000);
@@ -375,20 +376,21 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 			_spawnNextMysteriousBoxTask.cancel(true);
 		_spawnNextMysteriousBoxTask = ThreadPoolManager.getInstance().scheduleEffect(new SpawnNextMysteriousBox(npcId), 0);
 	}
-	
-	
-	
+
+
+
 	private class CloseNextDoor implements Runnable
 	{
 		final DoorTable _DoorTable = DoorTable.getInstance();
 
-		private int _DoorId;
+		private final int _DoorId;
 
 		public CloseNextDoor(int doorId)
 		{
 			_DoorId = doorId;
 		}
 
+		@Override
 		public void run()
 		{
 			try
@@ -397,20 +399,21 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 			}
 			catch (Exception e)
 			{
-				_log.warning(e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + ": cant close door " + _DoorId, e);
 			}
 		}
 	}
 
 	private class SpawnNextMysteriousBox implements Runnable
 	{
-		private int _NpcId;
+		private final int _NpcId;
 
 		public SpawnNextMysteriousBox(int npcId)
 		{
 			_NpcId = npcId;
 		}
-		
+
+		@Override
 		public void run()
 		{
 			FourSepulchersManager.getInstance().spawnMysteriousBox(_NpcId);
@@ -419,19 +422,20 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 
 	private class SpawnMonster implements Runnable
 	{
-		private int _NpcId;
-		
+		private final int _NpcId;
+
 		public SpawnMonster(int npcId)
 		{
 			_NpcId = npcId;
 		}
-		
+
+		@Override
 		public void run()
 		{
 			FourSepulchersManager.getInstance().spawnMonster(_NpcId);
 		}
 	}
-	
+
 	public void sayInShout(String msg)
 	{
 		if (msg == null || msg.isEmpty())

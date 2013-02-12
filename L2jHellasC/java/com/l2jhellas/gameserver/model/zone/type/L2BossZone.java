@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model.zone.type;
 import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.GameServer;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;

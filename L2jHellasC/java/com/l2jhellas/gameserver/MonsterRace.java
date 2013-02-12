@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver;
 
 import java.lang.reflect.Constructor;
 
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;

@@ -21,13 +21,14 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
@@ -57,7 +58,7 @@ public class Hero
     private static final String GET_CLAN_NAME = "SELECT clan_name FROM clan_data WHERE clan_id = (SELECT clanid FROM characters WHERE char_name = ?)";
     private static final String DELETE_ITEMS = "DELETE FROM items WHERE item_id IN " +
             "(6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621) " +
-            "AND owner_id NOT IN (SELECT obj_id FROM characters WHERE accesslevel > 0)";
+ "AND owner_id NOT IN (SELECT obj_Id FROM characters WHERE accesslevel > 0)";
 
     private static final int[] _heroItems = {6842, 6611, 6612, 6613, 6614, 6615, 6616,
                                              6617, 6618, 6619, 6620, 6621
@@ -209,12 +210,15 @@ public class Hero
             con2.close();
         } catch(SQLException e)
         {
-        	_log.warning("Hero System: Couldnt load Heroes");
-        	if (Config.DEBUG) e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Couldnt load Heroes" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
         }
 
-        _log.info("Hero System: Loaded " + _heroes.size() + " Heroes.");
-        _log.info("Hero System: Loaded " + _completeHeroes.size() + " all time Heroes.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _heroes.size() + " Heroes.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _completeHeroes.size() + " all time Heroes.");
     }
 
     public Map<Integer, StatsSet> getHeroes()
@@ -397,7 +401,11 @@ public class Hero
             	}
             	catch (Exception e)
             	{
-            		_log.warning("could not get clan name of " + name + ": "+e);
+					_log.log(Level.WARNING, getClass().getName() + ": could not get clan name of " + name + ": " + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
             	}
             	finally
             	{
@@ -494,8 +502,11 @@ public class Hero
         }
         catch(SQLException e)
         {
-            _log.warning("Hero System: Couldnt update Heroes");
-            if (Config.DEBUG) e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Couldnt update Heroes");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
         }
         finally
         {

@@ -15,7 +15,6 @@
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
-import com.l2jhellas.gameserver.lib.Log;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -29,6 +28,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
+import com.l2jhellas.logs.LogRecorder;
 
 /**
  * This class ...
@@ -144,7 +144,7 @@ public class Mdam implements ISkillHandler
 				if (target instanceof L2PcInstance)
 					name = target.getName() + "(" + target.getObjectId() + ") ";
 				name += target.getLevel() + " lvl";
-				Log.add(activeChar.getName() + "(" + activeChar.getObjectId() + ") " + activeChar.getLevel() + " lvl did damage " + damage + " with skill " + skill.getName() + "(" + skill.getId() + ") to " + name, "damage_mdam");
+				LogRecorder.add(activeChar.getName() + "(" + activeChar.getObjectId() + ") " + activeChar.getLevel() + " lvl did damage " + damage + " with skill " + skill.getName() + "(" + skill.getId() + ") to " + name, "damage_mdam");
 			}
 
 			// Why are we trying to reduce the current target HP here?

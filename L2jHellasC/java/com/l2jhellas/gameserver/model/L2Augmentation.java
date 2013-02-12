@@ -22,9 +22,9 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.datatables.AugmentationData;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.funcs.FuncAdd;
 import com.l2jhellas.gameserver.skills.funcs.LambdaConst;

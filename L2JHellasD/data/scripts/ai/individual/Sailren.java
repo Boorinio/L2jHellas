@@ -3,31 +3,32 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ai.individual;
 
 import ai.group_template.L2AttackableAIScript;
+
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
-import com.l2jhellas.Config;
 
 /**
  * Sailren AI
@@ -47,7 +48,7 @@ public class Sailren extends L2AttackableAIScript
 												//before he unleashes his attack. Entry is unlocked
 	private static final byte FIGHTING = 2; 	//Sailren is engaged in battle, annihilating his foes. Entry is locked
 	private static final byte DEAD = 3;			//Sailren has been killed. Entry is locked
-	
+
 	private static long _LastAction = 0;
 
 	// Boss: Sailren
@@ -78,6 +79,7 @@ public class Sailren extends L2AttackableAIScript
 		}
 	}
 
+	@Override
 	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
 	{
 		long temp = 0;
@@ -208,6 +210,7 @@ public class Sailren extends L2AttackableAIScript
 	return super.onAdvEvent(event, npc, player);
 	}
 
+	@Override
 	public String onTalk(L2NpcInstance npc,L2PcInstance player)
 	{
 	String htmltext = "";
@@ -238,6 +241,7 @@ public class Sailren extends L2AttackableAIScript
 	return htmltext;
 	}
 
+	@Override
 	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		_LastAction = System.currentTimeMillis();
@@ -257,6 +261,7 @@ public class Sailren extends L2AttackableAIScript
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
 
+	@Override
 	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
 	{
 		if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING && npc.getNpcId() == SAILREN)

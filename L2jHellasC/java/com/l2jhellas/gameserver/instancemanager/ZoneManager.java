@@ -99,7 +99,6 @@ public class ZoneManager
 
 	private final void load()
 	{
-		_log.info("Loading zones...");
 		Connection con = null;
 		int zoneCount = 0;
 		_zones.clear();
@@ -120,8 +119,7 @@ public class ZoneManager
 			File file = new File(Config.DATAPACK_ROOT + "/data/zones/zone.xml");
 			if (!file.exists())
 			{
-				if (Config.DEBUG)
-					_log.info("The zone.xml file is missing.");
+				_log.log(Level.WARNING, getClass().getName() + ": The zone.xml file is missing.");
 				return;
 			}
 
@@ -178,7 +176,7 @@ public class ZoneManager
 								// Check for unknown type
 								if (temp == null)
 								{
-									_log.warning("ZoneData: No such zone type: " + zoneType);
+									_log.log(Level.WARNING, getClass().getName() + ": No such zone type: " + zoneType);
 									continue;
 								}
 
@@ -217,7 +215,7 @@ public class ZoneManager
 										}
 										else
 										{
-											_log.warning("ZoneData: Missing cuboid vertex in sql data for zone: " + zoneId);
+											_log.log(Level.WARNING, getClass().getName() + ": Missing cuboid vertex in sql data for zone: " + zoneId);
 											rset.close();
 											statement.close();
 											successfulLoad = false;
@@ -283,7 +281,7 @@ public class ZoneManager
 									}
 									else
 									{
-										_log.warning("ZoneData: Bad sql data for zone: " + zoneId);
+										_log.log(Level.WARNING, getClass().getName() + ": Bad sql data for zone: " + zoneId);
 										rset.close();
 										statement.close();
 										continue;
@@ -291,7 +289,7 @@ public class ZoneManager
 								}
 								else
 								{
-									_log.warning("ZoneData: Unknown shape: " + zoneShape);
+									_log.log(Level.WARNING, getClass().getName() + ": Unknown shape: " + zoneShape);
 									rset.close();
 									statement.close();
 									continue;
@@ -302,7 +300,7 @@ public class ZoneManager
 							}
 							catch (Exception e)
 							{
-								_log.warning("ZoneData: Failed to load zone coordinates: " + e);
+								_log.log(Level.WARNING, getClass().getName() + ": Failed to load zone coordinates: " + e);
 							}
 
 							// Check for aditional parameters
@@ -356,7 +354,7 @@ public class ZoneManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error while loading zones.", e);
+			_log.log(Level.SEVERE, getClass().getName() + ": Error while loading zones.", e);
 			return;
 		}
 		finally
@@ -370,7 +368,7 @@ public class ZoneManager
 			}
 		}
 
-		_log.info("Done: loaded " + zoneCount + " zones.");
+		_log.log(Level.FINE, getClass().getSimpleName() + ":  loaded " + zoneCount + " zones.");
 	}
 
 	/**

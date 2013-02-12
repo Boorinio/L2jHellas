@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;

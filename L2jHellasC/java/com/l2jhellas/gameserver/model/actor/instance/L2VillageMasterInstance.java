@@ -20,15 +20,15 @@ import java.util.Set;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.CharTemplateTable;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
-import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.ClassType;
 import com.l2jhellas.gameserver.model.base.PlayerClass;
@@ -45,7 +45,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 /**
  * This class ...
@@ -63,7 +63,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-	
+
 	@SuppressWarnings("static-access")
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
@@ -175,7 +175,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             	               player.sendMessage("Sub classes may not be created or changed while being in combat.");
             	               return;
             	           }
-            	          
+
 
             TextBuilder content = new TextBuilder("<html><body>");
             NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -209,13 +209,13 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                         player.sendMessage("You can now only change one of your current sub classes.");
                         return;
                     }
-            		
+
                     subsAvailable = getAvailableSubClasses(player);
 
                     if (subsAvailable != null && !subsAvailable.isEmpty())
                     {
                     	content.append("Add Subclass:<br>Which sub class do you wish to add?<br>");
-                    	
+
                     	for (PlayerClass subClass : subsAvailable)
                     		content.append("<a action=\"bypass -h npc_"
                     				+ getObjectId() + "_Subclass 4 "
@@ -267,21 +267,21 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                 case 3: // Change/Cancel Subclass - Initial
                     content.append("Change Subclass:<br>Which of the following sub classes would you like to change?<br>");
                     int classIndex = 1;
-                    
+
                     if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
                     	player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT));
                     else
-                    {    	
+                    {
                     	for (Iterator<SubClass> subList = iterSubClasses(player); subList.hasNext();)
                     	{
                     		SubClass subClass = subList.next();
-                    		
+
                     		content.append("Sub-class " + classIndex + "<br1>");
                     		content.append("<a action=\"bypass -h npc_"
                     				+ getObjectId() + "_Subclass 6 "
                     				+ subClass.getClassIndex() + "\">"
                     				+ CharTemplateTable.getClassNameById(subClass.getClassId()) + "</a><br>");
-                    		
+
                     		classIndex++;
                     	}
                     }
@@ -289,16 +289,16 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                     break;
                 case 4: // Add Subclass - Action (Subclass 4 x[x])
                     boolean allowAddition = true;
-                    
-                    if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass")) 
-                     	{ 
-                     	  _log.warning("Player "+player.getName()+" has performed a subclass change too fast"); 
-                     	  return; 
+
+                    if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
+                     	{
+                     	  _log.warning("Player "+player.getName()+" has performed a subclass change too fast");
+                     	  return;
                      	}
-                    
+
                     if (!ItemRestriction(player))
                     	return;//Check the player for items during subclass..to avoid bugs
-                    
+
                     /*
                      * If the character is less than level 75 on any of their previously chosen
                      * classes then disallow them to change to their most recently added sub-class choice.
@@ -308,7 +308,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                         player.sendMessage("You may not add a new sub class before you are level 75 on your previous class.");
                         allowAddition = false;
                     }
-                    
+
                     if (player._inEventCTF || player._inEventDM || player._inEventTvT || player._inEventVIP)
     				{
     					player.sendMessage("You may not add a new sub class while being registered on event.");
@@ -346,7 +346,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                      *
                      * If they both exist, remove both unique items and continue with adding the sub-class.
                      */
-					 
+
                     if (!Config.ALT_GAME_SUBCLASS_WITHOUT_QUESTS)
                     {
                     	QuestState qs = player.getQuestState("235_MimirsElixir");
@@ -371,7 +371,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                             player.sendMessage("The sub class could not be added.");
                             return;
                         }
-                        
+
                         player.setActiveClass(player.getTotalSubClasses());
 
                         content.append("Add Subclass:<br>The sub class of <font color=\"LEVEL\">"
@@ -383,7 +383,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                         html.setFile("data/html/villagemaster/SubClass_Fail.htm");
                     }
                     break;
-    				
+
                 case 5: // Change Class - Action
                     /*
                      * If the character is less than level 75 on any of their previously chosen
@@ -391,43 +391,43 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                      *
                      * Note: paramOne = classIndex
                      */
-                	
-                	if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass")) 
-                	 	{ 
-                	 	  _log.warning("Player "+player.getName()+" has performed a subclass change too fast"); 
-                	 	  return; 
-                	 	} 
-                	
+
+                	if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
+                	 	{
+                	 	  _log.warning("Player "+player.getName()+" has performed a subclass change too fast");
+                	 	  return;
+                	 	}
+
                 	if (player._inEventCTF || player._inEventDM || player._inEventTvT || player._inEventVIP)
     				{
     					player.sendMessage("You may not add a new sub class while being registered on event.");
     					return;
     				}
-                	
+
                     if (!ItemRestriction(player))
                     	return;//Check the player for items during subclass..to avoid bugs
-                    
+
                     if (Olympiad.getInstance().isRegisteredInComp(player)
                         || player.getOlympiadGameId() > 0)
                     {
                     	player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT));
                     	return;
                     }
-                    
+
                     player.setActiveClass(paramOne);
 
                     content.append("Change Subclass:<br>Your active sub class is now a <font color=\"LEVEL\">"
                         + CharTemplateTable.getClassNameById(player.getActiveClass()) + "</font>.");
 
 
-                    
+
                     player.sendPacket(new SystemMessage(SystemMessageId.SUBCLASS_TRANSFER_COMPLETED)); // Transfer completed.
                     break;
                 case 6: // Change/Cancel Subclass - Choice
                     content.append("Please choose a sub class to change to. If the one you are looking for is not here, "
                         + "please seek out the appropriate master for that class.<br>"
                         + "<font color=\"LEVEL\">Warning!</font> All classes and skills for this class will be removed.<br><br>");
-                    
+
                     subsAvailable = getAvailableSubClasses(player);
 
                     if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
@@ -448,27 +448,27 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                     }
                     break;
                 case 7: // Change Subclass - Action
-                	// check player skills 
+                	// check player skills
                     /*
                      * Warning: the information about this subclass will be removed from the
                      * subclass list even if false!
-                     */             
-                	
-                 	if (!player.getAntiFlood().getSubclass().tryPerformAction("change class")) 
-                 	 	{ 
-                 	 	  _log.warning("Player "+player.getName()+" has performed a subclass change too fast"); 
-                 	 	  return; 
+                     */
+
+                 	if (!player.getAntiFlood().getSubclass().tryPerformAction("change class"))
+                 	 	{
+                 	 	  _log.warning("Player "+player.getName()+" has performed a subclass change too fast");
+                 	 	  return;
                  	 	}
-                 	
-                 	if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN) 
+
+                 	if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN)
                      	player.checkAllowedSkills();
-                 	
+
                 	if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
                 		player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT));
-                	
+
                 	if (!ItemRestriction(player))
                     	return;//Check the player for items during subclass..to avoid bugs
-                	
+
                 	else if (player.modifySubClass(paramOne, paramTwo))
                     {
                         player.setActiveClass(paramOne);
@@ -477,8 +477,8 @@ public final class L2VillageMasterInstance extends L2FolkInstance
                             + CharTemplateTable.getClassNameById(paramTwo) + "</font>.");
 
                         player.sendPacket(new SystemMessage(SystemMessageId.ADD_NEW_SUBCLASS)); // Subclass added.
-                        // check player skills 
-                     	if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN) 
+                        // check player skills
+                     	if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN)
                      	player.checkAllowedSkills();
                     }
                     else
@@ -536,17 +536,17 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
             return;
         }
-        /*  
-         * Until proper clan leader change support is done, this is a little 
-         * exploit fix (leader, while fliying wyvern changes clan leader and the new leader 
-         * can ride the wyvern too) 
-         * DrHouse 
-         */ 
-        if (player.isFlying()) 
-        { 
-               player.sendMessage("Please, stop flying"); 
-     		   return; 
-        }        
+        /*
+         * Until proper clan leader change support is done, this is a little
+         * exploit fix (leader, while fliying wyvern changes clan leader and the new leader
+         * can ride the wyvern too)
+         * DrHouse
+         */
+        if (player.isFlying())
+        {
+               player.sendMessage("Please, stop flying");
+     		   return;
+        }
         L2Clan clan = player.getClan();
         if (clan.getAllyId() != 0)
         {
@@ -556,7 +556,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         if (clan.isAtWar() != 0)
         {
             player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_WAR));
-             return;       
+             return;
         }
         if (clan.getHasCastle() !=0 || clan.getHasHideout() != 0)
         {
@@ -639,7 +639,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
             player.sendPacket(new SystemMessage(SystemMessageId.INVITED_USER_NOT_ONLINE));
 			return;
 		}
-		
+
 		clan.setNewLeader(member, player);
     }
 
@@ -883,7 +883,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
      */
     public void showPledgeSkillList(L2PcInstance player)
     {
-    	
+
         if (Config.DEBUG)
             _log.fine("PledgeSkillList activated on: "+getObjectId());
         if(player.getClan() == null) return;
@@ -987,11 +987,11 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         	player.store();
     		player.sendMessage("Your items have been removed!");
     		return true;
-			 
+
         }
         if (player.getActiveChestArmorItem() != null)
-		{ 
-        	
+		{
+
         	player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LR_HAND);
         	player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_HAND);
         	player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_L_HAND);
@@ -1008,10 +1008,10 @@ public final class L2VillageMasterInstance extends L2FolkInstance
         	player.store();
     		player.sendMessage("Your items have been removed!");
     		return true;
-		
+
 		}
-        
-        
+
+
         return true;
     }
 
@@ -1019,5 +1019,5 @@ public final class L2VillageMasterInstance extends L2FolkInstance
     {
         return player.getSubClasses().values().iterator();
     }
-    
+
 }

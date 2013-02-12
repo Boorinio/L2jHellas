@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.datatables.AccessLevels;
+import com.l2jhellas.gameserver.datatables.sql.AccessLevels;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
 import com.l2jhellas.gameserver.model.L2Attackable;

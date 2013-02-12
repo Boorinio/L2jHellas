@@ -43,8 +43,8 @@ import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.gameserver.util.Util;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -377,27 +377,27 @@ public final class Formulas
 			{
 				env.value *= DEXbonus[p.getDEX()];
 				env.value *= 10;
-				if(env.value > Config.MAX_PCRIT_RATE) 
+				if(env.value > Config.MAX_PCRIT_RATE)
 	                    env.value = Config.MAX_PCRIT_RATE;
-					
+
 			}
 		}
 	}
-	
+
 	static class FuncMAtkCritical extends Func
 	{
 		static final FuncMAtkCritical _fac_instance = new FuncMAtkCritical();
-	
+
 		static Func getInstance()
 		{
 			return _fac_instance;
 		}
-	
+
 		private FuncMAtkCritical()
 		{
 			super(Stats.MCRITICAL_RATE, 0x30, null);
 		}
-	
+
 		@Override
 		public void calc(Env env)
 		{
@@ -925,8 +925,8 @@ public final class Formulas
             // Add CON bonus
             init *= cha.getLevelMod() * CONbonus[cha.getCON()];
 		}
-		else if (cha instanceof L2PetInstance) 
-		 	init = ((L2PetInstance) cha).getPetData().getPetRegenHP(); 
+		else if (cha instanceof L2PetInstance)
+		 	init = ((L2PetInstance) cha).getPetData().getPetRegenHP();
 
         if (init < 1) init = 1;
 
@@ -976,9 +976,9 @@ public final class Formulas
             // Add MEN bonus
             init *= cha.getLevelMod() * MENbonus[cha.getMEN()];
 		}
-		else if (cha instanceof L2PetInstance) 
-		 	init = ((L2PetInstance) cha).getPetData().getPetRegenMP(); 
-		
+		else if (cha instanceof L2PetInstance)
+		 	init = ((L2PetInstance) cha).getPetData().getPetRegenMP();
+
 		if (init < 1) init = 1;
 
 		return cha.calcStat(Stats.REGENERATE_MP_RATE, init, null, null) * mpRegenMultiplier + mpRegenBonus;
@@ -1133,7 +1133,7 @@ public final class Formulas
 
 		double damage = attacker.getPAtk(target);
 		double defence = target.getPDef(attacker);
-		
+
 		switch (shld)
 		{
 			case 1:
@@ -1145,7 +1145,7 @@ public final class Formulas
 			case 2: // perfect block
 				return 1.;
 		}
-		
+
 		if (ss) damage *= 2;
 		if (skill != null)
 		{
@@ -1208,9 +1208,9 @@ public final class Formulas
 
 		if (crit)
 		{
-			//Finally retail like formula 
+			//Finally retail like formula
 			damage = 2 * attacker.calcStat(Stats.CRITICAL_DAMAGE, 1, target, skill) * target.calcStat(Stats.CRIT_VULN, target.getTemplate().baseCritVuln, target, null) * (70 * damage / defence);
-			//Crit dmg add is almost useless in normal hits... 
+			//Crit dmg add is almost useless in normal hits...
 			damage += (attacker.calcStat(Stats.CRITICAL_DAMAGE_ADD, 0, target, skill) * 70 / defence);
 		}
 		else
@@ -1219,7 +1219,7 @@ public final class Formulas
 		// In C5 summons make 10 % less dmg in PvP.
 		if (attacker instanceof L2Summon && target instanceof L2PcInstance)
 			damage *= 0.9;
-		
+
 		if (stat != null)
 		{
 			// get the vulnerability due to skills (buffs, passives, toggles, etc)
@@ -1263,13 +1263,13 @@ public final class Formulas
 					break;
 				case GIANT:
 					damage *= attacker.getPAtkGiants(target);
-					break;					
+					break;
 				default:
 					// nothing
 					break;
 			}
 		}
-		
+
 		if (damage > 0 && damage < 1)
 		{
 			damage = 1;
@@ -1278,7 +1278,7 @@ public final class Formulas
 		{
 			damage = 0;
 		}
-		
+
 		// Dmg bonusses in PvP fight
 		if((attacker instanceof L2PcInstance || attacker instanceof L2Summon)
 				&& (target instanceof L2PcInstance || target instanceof L2Summon))
@@ -1286,9 +1286,9 @@ public final class Formulas
 			if(skill == null)
 				damage *= attacker.calcStat(Stats.PVP_PHYSICAL_DMG, 1, null, null);
 			else
-				damage *= attacker.calcStat(Stats.PVP_PHYS_SKILL_DMG, 1, null, null);	
+				damage *= attacker.calcStat(Stats.PVP_PHYS_SKILL_DMG, 1, null, null);
 		}
-		
+
 		return damage;
 	}
 
@@ -1301,17 +1301,17 @@ public final class Formulas
 			if (pcInst.isGM() && !pcInst.getAccessLevel().canGiveDamage())
 				return 0;
 		}
-		
+
 		double mAtk = attacker.getMAtk(target, skill);
 		double mDef = target.getMDef(attacker, skill);
 		if (bss) mAtk *= 4;
 		else if (ss) mAtk *= 2;
 
 		double damage = 91 * Math.sqrt(mAtk) / mDef * skill.getPower(attacker) * calcSkillVulnerability(target, skill);
-		
+
 		// In C5 summons make 10 % less dmg in PvP.
 		if(attacker instanceof L2Summon && target instanceof L2PcInstance) damage *= 0.9;
-		
+
 		//		if(attacker instanceof L2PcInstance && target instanceof L2PcInstance) damage *= 0.9; // PvP modifier (-10%)
 
 		// Failure calculation
@@ -1397,12 +1397,12 @@ public final class Formulas
         {
 			if (((L2PcInstance)target).getForceBuff() != null)
                 return true;
-			
+
 			if (target.isCastingNow()&& target.getLastSkillCast() != null)
 				if (target.getLastSkillCast().isCancelIfHit())
 					return true;
         }
-	    
+
         double init = 0;
 
 		if (Config.ALT_GAME_CANCEL_CAST && target.isCastingNow()) init = 15;
@@ -1415,13 +1415,13 @@ public final class Formulas
         if (target.isRaid() || target.isInvul() || init <= 0) return false; // No attack break
 
         // Chance of break is higher with higher dmg
-        init += Math.sqrt(13*dmg);  
+        init += Math.sqrt(13*dmg);
 
         // Chance is affected by target MEN
         init -= (MENbonus[target.getMEN()] * 100 - 100);
 
         // Calculate all modifiers for ATTACK_CANCEL
-        double rate = target.calcStat(Stats.ATTACK_CANCEL, init, null, null); 
+        double rate = target.calcStat(Stats.ATTACK_CANCEL, init, null, null);
 
         // Adjust the rate to be between 1 and 99
         if (rate > 99) rate = 99;
@@ -1429,7 +1429,7 @@ public final class Formulas
 
         return Rnd.get(100) < rate;
 	}
-	
+
 	/** Calculate delay (in milliseconds) before next ATTACK */
 	public final int calcPAtkSpd(L2Character attacker, L2Character target, double rate)
 	{
@@ -1464,13 +1464,13 @@ public final class Formulas
 		int d = 85 + acc_attacker - evas_target;
 		return d < Rnd.get(100);
 	}
-	
+
 	/**
 	 * Returns:<br>
 	 * 0 = shield defense doesn't succeed<br>
 	 * 1 = shield defense succeed<br>
 	 * 2 = perfect block<br>
-	 * 
+	 *
 	 * @param attacker
 	 * @param target
 	 * @param sendSysMsg
@@ -1481,14 +1481,14 @@ public final class Formulas
 		double shldRate = target.calcStat(Stats.SHIELD_RATE, 0, attacker, null)
 			* DEXbonus[target.getDEX()];
 		if (shldRate == 0.0) return 0;
-                
+
         byte shldSuccess = 0;
-        // if attacker 
+        // if attacker
 		// if attacker use bow and target wear shield, shield block rate is multiplied by 1.3 (30%)
         L2Weapon at_weapon = attacker.getActiveWeaponItem();
         if (at_weapon != null && at_weapon.getItemType() == L2WeaponType.BOW)
 			shldRate *= 1.3;
-        
+
         if (shldRate > 0 && 100 - Config.ALT_PERFECT_SHLD_BLOCK < Rnd.get(100))
         {
         	shldSuccess = 2;
@@ -1497,11 +1497,11 @@ public final class Formulas
         {
         	shldSuccess = 1;
         }
-        
+
         if (sendSysMsg && target instanceof L2PcInstance)
 		{
 			L2PcInstance enemy = (L2PcInstance)target;
-			
+
 			switch (shldSuccess)
 			{
 				case 1:
@@ -1512,7 +1512,7 @@ public final class Formulas
 					break;
 			}
 		}
-        
+
 		return shldSuccess;
 	}
 
@@ -1626,10 +1626,10 @@ public final class Formulas
 				multiplier = target.calcStat(Stats.DARK_VULN, multiplier, target, skill);
 				break;
 			}
-			
+
 			// Finally, calculate skilltype vulnerabilities
 			L2SkillType type = skill.getSkillType();
-			
+
 			// For additional effects on PDAM and MDAM skills (like STUN, SHOCK, PARALYZE...)
 			if (type != null && (type == L2SkillType.PDAM || type == L2SkillType.MDAM))
 				type = skill.getEffectType();
@@ -1673,7 +1673,7 @@ public final class Formulas
 						;
 				}
 			}
-			
+
 		}
 		return multiplier;
 	}
@@ -1828,11 +1828,11 @@ public final class Formulas
 				chance = 100;
 				break;
 		}
-		if (Rnd.get(120) > chance)		
+		if (Rnd.get(120) > chance)
 			return false;
 		return true;
 	}
-	
+
     public double calcManaDam(L2Character attacker, L2Character target, L2Skill skill,
 			boolean ss, boolean bss)
     {
@@ -1844,55 +1844,55 @@ public final class Formulas
 		else if (ss) mAtk *= 2;
 
 		double damage = (Math.sqrt(mAtk) * skill.getPower(attacker) * (mp/97)) / mDef;
-		damage *= calcSkillVulnerability(target, skill);		
+		damage *= calcSkillVulnerability(target, skill);
     	return damage;
     }
-    
+
     public double calculateSkillResurrectRestorePercent(double baseRestorePercent, int casterWIT)
 	{
 		double restorePercent = baseRestorePercent;
 		double modifier = WITbonus[casterWIT];
 
 		if(restorePercent != 100 && restorePercent != 0) {
-						
+
 			restorePercent = baseRestorePercent * modifier;
-						
-			if(restorePercent - baseRestorePercent > 20.0) 
+
+			if(restorePercent - baseRestorePercent > 20.0)
 				restorePercent = baseRestorePercent + 20.0;
 		}
-				
-		if(restorePercent > 100) 
+
+		if(restorePercent > 100)
 			restorePercent = 100;
-		if(restorePercent < baseRestorePercent) 
+		if(restorePercent < baseRestorePercent)
 			restorePercent = baseRestorePercent;
-					
+
 		return restorePercent;
 	}
-    
+
     public static double getSTRBonus(L2Character activeChar)
     {
     	return STRbonus[activeChar.getSTR()];
     }
-    
+
     public boolean calcSkillMastery(L2Character actor)
     {
     	if (actor == null)
     		return false;
-    	
+
     	double val = actor.getStat().calcStat(Stats.SKILL_MASTERY, 0, null, null);
-    	
+
     	if (actor instanceof L2PcInstance && ((L2PcInstance)actor).isMageClass())
     		val *= INTbonus[actor.getINT()];
     	else
     		val*= STRbonus[actor.getSTR()];
-    		
+
     	return Rnd.get(100) < val;
     }
     public static boolean calcPhysicalSkillEvasion(L2Character target, L2Skill skill)
     {
     	if (skill.isMagic() && skill.getSkillType() != L2SkillType.BLOW)
     		return false;
-    	
+
     	return Rnd.get(100) < target.calcStat(Stats.P_SKILL_EVASION, 0, null, skill);
     }
 }

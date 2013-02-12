@@ -14,10 +14,10 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.datatables.ArmorSetsTable;
-import com.l2jhellas.gameserver.datatables.ArmorSetsTable.ArmorDummy;
-import com.l2jhellas.gameserver.datatables.CharTemplateTable;
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable.ArmorDummy;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.templates.StatsSet;
 

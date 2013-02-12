@@ -24,7 +24,7 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 public class AdminDMEngine implements IAdminCommandHandler
 {

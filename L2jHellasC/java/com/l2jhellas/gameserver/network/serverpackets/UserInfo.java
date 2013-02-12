@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Summon;

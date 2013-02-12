@@ -16,28 +16,33 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 
 public class TopPlayers
 {
+	protected static final Logger _log = Logger.getLogger(TopPlayers.class.getName());
+
 	private int pos;
 	private final TextBuilder _topList = new TextBuilder();
 	String sort = "";
-	
+
 	public TopPlayers(String file)
 	{
 		loadDB(file);
 	}
-	
+
 	private void loadDB(String file)
 	{
 		Connection con = null;
-		
+
 		switch (file)
 		{
 			case "toppvp":
@@ -57,38 +62,42 @@ public class TopPlayers
 				break;
 			default:
 			break;
-		
+
 		}
-		
+
 		try
 		{
 			pos = 0;
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY " + sort + " DESC LIMIT " + ExternalConfig.TOP_PLAYER_RESULTS);
-			
+
 			ResultSet result = statement.executeQuery();
-			
+
 			while (result.next())
 			{
 				boolean status = false;
 				pos++;
-				
+
 				if (result.getInt("online") == 1)
 				{
 					status = true;
 				}
 				String timeon = getPlayerRunTime(result.getInt("ch.onlinetime"));
 				String adenas = getAdenas(result.getLong("SUM(it.count)"));
-				
+
 				addChar(pos, result.getString("ch.char_name"), result.getInt("base_class"), result.getInt("ch.pvpkills"), result.getInt("ch.pkkills"), result.getInt("SUM(chr.points)"), adenas, timeon, status);
 			}
-			
+
 			result.close();
 			statement.close();
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Could not Select Top Players " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -98,16 +107,16 @@ public class TopPlayers
 			}
 			catch (Exception e)
 			{
-				
+
 			}
 		}
 	}
-	
+
 	public String loadTopList()
 	{
 		return _topList.toString();
 	}
-	
+
 	private void addChar(int position, String name, int classid, int pvp, int pk, int raid, String adenas, String online, boolean isOnline)
 	{
 		_topList.append("<table border=0 cellspacing=0 cellpadding=2 bgcolor=050505 height=" + ExternalConfig.TOP_PLAYER_ROW_HEIGHT + "><tr><td FIXWIDTH=5></td>");
@@ -121,9 +130,9 @@ public class TopPlayers
 		_topList.append("<td FIXWIDTH=150>" + online + "</td>");
 		_topList.append("<td FIXWIDTH=65>" + ((isOnline) ? "<font color=99FF00>Online</font>" : "<font color=CC0000>Offline</font>") + "</td>");
 		_topList.append("</tr></table><img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
-		
+
 	}
-	
+
 	public final static String className(int classid)
 	{
 		Map<Integer, String> classList;
@@ -217,10 +226,10 @@ public class TopPlayers
 		classList.put(116, "Doomcryer");
 		classList.put(117, "Fortune Seeker");
 		classList.put(118, "Maestro");
-		
+
 		return classList.get(classid);
 	}
-	
+
 	public String getPlayerRunTime(int secs)
 	{
 		String timeResult = "";
@@ -234,7 +243,7 @@ public class TopPlayers
 		}
 		return timeResult;
 	}
-	
+
 	public String getAdenas(Long adena)
 	{
 		String adenas = "";

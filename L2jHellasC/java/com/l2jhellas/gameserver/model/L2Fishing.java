@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PenaltyMonsterInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;

@@ -19,7 +19,7 @@ import java.util.List;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -33,7 +33,7 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 @SuppressWarnings("unused")
 public class RequestBuyProcure extends L2GameClientPacket {

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,8 +31,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.gameserver.util.Util;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 public class Fishing implements ISkillHandler
 {
@@ -42,15 +42,15 @@ public class Fishing implements ISkillHandler
 	{
 		L2SkillType.FISHING
 	};
-	
+
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar == null || !(activeChar instanceof L2PcInstance))
 			return;
-		
+
 		L2PcInstance player = (L2PcInstance) activeChar;
-		
+
 		/*
 		 * If fishing is disabled, there isn't much point in doing anything
 		 * else, unless you are GM.
@@ -61,7 +61,7 @@ public class Fishing implements ISkillHandler
 			player.sendMessage("Not Working Yet");
 			return;
 		}
-		
+
 		/*
 		 * If fishing is enabled, here is the code that was striped from
 		 * startFishing() in L2PcInstance.
@@ -80,7 +80,7 @@ public class Fishing implements ISkillHandler
 		int x = player.getX() + x1;
 		int y = player.getY() + y1;
 		int z = player.getZ() - 30;
-		
+
 		/*
 		 * ...and if the spot is in a fishing zone. If it is, it will then
 		 * position the hook on the water
@@ -105,7 +105,7 @@ public class Fishing implements ISkillHandler
 				return;
 			}
 		}
-		
+
 		if (player.isFishing())
 		{
 			if (player.GetFishCombat() != null)
@@ -123,7 +123,7 @@ public class Fishing implements ISkillHandler
 			if (!player.isGM())
 				return;
 		}
-		
+
 		/*
 		 * Of course since you can define fishing water volumes of any height,
 		 * the function needs to be
@@ -160,7 +160,7 @@ public class Fishing implements ISkillHandler
 		}
 		player.SetLure(lure);
 		L2ItemInstance lure2 = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
-		
+
 		if (lure2 == null || lure2.getCount() < 1) // Not enough bait.
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_BAIT));
@@ -175,13 +175,13 @@ public class Fishing implements ISkillHandler
 			iu.addModifiedItem(lure2);
 			player.sendPacket(iu);
 		}
-		
+
 		// If everything else checks out, actually cast the hook and start
 		// fishing... :P
 		player.startFishing(x, y, z);
-		
+
 	}
-	
+
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

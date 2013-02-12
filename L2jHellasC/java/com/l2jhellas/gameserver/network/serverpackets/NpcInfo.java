@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.TownManager;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;

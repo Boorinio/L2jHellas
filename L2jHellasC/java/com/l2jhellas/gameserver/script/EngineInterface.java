@@ -17,19 +17,19 @@ package com.l2jhellas.gameserver.script;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.RecipeController;
-import com.l2jhellas.gameserver.datatables.CharNameTable;
-import com.l2jhellas.gameserver.datatables.CharTemplateTable;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.ItemTable;
 import com.l2jhellas.gameserver.datatables.LevelUpData;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
-import com.l2jhellas.gameserver.datatables.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
  * @author Luis Arias

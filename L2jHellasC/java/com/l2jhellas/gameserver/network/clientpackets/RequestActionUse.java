@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
@@ -38,6 +37,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ChairSit;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopManageList;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
  * This class ...

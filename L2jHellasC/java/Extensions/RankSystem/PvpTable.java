@@ -20,9 +20,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -32,7 +35,7 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
  */
 public class PvpTable
 {
-
+	protected static final Logger _log = Logger.getLogger(PvpTable.class.getName());
 	private static PvpTable _instance = null;
 
 	/** <pvp_id, Pvp> contains killer pvp's data (victim, kills on victim, last kill time, etc.) */
@@ -293,7 +296,11 @@ public class PvpTable
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + " could not load custom_pvp_system " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -350,7 +357,11 @@ public class PvpTable
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + " could not update/insert custom_pvp_system " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -364,7 +375,6 @@ public class PvpTable
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
 			}
 		}
 	}

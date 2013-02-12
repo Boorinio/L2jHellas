@@ -32,7 +32,7 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2TradeList;
 

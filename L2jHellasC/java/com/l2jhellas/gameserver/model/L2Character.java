@@ -37,15 +37,12 @@ import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
-import com.l2jhellas.gameserver.datatables.DoorTable;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.MapRegionTable.TeleportWhereType;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.AbstractNodeLoc;
 import com.l2jhellas.gameserver.geodata.pathfinding.Node;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
-import com.l2jhellas.gameserver.geodata.pathfinding.geonodes.GeoPathFinding;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -93,6 +90,7 @@ import com.l2jhellas.gameserver.network.serverpackets.TargetUnselected;
 import com.l2jhellas.gameserver.network.serverpackets.TeleportToLocation;
 import com.l2jhellas.gameserver.skills.Calculator;
 import com.l2jhellas.gameserver.skills.Formulas;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
 import com.l2jhellas.gameserver.skills.funcs.Func;
@@ -100,9 +98,9 @@ import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.gameserver.util.Util;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 
 /**
  * Mother class of all character objects of the world (PC, NPC...)
@@ -4342,25 +4340,13 @@ public abstract class L2Character extends L2Object
 	 */
 	public final boolean isOnGeodataPath()
 	{
-		final MoveData move = _move;
-		
-		if(move == null)
+		MoveData m = _move;
+		if (m == null)
 			return false;
-
-		try
-		{
-			if(move.onGeodataPathIndex == -1)
-				return false;
-
-			if(move.onGeodataPathIndex == move.geoPath.length - 1)
-				return false;
-		}
-		catch(NullPointerException e)
-		{
-			e.printStackTrace();
+		if (m.onGeodataPathIndex == -1)
 			return false;
-		}
-
+		if (m.onGeodataPathIndex == m.geoPath.length-1)
+			return false;
 		return true;
 	}
 

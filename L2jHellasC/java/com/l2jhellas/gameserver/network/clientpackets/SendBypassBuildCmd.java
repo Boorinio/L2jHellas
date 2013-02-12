@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.AdminCommandAccessRights;
+import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;

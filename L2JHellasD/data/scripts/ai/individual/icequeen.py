@@ -2,7 +2,7 @@ import sys
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState
 from com.l2jhellas.gameserver.model.quest.jython import QuestJython as JQuest
-from com.l2jhellas.gameserver.datatables import SkillTable
+from com.l2jhellas.gameserver.skills import SkillTable
 from java.lang import System
 
 qn = "icequeen"

@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.GmListTable;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.Location;

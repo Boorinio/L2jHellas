@@ -27,20 +27,18 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.AbstractNodeLoc;
 import com.l2jhellas.gameserver.geodata.pathfinding.Node;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
-import com.l2jhellas.gameserver.geodata.util.L2Arrays;
-import com.l2jhellas.gameserver.geodata.util.LookupTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.util.geodata.L2Arrays;
+import com.l2jhellas.util.geodata.LookupTable;
 
 
 public final class GeoPathFinding extends PathFinding

@@ -3,7 +3,7 @@ import sys
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState
 from com.l2jhellas.gameserver.model.quest.jython import QuestJython as JQuest
-from com.l2jhellas.gameserver.datatables import SpawnTable
+from com.l2jhellas.gameserver.datatables.sql import SpawnTable
 from com.l2jhellas.gameserver.network.serverpackets import CreatureSay
 from com.l2jhellas.util import Rnd
 

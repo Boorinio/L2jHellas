@@ -58,20 +58,20 @@ import com.l2jhellas.util.Util;
 public class GameServerThread extends Thread
 {
 	protected static final Logger _log = Logger.getLogger(GameServerThread.class.getName());
-	private Socket _connection;
+	private final Socket _connection;
 	private InputStream _in;
 	private OutputStream _out;
-	private RSAPublicKey _publicKey;
-	private RSAPrivateKey _privateKey;
+	private final RSAPublicKey _publicKey;
+	private final RSAPrivateKey _privateKey;
 	private NewCrypt _blowfish;
 	private byte[] _blowfishKey;
 
-	private String _connectionIp;
+	private final String _connectionIp;
 
 	private GameServerInfo _gsi;
 
 	/** Authed Clients on a GameServer*/
-	private Set<String> _accountsOnGameServer = new FastSet<String>();
+	private final Set<String> _accountsOnGameServer = new FastSet<String>();
 
 	private String _connectionIPAddress;
 
@@ -135,7 +135,7 @@ public class GameServerThread extends Thread
 
 				if (Config.DEBUG)
 				{
-					_log.warning("[C]\n"+Util.printData(data));
+					_log.warning("[C]\n" + Util.printData(data, newBytes));
 				}
 
 				int packetType = data[0] & 0xff;
@@ -183,8 +183,8 @@ public class GameServerThread extends Thread
 				_gsi.setDown();
 				_log.info("Server ["+getServerId()+"] "+GameServerTable.getInstance().getServerNameById(getServerId())+" is now set as disconnected");
 			}
-			L2LoginServer.getInstance().getGameServerListener().removeGameServer(this);
-			L2LoginServer.getInstance().getGameServerListener().removeFloodProtection(_connectionIp);
+			LoginServer.getInstance().getGameServerListener().removeGameServer(this);
+			LoginServer.getInstance().getGameServerListener().removeFloodProtection(_connectionIp);
 		}
 	}
 
@@ -605,7 +605,7 @@ public class GameServerThread extends Thread
 		NewCrypt.appendChecksum(data);
 		if (Config.DEBUG)
 		{
-			_log.finest("[S] "+sl.getClass().getSimpleName()+":\n"+Util.printData(data));
+			_log.finest("[S] " + sl.getClass().getSimpleName() + ":\n" + Util.printData(data, 0));
 		}
 		data = _blowfish.crypt(data);
 
@@ -621,9 +621,9 @@ public class GameServerThread extends Thread
 
 	private void broadcastToTelnet(String msg)
 	{
-		if (L2LoginServer.getInstance().getStatusServer() != null)
+		if (LoginServer.getInstance().getStatusServer() != null)
 		{
-			L2LoginServer.getInstance().getStatusServer().sendMessageToTelnets(msg);
+			LoginServer.getInstance().getStatusServer().sendMessageToTelnets(msg);
 		}
 	}
 

@@ -22,7 +22,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.util.Broadcast;
+import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Rnd;
 
 public class L2CasinoInstance extends L2NpcInstance

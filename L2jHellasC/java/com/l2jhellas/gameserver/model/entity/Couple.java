@@ -18,10 +18,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -31,7 +31,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class Couple
 {
-	private static final Log _log = LogFactory.getLog(Couple.class.getName());
+	protected static final Logger _log = Logger.getLogger(Couple.class.getName());
 
 	private int _Id = 0;
 	private int _player1Id = 0;
@@ -52,7 +52,7 @@ public class Couple
 
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			statement = con.prepareStatement("Select * from mods_wedding where id = ?");
+			statement = con.prepareStatement("SELECT * FROM mods_wedding WHERE id = ?");
 			statement.setInt(1, _Id);
 			rs = statement.executeQuery();
 
@@ -73,7 +73,11 @@ public class Couple
 		}
 		catch (Exception e)
 		{
-			_log.error("Exception: Couple.load(): " + e.getMessage(), e);
+			_log.log(Level.WARNING, getClass().getName() + ": Exception: Couple.load(): " + e.getMessage(), e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -121,7 +125,11 @@ public class Couple
 		}
 		catch (Exception e)
 		{
-			_log.error("", e);
+			_log.log(Level.WARNING, getClass().getName() + ": ", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -154,7 +162,11 @@ public class Couple
 		}
 		catch (Exception e)
 		{
-			_log.error("", e);
+			_log.log(Level.WARNING, getClass().getName() + ": ", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -182,7 +194,11 @@ public class Couple
 		}
 		catch (Exception e)
 		{
-			_log.error("Exception: Couple.divorce(): " + e.getMessage(), e);
+			_log.log(Level.WARNING, getClass().getName() + ": Exception: Couple.divorce(): " + e.getMessage(), e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

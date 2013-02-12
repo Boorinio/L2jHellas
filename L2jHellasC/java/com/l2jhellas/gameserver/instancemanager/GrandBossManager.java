@@ -19,10 +19,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -39,6 +41,8 @@ import com.l2jhellas.util.L2FastList;
  */
 public class GrandBossManager
 {
+	protected static Logger _log = Logger.getLogger(GrandBossManager.class.getName());
+
 	/* =========================================================
 	 * This class handles all Grand Bosses:
 	 * <ul>
@@ -79,8 +83,6 @@ public class GrandBossManager
 	private static final String UPDATE_GRAND_BOSS_DATA = "UPDATE grandboss_data set loc_x = ?, loc_y = ?, loc_z = ?, heading = ?, respawn_time = ?, currentHP = ?, currentMP = ?, status = ? where boss_id = ?";
 
 	private static final String UPDATE_GRAND_BOSS_DATA2 = "UPDATE grandboss_data set status = ? where boss_id = ?";
-	
-	protected static Logger _log = Logger.getLogger(GrandBossManager.class.getName());
 
 	private static GrandBossManager _instance;
 
@@ -152,11 +154,19 @@ public class GrandBossManager
 		}
 		catch (SQLException e)
 		{
-			_log.warning("GrandBossManager: Could not load grandboss_data table");
+			_log.log(Level.WARNING, getClass().getName() + ": Could not load grandboss_data table" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -183,7 +193,7 @@ public class GrandBossManager
 
 		if (_zones == null)
 		{
-			_log.warning("GrandBossManager: Could not read Grand Boss zone data");
+			_log.log(Level.WARNING, getClass().getName() + ": Could not read Grand Boss zone data");
 			return;
 		}
 
@@ -211,12 +221,15 @@ public class GrandBossManager
 			rset.close();
 			statement.close();
 
-			_log.info("GrandBossManager: Initialized " + _zones.size() + " Grand Boss Zones");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Initialized " + _zones.size() + " Grand Boss Zones.");
 		}
 		catch (SQLException e)
 		{
-			_log.warning("GrandBossManager: Could not load grandboss_list table");
-			e.getMessage();
+			_log.log(Level.WARNING, getClass().getName() + ": Could not load grandboss_list table" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		catch (Exception e)
 		{
@@ -282,7 +295,7 @@ public class GrandBossManager
 		L2BossZone temp = getZone(obj.getX(), obj.getY(), obj.getZ());
 		if (temp == null)
 			return false;
-		
+
 		return temp.getZoneName().equalsIgnoreCase(zoneType);
 	}
 
@@ -402,14 +415,18 @@ public class GrandBossManager
 					statement.setInt(8, _bossStatus.get(bossId));
 					statement.setInt(9, bossId);
 				}
-				statement.executeUpdate(); 
-			 	statement.clearParameters(); 
+				statement.executeUpdate();
+			 	statement.clearParameters();
 			 	statement.close();
 			}
 		}
 		catch (SQLException e)
 		{
-			_log.warning("GrandBossManager: Couldn't store grandbosses to database:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Couldn't store grandbosses to database:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -437,7 +454,7 @@ public class GrandBossManager
 		 _bossStatus.clear();
 		 _zones.clear();
 	}
-	
+
 	public L2FastList<L2BossZone> getZones()
 	{
 		return _zones;

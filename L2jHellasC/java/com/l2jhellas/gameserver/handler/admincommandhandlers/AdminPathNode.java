@@ -14,10 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import java.util.List;
-
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.geodata.pathfinding.AbstractNodeLoc;
 import com.l2jhellas.gameserver.geodata.pathfinding.Node;
 import com.l2jhellas.gameserver.geodata.pathfinding.geonodes.GeoPathFinding;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;

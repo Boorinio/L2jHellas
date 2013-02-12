@@ -67,9 +67,9 @@ public class LoginServerThread extends Thread
 	/** {@see com.l2jhellas.loginserver.LoginServer#PROTOCOL_REV } */
 	private static final int			REVISION = 0x0102;
 	private RSAPublicKey				_publicKey;
-	private String						_hostname;
-	private int							_port;
-	private int							_gamePort;
+	private final String						_hostname;
+	private final int							_port;
+	private final int							_gamePort;
 	private Socket						_loginSocket;
 	private InputStream 				_in;
 	private OutputStream 				_out;
@@ -86,17 +86,17 @@ public class LoginServerThread extends Thread
 	private NewCrypt 					_blowfish;
 	private byte[]			 			_blowfishKey;
 	private byte[] 						_hexID;
-	private boolean			 			_acceptAlternate;
+	private final boolean			 			_acceptAlternate;
 	private int							_requestID;
 	private int							_serverID;
-	private boolean 					_reserveHost;
+	private final boolean 					_reserveHost;
 	private int							_maxPlayer;
-	private List<WaitingClient>			_waitingClients;
-	private Map<String, L2GameClient>	_accountsInGameServer;
+	private final List<WaitingClient>			_waitingClients;
+	private final Map<String, L2GameClient>	_accountsInGameServer;
 	private int							_status;
 	private String						_serverName;
-	private String						_gameExternalHost;
-	private String						_gameInternalHost;
+	private final String						_gameExternalHost;
+	private final String						_gameInternalHost;
 
 	public LoginServerThread()
 	{
@@ -112,7 +112,7 @@ public class LoginServerThread extends Thread
 		}
 		else
 			_requestID = Config.SERVER_ID;
-		
+
 		_acceptAlternate = Config.ACCEPT_ALTERNATE_ID;
 		_reserveHost = Config.RESERVE_HOST_ON_LOGIN;
 		_gameExternalHost = Config.EXTERNAL_HOSTNAME;
@@ -126,7 +126,7 @@ public class LoginServerThread extends Thread
 	{
 		if(_instance == null)
 			_instance = new LoginServerThread();
-		
+
 		return _instance;
 	}
 
@@ -193,7 +193,7 @@ public class LoginServerThread extends Thread
 					}
 
 					if (Config.DEBUG)
-						_log.warning("[C]\n"+Util.printData(decrypt));
+						_log.warning("[C]\n" + Util.printData(decrypt, 0));
 
 					int packetType = decrypt[0]&0xff;
 					switch (packetType)
@@ -251,13 +251,13 @@ public class LoginServerThread extends Thread
 						ServerStatus st = new ServerStatus();
 						if(Config.SERVER_LIST_BRACKET)
 							st.addAttribute(ServerStatus.SERVER_LIST_SQUARE_BRACKET,ServerStatus.ON);
-						
+
 						else
 							st.addAttribute(ServerStatus.SERVER_LIST_SQUARE_BRACKET,ServerStatus.OFF);
-						
+
 						if(Config.SERVER_LIST_CLOCK)
 							st.addAttribute(ServerStatus.SERVER_LIST_CLOCK,ServerStatus.ON);
-						
+
 						else
 							st.addAttribute(ServerStatus.SERVER_LIST_CLOCK,ServerStatus.OFF);
 
@@ -269,7 +269,7 @@ public class LoginServerThread extends Thread
 
 						if(Config.SERVER_GMONLY)
 							st.addAttribute(ServerStatus.SERVER_LIST_STATUS,ServerStatus.STATUS_GM_ONLY);
-						
+
 						else
 							st.addAttribute(ServerStatus.SERVER_LIST_STATUS,ServerStatus.STATUS_AUTO);
 
@@ -332,8 +332,9 @@ public class LoginServerThread extends Thread
 			}
 			catch (IOException e)
 			{
-				_log.info("Deconnected from Login, Trying to reconnect:");
-				_log.info(e.toString());
+				_log.info("Trying to reconnect on Login Server:");
+				if (Config.DEBUG)
+					_log.info(e.toString());
 			}
 			finally
 			{
@@ -452,7 +453,7 @@ public class LoginServerThread extends Thread
 		byte[] data = sl.getContent();
 		NewCrypt.appendChecksum(data);
 		if (Config.DEBUG)
-			_log.finest("[S]\n"+Util.printData(data));
+			_log.finest("[S]\n" + Util.printData(data, 0));
 		data = _blowfish.crypt(data);
 
 		int len = data.length+2;

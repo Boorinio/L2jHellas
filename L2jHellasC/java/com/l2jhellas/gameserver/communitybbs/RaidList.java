@@ -15,21 +15,26 @@ package com.l2jhellas.gameserver.communitybbs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 
 public class RaidList
 {
+	protected static final Logger _log = Logger.getLogger(RaidList.class.getName());
+
 	private final TextBuilder _raidList = new TextBuilder();
-	
+
 	public RaidList(String rfid)
 	{
 		loadFromDB(rfid);
 	}
-	
+
 	private void loadFromDB(String rfid)
 	{
 		int type = Integer.parseInt(rfid);
@@ -45,15 +50,15 @@ public class RaidList
 		{
 			stpoint += ExternalConfig.RAID_LIST_RESULTS;
 		}
-		
-		
+
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` " + sort + " Limit " + stpoint + ", " + ExternalConfig.RAID_LIST_RESULTS);
 			ResultSet result = statement.executeQuery();
 			pos = stpoint;
-			
+
 			while (result.next())
 			{
 				int npcid = result.getInt("id");
@@ -61,7 +66,7 @@ public class RaidList
 				int rlevel = result.getInt("level");
 				PreparedStatement statement2 = con.prepareStatement("SELECT respawn_time, respawn_min_delay, respawn_max_delay FROM raidboss_spawnlist WHERE boss_id=" + npcid);
 				ResultSet result2 = statement2.executeQuery();
-				
+
 				while (result2.next())
 				{
 					pos++;
@@ -78,13 +83,17 @@ public class RaidList
 				result2.close();
 				statement2.close();
 			}
-			
+
 			result.close();
 			statement.close();
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Error Loading DB " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -97,7 +106,7 @@ public class RaidList
 			}
 		}
 	}
-	
+
 	private void addRaidToList(int pos, String npcname, int rlevel, int mindelay, int maxdelay, boolean rstatus)
 	{
 		_raidList.append("<table border=0 cellspacing=0 cellpadding=2 width=610 height=" + ExternalConfig.RAID_LIST_ROW_HEIGHT + ">");
@@ -113,7 +122,7 @@ public class RaidList
 		_raidList.append("</table>");
 		_raidList.append("<img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
 	}
-	
+
 	public String loadRaidList()
 	{
 		return _raidList.toString();

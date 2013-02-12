@@ -20,16 +20,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.ItemTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
@@ -791,7 +793,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("Error saving new npc value: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error saving new npc value: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		NpcTable.getInstance().saveNpc(newNpcData);
@@ -964,7 +970,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Could not update Npc/Mob Data " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1010,6 +1020,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + ": Could not add Npc/Mob Data " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1054,6 +1069,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + ": Could not delete Npc/Mob Data " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1109,6 +1129,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + ": Could not reload Npc/Mob drop Data " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

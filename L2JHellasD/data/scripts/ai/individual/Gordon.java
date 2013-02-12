@@ -15,14 +15,16 @@
 package ai.individual;
 
 import java.util.Collection;
+
+import ai.group_template.L2AttackableAIScript;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Spawn;
-import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import ai.group_template.L2AttackableAIScript;
 
 /**
  * Gordon AI
@@ -93,6 +95,7 @@ public class Gordon extends L2AttackableAIScript
     	return npc;
     }
 
+	@Override
 	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
 	{
 		X = WALKS[_isWalkTo-1][0];
@@ -185,7 +188,8 @@ public class Gordon extends L2AttackableAIScript
 		return super.onAdvEvent(event, npc, player);
 	}
 
-    public String onSpawn (L2NpcInstance npc) 
+    @Override
+	public String onSpawn (L2NpcInstance npc) 
     { 
         if (npc.getNpcId() == GORDON && _npcBlock == 0)
         {
@@ -196,7 +200,8 @@ public class Gordon extends L2AttackableAIScript
     	return super.onSpawn(npc); 
     }
 
-    public String onAttack (L2NpcInstance npc, L2PcInstance player, int damage, boolean isPet)
+    @Override
+	public String onAttack (L2NpcInstance npc, L2PcInstance player, int damage, boolean isPet)
     {	
         if (npc.getNpcId() == GORDON)
         {
@@ -213,7 +218,8 @@ public class Gordon extends L2AttackableAIScript
     	return super.onAttack(npc, player, damage, isPet);
     }
 
-    public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet) 
+    @Override
+	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet) 
     {
         if (npc.getNpcId() == GORDON)
         {

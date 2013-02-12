@@ -23,14 +23,15 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.entity.Auction;
 
 public class AuctionManager
 {
-    protected static final Logger _log = Logger.getLogger(AuctionManager.class.getName());
-    private static AuctionManager _instance;
-    private final List<Auction> _auctions;
+	protected static final Logger _log = Logger.getLogger(AuctionManager.class.getName());
+	private static AuctionManager _instance;
+	private final List<Auction> _auctions;
 	private static final String[] ITEM_INIT_DATA =
 		{
 		    "(23, 0, 'NPC', 'NPC Clan', 'ClanHall', 23, 0, 'Onyx Hall', 1, 20000000, 0, 1164841200000)",
@@ -71,104 +72,128 @@ public class AuctionManager
 		    "(60, 0, 'NPC', 'NPC Clan', 'ClanHall', 60, 0, 'Molten Ore Hall', 1, 50000000, 0, 1164841200000)",
 		    "(61, 0, 'NPC', 'NPC Clan', 'ClanHall', 61, 0, 'Titan Hall', 1, 50000000, 0, 1164841200000)"
 		 };
-	private static final Integer[] ItemInitDataId =
-	{
-		23,24,25,26,27,28,29,30,31,32,33,36,37,38,39,40,41,42,43,44,45,46,47,48
-		,49,50,51,52,53,54,55,56,57,58,59,60,61
+	private static final Integer[] ItemInitDataId = {
+	23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61
 	};
-    public static final AuctionManager getInstance()
-    {
-        if (_instance == null)
-        {
-    		System.out.println("Initializing AuctionManager");
-        	_instance = new AuctionManager();
-        }
-        return _instance;
-    }
-    public AuctionManager()
-    {
-    	_auctions = new FastList<Auction>();
-    	load();
-    }
-    public void reload()
-    {
-    	_auctions.clear();
-    	load();
-    }
-    private final void load()
-    {
+
+	public static final AuctionManager getInstance()
+	{
+		if (_instance == null)
+		{
+			System.out.println("Initializing AuctionManager");
+			_instance = new AuctionManager();
+		}
+		return _instance;
+	}
+
+	public AuctionManager()
+	{
+		_auctions = new FastList<Auction>();
+		load();
+	}
+
+	public void reload()
+	{
+		_auctions.clear();
+		load();
+	}
+
+	private final void load()
+	{
 		Connection con = null;
-        try
-        {
-            PreparedStatement statement;
-            ResultSet rs;
-            con = L2DatabaseFactory.getInstance().getConnection();
-            statement = con.prepareStatement("SELECT id FROM auction ORDER BY id");
-            rs = statement.executeQuery();
-            while (rs.next())
-            	_auctions.add(new Auction(rs.getInt("id")));
-            statement.close();
-            System.out.println("Loaded: " + getAuctions().size() + " auction(s)");
-        }
-        catch (Exception e)
-        {
-            System.out.println("Exception: AuctionManager.load(): " + e.getMessage());
-            e.printStackTrace();
-        }
+		try
+		{
+			PreparedStatement statement;
+			ResultSet rs;
+			con = L2DatabaseFactory.getInstance().getConnection();
+			statement = con.prepareStatement("SELECT id FROM auction ORDER BY id");
+			rs = statement.executeQuery();
+			while (rs.next())
+				_auctions.add(new Auction(rs.getInt("id")));
+			statement.close();
+			System.out.println("Loaded: " + getAuctions().size() + " auction(s)");
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, getClass().getName() + ": AuctionManager.load(): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
+		}
 
-        finally {try { con.close(); } catch (Exception e) {}}
-    }
-    public final Auction getAuction(int auctionId)
-    {
-        int index = getAuctionIndex(auctionId);
-        if (index >= 0)
-        	return getAuctions().get(index);
-        return null;
-    }
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+	}
 
-    public final int getAuctionIndex(int auctionId)
-    {
-        Auction auction;
-        for (int i = 0; i < getAuctions().size(); i++)
-        {
-        	auction = getAuctions().get(i);
-            if (auction != null && auction.getId() == auctionId)
-            	return i;
-        }
-        return -1;
-    }
+	public final Auction getAuction(int auctionId)
+	{
+		int index = getAuctionIndex(auctionId);
+		if (index >= 0)
+			return getAuctions().get(index);
+		return null;
+	}
 
-    public final List<Auction> getAuctions()
-    {
-        return _auctions;
-    }
-    /** Init Clan NPC aution */
-	public void initNPC(int id){
+	public final int getAuctionIndex(int auctionId)
+	{
+		Auction auction;
+		for (int i = 0; i < getAuctions().size(); i++)
+		{
+			auction = getAuctions().get(i);
+			if (auction != null && auction.getId() == auctionId)
+				return i;
+		}
+		return -1;
+	}
+
+	public final List<Auction> getAuctions()
+	{
+		return _auctions;
+	}
+
+	/** Init Clan NPC aution */
+	public void initNPC(int id)
+	{
 		Connection con = null;
-        int i = 0;
-        for(i=0;i<ItemInitDataId.length;i++)
-        	if(ItemInitDataId[i] == id)
-        		break;
-        if(i>=ItemInitDataId.length){
-        	_log.warning("Clan Hall auction not found for Id :"+id);
-        	return;
-        }
-        try
-        {
-            con = L2DatabaseFactory.getInstance().getConnection();
-            PreparedStatement statement;
-            statement = con.prepareStatement("INSERT INTO `auction` VALUES "+ITEM_INIT_DATA[i]);
-            statement.execute();
-            statement.close();
-            _auctions.add(new Auction(id));
-        }
-        catch (Exception e)
-        {
-        	 _log.log(Level.SEVERE, "Exception: Auction.initNPC(): " + e.getMessage(),e);
-        }
-        finally
-        {
-            try { con.close(); } catch (Exception e) {}
-        }
+		int i = 0;
+		for (i = 0; i < ItemInitDataId.length; i++)
+			if (ItemInitDataId[i] == id)
+				break;
+		if (i >= ItemInitDataId.length)
+		{
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Clan Hall auction not found for Id :" + id);
+			return;
+		}
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement;
+			statement = con.prepareStatement("INSERT INTO `auction` VALUES " + ITEM_INIT_DATA[i]);
+			statement.execute();
+			statement.close();
+			_auctions.add(new Auction(id));
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, getClass().getName() + ": Auction.initNPC(): " + e);
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
 	}
 }

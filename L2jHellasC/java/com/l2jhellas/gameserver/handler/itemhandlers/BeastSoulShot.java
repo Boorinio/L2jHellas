@@ -26,7 +26,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.gameserver.util.Broadcast;
+import com.l2jhellas.util.Broadcast;
 
 /**
  * Beast SoulShot Handler

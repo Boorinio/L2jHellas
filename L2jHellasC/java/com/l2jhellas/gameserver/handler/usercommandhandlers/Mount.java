@@ -14,14 +14,14 @@
  */
 package com.l2jhellas.gameserver.handler.usercommandhandlers;
 
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Broadcast;
+import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.Broadcast;
 
 /**
  * Support for /mount command.

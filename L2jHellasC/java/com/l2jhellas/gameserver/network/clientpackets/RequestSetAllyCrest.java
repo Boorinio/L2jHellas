@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.cache.CrestCache;
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -47,7 +47,7 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
         _length  = readD();
         if (_length < 0 || _length > 192)
 			return;
-        
+
         _data = new byte[_length];
         readB(_data);
     }
@@ -59,7 +59,7 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
         if (activeChar == null)
         	return;
 
-        
+
         if (_length < 0)
 		{
         	activeChar.sendMessage("File transfer error.");
@@ -70,7 +70,7 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
         	activeChar.sendMessage("The crest file size was too big (max 192 bytes).");
         	return;
         }
-        
+
         if (activeChar.getAllyId() != 0)
         {
             L2Clan leaderclan = ClanTable.getInstance().getClan(activeChar.getAllyId());
@@ -108,7 +108,7 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
             }
             catch (SQLException e)
             {
-                _log.warning("could not update the ally crest id:"+e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + " Could not update the ally crest id:" + e.getMessage(), e);
             }
             finally
             {
@@ -128,9 +128,6 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-     */
     @Override
 	public String getType()
     {

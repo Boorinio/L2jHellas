@@ -22,8 +22,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * An olympiad stadium
- *
- * @author  L2Dot
  */
 public class L2OlympiadStadiumZone extends L2ZoneType
 {
@@ -41,7 +39,8 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 		{
 			_stadiumId = Integer.parseInt(value);
 		}
-		else super.setParameter(name, value);
+		else
+			super.setParameter(name, value);
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 		character.setInsideZone(L2Character.ZONE_PVP, true);
 		if (character instanceof L2PcInstance)
 		{
-			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
+			((L2PcInstance) character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
 
@@ -60,20 +59,23 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 		character.setInsideZone(L2Character.ZONE_PVP, false);
 		if (character instanceof L2PcInstance)
 		{
-			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+			((L2PcInstance) character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 		}
 	}
-		
-
-	
-	@Override
-	public void onDieInside(L2Character character) {}
 
 	@Override
-	public void onReviveInside(L2Character character) {}
+	public void onDieInside(L2Character character)
+	{
+	}
+
+	@Override
+	public void onReviveInside(L2Character character)
+	{
+	}
 
 	/**
 	 * Returns this zones stadium id (if any)
+	 *
 	 * @return
 	 */
 	public int getStadiumId()

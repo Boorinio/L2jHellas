@@ -23,11 +23,11 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.datatables.ArmorSetsTable;
-import com.l2jhellas.gameserver.datatables.ItemTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2EtcItem;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;

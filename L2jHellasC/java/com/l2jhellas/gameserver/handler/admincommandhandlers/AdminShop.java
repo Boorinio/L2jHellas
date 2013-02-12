@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -79,7 +80,11 @@ public class AdminShop implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("admin buylist failed:" + command);
+			_log.log(Level.WARNING, getClass().getName() + ": admin buylist failed:" + command);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		L2TradeList list = TradeController.getInstance().getBuyList(val);
@@ -92,7 +97,7 @@ public class AdminShop implements IAdminCommandHandler
 		}
 		else
 		{
-			_log.warning("no buylist with id:" + val);
+			_log.log(Level.WARNING, getClass().getName() + ": no buylist with id:" + val);
 		}
 		activeChar.sendPacket(new ActionFailed());
 	}

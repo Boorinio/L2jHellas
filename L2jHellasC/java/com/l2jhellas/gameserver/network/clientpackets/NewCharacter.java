@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.network.serverpackets.CharTemplates;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;

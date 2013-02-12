@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.TradeController;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2TradeList;
@@ -36,7 +36,7 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -69,7 +69,8 @@ public final class RequestWearItem extends L2GameClientPacket
 
     class RemoveWearItemsTask implements Runnable
     {
-        public void run()
+        @Override
+		public void run()
         {
             try
             {

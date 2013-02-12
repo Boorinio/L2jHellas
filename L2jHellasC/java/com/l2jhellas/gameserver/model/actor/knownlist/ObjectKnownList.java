@@ -25,7 +25,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 public class ObjectKnownList
 {

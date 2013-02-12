@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
@@ -37,11 +38,11 @@ import javolution.util.FastSet;
 import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.lib.Log;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.crypt.ScrambledKeyPair;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
+import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.util.Rnd;
 
 /**
@@ -501,7 +502,7 @@ public class LoginController
 		}
 		catch (Exception e)
 		{
-			_log.warning("WARNING: Could not check GM state: " + e);
+			_log.log(Level.WARNING, getClass().getName() + "  Could not check GM state: " + e.getMessage(), e);
 			ok = false;
 		}
 		finally
@@ -544,12 +545,13 @@ public class LoginController
 	 * @param address
 	 * @return
 	 */
+	@SuppressWarnings("resource")
 	public boolean loginValid(String user, String password, L2LoginClient client)// throws HackingException
 	{
 		boolean ok = false;
 		InetAddress address = client.getConnection().getInetAddress();
 		// log it anyway
-		Log.add("'" + (user == null ? "null" : user) + "' " + (address == null ? "null" : address.getHostAddress()), "logins_ip");
+		LogRecorder.add("'" + (user == null ? "null" : user) + "' " + (address == null ? "null" : address.getHostAddress()), "logins_ip");
 
 		// player disconnected meanwhile
 		if (address == null)
@@ -634,6 +636,7 @@ public class LoginController
 
 			if (ok)
 			{
+
 				client.setAccessLevel(access);
 				client.setLastServer(lastServer);
 				statement = con.prepareStatement("UPDATE accounts SET lastactive=?, lastIP=? WHERE login=?");
@@ -662,7 +665,7 @@ public class LoginController
 
 		if (!ok)
 		{
-			Log.add("'" + user + "' " + address.getHostAddress(), "logins_ip_fails");
+			LogRecorder.add("'" + user + "' " + address.getHostAddress(), "logins_ip_fails");
 
 			FailedLoginAttempt failedAttempt = _hackProtection.get(address);
 			int failedCount;
@@ -686,7 +689,7 @@ public class LoginController
 		else
 		{
 			_hackProtection.remove(address);
-			Log.add("'" + user + "' " + address.getHostAddress(), "logins_ip");
+			LogRecorder.add("'" + user + "' " + address.getHostAddress(), "logins_ip");
 		}
 
 		return ok;

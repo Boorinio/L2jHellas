@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,6 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
@@ -31,8 +32,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -146,7 +147,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.warning("DM Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
+			_log.log(Level.WARNING, " DM Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
 		}
 	}
 
@@ -490,7 +491,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.warning("Exception: DM.loadData(): " + e.getMessage());
+			_log.log(Level.WARNING, " Exception: DM.loadData(): " + e.getMessage());
 		}
 		finally
 		{
@@ -539,7 +540,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.warning("Exception: DM.saveData(): " + e.getMessage());
+			_log.log(Level.WARNING, " Exception: DM.saveData(): " + e.getMessage());
 		}
 		finally
 		{
@@ -610,7 +611,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.warning("DM Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
+			_log.log(Level.WARNING, " DM Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
 		}
 	}
 

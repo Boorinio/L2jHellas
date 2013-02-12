@@ -33,7 +33,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.util.Broadcast;
+import com.l2jhellas.util.Broadcast;
 
 public class L2RaceManagerInstance extends L2NpcInstance
 {

@@ -17,10 +17,10 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -29,16 +29,13 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * @author L2Dot
- */
 public class AdminDonator implements IAdminCommandHandler
 {
 	private static String[] _adminCommands =
 	{
 		"admin_setdonator",
 	};
-	private final static Log _log = LogFactory.getLog(AdminDonator.class.getName());
+	protected static final Logger _log = Logger.getLogger(AdminDonator.class.getName());
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -93,7 +90,11 @@ public class AdminDonator implements IAdminCommandHandler
 				}
 				catch (Exception e)
 				{
-					_log.warn("could not set donator stats of char:", e);
+					_log.log(Level.WARNING, getClass().getName() + ": could not set donator stats of char:" + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 				finally
 				{
@@ -142,7 +143,11 @@ public class AdminDonator implements IAdminCommandHandler
 				}
 				catch (Exception e)
 				{
-					_log.warn("could not set donator stats of char:", e);
+					_log.log(Level.WARNING, getClass().getName() + ": could not set donator stats of char:" + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 				finally
 				{

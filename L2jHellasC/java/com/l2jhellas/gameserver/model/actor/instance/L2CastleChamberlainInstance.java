@@ -23,7 +23,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -43,7 +43,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 /**
  * Castle Chamberlains implementation
@@ -70,7 +70,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
     public void onAction(L2PcInstance player)
     {
         if (!canTarget(player)) return;
-        
+
         player.setLastFolkNPC(this);
 
         // Check if the L2PcInstance already target the L2NpcInstance
@@ -281,7 +281,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile(filename);
 				html.replace("%objectId%", String.valueOf(getObjectId()));
-				html.replace("%npcId%", String.valueOf(getNpcId())); 
+				html.replace("%npcId%", String.valueOf(getNpcId()));
 				html.replace("%npcname%", getName());
 				html.replace("%tax_income%", Util.formatAdena(getCastle().getTreasury()));
 				html.replace("%withdraw_amount%", Util.formatAdena(amount));
@@ -291,20 +291,20 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 			}
 			else if (actualCommand.equalsIgnoreCase("Clan_Gate"))
 			{
-				
-				L2PcInstance leader;   
+
+				L2PcInstance leader;
 				leader = (L2PcInstance)L2World.getInstance().findObject(player.getClan().getLeaderId());
 				if(leader == null)
 		        {
 		            player.sendMessage("Your Leader is not online.");
 		        }
-		        
+
 				else  if(leader.atEvent)
 	            	{
 	            		player.sendMessage("Your leader is in an event.");
 	            		return;
 	            	}
-	           
+
 	            else if(leader.isInJail())
         		{
             		player.sendMessage("Your leader is in Jail.");
@@ -315,7 +315,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
             		player.sendMessage("Your are The Leader.");
             		return;
         		}
-				
+
 	            else if(leader.isInOlympiadMode())
 	            	{
 	            		player.sendMessage("Your leader is in the Olympiad now.");
@@ -327,37 +327,37 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 	            		player.sendMessage("Your leader is in Observ Mode.");
 	                	return;
 	            	}
-				
+
 	            else  if (leader.isInDuel())
 	            	{
 	            		player.sendMessage("Your leader is in a duel.");
 	            		return;
 	            	}
-				
+
 	            else if (leader.isFestivalParticipant())
 	            	{
 	            		player.sendMessage("Your leader is in a festival.");
 
 	            		return;
 	            	}
-				
+
 	            else if (leader.isInParty() && leader.getParty().isInDimensionalRift())
 	            	{
 	            		player.sendMessage("Your leader is in dimensional rift.");
 	            		return;
 	            	}
 
-				
+
 				   int leaderx;
 	               int leadery;
 	               int leaderz;
 
-	               
+
 	               leaderx = leader.getX();
 	               leadery = leader.getY();
 	               leaderz = leader.getZ();
 
-	               
+
 	               player.teleToLocation(leaderx, leadery, leaderz);
 	               player.sendMessage("You have been teleported to your leader.");
 	               return;

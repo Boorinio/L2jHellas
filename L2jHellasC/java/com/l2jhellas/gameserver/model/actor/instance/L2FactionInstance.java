@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -32,8 +33,9 @@ import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
-
-/** Mod Faction Good vs Evil */
+/**
+ * Mod Faction Good vs Evil
+ */
 public class L2FactionInstance extends L2FolkInstance
 {
 	public L2FactionInstance(int objectId, L2NpcTemplate template)
@@ -55,7 +57,7 @@ public class L2FactionInstance extends L2FolkInstance
 	    {
 	        val = st.nextToken();
 	    }
-    
+
 	    else if (actualCommand.equalsIgnoreCase("setgood"))
 	    {
 	    	setTarget(player);
@@ -63,14 +65,14 @@ public class L2FactionInstance extends L2FolkInstance
 	        {
 		        player.sendMessage("You already are in " + Config.MOD_GVE_NAME_TEAM_GOOD + " faction ");
 		        player.sendPacket(new ActionFailed());
-	        } 
+	        }
 	    	else
 	        {
 	    		if (player.isevil())
 	    		{
 	    			player.sendMessage("You cant change faction.");
 	    			player.sendPacket(new ActionFailed());
-	    		} 
+	    		}
 	    		else
 	    		{
 	    			int getevils = L2World.getInstance().getAllevilPlayers().size();
@@ -79,7 +81,7 @@ public class L2FactionInstance extends L2FolkInstance
 	    			{
 	    				player.sendMessage("You Cant Use "+ Config.MOD_GVE_NAME_TEAM_GOOD + " Faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");
 	    				player.sendPacket(new ActionFailed());
-	    			} 
+	    			}
 	    			else
 	    			{
 	    				player.setgood(true);
@@ -107,22 +109,26 @@ public class L2FactionInstance extends L2FolkInstance
 	    					statement.execute();
 	    					statement.close();
 	    					connection.close();
-	    				} 
+	    				}
 	    				catch (Exception e)
 	    				{
-	    					_log.info("could not set good status of char:");
-	    				} 
+							_log.log(Level.WARNING, getClass().getName() + ": could not set good status of char:");
+							if (Config.DEVELOPER)
+							{
+								e.printStackTrace();
+							}
+	    				}
 	    				finally
 	    				{
 	    					try
 	    					{
 	    						connection.close();
-	    					} 
+	    					}
 	    					catch (Exception e)
 	    					{
 	    					}
 	    				}
-	    				System.out.println("##GvE Engine## : player " + player.getName() + " Has Choose " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction");
+						_log.log(Level.INFO, getClass().getSimpleName() + ": ##GvE Engine## : player " + player.getName() + " Has Choose " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction");
 	    				if (player.isgood() == true)
 	    				{
 	    					player.broadcastUserInfo();
@@ -142,14 +148,14 @@ public class L2FactionInstance extends L2FolkInstance
 	        {
 		        player.sendMessage("You already are in " + Config.MOD_GVE_NAME_TEAM_EVIL + " faction ");
 		        player.sendPacket(new ActionFailed());
-	        } 
+	        }
 	        else
 	        {
 	        	if (player.isgood())
 	        	{
 	        		player.sendMessage("You Cant Change Faction.");
 	        		player.sendPacket(new ActionFailed());
-	        	} 
+	        	}
 	        	else
 	        	{
 	        		int getevils = L2World.getInstance().getAllevilPlayers().size();
@@ -158,7 +164,7 @@ public class L2FactionInstance extends L2FolkInstance
 	        		{
 	        			player.sendMessage("You Cant Use " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");
 	        			player.sendPacket(new ActionFailed());
-	        		} 
+	        		}
 	        		else
 	        		{
 	        			player.setevil(true);
@@ -186,26 +192,30 @@ public class L2FactionInstance extends L2FolkInstance
 	        				statement.execute();
 	        				statement.close();
 	        				connection.close();
-	        			} 
+	        			}
 	        			catch (Exception e)
 	        			{
-	        				_log.info("could not set evil status of char:");
-	        			} 
+							_log.log(Level.WARNING, getClass().getName() + ": could not set evil status of char:" + e);
+							if (Config.DEVELOPER)
+							{
+								e.printStackTrace();
+							}
+	        			}
 	        			finally
 	        			{
 	        				try
 	        				{
 	        					connection.close();
-	        				} 
+	        				}
 	        				catch (Exception e)
 	        				{
 	        				}
 	        			}
-	        			System.out.println("##GvE Engine## : player " + player.getName() + " Has Choose " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction");
+						_log.log(Level.INFO, getClass().getSimpleName() + ": ##GvE Engine## : player " + player.getName() + " Has Choose " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction");
 	        			if (player.isevil() == true)
 	        			{
 	        				player.broadcastUserInfo();
-	        				player.sendMessage("You Are fighiting Now for " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction ");
+							player.sendMessage("You Are fighting Now for " + Config.MOD_GVE_NAME_TEAM_EVIL + " Faction.");
 	        				player.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
 	        				player.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ);
 	        				player.setTitle(Config.MOD_GVE_NAME_TEAM_EVIL);
@@ -213,19 +223,19 @@ public class L2FactionInstance extends L2FolkInstance
 	        		}
 	        	}
 	        }
-	    } 
+	    }
 	    else if (actualCommand.equalsIgnoreCase("setnobless"))
 	    {
 	    	if(!(player instanceof L2PcInstance))
                 return;
             L2PcInstance activeChar = player;
             if(activeChar.isNoble())
-                activeChar.sendMessage("You Are Already A Noblesse!.");
+				activeChar.sendMessage("You are already Noblesse!.");
             else
             {
                 activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 16));
                 activeChar.setNoble(true);
-                activeChar.sendMessage("You Are Now a Noble,You Are Granted With Noblesse Status , And Noblesse Skills.");
+				activeChar.sendMessage("You are now Noble, you are granted with Noblesse status , and Noblesse skills.");
                 activeChar.broadcastUserInfo();
                 activeChar.getInventory().addItem("Tiara", 7694, 1, activeChar, null);
             }

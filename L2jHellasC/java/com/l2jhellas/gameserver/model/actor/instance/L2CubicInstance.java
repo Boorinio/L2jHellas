@@ -21,14 +21,15 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Rnd;
 
 public class L2CubicInstance
@@ -165,7 +166,7 @@ public class L2CubicInstance
 
     private class Action implements Runnable
     {
-        private int _chance;
+        private final int _chance;
 
         Action(int chance)
         {
@@ -173,7 +174,8 @@ public class L2CubicInstance
             // run task
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (_owner.isDead() || _target.isDead() || _owner.getTarget() != _target)
             {
@@ -225,7 +227,11 @@ public class L2CubicInstance
                 }
                 catch (Exception e)
                 {
-                    _log.log(Level.SEVERE, "", e);
+					_log.log(Level.SEVERE, getClass().getName(), e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
                 }
             }
         }
@@ -233,7 +239,7 @@ public class L2CubicInstance
 
     private class Heal implements Runnable
     {
-        private int _chance;
+        private final int _chance;
 
         Heal(int chance)
         {
@@ -241,7 +247,8 @@ public class L2CubicInstance
             // run task
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             if (_owner.isDead())
             {
@@ -337,7 +344,8 @@ public class L2CubicInstance
             // run task
         }
 
-        public void run()
+        @Override
+		public void run()
         {
             stopAction();
             _owner.delCubic(_id);

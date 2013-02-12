@@ -17,7 +17,10 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -30,6 +33,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class L2ClanMember
 {
+	protected static final Logger _log = Logger.getLogger(L2ClanMember.class.getName());
+
 	private final L2Clan _clan;
 	private int _objectId;
 	private String _name;
@@ -262,7 +267,7 @@ public class L2ClanMember
 		try
         {
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET power_grade=? WHERE obj_id=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET power_grade=? WHERE obj_Id=?");
 			statement.setLong(1, _powerGrade);
 			statement.setInt(2, getObjectId());
 			statement.execute();
@@ -270,7 +275,7 @@ public class L2ClanMember
 		}
 		catch (Exception e)
 		{
-			//_log.warning("could not set char power_grade:"+e);
+			_log.log(Level.WARNING, getClass().getName() + " Could not set char power_grade:" + e.getMessage(), e);
 		}
 		finally
 		{
@@ -473,7 +478,11 @@ public class L2ClanMember
          }
          catch (SQLException e)
          {
-             //_log.warning("could not set apprentice/sponsor:"+e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + " could not set apprentice/sponsor:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
          }
          finally
          {

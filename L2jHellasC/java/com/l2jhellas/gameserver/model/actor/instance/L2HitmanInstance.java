@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.PlayerToAssasinate;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;

@@ -14,8 +14,10 @@
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -27,10 +29,10 @@ import com.l2jhellas.util.Rnd;
 /**
  * @author evill33t
  */
-
 public class SummonTreasureKey implements ISkillHandler
 {
-	static Logger _log = Logger.getLogger(SummonTreasureKey.class.getName());
+	protected static final Logger _log = Logger.getLogger(SummonTreasureKey.class.getName());
+
 	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.SUMMON_TREASURE_KEY
 	};
@@ -75,7 +77,11 @@ public class SummonTreasureKey implements ISkillHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("Error using skill summon Treasure Key:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error using skill summon Treasure Key:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

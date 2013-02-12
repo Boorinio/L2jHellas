@@ -17,11 +17,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.TopicBBSManager;
@@ -62,7 +64,7 @@ public class Forum
 		_fParent = FParent;
 		_children = new FastList<Forum>();
 		_topic = new FastMap<Integer, Topic>();
-		
+
 		/*
 		 * load();
 		 * getChildren();
@@ -122,8 +124,11 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.warning("data error on Forum " + _forumId + " : " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + " data error on Forum " + _forumId + " : " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -156,8 +161,11 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.warning("data error on Forum " + _forumId + " : " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + " data error on Forum " + _forumId + " : " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -191,8 +199,11 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.warning("data error on Forum (children): " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + " data error on Forum (children): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -323,7 +334,11 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.warning("error while saving new Forum to db " + e);
+			_log.log(Level.WARNING, getClass().getName() + " error while saving new Forum to db " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

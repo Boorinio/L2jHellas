@@ -14,8 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -26,7 +25,7 @@ import com.l2jhellas.util.Util;
  */
 public class Engine
 {
-	private static Log _log = LogFactory.getLog(Engine.class);
+	protected static final Logger _log = Logger.getLogger(Engine.class.getName());
 
 	public static void StartUp()
 	{

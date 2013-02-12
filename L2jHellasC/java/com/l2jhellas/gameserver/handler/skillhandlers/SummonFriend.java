@@ -27,11 +27,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Util;
-
-/**
- * @authors L2Dot
- */
+import com.l2jhellas.util.Util;
 
 public class SummonFriend implements ISkillHandler
 {
@@ -149,7 +145,7 @@ public class SummonFriend implements ISkillHandler
 						continue;
 					}
 
-					// L2Dot Faction GvE
+					// Faction GvE
 					if (targetChar.isevil())
 					{
 						activePlayer.sendMessage("You may not use an Summon Friend skill in a Faction mode.");

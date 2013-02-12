@@ -64,9 +64,10 @@ public class GeoEditorThread extends Thread
 		}
 		catch (Exception e)
 		{
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
+			}
 		}
 		super.interrupt();
 	}
@@ -123,14 +124,15 @@ public class GeoEditorThread extends Thread
 			if (Config.DEBUG)
 				e.printStackTrace();
 
-			_log.log(Level.WARNING, "GeoEditor disconnected. ", e);
+			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. " + e);
 		}
 		catch (Exception e)
 		{
-			if (Config.DEBUG)
+			_log.log(Level.WARNING, getClass().getName() + e);
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
-			_log.log(Level.SEVERE, e.getMessage(), e);
+			}
 		}
 		finally
 		{
@@ -142,7 +144,6 @@ public class GeoEditorThread extends Thread
 			{
 				if (Config.DEBUG)
 					e.printStackTrace();
-
 			}
 			_working = false;
 		}
@@ -171,15 +172,16 @@ public class GeoEditorThread extends Thread
 			if (Config.DEBUG)
 				e.printStackTrace();
 
-			_log.log(Level.WARNING, "GeoEditor disconnected. ", e);
+			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. " + e);
 			_working = false;
 		}
 		catch (Exception e)
 		{
-			if (Config.DEBUG)
+			_log.log(Level.WARNING, getClass().getName() + e);
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
-			_log.log(Level.SEVERE, e.getMessage(), e);
+			}
 			try
 			{
 				_geSocket.close();
@@ -188,7 +190,6 @@ public class GeoEditorThread extends Thread
 			{
 				if (Config.DEBUG)
 					e.printStackTrace();
-
 			}
 			_working = false;
 		}
@@ -216,18 +217,19 @@ public class GeoEditorThread extends Thread
 		}
 		catch (SocketException e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. ", e);
 			if (Config.DEBUG)
 				e.printStackTrace();
 
-			_log.log(Level.WARNING, "GeoEditor disconnected. ", e);
 			_working = false;
 		}
 		catch (Exception e)
 		{
-			if (Config.DEBUG)
+			_log.log(Level.WARNING, getClass().getName() + e);
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
-			_log.log(Level.SEVERE, e.getMessage(), e);
+			}
 			try
 			{
 				_geSocket.close();
@@ -236,7 +238,6 @@ public class GeoEditorThread extends Thread
 			{
 				if (Config.DEBUG)
 					ex.printStackTrace();
-
 			}
 			_working = false;
 		}

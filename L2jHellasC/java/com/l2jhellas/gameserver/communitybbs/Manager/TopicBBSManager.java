@@ -28,7 +28,7 @@ import javolution.util.FastMap;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.BB.Post;
 import com.l2jhellas.gameserver.communitybbs.BB.Topic;
-import com.l2jhellas.gameserver.datatables.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 

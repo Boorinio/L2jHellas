@@ -5,7 +5,9 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MonitorInfo;
 import java.lang.management.ThreadInfo;
 import java.util.List;
-import com.l2jhellas.gameserver.Threads.RunnableStatsManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javolution.util.FastList;
 
 /**
@@ -14,7 +16,7 @@ import javolution.util.FastList;
 
 public abstract class L2Thread extends Thread
 {
-	//private static final Logger _log = Logger.getLogger(L2Thread.class.getName);
+	private static final Logger _log = Logger.getLogger(L2Thread.class.getName());
 
 	protected L2Thread()
 	{
@@ -40,7 +42,7 @@ public abstract class L2Thread extends Thread
 	{
 		try
 		{
-			while(_isAlive)
+			while (_isAlive)
 			{
 				final long begin = System.nanoTime();
 
@@ -57,7 +59,7 @@ public abstract class L2Thread extends Thread
 				{
 					sleepTurn();
 				}
-				catch(InterruptedException e)
+				catch (InterruptedException e)
 				{
 					e.printStackTrace();
 				}
@@ -65,7 +67,7 @@ public abstract class L2Thread extends Thread
 		}
 		catch (Exception e)
 		{
-			// TODO: Log this exception.
+			_log.log(Level.WARNING, getClass().getName() + " Thread state " + e.getMessage(), e);
 		}
 	}
 
@@ -82,26 +84,25 @@ public abstract class L2Thread extends Thread
 		list.add(" * Alive: " + t.isAlive());
 		list.add(" * Daemon: " + t.isDaemon());
 		list.add(" * Interrupted: " + t.isInterrupted());
-		for(ThreadInfo info : ManagementFactory.getThreadMXBean().getThreadInfo(new long[]
-		{
+		for (ThreadInfo info : ManagementFactory.getThreadMXBean().getThreadInfo(new long[] {
 			t.getId()
 		}, true, true))
 		{
-			for(MonitorInfo monitorInfo : info.getLockedMonitors())
+			for (MonitorInfo monitorInfo : info.getLockedMonitors())
 			{
 				list.add("==========");
 				list.add(" * Locked monitor: " + monitorInfo);
 				list.add("\t[" + monitorInfo.getLockedStackDepth() + ".]: at " + monitorInfo.getLockedStackFrame());
 			}
 
-			for(LockInfo lockInfo : info.getLockedSynchronizers())
+			for (LockInfo lockInfo : info.getLockedSynchronizers())
 			{
 				list.add("==========");
 				list.add(" * Locked synchronizer: " + lockInfo);
 			}
 
 			list.add("==========");
-			for(StackTraceElement trace : info.getStackTrace())
+			for (StackTraceElement trace : info.getStackTrace())
 			{
 				list.add("\tat " + trace);
 			}

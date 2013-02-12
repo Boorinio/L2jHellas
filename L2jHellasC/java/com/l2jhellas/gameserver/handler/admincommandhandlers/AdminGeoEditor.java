@@ -76,7 +76,8 @@ public class AdminGeoEditor implements IAdminCommandHandler
 				m = Integer.parseInt(st.nextToken());
 				GeoEditorListener.getInstance().getThread().setMode(m);
 				activeChar.sendMessage("Geoeditor connection mode set to "+m+".");
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
         		activeChar.sendMessage("Usage: //ge_mode X");
         		activeChar.sendMessage("Mode 0: Don't send coordinates to geoeditor.");

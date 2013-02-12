@@ -20,7 +20,6 @@ import java.util.List;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -33,6 +32,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.skills.Env;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.conditions.ConditionGameChance;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;

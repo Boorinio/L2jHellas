@@ -25,15 +25,8 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SendTradeRequest;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
-
-/**
- *
- * This class ...
- *
- * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class TradeRequest extends L2GameClientPacket
 {
 	private static final String TRADEREQUEST__C__15 = "[C] 15 TradeRequest";
@@ -51,113 +44,114 @@ public final class TradeRequest extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-        if (player == null) return;
+		if (player == null)
+			return;
 
-        if (!player.getAccessLevel().allowTransaction())
-        {
-        	player.sendMessage("Transactions are disable for your Access Level");
-            sendPacket(new ActionFailed());
-            return;
-        }
-
+		if (!player.getAccessLevel().allowTransaction())
+		{
+			player.sendMessage("Transactions are disable for your Access Level");
+			sendPacket(new ActionFailed());
+			return;
+		}
 
 		L2Object target = L2World.getInstance().findObject(_objectId);
-        if (target == null || !player.getKnownList().knowsObject(target)
-        		|| !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
+		if (target == null || !player.getKnownList().knowsObject(target) || !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 			return;
 		}
 
-        L2PcInstance partner = (L2PcInstance)target;
+		L2PcInstance partner = (L2PcInstance) target;
 
-        if (partner.isInOlympiadMode() || player.isInOlympiadMode())
-        {
-            player.sendMessage("You or your target cant request trade in Olympiad mode");
-            return;
-        }
-                        
-                // L2Dot Faction Good vs Evil
-                L2PcInstance player2 = (L2PcInstance) target;
-                if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
-                {
-                player.sendMessage("You Can't Trade with Different Faction");
-                return;
-                }
-                        
-                if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
-                {
-                player.sendMessage("You Can't Trade with Different Faction");
-                return;
-                }
-
-        // Alt game - Karma punishment
-        if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && (player.getKarma() > 0 || partner.getKarma() > 0))
-        {
-        	player.sendMessage("Chaotic players can't use Trade.");
-            return;
-        }
-
-        if (player.getPrivateStoreType() != 0 || partner.getPrivateStoreType() != 0)
-        {
-            player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
-            return;
-        }
-        
-        if (!Config.ALLOW_LOW_LEVEL_TRADE)    
-         if (player.getLevel() <= 76 || player.getLevel() > 1)
-        {
-            player.sendMessage("You Cannot Trade a Lower Level Character");
-        }
-        
-        if (player.isProcessingTransaction())
+		if (partner.isInOlympiadMode() || player.isInOlympiadMode())
 		{
-			if (Config.DEBUG) _log.fine("already trading with someone");
+			player.sendMessage("You or your target cant request trade in Olympiad mode");
+			return;
+		}
+
+		// Faction Good vs Evil
+		L2PcInstance player2 = (L2PcInstance) target;
+		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			player.sendMessage("You Can't Trade with Different Faction");
+			return;
+		}
+
+		if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			player.sendMessage("You Can't Trade with Different Faction");
+			return;
+		}
+
+		// Alt game - Karma punishment
+		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && (player.getKarma() > 0 || partner.getKarma() > 0))
+		{
+			player.sendMessage("Chaotic players can't use Trade.");
+			return;
+		}
+
+		if (player.getPrivateStoreType() != 0 || partner.getPrivateStoreType() != 0)
+		{
+			player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+			return;
+		}
+
+		if (!Config.ALLOW_LOW_LEVEL_TRADE)
+			if (player.getLevel() <= 76 || player.getLevel() > 1)
+			{
+				player.sendMessage("You Cannot Trade a Lower Level Character");
+			}
+
+		if (player.isProcessingTransaction())
+		{
+			if (Config.DEBUG)
+				_log.fine("already trading with someone");
 			player.sendPacket(new SystemMessage(SystemMessageId.ALREADY_TRADING));
 			return;
 		}
 
 		if (partner.isProcessingRequest() || partner.isProcessingTransaction())
 		{
-			if (Config.DEBUG) _log.info("transaction already in progress.");
+			if (Config.DEBUG)
+				_log.info("transaction already in progress.");
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 			sm.addString(partner.getName());
 			player.sendPacket(sm);
-            return;
+			return;
 		}
 
-        if (partner.getTradeRefusal())
-        {
-            player.sendMessage("Target is in trade refusal mode");
-            return;
-        }
-        
-     	if (Util.calculateDistance(player, partner, true) > 150) 
-     	{ 
-     	 	SystemMessage sm = new SystemMessage(SystemMessageId.TARGET_TOO_FAR); 
-     	 	player.sendPacket(sm); 
-     	 	return; 
-     	} 
-     	if(BlockList.isBlocked(partner, player)) 
-     		
-     	{  
-     		player.sendMessage("Target has added you in his/her blocklist.");  
-     		return;  
-     	}  
-     	
-     	if (partner.getAllowTrade() == false)
-     	{  
-     		player.sendMessage("Target is not allowed to receive more than one trade request at the same time.");  
-     		return;  
-     	}  
-     	partner.setAllowTrade(false);  
-     	player.setAllowTrade(false);
-     	if (Util.calculateDistance(player, partner, true) > 150)     
-     	 	{     
-     	 	   SystemMessage sm = new SystemMessage(SystemMessageId.TARGET_TOO_FAR);     
-     	 	   player.sendPacket(sm);     
-     	 	   return;     
-     	 	}
+		if (partner.getTradeRefusal())
+		{
+			player.sendMessage("Target is in trade refusal mode");
+			return;
+		}
+
+		if (Util.calculateDistance(player, partner, true) > 150)
+		{
+			SystemMessage sm = new SystemMessage(SystemMessageId.TARGET_TOO_FAR);
+			player.sendPacket(sm);
+			return;
+		}
+		if (BlockList.isBlocked(partner, player))
+
+		{
+			player.sendMessage("Target has added you in his/her blocklist.");
+			return;
+		}
+
+		if (partner.getAllowTrade() == false)
+		{
+			player.sendMessage("Target is not allowed to receive more than one trade request at the same time.");
+			return;
+		}
+		partner.setAllowTrade(false);
+		player.setAllowTrade(false);
+		if (Util.calculateDistance(player, partner, true) > 150)
+		{
+			SystemMessage sm = new SystemMessage(SystemMessageId.TARGET_TOO_FAR);
+			player.sendPacket(sm);
+			return;
+		}
 		player.onTransactionRequest(partner);
 		partner.sendPacket(new SendTradeRequest(player.getObjectId()));
 		SystemMessage sm = new SystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE);

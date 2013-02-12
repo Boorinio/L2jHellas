@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.AugmentationData;
+import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -25,7 +25,7 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 /**
  * Format:(ch) dddd
@@ -91,53 +91,53 @@ public final class RequestRefine extends L2GameClientPacket
 
 	boolean TryAugmentItem(L2PcInstance player, L2ItemInstance targetItem,L2ItemInstance refinerItem, L2ItemInstance gemstoneItem)
 	{
-		 if (targetItem.isAugmented() || targetItem.isWear()) 
-	                        return false; 
-	                 
-	                if (player.isDead()) 
-	                { 
-	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_DEAD)); 
-	                        return false; 
-	                } 
-	                if (player.isSitting()) 
-	                { 
-	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_SITTING_DOWN)); 
-	                        return false; 
-	                } 
-	                if (player.isFishing()) 
-	                { 
-	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_FISHING)); 
-	                        return false; 
-	                } 
-	                if (player.isParalyzed()) 
-	                { 
-	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_PARALYZED)); 
-	                        return false; 
-	                } 
-	                if (player.getActiveTradeList() != null) 
-	                { 
-	                        player.sendPacket(new SystemMessage(SystemMessageId.AUGMENTED_ITEM_CANNOT_BE_DISCARDED)); 
-	                        return false; 
-	                } 
-	                if (player.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_NONE) 
-	                { 
-	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_A_PRIVATE_STORE_OR_PRIVATE_WORKSHOP_IS_IN_OPERATION)); 
-	                        return false; 
-	                } 
+		 if (targetItem.isAugmented() || targetItem.isWear())
+	                        return false;
+
+	                if (player.isDead())
+	                {
+	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_DEAD));
+	                        return false;
+	                }
+	                if (player.isSitting())
+	                {
+	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_SITTING_DOWN));
+	                        return false;
+	                }
+	                if (player.isFishing())
+	                {
+	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_FISHING));
+	                        return false;
+	                }
+	                if (player.isParalyzed())
+	                {
+	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_PARALYZED));
+	                        return false;
+	                }
+	                if (player.getActiveTradeList() != null)
+	                {
+	                        player.sendPacket(new SystemMessage(SystemMessageId.AUGMENTED_ITEM_CANNOT_BE_DISCARDED));
+	                        return false;
+	                }
+	                if (player.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_NONE)
+	                {
+	                        player.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_AUGMENT_ITEMS_WHILE_A_PRIVATE_STORE_OR_PRIVATE_WORKSHOP_IS_IN_OPERATION));
+	                        return false;
+	                }
 
 		// check for the items to be in the inventory of the owner
-		if (player.getInventory().getItemByObjectId(refinerItem.getObjectId()) == null) 
-	                { 
-			            Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to refine an item with wrong LifeStone-id.", Config.DEFAULT_PUNISH); 
-	                        return false; 
-	                } 
-	                if (player.getInventory().getItemByObjectId(targetItem.getObjectId()) == null) 
-	                { 
-	                	Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to refine an item with wrong Weapon-id.", Config.DEFAULT_PUNISH); 
-	                        return false; 
-	                } 
-	                if (player.getInventory().getItemByObjectId(gemstoneItem.getObjectId()) == null) 
-	                { 
+		if (player.getInventory().getItemByObjectId(refinerItem.getObjectId()) == null)
+	                {
+			            Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to refine an item with wrong LifeStone-id.", Config.DEFAULT_PUNISH);
+	                        return false;
+	                }
+	                if (player.getInventory().getItemByObjectId(targetItem.getObjectId()) == null)
+	                {
+	                	Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to refine an item with wrong Weapon-id.", Config.DEFAULT_PUNISH);
+	                        return false;
+	                }
+	                if (player.getInventory().getItemByObjectId(gemstoneItem.getObjectId()) == null)
+	                {
 	                	Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to refine an item with wrong Gemstone-id.", Config.DEFAULT_PUNISH);
 			                return false;
 		            }
@@ -221,7 +221,7 @@ public final class RequestRefine extends L2GameClientPacket
 		{
 			return false;
 		}
-			
+
 		// consume the gemstones
 		player.destroyItem("RequestRefine", _gemstoneItemObjId, modifyGemstoneCount, null, false);
 
@@ -232,7 +232,7 @@ public final class RequestRefine extends L2GameClientPacket
 		InventoryUpdate iu = new InventoryUpdate();
 		iu.addModifiedItem(targetItem);
 		player.sendPacket(iu);
-		
+
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);

@@ -17,8 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
@@ -29,6 +28,7 @@ import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.ExEnchantSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class L2FolkInstance extends L2NpcInstance

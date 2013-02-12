@@ -19,11 +19,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -84,8 +86,11 @@ public class ForumsBBSManager extends BaseBBSManager
 		}
 		catch (Exception e)
 		{
-			_log.warning("data error on Forum (root): " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": data error on Forum (root): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

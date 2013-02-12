@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.entity.engines;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
@@ -24,7 +25,7 @@ import javolution.util.FastMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.CharNameTable;
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.PlayerToAssasinate;
@@ -100,7 +101,7 @@ public class Hitman
 		}
 		catch (Exception e)
 		{
-			_log.warning("Hitman: " + e.getCause());
+			_log.log(Level.WARNING, " Hitman: " + e.getCause());
 			return new FastMap<Integer, PlayerToAssasinate>();
 		}
 
@@ -169,7 +170,7 @@ public class Hitman
 		}
 		catch (Exception e)
 		{
-			_log.warning("Hitman: " + e);
+			_log.log(Level.WARNING, " Hitman: " + e);
 		}
 
 	}
@@ -250,7 +251,7 @@ public class Hitman
 		}
 		catch (Exception e)
 		{
-			_log.warning("Hitman: " + e);
+			_log.log(Level.WARNING, " Hitman: " + e);
 		}
 	}
 
@@ -320,7 +321,7 @@ public class Hitman
 
 			while (rs.next())
 			{
-				set[0] = String.valueOf(rs.getInt("charId"));
+				set[0] = String.valueOf(rs.getInt("obj_Id"));
 				set[1] = rs.getString("char_name");
 			}
 
@@ -330,7 +331,7 @@ public class Hitman
 		}
 		catch (Exception e)
 		{
-			_log.warning("Hitman: " + e);
+			_log.log(Level.WARNING, " Hitman: " + e);
 		}
 
 		return set;

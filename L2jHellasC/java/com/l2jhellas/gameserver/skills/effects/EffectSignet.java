@@ -16,9 +16,8 @@ package com.l2jhellas.gameserver.skills.effects;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -31,6 +30,7 @@ import com.l2jhellas.gameserver.model.zone.type.L2SignetZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillMagicOnGround;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Point3D;

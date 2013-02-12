@@ -26,7 +26,7 @@ import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Stats;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 public class PcStatus extends PlayableStatus
 {

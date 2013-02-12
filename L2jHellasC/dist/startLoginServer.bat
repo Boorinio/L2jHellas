@@ -9,7 +9,7 @@ REM ------------------------------------------------------------------
 
 REM -------------------------------------
 REM Default parameters for a basic server.
-java -Dfile.encoding=UTF-8 -Xmx128m com.l2jhellas.loginserver.L2LoginServer
+java -Dfile.encoding=UTF-8 -Xmx128m com.l2jhellas.loginserver.LoginServer
 REM -------------------------------------
 
 SET CLASSPATH=%OLDCLASSPATH%

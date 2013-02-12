@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.HennaTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;

@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -307,9 +308,11 @@ public class AdminMenu implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not set accessLevel:" + e);
-			if (Config.DEBUG)
+			_log.log(Level.WARNING, getClass().getName() + ": Could not set accessLevel:" + e);
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
+			}
 		}
 		finally
 		{

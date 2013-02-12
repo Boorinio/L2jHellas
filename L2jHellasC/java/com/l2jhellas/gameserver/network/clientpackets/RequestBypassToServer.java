@@ -26,7 +26,7 @@ import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.CommunityBoard;
-import com.l2jhellas.gameserver.datatables.AdminCommandAccessRights;
+import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;

@@ -24,18 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.PcColorTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -51,12 +50,12 @@ import com.l2jhellas.gameserver.network.serverpackets.PartySmallWindowDeleteAll;
 import com.l2jhellas.gameserver.network.serverpackets.SetSummonRemainTime;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.StringUtil;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.StringUtil;
+import com.l2jhellas.util.Util;
 
 public class AdminEditChar implements IAdminCommandHandler
 {
-	private final static Log _log = LogFactory.getLog(AdminEditChar.class.getName());
+	protected static final Logger _log = Logger.getLogger(AdminEditChar.class.getName());
 
 	private static String[] ADMIN_COMMANDS =
 	{
@@ -390,7 +389,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				return false;
 			}
 			player.getAppearance().setSex(player.getAppearance().getSex() ? false : true);
-			player.sendMessage("Your gender has been changed by a GM");
+			player.sendMessage("Your gender has been changed by a GM.");
 			player.broadcastUserInfo();
 			player.decayMe();
 			player.spawnMe(player.getX(), player.getY(), player.getZ());
@@ -496,7 +495,11 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.error("" + e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			activeChar.getStatus().setCurrentCp(cp);
 		}
@@ -510,7 +513,11 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.error("" + e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			activeChar.getStatus().setCurrentHp(hp);
 		}
@@ -524,7 +531,11 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.error("" + e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			activeChar.getStatus().setCurrentMp(mp);
 		}
@@ -541,7 +552,11 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.error("" + e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			if (activeChar.getTarget() instanceof L2PcInstance)
 			{
@@ -566,7 +581,11 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.error("" + e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			if (activeChar.getTarget() instanceof L2PcInstance)
 			{
@@ -591,7 +610,11 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.error("" + e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			if (activeChar.getTarget() instanceof L2PcInstance)
 			{
@@ -804,8 +827,8 @@ public class AdminEditChar implements IAdminCommandHandler
 		// Admin information
 		player.sendMessage("Changed stats of " + player.getName() + "." + "  HP: " + hpval + "  MP: " + mpval + "  CP: " + cpval + "  PvP: " + pvpflagval + " / " + pvpkillsval);
 
-		if (_log.isDebugEnabled() || Config.DEBUG)
-			_log.debug("[GM]" + activeChar.getName() + " changed stats of " + player.getName() + ". " + " HP: " + hpval + " MP: " + mpval + " CP: " + cpval + " PvP: " + pvpflagval + " / " + pvpkillsval);
+		if (Config.DEVELOPER || Config.DEBUG)
+			_log.log(Level.CONFIG, getClass().getName() + ": [GM]" + activeChar.getName() + " changed stats of " + player.getName() + ". " + " HP: " + hpval + " MP: " + mpval + " CP: " + cpval + " PvP: " + pvpflagval + " / " + pvpkillsval);
 
 		showCharacterInfo(activeChar, null); // Back to start
 
@@ -1028,7 +1051,6 @@ public class AdminEditChar implements IAdminCommandHandler
 	 * @param newHero
 	 * @param new noble
 	 */
-	@SuppressWarnings("unused")
 	private void updateDatabase(L2PcInstance player, boolean newHero, boolean newNoble)
 	{
 		Connection con = null;
@@ -1095,7 +1117,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.error("Error: could not update database: ", e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error: could not update database: ", e);
 		}
 		finally
 		{
@@ -1106,7 +1128,6 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.error("Error: could not update database: ", e);
 			}
 		}
 	}

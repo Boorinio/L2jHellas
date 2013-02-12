@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,6 +30,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.io.UTF8StreamReader;
@@ -38,6 +39,7 @@ import javolution.xml.stream.XMLStreamConstants;
 import javolution.xml.stream.XMLStreamException;
 import javolution.xml.stream.XMLStreamReaderImpl;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.util.Rnd;
@@ -80,13 +82,13 @@ public class GameServerTable
 	public GameServerTable() throws SQLException, NoSuchAlgorithmException, InvalidAlgorithmParameterException
 	{
 		loadServerNames();
-		_log.info("Loaded " + _serverNames.size() + " Server Names.");
+		_log.log(Level.INFO, getClass().getSimpleName() + " Loaded " + _serverNames.size() + " Server Names.");
 
 		loadRegisteredGameServers();
-		_log.info("Loaded " + _gameServerTable.size() + " registered Game Servers.");
+		_log.log(Level.INFO, getClass().getSimpleName() + " Loaded " + _gameServerTable.size() + " registered Game Servers.");
 
 		loadRSAKeys();
-		_log.info("Cached " + _keyPairs.length + " RSA keys for Game Server communication.");
+		_log.log(Level.INFO, getClass().getSimpleName() + " Cached " + _keyPairs.length + " RSA keys for Game Server communication.");
 	}
 
 	private void loadRSAKeys() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException
@@ -100,7 +102,7 @@ public class GameServerTable
 		{
 			_keyPairs[i] = keyGen.genKeyPair();
 		}
-		
+
 		keyGen = null;
 		spec = null;
 	}
@@ -124,7 +126,7 @@ public class GameServerTable
 						Integer id = new Integer(xpp.getAttributeValue(null, "id").toString());
 						String name = xpp.getAttributeValue(null, "name").toString();
 						_serverNames.put(id, name);
-						
+
 						id = null;
 						name = null;
 					}
@@ -133,7 +135,11 @@ public class GameServerTable
 		}
 		catch (FileNotFoundException e)
 		{
-			_log.warning("servername.xml could not be loaded: file not found");
+			_log.log(Level.WARNING, getClass().getName() + " servername.xml could not be loaded: file not found" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		catch (XMLStreamException xppe)
 		{
@@ -170,7 +176,7 @@ public class GameServerTable
 		rset.close();
 		statement.close();
 		con.close();
-		
+
 		rset = null;
 		statement = null;
 		gsi = null;
@@ -245,17 +251,14 @@ public class GameServerTable
 		}
 		catch (SQLException e)
 		{
-			_log.warning("SQL error while saving gameserver: " + e);
+			_log.log(Level.WARNING, getClass().getName() + " SQL error while saving gameserver: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
-			try
-			{
-				statement.close();
-			}
-			catch (Exception e)
-			{
-			}
 			try
 			{
 				con.close();

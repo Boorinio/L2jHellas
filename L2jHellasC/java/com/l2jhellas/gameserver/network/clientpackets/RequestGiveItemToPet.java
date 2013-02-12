@@ -23,9 +23,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
-
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
 /**
  * This class ...
@@ -44,30 +43,32 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 	protected void readImpl()
 	{
 		_objectId = readD();
-		_amount   = readD();
+		_amount = readD();
 	}
 
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-        if (player == null || player.getPet() == null || !(player.getPet() instanceof L2PetInstance)) return;
+		if (player == null || player.getPet() == null || !(player.getPet() instanceof L2PetInstance))
+			return;
 
-        // Alt game - Karma punishment
-        if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && player.getKarma() > 0) return;
+		// Alt game - Karma punishment
+		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && player.getKarma() > 0)
+			return;
 
-        if (player.getActiveEnchantItem() != null)
-        {
-        	player.setAccessLevel(-100);
-        	Util.handleIllegalPlayerAction(player,"Player "+player.getName()+" Tried To Use Enchant Exploit And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
-           return;
-        } 
-        
-        if (player.getPrivateStoreType() != 0)
-        {
-            player.sendMessage("Cannot exchange items while trading");
-            return;
-        }
+		if (player.getActiveEnchantItem() != null)
+		{
+			player.setAccessLevel(-100);
+			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " Tried To Use Enchant Exploit And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
+			return;
+		}
+
+		if (player.getPrivateStoreType() != 0)
+		{
+			player.sendMessage("Cannot exchange items while trading");
+			return;
+		}
 
 		// Exploit Fix for Hero weapons Uses pet Inventory to buy New One.
 		// [L2JOneo Code Modded To L2Dot By Stefoulis15]
@@ -77,34 +78,31 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 			player.sendMessage("You cannot give augmented items to pet.");
 			return;
 		}
-		
+
 		if (!item.isDropable() || !item.isDestroyable() || !item.isTradeable())
 		{
-		        sendPacket(new SystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS));
-				return;
-		}		
-		if ((item.getItem().getItemType() == L2WeaponType.ROD)
-							|| ((item.getItemId() >= 6611) && (item.getItemId() <= 6621))
-							|| ((item.getItemId() >= 7816) && (item.getItemId() <= 7831))
-							|| item.isShadowItem())
+			sendPacket(new SystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS));
+			return;
+		}
+		if ((item.getItem().getItemType() == L2WeaponType.ROD) || ((item.getItemId() >= 6611) && (item.getItemId() <= 6621)) || ((item.getItemId() >= 7816) && (item.getItemId() <= 7831)) || item.isShadowItem())
 		{
- 	                player.sendMessage("Hero Weapons Protection , You Can't Use Pet's Inventory.");
- 	                return;
- 	    }		
-		if (!player.getAntiFlood().getTransaction().tryPerformAction("giveitemtopet")) 
-		 	{ 
-		 	  player.sendMessage("You give items to pet too fast."); 
-		 	  return; 
-		 	}
-		
-        L2PetInstance pet = (L2PetInstance)player.getPet();
+			player.sendMessage("Hero Weapons Protection , You Can't Use Pet's Inventory.");
+			return;
+		}
+		if (!player.getAntiFlood().getTransaction().tryPerformAction("giveitemtopet"))
+		{
+			player.sendMessage("You give items to pet too fast.");
+			return;
+		}
+
+		L2PetInstance pet = (L2PetInstance) player.getPet();
 		if (pet.isDead())
 		{
 			sendPacket(new SystemMessage(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET));
 			return;
 		}
 
-		if(_amount < 0)
+		if (_amount < 0)
 		{
 			return;
 		}

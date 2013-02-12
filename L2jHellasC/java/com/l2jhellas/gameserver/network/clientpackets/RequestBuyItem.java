@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2CastleChamberlainInstance;
@@ -37,8 +37,8 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -82,7 +82,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		
+
         if (player == null) return;
 
         // Alt game - Karma punishment

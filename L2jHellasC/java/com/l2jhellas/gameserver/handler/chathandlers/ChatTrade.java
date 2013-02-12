@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.handler.chathandlers;
 import java.util.Collection;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;

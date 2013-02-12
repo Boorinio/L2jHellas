@@ -21,9 +21,9 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2PetDataTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -31,7 +31,7 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -58,7 +58,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		
+
 		if (activeChar == null)
 		    return;
 
@@ -69,11 +69,11 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		}
 
 		int count = _count;
-		
-		if (!activeChar.getAntiFlood().getTransaction().tryPerformAction("destroy")) 
-		 	{ 
-		 	  activeChar.sendMessage("You destroying items too fast."); 
-		 	  return; 
+
+		if (!activeChar.getAntiFlood().getTransaction().tryPerformAction("destroy"))
+		 	{
+		 	  activeChar.sendMessage("You destroying items too fast.");
+		 	  return;
 		 	}
 
         if (activeChar.getPrivateStoreType() != 0)

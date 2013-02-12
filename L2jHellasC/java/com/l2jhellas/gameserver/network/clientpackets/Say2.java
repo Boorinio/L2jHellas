@@ -110,12 +110,12 @@ public final class Say2 extends L2GameClientPacket
 			_log.warning("Say2: Invalid type: "+_type);
 			return;
 		}
-		
+
 		if (_text.length() >= 100)
 		{
 		    _log.warning("Max input limit exceeded.");
 			return;
-		}	
+		}
 
 		L2PcInstance activeChar = getClient().getActiveChar();
 
@@ -124,7 +124,7 @@ public final class Say2 extends L2GameClientPacket
 			_log.warning("[Say2.java] Active Character is null.");
 			return;
 		}
-		
+
 		if (activeChar != null && activeChar instanceof L2PcInstance)
 		{
 		}
@@ -135,11 +135,11 @@ public final class Say2 extends L2GameClientPacket
 			_text = _text.substring(0, Config.MAX_CHAT_LENGTH);
 			return;
 		}
-		
-		// Say Filter implementation 
-		if (Config.USE_SAY_FILTER) 
+
+		// Say Filter implementation
+		if (Config.USE_SAY_FILTER)
 			checkText(activeChar);
-		
+
 		if (activeChar.isChatBanned())
 		{
 			if (_type == ALL || _type == SHOUT || _type == TRADE || _type == HERO_VOICE)
@@ -173,7 +173,7 @@ public final class Say2 extends L2GameClientPacket
 
 			_logChat.log(record);
 		}
-		
+
 		//CreatureSay cs = new CreatureSay(activeChar.getObjectId(),_type, activeChar.getName(), _text);
 
 		L2Object saymode = activeChar.getSayMode();
@@ -193,24 +193,24 @@ public final class Say2 extends L2GameClientPacket
 			}
 			return;
         }
-        IChatHandler handler = ChatHandler.getInstance().getChatHandler(_type); 
+        IChatHandler handler = ChatHandler.getInstance().getChatHandler(_type);
         if (handler != null)
 		{
         	handler.handleChat(_type, activeChar, _target, _text);
         }
 	}
-	
+
 	private void checkText(L2PcInstance activeChar)
 	{
 		if (Config.USE_SAY_FILTER)
 		{
 			String filteredText = _text;
-	
+
 			for (String pattern : Config.FILTER_LIST)
 			{
 				filteredText = filteredText.replaceAll("(?i)" + pattern, Config.CHAT_FILTER_CHARS);
 			}
-	
+
 			if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("jail") && _text != filteredText)
 			{
 				int punishmentLength = 0;
@@ -225,11 +225,11 @@ public final class Say2 extends L2GameClientPacket
 					{
 						con = L2DatabaseFactory.getInstance().getConnection();
 						PreparedStatement statement;
-	
+
 						statement = con.prepareStatement("SELECT value FROM account_data WHERE (account_name=?) AND (var='jail_time')");
 						statement.setString(1, activeChar.getAccountName());
 						ResultSet rset = statement.executeQuery();
-	
+
 						if (!rset.next())
 						{
 							punishmentLength = Config.CHAT_FILTER_PUNISHMENT_PARAM1;
@@ -255,7 +255,11 @@ public final class Say2 extends L2GameClientPacket
 	 	           }
 	 	           catch (SQLException e)
 	 	           {
-	 	        	   _log.warning("Say2: Could not check character for chat filter punishment data: " + e);
+						_log.log(Level.WARNING, getClass().getName() + " Could not check character for chat filter punishment data: " + e);
+						if (Config.DEVELOPER)
+						{
+							e.printStackTrace();
+						}
 	 	           }
 	 	           finally
 	 	           {
@@ -275,9 +279,6 @@ public final class Say2 extends L2GameClientPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

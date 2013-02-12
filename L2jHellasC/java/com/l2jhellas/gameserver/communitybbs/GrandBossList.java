@@ -15,31 +15,37 @@ package com.l2jhellas.gameserver.communitybbs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.gameserver.instancemanager.games.Lottery;
 
 public class GrandBossList
 {
+	protected static final Logger _log = Logger.getLogger(Lottery.class.getName());
+
 	private final TextBuilder _GrandBossList = new TextBuilder();
-	
+
 	public GrandBossList()
 	{
 		loadFromDB();
 	}
-	
+
 	private void loadFromDB()
 	{
 		Connection con = null;
 		int pos = 0;
-		
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT boss_id, status FROM grandboss_data");
 			ResultSet result = statement.executeQuery();
-			
+
 			nextnpc:
 			while (result.next())
 			{
@@ -47,10 +53,10 @@ public class GrandBossList
 				int status = result.getInt("status");
 				if (npcid == 29066 || npcid == 29067 || npcid == 29068 || npcid == 29118)
 					continue nextnpc;
-				
+
 				PreparedStatement statement2 = con.prepareStatement("SELECT name FROM npc WHERE id=" + npcid);
 				ResultSet result2 = statement2.executeQuery();
-				
+
 				while (result2.next())
 				{
 					pos++;
@@ -63,13 +69,17 @@ public class GrandBossList
 				result2.close();
 				statement2.close();
 			}
-			
+
 			result.close();
 			statement.close();
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Error Loading DB " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -82,7 +92,7 @@ public class GrandBossList
 			}
 		}
 	}
-	
+
 	private void addGrandBossToList(int pos, String npcname, boolean rstatus)
 	{
 		_GrandBossList.append("<table border=0 cellspacing=0 cellpadding=2>");
@@ -96,7 +106,7 @@ public class GrandBossList
 		_GrandBossList.append("</table>");
 		_GrandBossList.append("<img src=\"L2UI.Squaregray\" width=\"250\" height=\"1\">");
 	}
-	
+
 	public String loadGrandBossList()
 	{
 		return _GrandBossList.toString();

@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2Multisell.MultiSellEntry;
 import com.l2jhellas.gameserver.model.L2Multisell.MultiSellIngredient;
 import com.l2jhellas.gameserver.model.L2Multisell.MultiSellListContainer;

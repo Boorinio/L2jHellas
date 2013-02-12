@@ -25,8 +25,8 @@ import java.util.LinkedList;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -36,12 +36,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.EventData;
-
-/**
- * This class ...
- *
- * @version $Revision: 1.3.4.1 $ $Date: 2005/03/27 15:29:32 $
- */
 
 public class L2Event
 {
@@ -151,6 +145,7 @@ public class L2Event
 
 			adminReply.setHtml(replyMSG.toString());
 			player.sendPacket(adminReply);
+			inbr.close();
 		}
 		catch (Exception e)
 		{

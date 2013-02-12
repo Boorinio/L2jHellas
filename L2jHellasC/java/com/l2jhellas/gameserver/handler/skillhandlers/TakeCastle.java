@@ -25,7 +25,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 /**
  * @author _drunk_
@@ -36,8 +36,7 @@ import com.l2jhellas.gameserver.util.Util;
 public class TakeCastle implements ISkillHandler
 {
 	// private static Logger _log = Logger.getLogger(TakeCastle.class.getName());
-	private static final L2SkillType[] SKILL_IDS =
-	{
+	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.TAKECASTLE
 	};
 

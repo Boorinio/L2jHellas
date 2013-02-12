@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -25,8 +26,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
 /**
  * This class handles following admin commands: <li>add_exp_sp_to_character
@@ -150,12 +151,14 @@ public class AdminExpSp implements IAdminCommandHandler
 			if (Config.GM_EDIT && (expval != 0 || spval != 0) && !player.isGM())
 			{
 				// Warn the player about his inmediate ban.
-				player.sendMessage("A GM tried to edit you in " + expval + " exp points and in " + spval + " sp points.You will both be banned.");
-				Util.handleIllegalPlayerAction(player, "The player " + player.getName() + " has been edited. BAN!!", IllegalPlayerAction.PUNISH_KICKBAN);
+				player.sendMessage("A GM tried to edit you in " + expval + " exp points and " + spval + " sp points.You will both be banned.");
+				Util.handleIllegalPlayerAction(player, "The player " + player.getName() + " has been edited. BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
+
 				// Warn the GM about his inmediate ban.
-				player.sendMessage("You tried to edit " + player.getName() + " by " + expval + " exp points and " + spval + ". You both be banned now.");
-				Util.handleIllegalPlayerAction(activeChar, "El GM " + activeChar.getName() + " ha editado a alguien. BAN!!", IllegalPlayerAction.PUNISH_KICKBAN);
-				_log.severe("GM " + activeChar.getName() + " tried to edit " + player.getName() + ". They both have been Banned.");
+				activeChar.sendMessage("You tried to edit " + player.getName() + " by " + expval + " exp points and " + spval + ". You will both be banned.Q_Q");
+				Util.handleIllegalPlayerAction(activeChar, "GM " + activeChar.getName() + " tried to edit " + player.getName() + ". BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
+
+				_log.log(Level.INFO, getClass().getSimpleName() + ": GM " + activeChar.getName() + " tried to edit " + player.getName() + ". They both have been Banned. Q_Q");
 			}
 			else if (expval != 0 || spval != 0)
 			{

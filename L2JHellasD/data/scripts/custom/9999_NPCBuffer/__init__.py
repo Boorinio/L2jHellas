@@ -1,7 +1,7 @@
 import sys
 from com.l2jhellas.gameserver.model.actor.instance import L2PcInstance
 from java.util import Iterator
-from com.l2jhellas.gameserver.datatables import SkillTable
+from com.l2jhellas.gameserver.skills import SkillTable
 from com.l2jhellas import L2DatabaseFactory
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState

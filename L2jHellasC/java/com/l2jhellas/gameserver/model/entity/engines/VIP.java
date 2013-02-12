@@ -19,19 +19,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.ItemTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -48,7 +47,7 @@ import com.l2jhellas.util.Rnd;
  */
 public class VIP
 {
-	private final static Log _log = LogFactory.getLog(VIP.class.getName());
+	protected static final Logger _log = Logger.getLogger(VIP.class.getName());
 	public static String _teamName = "", _joinArea = "", _theVIPName = "";
 	public static int _time = 0, _winners = 0, _minPlayers = Config.VIP_MIN_PARTICIPANTS, _vipReward = 0,
 			_vipRewardAmount = 0, _notVipReward = 0, _notVipRewardAmount = 0, _theVipReward = 0,
@@ -141,8 +140,8 @@ public class VIP
 	{
 		int random = Rnd.nextInt(5) + 1; // (0 - 4) + 1
 
-		if (_log.isDebugEnabled() || Config.DEBUG)
-			_log.debug("Random number generated in setRandomTeam(): " + random);
+		if (Config.DEVELOPER || Config.DEBUG)
+			_log.log(Level.FINER, "Random number generated in setRandomTeam(): " + random);
 
 		switch (random)
 		{
@@ -180,8 +179,8 @@ public class VIP
 	{
 		int random = Rnd.nextInt(5) + 1; // (0 - 4) + 1
 
-		if (_log.isDebugEnabled())
-			_log.debug("Random number generated in setRandomTeam(): " + random);
+		if (Config.DEBUG)
+			_log.log(Level.FINER, "Random number generated in setRandomTeam(): " + random);
 
 		switch (random)
 		{
@@ -238,7 +237,7 @@ public class VIP
 		}
 		catch (SQLException e)
 		{
-			_log.error("Could not check End & Start LOC for team" + _team + " got: " + e.getMessage());
+			_log.log(Level.WARNING, ": Could not check End & Start LOC for team" + _team + " got: " + e);
 		}
 		finally
 		{
@@ -301,7 +300,7 @@ public class VIP
 		}
 		catch (Exception e)
 		{
-			_log.error("VIP Engine[endNPC]: exception: " + e.getMessage());
+			_log.log(Level.WARNING, "VIP Engine[endNPC]: exception: " + e);
 		}
 	}
 
@@ -352,7 +351,7 @@ public class VIP
 		}
 		catch (Exception e)
 		{
-			_log.error("VIP Engine[joinNPC]: exception: " + e.getMessage());
+			_log.log(Level.WARNING, "VIP Engine[joinNPC]: exception: " + e);
 		}
 	}
 
@@ -374,7 +373,7 @@ public class VIP
 		}
 		catch (Exception e)
 		{
-			_log.error("VIP Engine[spawnEndNPC()]: exception: " + e.getMessage());
+			_log.log(Level.WARNING, "VIP Engine[spawnEndNPC()]: exception: " + e);
 		}
 	}
 
@@ -396,7 +395,7 @@ public class VIP
 		}
 		catch (Exception e)
 		{
-			_log.error("VIP Engine[spawnJoinNPC()]: exception: " + e.getMessage());
+			_log.log(Level.WARNING, "VIP Engine[spawnJoinNPC()]: exception: " + e);
 		}
 	}
 
@@ -514,19 +513,19 @@ public class VIP
 	{
 		if (_teamName.isEmpty() || _joinArea.isEmpty() || _time == 0 || _vipReward == 0 || _vipRewardAmount == 0 || _notVipReward == 0 || _notVipRewardAmount == 0 || _theVipReward == 0 || _theVipRewardAmount == 0 || _endNPC == 0 || _joinNPC == 0 || _delay == 0 || _endX == 0 || _endY == 0 || _endZ == 0 || _startX == 0 || _startY == 0 || _startZ == 0 || _joinX == 0 || _joinY == 0 || _joinZ == 0 || _team == 0)
 		{
-			_log.error("VIP Engine : Cannot initiate join status of event, not all the values are filled in");
+			_log.log(Level.WARNING, "VIP Engine : Cannot initiate join status of event, not all the values are filled in");
 			return;
 		}
 
 		if (_joining)
 		{
-			_log.error("VIP Engine : Players are already allowed to join the event");
+			_log.log(Level.WARNING, "VIP Engine : Players are already allowed to join the event");
 			return;
 		}
 
 		if (_started)
 		{
-			_log.error("VIP Engine : Event already started. Please wait for it to finish or finish it manually");
+			_log.log(Level.WARNING, "VIP Engine : Event already started. Please wait for it to finish or finish it manually");
 			return;
 		}
 
@@ -607,7 +606,7 @@ public class VIP
 	{
 		if (!_started)
 		{
-			_log.info("Could not finish the event. Event not started or event ended prematurly.");
+			_log.log(Level.INFO, "Could not finish the event. Event not started or event ended prematurly.");
 			return;
 		}
 
@@ -622,7 +621,7 @@ public class VIP
 	{
 		if (!_started)
 		{
-			_log.info("Could not finish the event. Event not started or event ended prematurly (VIP died)");
+			_log.log(Level.INFO, "Could not finish the event. Event not started or event ended prematurly (VIP died)");
 			return;
 		}
 
@@ -684,8 +683,8 @@ public class VIP
 		}
 		catch (Exception e)
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("VIP(showJoinHTML(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "VIP(showJoinHTML(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
 		}
 	}
 
@@ -696,7 +695,7 @@ public class VIP
 	{
 		if (!_started)
 		{
-			_log.info("Could not finish the event. Event not started or event ended prematurly");
+			_log.log(Level.INFO, "Could not finish the event. Event not started or event ended prematurly");
 			return;
 		}
 
@@ -831,13 +830,13 @@ public class VIP
 	{
 		int size = _playersVIP.size();
 
-		if (_log.isDebugEnabled() || Config.DEBUG)
-			_log.debug("Size of players on VIP: " + size);
+		if (Config.DEVELOPER || Config.DEBUG)
+			_log.log(Level.FINER, "Size of players on VIP: " + size);
 
 		int random = Rnd.nextInt(size);
 
-		if (_log.isDebugEnabled() || Config.DEBUG)
-			_log.debug("Random number chosen in VIP: " + random);
+		if (Config.DEVELOPER || Config.DEBUG)
+			_log.log(Level.FINER, "Random number chosen in VIP: " + random);
 
 		L2PcInstance VIP = _playersVIP.get(random);
 		VIP._isTheVIP = true;
@@ -1036,8 +1035,8 @@ public class VIP
 		}
 		catch (Exception e)
 		{
-			if (_log.isDebugEnabled() || Config.DEBUG)
-				_log.debug("VIP(showJoinHTML(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
+			if (Config.DEVELOPER || Config.DEBUG)
+				_log.log(Level.FINER, "VIP(showJoinHTML(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
 		}
 	}
 

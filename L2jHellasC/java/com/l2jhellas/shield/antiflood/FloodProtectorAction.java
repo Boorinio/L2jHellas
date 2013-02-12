@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.util.StringUtil;
+import com.l2jhellas.util.StringUtil;
 
 /**
  * Flood protector implementation.

@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.skills.Env;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
  * @author kombat

@@ -37,7 +37,7 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.gameserverpackets.ServerStatus;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Broadcast;
+import com.l2jhellas.util.Broadcast;
 
 /**
  * This class provides the functions for shutting down and restarting the server

@@ -23,8 +23,8 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Dice;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.util.Broadcast;
-import com.l2jhellas.gameserver.util.FloodProtector;
+import com.l2jhellas.util.Broadcast;
+import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Rnd;
 
 /**

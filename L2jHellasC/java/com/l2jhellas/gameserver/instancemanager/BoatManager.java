@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
@@ -80,20 +81,23 @@ public class BoatManager
 				_staticItems.put(boat.getObjectId(), boat);
 				if (Config.DEBUG)
 				{
-					System.out.println("Boat ID : " + boat.getObjectId());
+					_log.log(Level.WARNING, getClass().getName() + ": Boat ID : " + boat.getObjectId());
 				}
 			}
 		}
 		catch (FileNotFoundException e)
 		{
 			_initialized = false;
-			_log.warning("boat.csv is missing in data folder");
+			_log.log(Level.WARNING, getClass().getName() + ": boat.csv is missing in data folder");
 		}
 		catch (Exception e)
 		{
 			_initialized = false;
-			_log.warning("error while creating boat table " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": error boat.csv not found. " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

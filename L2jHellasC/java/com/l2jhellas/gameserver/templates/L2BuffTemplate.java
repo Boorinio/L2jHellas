@@ -12,10 +12,10 @@
  */
 package com.l2jhellas.gameserver.templates;
 
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.Race;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
  * This class represents a Buff Template

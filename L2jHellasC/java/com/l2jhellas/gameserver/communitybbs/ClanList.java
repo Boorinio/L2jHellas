@@ -15,20 +15,25 @@ package com.l2jhellas.gameserver.communitybbs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 
 public class ClanList
 {
+	protected static final Logger _log = Logger.getLogger(ClanList.class.getName());
+
 	private final TextBuilder _clanList = new TextBuilder();
-	
+
 	public ClanList(int type)
 	{
 		loadFromDB(type);
 	}
-	
+
 	private void loadFromDB(int type)
 	{
 		Connection con = null;
@@ -41,14 +46,14 @@ public class ClanList
 		{
 			stpoint += 20;
 		}
-		
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT clan_id, clan_name, ally_name, leader_id, clan_level, reputation_score, hasCastle, ally_id FROM clan_data ORDER BY `clan_level` desc Limit " + stpoint + ", " + results);
 			ResultSet result = statement.executeQuery();
 			int pos = 0;
-			
+
 			while (result.next())
 			{
 				int clanid = result.getInt("leader_id");
@@ -83,7 +88,7 @@ public class ClanList
 					castlename = "[none]";
 				PreparedStatement statement3 = con.prepareStatement("SELECT char_name FROM characters WHERE obj_Id=" + clanleader);
 				ResultSet result3 = statement3.executeQuery();
-				
+
 				if (result3.next())
 					leadername = result3.getString("char_name");
 				result3.close();
@@ -96,7 +101,11 @@ public class ClanList
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Error loading DB " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -109,7 +118,7 @@ public class ClanList
 			}
 		}
 	}
-	
+
 	private void addClanToList(int pos, String clan, String ally, String leadername, int clanlevel, int reputation, String castlename, String allystatus)
 	{
 		_clanList.append("<table border=0 cellspacing=0 cellpadding=2 width=610>");
@@ -128,7 +137,7 @@ public class ClanList
 		_clanList.append("</table>");
 		_clanList.append("<img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
 	}
-	
+
 	public String loadClanList()
 	{
 		return _clanList.toString();

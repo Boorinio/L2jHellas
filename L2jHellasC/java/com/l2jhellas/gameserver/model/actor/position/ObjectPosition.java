@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.position;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -64,7 +65,11 @@ public class ObjectPosition
 		}
 		catch (Exception e)
 		{
-			_log.warning("Object Id at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
+			_log.log(Level.WARNING, getClass().getName() + ": Object Id at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ")." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			if (getActiveObject() instanceof L2Character)
 				getActiveObject().decayMe();
 			else if (getActiveObject() instanceof L2PcInstance)

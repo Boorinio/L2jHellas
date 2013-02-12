@@ -137,6 +137,7 @@ public class AdminBan implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
+				activeChar.sendMessage("Typed wrong command!");
 				if (Config.DEBUG)
 					e.printStackTrace();
 			}
@@ -162,6 +163,7 @@ public class AdminBan implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
+				activeChar.sendMessage("Typed wrong command!");
 				if (Config.DEBUG)
 					e.printStackTrace();
 			}

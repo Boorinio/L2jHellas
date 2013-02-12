@@ -3,7 +3,7 @@
 # v1.1 Done by BiTi
 
 import sys
-from com.l2jhellas.gameserver.datatables import DoorTable
+from com.l2jhellas.gameserver.datatables.csv import DoorTable
 from com.l2jhellas.gameserver.model.actor.instance import L2PcInstance
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState

@@ -29,9 +29,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 /**
  * Used for Break Duress skill mainly
  * uses number of charges to negate, negate number depends on charge consume
- * @author L2Dot
  */
-
 public class L2SkillChargeNegate extends L2Skill
 {
 	public L2SkillChargeNegate(StatsSet set)
@@ -109,13 +107,9 @@ public class L2SkillChargeNegate extends L2Skill
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.model.L2Skill#useSkill(com.l2jhellas.gameserver.model.L2Character, com.l2jhellas.gameserver.model.L2Object[])
-	 */
 	@Override
 	public void useSkill(L2Character caster, L2Object[] targets)
 	{
 		// TODO Auto-generated method stub
-		
 	}
 }

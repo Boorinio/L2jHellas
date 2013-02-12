@@ -14,9 +14,10 @@
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -39,7 +40,7 @@ import com.l2jhellas.util.Rnd;
 
 public class Sow implements ISkillHandler
 {
-	private static Log _log = LogFactory.getLog(Sow.class.getName());
+	protected static final Logger _log = Logger.getLogger(Sow.class.getName());
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.SOW
@@ -64,8 +65,8 @@ public class Sow implements ISkillHandler
 			return;
 		}
 
-		if (_log.isDebugEnabled())
-			_log.info("Casting sow");
+		if (Config.DEBUG)
+			_log.log(Level.INFO, getClass().getName() + ": Casting sow");
 
 		for (int index = 0; index < targetList.length; index++)
 		{

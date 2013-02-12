@@ -23,7 +23,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2TeleportLocation;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;

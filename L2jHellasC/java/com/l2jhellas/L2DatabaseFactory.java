@@ -189,7 +189,11 @@ public class L2DatabaseFactory
 			}
 			catch (SQLException e)
 			{
-				_log.warning("L2DatabaseFactory: getConnection() failed, trying again " + e);
+				_log.log(Level.WARNING, getClass().getName() + " getConnection() failed, trying again " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		return con;

@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -31,8 +32,8 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.CastleUpdater;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.DoorTable;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
@@ -139,11 +140,11 @@ public class Castle
 			Castle aden = CastleManager.getInstance().getCastle("aden");
 			if (aden != null)
 			{
-				int adenTax = (int) (amount * aden.getTaxRate());        // Find out what Aden gets from the current castle instance's income
+				int adenTax = (int) (amount * aden.getTaxRate());        // Find out what Aden gets FROM the current castle instance's income
 				if (aden.getOwnerId() > 0)
 					aden.addToTreasury(adenTax); // Only bother to really add the tax to the treasury if not npc owned
 
-				amount -= adenTax; // Subtract Aden's income from current castle instance's income
+				amount -= adenTax; // Subtract Aden's income FROM current castle instance's income
 			}
 		}
 
@@ -175,7 +176,7 @@ public class Castle
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Update castle set treasury = ? where id = ?");
+			PreparedStatement statement = con.prepareStatement("UPDATE castle set treasury = ? WHERE id = ?");
 			statement.setInt(1, getTreasury());
 			statement.setInt(2, getCastleId());
 			statement.execute();
@@ -357,7 +358,7 @@ public class Castle
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Update castle set taxPercent = ? where id = ?");
+			PreparedStatement statement = con.prepareStatement("UPDATE castle set taxPercent = ? WHERE id = ?");
 			statement.setInt(1, taxPercent);
 			statement.setInt(2, getCastleId());
 			statement.execute();
@@ -365,6 +366,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + ": Error updating TaxPercent" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -438,7 +444,7 @@ public class Castle
 
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			statement = con.prepareStatement("Select * from castle where id = ?");
+			statement = con.prepareStatement("SELECT * FROM castle WHERE id = ?");
 			statement.setInt(1, getCastleId());
 			rs = statement.executeQuery();
 
@@ -467,7 +473,7 @@ public class Castle
 
 			_taxRate = _taxPercent / 100.0;
 
-			statement = con.prepareStatement("Select clan_id from clan_data where hasCastle = ?");
+			statement = con.prepareStatement("SELECT clan_id FROM clan_data WHERE hasCastle = ?");
 			statement.setInt(1, getCastleId());
 			rs = statement.executeQuery();
 
@@ -478,16 +484,19 @@ public class Castle
 
 			if (getOwnerId() > 0)
 			{
-				L2Clan clan = ClanTable.getInstance().getClan(getOwnerId());                        // Try to find clan instance
-				ThreadPoolManager.getInstance().scheduleGeneral(new CastleUpdater(clan, 1), 3600000);     // Schedule owner tasks to start running
+				L2Clan clan = ClanTable.getInstance().getClan(getOwnerId());// Try to find clan instance
+				ThreadPoolManager.getInstance().scheduleGeneral(new CastleUpdater(clan, 1), 3600000);// Schedule owner tasks to start running
 			}
 
 			statement.close();
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: loadCastleData(): " + e.getMessage());
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Exception: loadCastleData(): " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -501,14 +510,14 @@ public class Castle
 		}
 	}
 
-	// This method loads castle door data from database
+	// This method loads castle door data FROM database
 	private void loadDoor()
 	{
 		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Select * from castle_door where castleId = ?");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_door where castleId = ?");
 			statement.setInt(1, getCastleId());
 			ResultSet rs = statement.executeQuery();
 
@@ -542,14 +551,14 @@ public class Castle
 		}
 	}
 
-	// This method loads castle door upgrade data from database
+	// This method loads castle door upgrade data FROM database
 	private void loadDoorUpgrade()
 	{
 		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Select * from castle_doorupgrade where doorId in (Select Id from castle_door where castleId = ?)");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_doorupgrade WHERE doorId IN (SELECT Id FROM castle_door WHERE castleId = ?)");
 			statement.setInt(1, getCastleId());
 			ResultSet rs = statement.executeQuery();
 
@@ -562,8 +571,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: loadCastleDoorUpgrade(): " + e.getMessage());
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Exception: loadCastleDoorUpgrade(): " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -583,15 +595,18 @@ public class Castle
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("delete from castle_doorupgrade where doorId in (select id from castle_door where castleId=?)");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM castle_doorupgrade where doorId in (SELECT id FROM castle_door where castleId=?)");
 			statement.setInt(1, getCastleId());
 			statement.execute();
 			statement.close();
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: removeDoorUpgrade(): " + e.getMessage());
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Exception: removeDoorUpgrade(): " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -611,7 +626,7 @@ public class Castle
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("INSERT INTO castle_doorupgrade (doorId, hp, pDef, mDef) values (?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO castle_doorupgrade (doorId, hp, pDef, mDef) VALUES (?,?,?,?)");
 			statement.setInt(1, doorId);
 			statement.setInt(2, hp);
 			statement.setInt(3, pDef);
@@ -621,8 +636,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: saveDoorUpgrade(int doorId, int hp, int pDef, int mDef): " + e.getMessage());
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Exception: saveDoorUpgrade(int doorId, int hp, int pDef, int mDef): " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -676,8 +694,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -926,7 +947,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.info("Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + ": Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -983,7 +1008,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.info("Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + ": Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1057,7 +1086,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.info("Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + ": Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1115,7 +1148,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.info("Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + ": Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1147,7 +1184,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.info("Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + ": Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1179,7 +1220,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.info("Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + ": Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -1209,7 +1254,11 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.info("Error saving showNpcCrest for castle " + getName() + ": " + e.getMessage());
+			_log.log(Level.WARNING, getClass().getName() + ": Error saving showNpcCrest for castle " + getName() + ": " + e.getMessage());
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

@@ -24,12 +24,12 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import Extensions.RankSystem.Rank;
 
-import com.l2jhellas.gameserver.util.L2Properties;
-import com.l2jhellas.gameserver.util.StringUtil;
+import com.l2jhellas.util.L2Properties;
+import com.l2jhellas.util.StringUtil;
 
 public final class ExternalConfig
 {
-	private static final Logger _log = Logger.getLogger(ExternalConfig.class.getName());
+	private static Logger _log = Logger.getLogger(ExternalConfig.class.getName());
 	// --------------------------------------------------
 	// L2J Property File Definitions
 	// --------------------------------------------------
@@ -153,8 +153,8 @@ public final class ExternalConfig
 	public static boolean NPCBUFFER_FEATURE_ENABLED;
 	public static int NPCBUFFER_STATIC_BUFF_COST;
 	public static boolean NPC_NOBLES_ENABLE;
-	public static int NPC_NOBLESS_ID1;
-	public static int NPC_NOBLESS_QUANTITY1;
+	public static int NPC_NOBLESS_ID;
+	public static int NPC_NOBLESS_QUANTITY;
 	public static int BOSS_RESPAWN_NPC_ID;
 	public static int[] BOSS_RESPAWN_INFO;
 	public static boolean RAID_INFO_SHOW_TIME;
@@ -482,8 +482,8 @@ public final class ExternalConfig
 			ALLOW_CLASS_MASTER = Boolean.valueOf(CustomNpcs.getProperty("AllowClassMaster", "False"));
 			ALLOW_REMOTE_CLASS_MASTER = Boolean.valueOf(CustomNpcs.getProperty("AllowRemoteClassMaster", "False"));
 			NPC_NOBLES_ENABLE = Boolean.parseBoolean(CustomNpcs.getProperty("NobleManager", "false"));
-			NPC_NOBLESS_ID1 = Integer.parseInt(CustomNpcs.getProperty("NobleID", "57"));
-			NPC_NOBLESS_QUANTITY1 = Integer.parseInt(CustomNpcs.getProperty("NobleQuantity", "10000"));
+			NPC_NOBLESS_ID = Integer.parseInt(CustomNpcs.getProperty("NobleID", "57"));
+			NPC_NOBLESS_QUANTITY = Integer.parseInt(CustomNpcs.getProperty("NobleQuantity", "10000"));
 
 			/* Boss Info Npc */
 			String[] notenchantable = CustomNpcs.getProperty("BossList", "29028,29019,29020,29045,29022,29001,29014,29006").split(",");
@@ -519,5 +519,8 @@ public final class ExternalConfig
 			e.printStackTrace();
 			throw new Error("Failed to Load " + RCON_CONFIG_FILE + " File.");
 		}
+		
+		_log.severe("External Config's: loaded.");
 	}
+
 }

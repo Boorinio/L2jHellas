@@ -17,41 +17,46 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 
 public class CastleStatus
 {
+	protected static final Logger _log = Logger.getLogger(CastleStatus.class.getName());
+
 	private final TextBuilder _playerList = new TextBuilder();
-	
+
 	public CastleStatus()
 	{
 		loadFromDB();
 	}
-	
+
 	private void loadFromDB()
 	{
 		Connection con = null;
-		
+
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			
+
 			for (int i = 1; i < 9; i++)
 			{
 				PreparedStatement statement = con.prepareStatement("SELECT clan_name, clan_level FROM clan_data WHERE hasCastle=" + i + ";");
 				ResultSet result = statement.executeQuery();
-				
+
 				PreparedStatement statement2 = con.prepareStatement("SELECT name, siegeDate, taxPercent FROM castle WHERE id=" + i + ";");
 				ResultSet result2 = statement2.executeQuery();
-				
+
 				while (result.next())
 				{
 					String owner = result.getString("clan_name");
 					int level = result.getInt("clan_level");
-					
+
 					while (result2.next())
 					{
 						String name = result2.getString("name");
@@ -60,24 +65,28 @@ public class CastleStatus
 						Date anotherDate = new Date(someLong);
 						String DATE_FORMAT = "dd-MMM-yyyy HH:mm";
 						SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-						
+
 						addCastleToList(name, owner, level, tax, sdf.format(anotherDate));
 					}
-					
+
 					result2.close();
 					statement2.close();
 				}
-				
+
 				result.close();
 				statement.close();
 			}
 		}
-		
+
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Error loading db " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
-		
+
 		finally
 		{
 			try
@@ -89,7 +98,7 @@ public class CastleStatus
 			}
 		}
 	}
-	
+
 	private void addCastleToList(String name, String owner, int level, int tax, String siegeDate)
 	{
 		_playerList.append("<table border=0 cellspacing=0 cellpadding=2 width=610>");
@@ -105,7 +114,7 @@ public class CastleStatus
 		_playerList.append("</table>");
 		_playerList.append("<img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
 	}
-	
+
 	public String loadCastleList()
 	{
 		return _playerList.toString();

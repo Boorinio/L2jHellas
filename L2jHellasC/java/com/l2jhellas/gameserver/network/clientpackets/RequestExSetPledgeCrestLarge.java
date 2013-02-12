@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -126,7 +127,11 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
             }
             catch (SQLException e)
             {
-                _log.warning("could not update the large crest id:"+e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + " could not update the large crest id:" + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
             }
             finally
             {
@@ -144,9 +149,6 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

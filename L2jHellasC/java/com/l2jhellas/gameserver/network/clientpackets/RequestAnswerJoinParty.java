@@ -20,19 +20,15 @@ import com.l2jhellas.gameserver.network.serverpackets.JoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
- *  sample
- *  2a
- *  01 00 00 00
- *
- *  format  cdd
- *
- *
- * @version $Revision: 1.7.4.2 $ $Date: 2005/03/27 15:29:30 $
+ * sample
+ * 2a
+ * 01 00 00 00
+ * format cdd
  */
 public final class RequestAnswerJoinParty extends L2GameClientPacket
 {
 	private static final String _C__2A_REQUESTANSWERPARTY = "[C] 2A RequestAnswerJoinParty";
-	//private static Logger _log = Logger.getLogger(RequestAnswerJoinParty.class.getName());
+	// private static Logger _log = Logger.getLogger(RequestAnswerJoinParty.class.getName());
 
 	private int _response;
 
@@ -46,51 +42,49 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-        if(player != null)
-        {
-    		L2PcInstance requestor = player.getActiveRequester();
-    		    		
-    		    		// L2Dot Faction Good vs Evil
-    		    		    	if (player.isevil() && requestor.isgood())
-    		    		        {
-    		    		            return;
-    		    		        }
-    		    		    	
-    		    		        if (player.isgood() && requestor.isevil())
-    		    		        {
-    		    		            return;
-    		    		}
-    		    		
+		if (player != null)
+		{
+			L2PcInstance requestor = player.getActiveRequester();
 
-    		if (requestor == null)
-		    return;
+			// Faction Good vs Evil
+			if (player.isevil() && requestor.isgood())
+			{
+				return;
+			}
 
-    		JoinParty join = new JoinParty(_response);
-    		requestor.sendPacket(join);
+			if (player.isgood() && requestor.isevil())
+			{
+				return;
+			}
 
-    		if (_response == 1)
-            {
-    			player.joinParty(requestor.getParty());
-    		} else
-            {
-    			SystemMessage msg = new SystemMessage(SystemMessageId.PLAYER_DECLINED);
-    			requestor.sendPacket(msg);
-                msg = null;
+			if (requestor == null)
+				return;
 
-    			//activate garbage collection if there are no other members in party (happens when we were creating new one)
-    			if (requestor.getParty() != null && requestor.getParty().getMemberCount() == 1) requestor.setParty(null);
-    		}
-    		if (requestor.getParty() != null)
-    			requestor.getParty().decreasePendingInvitationNumber(); // if party is null, there is no need of decreasing
+			JoinParty join = new JoinParty(_response);
+			requestor.sendPacket(join);
 
-    		player.setActiveRequester(null);
-    		requestor.onTransactionResponse();
-        }
+			if (_response == 1)
+			{
+				player.joinParty(requestor.getParty());
+			}
+			else
+			{
+				SystemMessage msg = new SystemMessage(SystemMessageId.PLAYER_DECLINED);
+				requestor.sendPacket(msg);
+				msg = null;
+
+				// activate garbage collection if there are no other members in party (happens when we were creating new one)
+				if (requestor.getParty() != null && requestor.getParty().getMemberCount() == 1)
+					requestor.setParty(null);
+			}
+			if (requestor.getParty() != null)
+				requestor.getParty().decreasePendingInvitationNumber(); // if party is null, there is no need of decreasing
+
+			player.setActiveRequester(null);
+			requestor.onTransactionResponse();
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -14,7 +14,8 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.gameserver.datatables.DoorTable;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.GMAudit;
@@ -42,7 +43,6 @@ import com.l2jhellas.gameserver.model.entity.Castle;
  */
 public class AdminDoorControl implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminDoorControl.class.getName());
 	private static DoorTable _doorTable;
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -131,7 +131,10 @@ public class AdminDoorControl implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");

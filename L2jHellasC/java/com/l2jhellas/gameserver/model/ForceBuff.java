@@ -17,11 +17,11 @@ package com.l2jhellas.gameserver.model;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.effects.EffectForce;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 
 /**

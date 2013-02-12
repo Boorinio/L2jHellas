@@ -30,11 +30,13 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskCleanUp;
@@ -102,7 +104,11 @@ public final class TaskManager
             }
             catch (SQLException e)
             {
-                _log.warning("cannot updated the Global Task " + id + ": " + e.getMessage());
+				_log.log(Level.WARNING, getClass().getName() + " Could not update the Global Task " + id + ": " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
             }
             finally
             {
@@ -378,7 +384,11 @@ public final class TaskManager
         }
         catch (SQLException e)
         {
-            _log.warning("cannot add the unique task: " + e.getMessage());
+			_log.log(Level.WARNING, "TaskManager Could not add the unique task: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
         }
         finally
         {
@@ -422,7 +432,11 @@ public final class TaskManager
         }
         catch (SQLException e)
         {
-            _log.warning("cannot add the task:  " + e.getMessage());
+			_log.log(Level.WARNING, "TaskManager Could not add the task:  " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
         }
         finally
         {

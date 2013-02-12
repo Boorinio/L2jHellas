@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.gameserver.lib.SqlUtils;
 import com.l2jhellas.gameserver.model.L2Territory;
+import com.l2jhellas.util.SqlUtils;
 
 public class Territory
 {

@@ -18,13 +18,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -50,7 +52,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public class MercTicketManager
 {
-	protected static Logger _log = Logger.getLogger(CastleManager.class.getName());
+	protected static Logger _log = Logger.getLogger(MercTicketManager.class.getName());
 
 	private static MercTicketManager _instance;
 
@@ -214,8 +216,11 @@ public class MercTicketManager
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: loadMercenaryData(): " + e.getMessage());
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": loadMercenaryData(): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

@@ -58,20 +58,17 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.cache.WarehouseCacheManager;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
-import com.l2jhellas.gameserver.datatables.AccessLevels;
-import com.l2jhellas.gameserver.datatables.AdminCommandAccessRights;
-import com.l2jhellas.gameserver.datatables.CharNameTable;
-import com.l2jhellas.gameserver.datatables.CharTemplateTable;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.FishTable;
-import com.l2jhellas.gameserver.datatables.HennaTable;
-import com.l2jhellas.gameserver.datatables.HeroSkillTable;
-import com.l2jhellas.gameserver.datatables.ItemTable;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.NobleSkillTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.AccessLevels;
+import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.FishTable;
+import com.l2jhellas.gameserver.datatables.sql.HennaTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
@@ -87,7 +84,6 @@ import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
-import com.l2jhellas.gameserver.lib.Log;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.FishData;
 import com.l2jhellas.gameserver.model.ForceBuff;
@@ -201,6 +197,9 @@ import com.l2jhellas.gameserver.network.serverpackets.TradeStart;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.skills.Formulas;
+import com.l2jhellas.gameserver.skills.HeroSkillTable;
+import com.l2jhellas.gameserver.skills.NobleSkillTable;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2ArmorType;
@@ -210,9 +209,10 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.gameserver.util.Broadcast;
-import com.l2jhellas.gameserver.util.FloodProtector;
+import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.util.Broadcast;
+import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 
@@ -616,8 +616,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not insert char data: " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": Could not insert char data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			return;
 		}
 		finally
@@ -647,7 +650,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (SQLException e)
 		{
-			_log.warning("PremiumService:  Could not increase data");
+			_log.log(Level.WARNING, "L2PcInstance: Premium Service Could not increase data." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -691,8 +698,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("PremiumService: Could not restore PremiumService data for:" + account + "." + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, ": PremiumService: Could not restore PremiumService data for:" + account + "." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -2082,7 +2092,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			catch (Exception e)
 			{
-				_log.warning("could not update char recommendations:" + e);
+				_log.log(Level.WARNING, getClass().getName() + ": could not update char recommendations:" + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			finally
 			{
@@ -5408,12 +5422,12 @@ public final class L2PcInstance extends L2PlayableInstance
 						if (isKarmaDrop)
 						{
 							String text = getName() + " has karma and dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount();
-							Log.add(text, "karma_dieDrop");
+							LogRecorder.add(text, "karma_dieDrop");
 						}
 						else
 						{
 							String text = getName() + " dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount();
-							Log.add(text, "dieDrop");
+							LogRecorder.add(text, "dieDrop");
 						}
 
 						dropCount++;
@@ -6756,7 +6770,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not set char online status:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": could not set char online status:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -6786,7 +6804,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not set char isIn7sDungeon status:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": could not set char isIn7sDungeon status:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -6874,7 +6896,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.severe("Could not insert char data: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not insert char data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			return false;
 		}
 		finally
@@ -7023,6 +7049,11 @@ public final class L2PcInstance extends L2PlayableInstance
 				catch (Exception e)
 				{
 					player.setBaseClass(activeClassId);
+					_log.log(Level.WARNING, "" + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 
 				// Restore Subclass Data (cannot be done earlier in function)
@@ -7127,7 +7158,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.severe("Could not restore char data: " + e);
+			_log.log(Level.WARNING, ": Could not restore char data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7231,8 +7266,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not restore classes for " + player.getName() + ": " + e);
-			e.printStackTrace();
+			_log.log(Level.WARNING, ": Could not restore classes for " + player.getName() + ": " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7340,7 +7378,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not store recipe book data: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not store recipe book data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7384,7 +7426,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not restore recipe book data:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not restore recipe book data:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7513,7 +7559,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not store char base data: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not store char base data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7555,7 +7605,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not store sub class data for " + getName() + ": " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not store sub class data for " + getName() + ": " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7648,7 +7702,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not store char effect data: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not store char effect data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7780,7 +7838,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Error could not delete skill: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error could not delete skill: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7853,7 +7915,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Error could not store char skills: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error could not store char skills: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -7971,7 +8037,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not restore character skills: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not restore character skills: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -8077,7 +8147,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not restore active effect data: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not restore active effect data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -8141,7 +8215,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not restore henna: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": could not restore henna: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -8183,7 +8261,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not restore recommendations: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": could not restore recommendations: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -8248,7 +8330,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not remove char henna: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": could not remove char henna: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -8320,7 +8406,11 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				catch (Exception e)
 				{
-					_log.warning("could not save char henna: " + e);
+					_log.log(Level.WARNING, getClass().getName() + ": could not save char henna: " + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 				finally
 				{
@@ -9422,7 +9512,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception on removeFromBossZone(): " + e.getMessage(), e);
+			_log.log(Level.WARNING, getClass().getName() + ": Exception on removeFromBossZone(): " + e.getMessage(), e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -10039,6 +10133,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, getClass().getName() + ": Error get heroes." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -10049,7 +10148,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			catch (SQLException e)
 			{
-				e.printStackTrace();
+				_log.log(Level.WARNING, getClass().getName() + " Could not get heroes." + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -10431,7 +10534,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("WARNING: Could not add character sub class for " + getName() + ": " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not add character sub class for " + getName() + ": " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			return false;
 		}
 		finally
@@ -10543,7 +10650,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not modify sub class for " + getName() + " to class index " + classIndex + ": " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not modify sub class for " + getName() + " to class index " + classIndex + ": " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 
 			// This must be done in order to maintain data consistency.
 			getSubClasses().remove(classIndex);
@@ -10660,7 +10771,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			catch (Exception e)
 			{
-				_log.info("Could not switch " + getName() + "'s sub class to class index " + classIndex + ": " + e);
+				_log.log(Level.WARNING, getClass().getName() + ": Could not switch " + getName() + "'s sub class to class index " + classIndex + ": " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 				return false;
 			}
 		}
@@ -10962,7 +11077,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			catch (Exception e)
 			{
-				_log.warning("could not clear char recommendations: " + e);
+				_log.log(Level.WARNING, getClass().getName() + ": could not clear char recommendations: " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			finally
 			{
@@ -12628,7 +12747,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not select chat ban info:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not select chat ban info:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -12689,7 +12812,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not save chat ban info:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not save chat ban info:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

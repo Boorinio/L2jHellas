@@ -29,8 +29,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -48,7 +47,8 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillListAdd;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.Util;
 
 /**
  * This class ...
@@ -159,7 +159,7 @@ public class L2Clan
 
     private String _notice;
     private boolean _noticeEnabled = false;
-    
+
     /**
      * Called if a clan is referenced only by id.
      * In this case all other data needs to be fetched from db
@@ -224,12 +224,12 @@ public class L2Clan
 		_members.put(leader.getName(), leader);
 	}
 
-	public void setNewLeader(L2ClanMember member,L2PcInstance activeChar) 
+	public void setNewLeader(L2ClanMember member,L2PcInstance activeChar)
 	{
-		 if (activeChar.isRiding() || activeChar.isFlying()) 
-		 {    
-			 activeChar.sendPacket(ActionFailed.STATIC_PACKET); 
-			 return; 
+		 if (activeChar.isRiding() || activeChar.isFlying())
+		 {
+			 activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			 return;
 	     }
 	    if (!getLeader().isOnline())
 	    {
@@ -891,13 +891,13 @@ public class L2Clan
         		PreparedStatement statement = con.prepareStatement("SELECT enabled,notice FROM clan_notices WHERE clan_id=?");
         		statement.setInt(1, getClanId());
         		ResultSet noticeData = statement.executeQuery();
-       		
+
       		while (noticeData.next())
         		{
         			_noticeEnabled = noticeData.getBoolean("enabled");
         			_notice = noticeData.getString("notice");
         		}
-        		
+
         		noticeData.close();
         		statement.close();
         		con.close();
@@ -911,21 +911,21 @@ public class L2Clan
         		try { con.close(); } catch (Exception e) {}
         	}
         }
-    
+
         private void storeNotice(String notice, boolean enabled)
         {
         	if (notice == null)
         		notice = "";
-        	
+
 		Connection con = null;
-    
+
         	try
        	{
         		con = L2DatabaseFactory.getInstance().getConnection();
-    
+
       		if (notice.length() > 8192)
         			notice = notice.substring(0, 8191);
-        		
+
         		if (_notice != null)
         		{
         			PreparedStatement statement = con.prepareStatement("UPDATE clan_notices SET enabled=?,notice=? WHERE clan_id=?");
@@ -959,35 +959,35 @@ public class L2Clan
             {
                 try { con.close(); } catch (Exception e) {}
             }
-    
+
         	_notice = notice;
         	_noticeEnabled = enabled;
         }
-    
+
         public void setNoticeEnabled(boolean noticeEnabled)
         {
         	storeNotice(_notice, noticeEnabled);
         }
-        
+
         public void setNotice(String notice)
         {
         	storeNotice(notice, _noticeEnabled);
         }
-    
+
        public boolean isNoticeEnabled()
         {
         	return _noticeEnabled;
         }
-        
+
         public String getNotice()
         {
         	if (_notice == null)
         		return "";
         	return _notice;
         }
-        
 
-    
+
+
     /** used to retrieve all skills */
     public final L2Skill[] getAllSkills()
     {
@@ -1123,20 +1123,20 @@ public class L2Clan
 			}
 		}
 	}
-	
-    public void broadcastCSToOnlineMembers(CreatureSay packet, L2PcInstance broadcaster) 
-    { 
-    	for (L2ClanMember member : _members.values()) 
-    	{ 
+
+    public void broadcastCSToOnlineMembers(CreatureSay packet, L2PcInstance broadcaster)
+    {
+    	for (L2ClanMember member : _members.values())
+    	{
     		try
-    		{ 
-    			if (member.isOnline() && !BlockList.isBlocked(member.getPlayerInstance(), broadcaster)) 
-    				member.getPlayerInstance().sendPacket(packet); 
+    		{
+    			if (member.isOnline() && !BlockList.isBlocked(member.getPlayerInstance(), broadcaster))
+    				member.getPlayerInstance().sendPacket(packet);
     		}
-    		catch (NullPointerException e) {} 
-    	} 
+    		catch (NullPointerException e) {}
+    	}
     }
-    
+
 	public void broadcastToOnlineMembers(L2GameServerPacket packet)
 	{
 		for (L2ClanMember member : _members.values())
@@ -1803,7 +1803,7 @@ public class L2Clan
         	activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
             return false;
         }
-		
+
 		// Mod Faction Good vs Evil
 		if (activeChar.isgood() && target.isevil() && Config.MOD_GVE_ENABLE_FACTION)
 		{
@@ -1814,7 +1814,7 @@ public class L2Clan
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
 			return false;
-		}	
+		}
 
 		if (activeChar.getObjectId() == target.getObjectId())
 		{

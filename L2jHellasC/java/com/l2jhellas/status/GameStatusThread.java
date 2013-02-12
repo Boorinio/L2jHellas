@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,9 +43,8 @@ import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.Shutdown;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.ItemTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.instancemanager.Manager;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -64,20 +63,21 @@ import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
-import com.l2jhellas.gameserver.util.DynamicExtension;
+import com.l2jhellas.util.DynamicExtension;
 
 public class GameStatusThread extends Thread
 {
 	// private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
-	
+
 	private final Socket _cSocket;
-	
+
 	private final PrintWriter _print;
 	private final BufferedReader _read;
-	
+
 	private final int _uptime;
-	
+
 	private void telnetOutput(int type, String text)
 	{
 		if (Config.DEVELOPER)
@@ -100,33 +100,33 @@ public class GameStatusThread extends Thread
 				System.out.println("TELNET | " + text);
 		}
 	}
-	
+
 	private boolean isValidIP(Socket client)
 	{
 		boolean result = false;
 		InetAddress ClientIP = client.getInetAddress();
-		
+
 		// convert IP to String, and compare with list
 		String clientStringIP = ClientIP.getHostAddress();
-		
+
 		telnetOutput(1, "Connection from: " + clientStringIP);
-		
+
 		// read and loop thru list of IPs, compare with newIP
 		if (Config.DEVELOPER)
 			telnetOutput(2, "");
-		
+
 		try
 		{
 			Properties telnetSettings = new Properties();
 			InputStream telnetIS = new FileInputStream(new File(Config.TELNET_FILE));
 			telnetSettings.load(telnetIS);
 			telnetIS.close();
-			
+
 			String HostList = telnetSettings.getProperty("ListOfHosts", "127.0.0.1,localhost");
-			
+
 			if (Config.DEVELOPER)
 				telnetOutput(3, "Comparing ip to list...");
-			
+
 			// compare
 			String ipToCompare = null;
 			for (String ip : HostList.split(","))
@@ -147,20 +147,20 @@ public class GameStatusThread extends Thread
 				telnetOutput(4, "");
 			telnetOutput(1, "Error: " + e);
 		}
-		
+
 		if (Config.DEVELOPER)
 			telnetOutput(4, "Allow IP: " + result);
 		return result;
 	}
-	
+
 	public GameStatusThread(Socket client, int uptime, String StatusPW) throws IOException
 	{
 		_cSocket = client;
 		_uptime = uptime;
-		
+
 		_print = new PrintWriter(_cSocket.getOutputStream());
 		_read = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
-		
+
 		if (isValidIP(client))
 		{
 			telnetOutput(1, client.getInetAddress().getHostAddress() + " accepted.");
@@ -201,7 +201,7 @@ public class GameStatusThread extends Thread
 			_cSocket.close();
 		}
 	}
-	
+
 	@Override
 	@SuppressWarnings(
 	{
@@ -257,10 +257,10 @@ public class GameStatusThread extends Thread
 				{
 					int playerCount = 0, objectCount = 0;
 					int max = LoginServerThread.getInstance().getMaxPlayer();
-					
+
 					playerCount = L2World.getInstance().getAllPlayersCount();
 					objectCount = L2World.getInstance().getAllVisibleObjectsCount();
-					
+
 					int itemCount = 0;
 					int itemVoidCount = 0;
 					int monsterCount = 0;
@@ -272,7 +272,7 @@ public class GameStatusThread extends Thread
 					int doorCount = 0;
 					int summonCount = 0;
 					int AICount = 0;
-					
+
 					for (L2Object obj : L2World.getInstance().getAllVisibleObjects())
 					{
 						if (obj == null)
@@ -285,7 +285,7 @@ public class GameStatusThread extends Thread
 								itemVoidCount++;
 							else
 								itemCount++;
-						
+
 						else if (obj instanceof L2MonsterInstance)
 						{
 							monsterCount++;
@@ -400,7 +400,7 @@ public class GameStatusThread extends Thread
 				{
 					int igm = 0;
 					String gmList = "";
-					
+
 					for (String player : GmListTable.getInstance().getAllGmNames(true))
 					{
 						gmList = gmList + ", " + player;
@@ -496,13 +496,13 @@ public class GameStatusThread extends Thread
 				else if (_usrCommand.startsWith("give"))
 				{
 					StringTokenizer st = new StringTokenizer(_usrCommand.substring(5));
-					
+
 					try
 					{
 						L2PcInstance player = L2World.getInstance().getPlayer(st.nextToken());
 						int itemId = Integer.parseInt(st.nextToken());
 						int amount = Integer.parseInt(st.nextToken());
-						
+
 						if (player != null)
 						{
 							L2ItemInstance item = player.getInventory().addItem("Status-Give", itemId, amount, null, null);
@@ -517,7 +517,7 @@ public class GameStatusThread extends Thread
 					}
 					catch (Exception e)
 					{
-						
+
 					}
 				}
 				else if (_usrCommand.startsWith("jail"))
@@ -538,7 +538,7 @@ public class GameStatusThread extends Thread
 						{
 						}
 						// L2PcInstance playerObj = L2World.getInstance().getPlayer(player);
-						
+
 						if (playerObj != null)
 						{
 							playerObj.setInJail(true, delay);
@@ -563,7 +563,7 @@ public class GameStatusThread extends Thread
 					try
 					{
 						L2PcInstance playerObj = L2World.getInstance().getPlayer(st.nextToken());
-						
+
 						if (playerObj != null)
 						{
 							playerObj.stopJailTask(false);
@@ -589,7 +589,7 @@ public class GameStatusThread extends Thread
 					try
 					{
 						String dbg = st.nextToken();
-						
+
 						if (dbg.equals("decay"))
 						{
 							_print.print(DecayTaskManager.getInstance().toString());
@@ -676,7 +676,7 @@ public class GameStatusThread extends Thread
 					try
 					{
 						String type = st.nextToken();
-						
+
 						if (type.equals("multisell"))
 						{
 							_print.print("Reloading multisell... ");
@@ -719,7 +719,7 @@ public class GameStatusThread extends Thread
 							// TODO: ZONETODO reload zones using telnet ZoneManager.getInstance().reload();
 							_print.print("done\n");
 						}
-						
+
 					}
 					catch (Exception e)
 					{
@@ -731,7 +731,7 @@ public class GameStatusThread extends Thread
 					try
 					{
 						String type = st.nextToken();
-						
+
 						// name;type;x;y;itemId:enchant:price...
 						if (type.equals("privatestore"))
 						{
@@ -739,10 +739,10 @@ public class GameStatusThread extends Thread
 							{
 								if (player.getPrivateStoreType() == 0)
 									continue;
-								
+
 								TradeList list = null;
 								String content = "";
-								
+
 								if (player.getPrivateStoreType() == 1) // sell
 								{
 									list = player.getSellList();
@@ -765,7 +765,7 @@ public class GameStatusThread extends Thread
 									_print.println(content);
 									continue;
 								}
-								
+
 							}
 						}
 					}
@@ -871,14 +871,14 @@ public class GameStatusThread extends Thread
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void jailOfflinePlayer(String name, int delay)
 	{
 		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			
+
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?");
 			statement.setInt(1, -114356);
 			statement.setInt(2, -249645);
@@ -886,11 +886,11 @@ public class GameStatusThread extends Thread
 			statement.setInt(4, 1);
 			statement.setLong(5, delay * 60000L);
 			statement.setString(6, name);
-			
+
 			statement.execute();
 			int count = statement.getUpdateCount();
 			statement.close();
-			
+
 			if (count == 0)
 				_print.println("Character not found!");
 			else
@@ -913,14 +913,14 @@ public class GameStatusThread extends Thread
 			}
 		}
 	}
-	
+
 	private void unjailOfflinePlayer(String name)
 	{
 		Connection con = null;
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			
+
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?");
 			statement.setInt(1, 17836);
 			statement.setInt(2, 170178);
@@ -928,11 +928,11 @@ public class GameStatusThread extends Thread
 			statement.setInt(4, 0);
 			statement.setLong(5, 0);
 			statement.setString(6, name);
-			
+
 			statement.execute();
 			int count = statement.getUpdateCount();
 			statement.close();
-			
+
 			if (count == 0)
 				_print.println("Character not found!");
 			else
@@ -955,12 +955,12 @@ public class GameStatusThread extends Thread
 			}
 		}
 	}
-	
+
 	private int getOnlineGMS()
 	{
 		return GmListTable.getInstance().getAllGms(true).size();
 	}
-	
+
 	private String getUptime(int time)
 	{
 		int uptime = (int) System.currentTimeMillis() - time;
@@ -970,7 +970,7 @@ public class GameStatusThread extends Thread
 		int s = ((uptime - (h * 3600)) - (m * 60));
 		return h + "hrs " + m + "mins " + s + "secs";
 	}
-	
+
 	private String gameTime()
 	{
 		int t = GameTimeController.getInstance().getGameTime();

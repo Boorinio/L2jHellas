@@ -3,19 +3,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -38,52 +38,52 @@ import com.l2jhellas.util.Rnd;
  */
 public class Harvest implements ISkillHandler
 {
-	private static Log _log = LogFactory.getLog(Harvest.class.getName());
+	protected static final Logger _log = Logger.getLogger(Harvest.class.getName());
 	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.HARVEST
 	};
-	
+
 	private L2PcInstance _activeChar;
 	private L2MonsterInstance _target;
-	
+
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (!(activeChar instanceof L2PcInstance))
 			return;
-		
+
 		_activeChar = (L2PcInstance) activeChar;
-		
+
 		L2Object[] targetList = skill.getTargetList(activeChar);
-		
+
 		InventoryUpdate iu = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
-		
+
 		if (targetList == null)
 		{
 			return;
 		}
-		
-		if (_log.isDebugEnabled())
-			_log.info("Casting harvest");
-		
+
+		if (Config.DEBUG)
+			_log.log(Level.INFO, getClass().getName() + ": Casting harvest");
+
 		for (int index = 0; index < targetList.length; index++)
 		{
 			if (!(targetList[index] instanceof L2MonsterInstance))
 				continue;
-			
+
 			_target = (L2MonsterInstance) targetList[index];
-			
+
 			if (_activeChar != _target.getSeeder())
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_HARVEST);
 				_activeChar.sendPacket(sm);
 				continue;
 			}
-			
+
 			boolean send = false;
 			int total = 0;
 			int cropId = 0;
-			
+
 			// TODO: check items and amount of items player harvest
 			if (_target.isSeeded())
 			{
@@ -121,7 +121,7 @@ public class Harvest implements ISkillHandler
 								smsg.addItemName(cropId);
 								_activeChar.getParty().broadcastToPartyMembers(_activeChar, smsg);
 							}
-							
+
 							if (iu != null)
 								_activeChar.sendPacket(iu);
 							else
@@ -139,37 +139,37 @@ public class Harvest implements ISkillHandler
 				_activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_HARVEST_FAILED_BECAUSE_THE_SEED_WAS_NOT_SOWN));
 			}
 		}
-		
+
 	}
-	
+
 	private boolean calcSuccess()
 	{
 		int basicSuccess = 100;
 		int levelPlayer = _activeChar.getLevel();
 		int levelTarget = _target.getLevel();
-		
+
 		int diff = (levelPlayer - levelTarget);
 		if (diff < 0)
 			diff = -diff;
-		
+
 		// apply penalty, target <=> player levels
 		// 5% penalty for each level
 		if (diff > 5)
 		{
 			basicSuccess -= (diff - 5) * 5;
 		}
-		
+
 		// success rate cant be less than 1%
 		if (basicSuccess < 1)
 			basicSuccess = 1;
-		
+
 		int rate = Rnd.nextInt(99);
-		
+
 		if (rate < basicSuccess)
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

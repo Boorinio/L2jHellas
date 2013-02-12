@@ -33,11 +33,9 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.DoorTable;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.geodata.pathfinding.Node;
 import com.l2jhellas.gameserver.geodata.pathfinding.cellnodes.CellPathFinding;
-import com.l2jhellas.gameserver.geodata.util.L2Arrays;
-import com.l2jhellas.gameserver.geodata.util.LookupTable;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
@@ -45,6 +43,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.util.Point3D;
+import com.l2jhellas.util.geodata.L2Arrays;
+import com.l2jhellas.util.geodata.LookupTable;
 
 public final class GeoEngine extends GeoData
 {

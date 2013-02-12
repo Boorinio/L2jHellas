@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,7 +21,7 @@ import javolution.text.TextBuilder;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -39,7 +39,7 @@ public class L2CharNoblesInstance extends L2NpcInstance
 {
 	/* Main Menu */
 	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>" + "<center><br><br><br>" + "<button value=\"Nobles\" action=\"bypass -h npc_%objectId%_showwindow 1\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br><br>" + "</body></html>";
-	
+
 	public L2CharNoblesInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
@@ -87,10 +87,10 @@ public class L2CharNoblesInstance extends L2NpcInstance
 	        player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 	        player.sendPacket(new ActionFailed());
 	    }
-				
-	
+
+
 	}
-	
+
 	private void sendHtmlMessage(L2PcInstance player, NpcHtmlMessage html)
 	{
 		html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -111,7 +111,7 @@ public class L2CharNoblesInstance extends L2NpcInstance
 		msg.replace("%objectId%", String.valueOf(getObjectId()));
 		player.sendPacket(msg);
 	}
-	
+
 	private void setStatus(L2PcInstance player, int type)
 	{
 		if (type == 1 && player.isNoble())
@@ -119,14 +119,14 @@ public class L2CharNoblesInstance extends L2NpcInstance
 			player.sendMessage("You are already nobless.");
 			return;
 		}
-		else if (type == 1 && player.getInventory().getItemByItemId(ExternalConfig.NPC_NOBLESS_ID1) == null || player.getInventory().getItemByItemId(ExternalConfig.NPC_NOBLESS_ID1).getCount() < ExternalConfig.NPC_NOBLESS_QUANTITY1)
+		else if (type == 1 && player.getInventory().getItemByItemId(ExternalConfig.NPC_NOBLESS_ID) == null || player.getInventory().getItemByItemId(ExternalConfig.NPC_NOBLESS_ID).getCount() < ExternalConfig.NPC_NOBLESS_QUANTITY)
 		{
 			player.sendMessage("Not enough items.");
 			return;
 		}
 		else
 		{
-			player.destroyItemByItemId("Consume", ExternalConfig.NPC_NOBLESS_ID1, ExternalConfig.NPC_NOBLESS_QUANTITY1, player, false);
+			player.destroyItemByItemId("Consume", ExternalConfig.NPC_NOBLESS_ID, ExternalConfig.NPC_NOBLESS_QUANTITY, player, false);
 			MagicSkillUse MSU = new MagicSkillUse(player, player, 2023, 1, 1, 0);
 			player.sendPacket(MSU);
 			player.broadcastPacket(MSU);
@@ -136,7 +136,7 @@ public class L2CharNoblesInstance extends L2NpcInstance
 			player.broadcastUserInfo();
 		}
 	}
-	
+
 	private void showWindow(L2PcInstance player, int window)
 	{
 		TextBuilder tb;
@@ -154,9 +154,9 @@ public class L2CharNoblesInstance extends L2NpcInstance
 			tb.append("Here you can get a nobleman's status.<br>");
 			tb.append("<a action=\"bypass -h npc_%objectId%_setstatus 1\">Get the status of a nobleman</a>");
 			tb.append("Price:<br><table>");
-			tb.append("<tr><td>" + ExternalConfig.NPC_NOBLESS_QUANTITY1 + " <font color=\"LEVEL\">" + ItemTable.getInstance().getTemplate(ExternalConfig.NPC_NOBLESS_ID1).getName() + "</font></td></tr><br>");
+			tb.append("<tr><td>" + ExternalConfig.NPC_NOBLESS_QUANTITY + " <font color=\"LEVEL\">" + ItemTable.getInstance().getTemplate(ExternalConfig.NPC_NOBLESS_ID).getName() + "</font></td></tr><br>");
 			tb.append("</table><br>This items can be droped by <font color=\"LEVEL\">RB's</font><br>For More info click on <a action=\"bypass -h npc_%objectId%_info\">List</a><br><button value=\"Back\" action=\"bypass -h npc_%objectId%_showwindow 0\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br>");
-			
+
 			tb.append("</center></body></html>");
 			html = new NpcHtmlMessage(1);
 			html.setHtml(tb.toString());

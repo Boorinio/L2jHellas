@@ -37,7 +37,6 @@ import com.l2jhellas.gameserver.script.ScriptPackage;
 
 /**
  * @author Luis Arias
- *
  */
 public class FaenorScriptEngine extends ScriptEngine
 {
@@ -78,7 +77,8 @@ public class FaenorScriptEngine extends ScriptEngine
         File packDirectory = new File(Config.DATAPACK_ROOT, PACKAGE_DIRECTORY);//_log.sss(packDirectory.getAbsolutePath());
 
         FileFilter fileFilter = new FileFilter() {
-            public boolean accept(File file)
+            @Override
+			public boolean accept(File file)
             {
                 return file.getName().endsWith(".zip");
             }
@@ -114,16 +114,18 @@ public class FaenorScriptEngine extends ScriptEngine
             }
 
         }
-        /*for (ScriptDocument script : scripts)
-         {
-         _log.sss("Script: "+script);
-         }
-         _log.sss("Sorting");
-         orderScripts();
-         for (ScriptDocument script : scripts)
-         {
-         _log.sss("Script: "+script);
-         }*/
+        /*
+		 * for (ScriptDocument script : scripts)
+		 * {
+		 * _log.sss("Script: "+script);
+		 * }
+		 * _log.sss("Sorting");
+		 * orderScripts();
+		 * for (ScriptDocument script : scripts)
+		 * {
+		 * _log.sss("Script: "+script);
+		 * }
+		 */
     }
 
     public void orderScripts()

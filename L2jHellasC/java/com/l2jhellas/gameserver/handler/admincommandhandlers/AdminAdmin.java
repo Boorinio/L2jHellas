@@ -13,6 +13,7 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GmListTable;
@@ -37,12 +38,13 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * - set/set_menu/set_mod = alters specified server setting
  * - saveolymp = saves olympiad state manually
  * - manualhero = cycles olympiad and calculate new heroes.
- * 
+ *
  * @version $Revision: 1.3.2.1.2.4 $ $Date: 2007/07/28 10:06:06 $
  */
 public class AdminAdmin implements IAdminCommandHandler
 {
-	
+	protected static final Logger _log = Logger.getLogger(AdminAdmin.class.getName());
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_admin",
@@ -62,12 +64,12 @@ public class AdminAdmin implements IAdminCommandHandler
 		"admin_saveolymp",
 		"admin_manualhero"
 	};
-	
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
-		
+
 		if (command.startsWith("admin_admin"))
 		{
 			showMainPage(activeChar, command);
@@ -104,7 +106,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				activeChar.sendMessage("Typed wrong command!");
 			}
 			activeChar.sendMessage("Olympiad data is saved!");
 		}
@@ -116,7 +118,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				activeChar.sendMessage("Typed wrong command!");
 			}
 			activeChar.sendMessage("Heroes are formed");
 		}
@@ -217,13 +219,13 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-	
+
 	private void showMainPage(L2PcInstance activeChar, String command)
 	{
 		int mode = 0;

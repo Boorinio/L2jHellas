@@ -12,23 +12,20 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import java.util.logging.Logger;
-
 import javolution.util.FastList;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.BuffTemplateTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
+import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
 
 public class L2EventBufferInstance
 {
 	static L2PcInstance selfBuffer;
 	static L2NpcInstance npcBuffer;
-	
+
 	/**
 	 * Apply Buffs onto a player.
 	 * @param player
@@ -40,22 +37,22 @@ public class L2EventBufferInstance
 	{
 		if (player == null)
 			return;
-		
+
 		FastList<L2BuffTemplate> _templateBuffs = new  FastList<L2BuffTemplate>();
 		_templateBuffs = BuffTemplateTable.getInstance().getBuffTemplate(_templateId);
-		
+
 		if (_templateBuffs == null  || _templateBuffs.size() == 0)
 			return;
-		
+
 		int _priceTotal = 0;
 		int _pricePoints =0;
-		
+
 		for (L2BuffTemplate _buff:_templateBuffs)
 		{
-			
+
 			if (paymentRequired)
-			{	
-				
+			{
+
 				if(!_buff.checkPrice(player))
 				{
 					player.sendMessage("Not enough Adena");
@@ -66,33 +63,33 @@ public class L2EventBufferInstance
 					player.sendMessage("Not enough Event Points");
 					return;
 				}
-				
+
 			}
-			
-			if ( _buff.checkPlayer(player) && _buff.checkPrice(player)) 
-			{							
-					
+
+			if ( _buff.checkPlayer(player) && _buff.checkPrice(player))
+			{
+
 					player.setCurrentHpMp(player.getMaxHp()+5000, player.getMaxMp()+5000);
-        
+
 					L2Skill skill = SkillTable.getInstance().getInfo(_buff.getSkillId(), _buff.getSkillLevel());
 					if (skill != null)
 					{
 						skill.getEffects(player, player);
 					}
-		                            
+
 					if (_buff.getSkill().getSkillType() == L2SkillType.SUMMON)
 		            {
 						player.doCast(_buff.getSkill());
-		            }           		                         
-		                    
+		            }
+
 					try{
 		                Thread.sleep(50);
 		            }catch (Exception e) {}
-						
+
 					}
-			
+
 			}
-		
+
 			if (paymentRequired &&(_pricePoints>0 ||_priceTotal>0))
 			{
 				if(_pricePoints>0)
@@ -105,5 +102,5 @@ public class L2EventBufferInstance
 				player.reduceAdena("NpcBuffer", _priceTotal, player.getLastFolkNPC(), true);
 			}
 	}
-	static Logger _log = Logger.getLogger(Config.class.getName());
+
 }

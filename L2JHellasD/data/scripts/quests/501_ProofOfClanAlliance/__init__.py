@@ -1,5 +1,5 @@
 import sys
-from com.l2jhellas.gameserver.datatables         import SkillTable
+from com.l2jhellas.gameserver.skills         import SkillTable
 from com.l2jhellas.gameserver.network.serverpackets      import CreatureSay 
 from com.l2jhellas.gameserver.network.serverpackets      import MagicSkillUse
 from com.l2jhellas.gameserver.model.quest        import State

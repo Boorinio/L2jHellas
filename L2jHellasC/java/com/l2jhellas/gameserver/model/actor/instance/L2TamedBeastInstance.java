@@ -22,7 +22,6 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.SkillTable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -30,6 +29,7 @@ import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;

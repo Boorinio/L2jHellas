@@ -28,8 +28,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.util.IllegalPlayerAction;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
 
 /**
@@ -64,9 +64,9 @@ public final class RequestDropItem extends L2GameClientPacket
         L2PcInstance activeChar = getClient().getActiveChar();
     	if (activeChar == null)
     		return;
-    	
-        // Flood protect drop to avoid packet lag 
-     	if (!activeChar.getAntiFlood().getDropItem().tryPerformAction("drop item")) 
+
+        // Flood protect drop to avoid packet lag
+     	if (!activeChar.getAntiFlood().getDropItem().tryPerformAction("drop item"))
      	return;
 
         L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
@@ -81,7 +81,7 @@ public final class RequestDropItem extends L2GameClientPacket
         	return;
         }
         int itemId = item.getItemId();
-        
+
         // Cursed Weapons cannot be dropped
         if (CursedWeaponsManager.getInstance().isCursed(itemId))
         	return;
@@ -91,7 +91,7 @@ public final class RequestDropItem extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
 			return;
         }
-        	
+
         if(_count <= 0)
         {
         	Util.handleIllegalPlayerAction(activeChar,"[RequestDropItem] count <= 0! ban! oid: "+_objectId+" owner: "+activeChar.getName(),IllegalPlayerAction.PUNISH_KICK);
@@ -176,7 +176,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		if (activeChar.isGM())
 		{
 			String target = (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target");
-			GMAudit.auditGMAction(activeChar.getName(), "drop", target, dropedItem.getItemId() + " - " +dropedItem.getItemName() +  
+			GMAudit.auditGMAction(activeChar.getName(), "drop", target, dropedItem.getItemId() + " - " +dropedItem.getItemName() +
 					" - " + dropedItem.getObjectId());
 		}
 

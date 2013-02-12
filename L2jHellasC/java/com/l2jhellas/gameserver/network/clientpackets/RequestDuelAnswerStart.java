@@ -22,7 +22,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Format:(ch) ddd
- * @author  L2Dot
+ *
+ * @author L2Dot
  */
 public final class RequestDuelAnswerStart extends L2GameClientPacket
 {
@@ -40,17 +41,16 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 		_response = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null) return;
+		if (player == null)
+			return;
 
 		L2PcInstance requestor = player.getActiveRequester();
-		if (requestor == null) return;
+		if (requestor == null)
+			return;
 
 		if (_response == 1)
 		{
@@ -68,12 +68,12 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 				return;
 			}
 
-						// MODS Faction Good vs Evil
-						if ((Config.MOD_GVE_ENABLE_FACTION && player.isevil()) || player.isgood())
-						{
-						player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_UNABLE_TO_REQUEST_A_DUEL_AT_THIS_TIME));
-						return;
-						}
+			// Faction Good vs Evil
+			if ((Config.MOD_GVE_ENABLE_FACTION && player.isevil()) || player.isgood())
+			{
+				player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_UNABLE_TO_REQUEST_A_DUEL_AT_THIS_TIME));
+				return;
+			}
 
 			if (_partyDuel == 1)
 			{
@@ -100,26 +100,23 @@ public final class RequestDuelAnswerStart extends L2GameClientPacket
 		else
 		{
 			SystemMessage msg = null;
-			if (_partyDuel == 1) msg = new SystemMessage(SystemMessageId.THE_OPPOSING_PARTY_HAS_DECLINED_YOUR_CHALLENGE_TO_A_DUEL);
+			if (_partyDuel == 1)
+				msg = new SystemMessage(SystemMessageId.THE_OPPOSING_PARTY_HAS_DECLINED_YOUR_CHALLENGE_TO_A_DUEL);
 			else
 			{
 				msg = new SystemMessage(SystemMessageId.S1_HAS_DECLINED_YOUR_CHALLENGE_TO_A_DUEL);
 				msg.addString(player.getName());
 			}
-    		requestor.sendPacket(msg);
+			requestor.sendPacket(msg);
 		}
 
 		player.setActiveRequester(null);
-    	requestor.onTransactionResponse();
+		requestor.onTransactionResponse();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_28_REQUESTDUELANSWERSTART;
 	}
-
 }

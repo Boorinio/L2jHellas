@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,7 +35,7 @@ import com.l2jhellas.gameserver.templates.L2EtcItemType;
 
 /**
  * This class manage all items on ground
- * 
+ *
  * @version $Revision: $ $Date: $
  * @author DiezelMax - original ideea
  * @author Enforcer - actual build
@@ -45,7 +45,7 @@ public class ItemsOnGroundManager
 	static final Logger _log = Logger.getLogger(ItemsOnGroundManager.class.getName());
 	private static ItemsOnGroundManager _instance;
 	protected List<L2ItemInstance> _items = null;
-	
+
 	private ItemsOnGroundManager()
 	{
 		if (!Config.SAVE_DROPPED_ITEM)
@@ -54,7 +54,7 @@ public class ItemsOnGroundManager
 		if (Config.SAVE_DROPPED_ITEM_INTERVAL > 0)
 			ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new storeInDb(), Config.SAVE_DROPPED_ITEM_INTERVAL, Config.SAVE_DROPPED_ITEM_INTERVAL);
 	}
-	
+
 	public static final ItemsOnGroundManager getInstance()
 	{
 		if (_instance == null)
@@ -64,16 +64,16 @@ public class ItemsOnGroundManager
 		}
 		return _instance;
 	}
-	
+
 	private void load()
 	{
 		// If SaveDroppedItem is false, may want to delete all items previously stored to avoid add old items on reactivate
 		if (!Config.SAVE_DROPPED_ITEM && Config.CLEAR_DROPPED_ITEM_TABLE)
 			emptyTable();
-		
+
 		if (!Config.SAVE_DROPPED_ITEM)
 			return;
-		
+
 		// if DestroyPlayerDroppedItem was previously false, items curently protected will be added to ItemsAutoDestroy
 		if (Config.DESTROY_DROPPED_PLAYER_ITEM)
 		{
@@ -93,8 +93,11 @@ public class ItemsOnGroundManager
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "error while updating table ItemsOnGround " + e);
-				e.printStackTrace();
+				_log.log(Level.WARNING, getClass().getName() + ": error while updating table ItemsOnGround " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			finally
 			{
@@ -107,7 +110,7 @@ public class ItemsOnGroundManager
 				}
 			}
 		}
-		
+
 		// Add items to world
 		Connection con = null;
 		try
@@ -158,7 +161,11 @@ public class ItemsOnGroundManager
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "error while loading ItemsOnGround " + e);
+				_log.log(Level.WARNING, getClass().getName() + ": error while loading ItemsOnGround " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 				e.printStackTrace();
 			}
 		}
@@ -175,31 +182,31 @@ public class ItemsOnGroundManager
 		if (Config.EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD)
 			emptyTable();
 	}
-	
+
 	public void save(L2ItemInstance item)
 	{
 		if (!Config.SAVE_DROPPED_ITEM)
 			return;
 		_items.add(item);
 	}
-	
+
 	public void removeObject(L2Object item)
 	{
 		if (!Config.SAVE_DROPPED_ITEM)
 			return;
 		_items.remove(item);
 	}
-	
+
 	public void saveInDb()
 	{
 		new storeInDb().run();
 	}
-	
+
 	public void cleanUp()
 	{
 		_items.clear();
 	}
-	
+
 	public void emptyTable()
 	{
 		java.sql.Connection conn = null;
@@ -226,7 +233,7 @@ public class ItemsOnGroundManager
 			}
 		}
 	}
-	
+
 	protected class storeInDb extends Thread
 	{
 		@Override
@@ -234,22 +241,22 @@ public class ItemsOnGroundManager
 		{
 			if (!Config.SAVE_DROPPED_ITEM)
 				return;
-			
+
 			emptyTable();
-			
+
 			if (_items.isEmpty())
 			{
 				if (Config.DEBUG)
 					_log.warning("ItemsOnGroundManager: nothing to save...");
 				return;
 			}
-			
+
 			for (L2ItemInstance item : _items)
 			{
-				
+
 				if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
 					continue; // Cursed Items not saved to ground, prevent double save
-					
+
 				Connection con = null;
 				try
 				{
@@ -262,7 +269,7 @@ public class ItemsOnGroundManager
 					statement.setInt(5, item.getX());
 					statement.setInt(6, item.getY());
 					statement.setInt(7, item.getZ());
-					
+
 					if (item.isProtected())
 						statement.setLong(8, -1); // item will be protected
 					else
@@ -276,8 +283,11 @@ public class ItemsOnGroundManager
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.SEVERE, "error while inserting into table ItemsOnGround " + e);
-					e.printStackTrace();
+					_log.log(Level.WARNING, getClass().getName() + ": error while inserting into table ItemsOnGround " + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 				finally
 				{
@@ -291,7 +301,7 @@ public class ItemsOnGroundManager
 				}
 			}
 			if (Config.DEBUG)
-				_log.warning("ItemsOnGroundManager: " + _items.size() + " items on ground saved");
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": " + _items.size() + " items on ground saved.");
 		}
 	}
 }

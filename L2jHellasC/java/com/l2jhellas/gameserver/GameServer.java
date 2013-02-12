@@ -24,8 +24,8 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import Extensions.Balancer.BalanceLoad;
-import Extensions.RankSystem.RankCharacterRewardTable;
 import Extensions.RankSystem.PvpTable;
+import Extensions.RankSystem.RankCharacterRewardTable;
 import Extensions.RankSystem.RankRewardTable;
 import Extensions.RankSystem.TopTable;
 import Extensions.Vote.VoteMain;
@@ -38,40 +38,39 @@ import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
-import com.l2jhellas.gameserver.datatables.AccessLevels;
-import com.l2jhellas.gameserver.datatables.ArmorSetsTable;
-import com.l2jhellas.gameserver.datatables.AugmentationData;
-import com.l2jhellas.gameserver.datatables.BuffTemplateTable;
-import com.l2jhellas.gameserver.datatables.CharNameTable;
-import com.l2jhellas.gameserver.datatables.CharTemplateTable;
-import com.l2jhellas.gameserver.datatables.ClanTable;
-import com.l2jhellas.gameserver.datatables.DoorTable;
 import com.l2jhellas.gameserver.datatables.EventDroplist;
-import com.l2jhellas.gameserver.datatables.ExtractableItemsData;
-import com.l2jhellas.gameserver.datatables.FishTable;
-import com.l2jhellas.gameserver.datatables.HelperBuffTable;
-import com.l2jhellas.gameserver.datatables.HennaTable;
-import com.l2jhellas.gameserver.datatables.HennaTreeTable;
-import com.l2jhellas.gameserver.datatables.HeroSkillTable;
-import com.l2jhellas.gameserver.datatables.ItemTable;
 import com.l2jhellas.gameserver.datatables.LevelUpData;
-import com.l2jhellas.gameserver.datatables.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.MaxCheatersTable;
-import com.l2jhellas.gameserver.datatables.NobleSkillTable;
-import com.l2jhellas.gameserver.datatables.NpcTable;
-import com.l2jhellas.gameserver.datatables.NpcWalkerRoutesTable;
-import com.l2jhellas.gameserver.datatables.PcColorTable;
-import com.l2jhellas.gameserver.datatables.SkillSpellbookTable;
-import com.l2jhellas.gameserver.datatables.SkillTable;
-import com.l2jhellas.gameserver.datatables.SkillTreeTable;
-import com.l2jhellas.gameserver.datatables.SpawnTable;
-import com.l2jhellas.gameserver.datatables.StaticObjects;
-import com.l2jhellas.gameserver.datatables.SummonItemsData;
-import com.l2jhellas.gameserver.datatables.TeleportLocationTable;
-import com.l2jhellas.gameserver.datatables.ZoneData;
+import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
+import com.l2jhellas.gameserver.datatables.csv.StaticObjects;
+import com.l2jhellas.gameserver.datatables.csv.SummonItemsData;
+import com.l2jhellas.gameserver.datatables.sql.AccessLevels;
+import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
+import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.FishTable;
+import com.l2jhellas.gameserver.datatables.sql.HelperBuffTable;
+import com.l2jhellas.gameserver.datatables.sql.HennaTable;
+import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.sql.MaxCheatersTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
+import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillSpellbookTable;
+import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable;
+import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.ZoneData;
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.AutoAnnouncementHandler;
 import com.l2jhellas.gameserver.handler.ChatHandler;
@@ -87,6 +86,7 @@ import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
+import com.l2jhellas.gameserver.instancemanager.CrownManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -105,7 +105,6 @@ import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2Multisell;
-import com.l2jhellas.gameserver.model.L2PetDataTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
@@ -113,12 +112,15 @@ import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
-import com.l2jhellas.gameserver.script.faenor.FaenorScriptEngine;
 import com.l2jhellas.gameserver.scripting.CompiledScriptCache;
 import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
+import com.l2jhellas.gameserver.skills.HeroSkillTable;
+import com.l2jhellas.gameserver.skills.NobleSkillTable;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
-import com.l2jhellas.gameserver.util.DynamicExtension;
 import com.l2jhellas.status.Status;
+import com.l2jhellas.util.DynamicExtension;
+import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jserver.mmocore.network.SelectorConfig;
 import com.l2jserver.mmocore.network.SelectorThread;
@@ -172,12 +174,6 @@ public class GameServer
 		if (Config.USE_SAY_FILTER)
 			new File(Config.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 
-		Util.printSection("Script Engine");
-		if (!Config.ALT_DEV_NO_SCRIPT)
-		{
-			L2ScriptEngineManager.getInstance();
-		}
-
 		// ===========================================================================
 		Util.printSection("World");
 		L2World.getInstance();
@@ -185,6 +181,7 @@ public class GameServer
 		Announcements.getInstance();
 		AutoAnnouncementHandler.getInstance();
 		Universe.getInstance();
+		FloodProtector.getInstance();
 		if (!IdFactory.getInstance().isInitialized())
 		{
 			_log.info("Could not read object IDs from DB. Please Check Your Data.");
@@ -206,7 +203,6 @@ public class GameServer
 		SkillSpellbookTable.getInstance();
 		NobleSkillTable.getInstance();
 		HeroSkillTable.getInstance();
-		_log.info("Skills: All skills loaded.");
 
 		Util.printSection("Items");
 		if (!ItemTable.getInstance().isInitialized())
@@ -219,7 +215,6 @@ public class GameServer
 		SummonItemsData.getInstance();
 		if (Config.ALLOWFISHING)
 			FishTable.getInstance();
-		_log.info("Items: All items loaded.");
 
 		Util.printSection("Npc");
 		if (Config.ALLOW_NPC_WALKERS)
@@ -229,7 +224,6 @@ public class GameServer
 			_log.info("Could not find the extraced files. Please Check Your Data.");
 			throw new Exception("Could not initialize the npc table");
 		}
-		_log.info("NPC: All Npc's loaded.");
 
 		Util.printSection("Characters");
 		if (Config.COMMUNITY_TYPE.equals("Full"))
@@ -240,6 +234,8 @@ public class GameServer
 		CharTemplateTable.getInstance();
 		LevelUpData.getInstance();
 		AccessLevels.getInstance();
+		AdminCommandAccessRights.getInstance();
+		CrownManager.getInstance();
 		GmListTable.getInstance();
 		if (!HennaTable.getInstance().isInitialized())
 		{
@@ -254,7 +250,6 @@ public class GameServer
 			throw new Exception("Could not initialize the Helper Buff Table");
 		}
 		BuffTemplateTable.getInstance();
-		_log.info("Characters: All Data loaded.");
 
 		Util.printSection("Geodata");
 		GeoData.getInstance();
@@ -264,12 +259,10 @@ public class GameServer
 		Util.printSection("Economy");
 		TradeController.getInstance();
 		L2Multisell.getInstance();
-		_log.info("Multisell: loaded.");
 
 		Util.printSection("Clan Halls");
 		ClanHallManager.getInstance();
 		AuctionManager.getInstance();
-		_log.info("Clan Halls: loaded.");
 
 		Util.printSection("Zone");
 		ZoneData.getInstance();
@@ -286,7 +279,7 @@ public class GameServer
 		}
 		else
 		{
-			_log.info("Spawn: disable load.");
+			_log.log(Level.INFO, "Spawns: disabled.");
 		}
 		if (!Config.ALT_DEV_NO_RB)
 		{
@@ -299,7 +292,6 @@ public class GameServer
 			_log.info("RaidBoss: disable load.");
 		}
 		DayNightSpawnManager.getInstance().notifyChangeMode();
-		_log.info("Spawn Data: loaded.");
 
 		Util.printSection("Dimensional Rift");
 		DimensionalRiftManager.getInstance();
@@ -313,6 +305,7 @@ public class GameServer
 		PetitionManager.getInstance();
 		CursedWeaponsManager.getInstance();
 		TaskManager.getInstance();
+		FourSepulchersManager.getInstance();
 		L2PetDataTable.getInstance().loadPetsData();
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 			GeoEditorListener.getInstance();
@@ -324,11 +317,9 @@ public class GameServer
 		Util.printSection("Manor");
 		L2Manor.getInstance();
 		CastleManorManager.getInstance();
-		_log.info("Manor System: loaded.");
 
 		Util.printSection("Boat");
 		BoatManager.getInstance();
-		_log.info("BoatManager: loaded.");
 
 		Util.printSection("Doors");
 		_doorTable = DoorTable.getInstance();
@@ -350,15 +341,10 @@ public class GameServer
 		catch (NullPointerException e)
 		{
 			_log.warning("You have errors on Door.csv!");
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-		_log.info("Door Data: loaded.");
 
-		System.gc();
-
-		Util.printSection("Four Sepulchers");
-		FourSepulchersManager.getInstance();
 
 		Util.printSection("Seven Signs");
 		_sevenSignsEngine = SevenSigns.getInstance();
@@ -366,15 +352,10 @@ public class GameServer
 		_autoChatHandler = AutoChatHandler.getInstance();
 		SevenSignsFestival.getInstance();
 		_sevenSignsEngine.spawnSevenSignsNPC();// Spawn the Orators/Preachers if in the Seal Validation period.
-		_log.info("Seven Signs: loaded.");
 
 		Util.printSection("Olympiad System");
 		Olympiad.getInstance();
 		Hero.getInstance();
-		_log.info("Olympiad System: loaded.");
-		_log.info("");// avoid oly game started
-
-		System.gc();
 
 		Util.printSection("Handlers");
 		ItemHandler.getInstance();
@@ -383,10 +364,9 @@ public class GameServer
 		UserCommandHandler.getInstance();
 		VoicedCommandHandler.getInstance();
 		ChatHandler.getInstance();
-		_log.info("AutoChatHandler : Loaded " + _autoChatHandler.size() + " handlers in total.");
-		_log.info("AutoSpawnHandler : Loaded " + _autoSpawnHandler.size() + " handlers in total.");
-		_log.info("VoicedCommandHandler: Loaded " + VoicedCommandHandler.getInstance().size() + " handlers in total.");
-		_log.info("Handler Data: loaded.");
+		_log.log(Level.INFO, "AutoChatHandler : Loaded " + _autoChatHandler.size() + " handlers in total.");
+		_log.log(Level.INFO, "AutoSpawnHandler : Loaded " + _autoSpawnHandler.size() + " handlers in total.");
+		_log.log(Level.INFO, "VoicedCommandHandler: Loaded " + VoicedCommandHandler.getInstance().size() + " handlers in total.");
 
 		Util.printSection("Quests");
 		if (!Config.ALT_DEV_NO_QUESTS)
@@ -408,14 +388,18 @@ public class GameServer
 			}
 			catch (IOException ioe)
 			{
-				_log.severe("Failed to load!!");
+				_log.log(Level.SEVERE, "Failed to load!!" + ioe);
+				if (Config.DEVELOPER)
+				{
+					ioe.printStackTrace();
+				}
 			}
 			try
 			{
 				CompiledScriptCache compiledScriptCache = L2ScriptEngineManager.getInstance().getCompiledScriptCache();
 				if (compiledScriptCache == null)
 				{
-					_log.info("The Cache of scripts is disabled.");
+					_log.log(Level.INFO, getClass().getSimpleName() + ": The Cache of scripts is disabled.");
 				}
 				else
 				{
@@ -424,23 +408,27 @@ public class GameServer
 					if (compiledScriptCache.isModified())
 					{
 						compiledScriptCache.save();
-						_log.info("The script hasn't updated the Cache.");
+						_log.log(Level.INFO, getClass().getSimpleName() + ": The script hasn't updated the Cache.");
 					}
 					else
 					{
-						_log.info("The script has been updated Cache.");
+						_log.log(Level.INFO, getClass().getSimpleName() + ": The script has been updated Cache.");
 					}
 				}
 			}
 			catch (IOException e)
 			{
-				_log.log(Level.SEVERE, "Failed to load Cache Script.", e);
+				_log.log(Level.SEVERE, getClass().getSimpleName() + ": Failed to load Cache Script.", e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
-			FaenorScriptEngine.getInstance();
+			// FaenorScriptEngine.getInstance();
 		}
 		else
 		{
-			_log.info("Scripts: Disabled by Config.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts: Disabled by Config.");
 		}
 
 		Util.printSection("Customs");
@@ -459,18 +447,17 @@ public class GameServer
 			QuizEvent.getInstance();
 		if (Config.ALLOW_AWAY_STATUS)
 		{
-			_log.info("Away System");
 			AwayManager.getInstance();
 		}
 		BalanceLoad.loadBalance();
 		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
 		{
-			_log.info("[Restart System]: Auto Restart System is Enabled ");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Restart System: Auto Restart System is Enabled.");
 			Restart.getInstance().StartCalculationOfNextRestartTime();
 		}
 		else
 		{
-			_log.info("[Restart System]: Auto Restart System is Disabled ");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Restart System: Auto Restart System is Disabled.");
 		}
 		if (Config.MOD_ALLOW_WEDDING)
 			CoupleManager.getInstance();
@@ -487,24 +474,26 @@ public class GameServer
 		catch (Exception ex)
 		{
 			_log.log(Level.WARNING, "Dynamic Extension initials", ex);
+			if (Config.DEVELOPER)
+			{
+				ex.printStackTrace();
+			}
 		}
 
-		System.gc();
-
 		Util.printSection("Info");
-		_log.info("Maximum Numbers of Connected Players: " + Config.MAXIMUM_ONLINE_USERS);
+		_log.log(Level.INFO, "Maximum Numbers of Connected Players: " + Config.MAXIMUM_ONLINE_USERS);
 		// maxMemory is the upper limit the jvm can use, totalMemory the size of
 		// the current allocation pool, freeMemory the unused memory in the
 		// allocation pool
 		long freeMem = (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
 		long totalMem = Runtime.getRuntime().maxMemory() / 1048576;
-		_log.info("GameServer Initiated, Used Memory " + freeMem + " Mb from total " + totalMem + " Mb");
+		_log.log(Level.INFO, "GameServer Initiated, Used Memory " + freeMem + " Mb from total " + totalMem + " Mb");
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();
 		Util.printRuntimeInfo();
 
 		Util.printSection("Game Server");
-		_log.config("IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
+		_log.log(Level.INFO, getClass().getSimpleName() + ": IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
 
 		final SelectorConfig sc = new SelectorConfig();
 		sc.MAX_READ_PER_PASS = Config.MMO_MAX_READ_PER_PASS;
@@ -522,7 +511,7 @@ public class GameServer
 			}
 			catch (UnknownHostException e1)
 			{
-				_log.severe("WARNING: The GameServer bind address is invalid, using all avaliable IPs. Reason: " + e1.getMessage());
+				_log.log(Level.SEVERE, getClass().getSimpleName() + ": WARNING: The GameServer bind address is invalid, using all avaliable IPs. Reason: " + e1.getMessage());
 				if (Config.DEVELOPER)
 					e1.printStackTrace();
 			}
@@ -533,16 +522,16 @@ public class GameServer
 		}
 		catch (IOException e)
 		{
-			_log.severe("FATAL: Failed to open server socket. Reason: " + e.getMessage());
+			_log.log(Level.SEVERE, getClass().getSimpleName() + ": FATAL: Failed to open server socket. Reason: " + e.getMessage());
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 			System.exit(1);
 		}
 
 		_selectorThread.start();
-		_log.config("Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
 		long serverLoadEnd = System.currentTimeMillis();
-		_log.info("Server Started at: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Server Started in: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
 	}
 
 	public static void main(String[] args) throws Exception
@@ -569,14 +558,18 @@ public class GameServer
 		InputStream is = new FileInputStream(new File(LOG_NAME));
 		LogManager.getLogManager().readConfiguration(is);
 		is.close();
-
-		Util.printSection("General Info");
-		Util.printGeneralSystemInfo();
-
 		Util.printSection("Configs");
 		Config.load();
 		ExternalConfig.load();
-		_log.info("Configs Loaded.");
+
+		Util.printSection("Script Engine");
+		if (!Config.ALT_DEV_NO_SCRIPT)
+		{
+			L2ScriptEngineManager.getInstance();
+		}
+
+		Util.printSection("General Info");
+		Util.printGeneralSystemInfo();
 
 		Util.printSection("DataBase");
 		L2DatabaseFactory.getInstance();

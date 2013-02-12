@@ -14,6 +14,10 @@
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -32,10 +36,9 @@ import com.l2jhellas.gameserver.templates.L2WeaponType;
 /**
  * @author _tomciaaa_
  */
-
 public class StrSiegeAssault implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(StrSiegeAssault.class.getName());
+	private static Logger _log = Logger.getLogger(StrSiegeAssault.class.getName());
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.STRSIEGEASSAULT
@@ -104,7 +107,11 @@ public class StrSiegeAssault implements ISkillHandler
 		}
 		catch (Exception e)
 		{
-			player.sendMessage("Error using siege assault:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error using siege assault:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

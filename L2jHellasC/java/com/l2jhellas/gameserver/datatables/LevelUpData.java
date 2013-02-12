@@ -18,36 +18,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2LvlupData;
 import com.l2jhellas.gameserver.model.base.ClassId;
 
-/**
- * This class ...
- *
- * @author NightMarez
- * @version $Revision: 1.3.2.4.2.3 $ $Date: 2005/03/27 15:29:18 $
- */
 public class LevelUpData
 {
-    private static final String SELECT_ALL = "SELECT classid, defaulthpbase, defaulthpadd, defaulthpmod, defaultcpbase, defaultcpadd, defaultcpmod, defaultmpbase, defaultmpadd, defaultmpmod, class_lvl FROM lvlupgain";
-    private static final String CLASS_LVL = "class_lvl";
-    private static final String MP_MOD = "defaultmpmod";
-    private static final String MP_ADD = "defaultmpadd";
-    private static final String MP_BASE = "defaultmpbase";
-    private static final String HP_MOD = "defaulthpmod";
-    private static final String HP_ADD = "defaulthpadd";
-    private static final String HP_BASE = "defaulthpbase";
-    private static final String CP_MOD = "defaultcpmod";
-    private static final String CP_ADD = "defaultcpadd";
-    private static final String CP_BASE = "defaultcpbase";
-    private static final String CLASS_ID = "classid";
+	private static Logger _log = Logger.getLogger(LevelUpData.class.getName());
 
-    private static Logger _log = Logger.getLogger(LevelUpData.class.getName());
+	private static final String SELECT_ALL = "SELECT classid, defaulthpbase, defaulthpadd, defaulthpmod, defaultcpbase, defaultcpadd, defaultcpmod, defaultmpbase, defaultmpadd, defaultmpmod, class_lvl FROM lvlupgain";
+	private static final String CLASS_LVL = "class_lvl";
+	private static final String MP_MOD = "defaultmpmod";
+	private static final String MP_ADD = "defaultmpadd";
+	private static final String MP_BASE = "defaultmpbase";
+	private static final String HP_MOD = "defaulthpmod";
+	private static final String HP_ADD = "defaulthpadd";
+	private static final String HP_BASE = "defaulthpbase";
+	private static final String CP_MOD = "defaultcpmod";
+	private static final String CP_ADD = "defaultcpadd";
+	private static final String CP_BASE = "defaultcpbase";
+	private static final String CLASS_ID = "classid";
 
 	private static LevelUpData _instance;
 
@@ -81,9 +77,9 @@ public class LevelUpData
 				lvlDat.setClassHpBase(rset.getFloat(HP_BASE));
 				lvlDat.setClassHpAdd(rset.getFloat(HP_ADD));
 				lvlDat.setClassHpModifier(rset.getFloat(HP_MOD));
-                lvlDat.setClassCpBase(rset.getFloat(CP_BASE));
-                lvlDat.setClassCpAdd(rset.getFloat(CP_ADD));
-                lvlDat.setClassCpModifier(rset.getFloat(CP_MOD));
+				lvlDat.setClassCpBase(rset.getFloat(CP_BASE));
+				lvlDat.setClassCpAdd(rset.getFloat(CP_ADD));
+				lvlDat.setClassCpModifier(rset.getFloat(CP_MOD));
 				lvlDat.setClassMpBase(rset.getFloat(MP_BASE));
 				lvlDat.setClassMpAdd(rset.getFloat(MP_ADD));
 				lvlDat.setClassMpModifier(rset.getFloat(MP_MOD));
@@ -94,26 +90,38 @@ public class LevelUpData
 			rset.close();
 			statement.close();
 
-			_log.config("LevelUpData: Loaded " + _lvlTable.size() + " Character Level Up Templates.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _lvlTable.size() + " Character Level Up Templates.");
 		}
 		catch (Exception e)
 		{
-			_log.warning("error while creating Lvl up data table "+e);
+			_log.log(Level.WARNING, getClass().getName() + ": error while creating Lvl up data table " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
-			try { con.close(); } catch (Exception e) {}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 
 	/**
-	 * @param template id
+	 * @param template
+	 *        id
 	 * @return
 	 */
 	public L2LvlupData getTemplate(int classId)
 	{
 		return _lvlTable.get(classId);
 	}
+
 	public L2LvlupData getTemplate(ClassId classId)
 	{
 		return _lvlTable.get(classId.getId());

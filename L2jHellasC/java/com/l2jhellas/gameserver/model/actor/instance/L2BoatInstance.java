@@ -22,6 +22,7 @@ import java.io.LineNumberReader;
 import java.util.Collection;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
@@ -147,8 +148,10 @@ public class L2BoatInstance extends L2Character
 					if (line.trim().length() == 0 || !line.startsWith(idWaypoint1+";"))
 						continue;
 					parseLine(line);
+					lnr.close();
 					return;
 				}
+
 				_logBoat.warning("No path for boat "+boatName+" !!!");
 			}
 			catch (FileNotFoundException e)
@@ -157,11 +160,21 @@ public class L2BoatInstance extends L2Character
 			}
 			catch (Exception e)
 			{
-				_logBoat.warning("error while creating boat table " + e);
+				_log.log(Level.WARNING, getClass().getName() + ": error while creating boat table " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			finally
 			{
-				try { lnr.close(); } catch (Exception e1) { /* ignore problems */ }
+				try
+				{
+					lnr.close();
+				}
+				catch (Exception e1)
+				{
+				}
 			}
 		}
 

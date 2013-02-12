@@ -14,7 +14,11 @@
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
-import com.l2jhellas.gameserver.datatables.NpcTable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -37,7 +41,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class SiegeFlag implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(SiegeFlag.class.getName());
+	private static Logger _log = Logger.getLogger(SiegeFlag.class.getName());
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.SIEGEFLAG
@@ -71,7 +75,11 @@ public class SiegeFlag implements ISkillHandler
 		}
 		catch (Exception e)
 		{
-			player.sendMessage("Error placing flag:" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error placing flag:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

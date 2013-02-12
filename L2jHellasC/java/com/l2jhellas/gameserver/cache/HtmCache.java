@@ -18,12 +18,13 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.util.Util;
+import com.l2jhellas.util.Util;
 
 /**
  * @author Layane
@@ -34,7 +35,7 @@ public class HtmCache
     private static Logger _log = Logger.getLogger(HtmCache.class.getName());
     private static HtmCache _instance;
 
-    private FastMap<Integer, String> _cache;
+    private final FastMap<Integer, String> _cache;
 
     private int _loadedFiles;
     private long _bytesBuffLen;
@@ -93,7 +94,8 @@ public class HtmCache
 
     class HtmFilter implements FileFilter
     {
-        public boolean accept(File file)
+        @Override
+		public boolean accept(File file)
         {
             if (!file.isDirectory())
             {
@@ -158,7 +160,11 @@ public class HtmCache
             }
             catch (Exception e)
             {
-                _log.warning("problem with htm file " + e);
+				_log.log(Level.WARNING, getClass().getName() + " problem with htm file " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
             }
             finally
             {
@@ -176,7 +182,7 @@ public class HtmCache
         if (content == null)
         {
             content = "<html><body>My text is missing:<br>" + path + "</body></html>";
-            _log.warning("Cache[HTML]: Missing HTML page: " + path);
+			_log.log(Level.WARNING, getClass().getName() + " Missing HTML page: " + path);
         }
 
         return content;

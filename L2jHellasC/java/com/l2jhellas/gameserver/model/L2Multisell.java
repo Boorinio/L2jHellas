@@ -27,7 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MultiSellList;
 import com.l2jhellas.gameserver.templates.L2Armor;
@@ -494,7 +494,7 @@ public class L2Multisell
             }
             catch (Exception e)
             {
-                _log.log(Level.SEVERE, "Error loading file " + f, e);
+				_log.log(Level.WARNING, "Error loading file " + f, e);
             }
             try
             {
@@ -504,9 +504,10 @@ public class L2Multisell
             }
             catch (Exception e)
             {
-                _log.log(Level.SEVERE, "Error in file " + f, e);
+				_log.log(Level.WARNING, "Error in file " + f, e);
             }
         }
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _entries.size() + " lists.");
     }
 
     protected MultiSellListContainer parseDocument(Document doc)
@@ -592,5 +593,4 @@ public class L2Multisell
 
         return entry;
     }
-
 }

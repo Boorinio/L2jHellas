@@ -18,7 +18,7 @@ import java.util.List;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.gameserver.datatables.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.Race;
 

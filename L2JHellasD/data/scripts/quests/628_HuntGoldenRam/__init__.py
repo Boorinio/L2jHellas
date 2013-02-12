@@ -2,7 +2,7 @@
 # Made by Polo - Have fun!..... fix & addition by t0rm3nt0r and LEX
 import sys
 from com.l2jhellas import Config 
-from com.l2jhellas.gameserver.datatables import SkillTable
+from com.l2jhellas.gameserver.skills import SkillTable
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState
 from com.l2jhellas.gameserver.model.quest.jython import QuestJython as JQuest
