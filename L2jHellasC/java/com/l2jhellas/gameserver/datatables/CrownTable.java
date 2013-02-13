@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.datatables;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -45,7 +46,7 @@ public class CrownTable
 			_crownList.add(8182); // Rune
 			_crownList.add(8183); // Schuttgart
 		}
-		_log.warning("CrownTable Loaded: " + _crownList.size() + " Crowns.");
+		_log.log(Level.FINER, ": Loaded: " + _crownList.size() + " Crowns.");
 		return _crownList;
 	}
 

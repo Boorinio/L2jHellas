@@ -17,6 +17,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.itemhandlers.BeastSoulShot;
 import com.l2jhellas.gameserver.handler.itemhandlers.BeastSpice;
 import com.l2jhellas.gameserver.handler.itemhandlers.BeastSpiritShot;
@@ -111,6 +112,7 @@ public class ItemHandler
 		registerItemHandler(new CompBlessedSpiritShotPacks());
 		registerItemHandler(new CompShotPacks());
 		registerItemHandler(new CompSpiritShotPacks());
+		if(Config.HERO_CUSTOM_ITEMS)
 		registerItemHandler(new HeroCustomItem());
 		registerItemHandler(new PaganKeys());
 		registerItemHandler(new Maps());

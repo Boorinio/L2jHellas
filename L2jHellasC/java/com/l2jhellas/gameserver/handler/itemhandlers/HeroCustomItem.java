@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,41 +23,40 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class HeroCustomItem implements IItemHandler
 {
-	private static final int ITEM_IDS[] = {
+	private static final int ITEM_IDS[] =
+	{
 		6673
 	};
-
+	
 	public HeroCustomItem()
 	{
 	}
-
+	
 	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
-		if (Config.HERO_CUSTOM_ITEMS)
+		if (!(playable instanceof L2PcInstance))
+			return;
+		L2PcInstance activeChar = (L2PcInstance) playable;
+		if (activeChar.isHero())
 		{
-			if (!(playable instanceof L2PcInstance))
-				return;
-			L2PcInstance activeChar = (L2PcInstance) playable;
-			if (activeChar.isHero())
-			{
-				activeChar.sendMessage("You are already Hero!.");
-			}
-			else
-			{
-				activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 16));
-				activeChar.setNoble(true);
-				activeChar.sendMessage("Now you're Hero and just received Hero status and skills.");
-				activeChar.broadcastUserInfo();
-				playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
-			}
+			activeChar.sendMessage("You are already Hero!.");
 		}
+		else
+		{
+			activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 16));
+			activeChar.setNoble(true);
+			activeChar.sendMessage("Now you're Hero and just received Hero status and skills.");
+			activeChar.broadcastUserInfo();
+			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
+		}
+		
 	}
-
+	
 	@Override
 	public int[] getItemIds()
 	{
 		return ITEM_IDS;
 	}
-
+	
 }
