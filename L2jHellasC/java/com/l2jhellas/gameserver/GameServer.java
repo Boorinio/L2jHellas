@@ -112,6 +112,7 @@ import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
+import com.l2jhellas.gameserver.script.faenor.FaenorScriptEngine;
 import com.l2jhellas.gameserver.scripting.CompiledScriptCache;
 import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
@@ -357,7 +358,7 @@ public class GameServer
 					e.printStackTrace();
 				}
 			}
-			// FaenorScriptEngine.getInstance();
+			FaenorScriptEngine.getInstance();
 		}
 		else
 		{
