@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS `castle_door`;
 CREATE TABLE `castle_door` (
   `castleId` int(11) NOT NULL DEFAULT '0',
   `id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(30) COLLATE utf8_bin NOT NULL,
+  `name` varchar(30) NOT NULL,
   `x` int(11) NOT NULL DEFAULT '0',
   `y` int(11) NOT NULL DEFAULT '0',
   `z` int(11) NOT NULL DEFAULT '0',
@@ -22,7 +22,7 @@ CREATE TABLE `castle_door` (
   `mDef` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id` (`castleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `castle_door`

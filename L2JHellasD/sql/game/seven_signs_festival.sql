@@ -6,13 +6,13 @@ DROP TABLE IF EXISTS `seven_signs_festival`;
 
 CREATE TABLE `seven_signs_festival` (
   `festivalId` int(1) NOT NULL DEFAULT '0',
-  `cabal` varchar(4) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `cabal` varchar(4) NOT NULL DEFAULT '',
   `cycle` int(4) NOT NULL DEFAULT '0',
   `date` bigint(50) DEFAULT '0',
   `score` int(5) NOT NULL DEFAULT '0',
-  `members` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `members` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`festivalId`,`cabal`,`cycle`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `seven_signs_festival`

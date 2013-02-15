@@ -6,12 +6,12 @@ DROP TABLE IF EXISTS `clan_data`;
 
 CREATE TABLE `clan_data` (
   `clan_id` int(11) NOT NULL DEFAULT '0',
-  `clan_name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `clan_name` varchar(45) DEFAULT NULL,
   `clan_level` int(11) DEFAULT NULL,
   `reputation_score` int(11) NOT NULL DEFAULT '0',
   `hasCastle` int(11) DEFAULT NULL,
   `ally_id` int(11) DEFAULT NULL,
-  `ally_name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `ally_name` varchar(45) DEFAULT NULL,
   `leader_id` int(11) DEFAULT NULL,
   `crest_id` int(11) DEFAULT NULL,
   `crest_large_id` int(11) DEFAULT NULL,
@@ -24,4 +24,4 @@ CREATE TABLE `clan_data` (
   PRIMARY KEY (`clan_id`),
   KEY `leader_id` (`leader_id`),
   KEY `ally_id` (`ally_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

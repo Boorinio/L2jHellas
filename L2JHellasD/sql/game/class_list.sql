@@ -5,11 +5,11 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `class_list`;
 
 CREATE TABLE `class_list` (
-  `class_name` varchar(19) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `class_name` varchar(19) NOT NULL DEFAULT '',
   `id` int(10) unsigned NOT NULL DEFAULT '0',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `class_list`

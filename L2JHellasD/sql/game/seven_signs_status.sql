@@ -30,7 +30,7 @@ CREATE TABLE `seven_signs_status` (
   `accumulated_bonus3` int(10) NOT NULL DEFAULT '0',
   `accumulated_bonus4` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `seven_signs_status`

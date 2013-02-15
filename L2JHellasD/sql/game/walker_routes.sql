@@ -15,7 +15,7 @@ CREATE TABLE `walker_routes` (
   `delay` int(9) NOT NULL DEFAULT '0',
   `running` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`route_id`,`npc_id`,`move_point`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `walker_routes`

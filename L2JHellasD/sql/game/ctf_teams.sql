@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `ctf_teams`;
 
 CREATE TABLE `ctf_teams` (
   `teamId` int(4) NOT NULL DEFAULT '0',
-  `teamName` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `teamName` varchar(255) NOT NULL DEFAULT '',
   `teamX` int(11) NOT NULL DEFAULT '0',
   `teamY` int(11) NOT NULL DEFAULT '0',
   `teamZ` int(11) NOT NULL DEFAULT '0',
@@ -15,4 +15,4 @@ CREATE TABLE `ctf_teams` (
   `flagY` int(11) NOT NULL DEFAULT '0',
   `flagZ` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`teamId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

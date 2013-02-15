@@ -5,8 +5,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `clan_wars`;
 
 CREATE TABLE `clan_wars` (
-  `clan1` varchar(35) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `clan2` varchar(35) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `clan1` varchar(35) NOT NULL DEFAULT '',
+  `clan2` varchar(35) NOT NULL DEFAULT '',
   `wantspeace1` decimal(1,0) NOT NULL DEFAULT '0',
   `wantspeace2` decimal(1,0) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

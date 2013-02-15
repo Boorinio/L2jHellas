@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS `pledge_skill_trees`;
 CREATE TABLE `pledge_skill_trees` (
   `skill_id` int(11) DEFAULT NULL,
   `level` int(11) DEFAULT NULL,
-  `name` varchar(25) COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(25) DEFAULT NULL,
   `clan_lvl` int(11) DEFAULT NULL,
-  `Description` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
   `repCost` int(11) DEFAULT NULL,
   `itemId` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `pledge_skill_trees`

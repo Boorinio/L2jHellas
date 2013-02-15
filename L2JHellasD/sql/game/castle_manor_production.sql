@@ -12,4 +12,4 @@ CREATE TABLE `castle_manor_production` (
   `seed_price` int(11) NOT NULL DEFAULT '0',
   `period` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`castle_id`,`seed_id`,`period`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

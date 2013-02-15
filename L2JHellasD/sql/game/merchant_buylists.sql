@@ -14,7 +14,7 @@ CREATE TABLE `merchant_buylists` (
   `time` int(11) NOT NULL DEFAULT '0',
   `savetimer` decimal(20,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`shop_id`,`order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `merchant_buylists`

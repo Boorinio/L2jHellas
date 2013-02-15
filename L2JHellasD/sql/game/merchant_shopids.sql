@@ -6,9 +6,9 @@ DROP TABLE IF EXISTS `merchant_shopids`;
 
 CREATE TABLE `merchant_shopids` (
   `shop_id` decimal(9,0) NOT NULL DEFAULT '0',
-  `npc_id` varchar(9) COLLATE utf8_bin DEFAULT NULL,
+  `npc_id` varchar(9) DEFAULT NULL,
   PRIMARY KEY (`shop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `merchant_shopids`

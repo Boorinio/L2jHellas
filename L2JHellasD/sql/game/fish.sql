@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS `fish`;
 CREATE TABLE `fish` (
   `id` int(5) NOT NULL DEFAULT '0',
   `level` int(5) NOT NULL DEFAULT '0',
-  `name` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `name` varchar(40) NOT NULL DEFAULT '',
   `hp` int(5) NOT NULL DEFAULT '0',
   `hpregen` int(3) NOT NULL DEFAULT '5',
   `fish_type` int(1) NOT NULL DEFAULT '0',
@@ -17,7 +17,7 @@ CREATE TABLE `fish` (
   `wait_time` int(5) NOT NULL DEFAULT '0',
   `combat_time` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `fish`

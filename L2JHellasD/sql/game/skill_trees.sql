@@ -8,11 +8,11 @@ CREATE TABLE `skill_trees` (
   `class_id` int(10) unsigned NOT NULL DEFAULT '0',
   `skill_id` int(10) unsigned NOT NULL DEFAULT '0',
   `level` int(10) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `name` varchar(40) NOT NULL DEFAULT '',
   `sp` int(10) unsigned NOT NULL DEFAULT '0',
   `min_level` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`class_id`,`skill_id`,`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `spawnlist`

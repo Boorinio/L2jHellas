@@ -5,8 +5,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `max_poly`;
 
 CREATE TABLE `max_poly` (
-  `name` varchar(22) COLLATE utf8_bin DEFAULT NULL,
-  `title` varchar(22) COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(22) DEFAULT NULL,
+  `title` varchar(22) DEFAULT NULL,
   `sex` decimal(22,0) NOT NULL DEFAULT '0',
   `hair` decimal(22,0) NOT NULL DEFAULT '0',
   `hairColor` decimal(22,0) NOT NULL DEFAULT '0',
@@ -34,7 +34,7 @@ CREATE TABLE `max_poly` (
   `nameColor` decimal(22,0) NOT NULL DEFAULT '0',
   `titleColor` decimal(22,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`classId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `max_poly`

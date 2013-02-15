@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `henna`;
 
 CREATE TABLE `henna` (
   `symbol_id` int(11) NOT NULL DEFAULT '0',
-  `symbol_name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `symbol_name` varchar(45) DEFAULT NULL,
   `dye_id` int(11) DEFAULT NULL,
   `dye_amount` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `henna` (
   `stat_DEX` decimal(11,0) DEFAULT NULL,
   `stat_WIT` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`symbol_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `henna`

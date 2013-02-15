@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `four_sepulchers_spawnlist`;
 
 CREATE TABLE `four_sepulchers_spawnlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `location` varchar(19) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `location` varchar(19) NOT NULL DEFAULT '',
   `count` int(9) NOT NULL DEFAULT '0',
   `npc_templateid` int(11) NOT NULL DEFAULT '0',
   `locx` int(9) NOT NULL DEFAULT '0',
@@ -19,7 +19,7 @@ CREATE TABLE `four_sepulchers_spawnlist` (
   `key_npc_id` int(9) NOT NULL DEFAULT '0',
   `spawntype` int(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1613 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='L2jHellas Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1613 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `four_sepulchers_spawnlist`

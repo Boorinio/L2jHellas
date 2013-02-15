@@ -7,14 +7,14 @@ DROP TABLE IF EXISTS `fishing_skill_trees`;
 CREATE TABLE `fishing_skill_trees` (
   `skill_id` int(10) NOT NULL DEFAULT '0',
   `level` int(10) NOT NULL DEFAULT '0',
-  `name` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `name` varchar(25) NOT NULL DEFAULT '',
   `sp` int(10) NOT NULL DEFAULT '0',
   `min_level` int(10) NOT NULL DEFAULT '0',
   `costid` int(10) NOT NULL DEFAULT '0',
   `cost` int(10) NOT NULL DEFAULT '0',
   `isfordwarf` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`skill_id`,`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `fishing_skill_trees`

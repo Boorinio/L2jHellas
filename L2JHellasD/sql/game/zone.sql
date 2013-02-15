@@ -15,7 +15,7 @@ CREATE TABLE `zone` (
   z INT NOT NULL default 0,
   z2 INT NOT NULL default 0,
   taxById INT NOT NULL default 0
-) ENGINE = InnoDB DEFAULT CHARSET = UTF8 COLLATE = UTF8_UNICODE_CI COMMENT = 'L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8 COLLATE=UTF8_UNICODE_CI ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `zone`

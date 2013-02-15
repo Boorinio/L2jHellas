@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `pets`;
 
 CREATE TABLE `pets` (
   `item_obj_id` decimal(11,0) NOT NULL DEFAULT '0',
-  `name` varchar(16) COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(16) DEFAULT NULL,
   `level` decimal(11,0) DEFAULT NULL,
   `curHp` decimal(18,0) DEFAULT NULL,
   `curMp` decimal(18,0) DEFAULT NULL,
@@ -16,4 +16,4 @@ CREATE TABLE `pets` (
   `pkkills` decimal(11,0) DEFAULT NULL,
   `fed` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`item_obj_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

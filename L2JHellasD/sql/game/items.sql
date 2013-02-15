@@ -10,7 +10,7 @@ CREATE TABLE `items` (
   `item_id` int(11) DEFAULT NULL,
   `count` int(11) DEFAULT NULL,
   `enchant_level` int(11) DEFAULT NULL,
-  `loc` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  `loc` varchar(10) DEFAULT NULL,
   `loc_data` int(11) DEFAULT NULL,
   `price_sell` int(11) DEFAULT NULL,
   `price_buy` int(11) DEFAULT NULL,
@@ -23,4 +23,4 @@ CREATE TABLE `items` (
   KEY `key_loc` (`loc`),
   KEY `key_item_id` (`item_id`),
   KEY `key_time_of_use` (`time_of_use`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

@@ -8,8 +8,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `quest_global_data`;
 
 CREATE TABLE `quest_global_data` (
-  `quest_name` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `var` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `value` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `quest_name` varchar(40) NOT NULL DEFAULT '',
+  `var` varchar(20) NOT NULL DEFAULT '',
+  `value` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`quest_name`,`var`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

@@ -17,7 +17,7 @@ CREATE TABLE `lvlupgain` (
   `defaultmpmod` decimal(4,2) NOT NULL DEFAULT '0.00',
   `class_lvl` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`classid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `lvlupgain`

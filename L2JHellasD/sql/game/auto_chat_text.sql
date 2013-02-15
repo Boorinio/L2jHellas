@@ -6,9 +6,9 @@ DROP TABLE IF EXISTS `auto_chat_text`;
 
 CREATE TABLE `auto_chat_text` (
   `groupId` int(11) NOT NULL DEFAULT '0',
-  `chatText` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `chatText` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`groupId`,`chatText`(100))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `auto_chat_text`

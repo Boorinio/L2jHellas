@@ -6,9 +6,9 @@ DROP TABLE IF EXISTS `buff_templates`;
 
 CREATE TABLE `buff_templates` (
   `id` int(11) unsigned NOT NULL,
-  `name` varchar(35) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `name` varchar(35) NOT NULL DEFAULT '',
   `skill_id` int(10) unsigned NOT NULL,
-  `skill_name` varchar(35) COLLATE utf8_bin DEFAULT NULL,
+  `skill_name` varchar(35) DEFAULT NULL,
   `skill_level` int(10) unsigned NOT NULL DEFAULT '1',
   `skill_force` int(1) NOT NULL DEFAULT '1',
   `skill_order` int(10) unsigned NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE `buff_templates` (
   `price_adena` int(10) unsigned NOT NULL DEFAULT '0',
   `price_points` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`name`,`skill_order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `buff_templates`

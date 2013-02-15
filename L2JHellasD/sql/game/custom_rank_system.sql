@@ -17,7 +17,7 @@ CREATE TABLE `custom_pvp_system` (
   `war_kills` int(10) NOT NULL DEFAULT '0',
   `kill_time`  bigint(18) NOT NULL DEFAULT 0 ,
 `kill_day`  bigint(18) NOT NULL DEFAULT 0 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Table structure for `custom_pvp_system_characters_rank_rewards`
@@ -28,7 +28,7 @@ CREATE TABLE `custom_pvp_system_characters_rank_rewards` (
   `charId` int(10) NOT NULL,
   `reward_id` int(10) NOT NULL,
   `is_taken` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Table structure for `custom_pvp_system_rank_reward`
@@ -41,7 +41,7 @@ CREATE TABLE `custom_pvp_system_rank_reward` (
   `item_amount` bigint(18) NOT NULL,
   `min_rank_points` int(10) NOT NULL COMMENT 'Should be the same like in: ExternalConfig:RankPvpRankMinPoints',
   PRIMARY KEY (`reward_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `custom_pvp_system_rank_reward`

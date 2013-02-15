@@ -6,16 +6,16 @@ DROP TABLE IF EXISTS `clanhall`;
 
 CREATE TABLE `clanhall` (
   `id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `name` varchar(40) NOT NULL DEFAULT '',
   `ownerId` int(11) NOT NULL DEFAULT '0',
   `lease` int(10) NOT NULL DEFAULT '0',
-  `desc` text COLLATE utf8_bin NOT NULL,
-  `location` varchar(15) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `desc` text NOT NULL,
+  `location` varchar(15) NOT NULL DEFAULT '',
   `paidUntil` decimal(20,0) NOT NULL DEFAULT '0',
   `Grade` decimal(1,0) NOT NULL DEFAULT '0',
   `paid` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `clanhall`

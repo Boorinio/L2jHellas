@@ -6,5 +6,5 @@ DROP TABLE IF EXISTS `boxaccess`;
 
 CREATE TABLE `boxaccess` (
   `spawn` decimal(11,0) DEFAULT NULL,
-  `charname` varchar(32) COLLATE utf8_bin DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+  `charname` varchar(32) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

@@ -11,10 +11,10 @@ CREATE TABLE `random_spawn` (
   `initialDelay` bigint(20) NOT NULL DEFAULT '-1',
   `respawnDelay` bigint(20) NOT NULL DEFAULT '-1',
   `despawnDelay` bigint(20) NOT NULL DEFAULT '-1',
-  `broadcastSpawn` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'false',
-  `randomSpawn` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'true',
+  `broadcastSpawn` varchar(5) NOT NULL DEFAULT 'false',
+  `randomSpawn` varchar(5) NOT NULL DEFAULT 'true',
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `random_spawn`

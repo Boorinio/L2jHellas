@@ -7,13 +7,13 @@ DROP TABLE IF EXISTS `helper_buff_list`;
 CREATE TABLE `helper_buff_list` (
   `id` int(11) NOT NULL DEFAULT '0',
   `skill_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `name` varchar(25) NOT NULL DEFAULT '',
   `skill_level` int(10) unsigned NOT NULL DEFAULT '0',
   `lower_level` int(10) unsigned NOT NULL DEFAULT '0',
   `upper_level` int(10) unsigned NOT NULL DEFAULT '0',
-  `is_magic_class` varchar(5) COLLATE utf8_bin DEFAULT NULL,
+  `is_magic_class` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `helper_buff_list`

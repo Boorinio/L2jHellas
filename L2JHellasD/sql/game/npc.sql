@@ -7,16 +7,16 @@ DROP TABLE IF EXISTS `npc`;
 CREATE TABLE `npc` (
   `id` decimal(11,0) NOT NULL DEFAULT '0',
   `idTemplate` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(200) DEFAULT NULL,
   `serverSideName` int(1) DEFAULT '0',
-  `title` varchar(45) COLLATE utf8_bin DEFAULT '',
+  `title` varchar(45) DEFAULT '',
   `serverSideTitle` int(1) DEFAULT '0',
-  `class` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `class` varchar(200) DEFAULT NULL,
   `collision_radius` decimal(5,2) DEFAULT NULL,
   `collision_height` decimal(5,2) DEFAULT NULL,
   `level` decimal(2,0) DEFAULT NULL,
-  `sex` varchar(6) COLLATE utf8_bin DEFAULT NULL,
-  `type` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `sex` varchar(6) DEFAULT NULL,
+  `type` varchar(20) DEFAULT NULL,
   `attackrange` int(11) DEFAULT NULL,
   `hp` decimal(8,0) DEFAULT NULL,
   `mp` decimal(5,0) DEFAULT NULL,
@@ -42,13 +42,13 @@ CREATE TABLE `npc` (
   `armor` decimal(1,0) DEFAULT NULL,
   `walkspd` decimal(3,0) DEFAULT NULL,
   `runspd` decimal(3,0) DEFAULT NULL,
-  `faction_id` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `faction_id` varchar(40) DEFAULT NULL,
   `faction_range` decimal(4,0) DEFAULT NULL,
   `isUndead` int(11) DEFAULT '0',
   `absorb_level` decimal(2,0) DEFAULT '0',
-  `absorb_type` enum('FULL_PARTY','LAST_HIT','PARTY_ONE_RANDOM') COLLATE utf8_bin NOT NULL DEFAULT 'LAST_HIT',
+  `absorb_type` enum('FULL_PARTY','LAST_HIT','PARTY_ONE_RANDOM') NOT NULL DEFAULT 'LAST_HIT',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `npc`

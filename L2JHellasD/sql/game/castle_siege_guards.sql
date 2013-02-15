@@ -16,7 +16,7 @@ CREATE TABLE `castle_siege_guards` (
   `isHired` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `id` (`castleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3690 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='L2jHellas Table';
+) ENGINE=InnoDB AUTO_INCREMENT=3690 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `castle_siege_guards`

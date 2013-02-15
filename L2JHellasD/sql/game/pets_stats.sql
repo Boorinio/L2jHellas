@@ -5,7 +5,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `pets_stats`;
 
 CREATE TABLE `pets_stats` (
-  `type` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `type` varchar(25) NOT NULL DEFAULT '',
   `typeID` int(5) NOT NULL DEFAULT '0',
   `level` int(11) NOT NULL DEFAULT '0',
   `expMax` int(20) NOT NULL DEFAULT '0',
@@ -29,7 +29,7 @@ CREATE TABLE `pets_stats` (
   `mpregen` int(11) NOT NULL DEFAULT '0',
   `owner_exp_taken` decimal(3,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`typeID`,`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `pets_stats`

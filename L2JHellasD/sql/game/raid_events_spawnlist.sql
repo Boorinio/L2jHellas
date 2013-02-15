@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `raid_event_spawnlist`;
 
 CREATE TABLE `raid_event_spawnlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `location` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `location` varchar(40) NOT NULL DEFAULT '',
   `raid_locX` int(9) NOT NULL,
   `raid_locY` int(9) NOT NULL,
   `raid_locZ` int(9) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `raid_event_spawnlist` (
   `player_locY` int(9) NOT NULL,
   `player_locZ` int(9) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='L2jHellas Table';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `raid_event_spawnlist`

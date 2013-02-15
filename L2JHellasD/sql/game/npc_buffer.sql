@@ -11,7 +11,7 @@ CREATE TABLE `npc_buffer` (
   `skill_fee_id` int(5) NOT NULL DEFAULT '0',
   `skill_fee_amount` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`npc_id`,`skill_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `npc_buffer`

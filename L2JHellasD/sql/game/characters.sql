@@ -5,9 +5,9 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `characters`;
 
 CREATE TABLE `characters` (
-  `account_name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `account_name` varchar(45) DEFAULT NULL,
   `obj_Id` decimal(11,0) NOT NULL DEFAULT '0',
-  `char_name` varchar(35) COLLATE utf8_bin NOT NULL,
+  `char_name` varchar(35) NOT NULL,
   `level` decimal(11,0) DEFAULT NULL,
   `maxHp` decimal(11,0) DEFAULT NULL,
   `curHp` decimal(18,0) DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `characters` (
   `base_class` int(2) NOT NULL DEFAULT '0',
   `deletetime` decimal(20,0) DEFAULT NULL,
   `cancraft` decimal(11,0) DEFAULT NULL,
-  `title` varchar(16) COLLATE utf8_bin DEFAULT NULL,
+  `title` varchar(16) DEFAULT NULL,
   `rec_have` int(3) NOT NULL DEFAULT '0',
   `rec_left` int(3) NOT NULL DEFAULT '0',
   `accesslevel` decimal(4,0) DEFAULT NULL,
@@ -85,15 +85,15 @@ CREATE TABLE `characters` (
   `hero` decimal(1,0) DEFAULT '0',
   `donator` decimal(1,0) DEFAULT '0',
   `chatban_timer` decimal(20,0) DEFAULT '0',
-  `chatban_reason` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `chatban_reason` varchar(255) NOT NULL DEFAULT '',
   `chat_filter_count` int(1) DEFAULT '0',
   `good` int(1) DEFAULT '0',
   `evil` int(1) DEFAULT '0',
   `hitman_target` int(16) NOT NULL DEFAULT '0',
-  `email` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
   `emailcode` int(10) unsigned DEFAULT '0',
   `hasSubEmail` int(10) unsigned DEFAULT '0',
-  `answer` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `answer` varchar(100) DEFAULT NULL,
   `secCode` int(10) unsigned DEFAULT '0',
   `emailchangecode` int(10) unsigned DEFAULT '0',
   `hasSubSec` int(10) unsigned DEFAULT '0',
@@ -107,4 +107,4 @@ CREATE TABLE `characters` (
   `event_points` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`obj_Id`),
   KEY `clanid` (`clanid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

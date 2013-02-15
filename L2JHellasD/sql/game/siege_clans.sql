@@ -10,4 +10,4 @@ CREATE TABLE `siege_clans` (
   `type` int(1) DEFAULT NULL,
   `castle_owner` int(1) DEFAULT NULL,
   PRIMARY KEY (`clan_id`,`castle_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
