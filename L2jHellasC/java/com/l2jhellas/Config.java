@@ -2383,7 +2383,7 @@ public final class Config
 				INTERNAL_HOSTNAME = serverSettings.getProperty("InternalHostname", "localhost");
 				EXTERNAL_HOSTNAME = serverSettings.getProperty("ExternalHostname", "localhost");
 				DATABASE_DRIVER = serverSettings.getProperty("Driver", "com.mysql.jdbc.Driver");
-				// DATABASE_URL = serverSettings.getProperty("URL", "jdbc:mysql://localhost/l2jdb");
+				DATABASE_URL = serverSettings.getProperty("URL", "jdbc:mysql://localhost/l2jdb");
 				DATABASE_LOGIN = serverSettings.getProperty("Login", "root");
 				DATABASE_PASSWORD = serverSettings.getProperty("Password", "");
 				DATABASE_MAX_CONNECTIONS = Integer.parseInt(serverSettings.getProperty("MaximumDbConnections", "10"));
