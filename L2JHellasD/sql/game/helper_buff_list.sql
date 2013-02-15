@@ -13,7 +13,7 @@ CREATE TABLE `helper_buff_list` (
   `upper_level` int(10) unsigned NOT NULL DEFAULT '0',
   `is_magic_class` varchar(5) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `helper_buff_list`

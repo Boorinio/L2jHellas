@@ -43,4 +43,4 @@ CREATE TABLE `custom_weapon` (
   `onCrit_skill_lvl` decimal(11,0) NOT NULL DEFAULT '0',
   `onCrit_skill_chance` decimal(11,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

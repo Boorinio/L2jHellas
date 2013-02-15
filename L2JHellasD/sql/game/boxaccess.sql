@@ -7,4 +7,4 @@ DROP TABLE IF EXISTS `boxaccess`;
 CREATE TABLE `boxaccess` (
   `spawn` decimal(11,0) DEFAULT NULL,
   `charname` varchar(32) COLLATE utf8_bin DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

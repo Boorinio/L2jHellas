@@ -14,7 +14,7 @@ CREATE TABLE `random_spawn` (
   `broadcastSpawn` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'false',
   `randomSpawn` varchar(5) COLLATE utf8_bin NOT NULL DEFAULT 'true',
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `random_spawn`

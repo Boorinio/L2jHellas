@@ -10,4 +10,4 @@ CREATE TABLE `augmentations` (
   `skill` int(11) DEFAULT '0',
   `level` int(11) DEFAULT '0',
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

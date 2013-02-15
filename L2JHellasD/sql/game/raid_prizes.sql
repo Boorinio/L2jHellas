@@ -12,7 +12,7 @@ CREATE TABLE `raid_prizes` (
   `second_prize_ammount` int(11) NOT NULL,
   `event_points_ammount` int(11) NOT NULL,
   PRIMARY KEY (`prize_package_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `raid_prizes`

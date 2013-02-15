@@ -19,7 +19,7 @@ CREATE TABLE `four_sepulchers_spawnlist` (
   `key_npc_id` int(9) NOT NULL DEFAULT '0',
   `spawntype` int(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1613 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=1613 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `four_sepulchers_spawnlist`

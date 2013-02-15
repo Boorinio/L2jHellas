@@ -10,7 +10,7 @@ CREATE TABLE `zone_vertices` (
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
   PRIMARY KEY  (`id`,`order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `zone_vertices`

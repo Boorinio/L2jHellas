@@ -11,4 +11,4 @@ CREATE TABLE `olympiad_nobles` (
   `olympiad_points` decimal(10,0) NOT NULL DEFAULT '0',
   `competitions_done` decimal(3,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`char_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

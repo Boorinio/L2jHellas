@@ -10,7 +10,7 @@ CREATE TABLE `merchant_areas_list` (
   `tax` double(3,2) unsigned NOT NULL DEFAULT '0.00',
   `Chaotic` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`merchant_area_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `merchant_areas_list`

@@ -10,7 +10,7 @@ CREATE TABLE `mods_buffer_skills` (
   `skill_group` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT 'default',
   `adena` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Table structure for `mods_buffer_schemes`
@@ -22,7 +22,7 @@ CREATE TABLE `mods_buffer_schemes` (
   `id` int(10) unsigned NOT NULL DEFAULT '0',
   `level` int(10) unsigned NOT NULL DEFAULT '0',
   `scheme` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT 'default'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `mods_buffer_skills`

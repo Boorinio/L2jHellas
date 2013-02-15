@@ -11,4 +11,4 @@ CREATE TABLE `mails` (
   `title` text COLLATE utf8_bin,
   `message` text COLLATE utf8_bin,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

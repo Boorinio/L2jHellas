@@ -13,7 +13,7 @@ CREATE TABLE `vipinfo` (
   `starty` int(11) NOT NULL DEFAULT '0',
   `startz` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`teamID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `vipinfo`

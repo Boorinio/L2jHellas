@@ -20,4 +20,4 @@ CREATE TABLE `dm` (
   `playerX` int(11) NOT NULL DEFAULT '0',
   `playerY` int(11) NOT NULL DEFAULT '0',
   `playerZ` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

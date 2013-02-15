@@ -14,4 +14,4 @@ CREATE TABLE `seven_signs` (
   `ancient_adena_amount` decimal(20,0) NOT NULL DEFAULT '0',
   `contribution_score` decimal(20,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`char_obj_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

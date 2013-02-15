@@ -20,7 +20,7 @@ CREATE TABLE `spawnlist` (
   `periodOfDay` decimal(2,0) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `key_npc_templateid` (`npc_templateid`)
-) ENGINE=InnoDB AUTO_INCREMENT=76235 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=76235 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `spawnlist`

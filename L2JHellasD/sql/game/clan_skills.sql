@@ -10,4 +10,4 @@ CREATE TABLE `clan_skills` (
   `skill_level` int(5) NOT NULL DEFAULT '0',
   `skill_name` varchar(26) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`clan_id`,`skill_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

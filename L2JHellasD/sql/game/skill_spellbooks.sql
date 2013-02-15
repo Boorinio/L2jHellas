@@ -8,7 +8,7 @@ CREATE TABLE `skill_spellbooks` (
   `skill_id` int(11) NOT NULL DEFAULT '-1',
   `item_id` int(11) NOT NULL DEFAULT '-1',
   KEY `skill_id` (`skill_id`,`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `skill_spellbooks`

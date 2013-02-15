@@ -13,7 +13,7 @@ CREATE TABLE `locations` (
   `proc` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`loc_id`,`loc_x`,`loc_y`),
   KEY `proc` (`proc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `locations`

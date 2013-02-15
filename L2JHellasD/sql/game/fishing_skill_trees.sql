@@ -14,7 +14,7 @@ CREATE TABLE `fishing_skill_trees` (
   `cost` int(10) NOT NULL DEFAULT '0',
   `isfordwarf` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`skill_id`,`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `fishing_skill_trees`

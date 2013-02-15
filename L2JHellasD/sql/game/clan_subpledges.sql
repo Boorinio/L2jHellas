@@ -10,4 +10,4 @@ CREATE TABLE `clan_subpledges` (
   `name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   `leader_name` varchar(35) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`clan_id`,`sub_pledge_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

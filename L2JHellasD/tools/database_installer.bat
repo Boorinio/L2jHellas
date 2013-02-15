@@ -238,7 +238,7 @@ set cmdline=
 title L2JHellas Datapack Installer - Sql Server DataBase Creation
 echo.
 echo Trying to create a Server DataBase...
-set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -e "CREATE DATABASE %gsdb%" 2^> NUL
+set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -e "CREATE DATABASE %gsdb% " --default-character-set=utf8 2^> NUL
 %cmdline%
 if %ERRORLEVEL% == 0 goto gs_db_ok
 if %safe_mode% == 1 goto omfg
@@ -278,21 +278,17 @@ title L2JHellas Datapack Installer - DataBase WARNING!
 echo.
 echo GAME SERVER DATABASE install:
 echo.
-echo (f) Full: WARNING! I'll destroy ALL of your existing character
-echo     data (i really mean it: items, pets.. ALL)
+echo (f) Full: WARNING! I'll destroy ALL of your existing character!
+echo     Data WIPE!
 echo.
 echo (u) Upgrade: I'll do my best to preserve all of your character
 echo     data.
-echo.
-echo (s) Skip: We'll get into the last set of questions (cummulative
-echo     updates, custom stuff...)
 echo.
 echo (q) Quit
 echo.
 set /p installtype=Choose (default upgrade):
 if /i %installtype%==f goto gs_cleanup
 if /i %installtype%==u goto gs_upgrade
-if /i %installtype%==s goto custom_ask
 if /i %installtype%==q goto end
 goto gs_db_ok
 
@@ -453,9 +449,9 @@ call :colors 17
 title L2JHELLAS DataPack Installer - Script Execution Finished
 cls
 echo.
-echo L2JHellas Datapack Database Installer 2012
+echo L2JHellas Datapack Database Installer
 echo.
-echo (C) 2012 L2JHellas DataPack Team
+echo (C) 2012-2013 L2JHellas Team
 echo L2JHellas DataPack DB Installer comes with ABSOLUTELY NO WARRANTY
 echo This is free software, and you are welcome to redistribute it
 echo under certain conditions; See the file gpl.txt for further
@@ -463,6 +459,6 @@ echo details.
 echo.
 echo Thanks for using our software.
 echo visit http://l2jhellas.eu/ for more info about
-echo the L2JHellas DataPack Project.
+echo the L2JHellas Project.
 echo.
 pause

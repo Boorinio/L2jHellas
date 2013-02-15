@@ -12,4 +12,4 @@ CREATE TABLE `clanhall_functions` (
   `rate` decimal(20,0) NOT NULL DEFAULT '0',
   `endTime` decimal(20,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`hall_id`,`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

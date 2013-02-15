@@ -11,7 +11,7 @@ CREATE TABLE `admin_command_access_rights` (
   `adminCommand` varchar(255) NOT NULL default 'admin_',
   `accessLevels` varchar(255) NOT NULL,
   PRIMARY KEY (`adminCommand`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `admin_command_access_rights`

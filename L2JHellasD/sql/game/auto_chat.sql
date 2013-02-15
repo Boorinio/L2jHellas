@@ -9,7 +9,7 @@ CREATE TABLE `auto_chat` (
   `npcId` int(11) NOT NULL DEFAULT '0',
   `chatDelay` bigint(20) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `auto_chat`

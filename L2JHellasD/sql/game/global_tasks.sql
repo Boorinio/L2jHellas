@@ -13,4 +13,4 @@ CREATE TABLE `global_tasks` (
   `param2` varchar(100) COLLATE utf8_bin NOT NULL DEFAULT '',
   `param3` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='L2jHellas Table';

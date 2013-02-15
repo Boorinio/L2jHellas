@@ -16,4 +16,4 @@ CREATE TABLE `pets` (
   `pkkills` decimal(11,0) DEFAULT NULL,
   `fed` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`item_obj_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

@@ -12,7 +12,7 @@ CREATE TABLE `questions` (
   `answer3` text COLLATE utf8_bin,
   `right_answer` text COLLATE utf8_bin,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 INSERT INTO `questions` VALUES 
   ('0','Whats the name of server admin?','Tom','Paul','John','Paul'),

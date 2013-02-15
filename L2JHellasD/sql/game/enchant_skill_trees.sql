@@ -17,7 +17,7 @@ CREATE TABLE `enchant_skill_trees` (
   `success_rate77` int(3) NOT NULL DEFAULT '0',
   `success_rate78` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`skill_id`,`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `enchant_skill_trees`

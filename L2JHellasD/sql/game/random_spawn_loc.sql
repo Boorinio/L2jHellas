@@ -11,7 +11,7 @@ CREATE TABLE `random_spawn_loc` (
   `z` int(11) NOT NULL DEFAULT '0',
   `heading` int(11) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`groupId`,`x`,`y`,`z`,`heading`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `random_spawn_loc`

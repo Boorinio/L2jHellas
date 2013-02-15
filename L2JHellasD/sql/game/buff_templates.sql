@@ -20,7 +20,7 @@ CREATE TABLE `buff_templates` (
   `price_adena` int(10) unsigned NOT NULL DEFAULT '0',
   `price_points` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`,`name`,`skill_order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `buff_templates`

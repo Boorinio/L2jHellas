@@ -12,7 +12,7 @@ CREATE TABLE `seven_signs_festival` (
   `score` int(5) NOT NULL DEFAULT '0',
   `members` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`festivalId`,`cabal`,`cycle`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `seven_signs_festival`

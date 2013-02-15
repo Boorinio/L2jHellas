@@ -8,7 +8,7 @@ CREATE TABLE `henna_trees` (
   `class_id` decimal(10,0) NOT NULL DEFAULT '0',
   `symbol_id` decimal(10,0) NOT NULL DEFAULT '0',
   PRIMARY KEY (`class_id`,`symbol_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `henna_trees`

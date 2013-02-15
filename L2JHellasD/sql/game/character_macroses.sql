@@ -13,4 +13,4 @@ CREATE TABLE `character_macroses` (
   `acronym` varchar(4) COLLATE utf8_bin DEFAULT NULL,
   `commands` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`char_obj_id`,`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

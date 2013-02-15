@@ -23,4 +23,4 @@ CREATE TABLE `items` (
   KEY `key_loc` (`loc`),
   KEY `key_item_id` (`item_id`),
   KEY `key_time_of_use` (`time_of_use`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

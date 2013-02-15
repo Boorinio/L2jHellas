@@ -402,7 +402,7 @@ CREATE TABLE `balance` (
   `patksplus136` int(11) DEFAULT '0',
   `pdefplus136` int(11) DEFAULT '0',
   PRIMARY KEY (`accplus88`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `balance`

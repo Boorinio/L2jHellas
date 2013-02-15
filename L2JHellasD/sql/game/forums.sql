@@ -13,7 +13,7 @@ CREATE TABLE `forums` (
   `forum_perm` int(8) NOT NULL DEFAULT '0',
   `forum_owner_id` int(8) NOT NULL DEFAULT '0',
   UNIQUE KEY `forum_id` (`forum_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `forums`

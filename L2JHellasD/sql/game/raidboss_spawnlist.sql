@@ -17,7 +17,7 @@ CREATE TABLE `raidboss_spawnlist` (
   `currentHp` decimal(8,0) DEFAULT NULL,
   `currentMp` decimal(8,0) DEFAULT NULL,
   PRIMARY KEY (`boss_id`,`loc_x`,`loc_y`,`loc_z`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `raidboss_spawnlist`

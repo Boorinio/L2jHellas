@@ -8,4 +8,4 @@ CREATE TABLE `grandboss_list` (
   `player_id` decimal(11,0) NOT NULL,
   `zone` decimal(11,0) NOT NULL,
   PRIMARY KEY (`player_id`,`zone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

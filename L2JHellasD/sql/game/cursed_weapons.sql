@@ -12,4 +12,4 @@ CREATE TABLE `cursed_weapons` (
   `nbKills` int(11) DEFAULT '0',
   `endTime` decimal(20,0) DEFAULT '0',
   PRIMARY KEY (`itemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';

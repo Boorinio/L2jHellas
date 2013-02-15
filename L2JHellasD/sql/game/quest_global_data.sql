@@ -12,4 +12,4 @@ CREATE TABLE `quest_global_data` (
   `var` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '',
   `value` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`quest_name`,`var`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='L2jHellas Table';
