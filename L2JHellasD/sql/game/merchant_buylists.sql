@@ -21,637 +21,638 @@ CREATE TABLE `merchant_buylists` (
 -- ----------------------------
 -- Custom GM Shop
 -- ----------------------------
-INSERT INTO `merchant_buylists` VALUES ('2499', '2000000', '350001', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('225', '2000000', '350001', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('159', '2000000', '350001', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('189', '2000000', '350001', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('262', '2000000', '350001', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('297', '2000000', '350001', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('70', '2000000', '350001', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2529', '2000000', '350001', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('352', '500000', '350002', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2378', '300000', '350002', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('437', '500000', '350002', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('470', '300000', '350002', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2425', '200000', '350002', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2426', '200000', '350002', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2449', '100000', '350002', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2450', '100000', '350002', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2411', '120000', '350002', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2493', '100000', '350002', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('395', '500000', '350002', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('417', '300000', '350002', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2424', '300000', '350002', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2448', '100000', '350002', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('736', '200', '350003', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('737', '1000', '350003', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1829', '250', '350003', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1830', '250', '350003', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('955', '25000', '350003', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('956', '3000', '350003', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('952', '7500', '350003', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('951', '55000', '350003', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('947', '250000', '350003', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('948', '40000', '350003', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('730', '900000', '350003', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('729', '1200000', '350003', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('959', '2500000', '350003', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('960', '1500000', '350003', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4708', '7000000', '350004', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4709', '7000000', '350004', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4710', '7000000', '350004', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4822', '7000000', '350004', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4823', '7000000', '350004', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4824', '7000000', '350004', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4774', '7000000', '350004', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4775', '7000000', '350004', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4776', '7000000', '350004', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6313', '7000000', '350004', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6314', '7000000', '350004', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6315', '7000000', '350004', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4795', '7000000', '350004', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4796', '7000000', '350004', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4797', '7000000', '350004', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4744', '7000000', '350004', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4745', '7000000', '350004', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4746', '7000000', '350004', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2582', '7000000', '350004', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4852', '7000000', '350004', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4853', '7000000', '350004', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4854', '7000000', '350004', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6348', '7000000', '350004', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6349', '7000000', '350004', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6347', '7000000', '350004', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('439', '1000000', '350005', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('471', '1000000', '350005', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2430', '500000', '350005', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2454', '500000', '350005', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('441', '1500000', '350005', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('472', '1500000', '350005', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2435', '750000', '350005', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2459', '750000', '350005', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('60', '2000000', '350005', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('568', '500000', '350005', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('517', '500000', '350005', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('107', '500000', '350005', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('356', '2500000', '350005', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2438', '750000', '350005', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2462', '750000', '350005', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2414', '750000', '350005', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2497', '750000', '350005', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('400', '1000000', '350005', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('420', '1000000', '350005', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2436', '500000', '350005', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2460', '500000', '350005', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('401', '2500000', '350005', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2437', '750000', '350005', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2461', '750000', '350005', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('398', '1000000', '350005', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('418', '500000', '350005', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2431', '300000', '350005', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2455', '300000', '350005', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1835', '3', '350006', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1463', '5', '350006', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1464', '7', '350006', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1465', '25', '350006', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1466', '40', '350006', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1467', '50', '350006', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2509', '7', '350006', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2510', '9', '350006', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2511', '17', '350006', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2512', '50', '350006', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2513', '60', '350006', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2514', '75', '350006', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3947', '17', '350006', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3948', '22', '350006', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3949', '45', '350006', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3950', '122', '350006', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3951', '145', '350006', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3952', '175', '350006', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('728', '1000', '350006', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1539', '540', '350006', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4679', '250', '350006', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3031', '200', '350006', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1785', '125', '350006', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5589', '50', '350006', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2508', '150', '350006', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1458', '500', '350006', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1459', '2000', '350006', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1460', '5000', '350006', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1461', '8000', '350006', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1462', '13000', '350006', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('17', '1', '350006', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1341', '2', '350006', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1342', '2', '350006', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1343', '3', '350006', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1344', '4', '350006', '35', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1345', '5', '350006', '36', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8874', '10000', '350006', '37', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8873', '10000', '350006', '38', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2131', '1500', '350006', '39', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1832', '1000', '350006', '40', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1834', '1000', '350006', '41', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10409', '500', '350006', '42', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9632', '1', '350006', '43', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9633', '2', '350006', '44', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9634', '2', '350006', '45', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9635', '3', '350006', '46', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9636', '4', '350006', '47', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9637', '5', '350006', '48', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4717', '14000000', '350007', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4718', '14000000', '350007', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4719', '14000000', '350007', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4828', '14000000', '350007', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4829', '14000000', '350007', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4830', '14000000', '350007', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4782', '14000000', '350007', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6359', '14000000', '350007', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4778', '14000000', '350007', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4753', '14000000', '350007', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4754', '14000000', '350007', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4755', '14000000', '350007', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7722', '14000000', '350007', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7723', '14000000', '350007', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4804', '14000000', '350007', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4805', '14000000', '350007', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4806', '14000000', '350007', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2625', '14000000', '350007', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2626', '14000000', '350007', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4858', '14000000', '350007', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4859', '14000000', '350007', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4860', '14000000', '350007', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4723', '14000000', '350007', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4724', '14000000', '350007', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4725', '14000000', '350007', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2390', '5500000', '350008', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2406', '5500000', '350008', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2376', '3000000', '350008', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2379', '2500000', '350008', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5731', '1000000', '350008', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5732', '1000000', '350008', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5730', '1000000', '350008', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5715', '1000000', '350008', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5716', '1000000', '350008', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5714', '1000000', '350008', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2415', '1000000', '350008', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2391', '7000000', '350008', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('358', '4000000', '350008', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2398', '4000000', '350008', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2403', '3000000', '350008', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2380', '3000000', '350008', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5734', '2000000', '350008', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5735', '2000000', '350008', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5736', '2000000', '350008', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5718', '2000000', '350008', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5719', '2000000', '350008', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5720', '2000000', '350008', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2416', '2000000', '350008', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2392', '7000000', '350008', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2381', '7000000', '350008', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2399', '4000000', '350008', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2404', '3000000', '350008', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5738', '2000000', '350008', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5739', '2000000', '350008', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5740', '2000000', '350008', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5722', '2000000', '350008', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5723', '2000000', '350008', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5724', '2000000', '350008', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2417', '2000000', '350008', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('357', '3000000', '350008', '35', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2384', '3000000', '350008', '36', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2397', '3000000', '350008', '37', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('383', '3000000', '350008', '38', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2388', '2500000', '350008', '39', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2402', '2500000', '350008', '40', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5726', '1000000', '350008', '41', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5727', '1000000', '350008', '42', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5728', '1000000', '350008', '43', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5710', '1000000', '350008', '44', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5711', '1000000', '350008', '45', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5712', '1000000', '350008', '46', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('503', '1000000', '350008', '47', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('110', '1000000', '350008', '48', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('673', '1000000', '350008', '49', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('633', '1000000', '350008', '50', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1419', '150000', '350009', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3874', '250000', '350009', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('3870', '400000', '350009', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6029', '500000', '350009', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6033', '700000', '350009', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5641', '36000000', '350010', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5642', '36000000', '350010', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5643', '36000000', '350010', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5632', '36000000', '350010', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5633', '36000000', '350010', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5634', '36000000', '350010', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5635', '36000000', '350010', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5636', '36000000', '350010', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5637', '36000000', '350010', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5638', '36000000', '350010', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5639', '36000000', '350010', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5640', '36000000', '350010', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5644', '36000000', '350010', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5645', '36000000', '350010', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5646', '36000000', '350010', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5647', '36000000', '350010', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5648', '36000000', '350010', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5649', '36000000', '350010', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5704', '36000000', '350010', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5705', '36000000', '350010', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5706', '36000000', '350010', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5596', '36000000', '350010', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5597', '36000000', '350010', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5598', '36000000', '350010', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5599', '36000000', '350010', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5600', '36000000', '350010', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5601', '36000000', '350010', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5602', '36000000', '350010', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5603', '36000000', '350010', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5604', '36000000', '350010', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5605', '36000000', '350010', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5606', '36000000', '350010', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5607', '36000000', '350010', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5609', '36000000', '350010', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5610', '36000000', '350010', '35', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5611', '36000000', '350010', '36', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5612', '36000000', '350010', '37', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5613', '36000000', '350010', '38', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5614', '36000000', '350010', '39', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5615', '36000000', '350010', '40', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5616', '36000000', '350010', '41', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5617', '36000000', '350010', '42', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5618', '36000000', '350010', '43', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5619', '36000000', '350010', '44', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5620', '36000000', '350010', '45', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5621', '36000000', '350010', '46', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5622', '36000000', '350010', '47', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5623', '36000000', '350010', '48', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5624', '36000000', '350010', '49', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5625', '36000000', '350010', '50', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5626', '36000000', '350010', '51', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5627', '36000000', '350010', '52', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5628', '36000000', '350010', '53', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8108', '36000000', '350010', '54', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8109', '36000000', '350010', '55', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8110', '36000000', '350010', '56', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8126', '36000000', '350010', '57', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8127', '36000000', '350010', '58', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8128', '36000000', '350010', '59', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8135', '36000000', '350010', '60', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8136', '36000000', '350010', '61', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8137', '36000000', '350010', '62', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8150', '36000000', '350010', '63', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8151', '36000000', '350010', '64', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8152', '36000000', '350010', '65', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8147', '36000000', '350010', '66', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8148', '36000000', '350010', '67', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8149', '36000000', '350010', '68', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5788', '10000000', '350011', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5787', '10000000', '350011', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5786', '10000000', '350011', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5776', '10000000', '350011', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5775', '10000000', '350011', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5774', '10000000', '350011', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2409', '20000000', '350011', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2383', '20000000', '350011', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2395', '20000000', '350011', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2419', '10000000', '350011', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5779', '10000000', '350011', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5778', '10000000', '350011', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5777', '10000000', '350011', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5767', '10000000', '350011', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5766', '10000000', '350011', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5765', '10000000', '350011', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2407', '20000000', '350011', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('365', '10000000', '350011', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('388', '10000000', '350011', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2385', '10000000', '350011', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2389', '10000000', '350011', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('512', '10000000', '350011', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('641', '10000000', '350011', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5785', '10000000', '350011', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5784', '10000000', '350011', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5783', '10000000', '350011', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5773', '10000000', '350011', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5772', '10000000', '350011', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5771', '10000000', '350011', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2408', '20000000', '350011', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2394', '20000000', '350011', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('374', '20000000', '350011', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2418', '10000000', '350011', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2498', '10000000', '350011', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5782', '10000000', '350011', '35', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5781', '10000000', '350011', '36', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5780', '10000000', '350011', '37', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5770', '10000000', '350011', '38', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5769', '10000000', '350011', '39', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5768', '10000000', '350011', '40', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2400', '10000000', '350011', '41', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2393', '10000000', '350011', '42', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2382', '10000000', '350011', '43', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('547', '10000000', '350011', '44', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2405', '10000000', '350011', '45', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('909', '10650', '350012', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('878', '5350', '350012', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('846', '8000', '350012', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('913', '62500', '350012', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('850', '46700', '350012', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('881', '31150', '350012', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('919', '282500', '350012', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('857', '212000', '350012', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('888', '141000', '350012', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('926', '615000', '350012', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('864', '462000', '350012', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('895', '308000', '350012', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('924', '1725000', '350012', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('862', '1295000', '350012', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('893', '865000', '350012', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('920', '2960000', '350012', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('858', '2220000', '350012', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('889', '1480000', '350012', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6607', '60000000', '350013', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6606', '60000000', '350013', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6605', '60000000', '350013', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6581', '60000000', '350013', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6582', '60000000', '350013', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6583', '60000000', '350013', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6608', '60000000', '350013', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6609', '60000000', '350013', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6610', '60000000', '350013', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6585', '60000000', '350013', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6584', '60000000', '350013', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6586', '60000000', '350013', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6587', '60000000', '350013', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6588', '60000000', '350013', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6589', '60000000', '350013', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6590', '60000000', '350013', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6591', '60000000', '350013', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6592', '60000000', '350013', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6593', '60000000', '350013', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6594', '60000000', '350013', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6595', '60000000', '350013', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6596', '60000000', '350013', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6597', '60000000', '350013', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6598', '60000000', '350013', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6599', '60000000', '350013', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6600', '60000000', '350013', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6601', '60000000', '350013', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6602', '60000000', '350013', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6603', '60000000', '350013', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6604', '60000000', '350013', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6580', '60000000', '350013', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7576', '60000000', '350013', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7577', '60000000', '350013', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7578', '60000000', '350013', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6378', '15000000', '350014', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6374', '15000000', '350014', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6373', '15000000', '350014', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6376', '15000000', '350014', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6375', '15000000', '350014', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6382', '15000000', '350014', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6379', '20000000', '350014', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6381', '15000000', '350014', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6380', '15000000', '350014', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6386', '15000000', '350014', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6383', '20000000', '350014', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6385', '15000000', '350014', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6384', '15000000', '350014', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6377', '15000000', '350014', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4616', '100000', '350015', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4615', '100000', '350015', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4617', '100000', '350015', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4618', '100000', '350015', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4614', '100000', '350015', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4613', '100000', '350015', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4620', '100000', '350015', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4619', '100000', '350015', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4621', '100000', '350015', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4622', '100000', '350015', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4623', '100000', '350015', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('4624', '100000', '350015', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('485', '10000000', '350016', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('486', '10000000', '350016', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('487', '10000000', '350016', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('488', '10000000', '350016', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('489', '10000000', '350016', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('490', '10000000', '350016', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('491', '10000000', '350016', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('492', '10000000', '350016', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('493', '10000000', '350016', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('494', '10000000', '350016', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('495', '10000000', '350016', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('496', '10000000', '350016', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1101', '10150', '350017', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('1104', '6350', '350017', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('44', '5100', '350017', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('23', '3980', '350017', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('2386', '2485', '350017', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('43', '1990', '350017', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('26', '24600', '350017', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('34', '15350', '350017', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('717', '3385', '350017', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('38', '3385', '350017', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('625', '6450', '350017', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('120', '122000', '350018', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5284', '122000', '350018', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('219', '122000', '350018', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('273', '122000', '350018', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('257', '122000', '350018', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('16', '122000', '350018', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('87', '122000', '350018', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('177', '122000', '350018', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6661', '100000000', '350019', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6662', '100000000', '350019', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10215', '300000000', '350022', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10216', '300000000', '350022', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10217', '300000000', '350022', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10218', '300000000', '350022', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10219', '300000000', '350022', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10220', '300000000', '350022', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10221', '300000000', '350022', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10222', '300000000', '350022', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10223', '300000000', '350022', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10224', '300000000', '350022', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10225', '300000000', '350022', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10226', '300000000', '350022', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10415', '300000000', '350022', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9863', '150000000', '350023', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9864', '150000000', '350023', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9865', '150000000', '350023', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9854', '150000000', '350023', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9855', '150000000', '350023', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9856', '150000000', '350023', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9857', '150000000', '350023', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9858', '150000000', '350023', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9859', '150000000', '350023', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9860', '150000000', '350023', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9861', '150000000', '350023', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9862', '150000000', '350023', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9866', '150000000', '350023', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9867', '150000000', '350023', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9868', '150000000', '350023', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9869', '150000000', '350023', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9870', '150000000', '350023', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9871', '150000000', '350023', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9872', '150000000', '350023', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9873', '150000000', '350023', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9874', '150000000', '350023', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9875', '150000000', '350023', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9876', '150000000', '350023', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9877', '150000000', '350023', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9878', '150000000', '350023', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9879', '150000000', '350023', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9880', '150000000', '350023', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9377', '150000000', '350023', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9378', '150000000', '350023', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9379', '150000000', '350023', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9381', '150000000', '350023', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9382', '150000000', '350023', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9383', '150000000', '350023', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9385', '150000000', '350023', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9386', '150000000', '350023', '35', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9387', '150000000', '350023', '36', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10527', '150000000', '350023', '37', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10528', '150000000', '350023', '38', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10529', '150000000', '350023', '39', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10530', '150000000', '350023', '40', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10531', '150000000', '350023', '41', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10532', '150000000', '350023', '42', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10004', '150000000', '350023', '43', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9416', '50000000', '350024', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9421', '45000000', '350024', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9422', '35000000', '350024', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9423', '35000000', '350024', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9424', '35000000', '350024', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9441', '35000000', '350024', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9425', '50000000', '350024', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9428', '45000000', '350024', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9429', '35000000', '350024', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9430', '35000000', '350024', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9431', '35000000', '350024', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9432', '50000000', '350024', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9437', '45000000', '350024', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9438', '35000000', '350024', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9439', '35000000', '350024', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9440', '35000000', '350024', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9456', '20000000', '350025', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9455', '15000000', '350025', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9457', '10000000', '350025', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10215', '125000000', '350095', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10216', '125000000', '350095', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10217', '125000000', '350095', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10218', '125000000', '350095', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10219', '125000000', '350095', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10220', '125000000', '350095', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10221', '125000000', '350095', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10222', '125000000', '350095', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10223', '125000000', '350095', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10224', '125000000', '350095', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10225', '125000000', '350095', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10226', '125000000', '350095', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10415', '125000000', '350095', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9456', '10000000', '350096', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9455', '5000000', '350096', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9457', '2500000', '350096', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9416', '37000000', '350097', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9421', '37000000', '350097', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9423', '37000000', '350097', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9424', '37000000', '350097', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9422', '37000000', '350097', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9425', '37000000', '350097', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9428', '37000000', '350097', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9430', '37000000', '350097', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9431', '37000000', '350097', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9429', '37000000', '350097', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9432', '37000000', '350097', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9437', '37000000', '350097', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9439', '37000000', '350097', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9440', '37000000', '350097', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9438', '37000000', '350097', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9854', '95000000', '350098', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9855', '95000000', '350098', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9856', '95000000', '350098', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9857', '95000000', '350098', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9858', '95000000', '350098', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9859', '95000000', '350098', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9860', '95000000', '350098', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9861', '95000000', '350098', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9862', '95000000', '350098', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9863', '95000000', '350098', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9864', '95000000', '350098', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9865', '95000000', '350098', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9866', '95000000', '350098', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9867', '95000000', '350098', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9868', '95000000', '350098', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9869', '95000000', '350098', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9870', '95000000', '350098', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9871', '95000000', '350098', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9872', '95000000', '350098', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9873', '95000000', '350098', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9874', '95000000', '350098', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9875', '95000000', '350098', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9876', '95000000', '350098', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9877', '95000000', '350098', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9878', '95000000', '350098', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9879', '95000000', '350098', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9880', '95000000', '350098', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10527', '95000000', '350098', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10528', '95000000', '350098', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10529', '95000000', '350098', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10530', '95000000', '350098', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10531', '95000000', '350098', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10532', '95000000', '350098', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('10004', '95000000', '350098', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('5808', '50000000', '350099', '1', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6394', '50000000', '350099', '2', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6843', '50000000', '350099', '3', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6844', '50000000', '350099', '4', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6845', '50000000', '350099', '5', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('6846', '50000000', '350099', '6', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7060', '50000000', '350099', '7', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7680', '50000000', '350099', '8', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7681', '50000000', '350099', '9', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7682', '50000000', '350099', '10', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7683', '50000000', '350099', '11', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7695', '50000000', '350099', '12', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7696', '50000000', '350099', '13', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7838', '50000000', '350099', '14', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('7837', '50000000', '350099', '15', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8177', '50000000', '350099', '16', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8178', '50000000', '350099', '17', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8179', '50000000', '350099', '18', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8180', '50000000', '350099', '19', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8184', '50000000', '350099', '20', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8185', '50000000', '350099', '21', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8186', '50000000', '350099', '22', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8187', '50000000', '350099', '23', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8188', '50000000', '350099', '24', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8189', '50000000', '350099', '25', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8552', '50000000', '350099', '26', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8557', '50000000', '350099', '27', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8910', '50000000', '350099', '28', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8911', '50000000', '350099', '29', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8912', '50000000', '350099', '30', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8913', '50000000', '350099', '31', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8914', '50000000', '350099', '32', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8915', '50000000', '350099', '33', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8916', '50000000', '350099', '34', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8917', '50000000', '350099', '35', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8918', '50000000', '350099', '36', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8920', '50000000', '350099', '37', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8921', '50000000', '350099', '38', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8922', '50000000', '350099', '39', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8923', '50000000', '350099', '40', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('9161', '50000000', '350099', '41', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8559', '50000000', '350099', '42', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8560', '50000000', '350099', '43', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8561', '50000000', '350099', '44', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8562', '50000000', '350099', '45', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8563', '50000000', '350099', '46', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8564', '50000000', '350099', '47', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8565', '50000000', '350099', '48', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8566', '50000000', '350099', '49', '-1', '-1', '0', '0');
-INSERT INTO `merchant_buylists` VALUES ('8569', '50000000', '350099', '50', '-1', '-1', '0', '0');
+INSERT INTO `merchant_buylists` VALUES
+('2499', '2000000', '350001', '1', '-1', '-1', '0', '0'),
+('225', '2000000', '350001', '3', '-1', '-1', '0', '0'),
+('159', '2000000', '350001', '4', '-1', '-1', '0', '0'),
+('189', '2000000', '350001', '5', '-1', '-1', '0', '0'),
+('262', '2000000', '350001', '6', '-1', '-1', '0', '0'),
+('297', '2000000', '350001', '7', '-1', '-1', '0', '0'),
+('70', '2000000', '350001', '8', '-1', '-1', '0', '0'),
+('2529', '2000000', '350001', '9', '-1', '-1', '0', '0'),
+('352', '500000', '350002', '1', '-1', '-1', '0', '0'),
+('2378', '300000', '350002', '2', '-1', '-1', '0', '0'),
+('437', '500000', '350002', '3', '-1', '-1', '0', '0'),
+('470', '300000', '350002', '4', '-1', '-1', '0', '0'),
+('2425', '200000', '350002', '5', '-1', '-1', '0', '0'),
+('2426', '200000', '350002', '6', '-1', '-1', '0', '0'),
+('2449', '100000', '350002', '7', '-1', '-1', '0', '0'),
+('2450', '100000', '350002', '8', '-1', '-1', '0', '0'),
+('2411', '120000', '350002', '9', '-1', '-1', '0', '0'),
+('2493', '100000', '350002', '10', '-1', '-1', '0', '0'),
+('395', '500000', '350002', '11', '-1', '-1', '0', '0'),
+('417', '300000', '350002', '12', '-1', '-1', '0', '0'),
+('2424', '300000', '350002', '13', '-1', '-1', '0', '0'),
+('2448', '100000', '350002', '14', '-1', '-1', '0', '0'),
+('736', '200', '350003', '1', '-1', '-1', '0', '0'),
+('737', '1000', '350003', '2', '-1', '-1', '0', '0'),
+('1829', '250', '350003', '3', '-1', '-1', '0', '0'),
+('1830', '250', '350003', '4', '-1', '-1', '0', '0'),
+('955', '25000', '350003', '5', '-1', '-1', '0', '0'),
+('956', '3000', '350003', '6', '-1', '-1', '0', '0'),
+('952', '7500', '350003', '7', '-1', '-1', '0', '0'),
+('951', '55000', '350003', '8', '-1', '-1', '0', '0'),
+('947', '250000', '350003', '9', '-1', '-1', '0', '0'),
+('948', '40000', '350003', '10', '-1', '-1', '0', '0'),
+('730', '900000', '350003', '11', '-1', '-1', '0', '0'),
+('729', '1200000', '350003', '12', '-1', '-1', '0', '0'),
+('959', '2500000', '350003', '13', '-1', '-1', '0', '0'),
+('960', '1500000', '350003', '14', '-1', '-1', '0', '0'),
+('4708', '7000000', '350004', '1', '-1', '-1', '0', '0'),
+('4709', '7000000', '350004', '2', '-1', '-1', '0', '0'),
+('4710', '7000000', '350004', '3', '-1', '-1', '0', '0'),
+('4822', '7000000', '350004', '4', '-1', '-1', '0', '0'),
+('4823', '7000000', '350004', '5', '-1', '-1', '0', '0'),
+('4824', '7000000', '350004', '6', '-1', '-1', '0', '0'),
+('4774', '7000000', '350004', '7', '-1', '-1', '0', '0'),
+('4775', '7000000', '350004', '8', '-1', '-1', '0', '0'),
+('4776', '7000000', '350004', '9', '-1', '-1', '0', '0'),
+('6313', '7000000', '350004', '10', '-1', '-1', '0', '0'),
+('6314', '7000000', '350004', '11', '-1', '-1', '0', '0'),
+('6315', '7000000', '350004', '12', '-1', '-1', '0', '0'),
+('4795', '7000000', '350004', '13', '-1', '-1', '0', '0'),
+('4796', '7000000', '350004', '14', '-1', '-1', '0', '0'),
+('4797', '7000000', '350004', '15', '-1', '-1', '0', '0'),
+('4744', '7000000', '350004', '16', '-1', '-1', '0', '0'),
+('4745', '7000000', '350004', '17', '-1', '-1', '0', '0'),
+('4746', '7000000', '350004', '18', '-1', '-1', '0', '0'),
+('2582', '7000000', '350004', '19', '-1', '-1', '0', '0'),
+('4852', '7000000', '350004', '20', '-1', '-1', '0', '0'),
+('4853', '7000000', '350004', '21', '-1', '-1', '0', '0'),
+('4854', '7000000', '350004', '22', '-1', '-1', '0', '0'),
+('6348', '7000000', '350004', '23', '-1', '-1', '0', '0'),
+('6349', '7000000', '350004', '24', '-1', '-1', '0', '0'),
+('6347', '7000000', '350004', '25', '-1', '-1', '0', '0'),
+('439', '1000000', '350005', '1', '-1', '-1', '0', '0'),
+('471', '1000000', '350005', '2', '-1', '-1', '0', '0'),
+('2430', '500000', '350005', '3', '-1', '-1', '0', '0'),
+('2454', '500000', '350005', '4', '-1', '-1', '0', '0'),
+('441', '1500000', '350005', '5', '-1', '-1', '0', '0'),
+('472', '1500000', '350005', '6', '-1', '-1', '0', '0'),
+('2435', '750000', '350005', '7', '-1', '-1', '0', '0'),
+('2459', '750000', '350005', '8', '-1', '-1', '0', '0'),
+('60', '2000000', '350005', '9', '-1', '-1', '0', '0'),
+('568', '500000', '350005', '10', '-1', '-1', '0', '0'),
+('517', '500000', '350005', '11', '-1', '-1', '0', '0'),
+('107', '500000', '350005', '12', '-1', '-1', '0', '0'),
+('356', '2500000', '350005', '13', '-1', '-1', '0', '0'),
+('2438', '750000', '350005', '14', '-1', '-1', '0', '0'),
+('2462', '750000', '350005', '15', '-1', '-1', '0', '0'),
+('2414', '750000', '350005', '16', '-1', '-1', '0', '0'),
+('2497', '750000', '350005', '17', '-1', '-1', '0', '0'),
+('400', '1000000', '350005', '18', '-1', '-1', '0', '0'),
+('420', '1000000', '350005', '19', '-1', '-1', '0', '0'),
+('2436', '500000', '350005', '20', '-1', '-1', '0', '0'),
+('2460', '500000', '350005', '21', '-1', '-1', '0', '0'),
+('401', '2500000', '350005', '22', '-1', '-1', '0', '0'),
+('2437', '750000', '350005', '23', '-1', '-1', '0', '0'),
+('2461', '750000', '350005', '24', '-1', '-1', '0', '0'),
+('398', '1000000', '350005', '25', '-1', '-1', '0', '0'),
+('418', '500000', '350005', '26', '-1', '-1', '0', '0'),
+('2431', '300000', '350005', '27', '-1', '-1', '0', '0'),
+('2455', '300000', '350005', '28', '-1', '-1', '0', '0'),
+('1835', '3', '350006', '1', '-1', '-1', '0', '0'),
+('1463', '5', '350006', '2', '-1', '-1', '0', '0'),
+('1464', '7', '350006', '3', '-1', '-1', '0', '0'),
+('1465', '25', '350006', '4', '-1', '-1', '0', '0'),
+('1466', '40', '350006', '5', '-1', '-1', '0', '0'),
+('1467', '50', '350006', '6', '-1', '-1', '0', '0'),
+('2509', '7', '350006', '7', '-1', '-1', '0', '0'),
+('2510', '9', '350006', '8', '-1', '-1', '0', '0'),
+('2511', '17', '350006', '9', '-1', '-1', '0', '0'),
+('2512', '50', '350006', '10', '-1', '-1', '0', '0'),
+('2513', '60', '350006', '11', '-1', '-1', '0', '0'),
+('2514', '75', '350006', '12', '-1', '-1', '0', '0'),
+('3947', '17', '350006', '13', '-1', '-1', '0', '0'),
+('3948', '22', '350006', '14', '-1', '-1', '0', '0'),
+('3949', '45', '350006', '15', '-1', '-1', '0', '0'),
+('3950', '122', '350006', '16', '-1', '-1', '0', '0'),
+('3951', '145', '350006', '17', '-1', '-1', '0', '0'),
+('3952', '175', '350006', '18', '-1', '-1', '0', '0'),
+('728', '1000', '350006', '19', '-1', '-1', '0', '0'),
+('1539', '540', '350006', '20', '-1', '-1', '0', '0'),
+('4679', '250', '350006', '21', '-1', '-1', '0', '0'),
+('3031', '200', '350006', '22', '-1', '-1', '0', '0'),
+('1785', '125', '350006', '23', '-1', '-1', '0', '0'),
+('5589', '50', '350006', '24', '-1', '-1', '0', '0'),
+('2508', '150', '350006', '25', '-1', '-1', '0', '0'),
+('1458', '500', '350006', '26', '-1', '-1', '0', '0'),
+('1459', '2000', '350006', '27', '-1', '-1', '0', '0'),
+('1460', '5000', '350006', '28', '-1', '-1', '0', '0'),
+('1461', '8000', '350006', '29', '-1', '-1', '0', '0'),
+('1462', '13000', '350006', '30', '-1', '-1', '0', '0'),
+('17', '1', '350006', '31', '-1', '-1', '0', '0'),
+('1341', '2', '350006', '32', '-1', '-1', '0', '0'),
+('1342', '2', '350006', '33', '-1', '-1', '0', '0'),
+('1343', '3', '350006', '34', '-1', '-1', '0', '0'),
+('1344', '4', '350006', '35', '-1', '-1', '0', '0'),
+('1345', '5', '350006', '36', '-1', '-1', '0', '0'),
+('8874', '10000', '350006', '37', '-1', '-1', '0', '0'),
+('8873', '10000', '350006', '38', '-1', '-1', '0', '0'),
+('2131', '1500', '350006', '39', '-1', '-1', '0', '0'),
+('1832', '1000', '350006', '40', '-1', '-1', '0', '0'),
+('1834', '1000', '350006', '41', '-1', '-1', '0', '0'),
+('10409', '500', '350006', '42', '-1', '-1', '0', '0'),
+('9632', '1', '350006', '43', '-1', '-1', '0', '0'),
+('9633', '2', '350006', '44', '-1', '-1', '0', '0'),
+('9634', '2', '350006', '45', '-1', '-1', '0', '0'),
+('9635', '3', '350006', '46', '-1', '-1', '0', '0'),
+('9636', '4', '350006', '47', '-1', '-1', '0', '0'),
+('9637', '5', '350006', '48', '-1', '-1', '0', '0'),
+('4717', '14000000', '350007', '1', '-1', '-1', '0', '0'),
+('4718', '14000000', '350007', '2', '-1', '-1', '0', '0'),
+('4719', '14000000', '350007', '3', '-1', '-1', '0', '0'),
+('4828', '14000000', '350007', '4', '-1', '-1', '0', '0'),
+('4829', '14000000', '350007', '5', '-1', '-1', '0', '0'),
+('4830', '14000000', '350007', '6', '-1', '-1', '0', '0'),
+('4782', '14000000', '350007', '7', '-1', '-1', '0', '0'),
+('6359', '14000000', '350007', '8', '-1', '-1', '0', '0'),
+('4778', '14000000', '350007', '9', '-1', '-1', '0', '0'),
+('4753', '14000000', '350007', '10', '-1', '-1', '0', '0'),
+('4754', '14000000', '350007', '11', '-1', '-1', '0', '0'),
+('4755', '14000000', '350007', '12', '-1', '-1', '0', '0'),
+('7722', '14000000', '350007', '13', '-1', '-1', '0', '0'),
+('7723', '14000000', '350007', '14', '-1', '-1', '0', '0'),
+('4804', '14000000', '350007', '15', '-1', '-1', '0', '0'),
+('4805', '14000000', '350007', '16', '-1', '-1', '0', '0'),
+('4806', '14000000', '350007', '17', '-1', '-1', '0', '0'),
+('2625', '14000000', '350007', '18', '-1', '-1', '0', '0'),
+('2626', '14000000', '350007', '19', '-1', '-1', '0', '0'),
+('4858', '14000000', '350007', '20', '-1', '-1', '0', '0'),
+('4859', '14000000', '350007', '21', '-1', '-1', '0', '0'),
+('4860', '14000000', '350007', '22', '-1', '-1', '0', '0'),
+('4723', '14000000', '350007', '23', '-1', '-1', '0', '0'),
+('4724', '14000000', '350007', '24', '-1', '-1', '0', '0'),
+('4725', '14000000', '350007', '25', '-1', '-1', '0', '0'),
+('2390', '5500000', '350008', '1', '-1', '-1', '0', '0'),
+('2406', '5500000', '350008', '2', '-1', '-1', '0', '0'),
+('2376', '3000000', '350008', '3', '-1', '-1', '0', '0'),
+('2379', '2500000', '350008', '4', '-1', '-1', '0', '0'),
+('5731', '1000000', '350008', '5', '-1', '-1', '0', '0'),
+('5732', '1000000', '350008', '6', '-1', '-1', '0', '0'),
+('5730', '1000000', '350008', '7', '-1', '-1', '0', '0'),
+('5715', '1000000', '350008', '8', '-1', '-1', '0', '0'),
+('5716', '1000000', '350008', '9', '-1', '-1', '0', '0'),
+('5714', '1000000', '350008', '10', '-1', '-1', '0', '0'),
+('2415', '1000000', '350008', '11', '-1', '-1', '0', '0'),
+('2391', '7000000', '350008', '12', '-1', '-1', '0', '0'),
+('358', '4000000', '350008', '13', '-1', '-1', '0', '0'),
+('2398', '4000000', '350008', '14', '-1', '-1', '0', '0'),
+('2403', '3000000', '350008', '15', '-1', '-1', '0', '0'),
+('2380', '3000000', '350008', '16', '-1', '-1', '0', '0'),
+('5734', '2000000', '350008', '17', '-1', '-1', '0', '0'),
+('5735', '2000000', '350008', '18', '-1', '-1', '0', '0'),
+('5736', '2000000', '350008', '19', '-1', '-1', '0', '0'),
+('5718', '2000000', '350008', '20', '-1', '-1', '0', '0'),
+('5719', '2000000', '350008', '21', '-1', '-1', '0', '0'),
+('5720', '2000000', '350008', '22', '-1', '-1', '0', '0'),
+('2416', '2000000', '350008', '23', '-1', '-1', '0', '0'),
+('2392', '7000000', '350008', '24', '-1', '-1', '0', '0'),
+('2381', '7000000', '350008', '25', '-1', '-1', '0', '0'),
+('2399', '4000000', '350008', '26', '-1', '-1', '0', '0'),
+('2404', '3000000', '350008', '27', '-1', '-1', '0', '0'),
+('5738', '2000000', '350008', '28', '-1', '-1', '0', '0'),
+('5739', '2000000', '350008', '29', '-1', '-1', '0', '0'),
+('5740', '2000000', '350008', '30', '-1', '-1', '0', '0'),
+('5722', '2000000', '350008', '31', '-1', '-1', '0', '0'),
+('5723', '2000000', '350008', '32', '-1', '-1', '0', '0'),
+('5724', '2000000', '350008', '33', '-1', '-1', '0', '0'),
+('2417', '2000000', '350008', '34', '-1', '-1', '0', '0'),
+('357', '3000000', '350008', '35', '-1', '-1', '0', '0'),
+('2384', '3000000', '350008', '36', '-1', '-1', '0', '0'),
+('2397', '3000000', '350008', '37', '-1', '-1', '0', '0'),
+('383', '3000000', '350008', '38', '-1', '-1', '0', '0'),
+('2388', '2500000', '350008', '39', '-1', '-1', '0', '0'),
+('2402', '2500000', '350008', '40', '-1', '-1', '0', '0'),
+('5726', '1000000', '350008', '41', '-1', '-1', '0', '0'),
+('5727', '1000000', '350008', '42', '-1', '-1', '0', '0'),
+('5728', '1000000', '350008', '43', '-1', '-1', '0', '0'),
+('5710', '1000000', '350008', '44', '-1', '-1', '0', '0'),
+('5711', '1000000', '350008', '45', '-1', '-1', '0', '0'),
+('5712', '1000000', '350008', '46', '-1', '-1', '0', '0'),
+('503', '1000000', '350008', '47', '-1', '-1', '0', '0'),
+('110', '1000000', '350008', '48', '-1', '-1', '0', '0'),
+('673', '1000000', '350008', '49', '-1', '-1', '0', '0'),
+('633', '1000000', '350008', '50', '-1', '-1', '0', '0'),
+('1419', '150000', '350009', '1', '-1', '-1', '0', '0'),
+('3874', '250000', '350009', '2', '-1', '-1', '0', '0'),
+('3870', '400000', '350009', '3', '-1', '-1', '0', '0'),
+('6029', '500000', '350009', '4', '-1', '-1', '0', '0'),
+('6033', '700000', '350009', '5', '-1', '-1', '0', '0'),
+('5641', '36000000', '350010', '1', '-1', '-1', '0', '0'),
+('5642', '36000000', '350010', '2', '-1', '-1', '0', '0'),
+('5643', '36000000', '350010', '3', '-1', '-1', '0', '0'),
+('5632', '36000000', '350010', '4', '-1', '-1', '0', '0'),
+('5633', '36000000', '350010', '5', '-1', '-1', '0', '0'),
+('5634', '36000000', '350010', '6', '-1', '-1', '0', '0'),
+('5635', '36000000', '350010', '7', '-1', '-1', '0', '0'),
+('5636', '36000000', '350010', '8', '-1', '-1', '0', '0'),
+('5637', '36000000', '350010', '9', '-1', '-1', '0', '0'),
+('5638', '36000000', '350010', '10', '-1', '-1', '0', '0'),
+('5639', '36000000', '350010', '11', '-1', '-1', '0', '0'),
+('5640', '36000000', '350010', '12', '-1', '-1', '0', '0'),
+('5644', '36000000', '350010', '13', '-1', '-1', '0', '0'),
+('5645', '36000000', '350010', '14', '-1', '-1', '0', '0'),
+('5646', '36000000', '350010', '15', '-1', '-1', '0', '0'),
+('5647', '36000000', '350010', '16', '-1', '-1', '0', '0'),
+('5648', '36000000', '350010', '17', '-1', '-1', '0', '0'),
+('5649', '36000000', '350010', '18', '-1', '-1', '0', '0'),
+('5704', '36000000', '350010', '19', '-1', '-1', '0', '0'),
+('5705', '36000000', '350010', '20', '-1', '-1', '0', '0'),
+('5706', '36000000', '350010', '21', '-1', '-1', '0', '0'),
+('5596', '36000000', '350010', '22', '-1', '-1', '0', '0'),
+('5597', '36000000', '350010', '23', '-1', '-1', '0', '0'),
+('5598', '36000000', '350010', '24', '-1', '-1', '0', '0'),
+('5599', '36000000', '350010', '25', '-1', '-1', '0', '0'),
+('5600', '36000000', '350010', '26', '-1', '-1', '0', '0'),
+('5601', '36000000', '350010', '27', '-1', '-1', '0', '0'),
+('5602', '36000000', '350010', '28', '-1', '-1', '0', '0'),
+('5603', '36000000', '350010', '29', '-1', '-1', '0', '0'),
+('5604', '36000000', '350010', '30', '-1', '-1', '0', '0'),
+('5605', '36000000', '350010', '31', '-1', '-1', '0', '0'),
+('5606', '36000000', '350010', '32', '-1', '-1', '0', '0'),
+('5607', '36000000', '350010', '33', '-1', '-1', '0', '0'),
+('5609', '36000000', '350010', '34', '-1', '-1', '0', '0'),
+('5610', '36000000', '350010', '35', '-1', '-1', '0', '0'),
+('5611', '36000000', '350010', '36', '-1', '-1', '0', '0'),
+('5612', '36000000', '350010', '37', '-1', '-1', '0', '0'),
+('5613', '36000000', '350010', '38', '-1', '-1', '0', '0'),
+('5614', '36000000', '350010', '39', '-1', '-1', '0', '0'),
+('5615', '36000000', '350010', '40', '-1', '-1', '0', '0'),
+('5616', '36000000', '350010', '41', '-1', '-1', '0', '0'),
+('5617', '36000000', '350010', '42', '-1', '-1', '0', '0'),
+('5618', '36000000', '350010', '43', '-1', '-1', '0', '0'),
+('5619', '36000000', '350010', '44', '-1', '-1', '0', '0'),
+('5620', '36000000', '350010', '45', '-1', '-1', '0', '0'),
+('5621', '36000000', '350010', '46', '-1', '-1', '0', '0'),
+('5622', '36000000', '350010', '47', '-1', '-1', '0', '0'),
+('5623', '36000000', '350010', '48', '-1', '-1', '0', '0'),
+('5624', '36000000', '350010', '49', '-1', '-1', '0', '0'),
+('5625', '36000000', '350010', '50', '-1', '-1', '0', '0'),
+('5626', '36000000', '350010', '51', '-1', '-1', '0', '0'),
+('5627', '36000000', '350010', '52', '-1', '-1', '0', '0'),
+('5628', '36000000', '350010', '53', '-1', '-1', '0', '0'),
+('8108', '36000000', '350010', '54', '-1', '-1', '0', '0'),
+('8109', '36000000', '350010', '55', '-1', '-1', '0', '0'),
+('8110', '36000000', '350010', '56', '-1', '-1', '0', '0'),
+('8126', '36000000', '350010', '57', '-1', '-1', '0', '0'),
+('8127', '36000000', '350010', '58', '-1', '-1', '0', '0'),
+('8128', '36000000', '350010', '59', '-1', '-1', '0', '0'),
+('8135', '36000000', '350010', '60', '-1', '-1', '0', '0'),
+('8136', '36000000', '350010', '61', '-1', '-1', '0', '0'),
+('8137', '36000000', '350010', '62', '-1', '-1', '0', '0'),
+('8150', '36000000', '350010', '63', '-1', '-1', '0', '0'),
+('8151', '36000000', '350010', '64', '-1', '-1', '0', '0'),
+('8152', '36000000', '350010', '65', '-1', '-1', '0', '0'),
+('8147', '36000000', '350010', '66', '-1', '-1', '0', '0'),
+('8148', '36000000', '350010', '67', '-1', '-1', '0', '0'),
+('8149', '36000000', '350010', '68', '-1', '-1', '0', '0'),
+('5788', '10000000', '350011', '1', '-1', '-1', '0', '0'),
+('5787', '10000000', '350011', '2', '-1', '-1', '0', '0'),
+('5786', '10000000', '350011', '3', '-1', '-1', '0', '0'),
+('5776', '10000000', '350011', '4', '-1', '-1', '0', '0'),
+('5775', '10000000', '350011', '5', '-1', '-1', '0', '0'),
+('5774', '10000000', '350011', '6', '-1', '-1', '0', '0'),
+('2409', '20000000', '350011', '7', '-1', '-1', '0', '0'),
+('2383', '20000000', '350011', '8', '-1', '-1', '0', '0'),
+('2395', '20000000', '350011', '9', '-1', '-1', '0', '0'),
+('2419', '10000000', '350011', '10', '-1', '-1', '0', '0'),
+('5779', '10000000', '350011', '11', '-1', '-1', '0', '0'),
+('5778', '10000000', '350011', '12', '-1', '-1', '0', '0'),
+('5777', '10000000', '350011', '13', '-1', '-1', '0', '0'),
+('5767', '10000000', '350011', '14', '-1', '-1', '0', '0'),
+('5766', '10000000', '350011', '15', '-1', '-1', '0', '0'),
+('5765', '10000000', '350011', '16', '-1', '-1', '0', '0'),
+('2407', '20000000', '350011', '17', '-1', '-1', '0', '0'),
+('365', '10000000', '350011', '18', '-1', '-1', '0', '0'),
+('388', '10000000', '350011', '19', '-1', '-1', '0', '0'),
+('2385', '10000000', '350011', '20', '-1', '-1', '0', '0'),
+('2389', '10000000', '350011', '21', '-1', '-1', '0', '0'),
+('512', '10000000', '350011', '22', '-1', '-1', '0', '0'),
+('641', '10000000', '350011', '23', '-1', '-1', '0', '0'),
+('5785', '10000000', '350011', '24', '-1', '-1', '0', '0'),
+('5784', '10000000', '350011', '25', '-1', '-1', '0', '0'),
+('5783', '10000000', '350011', '26', '-1', '-1', '0', '0'),
+('5773', '10000000', '350011', '27', '-1', '-1', '0', '0'),
+('5772', '10000000', '350011', '28', '-1', '-1', '0', '0'),
+('5771', '10000000', '350011', '29', '-1', '-1', '0', '0'),
+('2408', '20000000', '350011', '30', '-1', '-1', '0', '0'),
+('2394', '20000000', '350011', '31', '-1', '-1', '0', '0'),
+('374', '20000000', '350011', '32', '-1', '-1', '0', '0'),
+('2418', '10000000', '350011', '33', '-1', '-1', '0', '0'),
+('2498', '10000000', '350011', '34', '-1', '-1', '0', '0'),
+('5782', '10000000', '350011', '35', '-1', '-1', '0', '0'),
+('5781', '10000000', '350011', '36', '-1', '-1', '0', '0'),
+('5780', '10000000', '350011', '37', '-1', '-1', '0', '0'),
+('5770', '10000000', '350011', '38', '-1', '-1', '0', '0'),
+('5769', '10000000', '350011', '39', '-1', '-1', '0', '0'),
+('5768', '10000000', '350011', '40', '-1', '-1', '0', '0'),
+('2400', '10000000', '350011', '41', '-1', '-1', '0', '0'),
+('2393', '10000000', '350011', '42', '-1', '-1', '0', '0'),
+('2382', '10000000', '350011', '43', '-1', '-1', '0', '0'),
+('547', '10000000', '350011', '44', '-1', '-1', '0', '0'),
+('2405', '10000000', '350011', '45', '-1', '-1', '0', '0'),
+('909', '10650', '350012', '1', '-1', '-1', '0', '0'),
+('878', '5350', '350012', '2', '-1', '-1', '0', '0'),
+('846', '8000', '350012', '3', '-1', '-1', '0', '0'),
+('913', '62500', '350012', '4', '-1', '-1', '0', '0'),
+('850', '46700', '350012', '5', '-1', '-1', '0', '0'),
+('881', '31150', '350012', '6', '-1', '-1', '0', '0'),
+('919', '282500', '350012', '7', '-1', '-1', '0', '0'),
+('857', '212000', '350012', '8', '-1', '-1', '0', '0'),
+('888', '141000', '350012', '9', '-1', '-1', '0', '0'),
+('926', '615000', '350012', '10', '-1', '-1', '0', '0'),
+('864', '462000', '350012', '11', '-1', '-1', '0', '0'),
+('895', '308000', '350012', '12', '-1', '-1', '0', '0'),
+('924', '1725000', '350012', '13', '-1', '-1', '0', '0'),
+('862', '1295000', '350012', '14', '-1', '-1', '0', '0'),
+('893', '865000', '350012', '15', '-1', '-1', '0', '0'),
+('920', '2960000', '350012', '16', '-1', '-1', '0', '0'),
+('858', '2220000', '350012', '17', '-1', '-1', '0', '0'),
+('889', '1480000', '350012', '18', '-1', '-1', '0', '0'),
+('6607', '60000000', '350013', '1', '-1', '-1', '0', '0'),
+('6606', '60000000', '350013', '2', '-1', '-1', '0', '0'),
+('6605', '60000000', '350013', '3', '-1', '-1', '0', '0'),
+('6581', '60000000', '350013', '4', '-1', '-1', '0', '0'),
+('6582', '60000000', '350013', '5', '-1', '-1', '0', '0'),
+('6583', '60000000', '350013', '6', '-1', '-1', '0', '0'),
+('6608', '60000000', '350013', '7', '-1', '-1', '0', '0'),
+('6609', '60000000', '350013', '8', '-1', '-1', '0', '0'),
+('6610', '60000000', '350013', '9', '-1', '-1', '0', '0'),
+('6585', '60000000', '350013', '10', '-1', '-1', '0', '0'),
+('6584', '60000000', '350013', '11', '-1', '-1', '0', '0'),
+('6586', '60000000', '350013', '12', '-1', '-1', '0', '0'),
+('6587', '60000000', '350013', '13', '-1', '-1', '0', '0'),
+('6588', '60000000', '350013', '14', '-1', '-1', '0', '0'),
+('6589', '60000000', '350013', '15', '-1', '-1', '0', '0'),
+('6590', '60000000', '350013', '16', '-1', '-1', '0', '0'),
+('6591', '60000000', '350013', '17', '-1', '-1', '0', '0'),
+('6592', '60000000', '350013', '18', '-1', '-1', '0', '0'),
+('6593', '60000000', '350013', '19', '-1', '-1', '0', '0'),
+('6594', '60000000', '350013', '20', '-1', '-1', '0', '0'),
+('6595', '60000000', '350013', '21', '-1', '-1', '0', '0'),
+('6596', '60000000', '350013', '22', '-1', '-1', '0', '0'),
+('6597', '60000000', '350013', '23', '-1', '-1', '0', '0'),
+('6598', '60000000', '350013', '24', '-1', '-1', '0', '0'),
+('6599', '60000000', '350013', '25', '-1', '-1', '0', '0'),
+('6600', '60000000', '350013', '26', '-1', '-1', '0', '0'),
+('6601', '60000000', '350013', '27', '-1', '-1', '0', '0'),
+('6602', '60000000', '350013', '28', '-1', '-1', '0', '0'),
+('6603', '60000000', '350013', '29', '-1', '-1', '0', '0'),
+('6604', '60000000', '350013', '30', '-1', '-1', '0', '0'),
+('6580', '60000000', '350013', '31', '-1', '-1', '0', '0'),
+('7576', '60000000', '350013', '32', '-1', '-1', '0', '0'),
+('7577', '60000000', '350013', '33', '-1', '-1', '0', '0'),
+('7578', '60000000', '350013', '34', '-1', '-1', '0', '0'),
+('6378', '15000000', '350014', '1', '-1', '-1', '0', '0'),
+('6374', '15000000', '350014', '2', '-1', '-1', '0', '0'),
+('6373', '15000000', '350014', '3', '-1', '-1', '0', '0'),
+('6376', '15000000', '350014', '4', '-1', '-1', '0', '0'),
+('6375', '15000000', '350014', '5', '-1', '-1', '0', '0'),
+('6382', '15000000', '350014', '6', '-1', '-1', '0', '0'),
+('6379', '20000000', '350014', '7', '-1', '-1', '0', '0'),
+('6381', '15000000', '350014', '8', '-1', '-1', '0', '0'),
+('6380', '15000000', '350014', '9', '-1', '-1', '0', '0'),
+('6386', '15000000', '350014', '10', '-1', '-1', '0', '0'),
+('6383', '20000000', '350014', '11', '-1', '-1', '0', '0'),
+('6385', '15000000', '350014', '12', '-1', '-1', '0', '0'),
+('6384', '15000000', '350014', '13', '-1', '-1', '0', '0'),
+('6377', '15000000', '350014', '14', '-1', '-1', '0', '0'),
+('4616', '100000', '350015', '1', '-1', '-1', '0', '0'),
+('4615', '100000', '350015', '2', '-1', '-1', '0', '0'),
+('4617', '100000', '350015', '3', '-1', '-1', '0', '0'),
+('4618', '100000', '350015', '4', '-1', '-1', '0', '0'),
+('4614', '100000', '350015', '5', '-1', '-1', '0', '0'),
+('4613', '100000', '350015', '6', '-1', '-1', '0', '0'),
+('4620', '100000', '350015', '7', '-1', '-1', '0', '0'),
+('4619', '100000', '350015', '8', '-1', '-1', '0', '0'),
+('4621', '100000', '350015', '9', '-1', '-1', '0', '0'),
+('4622', '100000', '350015', '10', '-1', '-1', '0', '0'),
+('4623', '100000', '350015', '11', '-1', '-1', '0', '0'),
+('4624', '100000', '350015', '12', '-1', '-1', '0', '0'),
+('485', '10000000', '350016', '1', '-1', '-1', '0', '0'),
+('486', '10000000', '350016', '2', '-1', '-1', '0', '0'),
+('487', '10000000', '350016', '3', '-1', '-1', '0', '0'),
+('488', '10000000', '350016', '4', '-1', '-1', '0', '0'),
+('489', '10000000', '350016', '5', '-1', '-1', '0', '0'),
+('490', '10000000', '350016', '6', '-1', '-1', '0', '0'),
+('491', '10000000', '350016', '7', '-1', '-1', '0', '0'),
+('492', '10000000', '350016', '8', '-1', '-1', '0', '0'),
+('493', '10000000', '350016', '9', '-1', '-1', '0', '0'),
+('494', '10000000', '350016', '10', '-1', '-1', '0', '0'),
+('495', '10000000', '350016', '11', '-1', '-1', '0', '0'),
+('496', '10000000', '350016', '12', '-1', '-1', '0', '0'),
+('1101', '10150', '350017', '1', '-1', '-1', '0', '0'),
+('1104', '6350', '350017', '2', '-1', '-1', '0', '0'),
+('44', '5100', '350017', '3', '-1', '-1', '0', '0'),
+('23', '3980', '350017', '4', '-1', '-1', '0', '0'),
+('2386', '2485', '350017', '5', '-1', '-1', '0', '0'),
+('43', '1990', '350017', '6', '-1', '-1', '0', '0'),
+('26', '24600', '350017', '7', '-1', '-1', '0', '0'),
+('34', '15350', '350017', '8', '-1', '-1', '0', '0'),
+('717', '3385', '350017', '9', '-1', '-1', '0', '0'),
+('38', '3385', '350017', '10', '-1', '-1', '0', '0'),
+('625', '6450', '350017', '11', '-1', '-1', '0', '0'),
+('120', '122000', '350018', '1', '-1', '-1', '0', '0'),
+('5284', '122000', '350018', '2', '-1', '-1', '0', '0'),
+('219', '122000', '350018', '3', '-1', '-1', '0', '0'),
+('273', '122000', '350018', '4', '-1', '-1', '0', '0'),
+('257', '122000', '350018', '5', '-1', '-1', '0', '0'),
+('16', '122000', '350018', '6', '-1', '-1', '0', '0'),
+('87', '122000', '350018', '7', '-1', '-1', '0', '0'),
+('177', '122000', '350018', '8', '-1', '-1', '0', '0'),
+('6661', '100000000', '350019', '1', '-1', '-1', '0', '0'),
+('6662', '100000000', '350019', '2', '-1', '-1', '0', '0'),
+('10215', '300000000', '350022', '1', '-1', '-1', '0', '0'),
+('10216', '300000000', '350022', '2', '-1', '-1', '0', '0'),
+('10217', '300000000', '350022', '3', '-1', '-1', '0', '0'),
+('10218', '300000000', '350022', '4', '-1', '-1', '0', '0'),
+('10219', '300000000', '350022', '5', '-1', '-1', '0', '0'),
+('10220', '300000000', '350022', '6', '-1', '-1', '0', '0'),
+('10221', '300000000', '350022', '7', '-1', '-1', '0', '0'),
+('10222', '300000000', '350022', '8', '-1', '-1', '0', '0'),
+('10223', '300000000', '350022', '9', '-1', '-1', '0', '0'),
+('10224', '300000000', '350022', '10', '-1', '-1', '0', '0'),
+('10225', '300000000', '350022', '11', '-1', '-1', '0', '0'),
+('10226', '300000000', '350022', '12', '-1', '-1', '0', '0'),
+('10415', '300000000', '350022', '13', '-1', '-1', '0', '0'),
+('9863', '150000000', '350023', '1', '-1', '-1', '0', '0'),
+('9864', '150000000', '350023', '2', '-1', '-1', '0', '0'),
+('9865', '150000000', '350023', '3', '-1', '-1', '0', '0'),
+('9854', '150000000', '350023', '4', '-1', '-1', '0', '0'),
+('9855', '150000000', '350023', '5', '-1', '-1', '0', '0'),
+('9856', '150000000', '350023', '6', '-1', '-1', '0', '0'),
+('9857', '150000000', '350023', '7', '-1', '-1', '0', '0'),
+('9858', '150000000', '350023', '8', '-1', '-1', '0', '0'),
+('9859', '150000000', '350023', '9', '-1', '-1', '0', '0'),
+('9860', '150000000', '350023', '10', '-1', '-1', '0', '0'),
+('9861', '150000000', '350023', '11', '-1', '-1', '0', '0'),
+('9862', '150000000', '350023', '12', '-1', '-1', '0', '0'),
+('9866', '150000000', '350023', '13', '-1', '-1', '0', '0'),
+('9867', '150000000', '350023', '14', '-1', '-1', '0', '0'),
+('9868', '150000000', '350023', '15', '-1', '-1', '0', '0'),
+('9869', '150000000', '350023', '16', '-1', '-1', '0', '0'),
+('9870', '150000000', '350023', '17', '-1', '-1', '0', '0'),
+('9871', '150000000', '350023', '18', '-1', '-1', '0', '0'),
+('9872', '150000000', '350023', '19', '-1', '-1', '0', '0'),
+('9873', '150000000', '350023', '20', '-1', '-1', '0', '0'),
+('9874', '150000000', '350023', '21', '-1', '-1', '0', '0'),
+('9875', '150000000', '350023', '22', '-1', '-1', '0', '0'),
+('9876', '150000000', '350023', '23', '-1', '-1', '0', '0'),
+('9877', '150000000', '350023', '24', '-1', '-1', '0', '0'),
+('9878', '150000000', '350023', '25', '-1', '-1', '0', '0'),
+('9879', '150000000', '350023', '26', '-1', '-1', '0', '0'),
+('9880', '150000000', '350023', '27', '-1', '-1', '0', '0'),
+('9377', '150000000', '350023', '28', '-1', '-1', '0', '0'),
+('9378', '150000000', '350023', '29', '-1', '-1', '0', '0'),
+('9379', '150000000', '350023', '30', '-1', '-1', '0', '0'),
+('9381', '150000000', '350023', '31', '-1', '-1', '0', '0'),
+('9382', '150000000', '350023', '32', '-1', '-1', '0', '0'),
+('9383', '150000000', '350023', '33', '-1', '-1', '0', '0'),
+('9385', '150000000', '350023', '34', '-1', '-1', '0', '0'),
+('9386', '150000000', '350023', '35', '-1', '-1', '0', '0'),
+('9387', '150000000', '350023', '36', '-1', '-1', '0', '0'),
+('10527', '150000000', '350023', '37', '-1', '-1', '0', '0'),
+('10528', '150000000', '350023', '38', '-1', '-1', '0', '0'),
+('10529', '150000000', '350023', '39', '-1', '-1', '0', '0'),
+('10530', '150000000', '350023', '40', '-1', '-1', '0', '0'),
+('10531', '150000000', '350023', '41', '-1', '-1', '0', '0'),
+('10532', '150000000', '350023', '42', '-1', '-1', '0', '0'),
+('10004', '150000000', '350023', '43', '-1', '-1', '0', '0'),
+('9416', '50000000', '350024', '1', '-1', '-1', '0', '0'),
+('9421', '45000000', '350024', '2', '-1', '-1', '0', '0'),
+('9422', '35000000', '350024', '3', '-1', '-1', '0', '0'),
+('9423', '35000000', '350024', '4', '-1', '-1', '0', '0'),
+('9424', '35000000', '350024', '5', '-1', '-1', '0', '0'),
+('9441', '35000000', '350024', '6', '-1', '-1', '0', '0'),
+('9425', '50000000', '350024', '7', '-1', '-1', '0', '0'),
+('9428', '45000000', '350024', '8', '-1', '-1', '0', '0'),
+('9429', '35000000', '350024', '9', '-1', '-1', '0', '0'),
+('9430', '35000000', '350024', '10', '-1', '-1', '0', '0'),
+('9431', '35000000', '350024', '11', '-1', '-1', '0', '0'),
+('9432', '50000000', '350024', '12', '-1', '-1', '0', '0'),
+('9437', '45000000', '350024', '13', '-1', '-1', '0', '0'),
+('9438', '35000000', '350024', '14', '-1', '-1', '0', '0'),
+('9439', '35000000', '350024', '15', '-1', '-1', '0', '0'),
+('9440', '35000000', '350024', '16', '-1', '-1', '0', '0'),
+('9456', '20000000', '350025', '1', '-1', '-1', '0', '0'),
+('9455', '15000000', '350025', '2', '-1', '-1', '0', '0'),
+('9457', '10000000', '350025', '3', '-1', '-1', '0', '0'),
+('10215', '125000000', '350095', '1', '-1', '-1', '0', '0'),
+('10216', '125000000', '350095', '2', '-1', '-1', '0', '0'),
+('10217', '125000000', '350095', '3', '-1', '-1', '0', '0'),
+('10218', '125000000', '350095', '4', '-1', '-1', '0', '0'),
+('10219', '125000000', '350095', '5', '-1', '-1', '0', '0'),
+('10220', '125000000', '350095', '6', '-1', '-1', '0', '0'),
+('10221', '125000000', '350095', '7', '-1', '-1', '0', '0'),
+('10222', '125000000', '350095', '8', '-1', '-1', '0', '0'),
+('10223', '125000000', '350095', '9', '-1', '-1', '0', '0'),
+('10224', '125000000', '350095', '10', '-1', '-1', '0', '0'),
+('10225', '125000000', '350095', '11', '-1', '-1', '0', '0'),
+('10226', '125000000', '350095', '12', '-1', '-1', '0', '0'),
+('10415', '125000000', '350095', '13', '-1', '-1', '0', '0'),
+('9456', '10000000', '350096', '1', '-1', '-1', '0', '0'),
+('9455', '5000000', '350096', '2', '-1', '-1', '0', '0'),
+('9457', '2500000', '350096', '3', '-1', '-1', '0', '0'),
+('9416', '37000000', '350097', '1', '-1', '-1', '0', '0'),
+('9421', '37000000', '350097', '2', '-1', '-1', '0', '0'),
+('9423', '37000000', '350097', '3', '-1', '-1', '0', '0'),
+('9424', '37000000', '350097', '4', '-1', '-1', '0', '0'),
+('9422', '37000000', '350097', '5', '-1', '-1', '0', '0'),
+('9425', '37000000', '350097', '6', '-1', '-1', '0', '0'),
+('9428', '37000000', '350097', '7', '-1', '-1', '0', '0'),
+('9430', '37000000', '350097', '8', '-1', '-1', '0', '0'),
+('9431', '37000000', '350097', '9', '-1', '-1', '0', '0'),
+('9429', '37000000', '350097', '10', '-1', '-1', '0', '0'),
+('9432', '37000000', '350097', '11', '-1', '-1', '0', '0'),
+('9437', '37000000', '350097', '12', '-1', '-1', '0', '0'),
+('9439', '37000000', '350097', '13', '-1', '-1', '0', '0'),
+('9440', '37000000', '350097', '14', '-1', '-1', '0', '0'),
+('9438', '37000000', '350097', '15', '-1', '-1', '0', '0'),
+('9854', '95000000', '350098', '1', '-1', '-1', '0', '0'),
+('9855', '95000000', '350098', '2', '-1', '-1', '0', '0'),
+('9856', '95000000', '350098', '3', '-1', '-1', '0', '0'),
+('9857', '95000000', '350098', '4', '-1', '-1', '0', '0'),
+('9858', '95000000', '350098', '5', '-1', '-1', '0', '0'),
+('9859', '95000000', '350098', '6', '-1', '-1', '0', '0'),
+('9860', '95000000', '350098', '7', '-1', '-1', '0', '0'),
+('9861', '95000000', '350098', '8', '-1', '-1', '0', '0'),
+('9862', '95000000', '350098', '9', '-1', '-1', '0', '0'),
+('9863', '95000000', '350098', '10', '-1', '-1', '0', '0'),
+('9864', '95000000', '350098', '11', '-1', '-1', '0', '0'),
+('9865', '95000000', '350098', '12', '-1', '-1', '0', '0'),
+('9866', '95000000', '350098', '13', '-1', '-1', '0', '0'),
+('9867', '95000000', '350098', '14', '-1', '-1', '0', '0'),
+('9868', '95000000', '350098', '15', '-1', '-1', '0', '0'),
+('9869', '95000000', '350098', '16', '-1', '-1', '0', '0'),
+('9870', '95000000', '350098', '17', '-1', '-1', '0', '0'),
+('9871', '95000000', '350098', '18', '-1', '-1', '0', '0'),
+('9872', '95000000', '350098', '19', '-1', '-1', '0', '0'),
+('9873', '95000000', '350098', '20', '-1', '-1', '0', '0'),
+('9874', '95000000', '350098', '21', '-1', '-1', '0', '0'),
+('9875', '95000000', '350098', '22', '-1', '-1', '0', '0'),
+('9876', '95000000', '350098', '23', '-1', '-1', '0', '0'),
+('9877', '95000000', '350098', '24', '-1', '-1', '0', '0'),
+('9878', '95000000', '350098', '25', '-1', '-1', '0', '0'),
+('9879', '95000000', '350098', '26', '-1', '-1', '0', '0'),
+('9880', '95000000', '350098', '27', '-1', '-1', '0', '0'),
+('10527', '95000000', '350098', '28', '-1', '-1', '0', '0'),
+('10528', '95000000', '350098', '29', '-1', '-1', '0', '0'),
+('10529', '95000000', '350098', '30', '-1', '-1', '0', '0'),
+('10530', '95000000', '350098', '31', '-1', '-1', '0', '0'),
+('10531', '95000000', '350098', '32', '-1', '-1', '0', '0'),
+('10532', '95000000', '350098', '33', '-1', '-1', '0', '0'),
+('10004', '95000000', '350098', '34', '-1', '-1', '0', '0'),
+('5808', '50000000', '350099', '1', '-1', '-1', '0', '0'),
+('6394', '50000000', '350099', '2', '-1', '-1', '0', '0'),
+('6843', '50000000', '350099', '3', '-1', '-1', '0', '0'),
+('6844', '50000000', '350099', '4', '-1', '-1', '0', '0'),
+('6845', '50000000', '350099', '5', '-1', '-1', '0', '0'),
+('6846', '50000000', '350099', '6', '-1', '-1', '0', '0'),
+('7060', '50000000', '350099', '7', '-1', '-1', '0', '0'),
+('7680', '50000000', '350099', '8', '-1', '-1', '0', '0'),
+('7681', '50000000', '350099', '9', '-1', '-1', '0', '0'),
+('7682', '50000000', '350099', '10', '-1', '-1', '0', '0'),
+('7683', '50000000', '350099', '11', '-1', '-1', '0', '0'),
+('7695', '50000000', '350099', '12', '-1', '-1', '0', '0'),
+('7696', '50000000', '350099', '13', '-1', '-1', '0', '0'),
+('7838', '50000000', '350099', '14', '-1', '-1', '0', '0'),
+('7837', '50000000', '350099', '15', '-1', '-1', '0', '0'),
+('8177', '50000000', '350099', '16', '-1', '-1', '0', '0'),
+('8178', '50000000', '350099', '17', '-1', '-1', '0', '0'),
+('8179', '50000000', '350099', '18', '-1', '-1', '0', '0'),
+('8180', '50000000', '350099', '19', '-1', '-1', '0', '0'),
+('8184', '50000000', '350099', '20', '-1', '-1', '0', '0'),
+('8185', '50000000', '350099', '21', '-1', '-1', '0', '0'),
+('8186', '50000000', '350099', '22', '-1', '-1', '0', '0'),
+('8187', '50000000', '350099', '23', '-1', '-1', '0', '0'),
+('8188', '50000000', '350099', '24', '-1', '-1', '0', '0'),
+('8189', '50000000', '350099', '25', '-1', '-1', '0', '0'),
+('8552', '50000000', '350099', '26', '-1', '-1', '0', '0'),
+('8557', '50000000', '350099', '27', '-1', '-1', '0', '0'),
+('8910', '50000000', '350099', '28', '-1', '-1', '0', '0'),
+('8911', '50000000', '350099', '29', '-1', '-1', '0', '0'),
+('8912', '50000000', '350099', '30', '-1', '-1', '0', '0'),
+('8913', '50000000', '350099', '31', '-1', '-1', '0', '0'),
+('8914', '50000000', '350099', '32', '-1', '-1', '0', '0'),
+('8915', '50000000', '350099', '33', '-1', '-1', '0', '0'),
+('8916', '50000000', '350099', '34', '-1', '-1', '0', '0'),
+('8917', '50000000', '350099', '35', '-1', '-1', '0', '0'),
+('8918', '50000000', '350099', '36', '-1', '-1', '0', '0'),
+('8920', '50000000', '350099', '37', '-1', '-1', '0', '0'),
+('8921', '50000000', '350099', '38', '-1', '-1', '0', '0'),
+('8922', '50000000', '350099', '39', '-1', '-1', '0', '0'),
+('8923', '50000000', '350099', '40', '-1', '-1', '0', '0'),
+('9161', '50000000', '350099', '41', '-1', '-1', '0', '0'),
+('8559', '50000000', '350099', '42', '-1', '-1', '0', '0'),
+('8560', '50000000', '350099', '43', '-1', '-1', '0', '0'),
+('8561', '50000000', '350099', '44', '-1', '-1', '0', '0'),
+('8562', '50000000', '350099', '45', '-1', '-1', '0', '0'),
+('8563', '50000000', '350099', '46', '-1', '-1', '0', '0'),
+('8564', '50000000', '350099', '47', '-1', '-1', '0', '0'),
+('8565', '50000000', '350099', '48', '-1', '-1', '0', '0'),
+('8566', '50000000', '350099', '49', '-1', '-1', '0', '0'),
+('8569', '50000000', '350099', '50', '-1', '-1', '0', '0');
 -- ----------------------------
 -- Castles Item Creation
 -- ----------------------------

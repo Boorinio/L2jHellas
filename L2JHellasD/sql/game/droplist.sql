@@ -45,7 +45,7 @@ CREATE TABLE `droplist` (
 --    2 is almost all of the other items except:
 --    3 and 4 are used for the other two seal stones (1 category each).
 -- 
-INSERT INTO `droplist` VALUES 
+INSERT INTO `droplist` VALUES
 (12775,951,1,1,0,900000),  -- Scroll: Enchant Weapon (Grade C) **   begin   event Squash** RT Bibigon 10.11.07
 (12775,952,1,1,0,900000),  -- Scroll: Enchant Armor (Grade C)
 (12775,955,1,2,0,950000),  -- Scroll: Enchant Weapon (Grade D)
@@ -2793,7 +2793,9 @@ INSERT INTO `droplist` VALUES
 (20248,1865,1,1,-1,470054), -- Varnish
 (20248,2250,1,1,-1,117514), -- Recipe: Bone Arrow
 (20248,57,199,396,0,700000), -- Adena
-(20248,86,1,1,1,8), -- Tomahawk
+(20248,86,1,1,1,8); -- Tomahawk
+
+INSERT INTO `droplist` VALUES
 (20248,179,1,1,1,8), -- Mace of Prayer
 (20248,180,1,1,1,8), -- Mace of Judgment
 (20248,181,1,1,1,8), -- Mace of Miracle
@@ -8221,7 +8223,8 @@ INSERT INTO `droplist` VALUES
 (20816,1864,3,9,2,63121), -- Stem
 (20816,1869,1,1,2,189363), -- Iron Ore
 (20816,1878,1,1,2,75746), -- Braided Hemp
-(20816,1884,1,1,2,116532), -- Cord
+(20816,1884,1,1,2,116532); -- Cord
+INSERT INTO `droplist` VALUES
 (20816,4039,1,1,2,6313), -- Mold Glue
 (20816,4402,1,1,2,379), -- Blue Dimensional Stone
 (20816,5001,1,1,2,145), -- Recipe: Lance (60%)
@@ -13779,7 +13782,8 @@ INSERT INTO `droplist` VALUES
 (21289,1889,1,1,-1,73108), -- Compound Braid
 (21289,5549,1,1,-1,109662), -- Metallic Thread
 (21289,6343,1,1,-1,23447), -- Sealed Phoenix Necklace Beads
-(21289,57,442,900,0,700000), -- Adena
+(21289,57,442,900,0,700000); -- Adena
+INSERT INTO `droplist` VALUES
 (21289,5290,1,1,1,7), -- Sealed Dark Crystal Gloves
 (21289,5291,1,1,1,7), -- Sealed Dark Crystal Boots
 (21289,5295,1,1,1,7), -- Sealed Tallum Gloves
@@ -19730,7 +19734,8 @@ INSERT INTO `droplist` VALUES
 (21722,1989,1,1,-1,222552), -- Divine Stocking Pattern
 (21722,2112,1,1,-1,35759), -- Pa\'agrian Axe Blade
 (21722,4128,1,1,-1,91389), -- Recipe: Adamantite Necklace
-(21722,57,2981,6056,0,700000), -- Adena
+(21722,57,2981,6056,0,700000); -- Adena
+INSERT INTO `droplist` VALUES
 (21722,299,1,1,1,15), -- Orcish Poleaxe
 (21722,301,1,1,1,20), -- Scorpion
 (21722,303,1,1,1,20), -- Widow Maker
@@ -24842,7 +24847,8 @@ INSERT INTO `droplist` VALUES
 (25357,1123,2,4,0,342628), -- Blue Buckskin Boots
 (25357,222,1,1,1,159449), -- Poniard Dagger
 (25357,955,1,1,2,443703), -- Scroll: Enchant Weapon (Grade D)
-(25357,956,8,22,2,246502), -- Scroll: Enchant Armor (Grade D)
+(25357,956,8,22,2,246502); -- Scroll: Enchant Armor (Grade D)
+INSERT INTO `droplist` VALUES
 (25357,6387,24,72,2,92438), -- Blessed Scroll of Resurrection for Pets
 (25358,1061,1,1,2,99782), -- Healing Potion
 (25359,1832,1,1,2,182933), -- Greater Antidote

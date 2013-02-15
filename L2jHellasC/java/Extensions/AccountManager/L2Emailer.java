@@ -21,6 +21,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 
 public class L2Emailer
@@ -33,7 +34,7 @@ public class L2Emailer
 		String[] email = towho;
 		String subject = sub;
 		String content = text;
-		
+
 		Properties props = System.getProperties();
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", host);
@@ -41,28 +42,29 @@ public class L2Emailer
 		props.put("mail.smtp.password", pass);
 		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.auth", "true");
-		
+
 		Session session = Session.getDefaultInstance(props, null);
 		MimeMessage message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(from));
-		
+
 		InternetAddress[] toAddress = new InternetAddress[email.length];
-		
+
 		for (int i = 0; i < email.length; i++)
 		{
 			toAddress[i] = new InternetAddress(email[i]);
 		}
-		
+
 		for (int i = 0; i < toAddress.length; i++)
 		{
 			message.addRecipient(Message.RecipientType.TO, toAddress[i]);
 		}
-		
+
 		message.setSubject(subject);
 		message.setText(content);
 		Transport transport = session.getTransport("smtp");
 		transport.connect(host, from, pass);
 		transport.sendMessage(message, message.getAllRecipients());
+		if (Config.DEBUG)
 		System.out.println("An email was successfully sent to " + toAddress);
 		transport.close();
 	}

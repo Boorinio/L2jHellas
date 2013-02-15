@@ -28,7 +28,7 @@ import com.l2jhellas.util.Rnd;
  *
  * Implementation of the Bluff Effect
  */
-public final class EffectBluff extends L2Effect 
+public final class EffectBluff extends L2Effect
 {
 
     public EffectBluff(Env env, EffectTemplate template)
@@ -54,14 +54,13 @@ public final class EffectBluff extends L2Effect
 			return false;
 		if (getEffected() instanceof L2SiegeSummonInstance)
 			return false;
-		
+
 		if (Rnd.get(100) <= 55)
 		{
 			getEffected().setTarget(null);
 			getEffected().abortAttack();
 			getEffected().abortCast();
 			getEffected().broadcastPacket(new StartRotation(getEffected().getObjectId(), getEffected().getHeading(), 1, 65535));
-			getEffected().broadcastPacket(new StopRotation(getEffected().getObjectId(), getEffector().getHeading(), 65535));
 			getEffected().setHeading(getEffector().getHeading());
 			return true;
 		}
@@ -71,6 +70,7 @@ public final class EffectBluff extends L2Effect
     @Override
 	public boolean onActionTime()
     {
+		getEffected().broadcastPacket(new StopRotation(getEffected().getObjectId(), getEffector().getHeading(), 65535));
         return false;
     }
 }

@@ -46,7 +46,7 @@ CREATE TABLE `custom_pvp_system_rank_reward` (
 -- ----------------------------
 -- Records of `custom_pvp_system_rank_reward`
 -- ----------------------------
-INSERT INTO `custom_pvp_system_rank_reward` VALUES 
+INSERT INTO `custom_pvp_system_rank_reward` VALUES
 ('1', '57', '50000', '1'),
 ('2', '57', '100000', '2'),
 ('3', '57', '150000', '5'),

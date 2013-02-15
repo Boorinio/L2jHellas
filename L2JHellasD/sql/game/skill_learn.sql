@@ -305,7 +305,8 @@ INSERT INTO `skill_learn` VALUES
 (30189,28),
 (30190,10),
 (30190,11),
-(30190,12),
+(30190,12);
+INSERT INTO skill_learn VALUES 
 (30190,13),
 (30190,14),
 (30192,31),
@@ -765,7 +766,8 @@ INSERT INTO `skill_learn` VALUES
 (30851,4),
 (30851,5),
 (30851,6),
-(30851,7),
+(30851,7);
+INSERT INTO skill_learn VALUES 
 (30851,8),
 (30851,9),
 (30852,18),

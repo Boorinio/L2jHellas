@@ -501,10 +501,9 @@ INSERT INTO teleport VALUES
 ('Clan Hall -> Ant Cave South Entrance',664,-16019,193365,-4488,500,0),
 ('Clan Hall -> Ant Cave East Entrance',665,-10875,175962,-4152,500,0),
 ('Clan Hall -> Ant Cave West Entrance',666,-25899,172857,-4186,500,0),
-('Clan Hall -> Altar of Rites',667,-44311,78617,-3744,500,0);
+('Clan Hall -> Altar of Rites',667,-44311,78617,-3744,500,0),
 
 -- Noblesse Teleport
-INSERT INTO teleport VALUES
 -- 1000 adena
 ('Gludin Arena - 1000 adena',9000,-87328,142266,-3640,1000,0),
 ('Coliseum - 1000 adena',9001,146440,46723,-3432,1000,0),
@@ -652,9 +651,8 @@ INSERT INTO teleport VALUES
 ('Varka teleport - Rune Castle Town',10034,43849,-47877,-792,12000,0),
 ('Varka teleport - Aden Castle Town',10035,146705,25840,-2000,17000,0),
 ('Varka teleport - Wall of Argos',10036,164564,-48145,-3536,11000,0),
-('Varka teleport - Hot Springs',10037,144880,-113468,-2560,14000,0);
+('Varka teleport - Hot Springs',10037,144880,-113468,-2560,14000,0),
 
-INSERT INTO teleport VALUES
 ('Clan Hall -> Center Town of Aden',12000,147450,28081,-2294,0,0),
 ('Clan Hall -> North Town of Aden',12001,151950,25094,-2172,0,0),
 ('Clan Hall -> East Town of Aden',12002,142593,26344,-2425,0,0),

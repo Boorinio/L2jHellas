@@ -21095,9 +21095,7 @@ INSERT INTO `npcskills` (`npcid`, `skillid`, `level`) VALUES
 (31943,4390,1),
 (31944,4045,1),
 (31944,4416,2),
-(31944,4390,1);
-
-INSERT INTO `npcskills` (`npcid`, `skillid`, `level`) VALUES 
+(31944,4390,1),
 (32075,4045,1),
 (32075,4416,4);
 

@@ -18,13 +18,10 @@
 	<property name="build" location="../build/DataPack"/>
 	<property name="build.dist" location="${build}/dist"/>
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
-	<property name="build.dist.login" location="${build.dist}/login"/>
 	<property name="build.dist.tools" location="${build.dist}/tools"/>
 	<property name="build.dist.tools.RemoteConnector" location="${build.dist}/tools/RemoteConnector"/>
 	<property name="build.dist.doc" location="${build.dist}/doc"/>
-	
 	<property name="build.dist.sql.game" location="${build.dist}/sql/game"/>
-	<property name="build.dist.sql.login" location="${build.dist}/sql/login"/>
 	<property name="build.dist.sql.maintenance" location="${build.dist}/sql/maintenance"/>
 	
 	<target name="init" description="Create the output directories. Do nothing if dirs were already created">
@@ -32,13 +29,8 @@
 		<mkdir dir="${build.dist}"/>
 		<mkdir dir="${build.dist.game}"/>
 		<mkdir dir="${build.dist.doc}" />
-		<mkdir dir="${build.dist.login}" />
 		<mkdir dir="${build.dist.sql.game}" />
-		<mkdir dir="${build.dist.sql.game.custom}" />
-		<mkdir dir="${build.dist.sql.game.mods}" />
 		<mkdir dir="${build.dist.sql.game.updates}" />
-		<mkdir dir="${build.dist.sql.login}" />
-		<mkdir dir="${build.dist.sql.login.updates}" />
 		<mkdir dir="${build.dist.sql.maintenance}" />
 	</target>
 	<echo>Creating L2J Hellas DataPack please wait..</echo>
@@ -66,14 +58,6 @@
 		</sync>
 		<sync todir="${build.dist.sql.game}">
 			<fileset dir="${basedir}/sql/game">
-				<include name="*.*"/>
-				<include name="custom/*.*"/>
-				<include name="mods/*.*"/>
-				<include name="updates/*.*"/>
-			</fileset>
-		</sync>
-		<sync todir="${build.dist.sql.login}">
-			<fileset dir="${basedir}/sql/login">
 				<include name="*.*"/>
 				<include name="updates/*.*"/>
 			</fileset>
@@ -105,19 +89,8 @@
 		<echo>Please visit our forum http://l2jhellas.eu for bugs.</echo>
 	</target>
 	
-	<target name="dist-deflate"
-			depends="export"
-			description="Creates a datapack ZIP file with NO compression (bigger ZIP file but faster than regular dist target)">
-		<zip destfile="${build}/L2JHellas-DP-nocompress.zip" basedir="${build.dist}" update="true" compress="false"/>
-	</target>
-	
 	<target name="clean" 
 		description="Deletes the whole build space and existing packages.">
 		<delete dir="${build}"/>
-	</target>
-	
-	<target name="distclean" description="Deletes the datapack distribution ZIP file only, preserving synchronized build files.">
-		<delete file="${build}/L2JHellas_DP.zip"/>
-		<delete file="${build}/L2JHellas-DP-nocompress.zip"/>
 	</target>
 </project>
