@@ -266,16 +266,16 @@ public class CTF
 		L2ItemInstance wpn = _player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);
 		if (wpn == null)
 		{
-			wpn = _player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);
+			wpn = _player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LRHAND);
 			if (wpn != null)
-				_player.getInventory().unEquipItemInBodySlotAndRecord(Inventory.PAPERDOLL_RHAND);
+				_player.getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_LRHAND);
 		}
 		else
 		{
-			_player.getInventory().unEquipItemInBodySlotAndRecord(Inventory.PAPERDOLL_RHAND);
+			_player.getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_RHAND);
 			wpn = _player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
 			if (wpn != null)
-				_player.getInventory().unEquipItemInBodySlotAndRecord(Inventory.PAPERDOLL_LHAND);
+				_player.getInventory().unEquipItemInSlot(Inventory.PAPERDOLL_LHAND);
 		}
 		// add the flag in his hands
 		_player.getInventory().equipItem(ItemTable.getInstance().createItem("", CTF._FLAG_IN_HAND_ITEM_ID, 1, _player, null));
