@@ -526,4 +526,12 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 
 -- ZONE
 ('admin_zone_check','1'),
-('admin_zone_reload','1');
+('admin_zone_reload','1'),
+
+-- PREMIUM
+('admin_premium_menu','1'),
+('admin_premium_add1','1'),
+('admin_premium_add2','1'),
+('admin_premium_add3','1'),
+('admin_premium_add4','1'),
+('admin_premium_add5','1');
