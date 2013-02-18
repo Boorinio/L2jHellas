@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.GMViewCharacterInfo;
+import com.l2jhellas.gameserver.network.serverpackets.GMViewHennaInfo;
 import com.l2jhellas.gameserver.network.serverpackets.GMViewItemList;
 import com.l2jhellas.gameserver.network.serverpackets.GMViewPledgeInfo;
 import com.l2jhellas.gameserver.network.serverpackets.GMViewQuestList;
@@ -87,6 +88,7 @@ public final class RequestGMCommand extends L2GameClientPacket
 		case 5: // player inventory
 			{
 				sendPacket(new GMViewItemList(player));
+				sendPacket(new GMViewHennaInfo(player));
 				break;
 			}
 		case 6: // player warehouse
@@ -99,9 +101,6 @@ public final class RequestGMCommand extends L2GameClientPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
