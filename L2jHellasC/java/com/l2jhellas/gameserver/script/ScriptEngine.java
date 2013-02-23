@@ -16,10 +16,6 @@ package com.l2jhellas.gameserver.script;
 
 import java.util.Hashtable;
 
-import com.l2jhellas.gameserver.script.faenor.FaenorInterface;
-
-
-
 
 /**
  * @author Luis Arias
@@ -29,7 +25,6 @@ import com.l2jhellas.gameserver.script.faenor.FaenorInterface;
  */
 public class ScriptEngine
 {
-    protected EngineInterface _utils = new FaenorInterface();
     public static final Hashtable<String, ParserFactory> parserFactories = new Hashtable<String, ParserFactory>();
 
     protected static Parser createParser(String name)

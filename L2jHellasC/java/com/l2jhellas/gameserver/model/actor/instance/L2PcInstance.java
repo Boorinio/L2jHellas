@@ -2215,31 +2215,38 @@ public final class L2PcInstance extends L2PlayableInstance
 			setIsOverloaded(getCurrentLoad() > maxLoad);
 			int weightproc = getCurrentLoad() * 1000 / maxLoad;
 			int newWeightPenalty;
-			if (weightproc < 500 || _dietMode || Config.DISABLE_WEIGHT_PENALTY)
-				newWeightPenalty = 0;
-			else if (weightproc < 666)
-				newWeightPenalty = 1;
-			else if (weightproc < 800)
-				newWeightPenalty = 2;
-			else if (weightproc < 1000)
-				newWeightPenalty = 3;
-			else
-				newWeightPenalty = 4;
-
-			if (_curWeightPenalty != newWeightPenalty)
+			if(Config.DISABLE_WEIGHT_PENALTY||_dietMode)
 			{
-				_curWeightPenalty = newWeightPenalty;
-				if (newWeightPenalty > 0 && !_dietMode && !Config.DISABLE_WEIGHT_PENALTY)
-				{
-					super.addSkill(SkillTable.getInstance().getInfo(4270, newWeightPenalty));
-				}
-				else
-				{
-					super.removeSkill(getKnownSkill(4270));
-				}
-
+				newWeightPenalty = 0;
+				super.removeSkill(getKnownSkill(4270));
 				sendPacket(new EtcStatusUpdate(this));
 				Broadcast.toKnownPlayers(this, new CharInfo(this));
+			}
+			else
+			{
+				if (weightproc < 666)
+					newWeightPenalty = 1;
+				else if (weightproc < 800)
+					newWeightPenalty = 2;
+				else if (weightproc < 1000)
+					newWeightPenalty = 3;
+				else
+					newWeightPenalty = 4;
+				if (_curWeightPenalty != newWeightPenalty)
+				{
+					_curWeightPenalty = newWeightPenalty;
+					if (newWeightPenalty > 0)
+					{
+						super.addSkill(SkillTable.getInstance().getInfo(4270, newWeightPenalty));
+					}
+					else
+					{
+						super.removeSkill(getKnownSkill(4270));
+					}
+
+					sendPacket(new EtcStatusUpdate(this));
+					Broadcast.toKnownPlayers(this, new CharInfo(this));
+				}
 			}
 		}
 	}
@@ -12535,9 +12542,11 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public void calculateDeathPenaltyBuffLevel(L2Character killer)
 	{
+		if(!(Config.DEATH_PENALTY_CHANCE==0))
+		{
 		if (Rnd.get(100) <= Config.DEATH_PENALTY_CHANCE && !(killer instanceof L2PcInstance) && !(this.isGM()) && !(this.getCharmOfLuck() && (killer instanceof L2GrandBossInstance || killer instanceof L2RaidBossInstance)))
-
 			increaseDeathPenaltyBuffLevel();
+		}
 	}
 
 	public void increaseDeathPenaltyBuffLevel()
