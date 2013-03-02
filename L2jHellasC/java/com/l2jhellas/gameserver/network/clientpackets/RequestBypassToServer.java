@@ -111,6 +111,16 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				comeHere(activeChar);
 			}
+			else if (_command.startsWith("SecondAnswer"))
+			{
+				activeChar.sendMessage("You passed our vertification system");
+				activeChar.PassedProt=true;
+			}
+			else if (_command.startsWith("FirstAnswer"))
+			{
+				activeChar.sendMessage("You didn't pass our vertification system you will be kicked within 2 minutes!");
+				activeChar.PassedProt=false;
+			}
 			else if (_command.startsWith("player_help "))
 			{
 				playerHelp(activeChar, _command.substring(12));

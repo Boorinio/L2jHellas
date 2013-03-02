@@ -108,6 +108,7 @@ import com.l2jhellas.gameserver.model.L2Multisell;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.engines.AntiBot;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 import com.l2jhellas.gameserver.network.L2GameClient;
@@ -382,6 +383,10 @@ public class GameServer
 			AwayManager.getInstance();
 		}
 		BalanceLoad.loadBalance();
+		if(ExternalConfig.ALLOW_SEQURITY_QUE)
+		AntiBot.getInstance();
+		if(ExternalConfig.ALLOW_ANTI_AFK)
+		AntiBot.getInstance2();
 		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
 		{
 			_log.log(Level.INFO, "Restart System: Auto Restart System is Enabled.");

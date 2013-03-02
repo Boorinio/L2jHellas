@@ -71,6 +71,12 @@ public final class ExternalConfig
 	public static String[] RESTART_INTERVAL_BY_TIME_OF_DAY;
 	public static boolean LOGIN_SERVER_SCHEDULE_RESTART;
 	public static long LOGIN_SERVER_SCHEDULE_RESTART_TIME;
+	public static boolean ALLOW_PRIVATE_ANTI_BOT;
+	public static boolean ALLOW_SEQURITY_QUE;
+	public static boolean ALLOW_ANTI_AFK;
+	public static int ENCHANT_BOT_CHANCE;
+	public static int MINUTES_AFK_PLAYERS;
+	public static int SECURITY_QUE_TIME;
 	
 	/* CUSTOM PVP/RANK/REWARD SYSTEM */
 	public static boolean CUSTOM_PVP_ENABLED;
@@ -406,6 +412,13 @@ public final class ExternalConfig
 			RESTART_INTERVAL_BY_TIME_OF_DAY = (AutoSettings.getProperty("RestartByTimeOfDay", "23:59").split(","));
 			LOGIN_SERVER_SCHEDULE_RESTART = Boolean.parseBoolean(AutoSettings.getProperty("LoginRestartSchedule", "False"));
 			LOGIN_SERVER_SCHEDULE_RESTART_TIME = Long.parseLong(AutoSettings.getProperty("LoginRestartTime", "24"));
+			ALLOW_SEQURITY_QUE = Boolean.valueOf(AutoSettings.getProperty("AllowSecurityQuestion", "True"));
+			SECURITY_QUE_TIME = Integer.parseInt(AutoSettings.getProperty("Securitytime", "20"));
+			ALLOW_ANTI_AFK = Boolean.valueOf(AutoSettings.getProperty("AllowAntiAfk", "True"));
+			MINUTES_AFK_PLAYERS = Integer.parseInt(AutoSettings.getProperty("AntiAfkMinutes", "20"));
+			ALLOW_PRIVATE_ANTI_BOT = Boolean.valueOf(AutoSettings.getProperty("AllowPrivateAntiBot", "False"));
+			ENCHANT_BOT_CHANCE = Integer.parseInt(AutoSettings.getProperty("PrivateBotChance", "15"));
+			
 		}
 		catch (Exception e)
 		{

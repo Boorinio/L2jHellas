@@ -21,6 +21,7 @@ import javolution.util.FastMap;
 import Extensions.RaidEvent.L2RaidEvent;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -43,6 +44,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.AttackableKnownList;
 import com.l2jhellas.gameserver.model.base.SoulCrystal;
+import com.l2jhellas.gameserver.model.entity.engines.AntiBot;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
@@ -1631,11 +1633,14 @@ public class L2Attackable extends L2NpcInstance
 
 					// Check if the autoLoot mode is active
 					if (Config.AUTO_LOOT)
+					{
 						player.doAutoLoot(this, item); // Give this or these
-														// Item(s) to the
+					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						AntiBot.privateantibot(player);							// Item(s) to the
 														// L2PcInstance that has
 														// killed the
 														// L2Attackable
+					}
 					else
 						DropItem(player, item); // drop the item on the ground
 
@@ -1673,7 +1678,11 @@ public class L2Attackable extends L2NpcInstance
 			// the L2Attackable
 			RewardItem item = new RewardItem(Config.CHAMPION_SPCL_ITEM, champqty);
 			if (Config.AUTO_LOOT)
+			{
 				player.doAutoLoot(this, item);
+			if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+				AntiBot.privateantibot(player);
+			}
 			else
 				DropItem(player, item);
 		}
@@ -1703,7 +1712,11 @@ public class L2Attackable extends L2NpcInstance
 			{
 				RewardItem item = new RewardItem(8612, 1); // Herb of Warrior
 				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+					AntiBot.privateantibot(player);
+				}
 				else
 					DropItem(player, item);
 				_spec = true;
@@ -1724,7 +1737,11 @@ public class L2Attackable extends L2NpcInstance
 															// Attack
 
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+						if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							AntiBot.privateantibot(player);
+						}
 						else
 							DropItem(player, item);
 						break;
@@ -1740,6 +1757,8 @@ public class L2Attackable extends L2NpcInstance
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 				else
 					DropItem(player, item);
+				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+					AntiBot.privateantibot(player);
 				_spec = true;
 			}
 			else
@@ -1756,7 +1775,11 @@ public class L2Attackable extends L2NpcInstance
 															// Speed
 
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+						if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							AntiBot.privateantibot(player);
+						}
 						else
 							DropItem(player, item);
 						break;
@@ -1769,7 +1792,11 @@ public class L2Attackable extends L2NpcInstance
 			{
 				RewardItem item = new RewardItem(8614, 1); // Herb of Recovery
 				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+					AntiBot.privateantibot(player);
+				}
 				else
 					DropItem(player, item);
 				_mp = true;
@@ -1784,7 +1811,11 @@ public class L2Attackable extends L2NpcInstance
 				{
 					RewardItem item = new RewardItem(8600, 1); // Herb of Life
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						AntiBot.privateantibot(player);
+					}
 					else
 						DropItem(player, item);
 					_hp = true;
@@ -1798,7 +1829,11 @@ public class L2Attackable extends L2NpcInstance
 					RewardItem item = new RewardItem(8601, 1); // Greater Herb
 																// of Life
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						AntiBot.privateantibot(player);
+					}
 					else
 						DropItem(player, item);
 					_hp = true;
@@ -1812,7 +1847,11 @@ public class L2Attackable extends L2NpcInstance
 					RewardItem item = new RewardItem(8602, 1); // Superior Herb
 																// of Life
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						AntiBot.privateantibot(player);
+					}
 					else
 						DropItem(player, item);
 				}
@@ -1825,7 +1864,11 @@ public class L2Attackable extends L2NpcInstance
 				{
 					RewardItem item = new RewardItem(8603, 1); // Herb of Manna
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						AntiBot.privateantibot(player);
+					}
 					else
 						DropItem(player, item);
 					_mp = true;
@@ -1839,7 +1882,11 @@ public class L2Attackable extends L2NpcInstance
 					RewardItem item = new RewardItem(8604, 1); // Greater Herb
 																// of Mana
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
+					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						AntiBot.privateantibot(player);
+					}
 					else
 						DropItem(player, item);
 					_mp = true;

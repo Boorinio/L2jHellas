@@ -226,7 +226,8 @@ import com.l2jhellas.util.Rnd;
 public final class L2PcInstance extends L2PlayableInstance
 {
 	public int tempAc = 0;
-
+	public boolean PassedProt;
+	public int botx,boty,botz;
 	// Chaos Event.
 	public int _chaosKills;
 	public boolean _inChaosEvent = false;
@@ -2224,7 +2225,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			else
 			{
-				if (weightproc < 666)
+				newWeightPenalty = 0;
+				if (weightproc > 500 && weightproc < 666)
 					newWeightPenalty = 1;
 				else if (weightproc < 800)
 					newWeightPenalty = 2;

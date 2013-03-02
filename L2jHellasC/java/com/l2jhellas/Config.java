@@ -326,7 +326,7 @@ public final class Config
 	public static IdFactoryType IDFACTORY_TYPE;
 	public static boolean BAD_ID_CHECKING;
 
-	// l2jhellas_CONFIG_FILE
+	// l2jhellas_CONFIG_FILE	
 	public static boolean MOD_ALLOW_WEDDING;
 	public static int MOD_WEDDING_PRICE;
 	public static boolean MOD_WEDDING_PUNISH_INFIDELITY;
@@ -1356,7 +1356,7 @@ public final class Config
 				ANNOUNCE_PVP_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePvPKill", "False"));
 				ANNOUNCE_PK_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePkKill", "False"));
 				CUSTOM_MSG_ON_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("PvPCustomMessages", "False"));
-
+				
 				MOD_ALLOW_WEDDING = Boolean.valueOf(L2JHellasSettings.getProperty("AllowWedding", "False"));
 				MOD_WEDDING_PRICE = Integer.parseInt(L2JHellasSettings.getProperty("WeddingPrice", "250000000"));
 				MOD_WEDDING_PUNISH_INFIDELITY = Boolean.parseBoolean(L2JHellasSettings.getProperty("WeddingPunishInfidelity", "True"));
