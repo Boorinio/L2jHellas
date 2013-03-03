@@ -10,9 +10,10 @@ import com.l2jhellas.util.Rnd;
 public class PrivateAntiBot
 {
 	static int[] epiloges =
-		{
-		Rnd.get(-100, 100), Rnd.get(100), Rnd.get(-100, 100), Rnd.get(100),
-		};
+	{
+	Rnd.get(-100, 100), Rnd.get(100), Rnd.get(-100, 100), Rnd.get(100),
+	};
+	
 	public static void privateantibot(final L2PcInstance player)
 	{
 		showHtmlWindow(player);
@@ -29,12 +30,13 @@ public class PrivateAntiBot
 				}
 				else
 				{
-					player.PassedProt=false;
+					player.PassedProt = false;
 				}
 			}
 		}, 60 * 1000 * 2);
 		
 	}
+	
 	public static void showHtmlWindow(L2PcInstance activeChar)
 	{
 		int option = Rnd.get(7);
