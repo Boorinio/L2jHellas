@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.model.entity.engines.CaptureThem;
 import com.l2jhellas.gameserver.model.entity.engines.CastleWars;
 import com.l2jhellas.gameserver.model.entity.engines.PeloponnesianWar;
 import com.l2jhellas.gameserver.model.entity.engines.ProtectTheLdr;
+import com.l2jhellas.gameserver.model.entity.engines.TreasureChest;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
@@ -76,6 +77,14 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 				File mainText = new File(Config.DATAPACK_ROOT, Protect_Path);
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Protect_Path);
+				activeChar.sendPacket(html);
+			}
+			else if(TreasureChest.TreasureRunning)
+			{
+				String Capture_Path = "data/html/zodiac/Treasure.htm";
+				File mainText = new File(Config.DATAPACK_ROOT, Capture_Path);
+				NpcHtmlMessage html = new NpcHtmlMessage(1);
+				html.setFile(Capture_Path);
 				activeChar.sendPacket(html);
 			}
 		}

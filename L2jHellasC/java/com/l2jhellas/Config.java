@@ -729,6 +729,7 @@ public final class Config
 	public static boolean ZODIAC_ENABLE;
 	public static int ZODIAC_REWARD;
 	public static int ZODIAC_REWARD_COUN;
+	public static int ZODIAC_VOTE_MINUTES;
 	public static boolean SAME_IP_ZODIAC;
 	public static int INITIAL_START;
 	public static int BETWEEN_EVENTS;
@@ -1850,6 +1851,7 @@ public final class Config
 				ZODIAC_ENABLE = Boolean.parseBoolean(EventSettings.getProperty("Zodiace", "true"));
 				ZODIAC_REWARD = Integer.parseInt(EventSettings.getProperty("ZodiadReward", "3470"));
 				ZODIAC_REWARD_COUN = Integer.parseInt(EventSettings.getProperty("ZodiadRewardc", "1"));
+				ZODIAC_VOTE_MINUTES= Integer.parseInt(EventSettings.getProperty("VotingMin", "5"));
 				SAME_IP_ZODIAC= Boolean.parseBoolean(EventSettings.getProperty("SameIpProtection", "true"));
 				INITIAL_START= Integer.parseInt(EventSettings.getProperty("MinutesInitial", "10"));
 				BETWEEN_EVENTS =Integer.parseInt(EventSettings.getProperty("MinutesAfterEvent", "60"));

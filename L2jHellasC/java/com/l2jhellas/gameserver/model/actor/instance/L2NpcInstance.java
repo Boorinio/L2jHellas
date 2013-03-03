@@ -67,6 +67,7 @@ import com.l2jhellas.gameserver.model.entity.engines.CaptureThem;
 import com.l2jhellas.gameserver.model.entity.engines.CastleWars;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.ProtectTheLdr;
+import com.l2jhellas.gameserver.model.entity.engines.TreasureChest;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -2251,6 +2252,10 @@ public class L2NpcInstance extends L2Character
     {
         if (!super.doDie(killer))
         	return false;
+        if(getNpcId() == 18286 && TreasureChest.TreasureRunning)
+        {
+            TreasureChest.LuckyOne((L2PcInstance) killer);
+        }
         if(getNpcId() == 36006)
         {
         	if(!CastleWars.isFinished&&CastleWars.CastleWarsRunning)

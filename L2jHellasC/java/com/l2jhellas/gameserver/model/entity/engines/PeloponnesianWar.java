@@ -20,7 +20,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 public class PeloponnesianWar
 {
 	private static boolean alaksokolies = true;
-	public static boolean PeloRunning;
+	public static boolean PeloRunning, continuez, continuez2;
 	private static int i, countA, countS;
 	private static List<L2PcInstance> _participants = new FastList<L2PcInstance>();
 	private static List<L2PcInstance> _athenians = new FastList<L2PcInstance>();
@@ -91,7 +91,7 @@ public class PeloponnesianWar
 		teleportplayers();
 		Announcements.getInstance().announceToAll("Civil War round started!");
 		Announcements.getInstance().announceToAll("You have 3 minutes the one who survive will face the opponent race!!");
-		waitSecs(30);
+		waitSecs(180);
 		for (L2PcInstance finals : _athenians)
 		{
 			if (finals.isinZodiac)
@@ -116,7 +116,7 @@ public class PeloponnesianWar
 		{
 			finalround();
 			Announcements.getInstance().announceToAll("Spartan and Athenian representative have 2 minutes to face each other");
-			waitSecs(30);
+			waitSecs(120);
 			checkwhowon();
 		}
 		cleanthemess();
@@ -139,6 +139,8 @@ public class PeloponnesianWar
 		{
 			protectors.deleteMe();
 		}
+		continuez = false;
+		continuez2 = false;
 		PeloRunning = false;
 		_protectors.clear();
 		_participants.clear();
@@ -174,10 +176,24 @@ public class PeloponnesianWar
 		{
 			if (winner.isinZodiac && _athenians.contains(winner))
 			{
+				
+				continuez = true;
+			}
+			if (winner.isinZodiac && _spartans.contains(winner))
+			{
+				
+				continuez2 = true;
+			}
+			if (continuez && continuez2)
+			{
+				Announcements.getInstance().announceToAll("Both representatives are alive blame them for not getting a reward!");
+			}
+			else if (continuez)
+			{
 				Announcements.getInstance().announceToAll("Athenians won!");
 				reward(true);
 			}
-			else if (winner.isinZodiac && _spartans.contains(winner))
+			else if (continuez2)
 			{
 				Announcements.getInstance().announceToAll("Spartans won!");
 				reward(false);
