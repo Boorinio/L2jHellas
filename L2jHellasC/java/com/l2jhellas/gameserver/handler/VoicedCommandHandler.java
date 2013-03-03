@@ -33,6 +33,7 @@ import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ServerRestartVote;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VipTeleport;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VoiceInfo;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Wedding;
+import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ZodiacRegistration;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.pmoff;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.stat;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.tradeoff;
@@ -95,6 +96,8 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new ChaosCmd());
 		registerVoicedCommandHandler(new Premium());
 		registerVoicedCommandHandler(new QuizCmd());
+		if(Config.ZODIAC_ENABLE)
+		registerVoicedCommandHandler(new ZodiacRegistration());
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}

@@ -136,9 +136,13 @@ import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
+import com.l2jhellas.gameserver.model.entity.engines.CaptureThem;
+import com.l2jhellas.gameserver.model.entity.engines.CastleWars;
 import com.l2jhellas.gameserver.model.entity.engines.ChaosEvent;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
+import com.l2jhellas.gameserver.model.entity.engines.PeloponnesianWar;
+import com.l2jhellas.gameserver.model.entity.engines.ProtectTheLdr;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -231,6 +235,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	// Chaos Event.
 	public int _chaosKills;
 	public boolean _inChaosEvent = false;
+	public boolean isinZodiac;
+	public int ZodiacPoints;
+	public int CountIps;
 
 	// Character Skills
 	private static final String RESTORE_SKILLS_FOR_CHAR = "SELECT skill_id,skill_level FROM character_skills WHERE char_obj_id=? AND class_index=?";
@@ -5099,6 +5106,22 @@ public final class L2PcInstance extends L2PlayableInstance
 				RankPvpSystem cps = new RankPvpSystem(killer, this);
 				cps.doPvp();
 			}
+						if (CastleWars.CastleWarsRunning && (isinZodiac && pk.isinZodiac))
+							{
+								sendMessage("You will be revived in your spot");
+								
+							}
+						if((pk.isinZodiac&&pk.isinZodiac)  && CaptureThem.CaptureThemRunning)
+											pk.ZodiacPoints ++;
+									if(isinZodiac&&PeloponnesianWar.PeloRunning)
+										{
+										isinZodiac = false;
+											teleToLocation(82698, 148638,-3473);
+											getAppearance().setNameColor(0xFFFFFF);
+											setTitle("");
+											broadcastUserInfo();
+										}
+				 
 			if (pk != null && pk._inEventTvT && _inEventTvT)
 			{
 				if (TvT._teleport || TvT._started)
@@ -11139,13 +11162,53 @@ public final class L2PcInstance extends L2PlayableInstance
 		sendPacket(new EtcStatusUpdate(this));
 		_reviveRequested = 0;
 		_revivePower = 0;
+				if (CastleWars.CastleWarsRunning)
+					{
+					if (CastleWars.isattacker(this))
+						{
+							
+							teleToLocation(CastleWars.attackersx, CastleWars.attackersy, CastleWars.attackersz);
+						}
+						if (CastleWars.isdefender(this))
+						{
+							
+							teleToLocation(CastleWars.defendersx, CastleWars.defendersy, CastleWars.defendersz);
+						}
+					}
 
+		
 		if (isInParty() && getParty().isInDimensionalRift())
 		{
 			if (!DimensionalRiftManager.getInstance().checkIfInPeaceZone(getX(), getY(), getZ()))
 				getParty().getDimensionalRift().memberRessurected(this);
 		}
-
+				if(isinZodiac && CaptureThem.CaptureThemRunning)
+				    {
+						getStatus().setCurrentHp(getMaxHp());
+						getStatus().setCurrentMp(getMaxMp());
+						getStatus().setCurrentCp(getMaxCp());
+						teleToLocation(149722, 46700, -3413);
+						L2Skill skill;
+						skill = SkillTable.getInstance().getInfo(1323, 1);
+					    skill.getEffects(this,this);
+				    }
+				if(isinZodiac && ProtectTheLdr.ProtectisRunning)
+				{
+					getStatus().setCurrentHp(getMaxHp());
+					getStatus().setCurrentMp(getMaxMp());
+					getStatus().setCurrentCp(getMaxCp());
+					L2Skill skill;
+					skill = SkillTable.getInstance().getInfo(1323, 1);
+				    skill.getEffects(this,this);
+					if(ProtectTheLdr._Team1.contains(this))
+					{
+						teleToLocation(ProtectTheLdr.team1x, ProtectTheLdr.team1y, ProtectTheLdr.team1z);
+					}
+					if(ProtectTheLdr._Team2.contains(this))
+					{
+						teleToLocation(ProtectTheLdr.team2x, ProtectTheLdr.team2y, ProtectTheLdr.team2z);
+					}
+				}
 		ChaosEvent chaos = new ChaosEvent();
 		if (_inChaosEvent)
 		{

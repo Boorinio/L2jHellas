@@ -83,7 +83,6 @@ public final class Config
 	 * LoginServer Config locations *
 	 *********************************/
 	public static final String LOGIN_CONFIGURATION_FILE = "./config/Network/LoginServer.ini";
-
 	// ================================
 	// GameServer && LoginServer
 	// ================================
@@ -727,6 +726,13 @@ public final class Config
 	public static boolean ENABLE_HITMAN_EVENT;
 	public static boolean HITMAN_TAKE_KARMA;
 
+	public static boolean ZODIAC_ENABLE;
+	public static int ZODIAC_REWARD;
+	public static int ZODIAC_REWARD_COUN;
+	public static boolean SAME_IP_ZODIAC;
+	public static int INITIAL_START;
+	public static int BETWEEN_EVENTS;
+	
 	// TVT_CONFIG_FILE
 	public static boolean TVT_AUTO_STARTUP_ON_BOOT;
 	public static boolean TVT_ALLOW_INTERFERENCE;
@@ -1841,6 +1847,13 @@ public final class Config
 				if (VIP_MIN_PARTICIPANTS < 10)
 					VIP_MIN_PARTICIPANTS = 10; // can't be set less then lvl 10
 
+				ZODIAC_ENABLE = Boolean.parseBoolean(EventSettings.getProperty("Zodiace", "true"));
+				ZODIAC_REWARD = Integer.parseInt(EventSettings.getProperty("ZodiadReward", "3470"));
+				ZODIAC_REWARD_COUN = Integer.parseInt(EventSettings.getProperty("ZodiadRewardc", "1"));
+				SAME_IP_ZODIAC= Boolean.parseBoolean(EventSettings.getProperty("SameIpProtection", "true"));
+				INITIAL_START= Integer.parseInt(EventSettings.getProperty("MinutesInitial", "10"));
+				BETWEEN_EVENTS =Integer.parseInt(EventSettings.getProperty("MinutesAfterEvent", "60"));
+				
 				FIRST_TVT_DELAY = Integer.parseInt(EventSettings.getProperty("FirstEventDelay", "10"));
 				TVT_AURA = Boolean.parseBoolean(EventSettings.getProperty("TvTAura", "true"));
 				TVT_JOIN_CURSED = Boolean.parseBoolean(EventSettings.getProperty("TvTJoinWithCursedWeapon", "true"));

@@ -59,15 +59,16 @@ public final class RequestRestart extends L2GameClientPacket
             _log.warning("[RequestRestart] activeChar null!?");
             return;
         }
-        
-        
-
         if (player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
         {
             player.sendMessage("You cant logout in olympiad mode");
             return;
         }
-		
+		if(player.isinZodiac)
+		{
+			player.sendMessage("You cant logout while in zodiac");
+            return;
+		}
 		if (player.isTeleporting())
 		{ 
 	                player.abortCast(); 

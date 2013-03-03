@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2WarehouseInstance;
 import com.l2jhellas.gameserver.model.base.Race;
-import com.l2jhellas.gameserver.model.entity.engines.AntiBot;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -36,6 +35,7 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
+import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
@@ -544,7 +544,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		activeChar.sendPacket(new ItemList(activeChar, false)); // TODO update only the enchanted item
 		activeChar.broadcastUserInfo();
 		if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-			AntiBot.privateantibot(activeChar);
+			PrivateAntiBot.privateantibot(activeChar);
 	}
 
 	@Override

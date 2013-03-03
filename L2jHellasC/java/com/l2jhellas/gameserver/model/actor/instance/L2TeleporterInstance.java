@@ -177,6 +177,11 @@ public final class L2TeleporterInstance extends L2FolkInstance
         if (list != null)
         {
             //you cannot teleport to village that is in siege
+        	if(player.isinZodiac)
+        	{
+        		player.sendMessage("You cannot teleport while in Zodiac's Event's");
+        		return;
+        	}
             if (SiegeManager.getInstance().getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
             {
                 player.sendPacket(new SystemMessage(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE));

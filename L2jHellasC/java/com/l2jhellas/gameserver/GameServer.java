@@ -108,9 +108,9 @@ import com.l2jhellas.gameserver.model.L2Multisell;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
-import com.l2jhellas.gameserver.model.entity.engines.AntiBot;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
+import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
 import com.l2jhellas.gameserver.scripting.CompiledScriptCache;
@@ -119,6 +119,8 @@ import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
+import com.l2jhellas.shield.antibot.AntiAfk;
+import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.status.Status;
 import com.l2jhellas.util.DynamicExtension;
 import com.l2jhellas.util.FloodProtector;
@@ -162,6 +164,8 @@ public class GameServer
 		DayNightSpawnManager.getInstance().notifyChangeMode();
 		AutoChatHandler.getInstance();
 		Universe.getInstance();
+		if(Config.ZODIAC_ENABLE)
+		ZodiacMain.ZodiacIn();
 		FloodProtector.getInstance();
 		StaticObjects.getInstance();
 		TeleportLocationTable.getInstance();
@@ -386,7 +390,7 @@ public class GameServer
 		if(ExternalConfig.ALLOW_SEQURITY_QUE)
 		AntiBot.getInstance();
 		if(ExternalConfig.ALLOW_ANTI_AFK)
-		AntiBot.getInstance2();
+		AntiAfk.getInstance();
 		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
 		{
 			_log.log(Level.INFO, "Restart System: Auto Restart System is Enabled.");

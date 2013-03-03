@@ -42,6 +42,7 @@ import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.VIP;
+import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
@@ -124,6 +125,30 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			else if (_command.startsWith("player_help "))
 			{
 				playerHelp(activeChar, _command.substring(12));
+			}
+			else if(_command.startsWith("PeloponnesianWar")&&ZodiacMain.voting)
+			{
+				activeChar.sendMessage("You have voted for PeloponnesianWar!");
+				ZodiacMain.count[0]++;
+				ZodiacMain.showFinalWindow(activeChar);
+			}
+			else if(_command.startsWith("CaptureThem")&&ZodiacMain.voting)
+			{
+				activeChar.sendMessage("You have voted for CaptureThem!");
+				ZodiacMain.count[1]++;
+				ZodiacMain.showFinalWindow(activeChar);
+			}
+			else if(_command.startsWith("CastleWars")&&ZodiacMain.voting)
+			{
+				activeChar.sendMessage("You have voted for CastleWars!");
+				ZodiacMain.count[2]++;
+				ZodiacMain.showFinalWindow(activeChar);
+			}
+			else if(_command.startsWith("ProtectTheLdr")&&ZodiacMain.voting)
+			{
+				activeChar.sendMessage("You have voted for ProtectTheLeader!");
+				ZodiacMain.count[3]++;
+				ZodiacMain.showFinalWindow(activeChar);
 			}
 			else if (_command.startsWith("sendMsg"))
 			{ // Message System By Pauler

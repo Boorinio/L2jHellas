@@ -44,7 +44,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.AttackableKnownList;
 import com.l2jhellas.gameserver.model.base.SoulCrystal;
-import com.l2jhellas.gameserver.model.entity.engines.AntiBot;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
@@ -54,6 +53,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
@@ -1636,7 +1636,7 @@ public class L2Attackable extends L2NpcInstance
 					{
 						player.doAutoLoot(this, item); // Give this or these
 					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						AntiBot.privateantibot(player);							// Item(s) to the
+						PrivateAntiBot.privateantibot(player);							// Item(s) to the
 														// L2PcInstance that has
 														// killed the
 														// L2Attackable
@@ -1681,7 +1681,7 @@ public class L2Attackable extends L2NpcInstance
 			{
 				player.doAutoLoot(this, item);
 			if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-				AntiBot.privateantibot(player);
+				PrivateAntiBot.privateantibot(player);
 			}
 			else
 				DropItem(player, item);
@@ -1715,7 +1715,7 @@ public class L2Attackable extends L2NpcInstance
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-					AntiBot.privateantibot(player);
+					PrivateAntiBot.privateantibot(player);
 				}
 				else
 					DropItem(player, item);
@@ -1740,7 +1740,7 @@ public class L2Attackable extends L2NpcInstance
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 						if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-							AntiBot.privateantibot(player);
+							PrivateAntiBot.privateantibot(player);
 						}
 						else
 							DropItem(player, item);
@@ -1758,7 +1758,7 @@ public class L2Attackable extends L2NpcInstance
 				else
 					DropItem(player, item);
 				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-					AntiBot.privateantibot(player);
+					PrivateAntiBot.privateantibot(player);
 				_spec = true;
 			}
 			else
@@ -1778,7 +1778,7 @@ public class L2Attackable extends L2NpcInstance
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 						if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-							AntiBot.privateantibot(player);
+							PrivateAntiBot.privateantibot(player);
 						}
 						else
 							DropItem(player, item);
@@ -1795,7 +1795,7 @@ public class L2Attackable extends L2NpcInstance
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-					AntiBot.privateantibot(player);
+					PrivateAntiBot.privateantibot(player);
 				}
 				else
 					DropItem(player, item);
@@ -1814,7 +1814,7 @@ public class L2Attackable extends L2NpcInstance
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						AntiBot.privateantibot(player);
+						PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1832,7 +1832,7 @@ public class L2Attackable extends L2NpcInstance
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						AntiBot.privateantibot(player);
+						PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1850,7 +1850,7 @@ public class L2Attackable extends L2NpcInstance
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						AntiBot.privateantibot(player);
+						PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1867,7 +1867,7 @@ public class L2Attackable extends L2NpcInstance
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						AntiBot.privateantibot(player);
+						PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1885,7 +1885,7 @@ public class L2Attackable extends L2NpcInstance
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						AntiBot.privateantibot(player);
+						PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
