@@ -204,7 +204,7 @@ public class ZodiacMain
 	
 	public static void endit()
 	{
-		max = 0;
+		max = -1;
 		for (i = 0; i < 5; i++)
 		{
 			if (count[i] > max)
@@ -249,8 +249,8 @@ public class ZodiacMain
 		{
 			Announcements.getInstance().announceToAll("No votes event canceled!");
 		}
-		max = 0;
-		for (i = 0; i < 4; i++)
+		max = -1;
+		for (i = 0; i < 5; i++)
 		{
 			count[i] = 0;
 		}

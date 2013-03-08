@@ -22,6 +22,7 @@ import java.util.Collection;
 import javolution.util.FastList;
 import ai.group_template.L2AttackableAIScript;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -372,7 +373,7 @@ public class Baium extends L2AttackableAIScript
         // spawn the "Teleportation Cubic" for 15 minutes (to allow players to exit the lair)
         addSpawn(29055,115203,16620,10078,0,false,900000); ////should we teleport everyone out if the cubic despawns??
         // "lock" baium for 5 days and 1 to 8 hours [i.e. 432,000,000 +  1*3,600,000 + random-less-than(8*3,600,000) millisecs]
-        long respawnTime = ((121 + Rnd.get(8)) * 3600000);
+        long respawnTime = ((Config.Interval_Of_Baium_Spawn + Config.Random_Of_Baium_Spawn) * 3600000);
         GrandBossManager.getInstance().setBossStatus(LIVE_BAIUM,DEAD);
         startQuestTimer("baium_unlock", respawnTime, null, null);
         // also save the respawn time so that the info is maintained past reboots

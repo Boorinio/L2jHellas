@@ -225,6 +225,8 @@ public final class Config
 	// GRAND BOSS SETTINGS
 	public static int Antharas_Wait_Time;
 	public static int Valakas_Wait_Time;
+	public static int Interval_Of_Baium_Spawn;
+	public static int Random_Of_Baium_Spawn;
 	public static int Interval_Of_Antharas_Spawn;
 	public static int Random_Of_Antharas_Spawn;
 	public static int Interval_Of_Valakas_Spawn;
@@ -2248,6 +2250,8 @@ public final class Config
 					Antharas_Wait_Time = 10;
 				Antharas_Wait_Time = Antharas_Wait_Time * 60000;
 				Interval_Of_Antharas_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfAntharasSpawn", "192"));
+				Interval_Of_Baium_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfBaiumSpawn", "121"));
+				Random_Of_Baium_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfBaiumSpawn", "8"));
 				if (Interval_Of_Antharas_Spawn < 1 || Interval_Of_Antharas_Spawn > 192)
 					Interval_Of_Antharas_Spawn = 192;
 				Interval_Of_Antharas_Spawn = Interval_Of_Antharas_Spawn * 3600000;
