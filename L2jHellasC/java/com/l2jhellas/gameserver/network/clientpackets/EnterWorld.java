@@ -226,7 +226,11 @@ public class EnterWorld extends L2GameClientPacket
 			activeChar.inPartyEvent = false;
 			activeChar.inSoloEvent = false;
 		}
-
+		if(activeChar.isDead())
+		{
+			activeChar.doRevive();
+			activeChar.doDie(activeChar);
+		}
 		if (activeChar.isDonator() && Config.DONATOR_NAME_COLOR_ENABLED)
 		{
 			activeChar.getAppearance().setNameColor(Config.DONATOR_NAME_COLOR);

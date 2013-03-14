@@ -245,7 +245,7 @@ public class ZodiacMain
 			waitSecs(10);
 			TreasureChest.registration();
 		}
-		else
+		else if(max == -1)
 		{
 			Announcements.getInstance().announceToAll("No votes event canceled!");
 		}

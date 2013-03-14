@@ -61,12 +61,17 @@ public final class RequestRestart extends L2GameClientPacket
         }
         if (player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
         {
-            player.sendMessage("You cant logout in olympiad mode");
+            player.sendMessage("You cant logout in olympiad mode.");
             return;
         }
 		if(player.isinZodiac)
 		{
-			player.sendMessage("You cant logout while in zodiac");
+			player.sendMessage("You cant logout while in zodiac.");
+            return;
+		}
+		if(player.isDead())
+		{
+			player.sendMessage("You cant logout while dead.");
             return;
 		}
 		if (player.isTeleporting())
