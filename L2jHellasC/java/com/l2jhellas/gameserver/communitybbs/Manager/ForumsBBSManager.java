@@ -146,7 +146,12 @@ public class ForumsBBSManager extends BaseBBSManager
 	 */
 	public int getANewID()
 	{
+		int temp = 0;
+		for(Forum f: _table)
+			temp++;
 		_lastid++;
+		if(temp==_lastid)
+			return _lastid++;
 		return _lastid;
 	}
 

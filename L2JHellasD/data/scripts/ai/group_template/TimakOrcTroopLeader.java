@@ -16,7 +16,7 @@ package ai.group_template;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
 
 /**
@@ -43,7 +43,7 @@ public class TimakOrcTroopLeader extends L2AttackableAIScript
             if (_FirstAttacked)
             {
                if (Rnd.get(100) == 50)
-            	   npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"Destroy the enemy, my brothers!"));
+            	   attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Destroy the enemy, my brothers!"));
             }
             else
             {

@@ -16,7 +16,7 @@ package ai.group_template;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
 
 /**
@@ -43,12 +43,12 @@ public class TimakOrcSupplier extends L2AttackableAIScript
             if (_FirstAttacked)
             {
                if (Rnd.get(100) == 40)
-            	   npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"You wont take me down easily."));
+            	   attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "You wont take me down easily."));
             }
             else
             {
                _FirstAttacked = true;
-            	   npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"We shall see about that!"));
+               attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "We shall see about that!"));
 		}
         }
         return super.onAttack(npc, attacker, damage, isPet);

@@ -16,7 +16,7 @@ package ai.group_template;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
 
 /**
@@ -43,12 +43,12 @@ public class DeluLizardmanSpecialCommander extends L2AttackableAIScript
             if (_FirstAttacked)
             {
                if (Rnd.get(100) == 40)
-            	   npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"Come on, Ill take you on!"));
+            	   attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Come on, Ill take you on!"));
             }
             else
             {
                _FirstAttacked = true;
-           npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"How dare you interrupt a sacred duel! You must be taught a lesson!"));
+               attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "How dare you interrupt a sacred duel! You must be taught a lesson!"));
 		}
         }
         return super.onAttack(npc, attacker, damage, isPet);

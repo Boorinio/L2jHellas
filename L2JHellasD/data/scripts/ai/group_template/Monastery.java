@@ -23,7 +23,7 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
 
 public class Monastery extends L2AttackableAIScript
@@ -46,7 +46,7 @@ public class Monastery extends L2AttackableAIScript
 		L2Character target = isPet ? attacker.getPet() : attacker;
 
 		if (npc.getNpcId() == 22129 && !isPet && !_isAttacked && Rnd.get(100) < 50 && attacker.getActiveWeaponItem() != null)
-			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Brother " + attacker.getName() + ", move your weapon away!!"));
+			attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Brother " + attacker.getName() + ", move your weapon away!!"));
 
 		if (_attackersList.get(npcObjId) == null)
 		{
@@ -71,9 +71,9 @@ public class Monastery extends L2AttackableAIScript
 		if (player.getActiveWeaponItem() != null)
 		{
 			if (npc.getNpcId() == 22129)
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Brother " + target.getName() + ", move your weapon away!!"));
+				target.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Brother " + target.getName() + ", move your weapon away!!"));
 			else
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "You cannot carry a weapon without authorization!"));
+				target.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "You cannot carry a weapon without authorization!"));
 			((L2Attackable) npc).addDamageHate(target, 0, 999);
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 		}

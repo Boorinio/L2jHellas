@@ -16,7 +16,7 @@ package ai.group_template;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
 
 /**
@@ -43,13 +43,13 @@ public class KarulBugbear extends L2AttackableAIScript
             if (_FirstAttacked)
             {
                if (Rnd.get(100) == 4)
-            	   npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"Your rear is practically unguarded!"));
+            	   attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Your rear is practically unguarded!"));
             }
             else
             {
                _FirstAttacked = true;
                if (Rnd.get(100) == 4)
-            	   npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"Watch your back!"));
+            	   attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Watch your back!"));
 		}
         }
         return super.onAttack(npc, attacker, damage, isPet);

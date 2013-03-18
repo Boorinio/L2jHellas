@@ -50,7 +50,7 @@ public class AntiBot
 		{
 			player.PassedProt = false;
 		}
-		waitSecs(ExternalConfig.SECURITY_QUE_TIME);
+		waitSecs(60 * ExternalConfig.SECURITY_QUE_TIME);
 		startantibot();
 	}
 	

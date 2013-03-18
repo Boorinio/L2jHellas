@@ -21,7 +21,7 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
 
 public class SummonMinions extends L2AttackableAIScript
@@ -176,7 +176,7 @@ public class SummonMinions extends L2AttackableAIScript
 						minions = null;
 						if (npcId == 20767)
 						{
-							npc.broadcastPacket(new NpcSay(npcObjId, 0, npcId, "Come out, you children of darkness!"));
+							attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "Come out, you children of darkness!"));
 						}
 						break;
 					}

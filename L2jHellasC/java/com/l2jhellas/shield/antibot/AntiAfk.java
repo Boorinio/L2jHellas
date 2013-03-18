@@ -16,7 +16,7 @@ public class AntiAfk
 			{
 				antiafksystem();
 			}
-		}, 60 * 1000 * ExternalConfig.MINUTES_AFK_PLAYERS);
+		}, 60 * 1000 * 10);
 	}
 	
 	static void antiafksystem()
@@ -27,7 +27,7 @@ public class AntiAfk
 			player.boty = player.getY();
 			player.botz = player.getZ();
 		}
-		waitSecs(ExternalConfig.MINUTES_AFK_PLAYERS);
+		waitSecs(60 * ExternalConfig.MINUTES_AFK_PLAYERS);
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
 			if (player.botx == player.getX() && player.boty == player.getY() && player.botz == player.getZ())
@@ -36,7 +36,7 @@ public class AntiAfk
 				player.closeNetConnection();
 			}
 		}
-		waitSecs(ExternalConfig.MINUTES_AFK_PLAYERS);
+		waitSecs(60 * ExternalConfig.MINUTES_AFK_PLAYERS);
 		antiafksystem();
 	}
 	

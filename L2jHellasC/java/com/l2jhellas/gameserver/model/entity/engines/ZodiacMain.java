@@ -207,7 +207,7 @@ public class ZodiacMain
 		max = -1;
 		for (i = 0; i < 5; i++)
 		{
-			if (count[i] > max)
+			if (count[i] > max && !(count[i]==0))
 				max = i;
 		}
 		if (max == 0)

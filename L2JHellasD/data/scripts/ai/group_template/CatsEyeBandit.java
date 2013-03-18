@@ -16,6 +16,7 @@ package ai.group_template;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.util.Rnd;
 
@@ -43,7 +44,7 @@ public class CatsEyeBandit extends L2AttackableAIScript
             if (_FirstAttacked)
             {
                if (Rnd.get(100) == 40)
-            	   npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),"You childish fool, do you think you can catch me?"));
+            	   attacker.sendPacket(new CreatureSay(npc.getObjectId(), 0, npc.getName(), "You childish fool, do you think you can catch me?"));
             }
             else
             {
