@@ -711,14 +711,14 @@ public abstract class L2Summon extends L2PlayableInstance
 			if (isInsidePeaceZone(this, target) && getOwner() != null && (getOwner().getAccessLevel().allowPeaceAttack()))
 			{
 				// If summon or target is in a peace zone, send a system message TARGET_IN_PEACEZONE
-				sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
+				getOwner().sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
 				return;
 			}
 
-			if (!this.isInFunEvent() || !target.isInFunEvent())
+			if (this.isInFunEvent() || target.isInFunEvent())
 			{
 				// If summon or target is in a peace zone, send a system message TARGET_IN_PEACEZONE
-				sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
+				getOwner().sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
 				return;
 			}
 
