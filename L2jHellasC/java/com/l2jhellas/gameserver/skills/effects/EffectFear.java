@@ -57,67 +57,61 @@ public final class EffectFear extends L2Effect
 	{
 		if (!getEffected().isAfraid())
 		{
+			// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread, Curse: Fear, Fear and Horror are the exceptions.
+			if(getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376 && getSkill().getId() != 1169 && getSkill().getId() != 65 && getSkill().getId() != 1092)
+				return false;
+			if(getEffected() instanceof L2FolkInstance)
+				return false;
+			if(getEffected() instanceof L2SiegeGuardInstance)
+				return false;
+			// Fear skills cannot be used on Headquarters Flag.
+			if(getEffected() instanceof L2SiegeFlagInstance)
+				return false;
+
+			if(getEffected() instanceof L2SiegeSummonInstance) 
+				return false;
+
 			getEffected().startFear();
-			onActionTime();
+			
+			int posX = getEffected().getX();
+			int posY = getEffected().getY();
+			int posZ = getEffected().getZ();
+			
+			int signx=-1;
+			int signy=-1;
+			if (getEffected().getX()>getEffector().getX())
+				signx=1;
+			if (getEffected().getY()>getEffector().getY())
+				signy=1;
+			posX += signx*FEAR_RANGE;
+			posY += signy*FEAR_RANGE;
+			
+			if(!getEffected().isRaid()
+					&& !(getEffected() instanceof L2DoorInstance)
+					&& !(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062))
+			{		
+			int chance = Rnd.get(100);
+			 if(getSkill().getLethalChance2() > 0 && chance < Formulas.getInstance().calcLethal(getEffector(), getEffected(), getSkill().getLethalChance2()))
+	         {
+	        	if (getEffected() instanceof L2NpcInstance)
+	        	{
+	        		getEffected().reduceCurrentHp(getEffected().getCurrentHp()-1, getEffector());
+	            	getEffector().sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
+		       	}
+			 }
+			}
+			
+			getEffected().setRunning();
+			getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,new L2CharPosition(posX,posY,posZ,0));
 			return true;
 		}
 		return false;
-	}
-	
-	/** Notify exited */
-	@Override
-	public void onExit()
-	{
-		getEffected().stopFear(this);
 	}
 
 	@Override
 	public boolean onActionTime()
 	{
-		// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread, Curse: Fear, Fear and Horror are the exceptions.
-		if(getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376 && getSkill().getId() != 1169 && getSkill().getId() != 65 && getSkill().getId() != 1092)
-			return false;
-		if(getEffected() instanceof L2FolkInstance)
-			return false;
-		if(getEffected() instanceof L2SiegeGuardInstance)
-			return false;
-		// Fear skills cannot be used on Headquarters Flag.
-		if(getEffected() instanceof L2SiegeFlagInstance)
-			return false;
-
-		if(getEffected() instanceof L2SiegeSummonInstance) 
-			return false;
-
-		int posX = getEffected().getX();
-		int posY = getEffected().getY();
-		int posZ = getEffected().getZ();
-		
-		int signx=-1;
-		int signy=-1;
-		if (getEffected().getX()>getEffector().getX())
-			signx=1;
-		if (getEffected().getY()>getEffector().getY())
-			signy=1;
-		posX += signx*FEAR_RANGE;
-		posY += signy*FEAR_RANGE;
-		
-		if(!getEffected().isRaid()
-				&& !(getEffected() instanceof L2DoorInstance)
-				&& !(getEffected() instanceof L2NpcInstance && ((L2NpcInstance)getEffected()).getNpcId() == 35062))
-		{		
-		int chance = Rnd.get(100);
-		 if(getSkill().getLethalChance2() > 0 && chance < Formulas.getInstance().calcLethal(getEffector(), getEffected(), getSkill().getLethalChance2()))
-         {
-        	if (getEffected() instanceof L2NpcInstance)
-        	{
-        		getEffected().reduceCurrentHp(getEffected().getCurrentHp()-1, getEffector());
-            	getEffector().sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
-	       	}
-		 }
-		}
-		
-		getEffected().setRunning();
-		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,new L2CharPosition(posX,posY,posZ,0));
+		getEffected().stopFear(this);
 		return true;
 	}
 }

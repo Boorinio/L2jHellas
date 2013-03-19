@@ -17,7 +17,6 @@ package ai.group_template;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.util.Rnd;
 
 /**

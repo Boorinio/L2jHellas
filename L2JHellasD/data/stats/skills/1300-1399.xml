@@ -1820,7 +1820,7 @@
   <set name="effectRange" val="1100"/>
   <set name="isMagic" val="true"/>
   <for>
-    <effect count="1" name="Betray" time="25" val="0"/>
+    <effect count="1" name="Betray" time="15" val="0"/>
   </for>
 </skill>
 <skill id="1381" levels="5" name="Mass Fear">

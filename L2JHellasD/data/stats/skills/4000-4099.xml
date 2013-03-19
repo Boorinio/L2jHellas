@@ -1062,8 +1062,6 @@
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="600"/>
   <set name="effectRange" val="1100"/>
-  <for>
-  </for>
 </skill>
 <skill id="4069" levels="12" name="NPC Curve Beam Cannon">
   <table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>

@@ -47,32 +47,23 @@ public final class EffectBetray extends L2Effect
             targetOwner = ((L2Summon)getEffected()).getOwner();
             getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK,targetOwner);
             targetOwner.setIsBetrayed(true);
-            onActionTime();
+            targetOwner = ((L2Summon)getEffected()).getOwner();
+            targetOwner.setIsBetrayed(true);
             return true;
         }
         return false;
     }
-    
-     /** Notify exited */
-    @Override
-    public void onExit()
-    {
-        if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
-        {
-            L2PcInstance targetOwner = null;
-            targetOwner = ((L2Summon)getEffected()).getOwner();
-            targetOwner.setIsBetrayed(false);
-        getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-        }
-    }
-
-    @Override
-    public boolean onActionTime()
-    {
-        L2PcInstance targetOwner = null;
-        targetOwner = ((L2Summon)getEffected()).getOwner();
-        targetOwner.setIsBetrayed(true);
-        return false;
-    }
+	@Override
+	public boolean onActionTime()
+	{
+		 if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
+	        {
+	            L2PcInstance targetOwner = null;
+	            targetOwner = ((L2Summon)getEffected()).getOwner();
+	            targetOwner.setIsBetrayed(false);
+	            getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+	        }
+		return true;
+	}
 }
 

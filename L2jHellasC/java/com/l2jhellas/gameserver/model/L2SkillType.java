@@ -43,6 +43,7 @@ public enum L2SkillType
 	DRAIN_SOUL,
 	DRAIN(L2SkillDrain.class),
 	DEATHLINK,
+	FATAL,
 	BLOW,
 	MOG(L2SkillMagicOnGround.class),
 

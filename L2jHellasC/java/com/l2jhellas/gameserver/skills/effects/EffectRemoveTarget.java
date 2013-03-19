@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
+import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
@@ -48,6 +49,7 @@ public class EffectRemoveTarget extends L2Effect
         getEffected().setTarget(null);
         getEffected().abortAttack();
         getEffected().abortCast();
+        getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
         return true;
     }
 

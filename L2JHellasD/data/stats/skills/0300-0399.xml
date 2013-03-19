@@ -539,7 +539,6 @@
   <table name="#enchantMagicLvl"> 76 76 76 77 77 77 78 78 78 79 79 79 80 80 80 81 81 81 82 82 82 83 83 83 84 84 84 85 85 85 </table>
   <enchant1 name="magicLvl" val="#enchantMagicLvl"/>
   <enchant2 name="magicLvl" val="#enchantMagicLvl"/>
-  <!-- TO DO LINK WITH HP LVL -->
   <table name="#mpConsume"> 129 132 135 135 138 140 143 145 148 150 153 155 157 160 162 164 </table>
   <table name="#magicLvl"> 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 </table>
   <table name="#power"> 2908.0 3030.0 3154.0 3280.0 3408.0 3537.0 3668.0 3800.0 3933.0 4067.0 4201.0 4336.0 4470.0 4604.0 4738.0 4870.0 </table>
@@ -562,7 +561,7 @@
   <set name="reuseDelay" val="20000"/>
   <set name="hitTime" val="3000"/>
   <set name="coolTime" val="1000" />
-  <set name="skillType" val="PDAM"/>
+  <set name="skillType" val="FATAL"/>
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="900"/>
   <set name="effectRange" val="1400"/>
@@ -1053,8 +1052,8 @@
   <set name="effectRange" val="-1"/>
   <for>
     <effect count="0x7fffffff" name="ManaDamOverTime" time="3" val="35">
-      <add order="0x40" stat="reflectSkillPhysic" val="30"/>
-      <add order="0x40" stat="reflectSkillMagic" val="30"/>
+      <add order="0x40" stat="reflectSkillPhysic" val="40"/>
+      <add order="0x40" stat="reflectSkillMagic" val="40"/>
       <mul order="0x30" stat="pAtkSpd" val="0.8"/>
       <mul order="0x30" stat="runSpd" val="0.9"/>
       <sub order="0x40" stat="accCombat" val="4"/>

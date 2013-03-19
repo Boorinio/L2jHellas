@@ -508,7 +508,10 @@ public abstract class L2Skill
      */
     public final double getPower(L2Character activeChar)
     {
-        if (_skillType == L2SkillType.DEATHLINK && activeChar != null) return _power * Math.pow(1.7165 - activeChar.getCurrentHp() / activeChar.getMaxHp(), 2) * 0.577;
+        if (_skillType == L2SkillType.DEATHLINK && activeChar != null) 
+        	return _power * Math.pow(1.7165 - activeChar.getCurrentHp() / activeChar.getMaxHp(), 2) * 0.577;
+        else if(_skillType == L2SkillType.FATAL && activeChar != null) 
+        	return _power * Math.pow(1.7165 - activeChar.getCurrentHp() / activeChar.getMaxHp(), 2) * 0.577;
         else return _power;
     }
 
@@ -1014,6 +1017,7 @@ public abstract class L2Skill
             case FEAR:
             case DRAIN:
             case SLEEP:
+            case FATAL:
             case CHARGEDAM:
             case CONFUSE_MOB_ONLY:
             case DEATHLINK:
@@ -1913,10 +1917,16 @@ public abstract class L2Skill
                 if(target != null && target instanceof L2Summon)
                 {
                     L2Summon targetSummon = (L2Summon)target;
-                    if (activeChar instanceof L2PcInstance && activeChar.getPet() != targetSummon && !targetSummon.isDead() && (targetSummon.getOwner().getPvpFlag() != 0 || targetSummon.getOwner().getKarma() > 0) || (targetSummon.getOwner().isInsideZone(L2Character.ZONE_PVP) && ((L2PcInstance)activeChar).isInsideZone(L2Character.ZONE_PVP)))
+                    if(targetSummon.getOwner().getPvpFlag()!=0||targetSummon.getOwner().getKarma()>0||targetSummon.getOwner().isInsideZone(L2Character.ZONE_PVP))
                        return new L2Character[]{targetSummon};
                 }
-                return null;
+                else
+                {
+                	SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+                	sm.addString("Target is not your enemy or not a summon");
+                    activeChar.sendPacket(sm);
+                    return null;
+                }
             }
             case TARGET_AREA_ANGEL:
             {
