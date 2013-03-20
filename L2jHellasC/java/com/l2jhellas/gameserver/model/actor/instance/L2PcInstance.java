@@ -5111,9 +5111,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				sendMessage("You will be revived in your spot");
 				
 			}
-			if ((pk.isinZodiac && pk.isinZodiac) && CaptureThem.CaptureThemRunning)
+			if (CaptureThem.CaptureThemRunning &&(pk.isinZodiac && pk.isinZodiac))
 				pk.ZodiacPoints++;
-			if (isinZodiac && PeloponnesianWar.PeloRunning)
+			if (PeloponnesianWar.PeloRunning && isinZodiac)
 			{
 				isinZodiac = false;
 				teleToLocation(82698, 148638, -3473);
