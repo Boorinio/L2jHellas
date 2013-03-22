@@ -50,7 +50,7 @@ public class RaidBossPointsManager
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM `character_raid_points`");
+			PreparedStatement statement = con.prepareStatement("SELECT `char_id` FROM `character_raid_points`");
 			ResultSet rset = statement.executeQuery();
 			while (rset.next())
 			{
@@ -62,7 +62,7 @@ public class RaidBossPointsManager
 			{
 				int charId = n.getValue();
 				FastMap<Integer, Integer> values = new FastMap<Integer, Integer>();
-				statement = con.prepareStatement("SELECT * FROM `character_raid_points` WHERE `charId`=?");
+				statement = con.prepareStatement("SELECT `boss_id`,`points` FROM `character_raid_points` WHERE `charId`=?");
 				statement.setInt(1, charId);
 				rset = statement.executeQuery();
 				while (rset.next())

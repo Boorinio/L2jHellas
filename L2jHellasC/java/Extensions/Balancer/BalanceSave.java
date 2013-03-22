@@ -924,7 +924,7 @@ public class BalanceSave
 		}
 	}
 	
-	private final static String UPDATE_BALANCE_110 = "UPDATE balance SET accplus110,evasionplus110=?,hpplus110=?," + "cpplus110=?,mpplus110=?,matkplus110=?,matksplus110=?,mdefplus110=?," + "patkplus110=?,patksplus110=?,pdefplus110=?";
+	private final static String UPDATE_BALANCE_110 = "UPDATE balance SET accplus110=?,evasionplus110=?,hpplus110=?," + "cpplus110=?,mpplus110=?,matkplus110=?,matksplus110=?,mdefplus110=?," + "patkplus110=?,patksplus110=?,pdefplus110=?";
 
 	public static void storeBalance110()
 	{

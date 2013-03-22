@@ -64,13 +64,13 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 	@Override
 	public void onAction(L2PcInstance player)
 	{
-		if (this != player.getTarget())
+		if (this != player.getTarget() && !ExternalConfig.ALLOW_REMOTE_CLASS_MASTER)
 	    {
 	        player.setTarget(this);
 	        player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
 	        player.sendPacket(new ValidateLocation(this));
 	    }
-	    else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+	    else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false) || ExternalConfig.ALLOW_REMOTE_CLASS_MASTER)
 	    {
 		if (Config.DEBUG)
 			_log.fine("ClassMaster activated");
