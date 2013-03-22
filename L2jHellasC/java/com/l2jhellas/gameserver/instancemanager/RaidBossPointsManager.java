@@ -50,7 +50,7 @@ public class RaidBossPointsManager
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT `char_id` FROM `character_raid_points`");
+			PreparedStatement statement = con.prepareStatement("SELECT `charId` FROM `character_raid_points`");
 			ResultSet rset = statement.executeQuery();
 			while (rset.next())
 			{
