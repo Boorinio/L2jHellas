@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -32,6 +33,7 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.RaidEvent.L2EventChecks;
 import Extensions.RaidEvent.L2RaidEvent;
 import Extensions.RankSystem.RankPvpSystem;
@@ -3197,6 +3199,139 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		
 		return true;
+	}
+
+	/**
+	 * Conversion to long (Only For Achievement Manager)
+	 *
+	 * @param process
+	 * @param itemId
+	 * @param countL
+	 * @param reference
+	 * @param sendMessage
+	 */
+	public void addItem(String process, int itemId, long countL, L2Object reference, boolean sendMessage)
+	{      
+		int count = 0;
+		count = (int)countL;
+		if(count!=countL)
+		{
+			count = 1;
+		}
+		
+		if(count > 0)
+		{
+			// Sends message to client if requested
+			if(sendMessage && (!isCastingNow()
+							&& ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB
+							|| ItemTable.getInstance().createDummyItem(itemId).getItemType() != L2EtcItemType.HERB))
+			{
+				if(count > 1)
+				{
+					if(process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
+					{
+						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+						sm.addItemName(itemId);
+						sm.addNumber(count);
+						sendPacket(sm);
+						sm = null;
+					}
+					else
+					{
+						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
+						sm.addItemName(itemId);
+						sm.addNumber(count);
+						sendPacket(sm);
+						sm = null;
+					}
+				}
+				else
+				{
+					if(process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
+					{
+						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
+						sm.addItemName(itemId);
+						sendPacket(sm);
+						sm = null;
+					}
+					else
+					{
+						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
+						sm.addItemName(itemId);
+						sendPacket(sm);
+						sm = null;
+					}
+				}
+			}
+			//Auto use herbs - autoloot
+			if(ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB) //If item is herb dont add it to iv :]
+			{
+				if(!isCastingNow())
+				{
+					L2ItemInstance herb = new L2ItemInstance(_charId, itemId);
+					IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getItemId());
+					
+					if(handler == null)
+					{
+						_log.warning("No item handler registered for Herb - item ID " + herb.getItemId() + ".");
+					}
+					else
+					{
+						handler.useItem(this, herb);
+						
+						if(_herbstask >= 100)
+						{
+							_herbstask -= 100;
+						}
+						
+						handler = null;
+					}
+					
+					herb = null;
+				}
+				else
+				{
+					_herbstask += 100;
+					ThreadPoolManager.getInstance().scheduleAi(new HerbTask(process, itemId, count, reference, sendMessage), _herbstask);
+				}
+			}
+			else
+			{
+				// Add the item to inventory
+				L2ItemInstance item = _inventory.addItem(process, itemId, count, this, reference);
+				
+				// Send inventory update packet
+				if(!Config.FORCE_INVENTORY_UPDATE)
+				{
+					InventoryUpdate playerIU = new InventoryUpdate();
+					playerIU.addItem(item);
+					sendPacket(playerIU);
+					playerIU = null;
+				}
+				else
+				{
+					sendPacket(new ItemList(this, false));
+				}
+				
+				// Update current load as well
+				StatusUpdate su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
+				sendPacket(su);
+				su = null;
+				
+				// If over capacity, drop the item
+				if(!isGM() && !_inventory.validateCapacity(item))
+				{
+					dropItem("InvDrop", item, null, true);
+				}
+				else if(CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+				{
+					CursedWeaponsManager.getInstance().activate(this, item);
+				}
+				
+				item = null;
+			}
+		}
 	}
 	
 	/**
@@ -13318,5 +13453,128 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendMessage("You don't want to continue with the Event.");
 		else
 			return;
+	}
+	
+	private List<Integer> _completedAchievements = new FastList<>();
+	
+	public long getOnlineTime()
+	{
+		return _onlineTime;
+	}
+	
+	public List<Integer> getCompletedAchievements()
+	{
+		return _completedAchievements;
+	}
+	
+	public boolean readyAchievementsList()
+	{
+		if (_completedAchievements.isEmpty())
+			return false;
+		return true;
+	}
+	
+	public void saveAchievemntData()
+	{
+		
+	}
+	
+	public void getAchievemntData()
+	{
+		Connection con = null;
+		try
+		{			
+			PreparedStatement statement;
+			PreparedStatement insertStatement;
+			ResultSet rs;
+			con = L2DatabaseFactory.getInstance().getConnection();
+			
+			statement = con.prepareStatement("SELECT * FROM achievements WHERE owner_id=" + getObjectId());
+			
+			rs = statement.executeQuery();   
+	
+			String values = "owner_id";
+			String in = Integer.toString(getObjectId());
+			String questionMarks = in;
+			int ilosc = AchievementsManager.getInstance().getAchievementList().size();
+			
+			if (rs.next()) 
+			{   
+				_completedAchievements.clear();
+				for (int i=1; i <=ilosc; i++)
+				{
+					int a = rs.getInt("a" + i);
+					
+					if (!_completedAchievements.contains(i))
+						if (a == 1 || String.valueOf(a).startsWith("1"))
+							_completedAchievements.add(i);
+				}
+			}
+			else
+			{
+				//Player hasnt entry in database, means we have to create it.
+				for (int i=1; i <=ilosc; i++)
+				{
+					values += ", a" + i;
+					questionMarks += ", 0";
+				}
+				
+				String s = "INSERT INTO achievements(" + values + ") VALUES (" + questionMarks + ")";
+				insertStatement = con.prepareStatement(s);
+				
+				insertStatement.execute();
+				insertStatement.close();
+			}
+		}
+		catch (SQLException e)
+		{
+			_log.warning("[ACHIEVEMENTS ENGINE GETDATA]" + e);
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+	}
+	
+	public void saveAchievementData(int achievementID,int objid)
+	{
+		Connection con = null;
+		
+		try
+		{			
+			con = L2DatabaseFactory.getInstance().getConnection();
+			Statement statement = con.createStatement();
+			if (achievementID==4 || achievementID==6 || achievementID==11 || achievementID==13)
+			{
+				statement.executeUpdate("UPDATE achievements SET a" + achievementID + "=1"+objid+" WHERE owner_id=" + getObjectId());
+			}
+			else
+				statement.executeUpdate("UPDATE achievements SET a" + achievementID + "=1 WHERE owner_id=" + getObjectId());
+			
+			statement.close();
+			
+			if (!_completedAchievements.contains(achievementID))
+				_completedAchievements.add(achievementID);
+		}
+		catch (SQLException e)
+		{
+			_log.warning("[ACHIEVEMENTS SAVE GETDATA]" + e);
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
+		}
 	}
 }

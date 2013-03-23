@@ -18,17 +18,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
@@ -39,6 +45,7 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeShowInfoUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.templates.L2Item;
+import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 
@@ -60,11 +67,18 @@ public class Hero
             "(6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621) " +
  "AND owner_id NOT IN (SELECT obj_Id FROM characters WHERE accesslevel > 0)";
 
+	private static final String GET_DIARIES = "SELECT * FROM  heroes_diary WHERE char_id=? ORDER BY time ASC";
+	private static final String UPDATE_DIARIES = "INSERT INTO heroes_diary (char_id, time, action, param) values(?,?,?,?)";
+
+    
     private static final int[] _heroItems = {6842, 6611, 6612, 6613, 6614, 6615, 6616,
                                              6617, 6618, 6619, 6620, 6621
     };
     private static Map<Integer, StatsSet> _heroes;
     private static Map<Integer, StatsSet> _completeHeroes;
+    
+	private static Map<Integer, List<StatsSet>> _herodiary;
+	private static List<StatsSet> _diary;
 
     public static final String COUNT = "count";
     public static final String PLAYED = "played";
@@ -73,6 +87,10 @@ public class Hero
     public static final String ALLY_NAME = "ally_name";
     public static final String ALLY_CREST = "ally_crest";
 
+	public static final int ACTION_RAID_KILLED = 1;
+	public static final int ACTION_HERO_GAINED = 2;
+	public static final int ACTION_CASTLE_TAKEN = 3;
+    
     public static Hero getInstance()
     {
         if (_instance == null)
@@ -89,7 +107,8 @@ public class Hero
     {
         _heroes = new FastMap<Integer, StatsSet>();
         _completeHeroes = new FastMap<Integer, StatsSet>();
-
+        _herodiary = new FastMap<>();
+        
         PreparedStatement statement;
         PreparedStatement statement2;
 
@@ -539,4 +558,133 @@ public class Hero
             try{con.close();}catch(SQLException e){e.printStackTrace();}
         }
     }
+    
+	public void setDiaryData(int charId, int action, int param)
+	{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement(UPDATE_DIARIES);
+			statement.setInt(1, charId);
+			statement.setLong(2, System.currentTimeMillis());
+			statement.setInt(3, action);
+			statement.setInt(4, param);
+			statement.execute();
+			statement.close();
+		}
+		catch (SQLException e)
+		{
+			if (_log.isLoggable(Level.SEVERE))
+				_log.log(Level.SEVERE, "SQL exception while saving DiaryData.", e);
+		}
+	}
+	
+	public void loadDiary(int charId)
+	{
+		_diary = new FastList<>();
+		
+		int diaryentries = 0;
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement(GET_DIARIES);
+			statement.setInt(1, charId);
+			ResultSet rset = statement.executeQuery();
+			
+			while (rset.next())
+			{
+				StatsSet _diaryentry = new StatsSet();
+				
+				long time = rset.getLong("time");
+				int action = rset.getInt("action");
+				int param = rset.getInt("param");
+				
+				String date = (new SimpleDateFormat("yyyy-MM-dd HH")).format(new Date(time));
+				_diaryentry.set("date", date);
+				
+				if (action == ACTION_RAID_KILLED)
+				{
+					L2NpcTemplate template = NpcTable.getInstance().getTemplate(param);
+					if (template != null)
+						_diaryentry.set("action", template.getName() + " was defeated");
+				}
+				else if (action == ACTION_HERO_GAINED)
+					_diaryentry.set("action", "Gained Hero status");
+				else if (action == ACTION_CASTLE_TAKEN)
+				{
+					Castle castle = CastleManager.getInstance().getCastleById(param);
+					if (castle != null)
+						_diaryentry.set("action", castle.getName() + " Castle was successfuly taken");
+				}
+				_diary.add(_diaryentry);
+				diaryentries++;
+			}
+			rset.close();
+			statement.close();
+			
+			_herodiary.put(charId, _diary);
+			
+			_log.info("Hero System: Loaded " + diaryentries + " diary entries for Hero: " + CharNameTable.getInstance().getNameById(charId));
+		}
+		catch (SQLException e)
+		{
+			_log.warning("Hero System: Couldnt load Hero Diary for char_id: " + charId);
+			if (Config.DEBUG)
+				_log.log(Level.WARNING, "", e);
+		}
+	}
+	
+	public void setRBkilled(int charId, int npcId)
+	{
+		setDiaryData(charId, ACTION_RAID_KILLED, npcId);
+		
+		L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+		
+		if (_herodiary.containsKey(charId) && (template != null))
+		{
+			// Get Data
+			List<StatsSet> _list = _herodiary.get(charId);
+			
+			// Clear old data
+			_herodiary.remove(charId);
+			
+			// Prepare new data
+			StatsSet _diaryentry = new StatsSet();
+			String date = (new SimpleDateFormat("yyyy-MM-dd HH")).format(new Date(System.currentTimeMillis()));
+			_diaryentry.set("date", date);
+			_diaryentry.set("action", template.getName() + " was defeated");
+			
+			// Add to old list
+			_list.add(_diaryentry);
+			
+			// Put new list into diary
+			_herodiary.put(charId, _list);
+		}
+	}
+	
+	public void setCastleTaken(int charId, int castleId)
+	{
+		setDiaryData(charId, ACTION_CASTLE_TAKEN, castleId);
+		
+		Castle castle = CastleManager.getInstance().getCastleById(castleId);
+		
+		if (_herodiary.containsKey(charId) && (castle != null))
+		{
+			// Get Data
+			List<StatsSet> _list = _herodiary.get(charId);
+			
+			// Clear old data
+			_herodiary.remove(charId);
+			
+			// Prepare new data
+			StatsSet _diaryentry = new StatsSet();
+			String date = (new SimpleDateFormat("yyyy-MM-dd HH")).format(new Date(System.currentTimeMillis()));
+			_diaryentry.set("date", date);
+			_diaryentry.set("action", castle.getName() + " Castle was successfuly taken");
+			
+			// Add to old list
+			_list.add(_diaryentry);
+			
+			// Put new list into diary
+			_herodiary.put(charId, _list);
+		}
+	}
 }

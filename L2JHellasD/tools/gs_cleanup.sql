@@ -9,6 +9,8 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS
 -- MOD TABLES
+achievements,
+heroes_diary,
 balance,
 buff_templates,
 characters_colors,

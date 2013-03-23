@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
+import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -99,6 +100,11 @@ public class RaidBossPointsManager
 		}
 	}
 
+	public static final RaidBossPointsManager getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
 	public final static void updatePointsInDB(L2PcInstance player, int raidId, int points)
 	{
 		Connection con = null;
@@ -277,5 +283,10 @@ public class RaidBossPointsManager
 			tmpRanking.put(entry.getKey(), ranking++);
 
 		return tmpRanking;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final RaidBossPointsManager _instance = new RaidBossPointsManager();
 	}
 }

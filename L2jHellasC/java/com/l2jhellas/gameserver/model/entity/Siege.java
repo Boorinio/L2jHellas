@@ -36,6 +36,7 @@ import com.l2jhellas.gameserver.instancemanager.SiegeManager.SiegeSpawn;
 import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
 import com.l2jhellas.gameserver.model.L2SiegeClan.SiegeClanType;
@@ -267,6 +268,16 @@ public class Siege
 				_siegeGuardManager.removeMercs();
 			getCastle().spawnDoor(); // Respawn door to castle
 			getCastle().getZone().updateZoneStatusForCharactersInside();
+			L2Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
+			for (L2ClanMember member : clan.getMembers())
+			{
+				if (member != null)
+				{
+					L2PcInstance player = member.getPlayerInstance();
+					if (player != null && player.isNoble())
+						Hero.getInstance().setCastleTaken(player.getObjectId(), getCastle().getCastleId());
+				}
+			}
 		}
 	}
 

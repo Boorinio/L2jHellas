@@ -15,9 +15,11 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -68,8 +70,19 @@ public final class L2RaidBossInstance extends L2MonsterInstance
     		return false;
     	if(killer instanceof L2PlayableInstance)
         {
-        	SystemMessage msg = new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
-        	broadcastPacket(msg);
+    		if (killer.isInParty())
+        	{
+    			for (L2PcInstance member : killer.getParty().getPartyMembers())
+    			{
+    				Hero.getInstance().setRBkilled(member.getObjectId(), getNpcId()); 
+    			}
+        	}
+    		else
+    		{
+    			Hero.getInstance().setRBkilled(killer.getObjectId(), getNpcId());
+    		}
+    	SystemMessage msg = new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
+        broadcastPacket(msg);
         }
 
         RaidBossSpawnManager.getInstance().updateStatus(this, true);

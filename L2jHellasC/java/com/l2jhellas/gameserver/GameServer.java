@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
 import Extensions.RankSystem.PvpTable;
 import Extensions.RankSystem.RankCharacterRewardTable;
@@ -370,6 +371,7 @@ public class GameServer
 
 		Util.printSection("Customs");
 		// we could add general custom config?
+		AchievementsManager.getInstance();
 		PcColorTable.getInstance();
 		MaxCheatersTable.getInstance();
 		Hitman.start();
