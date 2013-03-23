@@ -49,8 +49,6 @@ public class AchievementsManager
 
 	private FastList<String> _binded = new FastList<>();
 
-	private final String ACHIEVEMENTS_FILE_PATH = Config.DATAPACK_ROOT + "/data/achievements.xml";
-
 	private static Logger _log = Logger.getLogger(AchievementsManager.class.getName());
 
 	public AchievementsManager()
@@ -64,7 +62,7 @@ public class AchievementsManager
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
 
-		File file = new File(ACHIEVEMENTS_FILE_PATH);
+		File file = new File(Config.DATAPACK_ROOT, "data/xml/achievements.xml");
 
 		if (!file.exists())
 		{

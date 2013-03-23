@@ -321,7 +321,7 @@ public class L2Manor
     private void parseData() {
 		LineNumberReader lnr = null;
 		try {
-			File seedData = new File(Config.DATAPACK_ROOT, "data/seeds.csv");
+			File seedData = new File(Config.DATAPACK_ROOT, "data/csv/seeds.csv");
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(
 					seedData)));
 

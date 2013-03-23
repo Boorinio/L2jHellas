@@ -28,47 +28,39 @@ import com.l2jhellas.gameserver.network.serverpackets.ExGetBossRecord;
  */
 public class RequestGetBossRecord extends L2GameClientPacket
 {
-	protected static final Logger _log = Logger.getLogger(RequestGetBossRecord.class.getName());
-    private static final String _C__D0_18_REQUESTGETBOSSRECORD = "[C] D0:18 RequestGetBossRecord";
-    private int _bossId;
-
-    @Override
+private int _bossId;
+	
+	@Override
 	protected void readImpl()
-    {
-        _bossId = readD();
-    }
-
-    /**
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
-    @Override
+	{
+		_bossId = readD();
+	}
+	
+	@Override
 	protected void runImpl()
-    {
-    	L2PcInstance activeChar = getClient().getActiveChar(); 
-     	if(activeChar == null) 
-     	return; 
-     		 
-     	if (_bossId != 0) 
-     	{ 
-     	_log.info("C5: RequestGetBossRecord: d: "+_bossId+" ActiveChar: "+activeChar); // should be always 0, log it if isnt 0 for furture research 
-     	} 
-     	
-     	int points = RaidBossPointsManager.getPointsByOwnerId(activeChar.getObjectId()); 
-     	int ranking = RaidBossPointsManager.calculateRanking(activeChar.getObjectId()); 
-     	
-     	Map<Integer, Integer> list = RaidBossPointsManager.getList(activeChar); 
-     	
-     	// trigger packet 
-     	activeChar.sendPacket(new ExGetBossRecord(ranking, points, list));
-    }
+	{
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+			return;
+		
+		// should be always 0, log it if isn't 0 for future research
+		if (_bossId != 0)
+			_log.info("C5: RequestGetBossRecord: d: " + _bossId + " ActiveChar: " + activeChar);
+		
+		int points = RaidBossPointsManager.getInstance().getPointsByOwnerId(activeChar.getObjectId());
+		int ranking = RaidBossPointsManager.getInstance().calculateRanking(activeChar.getObjectId());
+		
+		Map<Integer, Integer> list = RaidBossPointsManager.getInstance().getList(activeChar);
+		
+		// trigger packet
+		activeChar.sendPacket(new ExGetBossRecord(ranking, points, list));
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.BasePacket#getType()
-     */
-    @Override
-    public String getType()
-    {
-        return _C__D0_18_REQUESTGETBOSSRECORD;
-    }
+	@Override
+	public String getType()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

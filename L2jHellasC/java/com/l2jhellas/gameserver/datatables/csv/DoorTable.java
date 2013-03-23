@@ -77,7 +77,7 @@ public class DoorTable
 		LineNumberReader lnr = null;
 		try
 		{
-			File doorData = new File(Config.DATAPACK_ROOT, "data/door.csv");
+			File doorData = new File(Config.DATAPACK_ROOT, "data/csv/door.csv");
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
 
 			String line = null;

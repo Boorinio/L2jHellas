@@ -294,7 +294,7 @@
     <using kind="Dagger"/>
   </cond>
   <for>
-    <effect count="1" name="Confusion" time="4" val="0"/>
+    <effect count="1" name="Confusion" time="1" noicon="1" val="0"/>
   </for>
 </skill>
 <skill id="13" levels="1" name="Summon Siege Golem">

@@ -50,20 +50,7 @@ public final class EffectConfusion extends L2Effect {
 	public boolean onStart()
 	{
 		getEffected().startConfused();
-		onActionTime();
-		return true;
-	}
-
-	/** Notify exited */
-	@Override
-	public void onExit() {
-		getEffected().stopConfused(this);
-	}
-
-    @Override
-	public boolean onActionTime()
-    {
-    	if (Config.DEBUG)
+		if (Config.DEBUG)
     		System.out.println(getEffected());
 		List<L2Character> targetList = new FastList<L2Character>();
 
@@ -90,6 +77,12 @@ public final class EffectConfusion extends L2Effect {
 		//getEffected().setTarget(target);
 		getEffected().setTarget(target);
 		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK,target);
+		return true;
+	}
+    @Override
+	public boolean onActionTime()
+    {    	
+    	getEffected().stopConfused(this);
     	return false;
     }
 }

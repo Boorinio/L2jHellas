@@ -63,7 +63,7 @@ public class CharTemplateTable
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "/data/stats/char_templates.xml");
+		File f = new File(Config.DATAPACK_ROOT, "/data/xml/char_templates.xml");
 		if (!f.exists())
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": char_template.xml could not be loaded: file not found");

@@ -1,4 +1,4 @@
-<?XML version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!-- Achievements -->
 <!-- Max achievements recommended is 60 more will cause client to crash (big html) -->
 <!-- Possible Conditions are: -->
@@ -29,8 +29,7 @@
 <!-- minRaidPoints -->
 <!-- eventKills -->
 <!-- events -->
-<!-- eventWins -->
-		
+<!-- eventWins -->	
 <list>
   <achievement id="1" name="Champion" description="Gain level 80" reward="9142,5" minLevel="80"/>
   <achievement id="2" name="Hero" description="Gain hero status" reward="9142,10" mustBeHero="true"/>

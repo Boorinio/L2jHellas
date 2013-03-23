@@ -1659,13 +1659,9 @@ public abstract class L2Character extends L2Object
 			if (((L2PlayableInstance) this).getCharmOfLuck()) // remove Lucky Charm if player has SoulOfThePhoenix/Salvation buff
 				((L2PlayableInstance) this).stopCharmOfLuck(null);
 		}
-		else if (Config.LEAVE_BUFFS_ON_DIE)
-		{
-			// do nothin :P
-		}
-		else
+		else if (Config.REMOVE_BUFFS_ON_DIE)
 			stopAllEffects();
-
+		
 		calculateRewards(killer);
 
 		// Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform

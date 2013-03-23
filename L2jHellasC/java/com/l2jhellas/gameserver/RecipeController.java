@@ -73,7 +73,7 @@ public class RecipeController
 
 		try
 		{
-			File recipesData = new File(Config.DATAPACK_ROOT, "data/recipes.csv");
+			File recipesData = new File(Config.DATAPACK_ROOT, "data/csv/recipes.csv");
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(recipesData)));
 
 			while ((line = lnr.readLine()) != null)

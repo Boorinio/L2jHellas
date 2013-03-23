@@ -68,7 +68,7 @@ public class BoatManager
 		LineNumberReader lnr = null;
 		try
 		{
-			File doorData = new File(Config.DATAPACK_ROOT, "data/boat.csv");
+			File doorData = new File(Config.DATAPACK_ROOT, "data/csv/boat.csv");
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
 
 			String line = null;

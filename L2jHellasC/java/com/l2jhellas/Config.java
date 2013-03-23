@@ -670,7 +670,7 @@ public final class Config
 	public static final FloodProtectorConfig FLOOD_PROTECTOR_TRANSACTION = new FloodProtectorConfig("TransactionFloodProtector");
 
 	// PVP_PK_CONFIG_FILE
-	public static boolean LEAVE_BUFFS_ON_DIE;
+	public static boolean REMOVE_BUFFS_ON_DIE;
 	public static boolean ALLOW_POTS_IN_PVP;
 	public static boolean ALLOW_SOE_IN_PVP;
 	public static boolean PVP_PK_TITLE;
@@ -1304,7 +1304,7 @@ public final class Config
 				CHAMPION_SPCL_ITEM = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemID", "6393"));
 				CHAMPION_SPCL_QTY = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemAmount", "1"));
 				CHAMPION_SPCL_LVL_DIFF = Integer.parseInt(L2JHellasSettings.getProperty("ChampionSpecialItemLevelDiff", "0"));
-				LEAVE_BUFFS_ON_DIE = Boolean.parseBoolean(L2JHellasSettings.getProperty("LeaveBuffsOnDie", "True"));
+				REMOVE_BUFFS_ON_DIE = Boolean.parseBoolean(L2JHellasSettings.getProperty("RemoveBuffsOnDie", "True"));
 				ALLOW_POTS_IN_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowPotsInPvP", "True"));
 				ALLOW_SOE_IN_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowSoEInPvP", "True"));
 				PVP_PK_TITLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("PvpPkTitle", "False"));

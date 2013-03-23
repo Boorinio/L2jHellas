@@ -139,7 +139,7 @@ public class L2BoatInstance extends L2Character
 			LineNumberReader lnr = null;
 			try
 			{
-				File doorData = new File(Config.DATAPACK_ROOT, "data/boatpath.csv");
+				File doorData = new File(Config.DATAPACK_ROOT, "data/csv/boatpath.csv");
 				lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
 
 				String line = null;
