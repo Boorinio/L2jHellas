@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,12 +20,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -35,10 +33,9 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
  */
 public class PvpTable
 {
-	protected static final Logger _log = Logger.getLogger(PvpTable.class.getName());
 	private static PvpTable _instance = null;
 
-	/** <pvp_id, Pvp> contains killer pvp's data (victim, kills on victim, last kill time, etc.) */
+	/** <pvp_id, PvP> contains killer pvp's data (victim, kills on victim, last kill time, etc.) */
 	private FastMap<Integer, Pvp> _pvpTable = new FastMap<Integer, Pvp>();
 
 	private PvpTable()
@@ -46,11 +43,16 @@ public class PvpTable
 		Calendar c = Calendar.getInstance();
 		long startTime = c.getTimeInMillis();
 
+		if (ExternalConfig.CUSTOM_PVP_CLEANER_ENABLED)
+		{
+			cleanPvpTable();
+		}
+
 		load();
 
 		c = Calendar.getInstance();
 		long endTime = c.getTimeInMillis();
-		System.out.println("PvpTable loaded " + (this.getPvpTable().size()) + " objects in " + (endTime - startTime) + " ms.");
+		System.out.println(" - PvpTable loaded " + (this.getPvpTable().size()) + " objects in " + (endTime - startTime) + " ms.");
 
 		ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), ExternalConfig.PVP_TABLE_UPDATE_INTERVAL);
 	}
@@ -67,7 +69,7 @@ public class PvpTable
 
 	/**
 	 * Get Pvp object, if not found returns new Pvp object for killer - victim.
-	 *
+	 * 
 	 * @param killerId
 	 * @param victimId
 	 * @return
@@ -90,7 +92,6 @@ public class PvpTable
 		pvp.setVictimObjId(victimId);
 		pvp.setDbStatus((byte) 2);
 
-		// TODO check synchronization:
 		int pvpId = getPvpTable().size() + 1;
 		getPvpTable().put(pvpId, pvp);
 
@@ -100,7 +101,7 @@ public class PvpTable
 
 	/**
 	 * Get Pvp object, if not found returns new Pvp object for killer - victim, and reset daily fields if required.
-	 *
+	 * 
 	 * @param killerId
 	 * @param victimId
 	 * @param systemDay
@@ -131,7 +132,6 @@ public class PvpTable
 		pvp.setVictimObjId(victimId);
 		pvp.setDbStatus((byte) 2);
 
-		// TODO check synchronization:
 		int pvpId = getPvpTable().size() + 1;
 		getPvpTable().put(pvpId, pvp);
 
@@ -141,7 +141,7 @@ public class PvpTable
 
 	/**
 	 * Returns PvP statistics like total kills, total legal kills, etc. for character id.
-	 *
+	 * 
 	 * @param characterId
 	 * @return
 	 */
@@ -187,7 +187,7 @@ public class PvpTable
 	/**
 	 * Returns PvP statistics like total kills, total legal kills, etc. for character id, daily fields are not ignored<br>
 	 * if kill day = system day.
-	 *
+	 * 
 	 * @param characterId
 	 * @param systemDay
 	 * @return
@@ -223,16 +223,16 @@ public class PvpTable
 		return pvpStats;
 	}
 
-	public FastMap<Integer, Integer> getKillersList()
+	public FastList<Integer> getKillersList()
 	{
-		FastMap<Integer, Integer> list = new FastMap<Integer, Integer>();
+		FastList<Integer> list = new FastList<Integer>();
 
 		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
 		{
-			if (!list.containsValue(e.getValue().getKillerObjId()))
+			if (!list.contains(e.getValue().getKillerObjId()))
 			{
 
-				list.put(list.size() + 1, e.getValue().getKillerObjId());
+				list.add(e.getValue().getKillerObjId());
 
 			}
 		}
@@ -250,7 +250,7 @@ public class PvpTable
 
 	/**
 	 * @param _pvpTable
-	 *        the _PvpTable to set
+	 *            the _PvpTable to set
 	 */
 	public void setPvpTable(FastMap<Integer, Pvp> _pvpTable)
 	{
@@ -296,11 +296,7 @@ public class PvpTable
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " could not load custom_pvp_system " + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -333,20 +329,16 @@ public class PvpTable
 			// search new or updated fields in PvpTable:
 			for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
 			{
-				// if updated:
+
 				if (e.getValue().getDbStatus() == 1)
 				{
 					statement.addBatch("UPDATE custom_pvp_system SET kills=" + e.getValue().getKills() + ", kills_today=" + e.getValue().getKillsToday() + ", kills_legal=" + e.getValue().getKillsLegal() + ", kills_today_legal=" + e.getValue().getKillsLegalToday() + ", rank_points=" + e.getValue().getRankPoints() + ", rank_points_today=" + e.getValue().getRankPointsToday() + ", war_kills_legal=" + e.getValue().getWarKillsLegal() + ", war_kills=" + e.getValue().getWarKills() + ", kill_time=" + e.getValue().getKillTime() + ", kill_day=" + e.getValue().getKillDay() + " WHERE killer_id=" + e.getValue().getKillerObjId() + " AND victim_id=" + e.getValue().getVictimObjId());
 					e.getValue().setDbStatus((byte) 0);
-					// _log.info("UPDATE custom_pvp_table SET kills="+e.getValue().getKills()+", kills_today="+e.getValue().getKillsToday()+", kills_legal="+e.getValue().getKillsLegal()+", kills_today_legal="+e.getValue().getKillsLegalToday()+", rank_points="+e.getValue().getRankPoints()+", rank_points_today="+e.getValue().getRankPointsToday()+", war_kills_legal="+e.getValue().getWarKillsLegal()+", war_kills="+e.getValue().getWarKills()+", kill_time="+e.getValue().getKillTime()+", kill_day="+e.getValue().getKillDay()+" WHERE killer_id="+e.getValue().getKillerObjId()+" AND victim_id="+e.getValue().getVictimObjId());
 				}
-				else
-				// if inserted:
-				if (e.getValue().getDbStatus() == 2)
+				else if (e.getValue().getDbStatus() == 2)
 				{
 					statement.addBatch("INSERT INTO custom_pvp_system (killer_id, victim_id, kills, kills_today, kills_legal, kills_today_legal, rank_points, rank_points_today, war_kills_legal, war_kills, kill_time, kill_day) VALUES (" + e.getValue().getKillerObjId() + ", " + e.getValue().getVictimObjId() + ", " + e.getValue().getKills() + ", " + e.getValue().getKillsToday() + ", " + e.getValue().getKillsLegal() + ", " + e.getValue().getKillsLegalToday() + ", " + e.getValue().getRankPoints() + ", " + e.getValue().getRankPointsToday() + ", " + e.getValue().getWarKillsLegal() + ", " + e.getValue().getWarKills() + ", " + e.getValue().getKillTime() + ", " + e.getValue().getKillDay() + ")");
 					e.getValue().setDbStatus((byte) 0);
-					// _log.info("INSERT INTO custom_pvp_table (killer_id, victim_id, kills, kills_today, kills_legal, kills_today_legal, rank_points, rank_points_today, war_kills_legal, war_kills, kill_time, kill_day) VALUES ("+e.getValue().getKillerObjId()+", "+e.getValue().getVictimObjId()+", "+e.getValue().getKills()+", "+e.getValue().getKillsToday()+", "+e.getValue().getKillsLegal()+", "+e.getValue().getKillsLegalToday()+", "+e.getValue().getRankPoints()+", "+e.getValue().getRankPointsToday()+", "+e.getValue().getWarKillsLegal()+", "+e.getValue().getWarKills()+", "+e.getValue().getKillTime()+", "+e.getValue().getKillDay()+")");
 				}
 
 			}
@@ -354,14 +346,11 @@ public class PvpTable
 			statement.executeBatch();
 
 			statement.close();
+
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " could not update/insert custom_pvp_system " + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -375,8 +364,53 @@ public class PvpTable
 			}
 			catch (Exception e)
 			{
+				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Remove permanently not active players!
+	 */
+	private static void cleanPvpTable()
+	{
+		Connection con = null;
+		try
+		{
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("DELETE FROM custom_pvp_system WHERE (SELECT (lastAccess) FROM characters WHERE charId = killer_id) < ?");
+
+			// calculate ignore time:
+			Calendar c = Calendar.getInstance();
+			long ignoreTime = c.getTimeInMillis() - ExternalConfig.CUSTOM_PVP_CLEANER_IGNORE_TIME;
+
+			statement.setLong(1, ignoreTime);
+
+			statement.execute();
+
+			statement.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				if (con != null)
+				{
+					con.close();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		System.out.println("Cleaned Pvp Table with players who are inactive for longer than " + Math.round((double) ExternalConfig.CUSTOM_PVP_CLEANER_IGNORE_TIME / (double) 86400000) + " day(s).");
+
 	}
 
 	private static class PvpTableSchedule implements Runnable

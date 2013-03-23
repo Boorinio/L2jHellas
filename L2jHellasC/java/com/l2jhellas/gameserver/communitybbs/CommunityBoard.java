@@ -177,8 +177,8 @@ public class CommunityBoard
 				ShopBBSManager.getInstance().parsecmd("_bbsshop;" + st.nextToken(), activeChar);
 				L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(st.nextToken()), activeChar, false, 0);
 			}
-			else if (command.startsWith("_bbscprs") && ExternalConfig.CUSTOM_PVP_ENABLED)
-			{
+			else if(command.startsWith("_bbscprs") && ExternalConfig.CUSTOM_PVP_ENABLED && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+			{ //to Custom PvP System BBS Manager
 				RankPvpSystemBBSManager.getInstance().parsecmd(command, activeChar);
 			}
 			else

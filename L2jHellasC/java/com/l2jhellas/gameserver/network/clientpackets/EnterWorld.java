@@ -23,6 +23,9 @@ import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
+import Extensions.RankSystem.PvpStats;
+import Extensions.RankSystem.PvpTable;
+
 import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
@@ -96,12 +99,11 @@ import com.l2jhellas.util.Util;
  */
 public class EnterWorld extends L2GameClientPacket
 {
-
-	public static Vector<L2PcInstance> _onlineplayers = new Vector<L2PcInstance>();
-
-	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
 	private static Logger _log = Logger.getLogger(EnterWorld.class.getName());
-
+	
+	public static Vector<L2PcInstance> _onlineplayers = new Vector<L2PcInstance>();
+	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
+	
 	public TaskPriority getPriority()
 	{
 		return TaskPriority.PR_URGENT;
@@ -258,33 +260,32 @@ public class EnterWorld extends L2GameClientPacket
 		// check for crowns
 		CrownManager.getInstance().checkCrowns(activeChar);
 
-		if ((Config.PVP_COLOR_SYSTEM_ENABLED))
+		if (Config.PVP_COLOR_SYSTEM_ENABLED)
 			activeChar.updatePvPColor(activeChar.getPvpKills());
 
-		if ((Config.PK_COLOR_SYSTEM_ENABLED))
+		if (Config.PK_COLOR_SYSTEM_ENABLED)
 			activeChar.updatePkColor(activeChar.getPkKills());
 
 		if (Config.ANNOUNCE_HERO_LOGIN && activeChar.isHero())
-			{
-			       Announcements.getInstance().announceToAll("Hero: "+activeChar.getName()+" has been logged in.");
-			}
+		{
+			Announcements.getInstance().announceToAll("Hero: "+activeChar.getName()+" has been logged in.");
+		}
 
 		if (Config.ANNOUNCE_CASTLE_LORDS)
+		{
+			L2Clan clan = activeChar.getClan();
+			
+			if (clan != null)
 			{
-				L2Clan clan = activeChar.getClan();
-
-			    if (clan != null)
-				 {
-				  if (clan.getHasCastle() > 0)
-					{
-					 Castle castle = CastleManager.getInstance().getCastleById(clan.getHasCastle());
-					 if ((castle != null) && (activeChar.getObjectId() == clan.getLeaderId()))
-					  Announcements.getInstance().announceToAll("Lord " + activeChar.getName() + " Ruler Of " + castle.getName() + " Castle is Now Online!");
-				    }
-				 }
+				if (clan.getHasCastle() > 0)
+				{
+					Castle castle = CastleManager.getInstance().getCastleById(clan.getHasCastle());
+					if ((castle != null) && (activeChar.getObjectId() == clan.getLeaderId()))
+						Announcements.getInstance().announceToAll("Lord " + activeChar.getName() + " Ruler Of " + castle.getName() + " Castle is Now Online!");
+				}
 			}
-
-
+		}
+		
 		if (Config.PLAYER_SPAWN_PROTECTION > 0)
 			activeChar.setProtection(true);
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
@@ -328,7 +329,7 @@ public class EnterWorld extends L2GameClientPacket
 			}
 		}
 
-		// apply augmentation boni for equipped items
+		// apply augmentation bonus for equipped items
 		for (L2ItemInstance temp : activeChar.getInventory().getAugmentedItems())
 			if (temp != null && temp.isEquipped())
 				temp.getAugmentation().applyBoni(activeChar);
@@ -347,25 +348,25 @@ public class EnterWorld extends L2GameClientPacket
 		if (activeChar.isevil() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			activeChar.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
-			activeChar.sendMessage("Welcome " + activeChar.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction");
+			activeChar.sendMessage("Welcome " + activeChar.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
 		}
 		// If Enable Faction Base = true teleport evil to his village principal
 		if (activeChar.isevil() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			activeChar.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ, true);
-			activeChar.sendMessage("You have been teleported Back to your Faction Base");
+			activeChar.sendMessage("You have been teleported Back to your Faction Base.");
 		}
 		// Welcome for good
 		if (activeChar.isgood() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			activeChar.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
-			activeChar.sendMessage("Welcome " + activeChar.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction");
+			activeChar.sendMessage("Welcome " + activeChar.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
 		}
 		// If Enable Faction Base = true teleport good to his village principal
 		if (activeChar.isgood() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			activeChar.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ, true);
-			activeChar.sendMessage("You have been teleported Back to your Faction Base");
+			activeChar.sendMessage("You have been teleported Back to your Faction Base.");
 		}
 
 		Quest.playerEnter(activeChar);
@@ -377,8 +378,8 @@ public class EnterWorld extends L2GameClientPacket
 		// Account Manager
 		if(ExternalConfig.ALLOW_ACCOUNT_MANAGER)
 		{
-		if (!L2AccountManagerInstance.hasSubEmail(activeChar))
-			ThreadPoolManager.getInstance().scheduleGeneral(new entermail(activeChar), 20000);
+			if (!L2AccountManagerInstance.hasSubEmail(activeChar))
+				ThreadPoolManager.getInstance().scheduleGeneral(new entermail(activeChar), 20000);
 		}
 
 		if (activeChar.getFirstEffect(426) != null || activeChar.getFirstEffect(427) != null)
@@ -389,6 +390,24 @@ public class EnterWorld extends L2GameClientPacket
 			activeChar.broadcastUserInfo();
 		}
 
+		// Custom PvP System by Masterio:
+		if(ExternalConfig.NICK_COLOR_ENABLED || ExternalConfig.TITLE_COLOR_ENABLED)
+		{
+			PvpStats activeCharPvpStats = PvpTable.getInstance().getPvpStats(activeChar.getObjectId());
+			
+			if(ExternalConfig.NICK_COLOR_ENABLED)
+			{
+				activeChar.getAppearance().setNameColor(activeCharPvpStats.getRank().getNickColor());
+				activeChar.sendPacket(new UserInfo(activeChar));
+				activeChar.broadcastUserInfo();
+			}
+			
+			if(ExternalConfig.TITLE_COLOR_ENABLED)
+			{
+				activeChar.getAppearance().setTitleColor(activeCharPvpStats.getRank().getTitleColor());
+				activeChar.broadcastTitleInfo();
+			}
+		}
 		if (activeChar.getPremiumService() == 1)
 		{
 			// activeChar.sendPacket(new
@@ -418,8 +437,7 @@ public class EnterWorld extends L2GameClientPacket
 
 		if (activeChar.isAlikeDead())
 		{
-			// no broadcast needed since the player will already spawn dead to
-			// others
+			// no broadcast needed since the player will already spawn dead to others
 			sendPacket(new Die(activeChar));
 		}
 
@@ -454,36 +472,26 @@ public class EnterWorld extends L2GameClientPacket
 
 		_onlineplayers.add(activeChar);
 
-		if (Config.ENABLED_MESSAGE_SYSTEM) {
-
+		if (Config.ENABLED_MESSAGE_SYSTEM)
+		{
 			Connection con = null;
-
 			int results = 0;
-
-			try {
-
+			try
+			{
 				con = L2DatabaseFactory.getInstance().getConnection();
-
 				PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE `to`=?");
-
 				statement.setString(1, activeChar.getName());
-
 				ResultSet result = statement.executeQuery();
-
-				while (result.next()) {
-
+				while (result.next())
+				{
 					results++;
-
 				}
-
-			}catch(Exception e) {
-
-				e.printStackTrace();
-
 			}
-
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 			activeChar.sendMessage("You have " + results + " messages.");
-
 		}
 
 		if (Config.ENABLE_HITMAN_EVENT)

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -68,91 +68,107 @@ public class TopTable
 
 		c = Calendar.getInstance();
 		long endTime = c.getTimeInMillis();
-		System.out.println("TopTable loaded " + (getTopKillsTable().size() + getTopGatherersTable().size()) + " objects in " + (endTime - startTime) + " ms.");
+		System.out.println(" - TopTable loaded " + getTopKillsTable().size() + " TopKillers, " + getTopGatherersTable().size() + " TopGatherers in " + (endTime - startTime) + " ms.");
 	}
 
 	public void updateTopTable()
 	{
 
-		// lock table:
-		setUpdating(true);
-
-		// clear tables:
-		getTopKillsTable().clear();
-		getTopGatherersTable().clear();
-
-		// load Tables:
-		Connection con = null;
-		PreparedStatement statement = null;
-		ResultSet rset = null;
-
-		try
+		if (ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 
-			// get top killers:
-			statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(kills_legal) as col5 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 ORDER BY col5 DESC LIMIT 500;");
-			rset = statement.executeQuery();
+			// lock table:
+			setUpdating(true);
 
-			while (rset.next())
-			{
+			// clear tables:
+			getTopKillsTable().clear();
+			getTopGatherersTable().clear();
 
-				TopField tf = new TopField();
-				tf.setCharacterId(rset.getInt("killer_id"));
-				tf.setCharacterName(rset.getString("char_name"));
-				tf.setCharacterLevel(rset.getInt("level"));
-				tf.setCharacterBaseClassId(rset.getInt("base_class"));
-				tf.setCharacterPoints(rset.getLong("col5"));
+			// get minimum allowed time:
+			long sysTime = Calendar.getInstance().getTimeInMillis() - ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT;
 
-				// get killer pvp stats:
-				getTopKillsTable().put(getTopKillsTable().size() + 1, tf);
+			// load Tables:
+			Connection con = null;
+			PreparedStatement statement = null;
+			ResultSet rset = null;
 
-			}
-
-			// get top RP gatherers:
-			statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(rank_points) as col5 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 ORDER BY col5 DESC LIMIT 500;");
-			rset = statement.executeQuery();
-
-			while (rset.next())
-			{
-
-				TopField tf = new TopField();
-				tf.setCharacterId(rset.getInt("killer_id"));
-				tf.setCharacterName(rset.getString("char_name"));
-				tf.setCharacterLevel(rset.getInt("level"));
-				tf.setCharacterBaseClassId(rset.getInt("base_class"));
-				tf.setCharacterPoints(rset.getLong("col5"));
-
-				// get killer pvp stats:
-				getTopGatherersTable().put(getTopGatherersTable().size() + 1, tf);
-
-			}
-
-			rset.close();
-			statement.close();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
 			try
 			{
-				if (con != null)
+				con = L2DatabaseFactory.getInstance().getConnection();
+
+				// get top killers:
+				statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(kills_legal) as col5, max(kill_time) as col6 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 AND col6 >= ? ORDER BY col5 DESC LIMIT 500");
+
+				statement.setLong(1, sysTime);
+
+				rset = statement.executeQuery();
+
+				while (rset.next())
 				{
-					con.close();
-					con = null;
+
+					TopField tf = new TopField();
+					tf.setCharacterId(rset.getInt("killer_id"));
+					tf.setCharacterName(rset.getString("char_name"));
+					tf.setCharacterLevel(rset.getInt("level"));
+					tf.setCharacterBaseClassId(rset.getInt("base_class"));
+					tf.setCharacterPoints(rset.getLong("col5"));
+
+					// get killer pvp stats:
+					getTopKillsTable().put(getTopKillsTable().size() + 1, tf);
+
 				}
+
+				rset.close();
+				statement.close();
+
+				// get top RP gatherers:
+				statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(rank_points) as col5, max(kill_time) as col6 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 AND col6 >= ? ORDER BY col5 DESC LIMIT 500");
+
+				statement.setLong(1, sysTime);
+
+				rset = statement.executeQuery();
+
+				while (rset.next())
+				{
+
+					TopField tf = new TopField();
+					tf.setCharacterId(rset.getInt("killer_id"));
+					tf.setCharacterName(rset.getString("char_name"));
+					tf.setCharacterLevel(rset.getInt("level"));
+					tf.setCharacterBaseClassId(rset.getInt("base_class"));
+					tf.setCharacterPoints(rset.getLong("col5"));
+
+					// get killer pvp stats:
+					getTopGatherersTable().put(getTopGatherersTable().size() + 1, tf);
+
+				}
+
+				rset.close();
+				statement.close();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-		}
+			finally
+			{
+				try
+				{
+					if (con != null)
+					{
+						con.close();
+						con = null;
+					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
 
-		// unlock table:
-		setUpdating(false);
+			// unlock table:
+			setUpdating(false);
+		}
 	}
 
 	private static class TopTableSchedule implements Runnable
@@ -168,10 +184,11 @@ public class TopTable
 			if (!TopTable.getInstance().isUpdating())
 			{
 				TopTable.getInstance().updateTopTable();
+				ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), ExternalConfig.TOP_TABLE_UPDATE_INTERVAL);
 			}
 			else
 			{
-				ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), ExternalConfig.TOP_TABLE_UPDATE_INTERVAL);
+				ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), 30000);
 			}
 		}
 	}
@@ -186,7 +203,7 @@ public class TopTable
 
 	/**
 	 * @param _topKillsTable
-	 *        the _topKillsTable to set
+	 *            the _topKillsTable to set
 	 */
 	public void setTopKillsTable(FastMap<Integer, TopField> _topKillsTable)
 	{
@@ -203,7 +220,7 @@ public class TopTable
 
 	/**
 	 * @param _topGatherersTable
-	 *        the _topGatherersTable to set
+	 *            the _topGatherersTable to set
 	 */
 	public void setTopGatherersTable(FastMap<Integer, TopField> _topGatherersTable)
 	{
@@ -220,7 +237,7 @@ public class TopTable
 
 	/**
 	 * @param _isUpdating
-	 *        the _isUpdating to set
+	 *            the _isUpdating to set
 	 */
 	public void setUpdating(boolean _isUpdating)
 	{

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,11 +27,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public final class RankPvpSystemBBSManagerHtml
 {
 	private static final int width_table = 610;
-	private static final int width_index = 60;
-	private static final int width_name = 150;
-	private static final int width_level = 40;
-	private static final int width_class = 180;
-	private static final int width_col5 = 180;
+	private static final int width_index = 80;
+	private static final int width_name = 170;
+	private static final int width_level = 60;
+	private static final int width_class = 150;
+	private static final int width_col5 = 150;
 
 	public String prepareHtmlResponse(L2PcInstance activeChar, int page)
 	{
@@ -131,13 +131,25 @@ public final class RankPvpSystemBBSManagerHtml
 					if (activeChar.getObjectId() == e.getValue().getCharacterId())
 					{
 						// Player position and data:
-						tb2.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						tb2.append(itemHtml(
+										pos,
+										e.getValue().getCharacterName(),
+										e.getValue().getCharacterLevel(),
+										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
+										e.getValue().getCharacterPoints()
+										));
 						playerInfo = true;
 					}
 
 					if (pos <= 10)
 					{
-						tb.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						tb.append(itemHtml(
+										pos,
+										e.getValue().getCharacterName(),
+										e.getValue().getCharacterLevel(),
+										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
+										e.getValue().getCharacterPoints()
+										));
 
 						if (isEmpty)
 						{
@@ -159,13 +171,25 @@ public final class RankPvpSystemBBSManagerHtml
 					if (activeChar.getObjectId() == e.getValue().getCharacterId())
 					{
 						// Player position and data:
-						tb2.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						tb2.append(itemHtml(
+										pos,
+										e.getValue().getCharacterName(),
+										e.getValue().getCharacterLevel(),
+										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
+										e.getValue().getCharacterPoints()
+										));
 						playerInfo = true;
 					}
 
 					if (pos <= 10)
 					{
-						tb.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
+						tb.append(itemHtml(
+										pos,
+										e.getValue().getCharacterName(),
+										e.getValue().getCharacterLevel(),
+										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
+										e.getValue().getCharacterPoints()
+										));
 
 						if (isEmpty)
 						{
@@ -183,7 +207,14 @@ public final class RankPvpSystemBBSManagerHtml
 			if (!playerInfo)
 			{
 				tb2.append("<tr>");
-				tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You are out of 500 or you have not killed yet</td></tr></table></td>");
+				if (ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT > 0)
+				{
+					tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You're out of 500, or you did not kill anyone or even killed more than " + Math.round((double) ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT / (double) 86400000) + " days ago.</td></tr></table></td>");
+				}
+				else
+				{
+					tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You're out of 500, or you did not kill anyone.</td></tr></table></td>");
+				}
 				tb2.append("</tr>");
 			}
 

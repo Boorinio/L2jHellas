@@ -45,7 +45,12 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 		{
 			return;
 		}
-
+		
+		if (Config.DEBUG)
+		{
+			_log.fine("crestid " + _crestId + " requested.");
+		}
+		
 		byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
 
 		if (data != null)
@@ -53,7 +58,6 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 			PledgeCrest pc = new PledgeCrest(_crestId, data);
 			sendPacket(pc);
 		}
-
 		else
 		{
 			if (Config.DEBUG)

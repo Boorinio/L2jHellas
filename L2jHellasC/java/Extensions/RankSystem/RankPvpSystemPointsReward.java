@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -79,7 +79,7 @@ public class RankPvpSystemPointsReward
 
 	/**
 	 * @param _player
-	 *        the _player to set
+	 *            the _player to set
 	 */
 	public void setPlayer(L2PcInstance _player)
 	{
@@ -96,7 +96,7 @@ public class RankPvpSystemPointsReward
 
 	/**
 	 * @param _rankPoints
-	 *        the _rankPoints to set
+	 *            the _rankPoints to set
 	 */
 	public void setRankPoints(long _rankPoints)
 	{
@@ -113,7 +113,7 @@ public class RankPvpSystemPointsReward
 
 	/**
 	 * @param _rankRewardsCount
-	 *        the _rankRewardsCount to set
+	 *            the _rankRewardsCount to set
 	 */
 	public void setRankRewardsCount(int _rankRewardsCount)
 	{

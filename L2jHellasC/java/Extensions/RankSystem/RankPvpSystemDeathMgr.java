@@ -3,18 +3,16 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package Extensions.RankSystem;
-
-import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
@@ -29,7 +27,7 @@ import com.l2jhellas.gameserver.templates.L2Item;
  */
 public class RankPvpSystemDeathMgr
 {
-	private static Logger _log = Logger.getLogger(RankPvpSystemDeathMgr.class.getName());
+	// private static Logger _log = Logger.getLogger(CustomPvpSystemDeathMgr.class.getName());
 
 	private L2PcInstance _killer = null;
 	private L2PcInstance _victim = null;
@@ -49,11 +47,11 @@ public class RankPvpSystemDeathMgr
 	/**
 	 * [0 - itemSlotId] [1 - itemName] [2 - itemEnchantLevel].
 	 */
-	private final KillerItem[] _killerItems = new KillerItem[18]; // l2jFrozen 18, l2jserver H5 25.
+	private KillerItem[] _killerItems = new KillerItem[18];
 
 	/**
 	 * Always use this constructor as default!
-	 *
+	 * 
 	 * @param killer
 	 * @param victim
 	 */
@@ -118,7 +116,7 @@ public class RankPvpSystemDeathMgr
 
 	/**
 	 * Return true if item exists. Searched by item id.
-	 *
+	 * 
 	 * @param item
 	 * @return
 	 */
@@ -203,7 +201,7 @@ public class RankPvpSystemDeathMgr
 			else
 			{
 				tb.append("<tr><td>I can't load Killer Data!</td></tr>");
-				_log.info("DeathManager::killer is null!");
+				// _log.info("DeathManager::killer is null!");
 			}
 			tb.append("</table>");
 		}
@@ -229,7 +227,7 @@ public class RankPvpSystemDeathMgr
 
 	/**
 	 * @param killer
-	 *        the killer to set
+	 *            the killer to set
 	 */
 	public void setKiller(L2PcInstance killer)
 	{
