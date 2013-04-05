@@ -77,6 +77,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.FriendList;
 import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
+import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -156,7 +157,10 @@ public class EnterWorld extends L2GameClientPacket
 		sendPacket(new ShortCutInit(activeChar));
 
 		activeChar.sendSkillList();
-
+		//hotfix
+		InventoryUpdate iu = new InventoryUpdate();
+		activeChar.sendPacket(iu);
+		
 		activeChar.sendPacket(new HennaInfo(activeChar));
 
 		sendPacket(new UserInfo(activeChar));

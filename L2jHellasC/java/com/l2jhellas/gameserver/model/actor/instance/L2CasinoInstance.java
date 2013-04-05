@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -123,6 +123,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		tb.append("</center>");
 		tb.append("<center><img src=\"L2UI.SquareGray\" width=\"280\" height=\"1\">");
 		tb.append("</body></html>");
+		player.sendPacket(new ActionFailed());
 		return tb.toString();
 	}
 	

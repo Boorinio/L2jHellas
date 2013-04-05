@@ -21,6 +21,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
@@ -194,6 +195,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
+		activeChar.sendPacket(new ActionFailed());
 	}
 	
 	public static void generateLogo(L2PcInstance activeChar, int imgId)
@@ -272,5 +274,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
+		player.sendPacket(new ActionFailed());
 	}
+	
 }

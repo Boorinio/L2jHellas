@@ -208,6 +208,7 @@ public final class Config
 	public static float BUFF_TIME_MULTIPLIER;
 	public static float SPIRIT_TIME_MULTIPLIER;
 	public static byte BUFFS_MAX_AMOUNT;
+	public static byte DEBUFFS_MAX_AMOUNT;
 	public static boolean ALT_GAME_VIEWNPC;
 	public static boolean USE_3D_MAP;
 	public static boolean ALLOW_HIT_OWNER;
@@ -1117,6 +1118,7 @@ public final class Config
 				SPIRIT_TIME_MULTIPLIER = Float.parseFloat(altSettings.getProperty("SpiritMultiplier", "1"));
 				BUFF_TIME_MULTIPLIER = Float.parseFloat(altSettings.getProperty("BuffMultiplier", "1"));
 				BUFFS_MAX_AMOUNT = Byte.parseByte(altSettings.getProperty("MaxBuffAmount", "24"));
+				DEBUFFS_MAX_AMOUNT = Byte.parseByte(altSettings.getProperty("MaxDebuffAmount", "6"));
 				ALT_GAME_VIEWNPC = Boolean.parseBoolean(altSettings.getProperty("AltGameViewNpc", "False"));
 				USE_3D_MAP = Boolean.valueOf(altSettings.getProperty("Use3DMap", "False"));
 				ALLOW_HIT_OWNER = Boolean.valueOf(altSettings.getProperty("AllowHitOwner", "True"));

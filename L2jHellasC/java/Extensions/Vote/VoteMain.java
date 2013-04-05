@@ -69,7 +69,7 @@ public class VoteMain
 			String inputLine;
 			while ((inputLine = in.readLine()) != null)
 			{
-				if (inputLine.contains("Anonymous User Votes"))
+				if (inputLine.contains("no steal make love")||inputLine.contains("no votes here")||inputLine.contains("bang, you don't have votes")||inputLine.contains("la vita e bella"))
 				{
 					votes = Integer.valueOf(inputLine.split(">")[2].replace("</span", ""));
 					break;
