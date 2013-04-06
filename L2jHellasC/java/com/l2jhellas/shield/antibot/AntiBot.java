@@ -11,6 +11,8 @@ import com.l2jhellas.util.Rnd;
 
 public class AntiBot
 {
+	
+	public static boolean isvoting;
 	static int[] epiloges =
 	{
 	Rnd.get(-100, 100), Rnd.get(100), Rnd.get(-100, 100), Rnd.get(100),
@@ -37,6 +39,7 @@ public class AntiBot
 			showHtmlWindow(player);
 			player.sendMessage("You have 2 minutes to vote");
 		}
+		isvoting=true;
 		waitSecs(120);
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
@@ -46,6 +49,7 @@ public class AntiBot
 				player.closeNetConnection();
 			}
 		}
+		isvoting=false;
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
 			player.PassedProt = false;

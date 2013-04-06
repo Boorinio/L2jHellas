@@ -157,9 +157,6 @@ public class EnterWorld extends L2GameClientPacket
 		sendPacket(new ShortCutInit(activeChar));
 
 		activeChar.sendSkillList();
-		//hotfix
-		InventoryUpdate iu = new InventoryUpdate();
-		activeChar.sendPacket(iu);
 		
 		activeChar.sendPacket(new HennaInfo(activeChar));
 

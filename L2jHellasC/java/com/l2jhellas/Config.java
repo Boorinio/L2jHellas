@@ -346,6 +346,10 @@ public final class Config
 	public static boolean BANKINGALTERNATE_SYSTEM_ENABLED;
 	public static int BANKINGALTERNATE_SYSTEM_GOLDBARS;
 	public static int BANKINGALTERNATE_SYSTEM_ADENA;
+	public static boolean OFFLINE_TRADE_ENABLE;
+	public static boolean OFFLINE_CRAFT_ENABLE;
+	public static boolean OFFLINE_SET_NAME_COLOR;
+	public static int OFFLINE_NAME_COLOR;
 	public static boolean ANNOUNCE_HERO_LOGIN;
 	public static boolean ANNOUNCE_CASTLE_LORDS;
 	public static boolean CHAR_TITLE;
@@ -1382,6 +1386,10 @@ public final class Config
 				BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JHellasSettings.getProperty("BankingGoldbarCount", "1"));
 				BANKING_SYSTEM_ADENA = Integer.parseInt(L2JHellasSettings.getProperty("BankingAdenaCount", "500000000"));
 				BANKING_SYSTEM_ITEM = Integer.parseInt(L2JHellasSettings.getProperty("BankingItemId", "3470"));
+				OFFLINE_TRADE_ENABLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("OfflineTradeEnable", "false"));
+				OFFLINE_CRAFT_ENABLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("OfflineCraftEnable", "false"));
+				OFFLINE_SET_NAME_COLOR = Boolean.parseBoolean(L2JHellasSettings.getProperty("OfflineSetNameColor", "false"));
+				OFFLINE_NAME_COLOR = Integer.decode("0x" + L2JHellasSettings.getProperty("OfflineNameColor", "808080"));
 				ANNOUNCE_HERO_LOGIN = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnounceHeroLogin", "False"));
 				ANNOUNCE_CASTLE_LORDS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnounceCastleLords", "false"));
 				CHAR_TITLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("CharTitle", "False"));
