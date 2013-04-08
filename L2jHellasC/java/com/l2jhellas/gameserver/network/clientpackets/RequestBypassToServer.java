@@ -48,17 +48,17 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class ...
- * 
+ *
  * @version $Revision: 1.12.4.5 $ $Date: 2005/04/11 10:06:11 $
  */
 public final class RequestBypassToServer extends L2GameClientPacket
 {
 	private static final String _C__21_REQUESTBYPASSTOSERVER = "[C] 21 RequestBypassToServer";
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
-	
+
 	// S
 	private String _command;
-	
+
 	/**
 	 * @param decrypt
 	 */
@@ -67,45 +67,45 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	{
 		_command = readS();
 	}
-	
+
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		
+
 		if (activeChar == null)
 			return;
-		
+
 		if (!activeChar.getAntiFlood().getServerBypass().tryPerformAction(_command) && !activeChar.isGM())
 			return;
-		
+
 		try
 		{
 			if (_command.startsWith("admin_"))
 			{
 				String command = _command.split(" ")[0];
-				
+
 				IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(command);
-				
+
 				if (ach == null)
 				{
 					if (activeChar.isGM())
 						activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist.");
-					
+
 					_log.warning("No handler registered for admin command '" + command + "'");
 					return;
 				}
-				
+
 				if (!AdminCommandAccessRights.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access rights to use this command.");
 					_log.warning(activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
 					return;
 				}
-				
+
 				if (Config.GMAUDIT)
 					GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", _command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"));
-				
+
 				ach.useAdminCommand(_command, activeChar);
 			}
 			else if (_command.equals("come_here") && activeChar.isGM())
@@ -158,45 +158,45 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			}
 			else if (_command.startsWith("sendMsg"))
 			{ // Message System By Pauler
-			
+
 				StringTokenizer st = new StringTokenizer(_command);
-				
+
 				st.nextToken();
-				
+
 				String to;
 				String title;
 				String message = "";;
-				
+
 				if (st.hasMoreTokens())
 					to = st.nextToken();
 				else
 					return;
-				
+
 				if (st.hasMoreTokens())
 					title = st.nextToken();
 				else
 					return;
-				
+
 				while (st.hasMoreTokens())
 				{
 					message = message + st.nextToken() + " ";
 				}
-				
+
 				if (to.equalsIgnoreCase(activeChar.getName()))
 				{
 					activeChar.sendMessage("You cannot send a message to yourself.");
 					return;
 				}
-				
+
 				if (to.equalsIgnoreCase("") || message.equalsIgnoreCase("") || to == null)
 				{
 					activeChar.sendMessage("You have to fill all the fields.");
 					return;
 				}
-				
+
 				if (title.equalsIgnoreCase("") || title == null)
 					title = "(No Subject)";
-				
+
 				Connection con = null;
 				try
 				{
@@ -208,7 +208,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					statement.setString(4, message);
 					statement.execute();
 					statement.close();
-					
+
 					activeChar.sendMessage("Your message has been sent.");
 				}
 				catch (Exception e)
@@ -216,13 +216,13 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					e.printStackTrace();
 					_log.log(Level.SEVERE, e.getMessage(), e);
 				}
-				
+
 			}
 			else if (_command.startsWith("delMsg"))
 			{
 				StringTokenizer st = new StringTokenizer(_command);
 				st.nextToken();
-				
+
 				int messageId = Integer.parseInt(st.nextToken());
 				Connection con = null;
 				try
@@ -239,7 +239,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					e.printStackTrace();
 					_log.log(Level.SEVERE, e.getMessage(), e);
 				}
-				
+
 			}
 			else if (_command.startsWith("submitemail"))
 			{
@@ -248,18 +248,18 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					String value = _command.substring(11);
 					StringTokenizer s = new StringTokenizer(value, " ");
 					String email1 = null;
-					
+
 					try
 					{
 						email1 = s.nextToken();
-						
+
 						try
 						{
 							Connection con = null;
 							try
 							{
 								con = L2DatabaseFactory.getInstance().getConnection();
-								
+
 								PreparedStatement statement = con.prepareStatement("UPDATE characters SET email=? WHERE obj_Id=?");
 								statement.setString(1, email1);
 								statement.setInt(2, activeChar.getObjectId());
@@ -281,16 +281,16 @@ public final class RequestBypassToServer extends L2GameClientPacket
 									e.printStackTrace();
 								}
 							}
-							
+
 							activeChar.sendMessage("We successfully added your email " + email1 + " to our database");
 							L2AccountManagerInstance.setHasSubEmail(activeChar);
-							
+
 						}
 						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
-						
+
 					}
 					catch (Exception e)
 					{
@@ -306,7 +306,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				if (!activeChar.validateBypass(_command))
 					return;
-				
+
 				int endOfId = _command.indexOf('_', 5);
 				String id;
 				if (endOfId > 0)
@@ -316,7 +316,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				try
 				{
 					L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
-					
+
 					if (_command.substring(endOfId + 1).startsWith("event_participate"))
 						L2Event.inscribePlayer(activeChar);
 					else if (_command.substring(endOfId + 1).startsWith("vip_joinVIPTeam"))
@@ -328,7 +328,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					else if (_command.substring(endOfId + 1).startsWith("tvt_player_join "))
 					{
 						String teamName = _command.substring(endOfId + 1).substring(16);
-						
+
 						if (TvT._joining)
 							TvT.addPlayer(activeChar, teamName);
 						else
@@ -358,7 +358,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					else if (_command.substring(endOfId + 1).startsWith("ctf_player_join "))
 					{
 						String teamName = _command.substring(endOfId + 1).substring(16);
-						
+
 						if (CTF._joining)
 							CTF.addPlayer(activeChar, teamName);
 						else
@@ -371,7 +371,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 						else
 							activeChar.sendMessage("The event is already started. You can not leave now!");
 					}
-					
+
 					else if (((ExternalConfig.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)) || (object != null && object instanceof L2NpcInstance && endOfId > 0 && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false)))
 					{
 						((L2NpcInstance) object).onBypassFeedback(activeChar, _command.substring(endOfId + 1));
@@ -420,11 +420,11 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				if (!activeChar.validateBypass(_command))
 					return;
-				
+
 				L2PcInstance player = getClient().getActiveChar();
 				if (player == null)
 					return;
-				
+
 				String p = _command.substring(6).trim();
 				int idx = p.indexOf(' ');
 				if (idx < 0)
@@ -438,17 +438,16 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				BalancerMain.handleCommands(getClient(), _command.substring(8));
 			}
-			// Custom PvP System (CPS) by Masterio ->
-			// --------------------------------------------
+			// Rank PvP System by Masterio --------------------------------------------
 			else if (_command.equals("_cprs_equip"))
 			{ // for "details" button
 				try
 				{
-					if (activeChar._RankPvpSystemDeathMgr != null)
+					if (activeChar._rankPvpSystemDeathMgr != null)
 					{
-						if (activeChar._RankPvpSystemDeathMgr.getKiller() != null)
+						if (activeChar._rankPvpSystemDeathMgr.getKiller() != null)
 						{
-							activeChar._RankPvpSystemDeathMgr.sendVictimResponse();
+							activeChar._rankPvpSystemDeathMgr.sendVictimResponse();
 						}
 					}
 				}
@@ -461,13 +460,13 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{ // for "back" button
 				try
 				{
-					if (activeChar._RankPvpSystemDeathMgr != null)
+					if (activeChar._rankPvpSystemDeathMgr != null)
 					{
 						// required for death manager, shows killer info:
 						RankPvpSystemPlayerInfo playerInfo = new RankPvpSystemPlayerInfo();
-						if (activeChar._RankPvpSystemDeathMgr.getKiller() != null)
+						if (activeChar._rankPvpSystemDeathMgr.getKiller() != null)
 						{
-							playerInfo.sendPlayerResponse(activeChar, activeChar._RankPvpSystemDeathMgr.getKiller());
+							playerInfo.sendPlayerResponse(activeChar, activeChar._rankPvpSystemDeathMgr.getKiller());
 						}
 						playerInfo = null;
 					}
@@ -481,10 +480,10 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{ // for "get reward" button
 				try
 				{
-					if (activeChar._RankPvpSystemPointsReward != null && activeChar._RankPvpSystemPointsReward.getRankRewardsCount() > 0 && activeChar._RankPvpSystemPointsReward.getPlayer() != null)
+					if (activeChar._rankPvpSystemRankPointsReward != null && activeChar._rankPvpSystemRankPointsReward.getRankRewardsCount() > 0 && activeChar._rankPvpSystemRankPointsReward.getPlayer() != null)
 					{
-						activeChar._RankPvpSystemPointsReward.addRankRewardsToInventory();
-						activeChar._RankPvpSystemPointsReward = null;
+						activeChar._rankPvpSystemRankPointsReward.addRankRewardsToInventory();
+						activeChar._rankPvpSystemRankPointsReward = null;
 					}
 				}
 				catch (Exception e)
@@ -498,13 +497,13 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		{
 			_log.log(Level.WARNING, "Bad RequestBypassToServer: ", e);
 		}
-		
+
 		// finally
 		// {
 		// activeChar.clearBypass();
 		// }
 	}
-	
+
 	/**
 	 * @param client
 	 */
@@ -520,20 +519,20 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			temp.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(activeChar.getX(), activeChar.getY(), activeChar.getZ(), 0));
 			// temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
 		}
-		
+
 	}
-	
+
 	private void playerHelp(L2PcInstance activeChar, String path)
 	{
 		if (path.indexOf("..") != -1)
 			return;
-		
+
 		String filename = "data/html/help/" + path;
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile(filename);
 		activeChar.sendPacket(html);
 	}
-	
+
 	@Override
 	public String getType()
 	{

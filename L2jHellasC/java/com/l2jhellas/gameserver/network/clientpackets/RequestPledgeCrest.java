@@ -18,11 +18,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.4.4.4 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestPledgeCrest extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestPledgeCrest.class.getName());
@@ -40,17 +35,15 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// sendPacket(new PledgeCrest(_crestId));
 		if (_crestId == 0)
 		{
 			return;
 		}
-		
 		if (Config.DEBUG)
 		{
-			_log.fine("crestid " + _crestId + " requested.");
+			_log.fine("crestid " + _crestId + " requested");
 		}
-		
+
 		byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
 
 		if (data != null)
@@ -61,7 +54,9 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 		else
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("crest is missing:" + _crestId);
+			}
 		}
 	}
 

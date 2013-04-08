@@ -22,7 +22,6 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
-
 import Extensions.RankSystem.PvpStats;
 import Extensions.RankSystem.PvpTable;
 
@@ -77,7 +76,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.FriendList;
 import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
-import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -101,10 +99,10 @@ import com.l2jhellas.util.Util;
 public class EnterWorld extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(EnterWorld.class.getName());
-	
+
 	public static Vector<L2PcInstance> _onlineplayers = new Vector<L2PcInstance>();
 	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
-	
+
 	public TaskPriority getPriority()
 	{
 		return TaskPriority.PR_URGENT;
@@ -157,7 +155,7 @@ public class EnterWorld extends L2GameClientPacket
 		sendPacket(new ShortCutInit(activeChar));
 
 		activeChar.sendSkillList();
-		
+
 		activeChar.sendPacket(new HennaInfo(activeChar));
 
 		sendPacket(new UserInfo(activeChar));
@@ -275,7 +273,7 @@ public class EnterWorld extends L2GameClientPacket
 		if (Config.ANNOUNCE_CASTLE_LORDS)
 		{
 			L2Clan clan = activeChar.getClan();
-			
+
 			if (clan != null)
 			{
 				if (clan.getHasCastle() > 0)
@@ -286,7 +284,7 @@ public class EnterWorld extends L2GameClientPacket
 				}
 			}
 		}
-		
+
 		if (Config.PLAYER_SPAWN_PROTECTION > 0)
 			activeChar.setProtection(true);
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
@@ -391,18 +389,18 @@ public class EnterWorld extends L2GameClientPacket
 			activeChar.broadcastUserInfo();
 		}
 
-		// Custom PvP System by Masterio:
+		// Rank PvP System by Masterio:
 		if(ExternalConfig.NICK_COLOR_ENABLED || ExternalConfig.TITLE_COLOR_ENABLED)
 		{
 			PvpStats activeCharPvpStats = PvpTable.getInstance().getPvpStats(activeChar.getObjectId());
-			
+
 			if(ExternalConfig.NICK_COLOR_ENABLED)
 			{
 				activeChar.getAppearance().setNameColor(activeCharPvpStats.getRank().getNickColor());
 				activeChar.sendPacket(new UserInfo(activeChar));
 				activeChar.broadcastUserInfo();
 			}
-			
+
 			if(ExternalConfig.TITLE_COLOR_ENABLED)
 			{
 				activeChar.getAppearance().setTitleColor(activeCharPvpStats.getRank().getTitleColor());

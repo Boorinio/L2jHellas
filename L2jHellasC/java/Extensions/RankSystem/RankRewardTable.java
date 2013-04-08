@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -67,7 +67,7 @@ public class RankRewardTable
 
 	/**
 	 * @param _rankRewardTable
-	 *            the _rewardTable to set
+	 *        the _rewardTable to set
 	 */
 	public void setRankRewardTable(FastMap<Integer, RankReward> _rankRewardTable)
 	{
@@ -95,7 +95,7 @@ public class RankRewardTable
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM custom_pvp_system_rank_reward");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM rank_pvp_system_rank_rewards");
 
 			ResultSet rset = statement.executeQuery();
 

@@ -1,52 +1,51 @@
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for `custom_pvp_system`
+-- Table structure for `rank_pvp_system`
 -- ----------------------------
-DROP TABLE IF EXISTS `custom_pvp_system`;
+DROP TABLE IF EXISTS `rank_pvp_system`;
 
 CREATE TABLE `custom_pvp_system` (
-  `killer_id` int(10) NOT NULL,
-  `victim_id` int(10) NOT NULL,
-  `kills` int(10) NOT NULL DEFAULT '0',
-  `kills_today` int(10) NOT NULL DEFAULT '0',
-  `kills_legal` int(10) NOT NULL DEFAULT '0',
-  `kills_today_legal` int(10) NOT NULL DEFAULT '0',
-  `rank_points` bigint(18) NOT NULL DEFAULT '0',
-  `rank_points_today` bigint(18) NOT NULL DEFAULT '0',
-  `war_kills_legal` int(10) NOT NULL DEFAULT '0',
-  `war_kills` int(10) NOT NULL DEFAULT '0',
-  `kill_time`  bigint(18) NOT NULL DEFAULT 0 ,
-`kill_day`  bigint(18) NOT NULL DEFAULT 0 
+ `killer_id` int(10) NOT NULL,
+ `victim_id` int(10) NOT NULL,
+ `kills` int(10) NOT NULL DEFAULT 0,
+ `kills_today` int(10) NOT NULL DEFAULT 0,
+ `kills_legal` int(10) NOT NULL DEFAULT 0,
+ `kills_today_legal` int(10) NOT NULL DEFAULT 0,
+ `rank_points` bigint(18) NOT NULL DEFAULT 0,
+ `rank_points_today` bigint(18) NOT NULL DEFAULT 0,
+ `war_kills_legal` int(10) NOT NULL DEFAULT 0,
+ `war_kills` int(10) NOT NULL DEFAULT 0,
+ `kill_time` bigint(18) NOT NULL DEFAULT 0,
+ `kill_day` bigint(18) NOT NULL DEFAULT 0 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
--- Table structure for `custom_pvp_system_characters_rank_rewards`
+-- Table structure for `rank_pvp_system_character_rank_rewards`
 -- ----------------------------
-DROP TABLE IF EXISTS `custom_pvp_system_characters_rank_rewards`;
+DROP TABLE IF EXISTS `rank_pvp_system_character_rank_rewards`;
 
-CREATE TABLE `custom_pvp_system_characters_rank_rewards` (
-  `charId` int(10) NOT NULL,
-  `reward_id` int(10) NOT NULL,
-  `is_taken` tinyint(1) NOT NULL DEFAULT '0'
+CREATE TABLE `rank_pvp_system_character_rank_rewards` (
+ `charId` int(10) NOT NULL,
+ `reward_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
--- Table structure for `custom_pvp_system_rank_reward`
+-- Table structure for `rank_pvp_system_rank_rewards`
 -- ----------------------------
-DROP TABLE IF EXISTS `custom_pvp_system_rank_reward`;
+DROP TABLE IF EXISTS `rank_pvp_system_rank_rewards`;
 
-CREATE TABLE `custom_pvp_system_rank_reward` (
-  `reward_id` int(10) NOT NULL AUTO_INCREMENT,
-  `item_id` int(10) NOT NULL,
-  `item_amount` bigint(18) NOT NULL,
-  `min_rank_points` int(10) NOT NULL COMMENT 'Should be the same like in: ExternalConfig:RankPvpRankMinPoints',
-  PRIMARY KEY (`reward_id`)
+CREATE TABLE `rank_pvp_system_rank_rewards` (
+ `reward_id` int(10) NOT NULL AUTO_INCREMENT,
+ `item_id` int(10) NOT NULL,
+ `item_amount` bigint(18) NOT NULL,
+ `min_rank_points` int(10) NOT NULL COMMENT 'Should be the same like in: ExternalConfig:RankMinPoints',
+ PRIMARY KEY (`reward_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
--- Records of `custom_pvp_system_rank_reward`
+-- Records of `rank_pvp_system_rank_rewards`
 -- ----------------------------
-INSERT INTO `custom_pvp_system_rank_reward` VALUES
+INSERT INTO `rank_pvp_system_rank_rewards` VALUES
 ('1', '57', '50000', '1'),
 ('2', '57', '100000', '2'),
 ('3', '57', '150000', '5'),

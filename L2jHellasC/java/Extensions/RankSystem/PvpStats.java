@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,7 +20,7 @@ import com.l2jhellas.ExternalConfig;
 
 /**
  * Class contains Character PvP statistics like sum of kills, sum of rank points, etc.
- * 
+ *
  * @author Masterio
  */
 public class PvpStats
@@ -60,7 +60,7 @@ public class PvpStats
 
 	/**
 	 * Add Rank Points to Total Rank Points and update Rank.
-	 * 
+	 *
 	 * @param rankPoints
 	 */
 	public void addTotalRankPoints(long rankPoints)
@@ -94,7 +94,7 @@ public class PvpStats
 
 	/**
 	 * @param _characterId
-	 *            the _characterId to set
+	 *        the _characterId to set
 	 */
 	public void setCharacterId(int _characterId)
 	{
@@ -111,7 +111,7 @@ public class PvpStats
 
 	/**
 	 * @param _totalKills
-	 *            the _totalKills to set
+	 *        the _totalKills to set
 	 */
 	public void setTotalKills(int _totalKills)
 	{
@@ -128,7 +128,7 @@ public class PvpStats
 
 	/**
 	 * @param _totalKillsToday
-	 *            the _totalKillsToday to set
+	 *        the _totalKillsToday to set
 	 */
 	public void setTotalKillsToday(int _totalKillsToday)
 	{
@@ -145,7 +145,7 @@ public class PvpStats
 
 	/**
 	 * @param _totalKillsLegal
-	 *            the _totalKillsLegal to set
+	 *        the _totalKillsLegal to set
 	 */
 	public void setTotalKillsLegal(int _totalKillsLegal)
 	{
@@ -162,7 +162,7 @@ public class PvpStats
 
 	/**
 	 * @param _totalKillsLegalToday
-	 *            the _totalKillsLegalToday to set
+	 *        the _totalKillsLegalToday to set
 	 */
 	public void setTotalKillsLegalToday(int _totalKillsLegalToday)
 	{
@@ -179,9 +179,9 @@ public class PvpStats
 
 	/**
 	 * Set Total Rank Points and update Rank.
-	 * 
+	 *
 	 * @param _totalRankPoints
-	 *            the _totalRankPoints to set
+	 *        the _totalRankPoints to set
 	 */
 	public void setTotalRankPoints(long _totalRankPoints)
 	{
@@ -199,7 +199,7 @@ public class PvpStats
 
 	/**
 	 * @param _totalRankPointsToday
-	 *            the _totalRankPointsToday to set
+	 *        the _totalRankPointsToday to set
 	 */
 	public void setTotalRankPointsToday(long _totalRankPointsToday)
 	{
@@ -216,7 +216,7 @@ public class PvpStats
 
 	/**
 	 * @param _totalWarKills
-	 *            the _totalWarKills to set
+	 *        the _totalWarKills to set
 	 */
 	public void setTotalWarKills(int _totalWarKills)
 	{
@@ -233,7 +233,7 @@ public class PvpStats
 
 	/**
 	 * @param _totalWarKillsLegal
-	 *            the _totalWarKillsLegal to set
+	 *        the _totalWarKillsLegal to set
 	 */
 	public void setTotalWarKillsLegal(int _totalWarKillsLegal)
 	{
@@ -250,7 +250,7 @@ public class PvpStats
 
 	/**
 	 * @param _rank
-	 *            the _rank to set
+	 *        the _rank to set
 	 */
 	public void setRank(Rank _rank)
 	{
@@ -264,7 +264,7 @@ public class PvpStats
 	public void onUpdateRankPoints()
 	{
 
-		for (FastMap.Entry<Integer, Rank> e = ExternalConfig.CUSTOM_PVP_RANKS.head(), end = ExternalConfig.CUSTOM_PVP_RANKS.tail(); (e = e.getNext()) != end;)
+		for (FastMap.Entry<Integer, Rank> e = ExternalConfig.RANKS.head(), end = ExternalConfig.RANKS.tail(); (e = e.getNext()) != end;)
 		{
 			// set up rank for current rank points:
 			if (e.getValue().getMinPoints() <= getTotalRankPoints())
@@ -275,9 +275,9 @@ public class PvpStats
 		}
 
 		// if not set any rank, set minimum rank:
-		if (ExternalConfig.CUSTOM_PVP_RANKS.tail() != null)
+		if (ExternalConfig.RANKS.tail() != null)
 		{
-			setRank(ExternalConfig.CUSTOM_PVP_RANKS.tail().getValue());
+			setRank(ExternalConfig.RANKS.tail().getValue());
 		}
 	}
 

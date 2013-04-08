@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,7 +20,7 @@ import java.util.Calendar;
  * Class contains informations about victim. <br>
  * Example: How many times Killer killed Victim? <br>
  * Answer: getKills().
- * 
+ *
  * @author Masterio
  */
 public class Pvp
@@ -101,7 +101,7 @@ public class Pvp
 
 	/**
 	 * @param _killerObjId
-	 *            the _killerObjId to set
+	 *        the _killerObjId to set
 	 */
 	public void setKillerObjId(int _killerObjId)
 	{
@@ -119,7 +119,7 @@ public class Pvp
 
 	/**
 	 * @param _victimObjId
-	 *            the _victimObjId to set
+	 *        the _victimObjId to set
 	 */
 	public void setVictimObjId(int _victimObjId)
 	{
@@ -137,7 +137,7 @@ public class Pvp
 
 	/**
 	 * @param _kills
-	 *            the _kills to set
+	 *        the _kills to set
 	 */
 	public void setKills(int _kills)
 	{
@@ -159,7 +159,7 @@ public class Pvp
 
 	/**
 	 * @param _killsToday
-	 *            the _killsToday to set
+	 *        the _killsToday to set
 	 */
 	public void setKillsToday(int _killsToday)
 	{
@@ -177,7 +177,7 @@ public class Pvp
 
 	/**
 	 * @param _killsLegal
-	 *            the _killsLegal to set
+	 *        the _killsLegal to set
 	 */
 	public void setKillsLegal(int _killsLegal)
 	{
@@ -199,7 +199,7 @@ public class Pvp
 
 	/**
 	 * @param _killsLegalToday
-	 *            the _killsLegalToday to set
+	 *        the _killsLegalToday to set
 	 */
 	public void setKillsLegalToday(int _killsLegalToday)
 	{
@@ -217,7 +217,7 @@ public class Pvp
 
 	/**
 	 * @param _rankPoints
-	 *            the _rankPoints to set
+	 *        the _rankPoints to set
 	 */
 	public void setRankPoints(long _rankPoints)
 	{
@@ -239,7 +239,7 @@ public class Pvp
 
 	/**
 	 * @param _rankPointsToday
-	 *            the _rankPintsToday to set
+	 *        the _rankPintsToday to set
 	 */
 	public void setRankPointsToday(long _rankPointsToday)
 	{
@@ -257,7 +257,7 @@ public class Pvp
 
 	/**
 	 * @param _warKills
-	 *            the _warKills to set
+	 *        the _warKills to set
 	 */
 	public void setWarKills(int _warKills)
 	{
@@ -275,7 +275,7 @@ public class Pvp
 
 	/**
 	 * @param _warKillsLegal
-	 *            the _warKillsLegal to set
+	 *        the _warKillsLegal to set
 	 */
 	public void setWarKillsLegal(int _warKillsLegal)
 	{
@@ -293,7 +293,7 @@ public class Pvp
 
 	/**
 	 * @param _killTime
-	 *            the _killTime to set
+	 *        the _killTime to set
 	 */
 	public void setKillTime(long _killTime)
 	{
@@ -311,7 +311,7 @@ public class Pvp
 
 	/**
 	 * @param _killDay
-	 *            the _killDay to set
+	 *        the _killDay to set
 	 */
 	public void setKillDay(long _killDay)
 	{
@@ -329,7 +329,7 @@ public class Pvp
 
 	/**
 	 * @param _dbStatus
-	 *            the _dbStatus to set
+	 *        the _dbStatus to set
 	 */
 	public void setDbStatus(byte _dbStatus)
 	{
@@ -346,7 +346,7 @@ public class Pvp
 
 	/**
 	 * If Kill Day == System Day
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean checkToday()

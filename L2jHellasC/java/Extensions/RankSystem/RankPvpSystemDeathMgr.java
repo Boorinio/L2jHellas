@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -47,11 +47,11 @@ public class RankPvpSystemDeathMgr
 	/**
 	 * [0 - itemSlotId] [1 - itemName] [2 - itemEnchantLevel].
 	 */
-	private KillerItem[] _killerItems = new KillerItem[18];
+	private final KillerItem[] _killerItems = new KillerItem[18]; // l2jFrozen 18, l2jserver H5 25.
 
 	/**
 	 * Always use this constructor as default!
-	 * 
+	 *
 	 * @param killer
 	 * @param victim
 	 */
@@ -71,7 +71,7 @@ public class RankPvpSystemDeathMgr
 		_killerMaxMP = killer.getMaxMp();
 
 		// load item list:
-		if (_killer != null && ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS)
+		if (_killer != null && ExternalConfig.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
 		{
 			int j = 0;
 			for (int i = 0; i < _killerItems.length; i++)
@@ -116,7 +116,7 @@ public class RankPvpSystemDeathMgr
 
 	/**
 	 * Return true if item exists. Searched by item id.
-	 * 
+	 *
 	 * @param item
 	 * @return
 	 */
@@ -164,7 +164,7 @@ public class RankPvpSystemDeathMgr
 		tb.append("</table>");
 
 		// show item list:
-		if (ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS)
+		if (ExternalConfig.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
 		{
 			tb.append("<table width=270 border=0 cellspacing=0 cellpadding=2 bgcolor=000000>");
 			if (getKiller() != null)
@@ -227,7 +227,7 @@ public class RankPvpSystemDeathMgr
 
 	/**
 	 * @param killer
-	 *            the killer to set
+	 *        the killer to set
 	 */
 	public void setKiller(L2PcInstance killer)
 	{

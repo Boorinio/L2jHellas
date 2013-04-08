@@ -79,69 +79,106 @@ public final class ExternalConfig
 	public static int SECURITY_QUE_TIME;
 
 	/* CUSTOM PVP/RANK/REWARD SYSTEM */
-	public static boolean CUSTOM_PVP_ENABLED;
-	public static boolean CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED;
-	public static boolean CUSTOM_PVP_REWARD_ENABLED;
-	public static boolean CUSTOM_PVP_CLEANER_ENABLED;
-	public static long CUSTOM_PVP_CLEANER_IGNORE_TIME;
-	public static int CUSTOM_PVP_REWARD_ID;
-	public static int CUSTOM_PVP_REWARD_AMOUNT;
-	public static int CUSTOM_PVP_REWARD_MIN_LVL;
-	public static boolean CUSTOM_PVP_REWARD_PK_KILLER_AWARD;
-	public static boolean CUSTOM_PVP_REWARD_PK_MODE_ENABLED;
-	public static boolean CUSTOM_PVP_RANK_ENABLED;
-	public static int CUSTOM_PVP_RANK_MIN_LVL;
-	public static boolean CUSTOM_PVP_CUT_POINTS_ENABLED;
+	public static boolean RANK_PVP_SYSTEM_ENABLED;
+	public static int LEGAL_KILL_MIN_LVL;
+	public static boolean LEGAL_COUNTER_ALTT_ENABLED;
+	public static boolean LEGAL_KILL_FOR_PK_KILLER_ENABLED;
+	public static boolean LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED;
+	public static int PROTECTION_TIME_RESET;
+	public static int LEGAL_KILL_PROTECTION;
+	public static int DAILY_LEGAL_KILL_PROTECTION;
 
-	/** FastMap (rankId, Rank) */
-	public static FastMap<Integer, Rank> CUSTOM_PVP_RANKS = new FastMap<Integer, Rank>();
+	// PvP Reward:
+	public static boolean PVP_REWARD_ENABLED;
+	public static int PVP_REWARD_ID;
+	public static int PVP_REWARD_AMOUNT;
+	public static int PVP_REWARD_MIN_LVL;
+	public static boolean PVP_REWARD_FOR_PK_KILLER_ENABLED;
+	public static boolean PVP_REWARD_FOR_INNOCENT_KILL_ENABLED;
 
-	public static boolean CUSTOM_PVP_RANK_REWARD_ENABLED;
-	public static boolean CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED;
-	public static FastList<Integer> CUSTOM_PVP_RANK_KILL_POINTS_DOWN = new FastList<Integer>();
-	public static boolean CUSTOM_PVP_RANK_SHOUT_INFO;
-	public static boolean CUSTOM_PVP_RANK_PK_KILLER_AWARD;
-	public static boolean CUSTOM_PVP_RANK_PK_MODE_ENABLED;
-	public static boolean CUSTOM_PVP_WAR_ENABLED;
-	public static double CUSTOM_PVP_WAR_RP_RATIO;
+	// Ranks:
+	/** FastMap &lt;rankId, Rank&gt; - store all Ranks as Rank objects. */
+	public static FastMap<Integer, Rank> RANKS = new FastMap<Integer, Rank>();
 
+	public static boolean RANKS_ENABLED;
+	public static int RANK_POINTS_MIN_LVL;
+	public static boolean RANK_POINTS_CUT_ENABLED;
+	public static boolean RANK_REWARD_ENABLED;
+
+	public static boolean RANK_POINTS_DOWN_COUNT_ENABLED;
+	public static FastList<Integer> RANK_POINTS_DOWN_AMOUNTS = new FastList<Integer>();
+
+	public static boolean RANK_SHOUT_INFO_ON_KILL_ENABLED;
+	public static boolean RANK_SHOUT_BONUS_INFO_ON_KILL_ENABLED;
+	public static boolean RANK_REWARD_FOR_PK_KILLER_ENABLED;
+	public static boolean RANK_REWARD_FOR_INNOCENT_KILL_ENABLED;
+
+	public static boolean RANK_POINTS_REWARD_ENABLED;
+
+	// War Kills:
+	public static boolean WAR_KILLS_ENABLED;
+	public static double WAR_RANK_POINTS_RATIO;
+
+	// Combo Kill:
+	public static boolean COMBO_KILL_ENABLED;
+	public static boolean COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED;
+	public static boolean COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED;
+
+	public static FastMap<Integer, String> COMBO_KILL_LOCAL_AREA_MESSAGES = new FastMap<Integer, String>();
+	public static FastMap<Integer, String> COMBO_KILL_GLOBAL_AREA_MESSAGES = new FastMap<Integer, String>();
+
+	public static boolean COMBO_KILL_ALT_MESSAGES_ENABLED;
+	public static String COMBO_KILL_ALT_MESSAGE;
+	public static int COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL;
+
+	public static boolean COMBO_KILL_DEFEAT_MESSAGE_ENABLED;
+	public static int COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL;
+	public static String COMBO_KILL_DEFEAT_MESSAGE;
+
+	public static int COMBO_KILL_RESETER;
+	public static boolean COMBO_KILL_RANK_POINTS_RATIO_ENABLED;
+	public static FastMap<Integer, Double> COMBO_KILL_RANK_POINTS_RATIO = new FastMap<Integer, Double>();
+
+	public static boolean COMBO_KILL_ON_EVENTS_ENABLED;
+
+	// Title & Nick Color:
 	public static boolean NICK_COLOR_ENABLED;
 	public static boolean TITLE_COLOR_ENABLED;
 
-	public static FastList<Integer> CUSTOM_PVP_ALLOWED_ZONES_IDS = new FastList<Integer>();
-	public static FastList<Integer> CUSTOM_PVP_RESTRICTED_ZONES_IDS = new FastList<Integer>();
-	public static int CUSTOM_PVP_LEGAL_MIN_LVL;
-	public static boolean CUSTOM_PVP_LEGAL_PK_KILLER_AWARD;
-	public static boolean CUSTOM_PVP_LEGAL_PK_MODE_ENABLED;
-	public static int CUSTOM_PVP_PROTECTION_RESET;
+	// Zones:
+	public static FastList<Integer> ALLOWED_ZONES_IDS = new FastList<Integer>();
+	public static FastList<Integer> RESTRICTED_ZONES_IDS = new FastList<Integer>();
+	public static FastList<Integer> DEATH_MANAGER_RESTRICTED_ZONES_IDS = new FastList<Integer>();
+	public static FastMap<Integer, Double> RANK_POINTS_BONUS_ZONES_IDS = new FastMap<Integer, Double>();
 
-	public static int CUSTOM_PVP_LEGAL_KILL_PROTECTION;
-	public static int CUSTOM_PVP_DAILY_LEGAL_KILL_PROTECTION;
+	// pvpinfo command, death manager:
+	public static boolean PVP_INFO_COMMAND_ENABLED;
+	public static boolean PVP_INFO_USER_COMMAND_ENABLED;
+	public static int PVP_INFO_USER_COMMAND_ID;
 
-	public static boolean CUSTOM_PVP_INFO_COMMAND_ENABLED;
-	public static boolean CUSTOM_PVP_INFO_USER_COMMAND_ENABLED;
-	public static int CUSTOM_PVP_INFO_USER_COMMAND_ID;
-
-	public static boolean CUSTOM_PVP_INFO_COMMAND_ON_DEATH_ENABLED;
-	public static boolean CUSTOM_PVP_DEATH_MANAGER_DETAILS_ENABLED;
-	public static boolean CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS;
-	public static FastList<Integer> CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS = new FastList<Integer>();
-	public static boolean CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED;
-	public static FastMap<Integer, Double> CUSTOM_PVP_RANK_POINTS_BONUS_ZONES;
+	public static boolean PVP_INFO_COMMAND_ON_DEATH_ENABLED;
+	public static boolean DEATH_MANAGER_DETAILS_ENABLED;
+	public static boolean DEATH_MANAGER_SHOW_ITEMS_ENABLED;
 
 	public static boolean TOTAL_KILLS_IN_SHOUT_ENABLED;
 	public static boolean TOTAL_KILLS_IN_PVPINFO_ENABLED;
 	public static boolean TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED;
 
-	public static boolean CUSTOM_PVP_ANTI_FARM_CLAN_ALLY_ENABLED;
-	public static boolean CUSTOM_PVP_ANTI_FARM_PARTY_ENABLED;
-	public static boolean CUSTOM_PVP_ANTI_FARM_IP_ENABLED;
+	// Anti-Farm:
+	public static boolean ANTI_FARM_CLAN_ALLY_ENABLED;
+	public static boolean ANTI_FARM_PARTY_ENABLED;
+	public static boolean ANTI_FARM_IP_ENABLED;
 
+	// Community Board:
+	public static boolean COMMUNITY_BOARD_TOP_LIST_ENABLED;
+	public static long COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT;
+
+	// Database:
 	public static long PVP_TABLE_UPDATE_INTERVAL;
 	public static long TOP_TABLE_UPDATE_INTERVAL;
 
-	public static boolean COMMUNITY_BOARD_TOP_LIST_ENABLED;
-	public static long COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT;
+	public static boolean DATABASE_CLEANER_ENABLED;
+	public static long DATABASE_CLEANER_REPEAT_TIME;
 
 	/* Vote Manager */
 	public static String VOTE_LINK_HOPZONE;
@@ -197,54 +234,54 @@ public final class ExternalConfig
 			ccSettings.load(is);
 
 			/* CUSTOM PVP/RANK/REWARD SYSTEM */
-			CUSTOM_PVP_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpEnabled", "false"));
-			CUSTOM_PVP_LEGAL_COUNTER_ALTT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpLegalCounterAltTEnabled", "false"));
-			CUSTOM_PVP_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRewardEnabled", "false"));
+			RANK_PVP_SYSTEM_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPvpSystemEnabled", "false"));
+			LEGAL_COUNTER_ALTT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("LegalCounterAltTEnabled", "false"));
+			PVP_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("PvpRewardEnabled", "false"));
 
-			CUSTOM_PVP_CLEANER_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpCleanerEnabled", "false"));
-			CUSTOM_PVP_CLEANER_IGNORE_TIME = Integer.parseInt(ccSettings.getProperty("CustomPvpCleanerIgnoreTime", "60"));
-			if (CUSTOM_PVP_CLEANER_IGNORE_TIME <= 0)
+			DATABASE_CLEANER_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("DatabaseCleanerEnabled", "false"));
+			DATABASE_CLEANER_REPEAT_TIME = Integer.parseInt(ccSettings.getProperty("DatabaseCleanerRepeatTime", "0"));
+			if (DATABASE_CLEANER_REPEAT_TIME <= 0)
 			{
-				CUSTOM_PVP_CLEANER_ENABLED = false;
+				DATABASE_CLEANER_ENABLED = false;
 			}
 			else
 			{
-				CUSTOM_PVP_CLEANER_IGNORE_TIME *= 86400000;
+				DATABASE_CLEANER_REPEAT_TIME *= 86400000;
 			}
 
-			CUSTOM_PVP_REWARD_ID = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardItemId", "6392"));
-			CUSTOM_PVP_REWARD_AMOUNT = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardAmmount", "1"));
-			CUSTOM_PVP_REWARD_MIN_LVL = Integer.parseInt(ccSettings.getProperty("CustomPvpRewardMinLvl", "76"));
-			CUSTOM_PVP_REWARD_PK_KILLER_AWARD = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRewardPkKillerAward", "true"));
-			CUSTOM_PVP_REWARD_PK_MODE_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRewardPkModeEnabled", "false"));
-			CUSTOM_PVP_RANK_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankEnabled", "false"));
-			CUSTOM_PVP_RANK_MIN_LVL = Integer.parseInt(ccSettings.getProperty("CustomPvpRankMinLvl", "76"));
-			CUSTOM_PVP_CUT_POINTS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpCutPointsEnabled", "true"));
+			PVP_REWARD_ID = Integer.parseInt(ccSettings.getProperty("PvpRewardId", "6392"));
+			PVP_REWARD_AMOUNT = Integer.parseInt(ccSettings.getProperty("PvpRewardAmmount", "1"));
+			PVP_REWARD_MIN_LVL = Integer.parseInt(ccSettings.getProperty("PvpRewardMinLvl", "76"));
+			PVP_REWARD_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("PvpRewardForPkKillerEnabled", "true"));
+			PVP_REWARD_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("PvpRewardForInnocentKillEnabled", "false"));
+			RANKS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RanksEnabled", "false"));
+			RANK_POINTS_MIN_LVL = Integer.parseInt(ccSettings.getProperty("RankPointsMinLvl", "76"));
+			RANK_POINTS_CUT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPointsCutEnabled", "true"));
 
-			CUSTOM_PVP_RANK_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankRewardEnabled", "false"));
+			RANK_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankRewardEnabled", "false"));
 
 			// set rank's:
-			String id1[] = ccSettings.getProperty("CustomPvpRankName", "").split(",");
-			String id2[] = ccSettings.getProperty("CustomPvpRankMinPoints", "").split(",");
-			String id3[] = ccSettings.getProperty("CustomPvpRankPointsForKill", "").split(",");
-			String id4[] = ccSettings.getProperty("CustomPvpRankRewardIds", "").split(",");
-			String id5[] = ccSettings.getProperty("CustomPvpRankRewardAmounts", "").split(",");
+			String id1[] = ccSettings.getProperty("RankNames", "").split(",");
+			String id2[] = ccSettings.getProperty("RankMinPoints", "").split(",");
+			String id3[] = ccSettings.getProperty("RankPointsForKill", "").split(",");
+			String id4[] = ccSettings.getProperty("RankRewardIds", "").split(",");
+			String id5[] = ccSettings.getProperty("RankRewardAmounts", "").split(",");
 			String id6[] = ccSettings.getProperty("NickColors", "").split(",");
 			String id7[] = ccSettings.getProperty("TitleColors", "").split(",");
 
-			if (CUSTOM_PVP_ENABLED || CUSTOM_PVP_REWARD_ENABLED || CUSTOM_PVP_RANK_ENABLED)
+			if (RANK_PVP_SYSTEM_ENABLED || RANK_REWARD_ENABLED || RANKS_ENABLED)
 			{
 				if (id1.length != id2.length || id1.length != id3.length || id1.length != id4.length || id1.length != id5.length || id1.length != id6.length || id1.length != id7.length)
 				{
-					_log.info("ERROR: Custom PvP System Config: Arrays sizes should be the same!");
+					_log.info("ERROR: Rank PvP System Config: Arrays sizes should be the same!");
 
-					_log.info("CUSTOM_PVP_RANK_NAME           :" + id1.length);
-					_log.info("CUSTOM_PVP_RANK_MIN_POINTS     :" + id2.length);
-					_log.info("CUSTOM_PVP_RANK_POINTS_FOR_KILL:" + id3.length);
-					_log.info("CUSTOM_PVP_RANK_REWARD_IDS     :" + id4.length);
-					_log.info("CUSTOM_PVP_RANK_REWARD_AMOUNTS :" + id5.length);
-					_log.info("CUSTOM_PVP_RANK_NICK_COLORS    :" + id6.length);
-					_log.info("CUSTOM_PVP_RANK_TITLE_COLORS   :" + id7.length);
+					_log.info("RANK_NAMES          :" + id1.length);
+					_log.info("RANK_MIN_POINTS     :" + id2.length);
+					_log.info("RANK_POINTS_FOR_KILL:" + id3.length);
+					_log.info("RANK_REWARD_IDS     :" + id4.length);
+					_log.info("RANK_REWARD_AMOUNTS :" + id5.length);
+					_log.info("RANK_NICK_COLORS    :" + id6.length);
+					_log.info("RANK_TITLE_COLORS   :" + id7.length);
 
 				}
 				else
@@ -262,7 +299,7 @@ public final class ExternalConfig
 						rank.setNickColor(Integer.decode("0x" + id6[i]));
 						rank.setTitleColor(Integer.decode("0x" + id7[i]));
 
-						CUSTOM_PVP_RANKS.put(id1.length - i, rank);
+						RANKS.put(id1.length - i, rank);
 					}
 				}
 			}
@@ -270,34 +307,158 @@ public final class ExternalConfig
 			NICK_COLOR_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("NickColorEnabled", "false"));
 			TITLE_COLOR_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TitleColorEnabled", "false"));
 
-			CUSTOM_PVP_RANK_KILL_POINTS_DOWN_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankKillPointsDownEnabled", "false"));
-			CUSTOM_PVP_RANK_KILL_POINTS_DOWN = new FastList<Integer>();
-			for (String id : ccSettings.getProperty("CustomPvpRankKillPointsDown", "").split(","))
+			RANK_POINTS_DOWN_COUNT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPointsDownCountEnabled", "false"));
+			RANK_POINTS_DOWN_AMOUNTS = new FastList<Integer>();
+			for (String id : ccSettings.getProperty("RankPointsDownAmounts", "").split(","))
 			{
-				CUSTOM_PVP_RANK_KILL_POINTS_DOWN.add(Integer.parseInt(id));
+				RANK_POINTS_DOWN_AMOUNTS.add(Integer.parseInt(id));
 			}
-			CUSTOM_PVP_RANK_SHOUT_INFO = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankShoutInfo", "false"));
-			CUSTOM_PVP_RANK_PK_KILLER_AWARD = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankPkKillerAward", "false"));
-			CUSTOM_PVP_RANK_PK_MODE_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankPkModeEnabled", "false"));
-			CUSTOM_PVP_WAR_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpWarEnabled", "false"));
-			if (CUSTOM_PVP_WAR_ENABLED)
+
+			RANK_SHOUT_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankShoutInfoOnKillEnabled", "false"));
+			RANK_SHOUT_BONUS_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankShoutBonusInfoOnKillEnabled", "false"));
+			RANK_REWARD_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankRewardForPkKillerEnabled", "false"));
+			RANK_REWARD_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankRewardForInnocentKillEnabled", "false"));
+			WAR_KILLS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("WarKillsEnabled", "false"));
+			if (WAR_KILLS_ENABLED)
 			{
-				CUSTOM_PVP_WAR_RP_RATIO = Double.parseDouble(ccSettings.getProperty("CustomPvpWarRPRatio", "1.0"));
+				WAR_RANK_POINTS_RATIO = Double.parseDouble(ccSettings.getProperty("WarRankPointsRatio", "1.0"));
 			}
 			else
 			{
-				CUSTOM_PVP_WAR_RP_RATIO = 1.0;
+				WAR_RANK_POINTS_RATIO = 1.0;
+			}
+
+			COMBO_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillEnabled", "false"));
+			COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillProtectionWithLegalKillEnabled", "false"));
+			COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillProtectionNoRepeatEnabled", "false"));
+
+			String propertyValue = ccSettings.getProperty("ComboKillLocalAreaMessages");
+			if (propertyValue != null && propertyValue.length() > 0)
+			{
+
+				String[] propertySplit = propertyValue.split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String skill : propertySplit)
+					{
+
+						String[] skillSplit = skill.split(",");
+						if (skillSplit.length != 2)
+						{
+							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
+						}
+						else
+						{
+							try
+							{
+								COMBO_KILL_LOCAL_AREA_MESSAGES.put(Integer.parseInt(skillSplit[0]), skillSplit[1]);
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!skill.isEmpty())
+								{
+									_log.warning(StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			propertyValue = ccSettings.getProperty("ComboKillGlobalAreaMessages", "");
+			if (propertyValue != null && propertyValue.length() > 0)
+			{
+
+				String[] propertySplit = ccSettings.getProperty("ComboKillGlobalAreaMessages").split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String skill : propertySplit)
+					{
+
+						String[] skillSplit = skill.split(",");
+						if (skillSplit.length != 2)
+						{
+							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
+						}
+						else
+						{
+							try
+							{
+								COMBO_KILL_GLOBAL_AREA_MESSAGES.put(Integer.parseInt(skillSplit[0]), skillSplit[1]);
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!skill.isEmpty())
+								{
+									_log.warning(StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			COMBO_KILL_ALT_MESSAGES_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillAltMessagesEnabled", "false"));
+			COMBO_KILL_ALT_MESSAGE = ccSettings.getProperty("ComboKillAltMessage", "%killer% have %combo_level% Combo kills!");
+			COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL = Integer.parseInt(ccSettings.getProperty("ComboKillAltGlobalMessageMinLvl", "0"));
+
+			COMBO_KILL_DEFEAT_MESSAGE_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillDefeatMessageEnabled", "true"));
+			COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL = Integer.parseInt(ccSettings.getProperty("ComboKillDefeatMessageMinComboLvl", "0"));
+			COMBO_KILL_DEFEAT_MESSAGE = ccSettings.getProperty("ComboKillDefeatMessage", "%killer% is defeated with %combo_level% combo lvl!!!");
+
+			COMBO_KILL_RESETER = Integer.parseInt(ccSettings.getProperty("ComboKillReseter", "0"));
+			COMBO_KILL_RANK_POINTS_RATIO_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillRankPointsRatioEnabled", "false"));
+
+			propertyValue = ccSettings.getProperty("ComboKillRankPointsRatio", "");
+			if (propertyValue != null && propertyValue.length() > 0)
+			{
+
+				String[] propertySplit = ccSettings.getProperty("ComboKillRankPointsRatio").split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String skill : propertySplit)
+					{
+
+						String[] skillSplit = skill.split(",");
+						if (skillSplit.length != 2)
+						{
+							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
+						}
+						else
+						{
+							try
+							{
+								COMBO_KILL_RANK_POINTS_RATIO.put(Integer.parseInt(skillSplit[0]), Double.parseDouble(skillSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!skill.isEmpty())
+								{
+									_log.warning(StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			COMBO_KILL_ON_EVENTS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillOnEventsEnabled", "false"));
+
+			// additional security for combo kill system:
+			if (COMBO_KILL_LOCAL_AREA_MESSAGES.size() == 0 && COMBO_KILL_GLOBAL_AREA_MESSAGES.size() == 0)
+			{
+				COMBO_KILL_ENABLED = false;
 			}
 
 			int i = 0;
-			String tempStr = ccSettings.getProperty("CustomPvpAllowedZonesIds");
+			String tempStr = ccSettings.getProperty("AllowedZonesIds");
 			if (tempStr != null && tempStr.length() > 0)
 			{
 				for (String rZoneId : tempStr.split(","))
 				{
 					try
 					{
-						CUSTOM_PVP_ALLOWED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
+						ALLOWED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
 					}
 					catch (Exception e)
 					{
@@ -308,14 +469,14 @@ public final class ExternalConfig
 			}
 
 			i = 0;
-			tempStr = ccSettings.getProperty("CustomPvpRestrictedZonesIds");
+			tempStr = ccSettings.getProperty("RestrictedZonesIds");
 			if (tempStr != null && tempStr.length() > 0)
 			{
 				for (String rZoneId : tempStr.split(","))
 				{
 					try
 					{
-						CUSTOM_PVP_RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
+						RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
 					}
 					catch (Exception e)
 					{
@@ -324,31 +485,31 @@ public final class ExternalConfig
 					i++;
 				}
 			}
-			CUSTOM_PVP_LEGAL_MIN_LVL = Integer.parseInt(ccSettings.getProperty("CustomPvpLegalMinLvl", "0"));
-			CUSTOM_PVP_LEGAL_PK_KILLER_AWARD = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpLegalPkKillerAward", "true"));
-			CUSTOM_PVP_LEGAL_PK_MODE_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpLegalPkModeEnabled", "false"));
-			CUSTOM_PVP_PROTECTION_RESET = Integer.parseInt(ccSettings.getProperty("CustomPvpProtectionReset", "0"));
+			LEGAL_KILL_MIN_LVL = Integer.parseInt(ccSettings.getProperty("LegalKillMinLvl", "1"));
+			LEGAL_KILL_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("LegalKillForPkKillerEnabled", "true"));
+			LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("LegalKillForInnocentKillerEnabled", "false"));
+			PROTECTION_TIME_RESET = Integer.parseInt(ccSettings.getProperty("ProtectionTimeReset", "0"));
 
-			CUSTOM_PVP_LEGAL_KILL_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpLegalKillProtection", "0"));
-			CUSTOM_PVP_DAILY_LEGAL_KILL_PROTECTION = Integer.parseInt(ccSettings.getProperty("CustomPvpDailyLegalKillProtection", "0"));
+			LEGAL_KILL_PROTECTION = Integer.parseInt(ccSettings.getProperty("LegalKillProtection", "0"));
+			DAILY_LEGAL_KILL_PROTECTION = Integer.parseInt(ccSettings.getProperty("DailyLegalKillProtection", "0"));
 
-			CUSTOM_PVP_INFO_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoCommandEnabled", "true"));
-			CUSTOM_PVP_INFO_USER_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoUserCommandEnabled", "false"));
-			CUSTOM_PVP_INFO_USER_COMMAND_ID = Integer.parseInt(ccSettings.getProperty("CustomPvpInfoUserCommandId", "114"));
+			PVP_INFO_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("PvpInfoCommandEnabled", "true"));
+			PVP_INFO_USER_COMMAND_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("PvpInfoUserCommandEnabled", "false"));
+			PVP_INFO_USER_COMMAND_ID = Integer.parseInt(ccSettings.getProperty("PvpInfoUserCommandId", "114"));
 
-			CUSTOM_PVP_INFO_COMMAND_ON_DEATH_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpInfoCommandShowOnDeathEnabled", "true"));
-			CUSTOM_PVP_DEATH_MANAGER_DETAILS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpDeathManagerDetailsEnabled", "true"));
-			CUSTOM_PVP_DEATH_MANAGER_SHOW_ITEMS = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpDeathManagerShowItems", "true"));
+			PVP_INFO_COMMAND_ON_DEATH_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("PvpInfoCommandShowOnDeathEnabled", "true"));
+			DEATH_MANAGER_DETAILS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("DeathManagerDetailsEnabled", "true"));
+			DEATH_MANAGER_SHOW_ITEMS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("DeathManagerShowItemsEnabled", "true"));
 
 			i = 0;
-			tempStr = ccSettings.getProperty("CustomPvpDeathManagerRestrictedZonesIds");
+			tempStr = ccSettings.getProperty("DeathManagerRestrictedZonesIds");
 			if (tempStr != null && tempStr.length() > 0)
 			{
 				for (String rZoneId : tempStr.split(","))
 				{
 					try
 					{
-						CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
+						DEATH_MANAGER_RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
 					}
 					catch (Exception e)
 					{
@@ -358,30 +519,34 @@ public final class ExternalConfig
 				}
 			}
 
-			String[] propertySplit = ccSettings.getProperty("CustomPvpRankPointsBonusZones", "").split(";");
-			CUSTOM_PVP_RANK_POINTS_BONUS_ZONES = new FastMap<Integer, Double>(propertySplit.length);
-			if (propertySplit.length > 0)
+			propertyValue = ccSettings.getProperty("RankPointsBonusZonesIds", "");
+			if (propertyValue != null && propertyValue.length() > 0)
 			{
-				for (String skill : propertySplit)
-				{
 
-					String[] skillSplit = skill.split(",");
-					if (skillSplit.length != 2)
+				String[] propertySplit = ccSettings.getProperty("RankPointsBonusZonesIds", "").split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String skill : propertySplit)
 					{
-						// _log.warning(StringUtil.concat("[CustomPvpRankPointsBonusArea]: invalid config property -> CustomPvpRankPointsBonusArea \"", skill, "\""));
-					}
-					else
-					{
-						try
+
+						String[] skillSplit = skill.split(",");
+						if (skillSplit.length != 2)
 						{
-
-							CUSTOM_PVP_RANK_POINTS_BONUS_ZONES.put(Integer.parseInt(skillSplit[0]), Double.parseDouble(skillSplit[1]));
+							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
 						}
-						catch (NumberFormatException nfe)
+						else
 						{
-							if (!skill.isEmpty())
+							try
 							{
-								_log.warning(StringUtil.concat("[CustomPvpRankPointsBonusArea]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
+
+								RANK_POINTS_BONUS_ZONES_IDS.put(Integer.parseInt(skillSplit[0]), Double.parseDouble(skillSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!skill.isEmpty())
+								{
+									_log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
+								}
 							}
 						}
 					}
@@ -392,11 +557,11 @@ public final class ExternalConfig
 			TOTAL_KILLS_IN_PVPINFO_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TotalKillsInPvpInfoEnabled", "true"));
 			TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TotalKillsOnMeInPvpInfoEnabled", "true"));
 
-			CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpRankPointsRewardEnabled", "true"));
+			RANK_POINTS_REWARD_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPointsRewardEnabled", "true"));
 
-			CUSTOM_PVP_ANTI_FARM_CLAN_ALLY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpAntiFarmClanAllyEnabled", "true"));
-			CUSTOM_PVP_ANTI_FARM_PARTY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpAntiFarmPartyEnabled", "true"));
-			CUSTOM_PVP_ANTI_FARM_IP_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CustomPvpAntiFarmIpEnabled", "true"));
+			ANTI_FARM_CLAN_ALLY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("AntiFarmClanAllyEnabled", "true"));
+			ANTI_FARM_PARTY_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("AntiFarmPartyEnabled", "true"));
+			ANTI_FARM_IP_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("AntiFarmIpEnabled", "true"));
 
 			PVP_TABLE_UPDATE_INTERVAL = (Integer.parseInt(ccSettings.getProperty("PvpTableUpdateInterval", "1")) * 60000);
 			if (PVP_TABLE_UPDATE_INTERVAL < 1)

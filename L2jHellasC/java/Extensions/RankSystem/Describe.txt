@@ -30,3 +30,7 @@
 
 5. War Counter:
 	- Count kills if target is in War Clan. Legal kills rulez are used. 
+	
+6. Combo Kill System:
+	- Shout messages (local/global) about the killer who doing a combo, all these messages are configurable in config. 
+      Combo system allows multiply Rank Points by special ratio defined in config.

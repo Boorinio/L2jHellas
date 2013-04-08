@@ -68,7 +68,7 @@
 					<attribute name="Implementation-URL" value="http://www.l2jhellas.eu/" />
 					<attribute name="Implementation-Version" value="${revision}" />
 					<attribute name="Main-Class" value="com.l2jhellas.Server"/>
-					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar bsh-engine.jar c3p0-0.9.1.2.jar commons-logging-1.1.1.jar ecj.jar java-engine.jar javolution.jar jython.jar jython-engine.jar mail.jar mmocore.jar mysql-connector-java-5.1.22-bin.jar	worldwind.jar"/>
+					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar bsh-engine.jar c3p0-0.9.1.2.jar ecj.jar java-engine.jar javolution.jar jython.jar jython-engine.jar mail.jar mmocore.jar mysql-connector-java-5.1.22-bin.jar	worldwind.jar"/>
 				</manifest>
 		</jar>
 		<copy todir="${build.dist.login.lib}">

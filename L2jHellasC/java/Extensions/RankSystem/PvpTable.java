@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,7 +43,7 @@ public class PvpTable
 		Calendar c = Calendar.getInstance();
 		long startTime = c.getTimeInMillis();
 
-		if (ExternalConfig.CUSTOM_PVP_CLEANER_ENABLED)
+		if (ExternalConfig.DATABASE_CLEANER_ENABLED)
 		{
 			cleanPvpTable();
 		}
@@ -69,7 +69,7 @@ public class PvpTable
 
 	/**
 	 * Get Pvp object, if not found returns new Pvp object for killer - victim.
-	 * 
+	 *
 	 * @param killerId
 	 * @param victimId
 	 * @return
@@ -101,7 +101,7 @@ public class PvpTable
 
 	/**
 	 * Get Pvp object, if not found returns new Pvp object for killer - victim, and reset daily fields if required.
-	 * 
+	 *
 	 * @param killerId
 	 * @param victimId
 	 * @param systemDay
@@ -141,7 +141,7 @@ public class PvpTable
 
 	/**
 	 * Returns PvP statistics like total kills, total legal kills, etc. for character id.
-	 * 
+	 *
 	 * @param characterId
 	 * @return
 	 */
@@ -187,7 +187,7 @@ public class PvpTable
 	/**
 	 * Returns PvP statistics like total kills, total legal kills, etc. for character id, daily fields are not ignored<br>
 	 * if kill day = system day.
-	 * 
+	 *
 	 * @param characterId
 	 * @param systemDay
 	 * @return
@@ -250,7 +250,7 @@ public class PvpTable
 
 	/**
 	 * @param _pvpTable
-	 *            the _PvpTable to set
+	 *        the _PvpTable to set
 	 */
 	public void setPvpTable(FastMap<Integer, Pvp> _pvpTable)
 	{
@@ -264,7 +264,7 @@ public class PvpTable
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM custom_pvp_system");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM rank_pvp_system");
 
 			ResultSet rset = statement.executeQuery();
 
@@ -332,12 +332,12 @@ public class PvpTable
 
 				if (e.getValue().getDbStatus() == 1)
 				{
-					statement.addBatch("UPDATE custom_pvp_system SET kills=" + e.getValue().getKills() + ", kills_today=" + e.getValue().getKillsToday() + ", kills_legal=" + e.getValue().getKillsLegal() + ", kills_today_legal=" + e.getValue().getKillsLegalToday() + ", rank_points=" + e.getValue().getRankPoints() + ", rank_points_today=" + e.getValue().getRankPointsToday() + ", war_kills_legal=" + e.getValue().getWarKillsLegal() + ", war_kills=" + e.getValue().getWarKills() + ", kill_time=" + e.getValue().getKillTime() + ", kill_day=" + e.getValue().getKillDay() + " WHERE killer_id=" + e.getValue().getKillerObjId() + " AND victim_id=" + e.getValue().getVictimObjId());
+					statement.addBatch("UPDATE rank_pvp_system SET kills=" + e.getValue().getKills() + ", kills_today=" + e.getValue().getKillsToday() + ", kills_legal=" + e.getValue().getKillsLegal() + ", kills_today_legal=" + e.getValue().getKillsLegalToday() + ", rank_points=" + e.getValue().getRankPoints() + ", rank_points_today=" + e.getValue().getRankPointsToday() + ", war_kills_legal=" + e.getValue().getWarKillsLegal() + ", war_kills=" + e.getValue().getWarKills() + ", kill_time=" + e.getValue().getKillTime() + ", kill_day=" + e.getValue().getKillDay() + " WHERE killer_id=" + e.getValue().getKillerObjId() + " AND victim_id=" + e.getValue().getVictimObjId());
 					e.getValue().setDbStatus((byte) 0);
 				}
 				else if (e.getValue().getDbStatus() == 2)
 				{
-					statement.addBatch("INSERT INTO custom_pvp_system (killer_id, victim_id, kills, kills_today, kills_legal, kills_today_legal, rank_points, rank_points_today, war_kills_legal, war_kills, kill_time, kill_day) VALUES (" + e.getValue().getKillerObjId() + ", " + e.getValue().getVictimObjId() + ", " + e.getValue().getKills() + ", " + e.getValue().getKillsToday() + ", " + e.getValue().getKillsLegal() + ", " + e.getValue().getKillsLegalToday() + ", " + e.getValue().getRankPoints() + ", " + e.getValue().getRankPointsToday() + ", " + e.getValue().getWarKillsLegal() + ", " + e.getValue().getWarKills() + ", " + e.getValue().getKillTime() + ", " + e.getValue().getKillDay() + ")");
+					statement.addBatch("INSERT INTO rank_pvp_system (killer_id, victim_id, kills, kills_today, kills_legal, kills_today_legal, rank_points, rank_points_today, war_kills_legal, war_kills, kill_time, kill_day) VALUES (" + e.getValue().getKillerObjId() + ", " + e.getValue().getVictimObjId() + ", " + e.getValue().getKills() + ", " + e.getValue().getKillsToday() + ", " + e.getValue().getKillsLegal() + ", " + e.getValue().getKillsLegalToday() + ", " + e.getValue().getRankPoints() + ", " + e.getValue().getRankPointsToday() + ", " + e.getValue().getWarKillsLegal() + ", " + e.getValue().getWarKills() + ", " + e.getValue().getKillTime() + ", " + e.getValue().getKillDay() + ")");
 					e.getValue().setDbStatus((byte) 0);
 				}
 
@@ -378,11 +378,11 @@ public class PvpTable
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("DELETE FROM custom_pvp_system WHERE (SELECT (lastAccess) FROM characters WHERE charId = killer_id) < ?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM rank_pvp_system WHERE (SELECT (lastAccess) FROM characters WHERE obj_Id = killer_id) < ?");
 
 			// calculate ignore time:
 			Calendar c = Calendar.getInstance();
-			long ignoreTime = c.getTimeInMillis() - ExternalConfig.CUSTOM_PVP_CLEANER_IGNORE_TIME;
+			long ignoreTime = c.getTimeInMillis() - ExternalConfig.DATABASE_CLEANER_REPEAT_TIME;
 
 			statement.setLong(1, ignoreTime);
 
@@ -409,7 +409,7 @@ public class PvpTable
 			}
 		}
 
-		System.out.println("Cleaned Pvp Table with players who are inactive for longer than " + Math.round((double) ExternalConfig.CUSTOM_PVP_CLEANER_IGNORE_TIME / (double) 86400000) + " day(s).");
+		System.out.println("Cleaned Pvp Table with players who are inactive for longer than " + Math.round((double) ExternalConfig.DATABASE_CLEANER_REPEAT_TIME / 86400000) + " day(s).");
 
 	}
 

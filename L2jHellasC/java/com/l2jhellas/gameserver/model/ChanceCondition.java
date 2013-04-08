@@ -14,15 +14,20 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
 /**
- *
- * @author  kombat
+ * @author kombat
  */
 public final class ChanceCondition
 {
+	protected static final Logger _log = Logger.getLogger(ChanceCondition.class.getName());
+
 	public static final int EVT_HIT = 1;
 	public static final int EVT_CRIT = 2;
 	public static final int EVT_CAST = 4;
@@ -82,9 +87,9 @@ public final class ChanceCondition
 		}
 	}
 
-	private TriggerType _triggerType;
+	private final TriggerType _triggerType;
 
-	private int _chance;
+	private final int _chance;
 
 	private ChanceCondition(TriggerType trigger, int chance)
 	{
@@ -102,7 +107,13 @@ public final class ChanceCondition
 				return new ChanceCondition(trigger, chance);
 		}
 		catch (Exception e)
-		{}
+		{
+			_log.log(Level.WARNING, "ChanceCondition: Condition parse error." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
+		}
 		return null;
 	}
 
@@ -114,6 +125,6 @@ public final class ChanceCondition
 	@Override
 	public String toString()
 	{
-		return "Trigger["+_chance+";"+_triggerType.toString()+"]";
+		return "Trigger[" + _chance + ";" + _triggerType.toString() + "]";
 	}
 }

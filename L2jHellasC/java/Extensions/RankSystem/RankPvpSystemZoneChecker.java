@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,17 +27,17 @@ public class RankPvpSystemZoneChecker
 {
 	/**
 	 * Returns true if character is in allowed zone.
-	 * 
+	 *
 	 * @param activeChar
 	 * @return
 	 */
 	public static final boolean isInPvpAllowedZone(L2PcInstance activeChar)
 	{
-		if (ExternalConfig.CUSTOM_PVP_ALLOWED_ZONES_IDS.size() == 0)
+		if (ExternalConfig.ALLOWED_ZONES_IDS.size() == 0)
 		{
 			return true;
 		}
-		for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_ALLOWED_ZONES_IDS.head(), end = ExternalConfig.CUSTOM_PVP_ALLOWED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
+		for (FastList.Node<Integer> n = ExternalConfig.ALLOWED_ZONES_IDS.head(), end = ExternalConfig.ALLOWED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
 		{
 			if (activeChar.isInsideZone(n.getValue().byteValue()))
 			{
@@ -49,13 +49,13 @@ public class RankPvpSystemZoneChecker
 
 	/**
 	 * Returns true if character is in restricted zone.
-	 * 
+	 *
 	 * @param activeChar
 	 * @return
 	 */
 	public static final boolean isInPvpRestrictedZone(L2PcInstance activeChar)
 	{
-		for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.CUSTOM_PVP_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
+		for (FastList.Node<Integer> n = ExternalConfig.RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
 		{
 			if (activeChar.isInsideZone(n.getValue().byteValue()))
 			{
@@ -67,13 +67,13 @@ public class RankPvpSystemZoneChecker
 
 	/**
 	 * Returns true if character is in restricted zone for death manager.
-	 * 
+	 *
 	 * @param activeChar
 	 * @return
 	 */
 	public static final boolean isInDMRestrictedZone(L2PcInstance activeChar)
 	{
-		for (FastList.Node<Integer> n = ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
+		for (FastList.Node<Integer> n = ExternalConfig.DEATH_MANAGER_RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.DEATH_MANAGER_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
 		{
 			if (activeChar.isInsideZone(n.getValue().byteValue()))
 			{
@@ -85,13 +85,13 @@ public class RankPvpSystemZoneChecker
 
 	/**
 	 * Returns true if character is in Bonus Ratio zone.
-	 * 
+	 *
 	 * @param player
 	 * @return
 	 */
 	public static final double getZoneBonusRatio(L2PcInstance player)
 	{
-		for (FastMap.Entry<Integer, Double> e = ExternalConfig.CUSTOM_PVP_RANK_POINTS_BONUS_ZONES.head(), end = ExternalConfig.CUSTOM_PVP_RANK_POINTS_BONUS_ZONES.tail(); (e = e.getNext()) != end;)
+		for (FastMap.Entry<Integer, Double> e = ExternalConfig.RANK_POINTS_BONUS_ZONES_IDS.head(), end = ExternalConfig.RANK_POINTS_BONUS_ZONES_IDS.tail(); (e = e.getNext()) != end;)
 		{
 			if (player.isInsideZone(e.getKey().byteValue()))
 			{

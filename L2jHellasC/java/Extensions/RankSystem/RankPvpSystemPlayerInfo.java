@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -137,7 +137,7 @@ public class RankPvpSystemPlayerInfo
 		tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 		tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
 
-		if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
+		if (ExternalConfig.RANKS_ENABLED)
 		{
 
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank</font></td>");
@@ -169,7 +169,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("</td></tr>");
 		}
 
-		if (ExternalConfig.CUSTOM_PVP_WAR_ENABLED)
+		if (ExternalConfig.WAR_KILLS_ENABLED)
 		{
 
 			if (ExternalConfig.TOTAL_KILLS_IN_PVPINFO_ENABLED)
@@ -194,46 +194,56 @@ public class RankPvpSystemPlayerInfo
 		tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 		tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
 
-		if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
+		if (ExternalConfig.RANKS_ENABLED)
 		{
 
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP for kill</font></td>");
 			tb.append("<td width=135 height=22 align=left>");
 			tb.append("<font color=ffa000>" + targetPvpStats.getRank().getPointsForKill() + "</font>");
+			if (ExternalConfig.RANK_POINTS_CUT_ENABLED)
+			{
+				// get player PvpStats:
+				PvpStats playerPvpStats = PvpTable.getInstance().getPvpStats(player.getObjectId());
+
+				if (playerPvpStats.getRank().getPointsForKill() < targetPvpStats.getRank().getPointsForKill())
+				{
+					tb.append("<font color=ff0000> [" + playerPvpStats.getRank().getPointsForKill() + "]</font>");
+				}
+			}
 			tb.append("</td></tr>");
 
-			if (ExternalConfig.CUSTOM_PVP_RANK_REWARD_ENABLED)
+			if (ExternalConfig.RANK_REWARD_ENABLED)
 			{
 				tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank Reward</font></td>");
 				tb.append("<td width=135 height=22 align=left>");
-				tb.append("<font color=ffa000>" + targetPvpStats.getRank().getRewardAmount() + "x " + ItemTable.getInstance().getTemplate(targetPvpStats.getRank().getRewardId()).getName() + "</font>");
+				tb.append("<font color=ffa000>" + targetPvpStats.getRank().getRewardAmount() + " </font><font color=FFFF00>" + ItemTable.getInstance().getTemplate(targetPvpStats.getRank().getRewardId()).getName() + "</font>");
 				tb.append("</td></tr>");
 			}
 
 		}
 
-		if (ExternalConfig.CUSTOM_PVP_REWARD_ENABLED)
+		if (ExternalConfig.PVP_REWARD_ENABLED)
 		{
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>PvP Reward</font></td>");
 			tb.append("<td width=135 height=22 align=left>");
-			tb.append("<font color=ffa000>" + ExternalConfig.CUSTOM_PVP_REWARD_AMOUNT + "x " + ItemTable.getInstance().getTemplate(ExternalConfig.CUSTOM_PVP_REWARD_ID).getName() + "</font>");
+			tb.append("<font color=ffa000>" + ExternalConfig.PVP_REWARD_AMOUNT + " </font><font color=FFFF00>" + ItemTable.getInstance().getTemplate(ExternalConfig.PVP_REWARD_ID).getName() + "</font>");
 			tb.append("</td></tr>");
 		}
 
-		if (!player.equals(playerTarget) && ExternalConfig.CUSTOM_PVP_PROTECTION_RESET > 0)
+		if (!player.equals(playerTarget) && ExternalConfig.PROTECTION_TIME_RESET > 0)
 		{
 			long sys_time = System.currentTimeMillis();
-			if (ExternalConfig.CUSTOM_PVP_PROTECTION_RESET > 0 && (sys_time - (1000 * 60 * ExternalConfig.CUSTOM_PVP_PROTECTION_RESET) < pvp2.getKillTime()))
+			if (ExternalConfig.PROTECTION_TIME_RESET > 0 && (sys_time - (1000 * 60 * ExternalConfig.PROTECTION_TIME_RESET) < pvp2.getKillTime()))
 			{ // show time to legal kill
-				if (ExternalConfig.CUSTOM_PVP_REWARD_ENABLED && ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
+				if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED) && ExternalConfig.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP/Reward Protection</font></td>");
 				}
-				else if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
+				else if (ExternalConfig.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank Points Protection</font></td>");
 				}
-				else if (ExternalConfig.CUSTOM_PVP_REWARD_ENABLED)
+				else if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED))
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Reward Protection</font></td>");
 				}
@@ -243,15 +253,15 @@ public class RankPvpSystemPlayerInfo
 			}
 			else
 			{
-				if (ExternalConfig.CUSTOM_PVP_REWARD_ENABLED && ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
+				if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED) && ExternalConfig.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP/Reward Protection</font></td>");
 				}
-				else if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
+				else if (ExternalConfig.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank Points Protection</font></td>");
 				}
-				else if (ExternalConfig.CUSTOM_PVP_REWARD_ENABLED)
+				else if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED))
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Reward Protection</font></td>");
 				}
@@ -295,14 +305,14 @@ public class RankPvpSystemPlayerInfo
 			tb.append("</table>");
 		}
 
-		if (player.equals(playerTarget) && ExternalConfig.CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED)
+		if (player.equals(playerTarget) && ExternalConfig.RANK_POINTS_REWARD_ENABLED)
 		{
-			if (ExternalConfig.CUSTOM_PVP_RANK_POINTS_REWARD_ENABLED)
+			if (ExternalConfig.RANK_POINTS_REWARD_ENABLED)
 			{
-				player._RankPvpSystemPointsReward = new RankPvpSystemPointsReward(player);
+				player._rankPvpSystemRankPointsReward = new RankPvpSystemRankPointsReward(player);
 			}
 
-			if (player._RankPvpSystemPointsReward != null && player._RankPvpSystemPointsReward.getRankRewardsCount() > 0)
+			if (player._rankPvpSystemRankPointsReward != null && player._rankPvpSystemRankPointsReward.getRankRewardsCount() > 0)
 			{
 				// button Get Reward:
 				tb.append("<table border=0 cellspacing=0 cellpadding=0>");
@@ -317,7 +327,7 @@ public class RankPvpSystemPlayerInfo
 			}
 		}
 
-		if (ExternalConfig.CUSTOM_PVP_DEATH_MANAGER_DETAILS_ENABLED && player._RankPvpSystemDeathMgr != null && player.isDead() && playerTarget.getObjectId() == player._RankPvpSystemDeathMgr.getKiller().getObjectId())
+		if (ExternalConfig.DEATH_MANAGER_DETAILS_ENABLED && player._rankPvpSystemDeathMgr != null && player.isDead() && playerTarget.getObjectId() == player._rankPvpSystemDeathMgr.getKiller().getObjectId())
 		{ // playerTarget is not real target its handler to current killer. //getKiller() store last killer.
 			// button show equipment:
 			tb.append("<table border=0 cellspacing=0 cellpadding=0>");
@@ -332,7 +342,7 @@ public class RankPvpSystemPlayerInfo
 		}
 		else
 		{
-			player._RankPvpSystemDeathMgr = null;
+			player._rankPvpSystemDeathMgr = null;
 		}
 
 		tb.append("</center></body></html>");
@@ -342,7 +352,7 @@ public class RankPvpSystemPlayerInfo
 
 	/**
 	 * Generate HTML table for images.
-	 * 
+	 *
 	 * @param player
 	 * @param targetPvpStats
 	 * @return
@@ -355,10 +365,10 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<table cellpadding=0 cellspacing=0 border=0 width=292 height=60 width=292>");
 			// rank image
 			tb.append("<tr><td width=60 height=60>");
-			tb.append(ServerSideImage.putImgHtmlTag(player, (50200 + targetPvpStats.getRank().getId()), "custom_pvp_system/rank/rank_" + targetPvpStats.getRank().getId(), 60, 60).toString());
+			tb.append(ServerSideImage.putImgHtmlTag(player, (50200 + targetPvpStats.getRank().getId()), "rank_pvp_system/rank/rank_" + targetPvpStats.getRank().getId(), 60, 60).toString());
 			// rank label
 			tb.append("</td><td width=232 height=60 align=left>");
-			tb.append(ServerSideImage.putImgHtmlTag(player, (50300 + targetPvpStats.getRank().getId()), "custom_pvp_system/rank_name/rank_name_" + targetPvpStats.getRank().getId(), 232, 60).toString());
+			tb.append(ServerSideImage.putImgHtmlTag(player, (50300 + targetPvpStats.getRank().getId()), "rank_pvp_system/rank_name/rank_name_" + targetPvpStats.getRank().getId(), 232, 60).toString());
 			tb.append("</td></tr>");
 			tb.append("</table>");
 		}
@@ -382,7 +392,7 @@ public class RankPvpSystemPlayerInfo
 		tb.append("<td width=292 height=20 align=left>");
 		if (percent >= 0)
 		{
-			tb.append(ServerSideImage.putImgHtmlTag(player, (50000 + percent), "custom_pvp_system/exp/exp_" + percent, 292, 20).toString());
+			tb.append(ServerSideImage.putImgHtmlTag(player, (50000 + percent), "rank_pvp_system/exp/exp_" + percent, 292, 20).toString());
 		}
 		else
 		{
@@ -407,9 +417,9 @@ public class RankPvpSystemPlayerInfo
 		int percent = 0;
 
 		int rankId = targetPvpStats.getRank().getId();
-		if (ExternalConfig.CUSTOM_PVP_RANKS.containsKey(rankId + 1))
+		if (ExternalConfig.RANKS.containsKey(rankId + 1))
 		{ // check if next rank exists
-			nextRP = ExternalConfig.CUSTOM_PVP_RANKS.get(rankId + 1).getMinPoints();
+			nextRP = ExternalConfig.RANKS.get(rankId + 1).getMinPoints();
 		}
 
 		if (nextRP >= minRP)

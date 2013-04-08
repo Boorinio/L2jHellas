@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -97,7 +97,7 @@ public class TopTable
 				con = L2DatabaseFactory.getInstance().getConnection();
 
 				// get top killers:
-				statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(kills_legal) as col5, max(kill_time) as col6 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 AND col6 >= ? ORDER BY col5 DESC LIMIT 500");
+				statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(kills_legal) as col5, max(kill_time) as col6 FROM rank_pvp_system JOIN characters ON characters.obj_Id = rank_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 AND col6 >= ? ORDER BY col5 DESC LIMIT 500");
 
 				statement.setLong(1, sysTime);
 
@@ -122,7 +122,7 @@ public class TopTable
 				statement.close();
 
 				// get top RP gatherers:
-				statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(rank_points) as col5, max(kill_time) as col6 FROM custom_pvp_system JOIN characters ON characters.obj_Id = custom_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 AND col6 >= ? ORDER BY col5 DESC LIMIT 500");
+				statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(rank_points) as col5, max(kill_time) as col6 FROM rank_pvp_system JOIN characters ON characters.obj_Id = rank_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 AND col6 >= ? ORDER BY col5 DESC LIMIT 500");
 
 				statement.setLong(1, sysTime);
 
@@ -203,7 +203,7 @@ public class TopTable
 
 	/**
 	 * @param _topKillsTable
-	 *            the _topKillsTable to set
+	 *        the _topKillsTable to set
 	 */
 	public void setTopKillsTable(FastMap<Integer, TopField> _topKillsTable)
 	{
@@ -220,7 +220,7 @@ public class TopTable
 
 	/**
 	 * @param _topGatherersTable
-	 *            the _topGatherersTable to set
+	 *        the _topGatherersTable to set
 	 */
 	public void setTopGatherersTable(FastMap<Integer, TopField> _topGatherersTable)
 	{
@@ -237,7 +237,7 @@ public class TopTable
 
 	/**
 	 * @param _isUpdating
-	 *            the _isUpdating to set
+	 *        the _isUpdating to set
 	 */
 	public void setUpdating(boolean _isUpdating)
 	{

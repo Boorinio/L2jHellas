@@ -49,7 +49,7 @@ public class CommunityBoard
 
 		return _instance;
 	}
-	
+
 	// Protections
 	public boolean checkPlayerConditions(L2PcInstance player)
 	{
@@ -126,7 +126,7 @@ public class CommunityBoard
 		L2PcInstance activeChar = client.getActiveChar();
 		if (activeChar == null)
 			return;
-		
+
 		if (!checkPlayerConditions(activeChar))
 		{
 			return;
@@ -177,7 +177,7 @@ public class CommunityBoard
 				ShopBBSManager.getInstance().parsecmd("_bbsshop;" + st.nextToken(), activeChar);
 				L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(st.nextToken()), activeChar, false, 0);
 			}
-			else if(command.startsWith("_bbscprs") && ExternalConfig.CUSTOM_PVP_ENABLED && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+			else if(command.startsWith("_bbscprs") && ExternalConfig.RANK_PVP_SYSTEM_ENABLED && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 			{ //to Custom PvP System BBS Manager
 				RankPvpSystemBBSManager.getInstance().parsecmd(command, activeChar);
 			}

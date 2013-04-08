@@ -15,6 +15,7 @@ package com.l2jhellas.gameserver.model;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -69,8 +70,7 @@ import com.l2jhellas.util.Util;
  */
 public class L2Attackable extends L2NpcInstance
 {
-	// protected static Logger _log =
-	// Logger.getLogger(L2Attackable.class.getName());
+	protected static Logger _log = Logger.getLogger(L2Attackable.class.getName());
 
 	/**
 	 * This class contains all AggroInfo of the L2Attackable against the
@@ -78,10 +78,8 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Data</U> :</B><BR>
 	 * <BR>
-	 * <li>attacker : The attaker L2Character concerned by this AggroInfo of
-	 * this L2Attackable</li> <li>hate : Hate level of this L2Attackable against
-	 * the attaker L2Character (hate = damage)</li> <li>damage : Number of
-	 * damages that the attaker L2Character gave to this L2Attackable</li><BR>
+	 * <li>attacker : The attaker L2Character concerned by this AggroInfo of this L2Attackable</li> <li>hate : Hate level of this L2Attackable against the attaker L2Character (hate
+	 * = damage)</li> <li>damage : Number of damages that the attaker L2Character gave to this L2Attackable</li><BR>
 	 * <BR>
 	 */
 	public final class AggroInfo
@@ -145,9 +143,8 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Data</U> :</B><BR>
 	 * <BR>
-	 * <li>attacker : The attaker L2Character concerned by this RewardInfo of
-	 * this L2Attackable</li> <li>dmg : Total amount of damage done by the
-	 * attacker to this L2Attackable (summon + own)</li>
+	 * <li>attacker : The attaker L2Character concerned by this RewardInfo of this L2Attackable</li> <li>dmg : Total amount of damage done by the attacker to this L2Attackable
+	 * (summon + own)</li>
 	 */
 	protected final class RewardInfo
 	{
@@ -188,8 +185,7 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Data</U> :</B><BR>
 	 * <BR>
-	 * <li>absorber : The attaker L2Character concerned by this AbsorberInfo of
-	 * this L2Attackable</li>
+	 * <li>absorber : The attaker L2Character concerned by this AbsorberInfo of this L2Attackable</li>
 	 */
 	public final class AbsorberInfo
 	{
@@ -364,11 +360,8 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Call the L2Character constructor to set the _template of the
-	 * L2Attackable (copy skills from template to object and link _calculators
-	 * to NPC_STD_CALCULATOR)</li> <li>Set the name of the L2Attackable</li> <li>
-	 * Create a RandomAnimation Task that will be launched after the calculated
-	 * delay if the server allow it</li><BR>
+	 * <li>Call the L2Character constructor to set the _template of the L2Attackable (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR)</li> <li>Set
+	 * the name of the L2Attackable</li> <li>Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it</li><BR>
 	 * <BR>
 	 *
 	 * @param objectId
@@ -467,8 +460,7 @@ public class L2Attackable extends L2NpcInstance
 			{
 				_firstCommandChannelAttacked = attacker.getParty().getCommandChannel();
 				_commandChannelTimer = new CommandChannelTimer(this, attacker.getParty().getCommandChannel());
-				ThreadPoolManager.getInstance().scheduleGeneral(_commandChannelTimer, 300000); // 5
-																								// min
+				ThreadPoolManager.getInstance().scheduleGeneral(_commandChannelTimer, 300000); // 5 min
 				_firstCommandChannelAttacked.broadcastToChannelMembers(new CreatureSay(0, Say2.PARTYROOM_ALL, "", "You have looting rights!"));
 			}
 		}
@@ -476,8 +468,7 @@ public class L2Attackable extends L2NpcInstance
 		if (isEventMob)
 			return;
 
-		// Add damage and hate to the attacker AggroInfo of the L2Attackable
-		// _aggroList
+		// Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList
 		if (attacker != null)
 			addDamage(attacker, (int) damage);
 
@@ -517,10 +508,8 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Distribute Exp and SP rewards to L2PcInstance (including Summon
-	 * owner) that hit the L2Attackable and to their Party members</li> <li>
-	 * Notify the Quest Engine of the L2Attackable death if necessary</li> <li>
-	 * Kill the L2NpcInstance (the corpse disappeared after 7 seconds)</li><BR>
+	 * <li>Distribute Exp and SP rewards to L2PcInstance (including Summon owner) that hit the L2Attackable and to their Party members</li> <li>Notify the Quest Engine of the
+	 * L2Attackable death if necessary</li> <li>Kill the L2NpcInstance (the corpse disappeared after 7 seconds)</li><BR>
 	 * <BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T GIVE rewards
 	 * to L2PetInstance</B></FONT><BR>
@@ -536,8 +525,7 @@ public class L2Attackable extends L2NpcInstance
 		if (!super.doDie(killer))
 			return false;
 
-		// Enhance soul crystals of the attacker if this L2Attackable had its
-		// soul absorbed
+		// Enhance soul crystals of the attacker if this L2Attackable had its soul absorbed
 		try
 		{
 			if (killer instanceof L2PcInstance)
@@ -547,7 +535,11 @@ public class L2Attackable extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "", e);
+			_log.log(Level.SEVERE, getClass().getName() + ": could not enchance soul crystals", e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		// Notify the Quest Engine of the L2Attackable death if necessary
@@ -567,7 +559,11 @@ public class L2Attackable extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "", e);
+			_log.log(Level.SEVERE, getClass().getName() + ": could not notify quest engine of the L2Attackable death." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		setChampion(false);
 
@@ -603,11 +599,8 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Get the L2PcInstance owner of the L2SummonInstance (if necessary) and
-	 * L2Party in progress</li> <li>Calculate the Experience and SP rewards in
-	 * function of the level difference</li> <li>Add Exp and SP rewards to
-	 * L2PcInstance (including Summon penalty) and to Party members in the known
-	 * area of the last attacker</li><BR>
+	 * <li>Get the L2PcInstance owner of the L2SummonInstance (if necessary) and L2Party in progress</li> <li>Calculate the Experience and SP rewards in function of the level
+	 * difference</li> <li>Add Exp and SP rewards to L2PcInstance (including Summon penalty) and to Party members in the known area of the last attacker</li><BR>
 	 * <BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T GIVE rewards
 	 * to L2PetInstance</B></FONT><BR>
@@ -951,7 +944,11 @@ public class L2Attackable extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "", e);
+			_log.log(Level.SEVERE, getClass().getName() + ": Could not calculate rewards." + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -983,7 +980,11 @@ public class L2Attackable extends L2NpcInstance
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "", e);
+				_log.log(Level.WARNING, getClass().getName() + ": could not add damage to player." + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -1303,7 +1304,7 @@ public class L2Attackable extends L2NpcInstance
 		if (itemCount > 0)
 			return new RewardItem(drop.getItemId(), itemCount);
 		else if (itemCount == 0 && Config.DEBUG)
-			_log.fine("Roll produced 0 items to drop...");
+			_log.log(Level.FINE, getClass().getName() + ": Roll produced 0 items to drop...");
 
 		return null;
 	}
@@ -1466,7 +1467,7 @@ public class L2Attackable extends L2NpcInstance
 			if (itemCount > 0)
 				return new RewardItem(drop.getItemId(), itemCount);
 			else if (itemCount == 0 && Config.DEBUG)
-				_log.fine("Roll produced 0 items to drop...");
+				_log.log(Level.FINE, getClass().getName() + ": Roll produced 0 items to drop...");
 		}
 		return null;
 
@@ -1543,18 +1544,11 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Actions</U> : </B><BR>
 	 * <BR>
-	 * <li>Manage drop of Special Events created by GM for a defined period</li>
-	 * <li>Get all possible drops of this L2Attackable from L2NpcTemplate and
-	 * add it Quest drops</li> <li>For each possible drops (base + quests),
-	 * calculate which one must be dropped (random)</li> <li>Get each Item
-	 * quantity dropped (random)</li> <li>Create this or these L2ItemInstance
-	 * corresponding to each Item Identifier dropped</li> <li>If the autoLoot
-	 * mode is actif and if the L2Character that has killed the L2Attackable is
-	 * a L2PcInstance, give this or these Item(s) to the L2PcInstance that has
-	 * killed the L2Attackable</li> <li>If the autoLoot mode isn't actif or if
-	 * the L2Character that has killed the L2Attackable is not a L2PcInstance,
-	 * add this or these Item(s) in the world as a visible object at the
-	 * position where mob was last</li><BR>
+	 * <li>Manage drop of Special Events created by GM for a defined period</li> <li>Get all possible drops of this L2Attackable from L2NpcTemplate and add it Quest drops</li> <li>
+	 * For each possible drops (base + quests), calculate which one must be dropped (random)</li> <li>Get each Item quantity dropped (random)</li> <li>Create this or these
+	 * L2ItemInstance corresponding to each Item Identifier dropped</li> <li>If the autoLoot mode is actif and if the L2Character that has killed the L2Attackable is a
+	 * L2PcInstance, give this or these Item(s) to the L2PcInstance that has killed the L2Attackable</li> <li>If the autoLoot mode isn't actif or if the L2Character that has killed
+	 * the L2Attackable is not a L2PcInstance, add this or these Item(s) in the world as a visible object at the position where mob was last</li><BR>
 	 * <BR>
 	 *
 	 * @param lastAttacker
@@ -1602,7 +1596,7 @@ public class L2Attackable extends L2NpcInstance
 							continue;
 
 						if (Config.DEBUG)
-							_log.fine("Item id to spoil: " + item.getItemId() + " amount: " + item.getCount());
+							_log.log(Level.FINE, getClass().getName() + ": item id to spoil: " + item.getItemId() + " amount: " + item.getCount());
 						sweepList.add(item);
 					}
 
@@ -1635,11 +1629,9 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT)
 					{
 						player.doAutoLoot(this, item); // Give this or these
-					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						PrivateAntiBot.privateantibot(player);							// Item(s) to the
-														// L2PcInstance that has
-														// killed the
-														// L2Attackable
+						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							PrivateAntiBot.privateantibot(player);
+						// Item(s) to the L2PcInstance that has killed the L2Attackable
 					}
 					else
 						DropItem(player, item); // drop the item on the ground
@@ -1660,28 +1652,18 @@ public class L2Attackable extends L2NpcInstance
 		}
 
 		// Apply Special Item drop with rnd qty for champions
-		if (isChampion() && Math.abs(getLevel() - player.getLevel()) <= Config.CHAMPION_SPCL_LVL_DIFF &&  !getTemplate().isQuestMonster() &&Config.CHAMPION_SPCL_CHANCE > 0 && Rnd.get(100) < Config.CHAMPION_SPCL_CHANCE)
+		if (isChampion() && Math.abs(getLevel() - player.getLevel()) <= Config.CHAMPION_SPCL_LVL_DIFF && !getTemplate().isQuestMonster() && Config.CHAMPION_SPCL_CHANCE > 0 && Rnd.get(100) < Config.CHAMPION_SPCL_CHANCE)
 		{
-			int champqty = Rnd.get(Config.CHAMPION_SPCL_QTY) + 1; // quantity
-																	// should
-																	// actually
-																	// vary
-																	// between 1
-																	// and
-																	// whatever
-																	// admin
-																	// specified
-																	// as max,
-																	// inclusive.
-
+			int champqty = Rnd.get(Config.CHAMPION_SPCL_QTY) + 1;
+			// quantity should actually vary between 1 and whatever admin specified as max, inclusive.
 			// Give this or these Item(s) to the L2PcInstance that has killed
 			// the L2Attackable
 			RewardItem item = new RewardItem(Config.CHAMPION_SPCL_ITEM, champqty);
 			if (Config.AUTO_LOOT)
 			{
 				player.doAutoLoot(this, item);
-			if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-				PrivateAntiBot.privateantibot(player);
+				if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+					PrivateAntiBot.privateantibot(player);
 			}
 			else
 				DropItem(player, item);
@@ -1689,15 +1671,7 @@ public class L2Attackable extends L2NpcInstance
 
 		// Instant Item Drop :>
 		double rateHp = getStat().calcStat(Stats.MAX_HP, 1, this, null);
-		if (rateHp <= 1 && String.valueOf(npcTemplate.type).contentEquals("L2Monster")) // only
-																						// L2Monster
-																						// with
-																						// <=
-																						// 1x
-																						// HP
-																						// can
-																						// drop
-																						// herbs
+		if (rateHp <= 1 && String.valueOf(npcTemplate.type).contentEquals("L2Monster")) // only L2Monster with <= 1x HP can drop herbs
 		{
 			boolean _hp = false;
 			boolean _mp = false;
@@ -1705,17 +1679,14 @@ public class L2Attackable extends L2NpcInstance
 
 			// ptk - patk type enhance
 			int random = Rnd.get(1000); // note *10
-			if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec) // &&
-																		// !_spec
-																		// useless
-																		// yet
+			if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec) // && !_spec useless yet
 			{
 				RewardItem item = new RewardItem(8612, 1); // Herb of Warrior
 				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-					PrivateAntiBot.privateantibot(player);
+					if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						PrivateAntiBot.privateantibot(player);
 				}
 				else
 					DropItem(player, item);
@@ -1739,8 +1710,8 @@ public class L2Attackable extends L2NpcInstance
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-						if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-							PrivateAntiBot.privateantibot(player);
+							if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+								PrivateAntiBot.privateantibot(player);
 						}
 						else
 							DropItem(player, item);
@@ -1757,7 +1728,7 @@ public class L2Attackable extends L2NpcInstance
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 				else
 					DropItem(player, item);
-				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+				if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
 					PrivateAntiBot.privateantibot(player);
 				_spec = true;
 			}
@@ -1777,8 +1748,8 @@ public class L2Attackable extends L2NpcInstance
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-						if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-							PrivateAntiBot.privateantibot(player);
+							if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+								PrivateAntiBot.privateantibot(player);
 						}
 						else
 							DropItem(player, item);
@@ -1794,8 +1765,8 @@ public class L2Attackable extends L2NpcInstance
 				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-				if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-					PrivateAntiBot.privateantibot(player);
+					if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						PrivateAntiBot.privateantibot(player);
 				}
 				else
 					DropItem(player, item);
@@ -1813,8 +1784,8 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						PrivateAntiBot.privateantibot(player);
+						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1831,8 +1802,8 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						PrivateAntiBot.privateantibot(player);
+						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1849,8 +1820,8 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						PrivateAntiBot.privateantibot(player);
+						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1866,8 +1837,8 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						PrivateAntiBot.privateantibot(player);
+						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1884,8 +1855,8 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
-						PrivateAntiBot.privateantibot(player);
+						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							PrivateAntiBot.privateantibot(player);
 					}
 					else
 						DropItem(player, item);
@@ -1931,15 +1902,10 @@ public class L2Attackable extends L2NpcInstance
 	 * <BR>
 	 * <B><U> Actions</U> : <I>If an extra drop must be generated</I></B><BR>
 	 * <BR>
-	 * <li>Get an Item Identifier (random) from the DateDrop Item table of this
-	 * Event</li> <li>Get the Item quantity dropped (random)</li> <li>Create
-	 * this or these L2ItemInstance corresponding to this Item Identifier</li>
-	 * <li>If the autoLoot mode is actif and if the L2Character that has killed
-	 * the L2Attackable is a L2PcInstance, give this or these Item(s) to the
-	 * L2PcInstance that has killed the L2Attackable</li> <li>If the autoLoot
-	 * mode isn't actif or if the L2Character that has killed the L2Attackable
-	 * is not a L2PcInstance, add this or these Item(s) in the world as a
-	 * visible object at the position where mob was last</li><BR>
+	 * <li>Get an Item Identifier (random) from the DateDrop Item table of this Event</li> <li>Get the Item quantity dropped (random)</li> <li>Create this or these L2ItemInstance
+	 * corresponding to this Item Identifier</li> <li>If the autoLoot mode is actif and if the L2Character that has killed the L2Attackable is a L2PcInstance, give this or these
+	 * Item(s) to the L2PcInstance that has killed the L2Attackable</li> <li>If the autoLoot mode isn't actif or if the L2Character that has killed the L2Attackable is not a
+	 * L2PcInstance, add this or these Item(s) in the world as a visible object at the position where mob was last</li><BR>
 	 * <BR>
 	 *
 	 * @param lastAttacker
@@ -1992,13 +1958,7 @@ public class L2Attackable extends L2NpcInstance
 			// Randomize drop position
 			int newX = getX() + Rnd.get(randDropLim * 2 + 1) - randDropLim;
 			int newY = getY() + Rnd.get(randDropLim * 2 + 1) - randDropLim;
-			int newZ = Math.max(getZ(), lastAttacker.getZ()) + 20; // TODO: temp
-																	// hack, do
-																	// somethign
-																	// nicer
-																	// when we
-																	// have
-																	// geodatas
+			int newZ = Math.max(getZ(), lastAttacker.getZ()) + 20; // TODO: temp hack, do somethign nicer when we have geodatas
 
 			// Init the dropped L2ItemInstance and add it in the world as a
 			// visible object at the position where mob was last
@@ -2421,16 +2381,19 @@ public class L2Attackable extends L2NpcInstance
 							}
 							catch (NumberFormatException nfe)
 							{
-								_log.log(Level.WARNING, "An attempt to identify a soul crystal failed, " + "verify the names have not changed in etcitem " + "table.", nfe);
+								_log.log(Level.WARNING, getClass().getName() + ": An attempt to identify a soul crystal failed, verify the names have not changed in etcitem table." + nfe);
 
-								player.sendMessage("There has been an error handling your soul crystal." + " Please notify your server admin.");
+								player.sendMessage("There has been an error handling your soul crystal. Please notify your server admin.");
 
 								isSuccess = false;
 								break;
 							}
 							catch (Exception e)
 							{
-								e.printStackTrace();
+								if (Config.DEVELOPER)
+								{
+									e.printStackTrace();
+								}
 								isSuccess = false;
 								break;
 							}
@@ -2593,8 +2556,7 @@ public class L2Attackable extends L2NpcInstance
 			}
 		}
 
-		int[] tmp =
-		{
+		int[] tmp = {
 		(int) xp, (int) sp
 		};
 
@@ -2841,12 +2803,10 @@ public class L2Attackable extends L2NpcInstance
 				{
 					if (player.getParty().getCommandChannel().equals(_channel))
 					{
-						// if a player which is in first attacked
-						// CommandChannel, restart the timer ;)
+						// if a player which is in first attacked CommandChannel, restart the timer ;)
 						_monster.setCommandChannelTimer(this);
 						_monster.setFirstCommandChannelAttacked(_channel);
-						ThreadPoolManager.getInstance().scheduleGeneral(this, 300000); // 5
-																						// min
+						ThreadPoolManager.getInstance().scheduleGeneral(this, 300000); // 5 min
 						break;
 					}
 				}

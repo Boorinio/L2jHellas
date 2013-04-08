@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -40,29 +41,24 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * Auto Spawn Handler
- *
  * Allows spawning of a NPC object based on a timer. (From the official idea
  * used for the Merchant and Blacksmith of Mammon)
- *
  * General Usage: - Call registerSpawn() with the parameters listed below. int
  * npcId int[][] spawnPoints or specify NULL to add points later. int
  * initialDelay (If < 0 = default value) int respawnDelay (If < 0 = default
  * value) int despawnDelay (If < 0 = default value or if = 0, function disabled)
- *
  * spawnPoints is a standard two-dimensional int array containing X,Y and Z
  * coordinates. The default respawn/despawn delays are currently every hour (as
  * for Mammon on official servers).
- *  - The resulting AutoSpawnInstance object represents the newly added spawn
+ * - The resulting AutoSpawnInstance object represents the newly added spawn
  * index. - The interal methods of this object can be used to adjust random
  * spawning, for instance a call to setRandomSpawn(1, true); would set the spawn
  * at index 1 to be randomly rather than sequentially-based. - Also they can be
  * used to specify the number of NPC instances to spawn using setSpawnCount(),
  * and broadcast a message to all users using setBroadcast().
- *
  * Random Spawning = OFF by default Broadcasting = OFF by default
  *
  * @author Tempy
- *
  */
 public class AutoSpawnHandler
 {
@@ -124,8 +120,7 @@ public class AutoSpawnHandler
 			{
 				// Register random spawn group, set various options on the
 				// created spawn instance.
-				AutoSpawnInstance spawnInst = registerSpawn(rs.getInt("npcId"),	rs.getInt("initialDelay"),
-						rs.getInt("respawnDelay"), rs.getInt("despawnDelay"));
+				AutoSpawnInstance spawnInst = registerSpawn(rs.getInt("npcId"), rs.getInt("initialDelay"), rs.getInt("respawnDelay"), rs.getInt("despawnDelay"));
 
 				spawnInst.setSpawnCount(rs.getInt("count"));
 				spawnInst.setBroadcast(rs.getBoolean("broadcastSpawn"));
@@ -140,9 +135,7 @@ public class AutoSpawnHandler
 				while (rs2.next())
 				{
 					// Add each location to the spawn group/instance.
-					spawnInst.addSpawnLocation(rs2.getInt("x"),
-							rs2.getInt("y"), rs2.getInt("z"),
-							rs2.getInt("heading"));
+					spawnInst.addSpawnLocation(rs2.getInt("x"), rs2.getInt("y"), rs2.getInt("z"), rs2.getInt("heading"));
 				}
 
 				statement2.close();
@@ -151,18 +144,23 @@ public class AutoSpawnHandler
 			statement.close();
 
 			if (Config.DEBUG)
-				_log.config("AutoSpawnHandler: Loaded " + numLoaded
-						+ " spawn group(s) from the database.");
-		} catch (Exception e)
+				_log.log(Level.CONFIG, getClass().getName() + ": Loaded " + numLoaded + " spawn group(s) from the database.");
+		}
+		catch (Exception e)
 		{
-			_log.warning("AutoSpawnHandler: Could not restore spawn data: "
-							+ e);
-		} finally
+			_log.log(Level.WARNING, getClass().getName() + ": Could not restore spawn data: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
+		}
+		finally
 		{
 			try
 			{
 				con.close();
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 			}
 		}
@@ -174,20 +172,19 @@ public class AutoSpawnHandler
 	 * spawn.
 	 *
 	 * @param int
-	 *            npcId
+	 *        npcId
 	 * @param int[][]
-	 *            spawnPoints
+	 *        spawnPoints
 	 * @param int
-	 *            initialDelay (If < 0 = default value)
+	 *        initialDelay (If < 0 = default value)
 	 * @param int
-	 *            respawnDelay (If < 0 = default value)
+	 *        respawnDelay (If < 0 = default value)
 	 * @param int
-	 *            despawnDelay (If < 0 = default value or if = 0, function
-	 *            disabled)
+	 *        despawnDelay (If < 0 = default value or if = 0, function
+	 *        disabled)
 	 * @return AutoSpawnInstance spawnInst
 	 */
-	public AutoSpawnInstance registerSpawn(int npcId, int[][] spawnPoints, int initialDelay, int respawnDelay,
-			int despawnDelay)
+	public AutoSpawnInstance registerSpawn(int npcId, int[][] spawnPoints, int initialDelay, int respawnDelay, int despawnDelay)
 	{
 		if (initialDelay < 0)
 			initialDelay = DEFAULT_INITIAL_SPAWN;
@@ -198,7 +195,7 @@ public class AutoSpawnHandler
 		if (despawnDelay < 0)
 			despawnDelay = DEFAULT_DESPAWN;
 
-		AutoSpawnInstance newSpawn = new AutoSpawnInstance(npcId, initialDelay,	respawnDelay, despawnDelay);
+		AutoSpawnInstance newSpawn = new AutoSpawnInstance(npcId, initialDelay, respawnDelay, despawnDelay);
 
 		if (spawnPoints != null)
 			for (int[] spawnPoint : spawnPoints)
@@ -211,7 +208,7 @@ public class AutoSpawnHandler
 		setSpawnActive(newSpawn, true);
 
 		if (Config.DEBUG)
-			_log.config("AutoSpawnHandler: Registered auto spawn for NPC ID "+ npcId + " (Object ID = " + newId + ").");
+			_log.log(Level.CONFIG, getClass().getName() + ": Registered auto spawn for NPC ID " + npcId + " (Object ID = " + newId + ").");
 
 		return newSpawn;
 	}
@@ -224,17 +221,17 @@ public class AutoSpawnHandler
 	 * addSpawnLocation().
 	 *
 	 * @param int
-	 *            npcId
+	 *        npcId
 	 * @param int
-	 *            initialDelay (If < 0 = default value)
+	 *        initialDelay (If < 0 = default value)
 	 * @param int
-	 *            respawnDelay (If < 0 = default value)
+	 *        respawnDelay (If < 0 = default value)
 	 * @param int
-	 *            despawnDelay (If < 0 = default value or if = 0, function
-	 *            disabled)
+	 *        despawnDelay (If < 0 = default value or if = 0, function
+	 *        disabled)
 	 * @return AutoSpawnInstance spawnInst
 	 */
-	public AutoSpawnInstance registerSpawn(int npcId, int initialDelay,	int respawnDelay, int despawnDelay)
+	public AutoSpawnInstance registerSpawn(int npcId, int initialDelay, int respawnDelay, int despawnDelay)
 	{
 		return registerSpawn(npcId, null, initialDelay, respawnDelay, despawnDelay);
 	}
@@ -244,7 +241,7 @@ public class AutoSpawnHandler
 	 * instance.
 	 *
 	 * @param AutoSpawnInstance
-	 *            spawnInst
+	 *        spawnInst
 	 * @return boolean removedSuccessfully
 	 */
 	public boolean removeSpawn(AutoSpawnInstance spawnInst)
@@ -262,14 +259,15 @@ public class AutoSpawnHandler
 			respawnTask.cancel(false);
 
 			if (Config.DEBUG)
-				_log.config("AutoSpawnHandler: Removed auto spawn for NPC ID "
-						+ spawnInst._npcId + " (Object ID = "
-						+ spawnInst._objectId + ").");
-		} catch (Exception e)
+				_log.log(Level.CONFIG, getClass().getName() + ": Removed auto spawn for NPC ID " + spawnInst._npcId + " (Object ID = " + spawnInst._objectId + ").");
+		}
+		catch (Exception e)
 		{
-			_log.warning("AutoSpawnHandler: Could not auto spawn for NPC ID "
-					+ spawnInst._npcId + " (Object ID = " + spawnInst._objectId
-					+ "): " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could not auto spawn for NPC ID " + spawnInst._npcId + " (Object ID = " + spawnInst._objectId + "): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 			return false;
 		}
 
@@ -281,7 +279,7 @@ public class AutoSpawnHandler
 	 * object ID.
 	 *
 	 * @param int
-	 *            objectId
+	 *        objectId
 	 * @return boolean removedSuccessfully
 	 */
 	public void removeSpawn(int objectId)
@@ -293,9 +291,9 @@ public class AutoSpawnHandler
 	 * Sets the active state of the specified spawn.
 	 *
 	 * @param AutoSpawnInstance
-	 *            spawnInst
+	 *        spawnInst
 	 * @param boolean
-	 *            isActive
+	 *        isActive
 	 */
 	public void setSpawnActive(AutoSpawnInstance spawnInst, boolean isActive)
 	{
@@ -313,13 +311,13 @@ public class AutoSpawnHandler
 				AutoSpawner rs = new AutoSpawner(objectId);
 
 				if (spawnInst._desDelay > 0)
-					spawnTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(rs,
-							spawnInst._initDelay, spawnInst._resDelay);
+					spawnTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(rs, spawnInst._initDelay, spawnInst._resDelay);
 				else
 					spawnTask = ThreadPoolManager.getInstance().scheduleEffect(rs, spawnInst._initDelay);
 
 				_runningSpawns.put(objectId, spawnTask);
-			} else
+			}
+			else
 			{
 				AutoDespawner rd = new AutoDespawner(objectId);
 				spawnTask = _runningSpawns.remove(objectId);
@@ -339,7 +337,7 @@ public class AutoSpawnHandler
 	 * cancels the scheduled spawn task if necessary.
 	 *
 	 * @param boolean
-	 *            isActive
+	 *        isActive
 	 */
 	public void setAllActive(boolean isActive)
 	{
@@ -357,9 +355,9 @@ public class AutoSpawnHandler
 	 * spawn.
 	 *
 	 * @param AutoSpawnInstance
-	 *            spawnInst
+	 *        spawnInst
 	 * @param long
-	 *            milliRemaining
+	 *        milliRemaining
 	 */
 	public final long getTimeToNextSpawn(AutoSpawnInstance spawnInst)
 	{
@@ -378,12 +376,12 @@ public class AutoSpawnHandler
 	 * NPC ID.
 	 *
 	 * @param int
-	 *            id
+	 *        id
 	 * @param boolean
-	 *            isObjectId
+	 *        isObjectId
 	 * @return AutoSpawnInstance spawnInst
 	 */
-	public final AutoSpawnInstance getAutoSpawnInstance(int id,	boolean isObjectId)
+	public final AutoSpawnInstance getAutoSpawnInstance(int id, boolean isObjectId)
 	{
 		if (isObjectId)
 		{
@@ -414,7 +412,7 @@ public class AutoSpawnHandler
 	 * Tests if the specified object ID is assigned to an auto spawn.
 	 *
 	 * @param int
-	 *            objectId
+	 *        objectId
 	 * @return boolean isAssigned
 	 */
 	public final boolean isSpawnRegistered(int objectId)
@@ -426,7 +424,7 @@ public class AutoSpawnHandler
 	 * Tests if the specified spawn instance is assigned to an auto spawn.
 	 *
 	 * @param AutoSpawnInstance
-	 *            spawnInst
+	 *        spawnInst
 	 * @return boolean isAssigned
 	 */
 	public final boolean isSpawnRegistered(AutoSpawnInstance spawnInst)
@@ -469,8 +467,7 @@ public class AutoSpawnHandler
 				// If there are no set co-ordinates, cancel the spawn task.
 				if (locationList.length == 0)
 				{
-					_log.info("AutoSpawnHandler: No location co-ords specified for spawn instance (Object ID = "
-							+ _objectId + ").");
+					_log.log(Level.INFO, getClass().getName() + ": No location co-ords specified for spawn instance (Object ID = " + _objectId + ").");
 					return;
 				}
 
@@ -504,7 +501,7 @@ public class AutoSpawnHandler
 				L2NpcTemplate npcTemp = NpcTable.getInstance().getTemplate(spawnInst.getNpcId());
 				if (npcTemp == null)
 				{
-					_log.warning("Couldnt find NPC id" + spawnInst.getNpcId()+ " Try to update your DP");
+					_log.log(Level.WARNING, getClass().getName() + ": Couldnt find NPC id" + spawnInst.getNpcId() + " Try to update your DP");
 					return;
 				}
 				L2Spawn newSpawn = new L2Spawn(npcTemp);
@@ -530,7 +527,8 @@ public class AutoSpawnHandler
 					npcInst = newSpawn.doSpawn();
 					npcInst.setXYZ(npcInst.getX(), npcInst.getY(), npcInst.getZ());
 					spawnInst.addNpcInstance(npcInst);
-				} else
+				}
+				else
 				{
 					for (int i = 0; i < spawnInst._spawnCount; i++)
 					{
@@ -539,8 +537,7 @@ public class AutoSpawnHandler
 						// To prevent spawning of more than one NPC in the exact
 						// same spot,
 						// move it slightly by a small random offset.
-						npcInst.setXYZ(npcInst.getX() + Rnd.nextInt(50), npcInst.getY() + Rnd.nextInt(50),
-								npcInst.getZ());
+						npcInst.setXYZ(npcInst.getX() + Rnd.nextInt(50), npcInst.getY() + Rnd.nextInt(50), npcInst.getZ());
 
 						// Add the NPC instance to the list of managed
 						// instances.
@@ -553,15 +550,10 @@ public class AutoSpawnHandler
 				// Announce to all players that the spawn has taken place, with
 				// the nearest town location.
 				if (spawnInst.isBroadcasting())
-					Announcements.getInstance().announceToAll("The " + npcInst.getName() + " has spawned near "
-							+ nearestTown + "!");
+					Announcements.getInstance().announceToAll("The " + npcInst.getName() + " has spawned near " + nearestTown + "!");
 
 				if (Config.DEBUG)
-					_log.info("AutoSpawnHandler: Spawned NPC ID "
-							+ spawnInst.getNpcId() + " at " + x + ", " + y
-							+ ", " + z + " (Near " + nearestTown + ") for "
-							+ (spawnInst.getRespawnDelay() / 60000)
-							+ " minute(s).");
+					_log.log(Level.WARNING, getClass().getName() + ": Spawned NPC ID " + spawnInst.getNpcId() + " at " + x + ", " + y + ", " + z + " (Near " + nearestTown + ") for " + (spawnInst.getRespawnDelay() / 60000) + " minute(s).");
 
 				// If there is no despawn time, do not create a despawn task.
 				if (spawnInst.getDespawnDelay() > 0)
@@ -569,11 +561,14 @@ public class AutoSpawnHandler
 					AutoDespawner rd = new AutoDespawner(_objectId);
 					ThreadPoolManager.getInstance().scheduleAi(rd, spawnInst.getDespawnDelay() - 1000);
 				}
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
-				_log.warning("AutoSpawnHandler: An error occurred while initializing spawn instance (Object ID = "
-								+ _objectId + "): " + e);
-				e.printStackTrace();
+				_log.log(Level.WARNING, getClass().getName() + ": An error occurred while initializing spawn instance (Object ID = " + _objectId + "): " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -603,7 +598,7 @@ public class AutoSpawnHandler
 
 				if (spawnInst == null)
 				{
-					_log.info("AutoSpawnHandler: No spawn registered for object ID = "+ _objectId + ".");
+					_log.log(Level.INFO, getClass().getName() + ": No spawn registered for object ID = " + _objectId + ".");
 					return;
 				}
 
@@ -616,12 +611,16 @@ public class AutoSpawnHandler
 					spawnInst.removeNpcInstance(npcInst);
 
 					if (Config.DEBUG)
-						_log.info("AutoSpawnHandler: Spawns removed for spawn instance (Object ID = "+ _objectId + ").");
+						_log.log(Level.INFO, getClass().getName() + ": Spawns removed for spawn instance (Object ID = " + _objectId + ").");
 				}
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
-				_log.warning("AutoSpawnHandler: An error occurred while despawning spawn (Object ID = "
-						+ _objectId + "): " + e);
+				_log.log(Level.WARNING, getClass().getName() + ": An error occurred while despawning spawn (Object ID = " + _objectId + "): " + e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -661,7 +660,7 @@ public class AutoSpawnHandler
 
 		private boolean _broadcastAnnouncement = false;
 
-		protected AutoSpawnInstance(int npcId, int initDelay, int respawnDelay,	int despawnDelay)
+		protected AutoSpawnInstance(int npcId, int initDelay, int respawnDelay, int despawnDelay)
 		{
 			_npcId = npcId;
 			_initDelay = initDelay;
@@ -789,7 +788,8 @@ public class AutoSpawnHandler
 			try
 			{
 				return _locList.remove(locIndex);
-			} catch (IndexOutOfBoundsException e)
+			}
+			catch (IndexOutOfBoundsException e)
 			{
 				return null;
 			}

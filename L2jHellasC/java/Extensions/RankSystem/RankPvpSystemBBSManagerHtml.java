@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,7 +46,7 @@ public final class RankPvpSystemBBSManagerHtml
 		else
 		{
 			content = content.replace("%header%", headerHtml(page));
-			if (ExternalConfig.CUSTOM_PVP_RANK_ENABLED)
+			if (ExternalConfig.RANKS_ENABLED)
 			{
 				content = content.replace("%button_1%", nextButton(page));
 				content = content.replace("%button_2%", previousButton(page));
@@ -131,25 +131,13 @@ public final class RankPvpSystemBBSManagerHtml
 					if (activeChar.getObjectId() == e.getValue().getCharacterId())
 					{
 						// Player position and data:
-						tb2.append(itemHtml(
-										pos,
-										e.getValue().getCharacterName(),
-										e.getValue().getCharacterLevel(),
-										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
-										e.getValue().getCharacterPoints()
-										));
+						tb2.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
 						playerInfo = true;
 					}
 
 					if (pos <= 10)
 					{
-						tb.append(itemHtml(
-										pos,
-										e.getValue().getCharacterName(),
-										e.getValue().getCharacterLevel(),
-										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
-										e.getValue().getCharacterPoints()
-										));
+						tb.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
 
 						if (isEmpty)
 						{
@@ -171,25 +159,13 @@ public final class RankPvpSystemBBSManagerHtml
 					if (activeChar.getObjectId() == e.getValue().getCharacterId())
 					{
 						// Player position and data:
-						tb2.append(itemHtml(
-										pos,
-										e.getValue().getCharacterName(),
-										e.getValue().getCharacterLevel(),
-										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
-										e.getValue().getCharacterPoints()
-										));
+						tb2.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
 						playerInfo = true;
 					}
 
 					if (pos <= 10)
 					{
-						tb.append(itemHtml(
-										pos,
-										e.getValue().getCharacterName(),
-										e.getValue().getCharacterLevel(),
-										RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()),
-										e.getValue().getCharacterPoints()
-										));
+						tb.append(itemHtml(pos, e.getValue().getCharacterName(), e.getValue().getCharacterLevel(), RankPvpSystemUtil.getClassName(e.getValue().getCharacterBaseClassId()), e.getValue().getCharacterPoints()));
 
 						if (isEmpty)
 						{
@@ -209,7 +185,7 @@ public final class RankPvpSystemBBSManagerHtml
 				tb2.append("<tr>");
 				if (ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT > 0)
 				{
-					tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You're out of 500, or you did not kill anyone or even killed more than " + Math.round((double) ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT / (double) 86400000) + " days ago.</td></tr></table></td>");
+					tb2.append("<td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><table cellpadding=2 width=" + width_table + "><tr><td align=center>You're out of 500, or you did not kill anyone or even killed more than " + Math.round((double) ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT / 86400000) + " days ago.</td></tr></table></td>");
 				}
 				else
 				{
@@ -235,11 +211,11 @@ public final class RankPvpSystemBBSManagerHtml
 			tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=12></td></tr>");
 			if (page == 1)
 			{
-				tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><button value=\"Refresh\" action=\"bypass _bbscprs;1\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
+				tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><button value=\"Refresh\" action=\"bypass _bbscprs;1\" width=65 height=20 back=\"l2ui_ch3.smallbutton2_down\" fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
 			}
 			else
 			{
-				tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><button value=\"Refresh\" action=\"bypass _bbscprs;0\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
+				tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=26 align=center><button value=\"Refresh\" action=\"bypass _bbscprs;0\" width=65 height=20 back=\"l2ui_ch3.smallbutton2_down\" fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
 			}
 			tb.append("<tr><td FIXWIDTH=" + width_table + " HEIGHT=130></td></tr>");
 			tb.append("</tr>");
@@ -288,7 +264,7 @@ public final class RankPvpSystemBBSManagerHtml
 
 		tb.append("<table border=0 cellspacing=0 cellpadding=2 width=" + width_table + " height=26 bgcolor=FF0000>");
 		tb.append("<tr>");
-		tb.append("<td WIDTH=" + width_table + " align=center>PLAYER POSITION</td>");
+		tb.append("<td WIDTH=" + width_table + " align=center>Player Position</td>");
 		tb.append("</tr>");
 		tb.append("</table>");
 
@@ -305,7 +281,7 @@ public final class RankPvpSystemBBSManagerHtml
 		{
 			if (page == 0)
 			{
-				return "<button value=\">>\" action=\"bypass _bbscprs;1\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
+				return "<button value=\">>\" action=\"bypass _bbscprs;1\" width=65 height=20 back=\"Button_DF_Calculator_Down\" fore=\"Button_DF_Calculator\">";
 			}
 
 			return "&nbsp;";
@@ -320,7 +296,7 @@ public final class RankPvpSystemBBSManagerHtml
 		{
 			if (page == 1)
 			{
-				return "<button value=\"<<\" action=\"bypass _bbscprs;0\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\">";
+				return "<button value=\"<<\" action=\"bypass _bbscprs;0\" width=65 height=20 back=\"Button_DF_Calculator_Down\" fore=\"Button_DF_Calculator\">";
 			}
 
 			return "&nbsp;";

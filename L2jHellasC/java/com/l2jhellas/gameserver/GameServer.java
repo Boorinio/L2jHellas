@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
+import Extensions.RankSystem.CharacterRankRewardTable;
 import Extensions.RankSystem.PvpTable;
-import Extensions.RankSystem.RankCharacterRewardTable;
 import Extensions.RankSystem.RankRewardTable;
 import Extensions.RankSystem.TopTable;
 import Extensions.Vote.VoteMain;
@@ -165,8 +165,8 @@ public class GameServer
 		DayNightSpawnManager.getInstance().notifyChangeMode();
 		AutoChatHandler.getInstance();
 		Universe.getInstance();
-		if(Config.ZODIAC_ENABLE)
-		ZodiacMain.ZodiacIn();
+		if (Config.ZODIAC_ENABLE)
+			ZodiacMain.ZodiacIn();
 		FloodProtector.getInstance();
 		StaticObjects.getInstance();
 		TeleportLocationTable.getInstance();
@@ -246,13 +246,9 @@ public class GameServer
 
 		// util inside spawntable cause unknown problem -.-
 		if (!Config.ALT_DEV_NO_SPAWNS)
-		{
 			SpawnTable.getInstance();
-		}
 		else
-		{
 			_log.log(Level.INFO, "Spawns: disabled.");
-		}
 		if (!Config.ALT_DEV_NO_RB)
 		{
 			RaidBossSpawnManager.getInstance();
@@ -260,9 +256,7 @@ public class GameServer
 			RaidBossPointsManager.init();
 		}
 		else
-		{
 			_log.info("RaidBoss: disable load.");
-		}
 
 		Util.printSection("Dimensional Rift");
 		DimensionalRiftManager.getInstance();
@@ -376,32 +370,30 @@ public class GameServer
 		MaxCheatersTable.getInstance();
 		Hitman.start();
 		VoteMain.load();
+		// Rank System.
 		PvpTable.getInstance();
-		RankCharacterRewardTable.getInstance();
+		CharacterRankRewardTable.getInstance();
 		RankRewardTable.getInstance();
 		TopTable.getInstance();
+
 		if (ExternalConfig.ENABLED_RCON)
 			RemoteConnector.getInstance();
 		if (Config.ENABLED_QUIZ_EVENT)
 			QuizEvent.getInstance();
 		if (Config.ALLOW_AWAY_STATUS)
-		{
 			AwayManager.getInstance();
-		}
 		BalanceLoad.loadBalance();
-		if(ExternalConfig.ALLOW_SEQURITY_QUE)
-		AntiBot.getInstance();
-		if(ExternalConfig.ALLOW_ANTI_AFK)
-		AntiAfk.getInstance();
+		if (ExternalConfig.ALLOW_SEQURITY_QUE)
+			AntiBot.getInstance();
+		if (ExternalConfig.ALLOW_ANTI_AFK)
+			AntiAfk.getInstance();
 		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
 		{
 			_log.log(Level.INFO, "Restart System: Auto Restart System is Enabled.");
 			Restart.getInstance().StartCalculationOfNextRestartTime();
 		}
 		else
-		{
 			_log.log(Level.INFO, "Restart System: Auto Restart System is Disabled.");
-		}
 		if (Config.MOD_ALLOW_WEDDING)
 			CoupleManager.getInstance();
 

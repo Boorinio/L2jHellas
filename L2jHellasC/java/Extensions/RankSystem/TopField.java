@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,7 +35,7 @@ public class TopField
 
 	/**
 	 * @param _characterId
-	 *            the _characterId to set
+	 *        the _characterId to set
 	 */
 	public void setCharacterId(int _characterId)
 	{
@@ -52,7 +52,7 @@ public class TopField
 
 	/**
 	 * @param _characterPoints
-	 *            the _characterPoints to set
+	 *        the _characterPoints to set
 	 */
 	public void setCharacterPoints(long _characterPoints)
 	{
@@ -69,7 +69,7 @@ public class TopField
 
 	/**
 	 * @param _characterName
-	 *            the _characterName to set
+	 *        the _characterName to set
 	 */
 	public void setCharacterName(String _characterName)
 	{
@@ -86,7 +86,7 @@ public class TopField
 
 	/**
 	 * @param _characterLevel
-	 *            the _characterLevel to set
+	 *        the _characterLevel to set
 	 */
 	public void setCharacterLevel(int _characterLevel)
 	{
@@ -103,7 +103,7 @@ public class TopField
 
 	/**
 	 * @param _characterBaseClassId
-	 *            the _characterBaseClassId to set
+	 *        the _characterBaseClassId to set
 	 */
 	public void setCharacterBaseClassId(int _characterBaseClassId)
 	{

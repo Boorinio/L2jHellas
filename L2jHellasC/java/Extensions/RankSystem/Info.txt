@@ -2,22 +2,61 @@ Author:
 	Masterio
 	
 Last update:
-	26.01.2013 (patch 3.4.9)
+	30.03.2013 (patch 3.6.2) beta
 	
 Describe:
-	Custom PvP/Rank/Reward System allow set Reward or Rank Points for PvP or PK.
-	All options are configurable in config/masterio/CustomPvpSystemConfig.properties file.
+	Rank PvP System described in Describe.txt file.
 	
-	For show Player PvP Status use command on targeted player (in chat window): .pvpinfo or /pvpinfo
+	For show Player PvP Status use command on targeted player (in chat window): .pvpinfo or /pvpinfo (if enabled).
 	
 	Special thanks for valanths1990 who shared Image Converter on MxC.
 
 Added/Fixed:
+
+	v3.6.2 [30.03.2013]:
+		+ Added Combo Kill System - now if killer kill few victims, the combo will rise up. It can shout message on global chat defined in config.
+		+ Added Combo Kill Ratio for Rank Points - higher combo level gives more rank points defined in config.
+		+ Added option with detailed information about bonus rank points (war, area, combo) showed for killer [default: enabled, in config].
+		+ Added defeat message when killer dies and his combo level is > 0 or defined value.
+		+ Added more describes for config options.
+		+ Reworked PvP Status window (little changes).
+		+ Reworked some system messages.
+		+ Removed temporary options from java config class.
+		+ Reworked Config properties names. It's mean many of config options names are changed.
+		+ Reworked Java classes, and packages.
+		+ Reworked images folder names.
+		+ Reworked CommunityBoard htm file.
+		+ Reworked database table names.
+		+ Fixed some little bugs.
+
+	v3.5.6 [18.03.2013]:
+		+ Added Ignore Time Limits for Top Table (unactive players can be ignored when counting, if new options are activated [details in config]).
+		+ Added PvpTable cleaner from unactive players (cleaner must be activated in config, default is off).
+		+ Added option for cut off RP to killer RP Reward, if Victim RPR > Killer RPR. Killer can't earn more points for kill than his RP Reward.
+		+ Added nick and title colors options for ranks. 
+		+ Added 2 options for setup limit for Legal Kills (total/daily).
+		+ Reworked some system messages.
+		+ Reworked Rank images (fixed white border on right).
+		+ Reworked config file (6 options with X time protection reduced to 2 options).
+		+ Reworked some messages.
+		+ Reworked config file and changed some default values.
+		* Important: now some time config values are in DAYS or MINUTES (before in MS), so check all options and compare it with new file.
+		
+	v3.5.0 [29.01.2013]:
+		+ Added 3 options with show Total Kills or Total Legal Kills in shout and pvpinfo panel.
+		+ Reworked some shouts after kill.
+		+ Reworked CPS code in L2PcInstance.
+		+ Fixed pvp counting for summon and pet masters.
+		+ Reduced top table to 500 rows (before no limit).
+		+ Reworked Config file.
+		+ Changed default update time for PvpTable (from 1 to 5 minutes).
+
 	v3.4.9 [26.01.2013]:
 		+ Fixed zone checkers.
 		+ Reworked methods for giving rank rewards (now more safe).
 		+ Reworked Config File.
-		+ Added new folder: Fixes, folder contains solutions for special situations.
+		+ Reworked ALL classes (changed package name from custom to masteriopack, couse: i have too much customs, and I like order).
+		+ Added new folder: Fixes, folder contains solutions for special situations and L2FileEdit.
 		
 	v3.4.7 [28.12.2012]:
 		+ Added daily protection options, now is possible to set X kill times for day (reset every day 00:00) or total.
@@ -88,11 +127,18 @@ Added/Fixed:
 		+ Fixed/Added other small things.
 		
 IMPORTANT: 
-	1. If you have big online, or custom_pvp_system table have 100k+ rows you should rise java memory limit:
-	- open StartGameServer.bat.
-	- change -Xms1024m -Xmx1024m for higher:
-	
-		java -Djava.util.logging.manager=com.l2jserver.util.L2LogManager -Xms2048m -Xmx2048m -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
+	1. If you are using l2jserver unstable and have zone problems look into Fixes folder.
+	2. If you have big online, or rank_pvp_system table have 100k+ rows you should rise up java memory limit:
+		- open StartGameServer.bat.
+		- change -Xms1024m -Xmx1024m for higher:
 		
-	- Settings was tested for 1kk rows.
-	- Big servers have this value on 8000-16000, but I wrote this info for test servers.
+			java -Djava.util.logging.manager=com.l2jserver.util.L2LogManager -Xms2048m -Xmx2048m -cp ./../libs/*;l2jserver.jar com.l2jserver.gameserver.GameServer
+			
+		- Settings was tested for 1kk rows.
+		- Live servers have this value on 8000-16000, but I wrote this info for test servers.
+			
+		
+Contact:
+	www.maxcheaters.com
+	
+	nick: matthewmaster04

@@ -34,11 +34,6 @@ import com.l2jhellas.gameserver.handler.usercommandhandlers.OlympiadStat;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.PartyInfo;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.Time;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.1.2.5 $ $Date: 2005/03/27 15:30:09 $
- */
 public class UserCommandHandler
 {
 	private static Logger _log = Logger.getLogger(UserCommandHandler.class.getName());
@@ -88,11 +83,11 @@ public class UserCommandHandler
 		registerUserCommandHandler(new ChannelLeave());
 		registerUserCommandHandler(new ChannelDelete());
 		registerUserCommandHandler(new ChannelListUpdate());
-		if (ExternalConfig.CUSTOM_PVP_INFO_USER_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED)
+		if (ExternalConfig.PVP_INFO_USER_COMMAND_ENABLED && ExternalConfig.PVP_INFO_COMMAND_ENABLED)
 			registerUserCommandHandler(new IUserCommandHandlerPvpInfo());
 
-		if(Config.DEBUG)
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
+		if (Config.DEBUG)
+			_log.log(Level.CONFIG, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 
 		return _datatable.get(new Integer(userCommand));
 	}

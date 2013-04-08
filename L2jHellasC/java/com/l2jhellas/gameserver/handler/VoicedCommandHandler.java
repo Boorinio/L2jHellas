@@ -39,11 +39,6 @@ import com.l2jhellas.gameserver.handler.voicedcommandhandlers.stat;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.tradeoff;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.version;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.5 $ $Date: 2005/03/27 15:30:09 $
- */
 public class VoicedCommandHandler
 {
 	private static Logger _log = Logger.getLogger(ItemHandler.class.getName());
@@ -88,8 +83,9 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new OnlinePlayers());
 		if (Config.BANKING_SYSTEM_ENABLED)
 			registerVoicedCommandHandler(new Banking());
-		if (ExternalConfig.CUSTOM_PVP_INFO_COMMAND_ENABLED && ExternalConfig.CUSTOM_PVP_ENABLED && !ExternalConfig.CUSTOM_PVP_INFO_USER_COMMAND_ENABLED)
+		if(ExternalConfig.PVP_INFO_COMMAND_ENABLED && ExternalConfig.RANK_PVP_SYSTEM_ENABLED && !ExternalConfig.PVP_INFO_USER_COMMAND_ENABLED)
 			registerVoicedCommandHandler(new IVoicedCommandHandlerPvpInfo());
+
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 			registerVoicedCommandHandler(new MailCmd());
 		if (Config.ENABLED_CHAOS_EVENT)

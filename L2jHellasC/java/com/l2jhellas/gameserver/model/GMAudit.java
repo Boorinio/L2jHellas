@@ -22,12 +22,14 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
+
 
 public class GMAudit
 {
 	static
 	{
-		new File("log/GMAudit").mkdirs();
+		new File("log/GMAudit").mkdir();
 	}
 
 	private static final Logger _log = Logger.getLogger(GMAudit.class.getName());
@@ -48,7 +50,11 @@ public class GMAudit
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.SEVERE, "GMAudit for GM " + gmName +" could not be saved: ", e);
+			_log.log(Level.SEVERE, ": GMAudit for GM " + gmName + " could not be saved: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

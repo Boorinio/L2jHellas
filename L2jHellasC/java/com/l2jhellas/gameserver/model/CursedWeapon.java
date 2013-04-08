@@ -43,7 +43,7 @@ import com.l2jhellas.util.Rnd;
 
 public class CursedWeapon
 {
-	private static final Logger _log = Logger.getLogger(CursedWeaponsManager.class.getName());
+	private static final Logger _log = Logger.getLogger(CursedWeapon.class.getName());
 
 	private final String _name;
 	private final int _itemId;
@@ -83,7 +83,7 @@ public class CursedWeapon
 			if (_player != null && _player.isOnline() == 1)
 			{
 				// Remove from player
-				_log.info(_name + " being removed online.");
+				_log.log(Level.INFO, getClass().getName() + ": " + _name + " being removed online.");
 
 				_player.abortAttack();
 
@@ -116,7 +116,7 @@ public class CursedWeapon
 			else
 			{
 				// Remove from Db
-				_log.info(_name + " being removed offline.");
+				_log.log(Level.INFO, getClass().getName() + ": " + _name + " being removed offline.");
 
 				Connection con = null;
 				try
@@ -129,7 +129,7 @@ public class CursedWeapon
 					statement.setInt(2, _itemId);
 					if (statement.executeUpdate() != 1)
 					{
-						_log.warning("Error while deleting itemId " + _itemId + " from userId " + _playerId);
+						_log.log(Level.WARNING, getClass().getName() + ": Error while deleting itemId " + _itemId + " from userId " + _playerId);
 					}
 					statement.close();
 					/*
@@ -150,14 +150,18 @@ public class CursedWeapon
 					statement.setInt(3, _playerId);
 					if (statement.executeUpdate() != 1)
 					{
-						_log.warning("Error while updating karma & pkkills for userId " + _playerId);
+						_log.log(Level.WARNING, getClass().getName() + ": Error while updating karma & pkkills for userId " + _playerId);
 					}
 
 					statement.close();
 				}
 				catch (Exception e)
 				{
-					_log.warning("Could not delete : " + e);
+					_log.log(Level.WARNING, getClass().getName() + ": Could not delete from db : " + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 				finally
 				{
@@ -199,7 +203,7 @@ public class CursedWeapon
 			{
 				_item.decayMe();
 				L2World.getInstance().removeObject(_item);
-				_log.info(_name + " item has been removed from World.");
+				_log.log(Level.INFO, getClass().getName() + ": " + _name + " item has been removed from World.");
 			}
 		}
 
@@ -317,7 +321,7 @@ public class CursedWeapon
 		_player.addSkill(skill, false);
 
 		if (Config.DEBUG)
-			System.out.println("Player " + _player.getName() + " has been awarded with skill " + skill);
+			_log.log(Level.CONFIG, getClass().getName() + ": Player " + _player.getName() + " has been awarded with skill " + skill);
 		_player.sendSkillList();
 	}
 
@@ -442,7 +446,7 @@ public class CursedWeapon
 	public void saveData()
 	{
 		if (Config.DEBUG)
-			System.out.println("CursedWeapon: Saving data to disk.");
+			_log.log(Level.CONFIG, getClass().getName() + ": Saving data to disk.");
 
 		Connection con = null;
 		PreparedStatement statement = null;

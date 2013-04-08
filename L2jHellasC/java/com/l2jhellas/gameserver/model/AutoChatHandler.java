@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -102,11 +103,15 @@ public class AutoChatHandler implements SpawnListener
             statement.close();
 
             if (Config.DEBUG)
-                _log.config("AutoChatHandler: Loaded " + numLoaded + " chat group(s) from the database.");
+            	_log.log(Level.CONFIG, getClass().getName() + ":  Loaded " + numLoaded + " chat group(s) from the database.");
         }
         catch (Exception e)
         {
-            _log.warning("AutoSpawnHandler: Could not restore chat data: " + e);
+        	_log.log(Level.WARNING, getClass().getName() + ":  Could not restore chat data: " + e);
+        	if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
         }
         finally
         {
@@ -209,7 +214,7 @@ public class AutoChatHandler implements SpawnListener
         chatInst.setActive(false);
 
         if (Config.DEBUG)
-            _log.config("AutoChatHandler: Removed auto chat for NPC ID " + chatInst.getNPCId());
+        	_log.log(Level.CONFIG, getClass().getName() + ": Removed auto chat for NPC ID " + chatInst.getNPCId());
 
         return true;
     }
@@ -296,8 +301,7 @@ public class AutoChatHandler implements SpawnListener
             _globalChat = isGlobal;
 
             if (Config.DEBUG)
-                _log.config("AutoChatHandler: Registered auto chat for NPC ID " + _npcId
-                    + " (Global Chat = " + _globalChat + ").");
+            	_log.log(Level.CONFIG, getClass().getName() + ": Registered auto chat for NPC ID " + _npcId + " (Global Chat = " + _globalChat + ").");
 
             setActive(true);
         }
@@ -579,8 +583,7 @@ public class AutoChatHandler implements SpawnListener
                 _chatTexts = chatTexts;
 
                 if (Config.DEBUG)
-                    _log.info("AutoChatHandler: Chat definition added for NPC ID "
-                        + _npcInstance.getNpcId() + " (Object ID = " + _npcInstance.getObjectId() + ").");
+                	_log.log(Level.INFO, getClass().getName() + ":  Chat definition added for NPC ID " + _npcInstance.getNpcId() + " (Object ID = " + _npcInstance.getObjectId() + ").");
 
                 // If global chat isn't enabled for the parent instance,
                 // then handle the chat task locally.
@@ -687,8 +690,7 @@ public class AutoChatHandler implements SpawnListener
 
                     if (chatDef == null)
                     {
-                        _log.warning("AutoChatHandler: Auto chat definition is NULL for NPC ID "
-                            + _npcId + ".");
+                    	_log.log(Level.WARNING, getClass().getName() + ": Auto chat definition is NULL for NPC ID " + _npcId + ".");
                         return;
                     }
 
@@ -696,9 +698,7 @@ public class AutoChatHandler implements SpawnListener
                 }
 
                 if (Config.DEBUG)
-                    _log.info("AutoChatHandler: Running auto chat for " + chatDefinitions.length
-                        + " instances of NPC ID " + _npcId + "." + " (Global Chat = "
-                        + chatInst.isGlobal() + ")");
+                	_log.log(Level.INFO, getClass().getName() + ": Running auto chat for " + chatDefinitions.length + " instances of NPC ID " + _npcId + "." + " (Global Chat = " + chatInst.isGlobal() + ")");
 
                 for (AutoChatDefinition chatDef : chatDefinitions)
                 {
@@ -793,13 +793,15 @@ public class AutoChatHandler implements SpawnListener
                             nearbyGM.sendPacket(cs);
 
                         if (Config.DEBUG)
-                            _log.fine("AutoChatHandler: Chat propogation for object ID "
-                                + chatNpc.getObjectId() + " (" + creatureName + ") with text '" + text
-                                + "' sent to " + nearbyPlayers.size() + " nearby players.");
+                        	_log.log(Level.FINE, getClass().getCanonicalName() + ": Chat propogation for object ID " + chatNpc.getObjectId() + " (" + creatureName + ") with text '" + text + "' sent to " + nearbyPlayers.size() + " nearby players.");
                     }
                     catch (Exception e)
                     {
-                        e.printStackTrace();
+                    	_log.log(Level.WARNING, getClass().getName() + ": Something did wrong." + e);
+                    	if (Config.DEVELOPER)
+            			{
+            				e.printStackTrace();
+            			}
                         return;
                     }
                 }

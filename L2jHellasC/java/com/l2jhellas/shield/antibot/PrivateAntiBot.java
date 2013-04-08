@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.l2jhellas.shield.antibot;
 
 import javolution.text.TextBuilder;
@@ -13,11 +27,11 @@ public class PrivateAntiBot
 	{
 	Rnd.get(-100, 100), Rnd.get(100), Rnd.get(-100, 100), Rnd.get(100),
 	};
-	
+
 	public static void privateantibot(final L2PcInstance player)
 	{
 		showHtmlWindow(player);
-		player.sendMessage("You have to choose within 2 minutes");
+		player.sendMessage("You have to choose within 2 minutes.");
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
@@ -34,9 +48,9 @@ public class PrivateAntiBot
 				}
 			}
 		}, 60 * 1000 * 2);
-		
+
 	}
-	
+
 	public static void showHtmlWindow(L2PcInstance activeChar)
 	{
 		int option = Rnd.get(7);
@@ -67,7 +81,7 @@ public class PrivateAntiBot
 			tb.append("<button value=\"" + epiloges[2] + "\" action=\"bypass -h FirstAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
 			tb.append("<button value=\"" + epiloges[3] + "\" action=\"bypass -h FirstAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
 			tb.append("<button value=\"2013\" action=\"bypass -h SecondAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
-			
+
 		}
 		if (option == 2)
 		{
