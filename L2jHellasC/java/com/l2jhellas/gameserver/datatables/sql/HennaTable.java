@@ -120,7 +120,7 @@ public class HennaTable
 			L2Henna template = new L2Henna(hennaDat);
 			_henna.put(id, template);
 		}
-		_log.config("HennaTable: Loaded " + _henna.size() + " Templates.");
+		_log.info("HennaTable: Loaded " + _henna.size() + " Templates.");
 	}
 
 	public L2Henna getTemplate(int id)

@@ -74,9 +74,9 @@ public class Announcements
 		File file = new File(Config.DATAPACK_ROOT, "data/announcements.txt");
 		if (file.exists())
 			readFromDisk(file);
-		
+
 		else
-			_log.config("data/announcements.txt doesn't exist.");
+			_log.warning("data/announcements.txt doesn't exist.");
 	}
 
 	public void showAnnouncements(L2PcInstance activeChar)
@@ -162,7 +162,7 @@ public class Announcements
 					i++;
 				}
 			}
-			_log.config("Announcements: Loaded " + i + " Announcements.");
+			_log.info("Announcements: Loaded " + i + " Announcements.");
 		}
 		catch (IOException e1)
 		{
@@ -218,7 +218,7 @@ public class Announcements
 
         cs = null;
     }
-	
+
 	public void announceToAll(String text) {
 		CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", text);
 

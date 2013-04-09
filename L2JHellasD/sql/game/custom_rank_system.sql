@@ -4,7 +4,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `rank_pvp_system`;
 
-CREATE TABLE `custom_pvp_system` (
+CREATE TABLE `rank_pvp_system` (
  `killer_id` int(10) NOT NULL,
  `victim_id` int(10) NOT NULL,
  `kills` int(10) NOT NULL DEFAULT 0,

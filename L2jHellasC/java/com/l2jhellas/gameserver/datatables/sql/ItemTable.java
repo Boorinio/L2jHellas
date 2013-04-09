@@ -50,11 +50,6 @@ import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.9.2.6.2.9 $ $Date: 2005/04/02 15:57:34 $
- */
 public class ItemTable
 {
 	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
@@ -334,19 +329,19 @@ public class ItemTable
 		{
             _armors.put(armor.getItemId(), armor);
 		}
-        _log.config("ItemTable: Loaded " + _armors.size() + " Armors.");
+        _log.info("ItemTable: Loaded " + _armors.size() + " Armors.");
 
         for (L2EtcItem item : SkillsEngine.getInstance().loadItems(itemData))
 		{
             _etcItems.put(item.getItemId(), item);
 		}
-        _log.config("ItemTable: Loaded " + _etcItems.size() + " Items.");
+        _log.info("ItemTable: Loaded " + _etcItems.size() + " Items.");
 
         for (L2Weapon weapon : SkillsEngine.getInstance().loadWeapons(weaponData))
 		{
             _weapons.put(weapon.getItemId(), weapon);
 		}
-        _log.config("ItemTable: Loaded " + _weapons.size() + " Weapons.");
+        _log.info("ItemTable: Loaded " + _weapons.size() + " Weapons.");
 
         //fillEtcItemsTable();
 		//fillArmorsTable();

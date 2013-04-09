@@ -124,7 +124,7 @@ public class HennaTreeTable
 			try { con.close(); } catch (Exception e) {}
 		}
 
-        _log.config("HennaTreeTable: Loaded " + count + " Henna Tree Templates.");
+        _log.info("HennaTreeTable: Loaded " + count + " Henna Tree Templates.");
 
 	}
 

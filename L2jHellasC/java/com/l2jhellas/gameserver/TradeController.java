@@ -73,7 +73,7 @@ public class TradeController
 	{
 		if (_instance == null)
 			_instance = new TradeController();
-		
+
 		return _instance;
 	}
 
@@ -97,14 +97,14 @@ public class TradeController
 				{
 					if (line.trim().length() == 0 || line.startsWith("#"))
 						continue;
-					
+
 					dummyItemCount += parseList(line);
 				}
 
 				if (Config.DEBUG)
 					_log.fine("created " + dummyItemCount + " Dummy-Items for buylists");
-				
-				_log.config("TradeController: Loaded " + _lists.size() + " Buylists.");
+
+				_log.info("TradeController: Loaded " + _lists.size() + " Buylists.");
 			}
 			catch (Exception e)
 			{
@@ -199,7 +199,7 @@ public class TradeController
 							_listsTaskItem.put(new Integer(buy1.getListId()), buy1);
 						else
 							_lists.put(new Integer(buy1.getListId()), buy1);
-						
+
 						_nextListId = Math.max(_nextListId, buy1.getListId() + 1);
 					}
 					rset.close();
@@ -210,9 +210,9 @@ public class TradeController
 
 				if (Config.DEBUG)
 					_log.fine("created " + dummyItemCount + " Dummy-Items for buylists");
-				
-				_log.config("TradeController: Loaded " + _lists.size() + " Buylists.");
-				_log.config("TradeController: Loaded " + _listsTaskItem.size() + " Limited Buylists.");
+
+				_log.info("TradeController: Loaded " + _lists.size() + " Buylists.");
+				_log.info("TradeController: Loaded " + _listsTaskItem.size() + " Limited Buylists.");
 	            /*
 				 *  Restore Task for reinitialyze count of buy item
 				 */
@@ -282,7 +282,7 @@ public class TradeController
 	{
 		if(_lists.get(new Integer(listId)) != null)
 				return _lists.get(new Integer(listId));
-		
+
 		return _listsTaskItem.get(new Integer(listId));
 	}
 

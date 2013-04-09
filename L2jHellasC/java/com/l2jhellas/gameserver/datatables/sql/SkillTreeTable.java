@@ -190,7 +190,7 @@ public class SkillTreeTable
 			}
 		}
 
-        _log.config("SkillTreeTable: Loaded " + count + " skills.");
+        _log.info("SkillTreeTable: Loaded " + count + " skills.");
 
         //Skill tree for fishing skill (from Fisherman)
         int count2   = 0;

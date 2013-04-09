@@ -49,7 +49,7 @@ public class StaticObjects
     {
         _staticObjects = new FastMap<Integer,L2StaticObjectInstance>();
         parseData();
-        _log.config("StaticObject: Loaded " + _staticObjects.size() + " StaticObject Templates.");
+        _log.info("StaticObject: Loaded " + _staticObjects.size() + " StaticObject Templates.");
     }
 
     private void parseData()

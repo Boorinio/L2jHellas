@@ -40,11 +40,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.util.Util;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.11.2.5.2.5 $ $Date: 2005/03/27 15:29:18 $
- */
 public class ClanTable
 {
 	private static Logger _log = Logger.getLogger(ClanTable.class.getName());
@@ -100,7 +95,7 @@ public class ClanTable
 	            result.close();
 	            statement.close();
 
-	            _log.config("Restored "+clanCount+" clans from the database.");
+	            _log.info("Restored "+clanCount+" clans from the database.");
 	        }
 	        catch (Exception e) {
 			_log.log(Level.WARNING, getClass().getName() + ": data error on ClanTable: " + e);

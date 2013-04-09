@@ -99,8 +99,8 @@ public class AugmentationData
 		load();
 
 		// Use size*4: since theres 4 blocks of stat-data with equivalent size
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": Loaded: " + (_augmentationStats[0].size() * 4) + " augmentation stats.");
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": Loaded: " + _activeSkills.size() + " active, " + _passiveSkills.size() + " passive and " + _chanceSkills.size() + " chance skills");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + (_augmentationStats[0].size() * 4) + " augmentation stats.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _activeSkills.size() + " active, " + _passiveSkills.size() + " passive and " + _chanceSkills.size() + " chance skills");
 	}
 
 	public class augmentationSkill

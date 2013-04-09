@@ -36,7 +36,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 public class HelperBuffTable
 {
 
-	private static Logger _log = Logger.getLogger(HennaTable.class.getName());
+	private static Logger _log = Logger.getLogger(HelperBuffTable.class.getName());
 
 	/** The table containing all Buff of the Newbie Helper */
 	private final List<L2HelperBuff> _helperBuff;

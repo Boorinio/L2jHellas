@@ -38,11 +38,6 @@ import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.8.2.6.2.9 $ $Date: 2005/04/06 16:13:25 $
- */
 public class NpcTable
 {
 	private static Logger _log = Logger.getLogger(NpcTable.class.getName());
@@ -386,8 +381,8 @@ public class NpcTable
 			_npcs.put(id, template);
 		}
 
-		if (!customData) _log.config("NpcTable: Loaded " + _npcs.size() + " NPC templates.");
-		else _log.config("NpcTable: Loaded " + _npcs.size() + " custom NPC templates.");
+		if (!customData) _log.info("NpcTable: Loaded " + _npcs.size() + " NPC templates.");
+		else _log.info("NpcTable: Loaded " + _npcs.size() + " custom NPC templates.");
 	}
 
 

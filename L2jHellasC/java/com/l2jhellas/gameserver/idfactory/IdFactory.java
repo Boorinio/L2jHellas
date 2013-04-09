@@ -24,11 +24,6 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.2.1.2.7 $ $Date: 2005/04/11 10:06:12 $
- */
 public abstract class IdFactory
 {
 	private static Logger _log = Logger.getLogger(IdFactory.class.getName());
@@ -82,7 +77,7 @@ public abstract class IdFactory
 		{
 			con2 = L2DatabaseFactory.getInstance().getConnection();
 			Statement s2 = con2.createStatement();
-			s2.executeUpdate("update characters set online=0");
+			s2.executeUpdate("UPDATE characters SET online=0");
 			_log.log(Level.INFO, getClass().getSimpleName() + ": Updated characters online status.");
 
 			s2.close();
@@ -195,26 +190,26 @@ public abstract class IdFactory
 			Statement s = con.createStatement();
 			try
 			{
-				s.executeUpdate("drop table temporaryObjectTable");
+				s.executeUpdate("DROP TABLE temporaryObjectTable");
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Table could not dropped. " + e);
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": Table could not dropped. (does not exists)");
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
 				}
 			}
-			s.executeUpdate("delete from itemsonground where object_id in (select object_id from items)");
-			s.executeUpdate("create table temporaryObjectTable" + " (object_id int NOT NULL PRIMARY KEY)");
+			s.executeUpdate("DELETE FROM itemsonground WHERE object_id IN (SELECT object_id FROM items)");
+			s.executeUpdate("CREATE TABLE temporaryObjectTable" + " (object_id int NOT NULL PRIMARY KEY)");
 
-			s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select obj_Id from characters");
-			s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select object_id from items");
-			s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select clan_id from clan_data");
-			// s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select crest_id from clan_data where crest_id > 0");
-			s.executeUpdate("insert into temporaryObjectTable (object_id)" + " select object_id from itemsonground");
+			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT obj_Id FROM characters");
+			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT object_id FROM items");
+			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT clan_id FROM clan_data");
+			// s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT crest_id FROM clan_data WHERE crest_id > 0");
+			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " select object_id from itemsonground");
 
-			ResultSet result = s.executeQuery("select count(object_id) from temporaryObjectTable");
+			ResultSet result = s.executeQuery("SELECT count(object_id) FROM temporaryObjectTable");
 
 			result.next();
 			int size = result.getInt(1);
@@ -222,7 +217,7 @@ public abstract class IdFactory
 			// System.out.println("tmp table size: " + tmp_obj_ids.length);
 			result.close();
 
-			result = s.executeQuery("select object_id from temporaryObjectTable ORDER BY object_id");
+			result = s.executeQuery("SELECT object_id FROM temporaryObjectTable ORDER BY object_id");
 
 			int idx = 0;
 			while (result.next())

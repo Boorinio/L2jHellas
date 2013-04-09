@@ -32,12 +32,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
 
-/**
- * This class ...
- *
- * @author Nightmare
- * @version $Revision: 1.5.2.6.2.7 $ $Date: 2005/03/27 15:29:18 $
- */
 public class SpawnTable
 {
 	private static Logger _log = Logger.getLogger(SpawnTable.class.getName());
@@ -161,7 +155,7 @@ public class SpawnTable
 		}
 
 		Util.printSection("Spawnlist");
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": SpawnTable: Loaded " + _spawntable.size() + " Npc Spawn Locations.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
 
 		if (Config.DEBUG)
 			_log.fine("SpawnTable: Spawning completed, total number of NPCs in the world: " + _npcSpawnCount);

@@ -33,7 +33,7 @@ import com.l2jhellas.gameserver.model.FishData;
  */
 public class FishTable
 {
-	private static Logger _log = Logger.getLogger(SkillTreeTable.class.getName());
+	private static Logger _log = Logger.getLogger(FishTable.class.getName());
 	private static final FishTable _instance = new FishTable();
 
 	private static List<FishData> _fishsNormal;
@@ -100,7 +100,7 @@ public class FishTable
 		{
 			try { con.close(); } catch (Exception e) {}
 		}
-        _log.config("FishTable: Loaded " + count + " Fishes.");
+        _log.info("FishTable: Loaded " + count + " Fishes.");
 	}
 	/**
 	 * @param Fish - lvl

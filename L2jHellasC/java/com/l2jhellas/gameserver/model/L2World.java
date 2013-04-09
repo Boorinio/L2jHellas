@@ -31,11 +31,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.util.L2ObjectMap;
 import com.l2jhellas.util.Point3D;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.21.2.5.2.7 $ $Date: 2005/03/27 15:29:32 $
- */
 public final class L2World
 {
     private static Logger _log = Logger.getLogger(L2World.class.getName());
@@ -65,15 +60,15 @@ public final class L2World
     //private FastMap<String, L2PcInstance> _allGms;
 
     /** HashMap(String Player name, L2PcInstance) containing all the players in game */
-    private Map<String, L2PcInstance> _allPlayers;
-    private Map<String, L2PcInstance> _allgoodPlayers;
-    private Map<String, L2PcInstance> _allevilPlayers;
-    
+    private final Map<String, L2PcInstance> _allPlayers;
+    private final Map<String, L2PcInstance> _allgoodPlayers;
+    private final Map<String, L2PcInstance> _allevilPlayers;
+
     /** L2ObjectHashMap(L2Object) containing all visible objects */
-    private L2ObjectMap<L2Object> _allObjects;
+    private final L2ObjectMap<L2Object> _allObjects;
 
     /** List with the pets instances and their owner id */
-    private FastMap<Integer,L2PetInstance> _petsInstance;
+    private final FastMap<Integer,L2PetInstance> _petsInstance;
 
     private static final L2World _instance = new L2World();
 
@@ -102,9 +97,9 @@ public final class L2World
     {
         return _instance;
     }
-    public void forceObject(L2Object object) 
-   	{ 
-   	_allObjects.put(object); 
+    public void forceObject(L2Object object)
+   	{
+   	_allObjects.put(object);
     }
     /**
      * Add L2Object object in _allObjects.<BR><BR>
@@ -190,44 +185,44 @@ public final class L2World
         time        -= System.currentTimeMillis();
         return time;
     }
-    
+
     /**
      * Added by Tempy - 08 Aug 05
-     * Allows easy retrevial of all visible objects in world.
-     * 
-     * -- do not use that fucntion, its unsafe!
-     * 
-     * @deprecated 
+     * Allows easy retrieval of all visible objects in world.
+     *
+     * -- do not use that function, its unsafe!
+     *
+     * @deprecated
      */
     @Deprecated
     public final L2ObjectMap<L2Object> getAllVisibleObjects()
     {
         return _allObjects;
     }
-    
+
 
     /**
      * Get the count of all visible objects in world.<br><br>
-     * 
+     *
      * @return count off all L2World objects
      */
     public final int getAllVisibleObjectsCount()
     {
         return _allObjects.size();
     }
-    
+
     /**
      * Return a table containing all GMs.<BR><BR>
-     * 
+     *
      */
     public FastList<L2PcInstance> getAllGMs()
     {
         return GmListTable.getInstance().getAllGms(true);
     }
-    
+
     /**
      * Return a collection containing all players in game.<BR><BR>
-     * 
+     *
      * <FONT COLOR=#FF0000><B> <U>Caution</U> : Read-only, please! </B></FONT><BR><BR>
      */
     public Collection<L2PcInstance> getAllPlayers()
@@ -241,7 +236,7 @@ public final class L2World
     public Collection<L2PcInstance> getAllevilPlayers()
     {
     	return _allevilPlayers.values();
-    }     
+    }
 
     /**
      * Return how many players are online.<BR><BR>
@@ -251,7 +246,7 @@ public final class L2World
     public int getAllPlayersCount()
     {
         return _allPlayers.size();
-    }     
+    }
     public int getAllgoodPlayersCount()
     {
     	return _allgoodPlayers.size();
@@ -378,7 +373,7 @@ public final class L2World
     		{
 	    		if (((L2PcInstance) object).isgood())
 	    			_allgoodPlayers.put(player.getName().toLowerCase(), player);
-	
+
 	    		if (((L2PcInstance) object).isevil())
 	    			_allevilPlayers.put(player.getName().toLowerCase(), player);
     		}
@@ -406,10 +401,10 @@ public final class L2World
             object.getKnownList().addKnownObject(visible, dropper);
         }
     }
-    
+
 	/**
 	 * Add the L2PcInstance to _allPlayers of L2World.<BR><BR>
-	 *  
+	 *
 	 */
 	public void addToAllPlayers(L2PcInstance cha)
 	{
@@ -472,7 +467,7 @@ public final class L2World
             oldRegion.removeVisibleObject(object);
 
             // Go through all surrounding L2WorldRegion L2Characters
-            for (L2WorldRegion reg : oldRegion.getSurroundingRegions()) 
+            for (L2WorldRegion reg : oldRegion.getSurroundingRegions())
             {
                 for (L2Object obj : reg.getVisibleObjects())
                 {
@@ -590,7 +585,7 @@ public final class L2World
         FastList<L2WorldRegion> _regions = object.getWorldRegion().getSurroundingRegions();
 
         // Go through the FastList of region
-        for (int i = 0; i < _regions.size(); i++) 
+        for (int i = 0; i < _regions.size(); i++)
         {
             // Go through visible objects of the selected region
             for (L2Object _object : _regions.get(i).getVisibleObjects())
@@ -628,7 +623,7 @@ public final class L2World
      *
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Define the target list of a skill </li>
-     * <li> Define the target list of a polearme attack </li><BR><BR>
+     * <li> Define the target list of a polearm attack </li><BR><BR>
      *
      * @param object L2object that determine the center of the circular area
      * @param radius Radius of the spheric area
@@ -737,7 +732,7 @@ public final class L2World
      *
      * <B><U> Example of use </U> :</B><BR><BR>
      * <li> Set position of a new L2Object (drop, spawn...) </li>
-     * <li> Update position of a L2Object after a mouvement </li><BR>
+     * <li> Update position of a L2Object after a movement </li><BR>
      *
      * @param Point3D point position of the object
      */
@@ -789,7 +784,7 @@ public final class L2World
      */
     private void initRegions()
     {
-        _log.config("L2World: Setting up World Regions");
+        _log.info("L2World: Setting up World Regions");
 
         _worldRegions = new L2WorldRegion[REGIONS_X+1][REGIONS_Y+1];
 
@@ -818,7 +813,7 @@ public final class L2World
             }
         }
 
-        _log.config("L2World: ("+REGIONS_X+" by "+REGIONS_Y+") World Region Grid set up.");
+        _log.info("L2World: ("+REGIONS_X+" by "+REGIONS_Y+") World Region Grid set up.");
 
     }
 
