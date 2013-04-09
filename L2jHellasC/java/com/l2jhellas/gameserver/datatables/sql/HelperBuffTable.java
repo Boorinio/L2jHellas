@@ -150,7 +150,7 @@ public class HelperBuffTable
 			_helperBuff.add(template);
 		}
 
-		_log.config("Helper Buff Table: Loaded " + _helperBuff.size() + " Templates.");
+		_log.info("Helper Buff Table: Loaded " + _helperBuff.size() + " Templates.");
 
 	}
 

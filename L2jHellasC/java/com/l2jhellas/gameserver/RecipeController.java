@@ -84,7 +84,7 @@ public class RecipeController
 				parseList(line);
 
 			}
-			_log.config("RecipeController: Loaded " + _lists.size() + " Recipes.");
+			_log.info("RecipeController: Loaded " + _lists.size() + " Recipes.");
 		}
 		catch (Exception e)
 		{
