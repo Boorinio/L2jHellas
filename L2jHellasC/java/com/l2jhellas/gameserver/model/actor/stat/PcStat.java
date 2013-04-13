@@ -66,7 +66,7 @@ public class PcStat extends PlayableStat
 			if (karmaLost > 0)
 				activeChar.setKarma(activeChar.getKarma() - karmaLost);
 		}
-		// Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp
+		// Player is Gm and access level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp
 		if (getActiveChar().isGM() && !getActiveChar().getAccessLevel().canGainExp() && getActiveChar().isInParty())
 			return false;
 
@@ -91,7 +91,7 @@ public class PcStat extends PlayableStat
 	 * <BR>
 	 * <li>Remove Karma when the player kills L2MonsterInstance</li> <li>Send a Server->Client packet StatusUpdate to the L2PcInstance</li> <li>Send a Server->Client System Message
 	 * to the L2PcInstance</li> <li>If the L2PcInstance increases it's level, send a Server->Client packet SocialAction (broadcast)</li> <li>If the L2PcInstance increases it's
-	 * level, manage the increase level task (Max MP, Max MP, Recommandation, Expertise and beginner skills...)</li> <li>If the L2PcInstance increases it's level, send a
+	 * level, manage the increase level task (Max MP, Max MP, Recommendation, Expertise and beginner skills...)</li> <li>If the L2PcInstance increases it's level, send a
 	 * Server->Client packet UserInfo to the L2PcInstance</li><BR>
 	 * <BR>
 	 *
@@ -104,7 +104,7 @@ public class PcStat extends PlayableStat
 	public boolean addExpAndSp(long addToExp, int addToSp)
 	{
 		float ratioTakenByPet = 0;
-		// Player is Gm and acces level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp/Sp
+		// Player is Gm and access level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp/Sp
 		L2PcInstance activeChar = getActiveChar();
 		if (activeChar.isGM() && !activeChar.getAccessLevel().canGainExp() && activeChar.isInParty())
 			return false;
@@ -238,7 +238,7 @@ public class PcStat extends PlayableStat
 				{
 					getActiveChar().setNewbie(false);
 					if (Config.DEBUG)
-						_log.log(Level.INFO, getClass().getName() + ": Newbie character ended: " + getActiveChar().getCharId());
+						_log.log(Level.CONFIG, getClass().getName() + ": Newbie character ended: " + getActiveChar().getCharId());
 				};
 			};
 

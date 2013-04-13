@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,9 +29,9 @@ public class BalancerMain extends CharStat
 	{
 		super(activeChar);
 	}
-	
+
 	L2PcInstance activeChar = getActiveChar();
-	
+
 	//Duelist mods
 	public static int accplus88 = 0;
 	public static int evasionplus88 = 0;
@@ -44,12 +44,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus88 = 0;
 	public static int patksplus88 = 0;
 	public static int pdefplus88 = 0;
-	
+	public static int walkplus88 = 0;
+
 	public static void setAccplus88(int val)
 	{
 		accplus88 = val;
 	}
-	 	
+
 	public static void setEvasionplus88(int val)
 	{
 		evasionplus88 = val;
@@ -59,17 +60,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus88 = val;
 	}
-	
+
 	public static void setHpplus88(int val)
 	{
 		hpplus88 = val;
 	}
-	
+
 	public static void setMpplus88(int val)
 	{
 		mpplus88 = val;
 	}
-	
+
 	public static void setMatkplus88(int val)
 	{
 		matkplus88 = val;
@@ -100,6 +101,11 @@ public class BalancerMain extends CharStat
 		pdefplus88 = val;
 	}
 
+	public static void setWalkplus88(int val)
+	{
+		walkplus88 = val;
+	}
+
 	//DreadNought mods
 	public static int accplus89 = 0;
 	public static int evasionplus89 = 0;
@@ -112,12 +118,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus89 = 0;
 	public static int patksplus89 = 0;
 	public static int pdefplus89 = 0;
-	
+	public static int walkplus89 = 0;
+
 	public static void setAccplus89(int val)
 	{
 		accplus89 = val;
 	}
-	 	
+
 	public static void setEvasionplus89(int val)
 	{
 		evasionplus89 = val;
@@ -127,17 +134,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus89 = val;
 	}
-	
+
 	public static void setHpplus89(int val)
 	{
 		hpplus89 = val;
 	}
-	
+
 	public static void setMpplus89(int val)
 	{
 		mpplus89 = val;
 	}
-	
+
 	public static void setMatkplus89(int val)
 	{
 		matkplus89 = val;
@@ -167,7 +174,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus89 = val;
 	}
-	
+
+	public static void setWalkplus89(int val)
+	{
+		walkplus89 = val;
+	}
+
 	//Phoenix Knight mods
 	public static int accplus90 = 0;
 	public static int evasionplus90 = 0;
@@ -180,12 +192,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus90 = 0;
 	public static int patksplus90 = 0;
 	public static int pdefplus90 = 0;
-	
+	public static int walkplus90 = 0;
+
 	public static void setAccplus90(int val)
 	{
 		accplus90 = val;
 	}
-	 	
+
 	public static void setEvasionplus90(int val)
 	{
 		evasionplus90 = val;
@@ -195,17 +208,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus90 = val;
 	}
-	
+
 	public static void setHpplus90(int val)
 	{
 		hpplus90 = val;
 	}
-	
+
 	public static void setMpplus90(int val)
 	{
 		mpplus90 = val;
 	}
-	
+
 	public static void setMatkplus90(int val)
 	{
 		matkplus90 = val;
@@ -235,7 +248,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus90 = val;
 	}
-	
+
+	public static void setWalkplus90(int val)
+	{
+		walkplus90 = val;
+	}
+
 	//Hell Knight mods
 	public static int accplus91 = 0;
 	public static int evasionplus91 = 0;
@@ -248,12 +266,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus91 = 0;
 	public static int patksplus91 = 0;
 	public static int pdefplus91 = 0;
-	
+	public static int walkplus91 = 0;
+
 	public static void setAccplus91(int val)
 	{
 		accplus91 = val;
 	}
-	 	
+
 	public static void setEvasionplus91(int val)
 	{
 		evasionplus91 = val;
@@ -263,17 +282,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus91 = val;
 	}
-	
+
 	public static void setHpplus91(int val)
 	{
 		hpplus91 = val;
 	}
-	
+
 	public static void setMpplus91(int val)
 	{
 		mpplus91 = val;
 	}
-	
+
 	public static void setMatkplus91(int val)
 	{
 		matkplus91 = val;
@@ -304,6 +323,11 @@ public class BalancerMain extends CharStat
 		pdefplus91 = val;
 	}
 
+	public static void setWalkplus91(int val)
+	{
+		walkplus91 = val;
+	}
+
 	//Sagittarius mods
 	public static int accplus92 = 0;
 	public static int evasionplus92 = 0;
@@ -316,12 +340,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus92 = 0;
 	public static int patksplus92 = 0;
 	public static int pdefplus92 = 0;
-	
+	public static int walkplus92 = 0;
+
 	public static void setAccplus92(int val)
 	{
 		accplus92 = val;
 	}
-	 	
+
 	public static void setEvasionplus92(int val)
 	{
 		evasionplus92 = val;
@@ -331,17 +356,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus92 = val;
 	}
-	
+
 	public static void setHpplus92(int val)
 	{
 		hpplus92 = val;
 	}
-	
+
 	public static void setMpplus92(int val)
 	{
 		mpplus92 = val;
 	}
-	
+
 	public static void setMatkplus92(int val)
 	{
 		matkplus92 = val;
@@ -371,7 +396,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus92 = val;
 	}
-	
+
+	public static void setWalkplus92(int val)
+	{
+		walkplus92 = val;
+	}
+
 	//Adventurer mods
 	public static int accplus93 = 0;
 	public static int evasionplus93 = 0;
@@ -384,12 +414,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus93 = 0;
 	public static int patksplus93 = 0;
 	public static int pdefplus93 = 0;
-	
+	public static int walkplus93 = 0;
+
 	public static void setAccplus93(int val)
 	{
 		accplus93 = val;
 	}
-	 	
+
 	public static void setEvasionplus93(int val)
 	{
 		evasionplus93 = val;
@@ -399,17 +430,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus93 = val;
 	}
-	
+
 	public static void setHpplus93(int val)
 	{
 		hpplus93 = val;
 	}
-	
+
 	public static void setMpplus93(int val)
 	{
 		mpplus93 = val;
 	}
-	
+
 	public static void setMatkplus93(int val)
 	{
 		matkplus93 = val;
@@ -439,7 +470,11 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus93 = val;
 	}
-	
+	public static void setWalkplus93(int val)
+	{
+		walkplus93 = val;
+	}
+
 	//Archmage mods
 	public static int accplus94 = 0;
 	public static int evasionplus94 = 0;
@@ -452,12 +487,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus94 = 0;
 	public static int patksplus94 = 0;
 	public static int pdefplus94 = 0;
-	
+	public static int walkplus94 = 0;
+
 	public static void setAccplus94(int val)
 	{
 		accplus94 = val;
 	}
-	 	
+
 	public static void setEvasionplus94(int val)
 	{
 		evasionplus94 = val;
@@ -467,17 +503,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus94 = val;
 	}
-	
+
 	public static void setHpplus94(int val)
 	{
 		hpplus94 = val;
 	}
-	
+
 	public static void setMpplus94(int val)
 	{
 		mpplus94 = val;
 	}
-	
+
 	public static void setMatkplus94(int val)
 	{
 		matkplus94 = val;
@@ -507,7 +543,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus94 = val;
 	}
-	
+
+	public static void setWalkplus94(int val)
+	{
+		walkplus94 = val;
+	}
+
 	//Soultaker mods
 	public static int accplus95 = 0;
 	public static int evasionplus95 = 0;
@@ -520,12 +561,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus95 = 0;
 	public static int patksplus95 = 0;
 	public static int pdefplus95 = 0;
-	
+	public static int walkplus95 = 0;
+
 	public static void setAccplus95(int val)
 	{
 		accplus95 = val;
 	}
-	 	
+
 	public static void setEvasionplus95(int val)
 	{
 		evasionplus95 = val;
@@ -535,17 +577,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus95 = val;
 	}
-	
+
 	public static void setHpplus95(int val)
 	{
 		hpplus95 = val;
 	}
-	
+
 	public static void setMpplus95(int val)
 	{
 		mpplus95 = val;
 	}
-	
+
 	public static void setMatkplus95(int val)
 	{
 		matkplus95 = val;
@@ -575,7 +617,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus95 = val;
 	}
-	
+
+	public static void setWalkplus95(int val)
+	{
+		walkplus95 = val;
+	}
+
 	//Arcana Lord mods
 	public static int accplus96 = 0;
 	public static int evasionplus96 = 0;
@@ -588,12 +635,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus96 = 0;
 	public static int patksplus96 = 0;
 	public static int pdefplus96 = 0;
-	
+	public static int walkplus96 = 0;
+
 	public static void setAccplus96(int val)
 	{
 		accplus96 = val;
 	}
-	 	
+
 	public static void setEvasionplus96(int val)
 	{
 		evasionplus96 = val;
@@ -603,17 +651,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus96 = val;
 	}
-	
+
 	public static void setHpplus96(int val)
 	{
 		hpplus96 = val;
 	}
-	
+
 	public static void setMpplus96(int val)
 	{
 		mpplus96 = val;
 	}
-	
+
 	public static void setMatkplus96(int val)
 	{
 		matkplus96 = val;
@@ -643,7 +691,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus96 = val;
 	}
-	
+
+	public static void setWalkplus96(int val)
+	{
+		walkplus96 = val;
+	}
+
 	//Cardinal mods
 	public static int accplus97 = 0;
 	public static int evasionplus97 = 0;
@@ -656,12 +709,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus97 = 0;
 	public static int patksplus97 = 0;
 	public static int pdefplus97 = 0;
-	
+	public static int walkplus97 = 0;
+
 	public static void setAccplus97(int val)
 	{
 		accplus97 = val;
 	}
-	 	
+
 	public static void setEvasionplus97(int val)
 	{
 		evasionplus97 = val;
@@ -671,17 +725,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus97 = val;
 	}
-	
+
 	public static void setHpplus97(int val)
 	{
 		hpplus97 = val;
 	}
-	
+
 	public static void setMpplus97(int val)
 	{
 		mpplus97 = val;
 	}
-	
+
 	public static void setMatkplus97(int val)
 	{
 		matkplus97 = val;
@@ -711,7 +765,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus97 = val;
 	}
-	
+
+	public static void setWalkplus97(int val)
+	{
+		walkplus97 = val;
+	}
+
 	//Hierophant mods
 	public static int accplus98 = 0;
 	public static int evasionplus98 = 0;
@@ -724,12 +783,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus98 = 0;
 	public static int patksplus98 = 0;
 	public static int pdefplus98 = 0;
-	
+	public static int walkplus98 = 0;
+
 	public static void setAccplus98(int val)
 	{
 		accplus98 = val;
 	}
-	 	
+
 	public static void setEvasionplus98(int val)
 	{
 		evasionplus98 = val;
@@ -739,17 +799,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus98 = val;
 	}
-	
+
 	public static void setHpplus98(int val)
 	{
 		hpplus98 = val;
 	}
-	
+
 	public static void setMpplus98(int val)
 	{
 		mpplus98 = val;
 	}
-	
+
 	public static void setMatkplus98(int val)
 	{
 		matkplus98 = val;
@@ -779,7 +839,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus98 = val;
 	}
-	
+
+	public static void setWalkplus98(int val)
+	{
+		walkplus98 = val;
+	}
+
 	//Eva Templar mods
 	public static int accplus99 = 0;
 	public static int evasionplus99 = 0;
@@ -792,12 +857,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus99 = 0;
 	public static int patksplus99 = 0;
 	public static int pdefplus99 = 0;
-	
+	public static int walkplus99 = 0;
+
 	public static void setAccplus99(int val)
 	{
 		accplus99 = val;
 	}
-	 	
+
 	public static void setEvasionplus99(int val)
 	{
 		evasionplus99 = val;
@@ -807,17 +873,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus99 = val;
 	}
-	
+
 	public static void setHpplus99(int val)
 	{
 		hpplus99 = val;
 	}
-	
+
 	public static void setMpplus99(int val)
 	{
 		mpplus99 = val;
 	}
-	
+
 	public static void setMatkplus99(int val)
 	{
 		matkplus99 = val;
@@ -847,7 +913,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus99 = val;
 	}
-	
+
+	public static void setWalkplus99(int val)
+	{
+		walkplus99 = val;
+	}
+
 	//Sword Muse mods
 	public static int accplus100 = 0;
 	public static int evasionplus100 = 0;
@@ -860,12 +931,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus100 = 0;
 	public static int patksplus100 = 0;
 	public static int pdefplus100 = 0;
-	
+	public static int walkplus100 = 0;
+
 	public static void setAccplus100(int val)
 	{
 		accplus100 = val;
 	}
-	 	
+
 	public static void setEvasionplus100(int val)
 	{
 		evasionplus100 = val;
@@ -875,17 +947,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus100 = val;
 	}
-	
+
 	public static void setHpplus100(int val)
 	{
 		hpplus100 = val;
 	}
-	
+
 	public static void setMpplus100(int val)
 	{
 		mpplus100 = val;
 	}
-	
+
 	public static void setMatkplus100(int val)
 	{
 		matkplus100 = val;
@@ -915,7 +987,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus100 = val;
 	}
-	
+
+	public static void setWalkplus100(int val)
+	{
+		walkplus100 = val;
+	}
+
 	//Wind Rider mods
 	public static int accplus101 = 0;
 	public static int evasionplus101 = 0;
@@ -928,12 +1005,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus101 = 0;
 	public static int patksplus101 = 0;
 	public static int pdefplus101 = 0;
-	
+	public static int walkplus101 = 0;
+
 	public static void setAccplus101(int val)
 	{
 		accplus101 = val;
 	}
-	 	
+
 	public static void setEvasionplus101(int val)
 	{
 		evasionplus101 = val;
@@ -943,17 +1021,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus101 = val;
 	}
-	
+
 	public static void setHpplus101(int val)
 	{
 		hpplus101 = val;
 	}
-	
+
 	public static void setMpplus101(int val)
 	{
 		mpplus101 = val;
 	}
-	
+
 	public static void setMatkplus101(int val)
 	{
 		matkplus101 = val;
@@ -983,7 +1061,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus101 = val;
 	}
-	
+
+	public static void setWalkplus101(int val)
+	{
+		walkplus101 = val;
+	}
+
 	//Moonlight Sentinel mods
 	public static int accplus102 = 0;
 	public static int evasionplus102 = 0;
@@ -996,12 +1079,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus102 = 0;
 	public static int patksplus102 = 0;
 	public static int pdefplus102 = 0;
-	
+	public static int walkplus102 = 0;
+
 	public static void setAccplus102(int val)
 	{
 		accplus102 = val;
 	}
-	 	
+
 	public static void setEvasionplus102(int val)
 	{
 		evasionplus102 = val;
@@ -1011,17 +1095,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus102 = val;
 	}
-	
+
 	public static void setHpplus102(int val)
 	{
 		hpplus102 = val;
 	}
-	
+
 	public static void setMpplus102(int val)
 	{
 		mpplus102 = val;
 	}
-	
+
 	public static void setMatkplus102(int val)
 	{
 		matkplus102 = val;
@@ -1051,7 +1135,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus102 = val;
 	}
-	
+
+	public static void setWalkplus102(int val)
+	{
+		walkplus102 = val;
+	}
+
 	//Mystic Muse mods
 	public static int accplus103 = 0;
 	public static int evasionplus103 = 0;
@@ -1064,12 +1153,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus103 = 0;
 	public static int patksplus103 = 0;
 	public static int pdefplus103 = 0;
-	
+	public static int walkplus103 = 0;
+
 	public static void setAccplus103(int val)
 	{
 		accplus103 = val;
 	}
-	 	
+
 	public static void setEvasionplus103(int val)
 	{
 		evasionplus103 = val;
@@ -1079,17 +1169,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus103 = val;
 	}
-	
+
 	public static void setHpplus103(int val)
 	{
 		hpplus103 = val;
 	}
-	
+
 	public static void setMpplus103(int val)
 	{
 		mpplus103 = val;
 	}
-	
+
 	public static void setMatkplus103(int val)
 	{
 		matkplus103 = val;
@@ -1119,7 +1209,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus103 = val;
 	}
-	
+
+	public static void setWalkplus103(int val)
+	{
+		walkplus103 = val;
+	}
+
 	//Elemental Master mods
 	public static int accplus104 = 0;
 	public static int evasionplus104 = 0;
@@ -1132,12 +1227,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus104 = 0;
 	public static int patksplus104 = 0;
 	public static int pdefplus104 = 0;
-	
+	public static int walkplus104 = 0;
+
 	public static void setAccplus104(int val)
 	{
 		accplus104 = val;
 	}
-	 	
+
 	public static void setEvasionplus104(int val)
 	{
 		evasionplus104 = val;
@@ -1147,17 +1243,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus104 = val;
 	}
-	
+
 	public static void setHpplus104(int val)
 	{
 		hpplus104 = val;
 	}
-	
+
 	public static void setMpplus104(int val)
 	{
 		mpplus104 = val;
 	}
-	
+
 	public static void setMatkplus104(int val)
 	{
 		matkplus104 = val;
@@ -1187,7 +1283,11 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus104 = val;
 	}
-	
+	public static void setWalkplus104(int val)
+	{
+		walkplus104 = val;
+	}
+
 	//Eva Saint mods
 	public static int accplus105 = 0;
 	public static int evasionplus105 = 0;
@@ -1200,12 +1300,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus105 = 0;
 	public static int patksplus105 = 0;
 	public static int pdefplus105 = 0;
-	
+	public static int walkplus105 = 0;
+
 	public static void setAccplus105(int val)
 	{
 		accplus105 = val;
 	}
-	 	
+
 	public static void setEvasionplus105(int val)
 	{
 		evasionplus105 = val;
@@ -1215,17 +1316,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus105 = val;
 	}
-	
+
 	public static void setHpplus105(int val)
 	{
 		hpplus105 = val;
 	}
-	
+
 	public static void setMpplus105(int val)
 	{
 		mpplus105 = val;
 	}
-	
+
 	public static void setMatkplus105(int val)
 	{
 		matkplus105 = val;
@@ -1255,7 +1356,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus105 = val;
 	}
-	
+
+	public static void setWalkplus105(int val)
+	{
+		walkplus105 = val;
+	}
+
 	//Shillien Templar mods
 	public static int accplus106 = 0;
 	public static int evasionplus106 = 0;
@@ -1268,12 +1374,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus106 = 0;
 	public static int patksplus106 = 0;
 	public static int pdefplus106 = 0;
-	
+	public static int walkplus106 = 0;
+
 	public static void setAccplus106(int val)
 	{
 		accplus106 = val;
 	}
-	 	
+
 	public static void setEvasionplus106(int val)
 	{
 		evasionplus106 = val;
@@ -1283,17 +1390,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus106 = val;
 	}
-	
+
 	public static void setHpplus106(int val)
 	{
 		hpplus106 = val;
 	}
-	
+
 	public static void setMpplus106(int val)
 	{
 		mpplus106 = val;
 	}
-	
+
 	public static void setMatkplus106(int val)
 	{
 		matkplus106 = val;
@@ -1323,7 +1430,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus106 = val;
 	}
-	
+
+	public static void setWalkplus106(int val)
+	{
+		walkplus106 = val;
+	}
+
 	//Spectral Dancer mods
 	public static int accplus107 = 0;
 	public static int evasionplus107 = 0;
@@ -1336,12 +1448,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus107 = 0;
 	public static int patksplus107 = 0;
 	public static int pdefplus107 = 0;
-	
+	public static int walkplus107 = 0;
+
 	public static void setAccplus107(int val)
 	{
 		accplus107 = val;
 	}
-	 	
+
 	public static void setEvasionplus107(int val)
 	{
 		evasionplus107 = val;
@@ -1351,17 +1464,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus107 = val;
 	}
-	
+
 	public static void setHpplus107(int val)
 	{
 		hpplus107 = val;
 	}
-	
+
 	public static void setMpplus107(int val)
 	{
 		mpplus107 = val;
 	}
-	
+
 	public static void setMatkplus107(int val)
 	{
 		matkplus107 = val;
@@ -1391,7 +1504,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus107 = val;
 	}
-	
+
+	public static void setWalkplus107(int val)
+	{
+		walkplus107 = val;
+	}
+
 	//Ghost Hunter mods
 	public static int accplus108 = 0;
 	public static int evasionplus108 = 0;
@@ -1404,12 +1522,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus108 = 0;
 	public static int patksplus108 = 0;
 	public static int pdefplus108 = 0;
-	
+	public static int walkplus108 = 0;
+
 	public static void setAccplus108(int val)
 	{
 		accplus108 = val;
 	}
-	 	
+
 	public static void setEvasionplus108(int val)
 	{
 		evasionplus108 = val;
@@ -1419,17 +1538,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus108 = val;
 	}
-	
+
 	public static void setHpplus108(int val)
 	{
 		hpplus108 = val;
 	}
-	
+
 	public static void setMpplus108(int val)
 	{
 		mpplus108 = val;
 	}
-	
+
 	public static void setMatkplus108(int val)
 	{
 		matkplus108 = val;
@@ -1459,7 +1578,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus108 = val;
 	}
-	
+
+	public static void setWalkplus108(int val)
+	{
+		walkplus108 = val;
+	}
+
 	//Ghost Sentinel mods
 	public static int accplus109 = 0;
 	public static int evasionplus109 = 0;
@@ -1472,12 +1596,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus109 = 0;
 	public static int patksplus109 = 0;
 	public static int pdefplus109 = 0;
-	
+	public static int walkplus109 = 0;
+
 	public static void setAccplus109(int val)
 	{
 		accplus109 = val;
 	}
-	 	
+
 	public static void setEvasionplus109(int val)
 	{
 		evasionplus109 = val;
@@ -1487,17 +1612,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus109 = val;
 	}
-	
+
 	public static void setHpplus109(int val)
 	{
 		hpplus109 = val;
 	}
-	
+
 	public static void setMpplus109(int val)
 	{
 		mpplus109 = val;
 	}
-	
+
 	public static void setMatkplus109(int val)
 	{
 		matkplus109 = val;
@@ -1527,7 +1652,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus109 = val;
 	}
-	
+
+	public static void setWalkplus109(int val)
+	{
+		walkplus109 = val;
+	}
+
 	//Storm Screamer mods
 	public static int accplus110 = 0;
 	public static int evasionplus110 = 0;
@@ -1540,12 +1670,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus110 = 0;
 	public static int patksplus110 = 0;
 	public static int pdefplus110 = 0;
-	
+	public static int walkplus110 = 0;
+
 	public static void setAccplus110(int val)
 	{
 		accplus110 = val;
 	}
-	 	
+
 	public static void setEvasionplus110(int val)
 	{
 		evasionplus110 = val;
@@ -1555,17 +1686,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus110 = val;
 	}
-	
+
 	public static void setHpplus110(int val)
 	{
 		hpplus110 = val;
 	}
-	
+
 	public static void setMpplus110(int val)
 	{
 		mpplus110 = val;
 	}
-	
+
 	public static void setMatkplus110(int val)
 	{
 		matkplus110 = val;
@@ -1595,7 +1726,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus110 = val;
 	}
-	
+
+	public static void setWalkplus110(int val)
+	{
+		walkplus110 = val;
+	}
+
 	//Spectral Master mods
 	public static int accplus111 = 0;
 	public static int evasionplus111 = 0;
@@ -1608,12 +1744,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus111 = 0;
 	public static int patksplus111 = 0;
 	public static int pdefplus111 = 0;
-	
+	public static int walkplus111 = 0;
+
 	public static void setAccplus111(int val)
 	{
 		accplus111 = val;
 	}
-	 	
+
 	public static void setEvasionplus111(int val)
 	{
 		evasionplus111 = val;
@@ -1623,17 +1760,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus111 = val;
 	}
-	
+
 	public static void setHpplus111(int val)
 	{
 		hpplus111 = val;
 	}
-	
+
 	public static void setMpplus111(int val)
 	{
 		mpplus111 = val;
 	}
-	
+
 	public static void setMatkplus111(int val)
 	{
 		matkplus111 = val;
@@ -1663,7 +1800,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus111 = val;
 	}
-	
+
+	public static void setWalkplus111(int val)
+	{
+		walkplus111 = val;
+	}
+
 	//Shillen Saint mods
 	public static int accplus112 = 0;
 	public static int evasionplus112 = 0;
@@ -1676,12 +1818,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus112 = 0;
 	public static int patksplus112 = 0;
 	public static int pdefplus112 = 0;
-	
+	public static int walkplus112 = 0;
+
 	public static void setAccplus112(int val)
 	{
 		accplus112 = val;
 	}
-	 	
+
 	public static void setEvasionplus112(int val)
 	{
 		evasionplus112 = val;
@@ -1691,17 +1834,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus112 = val;
 	}
-	
+
 	public static void setHpplus112(int val)
 	{
 		hpplus112 = val;
 	}
-	
+
 	public static void setMpplus112(int val)
 	{
 		mpplus112 = val;
 	}
-	
+
 	public static void setMatkplus112(int val)
 	{
 		matkplus112 = val;
@@ -1731,7 +1874,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus112 = val;
 	}
-	
+
+	public static void setWalkplus112(int val)
+	{
+		walkplus112 = val;
+	}
+
 	//Titan mods
 	public static int accplus113 = 0;
 	public static int evasionplus113 = 0;
@@ -1744,12 +1892,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus113 = 0;
 	public static int patksplus113 = 0;
 	public static int pdefplus113 = 0;
-	
+	public static int walkplus113 = 0;
+
 	public static void setAccplus113(int val)
 	{
 		accplus113 = val;
 	}
-	 	
+
 	public static void setEvasionplus113(int val)
 	{
 		evasionplus113 = val;
@@ -1759,17 +1908,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus113 = val;
 	}
-	
+
 	public static void setHpplus113(int val)
 	{
 		hpplus113 = val;
 	}
-	
+
 	public static void setMpplus113(int val)
 	{
 		mpplus113 = val;
 	}
-	
+
 	public static void setMatkplus113(int val)
 	{
 		matkplus113 = val;
@@ -1799,7 +1948,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus113 = val;
 	}
-	
+
+	public static void setWalkplus113(int val)
+	{
+		walkplus113 = val;
+	}
+
 	//Grand Khauatari mods
 	public static int accplus114 = 0;
 	public static int evasionplus114 = 0;
@@ -1812,12 +1966,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus114 = 0;
 	public static int patksplus114 = 0;
 	public static int pdefplus114 = 0;
-	
+	public static int walkplus114 = 0;
+
 	public static void setAccplus114(int val)
 	{
 		accplus114 = val;
 	}
-	 	
+
 	public static void setEvasionplus114(int val)
 	{
 		evasionplus114 = val;
@@ -1827,17 +1982,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus114 = val;
 	}
-	
+
 	public static void setHpplus114(int val)
 	{
 		hpplus114 = val;
 	}
-	
+
 	public static void setMpplus114(int val)
 	{
 		mpplus114 = val;
 	}
-	
+
 	public static void setMatkplus114(int val)
 	{
 		matkplus114 = val;
@@ -1867,7 +2022,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus114 = val;
 	}
-	
+
+	public static void setWalkplus114(int val)
+	{
+		walkplus114 = val;
+	}
+
 	//Dominator mods
 	public static int accplus115 = 0;
 	public static int evasionplus115 = 0;
@@ -1880,12 +2040,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus115 = 0;
 	public static int patksplus115 = 0;
 	public static int pdefplus115 = 0;
-	
+	public static int walkplus115 = 0;
+
 	public static void setAccplus115(int val)
 	{
 		accplus115 = val;
 	}
-	 	
+
 	public static void setEvasionplus115(int val)
 	{
 		evasionplus115 = val;
@@ -1895,17 +2056,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus115 = val;
 	}
-	
+
 	public static void setHpplus115(int val)
 	{
 		hpplus115 = val;
 	}
-	
+
 	public static void setMpplus115(int val)
 	{
 		mpplus115 = val;
 	}
-	
+
 	public static void setMatkplus115(int val)
 	{
 		matkplus115 = val;
@@ -1935,7 +2096,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus115 = val;
 	}
-	
+
+	public static void setWalkplus115(int val)
+	{
+		walkplus115 = val;
+	}
+
 	//Doomcryer mods
 	public static int accplus116 = 0;
 	public static int evasionplus116 = 0;
@@ -1948,12 +2114,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus116 = 0;
 	public static int patksplus116 = 0;
 	public static int pdefplus116 = 0;
-	
+	public static int walkplus116 = 0;
+
 	public static void setAccplus116(int val)
 	{
 		accplus116 = val;
 	}
-	 	
+
 	public static void setEvasionplus116(int val)
 	{
 		evasionplus116 = val;
@@ -1963,17 +2130,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus116 = val;
 	}
-	
+
 	public static void setHpplus116(int val)
 	{
 		hpplus116 = val;
 	}
-	
+
 	public static void setMpplus116(int val)
 	{
 		mpplus116 = val;
 	}
-	
+
 	public static void setMatkplus116(int val)
 	{
 		matkplus116 = val;
@@ -2003,7 +2170,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus116 = val;
 	}
-	
+
+	public static void setWalkplus116(int val)
+	{
+		walkplus116 = val;
+	}
+
 	//Fortune Seeker mods
 	public static int accplus117 = 0;
 	public static int evasionplus117 = 0;
@@ -2016,12 +2188,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus117 = 0;
 	public static int patksplus117 = 0;
 	public static int pdefplus117 = 0;
-	
+	public static int walkplus117 = 0;
+
 	public static void setAccplus117(int val)
 	{
 		accplus117 = val;
 	}
-	 	
+
 	public static void setEvasionplus117(int val)
 	{
 		evasionplus117 = val;
@@ -2031,17 +2204,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus117 = val;
 	}
-	
+
 	public static void setHpplus117(int val)
 	{
 		hpplus117 = val;
 	}
-	
+
 	public static void setMpplus117(int val)
 	{
 		mpplus117 = val;
 	}
-	
+
 	public static void setMatkplus117(int val)
 	{
 		matkplus117 = val;
@@ -2071,7 +2244,12 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus117 = val;
 	}
-	
+
+	public static void setWalkplus117(int val)
+	{
+		walkplus117 = val;
+	}
+
 	//Maestro mods
 	public static int accplus118 = 0;
 	public static int evasionplus118 = 0;
@@ -2084,12 +2262,13 @@ public class BalancerMain extends CharStat
 	public static int patkplus118 = 0;
 	public static int patksplus118 = 0;
 	public static int pdefplus118 = 0;
-	
+	public static int walkplus118 = 0;
+
 	public static void setAccplus118(int val)
 	{
 		accplus118 = val;
 	}
-	 	
+
 	public static void setEvasionplus118(int val)
 	{
 		evasionplus118 = val;
@@ -2099,17 +2278,17 @@ public class BalancerMain extends CharStat
 	{
 		cpplus118 = val;
 	}
-	
+
 	public static void setHpplus118(int val)
 	{
 		hpplus118 = val;
 	}
-	
+
 	public static void setMpplus118(int val)
 	{
 		mpplus118 = val;
 	}
-	
+
 	public static void setMatkplus118(int val)
 	{
 		matkplus118 = val;
@@ -2139,13 +2318,19 @@ public class BalancerMain extends CharStat
 	{
 		pdefplus118 = val;
 	}
-	
+
+	public static void setWalkplus118(int val)
+	{
+		walkplus118 = val;
+	}
+
 	public static void handleCommands(L2GameClient client, String command)
 	{
 		final L2PcInstance activeChar = client.getActiveChar();
 		if (activeChar == null)
 			return;
-		
+
+		// 88 +
 		if (command.equals("addmatk88"))
  		{
 			setMatkplus88(matkplus88 + 100);
@@ -2212,6 +2397,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk88"))
+ 		{
+			setWalkplus88(walkplus88 + 1);
+			Balancer.mainHtml(activeChar, 88);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 88 -
 		else if (command.equals("remmatk88"))
  		{
 			setMatkplus88(matkplus88 - 100);
@@ -2278,6 +2470,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 88);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("remwalk88"))
+ 		{
+			setWalkplus88(walkplus88 - 1);
+			Balancer.mainHtml(activeChar, 88);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		//89 +
 		else if (command.equals("addmatk89"))
  		{
 			setMatkplus89(matkplus89 + 100);
@@ -2344,6 +2543,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk89"))
+ 		{
+			setWalkplus89(walkplus89 + 1);
+			Balancer.mainHtml(activeChar, 89);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 89 -
 		else if (command.equals("remmatk89"))
  		{
 			setMatkplus89(matkplus89 - 100);
@@ -2410,7 +2616,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 89);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk89"))
+ 		{
+			setWalkplus89(walkplus89 - 1);
+			Balancer.mainHtml(activeChar, 89);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 90 +
 		else if (command.equals("addmatk90"))
  		{
 			setMatkplus90(matkplus90 + 100);
@@ -2477,6 +2689,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk90"))
+ 		{
+			setWalkplus90(walkplus90 + 1);
+			Balancer.mainHtml(activeChar, 90);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 90 -
 		else if (command.equals("remmatk90"))
  		{
 			setMatkplus90(matkplus90 - 100);
@@ -2543,7 +2762,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 90);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk90"))
+ 		{
+			setWalkplus90(walkplus90 - 1);
+			Balancer.mainHtml(activeChar, 90);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 91 +
 		else if (command.equals("addmatk91"))
  		{
 			setMatkplus91(matkplus91 + 100);
@@ -2610,6 +2835,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk91"))
+ 		{
+			setWalkplus91(walkplus91 + 1);
+			Balancer.mainHtml(activeChar, 91);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 91 -
 		else if (command.equals("remmatk91"))
  		{
 			setMatkplus91(matkplus91 - 100);
@@ -2676,7 +2908,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 91);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk91"))
+ 		{
+			setWalkplus91(walkplus91 - 1);
+			Balancer.mainHtml(activeChar, 91);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 92 +
 		else if (command.equals("addmatk92"))
  		{
 			setMatkplus92(matkplus92 + 100);
@@ -2743,6 +2981,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk92"))
+ 		{
+			setWalkplus92(walkplus92 + 1);
+			Balancer.mainHtml(activeChar, 92);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 92 -
 		else if (command.equals("remmatk92"))
  		{
 			setMatkplus92(matkplus92 - 100);
@@ -2809,7 +3054,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 92);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk92"))
+ 		{
+			setWalkplus92(walkplus92 - 1);
+			Balancer.mainHtml(activeChar, 92);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 93 +
 		else if (command.equals("addmatk93"))
  		{
 			setMatkplus93(matkplus93 + 100);
@@ -2876,6 +3127,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk93"))
+ 		{
+			setWalkplus93(walkplus93 + 1);
+			Balancer.mainHtml(activeChar, 93);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 93 -
 		else if (command.equals("remmatk93"))
  		{
 			setMatkplus93(matkplus93 - 100);
@@ -2942,7 +3200,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 93);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk93"))
+ 		{
+			setWalkplus93(walkplus93 - 1);
+			Balancer.mainHtml(activeChar, 93);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 94 +
 		else if (command.equals("addmatk94"))
  		{
 			setMatkplus94(matkplus94 + 100);
@@ -3009,6 +3273,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk94"))
+ 		{
+			setWalkplus94(walkplus94 + 1);
+			Balancer.mainHtml(activeChar, 94);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 94 -
 		else if (command.equals("remmatk94"))
  		{
 			setMatkplus94(matkplus94 - 100);
@@ -3075,7 +3346,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 94);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk94"))
+ 		{
+			setWalkplus94(walkplus94 - 1);
+			Balancer.mainHtml(activeChar, 94);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 95 +
 		else if (command.equals("addmatk95"))
  		{
 			setMatkplus95(matkplus95 + 100);
@@ -3142,6 +3419,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk95"))
+ 		{
+			setWalkplus95(walkplus95 + 1);
+			Balancer.mainHtml(activeChar, 95);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 95 -
 		else if (command.equals("remmatk95"))
  		{
 			setMatkplus95(matkplus95 - 100);
@@ -3208,7 +3492,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 95);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk95"))
+ 		{
+			setWalkplus95(walkplus95 - 1);
+			Balancer.mainHtml(activeChar, 95);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 96 +
 		else if (command.equals("addmatk96"))
  		{
 			setMatkplus96(matkplus96 + 100);
@@ -3275,6 +3565,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk96"))
+ 		{
+			setWalkplus96(walkplus96 + 1);
+			Balancer.mainHtml(activeChar, 96);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 96 -
 		else if (command.equals("remmatk96"))
  		{
 			setMatkplus96(matkplus96 - 100);
@@ -3341,7 +3638,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 96);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk96"))
+ 		{
+			setWalkplus96(walkplus96 - 1);
+			Balancer.mainHtml(activeChar, 96);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 97 +
 		else if (command.equals("addmatk97"))
  		{
 			setMatkplus97(matkplus97 + 100);
@@ -3408,6 +3711,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk97"))
+ 		{
+			setWalkplus97(walkplus97 + 1);
+			Balancer.mainHtml(activeChar, 97);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 97 -
 		else if (command.equals("remmatk97"))
  		{
 			setMatkplus97(matkplus97 - 100);
@@ -3474,7 +3784,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 97);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk97"))
+ 		{
+			setWalkplus97(walkplus97 - 1);
+			Balancer.mainHtml(activeChar, 97);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 98 +
 		else if (command.equals("addmatk98"))
  		{
 			setMatkplus98(matkplus98 + 100);
@@ -3541,6 +3857,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk98"))
+ 		{
+			setWalkplus98(walkplus98 + 1);
+			Balancer.mainHtml(activeChar, 98);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 98 -
 		else if (command.equals("remmatk98"))
  		{
 			setMatkplus98(matkplus98 - 100);
@@ -3607,7 +3930,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 98);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk98"))
+ 		{
+			setWalkplus98(walkplus98 - 1);
+			Balancer.mainHtml(activeChar, 98);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 99 +
 		else if (command.equals("addmatk99"))
  		{
 			setMatkplus99(matkplus99 + 100);
@@ -3674,6 +4003,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk99"))
+ 		{
+			setWalkplus99(walkplus99 + 1);
+			Balancer.mainHtml(activeChar, 99);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 99 -
 		else if (command.equals("remmatk99"))
  		{
 			setMatkplus99(matkplus99 - 100);
@@ -3740,7 +4076,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 99);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk99"))
+ 		{
+			setWalkplus99(walkplus99 - 1);
+			Balancer.mainHtml(activeChar, 99);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 100 +
 		else if (command.equals("addmatk100"))
  		{
 			setMatkplus100(matkplus100 + 100);
@@ -3807,6 +4149,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk100"))
+ 		{
+			setWalkplus100(walkplus100 + 1);
+			Balancer.mainHtml(activeChar, 100);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 100 -
 		else if (command.equals("remmatk100"))
  		{
 			setMatkplus100(matkplus100 - 100);
@@ -3873,7 +4222,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 100);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk100"))
+ 		{
+			setWalkplus100(walkplus100 - 1);
+			Balancer.mainHtml(activeChar, 100);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 101 +
 		else if (command.equals("addmatk101"))
  		{
 			setMatkplus101(matkplus101 + 100);
@@ -3940,6 +4295,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk101"))
+ 		{
+			setWalkplus101(walkplus101 + 1);
+			Balancer.mainHtml(activeChar, 101);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 101 -
 		else if (command.equals("remmatk101"))
  		{
 			setMatkplus101(matkplus101 - 100);
@@ -4006,7 +4368,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 101);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk101"))
+ 		{
+			setWalkplus101(walkplus101 - 1);
+			Balancer.mainHtml(activeChar, 101);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 102 +
 		else if (command.equals("addmatk102"))
  		{
 			setMatkplus102(matkplus102 + 100);
@@ -4073,6 +4441,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk102"))
+ 		{
+			setWalkplus102(walkplus102 + 1);
+			Balancer.mainHtml(activeChar, 102);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 102 -
 		else if (command.equals("remmatk102"))
  		{
 			setMatkplus102(matkplus102 - 100);
@@ -4139,7 +4514,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 102);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk102"))
+ 		{
+			setWalkplus102(walkplus102 - 1);
+			Balancer.mainHtml(activeChar, 102);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 103 +
 		else if (command.equals("addmatk103"))
  		{
 			setMatkplus103(matkplus103 + 100);
@@ -4206,6 +4587,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk103"))
+ 		{
+			setWalkplus103(walkplus103 + 1);
+			Balancer.mainHtml(activeChar, 103);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 103 -
 		else if (command.equals("remmatk103"))
  		{
 			setMatkplus103(matkplus103 - 100);
@@ -4272,7 +4660,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 103);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk103"))
+ 		{
+			setWalkplus103(walkplus103 - 1);
+			Balancer.mainHtml(activeChar, 103);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 104 +
 		else if (command.equals("addmatk104"))
  		{
 			setMatkplus104(matkplus104 + 100);
@@ -4339,6 +4733,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk104"))
+ 		{
+			setWalkplus104(walkplus104 + 1);
+			Balancer.mainHtml(activeChar, 104);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 104 -
 		else if (command.equals("remmatk104"))
  		{
 			setMatkplus104(matkplus104 - 100);
@@ -4405,7 +4806,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 104);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk104"))
+ 		{
+			setWalkplus104(walkplus104 - 1);
+			Balancer.mainHtml(activeChar, 104);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 105 +
 		else if (command.equals("addmatk105"))
  		{
 			setMatkplus105(matkplus105 + 100);
@@ -4472,6 +4879,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 105);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk105"))
+ 		{
+			setWalkplus105(walkplus105 + 1);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 105 -
 		else if (command.equals("remmatk105"))
  		{
 			setMatkplus105(matkplus105 - 100);
@@ -4538,7 +4952,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 105);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk105"))
+ 		{
+			setWalkplus105(walkplus105 - 1);
+			Balancer.mainHtml(activeChar, 105);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 106 +
 		else if (command.equals("addmatk106"))
  		{
 			setMatkplus106(matkplus106 + 100);
@@ -4605,6 +5025,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 106);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk106"))
+ 		{
+			setWalkplus106(walkplus106 + 1);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 106 -
 		else if (command.equals("remmatk106"))
  		{
 			setMatkplus106(matkplus106 - 100);
@@ -4671,7 +5098,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 106);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk106"))
+ 		{
+			setWalkplus106(walkplus106 - 1);
+			Balancer.mainHtml(activeChar, 106);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 107 +
 		else if (command.equals("addmatk107"))
  		{
 			setMatkplus107(matkplus107 + 100);
@@ -4738,6 +5171,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 107);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk107"))
+ 		{
+			setWalkplus107(walkplus107 + 1);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 107 -
 		else if (command.equals("remmatk107"))
  		{
 			setMatkplus107(matkplus107 - 100);
@@ -4804,7 +5244,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 107);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk107"))
+ 		{
+			setWalkplus107(walkplus107 - 1);
+			Balancer.mainHtml(activeChar, 107);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 108 +
 		else if (command.equals("addmatk108"))
  		{
 			setMatkplus108(matkplus108 + 100);
@@ -4871,6 +5317,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 108);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk108"))
+ 		{
+			setWalkplus108(walkplus108 + 1);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 108 -
 		else if (command.equals("remmatk108"))
  		{
 			setMatkplus108(matkplus108 - 100);
@@ -4937,7 +5390,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 108);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk108"))
+ 		{
+			setWalkplus108(walkplus108 - 1);
+			Balancer.mainHtml(activeChar, 108);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 109 +
 		else if (command.equals("addmatk109"))
  		{
 			setMatkplus109(matkplus109 + 100);
@@ -5004,6 +5463,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 109);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk109"))
+ 		{
+			setWalkplus109(walkplus109 + 1);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 109 -
 		else if (command.equals("remmatk109"))
  		{
 			setMatkplus109(matkplus109 - 100);
@@ -5070,7 +5536,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 109);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk109"))
+ 		{
+			setWalkplus109(walkplus109 - 1);
+			Balancer.mainHtml(activeChar, 109);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 110 +
 		else if (command.equals("addmatk110"))
  		{
 			setMatkplus110(matkplus110 + 100);
@@ -5137,6 +5609,7 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 110);
  			activeChar.broadcastUserInfo();
  		}
+		// 110 -
 		else if (command.equals("remmatk110"))
  		{
 			setMatkplus110(matkplus110 - 100);
@@ -5203,7 +5676,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 110);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk110"))
+ 		{
+			setWalkplus110(walkplus110 - 1);
+			Balancer.mainHtml(activeChar, 110);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 111 +
 		else if (command.equals("addmatk111"))
  		{
 			setMatkplus111(matkplus111 + 100);
@@ -5270,6 +5749,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 111);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk111"))
+ 		{
+			setWalkplus111(walkplus111 + 1);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 111 -
 		else if (command.equals("remmatk111"))
  		{
 			setMatkplus111(matkplus111 - 100);
@@ -5336,7 +5822,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 111);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk111"))
+ 		{
+			setWalkplus111(walkplus111 - 1);
+			Balancer.mainHtml(activeChar, 111);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 112 +
 		else if (command.equals("addmatk112"))
  		{
 			setMatkplus112(matkplus112 + 100);
@@ -5403,6 +5895,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 112);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk112"))
+ 		{
+			setWalkplus112(walkplus112 + 1);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 112 -
 		else if (command.equals("remmatk112"))
  		{
 			setMatkplus112(matkplus112 - 100);
@@ -5469,7 +5968,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 112);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk112"))
+ 		{
+			setWalkplus112(walkplus112 - 1);
+			Balancer.mainHtml(activeChar, 112);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 113 +
 		else if (command.equals("addmatk113"))
  		{
 			setMatkplus113(matkplus113 + 100);
@@ -5536,6 +6041,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 113);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk113"))
+ 		{
+			setWalkplus113(walkplus113 + 1);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 113 -
 		else if (command.equals("remmatk113"))
  		{
 			setMatkplus113(matkplus113 - 100);
@@ -5602,7 +6114,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 113);
  			activeChar.broadcastUserInfo();
  		}
-		
+		else if (command.equals("remwalk113"))
+ 		{
+			setWalkplus113(walkplus113 - 1);
+			Balancer.mainHtml(activeChar, 113);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 114 +
 		else if (command.equals("addmatk114"))
  		{
 			setMatkplus114(matkplus114 + 100);
@@ -5669,6 +6187,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 114);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk114"))
+ 		{
+			setWalkplus114(walkplus114 + 1);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 114 -
 		else if (command.equals("remmatk114"))
  		{
 			setMatkplus114(matkplus114 - 100);
@@ -5735,7 +6260,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 114);
  			activeChar.broadcastUserInfo();
  		}
-		
+		else if (command.equals("remwalk114"))
+ 		{
+			setWalkplus114(walkplus114 - 1);
+			Balancer.mainHtml(activeChar, 114);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 115 +
 		else if (command.equals("addmatk115"))
  		{
 			setMatkplus115(matkplus115 + 100);
@@ -5802,6 +6333,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 115);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk115"))
+ 		{
+			setWalkplus115(walkplus115 + 1);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 115 -
 		else if (command.equals("remmatk115"))
  		{
 			setMatkplus115(matkplus115 - 100);
@@ -5868,7 +6406,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 115);
  			activeChar.broadcastUserInfo();
  		}
-		
+		else if (command.equals("remwalk115"))
+ 		{
+			setWalkplus115(walkplus115 - 1);
+			Balancer.mainHtml(activeChar, 115);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 116 +
 		else if (command.equals("addmatk116"))
  		{
 			setMatkplus116(matkplus116 + 100);
@@ -5935,6 +6479,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 116);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk116"))
+ 		{
+			setWalkplus116(walkplus116 + 1);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 116 -
 		else if (command.equals("remmatk116"))
  		{
 			setMatkplus116(matkplus116 - 100);
@@ -6001,7 +6552,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 116);
  			activeChar.broadcastUserInfo();
  		}
-		
+		else if (command.equals("remwalk116"))
+ 		{
+			setWalkplus116(walkplus116 - 1);
+			Balancer.mainHtml(activeChar, 116);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 117 +
 		else if (command.equals("addmatk117"))
  		{
 			setMatkplus117(matkplus117 + 100);
@@ -6068,6 +6625,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 117);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk117"))
+ 		{
+			setWalkplus117(walkplus117 + 1);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 117 -
 		else if (command.equals("remmatk117"))
  		{
 			setMatkplus117(matkplus117 - 100);
@@ -6134,7 +6698,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 117);
  			activeChar.broadcastUserInfo();
  		}
-		
+		else if (command.equals("remwalk117"))
+ 		{
+			setWalkplus117(walkplus117 - 1);
+			Balancer.mainHtml(activeChar, 117);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 118 +
 		else if (command.equals("addmatk118"))
  		{
 			setMatkplus118(matkplus118 + 100);
@@ -6201,6 +6771,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 118);
  			activeChar.broadcastUserInfo();
  		}
+		else if (command.equals("addwalk118"))
+ 		{
+			setWalkplus118(walkplus118 + 1);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+		// 118 -
 		else if (command.equals("remmatk118"))
  		{
 			setMatkplus118(matkplus118 - 100);
@@ -6267,7 +6844,13 @@ public class BalancerMain extends CharStat
 			Balancer.mainHtml(activeChar, 118);
  			activeChar.broadcastUserInfo();
  		}
- 		
+		else if (command.equals("remwalk118"))
+ 		{
+			setWalkplus118(walkplus118 - 1);
+			Balancer.mainHtml(activeChar, 118);
+ 			activeChar.broadcastUserInfo();
+ 		}
+
 		// return main html
  		else if(command.equals("edit88"))
  		{
@@ -6581,7 +7164,7 @@ public class BalancerMain extends CharStat
  			Balancer.mainHtml(activeChar, 118);
  		}
  	}
- 	
+
 	@Override
 	public final L2PcInstance getActiveChar()
 	{

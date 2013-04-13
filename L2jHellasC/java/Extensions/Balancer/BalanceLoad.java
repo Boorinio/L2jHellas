@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -17,61 +17,58 @@ package Extensions.Balancer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 
 public class BalanceLoad
 {
 	private static final Logger _log = Logger.getLogger(BalanceSave.class.getName());
 
-	private static final String RESTORE_BALANCE = 
-	"SELECT accplus88,evasionplus88,hpplus88,cpplus88,mpplus88,matkplus88,matksplus88,mdefplus88,patkplus88,patksplus88,pdefplus88," +
-			"accplus89,evasionplus89,hpplus89,cpplus89,mpplus89,matkplus89,matksplus89,mdefplus89,patkplus89,patksplus89,pdefplus89, " +
-			"accplus90,evasionplus90,hpplus90,cpplus90,mpplus90,matkplus90,matksplus90,mdefplus90,patkplus90,patksplus90,pdefplus90, " +
-			"accplus91,evasionplus91,hpplus91,cpplus91,mpplus91,matkplus91,matksplus91,mdefplus91,patkplus91,patksplus91,pdefplus91, " +
-			"accplus92,evasionplus92,hpplus92,cpplus92,mpplus92,matkplus92,matksplus92,mdefplus92,patkplus92,patksplus92,pdefplus92, " +
-			"accplus93,evasionplus93,hpplus93,cpplus93,mpplus93,matkplus93,matksplus93,mdefplus93,patkplus93,patksplus93,pdefplus93, " +
-			"accplus94,evasionplus94,hpplus94,cpplus94,mpplus94,matkplus94,matksplus94,mdefplus94,patkplus94,patksplus94,pdefplus94, " +
-			"accplus95,evasionplus95,hpplus95,cpplus95,mpplus95,matkplus95,matksplus95,mdefplus95,patkplus95,patksplus95,pdefplus95, " +
-			"accplus96,evasionplus96,hpplus96,cpplus96,mpplus96,matkplus96,matksplus96,mdefplus96,patkplus96,patksplus96,pdefplus96, " +
-			"accplus97,evasionplus97,hpplus97,cpplus97,mpplus97,matkplus97,matksplus97,mdefplus97,patkplus97,patksplus97,pdefplus97, " +
-			"accplus98,evasionplus98,hpplus98,cpplus98,mpplus98,matkplus98,matksplus98,mdefplus98,patkplus98,patksplus98,pdefplus98, " +
-			"accplus99,evasionplus99,hpplus99,cpplus99,mpplus99,matkplus99,matksplus99,mdefplus99,patkplus99,patksplus99,pdefplus99, " +
-			"accplus100,evasionplus100,hpplus100,cpplus100,mpplus100,matkplus100,matksplus100,mdefplus100,patkplus100,patksplus100,pdefplus100, " +
-			"accplus101,evasionplus101,hpplus101,cpplus101,mpplus101,matkplus101,matksplus101,mdefplus101,patkplus101,patksplus101,pdefplus101, " +
-			"accplus102,evasionplus102,hpplus102,cpplus102,mpplus102,matkplus102,matksplus102,mdefplus102,patkplus102,patksplus102,pdefplus102, " +
-			"accplus103,evasionplus103,hpplus103,cpplus103,mpplus103,matkplus103,matksplus103,mdefplus103,patkplus103,patksplus103,pdefplus103, " +
-			"accplus104,evasionplus104,hpplus104,cpplus104,mpplus104,matkplus104,matksplus104,mdefplus104,patkplus104,patksplus104,pdefplus104, " +
-			"accplus105,evasionplus105,hpplus105,cpplus105,mpplus105,matkplus105,matksplus105,mdefplus105,patkplus105,patksplus105,pdefplus105, " +
-			"accplus106,evasionplus106,hpplus106,cpplus106,mpplus106,matkplus106,matksplus106,mdefplus106,patkplus106,patksplus106,pdefplus106, " +
-			"accplus107,evasionplus107,hpplus107,cpplus107,mpplus107,matkplus107,matksplus107,mdefplus107,patkplus107,patksplus107,pdefplus107, " +
-			"accplus108,evasionplus108,hpplus108,cpplus108,mpplus108,matkplus108,matksplus108,mdefplus108,patkplus108,patksplus108,pdefplus108, " +
-			"accplus109,evasionplus109,hpplus109,cpplus109,mpplus109,matkplus109,matksplus109,mdefplus109,patkplus109,patksplus109,pdefplus109, " +
-			"accplus110,evasionplus110,hpplus110,cpplus110,mpplus110,matkplus110,matksplus110,mdefplus110,patkplus110,patksplus110,pdefplus110, " +
-			"accplus111,evasionplus111,hpplus111,cpplus111,mpplus111,matkplus111,matksplus111,mdefplus111,patkplus111,patksplus111,pdefplus111, " +
-			"accplus112,evasionplus112,hpplus112,cpplus112,mpplus112,matkplus112,matksplus112,mdefplus112,patkplus112,patksplus112,pdefplus112, " +
-			"accplus113,evasionplus113,hpplus113,cpplus113,mpplus113,matkplus113,matksplus113,mdefplus113,patkplus113,patksplus113,pdefplus113, " +
-			"accplus114,evasionplus114,hpplus114,cpplus114,mpplus114,matkplus114,matksplus114,mdefplus114,patkplus114,patksplus114,pdefplus114, " +
-			"accplus115,evasionplus115,hpplus115,cpplus115,mpplus115,matkplus115,matksplus115,mdefplus115,patkplus115,patksplus115,pdefplus115, " +
-			"accplus116,evasionplus116,hpplus116,cpplus116,mpplus116,matkplus116,matksplus116,mdefplus116,patkplus116,patksplus116,pdefplus116, " +
-			"accplus117,evasionplus117,hpplus117,cpplus117,mpplus117,matkplus117,matksplus117,mdefplus117,patkplus117,patksplus117,pdefplus117, " +
-			"accplus118,evasionplus118,hpplus118,cpplus118,mpplus118,matkplus118,matksplus118,mdefplus118,patkplus118,patksplus118,pdefplus118, " +
-			"accplus131,evasionplus131,hpplus131,cpplus131,mpplus131,matkplus131,matksplus131,mdefplus131,patkplus131,patksplus131,pdefplus131, " +
-			"accplus132,evasionplus132,hpplus132,cpplus132,mpplus132,matkplus132,matksplus132,mdefplus132,patkplus132,patksplus132,pdefplus132, " +
-			"accplus133,evasionplus133,hpplus133,cpplus133,mpplus133,matkplus133,matksplus133,mdefplus133,patkplus133,patksplus133,pdefplus133, " +
-			"accplus134,evasionplus134,hpplus134,cpplus134,mpplus134,matkplus134,matksplus134,mdefplus134,patkplus134,patksplus134,pdefplus134, " +
-			"accplus136,evasionplus136,hpplus136,cpplus136,mpplus136,matkplus136,matksplus136,mdefplus136,patkplus136,patksplus136,pdefplus136 " +
+	private static final String RESTORE_BALANCE =
+	"SELECT accplus88,evasionplus88,hpplus88,cpplus88,mpplus88,matkplus88,matksplus88,mdefplus88,patkplus88,patksplus88,pdefplus88,walkplus88," +
+			"accplus89,evasionplus89,hpplus89,cpplus89,mpplus89,matkplus89,matksplus89,mdefplus89,patkplus89,patksplus89,pdefplus89,walkplus89, " +
+			"accplus90,evasionplus90,hpplus90,cpplus90,mpplus90,matkplus90,matksplus90,mdefplus90,patkplus90,patksplus90,pdefplus90,walkplus90, " +
+			"accplus91,evasionplus91,hpplus91,cpplus91,mpplus91,matkplus91,matksplus91,mdefplus91,patkplus91,patksplus91,pdefplus91,walkplus91, " +
+			"accplus92,evasionplus92,hpplus92,cpplus92,mpplus92,matkplus92,matksplus92,mdefplus92,patkplus92,patksplus92,pdefplus92,walkplus92, " +
+			"accplus93,evasionplus93,hpplus93,cpplus93,mpplus93,matkplus93,matksplus93,mdefplus93,patkplus93,patksplus93,pdefplus93,walkplus93, " +
+			"accplus94,evasionplus94,hpplus94,cpplus94,mpplus94,matkplus94,matksplus94,mdefplus94,patkplus94,patksplus94,pdefplus94,walkplus94, " +
+			"accplus95,evasionplus95,hpplus95,cpplus95,mpplus95,matkplus95,matksplus95,mdefplus95,patkplus95,patksplus95,pdefplus95,walkplus95, " +
+			"accplus96,evasionplus96,hpplus96,cpplus96,mpplus96,matkplus96,matksplus96,mdefplus96,patkplus96,patksplus96,pdefplus96,walkplus96, " +
+			"accplus97,evasionplus97,hpplus97,cpplus97,mpplus97,matkplus97,matksplus97,mdefplus97,patkplus97,patksplus97,pdefplus97,walkplus97, " +
+			"accplus98,evasionplus98,hpplus98,cpplus98,mpplus98,matkplus98,matksplus98,mdefplus98,patkplus98,patksplus98,pdefplus98,walkplus98, " +
+			"accplus99,evasionplus99,hpplus99,cpplus99,mpplus99,matkplus99,matksplus99,mdefplus99,patkplus99,patksplus99,pdefplus99,walkplus99, " +
+			"accplus100,evasionplus100,hpplus100,cpplus100,mpplus100,matkplus100,matksplus100,mdefplus100,patkplus100,patksplus100,pdefplus100,walkplus100, " +
+			"accplus101,evasionplus101,hpplus101,cpplus101,mpplus101,matkplus101,matksplus101,mdefplus101,patkplus101,patksplus101,pdefplus101,walkplus101, " +
+			"accplus102,evasionplus102,hpplus102,cpplus102,mpplus102,matkplus102,matksplus102,mdefplus102,patkplus102,patksplus102,pdefplus102,walkplus102, " +
+			"accplus103,evasionplus103,hpplus103,cpplus103,mpplus103,matkplus103,matksplus103,mdefplus103,patkplus103,patksplus103,pdefplus103,walkplus103, " +
+			"accplus104,evasionplus104,hpplus104,cpplus104,mpplus104,matkplus104,matksplus104,mdefplus104,patkplus104,patksplus104,pdefplus104,walkplus104, " +
+			"accplus105,evasionplus105,hpplus105,cpplus105,mpplus105,matkplus105,matksplus105,mdefplus105,patkplus105,patksplus105,pdefplus105,walkplus105, " +
+			"accplus106,evasionplus106,hpplus106,cpplus106,mpplus106,matkplus106,matksplus106,mdefplus106,patkplus106,patksplus106,pdefplus106,walkplus106, " +
+			"accplus107,evasionplus107,hpplus107,cpplus107,mpplus107,matkplus107,matksplus107,mdefplus107,patkplus107,patksplus107,pdefplus107,walkplus107, " +
+			"accplus108,evasionplus108,hpplus108,cpplus108,mpplus108,matkplus108,matksplus108,mdefplus108,patkplus108,patksplus108,pdefplus108,walkplus108, " +
+			"accplus109,evasionplus109,hpplus109,cpplus109,mpplus109,matkplus109,matksplus109,mdefplus109,patkplus109,patksplus109,pdefplus109,walkplus109, " +
+			"accplus110,evasionplus110,hpplus110,cpplus110,mpplus110,matkplus110,matksplus110,mdefplus110,patkplus110,patksplus110,pdefplus110,walkplus110, " +
+			"accplus111,evasionplus111,hpplus111,cpplus111,mpplus111,matkplus111,matksplus111,mdefplus111,patkplus111,patksplus111,pdefplus111,walkplus111, " +
+			"accplus112,evasionplus112,hpplus112,cpplus112,mpplus112,matkplus112,matksplus112,mdefplus112,patkplus112,patksplus112,pdefplus112,walkplus112, " +
+			"accplus113,evasionplus113,hpplus113,cpplus113,mpplus113,matkplus113,matksplus113,mdefplus113,patkplus113,patksplus113,pdefplus113,walkplus113, " +
+			"accplus114,evasionplus114,hpplus114,cpplus114,mpplus114,matkplus114,matksplus114,mdefplus114,patkplus114,patksplus114,pdefplus114,walkplus114, " +
+			"accplus115,evasionplus115,hpplus115,cpplus115,mpplus115,matkplus115,matksplus115,mdefplus115,patkplus115,patksplus115,pdefplus115,walkplus115, " +
+			"accplus116,evasionplus116,hpplus116,cpplus116,mpplus116,matkplus116,matksplus116,mdefplus116,patkplus116,patksplus116,pdefplus116,walkplus116, " +
+			"accplus117,evasionplus117,hpplus117,cpplus117,mpplus117,matkplus117,matksplus117,mdefplus117,patkplus117,patksplus117,pdefplus117,walkplus117, " +
+			"accplus118,evasionplus118,hpplus118,cpplus118,mpplus118,matkplus118,matksplus118,mdefplus118,patkplus118,patksplus118,pdefplus118,walkplus118 " +
 			"FROM balance";
-	
-	
+
+
 	public static void loadBalance()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(RESTORE_BALANCE);
 			final ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				BalancerMain.accplus88 = rset.getInt("accplus88");
@@ -85,7 +82,8 @@ public class BalanceLoad
 				BalancerMain.patkplus88 = rset.getInt("patkplus88");
 				BalancerMain.patksplus88 = rset.getInt("patksplus88");
 				BalancerMain.pdefplus88 = rset.getInt("pdefplus88");
-				
+				BalancerMain.walkplus88 = rset.getInt("walkplus88");
+
 				BalancerMain.accplus89 = rset.getInt("accplus89");
 				BalancerMain.evasionplus89 = rset.getInt("evasionplus89");
 				BalancerMain.hpplus89 = rset.getInt("hpplus89");
@@ -97,7 +95,8 @@ public class BalanceLoad
 				BalancerMain.patkplus89 = rset.getInt("patkplus89");
 				BalancerMain.patksplus89 = rset.getInt("patksplus89");
 				BalancerMain.pdefplus89 = rset.getInt("pdefplus89");
-				
+				BalancerMain.walkplus89 = rset.getInt("walkplus89");
+
 				BalancerMain.accplus90 = rset.getInt("accplus90");
 				BalancerMain.evasionplus90 = rset.getInt("evasionplus90");
 				BalancerMain.hpplus90 = rset.getInt("hpplus90");
@@ -109,7 +108,8 @@ public class BalanceLoad
 				BalancerMain.patkplus90 = rset.getInt("patkplus90");
 				BalancerMain.patksplus90 = rset.getInt("patksplus90");
 				BalancerMain.pdefplus90 = rset.getInt("pdefplus90");
-				
+				BalancerMain.walkplus90 = rset.getInt("walkplus90");
+
 				BalancerMain.accplus91 = rset.getInt("accplus91");
 				BalancerMain.evasionplus91 = rset.getInt("evasionplus91");
 				BalancerMain.hpplus91 = rset.getInt("hpplus91");
@@ -121,7 +121,8 @@ public class BalanceLoad
 				BalancerMain.patkplus91 = rset.getInt("patkplus91");
 				BalancerMain.patksplus91 = rset.getInt("patksplus91");
 				BalancerMain.pdefplus91 = rset.getInt("pdefplus91");
-				
+				BalancerMain.walkplus91 = rset.getInt("walkplus91");
+
 				BalancerMain.accplus92 = rset.getInt("accplus92");
 				BalancerMain.evasionplus92 = rset.getInt("evasionplus92");
 				BalancerMain.hpplus92 = rset.getInt("hpplus92");
@@ -133,7 +134,8 @@ public class BalanceLoad
 				BalancerMain.patkplus92 = rset.getInt("patkplus92");
 				BalancerMain.patksplus92 = rset.getInt("patksplus92");
 				BalancerMain.pdefplus92 = rset.getInt("pdefplus92");
-				
+				BalancerMain.walkplus92 = rset.getInt("walkplus92");
+
 				BalancerMain.accplus93 = rset.getInt("accplus93");
 				BalancerMain.evasionplus93 = rset.getInt("evasionplus93");
 				BalancerMain.hpplus93 = rset.getInt("hpplus93");
@@ -145,7 +147,8 @@ public class BalanceLoad
 				BalancerMain.patkplus93 = rset.getInt("patkplus93");
 				BalancerMain.patksplus93 = rset.getInt("patksplus93");
 				BalancerMain.pdefplus93 = rset.getInt("pdefplus93");
-				
+				BalancerMain.walkplus93 = rset.getInt("walkplus93");
+
 				BalancerMain.accplus94 = rset.getInt("accplus94");
 				BalancerMain.evasionplus94 = rset.getInt("evasionplus94");
 				BalancerMain.hpplus94 = rset.getInt("hpplus94");
@@ -157,7 +160,8 @@ public class BalanceLoad
 				BalancerMain.patkplus94 = rset.getInt("patkplus94");
 				BalancerMain.patksplus94 = rset.getInt("patksplus94");
 				BalancerMain.pdefplus94 = rset.getInt("pdefplus94");
-				
+				BalancerMain.walkplus94 = rset.getInt("walkplus94");
+
 				BalancerMain.accplus95 = rset.getInt("accplus95");
 				BalancerMain.evasionplus95 = rset.getInt("evasionplus95");
 				BalancerMain.hpplus95 = rset.getInt("hpplus95");
@@ -169,7 +173,8 @@ public class BalanceLoad
 				BalancerMain.patkplus95 = rset.getInt("patkplus95");
 				BalancerMain.patksplus95 = rset.getInt("patksplus95");
 				BalancerMain.pdefplus95 = rset.getInt("pdefplus95");
-				
+				BalancerMain.walkplus95 = rset.getInt("walkplus95");
+
 				BalancerMain.accplus96 = rset.getInt("accplus96");
 				BalancerMain.evasionplus96 = rset.getInt("evasionplus96");
 				BalancerMain.hpplus96 = rset.getInt("hpplus96");
@@ -181,7 +186,8 @@ public class BalanceLoad
 				BalancerMain.patkplus96 = rset.getInt("patkplus96");
 				BalancerMain.patksplus96 = rset.getInt("patksplus96");
 				BalancerMain.pdefplus96 = rset.getInt("pdefplus96");
-				
+				BalancerMain.walkplus96 = rset.getInt("walkplus96");
+
 				BalancerMain.accplus97 = rset.getInt("accplus97");
 				BalancerMain.evasionplus97 = rset.getInt("evasionplus97");
 				BalancerMain.hpplus97 = rset.getInt("hpplus97");
@@ -193,7 +199,8 @@ public class BalanceLoad
 				BalancerMain.patkplus97 = rset.getInt("patkplus97");
 				BalancerMain.patksplus97 = rset.getInt("patksplus97");
 				BalancerMain.pdefplus97 = rset.getInt("pdefplus97");
-				
+				BalancerMain.walkplus97 = rset.getInt("walkplus97");
+
 				BalancerMain.accplus98 = rset.getInt("accplus98");
 				BalancerMain.evasionplus98 = rset.getInt("evasionplus98");
 				BalancerMain.hpplus98 = rset.getInt("hpplus98");
@@ -205,7 +212,8 @@ public class BalanceLoad
 				BalancerMain.patkplus98 = rset.getInt("patkplus98");
 				BalancerMain.patksplus98 = rset.getInt("patksplus98");
 				BalancerMain.pdefplus98 = rset.getInt("pdefplus98");
-				
+				BalancerMain.walkplus98 = rset.getInt("walkplus98");
+
 				BalancerMain.accplus99 = rset.getInt("accplus99");
 				BalancerMain.evasionplus99 = rset.getInt("evasionplus99");
 				BalancerMain.hpplus99 = rset.getInt("hpplus99");
@@ -217,7 +225,8 @@ public class BalanceLoad
 				BalancerMain.patkplus99 = rset.getInt("patkplus99");
 				BalancerMain.patksplus99 = rset.getInt("patksplus99");
 				BalancerMain.pdefplus99 = rset.getInt("pdefplus99");
-				
+				BalancerMain.walkplus99 = rset.getInt("walkplus99");
+
 				BalancerMain.accplus100 = rset.getInt("accplus100");
 				BalancerMain.evasionplus100 = rset.getInt("evasionplus100");
 				BalancerMain.hpplus100 = rset.getInt("hpplus100");
@@ -229,7 +238,8 @@ public class BalanceLoad
 				BalancerMain.patkplus100 = rset.getInt("patkplus100");
 				BalancerMain.patksplus100 = rset.getInt("patksplus100");
 				BalancerMain.pdefplus100 = rset.getInt("pdefplus100");
-				
+				BalancerMain.walkplus100 = rset.getInt("walkplus100");
+
 				BalancerMain.accplus101 = rset.getInt("accplus101");
 				BalancerMain.evasionplus101 = rset.getInt("evasionplus101");
 				BalancerMain.hpplus101 = rset.getInt("hpplus101");
@@ -241,7 +251,8 @@ public class BalanceLoad
 				BalancerMain.patkplus101 = rset.getInt("patkplus101");
 				BalancerMain.patksplus101 = rset.getInt("patksplus101");
 				BalancerMain.pdefplus101 = rset.getInt("pdefplus101");
-				
+				BalancerMain.walkplus101 = rset.getInt("walkplus101");
+
 				BalancerMain.accplus102 = rset.getInt("accplus102");
 				BalancerMain.evasionplus102 = rset.getInt("evasionplus102");
 				BalancerMain.hpplus102 = rset.getInt("hpplus102");
@@ -253,7 +264,8 @@ public class BalanceLoad
 				BalancerMain.patkplus102 = rset.getInt("patkplus102");
 				BalancerMain.patksplus102 = rset.getInt("patksplus102");
 				BalancerMain.pdefplus102 = rset.getInt("pdefplus102");
-				
+				BalancerMain.walkplus102 = rset.getInt("walkplus102");
+
 				BalancerMain.accplus103 = rset.getInt("accplus103");
 				BalancerMain.evasionplus103 = rset.getInt("evasionplus103");
 				BalancerMain.hpplus103 = rset.getInt("hpplus103");
@@ -265,7 +277,8 @@ public class BalanceLoad
 				BalancerMain.patkplus103 = rset.getInt("patkplus103");
 				BalancerMain.patksplus103 = rset.getInt("patksplus103");
 				BalancerMain.pdefplus103 = rset.getInt("pdefplus103");
-				
+				BalancerMain.walkplus103 = rset.getInt("walkplus103");
+
 				BalancerMain.accplus104 = rset.getInt("accplus104");
 				BalancerMain.evasionplus104 = rset.getInt("evasionplus104");
 				BalancerMain.hpplus104 = rset.getInt("hpplus104");
@@ -277,7 +290,8 @@ public class BalanceLoad
 				BalancerMain.patkplus104 = rset.getInt("patkplus104");
 				BalancerMain.patksplus104 = rset.getInt("patksplus104");
 				BalancerMain.pdefplus104 = rset.getInt("pdefplus104");
-				
+				BalancerMain.walkplus104 = rset.getInt("walkplus104");
+
 				BalancerMain.accplus105 = rset.getInt("accplus105");
 				BalancerMain.evasionplus105 = rset.getInt("evasionplus105");
 				BalancerMain.hpplus105 = rset.getInt("hpplus105");
@@ -289,7 +303,8 @@ public class BalanceLoad
 				BalancerMain.patkplus105 = rset.getInt("patkplus105");
 				BalancerMain.patksplus105 = rset.getInt("patksplus105");
 				BalancerMain.pdefplus105 = rset.getInt("pdefplus105");
-				
+				BalancerMain.walkplus105 = rset.getInt("walkplus105");
+
 				BalancerMain.accplus106 = rset.getInt("accplus106");
 				BalancerMain.evasionplus106 = rset.getInt("evasionplus106");
 				BalancerMain.hpplus106 = rset.getInt("hpplus106");
@@ -301,7 +316,8 @@ public class BalanceLoad
 				BalancerMain.patkplus106 = rset.getInt("patkplus106");
 				BalancerMain.patksplus106 = rset.getInt("patksplus106");
 				BalancerMain.pdefplus106 = rset.getInt("pdefplus106");
-				
+				BalancerMain.walkplus106 = rset.getInt("walkplus106");
+
 				BalancerMain.accplus107 = rset.getInt("accplus107");
 				BalancerMain.evasionplus107 = rset.getInt("evasionplus107");
 				BalancerMain.hpplus107 = rset.getInt("hpplus107");
@@ -313,7 +329,8 @@ public class BalanceLoad
 				BalancerMain.patkplus107 = rset.getInt("patkplus107");
 				BalancerMain.patksplus107 = rset.getInt("patksplus107");
 				BalancerMain.pdefplus107 = rset.getInt("pdefplus107");
-				
+				BalancerMain.walkplus107 = rset.getInt("walkplus107");
+
 				BalancerMain.accplus108 = rset.getInt("accplus108");
 				BalancerMain.evasionplus108 = rset.getInt("evasionplus108");
 				BalancerMain.hpplus108 = rset.getInt("hpplus108");
@@ -325,7 +342,8 @@ public class BalanceLoad
 				BalancerMain.patkplus108 = rset.getInt("patkplus108");
 				BalancerMain.patksplus108 = rset.getInt("patksplus108");
 				BalancerMain.pdefplus108 = rset.getInt("pdefplus108");
-				
+				BalancerMain.walkplus108 = rset.getInt("walkplus108");
+
 				BalancerMain.accplus109 = rset.getInt("accplus109");
 				BalancerMain.evasionplus109 = rset.getInt("evasionplus109");
 				BalancerMain.hpplus109 = rset.getInt("hpplus109");
@@ -337,7 +355,8 @@ public class BalanceLoad
 				BalancerMain.patkplus109 = rset.getInt("patkplus109");
 				BalancerMain.patksplus109 = rset.getInt("patksplus109");
 				BalancerMain.pdefplus109 = rset.getInt("pdefplus109");
-				
+				BalancerMain.walkplus109 = rset.getInt("walkplus109");
+
 				BalancerMain.accplus110 = rset.getInt("accplus110");
 				BalancerMain.evasionplus110 = rset.getInt("evasionplus110");
 				BalancerMain.hpplus110 = rset.getInt("hpplus110");
@@ -349,7 +368,8 @@ public class BalanceLoad
 				BalancerMain.patkplus110 = rset.getInt("patkplus110");
 				BalancerMain.patksplus110 = rset.getInt("patksplus110");
 				BalancerMain.pdefplus110 = rset.getInt("pdefplus110");
-				
+				BalancerMain.walkplus110 = rset.getInt("walkplus110");
+
 				BalancerMain.accplus111 = rset.getInt("accplus111");
 				BalancerMain.evasionplus111 = rset.getInt("evasionplus111");
 				BalancerMain.hpplus111 = rset.getInt("hpplus111");
@@ -361,7 +381,8 @@ public class BalanceLoad
 				BalancerMain.patkplus111 = rset.getInt("patkplus111");
 				BalancerMain.patksplus111 = rset.getInt("patksplus111");
 				BalancerMain.pdefplus111 = rset.getInt("pdefplus111");
-				
+				BalancerMain.walkplus111 = rset.getInt("walkplus111");
+
 				BalancerMain.accplus112 = rset.getInt("accplus112");
 				BalancerMain.evasionplus112 = rset.getInt("evasionplus112");
 				BalancerMain.hpplus112 = rset.getInt("hpplus112");
@@ -373,7 +394,8 @@ public class BalanceLoad
 				BalancerMain.patkplus112 = rset.getInt("patkplus112");
 				BalancerMain.patksplus112 = rset.getInt("patksplus112");
 				BalancerMain.pdefplus112 = rset.getInt("pdefplus112");
-				
+				BalancerMain.walkplus112 = rset.getInt("walkplus112");
+
 				BalancerMain.accplus113 = rset.getInt("accplus113");
 				BalancerMain.evasionplus113 = rset.getInt("evasionplus113");
 				BalancerMain.hpplus113 = rset.getInt("hpplus113");
@@ -385,7 +407,8 @@ public class BalanceLoad
 				BalancerMain.patkplus113 = rset.getInt("patkplus113");
 				BalancerMain.patksplus113 = rset.getInt("patksplus113");
 				BalancerMain.pdefplus113 = rset.getInt("pdefplus113");
-				
+				BalancerMain.walkplus113 = rset.getInt("walkplus113");
+
 				BalancerMain.accplus114 = rset.getInt("accplus114");
 				BalancerMain.evasionplus114 = rset.getInt("evasionplus114");
 				BalancerMain.hpplus114 = rset.getInt("hpplus114");
@@ -397,7 +420,8 @@ public class BalanceLoad
 				BalancerMain.patkplus114 = rset.getInt("patkplus114");
 				BalancerMain.patksplus114 = rset.getInt("patksplus114");
 				BalancerMain.pdefplus114 = rset.getInt("pdefplus114");
-				
+				BalancerMain.walkplus114 = rset.getInt("walkplus114");
+
 				BalancerMain.accplus115 = rset.getInt("accplus115");
 				BalancerMain.evasionplus115 = rset.getInt("evasionplus115");
 				BalancerMain.hpplus115 = rset.getInt("hpplus115");
@@ -409,7 +433,8 @@ public class BalanceLoad
 				BalancerMain.patkplus115 = rset.getInt("patkplus115");
 				BalancerMain.patksplus115 = rset.getInt("patksplus115");
 				BalancerMain.pdefplus115 = rset.getInt("pdefplus115");
-				
+				BalancerMain.walkplus115 = rset.getInt("walkplus115");
+
 				BalancerMain.accplus116 = rset.getInt("accplus116");
 				BalancerMain.evasionplus116 = rset.getInt("evasionplus116");
 				BalancerMain.hpplus116 = rset.getInt("hpplus116");
@@ -421,7 +446,8 @@ public class BalanceLoad
 				BalancerMain.patkplus116 = rset.getInt("patkplus116");
 				BalancerMain.patksplus116 = rset.getInt("patksplus116");
 				BalancerMain.pdefplus116 = rset.getInt("pdefplus116");
-				
+				BalancerMain.walkplus116 = rset.getInt("walkplus116");
+
 				BalancerMain.accplus117 = rset.getInt("accplus117");
 				BalancerMain.evasionplus117 = rset.getInt("evasionplus117");
 				BalancerMain.hpplus117 = rset.getInt("hpplus117");
@@ -433,7 +459,8 @@ public class BalanceLoad
 				BalancerMain.patkplus117 = rset.getInt("patkplus117");
 				BalancerMain.patksplus117 = rset.getInt("patksplus117");
 				BalancerMain.pdefplus117 = rset.getInt("pdefplus117");
-				
+				BalancerMain.walkplus117 = rset.getInt("walkplus117");
+
 				BalancerMain.accplus118 = rset.getInt("accplus118");
 				BalancerMain.evasionplus118 = rset.getInt("evasionplus118");
 				BalancerMain.hpplus118 = rset.getInt("hpplus118");
@@ -445,15 +472,19 @@ public class BalanceLoad
 				BalancerMain.patkplus118 = rset.getInt("patkplus118");
 				BalancerMain.patksplus118 = rset.getInt("patksplus118");
 				BalancerMain.pdefplus118 = rset.getInt("pdefplus118");
+				BalancerMain.walkplus118 = rset.getInt("walkplus118");
 			}
-			
+
 			rset.close();
 			statement.close();
 		}
 		catch(Exception e)
 		{
-			_log.warning("BALANCE: Problem loading 3rd class stats.");
-			e.printStackTrace();
+			_log.log(Level.WARNING, "BalanceLoad: Problem loading class stats.");
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }

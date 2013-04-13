@@ -5,6 +5,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `balance`;
 
 CREATE TABLE `balance` (
+--88
   `accplus88` int(11) NOT NULL DEFAULT '0',
   `evasionplus88` int(11) DEFAULT '0',
   `hpplus88` int(11) DEFAULT '0',
@@ -16,6 +17,8 @@ CREATE TABLE `balance` (
   `patkplus88` int(11) DEFAULT '0',
   `patksplus88` int(11) DEFAULT '0',
   `pdefplus88` int(11) DEFAULT '0',
+  `walkplus88` int(11) DEFAULT '0',
+--89
   `accplus89` int(11) DEFAULT '0',
   `evasionplus89` int(11) DEFAULT '0',
   `hpplus89` int(11) DEFAULT '0',
@@ -27,6 +30,8 @@ CREATE TABLE `balance` (
   `patkplus89` int(11) DEFAULT '0',
   `patksplus89` int(11) DEFAULT '0',
   `pdefplus89` int(11) DEFAULT '0',
+  `walkplus89` int(11) DEFAULT '0',
+--90
   `accplus90` int(11) DEFAULT '0',
   `evasionplus90` int(11) DEFAULT '0',
   `hpplus90` int(11) DEFAULT '0',
@@ -38,6 +43,8 @@ CREATE TABLE `balance` (
   `patkplus90` int(11) DEFAULT '0',
   `patksplus90` int(11) DEFAULT '0',
   `pdefplus90` int(11) DEFAULT '0',
+  `walkplus90` int(11) DEFAULT '0',
+--91
   `accplus91` int(11) DEFAULT '0',
   `evasionplus91` int(11) DEFAULT '0',
   `hpplus91` int(11) DEFAULT '0',
@@ -49,6 +56,8 @@ CREATE TABLE `balance` (
   `patkplus91` int(11) DEFAULT '0',
   `patksplus91` int(11) DEFAULT '0',
   `pdefplus91` int(11) DEFAULT '0',
+  `walkplus91` int(11) DEFAULT '0',
+--92
   `accplus92` int(11) DEFAULT '0',
   `evasionplus92` int(11) DEFAULT '0',
   `hpplus92` int(11) DEFAULT '0',
@@ -60,6 +69,8 @@ CREATE TABLE `balance` (
   `patkplus92` int(11) DEFAULT '0',
   `patksplus92` int(11) DEFAULT '0',
   `pdefplus92` int(11) DEFAULT '0',
+  `walkplus92` int(11) DEFAULT '0',
+--93
   `accplus93` int(11) DEFAULT '0',
   `evasionplus93` int(11) DEFAULT '0',
   `hpplus93` int(11) DEFAULT '0',
@@ -71,6 +82,8 @@ CREATE TABLE `balance` (
   `patkplus93` int(11) DEFAULT '0',
   `patksplus93` int(11) DEFAULT '0',
   `pdefplus93` int(11) DEFAULT '0',
+  `walkplus93` int(11) DEFAULT '0',
+--94
   `accplus94` int(11) DEFAULT '0',
   `evasionplus94` int(11) DEFAULT '0',
   `hpplus94` int(11) DEFAULT '0',
@@ -82,6 +95,8 @@ CREATE TABLE `balance` (
   `patkplus94` int(11) DEFAULT '0',
   `patksplus94` int(11) DEFAULT '0',
   `pdefplus94` int(11) DEFAULT '0',
+  `walkplus94` int(11) DEFAULT '0',
+--95
   `accplus95` int(11) DEFAULT '0',
   `evasionplus95` int(11) DEFAULT '0',
   `hpplus95` int(11) DEFAULT '0',
@@ -93,6 +108,8 @@ CREATE TABLE `balance` (
   `patkplus95` int(11) DEFAULT '0',
   `patksplus95` int(11) DEFAULT '0',
   `pdefplus95` int(11) DEFAULT '0',
+  `walkplus95` int(11) DEFAULT '0',
+--96
   `accplus96` int(11) DEFAULT '0',
   `evasionplus96` int(11) DEFAULT '0',
   `hpplus96` int(11) DEFAULT '0',
@@ -104,6 +121,8 @@ CREATE TABLE `balance` (
   `patkplus96` int(11) DEFAULT '0',
   `patksplus96` int(11) DEFAULT '0',
   `pdefplus96` int(11) DEFAULT '0',
+  `walkplus96` int(11) DEFAULT '0',
+--97
   `accplus97` int(11) DEFAULT '0',
   `evasionplus97` int(11) DEFAULT '0',
   `hpplus97` int(11) DEFAULT '0',
@@ -115,6 +134,8 @@ CREATE TABLE `balance` (
   `patkplus97` int(11) DEFAULT '0',
   `patksplus97` int(11) DEFAULT '0',
   `pdefplus97` int(11) DEFAULT '0',
+  `walkplus97` int(11) DEFAULT '0',
+--98
   `accplus98` int(11) DEFAULT '0',
   `evasionplus98` int(11) DEFAULT '0',
   `hpplus98` int(11) DEFAULT '0',
@@ -126,6 +147,8 @@ CREATE TABLE `balance` (
   `patkplus98` int(11) DEFAULT '0',
   `patksplus98` int(11) DEFAULT '0',
   `pdefplus98` int(11) DEFAULT '0',
+  `walkplus98` int(11) DEFAULT '0',
+--99
   `accplus99` int(11) DEFAULT '0',
   `evasionplus99` int(11) DEFAULT '0',
   `hpplus99` int(11) DEFAULT '0',
@@ -137,6 +160,8 @@ CREATE TABLE `balance` (
   `patkplus99` int(11) DEFAULT '0',
   `patksplus99` int(11) DEFAULT '0',
   `pdefplus99` int(11) DEFAULT '0',
+  `walkplus99` int(11) DEFAULT '0',
+--100
   `accplus100` int(11) DEFAULT '0',
   `evasionplus100` int(11) DEFAULT '0',
   `hpplus100` int(11) DEFAULT '0',
@@ -148,6 +173,8 @@ CREATE TABLE `balance` (
   `patkplus100` int(11) DEFAULT '0',
   `patksplus100` int(11) DEFAULT '0',
   `pdefplus100` int(11) DEFAULT '0',
+  `walkplus100` int(11) DEFAULT '0',
+--101
   `accplus101` int(11) DEFAULT '0',
   `evasionplus101` int(11) DEFAULT '0',
   `hpplus101` int(11) DEFAULT '0',
@@ -159,6 +186,8 @@ CREATE TABLE `balance` (
   `patkplus101` int(11) DEFAULT '0',
   `patksplus101` int(11) DEFAULT '0',
   `pdefplus101` int(11) DEFAULT '0',
+  `walkplus101` int(11) DEFAULT '0',
+--102
   `accplus102` int(11) DEFAULT '0',
   `evasionplus102` int(11) DEFAULT '0',
   `hpplus102` int(11) DEFAULT '0',
@@ -170,6 +199,8 @@ CREATE TABLE `balance` (
   `patkplus102` int(11) DEFAULT '0',
   `patksplus102` int(11) DEFAULT '0',
   `pdefplus102` int(11) DEFAULT '0',
+  `walkplus102` int(11) DEFAULT '0',
+--103
   `accplus103` int(11) DEFAULT '0',
   `evasionplus103` int(11) DEFAULT '0',
   `hpplus103` int(11) DEFAULT '0',
@@ -181,6 +212,8 @@ CREATE TABLE `balance` (
   `patkplus103` int(11) DEFAULT '0',
   `patksplus103` int(11) DEFAULT '0',
   `pdefplus103` int(11) DEFAULT '0',
+  `walkplus103` int(11) DEFAULT '0',
+--104
   `accplus104` int(11) DEFAULT '0',
   `evasionplus104` int(11) DEFAULT '0',
   `hpplus104` int(11) DEFAULT '0',
@@ -192,6 +225,8 @@ CREATE TABLE `balance` (
   `patkplus104` int(11) DEFAULT '0',
   `patksplus104` int(11) DEFAULT '0',
   `pdefplus104` int(11) DEFAULT '0',
+  `walkplus104` int(11) DEFAULT '0',
+--105
   `accplus105` int(11) DEFAULT '0',
   `evasionplus105` int(11) DEFAULT '0',
   `hpplus105` int(11) DEFAULT '0',
@@ -203,6 +238,8 @@ CREATE TABLE `balance` (
   `patkplus105` int(11) DEFAULT '0',
   `patksplus105` int(11) DEFAULT '0',
   `pdefplus105` int(11) DEFAULT '0',
+  `walkplus105` int(11) DEFAULT '0',
+--106
   `accplus106` int(11) DEFAULT '0',
   `evasionplus106` int(11) DEFAULT '0',
   `hpplus106` int(11) DEFAULT '0',
@@ -214,6 +251,8 @@ CREATE TABLE `balance` (
   `patkplus106` int(11) DEFAULT '0',
   `patksplus106` int(11) DEFAULT '0',
   `pdefplus106` int(11) DEFAULT '0',
+  `walkplus106` int(11) DEFAULT '0',
+--107
   `accplus107` int(11) DEFAULT '0',
   `evasionplus107` int(11) DEFAULT '0',
   `hpplus107` int(11) DEFAULT '0',
@@ -225,6 +264,8 @@ CREATE TABLE `balance` (
   `patkplus107` int(11) DEFAULT '0',
   `patksplus107` int(11) DEFAULT '0',
   `pdefplus107` int(11) DEFAULT '0',
+  `walkplus107` int(11) DEFAULT '0',
+--108
   `accplus108` int(11) DEFAULT '0',
   `evasionplus108` int(11) DEFAULT '0',
   `hpplus108` int(11) DEFAULT '0',
@@ -236,6 +277,8 @@ CREATE TABLE `balance` (
   `patkplus108` int(11) DEFAULT '0',
   `patksplus108` int(11) DEFAULT '0',
   `pdefplus108` int(11) DEFAULT '0',
+  `walkplus108` int(11) DEFAULT '0',
+--109
   `accplus109` int(11) DEFAULT '0',
   `evasionplus109` int(11) DEFAULT '0',
   `hpplus109` int(11) DEFAULT '0',
@@ -247,6 +290,8 @@ CREATE TABLE `balance` (
   `patkplus109` int(11) DEFAULT '0',
   `patksplus109` int(11) DEFAULT '0',
   `pdefplus109` int(11) DEFAULT '0',
+  `walkplus109` int(11) DEFAULT '0',
+--110
   `accplus110` int(11) DEFAULT '0',
   `evasionplus110` int(11) DEFAULT '0',
   `hpplus110` int(11) DEFAULT '0',
@@ -258,6 +303,8 @@ CREATE TABLE `balance` (
   `patkplus110` int(11) DEFAULT '0',
   `patksplus110` int(11) DEFAULT '0',
   `pdefplus110` int(11) DEFAULT '0',
+  `walkplus110` int(11) DEFAULT '0',
+--111
   `accplus111` int(11) DEFAULT '0',
   `evasionplus111` int(11) DEFAULT '0',
   `hpplus111` int(11) DEFAULT '0',
@@ -269,6 +316,8 @@ CREATE TABLE `balance` (
   `patkplus111` int(11) DEFAULT '0',
   `patksplus111` int(11) DEFAULT '0',
   `pdefplus111` int(11) DEFAULT '0',
+  `walkplus111` int(11) DEFAULT '0',
+--112
   `accplus112` int(11) DEFAULT '0',
   `evasionplus112` int(11) DEFAULT '0',
   `hpplus112` int(11) DEFAULT '0',
@@ -280,6 +329,8 @@ CREATE TABLE `balance` (
   `patkplus112` int(11) DEFAULT '0',
   `patksplus112` int(11) DEFAULT '0',
   `pdefplus112` int(11) DEFAULT '0',
+  `walkplus112` int(11) DEFAULT '0',
+--113
   `accplus113` int(11) DEFAULT '0',
   `evasionplus113` int(11) DEFAULT '0',
   `hpplus113` int(11) DEFAULT '0',
@@ -291,6 +342,8 @@ CREATE TABLE `balance` (
   `patkplus113` int(11) DEFAULT '0',
   `patksplus113` int(11) DEFAULT '0',
   `pdefplus113` int(11) DEFAULT '0',
+  `walkplus113` int(11) DEFAULT '0',
+--114
   `accplus114` int(11) DEFAULT '0',
   `evasionplus114` int(11) DEFAULT '0',
   `hpplus114` int(11) DEFAULT '0',
@@ -302,6 +355,8 @@ CREATE TABLE `balance` (
   `patkplus114` int(11) DEFAULT '0',
   `patksplus114` int(11) DEFAULT '0',
   `pdefplus114` int(11) DEFAULT '0',
+  `walkplus114` int(11) DEFAULT '0',
+--115
   `accplus115` int(11) DEFAULT '0',
   `evasionplus115` int(11) DEFAULT '0',
   `hpplus115` int(11) DEFAULT '0',
@@ -313,6 +368,8 @@ CREATE TABLE `balance` (
   `patkplus115` int(11) DEFAULT '0',
   `patksplus115` int(11) DEFAULT '0',
   `pdefplus115` int(11) DEFAULT '0',
+  `walkplus115` int(11) DEFAULT '0',
+--116
   `accplus116` int(11) DEFAULT '0',
   `evasionplus116` int(11) DEFAULT '0',
   `hpplus116` int(11) DEFAULT '0',
@@ -324,6 +381,8 @@ CREATE TABLE `balance` (
   `patkplus116` int(11) DEFAULT '0',
   `patksplus116` int(11) DEFAULT '0',
   `pdefplus116` int(11) DEFAULT '0',
+  `walkplus116` int(11) DEFAULT '0',
+--117
   `accplus117` int(11) DEFAULT '0',
   `evasionplus117` int(11) DEFAULT '0',
   `hpplus117` int(11) DEFAULT '0',
@@ -335,6 +394,8 @@ CREATE TABLE `balance` (
   `patkplus117` int(11) DEFAULT '0',
   `patksplus117` int(11) DEFAULT '0',
   `pdefplus117` int(11) DEFAULT '0',
+  `walkplus117` int(11) DEFAULT '0',
+--118
   `accplus118` int(11) DEFAULT '0',
   `evasionplus118` int(11) DEFAULT '0',
   `hpplus118` int(11) DEFAULT '0',
@@ -346,65 +407,11 @@ CREATE TABLE `balance` (
   `patkplus118` int(11) DEFAULT '0',
   `patksplus118` int(11) DEFAULT '0',
   `pdefplus118` int(11) DEFAULT '0',
-  `accplus131` int(11) DEFAULT '0',
-  `evasionplus131` int(11) DEFAULT '0',
-  `hpplus131` int(11) DEFAULT '0',
-  `cpplus131` int(11) DEFAULT '0',
-  `mpplus131` int(11) DEFAULT '0',
-  `matkplus131` int(11) DEFAULT '0',
-  `matksplus131` int(11) DEFAULT '0',
-  `mdefplus131` int(11) DEFAULT '0',
-  `patkplus131` int(11) DEFAULT '0',
-  `patksplus131` int(11) DEFAULT '0',
-  `pdefplus131` int(11) DEFAULT '0',
-  `accplus132` int(11) DEFAULT '0',
-  `evasionplus132` int(11) DEFAULT '0',
-  `hpplus132` int(11) DEFAULT '0',
-  `cpplus132` int(11) DEFAULT '0',
-  `mpplus132` int(11) DEFAULT '0',
-  `matkplus132` int(11) DEFAULT '0',
-  `matksplus132` int(11) DEFAULT '0',
-  `mdefplus132` int(11) DEFAULT '0',
-  `patkplus132` int(11) DEFAULT '0',
-  `patksplus132` int(11) DEFAULT '0',
-  `pdefplus132` int(11) DEFAULT '0',
-  `accplus133` int(11) DEFAULT '0',
-  `evasionplus133` int(11) DEFAULT '0',
-  `hpplus133` int(11) DEFAULT '0',
-  `cpplus133` int(11) DEFAULT '0',
-  `mpplus133` int(11) DEFAULT '0',
-  `matkplus133` int(11) DEFAULT '0',
-  `matksplus133` int(11) DEFAULT '0',
-  `mdefplus133` int(11) DEFAULT '0',
-  `patkplus133` int(11) DEFAULT '0',
-  `patksplus133` int(11) DEFAULT '0',
-  `pdefplus133` int(11) DEFAULT '0',
-  `accplus134` int(11) DEFAULT '0',
-  `evasionplus134` int(11) DEFAULT '0',
-  `hpplus134` int(11) DEFAULT '0',
-  `cpplus134` int(11) DEFAULT '0',
-  `mpplus134` int(11) DEFAULT '0',
-  `matkplus134` int(11) DEFAULT '0',
-  `matksplus134` int(11) DEFAULT '0',
-  `mdefplus134` int(11) DEFAULT '0',
-  `patkplus134` int(11) DEFAULT '0',
-  `patksplus134` int(11) DEFAULT '0',
-  `pdefplus134` int(11) DEFAULT '0',
-  `accplus136` int(11) DEFAULT '0',
-  `evasionplus136` int(11) DEFAULT '0',
-  `hpplus136` int(11) DEFAULT '0',
-  `cpplus136` int(11) DEFAULT '0',
-  `mpplus136` int(11) DEFAULT '0',
-  `matkplus136` int(11) DEFAULT '0',
-  `matksplus136` int(11) DEFAULT '0',
-  `mdefplus136` int(11) DEFAULT '0',
-  `patkplus136` int(11) DEFAULT '0',
-  `patksplus136` int(11) DEFAULT '0',
-  `pdefplus136` int(11) DEFAULT '0',
+  `walkplus118` int(11) DEFAULT '0',
   PRIMARY KEY (`accplus88`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
 -- ----------------------------
 -- Records of `balance`
 -- ----------------------------
-INSERT INTO `balance` VALUES ('0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `balance` VALUES ('0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
