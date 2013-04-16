@@ -45,7 +45,6 @@ import com.l2jhellas.util.Rnd;
  *
  * @author l3x
  */
-
 public class CastleManorManager
 {
 	protected static Logger _log = Logger.getLogger(CastleManorManager.class.getName());
@@ -264,7 +263,7 @@ public class CastleManorManager
 				castle.setCropProcure(procureNext, PERIOD_NEXT);
 
 				if (!procure.isEmpty() || !procureNext.isEmpty() || !production.isEmpty() || !productionNext.isEmpty())
-					_log.info(castle.getName() + ": Data loaded");
+					_log.log(Level.INFO, getClass().getSimpleName() + ": " + castle.getName() + ": Data loaded.");
 			}
 		}
 		catch (Exception e)
@@ -303,7 +302,7 @@ public class CastleManorManager
 
 	public void updateManorRefresh()
 	{
-		_log.info("Manor System: Manor refresh updated");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Manor refresh updated.");
 		_scheduledManorRefresh = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
@@ -312,14 +311,14 @@ public class CastleManorManager
 				if (!isDisabled())
 				{
 					setUnderMaintenance(true);
-					_log.info("Manor System: Under maintenance mode started");
+					_log.log(Level.INFO, getClass().getSimpleName() + ": Under maintenance mode started.");
 
 					_scheduledMaintenanceEnd = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 					{
 						@Override
 						public void run()
 						{
-							_log.info("Manor System: Next period started");
+							_log.log(Level.INFO, getClass().getSimpleName() + ": Next period started.");
 							setNextPeriod();
 							try
 							{
@@ -345,7 +344,7 @@ public class CastleManorManager
 
 	public void updatePeriodApprove()
 	{
-		_log.info("Manor System: Manor period approve updated");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Manor period approve updated.");
 		_scheduledNextPeriodapprove = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
@@ -354,7 +353,7 @@ public class CastleManorManager
 				if (!isDisabled())
 				{
 					approveNextPeriod();
-					_log.info("Manor System: Next period approved");
+					_log.log(Level.INFO, getClass().getSimpleName() + ": Next period approved.");
 				}
 				updatePeriodApprove();
 			}
@@ -376,7 +375,7 @@ public class CastleManorManager
 		_manorRefresh.set(Calendar.MINUTE, MANOR_REFRESH_MIN);
 		_manorRefresh.add(Calendar.HOUR_OF_DAY, 24);
 
-		_log.info("Manor System: New Schedule for manor refresh @ " + _manorRefresh.getTime());
+		_log.log(Level.INFO, getClass().getSimpleName() + ": New Schedule for manor refresh @ " + _manorRefresh.getTime());
 
 		return (_manorRefresh.getTimeInMillis() - Calendar.getInstance().getTimeInMillis());
 	}
@@ -396,7 +395,7 @@ public class CastleManorManager
 		_periodApprove.set(Calendar.MINUTE, NEXT_PERIOD_APPROVE_MIN);
 		_periodApprove.add(Calendar.HOUR_OF_DAY, 24);
 
-		_log.info("Manor System: New Schedule for period approve @ " + _periodApprove.getTime());
+		_log.log(Level.INFO, getClass().getSimpleName() + ": New Schedule for period approve @ " + _periodApprove.getTime());
 
 		return (_periodApprove.getTimeInMillis() - Calendar.getInstance().getTimeInMillis());
 	}
@@ -414,7 +413,7 @@ public class CastleManorManager
 			ItemContainer cwh = clan.getWarehouse();
 			if (!(cwh instanceof ClanWarehouse))
 			{
-				_log.info("Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
+				_log.log(Level.INFO, getClass().getSimpleName() + ": Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
 				return;
 			}
 
@@ -509,7 +508,7 @@ public class CastleManorManager
 				ItemContainer cwh = ClanTable.getInstance().getClan(c.getOwnerId()).getWarehouse();
 				if (!(cwh instanceof ClanWarehouse))
 				{
-					_log.info("Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
+					_log.log(Level.INFO, getClass().getSimpleName() + ": Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
 					return;
 				}
 				int slots = 0;

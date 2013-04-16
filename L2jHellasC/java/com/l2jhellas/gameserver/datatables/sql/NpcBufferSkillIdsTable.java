@@ -44,7 +44,7 @@ public class NpcBufferSkillIdsTable
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			PreparedStatement statement = con.prepareStatement("SELECT `npc_id`,`skill_id`,`skill_level`,`skill_fee_id`,`skill_fee_amount` FROM `npc_buffer` ORDER BY `npc_id` ASC");
+			PreparedStatement statement = con.prepareStatement("SELECT npc_id,skill_id,skill_level,skill_fee_id,skill_fee_amount FROM npc_buffer ORDER BY npc_id ASC");
 			ResultSet rset = statement.executeQuery();
 
 			int lastNpcId = 0;
@@ -79,7 +79,7 @@ public class NpcBufferSkillIdsTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": NpcBufferSkillIdsTable: Error reading npc_buffer_skill_ids table: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error reading npc_buffer_skill_ids table: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -87,10 +87,16 @@ public class NpcBufferSkillIdsTable
 		}
 		finally
 		{
-			try{con.close();}catch(Exception e){}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 
-		System.out.println("NpcBufferSkillIdsTable: Loaded " + _buffers.size() + " buffers and " + skillCount + " skills.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _buffers.size() + " buffers and " + skillCount + " skills.");
 	}
 
 	public static NpcBufferSkillIdsTable getInstance()
@@ -100,6 +106,7 @@ public class NpcBufferSkillIdsTable
 
 		return _instance;
 	}
+
 	/** Reloads npc buffer **/
 	public static void reload()
 	{

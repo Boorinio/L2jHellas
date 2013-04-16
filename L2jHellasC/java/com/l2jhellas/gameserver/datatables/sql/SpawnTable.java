@@ -128,7 +128,7 @@ public class SpawnTable
 				}
 				else
 				{
-					_log.warning("SpawnTable: Data missing in NPC table for ID: " + rset.getInt("npc_templateid") + ".");
+					_log.log(Level.WARNING, getClass().getName() + ": Data missing in NPC table for ID: " + rset.getInt("npc_templateid") + ".");
 				}
 			}
 			rset.close();
@@ -137,7 +137,7 @@ public class SpawnTable
 		catch (Exception e)
 		{
 			// problem with initializing spawn, go to next one
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Spawn could not be initialized: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Spawn could not be initialized: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -158,7 +158,7 @@ public class SpawnTable
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
 
 		if (Config.DEBUG)
-			_log.fine("SpawnTable: Spawning completed, total number of NPCs in the world: " + _npcSpawnCount);
+			_log.log(Level.FINE, getClass().getName() + ": Spawning completed, total number of NPCs in the world: " + _npcSpawnCount);
 
 	}
 
@@ -180,7 +180,7 @@ public class SpawnTable
 			try
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("INSERT INTO spawnlist (id,count,npc_templateid,locx,locy,locz,heading,respawn_delay,loc_id) values(?,?,?,?,?,?,?,?,?)");
+				PreparedStatement statement = con.prepareStatement("INSERT INTO spawnlist (id,count,npc_templateid,locx,locy,locz,heading,respawn_delay,loc_id) VALUES (?,?,?,?,?,?,?,?,?)");
 				statement.setInt(1, spawn.getId());
 				statement.setInt(2, spawn.getAmount());
 				statement.setInt(3, spawn.getNpcid());

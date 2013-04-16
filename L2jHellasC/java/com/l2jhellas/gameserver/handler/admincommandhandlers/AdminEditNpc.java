@@ -53,7 +53,18 @@ public class AdminEditNpc implements IAdminCommandHandler
 	private final static int PAGE_LIMIT = 7;
 
 	private static final String[] ADMIN_COMMANDS = {
-	"admin_edit_npc", "admin_save_npc", "admin_show_droplist", "admin_edit_drop", "admin_add_drop", "admin_del_drop", "admin_showShop", "admin_showShopList", "admin_addShopItem", "admin_delShopItem", "admin_editShopItem", "admin_close_window"
+	"admin_edit_npc",
+	"admin_save_npc",
+	"admin_show_droplist",
+	"admin_edit_drop",
+	"admin_add_drop",
+	"admin_del_drop",
+	"admin_showShop",
+	"admin_showShopList",
+	"admin_addShopItem",
+	"admin_delShopItem",
+	"admin_editShopItem",
+	"admin_close_window"
 	};
 
 	@Override
@@ -163,7 +174,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.fine("admin_edit_drop parements error: " + command);
+						_log.log(Level.WARNING, getClass().getName() + ": admin_edit_drop parements error: " + command);
+						if (Config.DEVELOPER)
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 				else
@@ -214,7 +229,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.fine("admin_add_drop parements error: " + command);
+						_log.log(Level.WARNING, getClass().getName() + ": admin_add_drop parements error: " + command);
+						if (Config.DEVELOPER)
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 				else
@@ -484,7 +503,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO merchant_buylists (`item_id`,`price`,`shop_id`,`order`) values (" + itemID + "," + price + "," + tradeListID + "," + order + ")");
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO merchant_buylists (`item_id`,`price`,`shop_id`,`order`) VALUES (" + itemID + "," + price + "," + tradeListID + "," + order + ")");
 			stmt.execute();
 			stmt.close();
 		}
@@ -517,7 +536,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (SQLException esql)
 		{
-			esql.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": could not update trade list" + esql);
+			if (Config.DEVELOPER)
+			{
+				esql.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -544,7 +567,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (SQLException esql)
 		{
-			esql.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": could not update trade list" + esql);
+			if (Config.DEVELOPER)
+			{
+				esql.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -577,7 +604,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (SQLException esql)
 		{
-			esql.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": could not order find trade list" + esql);
+			if (Config.DEVELOPER)
+			{
+				esql.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -996,7 +1027,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			PreparedStatement statement = con.prepareStatement("INSERT INTO droplist(mobId, itemId, min, max, category, chance) values(?,?,?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO droplist(mobId, itemId, min, max, category, chance) VALUES (?,?,?,?,?,?)");
 			statement.setInt(1, npcId);
 			statement.setInt(2, itemId);
 			statement.setInt(3, min);

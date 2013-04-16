@@ -22,19 +22,18 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
 /**
  * @author  Luno, Dezmond
  */
 public class AdminGeoEditor implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-		{
-			"admin_ge_status",
-			"admin_ge_mode",
-			"admin_ge_join",
-			"admin_ge_leave"
-		};
+	{
+	"admin_ge_status",
+	"admin_ge_mode",
+	"admin_ge_join",
+	"admin_ge_leave"
+	};
 
 
 	@Override

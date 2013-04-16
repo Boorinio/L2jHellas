@@ -539,9 +539,6 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			activeChar.getStatus().setCurrentMp(mp);
 		}
-		// [L2J_JP ADD END]
-
-		// L2Emu ADD: Xyde: Change player Status
 		if (cmand.equals("admin_setchar_cp"))
 		{
 			int cp = 0;
@@ -629,8 +626,6 @@ public class AdminEditChar implements IAdminCommandHandler
 			else
 				activeChar.getStatus().setCurrentMp(mp);
 		}
-		// L2Emu Add: End
-
 		return true;
 	}
 
@@ -959,7 +954,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			activeChar.sendPacket(adminReply);
 		}
 		else
-			throw new IllegalArgumentException("Malformed character name");
+			_log.log(Level.WARNING, getClass().getName() + ": Malformed character name");
 	}
 
 	/**

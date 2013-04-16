@@ -32,42 +32,38 @@ import com.l2jhellas.util.Util;
 
 public class AdminTvTEngine implements IAdminCommandHandler
 {
-
-	private static final String[]	ADMIN_COMMANDS	=
-													{
-			"admin_tvt",
-			"admin_tvt_name",
-			"admin_tvt_desc",
-			"admin_tvt_join_loc",
-			"admin_tvt_minlvl",
-			"admin_tvt_maxlvl",
-			"admin_tvt_npc",
-			"admin_tvt_npc_pos",
-			"admin_tvt_reward",
-			"admin_tvt_reward_amount",
-			"admin_tvt_team_add",
-			"admin_tvt_team_remove",
-			"admin_tvt_team_pos",
-			"admin_tvt_team_color",
-			"admin_tvt_join",
-			"admin_tvt_teleport",
-			"admin_tvt_start",
-			"admin_tvt_abort",
-			"admin_tvt_finish",
-			"admin_tvt_sit",
-			"admin_tvt_dump",
-			"admin_tvt_save",
-			"admin_tvt_load",
-			"admin_tvt_jointime",
-			"admin_tvt_eventtime",
-			"admin_tvt_autoevent",
-			"admin_tvt_minplayers",
-			"admin_tvt_maxplayers",
-			"admin_tvtkick",
-
-			//L2EMU_ADD
-			"admin_tvt_interval"					};
-			//L2EMU_ADD
+	private static final String[] ADMIN_COMMANDS = {
+	"admin_tvt",
+	"admin_tvt_name",
+	"admin_tvt_desc",
+	"admin_tvt_join_loc",
+	"admin_tvt_minlvl",
+	"admin_tvt_maxlvl",
+	"admin_tvt_npc",
+	"admin_tvt_npc_pos",
+	"admin_tvt_reward",
+	"admin_tvt_reward_amount",
+	"admin_tvt_team_add",
+	"admin_tvt_team_remove",
+	"admin_tvt_team_pos",
+	"admin_tvt_team_color",
+	"admin_tvt_join",
+	"admin_tvt_teleport",
+	"admin_tvt_start",
+	"admin_tvt_abort",
+	"admin_tvt_finish",
+	"admin_tvt_sit",
+	"admin_tvt_dump",
+	"admin_tvt_save",
+	"admin_tvt_load",
+	"admin_tvt_jointime",
+	"admin_tvt_eventtime",
+	"admin_tvt_autoevent",
+	"admin_tvt_minplayers",
+	"admin_tvt_maxplayers",
+	"admin_tvtkick",
+	"admin_tvt_interval"
+	};
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -75,7 +71,6 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		if (command.equals("admin_tvt"))
 			showMainPage(activeChar);
 
-		//L2EMU_ADD
 		else if (command.startsWith("admin_tvt_interval "))
 		{
 			int value = Integer.valueOf(command.substring(19));
@@ -83,7 +78,6 @@ public class AdminTvTEngine implements IAdminCommandHandler
 			TvT._intervalBetweenMatchs = Util.convertMinutesToMiliseconds(value);
 			showMainPage(activeChar);
 		}
-		//L2EMU_ADD
 		else if (command.startsWith("admin_tvt_name "))
 		{
 			TvT._eventName = command.substring(15);
@@ -314,10 +308,10 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		replyMSG.append("</tr></table><table><tr>");
 		replyMSG.append("<td width=\"100\"><button value=\"Abort\" action=\"bypass -h admin_tvt_abort\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		replyMSG.append("<td width=\"100\"><button value=\"Finish\" action=\"bypass -h admin_tvt_finish\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
-		//L2EMU_ADD
+		// L2EMU_ADD
 		replyMSG.append("</tr></table><table><tr>");
 		replyMSG.append("<td width=\"100\"><button value=\"Set Interval\" action=\"bypass -h admin_tvt_interval $input1\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
-		//L2EMU_ADD
+		// L2EMU_ADD
 		replyMSG.append("</tr></table><br><table><tr>");
 		replyMSG.append("<td width=\"100\"><button value=\"Sit Force\" action=\"bypass -h admin_tvt_sit\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		replyMSG.append("<td width=\"100\"><button value=\"Dump\" action=\"bypass -h admin_tvt_dump\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
@@ -327,15 +321,14 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		replyMSG.append("<td width=\"100\"><button value=\"Auto Event\" action=\"bypass -h admin_tvt_autoevent\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		replyMSG.append("</tr></table><br><br>");
 		replyMSG.append("Current event...<br1>");
-		//L2EMU_ADD
+		// L2EMU_ADD
 		replyMSG.append("    ... Event Type:&nbsp;<font color=\"00FF00\">" + TvT.getEventTypeByName(TvT._eventType) + "</font><br1>");
 		replyMSG.append("    ... Events Starts Every:&nbsp;<font color=\"00FF00\">" + TvT.getIntervalBetweenMatchs() + " minutes.</font><br><br>");
-		//L2EMU_ADD
+		// L2EMU_ADD
 		replyMSG.append("    ... name:&nbsp;<font color=\"00FF00\">" + TvT._eventName + "</font><br1>");
 		replyMSG.append("    ... description:&nbsp;<font color=\"00FF00\">" + TvT._eventDesc + "</font><br1>");
 		replyMSG.append("    ... joining location name:&nbsp;<font color=\"00FF00\">" + TvT._joiningLocationName + "</font><br1>");
-		replyMSG.append("    ... joining NPC ID:&nbsp;<font color=\"00FF00\">" + TvT._npcId + " on pos " + TvT._npcX + "," + TvT._npcY + "," + TvT._npcZ
-				+ "</font><br1>");
+		replyMSG.append("    ... joining NPC ID:&nbsp;<font color=\"00FF00\">" + TvT._npcId + " on pos " + TvT._npcX + "," + TvT._npcY + "," + TvT._npcZ + "</font><br1>");
 		replyMSG.append("    ... reward ID:&nbsp;<font color=\"00FF00\">" + TvT._rewardId + "</font><br1>");
 		replyMSG.append("    ... reward Amount:&nbsp;<font color=\"00FF00\">" + TvT._rewardAmount + "</font><br><br>");
 		replyMSG.append("    ... Min lvl:&nbsp;<font color=\"00FF00\">" + TvT._minlvl + "</font><br>");
@@ -362,10 +355,8 @@ public class AdminTvTEngine implements IAdminCommandHandler
 			replyMSG.append("</td></tr><tr><td>");
 			replyMSG.append(TvT._teamColors.get(TvT._teams.indexOf(team)));
 			replyMSG.append("</td></tr><tr><td>");
-			replyMSG.append(TvT._teamsX.get(TvT._teams.indexOf(team)) + ", " + TvT._teamsY.get(TvT._teams.indexOf(team)) + ", "
-					+ TvT._teamsZ.get(TvT._teams.indexOf(team)));
-			replyMSG.append("</td></tr><tr><td width=\"60\"><button value=\"Remove\" action=\"bypass -h admin_tvt_team_remove " + team
-					+ "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
+			replyMSG.append(TvT._teamsX.get(TvT._teams.indexOf(team)) + ", " + TvT._teamsY.get(TvT._teams.indexOf(team)) + ", " + TvT._teamsZ.get(TvT._teams.indexOf(team)));
+			replyMSG.append("</td></tr><tr><td width=\"60\"><button value=\"Remove\" action=\"bypass -h admin_tvt_team_remove " + team + "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
 		}
 
 		replyMSG.append("</table></center>");

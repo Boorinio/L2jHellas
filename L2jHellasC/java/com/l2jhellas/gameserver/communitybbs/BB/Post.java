@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.communitybbs.BB;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,7 +29,6 @@ import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
 
 /**
  * @author Maktakien
- *
  */
 public class Post
 {
@@ -48,24 +46,25 @@ public class Post
 	}
 
 	private final List<CPost> _post;
+
 	/**
 	 * @param restore
 	 * @param t
 	 */
-	//public enum ConstructorType {REPLY, CREATE };
-	public Post(String _PostOwner,int _PostOwnerID,long date,int tid,int _PostForumID,String txt)
+	// public enum ConstructorType {REPLY, CREATE };
+	public Post(String _PostOwner, int _PostOwnerID, long date, int tid, int _PostForumID, String txt)
 	{
-			_post = new FastList<CPost>();
-			CPost cp = new CPost();
-			cp.postId = 0;
-			cp.postOwner = _PostOwner;
-			cp.postOwnerId = _PostOwnerID;
-			cp.postDate = date;
-			cp.postTopicId = tid;
-			cp.postForumId = _PostForumID;
-			cp.postTxt = txt;
-			_post.add(cp);
-			insertindb(cp);
+		_post = new FastList<CPost>();
+		CPost cp = new CPost();
+		cp.postId = 0;
+		cp.postOwner = _PostOwner;
+		cp.postOwnerId = _PostOwnerID;
+		cp.postDate = date;
+		cp.postTopicId = tid;
+		cp.postForumId = _PostForumID;
+		cp.postTxt = txt;
+		_post.add(cp);
+		insertindb(cp);
 
 	}
 
@@ -75,7 +74,7 @@ public class Post
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("INSERT INTO posts (post_id,post_owner_name,post_ownerid,post_date,post_topic_id,post_forum_id,post_txt) values (?,?,?,?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO posts (post_id,post_owner_name,post_ownerid,post_date,post_topic_id,post_forum_id,post_txt) VALUES (?,?,?,?,?,?,?)");
 			statement.setInt(1, cp.postId);
 			statement.setString(2, cp.postOwner);
 			statement.setInt(3, cp.postOwnerId);
@@ -116,9 +115,9 @@ public class Post
 	public CPost getCPost(int id)
 	{
 		int i = 0;
-		for(CPost cp : _post)
+		for (CPost cp : _post)
 		{
-			if(i == id)
+			if (i == id)
 			{
 				return cp;
 			}
@@ -173,7 +172,7 @@ public class Post
 			statement.setInt(1, t.getForumID());
 			statement.setInt(2, t.getID());
 			ResultSet result = statement.executeQuery();
-			while(result.next())
+			while (result.next())
 			{
 				CPost cp = new CPost();
 				cp.postId = Integer.parseInt(result.getString("post_id"));

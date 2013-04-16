@@ -22,34 +22,37 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import Extensions.Vote.Tasks.MonthlyResetTask;
 import Extensions.Vote.Tasks.TriesResetTask;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-public class VoteMain
+public class VoteManager
 {
+	protected static final Logger _log = Logger.getLogger(VoteManager.class.getName());
+
 	private static boolean hasVotedHop;
 	private static boolean hasVotedTop;
-	
-	public VoteMain()
+
+	public VoteManager()
 	{
 	}
-	
+
 	public static void load()
 	{
-		System.out.println("Vortex Vote Reward System Started Successfully.");
-		System.out.println("Original Author Elfocrash.");
-		System.out.println("Cracked and reworked by L2TopHackers Team.");
+		_log.log(Level.INFO, "VoteManager: initialized.");
 		TriesResetTask.getInstance();
 		MonthlyResetTask.getInstance();
 	}
-	
+
 	protected static int getHopZoneVotes()
 	{
 		int votes = -1;
@@ -78,11 +81,15 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: Crazy error call boorinio " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		return votes;
 	}
-	
+
 	protected static int getTopZoneVotes()
 	{
 		int votes = -1;
@@ -105,7 +112,7 @@ public class VoteMain
 				if (inputLine.contains("Votes"))
 				{
 					String votesLine = in.readLine();
-					
+
 					votes = Integer.valueOf(votesLine.split(">")[5].replace("</font", ""));
 					break;
 				}
@@ -113,11 +120,15 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: cant get topzone votes " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		return votes;
 	}
-	
+
 	public static String hopCd(L2PcInstance player)
 	{
 		long hopCdMs = 0;
@@ -127,9 +138,9 @@ public class VoteMain
 		{
 			statement = con.prepareStatement("SELECT lastVoteHopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				hopCdMs = rset.getLong("lastVoteHopzone");
@@ -137,13 +148,18 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, "VoteManager: could not select lastvotehopzone from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-		
+
 		Date resultdate = new Date(hopCdMs + voteDelay);
 		return sdf.format(resultdate);
 	}
-	
+
 	public static String topCd(L2PcInstance player)
 	{
 		long topCdMs = 0;
@@ -153,9 +169,9 @@ public class VoteMain
 		{
 			statement = con.prepareStatement("SELECT lastVoteTopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				topCdMs = rset.getLong("lastVoteTopzone");
@@ -163,13 +179,18 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
+			_log.log(Level.WARNING, "VoteManager: could not select lastvotehopzone from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-		
+
 		Date resultdate = new Date(topCdMs + voteDelay);
 		return sdf.format(resultdate);
 	}
-	
+
 	public static String whosVoting()
 	{
 		for (L2PcInstance voter : L2World.getInstance().getAllPlayers())
@@ -181,53 +202,53 @@ public class VoteMain
 		}
 		return "None";
 	}
-	
+
 	public static void hopvote(final L2PcInstance player)
 	{
 		long lastVoteHopzone = 0L;
 		long voteDelay = 43200000L;
 		final int firstvoteshop;
-		
+
 		firstvoteshop = getHopZoneVotes();
-		
+
 		class hopvotetask implements Runnable
 		{
 			private final L2PcInstance p;
-			
+
 			public hopvotetask(L2PcInstance player)
 			{
 				p = player;
 			}
-			
+
 			@Override
 			public void run()
 			{
 				if (firstvoteshop < getHopZoneVotes())
 				{
 					p.setIsVoting(false);
-					VoteMain.setHasVotedHop(player);
+					VoteManager.setHasVotedHop(player);
 					p.sendMessage("Thank you for voting for us!");
-					VoteMain.updateLastVoteHopzone(p);
-					VoteMain.updateVotes(p);
+					VoteManager.updateLastVoteHopzone(p);
+					VoteManager.updateVotes(p);
 				}
 				else
 				{
 					p.setIsVoting(false);
 					p.sendMessage("You did not vote.Please try again.");
-					VoteMain.setTries(player, VoteMain.getTries(p) - 1);
+					VoteManager.setTries(player, VoteManager.getTries(p) - 1);
 				}
 			}
-			
+
 		}
-		
+
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			statement = con.prepareStatement("SELECT lastVoteHopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				lastVoteHopzone = rset.getLong("lastVoteHopzone");
@@ -235,9 +256,13 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select lastvotehopzone from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
-		
+
 		if (getTries(player) <= 0)
 		{
 			player.sendMessage("Due to your multiple failures in voting you lost your chance to vote today");
@@ -252,7 +277,7 @@ public class VoteMain
 					return;
 				}
 			}
-			
+
 			player.setIsVoting(true);
 			player.sendMessage("Go fast on the site and vote on the hopzone banner!");
 			player.sendMessage("You have " + ExternalConfig.SECS_TO_VOTE + " seconds.Hurry!");
@@ -268,66 +293,66 @@ public class VoteMain
 					return;
 				}
 			}
-			
+
 			player.setIsVoting(true);
 			player.sendMessage("Go fast on the site and vote on the hopzone banner!");
 			player.sendMessage("You have " + ExternalConfig.SECS_TO_VOTE + " seconds.Hurry!");
 			ThreadPoolManager.getInstance().scheduleGeneral(new hopvotetask(player), ExternalConfig.SECS_TO_VOTE * 1000);
-			
+
 		}
 		else
 		{
 			player.sendMessage("12 hours have to pass till you are able to vote again.");
 		}
-		
+
 	}
-	
+
 	public static void topvote(final L2PcInstance player)
 	{
 		long lastVoteTopzone = 0L;
 		long voteDelay = 43200000L;
 		final int firstvotestop;
-		
+
 		firstvotestop = getTopZoneVotes();
-		
+
 		class topvotetask implements Runnable
 		{
 			private final L2PcInstance p;
-			
+
 			public topvotetask(L2PcInstance player)
 			{
 				p = player;
 			}
-			
+
 			@Override
 			public void run()
 			{
 				if (firstvotestop < getTopZoneVotes())
 				{
 					p.setIsVoting(false);
-					VoteMain.setHasVotedTop(p);
+					VoteManager.setHasVotedTop(p);
 					p.sendMessage("Thank you for voting for us!");
-					VoteMain.updateLastVoteTopzone(p);
-					VoteMain.updateVotes(p);
+					VoteManager.updateLastVoteTopzone(p);
+					VoteManager.updateVotes(p);
 				}
 				else
 				{
 					p.setIsVoting(false);
 					p.sendMessage("You did not vote.Please try again.");
-					VoteMain.setTries(p, VoteMain.getTries(p) - 1);
+					VoteManager.setTries(p, VoteManager.getTries(p) - 1);
 				}
 			}
-			
+
 		}
-		
+
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			statement = con.prepareStatement("SELECT lastVoteTopzone FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				lastVoteTopzone = rset.getLong("lastVoteTopzone");
@@ -335,9 +360,13 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select lastvotehopzone from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
-		
+
 		if (getTries(player) <= 0)
 		{
 			player.sendMessage("Due to your multiple failures in voting you lost your chance to vote today");
@@ -376,9 +405,9 @@ public class VoteMain
 		{
 			player.sendMessage("12 hours have to pass till you are able to vote again.");
 		}
-		
+
 	}
-	
+
 	public static void hasVotedHop(L2PcInstance player)
 	{
 		int hasVotedHop = -1;
@@ -386,14 +415,14 @@ public class VoteMain
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT hasVotedHop FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				hasVotedHop = rset.getInt("hasVotedHop");
 			}
-			
+
 			if (hasVotedHop == 1)
 			{
 				setHasVotedHop(true);
@@ -405,10 +434,14 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select hasVotedHop from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void hasVotedTop(L2PcInstance player)
 	{
 		int hasVotedTop = -1;
@@ -416,14 +449,14 @@ public class VoteMain
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT hasVotedTop FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				hasVotedTop = rset.getInt("hasVotedTop");
 			}
-			
+
 			if (hasVotedTop == 1)
 			{
 				setHasVotedTop(true);
@@ -435,16 +468,20 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select hasVotedHop from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void updateVotes(L2PcInstance activeChar)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET monthVotes=?, totalVotes=? WHERE obj_Id=?");
-			
+
 			statement.setInt(1, getMonthVotes(activeChar) + 1);
 			statement.setInt(2, getTotalVotes(activeChar) + 1);
 			statement.setInt(3, activeChar.getObjectId());
@@ -453,16 +490,20 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update votes on table characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void setHasVotedHop(L2PcInstance activeChar)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE obj_Id=?");
-			
+
 			statement.setInt(1, 1);
 			statement.setInt(2, activeChar.getObjectId());
 			statement.execute();
@@ -470,16 +511,20 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update hasVotedHop in characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void setHasVotedTop(L2PcInstance activeChar)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE obj_Id=?");
-			
+
 			statement.setInt(1, 1);
 			statement.setInt(2, activeChar.getObjectId());
 			statement.execute();
@@ -487,16 +532,20 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update hasVotedTop in characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void setHasNotVotedHop(L2PcInstance activeChar)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE obj_Id=?");
-			
+
 			statement.setInt(1, 0);
 			statement.setInt(2, activeChar.getObjectId());
 			statement.execute();
@@ -504,16 +553,20 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update hasVotedHop in characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void setHasNotVotedTop(L2PcInstance activeChar)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE obj_Id=?");
-			
+
 			statement.setInt(1, 0);
 			statement.setInt(2, activeChar.getObjectId());
 			statement.execute();
@@ -521,10 +574,14 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update hasVotedTop in characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static int getTries(L2PcInstance player)
 	{
 		int tries = -1;
@@ -536,21 +593,25 @@ public class VoteMain
 			{
 				tries = rset.getInt("tries");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not get tries from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		return tries;
 	}
-	
+
 	public static void setTries(L2PcInstance player, int tries)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET tries=? WHERE obj_Id=?");
-			
+
 			statement.setInt(1, tries);
 			statement.setInt(2, player.getObjectId());
 			statement.execute();
@@ -558,59 +619,71 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update tries in characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static int getMonthVotes(L2PcInstance player)
 	{
 		int monthVotes = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT monthVotes FROM characters WHERE obj_Id=?");
-			
+
 			statement.setInt(1, player.getObjectId());
 			for (ResultSet rset = statement.executeQuery(); rset.next();)
 			{
 				monthVotes = rset.getInt("monthVotes");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select monthVotes from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		return monthVotes;
 	}
-	
+
 	public static int getTotalVotes(L2PcInstance player)
 	{
 		int totalVotes = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT totalVotes FROM characters WHERE obj_Id=?");
-			
+
 			statement.setInt(1, player.getObjectId());
 			for (ResultSet rset = statement.executeQuery(); rset.next();)
 			{
 				totalVotes = rset.getInt("totalVotes");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select totalVotes from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		return totalVotes;
 	}
-	
+
 	public static int getBigTotalVotes(L2PcInstance player)
 	{
 		int bigTotalVotes = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT SUM(totalVotes) FROM characters");
-			
+
 			for (ResultSet rset = statement.executeQuery(); rset.next();)
 			{
 				bigTotalVotes = rset.getInt("SUM(totalVotes)");
@@ -618,31 +691,39 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select totalVotes from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		return bigTotalVotes;
 	}
-	
+
 	public static int getBigMonthVotes(L2PcInstance player)
 	{
 		int bigMonthVotes = -1;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT SUM(monthVotes) FROM characters");
-			
+
 			for (ResultSet rset = statement.executeQuery(); rset.next();)
 			{
 				bigMonthVotes = rset.getInt("SUM(monthVotes)");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not select monthVotes from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		return bigMonthVotes;
 	}
-	
+
 	public static void updateLastVoteHopzone(L2PcInstance player)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -654,10 +735,14 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update lastVoteHopzone in characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void updateLastVoteTopzone(L2PcInstance player)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -669,28 +754,32 @@ public class VoteMain
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, "VoteManager: could not update lastVoteTopzone in characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	// Getters and Setters
 	public static boolean hasVotedHop()
 	{
 		return hasVotedHop;
 	}
-	
+
 	public static void setHasVotedHop(boolean hasVotedHop)
 	{
-		VoteMain.hasVotedHop = hasVotedHop;
+		VoteManager.hasVotedHop = hasVotedHop;
 	}
-	
+
 	public static boolean hasVotedTop()
 	{
 		return hasVotedTop;
 	}
-	
+
 	public static void setHasVotedTop(boolean hasVotedTop)
 	{
-		VoteMain.hasVotedTop = hasVotedTop;
+		VoteManager.hasVotedTop = hasVotedTop;
 	}
 }

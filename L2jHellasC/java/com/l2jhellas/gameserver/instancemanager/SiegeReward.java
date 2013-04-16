@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,15 +38,13 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class SiegeReward
 {
-	// Singleton
-	private static SiegeReward _instance;
-	static Logger _log = Logger.getLogger(SiegeReward.class.getName());
+	protected static final Logger _log = Logger.getLogger(SiegeReward.class.getName());
 
-	// Config
+	private static SiegeReward _instance;
+
 	public static boolean ACTIVATED_SYSTEM;
 	public static boolean REWARD_ACTIVE_MEMBERS_ONLY;
 
-	// Constant
 	private final FastList<RewardInfoz> _list;
 	private final FastMap<Integer, FastList<ToReward>> _toReward; // Offline players that didn't get rewarded. =( poor guys, But they'll have a surprise
 
@@ -54,7 +52,7 @@ public class SiegeReward
 	{
 		_list = new FastList<RewardInfoz>();
 		_toReward = new FastMap<Integer, FastList<ToReward>>();
-		_log.info("SiegeReward: Activated.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Activated.");
 	}
 
 	public static SiegeReward getInstance()
@@ -71,13 +69,12 @@ public class SiegeReward
 
 	private void loadOfflineMembers()
 	{
-		// Mysql connector
 		Connection con = null;
 
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement st = con.prepareStatement("select charId, itemId, count, castle_name, rewarded from reward_list");
+			PreparedStatement st = con.prepareStatement("SELECT charId, itemId, count, castle_name, rewarded FROM reward_list");
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next())
@@ -142,13 +139,12 @@ public class SiegeReward
 
 	public void deleteRewarded(int charId, int itemId)
 	{
-		// Mysql connector
 		Connection con = null;
 
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement st = con.prepareStatement("delete from reward_list where charId=? and itemId=?");
+			PreparedStatement st = con.prepareStatement("DELETE FROM reward_list WHERE charId=? AND itemId=?");
 			st.setInt(1, charId);
 			st.setInt(2, itemId);
 			st.execute();
@@ -205,13 +201,12 @@ public class SiegeReward
 		}
 		finally
 		{
-			_log.log(Level.FINE, getClass().getSimpleName() + "  Loaded: " + _list.size() + " Reword Item(s).");
+			_log.log(Level.FINE, getClass().getSimpleName() + "  Loaded: " + _list.size() + " Reward Item(s).");
 		}
 	}
 
 	public void storeDataBase(int charId, String castleName)
 	{
-		// Mysql connector
 		Connection con = null;
 
 		try
@@ -220,7 +215,7 @@ public class SiegeReward
 
 			for (RewardInfoz rewz : _list)
 			{
-				PreparedStatement st = con.prepareStatement("replace into reward_list values(?,?,?,?,?)");
+				PreparedStatement st = con.prepareStatement("REPLACE INTO reward_list VALUES (?,?,?,?,?)");
 				st.setInt(1, charId);
 				st.setInt(2, rewz.getItemId());
 				st.setInt(3, rewz.getItemCount());
@@ -246,7 +241,6 @@ public class SiegeReward
 			}
 			catch (SQLException e)
 			{
-
 			}
 		}
 	}
@@ -301,7 +295,6 @@ public class SiegeReward
 		{
 			return _itemCount;
 		}
-
 	}
 
 	public void notifySiegeEnded(L2Clan clan, String castleName)
@@ -321,5 +314,4 @@ public class SiegeReward
 				storeDataBase(member.getObjectId(), castleName);
 		}
 	}
-
 }

@@ -119,7 +119,7 @@ public class BitSetIDFactory extends IdFactory
 			}
 			else
 			{
-				throw new NullPointerException("Ran out of valid Id's.");
+				_log.log(Level.WARNING, getClass().getName() + ": Ran out of valid Id's.");
 			}
 		}
 

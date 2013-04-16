@@ -14,9 +14,6 @@
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Attackable;
@@ -38,7 +35,6 @@ import com.l2jhellas.util.Rnd;
  */
 public class Harvest implements ISkillHandler
 {
-	protected static final Logger _log = Logger.getLogger(Harvest.class.getName());
 	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.HARVEST
 	};
@@ -62,9 +58,6 @@ public class Harvest implements ISkillHandler
 		{
 			return;
 		}
-
-		if (Config.DEBUG)
-			_log.log(Level.INFO, getClass().getName() + ": Casting harvest");
 
 		for (int index = 0; index < targetList.length; index++)
 		{
@@ -139,7 +132,6 @@ public class Harvest implements ISkillHandler
 				_activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_HARVEST_FAILED_BECAUSE_THE_SEED_WAS_NOT_SOWN));
 			}
 		}
-
 	}
 
 	private boolean calcSuccess()

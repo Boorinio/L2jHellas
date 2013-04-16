@@ -33,12 +33,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.3.2.5 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class ScrollOfEscape implements IItemHandler
 {
 	// all the items ids that this handler knowns
@@ -177,13 +171,7 @@ public class ScrollOfEscape implements IItemHandler
 				{
 					_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Castle);
 				}
-				else if ((_itemId == 1829 || _itemId == 5858) && _activeChar.getClan() != null && ClanHallManager.getInstance().getClanHallByOwner(_activeChar.getClan()) != null) // escape
-																																													// to
-																																													// clan
-																																													// hall
-																																													// if
-																																													// own's
-																																													// one
+				else if ((_itemId == 1829 || _itemId == 5858) && _activeChar.getClan() != null && ClanHallManager.getInstance().getClanHallByOwner(_activeChar.getClan()) != null) // escape to clan hall if own's one
 				{
 					_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.ClanHall);
 				}
@@ -295,8 +283,10 @@ public class ScrollOfEscape implements IItemHandler
 			}
 			catch (Throwable e)
 			{
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					e.printStackTrace();
+				}
 			}
 		}
 	}

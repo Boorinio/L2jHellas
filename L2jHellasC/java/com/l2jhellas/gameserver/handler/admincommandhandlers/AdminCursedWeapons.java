@@ -36,14 +36,17 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * provided. Target will be the weilder
  * - cw_goto = teleports GM to the specified cursed weapon
  * - cw_reload = reloads instance manager
- *
- * @version $Revision: 1.1.6.3 $ $Date: 2007/07/31 10:06:06 $
  */
 public class AdminCursedWeapons implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_cw_info", "admin_cw_remove", "admin_cw_goto", "admin_cw_reload", "admin_cw_add", "admin_cw_info_menu"
+	"admin_cw_info",
+	"admin_cw_remove",
+	"admin_cw_goto",
+	"admin_cw_reload",
+	"admin_cw_add",
+	"admin_cw_info_menu"
 	};
 	private int itemId;
 

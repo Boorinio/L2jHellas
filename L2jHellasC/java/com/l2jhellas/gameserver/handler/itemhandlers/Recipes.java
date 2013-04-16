@@ -23,12 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.5.2.5 $ $Date: 2005/04/06 16:13:51 $
- */
-
 public class Recipes implements IItemHandler
 {
 	private final int[] ITEM_IDS;
@@ -63,7 +57,7 @@ public class Recipes implements IItemHandler
 				{
 					if (rp.getLevel() > activeChar.getDwarvenCraft())
 					{
-						// can't add recipe, becouse create item level too low
+						// can't add recipe, because create item level too low
 						SystemMessage sm = new SystemMessage(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
 						activeChar.sendPacket(sm);
 					}
@@ -95,7 +89,7 @@ public class Recipes implements IItemHandler
 				{
 					if (rp.getLevel() > activeChar.getCommonCraft())
 					{
-						// can't add recipe, becouse create item level too low
+						// can't add recipe, because create item level too low
 						SystemMessage sm = new SystemMessage(SystemMessageId.CREATE_LVL_TOO_LOW_TO_REGISTER);
 						activeChar.sendPacket(sm);
 					}

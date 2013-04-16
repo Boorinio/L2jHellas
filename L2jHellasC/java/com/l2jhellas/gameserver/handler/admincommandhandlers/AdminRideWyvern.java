@@ -24,7 +24,11 @@ public class AdminRideWyvern implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_ride_wyvern", "admin_ride_strider", "admin_unride_wyvern", "admin_unride_strider", "admin_unride",
+	"admin_ride_wyvern",
+	"admin_ride_strider",
+	"admin_unride_wyvern",
+	"admin_unride_strider",
+	"admin_unride"
 	};
 	private int _petRideId;
 

@@ -29,7 +29,7 @@ public class L2EventTeleporter implements Runnable
 
 	/**
 	 * Manages all Teleports done within a Raid Event.
-	 * 
+	 *
 	 * @param player
 	 *        --> Player being teleported
 	 * @param coordinateX

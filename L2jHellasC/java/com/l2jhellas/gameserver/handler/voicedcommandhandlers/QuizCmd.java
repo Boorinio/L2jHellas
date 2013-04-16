@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,11 +23,11 @@ import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
  */
 public class QuizCmd implements IVoicedCommandHandler
 {
-	
+
 	public static final String[] VOICED_COMMANDS = {
-	"quiz", "pauler"
+	"quiz"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
@@ -43,18 +43,13 @@ public class QuizCmd implements IVoicedCommandHandler
 				activeChar.sendMessage("Quiz event is not running right now.");
 			}
 		}
-		
-		if (command.equalsIgnoreCase(VOICED_COMMANDS[1])) // lol
-		{
-			activeChar.sendMessage("Quiz event by pauler.");
-		}
 		return false;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{
 		return VOICED_COMMANDS;
 	}
-	
+
 }

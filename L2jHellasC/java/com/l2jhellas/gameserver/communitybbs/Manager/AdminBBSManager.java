@@ -19,10 +19,6 @@ public class AdminBBSManager extends BaseBBSManager
 {
 	private static AdminBBSManager _instance = null;
 
-	/**
-	 * @return
-	 */
-
 	private AdminBBSManager()
 	{
 	}

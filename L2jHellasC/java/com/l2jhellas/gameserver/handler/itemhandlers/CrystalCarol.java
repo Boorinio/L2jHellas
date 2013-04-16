@@ -20,12 +20,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.4.4 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class CrystalCarol implements IItemHandler
 {
 	private static final int[] ITEM_IDS =

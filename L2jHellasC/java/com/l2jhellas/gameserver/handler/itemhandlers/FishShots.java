@@ -82,8 +82,7 @@ public class FishShots implements IItemHandler
 		L2Object oldTarget = activeChar.getTarget();
 		activeChar.setTarget(activeChar);
 
-		// activeChar.sendPacket(new
-		// SystemMessage(SystemMessage.ENABLED_SPIRITSHOT));
+		// activeChar.sendPacket(new SystemMessage(SystemMessage.ENABLED_SPIRITSHOT));
 
 		MagicSkillUse MSU = new MagicSkillUse(activeChar, SKILL_IDS[grade], 1, 0, 0);
 		Broadcast.toSelfAndKnownPlayers(activeChar, MSU);

@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.itemhandlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
@@ -31,10 +32,9 @@ import com.l2jhellas.util.Rnd;
 /**
  * @author FBIagent 11/12/2006
  */
-
 public class ExtractableItems implements IItemHandler
 {
-	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
+	private static Logger _log = Logger.getLogger(ExtractableItems.class.getName());
 
 	@Override
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -77,7 +77,7 @@ public class ExtractableItems implements IItemHandler
 		{
 			if (ItemTable.getInstance().createDummyItem(createItemID) == null)
 			{
-				_log.warning("createItemID " + createItemID + " doesn't have template!");
+				_log.log(Level.WARNING, getClass().getName() + ": createItemID " + createItemID + " doesn't have template!");
 				activeChar.sendMessage("Nothing happened.");
 				return;
 			}
@@ -105,9 +105,7 @@ public class ExtractableItems implements IItemHandler
 		}
 		else
 		{
-			activeChar.sendMessage("Item failed to open"); // TODO: Put a more
-															// proper message
-															// here.
+			activeChar.sendMessage("Item failed to open."); // TODO: Put a more proper message here.
 		}
 
 		activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar.getTarget(), true);

@@ -14,7 +14,6 @@ package Extensions.Vote;
 
 public class VoteConfig
 {
-	
 	public VoteConfig()
 	{
 	}

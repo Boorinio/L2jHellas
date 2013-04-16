@@ -36,8 +36,8 @@ public class SkillSpellbookTable
 
 	public static SkillSpellbookTable getInstance()
 	{
-        if (_instance == null)
-            _instance = new SkillSpellbookTable();
+		if (_instance == null)
+			_instance = new SkillSpellbookTable();
 
 		return _instance;
 	}
@@ -54,12 +54,12 @@ public class SkillSpellbookTable
 			ResultSet spbooks = statement.executeQuery();
 
 			while (spbooks.next())
-				_skillSpellbooks.put(spbooks.getInt("skill_id") , spbooks.getInt("item_id"));
+				_skillSpellbooks.put(spbooks.getInt("skill_id"), spbooks.getInt("item_id"));
 
 			spbooks.close();
 			statement.close();
 
-			_log.info("SkillSpellbookTable: Loaded " + _skillSpellbooks.size() + " Spellbooks.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _skillSpellbooks.size() + " Spellbooks.");
 		}
 		catch (Exception e)
 		{
@@ -72,23 +72,25 @@ public class SkillSpellbookTable
 		finally
 		{
 			try
-            {
+			{
 				con.close();
 			}
-            catch (Exception e) {}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 
-    public int getBookForSkill(int skillId)
-    {
-        if (!_skillSpellbooks.containsKey(skillId))
-            return -1;
+	public int getBookForSkill(int skillId)
+	{
+		if (!_skillSpellbooks.containsKey(skillId))
+			return -1;
 
-        return _skillSpellbooks.get(skillId);
-    }
+		return _skillSpellbooks.get(skillId);
+	}
 
-    public int getBookForSkill(L2Skill skill)
-    {
-        return getBookForSkill(skill.getId());
-    }
+	public int getBookForSkill(L2Skill skill)
+	{
+		return getBookForSkill(skill.getId());
+	}
 }

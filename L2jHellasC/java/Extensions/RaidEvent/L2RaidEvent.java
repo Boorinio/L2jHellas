@@ -43,17 +43,17 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 /**
  * This Class implements and Manages All Raid Events.<br>
  *
- * @author  polbat02
+ * @author polbat02
  */
 public class L2RaidEvent
 {
-	//Local Variables Definition
-	//--------------------------
+	// Local Variables Definition
+	// --------------------------
 	protected static final Logger _log = Logger.getLogger(L2RaidEvent.class.getName());
 	/**
 	 * Definition of the Event Mob Spawn
 	 */
-	
+
 	private static L2PcInstance _player;
 	private static L2Spawn _npcSpawn = null;
 	/**
@@ -68,12 +68,12 @@ public class L2RaidEvent
 	 * Custom Management of SP upon NPC death.
 	 */
 	public static int sp = 0;
-	
+
 	/**
 	 * <b>Event Type:</b><br>
-	 * 	1- Solo Event (Single player)<br>
-	 * 	2- Clan Event<br>
-	 * 	3- Party Event<br>
+	 * 1- Solo Event (Single player)<br>
+	 * 2- Clan Event<br>
+	 * 3- Party Event<br>
 	 */
 	public static int _eventType;
 	/**
@@ -81,46 +81,46 @@ public class L2RaidEvent
 	 */
 	private static int _eventMobs = 0;
 	/**
-	 * Reward Level: According to this reward level the players will be 
+	 * Reward Level: According to this reward level the players will be
 	 * congratulated with different prizes.
 	 */
-	private static int _rewardLevel;	
+	private static int _rewardLevel;
 	/**
 	 * Transport Locations
 	 */
-	private static int _locX,_locY,_locZ,_pX,_pY,_pZ;
-	
+	private static int _locX, _locY, _locZ, _pX, _pY, _pZ;
+
 	/**
 	 * NPC spawn positions
 	 */
-	private static int _npcX,_npcY,_npcZ;
-	
+	private static int _npcX, _npcY, _npcZ;
+
 	/**
 	 * DataBase Prize Parameters
 	 */
-	private static int _first_id,_first_ammount,_second_id,_second_ammount,_event_ammount;
-	
-	/** Event points Required*/
+	private static int _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount;
+
+	/** Event points Required */
 	private static int _points;
-	
+
 	/** NPC ID */
 	private static int _npcId;
-	
+
 	/** NPC Ammount */
 	private static int _npcAm;
-	
+
 	/** BuffList */
 	private static int _bufflist;
-	
+
 	/** BUFFER */
 	private static L2Object _effector;
-	
+
 	/**
 	 * Vector Created to add Single/Party/Clan Players onto the event.
 	 * TODO: Use this vector also to add another kind of event --> free Event with any player that may want to participate.
 	 */
 	public static Vector<L2PcInstance> _participatingPlayers = new Vector<L2PcInstance>();
-	
+
 	/**
 	 * Players from whom we're waiting for an answer in order to know it they want to join the event.
 	 */
@@ -129,34 +129,40 @@ public class L2RaidEvent
 	 * Vector Created to track all the Event Mobs and Delete them if needed.
 	 */
 	public static Vector<L2NpcInstance> _eventMobList = new Vector<L2NpcInstance>();
-	
+
 	/** The state of the Event<br> */
 	private static EventState _state = EventState.INACTIVE;
-	
+
 	enum EventState
 	{
-		INACTIVE,
-		STARTING,
-		STARTED,
-		PARTICIPATING,
-		REWARDING,
-		INACTIVATING
+		INACTIVE, STARTING, STARTED, PARTICIPATING, REWARDING, INACTIVATING
 	}
-	
+
 	/**
 	 * CONSTRUCTOR:<br>
 	 * This is the start of the Event, defined from HTM files.<br>
 	 * Documentation can be found in the method.<br>
-	 * @param player --> Player taking the action on the Event Manager.
-	 * @param type --> Type of Event: 1: Single Event || 2: Clan Event || 3: Party Event
-	 * @param points --> Event Points Required to start event.
-	 * @param npcId --> Id of the Event Raid/Mob
-	 * @param npcAm --> Amount of Mobs
-	 * @param minPeople --> Minimum People required to run event (Only functional on Clan and Party Events)
-	 * @param bufflist --> BuffList to apply to the player. Defined in the SQL table buff_templates
-	 * @param rewardLevel --> Reward level to apply upon player's victory.
-	 * @param effector --> Effector of the Buffs (Previously defined in L2EventMAnagerInstance.java)
-	 * @param participatingPlayers --> Players Enrolled in the Event.
+	 *
+	 * @param player
+	 *        --> Player taking the action on the Event Manager.
+	 * @param type
+	 *        --> Type of Event: 1: Single Event || 2: Clan Event || 3: Party Event
+	 * @param points
+	 *        --> Event Points Required to start event.
+	 * @param npcId
+	 *        --> Id of the Event Raid/Mob
+	 * @param npcAm
+	 *        --> Amount of Mobs
+	 * @param minPeople
+	 *        --> Minimum People required to run event (Only functional on Clan and Party Events)
+	 * @param bufflist
+	 *        --> BuffList to apply to the player. Defined in the SQL table buff_templates
+	 * @param rewardLevel
+	 *        --> Reward level to apply upon player's victory.
+	 * @param effector
+	 *        --> Effector of the Buffs (Previously defined in L2EventMAnagerInstance.java)
+	 * @param participatingPlayers
+	 *        --> Players Enrolled in the Event.
 	 */
 	public L2RaidEvent(L2PcInstance player, int type, int points, int npcId, int npcAm, int bufflist, int rewardLevel, L2Object effector, Vector<L2PcInstance> participatingPlayers)
 	{
@@ -174,29 +180,33 @@ public class L2RaidEvent
 		_effector = effector;
 		_participatingPlayers = participatingPlayers;
 	}
-	
-	/** Event Initialization given the Constructor defined variables.*/
+
+	/** Event Initialization given the Constructor defined variables. */
 	public void init()
 	{
 		setState(EventState.STARTING);
-		
-		if(!L2EventManagerInstance.addEvent())
+
+		if (!L2EventManagerInstance.addEvent())
 			return;
-	
-		if (setCoords(_player));
-		else{L2EventManagerInstance.removeEvent();
-			return;}
-		if(Config.DEBUG)
-		_log.warning("RaidEngine [setCoords]: Players: "+_locX+", "+_locY+", "+_locZ);
-	
+
+		if (setCoords(_player))
+			;
+		else
+		{
+			L2EventManagerInstance.removeEvent();
+			return;
+		}
+		if (Config.DEBUG)
+			_log.warning("RaidEngine [setCoords]: Players: " + _locX + ", " + _locY + ", " + _locZ);
+
 		setInEvent(_player);
-	
+
 		startEvent(_player, _npcId, _npcAm);
-		
-		buffEventMembers(_player,_points, _bufflist,_effector);
+
+		buffEventMembers(_player, _points, _bufflist, _effector);
 		return;
 	}
-	
+
 	/**
 	 * Sets the spawn positions for the players in each event
 	 */
@@ -219,16 +229,19 @@ public class L2RaidEvent
 			return true;
 		}
 	}
-	
+
 	/**
 	 * We will set the player/party Member in an Event Status.<br>
 	 * This way we will also make sure they don't enroll in any other event.<br>
-	 * @param player --> Player to set in an Event Status
-	 * @param type --> Type of event to be set In.
+	 *
+	 * @param player
+	 *        --> Player to set in an Event Status
+	 * @param type
+	 *        --> Type of event to be set In.
 	 */
 	private synchronized void setInEvent(L2PcInstance player)
 	{
-		
+
 		if (_eventType != 1 && _eventType != 2 && _eventType != 3)
 		{
 			player.sendMessage("Debug: Error in The event type [Function: setInEvent]");
@@ -262,25 +275,27 @@ public class L2RaidEvent
 			member.sendMessage("Event Manager: You are now enroled in a " + L2EventChecks.eType(_eventType) + " Type of Event.");
 		}
 	}
-	
+
 	/**
-	 * <b>Let's Apply the Buffs to the Event Members</b>
-	 * <li> We don't need to check if the player can or can not have access to the buffing state since it has 
-	 * previously been checked.
-	 * <li> We assign a value of previousEventPoints to notify the player.
-	 * <li> Apply the buffs.
-	 * <li> Notify the player once he/she has gotten the Buffs.
-	 * <br>More Documentation can Be found inside the  method's code.<br>
+	 * <b>Let's Apply the Buffs to the Event Members</b> <li>We don't need to check if the player can or can not have access to the buffing state since it has previously been
+	 * checked. <li>We assign a value of previousEventPoints to notify the player. <li>Apply the buffs. <li>Notify the player once he/she has gotten the Buffs. <br>
+	 * More Documentation can Be found inside the method's code.<br>
 	 * We will apply the buffs previous to the Event following the parameters:
-	 * @param player --> Player participating in the Event.
-	 * @param eventPoints --> Event points to be deduced once the buffing takes place.
-	 * @param buffList --> Buff list from where the buffs will be taken.
-	 * @param efector --> Eefector taking the action (in this case NPC).
-	 * @param eventType --> Type of Event.
+	 *
+	 * @param player
+	 *        --> Player participating in the Event.
+	 * @param eventPoints
+	 *        --> Event points to be deduced once the buffing takes place.
+	 * @param buffList
+	 *        --> Buff list from where the buffs will be taken.
+	 * @param efector
+	 *        --> Eefector taking the action (in this case NPC).
+	 * @param eventType
+	 *        --> Type of Event.
 	 */
 	private synchronized static void buffEventMembers(L2PcInstance player, int eventPoints, int buffList, L2Object efector)
 	{
-		if(!player.inPartyEvent && !player.inSoloEvent && !player.inSoloEvent)
+		if (!player.inPartyEvent && !player.inSoloEvent && !player.inSoloEvent)
 		{
 			player.sendMessage("Debug: Error During buff players");
 			return;
@@ -289,7 +304,7 @@ public class L2RaidEvent
 		{
 			int previousPoints = player.getEventPoints();
 			if (Config.RAID_SYSTEM_GIVE_BUFFS)
-			L2EventBufferInstance.makeBuffs(player, buffList, efector, false);
+				L2EventBufferInstance.makeBuffs(player, buffList, efector, false);
 			player.setEventPoints(player.getEventPoints() - eventPoints);
 			player.sendMessage("Event Manager: " + eventPoints + " Event Points have Been used. " + "You had " + previousPoints + " and now you have " + player.getEventPoints() + "Event Points.");
 		}
@@ -297,24 +312,24 @@ public class L2RaidEvent
 		// TODO: Check if the distance of other clan members is important upon member buffing.
 		if (_eventType == 2)
 		{
-			
+
 			int cmCount = _participatingPlayers.size();
-			
+
 			int individualPrice = eventPoints / cmCount;
-		
+
 			for (L2PcInstance member : _participatingPlayers)
 			{
-				
-				int previousPoints= player.getEventPoints();
+
+				int previousPoints = player.getEventPoints();
 				if (member == null)
 					continue;
-				
+
 				if (Config.RAID_SYSTEM_GIVE_BUFFS)
 					L2EventBufferInstance.makeBuffs(member, buffList, efector, false);
 				previousPoints = member.getEventPoints();
 				if (individualPrice > member.getEventPoints())
 				{
-					
+
 					member.setEventPoints(0);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 					TextBuilder replyMSG = new TextBuilder("<html><body>");
@@ -327,7 +342,7 @@ public class L2RaidEvent
 				}
 				else
 				{
-					
+
 					member.setEventPoints(member.getEventPoints() - individualPrice);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 					TextBuilder replyMSG = new TextBuilder("<html><body>");
@@ -339,15 +354,15 @@ public class L2RaidEvent
 				}
 			}
 		}
-	
+
 		if (_eventType == 3)
 		{
 			int pmCount = player.getParty().getMemberCount();
 			int individualPrice = eventPoints / pmCount;
-			
+
 			for (L2PcInstance member : _participatingPlayers)
 			{
-				if(member==null)
+				if (member == null)
 					continue;
 				if (Config.RAID_SYSTEM_GIVE_BUFFS)
 					L2EventBufferInstance.makeBuffs(member, buffList, efector, false);
@@ -365,7 +380,7 @@ public class L2RaidEvent
 					replyMSG.append("</body></html>");
 					adminReply.setHtml(replyMSG.toString());
 					member.sendPacket(adminReply);
-				
+
 				}
 				else
 				{
@@ -383,20 +398,25 @@ public class L2RaidEvent
 			}
 		}
 	}
-	
+
 	/**
 	 * <b>Starting of the Event</b><br>
-	 * This method checks it the total amount of events in process is > than the allowed and acts 
+	 * This method checks it the total amount of events in process is > than the allowed and acts
 	 * according to that and the parameters given.<br>
 	 * In case X events are already taking place, the void returns and won't let us continue with the
 	 * event.<br>
-	 * This check is not needed since we already check this in L2EventManagerInstance.java, but i'll 
+	 * This check is not needed since we already check this in L2EventManagerInstance.java, but i'll
 	 * leave it in here for now since this is a very early stage of developing for now.<br>
 	 * More documentation can be found in the Method.<br>
-	 * @param player --> Player taking the action.
-	 * @param npcId --> Event Monster ID.
-	 * @param ammount --> Amount of Event Monsters
-	 * @param type --> type of Event.
+	 *
+	 * @param player
+	 *        --> Player taking the action.
+	 * @param npcId
+	 *        --> Event Monster ID.
+	 * @param ammount
+	 *        --> Amount of Event Monsters
+	 * @param type
+	 *        --> type of Event.
 	 */
 	private static void startEvent(L2PcInstance player, int npcId, int ammount)
 	{
@@ -408,67 +428,82 @@ public class L2RaidEvent
 		if (currentEvents == 0)
 			return;
 		setState(EventState.STARTED);
-		
+
 		doTeleport(player, _locX, _locY, _locZ, 10, false);
-	
+
 		spawnMonster(npcId, 60, ammount, _npcX, _npcY, _npcZ);
 	}
-	
+
 	/**
 	 * Teleport the event participants to where the event is going to take place<br>
-	 * A function has been created to make it easier for us to teleport the players 
+	 * A function has been created to make it easier for us to teleport the players
 	 * every time we need them to teleport.<br>
 	 * Added suport for different kind of events.
-	 * @param player --> Player being teleported.
-	 * @param cox --> Coord X
-	 * @param coy --> Coord Y
-	 * @param coz --> Coord Z
-	 * @param delay --> Delay to be teleported in
-	 * @param removeBuffs --> Boolean to removeBuffs uponTeleport or not.
+	 *
+	 * @param player
+	 *        --> Player being teleported.
+	 * @param cox
+	 *        --> Coord X
+	 * @param coy
+	 *        --> Coord Y
+	 * @param coz
+	 *        --> Coord Z
+	 * @param delay
+	 *        --> Delay to be teleported in
+	 * @param removeBuffs
+	 *        --> Boolean to removeBuffs uponTeleport or not.
 	 */
 	private static void doTeleport(L2PcInstance player, final int cox, final int coy, final int coz, int delay, final boolean removeBuffs)
 	{
 		for (final L2PcInstance member : _participatingPlayers)
 		{
-			
-			//TODO: Have a look again to this mess.
-			
+
+			// TODO: Have a look again to this mess.
+
 			member.sendMessage("You will be teleported in 10 seconds.");
-			
-			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
-				
+
+			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
+			{
+
 				@Override
-				public void run() {
-					
-					if (removeBuffs) {
-						
+				public void run()
+				{
+
+					if (removeBuffs)
+					{
+
 						member.stopAllEffects();
 						member.updateEffectIcons();
 						member.broadcastUserInfo();
-						
+
 					}
-					
+
 					member.teleToLocation(cox, coy, coz);
-					
+
 				}
-				
-				
-				
+
 			}, 10000);
-			
+
 		}
 	}
-	
+
 	/**
 	 * Spawning function of Event Monsters.<br>
 	 * Added Support for multiple spawns and for each one of them being defined as Event Mob.
-	 * @param monsterId --> Npc Id
-	 * @param respawnTime --> Respawn Delay (in most cases this will be 0 as we're gonna 
-	 * cut the respawning of the Mobs upon death).
-	 * @param mobCount --> MobCount to be spawned.
-	 * @param locX --> Coordinate X for the mob to be spawned in.
-	 * @param locY --> Coordinate Y for the mob to be spawned in.
-	 * @param locZ --> Coordinate Z for the mob to be spawned in.
+	 *
+	 * @param monsterId
+	 *        --> Npc Id
+	 * @param respawnTime
+	 *        --> Respawn Delay (in most cases this will be 0 as we're gonna
+	 *        cut the respawning of the Mobs upon death).
+	 * @param mobCount
+	 *        --> MobCount to be spawned.
+	 * @param locX
+	 *        --> Coordinate X for the mob to be spawned in.
+	 * @param locY
+	 *        --> Coordinate Y for the mob to be spawned in.
+	 * @param locZ
+	 *        --> Coordinate Z for the mob to be spawned in.
 	 */
 	private static void spawnMonster(int monsterId, int respawnDelay, int mobCount, int locX, int locY, int locZ)
 	{
@@ -478,7 +513,7 @@ public class L2RaidEvent
 		if (template == null)
 			return;
 		_eventMobs = mobCount;
-       
+
 		if (mobCount > 1)
 		{
 			int n = 1;
@@ -499,15 +534,15 @@ public class L2RaidEvent
 					else
 						SpawnTable.getInstance().addNewSpawn(spawn, false);
 					spawn.init();
-				
-					 // TODO: Change the Mob statistics according on Event
+
+					// TODO: Change the Mob statistics according on Event
 					_lastNpcSpawn = spawn.getLastSpawn();
 					_npcSpawn = spawn;
 					_lastNpcSpawn.isPrivateEventMob = true;
-					if(Config.CHAMPION_ENABLE)
-					_lastNpcSpawn.setChampion(false);
+					if (Config.CHAMPION_ENABLE)
+						_lastNpcSpawn.setChampion(false);
 					_lastNpcSpawn.setTitle("Event Monster");
-					
+
 					_npcSpawn.stopRespawn();
 					_eventMobList.add(_lastNpcSpawn);
 					n++;
@@ -553,50 +588,52 @@ public class L2RaidEvent
 		}
 		new RaidFightManager();
 	}
-    
-    /**
-     * Delete the mob from the Event.
-     */
+
+	/**
+	 * Delete the mob from the Event.
+	 */
 	private static void unSpawnNPC()
 	{
-		if(_lastNpcSpawn != null && _npcSpawn !=null)
+		if (_lastNpcSpawn != null && _npcSpawn != null)
 		{
 			_lastNpcSpawn.deleteMe();
 			_npcSpawn.stopRespawn();
 			_npcSpawn = null;
 			_lastNpcSpawn = null;
 		}
-	else 
+		else
 		{
 			_log.warning("L2EventManager: Exception Upon NPC UNSPAWN.");
 		}
 	}
+
 	/**
 	 * Function launched at every player death (if he/she's enrolled in any Raid event)
+	 *
 	 * @param player
 	 */
 	public static void onPlayerDeath(L2PcInstance player)
 	{
-		  /*
-		   * TODO: Add support for:
-		   *   - Configurable Death rebirth system including:
-		   *    - Automatic respawn (Done)
-		   *    - Track deaths for player.
-		   *    - doRevive? (Done)
-		   */
-		  if(player != null)
-		  {
-			  player.abortCast();
-			  player.abortAttack();
-			  player.sendMessage("Raid Engine: You will be revived now!");
-			  player.teleToLocation(_locX, _locY, _locZ, false);
-			  player.doRevive();
-			  player.setCurrentHp(player.getMaxHp());
-			  player.setCurrentMp(player.getMaxMp());
-			  player.setCurrentCp(player.getMaxCp());
-		  }
+		/*
+		 * TODO: Add support for:
+		 * - Configurable Death rebirth system including:
+		 * - Automatic respawn (Done)
+		 * - Track deaths for player.
+		 * - doRevive? (Done)
+		 */
+		if (player != null)
+		{
+			player.abortCast();
+			player.abortAttack();
+			player.sendMessage("Raid Engine: You will be revived now!");
+			player.teleToLocation(_locX, _locY, _locZ, false);
+			player.doRevive();
+			player.setCurrentHp(player.getMaxHp());
+			player.setCurrentMp(player.getMaxMp());
+			player.setCurrentCp(player.getMaxCp());
+		}
 	}
-	
+
 	/**
 	 * This is the place where we define all the actions that take place after one Event Mob dies.
 	 * a. Check if that was the last event mob of this instance.
@@ -605,17 +642,17 @@ public class L2RaidEvent
 	 */
 	public static boolean checkPossibleReward()
 	{
-		if(_eventMobs>1)
+		if (_eventMobs > 1)
 		{
 			_eventMobs = _eventMobs - 1;
 			return false;
 		}
-		else if(_eventMobs<1)
+		else if (_eventMobs < 1)
 		{
 			_eventMobs = 0;
 			return false;
 		}
-		else if(_eventMobs == 0)
+		else if (_eventMobs == 0)
 		{
 			setState(EventState.REWARDING);
 			return true;
@@ -624,13 +661,16 @@ public class L2RaidEvent
 		{
 			return false;
 		}
-	
+
 	}
+
 	/**
 	 * This void picks the rewards and launches the hand out system.
 	 * It also Ends the event.
 	 * Added database support for this.
-	 * @param player --> Player taking the action.
+	 *
+	 * @param player
+	 *        --> Player taking the action.
 	 */
 	public static void chooseReward(L2PcInstance player)
 	{
@@ -639,28 +679,28 @@ public class L2RaidEvent
 		else
 			return;
 		loadData(_rewardLevel);
-		
+
 		if (_eventType == 1)
 		{
-			
+
 			handOutItems(player, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
-			
+
 			unSpawnNPC();
 			clearFromEvent(player);
-			
+
 			doTeleport(player, _pX, _pY, _pZ, 10, true);
 			if (L2EventManagerInstance._currentEvents != 0)
 				L2EventManagerInstance._currentEvents = L2EventManagerInstance._currentEvents - 1;
 		}
-	
+
 		if (_eventType == 2)
 		{
 			for (L2PcInstance member : _participatingPlayers)
 			{
 				if (member != null)
 				{
-				handOutItems(member, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
-				doTeleport(member, _pX, _pY, _pZ, 10, true);
+					handOutItems(member, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
+					doTeleport(member, _pX, _pY, _pZ, 10, true);
 				}
 			}
 			unSpawnNPC();
@@ -668,7 +708,7 @@ public class L2RaidEvent
 			if (L2EventManagerInstance._currentEvents != 0)
 				L2EventManagerInstance._currentEvents = L2EventManagerInstance._currentEvents - 1;
 		}
-		
+
 		if (_eventType == 3)
 		{
 			if (player.getParty() != null)
@@ -686,12 +726,12 @@ public class L2RaidEvent
 			else
 			{
 				player.sendMessage("You don't have a party anymore?! Well then the rewards go for you only.");
-			
+
 				handOutItems(player, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
-			
+
 				unSpawnNPC();
 				clearFromEvent(player);
-		
+
 				doTeleport(player, _pX, _pY, _pZ, 10, true);
 				if (L2EventManagerInstance._currentEvents != 0)
 					L2EventManagerInstance._currentEvents = L2EventManagerInstance._currentEvents - 1;
@@ -714,7 +754,7 @@ public class L2RaidEvent
 		exp += exp;
 		sp += sp;
 	}
-	
+
 	/**
 	 * Clean the eventStatus from the players.
 	 */
@@ -733,8 +773,8 @@ public class L2RaidEvent
 			{
 				for (L2PcInstance member : _participatingPlayers)
 				{
-					if(member!=null)
-					member.inClanEvent = false;
+					if (member != null)
+						member.inClanEvent = false;
 				}
 				// Clear Clan Members from event.
 				if (_participatingPlayers.size() != 0)
@@ -748,8 +788,8 @@ public class L2RaidEvent
 				player.inPartyEvent = false;
 				for (L2PcInstance member : _participatingPlayers)
 				{
-					if(member!=null)
-					member.inPartyEvent = false;
+					if (member != null)
+						member.inPartyEvent = false;
 				}
 			}
 			else
@@ -757,10 +797,10 @@ public class L2RaidEvent
 		}
 		setState(EventState.INACTIVE);
 	}
-	
+
 	/**
 	 * Function with which we will hand out event Items.
-	 * 
+	 *
 	 * @param player
 	 * @param item1
 	 * @param ammount1
@@ -783,11 +823,11 @@ public class L2RaidEvent
 			hasEventPoints = true;
 		if (hasItem1)
 		{
-			player.addItem("Event", item1, ammount1, player, true);	
+			player.addItem("Event", item1, ammount1, player, true);
 		}
 		if (hasItem2)
 		{
-			player.addItem("Event", item2, ammount2, player, true);	
+			player.addItem("Event", item2, ammount2, player, true);
 		}
 		if (hasEventPoints)
 		{
@@ -825,6 +865,7 @@ public class L2RaidEvent
 		adminReply.setHtml(replyMSG.toString());
 		player.sendPacket(adminReply);
 	}
+
 	/**
 	 * Hard Finish Event (Case every Body dies)
 	 */
@@ -838,9 +879,11 @@ public class L2RaidEvent
 		}
 		_log.warning("Raid Engines: All the Members from the Event are now dead or Have Left The event. Event Finished.");
 	}
+
 	/**
 	 * Load Data of the prizes for each event.
 	 * Added DataBase support for this.
+	 *
 	 * @param prizePackage
 	 */
 	private static void loadData(int prizePackage)
@@ -868,11 +911,11 @@ public class L2RaidEvent
 			_log.severe("Error While loading Raids prizes." + e);
 		}
 	}
-	
+
 	/**
 	 * Sets the Event state<br>
 	 * <br>
-	 * 
+	 *
 	 * @param state
 	 * <br>
 	 */
@@ -887,7 +930,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event inactive?<br>
 	 * <br>
-	 * 
+	 *
 	 * @return boolean<br>
 	 */
 	public static boolean isInactive()
@@ -905,7 +948,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event in inactivating?<br>
 	 * <br>
-	 * 
+	 *
 	 * @return boolean<br>
 	 */
 	public static boolean isInactivating()
@@ -923,7 +966,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event in participation?<br>
 	 * <br>
-	 * 
+	 *
 	 * @return boolean<br>
 	 */
 	public static boolean isParticipating()
@@ -941,7 +984,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event starting?<br>
 	 * <br>
-	 * 
+	 *
 	 * @return boolean<br>
 	 */
 	public static boolean isStarting()
@@ -959,7 +1002,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event started?<br>
 	 * <br>
-	 * 
+	 *
 	 * @return boolean<br>
 	 */
 	public static boolean isStarted()
@@ -977,7 +1020,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event rewarding?<br>
 	 * <br>
-	 * 
+	 *
 	 * @return boolean<br>
 	 */
 	public static boolean isRewarding()
@@ -991,13 +1034,13 @@ public class L2RaidEvent
 
 		return isRewarding;
 	}
-	
+
 	/**
 	 * Send a SystemMessage to all participated players<br>
 	 * 1. Send the message to all players of team number one<br>
 	 * 2. Send the message to all players of team number two<br>
 	 * <br>
-	 * 
+	 *
 	 * @param message
 	 * <br>
 	 */
@@ -1009,7 +1052,7 @@ public class L2RaidEvent
 				player.sendMessage(message);
 		}
 	}
-	
+
 	private static void loadSpawns(int eventNum)
 	{
 		Connection con;

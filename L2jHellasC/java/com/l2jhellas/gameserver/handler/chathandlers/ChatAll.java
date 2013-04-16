@@ -16,9 +16,7 @@ package com.l2jhellas.gameserver.handler.chathandlers;
 
 import java.util.Collection;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.handler.VoicedCommandHandler;
@@ -35,7 +33,6 @@ public class ChatAll implements IChatHandler
 		0
 	};
 
-	private static Logger _log = Logger.getLogger(ChatAll.class.getName());
 
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
@@ -55,8 +52,6 @@ public class ChatAll implements IChatHandler
 			else
 			{
 				command = text.substring(1);
-				if (Config.DEBUG)
-					_log.info("Command: " + command);
 				vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler(command);
 			}
 			if (vch != null)
@@ -65,8 +60,7 @@ public class ChatAll implements IChatHandler
 			}
 			else
 			{
-				if (Config.DEBUG)
-					_log.warning("No handler registered for bypass '" + command + "'");
+				//_log.warning("No handler registered for bypass '" + command + "'");
 			}
 		}
 		else
@@ -90,8 +84,6 @@ public class ChatAll implements IChatHandler
 				else
 				{
 					command = text.substring(1);
-					if (Config.DEBUG)
-						_log.info("Command: " + command);
 					vch = VoicedCommandHandler.getInstance().getVoicedCommandHandler(command);
 				}
 
@@ -102,8 +94,6 @@ public class ChatAll implements IChatHandler
 				}
 				else
 				{
-					if (Config.DEBUG)
-						_log.warning("No handler registered for bypass '" + command + "'");
 					vcd_used = false;
 				}
 			}
@@ -118,10 +108,8 @@ public class ChatAll implements IChatHandler
 					if (player != null && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
 						player.sendPacket(cs);
 				}
-
 				activeChar.sendPacket(cs);
 			}
-
 		}
 	}
 

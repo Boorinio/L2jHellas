@@ -43,7 +43,6 @@ public class CastleManager
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing CastleManager");
 			_instance = new CastleManager();
 			_instance.load();
 		}
@@ -94,7 +93,7 @@ public class CastleManager
 
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			statement = con.prepareStatement("Select id from castle order by id");
+			statement = con.prepareStatement("SELECT id FROM castle ORDER BY id");
 			rs = statement.executeQuery();
 
 			while (rs.next())
@@ -104,7 +103,7 @@ public class CastleManager
 
 			statement.close();
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getCastles().size() + " castles");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getCastles().size() + " castles.");
 		}
 		catch (Exception e)
 		{
@@ -283,7 +282,7 @@ public class CastleManager
 			try
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE owner_id = ? and item_id = ?");
+				PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE owner_id = ? AND item_id = ?");
 				statement.setInt(1, member.getObjectId());
 				statement.setInt(2, circletId);
 				statement.execute();

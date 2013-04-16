@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -27,12 +28,10 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * <li>admin_unblockip</li>
  * </ul>
  *
- * @version $Revision: 1.3.2.6.2.4 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminUnblockIp implements IAdminCommandHandler
 {
-
-	private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
+	private static final Logger _log = Logger.getLogger(IAdminCommandHandler.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
 	{
@@ -74,8 +73,7 @@ public class AdminUnblockIp implements IAdminCommandHandler
 
 	private boolean unblockIp(String ipAddress, L2PcInstance activeChar)
 	{
-		// LoginServerThread.getInstance().unBlockip(ipAddress);
-		_log.warning("IP removed by GM " + activeChar.getName());
+		_log.log(Level.WARNING, getClass().getSimpleName() + ": Banned IP:" + ipAddress + " removed by GM " + activeChar.getName());
 		return true;
 	}
 

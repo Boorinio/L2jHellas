@@ -30,8 +30,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class AdminDelete implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminDelete.class.getName());
-
 	private static final String[] ADMIN_COMMANDS = {
 		"admin_delete"
 	};

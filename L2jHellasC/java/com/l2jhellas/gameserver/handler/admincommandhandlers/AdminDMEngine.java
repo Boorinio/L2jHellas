@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 /**
  * @author SqueezeD
  */
-
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -29,28 +28,29 @@ import com.l2jhellas.util.Util;
 public class AdminDMEngine implements IAdminCommandHandler
 {
 	private static final String[]	ADMIN_COMMANDS	=
-													{
-			"admin_dmevent",
-			"admin_dmevent_name",
-			"admin_dmevent_desc",
-			"admin_dmevent_join_loc",
-			"admin_dmevent_minlvl",
-			"admin_dmevent_maxlvl",
-			"admin_dmevent_npc",
-			"admin_dmevent_npc_pos",
-			"admin_dmevent_reward",
-			"admin_dmevent_reward_amount",
-			"admin_dmevent_spawnpos",
-			"admin_dmevent_color",
-			"admin_dmevent_join",
-			"admin_dmevent_teleport",
-			"admin_dmevent_start",
-			"admin_dmevent_abort",
-			"admin_dmevent_finish",
-			"admin_dmevent_sit",
-			"admin_dmevent_dump",
-			"admin_dmevent_save",
-			"admin_dmevent_load"					};
+	{
+	"admin_dmevent",
+	"admin_dmevent_name",
+	"admin_dmevent_desc",
+	"admin_dmevent_join_loc",
+	"admin_dmevent_minlvl",
+	"admin_dmevent_maxlvl",
+	"admin_dmevent_npc",
+	"admin_dmevent_npc_pos",
+	"admin_dmevent_reward",
+	"admin_dmevent_reward_amount",
+	"admin_dmevent_spawnpos",
+	"admin_dmevent_color",
+	"admin_dmevent_join",
+	"admin_dmevent_teleport",
+	"admin_dmevent_start",
+	"admin_dmevent_abort",
+	"admin_dmevent_finish",
+	"admin_dmevent_sit",
+	"admin_dmevent_dump",
+	"admin_dmevent_save",
+	"admin_dmevent_load"
+	};
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

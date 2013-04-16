@@ -92,7 +92,7 @@ public class ZoneManager
 			}
 		}
 		GrandBossManager.getInstance().getZones().clear();
-		_log.info("Removed zones in " + count + " regions.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Removed zones in " + count + " regions.");
 		// Load the zones
 		load();
 	}
@@ -260,7 +260,7 @@ public class ZoneManager
 									}
 									else
 									{
-										_log.warning("ZoneData: Bad sql data for zone: " + zoneId);
+										_log.log(Level.WARNING, getClass().getName() + ": Bad sql data for zone: " + zoneId);
 										rset.close();
 										statement.close();
 										continue;
@@ -301,6 +301,10 @@ public class ZoneManager
 							catch (Exception e)
 							{
 								_log.log(Level.WARNING, getClass().getName() + ": Failed to load zone coordinates: " + e);
+								if (Config.DEVELOPER)
+								{
+									e.printStackTrace();
+								}
 							}
 
 							// Check for aditional parameters
@@ -333,9 +337,8 @@ public class ZoneManager
 									if (temp.getZone().intersectsRectangle(ax, bx, ay, by))
 									{
 										if (Config.DEBUG)
-										{
-											_log.info("Zone (" + zoneId + ") added to: " + x + " " + y);
-										}
+											_log.log(Level.CONFIG, getClass().getName() + ": Zone (" + zoneId + ") added to: " + x + " " + y);
+
 										worldRegions[x][y].addZone(temp);
 									}
 								}
@@ -354,7 +357,7 @@ public class ZoneManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Error while loading zones.", e);
+			_log.log(Level.SEVERE, getClass().getName() + ": Error while loading zones." + e);
 			return;
 		}
 		finally

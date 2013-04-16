@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -43,7 +44,7 @@ public class DuelManager
 
 	private DuelManager()
 	{
-		_log.info("Initializing DuelManager");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Initializing.");
 		_duels = new FastList<Duel>();
 	}
 
@@ -140,7 +141,7 @@ public class DuelManager
 	 * Updates player states.
 	 *
 	 * @param player
-	 *        - the dieing player
+	 *        - the dying player
 	 */
 	public void onPlayerDefeat(L2PcInstance player)
 	{

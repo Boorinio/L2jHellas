@@ -26,12 +26,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.6.4 $ $Date: 2005/04/06 18:25:18 $
- */
-
 public class Scrolls implements IItemHandler
 {
 	private static final int[] ITEM_IDS =

@@ -44,7 +44,7 @@ public class PcColorTable
 		{
 			Vector<String> deleteNames = new Vector<String>();
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement ps = con.prepareStatement("SELECT * FROM `character_colors`");
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM character_colors");
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next())
@@ -66,7 +66,7 @@ public class PcColorTable
 
 			for (String deleteName : deleteNames)
 			{
-				PreparedStatement psDel = con.prepareStatement("DELETE FROM `character_colors` WHERE `char_name`=?");
+				PreparedStatement psDel = con.prepareStatement("DELETE FROM character_colors WHERE char_name=?");
 				psDel.setString(1, deleteName);
 				psDel.executeUpdate();
 				psDel.close();
@@ -152,7 +152,7 @@ public class PcColorTable
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement psIns = con.prepareStatement("INSERT INTO `character_colors` VALUES (?,?,?,?)");
+			PreparedStatement psIns = con.prepareStatement("INSERT INTO character_colors VALUES (?,?,?,?)");
 			psIns.setString(1, charName);
 			psIns.setInt(2, color);
 			psIns.setLong(3, regTime);
@@ -205,7 +205,7 @@ public class PcColorTable
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement psDel = con.prepareStatement("DELETE FROM `character_colors` WHERE `char_name`=?");
+			PreparedStatement psDel = con.prepareStatement("DELETE FROM character_colors WHERE char_name=?");
 			psDel.setString(1, charName);
 			psDel.executeUpdate();
 			psDel.close();
@@ -213,7 +213,7 @@ public class PcColorTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "PcColrTable: Error while delete " + charName + "'s color from DB!" + e);
+			_log.log(Level.WARNING, "PcColorTable: Error while delete " + charName + "'s color from DB!" + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();

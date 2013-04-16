@@ -16,10 +16,9 @@ package com.l2jhellas.gameserver.instancemanager;
 
 public class Manager
 {
-
 	public static void reloadAll()
 	{
 		AuctionManager.getInstance().reload();
-//		QuestManager.getInstance().reload();
+		//FQuestManager.getInstance().reload();
 	}
 }

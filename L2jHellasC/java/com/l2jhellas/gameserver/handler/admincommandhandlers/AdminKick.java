@@ -27,7 +27,8 @@ public class AdminKick implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_kick", "admin_kick_non_gm"
+	"admin_kick",
+	"admin_kick_non_gm"
 	};
 
 	@Override

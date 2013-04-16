@@ -17,17 +17,12 @@ package com.l2jhellas.gameserver;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
 public class Item
 {
-    public int      id;
+	public int id;
 	public Enum<?> type;
-    public String   name;
-    public StatsSet set;
-    public int      currentLevel;
-    public L2Item   item;
+	public String name;
+	public StatsSet set;
+	public int currentLevel;
+	public L2Item item;
 }

@@ -28,15 +28,15 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  * - announce_announcements = announce all stored announcements to all players
  * - add_announcement text = adds text to startup announcements
  * - del_announcement id = deletes announcement with respective id
- *
- * @version $Revision: 1.4.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminAutoAnnouncements implements IAdminCommandHandler
 {
-
 	private static String[] ADMIN_COMMANDS =
 	{
-	"admin_list_autoannouncements", "admin_add_autoannouncement", "admin_del_autoannouncement", "admin_autoannounce"
+	"admin_list_autoannouncements",
+	"admin_add_autoannouncement",
+	"admin_del_autoannouncement",
+	"admin_autoannounce"
 	};
 
 	@Override
@@ -68,7 +68,6 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 						AutoAnnouncementHandler.getInstance().registerAnnouncment(autoAnnounce, delay);
 						AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
 					}
-
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{

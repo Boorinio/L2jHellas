@@ -111,7 +111,7 @@ public class AuctionManager
 			while (rs.next())
 				_auctions.add(new Auction(rs.getInt("id")));
 			statement.close();
-			System.out.println("Loaded: " + getAuctions().size() + " auction(s)");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getAuctions().size() + " auction(s)");
 		}
 		catch (Exception e)
 		{
@@ -159,7 +159,7 @@ public class AuctionManager
 		return _auctions;
 	}
 
-	/** Init Clan NPC aution */
+	/** Init Clan NPC auction */
 	public void initNPC(int id)
 	{
 		Connection con = null;
@@ -184,6 +184,10 @@ public class AuctionManager
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": Auction.initNPC(): " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

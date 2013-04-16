@@ -64,9 +64,6 @@ public class ForumsBBSManager extends BaseBBSManager
 		}
 	}
 
-	/**
-	 *
-	 */
 	private void load()
 	{
 		Connection con = null;
@@ -77,7 +74,6 @@ public class ForumsBBSManager extends BaseBBSManager
 			ResultSet result = statement.executeQuery();
 			while (result.next())
 			{
-
 				Forum f = new Forum(Integer.parseInt(result.getString("forum_id")), null);
 				_root.put(Integer.parseInt(result.getString("forum_id")), f);
 			}
@@ -107,14 +103,8 @@ public class ForumsBBSManager extends BaseBBSManager
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
-	/**
-	 * @param string
-	 * @return
-	 */
 	public Forum getForumByName(String Name)
 	{
 		for (Forum f : _table)
@@ -124,7 +114,6 @@ public class ForumsBBSManager extends BaseBBSManager
 				return f;
 			}
 		}
-
 		return null;
 	}
 
@@ -141,9 +130,7 @@ public class ForumsBBSManager extends BaseBBSManager
 		return forum;
 	}
 
-	/**
-	 * @return
-	 */
+	@SuppressWarnings("unused")
 	public int getANewID()
 	{
 		int temp = 0;
@@ -174,7 +161,5 @@ public class ForumsBBSManager extends BaseBBSManager
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -39,11 +39,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.script.DateRange;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.5.2.1.2.7 $ $Date: 2005/03/29 23:15:14 $
- */
 public class Announcements
 {
 	private static Logger _log = Logger.getLogger(Announcements.class.getName());
@@ -67,7 +62,6 @@ public class Announcements
 		return _instance;
 	}
 
-
 	public void loadAnnouncements()
 	{
 		_announcements.clear();
@@ -76,7 +70,7 @@ public class Announcements
 			readFromDisk(file);
 
 		else
-			_log.warning("data/announcements.txt doesn't exist.");
+			_log.log(Level.WARNING, getClass().getName() + ": data/announcements.txt doesn't exist.");
 	}
 
 	public void showAnnouncements(L2PcInstance activeChar)
@@ -89,45 +83,45 @@ public class Announcements
 
 		for (int i = 0; i < _eventAnnouncements.size(); i++)
 		{
-		    List<Object> entry   = _eventAnnouncements.get(i);
+			List<Object> entry = _eventAnnouncements.get(i);
 
-            DateRange validDateRange  = (DateRange)entry.get(0);
-            String[] msg              = (String[])entry.get(1);
-		    Date currentDate          = new Date();
+			DateRange validDateRange = (DateRange) entry.get(0);
+			String[] msg = (String[]) entry.get(1);
+			Date currentDate = new Date();
 
-		    if (!validDateRange.isValid() || validDateRange.isWithinRange(currentDate))
-		    {
-                SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-                for (int j=0; j<msg.length; j++)
-                {
-                    sm.addString(msg[j]);
-                }
-                activeChar.sendPacket(sm);
-		    }
+			if (!validDateRange.isValid() || validDateRange.isWithinRange(currentDate))
+			{
+				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				for (int j = 0; j < msg.length; j++)
+				{
+					sm.addString(msg[j]);
+				}
+				activeChar.sendPacket(sm);
+			}
 
 		}
 	}
 
 	public void addEventAnnouncement(DateRange validDateRange, String[] msg)
 	{
-	    List<Object> entry = new FastList<Object>();
-	    entry.add(validDateRange);
-	    entry.add(msg);
-	    _eventAnnouncements.add(entry);
+		List<Object> entry = new FastList<Object>();
+		entry.add(validDateRange);
+		entry.add(msg);
+		_eventAnnouncements.add(entry);
 	}
 
 	public void listAnnouncements(L2PcInstance activeChar)
 	{
-        String content = HtmCache.getInstance().getHtmForce("data/html/admin/announce.htm");
-        NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-        adminReply.setHtml(content);
-        TextBuilder replyMSG = new TextBuilder("<br>");
+		String content = HtmCache.getInstance().getHtmForce("data/html/admin/announce.htm");
+		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		adminReply.setHtml(content);
+		TextBuilder replyMSG = new TextBuilder("<br>");
 		for (int i = 0; i < _announcements.size(); i++)
 		{
 			replyMSG.append("<table width=260><tr><td width=220>" + _announcements.get(i) + "</td><td width=40>");
 			replyMSG.append("<button value=\"Delete\" action=\"bypass -h admin_del_announcement " + i + "\" width=60 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr></table>");
 		}
-        adminReply.replace("%announces%", replyMSG.toString());
+		adminReply.replace("%announces%", replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
 
@@ -148,12 +142,12 @@ public class Announcements
 		LineNumberReader lnr = null;
 		try
 		{
-			int i=0;
+			int i = 0;
 			String line = null;
 			lnr = new LineNumberReader(new FileReader(file));
-			while ( (line = lnr.readLine()) != null)
+			while ((line = lnr.readLine()) != null)
 			{
-				StringTokenizer st = new StringTokenizer(line,"\n\r");
+				StringTokenizer st = new StringTokenizer(line, "\n\r");
 				if (st.hasMoreTokens())
 				{
 					String announcement = st.nextToken();
@@ -162,11 +156,11 @@ public class Announcements
 					i++;
 				}
 			}
-			_log.info("Announcements: Loaded " + i + " Announcements.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + i + " Announcements.");
 		}
 		catch (IOException e1)
 		{
-			_log.log(Level.SEVERE, "Error reading announcements", e1);
+			_log.log(Level.SEVERE, getClass().getName() + ": Error reading announcements" + e1);
 		}
 		finally
 		{
@@ -200,26 +194,27 @@ public class Announcements
 		}
 		catch (IOException e)
 		{
-			_log.warning("saving the announcements file has failed: " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": saving the announcements file has failed: " + e);
 		}
 	}
 
 	// Colored Announcements 8D
-    public void gameAnnounceToAll(String text)
-    {
-        CreatureSay cs = new CreatureSay(0, 18, "", "Announcements: "+text);
+	public void gameAnnounceToAll(String text)
+	{
+		CreatureSay cs = new CreatureSay(0, 18, "", "Announcements: " + text);
 
-        for(L2PcInstance player : L2World.getInstance().getAllPlayers())
-        {
-            if(player != null)
-                if(player.isOnline()!=0)
-                    player.sendPacket(cs);
-        }
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		{
+			if (player != null)
+				if (player.isOnline() != 0)
+					player.sendPacket(cs);
+		}
 
-        cs = null;
-    }
+		cs = null;
+	}
 
-	public void announceToAll(String text) {
+	public void announceToAll(String text)
+	{
 		CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", text);
 
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
@@ -227,7 +222,9 @@ public class Announcements
 			player.sendPacket(cs);
 		}
 	}
-	public void announceToAll(SystemMessage sm) {
+
+	public void announceToAll(SystemMessage sm)
+	{
 
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{

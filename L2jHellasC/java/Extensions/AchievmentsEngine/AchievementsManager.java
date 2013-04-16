@@ -14,14 +14,6 @@
  */
 package Extensions.AchievmentsEngine;
 
-import Extensions.AchievmentsEngine.base.Achievement;
-import Extensions.AchievmentsEngine.base.Condition;
-import Extensions.AchievmentsEngine.conditions.*;
-
-import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -43,11 +35,44 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import Extensions.AchievmentsEngine.base.Achievement;
+import Extensions.AchievmentsEngine.base.Condition;
+import Extensions.AchievmentsEngine.conditions.Adena;
+import Extensions.AchievmentsEngine.conditions.Castle;
+import Extensions.AchievmentsEngine.conditions.ClanLeader;
+import Extensions.AchievmentsEngine.conditions.ClanLevel;
+import Extensions.AchievmentsEngine.conditions.CompleteAchievements;
+import Extensions.AchievmentsEngine.conditions.Crp;
+import Extensions.AchievmentsEngine.conditions.Hero;
+import Extensions.AchievmentsEngine.conditions.HeroCount;
+import Extensions.AchievmentsEngine.conditions.ItemsCount;
+import Extensions.AchievmentsEngine.conditions.Karma;
+import Extensions.AchievmentsEngine.conditions.Level;
+import Extensions.AchievmentsEngine.conditions.Mage;
+import Extensions.AchievmentsEngine.conditions.Marry;
+import Extensions.AchievmentsEngine.conditions.MinCMcount;
+import Extensions.AchievmentsEngine.conditions.Noble;
+import Extensions.AchievmentsEngine.conditions.OnlineTime;
+import Extensions.AchievmentsEngine.conditions.Pk;
+import Extensions.AchievmentsEngine.conditions.Pvp;
+import Extensions.AchievmentsEngine.conditions.RaidKill;
+import Extensions.AchievmentsEngine.conditions.RaidPoints;
+import Extensions.AchievmentsEngine.conditions.SkillEnchant;
+import Extensions.AchievmentsEngine.conditions.Sub;
+import Extensions.AchievmentsEngine.conditions.WeaponEnchant;
+import Extensions.AchievmentsEngine.conditions.eventKills;
+import Extensions.AchievmentsEngine.conditions.eventWins;
+import Extensions.AchievmentsEngine.conditions.events;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
 public class AchievementsManager
 {
-	private Map<Integer, Achievement> _achievementList = new FastMap<>();
+	private final Map<Integer, Achievement> _achievementList = new FastMap<>();
 
-	private FastList<String> _binded = new FastList<>();
+	private final FastList<String> _binded = new FastList<>();
 
 	private static Logger _log = Logger.getLogger(AchievementsManager.class.getName());
 
@@ -66,7 +91,7 @@ public class AchievementsManager
 
 		if (!file.exists())
 		{
-			_log.warning("[AchievementsEngine] Error: achievements xml file does not exist, check directory!");
+			_log.warning("AchievementsEngine: Error achievements xml file does not exist, check directory!");
 		}
 		try
 		{
@@ -98,11 +123,11 @@ public class AchievementsManager
 				}
 			}
 
-			_log.info("[AchievementsEngine] Successfully loaded: " + getAchievementList().size() + " achievements from xml!");
+			_log.info("AchievementsEngine: loaded " + getAchievementList().size() + " achievements from xml!");
 		}
 		catch (Exception e)
 		{
-			_log.warning("[AchievementsEngine] Error: " + e);
+			_log.warning("AchievementsEngine: Error " + e);
 			e.printStackTrace();
 		}
 	}
@@ -152,7 +177,7 @@ public class AchievementsManager
 
 	/**
 	 * Alter table, catch exception if already exist.
-	 * 
+	 *
 	 * @param fieldID
 	 */
 	private static void alterTable(int fieldID)
@@ -292,7 +317,10 @@ public class AchievementsManager
 		catch (SQLException e)
 		{
 			_log.warning("[ACHIEVEMENTS SAVE GETDATA]");
-			e.printStackTrace();
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

@@ -35,7 +35,6 @@ import com.l2jhellas.util.Util;
 
 public class TakeCastle implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(TakeCastle.class.getName());
 	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.TAKECASTLE
 	};

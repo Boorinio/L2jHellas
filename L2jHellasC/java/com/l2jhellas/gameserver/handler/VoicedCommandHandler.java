@@ -41,12 +41,10 @@ import com.l2jhellas.gameserver.handler.voicedcommandhandlers.version;
 
 public class VoicedCommandHandler
 {
-	private static Logger _log = Logger.getLogger(ItemHandler.class.getName());
+	private static Logger _log = Logger.getLogger(VoicedCommandHandler.class.getName());
 
 	private static VoicedCommandHandler _instance;
-
 	private final Map<String, IVoicedCommandHandler> _datatable;
-
 	public static VoicedCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -83,17 +81,16 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new OnlinePlayers());
 		if (Config.BANKING_SYSTEM_ENABLED)
 			registerVoicedCommandHandler(new Banking());
-		if(ExternalConfig.PVP_INFO_COMMAND_ENABLED && ExternalConfig.RANK_PVP_SYSTEM_ENABLED && !ExternalConfig.PVP_INFO_USER_COMMAND_ENABLED)
+		if (ExternalConfig.PVP_INFO_COMMAND_ENABLED && ExternalConfig.RANK_PVP_SYSTEM_ENABLED && !ExternalConfig.PVP_INFO_USER_COMMAND_ENABLED)
 			registerVoicedCommandHandler(new IVoicedCommandHandlerPvpInfo());
-
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 			registerVoicedCommandHandler(new MailCmd());
 		if (Config.ENABLED_CHAOS_EVENT)
 			registerVoicedCommandHandler(new ChaosCmd());
+		if (Config.ZODIAC_ENABLE)
+			registerVoicedCommandHandler(new ZodiacRegistration());
 		registerVoicedCommandHandler(new Premium());
 		registerVoicedCommandHandler(new QuizCmd());
-		if(Config.ZODIAC_ENABLE)
-		registerVoicedCommandHandler(new ZodiacRegistration());
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}
@@ -104,7 +101,7 @@ public class VoicedCommandHandler
 		for (int i = 0; i < ids.length; i++)
 		{
 			if (Config.DEBUG)
-				_log.fine("Adding handler for command " + ids[i]);
+				_log.log(Level.CONFIG, getClass().getName() + ": Adding handler for command " + ids[i]);
 			_datatable.put(ids[i], handler);
 		}
 	}
@@ -117,13 +114,10 @@ public class VoicedCommandHandler
 			command = voicedCommand.substring(0, voicedCommand.indexOf(" "));
 		}
 		if (Config.DEBUG)
-			_log.fine("getting handler for command: " + command + " -> " + (_datatable.get(command) != null));
+			_log.log(Level.CONFIG, getClass().getName() + ": getting handler for command: " + command + " -> " + (_datatable.get(command) != null));
 		return _datatable.get(command);
 	}
 
-	/**
-	 * @return
-	 */
 	public int size()
 	{
 		return _datatable.size();

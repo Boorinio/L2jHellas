@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import java.util.logging.Logger;
-
 import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
@@ -26,15 +24,12 @@ import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 
 public class TownManager
 {
-	private static final Logger _log = Logger.getLogger(TownManager.class.getName());
-
 	private static TownManager _instance;
 
 	public static final TownManager getInstance()
 	{
 		if (_instance == null)
 		{
-			_log.info("Initializing TownManager");
 			_instance = new TownManager();
 		}
 		return _instance;

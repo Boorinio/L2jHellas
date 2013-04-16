@@ -24,8 +24,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands:
  * - target name = sets player with respective name as target
- *
- * @version $Revision: 1.2.4.3 $ $Date: 2005/04/11 10:05:56 $
  */
 public class AdminTarget implements IAdminCommandHandler
 {

@@ -15,7 +15,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.io.File;
 
 import javolution.text.TextBuilder;
-import Extensions.Vote.VoteMain;
+import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
@@ -46,12 +46,12 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		
 		if (command.startsWith("votehopzone"))
 		{
-			VoteMain.hopvote(player);
+			VoteManager.hopvote(player);
 		}
 		
 		if (command.startsWith("votetopzone"))
 		{
-			VoteMain.topvote(player);
+			VoteManager.topvote(player);
 		}
 		
 		if (command.startsWith("rewards"))
@@ -63,36 +63,36 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID1, ExternalConfig.VOTE_REWARD_AMOUNT1, player, null);
 			player.sendMessage("Wise choise!");
-			VoteMain.setHasNotVotedHop(player);
-			VoteMain.setHasNotVotedTop(player);
-			VoteMain.setTries(player, VoteMain.getTries(player) + 1);
+			VoteManager.setHasNotVotedHop(player);
+			VoteManager.setHasNotVotedTop(player);
+			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
 		
 		if (command.startsWith("reward2"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID2, ExternalConfig.VOTE_REWARD_AMOUNT2, player, null);
 			player.sendMessage("Wise choise!");
-			VoteMain.setHasNotVotedHop(player);
-			VoteMain.setHasNotVotedTop(player);
-			VoteMain.setTries(player, VoteMain.getTries(player) + 1);
+			VoteManager.setHasNotVotedHop(player);
+			VoteManager.setHasNotVotedTop(player);
+			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
 		
 		if (command.startsWith("reward3"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID3, ExternalConfig.VOTE_REWARD_AMOUNT3, player, null);
 			player.sendMessage("Wise choise!");
-			VoteMain.setHasNotVotedHop(player);
-			VoteMain.setHasNotVotedTop(player);
-			VoteMain.setTries(player, VoteMain.getTries(player) + 1);
+			VoteManager.setHasNotVotedHop(player);
+			VoteManager.setHasNotVotedTop(player);
+			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
 		
 		if (command.startsWith("reward4"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID4, ExternalConfig.VOTE_REWARD_AMOUNT4, player, null);
 			player.sendMessage("Wise choise!");
-			VoteMain.setHasNotVotedHop(player);
-			VoteMain.setHasNotVotedTop(player);
-			VoteMain.setTries(player, VoteMain.getTries(player) + 1);
+			VoteManager.setHasNotVotedHop(player);
+			VoteManager.setHasNotVotedTop(player);
+			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
 	}
 	
@@ -124,8 +124,8 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		generateLogo(activeChar, 65531);
 		generateLogo(activeChar, 65532);
 		generateLogo(activeChar, 65533);
-		VoteMain.hasVotedHop(activeChar);
-		VoteMain.hasVotedTop(activeChar);
+		VoteManager.hasVotedHop(activeChar);
+		VoteManager.hasVotedTop(activeChar);
 		
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
@@ -141,12 +141,12 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		tb.append("</table>");
 		tb.append("</center>");
 		tb.append("<center>");
-		tb.append("<table bgcolor=\"FFFFFF\"><tr><td align=\"center\"><font color=\"00ff99\">Who's voting now: </font>" + VoteMain.whosVoting() + "</td></tr>");
-		tb.append("<tr><td align=\"center\"><font color=\"00ffff\">Tries left: </font>" + VoteMain.getTries(activeChar) + "</td></tr>");
-		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">You can vote in Hopzone at " + VoteMain.hopCd(activeChar) + "</font></td></tr>");
-		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">You can vote in Topzone at " + VoteMain.topCd(activeChar) + "</font></td></tr></table>");
+		tb.append("<table bgcolor=\"FFFFFF\"><tr><td align=\"center\"><font color=\"00ff99\">Who's voting now: </font>" + VoteManager.whosVoting() + "</td></tr>");
+		tb.append("<tr><td align=\"center\"><font color=\"00ffff\">Tries left: </font>" + VoteManager.getTries(activeChar) + "</td></tr>");
+		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">You can vote in Hopzone at " + VoteManager.hopCd(activeChar) + "</font></td></tr>");
+		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">You can vote in Topzone at " + VoteManager.topCd(activeChar) + "</font></td></tr></table>");
 		tb.append("</center>");
-		if (!VoteMain.hasVotedHop() || !VoteMain.hasVotedTop())
+		if (!VoteManager.hasVotedHop() || !VoteManager.hasVotedTop())
 		{
 			tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
 			tb.append("<tr>");
@@ -159,7 +159,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			tb.append("</tr>");
 			tb.append("</table>");
 		}
-		if (VoteMain.hasVotedHop() && VoteMain.hasVotedTop())
+		if (VoteManager.hasVotedHop() && VoteManager.hasVotedTop())
 		{
 			tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"FFFFFF\">");
 			tb.append("<tr>");
@@ -168,28 +168,28 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			tb.append("</table>");
 		}
 		tb.append("<center><table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
-		if (!VoteMain.hasVotedHop())
+		if (!VoteManager.hasVotedHop())
 		{
 			tb.append("<tr><td width=\"45\" valign=\"top\" align=\"center\"><font color=\"FF6600\">Hopzone Status: </font><img src=\"Crest.crest_" + Config.SERVER_ID + "_" + 65533 + "\" width=32 height=32>");
 		}
-		if (VoteMain.hasVotedHop())
+		if (VoteManager.hasVotedHop())
 		{
 			tb.append("<tr><td width=\"45\" valign=\"top\" align=\"center\"><font color=\"FF6600\">Hopzone Status: </font><img src=\"Crest.crest_" + Config.SERVER_ID + "_" + 65532 + "\" width=32 height=32>");
 		}
-		if (!VoteMain.hasVotedTop())
+		if (!VoteManager.hasVotedTop())
 		{
 			tb.append("<br1><font color=\"FF6600\">Topzone Status: </font><img src=\"Crest.crest_" + Config.SERVER_ID + "_" + 65533 + "\" width=32 height=32></td></tr>");
 		}
-		if (VoteMain.hasVotedTop())
+		if (VoteManager.hasVotedTop())
 		{
 			tb.append("<br1><font color=\"FF6600\">Topzone Status: </font><img src=\"Crest.crest_" + Config.SERVER_ID + "_" + 65532 + "\" width=32 height=32></td></tr>");
 		}
 		tb.append("</table></center>");
 		tb.append("<center>");
-		tb.append("<table bgcolor=\"000000\"><tr><td align=\"center\"><font color=\"FF6600\">Your votes this month: </font>" + VoteMain.getMonthVotes(activeChar) + "</td></tr>");
-		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">Your total votes in general: </font>" + VoteMain.getTotalVotes(activeChar) + "</td></tr>");
-		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">Players voted this month: </font>" + VoteMain.getBigMonthVotes(activeChar) + "</td></tr>");
-		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">Players voted in general: </font>" + VoteMain.getBigTotalVotes(activeChar) + "</td></tr></table>");
+		tb.append("<table bgcolor=\"000000\"><tr><td align=\"center\"><font color=\"FF6600\">Your votes this month: </font>" + VoteManager.getMonthVotes(activeChar) + "</td></tr>");
+		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">Your total votes in general: </font>" + VoteManager.getTotalVotes(activeChar) + "</td></tr>");
+		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">Players voted this month: </font>" + VoteManager.getBigMonthVotes(activeChar) + "</td></tr>");
+		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">Players voted in general: </font>" + VoteManager.getBigTotalVotes(activeChar) + "</td></tr></table>");
 		tb.append("</center>");
 		tb.append("</body></html>");
 		
@@ -264,7 +264,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID1).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT1 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward1\" width=204 height=20>");
 		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID2).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT2 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward2\" width=204 height=20>");
 		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID3).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT3 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward3\" width=204 height=20>");
-		if (VoteMain.getTotalVotes(player) >= ExternalConfig.EXTRA_REW_VOTE_AM)
+		if (VoteManager.getTotalVotes(player) >= ExternalConfig.EXTRA_REW_VOTE_AM)
 		{
 			tb.append("<font color=\"FF6600\">Due to your votes you now have a 4th choise!</font><br><button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID4).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT4 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward4\" width=204 height=20>");
 		}

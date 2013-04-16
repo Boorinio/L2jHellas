@@ -107,8 +107,8 @@ public class ClanHallManager
 				}
 			}
 			statement.close();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getClanHalls().size() + " taken clan halls");
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getFreeClanHalls().size() + " free clan halls");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getClanHalls().size() + " taken clan halls.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getFreeClanHalls().size() + " free clan halls.");
 			_loaded = true;
 		}
 		catch (Exception e)

@@ -27,12 +27,6 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Broadcast;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.1.2.5 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class BlessedSpiritShot implements IItemHandler
 {
 	// all the items ids that this handler knowns
@@ -56,7 +50,7 @@ public class BlessedSpiritShot implements IItemHandler
 
 		if (activeChar.isParalyzed())
 		{
-			activeChar.sendMessage("You Cannot Use This While You Are Paralyzed");
+			activeChar.sendMessage("You cannot use this while you are paralyzed.");
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
@@ -78,8 +72,7 @@ public class BlessedSpiritShot implements IItemHandler
 			return;
 		}
 
-		// Check if Blessed Spiritshot is already active (it can be charged over
-		// Spiritshot)
+		// Check if Blessed Spiritshot is already active (it can be charged over Spiritshot)
 		if (weaponInst.getChargedSpiritshot() != L2ItemInstance.CHARGED_NONE)
 			return;
 

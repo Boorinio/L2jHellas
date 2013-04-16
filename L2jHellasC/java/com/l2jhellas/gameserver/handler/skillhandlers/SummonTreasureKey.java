@@ -44,10 +44,8 @@ public class SummonTreasureKey implements ISkillHandler
 			return;
 
 		L2PcInstance player = (L2PcInstance) activeChar;
-
 		try
 		{
-
 			int item_id = 0;
 
 			switch (skill.getLevel())

@@ -22,12 +22,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class CompBlessedSpiritShotPacks implements IItemHandler
 {
 	private static final int[] ITEM_IDS =
@@ -48,14 +42,12 @@ public class CompBlessedSpiritShotPacks implements IItemHandler
 
 		if (itemId < 5200)
 		{ // Normal Compressed Package of SpiritShots
-			itemToCreateId = itemId - 1199; // Gives id of matching item for
-											// this pack
+			itemToCreateId = itemId - 1199; // Gives id of matching item for this pack
 			amount = 300;
 		}
 		else
 		{  // Greater Compressed Package of Spirithots
-			itemToCreateId = itemId - 1315; // Gives id of matching item for
-											// this pack
+			itemToCreateId = itemId - 1315; // Gives id of matching item for this pack
 			amount = 1000;
 		}
 

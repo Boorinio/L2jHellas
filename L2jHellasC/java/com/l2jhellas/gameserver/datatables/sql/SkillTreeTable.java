@@ -144,7 +144,7 @@ public class SkillTreeTable
 				map = new FastMap<Integer, L2SkillLearn>();
 				parentClassId = classlist.getInt("parent_id");
 				classId = classlist.getInt("id");
-				PreparedStatement statement2 = con.prepareStatement("SELECT class_id, skill_id, level, name, sp, min_level FROM skill_trees where class_id=? ORDER BY skill_id, level");
+				PreparedStatement statement2 = con.prepareStatement("SELECT class_id, skill_id, level, name, sp, min_level FROM skill_trees WHERE class_id=? ORDER BY skill_id, level");
 				statement2.setInt(1, classId);
 				ResultSet skilltree = statement2.executeQuery();
 
@@ -176,7 +176,7 @@ public class SkillTreeTable
 				statement2.close();
 
 				count += map.size();
-				_log.log(Level.FINE, getClass().getSimpleName() + ": skill tree for class " + classId + " has " + map.size() + " skills");
+				_log.log(Level.FINE, getClass().getSimpleName() + ": skill tree for class " + classId + " has " + map.size() + " skills.");
 			}
 
 			classlist.close();
@@ -191,7 +191,7 @@ public class SkillTreeTable
 			}
 		}
 
-		_log.info("SkillTreeTable: Loaded " + count + " skills.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + count + " skills.");
 
 		// Skill tree for fishing skill (from Fisherman)
 		int count2 = 0;
@@ -339,11 +339,7 @@ public class SkillTreeTable
 			{
 			}
 		}
-
-		_log.info("FishingSkillTreeTable: Loaded " + count2 + " general skills.");
-		_log.info("DwarvenCraftSkillTreeTable: Loaded " + count3 + " dwarven skills.");
-		_log.info("EnchantSkillTreeTable: Loaded " + count4 + " enchant skills.");
-		_log.info("PledgeSkillTreeTable: Loaded " + count5 + " pledge skills");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + count2 + " general, " + count3 + " dwarven, " + count4 + " enchant, " + count5 + " pledge skills.");
 	}
 
 	private Map<ClassId, Map<Integer, L2SkillLearn>> getSkillTrees()

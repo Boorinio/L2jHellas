@@ -60,7 +60,7 @@ public class AdminQuest implements IAdminCommandHandler
 					}
 					else
 					{
-						activeChar.sendMessage("Quest Reloaded Failed");
+						activeChar.sendMessage("Quest Reload Failed.");
 					}
 				}
 				catch (NumberFormatException e)
@@ -71,7 +71,7 @@ public class AdminQuest implements IAdminCommandHandler
 					}
 					else
 					{
-						activeChar.sendMessage("Quest Reloaded Failed");
+						activeChar.sendMessage("Quest Reload Failed.");
 					}
 				}
 			}

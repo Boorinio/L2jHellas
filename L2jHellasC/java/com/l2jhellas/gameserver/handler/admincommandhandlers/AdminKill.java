@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -36,15 +37,14 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * radius will be killed.
  * - kill_monster <radius> = If radius is specified, then ALL non-players only
  * in that radius will be killed.
- *
- * @version $Revision: 1.2.4.5 $ $Date: 2007/07/31 10:06:06 $
  */
 public class AdminKill implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_kill", "admin_kill_monster"
+	"admin_kill",
+	"admin_kill_monster"
 	};
 
 	@Override
@@ -138,8 +138,7 @@ public class AdminKill implements IAdminCommandHandler
 			target.reduceCurrentHp(target.getMaxHp() * Config.CHAMPION_HP + 1, activeChar);
 		else
 			target.reduceCurrentHp(target.getMaxHp() + 1, activeChar);
-		if (Config.DEBUG)
-			_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed character " + target.getObjectId());
+		_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed character " + target.getObjectId());
 	}
 
 	@Override

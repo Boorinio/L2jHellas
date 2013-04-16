@@ -14,25 +14,24 @@
  */
 package Extensions.AchievmentsEngine.base;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
 public class Achievement
 {
-	private int _id;
-	private String _name;
-	private String _reward;
-	private String _description = "No Description!";
-	private boolean _repeatable;
-
-	private FastMap<Integer, Long> _rewardList;
-	private FastList<Condition> _conditions;
-
 	private static Logger _log = Logger.getLogger(Achievement.class.getName());
+	private final int _id;
+	private final String _name;
+	private final String _reward;
+	private String _description = "No Description!";
+	private final boolean _repeatable;
+
+	private final FastMap<Integer, Long> _rewardList;
+	private final FastList<Condition> _conditions;
 
 	public Achievement(int id, String name, String description, String reward, boolean repeatable, FastList<Condition> conditions)
 	{
@@ -63,7 +62,7 @@ public class Achievement
 			}
 			catch (NumberFormatException nfe)
 			{
-				_log.warning("[AchievementsEngine] Error: Wrong reward " + nfe);
+				_log.warning("AchievementsEngine: Error wrong reward " + nfe);
 			}
 			_rewardList.put(item, count);
 		}

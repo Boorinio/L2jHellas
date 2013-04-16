@@ -28,7 +28,6 @@ import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-
 /**
  * This class builds a list of skills that L2BufferInstance will be able to
  * cast. Info is directly taken from SQL (table buffer_skills) which should
@@ -36,8 +35,7 @@ import com.l2jhellas.gameserver.skills.SkillTable;
  * "type" will allow administrators to separate and skills in different groups,
  * specially useful to restrict the access to some groups to determined kind of
  * players.
- * Example:
- * <br>
+ * Example: <br>
  * <br>
  * <li>Prophet and similar</li>
  * <li>Songs</li>
@@ -45,16 +43,14 @@ import com.l2jhellas.gameserver.skills.SkillTable;
  * <li>Newbie buffs</li>
  * <li>Advanced buffs</li>
  * <li>Vip buffs</li>
- * <li>...</li>
- * <br>
- * <font color="red"><b>IMPORTANT: type must not contain spaces</b></font>
- * <br>
+ * <font color="red"><b>IMPORTANT: type must not contain spaces</b></font> <br>
  * <br>
  * The whole info is stored in different FastList objects, one per each group. These
  * lists contain a collection of L2Skills. Finally, these objects are stored in a
- * new FastMap which has group as key and previous maps as values.<br><br>
+ * new FastMap which has group as key and previous maps as values.<br>
+ * <br>
  *
- * @author  House
+ * @author House
  */
 
 public class BufferSkillsTable
@@ -67,7 +63,7 @@ public class BufferSkillsTable
 	private static FastMap<Integer, Integer> _buffPrizes;
 	private static FastMap<Integer, SkillInfo> _allSkills;
 
-	private static final String SQL_LOAD_SKILLS = "SELECT * FROM `mods_buffer_skills`";
+	private static final String SQL_LOAD_SKILLS = "SELECT * FROM mods_buffer_skills";
 
 	BufferSkillsTable()
 	{
@@ -87,11 +83,10 @@ public class BufferSkillsTable
 		 * also collected now into a list: typeList.
 		 *
 		 * Prizes for buffs are also read and stored.
-		 *
 		 */
 		int id = 0;
 		int level = 0;
-		String type ="";
+		String type = "";
 		int adena = 0;
 		int count = 0;
 		int typesCount = 0;
@@ -120,6 +115,8 @@ public class BufferSkillsTable
 			}
 			statement.close();
 			rs.close();
+
+			_log.log(Level.FINE, getClass().getSimpleName() + ": Loaded " + count + " skills and " + typesCount + " types.");
 		}
 		catch (Exception e)
 		{
@@ -131,9 +128,13 @@ public class BufferSkillsTable
 		}
 		finally
 		{
-			try {con.close();}
-			catch (Exception e){}
-			_log.fine("BufferSkillsTable: Loaded "+count+" skills and "+typesCount+" types.");
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 
 		/*
@@ -147,7 +148,7 @@ public class BufferSkillsTable
 		/*
 		 * Secondly info contained in auxMap is loaded into _bufferSkillsMap, in different list sorted by type
 		 */
-		for(FastMap.Entry<Integer, SkillInfo> e = _allSkills.head(), end = _allSkills.tail(); (e = e.getNext()) != end;)
+		for (FastMap.Entry<Integer, SkillInfo> e = _allSkills.head(), end = _allSkills.tail(); (e = e.getNext()) != end;)
 		{
 			_bufferSkillsMap.get(e.getValue()._skillType).add(SkillTable.getInstance().getInfo(e.getKey(), e.getValue()._skillLevel));
 		}
@@ -173,10 +174,12 @@ public class BufferSkillsTable
 	{
 		return _allSkills.get(id)._skillLevel;
 	}
+
 	public int getSkillFee(int id)
 	{
 		return _buffPrizes.get(id);
 	}
+
 	/**
 	 * This will reload BufferSkillsTable info from DataBase
 	 */
@@ -187,10 +190,10 @@ public class BufferSkillsTable
 
 	public static BufferSkillsTable getInstance()
 	{
-		if (_instance == null) _instance = new BufferSkillsTable();
+		if (_instance == null)
+			_instance = new BufferSkillsTable();
 		return _instance;
 	}
-
 
 	private class SkillInfo
 	{

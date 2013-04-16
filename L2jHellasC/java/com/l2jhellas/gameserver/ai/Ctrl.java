@@ -57,8 +57,8 @@ import com.l2jhellas.gameserver.model.L2Character;
  * to stop the avatar/mob.
  *
  */
-public interface Ctrl {
-
+public interface Ctrl
+{
 	/** the character this AI serves */
 	L2Character getActor();
 
@@ -79,4 +79,3 @@ public interface Ctrl {
 	void notifyEvent(CtrlEvent evt, Object arg0);
 	void notifyEvent(CtrlEvent evt, Object arg0, Object arg1);
 }
-

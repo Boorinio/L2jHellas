@@ -65,7 +65,7 @@ public class L2Emailer
 		transport.connect(host, from, pass);
 		transport.sendMessage(message, message.getAllRecipients());
 		if (Config.DEBUG)
-		System.out.println("An email was successfully sent to " + toAddress);
+			System.out.println("An email was successfully sent to " + toAddress);
 		transport.close();
 	}
 }

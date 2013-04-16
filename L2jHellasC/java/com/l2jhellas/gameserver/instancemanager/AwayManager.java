@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -28,13 +27,11 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 /**
  * @author Michiru
- *
  */
 public final class AwayManager
 {
-	protected static final Logger _log = Logger.getLogger(AwayManager.class.getName());
-	private static AwayManager				_instance;
-	Map<L2PcInstance, RestoreData>	_awayPlayers;
+	private static AwayManager _instance;
+	Map<L2PcInstance, RestoreData> _awayPlayers;
 
 	public static final AwayManager getInstance()
 	{
@@ -47,9 +44,9 @@ public final class AwayManager
 
 	private final class RestoreData
 	{
-		private final String	_originalTitle;
-		private final int		_originalTitleColor;
-		private final boolean	_sitForced;
+		private final String _originalTitle;
+		private final int _originalTitleColor;
+		private final boolean _sitForced;
 
 		public RestoreData(L2PcInstance activeChar)
 		{
@@ -104,8 +101,8 @@ public final class AwayManager
 	class setPlayerAwayTask implements Runnable
 	{
 
-		private final L2PcInstance	_activeChar;
-		private final String		_awayText;
+		private final L2PcInstance _activeChar;
+		private final String _awayText;
 
 		setPlayerAwayTask(L2PcInstance activeChar, String awayText)
 		{
@@ -156,7 +153,7 @@ public final class AwayManager
 	class setPlayerBackTask implements Runnable
 	{
 
-		private final L2PcInstance	_activeChar;
+		private final L2PcInstance _activeChar;
 
 		setPlayerBackTask(L2PcInstance activeChar)
 		{

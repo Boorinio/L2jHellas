@@ -3,16 +3,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -29,12 +32,12 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class AdminDisconnect implements IAdminCommandHandler
 {
-	
-	private static final String[] ADMIN_COMMANDS =
-	{
+	protected static final Logger _log = Logger.getLogger(AdminDisconnect.class.getName());
+
+	private static final String[] ADMIN_COMMANDS = {
 		"admin_character_disconnect"
 	};
-	
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -42,12 +45,12 @@ public class AdminDisconnect implements IAdminCommandHandler
 		{
 			disconnectCharacter(activeChar);
 		}
-		
+
 		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{
@@ -78,7 +81,9 @@ public class AdminDisconnect implements IAdminCommandHandler
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Character " + player.getName() + " disconnected from server.");
 			activeChar.sendPacket(sm);
-			
+
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": " + player.getName() + " kicked from server.");
+
 			// Logout Character
 			LeaveWorld ql = new LeaveWorld();
 			player.sendPacket(ql);

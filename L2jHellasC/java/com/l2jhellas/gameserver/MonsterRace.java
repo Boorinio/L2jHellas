@@ -22,15 +22,13 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
-
-
 public class MonsterRace
 {
-    private L2NpcInstance[] _monsters;
+    private final L2NpcInstance[] _monsters;
     private static MonsterRace _instance;
     private Constructor<?> _constructor;
     private int[][] _speeds;
-    private int[] _first, _second;
+    private final int[] _first, _second;
 
     private MonsterRace()
     {

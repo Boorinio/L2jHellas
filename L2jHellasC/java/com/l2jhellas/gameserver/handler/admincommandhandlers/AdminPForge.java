@@ -18,6 +18,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AdminForgePacket;
@@ -30,10 +31,11 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class AdminPForge implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminKick.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_forge", "admin_forge2", "admin_forge3"
+	"admin_forge",
+	"admin_forge2",
+	"admin_forge3"
 	};
 
 	@Override
@@ -154,7 +156,10 @@ public class AdminPForge implements IAdminCommandHandler
 			}
 			catch (Exception ex)
 			{
-				ex.printStackTrace();
+				if (Config.DEVELOPER)
+				{
+					ex.printStackTrace();
+				}
 			}
 		}
 		return true;

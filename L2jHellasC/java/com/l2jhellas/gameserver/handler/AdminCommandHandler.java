@@ -184,7 +184,7 @@ public class AdminCommandHandler
 		for (int i = 0; i < ids.length; i++)
 		{
 			if (Config.DEBUG)
-				_log.fine("Adding handler for command " + ids[i]);
+				_log.log(Level.CONFIG, getClass().getName() + ": Adding handler for command " + ids[i]);
 			_datatable.put(ids[i].hashCode(), handler);
 		}
 	}
@@ -197,13 +197,10 @@ public class AdminCommandHandler
 			command = adminCommand.substring(0, adminCommand.indexOf(" "));
 
 		if (Config.DEBUG)
-			_log.fine("getting handler for command: " + command + " -> " + (_datatable.get(command.hashCode()) != null));
+			_log.log(Level.CONFIG, getClass().getName() + ": getting handler for command: " + command + " -> " + (_datatable.get(command.hashCode()) != null));
 		return _datatable.get(command.hashCode());
 	}
 
-	/**
-	 * @return the size()
-	 */
 	public int size()
 	{
 		return _datatable.size();

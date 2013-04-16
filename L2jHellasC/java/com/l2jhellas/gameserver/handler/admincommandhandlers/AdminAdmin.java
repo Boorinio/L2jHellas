@@ -13,7 +13,6 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GmListTable;
@@ -38,31 +37,26 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * - set/set_menu/set_mod = alters specified server setting
  * - saveolymp = saves olympiad state manually
  * - manualhero = cycles olympiad and calculate new heroes.
- *
- * @version $Revision: 1.3.2.1.2.4 $ $Date: 2007/07/28 10:06:06 $
  */
 public class AdminAdmin implements IAdminCommandHandler
 {
-	protected static final Logger _log = Logger.getLogger(AdminAdmin.class.getName());
-
-	private static final String[] ADMIN_COMMANDS =
-	{
-		"admin_admin",
-		"admin_admin1",
-		"admin_admin2",
-		"admin_admin3",
-		"admin_admin4",
-		"admin_admin5",
-		"admin_gmliston",
-		"admin_gmlistoff",
-		"admin_silence",
-		"admin_diet",
-		"admin_tradeoff",
-		"admin_set",
-		"admin_set_menu",
-		"admin_set_mod",
-		"admin_saveolymp",
-		"admin_manualhero"
+	private static final String[] ADMIN_COMMANDS = {
+	"admin_admin",
+	"admin_admin1",
+	"admin_admin2",
+	"admin_admin3",
+	"admin_admin4",
+	"admin_admin5",
+	"admin_gmliston",
+	"admin_gmlistoff",
+	"admin_silence",
+	"admin_diet",
+	"admin_tradeoff",
+	"admin_set",
+	"admin_set_menu",
+	"admin_set_mod",
+	"admin_saveolymp",
+	"admin_manualhero"
 	};
 
 	@Override

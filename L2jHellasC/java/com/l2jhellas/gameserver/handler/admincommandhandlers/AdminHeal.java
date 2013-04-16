@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -29,12 +30,11 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands:
  * - heal = restores HP/MP/CP on target, name or radius
- *
- * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminHeal implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminRes.class.getName());
+	protected static final Logger _log = Logger.getLogger(AdminHeal.class.getName());
+
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_heal"
@@ -56,8 +56,8 @@ public class AdminHeal implements IAdminCommandHandler
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
-				if (Config.DEVELOPER)
-					System.out.println("Heal error: " + e);
+				if (Config.DEBUG)
+					_log.log(Level.WARNING, getClass().getName() + ": Heal error: " + e);
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Incorrect target/radius specified.");
 				activeChar.sendPacket(sm);
@@ -118,8 +118,7 @@ public class AdminHeal implements IAdminCommandHandler
 			target.setCurrentHpMp(target.getMaxHp(), target.getMaxMp());
 			if (target instanceof L2PcInstance)
 				target.setCurrentCp(target.getMaxCp());
-			if (Config.DEBUG)
-				_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") healed character " + target.getName());
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") healed character " + target.getName());
 		}
 		else
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));

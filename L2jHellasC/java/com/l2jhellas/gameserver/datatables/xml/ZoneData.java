@@ -56,11 +56,6 @@ import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 
-/**
- * This class manages the augmentation data and can also create new augmentations.
- *
- * @author durgus
- */
 public class ZoneData
 {
 	private static final Logger _log = Logger.getLogger(ZoneData.class.getName());
@@ -299,7 +294,7 @@ public class ZoneData
 									{
 										if (Config.DEBUG)
 										{
-											_log.info("Zone (" + zoneId + ") added to: " + x + " " + y);
+											_log.log(Level.CONFIG, getClass().getName() + ": Zone (" + zoneId + ") added to: " + x + " " + y);
 										}
 										worldRegions[x][y].addZone(temp);
 									}

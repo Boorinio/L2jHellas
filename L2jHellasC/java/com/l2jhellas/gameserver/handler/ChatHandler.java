@@ -32,8 +32,6 @@ import com.l2jhellas.gameserver.handler.chathandlers.ChatTrade;
 
 /**
  * This class handles all chat handlers
- *
- * @author durgus
  */
 public class ChatHandler
 {

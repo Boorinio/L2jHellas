@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class WarehouseCacheManager
@@ -39,15 +38,16 @@ public class WarehouseCacheManager
 
 	private WarehouseCacheManager()
 	{
-		_cacheTime = Config.WAREHOUSE_CACHE_TIME*60000L; // 60*1000 = 60000
+		_cacheTime = Config.WAREHOUSE_CACHE_TIME * 60000L; // 60*1000 = 60000
 		_cachedWh = new FastMap<L2PcInstance, Long>().setShared(true);
-		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CacheScheduler(),120000,60000);
+		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CacheScheduler(), 120000, 60000);
 	}
 
 	public void addCacheTask(L2PcInstance pc)
 	{
 		_cachedWh.put(pc, System.currentTimeMillis());
 	}
+
 	public void remCacheTask(L2PcInstance pc)
 	{
 		_cachedWh.remove(pc);
@@ -55,6 +55,7 @@ public class WarehouseCacheManager
 
 	public class CacheScheduler implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			long cTime = System.currentTimeMillis();

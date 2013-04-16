@@ -36,9 +36,6 @@ import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 
-/**
- * This class ...
- */
 public class MapRegionTable
 {
 	private static Logger _log = Logger.getLogger(MapRegionTable.class.getName());
@@ -90,7 +87,7 @@ public class MapRegionTable
 			rset.close();
 			statement.close();
 			if (Config.DEBUG)
-				_log.fine(count2 + " mapregion loaded");
+				_log.log(Level.CONFIG, getClass().getName() + ": " + count2 + " mapregion loaded.");
 		}
 		catch (Exception e)
 		{

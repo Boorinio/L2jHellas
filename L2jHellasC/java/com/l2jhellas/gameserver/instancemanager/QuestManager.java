@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
@@ -77,7 +78,7 @@ public class QuestManager extends ScriptManager<Quest>
 
 	public final void reloadAllQuests()
 	{
-		_log.info("Reloading Server Scripts");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Reloading Server Scripts.");
 		try
 		{
 			// unload all scripts
@@ -93,13 +94,13 @@ public class QuestManager extends ScriptManager<Quest>
 		}
 		catch (IOException ioe)
 		{
-			_log.severe("Failed loading scripts.cfg, no script going to be loaded");
+			_log.log(Level.SEVERE, getClass().getSimpleName() + ": Failed loading scripts.cfg, no script going to be loaded.");
 		}
 	}
 
 	public final void report()
 	{
-		_log.info("Loaded: " + _quests.size() + " quests");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _quests.size() + " quests.");
 	}
 
 	public final void save()
@@ -129,7 +130,7 @@ public class QuestManager extends ScriptManager<Quest>
 	{
 		if (newQuest == null)
 		{
-			throw new IllegalArgumentException("Quest argument cannot be null");
+			_log.log(Level.WARNING, getClass().getName() + ": Quest argument cannot be null");
 		}
 		Quest old = _quests.get(newQuest.getName());
 
@@ -145,7 +146,7 @@ public class QuestManager extends ScriptManager<Quest>
 		if (old != null)
 		{
 			old.unload();
-			_log.info("Replaced: (" + old.getName() + ") with a new version (" + newQuest.getName() + ")");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Replaced: (" + old.getName() + ") with a new version (" + newQuest.getName() + ")");
 
 		}
 		_quests.put(newQuest.getName(), newQuest);

@@ -34,15 +34,14 @@ import com.l2jhellas.util.Rnd;
 /**
  * This class handles following admin commands:
  * - gm = turns gm mode on/off
- *
- * @version $Revision: 1.1.2.1 $ $Date: 2005/03/15 21:32:48 $
  */
 public class AdminFightCalculator implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminFightCalculator.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_fight_calculator", "admin_fight_calculator_show", "admin_fcs",
+	"admin_fight_calculator",
+	"admin_fight_calculator_show",
+	"admin_fcs"
 	};
 
 	// TODO: remove from gm list etc etc

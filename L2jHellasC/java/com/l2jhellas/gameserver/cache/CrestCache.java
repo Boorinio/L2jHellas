@@ -137,7 +137,7 @@ public class CrestCache
 			}
 		}
 
-		_log.info("Cache[Crest]: " + String.format("%.3f", getMemoryUsage()) + "MB on " + getLoadedFiles() + " files loaded. (Forget Time: " + (_cachePledge.getForgetTime() / 1000) + "s , Capacity: " + _cachePledge.capacity() + ")");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": " + String.format("%.3f", getMemoryUsage()) + "MB on " + getLoadedFiles() + " files loaded. (Forget Time: " + (_cachePledge.getForgetTime() / 1000) + "s , Capacity: " + _cachePledge.capacity() + ")");
 	}
 
 	public void convertOldPedgeFiles()
@@ -150,7 +150,7 @@ public class CrestCache
 		{
 			int clanId = Integer.parseInt(file.getName().substring(7, file.getName().length() - 4));
 
-			_log.info("Found old crest file \"" + file.getName() + "\" for clanId " + clanId);
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Found old crest file \"" + file.getName() + "\" for clanId " + clanId);
 
 			int newId = IdFactory.getInstance().getNextId();
 
@@ -161,7 +161,7 @@ public class CrestCache
 				removeOldPledgeCrest(clan.getCrestId());
 
 				file.renameTo(new File(Config.DATAPACK_ROOT, "data/crests/Crest_" + newId + ".bmp"));
-				_log.info("Renamed Clan crest to new format: Crest_" + newId + ".bmp");
+				_log.log(Level.INFO, getClass().getSimpleName() + ": Renamed Clan crest to new format: Crest_" + newId + ".bmp");
 
 				Connection con = null;
 

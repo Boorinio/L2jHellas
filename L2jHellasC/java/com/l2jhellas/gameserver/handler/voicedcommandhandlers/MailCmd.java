@@ -31,8 +31,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * @author Pauler
- **/
-
+ */
 public class MailCmd implements IVoicedCommandHandler
 {
 	private static final Logger _log = Logger.getLogger(MailCmd.class.getName());
@@ -46,34 +45,26 @@ public class MailCmd implements IVoicedCommandHandler
 	{
 		if (command.equalsIgnoreCase(VOICED_COMMANDS[0])) // mailread
 		{
-
 			mailread(activeChar);
-
 		}
 
 		if (command.equalsIgnoreCase(VOICED_COMMANDS[1])) // mailsend
 		{
-
 			mailsend(activeChar);
-
 		}
-
 		return false;
 	}
 
 	public void mailread(L2PcInstance activeChar)
 	{
-
 		NpcHtmlMessage msg = new NpcHtmlMessage(20);
 		msg.setHtml(showMailReadWindow(activeChar));
 		msg.replace("%objectId%", String.valueOf(20));
 		activeChar.sendPacket(msg);
-
 	}
 
 	public String showMailReadWindow(L2PcInstance activeChar)
 	{
-
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><head><title>Inbox</title></head><body>");
 
@@ -81,28 +72,18 @@ public class MailCmd implements IVoicedCommandHandler
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE `to`=? ORDER BY id DESC");
-
 			statement.setString(1, activeChar.getName());
-
 			ResultSet result = statement.executeQuery();
-
 			int messageId = 0;
-
 			while (result.next())
 			{
-
 				tb.append("<font color=\"D6A718\">From:</font> <br>" + result.getString(2) + "<br>");
 				tb.append("<font color=\"D6A718\">Title:</font> <br>" + result.getString(4) + "<br>");
 				tb.append("<font color=\"D6A718\">Message:</font> <br>" + result.getString(5) + "<br>");
-
 				messageId = result.getInt(1);
-
 				tb.append("<button value=\"Delete\" action=\"bypass -h delMsg " + messageId + "\" width=100 height=20><br>*******************************<br>");
-
 			}
-
 		}
 		catch (SQLException e)
 		{
@@ -112,26 +93,20 @@ public class MailCmd implements IVoicedCommandHandler
 				e.printStackTrace();
 			}
 		}
-
 		tb.append("</body></html>");
-
 		return tb.toString();
-
 	}
 
 	public void mailsend(L2PcInstance activeChar)
 	{
-
 		NpcHtmlMessage msg = new NpcHtmlMessage(20);
 		msg.setHtml(showMailSendWindow(activeChar));
 		msg.replace("%objectId%", String.valueOf(20));
 		activeChar.sendPacket(msg);
-
 	}
 
 	public String showMailSendWindow(L2PcInstance activeChar)
 	{
-
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><head><title>Send a Mail</title></head><body>");
 
@@ -150,9 +125,7 @@ public class MailCmd implements IVoicedCommandHandler
 		tb.append("<button value=\"Send\" action=\"bypass -h sendMsg $to $title $message\" width=204 height=20>");
 
 		tb.append("</center>");
-
 		tb.append("</body></html>");
-
 		return tb.toString();
 	}
 
@@ -161,5 +134,4 @@ public class MailCmd implements IVoicedCommandHandler
 	{
 		return VOICED_COMMANDS;
 	}
-
 }

@@ -24,10 +24,13 @@ import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 public abstract class BaseBBSManager
 {
 	public abstract void parsecmd(String command, L2PcInstance activeChar);
-	public abstract void parsewrite(String ar1,String ar2,String ar3,String ar4,String ar5, L2PcInstance activeChar);
+
+	public abstract void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar);
+
 	protected void separateAndSend(String html, L2PcInstance acha)
 	{
-		if (html == null) return;
+		if (html == null)
+			return;
 		if (html.length() < 4090)
 		{
 			acha.sendPacket(new ShowBoard(html, "101"));
@@ -50,9 +53,7 @@ public abstract class BaseBBSManager
 
 		}
 	}
-	/**
-	 * @param html
-	 */
+
 	protected void send1001(String html, L2PcInstance acha)
 	{
 		if (html.length() < 8180)
@@ -60,19 +61,13 @@ public abstract class BaseBBSManager
 			acha.sendPacket(new ShowBoard(html, "1001"));
 		}
 	}
-	/**
-	 * @param i
-	 */
+
 	protected void send1002(L2PcInstance acha)
 	{
-		send1002(acha," "," ","0");
+		send1002(acha, " ", " ", "0");
 	}
-	/**
-	 * @param activeChar
-	 * @param string
-	 * @param string2
-	 */
-	protected void send1002(L2PcInstance activeChar, String string, String string2,String string3)
+
+	protected void send1002(L2PcInstance activeChar, String string, String string2, String string3)
 	{
 		List<String> _arg = new FastList<String>();
 		_arg.add("0");

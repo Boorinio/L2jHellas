@@ -30,18 +30,9 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.5.2.4 $ $Date: 2005/04/03 15:55:03 $
- */
-
 public class Resurrect implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(Resurrect.class.getName());
-
-	private static final L2SkillType[] SKILL_IDS =
-	{
+	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.RESURRECT
 	};
 

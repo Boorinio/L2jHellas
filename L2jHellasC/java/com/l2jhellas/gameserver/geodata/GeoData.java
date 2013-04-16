@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Point3D;
 
-
 public class GeoData
 {
 	protected static final Logger _log = Logger.getLogger(GeoData.class.getName());

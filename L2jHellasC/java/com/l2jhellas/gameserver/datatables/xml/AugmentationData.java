@@ -84,8 +84,6 @@ public class AugmentationData
 
 	public AugmentationData()
 	{
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Initializing AugmentationData.");
-
 		_augmentationStats = new FastList[4];
 		_augmentationStats[0] = new FastList<augmentationStat>();
 		_augmentationStats[1] = new FastList<augmentationStat>();
@@ -202,7 +200,7 @@ public class AugmentationData
 			if (!file.exists())
 			{
 				if (Config.DEBUG)
-					System.out.println("The augmentation skillmap file is missing.");
+					_log.log(Level.CONFIG, getClass().getName() + ": The augmentation skillmap file is missing.");
 				return;
 			}
 
@@ -273,7 +271,7 @@ public class AugmentationData
 				if (!file.exists())
 				{
 					if (Config.DEBUG)
-						System.out.println("The augmentation stat data file " + i + " is missing.");
+						_log.log(Level.CONFIG, getClass().getName() + ": The augmentation stat data file " + i + " is missing.");
 					return;
 				}
 
@@ -358,7 +356,7 @@ public class AugmentationData
 		// 0:yellow, 1:blue, 2:purple, 3:red
 		int resultColor = 0;
 		// The chances used here are most likely custom,
-		// whats known is: u can also get a red result from a normal grade lifeStone
+		// what's known is: u can also get a red result from a normal grade lifeStone
 		// however I will make it so that a higher grade lifeStone will more likely result in a
 		// higher grade augmentation... and the augmentation result will at least have the grade
 		// of the life stone
@@ -372,7 +370,7 @@ public class AugmentationData
 		else
 			resultColor = 0;
 
-		// Second: Calculate the subblock offset for the choosen color,
+		// Second: Calculate the subblock offset for the chosen color,
 		// and the level of the lifeStone
 		int colorOffset = (resultColor * (STAT_SUBBLOCKSIZE * 10)) + ((lifeStoneLevel - 1) * STAT_SUBBLOCKSIZE);
 
@@ -385,7 +383,7 @@ public class AugmentationData
 		// use a chance to determine whether we will add a skill or not
 		if (Rnd.get(1, 100) <= CHANCE_SKILL)
 			generateSkill = true;
-		// only if no skill is going to be applyed
+		// only if no skill is going to be applied
 		else if (Rnd.get(1, 100) <= CHANCE_BASESTAT)
 			stat34 = Rnd.get(BASESTAT_STR, BASESTAT_MEN);
 
@@ -397,7 +395,7 @@ public class AugmentationData
 			stat34 = Rnd.get(offset, offset + STAT_SUBBLOCKSIZE);
 		}
 
-		// generate a skill if neccessary
+		// generate a skill if necessary
 		L2Skill skill = null;
 		if (generateSkill)
 		{
@@ -456,9 +454,9 @@ public class AugmentationData
 	public FastList<AugStat> getAugStatsById(int augmentationId)
 	{
 		FastList<AugStat> temp = new FastList<AugStat>();
-		// An augmentation id contains 2 short vaues so we gotta seperate them here
+		// An augmentation id contains 2 short values so we gotta separate them here
 		// both values contain a number from 1-16380, the first 14560 values are stats
-		// the 14560 stats are devided into 4 blocks each holding 3640 values
+		// the 14560 stats are divided into 4 blocks each holding 3640 values
 		// each block contains 40 subblocks holding 91 stat values
 		// the first 13 values are so called Solo-stats and they have the highest stat increase possible
 		// after the 13 Solo-stats come 78 combined stats (thats every possible combination of the 13 solo stats)

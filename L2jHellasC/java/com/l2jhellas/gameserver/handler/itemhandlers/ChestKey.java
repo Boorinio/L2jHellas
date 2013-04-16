@@ -44,9 +44,7 @@ public class ChestKey implements IItemHandler
 
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		int itemId = item.getItemId();
-		L2Skill skill = SkillTable.getInstance().getInfo(2229, itemId - 6664);// box
-																				// key
-																				// skill
+		L2Skill skill = SkillTable.getInstance().getInfo(2229, itemId - 6664);// box key skill
 		L2Object target = activeChar.getTarget();
 
 		if (!(target instanceof L2ChestInstance) || target == null)
@@ -72,5 +70,4 @@ public class ChestKey implements IItemHandler
 	{
 		return ITEM_IDS;
 	}
-
 }

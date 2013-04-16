@@ -23,10 +23,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.communitybbs.Manager.TopicBBSManager;
 
-
 public class Topic
 {
-
 	private static Logger _log = Logger.getLogger(Topic.class.getName());
 	public static final int MORMAL = 0;
 	public static final int MEMO = 1;
@@ -40,34 +38,22 @@ public class Topic
 	private final int _type;
 	private final int _cReply;
 
-	/**
-	 * @param restaure
-	 * @param i
-	 * @param j
-	 * @param string
-	 * @param k
-	 * @param string2
-	 * @param l
-	 * @param m
-	 * @param n
-	 */
 	public Topic(ConstructorType ct, int id, int fid, String name, long date, String oname, int oid, int type, int Creply)
 	{
-			_id = id;
-			_forumId = fid;
-			_topicName = name;
-			_date = date;
-			_ownerName = oname;
-			_ownerId = oid;
-			_type =  type;
-			_cReply = Creply;
-			TopicBBSManager.getInstance().addTopic(this);
+		_id = id;
+		_forumId = fid;
+		_topicName = name;
+		_date = date;
+		_ownerName = oname;
+		_ownerId = oid;
+		_type = type;
+		_cReply = Creply;
+		TopicBBSManager.getInstance().addTopic(this);
 
-
-		 if(ct == ConstructorType.CREATE)
+		if (ct == ConstructorType.CREATE)
 		{
 
-			 insertindb();
+			insertindb();
 		}
 	}
 
@@ -77,7 +63,7 @@ public class Topic
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("INSERT INTO topic (topic_id,topic_forum_id,topic_name,topic_date,topic_ownername,topic_ownerid,topic_type,topic_reply) values (?,?,?,?,?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO topic (topic_id,topic_forum_id,topic_name,topic_date,topic_ownername,topic_ownerid,topic_type,topic_reply) VALUES (?,?,?,?,?,?,?,?)");
 			statement.setInt(1, _id);
 			statement.setInt(2, _forumId);
 			statement.setString(3, _topicName);
@@ -111,11 +97,11 @@ public class Topic
 
 	}
 
-	public enum ConstructorType { RESTORE , CREATE }
+	public enum ConstructorType
+	{
+		RESTORE, CREATE
+	}
 
-	/**
-	 * @return
-	 */
 	public int getID()
 	{
 		return _id;
@@ -126,18 +112,13 @@ public class Topic
 		return _forumId;
 	}
 
-	/**
-	 * @return
-	 */
 	public String getName()
 	{
-		// TODO Auto-generated method stub
 		return _topicName;
 	}
 
 	public String getOwnerName()
 	{
-		// TODO Auto-generated method stub
 		return _ownerName;
 	}
 
@@ -175,9 +156,6 @@ public class Topic
 		}
 	}
 
-	/**
-	 * @return
-	 */
 	public long getDate()
 	{
 		return _date;

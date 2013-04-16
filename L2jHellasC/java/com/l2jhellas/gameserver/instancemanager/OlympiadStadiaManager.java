@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import java.util.logging.Logger;
-
 import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.L2Character;
@@ -23,15 +21,12 @@ import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 
 public class OlympiadStadiaManager
 {
-	protected static Logger _log = Logger.getLogger(OlympiadStadiaManager.class.getName());
-
 	private static OlympiadStadiaManager _instance;
 
 	public static final OlympiadStadiaManager getInstance()
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing OlympiadStadiaManager");
 			_instance = new OlympiadStadiaManager();
 		}
 		return _instance;

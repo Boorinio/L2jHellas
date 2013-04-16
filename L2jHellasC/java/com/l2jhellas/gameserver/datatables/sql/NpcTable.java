@@ -40,7 +40,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class NpcTable
 {
-	private static Logger _log = Logger.getLogger(NpcTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(NpcTable.class.getName());
 
 	private static NpcTable _instance;
 
@@ -104,7 +104,7 @@ public class NpcTable
 					npcdata.close();
 					statement.close();
 					if (_npcs.size() > npc_count)
-						_log.info("NpcTable: Loaded " + (_npcs.size() - npc_count) + " custom NPC Templates.");
+						_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + (_npcs.size() - npc_count) + " custom NPC Templates.");
 				}
 				catch (Exception e)
 				{
@@ -217,7 +217,7 @@ public class NpcTable
 						npcDat = _npcs.get(mobId);
 						if (npcDat == null)
 						{
-							_log.warning("NPCTable: CUSTOM DROPLIST: Drop data for undefined NPC. npcId: " + mobId);
+							_log.log(Level.WARNING, getClass().getName() + ": CUSTOM DROPLIST: Drop data for undefined NPC. npcId: " + mobId);
 							continue;
 						}
 						dropDat = new L2DropData();
@@ -231,7 +231,7 @@ public class NpcTable
 					}
 					dropData.close();
 					statement2.close();
-					_log.info("CustomDropList: Added " + cCount + " custom droplist.");
+					_log.log(Level.INFO, getClass().getSimpleName() + ": Added " + cCount + " custom droplist.");
 				}
 				catch (Exception e)
 				{
@@ -258,7 +258,7 @@ public class NpcTable
 
 					if (npc == null)
 					{
-						_log.warning("NPCTable: Error getting NPC template ID " + npcId + " while trying to load skill trainer data.");
+						_log.log(Level.WARNING, getClass().getName() + ": Error getting NPC template ID " + npcId + " while trying to load skill trainer data.");
 						continue;
 					}
 
@@ -301,7 +301,7 @@ public class NpcTable
 
 				minionData.close();
 				statement4.close();
-				_log.config("NpcTable: Loaded " + cnt + " Minions.");
+				_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + cnt + " Minions.");
 			}
 			catch (Exception e)
 			{
@@ -400,7 +400,7 @@ public class NpcTable
 
 			_npcs.put(id, template);
 		}
-		_log.info("NpcTable: Loaded " + _npcs.size() + " NPC templates.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _npcs.size() + " NPC templates.");
 	}
 
 	public void reloadNpc(int id)
@@ -604,7 +604,6 @@ public class NpcTable
 	 */
 	public Set<Integer> getAllNpcOfClassType(String classType)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -614,7 +613,6 @@ public class NpcTable
 	 */
 	public Set<Integer> getAllNpcOfL2jClass(Class<?> clazz)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -624,7 +622,6 @@ public class NpcTable
 	 */
 	public Set<Integer> getAllNpcOfAiType(String aiType)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 

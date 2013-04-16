@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminBBS implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminKick.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_bbs"

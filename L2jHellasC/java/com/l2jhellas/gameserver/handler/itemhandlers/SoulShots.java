@@ -28,12 +28,6 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Broadcast;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.4.4 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class SoulShots implements IItemHandler
 {
 	// All the item IDs that this handler knows.

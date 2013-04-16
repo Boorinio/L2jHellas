@@ -32,7 +32,6 @@ import com.l2jhellas.gameserver.templates.StatsSet;
  * This class represents the Newbie Helper Buff list
  * Author: Ayor
  */
-
 public class HelperBuffTable
 {
 
@@ -42,7 +41,7 @@ public class HelperBuffTable
 	private final List<L2HelperBuff> _helperBuff;
 
 	/**
-	 * The player level since Newbie Helper can give the fisrt buff <BR>
+	 * The player level since Newbie Helper can give the first buff <BR>
 	 * Used to generate message : "Come back here when you have reached level ...")
 	 */
 	private int _magicClassLowestLevel = 100;
@@ -67,7 +66,6 @@ public class HelperBuffTable
 	{
 		_helperBuff = new FastList<L2HelperBuff>();
 		restoreHelperBuffData();
-
 	}
 
 	/**
@@ -78,25 +76,21 @@ public class HelperBuffTable
 		Connection con = null;
 		try
 		{
-			try
-			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT * FROM helper_buff_list");
-				ResultSet helperbuffdata = statement.executeQuery();
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM helper_buff_list");
+			ResultSet helperbuffdata = statement.executeQuery();
 
-				fillHelperBuffTable(helperbuffdata);
-				helperbuffdata.close();
-				statement.close();
-			}
-			catch (Exception e)
+			fillHelperBuffTable(helperbuffdata);
+			helperbuffdata.close();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, getClass().getName() + ": Table helper_buff_list not found." + e);
+			if (Config.DEVELOPER)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Table helper_buff_list not found." + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
+				e.printStackTrace();
 			}
-
 		}
 		finally
 		{
@@ -128,7 +122,7 @@ public class HelperBuffTable
 			helperBuffDat.set("upperLevel", HelperBuffData.getInt("upper_level"));
 			helperBuffDat.set("isMagicClass", HelperBuffData.getString("is_magic_class"));
 
-			// Calulate the range level in wich player must be to obtain buff from Newbie Helper
+			// Calculate the range level in which player must be to obtain buff from Newbie Helper
 			if ("false".equals(HelperBuffData.getString("is_magic_class")))
 			{
 				if (HelperBuffData.getInt("lower_level") < _physicClassLowestLevel)
@@ -150,8 +144,7 @@ public class HelperBuffTable
 			_helperBuff.add(template);
 		}
 
-		_log.info("Helper Buff Table: Loaded " + _helperBuff.size() + " Templates.");
-
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _helperBuff.size() + " Templates.");
 	}
 
 	/**

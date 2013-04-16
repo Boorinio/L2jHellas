@@ -15,17 +15,21 @@ package Extensions.Vote.Tasks;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 
 public class TriesResetTask
 {
-	
+	protected static final Logger _log = Logger.getLogger(TriesResetTask.class.getName());
+
 	public TriesResetTask()
 	{
 	}
-	
+
 	public static void getInstance()
 	{
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
@@ -36,18 +40,23 @@ public class TriesResetTask
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
 					PreparedStatement statement = con.prepareStatement("UPDATE characters SET tries=?");
-					
+
 					statement.setInt(1, 3);
 					statement.execute();
 					statement.close();
 				}
 				catch (Exception e)
 				{
+					_log.log(Level.WARNING, getClass().getName() + ": could not update database " + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 		}, getValidationTime());
 	}
-	
+
 	private static long getValidationTime()
 	{
 		Calendar cld = Calendar.getInstance();

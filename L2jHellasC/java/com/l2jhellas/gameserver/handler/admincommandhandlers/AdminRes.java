@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -31,15 +30,14 @@ import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 /**
  * This class handles following admin commands:
  * - res = resurrects target L2Character
- *
- * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminRes implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminRes.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_res", "admin_res_monster"
+	"admin_res",
+	"admin_res_monster"
 	};
 
 	@Override
@@ -115,9 +113,7 @@ public class AdminRes implements IAdminCommandHandler
 		}
 
 		doResurrect((L2Character) obj);
-
-		if (Config.DEBUG)
-			_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") resurrected character " + obj.getObjectId());
+		_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") resurrected character " + obj.getObjectId());
 	}
 
 	private void handleNonPlayerRes(L2PcInstance activeChar)

@@ -39,14 +39,23 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * This class handles following admin commands: - show_spawns = shows menu -
  * spawn_index lvl = shows menu for monsters with respective level -
  * spawn_monster id = spawns monster id on target
- *
- * @version $Revision: 1.2.2.5.2.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminSpawn implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_show_spawns", "admin_spawn", "admin_spawn_monster", "admin_spawn_index", "admin_unspawnall", "admin_respawnall", "admin_spawn_reload", "admin_npc_index", "admin_spawn_once", "admin_show_npcs", "admin_teleport_reload", "admin_spawnnight", "admin_spawnday"
+	private static final String[] ADMIN_COMMANDS = {
+	"admin_show_spawns",
+	"admin_spawn",
+	"admin_spawn_monster",
+	"admin_spawn_index",
+	"admin_unspawnall",
+	"admin_respawnall",
+	"admin_spawn_reload",
+	"admin_npc_index",
+	"admin_spawn_once",
+	"admin_show_npcs",
+	"admin_teleport_reload",
+	"admin_spawnnight",
+	"admin_spawnday"
 	};
 
 	@Override

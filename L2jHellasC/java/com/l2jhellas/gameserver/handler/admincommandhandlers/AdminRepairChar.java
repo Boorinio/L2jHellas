@@ -28,8 +28,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class handles following admin commands: - delete = deletes target
- *
- * @version $Revision: 1.1.2.6.2.3 $ $Date: 2005/04/11 10:05:59 $
  */
 public class AdminRepairChar implements IAdminCommandHandler
 {
@@ -37,7 +35,8 @@ public class AdminRepairChar implements IAdminCommandHandler
 
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_restore", "admin_repair"
+	"admin_restore",
+	"admin_repair"
 	};
 
 
@@ -74,7 +73,7 @@ public class AdminRepairChar implements IAdminCommandHandler
 			statement.setString(1, parts[1]);
 			statement.execute();
 
-			statement = con.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
+			statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 			statement.setString(1, parts[1]);
 			ResultSet rset = statement.executeQuery();
 			int objId = 0;
@@ -130,7 +129,7 @@ public class AdminRepairChar implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not repair char:", e);
+			_log.log(Level.WARNING, getClass().getName() + ": could not repair char:"+ e);
 		}
 		finally
 		{

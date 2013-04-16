@@ -6,7 +6,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -17,7 +17,6 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 package com.l2jhellas.gameserver.geodata.pathfinding;
-
 
 public abstract class Node
 {
@@ -38,7 +37,7 @@ public abstract class Node
 
 	public final void setCost(int cost)
 	{
-		_cost = (short)cost;
+		_cost = (short) cost;
 	}
 
 	public final void attachNeighbors()
@@ -80,11 +79,12 @@ public abstract class Node
 	}
 
 	@Override
-	public final boolean equals(Object obj) {
-		if(!(obj instanceof Node))
+	public final boolean equals(Object obj)
+	{
+		if (!(obj instanceof Node))
 			return false;
 
-		Node n = (Node)obj;
+		Node n = (Node) obj;
 
 		return getNodeX() == n.getNodeX() && getNodeY() == n.getNodeY() && getZ() == n.getZ();
 	}

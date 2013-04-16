@@ -24,7 +24,6 @@ import com.l2jhellas.gameserver.geodata.pathfinding.Node;
 import com.l2jhellas.util.geodata.L2FastSet;
 import com.l2jhellas.util.geodata.ObjectPool;
 
-
 public final class BinaryNodeHeap
 {
 	protected final Node[] _list = new Node[800 + 1];
@@ -33,7 +32,6 @@ public final class BinaryNodeHeap
 
 	protected BinaryNodeHeap()
 	{
-
 	}
 
 	public void add(Node n)

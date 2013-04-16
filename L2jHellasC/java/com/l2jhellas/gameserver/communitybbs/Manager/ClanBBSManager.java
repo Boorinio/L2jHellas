@@ -33,18 +33,11 @@ public class ClanBBSManager extends BaseBBSManager
 
 	private static ClanBBSManager _instance = new ClanBBSManager();
 
-	/**
-	 * @return
-	 */
 	public static ClanBBSManager getInstance()
 	{
 		return _instance;
 	}
 
-	/**
-	 * @param command
-	 * @param activeChar
-	 */
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
@@ -111,7 +104,6 @@ public class ClanBBSManager extends BaseBBSManager
 		else
 		{
 			separateAndSend("<html><body><br><br><center>Command : " + command + " needs core development</center><br><br></body></html>", activeChar);
-
 		}
 	}
 
@@ -155,9 +147,6 @@ public class ClanBBSManager extends BaseBBSManager
 		}
 	}
 
-	/**
-	 * @param activeChar
-	 */
 	private void clanlist(L2PcInstance activeChar, int index)
 	{
 		if (index < 1)
@@ -273,18 +262,11 @@ public class ClanBBSManager extends BaseBBSManager
 		separateAndSend(html.toString(), activeChar);
 	}
 
-	/**
-	 * @param activeChar
-	 */
 	private void clanhome(L2PcInstance activeChar)
 	{
 		clanhome(activeChar, activeChar.getClan().getClanId());
 	}
 
-	/**
-	 * @param activeChar
-	 * @param clanId
-	 */
 	private void clanhome(L2PcInstance activeChar, int clanId)
 	{
 		L2Clan cl = ClanTable.getInstance().getClan(clanId);

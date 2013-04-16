@@ -28,13 +28,19 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminPremium implements IAdminCommandHandler
 {
+	private static final Logger _log = Logger.getLogger(AdminPremium.class.getName());
+
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_premium_menu", "admin_premium_add1", "admin_premium_add2", "admin_premium_add3", "admin_premium_add4", "admin_premium_add5"
+	"admin_premium_menu",
+	"admin_premium_add1",
+	"admin_premium_add2",
+	"admin_premium_add3",
+	"admin_premium_add4",
+	"admin_premium_add5"
 	};
 
 	private static final String UPDATE_PREMIUMSERVICE = "UPDATE account_premium SET premium_service=?,enddate=? WHERE account_name=?";
-	private static final Logger _log = Logger.getLogger(AdminPremium.class.getName());
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -152,7 +158,6 @@ public class AdminPremium implements IAdminCommandHandler
 			}
 			catch (SQLException e)
 			{
-				e.printStackTrace();
 			}
 		}
 	}

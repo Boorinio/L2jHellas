@@ -30,16 +30,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.logs.LogRecorder;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.8.2.9 $ $Date: 2005/04/05 19:41:23 $
- */
-
 public class Mdam implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(Mdam.class.getName());
-
 	private static final L2SkillType[] SKILL_IDS = {
 	L2SkillType.MDAM, L2SkillType.DEATHLINK
 	};

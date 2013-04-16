@@ -61,7 +61,7 @@ public class GeoEditorListener extends Thread
 			System.exit(1);
 		}
 		start();
-		_log.info("GeoEditorListener Initialized.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Initialized.");
 	}
 
 	public GeoEditorThread getThread()
@@ -93,16 +93,17 @@ public class GeoEditorListener extends Thread
 					connection.close();
 					continue;
 				}
-				_log.info("Received geoeditor connection from: " + connection.getInetAddress().getHostAddress());
+				_log.log(Level.INFO, getClass().getSimpleName() + ": Received geoeditor connection from: " + connection.getInetAddress().getHostAddress());
 				_geoEditor = new GeoEditorThread(connection);
 				_geoEditor.start();
 			}
 		}
 		catch(Exception e)
 		{
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
+			}
 			_log.log(Level.WARNING, "GeoEditorListener: ", e);
 			try
 			{
@@ -110,9 +111,10 @@ public class GeoEditorListener extends Thread
 			}
 			catch(Exception e2)
 			{
-				if (Config.DEBUG)
-					e2.printStackTrace();
-
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 		finally
@@ -123,9 +125,10 @@ public class GeoEditorListener extends Thread
 			}
 			catch(IOException io)
 			{
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					io.printStackTrace();
-
+				}
 				_log.log(Level.WARNING, "", io);
 			}
 			_log.log(Level.WARNING, "GeoEditorListener Closed!");

@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastList;
@@ -26,11 +27,6 @@ import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.model.L2Character;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.8 $ $Date: 2005/04/06 16:13:24 $
- */
 public class GameTimeController
 {
 	static final Logger _log = Logger.getLogger(GameTimeController.class.getName());
@@ -47,7 +43,7 @@ public class GameTimeController
 	private static List<L2Character> _movingObjects = new FastList<L2Character>();
 
 	protected static TimerThread _timer;
-	private ScheduledFuture<?> _timerWatcher;
+	private final ScheduledFuture<?> _timerWatcher;
 
 	/**
 	 * one ingame day is 240 real minutes
@@ -202,12 +198,13 @@ public class GameTimeController
 
 	class TimerWatcher implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			if (!_timer.isAlive())
 			{
 				String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
-				_log.warning(time + " TimerThread stop with following error. restart it.");
+				_log.log(Level.WARNING, getClass().getName() + ": " + time + " TimerThread stop with following error. restart it.");
 				if (_timer._error != null)
 					_timer._error.printStackTrace();
 
@@ -229,6 +226,7 @@ public class GameTimeController
 			_ended = ended;
 		}
 
+		@Override
 		public void run()
 		{
 			for (L2Character cha : _ended)
@@ -248,13 +246,14 @@ public class GameTimeController
 	 */
 	class BroadcastSunState implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			int h = (getGameTime() / 60) % 24; // Time in hour
 			boolean tempIsNight = (h < 6);
 
 			if (tempIsNight != _isNight) // If diff day/night state
-			{ 	
+			{
 	            _isNight = tempIsNight; // Set current day/night varible to value of temp varible
 	            DayNightSpawnManager.getInstance().notifyChangeMode();
             }

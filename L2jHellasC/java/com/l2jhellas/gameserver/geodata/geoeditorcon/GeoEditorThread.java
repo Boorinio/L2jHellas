@@ -121,9 +121,10 @@ public class GeoEditorThread extends Thread
 		}
 		catch (SocketException e)
 		{
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
+			}
 			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. " + e);
 		}
 		catch (Exception e)
@@ -142,8 +143,10 @@ public class GeoEditorThread extends Thread
 			}
 			catch (Exception e)
 			{
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					e.printStackTrace();
+				}
 			}
 			_working = false;
 		}
@@ -169,9 +172,10 @@ public class GeoEditorThread extends Thread
 		}
 		catch (SocketException e)
 		{
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
+			}
 			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. " + e);
 			_working = false;
 		}
@@ -188,8 +192,10 @@ public class GeoEditorThread extends Thread
 			}
 			catch (Exception ex)
 			{
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					e.printStackTrace();
+				}
 			}
 			_working = false;
 		}
@@ -218,9 +224,10 @@ public class GeoEditorThread extends Thread
 		catch (SocketException e)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. ", e);
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
+			}
 			_working = false;
 		}
 		catch (Exception e)
@@ -236,8 +243,10 @@ public class GeoEditorThread extends Thread
 			}
 			catch (Exception ex)
 			{
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					ex.printStackTrace();
+				}
 			}
 			_working = false;
 		}

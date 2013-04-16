@@ -25,7 +25,7 @@ import com.l2jhellas.L2DatabaseFactory;
 
 public class BalanceLoad
 {
-	private static final Logger _log = Logger.getLogger(BalanceSave.class.getName());
+	protected static final Logger _log = Logger.getLogger(BalanceLoad.class.getName());
 
 	private static final String RESTORE_BALANCE =
 	"SELECT accplus88,evasionplus88,hpplus88,cpplus88,mpplus88,matkplus88,matksplus88,mdefplus88,patkplus88,patksplus88,pdefplus88,walkplus88," +

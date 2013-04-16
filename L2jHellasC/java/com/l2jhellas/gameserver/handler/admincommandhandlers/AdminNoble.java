@@ -35,7 +35,7 @@ public class AdminNoble implements IAdminCommandHandler
 
 	private static String[] _adminCommands =
 	{
-		"admin_setnoble",
+		"admin_setnoble"
 	};
 
 	@Override
@@ -65,7 +65,7 @@ public class AdminNoble implements IAdminCommandHandler
 				{
 					connection = L2DatabaseFactory.getInstance().getConnection();
 
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
+					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;
@@ -117,7 +117,7 @@ public class AdminNoble implements IAdminCommandHandler
 				{
 					connection = L2DatabaseFactory.getInstance().getConnection();
 
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
+					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;

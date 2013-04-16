@@ -37,7 +37,10 @@ public class AdminMammon implements IAdminCommandHandler
 
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_mammon_find", "admin_mammon_respawn", "admin_list_spawns", "admin_msg"
+	"admin_mammon_find",
+	"admin_mammon_respawn",
+	"admin_list_spawns",
+	"admin_msg"
 	};
 
 	private final boolean _isSealValidation = SevenSigns.getInstance().isSealValidationPeriod();

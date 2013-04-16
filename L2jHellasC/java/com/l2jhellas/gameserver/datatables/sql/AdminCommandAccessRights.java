@@ -30,7 +30,7 @@ import com.l2jhellas.gameserver.model.L2AccessLevel;
 import com.l2jhellas.gameserver.model.L2AdminCommandAccessRight;
 
 /**
- * @author FBIagent<br>
+ * @author FBIagent
  */
 public class AdminCommandAccessRights
 {

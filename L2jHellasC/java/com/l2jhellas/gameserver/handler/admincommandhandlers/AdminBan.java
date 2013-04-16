@@ -45,9 +45,11 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class AdminBan implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_ban", "admin_unban", "admin_jail", "admin_unjail"
+	private static final String[] ADMIN_COMMANDS = {
+	"admin_ban",
+	"admin_unban",
+	"admin_jail",
+	"admin_unjail"
 	};
 
 	@Override
@@ -138,8 +140,10 @@ public class AdminBan implements IAdminCommandHandler
 			catch (Exception e)
 			{
 				activeChar.sendMessage("Typed wrong command!");
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					e.printStackTrace();
+				}
 			}
 		}
 		else if (command.startsWith("admin_unjail"))
@@ -164,8 +168,10 @@ public class AdminBan implements IAdminCommandHandler
 			catch (Exception e)
 			{
 				activeChar.sendMessage("Typed wrong command!");
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					e.printStackTrace();
+				}
 			}
 		}
 		GMAudit.auditGMAction(activeChar.getName(), command, player, "");
@@ -199,8 +205,10 @@ public class AdminBan implements IAdminCommandHandler
 		catch (SQLException se)
 		{
 			activeChar.sendMessage("SQLException while jailing player");
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				se.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -210,8 +218,10 @@ public class AdminBan implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -240,8 +250,10 @@ public class AdminBan implements IAdminCommandHandler
 		catch (SQLException se)
 		{
 			activeChar.sendMessage("SQLException while jailing player");
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				se.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -251,8 +263,10 @@ public class AdminBan implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				if (Config.DEBUG)
+				if (Config.DEVELOPER)
+				{
 					e.printStackTrace();
+				}
 			}
 		}
 	}

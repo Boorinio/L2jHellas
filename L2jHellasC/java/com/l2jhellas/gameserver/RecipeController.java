@@ -84,15 +84,15 @@ public class RecipeController
 				parseList(line);
 
 			}
-			_log.info("RecipeController: Loaded " + _lists.size() + " Recipes.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _lists.size() + " Recipes.");
 		}
 		catch (Exception e)
 		{
 			if (lnr != null)
-				_log.log(Level.WARNING, "error while creating recipe controller in linenr: " + lnr.getLineNumber(), e);
+				_log.log(Level.INFO, getClass().getName() + ": error while creating recipe controller in linenr: " + lnr.getLineNumber(), e);
 
 			else
-				_log.warning("No recipes were found in data folder");
+				_log.log(Level.INFO, getClass().getName() + ": No recipes were found in data folder.");
 		}
 		finally
 		{
@@ -265,8 +265,8 @@ public class RecipeController
 			else if (recipeTypeString.equalsIgnoreCase("common"))
 				isDwarvenRecipe = false;
 			else
-			{ // prints a helpfull message
-				_log.warning("Error parsing recipes.csv, unknown recipe type " + recipeTypeString);
+			{
+				_log.log(Level.WARNING, getClass().getName() + ": Error parsing recipes.csv, unknown recipe type " + recipeTypeString);
 				return;
 			}
 
@@ -304,7 +304,11 @@ public class RecipeController
 		}
 		catch (Exception e)
 		{
-			_log.severe("Exception in RecipeController.parseList() - " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Exception in RecipeController.parseList() - " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -458,14 +462,14 @@ public class RecipeController
 
 			if (_player == null || _target == null)
 			{
-				_log.warning("player or target == null (disconnected?), aborting" + _target + _player);
+				_log.log(Level.WARNING, getClass().getName() + ": player or target == null (disconnected?), aborting" + _target + _player);
 				abort();
 				return;
 			}
 
 			if (_player.isOnline() == 0 || _target.isOnline() == 0)
 			{
-				_log.warning("player or target is not online, aborting " + _target + _player);
+				_log.log(Level.WARNING, getClass().getName() + ": player or target is not online, aborting " + _target + _player);
 				abort();
 				return;
 			}
@@ -474,12 +478,12 @@ public class RecipeController
 			{
 				if (_target != _player)
 				{
-					_target.sendMessage("Manufacture aborted");
-					_player.sendMessage("Manufacture aborted");
+					_target.sendMessage("Manufacture aborted.");
+					_player.sendMessage("Manufacture aborted.");
 				}
 				else
 				{
-					_player.sendMessage("Item creation aborted");
+					_player.sendMessage("Item creation aborted.");
 				}
 				abort();
 				return;

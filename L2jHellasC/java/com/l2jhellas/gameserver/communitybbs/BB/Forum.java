@@ -96,9 +96,6 @@ public class Forum
 		_loaded = true;
 	}
 
-	/**
-	 *
-	 */
 	private void load()
 	{
 		Connection con = null;
@@ -321,7 +318,7 @@ public class Forum
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("INSERT INTO forums (forum_id,forum_name,forum_parent,forum_post,forum_type,forum_perm,forum_owner_id) values (?,?,?,?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO forums (forum_id,forum_name,forum_parent,forum_post,forum_type,forum_perm,forum_owner_id) VALUES (?,?,?,?,?,?,?)");
 			statement.setInt(1, _forumId);
 			statement.setString(2, _forumName);
 			statement.setInt(3, _fParent.getID());

@@ -34,8 +34,6 @@ import com.l2jhellas.util.Util;
  * <i>shows menu for add or remove</i> <li>add_exp_sp exp sp <i>Adds exp & sp to
  * target, displays menu if a parameter is missing</i> <li>remove_exp_sp exp sp
  * <i>Removes exp & sp from target, displays menu if a parameter is missing</i>
- *
- * @version $Revision: 1.2.4.6 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminExpSp implements IAdminCommandHandler
 {
@@ -43,7 +41,9 @@ public class AdminExpSp implements IAdminCommandHandler
 
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_add_exp_sp_to_character", "admin_add_exp_sp", "admin_remove_exp_sp"
+	"admin_add_exp_sp_to_character",
+	"admin_add_exp_sp",
+	"admin_remove_exp_sp"
 	};
 
 	@Override
@@ -167,8 +167,7 @@ public class AdminExpSp implements IAdminCommandHandler
 				player.addExpAndSp(expval, spval);
 				// Admin information
 				activeChar.sendMessage("Added " + expval + " xp and " + spval + " sp to " + player.getName() + ".");
-				if (Config.DEBUG)
-					_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
 			}
 		}
 		return true;
@@ -212,8 +211,7 @@ public class AdminExpSp implements IAdminCommandHandler
 				player.removeExpAndSp(expval, spval);
 				// Admin information
 				activeChar.sendMessage("Removed " + expval + " xp and " + spval + " sp from " + player.getName() + ".");
-				if (Config.DEBUG)
-					_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
 			}
 		}
 		return true;

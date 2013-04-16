@@ -24,10 +24,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ShowMiniMap;
 /**
  * This class provides handling for items that should display a map
  * when double clicked.
- *
- * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:30:07 $
  */
-
 public class Maps implements IItemHandler
 {
 	// all the items ids that this handler knowns

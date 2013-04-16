@@ -343,7 +343,7 @@ public class Wedding implements IVoicedCommandHandler
 		}
 		if (activeChar.isCursedWeaponEquiped())
 		{
-			activeChar.sendMessage("You cannot do this while wielding a cursed weapon");
+			activeChar.sendMessage("You cannot do this while wielding a cursed weapon.");
 			return false;
 		}
 		// Thanks nbd

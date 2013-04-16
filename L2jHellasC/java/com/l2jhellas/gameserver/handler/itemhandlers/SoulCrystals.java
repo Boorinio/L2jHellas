@@ -28,12 +28,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.4 $ $Date: 2005/08/14 21:31:07 $
- */
-
 public class SoulCrystals implements IItemHandler
 {
 	// First line is for Red Soul Crystals, second is Green and third is Blue
@@ -68,7 +62,7 @@ public class SoulCrystals implements IItemHandler
 
 		if (activeChar.isParalyzed())
 		{
-			activeChar.sendMessage("You Cannot Use This While You Are Paralyzed");
+			activeChar.sendMessage("You cannot use this while you are paralyzed.");
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}

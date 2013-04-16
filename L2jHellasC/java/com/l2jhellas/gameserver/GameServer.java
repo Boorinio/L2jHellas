@@ -29,7 +29,7 @@ import Extensions.RankSystem.CharacterRankRewardTable;
 import Extensions.RankSystem.PvpTable;
 import Extensions.RankSystem.RankRewardTable;
 import Extensions.RankSystem.TopTable;
-import Extensions.Vote.VoteMain;
+import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
@@ -369,7 +369,7 @@ public class GameServer
 		PcColorTable.getInstance();
 		MaxCheatersTable.getInstance();
 		Hitman.start();
-		VoteMain.load();
+		VoteManager.load();
 		// Rank System.
 		PvpTable.getInstance();
 		CharacterRankRewardTable.getInstance();

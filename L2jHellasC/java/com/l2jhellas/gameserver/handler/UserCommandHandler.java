@@ -39,9 +39,7 @@ public class UserCommandHandler
 	private static Logger _log = Logger.getLogger(UserCommandHandler.class.getName());
 
 	private static UserCommandHandler _instance;
-
 	private final Map<Integer, IUserCommandHandler> _datatable;
-
 	public static UserCommandHandler getInstance()
 	{
 		if (_instance == null)
@@ -51,26 +49,10 @@ public class UserCommandHandler
 		return _instance;
 	}
 
-	private UserCommandHandler()
-	{
-		_datatable = new FastMap<Integer, IUserCommandHandler>();
-	}
-
-	public void registerUserCommandHandler(IUserCommandHandler handler)
-	{
-		int[] ids = handler.getUserCommandList();
-		for (int i = 0; i < ids.length; i++)
-		{
-			if (Config.DEBUG)
-				_log.fine("Adding handler for user command " + ids[i]);
-			_datatable.put(new Integer(ids[i]), handler);
-		}
-	}
-
 	public IUserCommandHandler getUserCommandHandler(int userCommand)
 	{
 		if (Config.DEBUG)
-			_log.fine("getting handler for user command: " + userCommand);
+			_log.log(Level.CONFIG, getClass().getName() + ": getting handler for user command: " + userCommand);
 		registerUserCommandHandler(new ClanPenalty());
 		registerUserCommandHandler(new ClanWarsList());
 		registerUserCommandHandler(new DisMount());
@@ -86,15 +68,26 @@ public class UserCommandHandler
 		if (ExternalConfig.PVP_INFO_USER_COMMAND_ENABLED && ExternalConfig.PVP_INFO_COMMAND_ENABLED)
 			registerUserCommandHandler(new IUserCommandHandlerPvpInfo());
 
-		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
-
+		_log.log(Level.FINE, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 		return _datatable.get(new Integer(userCommand));
 	}
 
-	/**
-	 * @return the size()
-	 */
+	private UserCommandHandler()
+	{
+		_datatable = new FastMap<Integer, IUserCommandHandler>();
+	}
+
+	public void registerUserCommandHandler(IUserCommandHandler handler)
+	{
+		int[] ids = handler.getUserCommandList();
+		for (int i = 0; i < ids.length; i++)
+		{
+			if (Config.DEBUG)
+				_log.log(Level.CONFIG, getClass().getName() + ": Adding handler for user command " + ids[i]);
+			_datatable.put(new Integer(ids[i]), handler);
+		}
+	}
+
 	public int size()
 	{
 		return _datatable.size();

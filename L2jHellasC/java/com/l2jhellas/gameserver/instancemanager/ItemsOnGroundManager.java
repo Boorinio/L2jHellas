@@ -36,8 +36,7 @@ import com.l2jhellas.gameserver.templates.L2EtcItemType;
 /**
  * This class manage all items on ground
  *
- * @version $Revision: $ $Date: $
- * @author DiezelMax - original ideea
+ * @author DiezelMax - original idea
  * @author Enforcer - actual build
  */
 public class ItemsOnGroundManager
@@ -82,9 +81,9 @@ public class ItemsOnGroundManager
 			{
 				String str = null;
 				if (!Config.DESTROY_EQUIPABLE_PLAYER_ITEM) // Recycle Misc
-					str = "update itemsonground set drop_time=? where drop_time=-1 and equipable=0";
+					str = "UPDATE itemsonground SET drop_time=? WHERE drop_time=-1 AND equipable=0";
 				else if (Config.DESTROY_EQUIPABLE_PLAYER_ITEM) // Recycle All
-					str = "update itemsonground set drop_time=? where drop_time=-1";
+					str = "UPDATE itemsonground SET drop_time=? WHERE drop_time=-1";
 				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement(str);
 				statement.setLong(1, System.currentTimeMillis());
@@ -121,7 +120,7 @@ public class ItemsOnGroundManager
 				Statement s = con.createStatement();
 				ResultSet result;
 				int count = 0;
-				result = s.executeQuery("select object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable from itemsonground");
+				result = s.executeQuery("SELECT object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable FROM itemsonground");
 				while (result.next())
 				{
 					L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
@@ -155,9 +154,9 @@ public class ItemsOnGroundManager
 				result.close();
 				s.close();
 				if (count > 0)
-					System.out.println("ItemsOnGroundManager: restored " + count + " items.");
+					_log.log(Level.INFO, getClass().getSimpleName() + ": restored " + count + " items.");
 				else
-					System.out.println("Initializing ItemsOnGroundManager.");
+					_log.log(Level.INFO, getClass().getSimpleName() + ": Initializing ItemsOnGroundManager.");
 			}
 			catch (Exception e)
 			{
@@ -166,7 +165,6 @@ public class ItemsOnGroundManager
 				{
 					e.printStackTrace();
 				}
-				e.printStackTrace();
 			}
 		}
 		finally
@@ -213,14 +211,17 @@ public class ItemsOnGroundManager
 		try
 		{
 			conn = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement del = conn.prepareStatement("delete from itemsonground");
+			PreparedStatement del = conn.prepareStatement("DELETE FROM itemsonground");
 			del.execute();
 			del.close();
 		}
 		catch (Exception e1)
 		{
-			_log.log(Level.SEVERE, "error while cleaning table ItemsOnGround " + e1);
-			e1.printStackTrace();
+			_log.log(Level.SEVERE, getClass().getName() + ": error while cleaning table ItemsOnGround " + e1);
+			if (Config.DEVELOPER)
+			{
+				e1.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -247,7 +248,7 @@ public class ItemsOnGroundManager
 			if (_items.isEmpty())
 			{
 				if (Config.DEBUG)
-					_log.warning("ItemsOnGroundManager: nothing to save...");
+					_log.log(Level.CONFIG, getClass().getName() + ": nothing to save...");
 				return;
 			}
 
@@ -261,7 +262,7 @@ public class ItemsOnGroundManager
 				try
 				{
 					con = L2DatabaseFactory.getInstance().getConnection();
-					PreparedStatement statement = con.prepareStatement("insert into itemsonground(object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable) values(?,?,?,?,?,?,?,?,?)");
+					PreparedStatement statement = con.prepareStatement("INSERT INTO itemsonground(object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable) VALUES (?,?,?,?,?,?,?,?,?)");
 					statement.setInt(1, item.getObjectId());
 					statement.setInt(2, item.getItemId());
 					statement.setInt(3, item.getCount());
@@ -301,7 +302,7 @@ public class ItemsOnGroundManager
 				}
 			}
 			if (Config.DEBUG)
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": " + _items.size() + " items on ground saved.");
+				_log.log(Level.CONFIG, getClass().getName() + ": " + _items.size() + " items on ground saved.");
 		}
 	}
 }

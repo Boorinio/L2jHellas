@@ -26,18 +26,17 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminGeodata implements IAdminCommandHandler
 {
-	//private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static final String[] ADMIN_COMMANDS =
-		{
-		"admin_geo_z",
-		"admin_geo_type",
-		"admin_geo_nswe",
-		"admin_geo_los",
-		"admin_geo_position",
-		"admin_geo_bug",
-		"admin_geo_load",
-		"admin_geo_unload"
-		};
+	{
+	"admin_geo_z",
+	"admin_geo_type",
+	"admin_geo_nswe",
+	"admin_geo_los",
+	"admin_geo_position",
+	"admin_geo_bug",
+	"admin_geo_load",
+	"admin_geo_unload"
+	};
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

@@ -15,11 +15,11 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
@@ -46,16 +46,22 @@ import com.l2jhellas.gameserver.skills.SkillTable;
  * - give_all_skills
  * - remove_all_skills
  * - add_clan_skills
- *
- * @version $Revision: 1.2.4.7 $ $Date: 2005/04/11 10:06:02 $
  */
 public class AdminSkill implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminSkill.class.getName());
-
-	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_show_skills", "admin_remove_skills", "admin_skill_list", "admin_skill_index", "admin_add_skill", "admin_remove_skill", "admin_get_skills", "admin_reset_skills", "admin_give_all_skills", "admin_remove_all_skills", "admin_add_clan_skill"
+	protected static final Logger _log = Logger.getLogger(AdminSkill.class.getName());
+	private static final String[] ADMIN_COMMANDS = {
+	"admin_show_skills",
+	"admin_remove_skills",
+	"admin_skill_list",
+	"admin_skill_index",
+	"admin_add_skill",
+	"admin_remove_skill",
+	"admin_get_skills",
+	"admin_reset_skills",
+	"admin_give_all_skills",
+	"admin_remove_all_skills",
+	"admin_add_clan_skill"
 	};
 
 	private static L2Skill[] adminSkills;
@@ -392,8 +398,7 @@ public class AdminSkill implements IAdminCommandHandler
 				player.addSkill(skill, true);
 				// Admin information
 				activeChar.sendMessage("You gave the skill " + name + " to " + player.getName() + ".");
-				if (Config.DEBUG)
-					_log.fine("[GM]" + activeChar.getName() + " gave skill " + name + " to " + player.getName() + ".");
+				_log.log(Level.FINE, getClass().getSimpleName() + ": [GM]" + activeChar.getName() + " gave skill " + name + " to " + player.getName() + ".");
 				activeChar.sendSkillList();
 			}
 			else
@@ -421,8 +426,8 @@ public class AdminSkill implements IAdminCommandHandler
 			player.removeSkill(skill);
 			// Admin information
 			activeChar.sendMessage("You removed the skill " + skillname + " from " + player.getName() + ".");
-			if (Config.DEBUG)
-				_log.fine("[GM]" + activeChar.getName() + " removed skill " + skillname + " from " + player.getName() + ".");
+
+			_log.log(Level.FINE, getClass().getSimpleName() + ": [GM]" + activeChar.getName() + " removed skill " + skillname + " from " + player.getName() + ".");
 			activeChar.sendSkillList();
 		}
 		else
@@ -481,8 +486,6 @@ public class AdminSkill implements IAdminCommandHandler
 				activeChar.sendMessage("Error: there is no such skill.");
 				return;
 			}
-
 		}
 	}
-
 }

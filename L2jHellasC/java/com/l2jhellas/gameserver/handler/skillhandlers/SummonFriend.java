@@ -14,6 +14,9 @@
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
@@ -31,9 +34,9 @@ import com.l2jhellas.util.Util;
 
 public class SummonFriend implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(SummonFriend.class.getName());
-	private static final L2SkillType[] SKILL_IDS =
-	{
+	protected static final Logger _log = Logger.getLogger(SummonFriend.class.getName());
+
+	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.SUMMON_FRIEND
 	};
 
@@ -146,13 +149,10 @@ public class SummonFriend implements ISkillHandler
 					}
 
 					// Faction GvE
-					if (targetChar.isevil())
+					if (targetChar.isevil() || targetChar.isgood())
 					{
 						activePlayer.sendMessage("You may not use an Summon Friend skill in a Faction mode.");
-					}
-					if (targetChar.isgood())
-					{
-						activePlayer.sendMessage("You may not use an Summon Friend skill in a Faction mode.");
+						continue;
 					}
 
 					// Check for the target's jail status, arenas and siege
@@ -166,7 +166,7 @@ public class SummonFriend implements ISkillHandler
 					// Requires a Summoning Crystal
 					if (targetChar.getInventory().getItemByItemId(8615) == null)
 					{
-						((L2PcInstance) activeChar).sendMessage("Your target cannot be summoned while he hasn't got a Summoning Crystal");
+						activePlayer.sendMessage("Your target cannot be summoned while he hasn't got a Summoning Crystal");
 						targetChar.sendMessage("You cannot be summoned while you haven't got a Summoning Crystal");
 						continue;
 					}
@@ -183,8 +183,11 @@ public class SummonFriend implements ISkillHandler
 		}
 		catch (Throwable e)
 		{
-			if (Config.DEBUG)
+			_log.log(Level.WARNING, getClass().getName() + ": error " + e);
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
+			}
 		}
 	}
 

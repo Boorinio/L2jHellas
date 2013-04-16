@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -37,10 +36,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 /**
  * @author Kerberos
  */
-
 public class RaidBossPointsManager
 {
-	public static Logger _log = Logger.getLogger(RaidBossPointsManager.class.getName());
+	protected static final Logger _log = Logger.getLogger(RaidBossPointsManager.class.getName());
 	protected static FastMap<Integer, Map<Integer, Integer>> _list;
 
 	public final static void init()
@@ -95,7 +93,6 @@ public class RaidBossPointsManager
 			}
 			catch (Exception e)
 			{
-				_log.warning(e.getMessage());
 			}
 		}
 	}
@@ -104,7 +101,7 @@ public class RaidBossPointsManager
 	{
 		return SingletonHolder._instance;
 	}
-	
+
 	public final static void updatePointsInDB(L2PcInstance player, int raidId, int points)
 	{
 		Connection con = null;
@@ -121,7 +118,7 @@ public class RaidBossPointsManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "RaidBossPointsManager: could not update char raid points:", e);
+			_log.log(Level.WARNING, "RaidBossPointsManager: could not update char raid points: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -193,7 +190,7 @@ public class RaidBossPointsManager
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
-			statement = con.prepareStatement("DELETE from character_raid_points WHERE charId > 0");
+			statement = con.prepareStatement("DELETE FROM character_raid_points WHERE charId > 0");
 			statement.executeUpdate();
 			statement.close();
 			_list.clear();
@@ -284,7 +281,7 @@ public class RaidBossPointsManager
 
 		return tmpRanking;
 	}
-	
+
 	private static class SingletonHolder
 	{
 		protected static final RaidBossPointsManager _instance = new RaidBossPointsManager();

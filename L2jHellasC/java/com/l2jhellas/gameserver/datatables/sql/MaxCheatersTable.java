@@ -29,16 +29,16 @@ import com.l2jhellas.gameserver.model.L2MaxPolyModel;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 /**
- *
- * @author  Velvet
+ * @author Velvet
  */
 public class MaxCheatersTable
 {
-	private final FastMap<Integer, L2MaxPolyModel> _map;
 	private final Logger _log = Logger.getLogger(MaxCheatersTable.class.getName());
+
+	private final FastMap<Integer, L2MaxPolyModel> _map;
 	private static MaxCheatersTable _instance;
 
-	private final String SQL_SELECT = "SELECT * from max_poly";
+	private final String SQL_SELECT = "SELECT * FROM max_poly";
 
 	public MaxCheatersTable()
 	{
@@ -130,12 +130,11 @@ public class MaxCheatersTable
 			L2MaxPolyModel poly = new L2MaxPolyModel(set);
 			_map.put(poly.getNpcId(), poly);// xD
 		}
-		_log.info("MaxCheatersTable Loaded: "+_map.size()+" npc to pc entry(s)");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded "+_map.size()+" npc to pc entries.");
 	}
 
 	public L2MaxPolyModel getModelForID(int key)
 	{
 		return _map.get(key);
 	}
-
 }

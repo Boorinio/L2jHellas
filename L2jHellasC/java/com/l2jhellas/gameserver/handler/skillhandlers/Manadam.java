@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,7 +30,7 @@ import com.l2jhellas.gameserver.skills.Formulas;
 
 /**
  * Class handling the Mana damage skill
- * 
+ *
  * @author slyce
  */
 public class Manadam implements ISkillHandler
@@ -38,20 +38,20 @@ public class Manadam implements ISkillHandler
 	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.MANADAM
 	};
-	
+
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2Character target = null;
-		
+
 		if (activeChar.isAlikeDead())
 			return;
-		
+
 		boolean ss = false;
 		boolean bss = false;
-		
+
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-		
+
 		if (weaponInst != null)
 		{
 			if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -68,10 +68,10 @@ public class Manadam implements ISkillHandler
 		for (int index = 0; index < targets.length; index++)
 		{
 			target = (L2Character) targets[index];
-			
+
 			if (target.reflectSkill(skill))
 				target = activeChar;
-			
+
 			boolean acted = Formulas.getInstance().calcMagicAffected(activeChar, target, skill);
 			if (target.isInvul() || !acted)
 			{
@@ -80,16 +80,15 @@ public class Manadam implements ISkillHandler
 			else
 			{
 				double damage = Formulas.getInstance().calcManaDam(activeChar, target, skill, ss, bss);
-				
+
 				double mp = (damage > target.getCurrentMp() ? target.getCurrentMp() : damage);
 				target.reduceCurrentMp(mp);
 				if (damage > 0)
 					if (target.isSleeping())
 						target.stopSleeping(null);
-				
+
 				StatusUpdate sump = new StatusUpdate(target.getObjectId());
 				sump.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
-				// [L2J_JP EDIT START - TSL]
 				target.sendPacket(sump);
 				SystemMessage sm = new SystemMessage(SystemMessageId.S2_MP_HAS_BEEN_DRAINED_BY_S1);
 				if (activeChar instanceof L2NpcInstance)
@@ -114,11 +113,10 @@ public class Manadam implements ISkillHandler
 					sm2.addNumber((int) mp);
 					activeChar.sendPacket(sm2);
 				}
-				// [L2J_JP EDIT END - TSL]
 			}
 		}
 	}
-	
+
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

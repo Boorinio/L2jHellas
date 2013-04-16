@@ -23,12 +23,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.6.4 $ $Date: 2005/04/06 18:25:18 $
- */
-
 public class MysteryPotion implements IItemHandler
 {
 	private static final int[] ITEM_IDS =

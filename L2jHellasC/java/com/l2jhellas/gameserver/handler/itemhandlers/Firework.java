@@ -23,15 +23,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.0.0.0.0.0 $ $Date: 2005/09/02 19:41:13 $
- */
-
 public class Firework implements IItemHandler
 {
-	// Modified by Baghak (Prograsso): Added Firework support
 	private static final int[] ITEM_IDS =
 	{
 	6403, 6406, 6407
@@ -45,49 +38,21 @@ public class Firework implements IItemHandler
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		int itemId = item.getItemId();
 
-		if (activeChar.isInOlympiadMode())
-		{
-			activeChar.sendPacket(new ActionFailed());
-			return;
-		}
-		if (activeChar.inObserverMode())
-		{
-			activeChar.sendPacket(new ActionFailed());
-			return;
-		}
-		if (activeChar.isSitting())
-		{
-			activeChar.sendPacket(new ActionFailed());
-			return;
-		}
-		if (activeChar.isAway())
+		if (activeChar.isInOlympiadMode()
+				|| activeChar.inObserverMode()
+				|| activeChar.inObserverMode()
+				|| activeChar.isSitting()
+				|| activeChar.isAway()
+				|| activeChar.isConfused()
+				|| activeChar.isStunned()
+				|| activeChar.isDead()
+				|| activeChar.isAlikeDead())
 		{
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}
 
-		if (activeChar.isConfused())
-		{
-			activeChar.sendPacket(new ActionFailed());
-			return;
-		}
-		if (activeChar.isStunned())
-		{
-			activeChar.sendPacket(new ActionFailed());
-			return;
-		}
-		if (activeChar.isDead())
-		{
-			activeChar.sendPacket(new ActionFailed());
-			return;
-		}
-		if (activeChar.isAlikeDead())
-		{
-			activeChar.sendPacket(new ActionFailed());
-			return;
-		}
-
-		/*
+		/**
 		 * Elven Firecracker
 		 */
 		if (itemId == 6403) // elven_firecracker, xml: 2023
@@ -98,7 +63,7 @@ public class Firework implements IItemHandler
 			useFw(activeChar, 2023, 1);
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 		}
-		/*
+		/**
 		 * Firework
 		 */
 		else if (itemId == 6406) // firework, xml: 2024
@@ -109,7 +74,7 @@ public class Firework implements IItemHandler
 			useFw(activeChar, 2024, 1);
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 		}
-		/*
+		/**
 		 * Lage Firework
 		 */
 		else if (itemId == 6407) // large_firework, xml: 2025

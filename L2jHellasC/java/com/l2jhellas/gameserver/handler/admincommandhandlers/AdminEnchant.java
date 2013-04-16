@@ -14,6 +14,9 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
@@ -32,33 +35,33 @@ import com.l2jhellas.util.Util;
 /**
  * This class handles following admin commands:
  * - enchant_armor
- *
- * @version $Revision: 1.3.2.1.2.10 $ $Date: 2005/08/24 21:06:06 $
  */
 public class AdminEnchant implements IAdminCommandHandler
 {
-   //private static Logger _log = Logger.getLogger(AdminEnchant.class.getName());
-    private static final String[] ADMIN_COMMANDS = {"admin_seteh",//6
-                                            "admin_setec",//10
-                                            "admin_seteg",//9
-                                            "admin_setel",//11
-                                            "admin_seteb",//12
-                                            "admin_setew",//7
-                                            "admin_setes",//8
-                                            "admin_setle",//1
-                                            "admin_setre",//2
-	                                        "admin_setlf",//4
-                                            "admin_setrf",//5
-                                            "admin_seten",//3
-                                            "admin_setun",//0
-                                            "admin_setba",//13
-                                            "admin_enchant"};
+	protected static final Logger _log = Logger.getLogger(AdminEnchant.class.getName());
+
+    private static final String[] ADMIN_COMMANDS = {
+    	"admin_seteh",//6
+    	"admin_setec",//10
+    	"admin_seteg",//9
+    	"admin_setel",//11
+    	"admin_seteb",//12
+    	"admin_setew",//7
+    	"admin_setes",//8
+    	"admin_setle",//1
+    	"admin_setre",//2
+    	"admin_setlf",//4
+    	"admin_setrf",//5
+    	"admin_seten",//3
+    	"admin_setun",//0
+    	"admin_setba",//13
+    	"admin_enchant"
+    };
 
     @Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
     {
         if (command.equals("admin_enchant"))
-
             showMainPage(activeChar);
 
 		else
@@ -126,15 +129,15 @@ public class AdminEnchant implements IAdminCommandHandler
                 }
                 catch (StringIndexOutOfBoundsException e)
                 {
-                    if (Config.DEVELOPER)
-                    	System.out.println("Set enchant error: " + e);
+                    if (Config.DEBUG)
+                    	_log.log(Level.WARNING, getClass().getName() + ": Set enchant error: " + e);
 
                     activeChar.sendMessage("Please specify a new enchant value.");
                 }
                 catch (NumberFormatException e)
                 {
-                    if (Config.DEVELOPER)
-                    	System.out.println("Set enchant error: " + e);
+                    if (Config.DEBUG)
+                    	_log.log(Level.WARNING, getClass().getName() + ": Set enchant error: " + e);
 
                     activeChar.sendMessage("Please specify a valid new enchant value.");
                 }

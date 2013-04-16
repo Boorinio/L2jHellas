@@ -14,9 +14,6 @@
  */
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -39,16 +36,8 @@ import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.util.Rnd;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.7.2.16 $ $Date: 2005/04/06 16:13:49 $
- */
-
 public class Pdam implements ISkillHandler
 {
-	// all the items ids that this handler knowns
-	private static Logger _log = Logger.getLogger(Pdam.class.getName());
 
 	private static final L2SkillType[] SKILL_IDS =
 	{
@@ -64,10 +53,6 @@ public class Pdam implements ISkillHandler
 			return;
 
 		int damage = 0;
-
-		if (Config.DEBUG)
-			if (Config.DEBUG)
-				_log.fine("Begin Skill processing in Pdam.java " + skill.getSkillType());
 
 		for (int index = 0; index < targets.length; index++)
 		{

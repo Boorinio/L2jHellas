@@ -22,12 +22,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class CompShotPacks implements IItemHandler
 {
 	private static final int[] ITEM_IDS =

@@ -61,7 +61,6 @@ public class MercTicketManager
 		// CastleManager.getInstance();
 		if (_instance == null)
 		{
-			System.out.println("Initializing MercTicketManager");
 			_instance = new MercTicketManager();
 			_instance.load();
 		}
@@ -168,7 +167,7 @@ public class MercTicketManager
 			ResultSet rs;
 
 			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("SELECT * FROM castle_siege_guards Where isHired = 1");
+			statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE isHired = 1");
 			rs = statement.executeQuery();
 
 			int npcId;
@@ -212,7 +211,7 @@ public class MercTicketManager
 			}
 			statement.close();
 
-			System.out.println("Loaded: " + getDroppedTickets().size() + " Mercenary Tickets");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + getDroppedTickets().size() + " Mercenary Tickets.");
 		}
 		catch (Exception e)
 		{

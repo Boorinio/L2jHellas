@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.datatables.sql;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +26,6 @@ import java.util.regex.PatternSyntaxException;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
-
 
 public class PetNameTable
 {
@@ -58,7 +56,8 @@ public class PetNameTable
 			String cond = "";
 			for (int it : L2PetDataTable.getPetItemsAsNpc(petNpcId))
 			{
-				if (cond != "") cond += ", ";
+				if (cond != "")
+					cond += ", ";
 				cond += it;
 			}
 			statement.setString(2, cond);
@@ -77,38 +76,45 @@ public class PetNameTable
 		}
 		finally
 		{
-			try { con.close(); } catch (Exception e) {}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 		return result;
 	}
 
-    public boolean isValidPetName(String name)
-    {
-        boolean result = true;
+	public boolean isValidPetName(String name)
+	{
+		boolean result = true;
 
-        if (!isAlphaNumeric(name)) return result;
+		if (!isAlphaNumeric(name))
+			return result;
 
-        Pattern pattern;
-        try
-        {
-            pattern = Pattern.compile(Config.PET_NAME_TEMPLATE);
-        }
-        catch (PatternSyntaxException e) // case of illegal pattern
-        {
+		Pattern pattern;
+		try
+		{
+			pattern = Pattern.compile(Config.PET_NAME_TEMPLATE);
+		}
+		catch (PatternSyntaxException e) // case of illegal pattern
+		{
 			_log.log(Level.WARNING, getClass().getName() + ": Error Pet name pattern of config is wrong!" + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
 			}
-            pattern = Pattern.compile(".*");
-        }
-        Matcher regexp = pattern.matcher(name);
-        if (!regexp.matches())
-        {
-            result = false;
-        }
-        return result;
-    }
+			pattern = Pattern.compile(".*");
+		}
+		Matcher regexp = pattern.matcher(name);
+		if (!regexp.matches())
+		{
+			result = false;
+		}
+		return result;
+	}
 
 	private boolean isAlphaNumeric(String text)
 	{

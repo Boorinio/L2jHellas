@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.ExternalConfig;
@@ -26,14 +27,14 @@ public class Restart
 	protected static final Logger _log = Logger.getLogger(Restart.class.getName());
 	private Calendar NextRestart;
 	private final SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-	
+
 	public static Restart getInstance()
 	{
 		if (_bitching == null)
 			_bitching = new Restart();
 		return _bitching;
 	}
-	
+
 	public String getRestartNextTime()
 	{
 		if (NextRestart.getTime() != null)
@@ -41,15 +42,15 @@ public class Restart
 		else
 			return "Something went wrong";
 	}
-	
+
 	private Restart()
 	{
-		
+
 	}
-	
+
 	public void StartCalculationOfNextRestartTime()
 	{
-		_log.info("[Restart System]: System actived");
+		_log.log(Level.INFO, "[Restart System]: System actived");
 		try
 		{
 			Calendar currentTime = Calendar.getInstance();
@@ -81,21 +82,21 @@ public class Restart
 				}
 				count++;
 			}
-			_log.info("[Restart System]: Next Restart Time: " + NextRestart.getTime().toString());
+			_log.log(Level.CONFIG, "[Restart System]: Next Restart Time: " + NextRestart.getTime().toString());
 			ThreadPoolManager.getInstance().scheduleGeneral(new StartRestartTask(), flush2);
 		}
 		catch (Exception e)
 		{
-			System.out.println("[Restart System]: The automatic restart system presented error while loading the configs");
+			_log.log(Level.WARNING, getClass().getName() + ": [Restart System]: The automatic restart system presented error while loading the configs.");
 		}
 	}
-	
+
 	class StartRestartTask implements Runnable
 	{
 		@Override
 		public void run()
 		{
-			_log.info("Start automated restart GameServer.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Start automated restart GameServer.");
 			Shutdown.getInstance().autoRestart(ExternalConfig.RESTART_SECONDS);
 		}
 	}

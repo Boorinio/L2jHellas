@@ -328,7 +328,7 @@ public final class Config
 	public static IdFactoryType IDFACTORY_TYPE;
 	public static boolean BAD_ID_CHECKING;
 
-	// l2jhellas_CONFIG_FILE	
+	// l2jhellas_CONFIG_FILE
 	public static boolean MOD_ALLOW_WEDDING;
 	public static int MOD_WEDDING_PRICE;
 	public static boolean MOD_WEDDING_PUNISH_INFIDELITY;
@@ -740,7 +740,7 @@ public final class Config
 	public static boolean SAME_IP_ZODIAC;
 	public static int INITIAL_START;
 	public static int BETWEEN_EVENTS;
-	
+
 	// TVT_CONFIG_FILE
 	public static boolean TVT_AUTO_STARTUP_ON_BOOT;
 	public static boolean TVT_ALLOW_INTERFERENCE;
@@ -957,10 +957,8 @@ public final class Config
 	}
 
 	// StatusPort and ListOfHosts checked elsewere.
-
-	// Found in more than one file
-	// TODO should we delete this?
 	public static boolean DEBUG;
+	public static boolean DEBUG_LOGGER;
 
 	// Variables doesn't found in any .ini file. If added look at
 	// altsettings.ini bottom
@@ -1371,7 +1369,7 @@ public final class Config
 				ANNOUNCE_PVP_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePvPKill", "False"));
 				ANNOUNCE_PK_KILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnouncePkKill", "False"));
 				CUSTOM_MSG_ON_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("PvPCustomMessages", "False"));
-				
+
 				MOD_ALLOW_WEDDING = Boolean.valueOf(L2JHellasSettings.getProperty("AllowWedding", "False"));
 				MOD_WEDDING_PRICE = Integer.parseInt(L2JHellasSettings.getProperty("WeddingPrice", "250000000"));
 				MOD_WEDDING_PUNISH_INFIDELITY = Boolean.parseBoolean(L2JHellasSettings.getProperty("WeddingPunishInfidelity", "True"));
@@ -1867,7 +1865,7 @@ public final class Config
 				SAME_IP_ZODIAC= Boolean.parseBoolean(EventSettings.getProperty("SameIpProtection", "true"));
 				INITIAL_START= Integer.parseInt(EventSettings.getProperty("MinutesInitial", "10"));
 				BETWEEN_EVENTS =Integer.parseInt(EventSettings.getProperty("MinutesAfterEvent", "60"));
-				
+
 				FIRST_TVT_DELAY = Integer.parseInt(EventSettings.getProperty("FirstEventDelay", "10"));
 				TVT_AURA = Boolean.parseBoolean(EventSettings.getProperty("TvTAura", "true"));
 				TVT_JOIN_CURSED = Boolean.parseBoolean(EventSettings.getProperty("TvTJoinWithCursedWeapon", "true"));
@@ -2204,6 +2202,7 @@ public final class Config
 
 				// Dev's Config
 				DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
+				DEBUG_LOGGER = Boolean.parseBoolean(serverSettings.getProperty("DebugLogger", "False"));
 				DATAPACK_ROOT = new File(serverSettings.getProperty("DatapackRoot", ".")).getCanonicalFile();
 				ALT_DEV_NO_QUESTS = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoQuests", "False"));
 				ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoSpawns", "False"));

@@ -26,7 +26,6 @@ public class FishingZoneManager
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing FishingZoneManager");
 			_instance = new FishingZoneManager();
 		}
 		return _instance;

@@ -15,15 +15,17 @@ package Extensions.PremiumService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 
 public class Prem
 {
-	
+	protected static final Logger _log = Logger.getLogger(Prem.class.getName());
 	private long _end_pr_date;
-	
+
 	public static final Prem getInstance()
 	{
 		return SingletonHolder._instance;
@@ -31,7 +33,7 @@ public class Prem
 
 	public long getPremServiceData(String playerAcc)
 	{
-		
+
 		Connection con = null;
 		try
 		{
@@ -50,7 +52,11 @@ public class Prem
 		}
 		catch (Exception e)
 		{
-
+			_log.log(Level.WARNING, getClass().getName() + ": Error connecting on database. " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{

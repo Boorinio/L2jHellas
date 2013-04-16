@@ -93,7 +93,7 @@ public class CompactionIDFactory extends IdFactory
 				while (rs.next())
 				{
 					int badId = rs.getInt(1);
-					_log.severe("Bad ID " + badId + " in DB found by: " + check);
+					_log.log(Level.SEVERE, getClass().getName() + ": Bad ID " + badId + " in DB found by: " + check);
 					throw new RuntimeException();
 				}
 				rs.close();
@@ -107,7 +107,7 @@ public class CompactionIDFactory extends IdFactory
 		for (int i = 1; i <= hole; i++)
 		{
 			id = tmp_obj_ids[N - i];
-			System.out.println("Compacting DB object ID=" + id + " into " + (_curOID));
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Compacting DB object ID=" + id + " into " + (_curOID));
 			for (String update : ID_UPDATES)
 			{
 				PreparedStatement ps = con.prepareStatement(update);

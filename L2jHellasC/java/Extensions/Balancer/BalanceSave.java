@@ -24,7 +24,7 @@ public class BalanceSave
 {
 	protected static final Logger _log = Logger.getLogger(BalanceSave.class.getName());
 
-	private final static String UPDATE_BALANCE_88 = "UPDATE balance SET accplus88=?,evasionplus88=?,hpplus88=?,cpplus88=?,mpplus88=?,matkplus88=?,matksplus88=?,mdefplus88=?,patkplus88=?,patksplus88=?,pdefplus88=?walkplus88=?";
+	private final static String UPDATE_BALANCE_88 = "UPDATE balance SET accplus88=?,evasionplus88=?,hpplus88=?,cpplus88=?,mpplus88=?,matkplus88=?,matksplus88=?,mdefplus88=?,patkplus88=?,patksplus88=?,pdefplus88=?,walkplus88=?";
 
 	public static void storeBalance88()
 	{
@@ -96,7 +96,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -141,7 +141,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -186,7 +186,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -231,7 +231,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -276,7 +276,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -321,7 +321,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -366,7 +366,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -411,7 +411,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -456,7 +456,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -501,7 +501,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -546,7 +546,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -591,7 +591,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -636,7 +636,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -681,7 +681,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -726,7 +726,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -771,7 +771,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -816,7 +816,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -861,7 +861,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -906,7 +906,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -951,7 +951,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -996,7 +996,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1041,7 +1041,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1086,7 +1086,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1131,7 +1131,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1176,7 +1176,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1221,7 +1221,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1266,7 +1266,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1311,7 +1311,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1356,7 +1356,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -1401,7 +1401,7 @@ public class BalanceSave
 		}
 		catch (Exception e)
 		{
-			_log.warning("BalanceSave: Problem saving class stats.");
+			_log.log(Level.WARNING, "BalanceSave: Problem saving class stats.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();

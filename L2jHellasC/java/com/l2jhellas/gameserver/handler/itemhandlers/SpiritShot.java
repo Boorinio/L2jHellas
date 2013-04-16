@@ -27,12 +27,6 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Broadcast;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.1.2.5 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class SpiritShot implements IItemHandler
 {
 	// All the item IDs that this handler knows.

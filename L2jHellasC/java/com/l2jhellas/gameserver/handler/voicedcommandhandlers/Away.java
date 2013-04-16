@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,9 +39,9 @@ public class Away implements IVoicedCommandHandler
 			return back(activeChar);
 		return false;
 	}
-	
+
 	public static final int ZONE_PEACE = 2;
-	
+
 	private boolean away(L2PcInstance activeChar, String text)
 	{
 		Siege siege = SiegeManager.getInstance().getSiege(activeChar);
@@ -51,7 +51,7 @@ public class Away implements IVoicedCommandHandler
 			activeChar.sendMessage("You are already in Away status");
 			return false;
 		}
-		
+
 		if (!activeChar.isInsideZone(ZONE_PEACE) && Config.AWAY_PEACE_ZONE)
 		{
 			activeChar.sendMessage("You can only change your status in a Peace Zone");
@@ -60,7 +60,7 @@ public class Away implements IVoicedCommandHandler
 		// check player is death/fake death and movement disable
 		if (activeChar.isMovementDisabled() || activeChar.isAlikeDead())
 			return false;
-		
+
 		// Check if player is in Siege
 		if (siege != null && siege.getIsInProgress())
 		{
@@ -111,23 +111,23 @@ public class Away implements IVoicedCommandHandler
 		}
 		if (activeChar.isImmobilized())
 			return false;
-		
+
 		if (text == null)
 			text = "";
 		// check away text have not more then 10 letter
 		if (text.length() > 10)
 		{
-			activeChar.sendMessage("You can't set your status Away with more then 10 letters");
+			activeChar.sendMessage("You can't set your status Away with more then 10 letters.");
 			return false;
 		}
 		// check if player have no one in target
 		if (activeChar.getTarget() == null && text.length() <= 1 || text.length() <= 10)
 			// set this Player status away in AwayManager
 			AwayManager.getInstance().setAway(activeChar, text);
-		
+
 		return true;
 	}
-	
+
 	private boolean back(L2PcInstance activeChar)
 	{
 		if (!activeChar.isAway())
@@ -138,7 +138,7 @@ public class Away implements IVoicedCommandHandler
 		AwayManager.getInstance().setBack(activeChar);
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{

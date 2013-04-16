@@ -31,7 +31,6 @@ import com.l2jhellas.util.Rnd;
 
 public class Unlock implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(Unlock.class.getName());
 	private static final L2SkillType[] SKILL_IDS = {
 		L2SkillType.UNLOCK
 	};

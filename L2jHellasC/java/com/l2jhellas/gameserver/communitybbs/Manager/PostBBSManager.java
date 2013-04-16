@@ -61,9 +61,6 @@ public class PostBBSManager extends BaseBBSManager
 		return post;
 	}
 
-	/**
-	 * @param t
-	 */
 	public void delPostByTopic(Topic t)
 	{
 		_postByTopic.remove(t);
@@ -77,10 +74,6 @@ public class PostBBSManager extends BaseBBSManager
 		}
 	}
 
-	/**
-	 * @param t
-	 * @return
-	 */
 	private Post load(Topic t)
 	{
 		Post p;

@@ -32,11 +32,11 @@ public class L2EventChecks
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check if Player/Clan/Party is eligible for Event.<br>
 	 * Documentation can be found in the method.<br>
-	 * 
+	 *
 	 * @param player
 	 *        --> Basic Player Taking the action.
 	 * @param eventType
@@ -82,10 +82,10 @@ public class L2EventChecks
 				notifyBadRequestor(player, badRequestor, 2, _eventPlayers);
 				return false;
 			}
-			
+
 			// TODO: Add a Check asking members of the clan/party (ONLY)
 			// ACTUALLY WANT TO PARTICIPATE or not.
-			
+
 			/*
 			 * Let's count all the points for every one of the event members,
 			 * only in the case that
@@ -165,7 +165,7 @@ public class L2EventChecks
 			}
 		}
 	}
-	
+
 	public static boolean usualChecks(L2PcInstance player, int minLevel)
 	{
 		if (player.getLevel() < minLevel)
@@ -193,14 +193,14 @@ public class L2EventChecks
 			player.sendMessage("Cannot Participate while in Jail.");
 			return false;
 		}
-		if(player.isOlympiadStart())
+		if (player.isOlympiadStart())
 		{
 			player.sendMessage("Cannot participate while olympiad is running");
 			return false;
 		}
 		return true;
 	}
-	
+
 	public static String eType(int type)
 	{
 		String sType;

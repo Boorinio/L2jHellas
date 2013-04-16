@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
@@ -24,9 +25,9 @@ import com.l2jhellas.util.SqlUtils;
 
 public class Territory
 {
-	private static Logger _log = Logger.getLogger(TradeController.class.getName());
+	private static Logger _log = Logger.getLogger(Territory.class.getName());
 	private static final Territory _instance = new Territory();
-	private static Map<Integer,L2Territory> _territory;
+	private static Map<Integer, L2Territory> _territory;
 
 	public static Territory getInstance()
 	{
@@ -50,25 +51,27 @@ public class Territory
 
 	public void reload_data()
 	{
-		_territory = new FastMap<Integer,L2Territory>();
+		_territory = new FastMap<Integer, L2Territory>();
 
-		Integer[][] point = SqlUtils.get2DIntArray(new String[]{"loc_id","loc_x","loc_y","loc_zmin","loc_zmax","proc"}, "locations", "loc_id > 0");
-		for(Integer[] row : point)
+		Integer[][] point = SqlUtils.get2DIntArray(new String[] {
+		"loc_id", "loc_x", "loc_y", "loc_zmin", "loc_zmax", "proc"
+		}, "locations", "loc_id > 0");
+		for (Integer[] row : point)
 		{
-			//_log.info("row = "+row[0]);
+			// _log.info("row = "+row[0]);
 			Integer terr = row[0];
-			if(terr == null)
+			if (terr == null)
 			{
-				_log.warning("Null territory!");
+				_log.log(Level.WARNING, getClass().getName() + ": Null territory!");
 				continue;
 			}
 
-			if(_territory.get(terr) == null)
+			if (_territory.get(terr) == null)
 			{
 				L2Territory t = new L2Territory(terr);
 				_territory.put(terr, t);
-		   	}
-			_territory.get(terr).add(row[1],row[2],row[3],row[4],row[5]);
+			}
+			_territory.get(terr).add(row[1], row[2], row[3], row[4], row[5]);
 		}
 	}
 }

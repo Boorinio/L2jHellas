@@ -21,34 +21,36 @@ import java.util.logging.LogRecord;
 
 import javolution.text.TextBuilder;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.1 $ $Date: 2005/03/27 15:30:08 $
- */
+import com.l2jhellas.Config;
 
 public class FileLogFormatter extends Formatter
 {
 	private static final String CRLF = "\r\n";
 	private static final String _ = "\t";
-	private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss,SSS");
+	private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
 	@Override
 	public String format(LogRecord record)
 	{
         TextBuilder output = new TextBuilder();
 
-		return output
-		.append(dateFmt.format(new Date(record.getMillis())))
-		.append(_)
-		.append(record.getLevel().getName())
-		.append(_)
-		.append(record.getThreadID())
-		.append(_)
-		.append(record.getLoggerName())
-		.append(_)
-		.append(record.getMessage())
-		.append(CRLF)
-		.toString();
+        output.append("L2jHellas");
+        output.append(_);
+        output.append(dateFmt.format(new Date(record.getMillis())));
+        output.append(_);
+        output.append(record.getLevel().getName());
+        if (Config.DEBUG_LOGGER)
+        {
+        	output.append(_);
+        	output.append(record.getThreadID());
+        	output.append(_);
+        	output.append(record.getLoggerName());
+        }
+        output.append(_);
+        output.append(record.getMessage());
+
+        output.append(CRLF);
+
+		return output.toString();
 	}
 }

@@ -40,7 +40,6 @@ import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.util.geodata.L2Arrays;
 import com.l2jhellas.util.geodata.LookupTable;
 
-
 public final class GeoPathFinding extends PathFinding
 {
 	protected static final Logger _log = Logger.getLogger(GeoPathFinding.class.getName());
@@ -212,8 +211,6 @@ public final class GeoPathFinding extends PathFinding
 		return L2Arrays.compact(Neighbors);
 	}
 
-	//Private
-
 	private Node readNode(short node_x, short node_y, byte layer)
 	{
 		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
@@ -228,7 +225,7 @@ public final class GeoPathFinding extends PathFinding
 		idx += layer * 10 + 1;//byte + layer*10byte
 		if(nodes < layer)
 		{
-			_log.log(Level.WARNING, "SmthWrong!");
+			_log.log(Level.WARNING, getClass().getName() + ": SmthWrong!");
 		}
 		short node_z = pn.getShort(idx);
 		idx += 2;
@@ -272,7 +269,7 @@ public final class GeoPathFinding extends PathFinding
 
 		try
 		{
-			_log.info("PathFinding Engine: - Loading Path Nodes...");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Path Nodes...");
 			File Data = new File(Config.DATAPACK_ROOT+"/data/pathnode/pn_index.txt");
 			if(!Data.exists())
 				return;
@@ -291,12 +288,14 @@ public final class GeoPathFinding extends PathFinding
 				byte ry = Byte.parseByte(st.nextToken());
 				LoadPathNodeFile(rx, ry);
 			}
-
-
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			_log.log(Level.WARNING, getClass().getName() + ": failed loading path nodes. " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		finally
 		{
@@ -307,7 +306,10 @@ public final class GeoPathFinding extends PathFinding
 				}
 				catch(Exception e1)
 				{
-					e1.printStackTrace();
+					if (Config.DEVELOPER)
+					{
+						e1.printStackTrace();
+					}
 				}
 
 			if(buff != null)
@@ -317,7 +319,10 @@ public final class GeoPathFinding extends PathFinding
 				}
 				catch(Exception e1)
 				{
-					e1.printStackTrace();
+					if (Config.DEVELOPER)
+					{
+						e1.printStackTrace();
+					}
 				}
 
 			if(reader != null)
@@ -327,18 +332,19 @@ public final class GeoPathFinding extends PathFinding
 				}
 				catch(Exception e1)
 				{
-					e1.printStackTrace();
+					if (Config.DEVELOPER)
+					{
+						e1.printStackTrace();
+					}
 				}
-
 		}
-
 	}
 
 	private void LoadPathNodeFile(byte rx, byte ry)
 	{
 		String fname = Config.DATAPACK_ROOT+"/data/pathnode/" + rx + "_" + ry + ".pn";
 		short regionoffset = getRegionOffset(rx, ry);
-		_log.info("PathFinding Engine: - Loading: " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loading " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
 		File Pn = new File(fname);
 		int node = 0,size, index = 0;
 		RandomAccessFile raf = null;
@@ -370,10 +376,11 @@ public final class GeoPathFinding extends PathFinding
 		}
 		catch(Exception e)
 		{
-			if (Config.DEBUG)
+			_log.log(Level.WARNING, getClass().getName() + ": Failed to Load PathNode File: "+fname+"\n", e);
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
-
-			_log.log(Level.WARNING, "Failed to Load PathNode File: "+fname+"\n", e);
+			}
 		}
 		finally
 		{
@@ -396,9 +403,6 @@ public final class GeoPathFinding extends PathFinding
 				{
 					e1.printStackTrace();
 				}
-
-
 		}
-
 	}
 }

@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class Recall implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(Recall.class.getName());
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.RECALL
@@ -94,8 +93,10 @@ public class Recall implements ISkillHandler
 		}
 		catch (Throwable e)
 		{
-			if (Config.DEBUG)
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
+			}
 		}
 	}
 

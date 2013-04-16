@@ -27,12 +27,6 @@ import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Rnd;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.2 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class RollingDice implements IItemHandler
 {
 	private static final int[] ITEM_IDS =

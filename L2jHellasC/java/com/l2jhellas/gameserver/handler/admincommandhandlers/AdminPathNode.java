@@ -25,7 +25,11 @@ public class AdminPathNode implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_pn_info", "admin_show_path", "admin_path_debug", "admin_show_pn", "admin_find_path",
+	"admin_pn_info",
+	"admin_show_path",
+	"admin_path_debug",
+	"admin_show_pn",
+	"admin_find_path"
 	};
 
 	@Override

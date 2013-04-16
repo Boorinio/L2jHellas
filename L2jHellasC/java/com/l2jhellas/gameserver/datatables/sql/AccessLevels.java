@@ -33,7 +33,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
 
 /**
- * @author FBIagent<br>
+ * @author FBIagent
  */
 public class AccessLevels
 {
@@ -64,7 +64,7 @@ public class AccessLevels
 	}
 
 	/**
-	 * Loads the access levels from database<br>
+	 * Loads the access levels from database
 	 */
 	private void loadAccessLevels()
 	{
@@ -116,6 +116,10 @@ public class AccessLevels
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": Error loading:" + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
 		}
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _accessLevels.size() + " from access_levels.xml.");
 	}

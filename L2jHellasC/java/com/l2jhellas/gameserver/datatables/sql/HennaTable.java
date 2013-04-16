@@ -28,11 +28,6 @@ import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.templates.L2Henna;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * This class ...
- *
- * @version $Revision$ $Date$
- */
 public class HennaTable
 {
 	private static Logger _log = Logger.getLogger(HennaTable.class.getName());
@@ -57,33 +52,26 @@ public class HennaTable
 
 	}
 
-	/**
-	 *
-	 */
 	private void restoreHennaData()
 	{
 		Connection con = null;
 		try
 		{
-			try
-			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT symbol_id, symbol_name, dye_id, dye_amount, price, stat_INT, stat_STR, stat_CON, stat_MEM, stat_DEX, stat_WIT FROM henna");
-				ResultSet hennadata = statement.executeQuery();
+			con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("SELECT symbol_id, symbol_name, dye_id, dye_amount, price, stat_INT, stat_STR, stat_CON, stat_MEM, stat_DEX, stat_WIT FROM henna");
+			ResultSet hennadata = statement.executeQuery();
 
-				fillHennaTable(hennadata);
-				hennadata.close();
-				statement.close();
-			}
-			catch (Exception e)
+			fillHennaTable(hennadata);
+			hennadata.close();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, getClass().getName() + ": error while creating henna table " + e);
+			if (Config.DEVELOPER)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": error while creating henna table " + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
+				e.printStackTrace();
 			}
-
 		}
 		finally
 		{
@@ -120,7 +108,7 @@ public class HennaTable
 			L2Henna template = new L2Henna(hennaDat);
 			_henna.put(id, template);
 		}
-		_log.info("HennaTable: Loaded " + _henna.size() + " Templates.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _henna.size() + " Templates.");
 	}
 
 	public L2Henna getTemplate(int id)

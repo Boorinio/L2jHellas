@@ -14,10 +14,6 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-/**
- * @author godson
- **/
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,6 +38,9 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
+/**
+ * @author godson
+ **/
 public class RaidBossSpawnManager
 {
 
@@ -86,7 +85,7 @@ public class RaidBossSpawnManager
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			PreparedStatement statement = con.prepareStatement("SELECT * from raidboss_spawnlist ORDER BY boss_id");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM raidboss_spawnlist ORDER BY boss_id");
 			ResultSet rset = statement.executeQuery();
 
 			L2Spawn spawnDat;
@@ -111,7 +110,7 @@ public class RaidBossSpawnManager
 				}
 				else
 				{
-					_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not load raidboss #" + rset.getInt("boss_id") + " from DB.");
+					_log.log(Level.WARNING, getClass().getName() + ": Could not load raidboss #" + rset.getInt("boss_id") + " from DB.");
 				}
 			}
 
@@ -141,7 +140,6 @@ public class RaidBossSpawnManager
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
 			}
 		}
 	}
@@ -285,7 +283,7 @@ public class RaidBossSpawnManager
 			try
 			{
 				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("INSERT INTO raidboss_spawnlist (boss_id,amount,loc_x,loc_y,loc_z,heading,respawn_time,currentHp,currentMp) values(?,?,?,?,?,?,?,?,?)");
+				PreparedStatement statement = con.prepareStatement("INSERT INTO raidboss_spawnlist (boss_id,amount,loc_x,loc_y,loc_z,heading,respawn_time,currentHp,currentMp) VALUES (?,?,?,?,?,?,?,?,?)");
 				statement.setInt(1, spawnDat.getNpcid());
 				statement.setInt(2, spawnDat.getAmount());
 				statement.setInt(3, spawnDat.getLocx());
@@ -402,7 +400,7 @@ public class RaidBossSpawnManager
 				if (info == null)
 					continue;
 
-				PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist set respawn_time = ?, currentHP = ?, currentMP = ? where boss_id = ?");
+				PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist SET respawn_time = ?, currentHP = ?, currentMP = ? WHERE boss_id = ?");
 				statement.setLong(1, info.getLong("respawnTime"));
 				statement.setDouble(2, info.getDouble("currentHP"));
 				statement.setDouble(3, info.getDouble("currentMP"));
@@ -413,7 +411,7 @@ public class RaidBossSpawnManager
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Couldn't update raidboss_spawnlist table" + e);
+				_log.log(Level.WARNING, getClass().getName() + ": Couldn't update raidboss_spawnlist table " + e);
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
@@ -427,7 +425,6 @@ public class RaidBossSpawnManager
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
 				}
 			}
 		}
@@ -536,7 +533,6 @@ public class RaidBossSpawnManager
 	 * Saves all raidboss status and then clears all info from memory,
 	 * including all schedules.
 	 */
-
 	public void cleanUp()
 	{
 		updateDb();

@@ -28,16 +28,14 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 /**
  * This class handles following admin commands:
  * - server_shutdown [sec] = shows menu or shuts down server in sec seconds
- *
- * @version $Revision: 1.5.2.1.2.4 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminShutdown implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminShutdown.class.getName());
-
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_server_shutdown", "admin_server_restart", "admin_server_abort"
+	"admin_server_shutdown",
+	"admin_server_restart",
+	"admin_server_abort"
 	};
 
 	@Override

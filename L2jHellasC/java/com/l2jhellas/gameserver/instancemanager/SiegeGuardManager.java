@@ -33,7 +33,6 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class SiegeGuardManager
 {
-
 	private static Logger _log = Logger.getLogger(SiegeGuardManager.class.getName());
 
 	private final Castle _castle;
@@ -45,8 +44,7 @@ public class SiegeGuardManager
 	}
 
 	/**
-	 * Add guard.<BR>
-	 * <BR>
+	 * Add guard.
 	 */
 	public void addSiegeGuard(L2PcInstance activeChar, int npcId)
 	{
@@ -56,8 +54,7 @@ public class SiegeGuardManager
 	}
 
 	/**
-	 * Add guard.<BR>
-	 * <BR>
+	 * Add guard.
 	 */
 	public void addSiegeGuard(int x, int y, int z, int heading, int npcId)
 	{
@@ -65,8 +62,7 @@ public class SiegeGuardManager
 	}
 
 	/**
-	 * Hire merc.<BR>
-	 * <BR>
+	 * Hire merc.
 	 */
 	public void hireMerc(L2PcInstance activeChar, int npcId)
 	{
@@ -76,8 +72,7 @@ public class SiegeGuardManager
 	}
 
 	/**
-	 * Hire merc.<BR>
-	 * <BR>
+	 * Hire merc.
 	 */
 	public void hireMerc(int x, int y, int z, int heading, int npcId)
 	{
@@ -94,7 +89,7 @@ public class SiegeGuardManager
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Delete From castle_siege_guards Where npcId = ? And x = ? AND y = ? AND z = ? AND isHired = 1");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM castle_siege_guards WHERE npcId = ? AND x = ? AND y = ? AND z = ? AND isHired = 1");
 			statement.setInt(1, npcId);
 			statement.setInt(2, x);
 			statement.setInt(3, y);
@@ -132,7 +127,7 @@ public class SiegeGuardManager
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Delete From castle_siege_guards Where castleId = ? And isHired = 1");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM castle_siege_guards WHERE castleId = ? AND isHired = 1");
 			statement.setInt(1, getCastle().getCastleId());
 			statement.execute();
 			statement.close();
@@ -158,8 +153,7 @@ public class SiegeGuardManager
 	}
 
 	/**
-	 * Spawn guards.<BR>
-	 * <BR>
+	 * Spawn guards.
 	 */
 	public void spawnSiegeGuard()
 	{
@@ -170,8 +164,7 @@ public class SiegeGuardManager
 	}
 
 	/**
-	 * Unspawn guards.<BR>
-	 * <BR>
+	 * Unspawn guards.
 	 */
 	public void unspawnSiegeGuard()
 	{
@@ -188,8 +181,7 @@ public class SiegeGuardManager
 	}
 
 	/**
-	 * Load guards.<BR>
-	 * <BR>
+	 * Load guards.
 	 */
 	private void loadSiegeGuard()
 	{
@@ -197,7 +189,7 @@ public class SiegeGuardManager
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_siege_guards Where castleId = ? And isHired = ?");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE castleId = ? AND isHired = ?");
 			statement.setInt(1, getCastle().getCastleId());
 			if (getCastle().getOwnerId() > 0)   // If castle is owned by a clan, then don't spawn default guards
 				statement.setInt(2, 1);
@@ -262,7 +254,7 @@ public class SiegeGuardManager
 		try
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Insert Into castle_siege_guards (castleId, npcId, x, y, z, heading, respawnDelay, isHired) Values (?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO castle_siege_guards (castleId,npcId,x,y,z,heading,respawnDelay,isHired) VALUES (?,?,?,?,?,?,?,?)");
 			statement.setInt(1, getCastle().getCastleId());
 			statement.setInt(2, npcId);
 			statement.setInt(3, x);

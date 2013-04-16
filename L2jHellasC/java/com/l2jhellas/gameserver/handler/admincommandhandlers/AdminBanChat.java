@@ -14,36 +14,28 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *<b> This class handles following admin commands: </b><br><br>
- *
- * <li> admin_banchat = Imposes a chat ban on the specified player. <br>
- * <li> admin_unbanchat = Removes any chat ban on the specified player. <br>
- * <li> admin_unbanchat_all = bans al players chat in server <br>
- * <li> admin_banchat_all = undo mass ban action  <br><br>
- * 
- * <b>Usage:</b><br><br>
- * 
- * <li> //banchat [player_name] [time_in_seconds] <br>
- * <li> //banchat [player_name] [time_in_seconds] [ban_chat_reason] <br>
- * <li> //unbanchat [player_name] <br>
- * <li> //unbanchat_all <br>
- * <li> //banchat_all <br><br>
- * 
+ * <b> This class handles following admin commands: </b><br>
+ * <br>
+ * <li>admin_banchat = Imposes a chat ban on the specified player. <br> <li>admin_unbanchat = Removes any chat ban on the specified player. <br> <li>admin_unbanchat_all = bans al
+ * players chat in server <br> <li>admin_banchat_all = undo mass ban action <br>
+ * <br>
+ * <b>Usage:</b><br>
+ * <br> <li>//banchat [player_name] [time_in_seconds] <br> <li>//banchat [player_name] [time_in_seconds] [ban_chat_reason] <br> <li>//unbanchat [player_name] <br> <li>
+ * //unbanchat_all <br> <li>//banchat_all <br>
+ * <br>
  */
 public class AdminBanChat implements IAdminCommandHandler
 {
-	private static String[] ADMIN_COMMANDS = 
-	{
-		"admin_banchat",
-		"admin_unbanchat",
-		"admin_unbanchat_all",
-		"admin_banchat_all"
+	private static String[] ADMIN_COMMANDS = {
+	"admin_banchat",
+	"admin_unbanchat",
+	"admin_unbanchat_all",
+	"admin_banchat_all"
 	};
 
 	@Override
@@ -52,14 +44,14 @@ public class AdminBanChat implements IAdminCommandHandler
 		String[] cmdParams = command.split(" ");
 
 		// checking syntax
-		if ( cmdParams.length < 3 && command.startsWith("admin_banchat") )
+		if (cmdParams.length < 3 && command.startsWith("admin_banchat"))
 		{
 			admin.sendMessage("usage:");
 			admin.sendMessage("  //banchat [<player_name>] [<time_in_seconds>]");
 			admin.sendMessage("  //banchat [<player_name>] [<time_in_seconds>] [<ban_chat_reason>]");
 			return false;
 		}
-		else if ( cmdParams.length < 2 && command.startsWith("admin_unbanchat") )
+		else if (cmdParams.length < 2 && command.startsWith("admin_unbanchat"))
 		{
 			admin.sendMessage("UnBanChat Syntax:");
 			admin.sendMessage("  //unbanchat [<player_name>]");
@@ -73,7 +65,7 @@ public class AdminBanChat implements IAdminCommandHandler
 				{
 					if (!player.isGM())
 					{
-						player.setBanChatTimer(120 * 60000); //setting max 2 min
+						player.setBanChatTimer(120 * 60000); // setting max 2 min
 						player.setChatBannedForAnnounce(true);
 					}
 				}
@@ -95,10 +87,10 @@ public class AdminBanChat implements IAdminCommandHandler
 			{
 			}
 		}
-		// void vars		
-		long   banLength = -1;
+		// void vars
+		long banLength = -1;
 		String banReason = "";
-		//L2Object targetObject = null;
+		// L2Object targetObject = null;
 		L2PcInstance targetPlayer = null;
 
 		// chat instance
@@ -112,13 +104,15 @@ public class AdminBanChat implements IAdminCommandHandler
 
 		// what is our actions?
 		if (command.startsWith("admin_banchat"))
-		{		
+		{
 			// ban chat length (seconds)
 			try
 			{
 				banLength = Integer.parseInt(cmdParams[2]);
 			}
-			catch (NumberFormatException nfe) {}
+			catch (NumberFormatException nfe)
+			{
+			}
 
 			// ban chat reason
 			if (cmdParams.length > 3)
@@ -130,16 +124,16 @@ public class AdminBanChat implements IAdminCommandHandler
 		}
 		else
 
-			if (command.startsWith("admin_unbanchat"))
-			{
-				admin.sendMessage(targetPlayer.getName() + "'s chat ban has now been lifted.");
-				targetPlayer.setChatBanned(false, 0, "");
-			}
+		if (command.startsWith("admin_unbanchat"))
+		{
+			admin.sendMessage(targetPlayer.getName() + "'s chat ban has now been lifted.");
+			targetPlayer.setChatBanned(false, 0, "");
+		}
 		return true;
 	}
-	
+
 	@Override
-	public String[] getAdminCommandList() 
+	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}

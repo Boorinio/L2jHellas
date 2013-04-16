@@ -33,8 +33,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * Can be used for character ban (as opposed to regular //ban that affects
  * accounts)
  * or to grant mod/GM privileges ingame
- *
- * @version $Revision: 1.1.2.2.2.3 $ $Date: 2005/04/11 10:06:00 $
  */
 public class AdminChangeAccessLevel implements IAdminCommandHandler
 {
@@ -114,8 +112,10 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 				catch (SQLException se)
 				{
 					activeChar.sendMessage("SQLException while changing character's access level");
-					if (Config.DEBUG)
+					if (Config.DEVELOPER)
+					{
 						se.printStackTrace();
+					}
 				}
 				finally
 				{

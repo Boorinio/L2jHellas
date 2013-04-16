@@ -46,7 +46,13 @@ public class AdminManor implements IAdminCommandHandler
 {
 	private static final String[] _adminCommands =
 	{
-	"admin_manor", "admin_manor_approve", "admin_manor_setnext", "admin_manor_reset", "admin_manor_setmaintenance", "admin_manor_save", "admin_manor_disable"
+	"admin_manor",
+	"admin_manor_approve",
+	"admin_manor_setnext",
+	"admin_manor_reset",
+	"admin_manor_setmaintenance",
+	"admin_manor_save",
+	"admin_manor_disable"
 	};
 
 	@Override

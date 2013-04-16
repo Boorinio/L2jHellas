@@ -28,12 +28,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.2.2.7 $ $Date: 2005/04/05 19:41:13 $
- */
-
 public class ScrollOfResurrection implements IItemHandler
 {
 	// all the items ids that this handler knows
@@ -121,7 +115,7 @@ public class ScrollOfResurrection implements IItemHandler
 					else if (!petScroll)
 					{
 						condGood = false;
-						activeChar.sendMessage("You do not have the correct scroll");
+						activeChar.sendMessage("You dont have the correct scroll.");
 					}
 				}
 				else
@@ -143,7 +137,7 @@ public class ScrollOfResurrection implements IItemHandler
 					else if (!humanScroll)
 					{
 						condGood = false;
-						activeChar.sendMessage("You do not have the correct scroll");
+						activeChar.sendMessage("You dont have the correct scroll.");
 					}
 				}
 

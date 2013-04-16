@@ -41,7 +41,6 @@ public class CoupleManager
 	{
 		if (_instance == null)
 		{
-			_log.info("L2JMOD: Initializing CoupleManager");
 			_instance = new CoupleManager();
 			_instance.load();
 		}
@@ -66,7 +65,7 @@ public class CoupleManager
 
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			statement = con.prepareStatement("Select id from mods_wedding order by id");
+			statement = con.prepareStatement("Select id FROM mods_wedding ORDER BY id");
 			rs = statement.executeQuery();
 
 			while (rs.next())
@@ -76,7 +75,7 @@ public class CoupleManager
 
 			statement.close();
 
-			_log.info("Loaded: " + getCouples().size() + " couples(s)");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getCouples().size() + " couples.");
 		}
 		catch (Exception e)
 		{

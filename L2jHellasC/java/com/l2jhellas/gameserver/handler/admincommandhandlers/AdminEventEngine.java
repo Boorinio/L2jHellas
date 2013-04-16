@@ -49,8 +49,6 @@ import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 /**
  * This class handles following admin commands:
  * - admin = shows menu
- *
- * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminEventEngine implements IAdminCommandHandler
 {
@@ -58,7 +56,27 @@ public class AdminEventEngine implements IAdminCommandHandler
 
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_event", "admin_event_new", "admin_event_choose", "admin_event_store", "admin_event_set", "admin_event_change_teams_number", "admin_event_announce", "admin_event_panel", "admin_event_control_begin", "admin_event_control_teleport", "admin_add", "admin_event_see", "admin_event_del", "admin_delete_buffer", "admin_event_control_sit", "admin_event_name", "admin_event_control_kill", "admin_event_control_res", "admin_event_control_poly", "admin_event_control_unpoly", "admin_event_control_prize", "admin_event_control_chatban", "admin_event_control_finish"
+	"admin_event",
+	"admin_event_new",
+	"admin_event_choose",
+	"admin_event_store",
+	"admin_event_set",
+	"admin_event_change_teams_number",
+	"admin_event_announce",
+	"admin_event_panel",
+	"admin_event_control_begin",
+	"admin_event_control_teleport",
+	"admin_add", "admin_event_see",
+	"admin_event_del", "admin_delete_buffer",
+	"admin_event_control_sit",
+	"admin_event_name",
+	"admin_event_control_kill",
+	"admin_event_control_res",
+	"admin_event_control_poly",
+	"admin_event_control_unpoly",
+	"admin_event_control_prize",
+	"admin_event_control_chatban",
+	"admin_event_control_finish"
 	};
 	private static String tempBuffer = "";
 	private static String tempName = "";
@@ -116,14 +134,12 @@ public class AdminEventEngine implements IAdminCommandHandler
 			File file = new File("data/events/" + eventName);
 			file.delete();
 			showMainPage(activeChar);
-
 		}
 
 		else if (command.startsWith("admin_event_name"))
 		{
 			tempName += command.substring(17);
 			showNewEventPage(activeChar);
-
 		}
 
 		else if (command.equalsIgnoreCase("admin_delete_buffer"))
@@ -166,7 +182,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 		{
 			L2Event.eventName = command.substring(16);
 			showEventParameters(activeChar, 2);
-
 		}
 		else if (command.startsWith("admin_event_change_teams_number"))
 		{
@@ -178,10 +193,8 @@ public class AdminEventEngine implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_event_control_begin"))
 		{
-
 			try
 			{
-
 				L2Event.active = true;
 				L2Event.players.clear();
 				L2Event.connectionLossData.clear();
@@ -200,20 +213,19 @@ public class AdminEventEngine implements IAdminCommandHandler
 
 					if (!target.equals(""))
 					{
-
 						L2Event.players.get(i + 1).add(target);
 						i = (i + 1) % L2Event.teamsNumber;
 					}
-
 				}
-
 				destroyEventNpcs();
 				npcsDeleted = true;
-
 			}
 			catch (Exception e)
 			{
-				System.out.println(e);
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
 			}
 			showEventControl(activeChar);
 		}
@@ -742,7 +754,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 			{
 			}
 		}
-
 	}
 
 	void telePlayersBack(int team)
@@ -770,5 +781,4 @@ public class AdminEventEngine implements IAdminCommandHandler
 			}
 		}
 	}
-
 }

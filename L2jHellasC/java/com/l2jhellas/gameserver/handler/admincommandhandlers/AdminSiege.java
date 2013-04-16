@@ -41,7 +41,24 @@ public class AdminSiege implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_siege", "admin_add_attacker", "admin_add_defender", "admin_add_guard", "admin_list_siege_clans", "admin_clear_siege_list", "admin_move_defenders", "admin_spawn_doors", "admin_endsiege", "admin_startsiege", "admin_setcastle", "admin_removecastle", "admin_clanhall", "admin_clanhallset", "admin_clanhalldel", "admin_clanhallopendoors", "admin_clanhallclosedoors", "admin_clanhallteleportself"
+	"admin_siege",
+	"admin_add_attacker",
+	"admin_add_defender",
+	"admin_add_guard",
+	"admin_list_siege_clans",
+	"admin_clear_siege_list",
+	"admin_move_defenders",
+	"admin_spawn_doors",
+	"admin_endsiege",
+	"admin_startsiege",
+	"admin_setcastle",
+	"admin_removecastle",
+	"admin_clanhall",
+	"admin_clanhallset",
+	"admin_clanhalldel",
+	"admin_clanhallopendoors",
+	"admin_clanhallclosedoors",
+	"admin_clanhallteleportself"
 	};
 
 	@Override
@@ -271,5 +288,4 @@ public class AdminSiege implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
 }

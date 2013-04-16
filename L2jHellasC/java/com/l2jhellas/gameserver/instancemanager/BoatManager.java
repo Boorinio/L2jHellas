@@ -34,7 +34,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class BoatManager
 {
-	private static final Logger _log = Logger.getLogger(BoatManager.class.getName());
+	protected static final Logger _log = Logger.getLogger(BoatManager.class.getName());
 
 	private static BoatManager _instance;
 
@@ -42,7 +42,7 @@ public class BoatManager
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing BoatManager");
+			System.out.println("Initializing BoatManager.");
 			_instance = new BoatManager();
 			_instance.load();
 		}

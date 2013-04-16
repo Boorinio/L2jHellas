@@ -35,28 +35,28 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.L2FastList;
 
 /**
- *
  * @author DaRkRaGe
- * Revised by Emperorc
+ *         Revised by Emperorc
  */
 public class GrandBossManager
 {
 	protected static Logger _log = Logger.getLogger(GrandBossManager.class.getName());
 
-	/* =========================================================
+	/*
+	 * =========================================================
 	 * This class handles all Grand Bosses:
 	 * <ul>
-	 * <li>22215-22217  Tyrannosaurus</li>
-	 * <li>25333-25338  Anakazel</li>
-	 * <li>29001        Queen Ant</li>
-	 * <li>29006        Core</li>
-	 * <li>29014        Orfen</li>
-	 * <li>29019        Antharas</li>
-	 * <li>29020        Baium</li>
-	 * <li>29022        Zaken</li>
-	 * <li>29028        Valakas</li>
-	 * <li>29045        Frintezza</li>
-	 * <li>29046-29047  Scarlet van Halisha</li>
+	 * <li>22215-22217 Tyrannosaurus</li>
+	 * <li>25333-25338 Anakazel</li>
+	 * <li>29001 Queen Ant</li>
+	 * <li>29006 Core</li>
+	 * <li>29014 Orfen</li>
+	 * <li>29019 Antharas</li>
+	 * <li>29020 Baium</li>
+	 * <li>29022 Zaken</li>
+	 * <li>29028 Valakas</li>
+	 * <li>29045 Frintezza</li>
+	 * <li>29046-29047 Scarlet van Halisha</li>
 	 * </ul>
 	 *
 	 * It handles the saving of hp, mp, location, and status
@@ -65,7 +65,7 @@ public class GrandBossManager
 	 * NOTE: The current version does NOT spawn the Grand Bosses,
 	 * it just stores and retrieves the values on reboot/startup,
 	 * for AI scripts to utilize as needed.
-	*/
+	 */
 
 	/**
 	 * DELETE FROM grandboss_list
@@ -80,9 +80,9 @@ public class GrandBossManager
 	/**
 	 * UPDATE grandboss_data set loc_x = ?, loc_y = ?, loc_z = ?, heading = ?, respawn_time = ?, currentHP = ?, currentMP = ?, status = ? where boss_id = ?
 	 */
-	private static final String UPDATE_GRAND_BOSS_DATA = "UPDATE grandboss_data set loc_x = ?, loc_y = ?, loc_z = ?, heading = ?, respawn_time = ?, currentHP = ?, currentMP = ?, status = ? where boss_id = ?";
+	private static final String UPDATE_GRAND_BOSS_DATA = "UPDATE grandboss_data SET loc_x = ?, loc_y = ?, loc_z = ?, heading = ?, respawn_time = ?, currentHP = ?, currentMP = ?, status = ? WHERE boss_id = ?";
 
-	private static final String UPDATE_GRAND_BOSS_DATA2 = "UPDATE grandboss_data set status = ? where boss_id = ?";
+	private static final String UPDATE_GRAND_BOSS_DATA2 = "UPDATE grandboss_data SET status = ? WHERE boss_id = ?";
 
 	private static GrandBossManager _instance;
 
@@ -98,7 +98,6 @@ public class GrandBossManager
 	{
 		if (_instance == null)
 		{
-			_log.info("Initializing GrandBossManager");
 			_instance = new GrandBossManager();
 		}
 		return _instance;
@@ -121,13 +120,13 @@ public class GrandBossManager
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			PreparedStatement statement = con.prepareStatement("SELECT * from grandboss_data ORDER BY boss_id");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM grandboss_data ORDER BY boss_id");
 			ResultSet rset = statement.executeQuery();
 
 			while (rset.next())
 			{
-				//Read all info from DB, and store it for AI to read and decide what to do
-				//faster than accessing DB in real time
+				// Read all info from DB, and store it for AI to read and decide what to do
+				// faster than accessing DB in real time
 				StatsSet info = new StatsSet();
 				int bossId = rset.getInt("boss_id");
 				info.set("loc_x", rset.getInt("loc_x"));
@@ -135,9 +134,9 @@ public class GrandBossManager
 				info.set("loc_z", rset.getInt("loc_z"));
 				info.set("heading", rset.getInt("heading"));
 				info.set("respawn_time", rset.getLong("respawn_time"));
-				double HP = rset.getDouble("currentHP"); //jython doesn't recognize doubles
-				int true_HP = (int) HP; //so use java's ability to type cast
-				info.set("currentHP", true_HP); //to convert double to int
+				double HP = rset.getDouble("currentHP"); // jython doesn't recognize doubles
+				int true_HP = (int) HP; // so use java's ability to type cast
+				info.set("currentHP", true_HP); // to convert double to int
 				double MP = rset.getDouble("currentMP");
 				int true_MP = (int) MP;
 				info.set("currentMP", true_MP);
@@ -147,7 +146,7 @@ public class GrandBossManager
 				info = null;
 			}
 
-			_log.info("GrandBossManager: Loaded " + _storedInfo.size() + " Instances");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _storedInfo.size() + " Instances.");
 
 			rset.close();
 			statement.close();
@@ -162,7 +161,6 @@ public class GrandBossManager
 		}
 		catch (Exception e)
 		{
-			
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -176,15 +174,13 @@ public class GrandBossManager
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
 			}
 		}
 	}
 
-	/*
+	/**
 	 * Zone Functions
 	 */
-
 	public void initZones()
 	{
 		Connection con = null;
@@ -208,7 +204,7 @@ public class GrandBossManager
 		{
 			con = L2DatabaseFactory.getInstance().getConnection();
 
-			PreparedStatement statement = con.prepareStatement("SELECT * from grandboss_list ORDER BY player_id");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM grandboss_list ORDER BY player_id");
 			ResultSet rset = statement.executeQuery();
 
 			while (rset.next())
@@ -301,17 +297,18 @@ public class GrandBossManager
 
 	public boolean checkIfInZone(L2PcInstance player)
 	{
-		if (player == null) return false;
+		if (player == null)
+			return false;
 		L2BossZone temp = getZone(player.getX(), player.getY(), player.getZ());
 		if (temp == null)
 			return false;
 
 		return true;
 	}
-	/*
+
+	/**
 	 * The rest
 	 */
-
 	public int getBossStatus(int bossId)
 	{
 		return _bossStatus.get(bossId);
@@ -323,10 +320,9 @@ public class GrandBossManager
 		_bossStatus.put(bossId, status);
 	}
 
-	/*
+	/**
 	 * Adds a L2GrandBossInstance to the list of bosses.
 	 */
-
 	public void addBoss(L2GrandBossInstance boss)
 	{
 		if (boss != null)
@@ -416,8 +412,8 @@ public class GrandBossManager
 					statement.setInt(9, bossId);
 				}
 				statement.executeUpdate();
-			 	statement.clearParameters();
-			 	statement.close();
+				statement.clearParameters();
+				statement.close();
 			}
 		}
 		catch (SQLException e)
@@ -436,7 +432,6 @@ public class GrandBossManager
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
 			}
 		}
 	}
@@ -449,10 +444,10 @@ public class GrandBossManager
 	{
 		storeToDb();
 
-		 _bosses.clear();
-		 _storedInfo.clear();
-		 _bossStatus.clear();
-		 _zones.clear();
+		_bosses.clear();
+		_storedInfo.clear();
+		_bossStatus.clear();
+		_zones.clear();
 	}
 
 	public L2FastList<L2BossZone> getZones()

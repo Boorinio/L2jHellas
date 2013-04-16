@@ -31,11 +31,12 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminDonator implements IAdminCommandHandler
 {
+	protected static final Logger _log = Logger.getLogger(AdminDonator.class.getName());
+
 	private static String[] _adminCommands =
 	{
-		"admin_setdonator",
+		"admin_setdonator"
 	};
-	protected static final Logger _log = Logger.getLogger(AdminDonator.class.getName());
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -65,7 +66,7 @@ public class AdminDonator implements IAdminCommandHandler
 				{
 					connection = L2DatabaseFactory.getInstance().getConnection();
 
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
+					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;
@@ -118,7 +119,7 @@ public class AdminDonator implements IAdminCommandHandler
 				{
 					connection = L2DatabaseFactory.getInstance().getConnection();
 
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters where char_name=?");
+					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;

@@ -28,7 +28,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 public class AdminLevel implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS = {
-	"admin_add_level", "admin_set_level"
+	"admin_add_level",
+	"admin_set_level"
 	};
 
 	@Override

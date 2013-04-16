@@ -50,6 +50,7 @@ public class NpcWalkerRoutesTable
 	private NpcWalkerRoutesTable()
 	{
 	}
+
 	public void load()
 	{
 		_routes.clear();

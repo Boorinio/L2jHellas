@@ -6,7 +6,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -23,10 +23,10 @@ import com.l2jhellas.gameserver.geodata.pathfinding.Node;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.model.L2World;
 
-
 public final class CellPathFinding extends PathFinding
 {
-	private static final class SingletonHolder {
+	private static final class SingletonHolder
+	{
 		protected static final CellPathFinding INSTANCE = new CellPathFinding();
 	}
 
@@ -40,12 +40,12 @@ public final class CellPathFinding extends PathFinding
 	{
 		int gx = x - L2World.MAP_MIN_X >> 4;
 		int gy = y - L2World.MAP_MIN_Y >> 4;
-		if(!GeoData.getInstance().hasGeo(x, y))
+		if (!GeoData.getInstance().hasGeo(x, y))
 			return null;
 		short gz = GeoData.getInstance().getHeight(x, y, z);
 		int gtx = tx - L2World.MAP_MIN_X >> 4;
 		int gty = ty - L2World.MAP_MIN_Y >> 4;
-		if(!GeoData.getInstance().hasGeo(tx, ty))
+		if (!GeoData.getInstance().hasGeo(tx, ty))
 			return null;
 		short gtz = GeoData.getInstance().getHeight(tx, ty, tz);
 		Node start = readNode(gx, gy, gz);
@@ -59,7 +59,7 @@ public final class CellPathFinding extends PathFinding
 		return GeoData.getInstance().getNeighbors(n);
 	}
 
-	//Private
+	// Private
 
 	public Node readNode(int gx, int gy, short z)
 	{

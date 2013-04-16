@@ -65,8 +65,7 @@ public class Harvester implements IItemHandler
 			return;
 		}
 
-		L2Skill skill = SkillTable.getInstance().getInfo(2098, 1); // harvesting
-																	// skill
+		L2Skill skill = SkillTable.getInstance().getInfo(2098, 1); // harvesting skill
 		_activeChar.useMagic(skill, false, false);
 	}
 

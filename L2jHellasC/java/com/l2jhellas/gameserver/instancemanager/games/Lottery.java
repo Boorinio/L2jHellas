@@ -45,7 +45,7 @@ public class Lottery
 	private static final String UPDATE_LOTTERY = "UPDATE games SET finished=1, prize=?, newprize=?, number1=?, number2=?, prize1=?, prize2=?, prize3=? WHERE id=1 AND idnr=?";
 	private static final String SELECT_LAST_LOTTERY = "SELECT idnr, prize, newprize, enddate, finished FROM games WHERE id = 1 ORDER BY idnr DESC LIMIT 1";
 	private static final String SELECT_LOTTERY_ITEM = "SELECT enchant_level, custom_type2 FROM items WHERE item_id = 4442 AND custom_type1 = ?";
-	private static final String SELECT_LOTTERY_TICKET = "SELECT number1, number2, prize1, prize2, prize3 FROM games WHERE id = 1 and idnr = ?";
+	private static final String SELECT_LOTTERY_TICKET = "SELECT number1, number2, prize1, prize2, prize3 FROM games WHERE id = 1 AND idnr = ?";
 
 	protected int _number;
 	protected int _prize;
@@ -212,7 +212,8 @@ public class Lottery
 			}
 
 			if (Config.DEBUG)
-				_log.info("Lottery: Starting ticket sell for lottery #" + getId() + ".");
+				_log.log(Level.CONFIG, getClass().getName() + ": Starting ticket sell for lottery #" + getId() + ".");
+
 			_isSellingTickets = true;
 			_isStarted = true;
 
@@ -282,7 +283,8 @@ public class Lottery
 		public void run()
 		{
 			if (Config.DEBUG)
-				_log.info("Lottery: Stopping ticket sell for lottery #" + getId() + ".");
+				_log.log(Level.CONFIG, getClass().getName() + ": Stopping ticket sell for lottery #" + getId() + ".");
+
 			_isSellingTickets = false;
 
 			Announcements.getInstance().announceToAll(new SystemMessage(SystemMessageId.LOTTERY_TICKET_SALES_TEMP_SUSPENDED));
@@ -300,7 +302,7 @@ public class Lottery
 		public void run()
 		{
 			if (Config.DEBUG)
-				_log.info("Lottery: Ending lottery #" + getId() + ".");
+				_log.log(Level.CONFIG, getClass().getName() + ": Ending lottery #" + getId() + ".");
 
 			int[] luckynums = new int[5];
 			int luckynum = 0;
@@ -323,7 +325,7 @@ public class Lottery
 			}
 
 			if (Config.DEBUG)
-				_log.info("Lottery: The lucky numbers are " + luckynums[0] + ", " + luckynums[1] + ", " + luckynums[2] + ", " + luckynums[3] + ", " + luckynums[4] + ".");
+				_log.log(Level.CONFIG, getClass().getName() + ": The lucky numbers are " + luckynums[0] + ", " + luckynums[1] + ", " + luckynums[2] + ", " + luckynums[3] + ", " + luckynums[4] + ".");
 
 			int enchant = 0;
 			int type2 = 0;
@@ -337,7 +339,7 @@ public class Lottery
 			}
 
 			if (Config.DEBUG)
-				_log.info("Lottery: Encoded lucky numbers are " + enchant + ", " + type2);
+				_log.log(Level.CONFIG, getClass().getName() + ": Encoded lucky numbers are " + enchant + ", " + type2);
 
 			int count1 = 0;
 			int count2 = 0;
@@ -424,17 +426,14 @@ public class Lottery
 			if (count3 > 0)
 				prize3 = (int) ((getPrize() - prize4) * Config.ALT_LOTTERY_3_NUMBER_RATE / count3);
 
-			if (Config.DEBUG)
-			{
-				_log.info("Lottery: " + count1 + " players with all FIVE numbers each win " + prize1 + ".");
-				_log.info("Lottery: " + count2 + " players with FOUR numbers each win " + prize2 + ".");
-				_log.info("Lottery: " + count3 + " players with THREE numbers each win " + prize3 + ".");
-				_log.info("Lottery: " + count4 + " players with ONE or TWO numbers each win " + prize4 + ".");
-			}
+			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count1 + " players with all FIVE numbers each win " + prize1 + ".");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count2 + " players with FOUR numbers each win " + prize2 + ".");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count3 + " players with THREE numbers each win " + prize3 + ".");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count4 + " players with ONE or TWO numbers each win " + prize4 + ".");
 
 			int newprize = getPrize() - (prize1 + prize2 + prize3 + prize4);
-			if (Config.DEBUG)
-				_log.info("Lottery: Jackpot for next lottery is " + newprize + ".");
+
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Jackpot for next lottery is " + newprize + ".");
 
 			SystemMessage sm;
 			if (count1 > 0)

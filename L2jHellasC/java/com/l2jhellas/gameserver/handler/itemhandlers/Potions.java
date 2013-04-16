@@ -14,9 +14,6 @@
  */
 package com.l2jhellas.gameserver.handler.itemhandlers;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.handler.IItemHandler;
@@ -35,15 +32,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.4.4 $ $Date: 2005/03/27 15:30:07 $
- */
-
 public class Potions implements IItemHandler
 {
-	protected static final Logger _log = Logger.getLogger(Potions.class.getName());
 	private int _herbstask = 0;
 
 	/** Task for Herbs */
@@ -69,7 +59,10 @@ public class Potions implements IItemHandler
 			}
 			catch (Throwable t)
 			{
-				_log.log(Level.WARNING, "", t);
+				if (Config.DEVELOPER)
+				{
+					t.printStackTrace();
+				}
 			}
 		}
 	}

@@ -56,11 +56,6 @@ import com.l2jhellas.gameserver.handler.itemhandlers.SpecialXMas;
 import com.l2jhellas.gameserver.handler.itemhandlers.SpiritShot;
 import com.l2jhellas.gameserver.handler.itemhandlers.SummonItems;
 
-/**
- * This class manages handlers of items
- *
- * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:30:09 $
- */
 public class ItemHandler
 {
 	private static final Logger _log = Logger.getLogger(ItemHandler.class.getName());
@@ -112,8 +107,6 @@ public class ItemHandler
 		registerItemHandler(new CompBlessedSpiritShotPacks());
 		registerItemHandler(new CompShotPacks());
 		registerItemHandler(new CompSpiritShotPacks());
-		if(Config.HERO_CUSTOM_ITEMS)
-		registerItemHandler(new HeroCustomItem());
 		registerItemHandler(new PaganKeys());
 		registerItemHandler(new Maps());
 		registerItemHandler(new Potions());
@@ -138,6 +131,8 @@ public class ItemHandler
 		registerItemHandler(new SpecialXMas());
 		registerItemHandler(new SummonItems());
 		registerItemHandler(new BeastSpice());
+		if(Config.HERO_CUSTOM_ITEMS)
+			registerItemHandler(new HeroCustomItem());
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}

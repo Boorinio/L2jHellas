@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,14 +26,16 @@ public class AdminChaos implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_startchaos", "admin_endchaos", "admin_warnchaos"
+	"admin_startchaos",
+	"admin_endchaos",
+	"admin_warnchaos"
 	};
-	
+
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		ChaosEvent chaos = new ChaosEvent();
-		
+
 		if (command.equals("admin_warnchaos"))
 		{
 			if (ChaosEvent._isChaosActive)
@@ -41,7 +43,7 @@ public class AdminChaos implements IAdminCommandHandler
 				activeChar.sendMessage("You can only warn the players if Chaos Event isn't active.");
 				return false;
 			}
-			
+
 			EnterWorld.warnAllPlayers();
 			return true;
 		}
@@ -53,7 +55,7 @@ public class AdminChaos implements IAdminCommandHandler
 				activeChar.sendMessage("You have succesfully started Chaos Event. Press //endchaos to stop it.");
 				return true;
 			}
-			
+
 			activeChar.sendMessage("Chaos Event is already active.");
 			return false;
 		}
@@ -65,14 +67,14 @@ public class AdminChaos implements IAdminCommandHandler
 				activeChar.sendMessage("You have succesfully stopped Chaos Event.");
 				return true;
 			}
-			
+
 			activeChar.sendMessage("Chaos Event is not active.");
 			return false;
 		}
 
 		return true;
 	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{

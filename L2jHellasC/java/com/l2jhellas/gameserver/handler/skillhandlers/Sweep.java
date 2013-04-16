@@ -36,7 +36,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class Sweep implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(Sweep.class.getName());
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.SWEEP

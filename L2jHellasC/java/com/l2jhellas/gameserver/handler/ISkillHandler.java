@@ -19,17 +19,11 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
 
-/**
- * an IItemHandler implementation has to be stateless
- * 
- * @version $Revision: 1.2.2.2.2.3 $ $Date: 2005/04/03 15:55:06 $
- */
-
 public interface ISkillHandler
 {
 	/**
 	 * this is the worker method that is called when using an item.
-	 * 
+	 *
 	 * @param activeChar
 	 * @param item
 	 * @param target
@@ -37,11 +31,11 @@ public interface ISkillHandler
 	 * @throws IOException
 	 */
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets) throws IOException;
-	
+
 	/**
 	 * this method is called at initialization to register all the item ids
 	 * automatically
-	 * 
+	 *
 	 * @return all known itemIds
 	 */
 	public L2SkillType[] getSkillIds();

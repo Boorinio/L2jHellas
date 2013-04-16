@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.CrownTable;
@@ -26,12 +26,12 @@ import com.l2jhellas.gameserver.model.entity.Castle;
 
 /**
  * @author evill33t
- * Reworked by NB4L1
+ *         Reworked by NB4L1
  */
 public class CrownManager
 {
 	protected static final Logger _log = Logger.getLogger(CrownManager.class.getName());
-	private static CrownManager	_instance;
+	private static CrownManager _instance;
 
 	public static final CrownManager getInstance()
 	{
@@ -42,7 +42,7 @@ public class CrownManager
 
 	public CrownManager()
 	{
-		_log.info("CrownManager: initialized");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": initialized.");
 	}
 
 	public void checkCrowns(L2Clan clan)
@@ -68,13 +68,11 @@ public class CrownManager
 		int crownId = -1;
 
 		L2Clan activeCharClan = activeChar.getClan();
-		//L2EMU_EDIT_BEGIN
 		L2ClanMember activeCharClanLeader;
 		if (activeCharClan != null)
 			activeCharClanLeader = activeChar.getClan().getLeader();
 		else
 			activeCharClanLeader = null;
-		//L2EMU_EDIT_END
 		if (activeCharClan != null)
 		{
 			Castle activeCharCastle = CastleManager.getInstance().getCastleByOwner(activeCharClan);
@@ -84,9 +82,7 @@ public class CrownManager
 				crownId = CrownTable.getCrownId(activeCharCastle.getCastleId());
 			}
 
-			//L2EMU_EDIT
 			if (activeCharClanLeader != null && activeCharClanLeader.getObjectId() == activeChar.getObjectId())
-			//L2EMU_EDIT
 			{
 				isLeader = true;
 			}

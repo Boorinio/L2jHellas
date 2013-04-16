@@ -36,7 +36,6 @@ import com.l2jhellas.util.Util;
 
 public class Fishing implements ISkillHandler
 {
-	// private static Logger _log = Logger.getLogger(SiegeFlag.class.getName());
 	// protected SkillType[] _skillIds = {SkillType.FISHING};
 	private static final L2SkillType[] SKILL_IDS =
 	{
@@ -167,8 +166,7 @@ public class Fishing implements ISkillHandler
 			player.sendPacket(new ItemList(player, false));
 		}
 		else
-		// Has enough bait, consume 1 and update inventory. Start fishing
-		// follows.
+		// Has enough bait, consume 1 and update inventory. Start fishing follows.
 		{
 			lure2 = player.getInventory().destroyItem("Consume", player.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LHAND), 1, player, null);
 			InventoryUpdate iu = new InventoryUpdate();
@@ -176,8 +174,7 @@ public class Fishing implements ISkillHandler
 			player.sendPacket(iu);
 		}
 
-		// If everything else checks out, actually cast the hook and start
-		// fishing... :P
+		// If everything else checks out, actually cast the hook and start fishing... :P
 		player.startFishing(x, y, z);
 
 	}

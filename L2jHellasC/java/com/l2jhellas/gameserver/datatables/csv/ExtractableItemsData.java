@@ -154,7 +154,7 @@ public class ExtractableItemsData
 		}
 
 		s.close();
-		System.out.println("Extractable items data: Loaded " + _items.size() + " extractable items!");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _items.size() + " extractable items!");
 	}
 
 	public L2ExtractableItem getExtractableItem(int itemID)

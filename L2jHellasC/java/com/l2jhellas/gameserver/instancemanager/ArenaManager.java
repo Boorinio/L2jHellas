@@ -27,7 +27,7 @@ public class ArenaManager
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing ArenaManager");
+			System.out.println("Initializing ArenaManager.");
 			_instance = new ArenaManager();
 		}
 		return _instance;
