@@ -89,6 +89,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SignsSky;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
+import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 
@@ -492,6 +493,11 @@ public class EnterWorld extends L2GameClientPacket
 			}
 			activeChar.sendMessage("You have " + results + " messages.");
 		}
+		if(AntiBot.isvoting)
+		{
+			AntiBot.showHtmlWindow(activeChar);
+		}
+
 
 		if (Config.ENABLE_HITMAN_EVENT)
 			Hitman.getInstance().onEnterWorld(activeChar);

@@ -4377,6 +4377,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 			}
 		}
+		player.sendPacket(new ActionFailed());
 	}
 
 	/**
