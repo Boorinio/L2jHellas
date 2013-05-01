@@ -24,12 +24,14 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
-		if (command.startsWith("_bbscprs;") && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+		if (command.startsWith("_bbsrps:") && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 		{
 			int page = 0;
 			try
 			{
-				page = Integer.parseInt(command.substring(9));
+
+				page = Integer.parseInt(command.split(":", 2)[1].trim());
+
 			}
 			catch (Exception e)
 			{
@@ -37,14 +39,12 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 				page = 0;
 			}
 
-			RankPvpSystemBBSManagerHtml htmlPrepare = new RankPvpSystemBBSManagerHtml();
-
-			separateAndSend(htmlPrepare.prepareHtmlResponse(activeChar, page), activeChar);
+			separateAndSend(RankPvpSystemBBSHtm.prepareHtmResponse(activeChar, page), activeChar);
 		}
 		else
 		{
 			ShowBoard sb = null;
-			if (command.startsWith("_bbscprs;") && !ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+			if (command.startsWith("_bbsrps:") && !ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 			{
 				sb = new ShowBoard("<html><body><br><br><center>Community Board Top List is disabled in config file</center><br><br></body></html>", "101");
 			}

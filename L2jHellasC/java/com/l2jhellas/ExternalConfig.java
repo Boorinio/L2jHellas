@@ -180,6 +180,15 @@ public final class ExternalConfig
 	public static boolean DATABASE_CLEANER_ENABLED;
 	public static long DATABASE_CLEANER_REPEAT_TIME;
 
+	// Image:
+	public static int IMAGE_PREFIX;
+
+	// Button style:
+	public static final String BUTTON_UP = "Button_DF_Calculator";
+	public static final String BUTTON_DOWN = "Button_DF_Calculator_Down";
+	public static final String BUTTON_W = "65";
+	public static final String BUTTON_H = "20";
+
 	/* Vote Manager */
 	public static String VOTE_LINK_HOPZONE;
 	public static String VOTE_LINK_TOPZONE;
@@ -581,6 +590,8 @@ public final class ExternalConfig
 			{
 				COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT *= 86400000;
 			}
+
+			IMAGE_PREFIX = Integer.parseInt(ccSettings.getProperty("ImagePrefix", "1"));
 
 		}
 		catch (Exception e)

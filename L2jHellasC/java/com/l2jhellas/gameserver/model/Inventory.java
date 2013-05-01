@@ -675,6 +675,22 @@ public abstract class Inventory extends ItemContainer
 	}
 
 	/**
+	 * @return The list of worn L2ItemInstance items.
+	 * @author Masterio
+	 */
+	public List<L2ItemInstance> getPaperdollItems()
+	{
+		final FastList<L2ItemInstance> itemsList = new FastList<L2ItemInstance>();
+
+		for (final L2ItemInstance item : _paperdoll)
+		{
+			if (item != null)
+				itemsList.add(item);
+		}
+		return itemsList;
+	}
+
+	/**
 	 * Returns the item in the paperdoll L2Item slot
 	 *
 	 * @param L2Item

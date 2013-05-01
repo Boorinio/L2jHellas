@@ -29,6 +29,7 @@ import Extensions.RankSystem.CharacterRankRewardTable;
 import Extensions.RankSystem.PvpTable;
 import Extensions.RankSystem.RankRewardTable;
 import Extensions.RankSystem.TopTable;
+import Extensions.RankSystem.Util.ServerSideImage;
 import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
@@ -375,6 +376,7 @@ public class GameServer
 		CharacterRankRewardTable.getInstance();
 		RankRewardTable.getInstance();
 		TopTable.getInstance();
+		ServerSideImage.getInstance().load();
 
 		if (ExternalConfig.ENABLED_RCON)
 			RemoteConnector.getInstance();

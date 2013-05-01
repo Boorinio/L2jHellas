@@ -15,6 +15,7 @@
 package Extensions.RankSystem;
 
 import javolution.text.TextBuilder;
+import javolution.util.FastMap;
 
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -44,10 +45,7 @@ public class RankPvpSystemDeathMgr
 	private int _killerMaxHP = 0;
 	private int _killerMaxMP = 0;
 
-	/**
-	 * [0 - itemSlotId] [1 - itemName] [2 - itemEnchantLevel].
-	 */
-	private final KillerItem[] _killerItems = new KillerItem[18]; // l2jFrozen 18, l2jserver H5 25.
+	private final FastMap<Integer, KillerItem> _killerItems = new FastMap<Integer, KillerItem>();
 
 	/**
 	 * Always use this constructor as default!
@@ -57,6 +55,7 @@ public class RankPvpSystemDeathMgr
 	 */
 	public RankPvpSystemDeathMgr(L2PcInstance killer, L2PcInstance victim)
 	{
+
 		_killer = killer;
 		_victim = victim;
 
@@ -70,67 +69,81 @@ public class RankPvpSystemDeathMgr
 		_killerMaxHP = killer.getMaxHp();
 		_killerMaxMP = killer.getMaxMp();
 
-		// load item list:
+		// load item killer list:
 		if (_killer != null && ExternalConfig.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
 		{
-			int j = 0;
-			for (int i = 0; i < _killerItems.length; i++)
+
+			// searching all equipped items by killer:
+			for (L2ItemInstance item : _killer.getInventory().getPaperdollItems())
 			{
-				_killerItems[j] = new KillerItem();
-				L2ItemInstance item = _killer.getInventory().getItemByObjectId(_killer.getInventory().getPaperdollObjectId(i));
-				if (item != null && !isItemInsideKillerItemsArray(item))
+
+				if (!isItemInsideKillerItems(item.getObjectId()))
 				{
+
+					KillerItem killerItem = new KillerItem();
+
 					int b = item.getItem().getBodyPart();
-					// item slot id:
-					_killerItems[j]._slotId = b;
+
 					// item Name:
-					_killerItems[j]._itemName = item.getItemName();
+					killerItem._itemName = item.getItemName();
 					// item Enchant:
-					_killerItems[j]._itemEnchantLevel = item.getEnchantLevel();
+					killerItem._itemEnchantLevel = item.getEnchantLevel();
 					// item object id:
-					_killerItems[j]._itemObjId = item.getObjectId();
+					killerItem._itemObjId = item.getObjectId();
 
 					// item group:
-					if (b == L2Item.SLOT_R_HAND || b == L2Item.SLOT_L_HAND || b == L2Item.SLOT_LR_HAND || b == L2Item.SLOT_LR_HAND)
+					// Slots can be replaced by static Integer number, if l2j server haven't defined item's slots correctly, (data for l2j aCis).
+					// 128 || 256 || 16384
+					if (b == L2Item.SLOT_R_HAND || b == L2Item.SLOT_L_HAND || b == L2Item.SLOT_LR_HAND)
 					{
-						_killerItems[j]._group = 1;
-					}
-					else if (b == L2Item.SLOT_UNDERWEAR || b == L2Item.SLOT_HEAD || b == L2Item.SLOT_GLOVES || b == L2Item.SLOT_CHEST || b == L2Item.SLOT_LEGS || b == L2Item.SLOT_FEET || b == L2Item.SLOT_BACK || b == L2Item.SLOT_FULL_ARMOR)
-					{
-						_killerItems[j]._group = 2;
-					}
-					else if (b == L2Item.SLOT_R_EAR || b == L2Item.SLOT_L_EAR || b == 6 || b == L2Item.SLOT_R_FINGER || b == L2Item.SLOT_L_FINGER || b == 48 || b == L2Item.SLOT_NECK)
-					{
-						_killerItems[j]._group = 3;
+						killerItem._group = 1;
 					}
 					else
+					// 1 || 64 || 512 || 1024 || 2048 || 4096 || 8192 || 32768
+					if (b == L2Item.SLOT_UNDERWEAR || b == L2Item.SLOT_HEAD || b == L2Item.SLOT_GLOVES || b == L2Item.SLOT_CHEST || b == L2Item.SLOT_LEGS || b == L2Item.SLOT_FEET || b == L2Item.SLOT_BACK || b == L2Item.SLOT_FULL_ARMOR)
 					{
-						_killerItems[j]._group = 4;
+						killerItem._group = 2;
+					}
+					else
+					// 2 || 4 || 6 || 16 || 32 || 48 || 8
+					if (b == L2Item.SLOT_R_EAR || b == L2Item.SLOT_L_EAR || b == 6 || b == L2Item.SLOT_R_FINGER || b == L2Item.SLOT_L_FINGER || b == 48 || b == L2Item.SLOT_NECK)
+					{
+						killerItem._group = 3;
+					}
+					// rest
+					else
+					{
+						killerItem._group = 4;
 					}
 
-					j++;
+					// add killerItem to _killerItems list:
+					_killerItems.put(b, killerItem);
+
 				}
+
 			}
+
 		}
+
 	}
 
 	/**
 	 * Return true if item exists. Searched by item id.
 	 *
-	 * @param item
+	 * @param itemObjId
 	 * @return
 	 */
-	private boolean isItemInsideKillerItemsArray(L2ItemInstance item)
+	private boolean isItemInsideKillerItems(int itemObjId)
 	{
-		for (int i = 0; i < _killerItems.length; i++)
+
+		for (FastMap.Entry<Integer, KillerItem> e = _killerItems.head(), end = _killerItems.tail(); (e = e.getNext()) != end;)
 		{
-			if (_killerItems[i] != null)
+
+			if (e.getValue()._itemObjId == itemObjId)
 			{
-				if (_killerItems[i]._itemObjId == item.getObjectId())
-				{
-					return true;
-				}
+				return true;
 			}
+
 		}
 		return false;
 	}
@@ -147,7 +160,13 @@ public class RankPvpSystemDeathMgr
 
 	private TextBuilder victimHtmlResponse()
 	{
+
 		TextBuilder tb = new TextBuilder();
+		TextBuilder tb_weapon = new TextBuilder();
+		TextBuilder tb_armor = new TextBuilder();
+		TextBuilder tb_jewel = new TextBuilder();
+		TextBuilder tb_other = new TextBuilder();
+
 		tb.append("<html><title>" + _killer.getName() + " Equipment informations</title><body><center>");
 
 		tb.append("<table width=270 border=0 cellspacing=0 cellpadding=2 bgcolor=000000>");
@@ -166,43 +185,71 @@ public class RankPvpSystemDeathMgr
 		// show item list:
 		if (ExternalConfig.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
 		{
+
 			tb.append("<table width=270 border=0 cellspacing=0 cellpadding=2 bgcolor=000000>");
+
 			if (getKiller() != null)
 			{
-				for (int group = 1; group <= 4; group++)
+
+				// create groups headers:
+				tb_weapon.append("<tr><td width=270 height=18 align=center><font color=2080D0>Weapon / Shield</font></td></tr>");
+				tb_armor.append("<tr><td width=270 height=18 align=center><font color=2080D0>Armor</font></td></tr>");
+				tb_jewel.append("<tr><td width=270 height=18 align=center><font color=2080D0>Jewellery</font></td></tr>");
+				tb_other.append("<tr><td width=270 height=18 align=center><font color=2080D0>Other</font></td></tr>");
+
+				// create group separator:
+				tb_weapon.append("<tr><td FIXWIDTH=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+				tb_armor.append("<tr><td FIXWIDTH=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+				tb_jewel.append("<tr><td FIXWIDTH=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+				tb_other.append("<tr><td FIXWIDTH=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+
+				// add items to groups:
+				for (FastMap.Entry<Integer, KillerItem> e = _killerItems.head(), end = _killerItems.tail(); (e = e.getNext()) != end;)
 				{
-					if (group == 1)
+
+					if (e.getValue()._group == 1)
 					{
-						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Weapon / Shield</font></td></tr>");
+
+						tb_weapon.append("<tr><td width=270 height=16 align=center><font color=808080>" + e.getValue()._itemName + " (</font><font color=FF8000>+" + e.getValue()._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
+						tb_weapon.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+
 					}
-					else if (group == 2)
+					else if (e.getValue()._group == 2)
 					{
-						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Armor</font></td></tr>");
+
+						tb_armor.append("<tr><td width=270 height=16 align=center><font color=808080>" + e.getValue()._itemName + " (</font><font color=FF8000>+" + e.getValue()._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
+						tb_armor.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+
 					}
-					else if (group == 3)
+					else if (e.getValue()._group == 3)
 					{
-						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Jewellery</font></td></tr>");
+
+						tb_jewel.append("<tr><td width=270 height=16 align=center><font color=808080>" + e.getValue()._itemName + " (</font><font color=FF8000>+" + e.getValue()._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
+						tb_jewel.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+
 					}
 					else
-					{
-						tb.append("<tr><td width=270 height=18 align=center><font color=2080D0>Other</font></td></tr>");
+					{ // group 4
+
+						tb_other.append("<tr><td width=270 height=16 align=center><font color=808080>" + e.getValue()._itemName + " (</font><font color=FF8000>+" + e.getValue()._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
+						tb_other.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
+
 					}
-					tb.append("<tr><td FIXWIDTH=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
-					for (int i = 0; i < _killerItems.length; i++)
-					{
-						if (_killerItems[i] != null && _killerItems[i]._group == group && _killerItems[i]._itemName != null)
-						{
-							tb.append("<tr><td width=270 height=16 align=center><font color=808080>" + _killerItems[i]._itemName + " (</font><font color=FF8000>+" + _killerItems[i]._itemEnchantLevel + "</font><font color=808080>)</font></td></tr>");
-							tb.append("<tr><td width=270 HEIGHT=3><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></td></tr>");
-						}
-					}
+
 				}
+
+				// add to head TB generated TB's:
+				tb.append(tb_weapon);
+				tb.append(tb_armor);
+				tb.append(tb_jewel);
+				tb.append(tb_other);
+
 			}
 			else
 			{
 				tb.append("<tr><td>I can't load Killer Data!</td></tr>");
-				// _log.info("DeathManager::killer is null!");
 			}
+
 			tb.append("</table>");
 		}
 
@@ -210,7 +257,7 @@ public class RankPvpSystemDeathMgr
 		tb.append("<table border=0 cellspacing=0 cellpadding=0>");
 		tb.append("<tr><td width=270 height=12 align=center><font color=808080>- killer state in kill moment -</font></td></tr>");
 		tb.append("<tr><td width=270 height=12></td></tr>");
-		tb.append("<tr><td width=270 align=center><button value=\"Back\" action=\"bypass -h _cprs_info\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
+		tb.append("<tr><td width=270 align=center><button value=\"Back\" action=\"bypass -h _rps_info\"  width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\"></td></tr>");
 		tb.append("</table>");
 
 		tb.append("</center></body></html>");
@@ -236,11 +283,12 @@ public class RankPvpSystemDeathMgr
 
 	class KillerItem
 	{
-		int _slotId = -1;
+
 		String _itemName = null;
 		int _itemEnchantLevel = 0;
 		int _itemObjId = 0;
 		/** Groups like WEAPON(1), ARMOR(2), JEWELLERY(3), OTHER(4) */
 		int _group = 4;
+
 	}
 }

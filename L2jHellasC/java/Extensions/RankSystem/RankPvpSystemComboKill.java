@@ -28,11 +28,8 @@ import com.l2jhellas.util.Broadcast;
  */
 public class RankPvpSystemComboKill
 {
-
 	private FastList<Integer> _victims = new FastList<Integer>();
-
 	private int _comboLevel = 0; // _comboLevel contains real combo size, do not use _victims.size() !
-
 	private long _lastKillTime = 0;
 
 	/**
@@ -48,7 +45,6 @@ public class RankPvpSystemComboKill
 		{
 			setComboLevel(getComboLevel() + 1);
 			setLastKillTime(killTime);
-
 			return true;
 		}
 		else if (ExternalConfig.COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED)
@@ -58,11 +54,9 @@ public class RankPvpSystemComboKill
 				getVictims().add(victimId);
 				setComboLevel(getComboLevel() + 1);
 				setLastKillTime(killTime);
-
 				return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -76,7 +70,6 @@ public class RankPvpSystemComboKill
 	{
 		String msg = null;
 		CreatureSay cs;
-
 		if (!ExternalConfig.COMBO_KILL_ALT_MESSAGES_ENABLED)
 		{
 			if (ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.containsKey(getComboLevel()))
@@ -85,9 +78,7 @@ public class RankPvpSystemComboKill
 				msg = msg.replace("%killer%", killer.getName());
 				msg = msg.replace("%victim%", victim.getName());
 				msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
-
 				cs = new CreatureSay(0, Say2.SHOUT, "", msg);
-
 				Broadcast.toSelfAndKnownPlayers(killer, cs);
 			}
 			else if (ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.containsKey(getComboLevel()))
@@ -96,9 +87,7 @@ public class RankPvpSystemComboKill
 				msg = msg.replace("%killer%", killer.getName());
 				msg = msg.replace("%victim%", victim.getName());
 				msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
-
 				cs = new CreatureSay(0, Say2.SHOUT, "", msg);
-
 				Broadcast.toAllOnlinePlayers(cs);
 			}
 			else
@@ -106,14 +95,11 @@ public class RankPvpSystemComboKill
 				// global have higher priority than local.
 				if (ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getKey() != null && getComboLevel() > ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getKey())
 				{ // if combo size greater than global max key.
-
 					msg = ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getValue();
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
-
 					cs = new CreatureSay(0, Say2.SHOUT, "", msg);
-
 					Broadcast.toAllOnlinePlayers(cs);
 				}
 				else if (ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getKey() != null && getComboLevel() > ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getKey())
@@ -122,9 +108,7 @@ public class RankPvpSystemComboKill
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
-
 					cs = new CreatureSay(0, Say2.SHOUT, "", msg);
-
 					Broadcast.toSelfAndKnownPlayers(killer, cs);
 				}
 			}
@@ -139,9 +123,7 @@ public class RankPvpSystemComboKill
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
-
 					cs = new CreatureSay(0, Say2.SHOUT, "", msg);
-
 					Broadcast.toAllOnlinePlayers(cs);
 				}
 				else
@@ -150,9 +132,7 @@ public class RankPvpSystemComboKill
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
-
 					cs = new CreatureSay(0, Say2.SHOUT, "", msg);
-
 					Broadcast.toSelfAndKnownPlayers(killer, cs);
 				}
 			}
@@ -175,9 +155,7 @@ public class RankPvpSystemComboKill
 				String msg = ExternalConfig.COMBO_KILL_DEFEAT_MESSAGE;
 				msg = msg.replace("%killer%", killer.getName());
 				msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
-
 				CreatureSay cs = new CreatureSay(0, Say2.SHOUT, "", msg);
-
 				Broadcast.toKnownPlayers(killer, cs);
 			}
 		}

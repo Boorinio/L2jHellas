@@ -15,7 +15,7 @@
 package Extensions.RankSystem;
 
 /**
- * All that data stored in global table: FastMap&ltInteger, Rank&gt RANKS in RankPvpSystemConfig class.
+ * All that data stored in global table: FastMap&ltInteger, Rank&gt RANKS in ExternalConfig class.
  *
  * @author Masterio
  */
@@ -28,8 +28,8 @@ public class Rank
 
 	private int _rewardId = 0; // reward for kill this player
 	private int _rewardAmount = 0; // reward amount
-	private int _nickColor = -1;
-	private int _titleColor = -1;
+	private int _nickColor = -1; // no color
+	private int _titleColor = -1; // no color
 
 	/**
 	 * @return the _id

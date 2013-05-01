@@ -46,15 +46,11 @@ import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.12.4.5 $ $Date: 2005/04/11 10:06:11 $
- */
 public final class RequestBypassToServer extends L2GameClientPacket
 {
-	private static final String _C__21_REQUESTBYPASSTOSERVER = "[C] 21 RequestBypassToServer";
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
+
+	private static final String _C__21_REQUESTBYPASSTOSERVER = "[C] 21 RequestBypassToServer";
 
 	// S
 	private String _command;
@@ -439,7 +435,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				BalancerMain.handleCommands(getClient(), _command.substring(8));
 			}
 			// Rank PvP System by Masterio --------------------------------------------
-			else if (_command.equals("_cprs_equip"))
+			else if (_command.equals("_rps_equip"))
 			{ // for "details" button
 				try
 				{
@@ -456,7 +452,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					e.printStackTrace();
 				}
 			}
-			else if (_command.equals("_cprs_info"))
+			else if (_command.equals("_rps_info"))
 			{ // for "back" button
 				try
 				{
@@ -476,7 +472,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					e.printStackTrace();
 				}
 			}
-			else if (_command.equals("_cprs_reward"))
+			else if (_command.equals("_rps_reward"))
 			{ // for "get reward" button
 				try
 				{

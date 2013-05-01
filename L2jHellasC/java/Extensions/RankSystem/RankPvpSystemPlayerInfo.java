@@ -17,12 +17,12 @@ package Extensions.RankSystem;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
+import Extensions.RankSystem.Util.ServerSideImage;
 
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.util.ServerSideImage;
 
 /**
  * @author Masterio
@@ -34,11 +34,11 @@ public class RankPvpSystemPlayerInfo
 	public void sendPlayerResponse(L2PcInstance player, L2PcInstance playerTarget)
 	{
 		NpcHtmlMessage n = new NpcHtmlMessage(0);
-		n.setHtml(playerResponseHtml(player, playerTarget).toString());
+		n.setHtml(playerResponseHtm(player, playerTarget).toString());
 		player.sendPacket(n);
 	}
 
-	private TextBuilder playerResponseHtml(L2PcInstance player, L2PcInstance playerTarget)
+	private TextBuilder playerResponseHtm(L2PcInstance player, L2PcInstance playerTarget)
 	{
 		TextBuilder tb = new TextBuilder();
 
@@ -321,7 +321,7 @@ public class RankPvpSystemPlayerInfo
 				tb.append("<tr><td width=270 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></img></td></tr>");
 				tb.append("<tr><td width=270 height=12></td></tr>");
 
-				tb.append("<tr><td width=270 align=center><button value=\"Get Reward\" action=\"bypass -h _cprs_reward\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
+				tb.append("<tr><td width=270 align=center><button value=\"Get Reward\" action=\"bypass -h _rps_reward\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\"></td></tr>");
 
 				tb.append("</table>");
 			}
@@ -336,7 +336,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<tr><td width=270 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></img></td></tr>");
 			tb.append("<tr><td width=270 height=12></td></tr>");
 
-			tb.append("<tr><td width=270 align=center><button value=\"Details\" action=\"bypass -h _cprs_equip\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"></td></tr>");
+			tb.append("<tr><td width=270 align=center><button value=\"Details\" action=\"bypass -h _rps_equip\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\"></td></tr>");
 
 			tb.append("</table>");
 		}
@@ -365,10 +365,10 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<table cellpadding=0 cellspacing=0 border=0 width=292 height=60 width=292>");
 			// rank image
 			tb.append("<tr><td width=60 height=60>");
-			tb.append(ServerSideImage.putImgHtmlTag(player, (50200 + targetPvpStats.getRank().getId()), "rank_pvp_system/rank/rank_" + targetPvpStats.getRank().getId(), 60, 60).toString());
+			tb.append(ServerSideImage.getInstance().getRankIconImageHtmlTag(player, targetPvpStats.getRank().getId(), 60, 60).toString());
 			// rank label
 			tb.append("</td><td width=232 height=60 align=left>");
-			tb.append(ServerSideImage.putImgHtmlTag(player, (50300 + targetPvpStats.getRank().getId()), "rank_pvp_system/rank_name/rank_name_" + targetPvpStats.getRank().getId(), 232, 60).toString());
+			tb.append(ServerSideImage.getInstance().getRankNameImageHtmlTag(player, targetPvpStats.getRank().getId(), 232, 60).toString());
 			tb.append("</td></tr>");
 			tb.append("</table>");
 		}
@@ -392,7 +392,7 @@ public class RankPvpSystemPlayerInfo
 		tb.append("<td width=292 height=20 align=left>");
 		if (percent >= 0)
 		{
-			tb.append(ServerSideImage.putImgHtmlTag(player, (50000 + percent), "rank_pvp_system/exp/exp_" + percent, 292, 20).toString());
+			tb.append(ServerSideImage.getInstance().getExpImageHtmlTag(player, percent, 292, 20).toString());
 		}
 		else
 		{

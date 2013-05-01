@@ -2,8 +2,8 @@ Author:
 	Masterio
 	
 Last update:
-	30.03.2013 (patch 3.6.2) beta
-	
+	01.05.2013 (patch 3.6.4)
+
 Describe:
 	Rank PvP System described in Describe.txt file.
 	
@@ -12,6 +12,18 @@ Describe:
 	Special thanks for valanths1990 who shared Image Converter on MxC.
 
 Added/Fixed:
+
+	v3.6.4 [01.05.2013]:
+		+ Added method into Inventory java class: getPaperdollItems(): FastList<L2ItemInstance> (required for Death Manager).
+		+ Added missing exp_95.png image (thx for PoRnosJH).
+		+ Reworked and optimized death manager.
+		+ Reworked and optimized Community Board Top 10 List (added new style, no background images because not supported by Client).
+		+ Reworked htm files structure for Community Board (now more flexible for custom reworks).
+		+ Created new diff patches for new stable l2jServer rev. 5937, all patches name's starts from 3.6.4.
+		+ Change RPS distribution for all chronicles, now 1 patch.rar for 1 chronicle, pages for IL and H5 RPS on mxc will be united to 1 page for all chronicles.
+		+ Added image refresh on client side option.
+		+ Reworked refresh Top Table time information.
+		+ Moved DDSConverter.java into imageconverter package.
 
 	v3.6.2 [30.03.2013]:
 		+ Added Combo Kill System - now if killer kill few victims, the combo will rise up. It can shout message on global chat defined in config.
