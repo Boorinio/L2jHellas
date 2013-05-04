@@ -15,6 +15,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.io.File;
 
 import javolution.text.TextBuilder;
+import Extensions.RankSystem.Util.DDSConverter;
 import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
@@ -27,7 +28,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.DDSConverter;
 
 public class L2VoteManagerInstance extends L2NpcInstance
 {
@@ -35,7 +35,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 	{
 		super(objectId, template);
 	}
-	
+
 	@Override
 	public void onBypassFeedback(final L2PcInstance player, String command)
 	{
@@ -43,22 +43,22 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		{
 			return;
 		}
-		
+
 		if (command.startsWith("votehopzone"))
 		{
 			VoteManager.hopvote(player);
 		}
-		
+
 		if (command.startsWith("votetopzone"))
 		{
 			VoteManager.topvote(player);
 		}
-		
+
 		if (command.startsWith("rewards"))
 		{
 			showRewardsHtml(player);
 		}
-		
+
 		if (command.startsWith("reward1"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID1, ExternalConfig.VOTE_REWARD_AMOUNT1, player, null);
@@ -67,7 +67,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			VoteManager.setHasNotVotedTop(player);
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
-		
+
 		if (command.startsWith("reward2"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID2, ExternalConfig.VOTE_REWARD_AMOUNT2, player, null);
@@ -76,7 +76,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			VoteManager.setHasNotVotedTop(player);
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
-		
+
 		if (command.startsWith("reward3"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID3, ExternalConfig.VOTE_REWARD_AMOUNT3, player, null);
@@ -85,7 +85,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			VoteManager.setHasNotVotedTop(player);
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
-		
+
 		if (command.startsWith("reward4"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID4, ExternalConfig.VOTE_REWARD_AMOUNT4, player, null);
@@ -95,14 +95,14 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (this != player.getTarget())
 		{
 			player.setTarget(this);
-			
+
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
 
 			player.sendPacket(new ValidateLocation(this));
@@ -116,7 +116,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			showHtmlWindow(player);
 		}
 	}
-	
+
 	public void showHtmlWindow(L2PcInstance activeChar)
 	{
 		generateLogo(activeChar, 1821);
@@ -126,10 +126,10 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		generateLogo(activeChar, 65533);
 		VoteManager.hasVotedHop(activeChar);
 		VoteManager.hasVotedTop(activeChar);
-		
+
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><head><title>Vote reward Manager</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -192,12 +192,12 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		tb.append("<tr><td align=\"center\"><font color=\"FF6600\">Players voted in general: </font>" + VoteManager.getBigTotalVotes(activeChar) + "</td></tr></table>");
 		tb.append("</center>");
 		tb.append("</body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 		activeChar.sendPacket(new ActionFailed());
 	}
-	
+
 	public static void generateLogo(L2PcInstance activeChar, int imgId)
 	{
 		try
@@ -208,28 +208,28 @@ public class L2VoteManagerInstance extends L2NpcInstance
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-			
+
 			if (imgId == 11888)
 			{
 				File captcha = new File("data/images/topzone.png");
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-			
+
 			if (imgId == 65531)
 			{
 				File captcha = new File("data/images/rewards.png");
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-			
+
 			if (imgId == 65532)
 			{
 				File captcha = new File("data/images/check.png");
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-			
+
 			if (imgId == 65533)
 			{
 				File captcha = new File("data/images/noncheck.png");
@@ -241,14 +241,14 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		{
 			activeChar.sendMessage("Could not genarate vote manager logo.");
 		}
-		
+
 	}
-	
+
 	public void showRewardsHtml(L2PcInstance player)
 	{
 		TextBuilder tb = new TextBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
-		
+
 		tb.append("<html><head><title>Vote Reward Manager</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -269,12 +269,12 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			tb.append("<font color=\"FF6600\">Due to your votes you now have a 4th choise!</font><br><button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID4).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT4 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward4\" width=204 height=20>");
 		}
 		tb.append("</center>");
-		
+
 		tb.append("</body></html>");
-		
+
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
 		player.sendPacket(new ActionFailed());
 	}
-	
+
 }
