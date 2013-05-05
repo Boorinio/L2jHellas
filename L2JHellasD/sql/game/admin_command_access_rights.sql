@@ -24,6 +24,7 @@ INSERT IGNORE INTO `admin_command_access_rights` VALUES
 ('admin_admin3','1'),
 ('admin_admin4','1'),
 ('admin_admin5','1'),
+('admin_balance','1')
 ('admin_gmliston','1'),
 ('admin_gmlistoff','1'),
 ('admin_silence','1'),

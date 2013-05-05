@@ -349,15 +349,15 @@ public class LoginServer
 					e.printStackTrace();
 				}
 			}
-			_log.log(Level.CONFIG, getClass().getSimpleName() + " Loaded " + LoginController.getInstance().getBannedIps().size() + " IP Bans.");
+			_log.log(Level.INFO, getClass().getSimpleName() + " Loaded " + LoginController.getInstance().getBannedIps().size() + " IP Bans.");
 		}
 		else
 		{
-			_log.log(Level.CONFIG, getClass().getSimpleName() + " IP Bans file (" + bannedFile.getName() + ") is missing or is a directory, skipped.");
+			_log.log(Level.WARNING, getClass().getSimpleName() + " IP Bans file (" + bannedFile.getName() + ") is missing or is a directory, skipped.");
 		}
 		if (ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART)
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + " Scheduled restart after " + ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART_TIME + " hours");
+			_log.log(Level.INFO, getClass().getSimpleName() + " Scheduled restart after " + ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART_TIME + " hours.");
 			_restartLoginServer = new LoginServerRestart();
 			_restartLoginServer.setDaemon(true);
 			_restartLoginServer.start();
