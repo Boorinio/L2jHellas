@@ -42,7 +42,7 @@ public class HeroCustomItem implements IItemHandler
 		else
 		{
 			activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 16));
-			activeChar.setNoble(true);
+			activeChar.setHero(true);
 			activeChar.sendMessage("Now you're Hero and just received Hero status and skills.");
 			activeChar.broadcastUserInfo();
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
