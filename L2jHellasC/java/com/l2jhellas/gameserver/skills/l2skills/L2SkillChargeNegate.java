@@ -110,6 +110,5 @@ public class L2SkillChargeNegate extends L2Skill
 	@Override
 	public void useSkill(L2Character caster, L2Object[] targets)
 	{
-		// TODO Auto-generated method stub
 	}
 }

@@ -41,10 +41,6 @@ public class L2SkillCreateItem extends L2Skill
 		_randomCount = set.getInteger("random_count", 1);
 	}
 	
-	/**
-	 * @see com.l2jhellas.gameserver.model.L2Skill#useSkill(com.l2jhellas.gameserver.model.L2Character,
-	 *      com.l2jhellas.gameserver.model.L2Object[])
-	 */
 	@Override
 	public void useSkill(L2Character activeChar, L2Object[] targets)
 	{

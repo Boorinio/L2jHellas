@@ -18,12 +18,10 @@ import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class PlayerLogout extends ClientBasePacket
 {
-
-	private String _account;
+	private final String _account;
 
 	/**
 	 * @param decrypt
@@ -41,5 +39,4 @@ public class PlayerLogout extends ClientBasePacket
 	{
 		return _account;
 	}
-
 }

@@ -22,12 +22,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
 public final class IllegalPlayerAction implements Runnable
 {
 	private static Logger _logAudit = Logger.getLogger("audit");
@@ -62,7 +56,8 @@ public final class IllegalPlayerAction implements Runnable
         }
     }
 
-    public void run()
+    @Override
+	public void run()
     {
 		LogRecord record = new LogRecord(Level.INFO, "AUDIT:" + _message);
 		record.setLoggerName("audit");

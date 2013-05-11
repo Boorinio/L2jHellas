@@ -18,8 +18,8 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.skills.Env;
 
-public final class EffectParalyze extends L2Effect {
-
+public final class EffectParalyze extends L2Effect
+{
 	public EffectParalyze(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -46,9 +46,9 @@ public final class EffectParalyze extends L2Effect {
 		getEffected().setIsParalyzed(false);
 	}
 
-    @Override
+	@Override
 	public boolean onActionTime()
-    {
-    	return false;
-    }
+	{
+		return false;
+	}
 }

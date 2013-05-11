@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
 
-
 public final class EffectManaDamOverTime extends L2Effect
 {
 	public EffectManaDamOverTime(Env env, EffectTemplate template)
@@ -36,14 +35,14 @@ public final class EffectManaDamOverTime extends L2Effect
 	@Override
 	public boolean onActionTime()
 	{
-		if(getEffected().isDead())
+		if (getEffected().isDead())
 			return false;
 
 		double manaDam = calc();
 
-		if(manaDam > getEffected().getCurrentMp())
+		if (manaDam > getEffected().getCurrentMp())
 		{
-			if(getSkill().isToggle())
+			if (getSkill().isToggle())
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP);
 				getEffected().sendPacket(sm);

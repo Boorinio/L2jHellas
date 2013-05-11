@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author kerberos_20
- *
  */
 public class EffectCharmOfLuck extends L2Effect
 {
@@ -28,20 +27,20 @@ public class EffectCharmOfLuck extends L2Effect
 	{
 		super(env, template);
 	}
-	
+
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.CHARM_OF_LUCK;
 	}
-	
+
 	/** Notify started */
 	@Override
 	public boolean onStart()
 	{
 		if (getEffected() instanceof L2PlayableInstance)
 		{
-			((L2PlayableInstance)getEffected()).startCharmOfLuck();
+			((L2PlayableInstance) getEffected()).startCharmOfLuck();
 			return true;
 		}
 		return false;
@@ -52,13 +51,13 @@ public class EffectCharmOfLuck extends L2Effect
 	public void onExit()
 	{
 		if (getEffected() instanceof L2PlayableInstance)
-			((L2PlayableInstance)getEffected()).stopCharmOfLuck (this);
+			((L2PlayableInstance) getEffected()).stopCharmOfLuck(this);
 	}
-	
+
 	@Override
 	public boolean onActionTime()
-    {
-       // just stop this effect
-       return false;
-    }
+	{
+		// just stop this effect
+		return false;
+	}
 }

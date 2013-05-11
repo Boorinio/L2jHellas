@@ -203,8 +203,7 @@ public class GameStatusThread extends Thread
 	}
 
 	@Override
-	@SuppressWarnings(
-	{
+	@SuppressWarnings({
 	"deprecation", "null"
 	})
 	public void run()
@@ -410,27 +409,29 @@ public class GameStatusThread extends Thread
 					if (gmList != "")
 						_print.println(gmList);
 				}
-                /*else if (_usrCommand.startsWith("unblock"))
-                {
-                    try
-                    {
-                        _usrCommand = _usrCommand.substring(8);
-                        if (LoginServer.getInstance().unblockIp(_usrCommand))
-                        {
-                            _log.warning("IP removed via TELNET by host: " + _csocket.getInetAddress().getHostAddress());
-                            _print.println("The IP " + _usrCommand + " has been removed from the hack protection list!");
-                        }
-                        else
-                        {
-                            _print.println("IP not found in hack protection list...");
-                        }
-                        //TODO: with packet
-                    }
-                    catch (StringIndexOutOfBoundsException e)
-                    {
-                        _print.println("Please Enter the IP to Unblock!");
-                    }
-                }*/
+				/*
+				 * else if (_usrCommand.startsWith("unblock"))
+				 * {
+				 * try
+				 * {
+				 * _usrCommand = _usrCommand.substring(8);
+				 * if (LoginServer.getInstance().unblockIp(_usrCommand))
+				 * {
+				 * _log.warning("IP removed via TELNET by host: " + _csocket.getInetAddress().getHostAddress());
+				 * _print.println("The IP " + _usrCommand + " has been removed from the hack protection list!");
+				 * }
+				 * else
+				 * {
+				 * _print.println("IP not found in hack protection list...");
+				 * }
+				 * //TODO: with packet
+				 * }
+				 * catch (StringIndexOutOfBoundsException e)
+				 * {
+				 * _print.println("Please Enter the IP to Unblock!");
+				 * }
+				 * }
+				 */
 				else if (_usrCommand.startsWith("kick"))
 				{
 					try

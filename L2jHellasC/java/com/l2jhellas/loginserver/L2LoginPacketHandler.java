@@ -27,13 +27,11 @@ import com.l2jserver.mmocore.network.ReceivablePacket;
 /**
  * Handler for packets received by Login Server
  *
- * @author  KenM
+ * @author KenM
  */
 public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 {
-	/**
-	 * @see com.l2jhellas.mmocore.IPacketHandler#handlePacket(java.nio.ByteBuffer, com.l2jhellas.mmocore.interfaces.MMOClient)
-	 */
+	@Override
 	public ReceivablePacket<L2LoginClient> handlePacket(ByteBuffer buf, L2LoginClient client)
 	{
 		int opcode = buf.get() & 0xFF;
@@ -52,7 +50,7 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 				{
 					debugOpcode(opcode, state);
 				}
-				break;
+			break;
 			case AUTHED_GG:
 				if (opcode == 0x00)
 				{
@@ -62,7 +60,7 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 				{
 					debugOpcode(opcode, state);
 				}
-				break;
+			break;
 			case AUTHED_LOGIN:
 				if (opcode == 0x05)
 				{
@@ -76,13 +74,13 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 				{
 					debugOpcode(opcode, state);
 				}
-				break;
+			break;
 		}
 		return packet;
 	}
 
 	private void debugOpcode(int opcode, LoginClientState state)
 	{
-		System.out.println("Unknown Opcode: "+opcode+" for state: "+state.name());
+		System.out.println("Unknown Opcode: " + opcode + " for state: " + state.name());
 	}
 }

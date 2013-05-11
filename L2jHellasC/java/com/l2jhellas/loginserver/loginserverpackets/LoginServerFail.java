@@ -18,7 +18,6 @@ import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class LoginServerFail extends ServerBasePacket
 {
@@ -45,5 +44,4 @@ public class LoginServerFail extends ServerBasePacket
 	public static final int REASON_NO_FREE_ID = 5;
 	public static final int NOT_AUTHED = 6;
 	public static final int REASON_ALREADY_LOGGED8IN = 7;
-
 }

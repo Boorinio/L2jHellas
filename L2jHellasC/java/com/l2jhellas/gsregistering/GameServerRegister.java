@@ -29,7 +29,6 @@ import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.loginserver.GameServerTable;
 
-
 public class GameServerRegister
 {
 	private static String _choice;
@@ -48,7 +47,7 @@ public class GameServerRegister
 		}
 		catch (Exception e)
 		{
-			System.out.println("FATAL: Failed loading GameServerTable. Reason: "+e.getMessage());
+			System.out.println("FATAL: Failed loading GameServerTable. Reason: " + e.getMessage());
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -61,15 +60,15 @@ public class GameServerRegister
 		{
 			System.out.println("Your choice:");
 			_choice = _in.readLine();
-			if(_choice.equalsIgnoreCase("help"))
+			if (_choice.equalsIgnoreCase("help"))
 			{
 				for (Map.Entry<Integer, String> entry : gameServerTable.getServerNames().entrySet())
 				{
-					System.out.println("Server: ID: "+entry.getKey()+"\t- "+entry.getValue()+" - In Use: "+(gameServerTable.hasRegisteredGameServerOnId(entry.getKey()) ? "YES" : "NO"));
+					System.out.println("Server: ID: " + entry.getKey() + "\t- " + entry.getValue() + " - In Use: " + (gameServerTable.hasRegisteredGameServerOnId(entry.getKey()) ? "YES" : "NO"));
 				}
 				System.out.println("You can also see servername.xml");
 			}
-			else if(_choice.equalsIgnoreCase("clean"))
+			else if (_choice.equalsIgnoreCase("clean"))
 			{
 				System.out.print("This is going to UNREGISTER ALL servers from this LoginServer. Are you sure? (y/n) ");
 				_choice = _in.readLine();
@@ -99,7 +98,7 @@ public class GameServerRegister
 					String name = gameServerTable.getServerNameById(id);
 					if (name == null)
 					{
-						System.out.println("No name for id: "+id);
+						System.out.println("No name for id: " + id);
 						continue;
 					}
 					else
@@ -112,8 +111,8 @@ public class GameServerRegister
 						{
 							byte[] hexId = LoginServerThread.generateHex(16);
 							gameServerTable.registerServerOnDB(hexId, id, "");
-							Config.saveHexid(id, new BigInteger(hexId).toString(16),"hexid(server "+id+").txt");
-							System.out.println("Server Registered hexid saved to 'hexid(server "+id+").txt'");
+							Config.saveHexid(id, new BigInteger(hexId).toString(16), "hexid(server " + id + ").txt");
+							System.out.println("Server Registered hexid saved to 'hexid(server " + id + ").txt'");
 							System.out.println("Put this file in the /config folder of your gameserver and rename it to 'hexid.txt'");
 							return;
 						}
@@ -140,12 +139,24 @@ public class GameServerRegister
 		}
 		catch (SQLException e)
 		{
-			System.out.println("SQL error while cleaning registered servers: "+e);
+			System.out.println("SQL error while cleaning registered servers: " + e);
 		}
 		finally
 		{
-			try {statement.close();} catch (Exception e) {}
-			try { con.close();} catch (Exception e) {}
+			try
+			{
+				statement.close();
+			}
+			catch (Exception e)
+			{
+			}
+			try
+			{
+				con.close();
+			}
+			catch (Exception e)
+			{
+			}
 		}
 	}
 }

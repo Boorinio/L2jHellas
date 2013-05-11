@@ -25,30 +25,29 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * @author decad
- *
- * Implementation of the Bluff Effect
+ *         Implementation of the Bluff Effect
  */
 public final class EffectBluff extends L2Effect
 {
 
-    public EffectBluff(Env env, EffectTemplate template)
-    {
-        super(env, template);
-    }
+	public EffectBluff(Env env, EffectTemplate template)
+	{
+		super(env, template);
+	}
 
-    @Override
+	@Override
 	public EffectType getEffectType()
-    {
-        return EffectType.BLUFF; //test for bluff effect
-    }
+	{
+		return EffectType.BLUFF; // test for bluff effect
+	}
 
-    /** Notify started */
-    @Override
+	/** Notify started */
+	@Override
 	public boolean onStart()
-    {
-    	if (getEffected() instanceof L2NpcInstance)
+	{
+		if (getEffected() instanceof L2NpcInstance)
 			return false;
-    	if (getEffected() instanceof L2FolkInstance)
+		if (getEffected() instanceof L2FolkInstance)
 			return false;
 		if (getEffected() instanceof L2NpcInstance && ((L2NpcInstance) getEffected()).getNpcId() == 35062 || getSkill().getId() != 358)
 			return false;
@@ -66,11 +65,12 @@ public final class EffectBluff extends L2Effect
 		}
 		else
 			return false;
-    }
-    @Override
+	}
+
+	@Override
 	public boolean onActionTime()
-    {
+	{
 		getEffected().broadcastPacket(new StopRotation(getEffected().getObjectId(), getEffector().getHeading(), 65535));
-        return false;
-    }
+		return false;
+	}
 }

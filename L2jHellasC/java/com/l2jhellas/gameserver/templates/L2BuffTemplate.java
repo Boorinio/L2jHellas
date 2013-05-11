@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
  * 
  * @author: polbat02
  */
-
 public class L2BuffTemplate
 {
 	/** Id of buff template */
@@ -261,5 +260,4 @@ public class L2BuffTemplate
 	{
 		return (checkLevel(player) && checkRace(player) && checkClass(player) && checkFaction(player));
 	}
-
 }

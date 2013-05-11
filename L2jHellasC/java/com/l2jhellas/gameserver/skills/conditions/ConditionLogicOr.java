@@ -16,15 +16,13 @@ package com.l2jhellas.gameserver.skills.conditions;
 
 import com.l2jhellas.gameserver.skills.Env;
 
-
-
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionLogicOr extends Condition {
+public class ConditionLogicOr extends Condition
+{
 
 	private static Condition[] _emptyConditions = new Condition[0];
 	public Condition[] conditions = _emptyConditions;
@@ -36,7 +34,7 @@ public class ConditionLogicOr extends Condition {
 		if (getListener() != null)
 			condition.setListener(this);
 		final int len = conditions.length;
-		final Condition[] tmp = new Condition[len+1];
+		final Condition[] tmp = new Condition[len + 1];
 		System.arraycopy(conditions, 0, tmp, 0, len);
 		tmp[len] = condition;
 		conditions = tmp;
@@ -45,10 +43,13 @@ public class ConditionLogicOr extends Condition {
 	@Override
 	void setListener(ConditionListener listener)
 	{
-		if (listener != null) {
+		if (listener != null)
+		{
 			for (Condition c : conditions)
 				c.setListener(this);
-		} else {
+		}
+		else
+		{
 			for (Condition c : conditions)
 				c.setListener(null);
 		}
@@ -56,12 +57,13 @@ public class ConditionLogicOr extends Condition {
 	}
 
 	@Override
-	public boolean testImpl(Env env) {
-		for (Condition c : conditions) {
+	public boolean testImpl(Env env)
+	{
+		for (Condition c : conditions)
+		{
 			if (c.test(env))
 				return true;
 		}
 		return false;
 	}
-
 }

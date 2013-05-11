@@ -107,9 +107,6 @@ public final class L2Properties extends Properties
 		}
 	}
 	
-	/**
-	 * @see Properties#getProperty(String)
-	 */
 	@Override
 	public String getProperty(String key)
 	{
@@ -125,9 +122,6 @@ public final class L2Properties extends Properties
 		return property.trim();
 	}
 	
-	/**
-	 * @see Properties#getProperty(String,String)
-	 */
 	@Override
 	public String getProperty(String key, String defaultValue)
 	{

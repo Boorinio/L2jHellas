@@ -20,31 +20,29 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
 
-
-
 /**
  * @author Layane
- *
  */
 public abstract class Task
 {
-    private static Logger _log = Logger.getLogger(Task.class.getName());
+	private static Logger _log = Logger.getLogger(Task.class.getName());
 
-    public void initializate()
-    {
-        if (Config.DEBUG)
-            _log.info("Task" + getName() + " inializate");
-    }
+	public void initializate()
+	{
+		if (Config.DEBUG)
+			_log.info("Task" + getName() + " inializate");
+	}
 
-    public ScheduledFuture<?> launchSpecial(ExecutedTask instance)
-    {
-        return null;
-    }
+	public ScheduledFuture<?> launchSpecial(ExecutedTask instance)
+	{
+		return null;
+	}
 
-    public abstract String getName();
-    public abstract void onTimeElapsed(ExecutedTask task);
+	public abstract String getName();
 
-    public void onDestroy()
-    {
-    }
+	public abstract void onTimeElapsed(ExecutedTask task);
+
+	public void onDestroy()
+	{
+	}
 }

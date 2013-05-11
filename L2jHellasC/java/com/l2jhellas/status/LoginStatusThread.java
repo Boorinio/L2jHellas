@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,22 +37,22 @@ import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.loginserver.GameServerTable;
-import com.l2jhellas.loginserver.LoginServer;
 import com.l2jhellas.loginserver.LoginController;
+import com.l2jhellas.loginserver.LoginServer;
 
 public class LoginStatusThread extends Thread
 {
 	private static final Logger _log = Logger.getLogger(LoginStatusThread.class.getName());
-	
+
 	private Socket _cSocket;
-	
+
 	private PrintWriter _print;
 	private BufferedReader _read;
 
 	private boolean _redirectLogger;
 
 	private String _pass;
-	
+
 	private void telnetOutput(int type, String text)
 	{
 		if (type == 1)
@@ -66,7 +66,7 @@ public class LoginStatusThread extends Thread
 		else
 			System.out.println("TELNET | " + text);
 	}
-	
+
 	private boolean isValidIP(Socket client)
 	{
 		boolean result = false;
@@ -74,13 +74,13 @@ public class LoginStatusThread extends Thread
 
 		// convert IP to String, and compare with list
 		String clientStringIP = ClientIP.getHostAddress();
-		
+
 		telnetOutput(1, "Connection from: " + clientStringIP);
 
 		// read and loop thru list of IPs, compare with newIP
 		if (Config.DEVELOPER)
 			telnetOutput(2, "");
-		
+
 		try
 		{
 			Properties telnetSettings = new Properties();
@@ -89,7 +89,7 @@ public class LoginStatusThread extends Thread
 			telnetIS.close();
 
 			String HostList = telnetSettings.getProperty("ListOfHosts", "127.0.0.1,localhost");
-			
+
 			if (Config.DEVELOPER)
 				telnetOutput(3, "Comparing ip to list...");
 
@@ -113,7 +113,7 @@ public class LoginStatusThread extends Thread
 				telnetOutput(4, "");
 			telnetOutput(1, "Error: " + e);
 		}
-		
+
 		if (Config.DEVELOPER)
 			telnetOutput(4, "Allow IP: " + result);
 		return result;
@@ -125,7 +125,7 @@ public class LoginStatusThread extends Thread
 
 		_print = new PrintWriter(_cSocket.getOutputStream());
 		_read = new BufferedReader(new InputStreamReader(_cSocket.getInputStream()));
-		
+
 		if (isValidIP(client))
 		{
 			telnetOutput(1, client.getInetAddress().getHostAddress() + " accepted.");

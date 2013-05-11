@@ -38,56 +38,56 @@ import com.l2jhellas.Config;
 /**
  * Cache of Compiled Scripts
  *
- * @author  KenM
+ * @author KenM
  */
 public class CompiledScriptCache implements Serializable
 {
 	/**
-     * Version 1
-     */
-    private static final long serialVersionUID = 1L;
+	 * Version 1
+	 */
+	private static final long serialVersionUID = 1L;
 
-    private static final Logger LOG = Logger.getLogger(CompiledScriptCache.class.getName());
+	private static final Logger LOG = Logger.getLogger(CompiledScriptCache.class.getName());
 
-	private final Map<String, CompiledScriptHolder>  _compiledScriptCache = new FastMap<String, CompiledScriptHolder>();
+	private final Map<String, CompiledScriptHolder> _compiledScriptCache = new FastMap<String, CompiledScriptHolder>();
 	private transient boolean _modified = false;
 
 	public CompiledScript loadCompiledScript(ScriptEngine engine, File file) throws FileNotFoundException, ScriptException
 	{
-        int len = L2ScriptEngineManager.SCRIPT_FOLDER.getPath().length() + 1;
-        String relativeName = file.getPath().substring(len);
+		int len = L2ScriptEngineManager.SCRIPT_FOLDER.getPath().length() + 1;
+		String relativeName = file.getPath().substring(len);
 
-        CompiledScriptHolder csh = _compiledScriptCache.get(relativeName);
-        if (csh != null && csh.matches(file))
-        {
-            if (Config.DEBUG)
-            {
-                LOG.fine("Reusing cached compiled script: "+file);
-            }
-        	return csh.getCompiledScript();
-        }
-        else
-        {
-            if (Config.DEBUG)
-            {
-                LOG.info("Compiling script: "+file);
-            }
-        	Compilable eng = (Compilable) engine;
-        	BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		CompiledScriptHolder csh = _compiledScriptCache.get(relativeName);
+		if (csh != null && csh.matches(file))
+		{
+			if (Config.DEBUG)
+			{
+				LOG.fine("Reusing cached compiled script: " + file);
+			}
+			return csh.getCompiledScript();
+		}
+		else
+		{
+			if (Config.DEBUG)
+			{
+				LOG.info("Compiling script: " + file);
+			}
+			Compilable eng = (Compilable) engine;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 
-        	// TODO lock file
-    		CompiledScript cs = eng.compile(reader);
-    		if (cs instanceof Serializable)
-    		{
-    			synchronized (_compiledScriptCache)
-                {
-    				_compiledScriptCache.put(relativeName, new CompiledScriptHolder(cs, file));
-        			_modified = true;
-                }
-    		}
+			// TODO lock file
+			CompiledScript cs = eng.compile(reader);
+			if (cs instanceof Serializable)
+			{
+				synchronized (_compiledScriptCache)
+				{
+					_compiledScriptCache.put(relativeName, new CompiledScriptHolder(cs, file));
+					_modified = true;
+				}
+			}
 
-    		return cs;
-        }
+			return cs;
+		}
 	}
 
 	public boolean isModified()

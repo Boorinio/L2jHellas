@@ -1364,8 +1364,75 @@ public class CharStat
 		if (val > Config.MAX_RUN_SPEED)
 			val = Config.MAX_RUN_SPEED;
 
+		if (_activeChar instanceof L2PcInstance)
+		{
+			switch (((L2PcInstance) _activeChar).getClassId().getId())
+			{
+				case 88:
+					return val + BalancerMain.walkplus88;
+				case 89:
+					return val + BalancerMain.walkplus89;
+				case 90:
+					return val + BalancerMain.walkplus90;
+				case 91:
+					return val + BalancerMain.walkplus91;
+				case 92:
+					return val + BalancerMain.walkplus92;
+				case 93:
+					return val + BalancerMain.walkplus93;
+				case 94:
+					return val + BalancerMain.walkplus94;
+				case 95:
+					return val + BalancerMain.walkplus95;
+				case 96:
+					return val + BalancerMain.walkplus96;
+				case 97:
+					return val + BalancerMain.walkplus97;
+				case 98:
+					return val + BalancerMain.walkplus98;
+				case 99:
+					return val + BalancerMain.walkplus99;
+				case 100:
+					return val + BalancerMain.walkplus100;
+				case 101:
+					return val + BalancerMain.walkplus101;
+				case 102:
+					return val + BalancerMain.walkplus102;
+				case 103:
+					return val + BalancerMain.walkplus103;
+				case 104:
+					return val + BalancerMain.walkplus104;
+				case 105:
+					return val + BalancerMain.walkplus105;
+				case 106:
+					return val + BalancerMain.walkplus106;
+				case 107:
+					return val + BalancerMain.walkplus107;
+				case 108:
+					return val + BalancerMain.walkplus108;
+				case 109:
+					return val + BalancerMain.walkplus109;
+				case 110:
+					return val + BalancerMain.walkplus110;
+				case 111:
+					return val + BalancerMain.walkplus111;
+				case 112:
+					return val + BalancerMain.walkplus112;
+				case 113:
+					return val + BalancerMain.walkplus113;
+				case 114:
+					return val + BalancerMain.walkplus114;
+				case 115:
+					return val + BalancerMain.walkplus115;
+				case 116:
+					return val + BalancerMain.walkplus116;
+				case 117:
+					return val + BalancerMain.walkplus117;
+				case 118:
+					return val + BalancerMain.walkplus118;
+			}
+		}
 		return val;
-
 	}
 
 	/** Return the ShieldDef rate (base+modifier) of the L2Character. */

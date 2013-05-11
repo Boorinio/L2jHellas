@@ -20,9 +20,8 @@ import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.taskmanager.Task;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
-import com.l2jhellas.gameserver.taskmanager.TaskTypes;
 import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
-
+import com.l2jhellas.gameserver.taskmanager.TaskTypes;
 
 /**
  * Updates all data for the Seven Signs and Festival of Darkness engines,
@@ -32,35 +31,37 @@ import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
  */
 public class TaskSevenSignsUpdate extends Task
 {
-    private static final Logger _log = Logger.getLogger(TaskOlympiadSave.class.getName());
-    public static final String NAME = "SevenSignsUpdate";
+	private static final Logger _log = Logger.getLogger(TaskOlympiadSave.class.getName());
+	public static final String NAME = "SevenSignsUpdate";
 
-    @Override
+	@Override
 	public String getName()
-    {
-        return NAME;
-    }
+	{
+		return NAME;
+	}
 
-    @Override
+	@Override
 	public void onTimeElapsed(ExecutedTask task)
-    {
-        try {
-            SevenSigns.getInstance().saveSevenSignsData(null, true);
+	{
+		try
+		{
+			SevenSigns.getInstance().saveSevenSignsData(null, true);
 
-            if (!SevenSigns.getInstance().isSealValidationPeriod())
-                SevenSignsFestival.getInstance().saveFestivalData(false);
+			if (!SevenSigns.getInstance().isSealValidationPeriod())
+				SevenSignsFestival.getInstance().saveFestivalData(false);
 
-            _log.info("SevenSigns: Data updated successfully.");
-        }
-        catch (Exception e) {
-            _log.warning("SevenSigns: Failed to save Seven Signs configuration: " + e);
-        }
-    }
+			_log.info("SevenSigns: Data updated successfully.");
+		}
+		catch (Exception e)
+		{
+			_log.warning("SevenSigns: Failed to save Seven Signs configuration: " + e);
+		}
+	}
 
-    @Override
+	@Override
 	public void initializate()
-    {
-        super.initializate();
-        TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_FIXED_SHEDULED, "1800000", "1800000", "");
-    }
+	{
+		super.initializate();
+		TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_FIXED_SHEDULED, "1800000", "1800000", "");
+	}
 }

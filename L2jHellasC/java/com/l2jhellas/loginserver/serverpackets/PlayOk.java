@@ -16,12 +16,9 @@ package com.l2jhellas.loginserver.serverpackets;
 
 import com.l2jhellas.loginserver.SessionKey;
 
-/**
- *
- */
 public final class PlayOk extends L2LoginServerPacket
 {
-	private int _playOk1, _playOk2;
+	private final int _playOk1, _playOk2;
 
 	public PlayOk(SessionKey sessionKey)
 	{
@@ -29,9 +26,6 @@ public final class PlayOk extends L2LoginServerPacket
 		_playOk2 = sessionKey.playOkID2;
 	}
 
-	/**
-	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
-	 */
 	@Override
 	protected void write()
 	{

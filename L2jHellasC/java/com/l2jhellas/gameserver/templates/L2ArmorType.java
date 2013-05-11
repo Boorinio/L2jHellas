@@ -16,10 +16,9 @@ package com.l2jhellas.gameserver.templates;
 
 /**
  * Description of Armor Type
- *
  */
-
-public enum L2ArmorType {
+public enum L2ArmorType
+{
 	NONE      ( 1, "None"),
 	LIGHT     ( 2, "Light"),
 	HEAVY     ( 3, "Heavy"),
@@ -44,7 +43,8 @@ public enum L2ArmorType {
 	 * Returns the ID of the ArmorType after applying a mask.
 	 * @return int : ID of the ArmorType after mask
 	 */
-	public int mask() {
+	public int mask()
+	{
 		return 1<<(_id+16);
 	}
 

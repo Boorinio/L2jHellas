@@ -18,14 +18,13 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.skills.Env;
 
-
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionPlayerRace extends Condition {
+public class ConditionPlayerRace extends Condition
+{
 
 	private final Race _race;
 
@@ -35,9 +34,10 @@ public class ConditionPlayerRace extends Condition {
 	}
 
 	@Override
-	public boolean testImpl(Env env) {
+	public boolean testImpl(Env env)
+	{
 		if (!(env.player instanceof L2PcInstance))
 			return false;
-		return ((L2PcInstance)env.player).getRace() == _race;
+		return ((L2PcInstance) env.player).getRace() == _race;
 	}
 }

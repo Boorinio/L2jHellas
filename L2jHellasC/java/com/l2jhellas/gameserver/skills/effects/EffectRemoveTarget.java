@@ -22,47 +22,47 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author -Nemesiss-
- *
  */
 public class EffectRemoveTarget extends L2Effect
 {
-    public EffectRemoveTarget(Env env, EffectTemplate template)
-    {
-        super(env, template);
-    }
+	public EffectRemoveTarget(Env env, EffectTemplate template)
+	{
+		super(env, template);
+	}
 
-    @Override
+	@Override
 	public EffectType getEffectType()
-    {
-        return EffectType.REMOVE_TARGET;
-    }
+	{
+		return EffectType.REMOVE_TARGET;
+	}
 
-    /** Notify started */
-    @Override
+	/** Notify started */
+	@Override
 	public boolean onStart()
-    {
-    	if (getEffected() instanceof L2GrandBossInstance||getEffected() instanceof L2RaidBossInstance )
-    	{
-    		return false;
-    	}
-			
-        getEffected().setTarget(null);
-        getEffected().abortAttack();
-        getEffected().abortCast();
-        getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-        return true;
-    }
+	{
+		if (getEffected() instanceof L2GrandBossInstance || getEffected() instanceof L2RaidBossInstance)
+		{
+			return false;
+		}
 
-    /** Notify exited */
-    @Override
-	public void onExit() {
-        //nothing
-    }
+		getEffected().setTarget(null);
+		getEffected().abortAttack();
+		getEffected().abortCast();
+		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+		return true;
+	}
 
-    @Override
+	/** Notify exited */
+	@Override
+	public void onExit()
+	{
+		// nothing
+	}
+
+	@Override
 	public boolean onActionTime()
-    {
-    	//nothing
-        return false;
-    }
+	{
+		// nothing
+		return false;
+	}
 }

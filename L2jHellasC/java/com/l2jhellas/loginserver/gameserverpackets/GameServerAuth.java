@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
-
 /**
  * Format: cccddb
  * c desired ID
@@ -29,20 +28,20 @@ import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
  * d max players
  * d hexid size
  * b hexid
- * @author -Wooden-
  *
+ * @author -Wooden-
  */
 public class GameServerAuth extends ClientBasePacket
 {
 	protected static Logger _log = Logger.getLogger(GameServerAuth.class.getName());
-	private byte[] _hexId;
-	private int _desiredId;
-	private boolean _hostReserved;
-	private boolean _acceptAlternativeId;
-	private int _maxPlayers;
-	private int _port;
-	private String _externalHost;
-	private String _internalHost;
+	private final byte[] _hexId;
+	private final int _desiredId;
+	private final boolean _hostReserved;
+	private final boolean _acceptAlternativeId;
+	private final int _maxPlayers;
+	private final int _port;
+	private final String _externalHost;
+	private final String _internalHost;
 
 	/**
 	 * @param decrypt

@@ -17,11 +17,11 @@ package com.l2jhellas.gameserver.skills.effects;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.skills.Env;
 
-public final class EffectSeed extends L2Effect {
-
+public final class EffectSeed extends L2Effect
+{
 	private int _power = 1;
 
-    public EffectSeed(Env env, EffectTemplate template)
+	public EffectSeed(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}
@@ -34,18 +34,18 @@ public final class EffectSeed extends L2Effect {
 
 	@Override
 	public boolean onActionTime()
-    {
-    	// just stop this effect
-    	return false;
-    }
+	{
+		// just stop this effect
+		return false;
+	}
 
-    public int getPower()
-    {
-        return _power;
-    }
+	public int getPower()
+	{
+		return _power;
+	}
 
-    public void increasePower()
-    {
-        _power++;
-    }
+	public void increasePower()
+	{
+		_power++;
+	}
 }

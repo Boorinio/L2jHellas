@@ -39,9 +39,9 @@ public class L2SkillChargeEffect extends L2Skill
 	{
 		if (activeChar instanceof L2PcInstance)
 		{
-			L2PcInstance player = (L2PcInstance)activeChar;
-			EffectCharge e = (EffectCharge)player.getFirstEffect(chargeSkillId);
-			if(e == null || e.numCharges < getNumCharges())
+			L2PcInstance player = (L2PcInstance) activeChar;
+			EffectCharge e = (EffectCharge) player.getFirstEffect(chargeSkillId);
+			if (e == null || e.numCharges < getNumCharges())
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 				sm.addSkillName(getId());
@@ -55,10 +55,11 @@ public class L2SkillChargeEffect extends L2Skill
 	@Override
 	public void useSkill(L2Character activeChar, L2Object[] targets)
 	{
-		if (activeChar.isAlikeDead()) return;
+		if (activeChar.isAlikeDead())
+			return;
 
 		// get the effect
-		EffectCharge effect = (EffectCharge)activeChar.getFirstEffect(chargeSkillId);
+		EffectCharge effect = (EffectCharge) activeChar.getFirstEffect(chargeSkillId);
 		if (effect == null || effect.numCharges < getNumCharges())
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
@@ -74,15 +75,16 @@ public class L2SkillChargeEffect extends L2Skill
 		// activeChar.updateEffectIcons();
 
 		// maybe exit? no charge
-		if (effect.numCharges == 0) effect.exit();
+		if (effect.numCharges == 0)
+			effect.exit();
 
 		// apply effects
 		if (hasEffects())
 			for (int index = 0; index < targets.length; index++)
-				getEffects(activeChar, (L2Character)targets[index]);
+				getEffects(activeChar, (L2Character) targets[index]);
 		if (activeChar instanceof L2PcInstance)
 		{
-			activeChar.sendPacket(new EtcStatusUpdate((L2PcInstance)activeChar));
+			activeChar.sendPacket(new EtcStatusUpdate((L2PcInstance) activeChar));
 		}
 	}
 }

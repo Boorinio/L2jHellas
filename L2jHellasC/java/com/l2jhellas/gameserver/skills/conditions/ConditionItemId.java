@@ -18,17 +18,16 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class ConditionItemId extends Condition {
-
+public final class ConditionItemId extends Condition
+{
 	private final int _itemId;
 
 	public ConditionItemId(int itemId)
 	{
-		_itemId= itemId;
+		_itemId = itemId;
 	}
 
 	@Override

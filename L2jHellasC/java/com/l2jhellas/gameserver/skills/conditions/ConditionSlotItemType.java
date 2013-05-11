@@ -21,12 +21,11 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class ConditionSlotItemType extends ConditionInventory {
-
+public final class ConditionSlotItemType extends ConditionInventory
+{
 	private final int _mask;
 
 	public ConditionSlotItemType(int slot, int mask)
@@ -40,7 +39,7 @@ public final class ConditionSlotItemType extends ConditionInventory {
 	{
 		if (!(env.player instanceof L2PcInstance))
 			return false;
-		Inventory inv = ((L2PcInstance)env.player).getInventory();
+		Inventory inv = ((L2PcInstance) env.player).getInventory();
 		L2ItemInstance item = inv.getPaperdollItem(_slot);
 		if (item == null)
 			return false;

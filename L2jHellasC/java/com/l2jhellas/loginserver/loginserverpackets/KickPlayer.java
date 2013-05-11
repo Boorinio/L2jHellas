@@ -18,10 +18,8 @@ import java.io.IOException;
 
 import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
 
-
 /**
  * @author -Wooden-
- *
  */
 public class KickPlayer extends ServerBasePacket
 {
@@ -31,13 +29,9 @@ public class KickPlayer extends ServerBasePacket
 		writeS(account);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.loginserver.serverpackets.ServerBasePacket#getContent()
-	 */
 	@Override
 	public byte[] getContent() throws IOException
 	{
 		return getBytes();
 	}
-
 }

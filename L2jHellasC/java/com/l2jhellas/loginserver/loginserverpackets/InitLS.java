@@ -19,7 +19,6 @@ import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class InitLS extends ServerBasePacket
 {
@@ -29,13 +28,13 @@ public class InitLS extends ServerBasePacket
 	// d key size
 	// b key
 
-    public InitLS(byte[] publickey)
-    {
-    	writeC(0x00);
-    	writeD(LoginServer.PROTOCOL_REV);
-    	writeD(publickey.length);
-    	writeB(publickey);
-    }
+	public InitLS(byte[] publickey)
+	{
+		writeC(0x00);
+		writeD(LoginServer.PROTOCOL_REV);
+		writeD(publickey.length);
+		writeB(publickey);
+	}
 
 	@Override
 	public byte[] getContent()

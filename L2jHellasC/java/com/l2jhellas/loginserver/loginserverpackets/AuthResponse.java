@@ -19,14 +19,11 @@ import java.io.IOException;
 import com.l2jhellas.loginserver.GameServerTable;
 import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
 
-
 /**
  * @author -Wooden-
- *
  */
 public class AuthResponse extends ServerBasePacket
 {
-
 	/**
 	 * @param serverId
 	 */
@@ -37,13 +34,9 @@ public class AuthResponse extends ServerBasePacket
 		writeS(GameServerTable.getInstance().getServerNameById(serverId));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.loginserver.serverpackets.ServerBasePacket#getContent()
-	 */
 	@Override
 	public byte[] getContent() throws IOException
 	{
 		return getBytes();
 	}
-
 }

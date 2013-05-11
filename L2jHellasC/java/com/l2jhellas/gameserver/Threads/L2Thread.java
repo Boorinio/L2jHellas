@@ -13,7 +13,6 @@ import javolution.util.FastList;
 /**
  * @author ProGramMoS
  */
-
 public abstract class L2Thread extends Thread
 {
 	private static final Logger _log = Logger.getLogger(L2Thread.class.getName());
@@ -107,8 +106,6 @@ public abstract class L2Thread extends Thread
 				list.add("\tat " + trace);
 			}
 		}
-
 		return list;
 	}
-
 }

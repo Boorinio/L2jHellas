@@ -21,90 +21,59 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
-
 public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
 {
-    Map<Integer, T> _objectMap = new FastMap<Integer, T>().setShared(true);
+	Map<Integer, T> _objectMap = new FastMap<Integer, T>().setShared(true);
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#size()
-     */
-    @Override
+	@Override
 	public int size()
-    {
-        return _objectMap.size();
-    }
+	{
+		return _objectMap.size();
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#isEmpty()
-     */
-    @Override
+	@Override
 	public boolean isEmpty()
-    {
-        return _objectMap.isEmpty();
-    }
+	{
+		return _objectMap.isEmpty();
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#clear()
-     */
-    @Override
+	@Override
 	public void clear()
-    {
-        _objectMap.clear();
-    }
+	{
+		_objectMap.clear();
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#put(T)
-     */
-    @Override
+	@Override
 	public void put(T obj)
-    {
-        if (obj != null)
-            _objectMap.put(obj.getObjectId(), obj);
-    }
+	{
+		if (obj != null)
+			_objectMap.put(obj.getObjectId(), obj);
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#remove(T)
-     */
-    @Override
+	@Override
 	public void remove(T obj)
-    {
-        if (obj != null)
-            _objectMap.remove(obj.getObjectId());
-    }
+	{
+		if (obj != null)
+			_objectMap.remove(obj.getObjectId());
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#get(int)
-     */
-    @Override
+	@Override
 	public T get(int id)
-    {
-        return _objectMap.get(id);
-    }
+	{
+		return _objectMap.get(id);
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#contains(T)
-     */
-    @Override
+	@Override
 	public boolean contains(T obj)
-    {
-        if (obj == null)
-            return false;
-        return _objectMap.get(obj.getObjectId()) != null;
-    }
+	{
+		if (obj == null)
+			return false;
+		return _objectMap.get(obj.getObjectId()) != null;
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.util.L2ObjectMap#iterator()
-     */
-    @Override
+	@Override
 	public Iterator<T> iterator()
-    {
-        return _objectMap.values().iterator();
-    }
-
+	{
+		return _objectMap.values().iterator();
+	}
 }

@@ -22,22 +22,21 @@ import com.l2jhellas.gameserver.skills.Env;
 /**
  * @author nBd
  */
-
 public class ConditionTargetRaceId extends Condition
 {
 	private final FastList<Integer> _raceIds;
-	
+
 	public ConditionTargetRaceId(FastList<Integer> raceId)
 	{
 		_raceIds = raceId;
 	}
-	
+
 	@Override
 	public boolean testImpl(Env env)
 	{
 		if (!(env.target instanceof L2NpcInstance))
 			return false;
-		
-		return (_raceIds.contains(((L2NpcInstance)env.target).getTemplate().race.ordinal()));
+
+		return (_raceIds.contains(((L2NpcInstance) env.target).getTemplate().race.ordinal()));
 	}
 }

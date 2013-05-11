@@ -38,7 +38,7 @@ public final class EffectSilentMove extends L2Effect
 		L2Character effected = getEffected();
 		if (effected instanceof L2PcInstance)
 		{
-			((L2PcInstance)effected).setSilentMoving(true);
+			((L2PcInstance) effected).setSilentMoving(true);
 			return true;
 		}
 		return false;
@@ -52,7 +52,7 @@ public final class EffectSilentMove extends L2Effect
 
 		L2Character effected = getEffected();
 		if (effected instanceof L2PcInstance)
-			((L2PcInstance)effected).setSilentMoving(false);
+			((L2PcInstance) effected).setSilentMoving(false);
 	}
 
 	@Override
@@ -64,16 +64,16 @@ public final class EffectSilentMove extends L2Effect
 	@Override
 	public boolean onActionTime()
 	{
-		 // Only cont skills shouldn't end
-		if(getSkill().getSkillType() != L2SkillType.CONT)
+		// Only cont skills shouldn't end
+		if (getSkill().getSkillType() != L2SkillType.CONT)
 			return false;
 
-		if(getEffected().isDead())
+		if (getEffected().isDead())
 			return false;
 
 		double manaDam = calc();
 
-		if(manaDam > getEffected().getCurrentMp())
+		if (manaDam > getEffected().getCurrentMp())
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP);
 			getEffected().sendPacket(sm);
@@ -83,5 +83,4 @@ public final class EffectSilentMove extends L2Effect
 		getEffected().reduceCurrentMp(manaDam);
 		return true;
 	}
-
 }

@@ -18,10 +18,8 @@ import java.io.IOException;
 
 import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
 
-
 /**
  * @author -Wooden-
- *
  */
 public class PlayerAuthResponse extends ServerBasePacket
 {
@@ -32,13 +30,9 @@ public class PlayerAuthResponse extends ServerBasePacket
 		writeC(response ? 1 : 0);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.loginserver.serverpackets.ServerBasePacket#getContent()
-	 */
 	@Override
 	public byte[] getContent() throws IOException
 	{
 		return getBytes();
 	}
-
 }

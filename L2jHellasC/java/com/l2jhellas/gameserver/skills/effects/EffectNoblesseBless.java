@@ -20,12 +20,11 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author earendil
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class EffectNoblesseBless extends L2Effect {
-
+public final class EffectNoblesseBless extends L2Effect
+{
 	public EffectNoblesseBless(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -43,7 +42,7 @@ public final class EffectNoblesseBless extends L2Effect {
 	{
 		if (getEffected() instanceof L2PlayableInstance)
 		{
-			((L2PlayableInstance)getEffected()).startNoblesseBlessing();
+			((L2PlayableInstance) getEffected()).startNoblesseBlessing();
 			return true;
 		}
 		return false;
@@ -51,15 +50,16 @@ public final class EffectNoblesseBless extends L2Effect {
 
 	/** Notify exited */
 	@Override
-	public void onExit() {
+	public void onExit()
+	{
 		if (getEffected() instanceof L2PlayableInstance)
-			((L2PlayableInstance)getEffected()).stopNoblesseBlessing(this);
+			((L2PlayableInstance) getEffected()).stopNoblesseBlessing(this);
 	}
 
-    @Override
+	@Override
 	public boolean onActionTime()
-    {
-    	// just stop this effect
-    	return false;
-    }
+	{
+		// just stop this effect
+		return false;
+	}
 }

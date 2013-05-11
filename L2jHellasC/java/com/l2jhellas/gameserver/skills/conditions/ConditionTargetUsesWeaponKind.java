@@ -17,16 +17,13 @@ package com.l2jhellas.gameserver.skills.conditions;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 
-
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ConditionTargetUsesWeaponKind extends Condition
 {
-
 	private final int _weaponMask;
 
 	public ConditionTargetUsesWeaponKind(int weaponMask)
@@ -43,7 +40,7 @@ public class ConditionTargetUsesWeaponKind extends Condition
 
 		L2Weapon item = env.target.getActiveWeaponItem();
 
-		if(item == null)
+		if (item == null)
 			return false;
 
 		return (item.getItemType().mask() & _weaponMask) != 0;

@@ -45,7 +45,6 @@ public class EffectMute extends L2Effect
 		return false;
 	}
 
-
 	@Override
 	public void onExit()
 	{

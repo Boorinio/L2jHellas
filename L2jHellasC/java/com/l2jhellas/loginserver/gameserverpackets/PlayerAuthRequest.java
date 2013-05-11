@@ -19,14 +19,11 @@ import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class PlayerAuthRequest extends ClientBasePacket
 {
-
-	private String _account;
-	private SessionKey _sessionKey;
-
+	private final String _account;
+	private final SessionKey _sessionKey;
 
 	/**
 	 * @param decrypt
@@ -57,5 +54,4 @@ public class PlayerAuthRequest extends ClientBasePacket
 	{
 		return _sessionKey;
 	}
-
 }

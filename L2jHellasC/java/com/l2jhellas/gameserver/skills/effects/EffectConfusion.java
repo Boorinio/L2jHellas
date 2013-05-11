@@ -26,14 +26,12 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.util.Rnd;
 
-
 /**
  * @author littlecrow
- *
- * Implementation of the Confusion Effect
+ *         Implementation of the Confusion Effect
  */
-public final class EffectConfusion extends L2Effect {
-
+public final class EffectConfusion extends L2Effect
+{
 	public EffectConfusion(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -51,21 +49,22 @@ public final class EffectConfusion extends L2Effect {
 	{
 		getEffected().startConfused();
 		if (Config.DEBUG)
-    		System.out.println(getEffected());
+			System.out.println(getEffected());
 		List<L2Character> targetList = new FastList<L2Character>();
 
 		// Getting the possible targets
 
-        for (L2Object obj : getEffected().getKnownList().getKnownObjects().values())
-        {
-            if (obj == null)
-                continue;
+		for (L2Object obj : getEffected().getKnownList().getKnownObjects().values())
+		{
+			if (obj == null)
+				continue;
 
-            if ((obj instanceof L2Character) && (obj != getEffected()))
-                targetList.add((L2Character)obj);
-        }
+			if ((obj instanceof L2Character) && (obj != getEffected()))
+				targetList.add((L2Character) obj);
+		}
 		// if there is no target, exit function
-		if (targetList.size()==0){
+		if (targetList.size() == 0)
+		{
 			return true;
 		}
 
@@ -74,16 +73,16 @@ public final class EffectConfusion extends L2Effect {
 		L2Object target = targetList.get(nextTargetIdx);
 
 		// Attacking the target
-		//getEffected().setTarget(target);
+		// getEffected().setTarget(target);
 		getEffected().setTarget(target);
-		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK,target);
+		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 		return true;
 	}
-    @Override
-	public boolean onActionTime()
-    {    	
-    	getEffected().stopConfused(this);
-    	return false;
-    }
-}
 
+	@Override
+	public boolean onActionTime()
+	{
+		getEffected().stopConfused(this);
+		return false;
+	}
+}

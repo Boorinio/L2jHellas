@@ -17,14 +17,16 @@ package com.l2jhellas.gameserver.skills.funcs;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Stats;
 
-
-
-public class FuncAdd extends Func {
+public class FuncAdd extends Func
+{
 	private final Lambda _lambda;
-	public FuncAdd(Stats pStat, int pOrder, Object owner, Lambda lambda) {
+
+	public FuncAdd(Stats pStat, int pOrder, Object owner, Lambda lambda)
+	{
 		super(pStat, pOrder, owner);
 		_lambda = lambda;
 	}
+
 	@Override
 	public void calc(Env env)
 	{

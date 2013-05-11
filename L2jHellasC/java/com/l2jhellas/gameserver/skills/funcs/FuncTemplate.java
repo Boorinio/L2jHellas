@@ -21,15 +21,13 @@ import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 
-
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class FuncTemplate {
-
+public final class FuncTemplate
+{
 	public Condition attachCond;
 	public Condition applayCond;
 	public final Class<?> func;
@@ -45,20 +43,26 @@ public final class FuncTemplate {
 		stat = pStat;
 		order = pOrder;
 		lambda = pLambda;
-		try {
-			func = Class.forName("com.l2jhellas.gameserver.skills.funcs.Func"+pFunc);
-		} catch (ClassNotFoundException e) {
+		try
+		{
+			func = Class.forName("com.l2jhellas.gameserver.skills.funcs.Func" + pFunc);
+		}
+		catch (ClassNotFoundException e)
+		{
 			throw new RuntimeException(e);
 		}
-		try {
-			constructor = func.getConstructor(
-				new Class[]{
-						Stats.class, // stats to update
-						Integer.TYPE, // order of execution
-						Object.class, // owner
-						Lambda.class // value for function
-				});
-		} catch (NoSuchMethodException e) {
+		try
+		{
+			constructor = func.getConstructor(new Class[] {
+			Stats.class, // stats to update
+			Integer.TYPE, // order of execution
+			Object.class, // owner
+			Lambda.class
+			// value for function
+			});
+		}
+		catch (NoSuchMethodException e)
+		{
 			throw new RuntimeException(e);
 		}
 	}
@@ -67,21 +71,27 @@ public final class FuncTemplate {
 	{
 		if (attachCond != null && !attachCond.test(env))
 			return null;
-		try {
-			Func f = (Func)constructor.newInstance(stat, order, owner, lambda);
+		try
+		{
+			Func f = (Func) constructor.newInstance(stat, order, owner, lambda);
 			if (applayCond != null)
 				f.setCondition(applayCond);
 			return f;
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			return null;
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-			return null;
-		} catch (InvocationTargetException e) {
+		}
+		catch (IllegalAccessException e)
+		{
 			e.printStackTrace();
 			return null;
 		}
-
+		catch (InstantiationException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		catch (InvocationTargetException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

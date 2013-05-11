@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class L2SkillDefault extends L2Skill
 {
-	
 	public L2SkillDefault(StatsSet set)
 	{
 		super(set);
@@ -36,5 +35,4 @@ public class L2SkillDefault extends L2Skill
 		sm.addString("Skill not implemented.  Skill ID: " + getId() + " " + getSkillType());
 		caster.sendPacket(sm);
 	}
-
 }

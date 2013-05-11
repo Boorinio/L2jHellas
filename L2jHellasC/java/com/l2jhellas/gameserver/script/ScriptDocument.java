@@ -24,59 +24,57 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/**
- *
- *
- */
 public class ScriptDocument
 {
-    private Document _document;
-    private String _name;
+	private Document _document;
+	private final String _name;
 
-    public ScriptDocument(String name, InputStream input)
-    {
-        _name = name;
+	public ScriptDocument(String name, InputStream input)
+	{
+		_name = name;
 
-        DocumentBuilderFactory factory =
-            DocumentBuilderFactory.newInstance();
-        try {
-           DocumentBuilder builder = factory.newDocumentBuilder();
-           _document = builder.parse( input );
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try
+		{
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			_document = builder.parse(input);
 
-        } catch (SAXException sxe) {
-           // Error generated during parsing)
-           Exception  x = sxe;
-           if (sxe.getException() != null)
-               x = sxe.getException();
-           x.printStackTrace();
+		}
+		catch (SAXException sxe)
+		{
+			// Error generated during parsing)
+			Exception x = sxe;
+			if (sxe.getException() != null)
+				x = sxe.getException();
+			x.printStackTrace();
 
-        } catch (ParserConfigurationException pce) {
-            // Parser with specified options can't be built
-            pce.printStackTrace();
+		}
+		catch (ParserConfigurationException pce)
+		{
+			// Parser with specified options can't be built
+			pce.printStackTrace();
 
-        } catch (IOException ioe) {
-           // I/O error
-           ioe.printStackTrace();
-        }
-    }
+		}
+		catch (IOException ioe)
+		{
+			// I/O error
+			ioe.printStackTrace();
+		}
+	}
 
-    public Document getDocument()
-    {
-        return _document;
-    }
+	public Document getDocument()
+	{
+		return _document;
+	}
 
-    /**
-     * @return Returns the _name.
-     */
-    public String getName()
-    {
-        return _name;
-    }
+	public String getName()
+	{
+		return _name;
+	}
 
-    @Override
+	@Override
 	public String toString()
-    {
-        return _name;
-    }
-
+	{
+		return _name;
+	}
 }

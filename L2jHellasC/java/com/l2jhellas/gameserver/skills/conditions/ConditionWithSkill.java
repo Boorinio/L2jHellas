@@ -17,8 +17,7 @@ package com.l2jhellas.gameserver.skills.conditions;
 import com.l2jhellas.gameserver.skills.Env;
 
 /**
- *
- * @author  Steuf
+ * @author Steuf
  */
 public class ConditionWithSkill extends Condition
 {

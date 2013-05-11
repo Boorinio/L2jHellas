@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author Ahmed
- * 
  */
 public class EffectImmobileUntilAttacked extends L2Effect
 {
@@ -32,20 +31,12 @@ public class EffectImmobileUntilAttacked extends L2Effect
 		super(env, template);
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#getEffectType()
-	 */
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.IMMOBILEUNTILATTACKED;
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#onStart()
-	 */
 	@Override
 	public boolean onStart()
 	{
@@ -53,20 +44,12 @@ public class EffectImmobileUntilAttacked extends L2Effect
 		return true;
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#onExit()
-	 */
 	@Override
 	public void onExit()
 	{
 		getEffected().stopImmobileUntilAttacked(this);
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#onActionTime()
-	 */
 	@Override
 	public boolean onActionTime()
 	{

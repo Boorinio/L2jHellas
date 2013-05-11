@@ -19,9 +19,8 @@ import java.util.logging.Logger;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.taskmanager.Task;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
-import com.l2jhellas.gameserver.taskmanager.TaskTypes;
 import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
-
+import com.l2jhellas.gameserver.taskmanager.TaskTypes;
 
 /**
  * Updates all data of Olympiad nobles in db
@@ -30,31 +29,33 @@ import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
  */
 public class TaskOlympiadSave extends Task
 {
-    private static final Logger _log = Logger.getLogger(TaskOlympiadSave.class.getName());
-    public static final String NAME = "OlympiadSave";
+	private static final Logger _log = Logger.getLogger(TaskOlympiadSave.class.getName());
+	public static final String NAME = "OlympiadSave";
 
-    @Override
+	@Override
 	public String getName()
-    {
-        return NAME;
-    }
+	{
+		return NAME;
+	}
 
-    @Override
+	@Override
 	public void onTimeElapsed(ExecutedTask task)
-    {
-        try {
-            Olympiad.getInstance().save();
-            _log.info("Olympiad System: Data updated successfully.");
-        }
-        catch (Exception e) {
-            _log.warning("Olympiad System: Failed to save Olympiad configuration: " + e);
-        }
-    }
+	{
+		try
+		{
+			Olympiad.getInstance().save();
+			_log.info("Olympiad System: Data updated successfully.");
+		}
+		catch (Exception e)
+		{
+			_log.warning("Olympiad System: Failed to save Olympiad configuration: " + e);
+		}
+	}
 
-    @Override
+	@Override
 	public void initializate()
-    {
-        super.initializate();
-        TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_FIXED_SHEDULED, "900000", "1800000", "");
-    }
+	{
+		super.initializate();
+		TaskManager.addUniqueTask(NAME, TaskTypes.TYPE_FIXED_SHEDULED, "900000", "1800000", "");
+	}
 }

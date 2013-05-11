@@ -9,7 +9,6 @@ import com.l2jhellas.util.ArrayUtils;
 /**
  * @author ProGramMoS
  */
-
 public final class RunnableStatsManager
 {
 	protected static final Map<Class<?>, ClassStat> _classStats = new HashMap<Class<?>, ClassStat>();
@@ -26,11 +25,11 @@ public final class RunnableStatsManager
 
 		protected MethodStat getMethodStat(String methodName, boolean synchronizedAlready)
 		{
-			for(int i = 0; i < _methodNames.length; i++)
-				if(_methodNames[i].equals(methodName))
+			for (int i = 0; i < _methodNames.length; i++)
+				if (_methodNames[i].equals(methodName))
 					return _methodStats[i];
 
-			if(!synchronizedAlready)
+			if (!synchronizedAlready)
 			{
 				synchronized (this)
 				{
@@ -42,8 +41,8 @@ public final class RunnableStatsManager
 
 			final MethodStat methodStat = new MethodStat();
 
-			_methodNames = (String[]) ArrayUtils.add(_methodNames, methodName);
-			_methodStats = (MethodStat[]) ArrayUtils.add(_methodStats, methodStat);
+			_methodNames = ArrayUtils.add(_methodNames, methodName);
+			_methodStats = ArrayUtils.add(_methodStats, methodStat);
 
 			return methodStat;
 		}
@@ -75,10 +74,10 @@ public final class RunnableStatsManager
 	{
 		ClassStat classStat = _classStats.get(clazz);
 
-		if(classStat != null)
+		if (classStat != null)
 			return classStat;
 
-		if(!synchronizedAlready)
+		if (!synchronizedAlready)
 		{
 			synchronized (RunnableStatsManager.class)
 			{

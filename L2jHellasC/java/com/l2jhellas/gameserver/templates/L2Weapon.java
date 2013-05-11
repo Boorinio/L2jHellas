@@ -37,11 +37,6 @@ import com.l2jhellas.gameserver.skills.conditions.ConditionGameChance;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
 
-/**
- * This class is dedicated to the management of weapons.
- *
- * @version $Revision: 1.4.2.3.2.5 $ $Date: 2005/04/02 15:57:51 $
- */
 public final class L2Weapon  extends L2Item
 {
 	private final int _soulShotCount;

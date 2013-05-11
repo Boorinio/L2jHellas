@@ -17,16 +17,22 @@ package com.l2jhellas.gameserver.skills.conditions;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Env;
 
-
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionPlayerState extends Condition {
-
-	public enum CheckPlayerState { RESTING, MOVING, RUNNING, FLYING, BEHIND, FRONT }
+public class ConditionPlayerState extends Condition
+{
+	public enum CheckPlayerState
+	{
+		RESTING,
+		MOVING,
+		RUNNING,
+		FLYING,
+		BEHIND,
+		FRONT
+	}
 
 	private final CheckPlayerState _check;
 	private final boolean _required;
@@ -38,26 +44,27 @@ public class ConditionPlayerState extends Condition {
 	}
 
 	@Override
-	public boolean testImpl(Env env) {
+	public boolean testImpl(Env env)
+	{
 		switch (_check)
 		{
-		case RESTING:
-			if (env.player instanceof L2PcInstance) {
-				return ((L2PcInstance)env.player).isSitting() == _required;
-			}
-			return !_required;
-		case MOVING:
-			return env.player.isMoving() == _required;
-		case RUNNING:
-			return env.player.isMoving() == _required && env.player.isRunning() == _required;
-		case FLYING:
-			return env.player.isFlying() == _required;
-        case BEHIND:
-            return env.player.isBehindTarget() == _required;
-        case FRONT:
-            return env.player.isFrontTarget() == _required;
+			case RESTING:
+				if (env.player instanceof L2PcInstance)
+				{
+					return ((L2PcInstance) env.player).isSitting() == _required;
+				}
+				return !_required;
+			case MOVING:
+				return env.player.isMoving() == _required;
+			case RUNNING:
+				return env.player.isMoving() == _required && env.player.isRunning() == _required;
+			case FLYING:
+				return env.player.isFlying() == _required;
+			case BEHIND:
+				return env.player.isBehindTarget() == _required;
+			case FRONT:
+				return env.player.isFrontTarget() == _required;
 		}
 		return !_required;
 	}
 }
-

@@ -42,10 +42,10 @@ public class SkillsEngine {
 
 	private static final SkillsEngine _instance = new SkillsEngine();
 
-	private List<File> _armorFiles     = new FastList<File>();
-	private List<File> _weaponFiles    = new FastList<File>();
-	private List<File> _etcitemFiles   = new FastList<File>();
-	private List<File> _skillFiles     = new FastList<File>();
+	private final List<File> _armorFiles     = new FastList<File>();
+	private final List<File> _weaponFiles    = new FastList<File>();
+	private final List<File> _etcitemFiles   = new FastList<File>();
+	private final List<File> _skillFiles     = new FastList<File>();
 
     public static SkillsEngine getInstance()
 	{
@@ -54,7 +54,7 @@ public class SkillsEngine {
 
 	private SkillsEngine()
 	{
-		//hashFiles("data/stats/etcitem", _etcitemFiles);
+		// hashFiles("data/stats/etcitem", _etcitemFiles);
 		hashFiles("data/stats/armor", _armorFiles);
 		hashFiles("data/stats/weapon", _weaponFiles);
 		hashFiles("data/stats/skills", _skillFiles);

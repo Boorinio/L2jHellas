@@ -21,12 +21,12 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author demonia
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class EffectImmobilePetBuff extends L2Effect {
-     private L2Summon _pet;
+public final class EffectImmobilePetBuff extends L2Effect
+{
+	private L2Summon _pet;
 
 	public EffectImmobilePetBuff(Env env, EffectTemplate template)
 	{
@@ -45,11 +45,9 @@ public final class EffectImmobilePetBuff extends L2Effect {
 	{
 		_pet = null;
 
-		if (getEffected() instanceof L2Summon
-			    && getEffector() instanceof L2PcInstance
-				&& ((L2Summon)getEffected()).getOwner() == getEffector())
+		if (getEffected() instanceof L2Summon && getEffector() instanceof L2PcInstance && ((L2Summon) getEffected()).getOwner() == getEffector())
 		{
-			_pet = (L2Summon)getEffected();
+			_pet = (L2Summon) getEffected();
 			_pet.setIsImmobilized(true);
 			return true;
 		}
@@ -58,15 +56,16 @@ public final class EffectImmobilePetBuff extends L2Effect {
 
 	/** Notify exited */
 	@Override
-	public void onExit() {
+	public void onExit()
+	{
 		if (_pet != null)
 			_pet.setIsImmobilized(false);
 	}
 
 	@Override
 	public boolean onActionTime()
-    {
-    	// just stop this effect
-    	return false;
-    }
+	{
+		// just stop this effect
+		return false;
+	}
 }

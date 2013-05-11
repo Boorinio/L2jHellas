@@ -19,22 +19,21 @@ import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
 
 /**
  * @author Tempy
- *
  */
 public final class TaskCleanUp extends Task
 {
-    public static final String NAME = "CleanUp";
+	public static final String NAME = "CleanUp";
 
-    @Override
+	@Override
 	public String getName()
-    {
-        return NAME;
-    }
+	{
+		return NAME;
+	}
 
-    @Override
+	@Override
 	public void onTimeElapsed(ExecutedTask task)
-    {
-        System.runFinalization();
-        System.gc();
-    }
+	{
+		System.runFinalization();
+		System.gc();
+	}
 }

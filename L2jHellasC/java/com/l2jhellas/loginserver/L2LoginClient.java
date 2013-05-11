@@ -25,8 +25,8 @@ import com.l2jhellas.loginserver.crypt.LoginCrypt;
 import com.l2jhellas.loginserver.crypt.ScrambledKeyPair;
 import com.l2jhellas.loginserver.serverpackets.L2LoginServerPacket;
 import com.l2jhellas.loginserver.serverpackets.LoginFail;
-import com.l2jhellas.loginserver.serverpackets.PlayFail;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
+import com.l2jhellas.loginserver.serverpackets.PlayFail;
 import com.l2jhellas.loginserver.serverpackets.PlayFail.PlayFailReason;
 import com.l2jhellas.util.Rnd;
 import com.l2jserver.mmocore.network.MMOClient;
@@ -35,30 +35,33 @@ import com.l2jserver.mmocore.network.MMOConnection;
 /**
  * Represents a client connected into the LoginServer
  *
- * @author  KenM
+ * @author KenM
  */
 public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 {
 	private static Logger _log = Logger.getLogger(L2LoginClient.class.getName());
 
-	public static enum LoginClientState { CONNECTED, AUTHED_GG, AUTHED_LOGIN};
+	public static enum LoginClientState
+	{
+		CONNECTED, AUTHED_GG, AUTHED_LOGIN
+	};
 
 	private LoginClientState _state;
 
 	// Crypt
-	private LoginCrypt _loginCrypt;
-	private ScrambledKeyPair _scrambledPair;
-	private byte[] _blowfishKey;
+	private final LoginCrypt _loginCrypt;
+	private final ScrambledKeyPair _scrambledPair;
+	private final byte[] _blowfishKey;
 
 	private String _account;
 	private int _accessLevel;
 	private int _lastServer;
 	private boolean _usesInternalIP;
 	private SessionKey _sessionKey;
-	private int _sessionId;
+	private final int _sessionId;
 	private boolean _joinedGS;
 
-	private long _connectionStartTime;
+	private final long _connectionStartTime;
 
 	/**
 	 * @param con
@@ -88,9 +91,6 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		return _usesInternalIP;
 	}
 
-	/**
-	 * @see com.l2jserver.mmocore.interfaces.MMOClient#decrypt(java.nio.ByteBuffer, int)
-	 */
 	@Override
 	public boolean decrypt(ByteBuffer buf, int size)
 	{
@@ -110,16 +110,13 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		{
 			byte[] dump = new byte[size];
 			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
-			_log.warning("Wrong checksum from client: "+toString());
+			_log.warning("Wrong checksum from client: " + toString());
 			super.getConnection().close(null);
 		}
 
 		return ret;
 	}
 
-	/**
-	 * @see com.l2jserver.mmocore.interfaces.MMOClient#encrypt(java.nio.ByteBuffer, int)
-	 */
 	@Override
 	public boolean encrypt(ByteBuffer buf, int size)
 	{
@@ -248,7 +245,7 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 	{
 		if (Config.DEBUG)
 		{
-			_log.info("DISCONNECTED: "+toString());
+			_log.info("DISCONNECTED: " + toString());
 		}
 
 		if (getState() != LoginClientState.AUTHED_LOGIN)
@@ -267,16 +264,17 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		InetAddress address = getConnection().getInetAddress();
 		if (getState() == LoginClientState.AUTHED_LOGIN)
 		{
-			return "["+getAccount()+" ("+(address == null ? "disconnected" : address.getHostAddress())+")]";
+			return "[" + getAccount() + " (" + (address == null ? "disconnected" : address.getHostAddress()) + ")]";
 		}
 		else
 		{
-			return "["+(address == null ? "disconnected" : address.getHostAddress())+"]";
+			return "[" + (address == null ? "disconnected" : address.getHostAddress()) + "]";
 		}
 	}
-	@Override  
-    protected void onForcedDisconnection()  
-    {  
-       // Empty  
-    }  
+
+	@Override
+	protected void onForcedDisconnection()
+	{
+		// Empty
+	}
 }

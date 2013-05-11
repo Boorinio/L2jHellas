@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.skills;
 import com.l2jhellas.gameserver.model.L2Skill;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class NobleSkillTable
@@ -49,12 +48,14 @@ public class NobleSkillTable
 	{
 		return _nobleSkills;
 	}
-	
+
 	public static boolean isNobleSkill(int skillid)
 	{
-		Integer[] _NobleSkillsId = new Integer[]{1323, 325, 326, 327, 1324, 1325, 1326, 1327};
+		Integer[] _NobleSkillsId = new Integer[] {
+		1323, 325, 326, 327, 1324, 1325, 1326, 1327
+		};
 
-		for (int id: _NobleSkillsId)
+		for (int id : _NobleSkillsId)
 		{
 			if (id == skillid)
 				return true;

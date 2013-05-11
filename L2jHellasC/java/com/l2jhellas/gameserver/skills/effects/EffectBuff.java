@@ -19,12 +19,11 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class EffectBuff extends L2Effect {
-
+public final class EffectBuff extends L2Effect
+{
 	public EffectBuff(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -38,9 +37,8 @@ public final class EffectBuff extends L2Effect {
 
 	@Override
 	public boolean onActionTime()
-    {
-    	// just stop this effect
-    	return false;
-    }
+	{
+		// just stop this effect
+		return false;
+	}
 }
-

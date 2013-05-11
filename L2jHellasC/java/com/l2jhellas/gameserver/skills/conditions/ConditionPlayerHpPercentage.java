@@ -18,14 +18,16 @@ import com.l2jhellas.gameserver.skills.Env;
 
 public class ConditionPlayerHpPercentage extends Condition
 {
-    private double _p;
+	private final double _p;
 
-    public ConditionPlayerHpPercentage(double p)
-    {
-        _p = p;
-    }
+	public ConditionPlayerHpPercentage(double p)
+	{
+		_p = p;
+	}
 
-    @Override
-	public boolean testImpl(Env env) {
-        return env.player.getCurrentHp() <= env.player.getMaxHp()*_p;    }
+	@Override
+	public boolean testImpl(Env env)
+	{
+		return env.player.getCurrentHp() <= env.player.getMaxHp() * _p;
+	}
 }

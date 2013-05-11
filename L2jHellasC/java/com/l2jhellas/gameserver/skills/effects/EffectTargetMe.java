@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.skills.Env;
 
 /**
- * 
  * @author -Nemesiss-
  */
 public class EffectTargetMe extends L2Effect
@@ -30,20 +29,12 @@ public class EffectTargetMe extends L2Effect
 		super(env, template);
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#getEffectType()
-	 */
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.TARGET_ME;
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#onStart()
-	 */
 	@Override
 	public boolean onStart()
 	{
@@ -54,20 +45,12 @@ public class EffectTargetMe extends L2Effect
 		return true;
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#onExit()
-	 */
 	@Override
 	public void onExit()
 	{
 		// nothing
 	}
 	
-	/**
-	 * 
-	 * @see com.l2jhellas.gameserver.model.L2Effect#onActionTime()
-	 */
 	@Override
 	public boolean onActionTime()
 	{

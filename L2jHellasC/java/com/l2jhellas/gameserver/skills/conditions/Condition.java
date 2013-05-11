@@ -14,22 +14,15 @@
  */
 package com.l2jhellas.gameserver.skills.conditions;
 
-//import java.util.logging.Logger;
-
 import com.l2jhellas.gameserver.skills.Env;
-
-
 
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public abstract class Condition implements ConditionListener {
-
-	//private static final Logger _log = Logger.getLogger(Condition.class.getName());
-
+public abstract class Condition implements ConditionListener
+{
 	private ConditionListener _listener;
 	private String _msg;
 	private boolean _result;
@@ -68,6 +61,7 @@ public abstract class Condition implements ConditionListener {
 
 	abstract boolean testImpl(Env env);
 
+	@Override
 	public void notifyChanged()
 	{
 		if (_listener != null)

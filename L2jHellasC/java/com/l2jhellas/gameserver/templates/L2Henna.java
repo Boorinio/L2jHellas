@@ -14,14 +14,8 @@
  */
 package com.l2jhellas.gameserver.templates;
 
-/**
- * This class ...
- *
- * @version $Revision$ $Date$
- */
 public class L2Henna
 {
-
 	public final int symbolId;
 	public final String symbolName;
 	public final int dye;
@@ -36,18 +30,17 @@ public class L2Henna
 
 	public L2Henna(StatsSet set)
 	{
-
-		symbolId          = set.getInteger("symbol_id");
-		symbolName		   = ""; //set.getString("symbol_name");
-		dye                = set.getInteger("dye");
-		price              = set.getInteger("price");
-		amount			   = set.getInteger("amount");
-		statINT           = set.getInteger("stat_INT");
-		statSTR           = set.getInteger("stat_STR");
-		statCON           = set.getInteger("stat_CON");
-		statMEM           = set.getInteger("stat_MEM");
-		statDEX	       = set.getInteger("stat_DEX");
-		statWIT           = set.getInteger("stat_WIT");
+		symbolId = set.getInteger("symbol_id");
+		symbolName = ""; // set.getString("symbol_name");
+		dye = set.getInteger("dye");
+		price = set.getInteger("price");
+		amount = set.getInteger("amount");
+		statINT = set.getInteger("stat_INT");
+		statSTR = set.getInteger("stat_STR");
+		statCON = set.getInteger("stat_CON");
+		statMEM = set.getInteger("stat_MEM");
+		statDEX = set.getInteger("stat_DEX");
+		statWIT = set.getInteger("stat_WIT");
 
 	}
 
@@ -55,70 +48,49 @@ public class L2Henna
 	{
 		return symbolId;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getDyeId()
 	{
 		return dye;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getPrice()
 	{
 		return price;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getAmountDyeRequire()
 	{
 		return amount;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getStatINT()
 	{
 		return statINT;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getStatSTR()
 	{
 		return statSTR;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getStatCON()
 	{
 		return statCON;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getStatMEM()
 	{
 		return statMEM;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getStatDEX()
 	{
 		return statDEX;
 	}
-	/**
-	 * @return
-	 */
+
 	public int getStatWIT()
 	{
 		return statWIT;
 	}
-	/**
-	 * @return
-	 */
 }

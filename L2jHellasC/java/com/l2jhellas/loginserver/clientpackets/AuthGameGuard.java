@@ -21,7 +21,6 @@ import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 /**
  * @author -Wooden-
  * Format: ddddd
- *
  */
 public class AuthGameGuard extends L2LoginClientPacket
 {
@@ -56,9 +55,6 @@ public class AuthGameGuard extends L2LoginClientPacket
 		return _data4;
 	}
 
-	/**
-	 * @see com.l2jhellas.loginserver.clientpackets.L2LoginClientPacket#readImpl()
-	 */
 	@Override
 	protected boolean readImpl()
 	{
@@ -77,9 +73,6 @@ public class AuthGameGuard extends L2LoginClientPacket
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.mmocore.ClientPacket#run()
-	 */
 	@Override
 	public void run()
 	{

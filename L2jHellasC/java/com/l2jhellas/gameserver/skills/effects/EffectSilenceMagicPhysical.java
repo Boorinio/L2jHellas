@@ -17,38 +17,39 @@ package com.l2jhellas.gameserver.skills.effects;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.skills.Env;
 
-public class EffectSilenceMagicPhysical extends L2Effect {
+public class EffectSilenceMagicPhysical extends L2Effect
+{
+	public EffectSilenceMagicPhysical(Env env, EffectTemplate template)
+	{
+		super(env, template);
+	}
 
+	@Override
+	public EffectType getEffectType()
+	{
+		return L2Effect.EffectType.SILENCE_MAGIC_PHYSICAL;
+	}
 
-    public EffectSilenceMagicPhysical(Env env, EffectTemplate template) {
-        super(env, template);
-    }
-
-    @Override
-	public EffectType getEffectType() {
-        return L2Effect.EffectType.SILENCE_MAGIC_PHYSICAL;
-    }
-
-    @Override
+	@Override
 	public boolean onStart()
-    {
-        getEffected().startMuted();
-        getEffected().startPsychicalMuted();
-        return true;
-    }
+	{
+		getEffected().startMuted();
+		getEffected().startPsychicalMuted();
+		return true;
+	}
 
-    @Override
+	@Override
 	public boolean onActionTime()
-    {
-        getEffected().stopMuted(this);
-        getEffected().stopPsychicalMuted(this);
-        return false;
-    }
+	{
+		getEffected().stopMuted(this);
+		getEffected().stopPsychicalMuted(this);
+		return false;
+	}
 
-    @Override
+	@Override
 	public void onExit()
-    {
-        getEffected().stopMuted(this);
-        getEffected().stopPsychicalMuted(this);
-    }
+	{
+		getEffected().stopMuted(this);
+		getEffected().stopPsychicalMuted(this);
+	}
 }

@@ -16,11 +16,6 @@ package com.l2jhellas.util;
 
 import java.io.Serializable;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
 public class Point3D implements Serializable
 {
 	/**

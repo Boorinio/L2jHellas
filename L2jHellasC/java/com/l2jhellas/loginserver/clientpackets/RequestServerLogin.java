@@ -17,9 +17,9 @@ package com.l2jhellas.loginserver.clientpackets;
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.LoginController;
 import com.l2jhellas.loginserver.SessionKey;
-import com.l2jhellas.loginserver.serverpackets.PlayOk;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.loginserver.serverpackets.PlayFail.PlayFailReason;
+import com.l2jhellas.loginserver.serverpackets.PlayOk;
 
 /**
  * Fromat is ddc

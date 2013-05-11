@@ -17,16 +17,13 @@ package com.l2jhellas.gameserver.skills.conditions;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Stats;
 
-
-
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public class ConditionSkillStats extends Condition {
-
+public class ConditionSkillStats extends Condition
+{
 	private final Stats _stat;
 
 	public ConditionSkillStats(Stats stat)
@@ -36,10 +33,10 @@ public class ConditionSkillStats extends Condition {
 	}
 
 	@Override
-	public boolean testImpl(Env env) {
+	public boolean testImpl(Env env)
+	{
 		if (env.skill == null)
 			return false;
 		return env.skill.getStat() == _stat;
 	}
 }
-

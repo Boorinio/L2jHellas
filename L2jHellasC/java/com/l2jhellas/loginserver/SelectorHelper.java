@@ -27,29 +27,24 @@ import com.l2jserver.mmocore.network.MMOConnection;
 import com.l2jserver.mmocore.network.ReceivablePacket;
 
 /**
- *
- * @author  KenM
+ * @author KenM
  */
 public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFactory<L2LoginClient>, IAcceptFilter
 {
-	private ThreadPoolExecutor _generalPacketsThreadPool;
+	private final ThreadPoolExecutor _generalPacketsThreadPool;
 
 	public SelectorHelper()
 	{
 		_generalPacketsThreadPool = new ThreadPoolExecutor(4, 6, 15L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 	}
 
-	/**
-	 * @see com.l2jhellas.mmocore.IMMOExecutor#execute(com.l2jhellas.mmocore.ClientPacket)
-	 */
+	@Override
 	public void execute(ReceivablePacket<L2LoginClient> packet)
 	{
 		_generalPacketsThreadPool.execute(packet);
 	}
 
-	/**
-	 * @see com.l2jhellas.mmocore.IClientFactory#create(com.l2jhellas.mmocore.MMOConnection)
-	 */
+	@Override
 	public L2LoginClient create(MMOConnection<L2LoginClient> con)
 	{
 		L2LoginClient client = new L2LoginClient(con);
@@ -57,12 +52,9 @@ public class SelectorHelper implements IMMOExecutor<L2LoginClient>, IClientFacto
 		return client;
 	}
 
-	/**
-	 * @see com.l2jserver.mmocore.network.IAcceptFilter#accept(java.nio.channels.SocketChannel)
-	 */
+	@Override
 	public boolean accept(SocketChannel sc)
 	{
 		return !LoginController.getInstance().isBannedAddress(sc.socket().getInetAddress());
 	}
-
 }

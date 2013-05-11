@@ -23,6 +23,9 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 
+/**
+ * @author Nightwolf
+ */
 public class FileLogFormatter extends Formatter
 {
 	private static final String CRLF = "\r\n";
@@ -32,24 +35,24 @@ public class FileLogFormatter extends Formatter
 	@Override
 	public String format(LogRecord record)
 	{
-        TextBuilder output = new TextBuilder();
+		TextBuilder output = new TextBuilder();
 
-        output.append("L2jHellas");
-        output.append(_);
-        output.append(dateFmt.format(new Date(record.getMillis())));
-        output.append(_);
-        output.append(record.getLevel().getName());
-        if (Config.DEBUG_LOGGER)
-        {
-        	output.append(_);
-        	output.append(record.getThreadID());
-        	output.append(_);
-        	output.append(record.getLoggerName());
-        }
-        output.append(_);
-        output.append(record.getMessage());
+		output.append("L2jHellas");
+		output.append(_);
+		output.append(dateFmt.format(new Date(record.getMillis())));
+		output.append(_);
+		output.append(record.getLevel().getName());
+		if (Config.DEBUG_LOGGER)
+		{
+			output.append(_);
+			output.append(record.getThreadID());
+			output.append(_);
+			output.append(record.getLoggerName());
+		}
+		output.append(_);
+		output.append(record.getMessage());
 
-        output.append(CRLF);
+		output.append(CRLF);
 
 		return output.toString();
 	}

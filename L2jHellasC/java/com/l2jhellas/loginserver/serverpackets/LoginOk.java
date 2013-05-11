@@ -29,7 +29,7 @@ import com.l2jhellas.loginserver.SessionKey;
  */
 public final class LoginOk extends L2LoginServerPacket
 {
-	private int _loginOk1, _loginOk2;
+	private final int _loginOk1, _loginOk2;
 
 	public LoginOk(SessionKey sessionKey)
 	{
@@ -37,9 +37,6 @@ public final class LoginOk extends L2LoginServerPacket
 		_loginOk2 = sessionKey.loginOkID2;
 	}
 
-	/**
-	 * @see com.l2jserver.mmocore.network.SendablePacket#write()
-	 */
 	@Override
 	protected void write()
 	{

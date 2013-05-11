@@ -20,29 +20,21 @@ import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
 
 /**
  * @author Layane
- *
  */
 public class TaskShutdown extends Task
 {
-    public static final String NAME = "shutdown";
+	public static final String NAME = "shutdown";
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.taskmanager.Task#getName()
-     */
-    @Override
-    public String getName()
-    {
-        return NAME;
-    }
+	@Override
+	public String getName()
+	{
+		return NAME;
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.taskmanager.Task#onTimeElapsed(com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask)
-     */
-    @Override
-    public void onTimeElapsed(ExecutedTask task)
-    {
-        Shutdown handler = new Shutdown(Integer.valueOf(task.getParams()[2]),false);
-        handler.start();
-    }
-
+	@Override
+	public void onTimeElapsed(ExecutedTask task)
+	{
+		Shutdown handler = new Shutdown(Integer.valueOf(task.getParams()[2]), false);
+		handler.start();
+	}
 }

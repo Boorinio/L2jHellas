@@ -52,7 +52,8 @@ public enum L2WeaponType {
 	 * Returns the ID of the item after applying the mask.
 	 * @return int : ID of the item
 	 */
-	public int mask() {
+	public int mask()
+	{
 		return 1<<_id;
 	}
 
@@ -65,5 +66,4 @@ public enum L2WeaponType {
 	{
 		return _name;
 	}
-
 }

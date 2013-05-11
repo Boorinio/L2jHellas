@@ -45,11 +45,6 @@ import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.util.Rnd;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.7.4.3 $ $Date: 2005/03/27 15:30:09 $
- */
 public class LoginController
 {
 	protected static final Logger _log = Logger.getLogger(LoginController.class.getName());

@@ -52,9 +52,7 @@ import com.l2jhellas.util.Util;
 /**
  * @author -Wooden-
  * @author KenM
- *
  */
-
 public class GameServerThread extends Thread
 {
 	protected static final Logger _log = Logger.getLogger(GameServerThread.class.getName());

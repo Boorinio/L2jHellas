@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.skills;
 import com.l2jhellas.gameserver.model.L2Skill;
 
 /**
- *
  * @author BiTi
  */
 public class HeroSkillTable
@@ -49,9 +48,11 @@ public class HeroSkillTable
 
 	public static boolean isHeroSkill(int skillid)
 	{
-		Integer[] _HeroSkillsId = new Integer[]{395, 396, 1374, 1375, 1376};
+		Integer[] _HeroSkillsId = new Integer[] {
+		395, 396, 1374, 1375, 1376
+		};
 
-		for (int id: _HeroSkillsId)
+		for (int id : _HeroSkillsId)
 		{
 			if (id == skillid)
 				return true;

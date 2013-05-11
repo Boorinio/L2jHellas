@@ -68,7 +68,7 @@ public enum Stats
 	MAGIC_ATTACK_RANGE("mAtkRange"),
     POWER_ATTACK_ANGLE("pAtkAngle"),
     ATTACK_COUNT_MAX("atkCountMax"),
-	
+
     // STEPS SPEED
 	RUN_SPEED("runSpd"),
 	WALK_SPEED("walkSpd"),
@@ -99,7 +99,7 @@ public enum Stats
 	EARTH("earth"),
 	HOLY("holy"),
 	DARK("dark"),
-	
+
 	BUFF_VULN("buffVuln"),
 	FALL_VULN("fallVuln"),
 	AGGRESSION_VULN("aggressionVuln"),
@@ -149,25 +149,25 @@ public enum Stats
 	PATK_BEAST("pAtk-beast"),
 	PATK_DRAGONS("pAtk-dragon"),
 	PATK_UNDEAD("pAtk-undead"),
-    PATK_MAGIC("pAtk-magic"), 
-     
+    PATK_MAGIC("pAtk-magic"),
+
     // PDEF
-    PDEF_PLANTS("pDef-plants"), 
-    PDEF_INSECTS("pDef-insects"), 
-    PDEF_ANIMALS("pDef-animals"), 
-    PDEF_MONSTERS("pDef-monsters"), 
-    PDEF_DRAGONS("pDef-dragons"), 
-    PDEF_UNDEAD("pDef-undead"), 
-    PDEF_GIANTS("pDef-giants"), 
-    PDEF_MAGIC("pDef-magic"), 
+    PDEF_PLANTS("pDef-plants"),
+    PDEF_INSECTS("pDef-insects"),
+    PDEF_ANIMALS("pDef-animals"),
+    PDEF_MONSTERS("pDef-monsters"),
+    PDEF_DRAGONS("pDef-dragons"),
+    PDEF_UNDEAD("pDef-undead"),
+    PDEF_GIANTS("pDef-giants"),
+    PDEF_MAGIC("pDef-magic"),
 
     // VALAKAS
-    PATK_VALAKAS("pAtk-valakas"), 
+    PATK_VALAKAS("pAtk-valakas"),
     PDEF_VALAKAS("pDef-valakas"),
 
 	ATK_REUSE("atkReuse"),
 	P_REUSE("pReuse"),
-	
+
 	//ExSkill
 	INV_LIM("inventoryLimit"),
 	WH_LIM("whLimit"),
@@ -176,13 +176,13 @@ public enum Stats
 	P_BUY_LIM("PrivateBuyLimit"),
 	REC_D_LIM("DwarfRecipeLimit"),
 	REC_C_LIM("CommonRecipeLimit"),
-	
+
 	// ELEMENTS POWER
- 	FIRE_POWER("firePower"), 
- 	WATER_POWER("waterPower"), 
- 	WIND_POWER("windPower"), 
- 	EARTH_POWER("earthPower"), 
- 	HOLY_POWER("holyPower"), 
+ 	FIRE_POWER("firePower"),
+ 	WATER_POWER("waterPower"),
+ 	WIND_POWER("windPower"),
+ 	EARTH_POWER("earthPower"),
+ 	HOLY_POWER("holyPower"),
  	DARK_POWER("darkPower"),
 
     //C4 STATS
@@ -191,7 +191,7 @@ public enum Stats
     HP_CONSUME_RATE("HpConsumeRate"),
     MP_CONSUME("MpConsume"),
     SOULSHOT_COUNT ("soulShotCount"),
-    
+
     // MASTERY
 	SKILL_MASTERY("skillMastery");
 
@@ -205,19 +205,21 @@ public enum Stats
 	{
 		return _value;
 	}
+
 	private Stats(String s)
 	{
 		_value = s;
 	}
+
 	public static Stats valueOfXml(String name)
 	{
 		name = name.intern();
-		for(Stats s: values())
+		for (Stats s : values())
 		{
-			if(s.getValue().equals(name))
+			if (s.getValue().equals(name))
 				return s;
 		}
 
-		throw new NoSuchElementException("Unknown name '"+name+"' for enum BaseStats");
+		throw new NoSuchElementException("Unknown name '" + name + "' for enum BaseStats");
 	}
 }

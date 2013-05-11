@@ -25,7 +25,6 @@ import java.util.zip.ZipFile;
  * This is a class loader for the dynamic extensions used by DynamicExtension
  * class.
  *
- * @version $Revision: $ $Date: $
  * @author galun
  */
 public class JarClassLoader extends ClassLoader

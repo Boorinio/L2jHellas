@@ -21,12 +21,11 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class EffectFakeDeath extends L2Effect {
-
+public final class EffectFakeDeath extends L2Effect
+{
 	public EffectFakeDeath(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -48,21 +47,22 @@ public final class EffectFakeDeath extends L2Effect {
 
 	/** Notify exited */
 	@Override
-	public void onExit() {
+	public void onExit()
+	{
 		getEffected().stopFakeDeath(this);
 	}
 
-    @Override
+	@Override
 	public boolean onActionTime()
-    {
-		if(getEffected().isDead())
+	{
+		if (getEffected().isDead())
 			return false;
 
 		double manaDam = calc();
 
-		if(manaDam > getEffected().getCurrentMp())
+		if (manaDam > getEffected().getCurrentMp())
 		{
-			if(getSkill().isToggle())
+			if (getSkill().isToggle())
 			{
 				SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP);
 				getEffected().sendPacket(sm);
@@ -72,7 +72,5 @@ public final class EffectFakeDeath extends L2Effect {
 
 		getEffected().reduceCurrentMp(manaDam);
 		return true;
-    }
+	}
 }
-
-

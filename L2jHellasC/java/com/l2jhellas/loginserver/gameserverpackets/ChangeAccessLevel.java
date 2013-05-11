@@ -18,13 +18,11 @@ import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
 /**
  * @author -Wooden-
- *
  */
 public class ChangeAccessLevel extends ClientBasePacket
 {
-
-	private int _level;
-	private String _account;
+	private final int _level;
+	private final String _account;
 
 	/**
 	 * @param decrypt
@@ -51,5 +49,4 @@ public class ChangeAccessLevel extends ClientBasePacket
 	{
 		return _level;
 	}
-
 }

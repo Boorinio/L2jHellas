@@ -40,7 +40,7 @@ final class EffectPhoenixBless extends L2Effect
 	{
 		if (getEffected() instanceof L2PlayableInstance)
 		{
-			((L2PlayableInstance)getEffected()).startPhoenixBlessing();
+			((L2PlayableInstance) getEffected()).startPhoenixBlessing();
 			return true;
 		}
 		return false;
@@ -51,7 +51,7 @@ final class EffectPhoenixBless extends L2Effect
 	public void onExit()
 	{
 		if (getEffected() instanceof L2PlayableInstance)
-			((L2PlayableInstance)getEffected()).stopPhoenixBlessing(this);
+			((L2PlayableInstance) getEffected()).stopPhoenixBlessing(this);
 	}
 
 	@Override

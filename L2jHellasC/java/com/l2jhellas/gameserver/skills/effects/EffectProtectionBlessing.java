@@ -12,53 +12,52 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.skills.effects; 
- 
+package com.l2jhellas.gameserver.skills.effects;
+
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.skills.Env;
- 
-/** 
- * @author kerberos_20 
- * 
- */ 
-public class EffectProtectionBlessing extends L2Effect 
-{ 
-       public EffectProtectionBlessing(Env env, EffectTemplate template) 
-       { 
-    	   super(env, template); 
-       } 
- 
-       @Override 
-       public EffectType getEffectType() 
-       { 
-    	   return EffectType.PROTECTION_BLESSING; 
-       } 
-        
-       /** Notify started */ 
-       @Override 
-       public boolean onStart()
-       { 
-    	   if (getEffected() instanceof L2PlayableInstance) 
-    	   {
-    		   ((L2PlayableInstance)getEffected()).startProtectionBlessing();
-    		   return true;
-    	   }
-    	   return false;
-       } 
-       
-       /** Notify exited */ 
-       @Override 
-       public void onExit()
-       { 
-    	   if (getEffected() instanceof L2PlayableInstance) 
-    		   ((L2PlayableInstance)getEffected()).stopProtectionBlessing (this); 
-       } 
-        
-    @Override 
-       public boolean onActionTime() 
-    { 
-       // just stop this effect 
-       return false; 
-    } 
-} 
+
+/**
+ * @author kerberos_20
+ */
+public class EffectProtectionBlessing extends L2Effect
+{
+	public EffectProtectionBlessing(Env env, EffectTemplate template)
+	{
+		super(env, template);
+	}
+
+	@Override
+	public EffectType getEffectType()
+	{
+		return EffectType.PROTECTION_BLESSING;
+	}
+
+	/** Notify started */
+	@Override
+	public boolean onStart()
+	{
+		if (getEffected() instanceof L2PlayableInstance)
+		{
+			((L2PlayableInstance) getEffected()).startProtectionBlessing();
+			return true;
+		}
+		return false;
+	}
+
+	/** Notify exited */
+	@Override
+	public void onExit()
+	{
+		if (getEffected() instanceof L2PlayableInstance)
+			((L2PlayableInstance) getEffected()).stopProtectionBlessing(this);
+	}
+
+	@Override
+	public boolean onActionTime()
+	{
+		// just stop this effect
+		return false;
+	}
+}

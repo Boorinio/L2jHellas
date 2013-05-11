@@ -19,40 +19,34 @@ import java.util.Iterator;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Object;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
-
 public abstract class L2ObjectMap<T extends L2Object> implements Iterable<T>
 {
 
-    public abstract int size();
+	public abstract int size();
 
-    public abstract boolean isEmpty();
+	public abstract boolean isEmpty();
 
-    public abstract void clear();
+	public abstract void clear();
 
-    public abstract void put(T obj);
+	public abstract void put(T obj);
 
-    public abstract void remove(T obj);
+	public abstract void remove(T obj);
 
-    public abstract T get(int id);
+	public abstract T get(int id);
 
-    public abstract boolean contains(T obj);
+	public abstract boolean contains(T obj);
 
-    public abstract Iterator<T> iterator();
+	@Override
+	public abstract Iterator<T> iterator();
 
-    public static L2ObjectMap<L2Object> createL2ObjectMap()
-    {
-        switch (Config.MAP_TYPE)
-        {
-            case WorldObjectMap:
-                return new WorldObjectMap<L2Object>();
-            default:
-                return new WorldObjectTree<L2Object>();
-        }
-    }
+	public static L2ObjectMap<L2Object> createL2ObjectMap()
+	{
+		switch (Config.MAP_TYPE)
+		{
+			case WorldObjectMap:
+				return new WorldObjectMap<L2Object>();
+			default:
+				return new WorldObjectTree<L2Object>();
+		}
+	}
 }

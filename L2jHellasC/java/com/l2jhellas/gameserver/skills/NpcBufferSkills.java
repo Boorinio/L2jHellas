@@ -21,9 +21,9 @@ import javolution.util.FastMap;
 public class NpcBufferSkills
 {
 	private int _npcId = 0;
-	private Map<Integer, Integer> _skillLevels = new FastMap<Integer, Integer>();
-	private Map<Integer, Integer> _skillFeeIds = new FastMap<Integer, Integer>();
-	private Map<Integer, Integer> _skillFeeAmounts = new FastMap<Integer, Integer>();
+	private final Map<Integer, Integer> _skillLevels = new FastMap<Integer, Integer>();
+	private final Map<Integer, Integer> _skillFeeIds = new FastMap<Integer, Integer>();
+	private final Map<Integer, Integer> _skillFeeAmounts = new FastMap<Integer, Integer>();
 
 	public NpcBufferSkills(int npcId)
 	{
@@ -42,11 +42,13 @@ public class NpcBufferSkills
 		Integer skillLevel = _skillLevels.get(skillId);
 		Integer skillFeeId = _skillFeeIds.get(skillId);
 		Integer skillFeeAmount = _skillFeeAmounts.get(skillId);
-		
+
 		if (skillLevel == null || skillFeeId == null || skillFeeAmount == null)
 			return null;
 
-		return new int[] {skillLevel, skillFeeId, skillFeeAmount};
+		return new int[] {
+		skillLevel, skillFeeId, skillFeeAmount
+		};
 	}
 
 	public int getNpcId()

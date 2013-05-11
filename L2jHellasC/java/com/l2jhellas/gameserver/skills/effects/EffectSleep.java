@@ -19,12 +19,11 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Style - Code Templates
  */
-public final class EffectSleep extends L2Effect {
-
+public final class EffectSleep extends L2Effect
+{
 	public EffectSleep(Env env, EffectTemplate template)
 	{
 		super(env, template);
@@ -46,16 +45,16 @@ public final class EffectSleep extends L2Effect {
 
 	/** Notify exited */
 	@Override
-	public void onExit() {
+	public void onExit()
+	{
 		getEffected().stopSleeping(this);
 	}
 
-    @Override
+	@Override
 	public boolean onActionTime()
-    {
-    	getEffected().stopSleeping(this);
-    	// just stop this effect
-    	return false;
-    }
+	{
+		getEffected().stopSleeping(this);
+		// just stop this effect
+		return false;
+	}
 }
-

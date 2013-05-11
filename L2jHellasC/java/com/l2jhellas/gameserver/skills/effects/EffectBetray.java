@@ -22,48 +22,47 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author decad
- *
  */
 public final class EffectBetray extends L2Effect
 {
-    public EffectBetray(Env env, EffectTemplate template)
-    {
-        super(env, template);
-    }
+	public EffectBetray(Env env, EffectTemplate template)
+	{
+		super(env, template);
+	}
 
-    @Override
-    public EffectType getEffectType()
-    {
-        return EffectType.BETRAY;
-    }
+	@Override
+	public EffectType getEffectType()
+	{
+		return EffectType.BETRAY;
+	}
 
-    /** Notify started */
-    @Override
-    public boolean onStart()
-    {
-        if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
-        {
-            L2PcInstance targetOwner = null;
-            targetOwner = ((L2Summon)getEffected()).getOwner();
-            getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK,targetOwner);
-            targetOwner.setIsBetrayed(true);
-            targetOwner = ((L2Summon)getEffected()).getOwner();
-            targetOwner.setIsBetrayed(true);
-            return true;
-        }
-        return false;
-    }
+	/** Notify started */
+	@Override
+	public boolean onStart()
+	{
+		if (getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
+		{
+			L2PcInstance targetOwner = null;
+			targetOwner = ((L2Summon) getEffected()).getOwner();
+			getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, targetOwner);
+			targetOwner.setIsBetrayed(true);
+			targetOwner = ((L2Summon) getEffected()).getOwner();
+			targetOwner.setIsBetrayed(true);
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public boolean onActionTime()
 	{
-		 if ( getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
-	        {
-	            L2PcInstance targetOwner = null;
-	            targetOwner = ((L2Summon)getEffected()).getOwner();
-	            targetOwner.setIsBetrayed(false);
-	            getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-	        }
+		if (getEffected() != null && getEffector() instanceof L2PcInstance && getEffected() instanceof L2Summon)
+		{
+			L2PcInstance targetOwner = null;
+			targetOwner = ((L2Summon) getEffected()).getOwner();
+			targetOwner.setIsBetrayed(false);
+			getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+		}
 		return true;
 	}
 }
-

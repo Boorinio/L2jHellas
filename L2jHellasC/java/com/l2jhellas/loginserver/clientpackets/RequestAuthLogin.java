@@ -21,18 +21,17 @@ import java.util.logging.Logger;
 import javax.crypto.Cipher;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.HackingException;
 import com.l2jhellas.loginserver.L2LoginClient;
-import com.l2jhellas.loginserver.LoginController;
-import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.L2LoginClient.LoginClientState;
+import com.l2jhellas.loginserver.LoginController;
 import com.l2jhellas.loginserver.LoginController.AuthLoginResult;
 import com.l2jhellas.loginserver.serverpackets.AccountKicked;
-import com.l2jhellas.loginserver.serverpackets.LoginOk;
-import com.l2jhellas.loginserver.serverpackets.ServerList;
 import com.l2jhellas.loginserver.serverpackets.AccountKicked.AccountKickedReason;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
-
+import com.l2jhellas.loginserver.serverpackets.LoginOk;
+import com.l2jhellas.loginserver.serverpackets.ServerList;
 
 /**
  * Format: x
@@ -43,7 +42,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestAuthLogin.class.getName());
 
-	private byte[] _raw = new byte[128];
+	private final byte[] _raw = new byte[128];
 
 	private String _user;
 	private String _password;
@@ -92,7 +91,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		{
 			Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
 			rsaCipher.init(Cipher.DECRYPT_MODE, getClient().getRSAPrivateKey());
-			decrypted = rsaCipher.doFinal(_raw, 0x00, 0x80 );
+			decrypted = rsaCipher.doFinal(_raw, 0x00, 0x80);
 		}
 		catch (GeneralSecurityException e)
 		{
@@ -100,7 +99,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 			return;
 		}
 
-		_user = new String(decrypted, 0x5E, 14 ).trim();
+		_user = new String(decrypted, 0x5E, 14).trim();
 		_user = _user.toLowerCase();
 		_password = new String(decrypted, 0x6C, 16).trim();
 		_ncotp = decrypted[0x7c];
@@ -128,13 +127,13 @@ public class RequestAuthLogin extends L2LoginClientPacket
 					{
 						getClient().sendPacket(new ServerList(getClient()));
 					}
-					break;
+				break;
 				case INVALID_PASSWORD:
 					client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);
-					break;
+				break;
 				case ACCOUNT_BANNED:
 					client.close(new AccountKicked(AccountKickedReason.REASON_PERMANENTLY_BANNED));
-					break;
+				break;
 				case ALREADY_ON_LS:
 					L2LoginClient oldClient;
 					if ((oldClient = lc.getAuthedClient(_user)) != null)
@@ -143,7 +142,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 						oldClient.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
 						lc.removeAuthedLoginClient(_user);
 					}
-					break;
+				break;
 				case ALREADY_ON_GS:
 					GameServerInfo gsi;
 					if ((gsi = lc.getAccountOnGameServer(_user)) != null)
@@ -156,14 +155,14 @@ public class RequestAuthLogin extends L2LoginClientPacket
 							gsi.getGameServerThread().kickPlayer(_user);
 						}
 					}
-					break;
+				break;
 			}
 		}
 		catch (HackingException e)
 		{
 			InetAddress address = getClient().getConnection().getInetAddress();
-			lc.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN*1000);
-			_log.info("Banned ("+address+") for "+Config.LOGIN_BLOCK_AFTER_BAN+" seconds, due to "+e.getConnects()+" incorrect login attempts.");
+			lc.addBanForAddress(address, Config.LOGIN_BLOCK_AFTER_BAN * 1000);
+			_log.info("Banned (" + address + ") for " + Config.LOGIN_BLOCK_AFTER_BAN + " seconds, due to " + e.getConnects() + " incorrect login attempts.");
 		}
 	}
 }

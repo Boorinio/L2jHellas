@@ -20,8 +20,7 @@ import com.l2jhellas.loginserver.L2LoginClient;
 import com.l2jserver.mmocore.network.ReceivablePacket;
 
 /**
- *
- * @author  KenM
+ * @author KenM
  */
 public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient>
 {
@@ -39,7 +38,7 @@ public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient
 		}
 		catch (Exception e)
 		{
-			_log.severe("ERROR READING: "+this.getClass().getSimpleName());
+			_log.severe("ERROR READING: " + this.getClass().getSimpleName());
 			e.printStackTrace();
 			return false;
 		}
