@@ -48,8 +48,9 @@ public class AccessLevels
 	private Map<Integer, L2AccessLevel> _accessLevels;
 
 	/**
-	 * Returns the one and only instance of this class<br><br>
-	 *
+	 * Returns the one and only instance of this class<br>
+	 * <br>
+	 * 
 	 * @return AccessLevels: the one and only instance of this class<br>
 	 */
 	public static AccessLevels getInstance()
@@ -125,10 +126,12 @@ public class AccessLevels
 	}
 
 	/**
-	 * Returns the access level by characterAccessLevel<br><br>
-	 *
-	 * @param accessLevelNum as int<br><br>
-	 *
+	 * Returns the access level by characterAccessLevel<br>
+	 * <br>
+	 * 
+	 * @param accessLevelNum
+	 *        as int<br>
+	 * <br>
 	 * @return AccessLevel: AccessLevel instance by char access level<br>
 	 */
 	public L2AccessLevel getAccessLevel(int accessLevelNum)

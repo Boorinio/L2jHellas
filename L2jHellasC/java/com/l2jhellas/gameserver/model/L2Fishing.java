@@ -99,7 +99,6 @@ public class L2Fishing implements Runnable
 		{
 			_fishAiTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(this, 1000, 1000);
 		}
-
 	}
 
 	public void changeHp(int hp, int pen)

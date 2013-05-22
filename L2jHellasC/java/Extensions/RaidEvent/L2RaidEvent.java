@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,7 +23,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
@@ -39,10 +40,11 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This Class implements and Manages All Raid Events.<br>
- *
+ * 
  * @author polbat02
  */
 public class L2RaidEvent
@@ -142,7 +144,7 @@ public class L2RaidEvent
 	 * CONSTRUCTOR:<br>
 	 * This is the start of the Event, defined from HTM files.<br>
 	 * Documentation can be found in the method.<br>
-	 *
+	 * 
 	 * @param player
 	 *        --> Player taking the action on the Event Manager.
 	 * @param type
@@ -233,7 +235,7 @@ public class L2RaidEvent
 	/**
 	 * We will set the player/party Member in an Event Status.<br>
 	 * This way we will also make sure they don't enroll in any other event.<br>
-	 *
+	 * 
 	 * @param player
 	 *        --> Player to set in an Event Status
 	 * @param type
@@ -281,7 +283,7 @@ public class L2RaidEvent
 	 * checked. <li>We assign a value of previousEventPoints to notify the player. <li>Apply the buffs. <li>Notify the player once he/she has gotten the Buffs. <br>
 	 * More Documentation can Be found inside the method's code.<br>
 	 * We will apply the buffs previous to the Event following the parameters:
-	 *
+	 * 
 	 * @param player
 	 *        --> Player participating in the Event.
 	 * @param eventPoints
@@ -342,7 +344,6 @@ public class L2RaidEvent
 				}
 				else
 				{
-
 					member.setEventPoints(member.getEventPoints() - individualPrice);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 					TextBuilder replyMSG = new TextBuilder("<html><body>");
@@ -380,7 +381,6 @@ public class L2RaidEvent
 					replyMSG.append("</body></html>");
 					adminReply.setHtml(replyMSG.toString());
 					member.sendPacket(adminReply);
-
 				}
 				else
 				{
@@ -408,7 +408,7 @@ public class L2RaidEvent
 	 * This check is not needed since we already check this in L2EventManagerInstance.java, but i'll
 	 * leave it in here for now since this is a very early stage of developing for now.<br>
 	 * More documentation can be found in the Method.<br>
-	 *
+	 * 
 	 * @param player
 	 *        --> Player taking the action.
 	 * @param npcId
@@ -439,7 +439,7 @@ public class L2RaidEvent
 	 * A function has been created to make it easier for us to teleport the players
 	 * every time we need them to teleport.<br>
 	 * Added suport for different kind of events.
-	 *
+	 * 
 	 * @param player
 	 *        --> Player being teleported.
 	 * @param cox
@@ -457,40 +457,30 @@ public class L2RaidEvent
 	{
 		for (final L2PcInstance member : _participatingPlayers)
 		{
-
 			// TODO: Have a look again to this mess.
-
 			member.sendMessage("You will be teleported in 10 seconds.");
 
 			ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 			{
-
 				@Override
 				public void run()
 				{
-
 					if (removeBuffs)
 					{
-
 						member.stopAllEffects();
 						member.updateEffectIcons();
 						member.broadcastUserInfo();
-
 					}
-
 					member.teleToLocation(cox, coy, coz);
-
 				}
-
 			}, 10000);
-
 		}
 	}
 
 	/**
 	 * Spawning function of Event Monsters.<br>
 	 * Added Support for multiple spawns and for each one of them being defined as Event Mob.
-	 *
+	 * 
 	 * @param monsterId
 	 *        --> Npc Id
 	 * @param respawnTime
@@ -609,7 +599,7 @@ public class L2RaidEvent
 
 	/**
 	 * Function launched at every player death (if he/she's enrolled in any Raid event)
-	 *
+	 * 
 	 * @param player
 	 */
 	public static void onPlayerDeath(L2PcInstance player)
@@ -668,7 +658,7 @@ public class L2RaidEvent
 	 * This void picks the rewards and launches the hand out system.
 	 * It also Ends the event.
 	 * Added database support for this.
-	 *
+	 * 
 	 * @param player
 	 *        --> Player taking the action.
 	 */
@@ -682,7 +672,6 @@ public class L2RaidEvent
 
 		if (_eventType == 1)
 		{
-
 			handOutItems(player, _first_id, _first_ammount, _second_id, _second_ammount, _event_ammount);
 
 			unSpawnNPC();
@@ -800,7 +789,7 @@ public class L2RaidEvent
 
 	/**
 	 * Function with which we will hand out event Items.
-	 *
+	 * 
 	 * @param player
 	 * @param item1
 	 * @param ammount1
@@ -883,16 +872,14 @@ public class L2RaidEvent
 	/**
 	 * Load Data of the prizes for each event.
 	 * Added DataBase support for this.
-	 *
+	 * 
 	 * @param prizePackage
 	 */
 	private static void loadData(int prizePackage)
 	{
-		Connection con;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT first_prize_id, first_prize_ammount, second_prize_id, second_prize_ammount, event_points_ammount FROM raid_prizes WHERE `prize_package_id` = '" + prizePackage + "'");
+			PreparedStatement statement = con.prepareStatement("SELECT first_prize_id, first_prize_ammount, second_prize_id, second_prize_ammount, event_points_ammount FROM raid_prizes WHERE prize_package_id = '" + prizePackage + "'");
 			ResultSet rset = statement.executeQuery();
 			while (rset.next())
 			{
@@ -904,7 +891,6 @@ public class L2RaidEvent
 			}
 			rset.close();
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{
@@ -915,7 +901,7 @@ public class L2RaidEvent
 	/**
 	 * Sets the Event state<br>
 	 * <br>
-	 *
+	 * 
 	 * @param state
 	 * <br>
 	 */
@@ -930,7 +916,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event inactive?<br>
 	 * <br>
-	 *
+	 * 
 	 * @return boolean<br>
 	 */
 	public static boolean isInactive()
@@ -948,7 +934,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event in inactivating?<br>
 	 * <br>
-	 *
+	 * 
 	 * @return boolean<br>
 	 */
 	public static boolean isInactivating()
@@ -966,7 +952,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event in participation?<br>
 	 * <br>
-	 *
+	 * 
 	 * @return boolean<br>
 	 */
 	public static boolean isParticipating()
@@ -984,7 +970,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event starting?<br>
 	 * <br>
-	 *
+	 * 
 	 * @return boolean<br>
 	 */
 	public static boolean isStarting()
@@ -1002,7 +988,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event started?<br>
 	 * <br>
-	 *
+	 * 
 	 * @return boolean<br>
 	 */
 	public static boolean isStarted()
@@ -1020,7 +1006,7 @@ public class L2RaidEvent
 	/**
 	 * Is Event rewarding?<br>
 	 * <br>
-	 *
+	 * 
 	 * @return boolean<br>
 	 */
 	public static boolean isRewarding()
@@ -1040,7 +1026,7 @@ public class L2RaidEvent
 	 * 1. Send the message to all players of team number one<br>
 	 * 2. Send the message to all players of team number two<br>
 	 * <br>
-	 *
+	 * 
 	 * @param message
 	 * <br>
 	 */
@@ -1055,11 +1041,9 @@ public class L2RaidEvent
 
 	private static void loadSpawns(int eventNum)
 	{
-		Connection con;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT raid_locX, raid_locY, raid_locZ, player_locX, player_locY, player_locZ FROM raid_event_spawnlist WHERE `id` = '" + eventNum + "'");
+			PreparedStatement statement = con.prepareStatement("SELECT raid_locX, raid_locY, raid_locZ, player_locX, player_locY, player_locZ FROM raid_event_spawnlist WHERE id = '" + eventNum + "'");
 			ResultSet rset = statement.executeQuery();
 			while (rset.next())
 			{
@@ -1072,7 +1056,6 @@ public class L2RaidEvent
 			}
 			rset.close();
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{

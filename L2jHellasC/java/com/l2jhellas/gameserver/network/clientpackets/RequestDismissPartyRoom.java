@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 /**
  * Format: (ch) dd
+ * 
  * @author -Wooden-
- *
  */
 public class RequestDismissPartyRoom extends L2GameClientPacket
 {
@@ -35,25 +35,17 @@ public class RequestDismissPartyRoom extends L2GameClientPacket
 		_data2 = readD();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
-		// TODO Auto-generated method stub
+		// TODO
 		_log.info("This packet is not well known : RequestDismissPartyRoom");
-		_log.info("Data received: d:"+_data1+" d:"+_data2);
-
+		_log.info("Data received: d:" + _data1 + " d:" + _data2);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_02_REQUESTDISMISSPARTYROOM;
 	}
-
 }

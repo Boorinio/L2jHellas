@@ -27,7 +27,7 @@ public class RankPvpSystemZoneChecker
 {
 	/**
 	 * Returns true if character is in allowed zone.
-	 *
+	 * 
 	 * @param activeChar
 	 * @return
 	 */
@@ -49,7 +49,7 @@ public class RankPvpSystemZoneChecker
 
 	/**
 	 * Returns true if character is in restricted zone.
-	 *
+	 * 
 	 * @param activeChar
 	 * @return
 	 */
@@ -67,7 +67,7 @@ public class RankPvpSystemZoneChecker
 
 	/**
 	 * Returns true if character is in restricted zone for death manager.
-	 *
+	 * 
 	 * @param activeChar
 	 * @return
 	 */
@@ -85,7 +85,7 @@ public class RankPvpSystemZoneChecker
 
 	/**
 	 * Returns true if character is in Bonus Ratio zone.
-	 *
+	 * 
 	 * @param player
 	 * @return
 	 */

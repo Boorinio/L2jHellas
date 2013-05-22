@@ -23,20 +23,13 @@ import com.l2jhellas.gameserver.network.serverpackets.CharDeleteFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharDeleteOk;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.8.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class CharacterDelete extends L2GameClientPacket
 {
-	private static final String _C__0C_CHARACTERDELETE = "[C] 0C CharacterDelete";
 	private static Logger _log = Logger.getLogger(CharacterDelete.class.getName());
+	private static final String _C__0C_CHARACTERDELETE = "[C] 0C CharacterDelete";
 
 	// cd
 	private int _charSlot;
-
 
 	@Override
 	protected void readImpl()
@@ -47,19 +40,20 @@ public final class CharacterDelete extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		if (Config.DEBUG) _log.fine("deleting slot:" + _charSlot);
+		if (Config.DEBUG)
+			_log.fine("deleting slot:" + _charSlot);
 
 		L2PcInstance character = null;
 		try
 		{
-		    if (Config.DELETE_DAYS == 0)
-		    	character = getClient().deleteChar(_charSlot);
-		    else
-		    	character = getClient().markToDeleteChar(_charSlot);
+			if (Config.DELETE_DAYS == 0)
+				character = getClient().deleteChar(_charSlot);
+			else
+				character = getClient().markToDeleteChar(_charSlot);
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error:", e);
+			_log.log(Level.SEVERE, getClass().getName() + " could not delete character slot:" + _charSlot, e);
 		}
 
 		if (character == null)
@@ -83,9 +77,6 @@ public final class CharacterDelete extends L2GameClientPacket
 		getClient().setCharSelection(cl.getCharInfo());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

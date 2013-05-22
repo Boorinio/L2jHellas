@@ -24,9 +24,9 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2MaxPolyModel;
 import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Velvet
@@ -47,7 +47,7 @@ public class MaxCheatersTable
 
 	public static MaxCheatersTable getInstance()
 	{
-		if(_instance == null)
+		if (_instance == null)
 		{
 			_instance = new MaxCheatersTable();
 			_instance.load();
@@ -57,37 +57,19 @@ public class MaxCheatersTable
 
 	private void load()
 	{
-		Connection con = null;
 		PreparedStatement st = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			st = con.prepareStatement(SQL_SELECT);
 			ResultSet rs = st.executeQuery();
 			restore(rs);
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": Error loading DB " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			if(con != null && st != null) // we don't like npes :P
-			{
-				try
-				{
-					con.close();
-					st.close();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -130,7 +112,7 @@ public class MaxCheatersTable
 			L2MaxPolyModel poly = new L2MaxPolyModel(set);
 			_map.put(poly.getNpcId(), poly);// xD
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded "+_map.size()+" npc to pc entries.");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _map.size() + " npc to pc entries.");
 	}
 
 	public L2MaxPolyModel getModelForID(int key)

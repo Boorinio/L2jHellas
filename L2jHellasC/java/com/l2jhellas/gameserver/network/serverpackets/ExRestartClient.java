@@ -16,31 +16,23 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * Format: (ch)
- *
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public class ExRestartClient extends L2GameServerPacket
 {
 	private static final String _S__FE_47_EXRESTARTCLIENT = "[S] FE:47 ExRestartClient";
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x47);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_47_EXRESTARTCLIENT;
 	}
-
 }

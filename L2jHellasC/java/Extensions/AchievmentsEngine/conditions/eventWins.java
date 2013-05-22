@@ -31,13 +31,13 @@ public class eventWins extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		@SuppressWarnings("unused")
 		int val = Integer.parseInt(getValue().toString());
-		
+
 		//if (EventStats.getInstance().getEventWins(player.getObjectId()) >= val)
 		//	return true;
-		
+
 		return false;
 	}
 }

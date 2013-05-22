@@ -30,13 +30,13 @@ public class L2HitmanInstance extends L2NpcInstance
 	{
 		super(objectID, template);
 	}
-	
+
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String currentcommand = st.nextToken();
-		
+
 		try
 		{
 			if (currentcommand.startsWith("showList"))
@@ -67,7 +67,7 @@ public class L2HitmanInstance extends L2NpcInstance
 			player.sendMessage("Make sure you filled the fields correctly.");
 		}
 	}
-	
+
 	public void parseWindow(L2PcInstance player, NpcHtmlMessage html)
 	{
 		html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -75,12 +75,12 @@ public class L2HitmanInstance extends L2NpcInstance
 		html.replace("%player_name%", player.getName());
 		player.sendPacket(html);
 	}
-	
+
 	public NpcHtmlMessage showListWindow()
 	{
 		TextBuilder content = new TextBuilder("<html><head><body><center>");
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-		
+
 		content.append("<img src=L2Font-e.mini_logo-e width=245 height=80>");
 		content.append("<img src=L2UI_CH3.herotower_deco width=256 height=32>");
 		content.append("<font color=AAAAAA>Agency - Jobs</font><br>");
@@ -88,16 +88,16 @@ public class L2HitmanInstance extends L2NpcInstance
 		content.append("<tr><td width=100 align=center>Target</td>)");
 		content.append("<td width=100 align=center>Bounty</td>");
 		content.append("<td width=100 align=center>State</td></tr></table>");
-		
+
 		FastList<PlayerToAssasinate> list = new FastList<PlayerToAssasinate>();
-		
+
 		// First we parse the list.. so we woun't show just an empty list ^^
 		for (PlayerToAssasinate pta : Hitman.getInstance().getTargets().values())
 		{
 			if (pta.isOnline() && !pta.isPendingDelete())
 				list.add(pta);
 		}
-		
+
 		// If the list contains at least 1 target we gonna make a html for him
 		if (list.size() > 0)
 		{
@@ -120,15 +120,15 @@ public class L2HitmanInstance extends L2NpcInstance
 			content.append("<td width=50 align=center> </td></tr>");
 			content.append("</table>");
 		}
-		
+
 		content.append("<br><font color=\"cc9900\"><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32></font><br1>");
 		content.append("<img src=l2ui.bbs_lineage2 height=16 width=80>");
 		content.append("</center></body></head></html>");
 		html.setHtml(content.toString());
-		
+
 		return html;
 	}
-	
+
 	public NpcHtmlMessage showInfoWindow(int objectId)
 	{
 		TextBuilder content = new TextBuilder("<html><head><body><center>");
@@ -136,12 +136,12 @@ public class L2HitmanInstance extends L2NpcInstance
 		PlayerToAssasinate pta = Hitman.getInstance().getTargets().get(objectId);
 		L2PcInstance target = L2World.getInstance().getPlayer(pta.getName());
 		MapRegionTable map = MapRegionTable.getInstance();
-		
+
 		content.append("<img src=L2Font-e.mini_logo-e width=245 height=80>");
 		content.append("<img src=L2UI_CH3.herotower_deco width=256 height=32>");
 		content.append("<font color=AAAAAA>Target: " + pta.getName() + "</font><br>");
 		content.append("</center><br>");
-		
+
 		if (target != null)
 		{
 			content.append("We are sorry %player_name% if we didn't manage to get more precise information.<br1> But you will have to do with this.<br>");
@@ -158,14 +158,14 @@ public class L2HitmanInstance extends L2NpcInstance
 		}
 		else
 			content.append("Player went offline.");
-		
+
 		content.append("<center>");
 		content.append("<button value=\"Back\" action=\"bypass -h npc_%objectId%_showList\" back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\" width=100 height=21>");
 		content.append("<font color=\"cc9900\"><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32></font><br1>");
 		content.append("<img src=l2ui.bbs_lineage2 height=16 width=80>");
 		content.append("</center></body></head></html>");
 		html.setHtml(content.toString());
-		
+
 		return html;
 	}
 }

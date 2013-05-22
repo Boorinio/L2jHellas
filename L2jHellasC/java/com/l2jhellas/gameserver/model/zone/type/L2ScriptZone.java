@@ -21,8 +21,8 @@ import com.l2jhellas.gameserver.model.zone.L2ZoneType;
  * A scripted zone...
  * Creation of such a zone should require somekind
  * of jython script reference which can handle onEnter() / onExit()
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2ScriptZone extends L2ZoneType
 {
@@ -42,9 +42,12 @@ public class L2ScriptZone extends L2ZoneType
 	}
 
 	@Override
-	public void onDieInside(L2Character character) {}
+	public void onDieInside(L2Character character)
+	{
+	}
 
 	@Override
-	public void onReviveInside(L2Character character) {}
-
+	public void onReviveInside(L2Character character)
+	{
+	}
 }

@@ -1,7 +1,6 @@
 REM L2JHellas Libraries
 SET CLASSPATH=%CLASSPATH%;./lib/bsf-2.4.0.jar
 SET CLASSPATH=%CLASSPATH%;./lib/bsh-2.0b4.jar
-SET CLASSPATH=%CLASSPATH%;./lib/bsh-engine.jar
 SET CLASSPATH=%CLASSPATH%;./lib/c3p0-0.9.1.2.jar
 SET CLASSPATH=%CLASSPATH%;./lib/ecj.jar
 SET CLASSPATH=%CLASSPATH%;./lib/java-engine.jar

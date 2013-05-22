@@ -19,22 +19,13 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.7.2.1.2.2 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class AttackRequest extends L2GameClientPacket
 {
 	// cddddc
 	private int _objectId;
-	@SuppressWarnings("unused")
 	private int _originX;
-	@SuppressWarnings("unused")
 	private int _originY;
-	@SuppressWarnings("unused")
 	private int _originZ;
-	@SuppressWarnings("unused")
 	private int _attackId;
 
 	private static final String _C__0A_ATTACKREQUEST = "[C] 0A AttackRequest";
@@ -46,7 +37,7 @@ public final class AttackRequest extends L2GameClientPacket
 		_originX = readD();
 		_originY = readD();
 		_originZ = readD();
-		_attackId = readC(); 	 // 0 for simple click 1 for shift-click
+		_attackId = readC(); // 0 for simple click 1 for shift-click
 	}
 
 	@Override

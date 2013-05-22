@@ -35,7 +35,8 @@ import com.l2jhellas.util.Rnd;
  */
 public class Harvest implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.HARVEST
 	};
 
@@ -151,7 +152,7 @@ public class Harvest implements ISkillHandler
 			basicSuccess -= (diff - 5) * 5;
 		}
 
-		// success rate cant be less than 1%
+		// success rate can't be less than 1%
 		if (basicSuccess < 1)
 			basicSuccess = 1;
 

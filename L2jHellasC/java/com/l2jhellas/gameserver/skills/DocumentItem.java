@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.skills;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -36,8 +37,6 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 final class DocumentItem extends DocumentBase
 {
@@ -120,7 +119,7 @@ final class DocumentItem extends DocumentBase
 		Item item;
 		if ((item = _itemData.get(_currentItem.id)) == null)
 		{
-			throw new IllegalStateException("No SQL data for Item ID: " + itemId + " - name: " + itemName);
+			_log.log(Level.WARNING, getClass().getName() + ": No SQL data for Item ID: " + itemId + " - name: " + itemName);
 		}
 		_currentItem.set = item.set;
 		_currentItem.type = item.type;
@@ -157,7 +156,7 @@ final class DocumentItem extends DocumentBase
 		else if (_currentItem.type instanceof L2EtcItemType)
 			_currentItem.item = new L2EtcItem((L2EtcItemType) _currentItem.type, _currentItem.set);
 		else
-			throw new Error("Unknown item type " + _currentItem.type);
+			_log.log(Level.WARNING, getClass().getName() + ": Unknown item type " + _currentItem.type);
 	}
 
 	/**

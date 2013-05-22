@@ -22,7 +22,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Format:(ch) ddd
- *
+ * 
  * @author L2Dot
  */
 public final class RequestDuelAnswerStart extends L2GameClientPacket

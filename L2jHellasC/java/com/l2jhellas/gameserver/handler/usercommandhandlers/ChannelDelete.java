@@ -24,7 +24,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class ChannelDelete implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = {
+	private static final int[] COMMAND_IDS =
+	{
 		93
 	};
 

@@ -18,13 +18,13 @@ import java.util.NoSuchElementException;
 
 /**
  * Enum of basic stats.
- *
+ * 
  * @author l2jhellas
  */
 public enum Stats
 {
 	// ****BASE STATS****
-
+	/** @formatter:off */
 	// HP And MP
 	MAX_HP("maxHp"),
 	MAX_MP("maxMp"),
@@ -194,7 +194,7 @@ public enum Stats
 
     // MASTERY
 	SKILL_MASTERY("skillMastery");
-
+	/** @formatter:on */
 	;
 
 	public static final int NUM_STATS = values().length;

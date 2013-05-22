@@ -45,10 +45,9 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * getPlayerSchemeListFrame: Returns a table with player's schemes names
  * getGroupSkillListFrame: Returns a table with skills available in the skill_group
  * getPlayerSkillListFrame: Returns a table with skills already in player's scheme (scheme_key)
- *
+ * 
  * @author House
  */
-
 public class L2BufferInstance extends L2FolkInstance
 {
 	private static final String PARENT_DIR = "data/html/mods/buffer/";
@@ -153,7 +152,6 @@ public class L2BufferInstance extends L2FolkInstance
 			NpcHtmlMessage html = new NpcHtmlMessage(1);
 			html.setHtml(tb.toString());
 			sendHtmlMessage(player, html);
-
 		}
 	}
 
@@ -166,8 +164,8 @@ public class L2BufferInstance extends L2FolkInstance
 
 	/**
 	 * Sends an html packet to player with Give Buffs menu info for player and pet,
-	 * depending on targettype parameter {player, pet}
-	 *
+	 * depending on target type parameter {player, pet}
+	 * 
 	 * @param player
 	 * @param targettype
 	 */

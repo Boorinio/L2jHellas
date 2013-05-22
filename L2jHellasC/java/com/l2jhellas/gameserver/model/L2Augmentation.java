@@ -22,17 +22,17 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.funcs.FuncAdd;
 import com.l2jhellas.gameserver.skills.funcs.LambdaConst;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * Used to store an augmentation and its boni
- *
+ * 
  * @author durgus
  */
 public final class L2Augmentation
@@ -110,11 +110,8 @@ public final class L2Augmentation
 
 	private void saveAugmentationData()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("INSERT INTO augmentations (item_id,attributes,skill,level) VALUES (?,?,?,?)");
 			statement.setInt(1, _item.getObjectId());
 			statement.setInt(2, _effectsId);
@@ -140,16 +137,6 @@ public final class L2Augmentation
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public void deleteAugmentationData()
@@ -158,10 +145,8 @@ public final class L2Augmentation
 			return;
 
 		// delete the augmentation from the database
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("DELETE FROM augmentations WHERE item_id=?");
 			statement.setInt(1, _item.getObjectId());
 			statement.executeUpdate();
@@ -175,21 +160,11 @@ public final class L2Augmentation
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Get the augmentation "id" used in serverpackets.
-	 *
+	 * 
 	 * @return augmentationId
 	 */
 	public int getAugmentationId()
@@ -204,7 +179,7 @@ public final class L2Augmentation
 
 	/**
 	 * Applys the boni to the player.
-	 *
+	 * 
 	 * @param player
 	 */
 	public void applyBoni(L2PcInstance player)
@@ -233,7 +208,7 @@ public final class L2Augmentation
 
 	/**
 	 * Removes the augmentation boni from the player.
-	 *
+	 * 
 	 * @param player
 	 */
 	public void removeBoni(L2PcInstance player)

@@ -27,12 +27,12 @@ public class ChaosCmd implements IVoicedCommandHandler
 	{
 	"joinchaos", "leavechaos"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		ChaosEvent chaos = new ChaosEvent();
-		
+
 		if (command.startsWith(VOICED_COMMANDS[0])) // joinchaos
 		{
 			if (ChaosEvent._isChaosActive)
@@ -55,7 +55,7 @@ public class ChaosCmd implements IVoicedCommandHandler
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{

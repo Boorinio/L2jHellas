@@ -26,7 +26,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -39,6 +38,7 @@ import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowInfoUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class ClanHall
 {
@@ -137,9 +137,13 @@ public class ClanHall
 				return;
 			long currentTime = System.currentTimeMillis();
 			if (_endDate > currentTime)
+			{
 				ThreadPoolManager.getInstance().scheduleGeneral(new FunctionTask(), _endDate - currentTime);
+			}
 			else
+			{
 				ThreadPoolManager.getInstance().scheduleGeneral(new FunctionTask(), 0);
+			}
 		}
 
 		private class FunctionTask implements Runnable
@@ -168,16 +172,23 @@ public class ClanHall
 							}
 						}
 						else
+						{
 							newfc = false;
+						}
 						setEndTime(System.currentTimeMillis() + getRate());
 						dbSave(newfc);
 						ClanTable.getInstance().getClan(getOwnerId()).getWarehouse().destroyItemByItemId("CH_function_fee", 57, fee, null, null);
 						if (Config.DEBUG)
-							_log.log(Level.WARNING, getClass().getName() + ": deducted " + fee + " adena from " + getName() + " owner's cwh for function id : " + getType());
+						{
+							_log.log(Level.CONFIG, getClass().getName() + ": deducted " + fee + " adena from " + getName() + " owner's cwh for function id : " + getType());
+						}
+
 						ThreadPoolManager.getInstance().scheduleGeneral(new FunctionTask(), getRate());
 					}
 					else
+					{
 						removeFunction(getType());
+					}
 				}
 				catch (Throwable t)
 				{
@@ -187,12 +198,10 @@ public class ClanHall
 
 		public void dbSave(boolean newFunction)
 		{
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
 				PreparedStatement statement;
 
-				con = L2DatabaseFactory.getInstance().getConnection();
 				if (newFunction)
 				{
 					statement = con.prepareStatement("INSERT INTO clanhall_functions (hall_id, type, lvl, lease, rate, endTime) VALUES (?,?,?,?,?,?)");
@@ -223,16 +232,6 @@ public class ClanHall
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 		}
 	}
 
@@ -242,7 +241,9 @@ public class ClanHall
 		_name = name;
 		_ownerId = ownerId;
 		if (Config.DEBUG)
-			_log.warning("Init Owner : " + _ownerId);
+		{
+			_log.log(Level.CONFIG, getClass().getSimpleName() + ": Init Owner : " + _ownerId);
+		}
 		_lease = lease;
 		_desc = desc;
 		_location = location;
@@ -318,7 +319,9 @@ public class ClanHall
 	public final List<L2DoorInstance> getDoors()
 	{
 		if (_doors == null)
+		{
 			_doors = new FastList<L2DoorInstance>();
+		}
 		return _doors;
 	}
 
@@ -366,7 +369,9 @@ public class ClanHall
 		_ownerId = 0;
 		_isFree = true;
 		for (Map.Entry<Integer, ClanHallFunction> fc : _functions.entrySet())
+		{
 			removeFunction(fc.getKey());
+		}
 		_functions.clear();
 		_paidUntil = 0;
 		_paid = false;
@@ -405,20 +410,26 @@ public class ClanHall
 				door.decayMe();	// Kill current if not killed already
 				door = DoorTable.parseList(_doorDefault.get(i));
 				if (isDoorWeak)
+				{
 					door.setCurrentHp(door.getMaxHp() / 2);
+				}
 				door.spawnMe(door.getX(), door.getY(), door.getZ());
 				getDoors().set(i, door);
 			}
 			else if (door.getOpen())
+			{
 				door.closeMe();
+			}
 		}
 	}
 
 	/** Open or Close Door */
 	public void openCloseDoor(L2PcInstance activeChar, int doorId, boolean open)
 	{
-		if (activeChar != null && activeChar.getClanId() == getOwnerId())
+		if ((activeChar != null) && (activeChar.getClanId() == getOwnerId()))
+		{
 			openCloseDoor(doorId, open);
+		}
 	}
 
 	public void openCloseDoor(int doorId, boolean open)
@@ -430,15 +441,21 @@ public class ClanHall
 	{
 		if (door != null)
 			if (open)
+			{
 				door.openMe();
+			}
 			else
+			{
 				door.closeMe();
+			}
 	}
 
 	public void openCloseDoors(L2PcInstance activeChar, boolean open)
 	{
-		if (activeChar != null && activeChar.getClanId() == getOwnerId())
+		if ((activeChar != null) && (activeChar.getClanId() == getOwnerId()))
+		{
 			openCloseDoors(open);
+		}
 	}
 
 	public void openCloseDoors(boolean open)
@@ -447,9 +464,13 @@ public class ClanHall
 		{
 			if (door != null)
 				if (open)
+				{
 					door.openMe();
+				}
 				else
+				{
 					door.closeMe();
+				}
 		}
 	}
 
@@ -462,13 +483,11 @@ public class ClanHall
 	/** Load All Functions */
 	private void loadFunctions()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
-			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("SELECT * FROM clanhall_functions WHERE hall_id = ?");
+			statement = con.prepareStatement("SELECT * FROM clanhall_functions WHERE hall_id=?");
 			statement.setInt(1, getId());
 			rs = statement.executeQuery();
 			while (rs.next())
@@ -485,27 +504,15 @@ public class ClanHall
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/** Remove function In List and in DB */
 	public void removeFunction(int functionType)
 	{
 		_functions.remove(functionType);
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("DELETE FROM clanhall_functions WHERE hall_id=? AND type=?");
 			statement.setInt(1, getId());
 			statement.setInt(2, functionType);
@@ -520,23 +527,16 @@ public class ClanHall
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/** Update Function */
 	public boolean updateFunctions(int type, int lvl, int lease, long rate, boolean addNew)
 	{
 		if (Config.DEBUG)
+		{
 			_log.log(Level.WARNING, getClass().getName() + ": Called ClanHall.updateFunctions(int type, int lvl, int lease, long rate, boolean addNew) Owner : " + getOwnerId());
+		}
+
 		if (addNew)
 		{
 			if (ClanTable.getInstance().getClan(getOwnerId()).getWarehouse().getAdena() < lease)
@@ -546,12 +546,16 @@ public class ClanHall
 		else
 		{
 			if (lvl == 0 && lease == 0)
+			{
 				removeFunction(type);
+			}
 			else
 			{
 				int diffLease = lease - _functions.get(type).getLease();
 				if (Config.DEBUG)
+				{
 					_log.log(Level.WARNING, getClass().getName() + ": Called ClanHall.updateFunctions diffLease : " + diffLease);
+				}
 				if (diffLease > 0)
 				{
 					if (ClanTable.getInstance().getClan(_ownerId).getWarehouse().getAdena() < diffLease)
@@ -573,10 +577,8 @@ public class ClanHall
 	/** Update DB */
 	public void updateDb()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
 			statement = con.prepareStatement("UPDATE clanhall SET ownerId=?, paidUntil=?, paid=? WHERE id=?");
@@ -595,16 +597,6 @@ public class ClanHall
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/** Initialize Fee Task */
@@ -612,16 +604,24 @@ public class ClanHall
 	{
 		long currentTime = System.currentTimeMillis();
 		if (_paidUntil > currentTime)
+		{
 			ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), _paidUntil - currentTime);
+		}
 		else if (!_paid && !forced)
 		{
 			if (System.currentTimeMillis() + (1000 * 60 * 60 * 24) <= _paidUntil + _chRate)
+			{
 				ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), System.currentTimeMillis() + (1000 * 60 * 60 * 24));
+			}
 			else
+			{
 				ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), (_paidUntil + _chRate) - System.currentTimeMillis());
+			}
 		}
 		else
+		{
 			ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), 0);
+		}
 	}
 
 	/** Fee Task */
@@ -642,13 +642,21 @@ public class ClanHall
 				if (ClanTable.getInstance().getClan(getOwnerId()).getWarehouse().getAdena() >= getLease())
 				{
 					if (_paidUntil != 0)
+					{
 						while (_paidUntil < System.currentTimeMillis())
+						{
 							_paidUntil += _chRate;
+						}
+					}
 					else
+					{
 						_paidUntil = System.currentTimeMillis() + _chRate;
+					}
 					ClanTable.getInstance().getClan(getOwnerId()).getWarehouse().destroyItemByItemId("CH_rental_fee", 57, getLease(), null, null);
 					if (Config.DEBUG)
+					{
 						_log.warning("deducted " + getLease() + " adena from " + getName() + " owner's cwh for ClanHall _paidUntil" + _paidUntil);
+					}
 					ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), _paidUntil - System.currentTimeMillis());
 					_paid = true;
 					updateDb();
@@ -665,7 +673,9 @@ public class ClanHall
 							Clan.broadcastToOnlineMembers(new SystemMessage(SystemMessageId.THE_CLAN_HALL_FEE_IS_ONE_WEEK_OVERDUE_THEREFORE_THE_CLAN_HALL_OWNERSHIP_HAS_BEEN_REVOKED));
 						}
 						else
+						{
 							ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), 3000);
+						}
 					}
 					else
 					{
@@ -674,10 +684,13 @@ public class ClanHall
 						sm.addNumber(getLease());
 						Clan.broadcastToOnlineMembers(sm);
 						if (System.currentTimeMillis() + (1000 * 60 * 60 * 24) <= _paidUntil + _chRate)
+						{
 							ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), System.currentTimeMillis() + (1000 * 60 * 60 * 24));
+						}
 						else
+						{
 							ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), (_paidUntil + _chRate) - System.currentTimeMillis());
-
+						}
 					}
 				}
 			}

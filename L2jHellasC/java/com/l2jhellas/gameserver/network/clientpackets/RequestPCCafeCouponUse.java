@@ -16,38 +16,30 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
  * Format: (ch) S
- * @author  -Wooden-
- *
+ * 
+ * @author -Wooden-
  */
 public final class RequestPCCafeCouponUse extends L2GameClientPacket
 {
-    private static final String _C__D0_20_REQUESTPCCAFECOUPONUSE = "[C] D0:20 RequestPCCafeCouponUse";
-    private String _str;
+	private static final String _C__D0_20_REQUESTPCCAFECOUPONUSE = "[C] D0:20 RequestPCCafeCouponUse";
+	private String _str;
 
-
-    @Override
+	@Override
 	protected void readImpl()
-    {
-        _str = readS();
-    }
+	{
+		_str = readS();
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        // TODO
-        System.out.println("C5: RequestPCCafeCouponUse: S: "+_str);
-    }
+	{
+		// @TODO
+		System.out.println("C5: RequestPCCafeCouponUse: S: " + _str);
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.BasePacket#getType()
-     */
-    @Override
-    public String getType()
-    {
-        return _C__D0_20_REQUESTPCCAFECOUPONUSE;
-    }
-
+	@Override
+	public String getType()
+	{
+		return _C__D0_20_REQUESTPCCAFECOUPONUSE;
+	}
 }

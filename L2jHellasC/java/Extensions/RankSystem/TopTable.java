@@ -23,8 +23,8 @@ import java.util.Calendar;
 import javolution.util.FastMap;
 
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Masterio
@@ -88,14 +88,11 @@ public class TopTable
 			long sysTime = Calendar.getInstance().getTimeInMillis() - ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT;
 
 			// load Tables:
-			Connection con = null;
 			PreparedStatement statement = null;
 			ResultSet rset = null;
 
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-
 				// get top killers:
 				statement = con.prepareStatement("SELECT killer_id, char_name, level, base_class, sum(kills_legal) as col5, max(kill_time) as col6 FROM rank_pvp_system JOIN characters ON characters.obj_Id = rank_pvp_system.killer_id GROUP BY killer_id HAVING col5 > 0 AND col6 >= ? ORDER BY col5 DESC LIMIT 500");
 
@@ -149,21 +146,6 @@ public class TopTable
 			catch (SQLException e)
 			{
 				e.printStackTrace();
-			}
-			finally
-			{
-				try
-				{
-					if (con != null)
-					{
-						con.close();
-						con = null;
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
 			}
 
 			// unlock table:

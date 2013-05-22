@@ -20,15 +20,14 @@ import com.l2jhellas.gameserver.network.serverpackets.JoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
- * sample
- * 2a
- * 01 00 00 00
+ * sample<BR>
+ * 2a<BR>
+ * 01 00 00 00<BR>
  * format cdd
  */
 public final class RequestAnswerJoinParty extends L2GameClientPacket
 {
 	private static final String _C__2A_REQUESTANSWERPARTY = "[C] 2A RequestAnswerJoinParty";
-	// private static Logger _log = Logger.getLogger(RequestAnswerJoinParty.class.getName());
 
 	private int _response;
 
@@ -45,6 +44,8 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 		if (player != null)
 		{
 			L2PcInstance requestor = player.getActiveRequester();
+			if (requestor == null)
+				return;
 
 			// Faction Good vs Evil
 			if (player.isevil() && requestor.isgood())
@@ -56,9 +57,6 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 			{
 				return;
 			}
-
-			if (requestor == null)
-				return;
 
 			JoinParty join = new JoinParty(_response);
 			requestor.sendPacket(join);

@@ -16,13 +16,10 @@ package com.l2jhellas.gameserver.model.base;
 
 /**
  * ClassType Enum
- *
+ * 
  * @author Tempy
  */
-
 public enum ClassType
 {
-    Fighter,
-    Mystic,
-    Priest
+	Fighter, Mystic, Priest
 }

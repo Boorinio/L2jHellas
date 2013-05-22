@@ -26,7 +26,8 @@ import com.l2jhellas.gameserver.skills.Formulas;
 
 public class CpDam implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.CPDAM
 	};
 

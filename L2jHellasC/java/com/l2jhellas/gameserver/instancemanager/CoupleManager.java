@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Couple;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author evill33t
@@ -57,13 +57,10 @@ public class CoupleManager
 
 	private final void load()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
-
-			con = L2DatabaseFactory.getInstance().getConnection();
 
 			statement = con.prepareStatement("Select id FROM mods_wedding ORDER BY id");
 			rs = statement.executeQuery();
@@ -83,17 +80,6 @@ public class CoupleManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

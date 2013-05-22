@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -41,6 +40,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author CubicVirtuoso - William McMahon
@@ -216,11 +216,8 @@ public class VIP
 
 	public static void setLoc()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT endx,endy,endz,startx,starty,startz FROM VIPinfo WHERE teamID = " + _team);
 			ResultSet rset = statement.executeQuery();
 			rset.next();
@@ -238,18 +235,6 @@ public class VIP
 		catch (SQLException e)
 		{
 			_log.log(Level.WARNING, ": Could not check End & Start LOC for team" + _team + " got: " + e);
-		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 

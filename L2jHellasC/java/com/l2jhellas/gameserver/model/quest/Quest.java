@@ -29,7 +29,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
@@ -47,6 +46,7 @@ import com.l2jhellas.gameserver.scripting.ManagedScript;
 import com.l2jhellas.gameserver.scripting.ScriptManager;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Quest extends ManagedScript
 {
@@ -63,7 +63,7 @@ public class Quest extends ManagedScript
 
 	/**
 	 * Return collection view of the values contains in the allEventS
-	 *
+	 * 
 	 * @return Collection<Quest>
 	 */
 	public static Collection<Quest> findAllEvents()
@@ -78,13 +78,9 @@ public class Quest extends ManagedScript
 		_descr = descr;
 
 		if (questId != 0)
-		{
 			QuestManager.getInstance().addQuest(Quest.this);
-		}
 		else
-		{
 			_allEventsS.put(name, this);
-		}
 		init_LoadGlobalData();
 	}
 
@@ -130,7 +126,7 @@ public class Quest extends ManagedScript
 
 	/**
 	 * Add a new QuestState to the database and return it.
-	 *
+	 * 
 	 * @param player
 	 * @return QuestState : QuestState created
 	 */
@@ -228,9 +224,7 @@ public class Quest extends ManagedScript
 			for (QuestTimer timer : timers)
 			{
 				if (timer != null)
-				{
 					timer.cancel();
-				}
 			}
 		}
 		finally
@@ -544,7 +538,7 @@ public class Quest extends ManagedScript
 
 	public boolean showResult(L2PcInstance player, String res)
 	{
-		if (res == null || res.equals(""))
+		if ((res == null) || res.equals(""))
 			return true;
 		if (res.endsWith(".htm"))
 		{
@@ -567,14 +561,12 @@ public class Quest extends ManagedScript
 
 	public final static void playerEnter(L2PcInstance player)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
 			PreparedStatement invalidQuestData = con.prepareStatement("DELETE FROM character_quests WHERE char_id=? and name=?");
-			PreparedStatement invalidQuestDataVar = con.prepareStatement("delete FROM character_quests WHERE char_id=? and name=? and var=?");
+			PreparedStatement invalidQuestDataVar = con.prepareStatement("DELETE FROM character_quests WHERE char_id=? AND name=? AND var=?");
 
 			statement = con.prepareStatement("SELECT name,value FROM character_quests WHERE char_id=? AND var=?");
 			statement.setInt(1, player.getObjectId());
@@ -640,16 +632,6 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not insert char quest:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		// events
 		for (String name : _allEventsS.keySet())
@@ -659,11 +641,11 @@ public class Quest extends ManagedScript
 	}
 
 	/**
-	 * Insert (or Update) in the database variables that need to stay persistant for this quest after a reboot.
+	 * Insert (or Update) in the database variables that need to stay persistent for this quest after a reboot.
 	 * This function is for storage of values that do not related to a specific player but are
 	 * global for all characters. For example, if we need to disable a quest-gatekeeper until
 	 * a certain time (as is done with some grand-boss gatekeepers), we can save that time in the DB.
-	 *
+	 * 
 	 * @param var
 	 *        : String designating the name of the variable for the quest
 	 * @param value
@@ -671,10 +653,8 @@ public class Quest extends ManagedScript
 	 */
 	public final void saveGlobalQuestVar(String var, String value)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("REPLACE INTO quest_global_data (quest_name,var,value) VALUES (?,?,?)");
 			statement.setString(1, getName());
@@ -687,16 +667,6 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not insert global quest variable:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -705,7 +675,7 @@ public class Quest extends ManagedScript
 	 * Subclasses of this class can define structures into which these loaded values can be saved.
 	 * However, on-demand usage of this function throughout the script is not prohibited, only not recommended.
 	 * Values read from this function were entered by calls to "saveGlobalQuestVar"
-	 *
+	 * 
 	 * @param var
 	 *        : String designating the name of the variable for the quest
 	 * @return String : String representing the loaded value for the passed var, or an empty string if the var was invalid
@@ -713,12 +683,10 @@ public class Quest extends ManagedScript
 	public final String loadGlobalQuestVar(String var)
 	{
 		String result = "";
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
-			statement = con.prepareStatement("SELECT value FROM quest_global_data WHERE quest_name = ? AND var = ?");
+			statement = con.prepareStatement("SELECT value FROM quest_global_data WHERE quest_name=? AND var=?");
 			statement.setString(1, getName());
 			statement.setString(2, var);
 			ResultSet rs = statement.executeQuery();
@@ -731,33 +699,21 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not load global quest variable:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return result;
 	}
 
 	/**
 	 * Permanently delete from the database a global quest variable that was previously saved for this quest.
-	 *
+	 * 
 	 * @param var
 	 *        : String designating the name of the variable for the quest
 	 */
 	public final void deleteGlobalQuestVar(String var)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
-			statement = con.prepareStatement("DELETE FROM quest_global_data WHERE quest_name = ? AND var = ?");
+			statement = con.prepareStatement("DELETE FROM quest_global_data WHERE quest_name=? AND var=?");
 			statement.setString(1, getName());
 			statement.setString(2, var);
 			statement.executeUpdate();
@@ -767,17 +723,6 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not delete global quest variable:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-
-			}
-		}
 	}
 
 	/**
@@ -785,12 +730,10 @@ public class Quest extends ManagedScript
 	 */
 	public final void deleteAllGlobalQuestVars()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
-			statement = con.prepareStatement("DELETE FROM quest_global_data WHERE quest_name = ?");
+			statement = con.prepareStatement("DELETE FROM quest_global_data WHERE quest_name=?");
 			statement.setString(1, getName());
 			statement.executeUpdate();
 			statement.close();
@@ -799,21 +742,11 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not delete global quest variables:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Insert in the database the quest for the player.
-	 *
+	 * 
 	 * @param qs
 	 *        : QuestState pointing out the state of the quest
 	 * @param var
@@ -823,10 +756,8 @@ public class Quest extends ManagedScript
 	 */
 	public static void createQuestVarInDb(QuestState qs, String var, String value)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("INSERT INTO character_quests (char_id,name,var,value) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=?");
 			statement.setInt(1, qs.getPlayer().getObjectId());
@@ -841,16 +772,6 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not insert char quest:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -860,7 +781,7 @@ public class Quest extends ManagedScript
 	 * The selection of the right record is made with : <LI>char_id = qs.getPlayer().getObjectID()</LI> <LI>name = qs.getQuest().getName()</LI> <LI>var = var</LI> <BR>
 	 * <BR>
 	 * The modification made is : <LI>value = parameter value</LI>
-	 *
+	 * 
 	 * @param qs
 	 *        : Quest State
 	 * @param var
@@ -870,12 +791,10 @@ public class Quest extends ManagedScript
 	 */
 	public static void updateQuestVarInDb(QuestState qs, String var, String value)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
-			statement = con.prepareStatement("UPDATE character_quests SET value=? WHERE char_id=? AND name=? AND var = ?");
+			statement = con.prepareStatement("UPDATE character_quests SET value=? WHERE char_id=? AND name=? AND var=?");
 			statement.setString(1, value);
 			statement.setInt(2, qs.getPlayer().getObjectId());
 			statement.setString(3, qs.getQuestName());
@@ -887,21 +806,11 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not update char quest:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Delete a variable of player's quest from the database.
-	 *
+	 * 
 	 * @param qs
 	 *        : object QuestState pointing out the player's quest
 	 * @param var
@@ -909,10 +818,8 @@ public class Quest extends ManagedScript
 	 */
 	public static void deleteQuestVarInDb(QuestState qs, String var)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("DELETE FROM character_quests WHERE char_id=? AND name=? AND var=?");
 			statement.setInt(1, qs.getPlayer().getObjectId());
@@ -925,30 +832,18 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not delete char quest:", e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Delete the player's quest from database.
-	 *
+	 * 
 	 * @param qs
 	 *        : QuestState pointing out the player's quest
 	 */
 	public static void deleteQuestInDb(QuestState qs)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("DELETE FROM character_quests WHERE char_id=? AND name=?");
 			statement.setInt(1, qs.getPlayer().getObjectId());
@@ -959,16 +854,6 @@ public class Quest extends ManagedScript
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, "could not delete char quest:", e);
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 
@@ -1003,7 +888,7 @@ public class Quest extends ManagedScript
 
 	/**
 	 * Add the quest to the NPC's startQuest
-	 *
+	 * 
 	 * @param npcId
 	 * @return L2NpcTemplate : Start NPC
 	 */
@@ -1014,7 +899,7 @@ public class Quest extends ManagedScript
 
 	/**
 	 * Add the quest to the NPC's first-talk (default action dialog)
-	 *
+	 * 
 	 * @param npcId
 	 * @return L2NpcTemplate : Start NPC
 	 */
@@ -1026,7 +911,7 @@ public class Quest extends ManagedScript
 	/**
 	 * Add this quest to the list of quests that the passed mob will respond to for Attack Events.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param attackId
 	 * @return int : attackId
 	 */
@@ -1043,7 +928,7 @@ public class Quest extends ManagedScript
 	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Talk Events.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param talkId
 	 *        : ID of the NPC
 	 * @return int : ID of the NPC
@@ -1056,7 +941,7 @@ public class Quest extends ManagedScript
 	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Spawn Events.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param talkId
 	 *        : ID of the NPC
 	 * @return int : ID of the NPC
@@ -1069,7 +954,7 @@ public class Quest extends ManagedScript
 	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Skill-See Events.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param talkId
 	 *        : ID of the NPC
 	 * @return int : ID of the NPC
@@ -1082,7 +967,7 @@ public class Quest extends ManagedScript
 	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Faction Call Events.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param talkId
 	 *        : ID of the NPC
 	 * @return int : ID of the NPC
@@ -1095,7 +980,7 @@ public class Quest extends ManagedScript
 	/**
 	 * Add this quest to the list of quests that the passed npc will respond to for Character See Events.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param talkId
 	 *        : ID of the NPC
 	 * @return int : ID of the NPC
@@ -1122,7 +1007,7 @@ public class Quest extends ManagedScript
 	 * Auxilary function for party quests.
 	 * Note: This function is only here because of how commonly it may be used by quest developers.
 	 * For any variations on this function, the quest script can always handle things on its own
-	 *
+	 * 
 	 * @param player
 	 *        : the instance of a player whose party is to be searched
 	 * @param value
@@ -1139,7 +1024,7 @@ public class Quest extends ManagedScript
 	 * Auxilary function for party quests.
 	 * Note: This function is only here because of how commonly it may be used by quest developers.
 	 * For any variations on this function, the quest script can always handle things on its own
-	 *
+	 * 
 	 * @param player
 	 *        : the instance of a player whose party is to be searched
 	 * @param var
@@ -1201,7 +1086,7 @@ public class Quest extends ManagedScript
 	 * Auxilary function for party quests.
 	 * Note: This function is only here because of how commonly it may be used by quest developers.
 	 * For any variations on this function, the quest script can always handle things on its own
-	 *
+	 * 
 	 * @param player
 	 *        : the instance of a player whose party is to be searched
 	 * @param state
@@ -1254,7 +1139,7 @@ public class Quest extends ManagedScript
 
 	/**
 	 * Show HTML file to client
-	 *
+	 * 
 	 * @param fileName
 	 * @return String : message sent to client
 	 */

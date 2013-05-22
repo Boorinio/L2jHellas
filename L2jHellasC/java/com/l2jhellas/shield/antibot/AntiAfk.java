@@ -19,6 +19,9 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
+/**
+ * @author Boorinio for l2jhellas
+ */
 public class AntiAfk
 {
 	public static void getInstance()

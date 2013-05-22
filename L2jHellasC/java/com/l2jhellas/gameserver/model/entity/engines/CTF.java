@@ -14,10 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
-/**
- * @author SqueezeD & Darki699 (idea by FBIAgent)
- */
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +25,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -55,7 +50,11 @@ import com.l2jhellas.gameserver.network.serverpackets.RadarControl;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
+/**
+ * @author SqueezeD & Darki699 (idea by FBIAgent)
+ */
 public class CTF
 {
 	private final static Logger _log = Logger.getLogger(CTF.class.getName());
@@ -98,9 +97,7 @@ public class CTF
 			else
 				replyMSG.append("<font color=\"LEVEL\">Enemy Flag!</font><br>");
 			if (_started)
-			{
 				processInFlagRange(eventPlayer);
-			}
 			else
 				replyMSG.append("CTF match is not in progress yet.<br>Wait for a GM to start the event<br>");
 			replyMSG.append("</center></body></html>");
@@ -163,7 +160,7 @@ public class CTF
 			// Check if a player ran away from the event holding a flag:
 			for (L2PcInstance player : _players)
 			{
-				if (player != null && player._haveFlagCTF)
+				if ((player != null) && player._haveFlagCTF)
 				{
 					if (isOutsideCTFArea(player))
 					{
@@ -419,7 +416,7 @@ public class CTF
 	{
 		try
 		{
-			if (_throneSpawns == null || _flagSpawns == null || _teams == null)
+			if ((_throneSpawns == null) || (_flagSpawns == null) || (_teams == null))
 				return;
 			for (String team : _teams)
 			{
@@ -1131,7 +1128,7 @@ public class CTF
 			}
 			if (teleportAutoStart())
 			{
-				waiter(1 * 30 * 1000); // 30 seconds wait time untill start fight after teleported
+				waiter(1 * 30 * 1000); // 30 seconds wait time until start fight after teleported
 				if (startAutoEvent())
 				{
 					waiter(_eventTime * 60 * 1000); // minutes for event time
@@ -1319,7 +1316,7 @@ public class CTF
 		teleportFinish();
 	}
 
-	// show loosers and winners animations
+	// show losers and winners animations
 	public static void playKneelAnimation(String teamName)
 	{
 		for (L2PcInstance player : _players)
@@ -1557,15 +1554,12 @@ public class CTF
 		_minPlayers = 0;
 		_maxPlayers = 0;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
 
-			con = L2DatabaseFactory.getInstance().getConnection();
-
-			statement = con.prepareStatement("Select * from ctf");
+			statement = con.prepareStatement("SELECT * FROM ctf");
 			rs = statement.executeQuery();
 
 			int teams = 0;
@@ -1597,7 +1591,7 @@ public class CTF
 				index = 0;
 			while (index < teams && index > -1)
 			{
-				statement = con.prepareStatement("Select * from ctf_teams where teamId = ?");
+				statement = con.prepareStatement("SELECT * FROM ctf_teams WHERE teamId=?");
 				statement.setInt(1, index);
 				rs = statement.executeQuery();
 				while (rs.next())
@@ -1632,33 +1626,19 @@ public class CTF
 		{
 			_log.log(Level.WARNING, " Exception: CTF.loadData(): " + e.getMessage());
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public static void saveData()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
-			statement = con.prepareStatement("Delete from ctf");
+			statement = con.prepareStatement("DELETE FROM ctf");
 			statement.execute();
 			statement.close();
 
-			statement = con.prepareStatement("INSERT INTO ctf (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, npcHeading, rewardId, rewardAmount, teamsCount, joinTime, eventTime, minPlayers, maxPlayers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			statement = con.prepareStatement("INSERT INTO ctf (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, npcHeading, rewardId, rewardAmount, teamsCount, joinTime, eventTime, minPlayers, maxPlayers) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			statement.setString(1, _eventName);
 			statement.setString(2, _eventDesc);
 			statement.setString(3, _joiningLocationName);
@@ -1679,7 +1659,7 @@ public class CTF
 			statement.execute();
 			statement.close();
 
-			statement = con.prepareStatement("Delete from ctf_teams");
+			statement = con.prepareStatement("DELETE FROM ctf_teams");
 			statement.execute();
 			statement.close();
 
@@ -1689,7 +1669,7 @@ public class CTF
 
 				if (index == -1)
 					return;
-				statement = con.prepareStatement("INSERT INTO ctf_teams (teamId ,teamName, teamX, teamY, teamZ, teamColor, flagX, flagY, flagZ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				statement = con.prepareStatement("INSERT INTO ctf_teams (teamId ,teamName, teamX, teamY, teamZ, teamColor, flagX, flagY, flagZ) VALUES (?,?,?,?,?,?,?,?,?)");
 				statement.setInt(1, index);
 				statement.setString(2, teamName);
 				statement.setInt(3, _teamsX.get(index));
@@ -1706,18 +1686,6 @@ public class CTF
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, " Exception: CTF.saveData(): " + e.getMessage());
-		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -2141,11 +2109,8 @@ public class CTF
 							player.teleToLocation(_npcX, _npcY, _npcZ, false);
 						else
 						{
-							Connection con = null;
-							try
+							try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 							{
-								con = L2DatabaseFactory.getInstance().getConnection();
-
 								PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=? WHERE char_name=?");
 								statement.setInt(1, _npcX);
 								statement.setInt(2, _npcY);
@@ -2157,18 +2122,6 @@ public class CTF
 							catch (SQLException se)
 							{
 								_log.log(Level.WARNING, " CTF Engine exception: " + se.getMessage());
-							}
-							finally
-							{
-								try
-								{
-									if (con != null)
-										con.close();
-								}
-								catch (SQLException e)
-								{
-									e.printStackTrace();
-								}
 							}
 						}
 					}
@@ -2205,7 +2158,7 @@ public class CTF
 	 */
 	private static void calculateOutSideOfCTF()
 	{
-		if (_teams == null || _flagSpawns == null || _teamsX == null || _teamsY == null || _teamsZ == null)
+		if ((_teams == null) || (_flagSpawns == null) || (_teamsX == null) || (_teamsY == null) || (_teamsZ == null))
 			return;
 
 		int division = _teams.size() * 2, pos = 0;
@@ -2241,7 +2194,7 @@ public class CTF
 			centerZ += (locZ[x] / division);
 		}
 
-		// now let's find the furthest distance from the "center" to the egg shaped sphere
+		// now let's find the farthest distance from the "center" to the egg shaped sphere
 		// surrounding the polygon, size x1.5 (for maximum logical area to wander...):
 		int maxX = 0, maxY = 0, maxZ = 0;
 		for (int x = 0; x < pos; x++)
@@ -2268,7 +2221,7 @@ public class CTF
 
 	public static boolean isOutsideCTFArea(L2PcInstance _player)
 	{
-		if (_player == null || _player.isOnline() == 0)
+		if ((_player == null) || (_player.isOnline() == 0))
 			return true;
 		if (!(_player.getX() > eventCenterX - eventOffset && _player.getX() < eventCenterX + eventOffset && _player.getY() > eventCenterY - eventOffset && _player.getY() < eventCenterY + eventOffset && _player.getZ() > eventCenterZ - eventOffset && _player.getZ() < eventCenterZ + eventOffset))
 			return true;

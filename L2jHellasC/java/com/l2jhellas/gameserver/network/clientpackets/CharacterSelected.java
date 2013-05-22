@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -24,27 +23,17 @@ import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelected;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.5.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
- */
 public class CharacterSelected extends L2GameClientPacket
 {
-	private static final String _C__0D_CHARACTERSELECTED = "[C] 0D CharacterSelected";
 	private static Logger _log = Logger.getLogger(CharacterSelected.class.getName());
+	private static final String _C__0D_CHARACTERSELECTED = "[C] 0D CharacterSelected";
 
 	// cd
 	private int _charSlot;
 
-	@SuppressWarnings("unused")
 	private int _unk1; 	// new in C4
-	@SuppressWarnings("unused")
 	private int _unk2;	// new in C4
-	@SuppressWarnings("unused")
 	private int _unk3;	// new in C4
-	@SuppressWarnings("unused")
 	private int _unk4;	// new in C4
 
 	@Override
@@ -63,13 +52,12 @@ public class CharacterSelected extends L2GameClientPacket
 		// if there is a playback.dat file in the current directory, it will
 		// be sent to the client instead of any regular packets
 		// to make this work, the first packet in the playback.dat has to
-		// be a  [S]0x21 packet
+		// be a [S]0x21 packet
 		// after playback is done, the client will not work correct and need to exit
-		//playLogFile(getConnection()); // try to play log file
-
+		// playLogFile(getConnection()); // try to play log file
 
 		// we should always be abble to acquire the lock
-		// but if we cant lock then nothing should be done (ie repeated packet)
+		// but if we can't lock then nothing should be done (ie repeated packet)
 		if (getClient().getActiveCharLock().tryLock())
 		{
 			try
@@ -80,15 +68,13 @@ public class CharacterSelected extends L2GameClientPacket
 				{
 					// The L2PcInstance must be created here, so that it can be attached to the L2GameClient
 					if (Config.DEBUG)
-					{
 						_log.fine("selected slot:" + _charSlot);
-					}
 
-					//load up character from disk
+					// load up character from disk
 					L2PcInstance cha = getClient().loadCharFromDisk(_charSlot);
 					if (cha == null)
 					{
-						_log.severe("Character could not be loaded (slot:"+_charSlot+")");
+						_log.severe("Character could not be loaded (slot:" + _charSlot + ")");
 						sendPacket(new ActionFailed());
 						return;
 					}
@@ -97,8 +83,8 @@ public class CharacterSelected extends L2GameClientPacket
 						cha.logout();
 						return;
 					}
-					
-					CharNameTable.getInstance().addName(cha); 
+
+					CharNameTable.getInstance().addName(cha);
 
 					cha.setClient(getClient());
 					getClient().setActiveChar(cha);
@@ -115,9 +101,6 @@ public class CharacterSelected extends L2GameClientPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

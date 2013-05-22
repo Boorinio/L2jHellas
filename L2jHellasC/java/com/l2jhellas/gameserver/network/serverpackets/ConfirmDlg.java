@@ -16,13 +16,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * @author Dezmond_snz
- * Format: cdddsdd
+ *         Format: cdddsdd
  */
 public class ConfirmDlg extends L2GameServerPacket
 {
 	private static final String _S__ED_CONFIRMDLG = "[S] ed ConfirmDlg";
-	private int _requestId;
-	private String _name;
+	private final int _requestId;
+	private final String _name;
 
 	public ConfirmDlg(int requestId, String requestorName)
 	{
@@ -42,9 +42,6 @@ public class ConfirmDlg extends L2GameServerPacket
 		writeD(0x00); // ??
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

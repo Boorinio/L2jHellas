@@ -99,7 +99,8 @@ public class TownManager
 	public final boolean townHasCastleInSiege(int townId)
 	{
 		// int[] castleidarray = {0,0,0,0,0,0,0,1,2,3,4,0,5,0,0,6,0};
-		int[] castleidarray = {
+		int[] castleidarray =
+		{
 		0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 5, 7, 8, 6, 0, 9
 		};
 		int castleIndex = castleidarray[townId];
@@ -116,7 +117,8 @@ public class TownManager
 	public final boolean townHasCastleInSiege(int x, int y)
 	{
 		int curtown = (MapRegionTable.getInstance().getMapRegion(x, y));
-		int[] castleidarray = {
+		int[] castleidarray =
+		{
 		0, 0, 0, 0, 0, 1, 0, 2, 3, 4, 5, 0, 0, 6, 8, 7, 9, 0, 0
 		};
 		// find an instance of the castle for this town.
@@ -140,7 +142,7 @@ public class TownManager
 
 	/**
 	 * Returns the town at that position (if any)
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 * @param z

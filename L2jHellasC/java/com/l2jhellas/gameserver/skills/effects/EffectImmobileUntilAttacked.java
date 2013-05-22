@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.skills.Env;
 
@@ -24,32 +22,30 @@ import com.l2jhellas.gameserver.skills.Env;
  */
 public class EffectImmobileUntilAttacked extends L2Effect
 {
-	static final Logger _log = Logger.getLogger(EffectImmobileUntilAttacked.class.getName());
-	
 	public EffectImmobileUntilAttacked(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}
-	
+
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.IMMOBILEUNTILATTACKED;
 	}
-	
+
 	@Override
 	public boolean onStart()
 	{
 		getEffector().startImmobileUntilAttacked();
 		return true;
 	}
-	
+
 	@Override
 	public void onExit()
 	{
 		getEffected().stopImmobileUntilAttacked(this);
 	}
-	
+
 	@Override
 	public boolean onActionTime()
 	{

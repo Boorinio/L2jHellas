@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.l2jhellas.gameserver.model.quest;
 
 import java.util.Map;
@@ -31,7 +45,7 @@ import com.l2jhellas.util.Rnd;
 
 public final class QuestState
 {
-	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
+	protected static final Logger _log = Logger.getLogger(QuestState.class.getName());
 	private final String _questName;
 	private final L2PcInstance _player;
 	private byte _state;
@@ -148,7 +162,7 @@ public final class QuestState
 	 * prepare the variable completedStateFlags appropriately to be ready for sending to clients</LI> <LI>If no steps were skipped, flags do not need to be prepared...</LI> <LI>If
 	 * the passed step resets the quest to a previous step, reset such that steps after the parameter are not considered, while skipped steps before the parameter, if any, maintain
 	 * their info</LI>
-	 *
+	 * 
 	 * @param cond
 	 *        : int indicating the step number for the current quest progress (as will be shown to the client)
 	 * @param old
@@ -242,7 +256,7 @@ public final class QuestState
 	 * <BR>
 	 * <U><I>Concept : </I></U>
 	 * Remove the variable of quest represented by "var" from the class variable FastMap "vars" and from the database.
-	 *
+	 * 
 	 * @param var
 	 *        : String designating the variable for the quest to be deleted
 	 * @return String pointing out the previous value associated with the variable "var"
@@ -262,7 +276,7 @@ public final class QuestState
 
 	/**
 	 * Return the value of the variable of quest represented by "var"
-	 *
+	 * 
 	 * @param var
 	 *        : name of the variable of quest
 	 * @return Object
@@ -277,7 +291,7 @@ public final class QuestState
 
 	/**
 	 * Return the value of the variable of quest represented by "var"
-	 *
+	 * 
 	 * @param var
 	 *        : String designating the variable for the quest
 	 * @return int
@@ -302,7 +316,7 @@ public final class QuestState
 
 	/**
 	 * Add player to get notification of characters death
-	 *
+	 * 
 	 * @param character
 	 *        : L2Character of the character to get notification of death
 	 */
@@ -316,7 +330,7 @@ public final class QuestState
 
 	/**
 	 * Return the quantity of one sort of item hold by the player
-	 *
+	 * 
 	 * @param itemId
 	 *        : ID of the item wanted to be count
 	 * @return int
@@ -334,7 +348,7 @@ public final class QuestState
 
 	/**
 	 * Return the level of enchantment on the weapon of the player(Done specifically for weapon SA's)
-	 *
+	 * 
 	 * @param itemId
 	 *        : ID of the item to check enchantment
 	 * @return int
@@ -351,7 +365,7 @@ public final class QuestState
 
 	/**
 	 * Give adena to the player
-	 *
+	 * 
 	 * @param count
 	 * @param applyRates
 	 */
@@ -362,7 +376,7 @@ public final class QuestState
 
 	/**
 	 * Give item/reward to the player
-	 *
+	 * 
 	 * @param itemId
 	 * @param count
 	 */
@@ -495,7 +509,7 @@ public final class QuestState
 	 * Remove items from player's inventory when talking to NPC in order to have rewards.<BR>
 	 * <BR>
 	 * <U><I>Actions :</I></U> <LI>Destroy quantity of items wanted</LI> <LI>Send new inventory list to player</LI>
-	 *
+	 * 
 	 * @param itemId
 	 *        : Identifier of the item
 	 * @param count
@@ -522,7 +536,7 @@ public final class QuestState
 
 	/**
 	 * Send a packet in order to play sound at client terminal
-	 *
+	 * 
 	 * @param sound
 	 */
 	public void playSound(String sound)
@@ -532,7 +546,7 @@ public final class QuestState
 
 	/**
 	 * Add XP and SP as quest reward
-	 *
+	 * 
 	 * @param exp
 	 * @param sp
 	 */
@@ -543,7 +557,7 @@ public final class QuestState
 
 	/**
 	 * Return random value
-	 *
+	 * 
 	 * @param max
 	 *        : max value for randomisation
 	 * @return int
@@ -555,7 +569,7 @@ public final class QuestState
 
 	/**
 	 * Return number of ticks from GameTimeController
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getItemEquipped(int loc)
@@ -565,7 +579,7 @@ public final class QuestState
 
 	/**
 	 * Return the number of ticks from the GameTimeController
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getGameTicks()
@@ -575,7 +589,7 @@ public final class QuestState
 
 	/**
 	 * Return true if quest is to exited on clean up by QuestStateManager
-	 *
+	 * 
 	 * @return boolean
 	 */
 	public final boolean isExitQuestOnCleanUp()
@@ -585,7 +599,7 @@ public final class QuestState
 
 	/**
 	 * Return the QuestTimer object with the specified name
-	 *
+	 * 
 	 * @return QuestTimer<BR>
 	 *         Return null if name does not exist
 	 */
@@ -597,7 +611,7 @@ public final class QuestState
 	/**
 	 * Start a timer for quest.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param name
 	 * <BR>
 	 *        The name of the timer. Will also be the value for event of onEvent
@@ -627,7 +641,7 @@ public final class QuestState
 
 	/**
 	 * Return the QuestTimer object with the specified name
-	 *
+	 * 
 	 * @return QuestTimer<BR>
 	 *         Return null if name does not exist
 	 */
@@ -718,7 +732,7 @@ public final class QuestState
 
 	/**
 	 * Destroy element used by quest when quest is exited
-	 *
+	 * 
 	 * @param repeatable
 	 * @return QuestState
 	 */

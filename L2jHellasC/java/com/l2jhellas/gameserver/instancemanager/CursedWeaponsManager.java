@@ -34,7 +34,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.CursedWeapon;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -47,6 +46,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Micht
@@ -183,12 +183,9 @@ public class CursedWeaponsManager
 	{
 		if (Config.DEBUG)
 			_log.log(Level.CONFIG, getClass().getName() + ": Restoring ... ");
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve the L2PcInstance from the characters table of the database
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT itemId, playerId, playerKarma, playerPkKills, nbKills, endTime FROM cursed_weapons");
 			ResultSet rset = statement.executeQuery();
 
@@ -227,28 +224,15 @@ public class CursedWeaponsManager
 				_log.log(Level.CONFIG, getClass().getName() + ": ERROR");
 			return;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private final void controlPlayers()
 	{
 		if (Config.DEBUG)
 			_log.log(Level.CONFIG, getClass().getName() + ": Checking players ... ");
-
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve the L2PcInstance from the characters table of the database
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = null;
 			ResultSet rset = null;
 
@@ -335,16 +319,6 @@ public class CursedWeaponsManager
 			if (Config.DEBUG)
 				_log.log(Level.CONFIG, getClass().getName() + ": ERROR");
 			return;
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 
 		if (Config.DEBUG)
@@ -454,12 +428,8 @@ public class CursedWeaponsManager
 
 	public static void removeFromDb(int itemId)
 	{
-
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			// Delete datas
 			PreparedStatement statement = con.prepareStatement("DELETE FROM cursed_weapons WHERE itemId = ?");
 			statement.setInt(1, itemId);
@@ -474,16 +444,6 @@ public class CursedWeaponsManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

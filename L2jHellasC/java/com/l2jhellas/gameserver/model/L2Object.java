@@ -37,10 +37,10 @@ import com.l2jhellas.gameserver.network.serverpackets.GetItem;
 
 public abstract class L2Object
 {
-	private boolean _isVisible;                 // Object visibility
+	private boolean _isVisible; // Object visibility
 	private ObjectKnownList _knownList;
 	private String _name;
-	private int _objectId;                      // Object identifier
+	private int _objectId; // Object identifier
 	private ObjectPoly _poly;
 	private ObjectPosition _position;
 
@@ -76,7 +76,7 @@ public abstract class L2Object
 	/**
 	 * Do Nothing.<BR>
 	 * <BR>
-	 * <B><U> Overriden in </U> :</B><BR>
+	 * <B><U> Overridden in </U> :</B><BR>
 	 * <BR>
 	 * <li>L2GuardInstance : Set the home location of its L2GuardInstance</li> <li>L2Attackable : Reset the Spoiled flag</li><BR>
 	 * <BR>
@@ -176,7 +176,7 @@ public abstract class L2Object
 	 * <BR>
 	 * <li>Do Pickup Item : PCInstance and Pet</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param player
 	 *        Player that pick up the item
 	 */
@@ -294,7 +294,7 @@ public abstract class L2Object
 			getPosition().getWorldRegion().addVisibleObject(this);
 		}
 
-		// this can synchronize on others instancies, so it's out of
+		// this can synchronize on others instances, so it's out of
 		// synchronized, to avoid deadlocks
 		// Add the L2Object spawn in the world as a visible object
 		L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion(), null);
@@ -323,11 +323,11 @@ public abstract class L2Object
 	}
 
 	/**
-	 * Return the visibilty state of the L2Object. <BR>
+	 * Return the visibility state of the L2Object. <BR>
 	 * <BR>
 	 * <B><U> Concept</U> :</B><BR>
 	 * <BR>
-	 * A L2Object is visble if <B>__IsVisible</B>=true and <B>_worldregion</B>!=null <BR>
+	 * A L2Object is visible if <B>__IsVisible</B>=true and <B>_worldregion</B>!=null <BR>
 	 * <BR>
 	 */
 	public final boolean isVisible()

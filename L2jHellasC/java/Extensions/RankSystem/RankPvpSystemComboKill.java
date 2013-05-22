@@ -34,7 +34,7 @@ public class RankPvpSystemComboKill
 
 	/**
 	 * Add victim information to combo list (_victims).
-	 *
+	 * 
 	 * @param victimId
 	 * @param killTime
 	 * @return
@@ -62,7 +62,7 @@ public class RankPvpSystemComboKill
 
 	/**
 	 * Shout in LOCAL or GLOBAL area information about killer combo.
-	 *
+	 * 
 	 * @param killer
 	 * @param victim
 	 */
@@ -142,7 +142,7 @@ public class RankPvpSystemComboKill
 	/**
 	 * Shout in chat window information about defeated killer, <br>
 	 * who have combo level >= COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL.
-	 *
+	 * 
 	 * @param killer
 	 *        - defeated player (this).
 	 */
@@ -163,7 +163,7 @@ public class RankPvpSystemComboKill
 
 	/**
 	 * Get Rank Points ratio for combo size.
-	 *
+	 * 
 	 * @return
 	 */
 	public double getComboKillRankPointsRatio()

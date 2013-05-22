@@ -17,27 +17,20 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.CommunityBoard;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.4.2 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestShowBoard extends L2GameClientPacket
 {
 	private static final String _C__57_REQUESTSHOWBOARD = "[C] 57 RequestShowBoard";
 
 	@SuppressWarnings("unused")
-    private int _unknown;
+	private int _unknown;
 
 	/**
 	 * packet type id 0x57
-	 *
 	 * sample
-	 *
 	 * 57
-	 * 01 00 00 00		// unknown (always 1?)
-	 *
-	 * format:		cd
+	 * 01 00 00 00 // unknown (always 1?)
+	 * format: cd
+	 * 
 	 * @param decrypt
 	 */
 	@Override
@@ -52,9 +45,6 @@ public final class RequestShowBoard extends L2GameClientPacket
 		CommunityBoard.getInstance().handleCommands(getClient(), Config.BBS_DEFAULT);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

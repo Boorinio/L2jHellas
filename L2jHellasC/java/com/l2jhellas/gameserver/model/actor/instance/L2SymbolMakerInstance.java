@@ -22,15 +22,8 @@ import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * This class ...
- *
- * @version $Revision$ $Date$
- */
 public class L2SymbolMakerInstance extends L2FolkInstance
 {
-	// private static Logger _log = Logger.getLogger(L2SymbolMakerInstance.class.getName());
-
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{

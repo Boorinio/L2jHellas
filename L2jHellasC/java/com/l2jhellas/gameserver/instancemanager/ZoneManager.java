@@ -30,7 +30,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -53,11 +52,12 @@ import com.l2jhellas.gameserver.model.zone.type.L2NoLandingZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class manages the augmentation data and can also create new
  * augmentations.
- *
+ * 
  * @author durgus
  */
 public class ZoneManager
@@ -99,7 +99,6 @@ public class ZoneManager
 
 	private final void load()
 	{
-		Connection con = null;
 		int zoneCount = 0;
 		_zones.clear();
 
@@ -107,11 +106,8 @@ public class ZoneManager
 		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
 
 		// Load the zone xml
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			// Get a sql connection here
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
@@ -198,10 +194,12 @@ public class ZoneManager
 								// vertex)
 								if (zoneShape.equalsIgnoreCase("Cuboid"))
 								{
-									int[] x = {
+									int[] x =
+									{
 									0, 0
 									};
-									int[] y = {
+									int[] y =
+									{
 									0, 0
 									};
 									boolean successfulLoad = true;
@@ -360,23 +358,13 @@ public class ZoneManager
 			_log.log(Level.SEVERE, getClass().getName() + ": Error while loading zones." + e);
 			return;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		_log.log(Level.FINE, getClass().getSimpleName() + ":  loaded " + zoneCount + " zones.");
 	}
 
 	/**
 	 * Add new zone
-	 *
+	 * 
 	 * @param zone
 	 */
 	public void addZone(L2ZoneType zone)
@@ -387,7 +375,7 @@ public class ZoneManager
 	/**
 	 * Returns all zones registered with the ZoneManager.
 	 * To minimise iteration processing retrieve zones from L2WorldRegion for a specific location instead.
-	 *
+	 * 
 	 * @return zones
 	 */
 	public FastList<L2ZoneType> getAllZones()
@@ -397,7 +385,7 @@ public class ZoneManager
 
 	/**
 	 * Returns all zones from where the object is located
-	 *
+	 * 
 	 * @param object
 	 * @return zones
 	 */
@@ -408,7 +396,7 @@ public class ZoneManager
 
 	/**
 	 * Returns all zones from given coordinates (plane)
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 * @return zones
@@ -427,7 +415,7 @@ public class ZoneManager
 
 	/**
 	 * Returns all zones from given coordinates
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 * @param z

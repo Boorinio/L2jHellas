@@ -19,11 +19,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * @author zabbix
- *
  */
 public class PartyMemberPosition extends L2GameServerPacket
 {
-	private L2Party _party;
+	private final L2Party _party;
 
 	public PartyMemberPosition(L2PcInstance actor)
 	{
@@ -36,9 +35,10 @@ public class PartyMemberPosition extends L2GameServerPacket
 		writeC(0xa7);
 		writeD(_party.getMemberCount());
 
-		for(L2PcInstance pm : _party.getPartyMembers())
+		for (L2PcInstance pm : _party.getPartyMembers())
 		{
-            if (pm == null) continue;
+			if (pm == null)
+				continue;
 
 			writeD(pm.getObjectId());
 			writeD(pm.getX());
@@ -52,5 +52,4 @@ public class PartyMemberPosition extends L2GameServerPacket
 	{
 		return null;
 	}
-
 }

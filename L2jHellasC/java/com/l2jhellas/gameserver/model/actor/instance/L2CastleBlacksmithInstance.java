@@ -23,7 +23,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
- * @author  l3x
+ * @author l3x
  */
 public class L2CastleBlacksmithInstance extends L2FolkInstance
 {
@@ -39,7 +39,8 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 	@Override
 	public void onAction(L2PcInstance player)
 	{
-		if (!canTarget(player)) return;
+		if (!canTarget(player))
+			return;
 
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
@@ -64,10 +65,7 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 			}
 			else
 			{
-			
-				{
-					showMessageWindow(player, 0);
-				}
+				showMessageWindow(player, 0);
 			}
 		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
@@ -77,8 +75,6 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
-		
-
 		int condition = validateCondition(player);
 		if (condition <= COND_ALL_FALSE)
 			return;
@@ -92,10 +88,14 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 				int val = 0;
 				try
 				{
-				   val = Integer.parseInt(command.substring(5));
+					val = Integer.parseInt(command.substring(5));
 				}
-				catch (IndexOutOfBoundsException ioobe){}
-				catch (NumberFormatException nfe){}
+				catch (IndexOutOfBoundsException ioobe)
+				{
+				}
+				catch (NumberFormatException nfe)
+				{
+				}
 				showMessageWindow(player, val);
 			}
 			else
@@ -109,15 +109,16 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 	{
 		player.sendPacket(new ActionFailed());
 		String filename = "data/html/castleblacksmith/castleblacksmith-no.htm";
-		
+
 		int condition = validateCondition(player);
 		if (condition > COND_ALL_FALSE)
 		{
 			if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
-				filename = "data/html/castleblacksmith/castleblacksmith-busy.htm";			// Busy because of siege
-			else if (condition == COND_OWNER) 
-			{																				// Clan owns castle
-				if (val == 0) 
+				filename = "data/html/castleblacksmith/castleblacksmith-busy.htm"; // Busy because of siege
+			else if (condition == COND_OWNER)
+			{
+				// Clan owns castle
+				if (val == 0)
 					filename = "data/html/castleblacksmith/castleblacksmith.htm";
 				else
 					filename = "data/html/castleblacksmith/castleblacksmith-" + val + ".htm";
@@ -131,19 +132,20 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 		html.replace("%castleid%", Integer.toString(getCastle().getCastleId()));
 		player.sendPacket(html);
 	}
-	
+
 	protected int validateCondition(L2PcInstance player)
 	{
-		if (player.isGM()) return COND_OWNER;
+		if (player.isGM())
+			return COND_OWNER;
 		if (getCastle() != null && getCastle().getCastleId() > 0)
 		{
 			if (player.getClan() != null)
 			{
 				if (getCastle().getSiege().getIsInProgress())
-					return COND_BUSY_BECAUSE_OF_SIEGE;					// Busy because of siege
+					return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
 				else if (getCastle().getOwnerId() == player.getClanId() // Clan owns castle
 						&& (player.getClanPrivileges() & L2Clan.CP_CS_MANOR_ADMIN) == L2Clan.CP_CS_MANOR_ADMIN)
-					return COND_OWNER;  // Owner
+					return COND_OWNER; // Owner
 			}
 		}
 		return COND_ALL_FALSE;

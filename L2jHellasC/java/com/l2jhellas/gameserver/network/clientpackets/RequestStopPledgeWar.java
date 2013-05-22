@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 public final class RequestStopPledgeWar extends L2GameClientPacket
 {
 	private static final String _C__4F_REQUESTSTOPPLEDGEWAR = "[C] 4F RequestStopPledgeWar";
-	//private static Logger _log = Logger.getLogger(RequestStopPledgeWar.class.getName());
 
 	private String _pledgeName;
 
@@ -39,9 +38,11 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null) return;
+		if (player == null)
+			return;
 		L2Clan playerClan = player.getClan();
-		if (playerClan == null) return;
+		if (playerClan == null)
+			return;
 
 		L2Clan clan = ClanTable.getInstance().getClanByName(_pledgeName);
 
@@ -60,36 +61,37 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
 		}
 
 		// Check if player who does the request has the correct rights to do it
-		if ((player.getClanPrivileges() & L2Clan.CP_CL_PLEDGE_WAR) != L2Clan.CP_CL_PLEDGE_WAR )
+		if ((player.getClanPrivileges() & L2Clan.CP_CL_PLEDGE_WAR) != L2Clan.CP_CL_PLEDGE_WAR)
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
 			return;
 		}
 
-		//_log.info("RequestStopPledgeWar: By leader or authorized player: " + playerClan.getLeaderName() + " of clan: "
-		//	+ playerClan.getName() + " to clan: " + _pledgeName);
+		// _log.info("RequestStopPledgeWar: By leader or authorized player: " + playerClan.getLeaderName() + " of clan: "
+		// + playerClan.getName() + " to clan: " + _pledgeName);
 
-		//        L2PcInstance leader = L2World.getInstance().getPlayer(clan.getLeaderName());
-		//        if(leader != null && leader.isOnline() == 0)
-		//        {
-		//            player.sendMessage("Clan leader isn't online.");
-		//            player.sendPacket(new ActionFailed());
-		//            return;
-		//        }
+		// L2PcInstance leader = L2World.getInstance().getPlayer(clan.getLeaderName());
+		// if(leader != null && leader.isOnline() == 0)
+		// {
+		// player.sendMessage("Clan leader isn't online.");
+		// player.sendPacket(new ActionFailed());
+		// return;
+		// }
 
-		//        if (leader.isProcessingRequest())
-		//        {
-		//            SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
-		//            sm.addString(leader.getName());
-		//            player.sendPacket(sm);
-		//            return;
-		//        }
+		// if (leader.isProcessingRequest())
+		// {
+		// SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
+		// sm.addString(leader.getName());
+		// player.sendPacket(sm);
+		// return;
+		// }
 
 		ClanTable.getInstance().deleteclanswars(playerClan.getClanId(), clan.getClanId());
-        for (L2PcInstance cha : L2World.getInstance().getAllPlayers()) {
-        	if (cha.getClan() == player.getClan() || cha.getClan() == clan)
-        		cha.broadcastUserInfo();
-        }
+		for (L2PcInstance cha : L2World.getInstance().getAllPlayers())
+		{
+			if (cha.getClan() == player.getClan() || cha.getClan() == clan)
+				cha.broadcastUserInfo();
+		}
 	}
 
 	@Override

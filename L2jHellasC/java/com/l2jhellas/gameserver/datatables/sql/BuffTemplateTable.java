@@ -21,9 +21,9 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class BuffTemplateTable
 {
@@ -60,75 +60,60 @@ public class BuffTemplateTable
 	{
 		_buffs.clear();
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM buff_templates ORDER BY id, skill_order");
+			ResultSet rset = statement.executeQuery();
+
+			int _buffTemplates = 0;
+			int templateId = -1;
+
+			while (rset.next())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT * FROM buff_templates ORDER BY id, skill_order");
-				ResultSet rset = statement.executeQuery();
+				StatsSet Buff = new StatsSet();
 
-				int _buffTemplates = 0;
-				int templateId = -1;
+				if (templateId != rset.getInt("id"))
+					_buffTemplates++;
+				templateId = rset.getInt("id");
 
-				while (rset.next())
+				Buff.set("id", templateId);
+				Buff.set("name", rset.getString("name"));
+				Buff.set("skillId", rset.getInt("skill_id"));
+				Buff.set("skillLevel", rset.getInt("skill_level"));
+				Buff.set("skillOrder", rset.getInt("skill_order"));
+				Buff.set("forceCast", rset.getInt("skill_force"));
+				Buff.set("minLevel", rset.getInt("char_min_level"));
+				Buff.set("maxLevel", rset.getInt("char_max_level"));
+				Buff.set("race", rset.getInt("char_race"));
+				Buff.set("class", rset.getInt("char_class"));
+				Buff.set("faction", rset.getInt("char_faction"));
+				Buff.set("adena", rset.getInt("price_adena"));
+				Buff.set("points", rset.getInt("price_points"));
+
+				// Add this buff to the Table.
+				L2BuffTemplate template = new L2BuffTemplate(Buff);
+				if (template.getSkill() == null)
 				{
-					StatsSet Buff = new StatsSet();
-
-					if (templateId != rset.getInt("id"))
-						_buffTemplates++;
-					templateId = rset.getInt("id");
-
-					Buff.set("id", templateId);
-					Buff.set("name", rset.getString("name"));
-					Buff.set("skillId", rset.getInt("skill_id"));
-					Buff.set("skillLevel", rset.getInt("skill_level"));
-					Buff.set("skillOrder", rset.getInt("skill_order"));
-					Buff.set("forceCast", rset.getInt("skill_force"));
-					Buff.set("minLevel", rset.getInt("char_min_level"));
-					Buff.set("maxLevel", rset.getInt("char_max_level"));
-					Buff.set("race", rset.getInt("char_race"));
-					Buff.set("class", rset.getInt("char_class"));
-					Buff.set("faction", rset.getInt("char_faction"));
-					Buff.set("adena", rset.getInt("price_adena"));
-					Buff.set("points", rset.getInt("price_points"));
-
-					// Add this buff to the Table.
-					L2BuffTemplate template = new L2BuffTemplate(Buff);
-					if (template.getSkill() == null)
-					{
-						_log.log(Level.WARNING, getClass().getName() + ": Error while loading buff template Id " + template.getId() + " skill Id " + template.getSkillId());
-					}
-					else
-						_buffs.add(template);
+					_log.log(Level.WARNING, getClass().getName() + ": Error while loading buff template Id " + template.getId() + " skill Id " + template.getSkillId());
 				}
-
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _buffTemplates + " Buff Templates.");
-
-				rset.close();
-				statement.close();
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.WARNING, getClass().getName() + ": Error while loading buff templates " + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
+				else
+					_buffs.add(template);
 			}
 
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _buffTemplates + " Buff Templates.");
+
+			rset.close();
+			statement.close();
 		}
-		finally
+		catch (Exception e)
 		{
-			try
+			_log.log(Level.WARNING, getClass().getName() + ": Error while loading buff templates " + e);
+			if (Config.DEVELOPER)
 			{
-				con.close();
-			}
-			catch (Exception e)
-			{
+				e.printStackTrace();
 			}
 		}
+
 	}
 
 	/**

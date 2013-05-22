@@ -246,7 +246,7 @@ public final class RankPvpSystemBBSHtm
 
 	/**
 	 * If fontColor == null then function not use any colors.
-	 *
+	 * 
 	 * @param position
 	 * @param playerName
 	 * @param playerLevel

@@ -23,14 +23,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class BoatKnownList extends CharKnownList
 {
-
 	/**
 	 * @param activeChar
 	 */
 	public BoatKnownList(L2Character activeChar)
 	{
 		super(activeChar);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -48,5 +46,4 @@ public class BoatKnownList extends CharKnownList
 			return 0;
 		return 4000;
 	}
-
 }

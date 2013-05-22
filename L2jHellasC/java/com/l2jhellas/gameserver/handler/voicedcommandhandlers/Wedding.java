@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -38,11 +37,13 @@ import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Broadcast;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Wedding implements IVoicedCommandHandler
 {
 	protected static final Logger _log = Logger.getLogger(Wedding.class.getName());
-	private static String[] VOICED_COMMANDS = {
+	private static String[] VOICED_COMMANDS =
+	{
 	"divorce", "engage", "gotolove"
 	};
 
@@ -196,10 +197,8 @@ public class Wedding implements IVoicedCommandHandler
 		// check if target has player on friendlist
 		boolean FoundOnFriendList = false;
 		int objectId = 0;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("SELECT friend_id FROM character_friends WHERE char_id=?");
 			statement.setInt(1, ptarget.getObjectId());
@@ -218,16 +217,6 @@ public class Wedding implements IVoicedCommandHandler
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 

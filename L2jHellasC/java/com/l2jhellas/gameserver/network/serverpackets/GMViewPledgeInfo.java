@@ -19,15 +19,13 @@ import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- * format   SdSS dddddddd d (Sddddd)
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
+ * format SdSS dddddddd d (Sddddd)
  */
 public class GMViewPledgeInfo extends L2GameServerPacket
 {
 	private static final String _S__A9_GMVIEWPLEDGEINFO = "[S] 90 GMViewPledgeInfo";
-	private L2Clan _clan;
-	private L2PcInstance _activeChar;
+	private final L2Clan _clan;
+	private final L2PcInstance _activeChar;
 
 	public GMViewPledgeInfo(L2Clan clan, L2PcInstance activeChar)
 	{
@@ -53,33 +51,29 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 		writeD(0);
 		writeD(0);
 
-		writeD(_clan.getAllyId()); //c2
-		writeS(_clan.getAllyName()); //c2
-		writeD(_clan.getAllyCrestId()); //c2
-		writeD(_clan.isAtWar()); //c3
+		writeD(_clan.getAllyId()); // c2
+		writeS(_clan.getAllyName()); // c2
+		writeD(_clan.getAllyCrestId()); // c2
+		writeD(_clan.isAtWar()); // c3
 
 		L2ClanMember[] members = _clan.getMembers();
 		writeD(members.length);
 
 		for (int i = 0; i < members.length; i++)
 		{
-            writeS(members[i].getName());
-            writeD(members[i].getLevel());
-            writeD(members[i].getClassId());
-            writeD(0);
-            writeD(1);
-            writeD(members[i].isOnline() ? members[i].getObjectId() : 0);
-            writeD(0);
+			writeS(members[i].getName());
+			writeD(members[i].getLevel());
+			writeD(members[i].getClassId());
+			writeD(0);
+			writeD(1);
+			writeD(members[i].isOnline() ? members[i].getObjectId() : 0);
+			writeD(0);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__A9_GMVIEWPLEDGEINFO;
 	}
-
 }

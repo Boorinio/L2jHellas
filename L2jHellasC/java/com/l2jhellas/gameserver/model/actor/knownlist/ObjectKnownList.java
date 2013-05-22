@@ -44,7 +44,7 @@ public class ObjectKnownList
 
 	public boolean addKnownObject(L2Object object, L2Character dropper)
 	{
-		if (object == null || object == getActiveObject())
+		if ((object == null) || (object == getActiveObject()))
 			return false;
 
 		// Check if already know object
@@ -93,7 +93,7 @@ public class ObjectKnownList
 	 */
 	public final synchronized void updateKnownObjects()
 	{
-		// Only bother updating knownobjects for L2Character; don't for L2Object
+		// Only bother updating known objects for L2Character; don't for L2Object
 		if (getActiveObject() instanceof L2Character)
 		{
 			findCloseObjects();
@@ -153,7 +153,7 @@ public class ObjectKnownList
 		// Go through knownObjects
 		Collection<L2Object> knownObjects = getKnownObjects().values();
 
-		if (knownObjects == null || knownObjects.size() == 0)
+		if ((knownObjects == null) || (knownObjects.size() == 0))
 			return;
 
 		for (L2Object object : knownObjects)
@@ -165,31 +165,21 @@ public class ObjectKnownList
 			// Remove all too far object
 			if (!object.isVisible() || !Util.checkIfInRange(getDistanceToForgetObject(object), getActiveObject(), object, true))
 				if (object instanceof L2BoatInstance && getActiveObject() instanceof L2PcInstance)
-				{
 					if (((L2BoatInstance) (object)).getVehicleDeparture() == null)
 					{
 						//
 					}
 					else if (((L2PcInstance) getActiveObject()).isInBoat())
-					{
 						if (((L2PcInstance) getActiveObject()).getBoat() == object)
 						{
 							//
 						}
 						else
-						{
 							removeKnownObject(object);
-						}
-					}
 					else
-					{
 						removeKnownObject(object);
-					}
-				}
 				else
-				{
 					removeKnownObject(object);
-				}
 		}
 	}
 

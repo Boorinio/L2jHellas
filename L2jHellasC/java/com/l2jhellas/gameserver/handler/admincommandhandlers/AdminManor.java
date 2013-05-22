@@ -39,21 +39,21 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
  * - manor_setmaintenance = sets manor system under maintenance mode
  * - manor_save = saves all manor data into database
  * - manor_disable = disables manor system
- *
+ * 
  * @author l3x
  */
 public class AdminManor implements IAdminCommandHandler
 {
 	private static final String[] _adminCommands =
-	{
-	"admin_manor",
-	"admin_manor_approve",
-	"admin_manor_setnext",
-	"admin_manor_reset",
-	"admin_manor_setmaintenance",
-	"admin_manor_save",
-	"admin_manor_disable"
-	};
+	{/** @formatter:off */
+		"admin_manor",
+		"admin_manor_approve",
+		"admin_manor_setnext",
+		"admin_manor_reset",
+		"admin_manor_setmaintenance",
+		"admin_manor_save",
+		"admin_manor_disable"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

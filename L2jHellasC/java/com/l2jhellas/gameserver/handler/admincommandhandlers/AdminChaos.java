@@ -25,11 +25,11 @@ import com.l2jhellas.gameserver.network.clientpackets.EnterWorld;
 public class AdminChaos implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_startchaos",
-	"admin_endchaos",
-	"admin_warnchaos"
-	};
+	{/** @formatter:off */
+		"admin_startchaos",
+		"admin_endchaos",
+		"admin_warnchaos"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

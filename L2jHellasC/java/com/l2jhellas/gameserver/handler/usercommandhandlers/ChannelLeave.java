@@ -25,7 +25,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class ChannelLeave implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = {
+	private static final int[] COMMAND_IDS =
+	{
 		96
 	};
 
@@ -50,9 +51,7 @@ public class ChannelLeave implements IUserCommandHandler
 				return true;
 			}
 		}
-
 		return false;
-
 	}
 
 	@Override

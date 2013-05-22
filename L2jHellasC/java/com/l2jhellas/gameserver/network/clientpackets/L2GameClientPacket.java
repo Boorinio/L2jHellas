@@ -23,7 +23,8 @@ import com.l2jserver.mmocore.network.ReceivablePacket;
 
 /**
  * Packets received by the game server from clients
- * @author  KenM
+ * 
+ * @author KenM
  */
 public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 {
@@ -34,7 +35,8 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 	@Override
 	protected boolean read()
 	{
-		//System.out.println(this.getType());
+		if (Config.DEBUG)
+			System.out.println("l2gameclient packet: " + this.getType());
 		try
 		{
 			readImpl();
@@ -42,7 +44,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed reading: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION);
+			_log.severe("Client: " + getClient().toString() + " - Failed reading: " + getType() + " packet - l2jhellas Server Version: " + Config.SERVER_VERSION);
 			t.printStackTrace();
 		}
 		return false;
@@ -56,32 +58,32 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		try
 		{
 			runImpl();
-			//TODO Seth: enchance
-            if (this instanceof MoveBackwardToLocation || this instanceof AttackRequest || this instanceof RequestMagicSkillUse)
-            	// could include pickup and talk too, but less is better
-            {
-            	// Removes onspawn protection - player has faster computer than
-            	// average
-            	if (getClient().getActiveChar() != null)
-            		getClient().getActiveChar().onActionRequest();
-            }
+			// TODO Seth: enhance
+			if (this instanceof MoveBackwardToLocation || this instanceof AttackRequest || this instanceof RequestMagicSkillUse)
+			// could include pickup and talk too, but less is better
+			{
+				// Removes onspawn protection - player has faster computer than
+				// average
+				if (getClient().getActiveChar() != null)
+					getClient().getActiveChar().onActionRequest();
+			}
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: "+getClient().toString()+" - Failed running: "+getType()+" - l2jhellas Server Version: "+Config.SERVER_VERSION);
+			_log.severe("Client: " + getClient().toString() + " - Failed running: " + getType() + " - l2jhellas Server Version: " + Config.SERVER_VERSION);
 			t.printStackTrace();
 		}
 	}
-	
+
 	protected abstract void runImpl();
-	
+
 	protected final void sendPacket(L2GameServerPacket gsp)
 	{
 		getClient().sendPacket(gsp);
 	}
-	
+
 	/**
-	 * @return A String with this packet name for debuging purposes
+	 * @return A String with this packet name for debugging purposes
 	 */
 	public abstract String getType();
 }

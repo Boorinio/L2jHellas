@@ -38,11 +38,11 @@ import com.l2jhellas.util.Rnd;
 public class AdminFightCalculator implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_fight_calculator",
-	"admin_fight_calculator_show",
-	"admin_fcs"
-	};
+	{/** @formatter:off */
+		"admin_fight_calculator",
+		"admin_fight_calculator_show",
+		"admin_fcs"
+	};/** @formatter:on */
 
 	// TODO: remove from gm list etc etc
 	@Override

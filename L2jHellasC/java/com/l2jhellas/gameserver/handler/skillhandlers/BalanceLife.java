@@ -30,7 +30,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class BalanceLife implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.BALANCE_LIFE
 	};
 

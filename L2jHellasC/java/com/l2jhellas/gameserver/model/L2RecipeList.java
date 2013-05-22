@@ -16,8 +16,8 @@ package com.l2jhellas.gameserver.model;
 
 /**
  * This class describes a Recipe used by Dwarf to craft Item.
- * All L2RecipeList are made of L2RecipeInstance (1 line of the recipe : Item-Quantity needed).<BR><BR>
- *
+ * All L2RecipeList are made of L2RecipeInstance (1 line of the recipe : Item-Quantity needed).<BR>
+ * <BR>
  */
 public class L2RecipeList
 {
@@ -25,34 +25,35 @@ public class L2RecipeList
 	private L2RecipeInstance[] _recipes;
 
 	/** The Identifier of the Instance */
-	private int _id;
+	private final int _id;
 
 	/** The crafting level needed to use this L2RecipeList */
-	private int _level;
+	private final int _level;
 
 	/** The Identifier of the L2RecipeList */
-	private int _recipeId;
+	private final int _recipeId;
 
 	/** The name of the L2RecipeList */
-	private String _recipeName;
+	private final String _recipeName;
 
-	/** The crafting succes rate when using the L2RecipeList */
-	private int _successRate;
+	/** The crafting success rate when using the L2RecipeList */
+	private final int _successRate;
 
 	/** The crafting MP cost of this L2RecipeList */
-	private int _mpCost;
+	private final int _mpCost;
 
 	/** The Identifier of the Item crafted with this L2RecipeList */
-	private int _itemId;
+	private final int _itemId;
 
 	/** The quantity of Item crafted when using this L2RecipeList */
-	private int _count;
+	private final int _count;
 
 	/** If this a common or a dwarven recipe */
-	private boolean _isDwarvenRecipe;
+	private final boolean _isDwarvenRecipe;
 
 	/**
-	 * Constructor of L2RecipeList (create a new Recipe).<BR><BR>
+	 * Constructor of L2RecipeList (create a new Recipe).<BR>
+	 * <BR>
 	 */
 	public L2RecipeList(int id, int level, int recipeId, String recipeName, int successRate, int mpCost, int itemId, int count, boolean isDwarvenRecipe)
 	{
@@ -69,20 +70,21 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Add a L2RecipeInstance to the L2RecipeList (add a line Item-Quantity needed to the Recipe).<BR><BR>
+	 * Add a L2RecipeInstance to the L2RecipeList (add a line Item-Quantity needed to the Recipe).<BR>
+	 * <BR>
 	 */
 	public void addRecipe(L2RecipeInstance recipe)
 	{
 		int len = _recipes.length;
-		L2RecipeInstance[] tmp = new L2RecipeInstance[len+1];
+		L2RecipeInstance[] tmp = new L2RecipeInstance[len + 1];
 		System.arraycopy(_recipes, 0, tmp, 0, len);
 		tmp[len] = recipe;
 		_recipes = tmp;
 	}
 
-
 	/**
-	 * Return the Identifier of the Instance.<BR><BR>
+	 * Return the Identifier of the Instance.<BR>
+	 * <BR>
 	 */
 	public int getId()
 	{
@@ -90,7 +92,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the crafting level needed to use this L2RecipeList.<BR><BR>
+	 * Return the crafting level needed to use this L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public int getLevel()
 	{
@@ -98,7 +101,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the Identifier of the L2RecipeList.<BR><BR>
+	 * Return the Identifier of the L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public int getRecipeId()
 	{
@@ -106,7 +110,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the name of the L2RecipeList.<BR><BR>
+	 * Return the name of the L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public String getRecipeName()
 	{
@@ -114,7 +119,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the crafting succes rate when using the L2RecipeList.<BR><BR>
+	 * Return the crafting success rate when using the L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public int getSuccessRate()
 	{
@@ -122,7 +128,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the crafting MP cost of this L2RecipeList.<BR><BR>
+	 * Return the crafting MP cost of this L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public int getMpCost()
 	{
@@ -130,19 +137,21 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return rue if the Item crafted with this L2RecipeList is consubable (shot, arrow,...).<BR><BR>
+	 * Return rue if the Item crafted with this L2RecipeList is consumable (shot, arrow,...).<BR>
+	 * <BR>
 	 */
 	public boolean isConsumable()
 	{
 		return ((_itemId >= 1463 && _itemId <= 1467) // Soulshots
 				|| (_itemId >= 2509 && _itemId <= 2514) // Spiritshots
 				|| (_itemId >= 3947 && _itemId <= 3952) // Blessed Spiritshots
-				|| (_itemId >= 1341 && _itemId <= 1345) // Arrows
+		|| (_itemId >= 1341 && _itemId <= 1345) // Arrows
 		);
 	}
 
 	/**
-	 * Return the Identifier of the Item crafted with this L2RecipeList.<BR><BR>
+	 * Return the Identifier of the Item crafted with this L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public int getItemId()
 	{
@@ -150,7 +159,8 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the quantity of Item crafted when using this L2RecipeList.<BR><BR>
+	 * Return the quantity of Item crafted when using this L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public int getCount()
 	{
@@ -166,11 +176,11 @@ public class L2RecipeList
 	}
 
 	/**
-	 * Return the table containing all L2RecipeInstance (1 line of the recipe : Item-Quantity needed) of the L2RecipeList.<BR><BR>
+	 * Return the table containing all L2RecipeInstance (1 line of the recipe : Item-Quantity needed) of the L2RecipeList.<BR>
+	 * <BR>
 	 */
 	public L2RecipeInstance[] getRecipes()
 	{
 		return _recipes;
 	}
 }
-

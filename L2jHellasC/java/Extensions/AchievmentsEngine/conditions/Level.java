@@ -25,7 +25,7 @@ public class Level extends Condition
 		super(value);
 		setName("Level");
 	}
-	
+
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
@@ -34,7 +34,7 @@ public class Level extends Condition
 		else
 		{
 			int val = Integer.parseInt(getValue().toString());
-			
+
 			if (player.getLevel() >= val)
 				return true;
 		}

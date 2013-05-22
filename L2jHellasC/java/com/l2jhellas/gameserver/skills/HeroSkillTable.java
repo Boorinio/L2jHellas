@@ -48,7 +48,8 @@ public class HeroSkillTable
 
 	public static boolean isHeroSkill(int skillid)
 	{
-		Integer[] _HeroSkillsId = new Integer[] {
+		Integer[] _HeroSkillsId = new Integer[]
+		{
 		395, 396, 1374, 1375, 1376
 		};
 

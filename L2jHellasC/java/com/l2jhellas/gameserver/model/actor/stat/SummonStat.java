@@ -22,7 +22,7 @@ public class SummonStat extends PlayableStat
 	{
 		super(activeChar);
 	}
-	
+
 	@Override
 	public L2Summon getActiveChar()
 	{

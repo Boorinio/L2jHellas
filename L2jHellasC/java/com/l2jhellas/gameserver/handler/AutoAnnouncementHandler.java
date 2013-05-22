@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,11 +27,11 @@ import javolution.text.TextBuilder;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * Auto Announcment Handler
@@ -55,14 +57,11 @@ public class AutoAnnouncementHandler
 	private void restoreAnnouncementData()
 	{
 		int numLoaded = 0;
-		Connection con = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			statement = con.prepareStatement("SELECT * FROM auto_announcements ORDER BY id");
 			rs = statement.executeQuery();
 
@@ -83,16 +82,6 @@ public class AutoAnnouncementHandler
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -148,7 +137,7 @@ public class AutoAnnouncementHandler
 	/**
 	 * Registers a globally active autoannouncement. <BR>
 	 * Returns the associated auto announcement instance.
-	 *
+	 * 
 	 * @param String
 	 *        announcementTexts
 	 * @param int announcementDelay (-1 = default delay)
@@ -162,7 +151,7 @@ public class AutoAnnouncementHandler
 	/**
 	 * Registers a NON globally-active auto announcement <BR>
 	 * Returns the associated auto chat instance.
-	 *
+	 * 
 	 * @param String
 	 *        announcementTexts
 	 * @param int announcementDelay (-1 = default delay)
@@ -177,10 +166,8 @@ public class AutoAnnouncementHandler
 	{
 		int nextId = nextAutoAnnouncmentId();
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("INSERT INTO auto_announcements (id,announcement,delay) " + "VALUES (?,?,?)");
 			statement.setInt(1, nextId);
 			statement.setString(2, announcementTexts);
@@ -198,33 +185,18 @@ public class AutoAnnouncementHandler
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		return registerAnnouncement(nextId, announcementTexts, announcementDelay);
 	}
 
 	public int nextAutoAnnouncmentId()
 	{
-
 		int nextId = 0;
-
-		Connection con = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			statement = con.prepareStatement("SELECT id FROM auto_announcements ORDER BY id");
 			rs = statement.executeQuery();
 
@@ -244,16 +216,6 @@ public class AutoAnnouncementHandler
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -284,18 +246,15 @@ public class AutoAnnouncementHandler
 
 	/**
 	 * Removes and cancels ALL auto announcement for the given announcement id.
-	 *
+	 * 
 	 * @param int Id
 	 * @return boolean removedSuccessfully
 	 */
 	public boolean removeAnnouncement(int id)
 	{
 		AutoAnnouncementInstance announcementInst = _registeredAnnouncements.get(id);
-
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("DELETE FROM auto_announcements WHERE id=?");
 			statement.setInt(1, announcementInst.getDefaultId());
 			statement.executeUpdate();
@@ -310,16 +269,6 @@ public class AutoAnnouncementHandler
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		return removeAnnouncement(announcementInst);
 	}
@@ -327,7 +276,7 @@ public class AutoAnnouncementHandler
 	/**
 	 * Removes and cancels ALL auto announcement for the given announcement
 	 * instance.
-	 *
+	 * 
 	 * @param AutoAnnouncementInstance
 	 *        announcementInst
 	 * @return boolean removedSuccessfully
@@ -347,7 +296,7 @@ public class AutoAnnouncementHandler
 	 * Returns the associated auto announcement instance either by the given
 	 * announcement ID
 	 * or object ID.
-	 *
+	 * 
 	 * @param int id
 	 * @return AutoAnnouncementInstance announcementInst
 	 */
@@ -360,7 +309,7 @@ public class AutoAnnouncementHandler
 	 * Sets the active state of all auto announcement instances to that
 	 * specified,
 	 * and cancels the scheduled chat task if necessary.
-	 *
+	 * 
 	 * @param boolean isActive
 	 */
 	public void setAutoAnnouncementActive(boolean isActive)
@@ -455,7 +404,7 @@ public class AutoAnnouncementHandler
 		 * <BR>
 		 * Represents the auto announcement scheduled task for each announcement
 		 * instance.
-		 *
+		 * 
 		 * @author chief
 		 */
 		private class AutoAnnouncementRunner implements Runnable

@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CompactionIDFactory extends IdFactory
 {
@@ -36,11 +36,9 @@ public class CompactionIDFactory extends IdFactory
 		_curOID = FIRST_OID;
 		_freeSize = 0;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			// con.createStatement().execute("drop table if exists tmp_obj_id");
+			// TODO check this con.createStatement().execute("drop table if exists tmp_obj_id");
 
 			int[] tmp_obj_ids = extractUsedObjectIDTable();
 
@@ -59,16 +57,6 @@ public class CompactionIDFactory extends IdFactory
 			if (Config.DEVELOPER)
 			{
 				e1.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

@@ -21,12 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class BalanceLoad
 {
 	protected static final Logger _log = Logger.getLogger(BalanceLoad.class.getName());
 
+	/** @formatter:off */
 	private static final String RESTORE_BALANCE =
 	"SELECT accplus88,evasionplus88,hpplus88,cpplus88,mpplus88,matkplus88,matksplus88,mdefplus88,patkplus88,patksplus88,pdefplus88,walkplus88," +
 			"accplus89,evasionplus89,hpplus89,cpplus89,mpplus89,matkplus89,matksplus89,mdefplus89,patkplus89,patksplus89,pdefplus89,walkplus89, " +
@@ -60,7 +61,7 @@ public class BalanceLoad
 			"accplus117,evasionplus117,hpplus117,cpplus117,mpplus117,matkplus117,matksplus117,mdefplus117,patkplus117,patksplus117,pdefplus117,walkplus117, " +
 			"accplus118,evasionplus118,hpplus118,cpplus118,mpplus118,matkplus118,matksplus118,mdefplus118,patkplus118,patksplus118,pdefplus118,walkplus118 " +
 			"FROM balance";
-
+	/** @formatter:on */
 
 	public static void loadBalance()
 	{
@@ -478,7 +479,7 @@ public class BalanceLoad
 			rset.close();
 			statement.close();
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			_log.log(Level.WARNING, "BalanceLoad: Problem loading class stats.");
 			if (Config.DEVELOPER)

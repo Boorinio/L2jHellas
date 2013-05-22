@@ -51,7 +51,8 @@ public class NobleSkillTable
 
 	public static boolean isNobleSkill(int skillid)
 	{
-		Integer[] _NobleSkillsId = new Integer[] {
+		Integer[] _NobleSkillsId = new Integer[]
+		{
 		1323, 325, 326, 327, 1324, 1325, 1326, 1327
 		};
 

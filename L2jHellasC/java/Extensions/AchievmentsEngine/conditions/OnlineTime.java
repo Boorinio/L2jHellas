@@ -31,12 +31,12 @@ public class OnlineTime extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
-		
-        if(player.getOnlineTime()>=val*24*60*60*1000)
-        {
-		  return true;
+
+		if (player.getOnlineTime() >= val * 24 * 60 * 60 * 1000)
+		{
+			return true;
 		}
 		return false;
 	}

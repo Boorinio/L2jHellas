@@ -48,7 +48,7 @@ public class LogRecorder
 			File file = new File("log/game/" + (cat != null ? cat : "_all") + ".txt");
 			// file.getAbsolutePath().mkdirs();
 			FileWriter save = new FileWriter(file, true);
-			String out = "[" + date + "] '---': " + text + "\n"; // "+char_name()+"
+			String out = "[" + date + "] Character: " + text + "\r\n"; // "+char_name()+"
 			save.write(out);
 			save.flush();
 			save.close();
@@ -62,7 +62,9 @@ public class LogRecorder
 		}
 
 		if (cat != null)
+		{
 			add(text, null);
+		}
 	}
 
 	@Deprecated
@@ -78,7 +80,7 @@ public class LogRecorder
 		try
 		{
 			save = new FileWriter(file, true);
-			String out = "[" + date + "] '<" + pc.getName() + ">': " + text + "\n"; // "+char_name()+"
+			String out = "[" + date + "] '<" + pc.getName() + ">': " + text + "\r\n";
 			save.write(out);
 		}
 		catch (IOException e)

@@ -26,7 +26,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -49,6 +48,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class L2Clan
 {
@@ -236,17 +236,11 @@ public class L2Clan
 			return;
 		}
 		if (!getLeader().isOnline())
-		{
 			return;
-		}
 		if (member == null)
-		{
 			return;
-		}
 		if (!member.isOnline())
-		{
 			return;
-		}
 
 		L2PcInstance exLeader = getLeader().getPlayerInstance();
 		SiegeManager.getInstance().removeSiegeSkills(exLeader);
@@ -365,9 +359,13 @@ public class L2Clan
 			if (apprentice != null)
 			{
 				if (apprentice.getPlayerInstance() != null)
+				{
 					apprentice.getPlayerInstance().setSponsor(0);
+				}
 				else
+				{
 					apprentice.initApprenticeAndSponsor(0, 0);
+				}
 
 				apprentice.saveApprenticeAndSponsor(0, 0);
 			}
@@ -378,9 +376,13 @@ public class L2Clan
 			if (sponsor != null)
 			{
 				if (sponsor.getPlayerInstance() != null)
+				{
 					sponsor.getPlayerInstance().setApprentice(0);
+				}
 				else
+				{
 					sponsor.initApprenticeAndSponsor(0, 0);
+				}
 
 				sponsor.saveApprenticeAndSponsor(0, 0);
 			}
@@ -403,7 +405,9 @@ public class L2Clan
 			}
 			// remove Clanskills from Player
 			for (L2Skill skill : player.getClan().getAllSkills())
+			{
 				player.removeSkill(skill, false);
+			}
 			player.setClan(null);
 			player.setClanJoinExpiryTime(clanJoinExpiryTime);
 			player.setPledgeClass(exMember.calculatePledgeClass(player));
@@ -433,7 +437,9 @@ public class L2Clan
 		for (L2ClanMember temp : _members.values())
 		{
 			if (temp.getPledgeType() == subpl)
+			{
 				result++;
+			}
 		}
 		return result;
 	}
@@ -493,7 +499,9 @@ public class L2Clan
 			try
 			{
 				if (temp.isOnline() && !temp.getName().equals(exclude))
+				{
 					result.add(temp.getPlayerInstance());
+				}
 			}
 			catch (NullPointerException e)
 			{
@@ -659,10 +667,8 @@ public class L2Clan
 
 	public void updateClanInDB()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET leader_id=?,ally_id=?,ally_name=?,reputation_score=?,ally_penalty_expiry_time=?,ally_penalty_type=?,char_penalty_expiry_time=?,dissolving_expiry_time=? WHERE clan_id=?");
 			statement.setInt(1, getLeaderId());
 			statement.setInt(2, getAllyId());
@@ -674,9 +680,11 @@ public class L2Clan
 			statement.setLong(8, getDissolvingExpiryTime());
 			statement.setInt(9, getClanId());
 			statement.execute();
-			statement.close();
+
 			if (Config.DEBUG)
+			{
 				_log.log(Level.CONFIG, getClass().getName() + ": New clan leader saved in db: " + getClanId());
+			}
 		}
 		catch (Exception e)
 		{
@@ -686,24 +694,12 @@ public class L2Clan
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public void store()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("INSERT INTO clan_data (clan_id,clan_name,clan_level,hasCastle,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id) values (?,?,?,?,?,?,?,?,?,?)");
 			statement.setInt(1, getClanId());
 			statement.setString(2, getName());
@@ -716,10 +712,11 @@ public class L2Clan
 			statement.setInt(9, getCrestLargeId());
 			statement.setInt(10, getAllyCrestId());
 			statement.execute();
-			statement.close();
 
 			if (Config.DEBUG)
+			{
 				_log.log(Level.CONFIG, getClass().getName() + ": New clan saved in db: " + getClanId());
+			}
 		}
 		catch (Exception e)
 		{
@@ -729,24 +726,12 @@ public class L2Clan
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void removeMemberInDatabase(L2ClanMember member, long clanJoinExpiryTime, long clanCreateExpiryTime)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET clanid=0, title=?, clan_join_expiry_time=?, clan_create_expiry_time=?, clan_privs=0, wantspeace=0, subpledge=0, lvl_joined_academy=0, apprentice=0, sponsor=0 WHERE obj_Id=?");
 			statement.setString(1, "");
 			statement.setLong(2, clanJoinExpiryTime);
@@ -755,7 +740,9 @@ public class L2Clan
 			statement.execute();
 			statement.close();
 			if (Config.DEBUG)
+			{
 				_log.log(Level.FINE, getClass().getName() + ": clan member removed in db: " + getClanId());
+			}
 
 			statement = con.prepareStatement("UPDATE characters SET apprentice=0 WHERE apprentice=?");
 			statement.setInt(1, member.getObjectId());
@@ -775,25 +762,13 @@ public class L2Clan
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	@SuppressWarnings("unused")
 	private void updateWarsInDB()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("UPDATE clan_wars SET wantspeace1=? WHERE clan1=?");
 			statement.setInt(1, 0);
@@ -811,28 +786,14 @@ public class L2Clan
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void restore()
 	{
 		// restorewars();
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			L2ClanMember member;
-
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id,reputation_score,auction_bid_at,ally_penalty_expiry_time,ally_penalty_type,char_penalty_expiry_time,dissolving_expiry_time FROM clan_data where clan_id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT clan_name,clan_level,hasCastle,ally_id,ally_name,leader_id,crest_id,crest_large_id,ally_crest_id,reputation_score,auction_bid_at,ally_penalty_expiry_time,ally_penalty_type,char_penalty_expiry_time,dissolving_expiry_time FROM clan_data WHERE clan_id=?");
 			statement.setInt(1, getClanId());
 			ResultSet clanData = statement.executeQuery();
 
@@ -849,7 +810,7 @@ public class L2Clan
 					setAllyPenaltyExpiryTime(0, 0);
 				}
 				setCharPenaltyExpiryTime(clanData.getLong("char_penalty_expiry_time"));
-				if (getCharPenaltyExpiryTime() + Config.ALT_CLAN_JOIN_DAYS * 86400000L < System.currentTimeMillis()) // 24*60*60*1000 = 86400000
+				if ((getCharPenaltyExpiryTime() + (Config.ALT_CLAN_JOIN_DAYS * 86400000L)) < System.currentTimeMillis()) // 24*60*60*1000 = 86400000
 				{
 					setCharPenaltyExpiryTime(0);
 				}
@@ -871,30 +832,37 @@ public class L2Clan
 				setReputationScore(clanData.getInt("reputation_score"), false);
 				setAuctionBiddedAt(clanData.getInt("auction_bid_at"), false);
 
-				int leaderId = (clanData.getInt("leader_id"));
+				final int leaderId = (clanData.getInt("leader_id"));
 
-				PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade,subpledge,apprentice,sponsor FROM characters WHERE clanid=?");
-				statement2.setInt(1, getClanId());
-				ResultSet clanMembers = statement2.executeQuery();
+				statement.clearParameters();
 
-				while (clanMembers.next())
+				try (PreparedStatement statement2 = con.prepareStatement("SELECT char_name,level,classid,obj_Id,title,power_grade,subpledge,apprentice,sponsor,sex,race FROM characters WHERE clanid=?"))
 				{
-					member = new L2ClanMember(this, clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"), clanMembers.getInt("subpledge"), clanMembers.getInt("power_grade"), clanMembers.getString("title"));
-					if (member.getObjectId() == leaderId)
-						setLeader(member);
-					else
-						addClanMember(member);
-					member.initApprenticeAndSponsor(clanMembers.getInt("apprentice"), clanMembers.getInt("sponsor"));
+					statement2.setInt(1, getClanId());
+					try (ResultSet clanMembers = statement2.executeQuery())
+					{
+						while (clanMembers.next())
+						{
+							L2ClanMember member = null;
+							member = new L2ClanMember(this, clanMembers.getString("char_name"), clanMembers.getInt("level"), clanMembers.getInt("classid"), clanMembers.getInt("obj_id"), clanMembers.getInt("subpledge"), clanMembers.getInt("power_grade"), clanMembers.getString("title"));
+							if (member.getObjectId() == leaderId)
+							{
+								setLeader(member);
+							}
+							else
+							{
+								addClanMember(member);
+							}
+							member.initApprenticeAndSponsor(clanMembers.getInt("apprentice"), clanMembers.getInt("sponsor"));
+						}
+					}
 				}
-				clanMembers.close();
-				statement2.close();
 			}
 
-			clanData.close();
-			statement.close();
-
 			if (Config.DEBUG && getName() != null)
-				_log.log(Level.WARNING, getClass().getName() + ": Restored clan data for: " + getName() + " from database.");
+			{
+				_log.log(Level.CONFIG, getClass().getSimpleName() + ": Restored clan data for: " + getName() + " from database.");
+			}
 
 			restoreSubPledges();
 			restoreRankPrivs();
@@ -903,32 +871,19 @@ public class L2Clan
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while restoring clan " + e);
+			_log.log(Level.WARNING, getClass().getName() + ": error while restoring clan " + e.getMessage(), e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
 
 	private void restoreSkills()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve all skills of this L2PcInstance from the database
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT skill_id,skill_level FROM clan_skills WHERE clan_id=?");
 			statement.setInt(1, getClanId());
 
@@ -944,9 +899,6 @@ public class L2Clan
 				// Add the L2Skill object to the L2Clan _skills
 				_skills.put(skill.getId(), skill);
 			}
-
-			rset.close();
-			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -956,54 +908,29 @@ public class L2Clan
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void restoreNotice()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("SELECT enabled,notice FROM clan_notices WHERE clan_id=?"))
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT enabled,notice FROM clan_notices WHERE clan_id=?");
 			statement.setInt(1, getClanId());
-			ResultSet noticeData = statement.executeQuery();
-
-			while (noticeData.next())
+			try (ResultSet noticeData = statement.executeQuery())
 			{
-				_noticeEnabled = noticeData.getBoolean("enabled");
-				_notice = noticeData.getString("notice");
+				while (noticeData.next())
+				{
+					_noticeEnabled = noticeData.getBoolean("enabled");
+					_notice = noticeData.getString("notice");
+				}
 			}
-
-			noticeData.close();
-			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error restoring clan notice.", e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error restoring clan notice." + e.getMessage(), e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -1011,41 +938,33 @@ public class L2Clan
 	private void storeNotice(String notice, boolean enabled)
 	{
 		if (notice == null)
-			notice = "";
-
-		Connection con = null;
-
-		try
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
+			notice = "";
+		}
 
-			if (notice.length() > 8192)
-				notice = notice.substring(0, 8191);
-
-			if (_notice != null)
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("INSERT INTO clan_notices (clan_id,notice,enabled) values (?,?,?) ON DUPLICATE KEY UPDATE notice=?,enabled=?"))
+		{
+			statement.setInt(1, getClanId());
+			statement.setString(2, notice);
+			if (enabled)
 			{
-				PreparedStatement statement = con.prepareStatement("UPDATE clan_notices SET enabled=?,notice=? WHERE clan_id=?");
-				if (enabled)
-					statement.setString(1, "true");
-				else
-					statement.setString(1, "false");
-				statement.setString(2, notice);
-				statement.setInt(3, getClanId());
-				statement.execute();
-				statement.close();
+				statement.setString(3, "true");
 			}
 			else
 			{
-				PreparedStatement statement = con.prepareStatement("INSERT INTO clan_notices (clan_id, enabled, notice) VALUES (?,?,?)");
-				statement.setInt(1, getClanId());
-				if (enabled)
-					statement.setString(2, "true");
-				else
-					statement.setString(2, "false");
-				statement.setString(3, notice);
-				statement.execute();
-				statement.close();
+				statement.setString(3, "false");
 			}
+			statement.setString(4, notice);
+			if (enabled)
+			{
+				statement.setString(5, "true");
+			}
+			else
+			{
+				statement.setString(5, "false");
+			}
+			statement.execute();
 		}
 		catch (Exception e)
 		{
@@ -1055,17 +974,6 @@ public class L2Clan
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		_notice = notice;
 		_noticeEnabled = enabled;
 	}
@@ -1115,11 +1023,16 @@ public class L2Clan
 		return oldSkill;
 	}
 
-	/** used to add a new skill to the list, send a packet to all online clan members, update their stats and store it in db */
+	/**
+	 * Used to add a new skill to the list, send a packet to all online clan members, update their stats and store it in db
+	 *
+	 * @param newSkill
+	 * @param subType
+	 * @return
+	 */
 	public L2Skill addNewSkill(L2Skill newSkill)
 	{
 		L2Skill oldSkill = null;
-		Connection con = null;
 
 		if (newSkill != null)
 		{
@@ -1127,29 +1040,28 @@ public class L2Clan
 			// Replace oldSkill by newSkill or Add the newSkill
 			oldSkill = _skills.put(newSkill.getId(), newSkill);
 
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement;
-
 				if (oldSkill != null)
 				{
-					statement = con.prepareStatement("UPDATE clan_skills SET skill_level=? WHERE skill_id=? AND clan_id=?");
-					statement.setInt(1, newSkill.getLevel());
-					statement.setInt(2, oldSkill.getId());
-					statement.setInt(3, getClanId());
-					statement.execute();
-					statement.close();
+					try (PreparedStatement statement = con.prepareStatement("UPDATE clan_skills SET skill_level=? WHERE skill_id=? AND clan_id=?"))
+					{
+						statement.setInt(1, newSkill.getLevel());
+						statement.setInt(2, oldSkill.getId());
+						statement.setInt(3, getClanId());
+						statement.execute();
+					}
 				}
 				else
 				{
-					statement = con.prepareStatement("INSERT INTO clan_skills (clan_id,skill_id,skill_level,skill_name) VALUES (?,?,?,?)");
-					statement.setInt(1, getClanId());
-					statement.setInt(2, newSkill.getId());
-					statement.setInt(3, newSkill.getLevel());
-					statement.setString(4, newSkill.getName());
-					statement.execute();
-					statement.close();
+					try (PreparedStatement statement = con.prepareStatement("INSERT INTO clan_skills (clan_id,skill_id,skill_level,skill_name) VALUES (?,?,?,?)"))
+					{
+						statement.setInt(1, getClanId());
+						statement.setInt(2, newSkill.getId());
+						statement.setInt(3, newSkill.getLevel());
+						statement.setString(4, newSkill.getName());
+						statement.execute();
+					}
 				}
 			}
 			catch (Exception e)
@@ -1158,16 +1070,6 @@ public class L2Clan
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 
@@ -1204,7 +1106,9 @@ public class L2Clan
 					if (temp.isOnline())
 					{
 						if (skill.getMinPledgeClass() <= temp.getPlayerInstance().getPledgeClass())
+						{
 							temp.getPlayerInstance().addSkill(skill, false); // Skill is not saved to player DB
+						}
 					}
 				}
 				catch (NullPointerException e)
@@ -1223,16 +1127,16 @@ public class L2Clan
 		{
 			// TODO add skills according to members class( in ex. don't add Clan Agillity skill's effect to lower class then Baron)
 			if (skill.getMinPledgeClass() <= cm.getPledgeClass())
+			{
 				cm.addSkill(skill, false); // Skill is not saved to player DB
+			}
 		}
 	}
 
 	public void broadcastToOnlineAllyMembers(L2GameServerPacket packet)
 	{
 		if (getAllyId() == 0)
-		{
 			return;
-		}
 		for (L2Clan clan : ClanTable.getInstance().getClans())
 		{
 			if (clan.getAllyId() == getAllyId())
@@ -1249,7 +1153,9 @@ public class L2Clan
 			try
 			{
 				if (member.isOnline() && !BlockList.isBlocked(member.getPlayerInstance(), broadcaster))
+				{
 					member.getPlayerInstance().sendPacket(packet);
+				}
 			}
 			catch (NullPointerException e)
 			{
@@ -1264,7 +1170,9 @@ public class L2Clan
 			try
 			{
 				if (member.isOnline())
+				{
 					member.getPlayerInstance().sendPacket(packet);
+				}
 			}
 			catch (NullPointerException e)
 			{
@@ -1279,7 +1187,9 @@ public class L2Clan
 			try
 			{
 				if (member.isOnline() && member.getPlayerInstance() != player)
+				{
 					member.getPlayerInstance().sendPacket(packet);
+				}
 			}
 			catch (NullPointerException e)
 			{
@@ -1504,28 +1414,24 @@ public class L2Clan
 
 	private void restoreSubPledges()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("SELECT sub_pledge_id,name,leader_name FROM clan_subpledges WHERE clan_id=?"))
 		{
 			// Retrieve all subpledges of this clan from the database
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT sub_pledge_id,name,leader_name FROM clan_subpledges WHERE clan_id=?");
+
 			statement.setInt(1, getClanId());
-			ResultSet rset = statement.executeQuery();
-
-			while (rset.next())
+			try (ResultSet rset = statement.executeQuery())
 			{
-				int id = rset.getInt("sub_pledge_id");
-				String name = rset.getString("name");
-				String leaderName = rset.getString("leader_name");
-				// Create a SubPledge object for each record
-				SubPledge pledge = new SubPledge(id, name, leaderName);
-				_subPledges.put(id, pledge);
+				while (rset.next())
+				{
+					int id = rset.getInt("sub_pledge_id");
+					String name = rset.getString("name");
+					String leaderName = rset.getString("leader_name");
+					// Create a SubPledge object for each record
+					SubPledge pledge = new SubPledge(id, name, leaderName);
+					_subPledges.put(id, pledge);
+				}
 			}
-
-			rset.close();
-			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -1533,16 +1439,6 @@ public class L2Clan
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -1565,9 +1461,7 @@ public class L2Clan
 		for (SubPledge sp : _subPledges.values())
 		{
 			if (sp.getName().equalsIgnoreCase(pledgeName))
-			{
 				return sp;
-			}
 		}
 		return null;
 	}
@@ -1588,9 +1482,13 @@ public class L2Clan
 		if (pledgeType == 0)
 		{
 			if (pledgeType == L2Clan.SUBUNIT_ACADEMY)
+			{
 				player.sendPacket(new SystemMessage(SystemMessageId.CLAN_HAS_ALREADY_ESTABLISHED_A_CLAN_ACADEMY));
+			}
 			else
+			{
 				player.sendMessage("You can't create any more sub-units of this type");
+			}
 			return null;
 		}
 		if (_leader.getName().equals(leaderName))
@@ -1609,31 +1507,44 @@ public class L2Clan
 		}
 		else
 		{
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement statement = con.prepareStatement("INSERT INTO clan_subpledges (clan_id,sub_pledge_id,name,leader_name) VALUES (?,?,?,?)"))
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("INSERT INTO clan_subpledges (clan_id,sub_pledge_id,name,leader_name) VALUES (?,?,?,?)");
 				statement.setInt(1, getClanId());
 				statement.setInt(2, pledgeType);
 				statement.setString(3, subPledgeName);
 				if (pledgeType != -1)
+				{
 					statement.setString(4, leaderName);
+				}
 				else
+				{
 					statement.setString(4, "");
+				}
 				statement.execute();
-				statement.close();
 
 				subPledge = new SubPledge(pledgeType, subPledgeName, leaderName);
 				_subPledges.put(pledgeType, subPledge);
 
 				if (pledgeType != -1)
 				{
-					setReputationScore(getReputationScore() - 2500, true);
+					// Royal Guard 5000 points per each
+					// Order of Knights 10000 points per each
+					if (pledgeType < L2Clan.SUBUNIT_KNIGHT1)
+					{
+						setReputationScore(getReputationScore() - 2500, true);
+					}
+					else
+					{
+						setReputationScore(getReputationScore() - 2500, true);
+						// TODO: clan lvl9 or more can reinforce knights cheaper if first knight unit already created, use Config.KNIGHT_REINFORCE_COST
+					}
 				}
 
 				if (Config.DEBUG)
+				{
 					_log.log(Level.CONFIG, getClass().getName() + ": New sub_clan saved in db: " + getClanId() + "; " + pledgeType);
+				}
 			}
 			catch (Exception e)
 			{
@@ -1641,16 +1552,6 @@ public class L2Clan
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}
@@ -1691,18 +1592,18 @@ public class L2Clan
 
 	public void updateSubPledgeInDB(int pledgeType)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("UPDATE clan_subpledges SET leader_name=? WHERE clan_id=? AND sub_pledge_id=?"))
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("UPDATE clan_subpledges SET leader_name=? WHERE clan_id=? AND sub_pledge_id=?");
 			statement.setString(1, getSubPledge(pledgeType).getLeaderName());
 			statement.setInt(2, getClanId());
 			statement.setInt(3, pledgeType);
 			statement.execute();
-			statement.close();
+
 			if (Config.DEBUG)
+			{
 				_log.log(Level.CONFIG, getClass().getName() + ": New subpledge leader saved in db: " + getClanId());
+			}
 		}
 		catch (Exception e)
 		{
@@ -1712,45 +1613,32 @@ public class L2Clan
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void restoreRankPrivs()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("SELECT privs,rank,party FROM clan_privs WHERE clan_id=?"))
 		{
 			// Retrieve all skills of this L2PcInstance from the database
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT privs,rank,party FROM clan_privs WHERE clan_id=?");
 			statement.setInt(1, getClanId());
 			// _log.warning("clanPrivs restore for ClanId : "+getClanId());
-			ResultSet rset = statement.executeQuery();
-
-			// Go though the recordset of this SQL query
-			while (rset.next())
+			try (ResultSet rset = statement.executeQuery())
 			{
-				int rank = rset.getInt("rank");
-				// int party = rset.getInt("party");
-				int privileges = rset.getInt("privs");
-				// Create a SubPledge object for each record
-				// RankPrivs privs = new RankPrivs(rank, party, privileges);
-				// _Privs.put(rank, privs);
-				_privs.get(rank).setPrivs(privileges);
+				// Go though the recordset of this SQL query
+				while (rset.next())
+				{
+					int rank = rset.getInt("rank");
+					// int party = rset.getInt("party");
+					int privileges = rset.getInt("privs");
+					// Create a SubPledge object for each record
+					if (rank == -1)
+					{
+						continue;
+					}
+					_privs.get(rank).setPrivs(privileges);
+				}
 			}
-
-			rset.close();
-			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -1758,16 +1646,6 @@ public class L2Clan
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -1796,23 +1674,17 @@ public class L2Clan
 		if (_privs.get(rank) != null)
 		{
 			_privs.get(rank).setPrivs(privs);
-
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement statement = con.prepareStatement("INSERT INTO clan_privs (clan_id,rank,party,privs) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE privs=?"))
 			{
-				// _log.warning("requested store clan privs in db for rank: "+rank+", privs: "+privs);
 				// Retrieve all skills of this L2PcInstance from the database
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("INSERT INTO clan_privs (clan_id,rank,party,privs) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE privs=?");
+
 				statement.setInt(1, getClanId());
 				statement.setInt(2, rank);
 				statement.setInt(3, 0);
 				statement.setInt(4, privs);
 				statement.setInt(5, privs);
-
 				statement.execute();
-				statement.close();
 			}
 			catch (Exception e)
 			{
@@ -1820,16 +1692,6 @@ public class L2Clan
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 			for (L2ClanMember cm : getMembers())
@@ -1848,20 +1710,15 @@ public class L2Clan
 		{
 			_privs.put(rank, new RankPrivs(rank, 0, privs));
 
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement statement = con.prepareStatement("INSERT INTO clan_privs (clan_id,rank,party,privs) VALUES (?,?,?,?)"))
 			{
-				// _log.warning("requested store clan new privs in db for rank: "+rank);
 				// Retrieve all skills of this L2PcInstance from the database
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("INSERT INTO clan_privs (clan_id,rank,party,privs) VALUES (?,?,?,?)");
 				statement.setInt(1, getClanId());
 				statement.setInt(2, rank);
 				statement.setInt(3, 0);
 				statement.setInt(4, privs);
 				statement.execute();
-				statement.close();
 			}
 			catch (Exception e)
 			{
@@ -1869,16 +1726,6 @@ public class L2Clan
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}
@@ -1899,9 +1746,13 @@ public class L2Clan
 		for (SubPledge sp : _subPledges.values())
 		{
 			if (sp.getLeaderName() == null)
+			{
 				continue;
+			}
 			if (sp.getLeaderName().equals(name))
+			{
 				id = sp.getId();
+			}
 		}
 		return id;
 	}
@@ -1917,7 +1768,9 @@ public class L2Clan
 				if (member.isOnline() && member.getPlayerInstance() != null)
 				{
 					for (L2Skill sk : skills)
+					{
 						member.getPlayerInstance().removeSkill(sk, false);
+					}
 				}
 			}
 		}
@@ -1932,7 +1785,9 @@ public class L2Clan
 					for (L2Skill sk : skills)
 					{
 						if (sk.getMinPledgeClass() <= member.getPlayerInstance().getPledgeClass())
+						{
 							member.getPlayerInstance().addSkill(sk, false);
+						}
 					}
 				}
 			}
@@ -1940,11 +1795,17 @@ public class L2Clan
 
 		_reputationScore = value;
 		if (_reputationScore > 100000000)
+		{
 			_reputationScore = 100000000;
+		}
 		if (_reputationScore < -100000000)
+		{
 			_reputationScore = -100000000;
+		}
 		if (save)
+		{
 			updateClanInDB();
+		}
 	}
 
 	public int getReputationScore()
@@ -1973,32 +1834,19 @@ public class L2Clan
 
 		if (storeInDb)
 		{
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET auction_bid_at=? WHERE clan_id=?"))
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET auction_bid_at=? WHERE clan_id=?");
 				statement.setInt(1, id);
 				statement.setInt(2, getClanId());
 				statement.execute();
-				statement.close();
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could not store auction for clan: " + e);
+				_log.log(Level.WARNING, getClass().getName() + ": Could not store auction for clan: " + e.getMessage(), e);
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}
@@ -2015,9 +1863,7 @@ public class L2Clan
 	public boolean checkClanJoinCondition(L2PcInstance activeChar, L2PcInstance target, int pledgeType)
 	{
 		if (activeChar == null)
-		{
 			return false;
-		}
 		if ((activeChar.getClanPrivileges() & L2Clan.CP_CL_JOIN_CLAN) != L2Clan.CP_CL_JOIN_CLAN)
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
@@ -2115,9 +1961,7 @@ public class L2Clan
 	public boolean checkAllyJoinCondition(L2PcInstance activeChar, L2PcInstance target)
 	{
 		if (activeChar == null)
-		{
 			return false;
-		}
 		if (activeChar.getAllyId() == 0 || !activeChar.isClanLeader() || activeChar.getClanId() != activeChar.getAllyId())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER));
@@ -2252,7 +2096,9 @@ public class L2Clan
 			return;
 
 		if (Config.DEBUG)
+		{
 			_log.log(Level.CONFIG, getClass().getName() + ": " + player.getObjectId() + "(" + player.getName() + ") requested ally creation from ");
+		}
 
 		if (!player.isClanLeader())
 		{
@@ -2528,35 +2374,16 @@ public class L2Clan
 
 	public void changeLevel(int level)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET clan_level=? WHERE clan_id=?"))
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET clan_level=? WHERE clan_id=?");
 			statement.setInt(1, level);
 			statement.setInt(2, getClanId());
 			statement.execute();
-			statement.close();
-
-			con.close();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not increase clan level:" + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
+			_log.log(Level.WARNING, "could not increase clan level:" + e.getMessage(), e);
 		}
 
 		setLevel(level);

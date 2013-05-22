@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
 import com.l2jhellas.gameserver.model.L2AdminCommandAccessRight;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author FBIagent
@@ -39,8 +39,9 @@ public class AdminCommandAccessRights
 	private Map<String, L2AdminCommandAccessRight> _adminCommandAccessRights;
 
 	/**
-	 * Returns the one and only instance of this class<br><br>
-	 *
+	 * Returns the one and only instance of this class<br>
+	 * <br>
+	 * 
 	 * @return AdminCommandAccessRights: the one and only instance of this class<br>
 	 */
 	public static AdminCommandAccessRights getInstance()
@@ -61,12 +62,8 @@ public class AdminCommandAccessRights
 	{
 		_adminCommandAccessRights = new FastMap<String, L2AdminCommandAccessRight>();
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement stmt = con.prepareStatement("SELECT * FROM admin_command_access_rights");
 			ResultSet rset = stmt.executeQuery();
 			String adminCommand = null;
@@ -88,10 +85,6 @@ public class AdminCommandAccessRights
 			{
 				e.printStackTrace();
 			}
-		}
-		finally
-		{
-			try { con.close(); } catch (Exception e) {}
 		}
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _adminCommandAccessRights.size() + " from database.");

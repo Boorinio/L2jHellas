@@ -28,7 +28,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
@@ -38,6 +37,7 @@ import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * Auto Spawn Handler
@@ -63,12 +63,11 @@ import com.l2jhellas.util.Rnd;
 public class AutoSpawnHandler
 {
 	protected static final Logger _log = Logger.getLogger(AutoSpawnHandler.class.getName());
-
 	private static AutoSpawnHandler _instance;
 
 	private static final int DEFAULT_INITIAL_SPAWN = 30000; // 30 seconds after registration
-	private static final int DEFAULT_RESPAWN = 3600000; // 1 hour in millisecs
-	private static final int DEFAULT_DESPAWN = 3600000; // 1 hour in millisecs
+	private static final int DEFAULT_RESPAWN = 3600000; // 1 hour in millisec's
+	private static final int DEFAULT_DESPAWN = 3600000; // 1 hour in millisec's
 
 	protected Map<Integer, AutoSpawnInstance> _registeredSpawns;
 	@SuppressWarnings("rawtypes")
@@ -88,7 +87,9 @@ public class AutoSpawnHandler
 	public static AutoSpawnHandler getInstance()
 	{
 		if (_instance == null)
+		{
 			_instance = new AutoSpawnHandler();
+		}
 
 		return _instance;
 	}
@@ -101,16 +102,12 @@ public class AutoSpawnHandler
 	private void restoreSpawnData()
 	{
 		int numLoaded = 0;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = null;
 			PreparedStatement statement2 = null;
 			ResultSet rs = null;
 			ResultSet rs2 = null;
-
-			con = L2DatabaseFactory.getInstance().getConnection();
 
 			// Restore spawn group data, then the location data.
 			statement = con.prepareStatement("SELECT * FROM random_spawn ORDER BY groupId ASC");
@@ -142,9 +139,7 @@ public class AutoSpawnHandler
 			}
 
 			statement.close();
-
-			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Loaded " + numLoaded + " spawn group(s) from the database.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + numLoaded + " spawn group(s) from the database.");
 		}
 		catch (Exception e)
 		{
@@ -152,16 +147,6 @@ public class AutoSpawnHandler
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -187,19 +172,29 @@ public class AutoSpawnHandler
 	public AutoSpawnInstance registerSpawn(int npcId, int[][] spawnPoints, int initialDelay, int respawnDelay, int despawnDelay)
 	{
 		if (initialDelay < 0)
+		{
 			initialDelay = DEFAULT_INITIAL_SPAWN;
+		}
 
 		if (respawnDelay < 0)
+		{
 			respawnDelay = DEFAULT_RESPAWN;
+		}
 
 		if (despawnDelay < 0)
+		{
 			despawnDelay = DEFAULT_DESPAWN;
+		}
 
 		AutoSpawnInstance newSpawn = new AutoSpawnInstance(npcId, initialDelay, respawnDelay, despawnDelay);
 
 		if (spawnPoints != null)
+		{
 			for (int[] spawnPoint : spawnPoints)
+			{
 				newSpawn.addSpawnLocation(spawnPoint);
+			}
+		}
 
 		int newId = IdFactory.getInstance().getNextId();
 		newSpawn._objectId = newId;
@@ -208,7 +203,9 @@ public class AutoSpawnHandler
 		setSpawnActive(newSpawn, true);
 
 		if (Config.DEBUG)
+		{
 			_log.log(Level.CONFIG, getClass().getName() + ": Registered auto spawn for NPC ID " + npcId + " (Object ID = " + newId + ").");
+		}
 
 		return newSpawn;
 	}
@@ -259,7 +256,9 @@ public class AutoSpawnHandler
 			respawnTask.cancel(false);
 
 			if (Config.DEBUG)
+			{
 				_log.log(Level.CONFIG, getClass().getName() + ": Removed auto spawn for NPC ID " + spawnInst._npcId + " (Object ID = " + spawnInst._objectId + ").");
+			}
 		}
 		catch (Exception e)
 		{
@@ -311,9 +310,13 @@ public class AutoSpawnHandler
 				AutoSpawner rs = new AutoSpawner(objectId);
 
 				if (spawnInst._desDelay > 0)
+				{
 					spawnTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(rs, spawnInst._initDelay, spawnInst._resDelay);
+				}
 				else
+				{
 					spawnTask = ThreadPoolManager.getInstance().scheduleEffect(rs, spawnInst._initDelay);
+				}
 
 				_runningSpawns.put(objectId, spawnTask);
 			}
@@ -323,7 +326,9 @@ public class AutoSpawnHandler
 				spawnTask = _runningSpawns.remove(objectId);
 
 				if (spawnTask != null)
+				{
 					spawnTask.cancel(false);
+				}
 
 				ThreadPoolManager.getInstance().scheduleEffect(rd, 0);
 			}
@@ -345,7 +350,9 @@ public class AutoSpawnHandler
 			return;
 
 		for (AutoSpawnInstance spawnInst : _registeredSpawns.values())
+		{
 			setSpawnActive(spawnInst, isActive);
+		}
 
 		_activeState = isActive;
 	}
@@ -403,7 +410,9 @@ public class AutoSpawnHandler
 
 		for (AutoSpawnInstance spawnInst : _registeredSpawns.values())
 			if (spawnInst.getNpcId() == npcId)
+			{
 				spawnInstList.put(spawnInst.getObjectId(), spawnInst);
+			}
 
 		return spawnInstList;
 	}
@@ -485,7 +494,9 @@ public class AutoSpawnHandler
 					locationIndex++;
 
 					if (locationIndex == locationCount)
+					{
 						locationIndex = 0;
+					}
 
 					spawnInst._lastLocIndex = locationIndex;
 				}
@@ -501,7 +512,7 @@ public class AutoSpawnHandler
 				L2NpcTemplate npcTemp = NpcTable.getInstance().getTemplate(spawnInst.getNpcId());
 				if (npcTemp == null)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Couldnt find NPC id" + spawnInst.getNpcId() + " Try to update your DP");
+					_log.log(Level.WARNING, getClass().getName() + ": Couldnt find NPC id" + spawnInst.getNpcId() + " Try to update your DP.");
 					return;
 				}
 				L2Spawn newSpawn = new L2Spawn(npcTemp);
@@ -510,7 +521,9 @@ public class AutoSpawnHandler
 				newSpawn.setLocy(y);
 				newSpawn.setLocz(z);
 				if (heading != -1)
+				{
 					newSpawn.setHeading(heading);
+				}
 				newSpawn.setAmount(spawnInst.getSpawnCount());
 				if (spawnInst._desDelay == 0)
 				{
@@ -550,10 +563,14 @@ public class AutoSpawnHandler
 				// Announce to all players that the spawn has taken place, with
 				// the nearest town location.
 				if (spawnInst.isBroadcasting())
+				{
 					Announcements.getInstance().announceToAll("The " + npcInst.getName() + " has spawned near " + nearestTown + "!");
+				}
 
 				if (Config.DEBUG)
-					_log.log(Level.WARNING, getClass().getName() + ": Spawned NPC ID " + spawnInst.getNpcId() + " at " + x + ", " + y + ", " + z + " (Near " + nearestTown + ") for " + (spawnInst.getRespawnDelay() / 60000) + " minute(s).");
+				{
+					_log.log(Level.CONFIG, getClass().getName() + ": Spawned NPC ID " + spawnInst.getNpcId() + " at " + x + ", " + y + ", " + z + " (Near " + nearestTown + ") for " + (spawnInst.getRespawnDelay() / 60000) + " minute(s).");
+				}
 
 				// If there is no despawn time, do not create a despawn task.
 				if (spawnInst.getDespawnDelay() > 0)
@@ -605,13 +622,17 @@ public class AutoSpawnHandler
 				for (L2NpcInstance npcInst : spawnInst.getNPCInstanceList())
 				{
 					if (npcInst == null)
+					{
 						continue;
+					}
 
 					npcInst.deleteMe();
 					spawnInst.removeNpcInstance(npcInst);
 
 					if (Config.DEBUG)
-						_log.log(Level.INFO, getClass().getName() + ": Spawns removed for spawn instance (Object ID = " + _objectId + ").");
+					{
+						_log.log(Level.CONFIG, getClass().getName() + ": Spawns removed for spawn instance (Object ID = " + _objectId + ").");
+					}
 				}
 			}
 			catch (Exception e)
@@ -735,7 +756,9 @@ public class AutoSpawnHandler
 			List<L2Spawn> npcSpawns = new FastList<L2Spawn>();
 
 			for (L2NpcInstance npcInst : _npcList)
+			{
 				npcSpawns.add(npcInst.getSpawn());
+			}
 
 			return npcSpawns.toArray(new L2Spawn[npcSpawns.size()]);
 		}

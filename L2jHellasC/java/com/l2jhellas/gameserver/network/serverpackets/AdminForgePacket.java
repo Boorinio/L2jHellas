@@ -20,12 +20,12 @@ import java.util.List;
 
 /**
  * This class is made to create packets with any format
+ * 
  * @author Maktakien
- *
  */
 public class AdminForgePacket extends L2GameServerPacket
 {
-	private List<Part> _parts = new ArrayList<Part>();
+	private final List<Part> _parts = new ArrayList<Part>();
 
 	private class Part
 	{
@@ -44,60 +44,54 @@ public class AdminForgePacket extends L2GameServerPacket
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
-		for(Part p : _parts)
+		for (Part p : _parts)
 		{
 			generate(p.b, p.str);
 		}
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return "[S] -1 AdminForge";
 	}
+
 	/**
 	 * @param b
 	 * @param string
 	 */
 	public boolean generate(byte b, String string)
 	{
-		// TODO Auto-generated method stub
-		if((b == 'C')||(b == 'c'))
+		if ((b == 'C') || (b == 'c'))
 		{
 			writeC(Integer.decode(string));
 			return true;
 		}
-		else if((b == 'D')||(b == 'd'))
+		else if ((b == 'D') || (b == 'd'))
 		{
 			writeD(Integer.decode(string));
 			return true;
 		}
-		else if((b == 'H')||(b == 'h'))
+		else if ((b == 'H') || (b == 'h'))
 		{
 			writeH(Integer.decode(string));
 			return true;
 		}
-		else if((b == 'F')||(b == 'f'))
+		else if ((b == 'F') || (b == 'f'))
 		{
 			writeF(Double.parseDouble(string));
 			return true;
 		}
-		else if((b == 'S')||(b == 's'))
+		else if ((b == 'S') || (b == 's'))
 		{
 			writeS(string);
 			return true;
 		}
-		else if((b == 'B')||(b == 'b')||(b == 'X')||(b == 'x'))
+		else if ((b == 'B') || (b == 'b') || (b == 'X') || (b == 'x'))
 		{
 			writeB(new BigInteger(string).toByteArray());
 			return true;
@@ -109,5 +103,4 @@ public class AdminForgePacket extends L2GameServerPacket
 	{
 		_parts.add(new Part(b, string));
 	}
-
 }

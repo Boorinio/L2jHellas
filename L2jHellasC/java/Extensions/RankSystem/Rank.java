@@ -16,7 +16,7 @@ package Extensions.RankSystem;
 
 /**
  * All that data stored in global table: FastMap&ltInteger, Rank&gt RANKS in ExternalConfig class.
- *
+ * 
  * @author Masterio
  */
 public class Rank
@@ -67,7 +67,7 @@ public class Rank
 
 	/**
 	 * Store information about minimum Rank Points for obtain this Rank.
-	 *
+	 * 
 	 * @return the _minPoints
 	 */
 	public long getMinPoints()

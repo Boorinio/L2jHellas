@@ -15,9 +15,7 @@
 package com.l2jhellas.util;
 
 /**
- * String utilities optimized for the best performance.
- * 
- * <h1>How to Use It</h1> <h2>concat() or append()</h2> If concatenating strings
+ * String utilities optimized for the best performance. <h1>How to Use It</h1> <h2>concat() or append()</h2> If concatenating strings
  * in single call, use StringUtil.concat(), otherwise use StringUtil.append()
  * and its variants. <h2>Minimum Calls</h2> Bad:
  * 
@@ -92,8 +90,7 @@ package com.l2jhellas.util;
  * It saves some cycles when determining size of memory that needs to be
  * allocated because less strings are passed to concat() method. But do not use
  * + for concatenation of non-constant strings, that degrades performance and
- * makes extra memory allocations needed. <h2>Concatenation and Constant
- * Variables</h2> Bad:
+ * makes extra memory allocations needed. <h2>Concatenation and Constant Variables</h2> Bad:
  * 
  * <pre>
  * String glue = &quot;some glue&quot;;
@@ -111,8 +108,7 @@ package com.l2jhellas.util;
  * marked as constant string and compiler treats it as a constant string so it
  * is able to create string "text1some gluetext2some glue" during the
  * compilation. But this only works in case the value is known at compilation
- * time, so this cannot be used for cases like
- * <code>final String objectIdString =
+ * time, so this cannot be used for cases like <code>final String objectIdString =
  * String.valueOf(getObjectId)</code>. <h2>StringBuilder Reuse</h2> Bad:
  * 
  * <pre>
@@ -139,8 +135,7 @@ package com.l2jhellas.util;
  * the second way is better because the string either fits in the memory and
  * some memory is saved, or it does not fit in the memory, and in that case it
  * works as in the first case. <h2>Primitives to Strings</h2> To convert
- * primitives to string, use String.valueOf(). <h2>How much faster is it?</h2>
- * Here are some results of my tests. Count is number of strings concatenated.
+ * primitives to string, use String.valueOf(). <h2>How much faster is it?</h2> Here are some results of my tests. Count is number of strings concatenated.
  * Don't take the numbers as 100% true as the numbers are affected by other
  * programs running on my computer at the same time. Anyway, from the results it
  * is obvious that using StringBuilder with predefined size is the fastest (and
@@ -193,97 +188,89 @@ package com.l2jhellas.util;
  */
 public final class StringUtil
 {
-	
+
 	private StringUtil()
 	{
 	}
-	
+
 	/**
 	 * Concatenates strings.
 	 * 
 	 * @param strings
-	 *            strings to be concatenated
-	 * 
+	 *        strings to be concatenated
 	 * @return concatenated string
-	 * 
 	 * @see StringUtil
 	 */
 	public static String concat(final String... strings)
 	{
 		final StringBuilder sbString = new StringBuilder(getLength(strings));
-		
+
 		for (final String string : strings)
 		{
 			sbString.append(string);
 		}
-		
+
 		return sbString.toString();
 	}
-	
+
 	/**
-	 * Creates new string builder with size initializated to
-	 * <code>sizeHint</code>, unless total length of strings is greater than
-	 * <code>sizeHint</code>.
+	 * Creates new string builder with size initializated to <code>sizeHint</code>, unless total length of strings is greater than <code>sizeHint</code>.
 	 * 
 	 * @param sizeHint
-	 *            hint for string builder size allocation
+	 *        hint for string builder size allocation
 	 * @param strings
-	 *            strings to be appended
-	 * 
+	 *        strings to be appended
 	 * @return created string builder
-	 * 
 	 * @see StringUtil
 	 */
 	public static StringBuilder startAppend(final int sizeHint, final String... strings)
 	{
 		final int length = getLength(strings);
 		final StringBuilder sbString = new StringBuilder(sizeHint > length ? sizeHint : length);
-		
+
 		for (final String string : strings)
 		{
 			sbString.append(string);
 		}
-		
+
 		return sbString;
 	}
-	
+
 	/**
 	 * Appends strings to existing string builder.
 	 * 
 	 * @param sbString
-	 *            string builder
+	 *        string builder
 	 * @param strings
-	 *            strings to be appended
-	 * 
+	 *        strings to be appended
 	 * @see StringUtil
 	 */
 	public static void append(final StringBuilder sbString, final String... strings)
 	{
 		sbString.ensureCapacity(sbString.length() + getLength(strings));
-		
+
 		for (final String string : strings)
 		{
 			sbString.append(string);
 		}
 	}
-	
+
 	/**
 	 * Counts total length of all the strings.
 	 * 
 	 * @param strings
-	 *            array of strings
-	 * 
+	 *        array of strings
 	 * @return total length of all the strings
 	 */
 	private static int getLength(final String[] strings)
 	{
 		int length = 0;
-		
+
 		for (final String string : strings)
 		{
 			length += string.length();
 		}
-		
+
 		return length;
 	}
 }

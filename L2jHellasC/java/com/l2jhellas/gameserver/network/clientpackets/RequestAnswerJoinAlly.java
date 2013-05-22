@@ -20,19 +20,14 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
- *  sample
- *  5F
- *  01 00 00 00
- *
- *  format  cdd
- *
- *
- * @version $Revision: 1.7.4.2 $ $Date: 2005/03/27 15:29:30 $
+ * sample<BR>
+ * 5F<BR>
+ * 01 00 00 00<BR>
+ * format cdd
  */
 public final class RequestAnswerJoinAlly extends L2GameClientPacket
 {
 	private static final String _C__83_REQUESTANSWERJOINALLY = "[C] 83 RequestAnswerJoinAlly";
-	//private static Logger _log = Logger.getLogger(RequestAnswerJoinAlly.class.getName());
 
 	private int _response;
 
@@ -48,14 +43,14 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		{
-		    return;
+			return;
 		}
 
 		L2PcInstance requestor = activeChar.getRequest().getPartner();
-        if (requestor == null)
-        {
-        	return;
-        }
+		if (requestor == null)
+		{
+			return;
+		}
 
 		if (_response == 0)
 		{
@@ -64,16 +59,16 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 		}
 		else
 		{
-	        if (!(requestor.getRequest().getRequestPacket() instanceof RequestJoinAlly))
-	        {
-	        	return; // hax
-	        }
+			if (!(requestor.getRequest().getRequestPacket() instanceof RequestJoinAlly))
+			{
+				return; // hax
+			}
 
-	        L2Clan clan = requestor.getClan();
+			L2Clan clan = requestor.getClan();
 			// we must double check this cause of hack
 			if (clan.checkAllyJoinCondition(requestor, activeChar))
-	        {
-		        //TODO: Need correct message id
+			{
+				// TODO: Need correct message id
 				requestor.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND));
 
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ACCEPTED_ALLIANCE));
@@ -82,15 +77,12 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 				activeChar.getClan().setAllyName(clan.getAllyName());
 				activeChar.getClan().setAllyPenaltyExpiryTime(0, 0);
 				activeChar.getClan().updateClanInDB();
-	        }
+			}
 		}
 
 		activeChar.getRequest().onRequestResponse();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

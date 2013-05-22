@@ -29,7 +29,8 @@ public class eventKills extends Condition
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
-		if (getValue() == null) return false;
+		if (getValue() == null)
+			return false;
 
 		@SuppressWarnings("unused")
 		int val = Integer.parseInt(getValue().toString());

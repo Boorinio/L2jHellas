@@ -1,20 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.util.geodata;
 
@@ -50,7 +46,7 @@ public class L2FastSet<E> extends L2FastCollection<E> implements Set<E>
 
 	public L2FastSet<E> setShared(boolean isShared)
 	{
-		if(isShared)
+		if (isShared)
 			_map.isShared();
 		else
 			_map.setShared(false);
@@ -77,13 +73,13 @@ public class L2FastSet<E> extends L2FastCollection<E> implements Set<E>
 	@Override
 	public E valueOf(Record record)
 	{
-		return ((FastMap.Entry<E, Object>)record).getKey();
+		return ((FastMap.Entry<E, Object>) record).getKey();
 	}
 
 	@Override
 	public void delete(Record record)
 	{
-		_map.remove(((FastMap.Entry<E, Object>)record).getKey());
+		_map.remove(((FastMap.Entry<E, Object>) record).getKey());
 	}
 
 	@Override

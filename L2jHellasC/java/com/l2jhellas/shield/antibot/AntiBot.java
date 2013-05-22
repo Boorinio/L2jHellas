@@ -23,9 +23,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.Rnd;
 
+/**
+ * @author Boorinio for l2jhellas
+ */
 public class AntiBot
 {
-
 	public static boolean isvoting;
 	static int[] epiloges =
 	{
@@ -47,13 +49,12 @@ public class AntiBot
 
 	public static void startantibot()
 	{
-
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
 			showHtmlWindow(player);
 			player.sendMessage("You have 2 minutes to vote.");
 		}
-		isvoting=true;
+		isvoting = true;
 		waitSecs(120);
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
@@ -63,7 +64,7 @@ public class AntiBot
 				player.closeNetConnection();
 			}
 		}
-		isvoting=false;
+		isvoting = false;
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
 			player.PassedProt = false;
@@ -101,7 +102,6 @@ public class AntiBot
 			tb.append("<button value=\"" + epiloges[2] + "\" action=\"bypass -h FirstAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
 			tb.append("<button value=\"" + epiloges[3] + "\" action=\"bypass -h FirstAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
 			tb.append("<button value=\"2013\" action=\"bypass -h SecondAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
-
 		}
 		if (option == 2)
 		{
@@ -145,7 +145,6 @@ public class AntiBot
 			tb.append("<button value=\"" + epiloges[2] + "\" action=\"bypass -h FirstAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
 			tb.append("<button value=\"" + epiloges[3] + "\" action=\"bypass -h FirstAnswer\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"><br>");
 		}
-		tb.append("<font color=\"FF6600\">By Boorinio!</font>");
 		tb.append("</center>");
 		tb.append("</body></html>");
 		nhm.setHtml(tb.toString());

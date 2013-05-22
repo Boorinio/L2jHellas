@@ -35,10 +35,10 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.loginserver.GameServerTable;
 import com.l2jhellas.loginserver.LoginController;
 import com.l2jhellas.loginserver.LoginServer;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class LoginStatusThread extends Thread
 {
@@ -219,7 +219,6 @@ public class LoginStatusThread extends Thread
 		}
 		catch (NoSuchAlgorithmException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (UnsupportedEncodingException uee)
@@ -237,10 +236,8 @@ public class LoginStatusThread extends Thread
 	{
 		if (!LoginController.getInstance().isGM(login))
 			return false;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT password FROM accounts WHERE login=?");
 			statement.setString(1, login);
 			ResultSet rset = statement.executeQuery();
@@ -256,16 +253,6 @@ public class LoginStatusThread extends Thread
 		catch (SQLException sqle)
 		{
 			sqle.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 		return false;
 	}

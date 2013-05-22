@@ -18,14 +18,13 @@ import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.network.serverpackets.ExPledgeCrestLarge;
 
 /**
- * Fomat : chd
- * c: (id) 0xD0
- * h: (subid) 0x10
- * d: the crest id
- *
+ * Fomat : chd<BR>
+ * c: (id) 0xD0<BR>
+ * h: (subid) 0x10<BR>
+ * d: the crest id<BR>
  * This is a trigger
+ * 
  * @author -Wooden-
- *
  */
 public final class RequestExPledgeCrestLarge extends L2GameClientPacket
 {
@@ -48,16 +47,11 @@ public final class RequestExPledgeCrestLarge extends L2GameClientPacket
 			ExPledgeCrestLarge pcl = new ExPledgeCrestLarge(_crestId, data);
 			sendPacket(pcl);
 		}
-
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_10_REQUESTEXPLEDGECRESTLARGE;
 	}
-
 }

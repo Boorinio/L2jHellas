@@ -18,7 +18,12 @@ public final class PlayFail extends L2LoginServerPacket
 {
 	public static enum PlayFailReason
 	{
-		REASON_SYSTEM_ERROR(0x01), REASON_USER_OR_PASS_WRONG(0x02), REASON3(0x03), REASON4(0x04), REASON_TOO_MANY_PLAYERS(0x0f);
+		/** @formatter:off */
+		REASON_SYSTEM_ERROR(0x01),
+		REASON_USER_OR_PASS_WRONG(0x02),
+		REASON3(0x03), REASON4(0x04),
+		REASON_TOO_MANY_PLAYERS(0x0f);
+		/** @formatter:on */
 
 		private final int _code;
 

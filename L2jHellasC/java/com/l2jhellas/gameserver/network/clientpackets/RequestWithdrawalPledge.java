@@ -21,15 +21,9 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListDelete;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestWithdrawalPledge extends L2GameClientPacket
 {
 	private static final String _C__26_REQUESTWITHDRAWALPLEDGE = "[C] 26 RequestWithdrawalPledge";
-	//static Logger _log = Logger.getLogger(RequestWithdrawalPledge.class.getName());
 
 	@Override
 	protected void readImpl()
@@ -43,13 +37,13 @@ public final class RequestWithdrawalPledge extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		{
-		    return;
+			return;
 		}
 		if (activeChar.getClan() == null)
-        {
+		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER));
-            return;
-        }
+			return;
+		}
 		if (activeChar.isClanLeader())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_LEADER_CANNOT_WITHDRAW));
@@ -63,23 +57,20 @@ public final class RequestWithdrawalPledge extends L2GameClientPacket
 
 		L2Clan clan = activeChar.getClan();
 
-		clan.removeClanMember(activeChar.getName(), System.currentTimeMillis() + Config.ALT_CLAN_JOIN_DAYS * 86400000L); //24*60*60*1000 = 86400000
+		clan.removeClanMember(activeChar.getName(), System.currentTimeMillis() + Config.ALT_CLAN_JOIN_DAYS * 86400000L); // 24*60*60*1000 = 86400000
 
 		SystemMessage sm = new SystemMessage(SystemMessageId.S1_HAS_WITHDRAWN_FROM_THE_CLAN);
 		sm.addString(activeChar.getName());
-    	clan.broadcastToOnlineMembers(sm);
-    	sm = null;
+		clan.broadcastToOnlineMembers(sm);
+		sm = null;
 
-    	// Remove the Player From the Member list
-        clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(activeChar.getName()));
+		// Remove the Player From the Member list
+		clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(activeChar.getName()));
 
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_WITHDRAWN_FROM_CLAN));
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_MUST_WAIT_BEFORE_JOINING_ANOTHER_CLAN));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -14,16 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
- */
 public class JoinPledge extends L2GameServerPacket
 {
 	private static final String _S__45_JOINPLEDGE = "[S] 33 JoinPledge";
 
-	private int _pledgeId;
+	private final int _pledgeId;
 
 	public JoinPledge(int pledgeId)
 	{
@@ -38,13 +33,9 @@ public class JoinPledge extends L2GameServerPacket
 		writeD(_pledgeId);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__45_JOINPLEDGE;
 	}
-
 }

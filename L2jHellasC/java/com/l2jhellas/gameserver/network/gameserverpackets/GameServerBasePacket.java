@@ -19,14 +19,12 @@ import java.io.IOException;
 
 import com.l2jhellas.gameserver.TaskPriority;
 
-
 /**
  * @author -Wooden-
- *
  */
 public abstract class GameServerBasePacket
 {
-	private ByteArrayOutputStream _bao;
+	private final ByteArrayOutputStream _bao;
 
 	protected GameServerBasePacket()
 	{
@@ -35,34 +33,34 @@ public abstract class GameServerBasePacket
 
 	protected void writeD(int value)
 	{
-		_bao.write(value &0xff);
-		_bao.write(value >> 8 &0xff);
-		_bao.write(value >> 16 &0xff);
-		_bao.write(value >> 24 &0xff);
+		_bao.write(value & 0xff);
+		_bao.write(value >> 8 & 0xff);
+		_bao.write(value >> 16 & 0xff);
+		_bao.write(value >> 24 & 0xff);
 	}
 
 	protected void writeH(int value)
 	{
-		_bao.write(value &0xff);
-		_bao.write(value >> 8 &0xff);
+		_bao.write(value & 0xff);
+		_bao.write(value >> 8 & 0xff);
 	}
 
 	protected void writeC(int value)
 	{
-		_bao.write(value &0xff);
+		_bao.write(value & 0xff);
 	}
 
 	protected void writeF(double org)
 	{
 		long value = Double.doubleToRawLongBits(org);
-		_bao.write((int)(value &0xff));
-		_bao.write((int)(value >> 8 &0xff));
-		_bao.write((int)(value >> 16 &0xff));
-		_bao.write((int)(value >> 24 &0xff));
-		_bao.write((int)(value >> 32 &0xff));
-		_bao.write((int)(value >> 40 &0xff));
-		_bao.write((int)(value >> 48 &0xff));
-		_bao.write((int)(value >> 56 &0xff));
+		_bao.write((int) (value & 0xff));
+		_bao.write((int) (value >> 8 & 0xff));
+		_bao.write((int) (value >> 16 & 0xff));
+		_bao.write((int) (value >> 24 & 0xff));
+		_bao.write((int) (value >> 32 & 0xff));
+		_bao.write((int) (value >> 40 & 0xff));
+		_bao.write((int) (value >> 48 & 0xff));
+		_bao.write((int) (value >> 56 & 0xff));
 	}
 
 	protected void writeS(String text)
@@ -91,32 +89,34 @@ public abstract class GameServerBasePacket
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public int getLength()
 	{
-		return _bao.size()+2;
+		return _bao.size() + 2;
 	}
 
 	public byte[] getBytes()
 	{
-		writeD(0x00);	// reserve for checksum
+		writeD(0x00); // reserve for checksum
 
 		int padding = _bao.size() % 8;
 		if (padding != 0)
 		{
-			for (int i = padding; i<8;i++)
+			for (int i = padding; i < 8; i++)
 			{
 				writeC(0x00);
 			}
 		}
-
 		return _bao.toByteArray();
 	}
 
-	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
+	public TaskPriority getPriority()
+	{
+		return TaskPriority.PR_HIGH;
+	}
+
 	public abstract byte[] getContent() throws IOException;
 }

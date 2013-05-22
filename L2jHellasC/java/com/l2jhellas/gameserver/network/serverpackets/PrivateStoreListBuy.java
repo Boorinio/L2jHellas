@@ -17,19 +17,14 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.7.2.2.2.3 $ $Date: 2005/03/27 15:29:39 $
- */
 public class PrivateStoreListBuy extends L2GameServerPacket
 {
-//	private static final String _S__D1_PRIVATEBUYLISTBUY = "[S] b8 PrivateBuyListBuy";
+	// private static final String _S__D1_PRIVATEBUYLISTBUY = "[S] b8 PrivateBuyListBuy";
 	private static final String _S__D1_PRIVATESTORELISTBUY = "[S] b8 PrivateStoreListBuy";
-	private L2PcInstance _storePlayer;
-	private L2PcInstance _activeChar;
-	private int _playerAdena;
-	private TradeList.TradeItem[] _items;
+	private final L2PcInstance _storePlayer;
+	private final L2PcInstance _activeChar;
+	private final int _playerAdena;
+	private final TradeList.TradeItem[] _items;
 
 	public PrivateStoreListBuy(L2PcInstance player, L2PcInstance storePlayer)
 	{
@@ -54,22 +49,19 @@ public class PrivateStoreListBuy extends L2GameServerPacket
 			writeD(item.getObjectId());
 			writeD(item.getItem().getItemId());
 			writeH(item.getEnchant());
-			writeD(item.getCount()); //give max possible sell amount
+			writeD(item.getCount()); // give max possible sell amount
 
 			writeD(item.getItem().getReferencePrice());
 			writeH(0);
 
 			writeD(item.getItem().getBodyPart());
 			writeH(item.getItem().getType2());
-			writeD(item.getPrice());//buyers price
+			writeD(item.getPrice()); // buyers price
 
-			writeD(item.getCount());  // maximum possible tradecount
+			writeD(item.getCount()); // maximum possible tradecount
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

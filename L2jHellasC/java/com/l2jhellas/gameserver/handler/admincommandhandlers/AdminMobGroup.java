@@ -36,26 +36,26 @@ import com.l2jhellas.util.Broadcast;
 public class AdminMobGroup implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_mobmenu",
-	"admin_mobgroup_list",
-	"admin_mobgroup_create",
-	"admin_mobgroup_remove",
-	"admin_mobgroup_delete",
-	"admin_mobgroup_spawn",
-	"admin_mobgroup_unspawn",
-	"admin_mobgroup_kill",
-	"admin_mobgroup_idle",
-	"admin_mobgroup_attack",
-	"admin_mobgroup_rnd",
-	"admin_mobgroup_return",
-	"admin_mobgroup_follow",
-	"admin_mobgroup_casting",
-	"admin_mobgroup_nomove",
-	"admin_mobgroup_attackgrp",
-	"admin_mobgroup_invul",
-	"admin_mobinst"
-	};
+	{/** @formatter:off */
+		"admin_mobmenu",
+		"admin_mobgroup_list",
+		"admin_mobgroup_create",
+		"admin_mobgroup_remove",
+		"admin_mobgroup_delete",
+		"admin_mobgroup_spawn",
+		"admin_mobgroup_unspawn",
+		"admin_mobgroup_kill",
+		"admin_mobgroup_idle",
+		"admin_mobgroup_attack",
+		"admin_mobgroup_rnd",
+		"admin_mobgroup_return",
+		"admin_mobgroup_follow",
+		"admin_mobgroup_casting",
+		"admin_mobgroup_nomove",
+		"admin_mobgroup_attackgrp",
+		"admin_mobgroup_invul",
+		"admin_mobinst"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

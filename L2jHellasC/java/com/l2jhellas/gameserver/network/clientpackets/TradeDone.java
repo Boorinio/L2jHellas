@@ -22,15 +22,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.6.2.2.2.2 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class TradeDone extends L2GameClientPacket
 {
-	private static final String _C__17_TRADEDONE = "[C] 17 TradeDone";
 	private static Logger _log = Logger.getLogger(TradeDone.class.getName());
+	private static final String _C__17_TRADEDONE = "[C] 17 TradeDone";
 
 	private int _response;
 
@@ -43,43 +38,45 @@ public final class TradeDone extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-        L2PcInstance player = getClient().getActiveChar();
-        if (player == null) return;
-        TradeList trade = player.getActiveTradeList();
-        if (trade == null)
-        	{
-            _log.warning("player.getTradeList == null in "+getType()+" for player "+player.getName());
-        	return;
-        	}
-        if (trade.isLocked()) return;
+		L2PcInstance player = getClient().getActiveChar();
+		if (player == null)
+			return;
+
+		TradeList trade = player.getActiveTradeList();
+		if (trade == null)
+		{
+			_log.warning("player.getTradeList == null in " + getType() + " for player " + player.getName());
+			return;
+		}
+
+		if (trade.isLocked())
+			return;
 
 		if (_response == 1)
 		{
-	        if (trade.getPartner() == null || L2World.getInstance().findObject(trade.getPartner().getObjectId()) == null)
-	        {
-	            // Trade partner not found, cancel trade
-	            player.cancelActiveTrade();
-	            SystemMessage msg = new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
-	            player.sendPacket(msg);
-	            msg = null;
-	            return;
-	        }
+			if ((trade.getPartner() == null) || (L2World.getInstance().findObject(trade.getPartner().getObjectId()) == null))
+			{
+				// Trade partner not found, cancel trade
+				player.cancelActiveTrade();
+				SystemMessage msg = new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+				player.sendPacket(msg);
+				msg = null;
+				return;
+			}
 
-	        if (!player.getAccessLevel().allowTransaction())
-	        {
-	            player.cancelActiveTrade();
-	            player.sendMessage("Transactions are disabled for your Access Level.");
-	            return;
-	        }
-      
-	        trade.confirm();
+			if (!player.getAccessLevel().allowTransaction())
+			{
+				player.cancelActiveTrade();
+				player.sendMessage("Transactions are disabled for your Access Level.");
+				return;
+			}
+
+			trade.confirm();
 		}
-		else player.cancelActiveTrade();
+		else
+			player.cancelActiveTrade();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -30,12 +30,13 @@ import com.l2jhellas.gameserver.skills.Formulas;
 
 /**
  * Class handling the Mana damage skill
- *
+ * 
  * @author slyce
  */
 public class Manadam implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.MANADAM
 	};
 

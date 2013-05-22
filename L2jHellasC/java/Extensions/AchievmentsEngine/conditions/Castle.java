@@ -29,11 +29,13 @@ public class Castle extends Condition
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
-		if (getValue() == null) return false;
+		if (getValue() == null)
+			return false;
 
 		if (player.getClan() != null)
 		{
-			if (player.isCastleLord(5) || player.isCastleLord(3) || player.isCastleLord(7)) return true;
+			if (player.isCastleLord(5) || player.isCastleLord(3) || player.isCastleLord(7))
+				return true;
 		}
 		return false;
 	}

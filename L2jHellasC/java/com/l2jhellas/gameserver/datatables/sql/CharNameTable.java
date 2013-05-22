@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CharNameTable
 {
@@ -88,11 +88,10 @@ public class CharNameTable
 		}
 
 		int id = -1;
-		Connection con = null;
+
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("SELECT obj_Id,accesslevel FROM characters WHERE char_name=?");
 			statement.setString(1, name);
 			ResultSet rset = statement.executeQuery();
@@ -111,16 +110,6 @@ public class CharNameTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -143,11 +132,10 @@ public class CharNameTable
 			return name;
 
 		int accessLevel = 0;
-		Connection con = null;
+
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("SELECT char_name,accesslevel FROM characters WHERE obj_Id=?");
 			statement.setInt(1, id);
 			ResultSet rset = statement.executeQuery();
@@ -165,16 +153,6 @@ public class CharNameTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 		if (name != null && !name.isEmpty())
@@ -198,11 +176,8 @@ public class CharNameTable
 	public boolean doesCharNameExist(String name)
 	{
 		boolean result = true;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT account_name FROM characters WHERE char_name=?");
 			statement.setString(1, name);
 			ResultSet rset = statement.executeQuery();
@@ -218,27 +193,15 @@ public class CharNameTable
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return result;
 	}
 
 	public int accountCharNumber(String account)
 	{
-		Connection con = null;
 		int number = 0;
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT COUNT(char_name) FROM characters WHERE account_name=?");
 			statement.setString(1, account);
 			ResultSet rset = statement.executeQuery();
@@ -257,17 +220,6 @@ public class CharNameTable
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		return number;
 	}
 

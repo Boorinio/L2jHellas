@@ -396,7 +396,8 @@ public class Universe implements java.io.Serializable
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	@SuppressWarnings(value = {
+	@SuppressWarnings(value =
+	{
 		"unchecked"
 	})
 	private void loadBinFiles() throws FileNotFoundException, IOException, ClassNotFoundException

@@ -55,29 +55,31 @@ public class AdminEventEngine implements IAdminCommandHandler
 	protected static final Logger _log = Logger.getLogger(AdminEventEngine.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_event",
-	"admin_event_new",
-	"admin_event_choose",
-	"admin_event_store",
-	"admin_event_set",
-	"admin_event_change_teams_number",
-	"admin_event_announce",
-	"admin_event_panel",
-	"admin_event_control_begin",
-	"admin_event_control_teleport",
-	"admin_add", "admin_event_see",
-	"admin_event_del", "admin_delete_buffer",
-	"admin_event_control_sit",
-	"admin_event_name",
-	"admin_event_control_kill",
-	"admin_event_control_res",
-	"admin_event_control_poly",
-	"admin_event_control_unpoly",
-	"admin_event_control_prize",
-	"admin_event_control_chatban",
-	"admin_event_control_finish"
-	};
+	{/** @formatter:off */
+		"admin_event",
+		"admin_event_new",
+		"admin_event_choose",
+		"admin_event_store",
+		"admin_event_set",
+		"admin_event_change_teams_number",
+		"admin_event_announce",
+		"admin_event_panel",
+		"admin_event_control_begin",
+		"admin_event_control_teleport",
+		"admin_add",
+		"admin_event_see",
+		"admin_event_del",
+		"admin_delete_buffer",
+		"admin_event_control_sit",
+		"admin_event_name",
+		"admin_event_control_kill",
+		"admin_event_control_res",
+		"admin_event_control_poly",
+		"admin_event_control_unpoly",
+		"admin_event_control_prize",
+		"admin_event_control_chatban",
+		"admin_event_control_finish"
+	};/** @formatter:off */
 	private static String tempBuffer = "";
 	private static String tempName = "";
 	private static String tempName2 = "";
@@ -600,7 +602,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 
 			}
 		}
-
 	}
 
 	void sitTeam(int team)
@@ -622,7 +623,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 			{
 			}
 		}
-
 	}
 
 	void killTeam(L2PcInstance activeChar, int team)
@@ -640,7 +640,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 			{
 			}
 		}
-
 	}
 
 	void resTeam(int team)
@@ -665,7 +664,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 			{
 			}
 		}
-
 	}
 
 	void polyTeam(int team, String id)
@@ -688,7 +686,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 			{
 			}
 		}
-
 	}
 
 	void unpolyTeam(int team)
@@ -713,7 +710,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 			{
 			}
 		}
-
 	}
 
 	private void createItem(L2PcInstance activeChar, L2PcInstance player, int id, int num)

@@ -16,19 +16,21 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 public class NormalCamera extends L2GameServerPacket
 {
-    private static final String _S__C8_NORMALCAMERA = "[S] C8 NormalCamera";
+	private static final String _S__C8_NORMALCAMERA = "[S] C8 NormalCamera";
 
-    public NormalCamera(){}
+	public NormalCamera()
+	{
+	}
 
-    @Override
+	@Override
 	public void writeImpl()
-    {
-        writeC(0xc8);
-    }
+	{
+		writeC(0xc8);
+	}
 
-    @Override
+	@Override
 	public String getType()
-    {
-        return _S__C8_NORMALCAMERA;
-    }
+	{
+		return _S__C8_NORMALCAMERA;
+	}
 }

@@ -26,7 +26,7 @@ import com.l2jhellas.gameserver.taskmanager.TaskTypes;
 /**
  * Updates all data for the Seven Signs and Festival of Darkness engines,
  * when time is elapsed.
- *
+ * 
  * @author Tempy
  */
 public class TaskSevenSignsUpdate extends Task

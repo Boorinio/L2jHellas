@@ -27,73 +27,63 @@ import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.11.2.4.2.4 $ $Date: 2005/03/27 15:29:30 $
- */
 public class MoveBackwardToLocation extends L2GameClientPacket
 {
-	//private static Logger _log = Logger.getLogger(MoveBackwardToLocation.class.getName());
 	// cdddddd
-	private       int _targetX;
-	private       int _targetY;
-	private       int _targetZ;
-	@SuppressWarnings("unused")
-    private int _originX;
-	@SuppressWarnings("unused")
-    private int _originY;
-	@SuppressWarnings("unused")
-    private int _originZ;
-	private       int _moveMovement;
+	private int _targetX;
+	private int _targetY;
+	private int _targetZ;
+	private int _originX;
+	private int _originY;
+	private int _originZ;
+	private int _moveMovement;
 
-    //For geodata
-    private       int _curX;
-    private       int _curY;
-    @SuppressWarnings("unused")
-    private       int _curZ;
+	// For geodata
+	private int _curX;
+	private int _curY;
+	private int _curZ;
 
-	public TaskPriority getPriority() { return TaskPriority.PR_HIGH; }
+	public TaskPriority getPriority()
+	{
+		return TaskPriority.PR_HIGH;
+	}
 
 	private static final String _C__01_MOVEBACKWARDTOLOC = "[C] 01 MoveBackwardToLoc";
-
 
 	@Override
 	protected void readImpl()
 	{
-		_targetX  = readD();
-		_targetY  = readD();
-		_targetZ  = readD();
-		_originX  = readD();
-		_originY  = readD();
-		_originZ  = readD();
+		_targetX = readD();
+		_targetY = readD();
+		_targetZ = readD();
+		_originX = readD();
+		_originY = readD();
+		_originZ = readD();
 		try
 		{
-			_moveMovement = readD(); // is 0 if cursor keys are used  1 if mouse is used
+			_moveMovement = readD(); // is 0 if cursor keys are used 1 if mouse is used
 		}
 		catch (BufferUnderflowException e)
 		{
-			/** 
-			 * @author Cobra 
-			 */ 
-			if(Config.KICK_L2WALKER)   
-			{  
-				L2PcInstance activeChar = getClient().getActiveChar();  
-				activeChar.systemSendMessage(SystemMessageId.HACKING_TOOL); 
-				try{ 
-					Thread.sleep(5000); 
-				} 
-				catch(InterruptedException ie){} 
-				finally 
-				{ 
-					_log.warning("Player used L2Walker, and got kicked"); 
-					activeChar.closeNetConnection(); 
-				} 
-				
-			}  	 
+			if (Config.KICK_L2WALKER)
+			{
+				L2PcInstance activeChar = getClient().getActiveChar();
+				activeChar.systemSendMessage(SystemMessageId.HACKING_TOOL);
+				try
+				{
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException ie)
+				{
+				}
+				finally
+				{
+					_log.warning("Player used L2Walker, and got kicked.");
+					activeChar.closeNetConnection();
+				}
+			}
 		}
-	}	
+	}
 
 	@Override
 	protected void runImpl()
@@ -103,10 +93,10 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			return;
 
 		_curX = activeChar.getX();
-        _curY = activeChar.getY();
-        _curZ = activeChar.getZ();
+		_curY = activeChar.getY();
+		_curZ = activeChar.getZ();
 
-		if(activeChar.isInBoat())
+		if (activeChar.isInBoat())
 		{
 			activeChar.setInBoat(false);
 		}
@@ -118,15 +108,13 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			activeChar.teleToLocation(_targetX, _targetY, _targetZ, false);
 			return;
 		}
-		
-		if (activeChar.getActiveEnchantItem() != null)
-			
-        {
-            activeChar.setActiveEnchantItem(null);
-            activeChar.sendPacket(EnchantResult.CANCELLED);
-            activeChar.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 
-        }
+		if (activeChar.getActiveEnchantItem() != null)
+		{
+			activeChar.setActiveEnchantItem(null);
+			activeChar.sendPacket(EnchantResult.CANCELLED);
+			activeChar.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
+		}
 
 		if (_moveMovement == 0 && Config.GEODATA < 1) // cursor movement without geodata is disabled
 		{
@@ -138,25 +126,21 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		}
 		else
 		{
-			double dx = _targetX-_curX;
-			double dy = _targetY-_curY;
+			double dx = _targetX - _curX;
+			double dy = _targetY - _curY;
 			// Can't move if character is confused, or trying to move a huge distance
-			if (activeChar.isOutOfControl() || ((dx*dx+dy*dy) > 98010000)) // 9900*9900
+			if (activeChar.isOutOfControl() || ((dx * dx + dy * dy) > 98010000)) // 9900*9900
 			{
 				activeChar.sendPacket(new ActionFailed());
 				return;
 			}
-			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,
-					new L2CharPosition(_targetX, _targetY, _targetZ, 0));
+			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_targetX, _targetY, _targetZ, 0));
 
-			if(activeChar.getParty() != null)
-				activeChar.getParty().broadcastToPartyMembers(activeChar,new PartyMemberPosition(activeChar));
+			if (activeChar.getParty() != null)
+				activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar));
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

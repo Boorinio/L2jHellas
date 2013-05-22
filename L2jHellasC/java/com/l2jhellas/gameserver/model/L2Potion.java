@@ -20,11 +20,6 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
- */
 public class L2Potion extends L2Object
 {
 	protected static final Logger _log = Logger.getLogger(L2Character.class.getName());

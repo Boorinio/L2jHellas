@@ -14,19 +14,15 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
- */
 public class SocialAction extends L2GameServerPacket
 {
 	private static final String _S__3D_SOCIALACTION = "[S] 2D SocialAction";
-	private int _charObjId;
-	private int _actionId;
+	private final int _charObjId;
+	private final int _actionId;
 
 	/**
-	 * 0x3d SocialAction         dd
+	 * 0x3d SocialAction dd
+	 * 
 	 * @param _characters
 	 */
 	public SocialAction(int playerId, int actionId)
@@ -43,9 +39,6 @@ public class SocialAction extends L2GameServerPacket
 		writeD(_actionId);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

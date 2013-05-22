@@ -26,9 +26,9 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class ForumsBBSManager extends BaseBBSManager
 {
@@ -66,10 +66,8 @@ public class ForumsBBSManager extends BaseBBSManager
 
 	private void load()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT forum_id FROM forums WHERE forum_type=0");
 			ResultSet result = statement.executeQuery();
 			while (result.next())
@@ -88,16 +86,6 @@ public class ForumsBBSManager extends BaseBBSManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	@Override
@@ -109,7 +97,7 @@ public class ForumsBBSManager extends BaseBBSManager
 	{
 		for (Forum f : _table)
 		{
-			if (f.getName().equals(Name))
+			if (f != null && f.getName().equals(Name))
 			{
 				return f;
 			}
@@ -134,10 +122,10 @@ public class ForumsBBSManager extends BaseBBSManager
 	public int getANewID()
 	{
 		int temp = 0;
-		for(Forum f: _table)
+		for (Forum f : _table)
 			temp++;
 		_lastid++;
-		if(temp==_lastid)
+		if (temp == _lastid)
 			return _lastid++;
 		return _lastid;
 	}

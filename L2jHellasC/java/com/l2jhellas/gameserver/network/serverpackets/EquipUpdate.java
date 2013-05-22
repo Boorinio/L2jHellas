@@ -20,46 +20,36 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.templates.L2Item;
 
-
 /**
- * 5e
- * 01 00 00 00 		01 - added ?  02 - modified
- * 7b 86 73 42      object id
- * 08 00 00 00      body slot
- *
- *
- *
- * body slot
- * 0000  ?? underwear
- * 0001  ear
- * 0002  ear
- * 0003  neck
- * 0004  finger   (magic ring)
- * 0005  finger   (magic ring)
- * 0006  head     (l.cap)
- * 0007  r.hand   (dagger)
- * 0008  l.hand   (arrows)
- * 0009  hands    (short gloves)
- * 000a  chest    (squire shirt)
- * 000b  legs     (squire pants)
- * 000c  feet
- * 000d  ?? back
- * 000e  lr.hand   (bow)
- *
- *
- *
- * format  ddd
- *
- * @version $Revision: 1.4.2.1.2.4 $ $Date: 2005/03/27 15:29:40 $
+ * 5e<BR>
+ * 01 00 00 00 01 - added ? 02 - modified<BR>
+ * 7b 86 73 42 object id<BR>
+ * 08 00 00 00 body slot<BR>
+ * body slot<BR>
+ * 0000 ?? underwear<BR>
+ * 0001 ear<BR>
+ * 0002 ear<BR>
+ * 0003 neck<BR>
+ * 0004 finger (magic ring)<BR>
+ * 0005 finger (magic ring)<BR>
+ * 0006 head (l.cap)<BR>
+ * 0007 r.hand (dagger)<BR>
+ * 0008 l.hand (arrows)<BR>
+ * 0009 hands (short gloves)<BR>
+ * 000a chest (squire shirt)<BR>
+ * 000b legs (squire pants)<BR>
+ * 000c feet<BR>
+ * 000d ?? back<BR>
+ * 000e lr.hand (bow)<BR>
+ * format ddd
  */
 public class EquipUpdate extends L2GameServerPacket
 {
-	private static final String _S__5E_EQUIPUPDATE = "[S] 4b EquipUpdate";
 	private static Logger _log = Logger.getLogger(EquipUpdate.class.getName());
+	private static final String _S__5E_EQUIPUPDATE = "[S] 4b EquipUpdate";
 
-	private L2ItemInstance _item;
-	private int _change;
-
+	private final L2ItemInstance _item;
+	private final int _change;
 
 	public EquipUpdate(L2ItemInstance item, int change)
 	{
@@ -78,58 +68,56 @@ public class EquipUpdate extends L2GameServerPacket
 		{
 			case L2Item.SLOT_L_EAR:
 				bodypart = 0x01;
-				break;
+			break;
 			case L2Item.SLOT_R_EAR:
 				bodypart = 0x02;
-				break;
+			break;
 			case L2Item.SLOT_NECK:
 				bodypart = 0x03;
-				break;
+			break;
 			case L2Item.SLOT_R_FINGER:
 				bodypart = 0x04;
-				break;
+			break;
 			case L2Item.SLOT_L_FINGER:
 				bodypart = 0x05;
-				break;
+			break;
 			case L2Item.SLOT_HEAD:
 				bodypart = 0x06;
-				break;
+			break;
 			case L2Item.SLOT_R_HAND:
 				bodypart = 0x07;
-				break;
+			break;
 			case L2Item.SLOT_L_HAND:
 				bodypart = 0x08;
-				break;
+			break;
 			case L2Item.SLOT_GLOVES:
 				bodypart = 0x09;
-				break;
+			break;
 			case L2Item.SLOT_CHEST:
 				bodypart = 0x0a;
-				break;
+			break;
 			case L2Item.SLOT_LEGS:
 				bodypart = 0x0b;
-				break;
+			break;
 			case L2Item.SLOT_FEET:
 				bodypart = 0x0c;
-				break;
+			break;
 			case L2Item.SLOT_BACK:
 				bodypart = 0x0d;
-				break;
+			break;
 			case L2Item.SLOT_LR_HAND:
 				bodypart = 0x0e;
-				break;
+			break;
 			case L2Item.SLOT_HAIR:
 				bodypart = 0x0f;
-				break;
+			break;
 		}
 
-		if (Config.DEBUG) _log.fine("body:" +bodypart);
+		if (Config.DEBUG)
+			_log.fine("body:" + bodypart);
 		writeD(bodypart);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

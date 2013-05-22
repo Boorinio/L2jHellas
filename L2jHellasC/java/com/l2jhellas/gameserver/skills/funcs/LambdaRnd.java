@@ -19,8 +19,6 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public final class LambdaRnd extends Lambda
 {

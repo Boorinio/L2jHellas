@@ -33,12 +33,16 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * @author Unknown
- * @fixes Nightwolf
+ * @author rebuild Nightwolf
  */
 public class L2CharNoblesInstance extends L2NpcInstance
 {
-	/* Main Menu */
-	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>" + "<center><br><br><br>" + "<button value=\"Nobles\" action=\"bypass -h npc_%objectId%_showwindow 1\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br><br>" + "</body></html>";
+	/* Main Menu *//** @formatter:off */
+	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>"
+	+ "<center><br><br><br>"
+	+ "<button value=\"Nobles\" action=\"bypass -h npc_%objectId%_showwindow 1\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br><br>"
+	+ "</body></html>";
+	/** @formatter:on */
 
 	public L2CharNoblesInstance(int objectId, L2NpcTemplate template)
 	{
@@ -68,27 +72,25 @@ public class L2CharNoblesInstance extends L2NpcInstance
 	public void onAction(L2PcInstance player)
 	{
 		if (this != player.getTarget())
-	    {
-	        player.setTarget(this);
-	        player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
-	        player.sendPacket(new ValidateLocation(this));
-	    }
-	    else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
-	    {
-	        SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-	        broadcastPacket(sa);
-	        NpcHtmlMessage html = new NpcHtmlMessage(1);
+		{
+			player.setTarget(this);
+			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
+			player.sendPacket(new ValidateLocation(this));
+		}
+		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+		{
+			SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
+			broadcastPacket(sa);
+			NpcHtmlMessage html = new NpcHtmlMessage(1);
 			html.setHtml(NPC_MENU);
 			sendHtmlMessage(player, html);
-	        player.sendPacket(new ActionFailed());
-	    }
-	    else
-	    {
-	        player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-	        player.sendPacket(new ActionFailed());
-	    }
-
-
+			player.sendPacket(new ActionFailed());
+		}
+		else
+		{
+			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+			player.sendPacket(new ActionFailed());
+		}
 	}
 
 	private void sendHtmlMessage(L2PcInstance player, NpcHtmlMessage html)

@@ -28,13 +28,14 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class AdminLogin implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = {
-	"admin_server_gm_only",
-	"admin_server_all",
-	"admin_server_max_player",
-	"admin_server_list_clock",
-	"admin_server_login"
-	};
+	private static final String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
+		"admin_server_gm_only",
+		"admin_server_all",
+		"admin_server_max_player",
+		"admin_server_list_clock",
+		"admin_server_login"
+	};/** @formatter:off */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

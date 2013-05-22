@@ -18,35 +18,31 @@ import java.util.List;
 
 import com.l2jhellas.util.Point3D;
 
-
 /**
  * Format: (ch) d[ddddd]
- *
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public class ExCursedWeaponLocation extends L2GameServerPacket
 {
 	private static final String _S__FE_46_EXCURSEDWEAPONLOCATION = "[S] FE:46 ExCursedWeaponLocation";
-	private List<CursedWeaponInfo> _cursedWeaponInfo;
+	private final List<CursedWeaponInfo> _cursedWeaponInfo;
 
 	public ExCursedWeaponLocation(List<CursedWeaponInfo> cursedWeaponInfo)
 	{
 		_cursedWeaponInfo = cursedWeaponInfo;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x46);
 
-		if(!_cursedWeaponInfo.isEmpty())
+		if (!_cursedWeaponInfo.isEmpty())
 		{
 			writeD(_cursedWeaponInfo.size());
-			for(CursedWeaponInfo w : _cursedWeaponInfo)
+			for (CursedWeaponInfo w : _cursedWeaponInfo)
 			{
 				writeD(w.id);
 				writeD(w.activated);
@@ -63,9 +59,6 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
@@ -76,7 +69,7 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 	{
 		public Point3D pos;
 		public int id;
-		public int activated; //0 - not activated ? 1 - activated
+		public int activated; // 0 - not activated ? 1 - activated
 
 		public CursedWeaponInfo(Point3D p, int ID, int status)
 		{
@@ -84,6 +77,5 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 			id = ID;
 			activated = status;
 		}
-
 	}
 }

@@ -40,17 +40,11 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.util.Util;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.9.2.3.2.8 $ $Date: 2005/03/27 15:29:30 $
- */
 @SuppressWarnings("unused")
 public final class CharacterCreate extends L2GameClientPacket
 {
-	private static final String _C__0B_CHARACTERCREATE = "[C] 0B CharacterCreate";
 	private static Logger _log = Logger.getLogger(CharacterCreate.class.getName());
-
+	private static final String _C__0B_CHARACTERCREATE = "[C] 0B CharacterCreate";
 	// cSdddddddddddd
 	private String _name;
 	private int _race;
@@ -92,6 +86,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			if (Config.DEBUG)
 				_log.fine("Max number of characters reached. Creation failed.");
+
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_TOO_MANY_CHARACTERS);
 			sendPacket(ccf);
 			return;
@@ -100,6 +95,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			if (Config.DEBUG)
 				_log.fine("charname: " + _name + " already exists. creation failed.");
+
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_NAME_ALREADY_EXISTS);
 			sendPacket(ccf);
 			return;
@@ -129,40 +125,40 @@ public final class CharacterCreate extends L2GameClientPacket
 		newChar.setCurrentHp(template.baseHpMax);
 		newChar.setCurrentCp(template.baseCpMax);
 		newChar.setCurrentMp(template.baseMpMax);
-		// newChar.setMaxLoad(template.baseLoad);
 
-		// send acknowledgement
+		// send acknowledgment
 		CharCreateOk cco = new CharCreateOk();
 		sendPacket(cco);
 
 		initNewChar(getClient(), newChar);
 	}
 
-    private boolean isValidName(String text)
-    {
-            boolean result = true;
-            String test = text;
-            Pattern pattern;
-            try
-            {
-                pattern = Pattern.compile(Config.CNAME_TEMPLATE);
-            }
-            catch (PatternSyntaxException e) // case of illegal pattern
-            {
-            	_log.warning("ERROR : Character name pattern of config is wrong!");
-                pattern = Pattern.compile(".*");
-            }
-            Matcher regexp = pattern.matcher(test);
-            if (!regexp.matches())
-            {
-                    result = false;
-            }
-            return result;
-    }
+	private boolean isValidName(String text)
+	{
+		boolean result = true;
+		String test = text;
+		Pattern pattern;
+		try
+		{
+			pattern = Pattern.compile(Config.CNAME_TEMPLATE);
+		}
+		catch (PatternSyntaxException e) // case of illegal pattern
+		{
+			_log.warning("ERROR : Character name pattern of config is wrong!using default .*");
+			pattern = Pattern.compile(".*");
+		}
+		Matcher regexp = pattern.matcher(test);
+		if (!regexp.matches())
+		{
+			result = false;
+		}
+		return result;
+	}
 
 	private void initNewChar(L2GameClient client, L2PcInstance newChar)
 	{
-		if (Config.DEBUG) _log.fine("Character init start");
+		if (Config.DEBUG)
+			_log.fine("Character init start");
 		L2World.getInstance().storeObject(newChar);
 
 		L2PcTemplate template = newChar.getTemplate();
@@ -172,10 +168,10 @@ public final class CharacterCreate extends L2GameClientPacket
 
 		newChar.setXYZInvisible(template.spawnX, template.spawnY, template.spawnZ);
 
-		if(Config.ALLOW_CREATE_LVL)
+		if (Config.ALLOW_CREATE_LVL)
 		{
 			long tXp = Experience.LEVEL[Config.CUSTOM_START_LVL];
-			newChar.addExpAndSp(tXp , 0);
+			newChar.addExpAndSp(tXp, 0);
 		}
 		if (Config.CHAR_TITLE)
 			newChar.setTitle(Config.ADD_CHAR_TITLE);
@@ -183,16 +179,16 @@ public final class CharacterCreate extends L2GameClientPacket
 		if (Config.PVP_PK_TITLE)
 			newChar.setTitle(Config.PVP_TITLE_PREFIX + "0" + Config.PK_TITLE_PREFIX + "0 ");
 		L2ShortCut shortcut;
-		//add attack shortcut
-		shortcut = new L2ShortCut(0,0,3,2,-1,1);
+		// add attack shortcut
+		shortcut = new L2ShortCut(0, 0, 3, 2, -1, 1);
 		newChar.registerShortCut(shortcut);
 
-		//add take shortcut
-		shortcut = new L2ShortCut(3,0,3,5,-1,1);
+		// add take shortcut
+		shortcut = new L2ShortCut(3, 0, 3, 5, -1, 1);
 		newChar.registerShortCut(shortcut);
 
-		//add sit shortcut
-		shortcut = new L2ShortCut(10,0,3,0,-1,1);
+		// add sit shortcut
+		shortcut = new L2ShortCut(10, 0, 3, 0, -1, 1);
 		newChar.registerShortCut(shortcut);
 
 		ItemTable itemTable = ItemTable.getInstance();
@@ -235,7 +231,6 @@ public final class CharacterCreate extends L2GameClientPacket
 		L2World.getInstance().removeObject(newChar);
 
 		// send char list
-
 		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		client.getConnection().sendPacket(cl);
 		client.setCharSelection(cl.getCharInfo());

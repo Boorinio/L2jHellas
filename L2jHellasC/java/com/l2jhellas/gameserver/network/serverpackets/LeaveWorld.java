@@ -14,10 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-/**
- * This class ...
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
- */
 public class LeaveWorld extends L2GameServerPacket
 {
 	private static final String _S__96_LEAVEWORLD = "[S] 7e LeaveWorld";
@@ -28,13 +24,9 @@ public class LeaveWorld extends L2GameServerPacket
 		writeC(0x7e);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__96_LEAVEWORLD;
 	}
-
 }

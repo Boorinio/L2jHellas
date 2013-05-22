@@ -17,15 +17,9 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.4.2 $ $Date: 2005/03/27 15:29:30 $
- */
 public class SetPrivateStoreMsgSell extends L2GameClientPacket
 {
 	private static final String _C__77_SETPRIVATESTOREMSGSELL = "[C] 77 SetPrivateStoreMsgSell";
-	//private static Logger _log = Logger.getLogger(SetPrivateStoreMsgSell.class.getName());
 
 	private String _storeMsg;
 
@@ -39,19 +33,16 @@ public class SetPrivateStoreMsgSell extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null || player.getSellList() == null) return;
+		if ((player == null) || (player.getSellList() == null))
+			return;
 
 		player.getSellList().setTitle(_storeMsg);
 		sendPacket(new PrivateStoreMsgSell(player));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__77_SETPRIVATESTOREMSGSELL;
 	}
-
 }

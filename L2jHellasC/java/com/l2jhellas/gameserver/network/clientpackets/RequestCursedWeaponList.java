@@ -24,7 +24,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ExCursedWeaponList;
 
 /**
  * Format: (ch)
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public class RequestCursedWeaponList extends L2GameClientPacket
 {
@@ -33,21 +34,17 @@ public class RequestCursedWeaponList extends L2GameClientPacket
 	@Override
 	protected void readImpl()
 	{
-		//nothing to read it's just a trigger
+		// nothing to read it's just a trigger
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
 		L2Character activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 
-		//send a ExCursedWeaponList :p
+		// send a ExCursedWeaponList :p
 		List<Integer> list = new FastList<Integer>();
 		for (int id : CursedWeaponsManager.getInstance().getCursedWeaponsIds())
 		{
@@ -56,13 +53,9 @@ public class RequestCursedWeaponList extends L2GameClientPacket
 		activeChar.sendPacket(new ExCursedWeaponList(list));
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_22_REQUESTCURSEDWEAPONLIST;
 	}
-
 }

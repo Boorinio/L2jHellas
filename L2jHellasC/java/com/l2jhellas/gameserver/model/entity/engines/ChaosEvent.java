@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,16 +25,15 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
  * @author Anarchy
+ *         Configs added by Pauler
  */
-// Configs added by Pauler
-
 public class ChaosEvent
 {
 	public static Vector<L2PcInstance> _players = new Vector<L2PcInstance>();
 	public static L2PcInstance _topplayer, _topplayer2, _topplayer3, _topplayer4, _topplayer5;
 	public static int _topkills = 0, _topkills2 = 0, _topkills3 = 0, _topkills4 = 0, _topkills5 = 0;
 	public static boolean _isChaosActive;
-	
+
 	public void startChaos()
 	{
 		_isChaosActive = true;
@@ -42,7 +41,7 @@ public class ChaosEvent
 		Announcements.getInstance().announceToAll("Chaos Event has started!");
 		Announcements.getInstance().announceToAll("Type .joinchaos to join and .leavechaos to leave!");
 	}
-	
+
 	public void stopChaos()
 	{
 		_isChaosActive = false;
@@ -57,7 +56,7 @@ public class ChaosEvent
 		cleanPlayers();
 		_players.clear();
 	}
-	
+
 	public void cleanColors()
 	{
 		for (L2PcInstance player : _players)
@@ -66,7 +65,7 @@ public class ChaosEvent
 			player.broadcastUserInfo();
 		}
 	}
-	
+
 	public void cleanPlayers()
 	{
 		for (L2PcInstance player : _players)
@@ -77,7 +76,7 @@ public class ChaosEvent
 			_topplayer = null;
 		}
 	}
-	
+
 	public void registerToChaos(L2PcInstance player)
 	{
 		if (!registerToChaosOk(player))
@@ -92,7 +91,7 @@ public class ChaosEvent
 		player.sendMessage("You have joined Chaos Event.");
 		addSuperHaste(player);
 	}
-	
+
 	public void addSuperHaste(L2PcInstance player)
 	{
 		L2Skill skill = SkillTable.getInstance().getInfo(Config.CHAOS_SKILL_ID, Config.CHAOS_SKILL_LVL);
@@ -101,7 +100,7 @@ public class ChaosEvent
 			skill.getEffects(player, player);
 		}
 	}
-	
+
 	public boolean registerToChaosOk(L2PcInstance chaosplayer)
 	{
 		if (chaosplayer._inChaosEvent)
@@ -111,7 +110,7 @@ public class ChaosEvent
 		}
 		return true;
 	}
-	
+
 	public void removeFromChaos(L2PcInstance player)
 	{
 		if (!removeFromChaosOk(player))
@@ -126,7 +125,7 @@ public class ChaosEvent
 		player.broadcastUserInfo();
 		removeSuperHaste(player);
 	}
-	
+
 	public boolean removeFromChaosOk(L2PcInstance chaosplayer)
 	{
 		if (!chaosplayer._inChaosEvent)
@@ -136,7 +135,7 @@ public class ChaosEvent
 		}
 		return true;
 	}
-	
+
 	public static void getTopKiller()
 	{
 		for (L2PcInstance player : _players)
@@ -168,7 +167,7 @@ public class ChaosEvent
 			}
 		}
 	}
-	
+
 	public void calculateRewards()
 	{
 		Announcements.getInstance().announceToAll("Winner of Chaos Event:");
@@ -198,13 +197,13 @@ public class ChaosEvent
 			Announcements.getInstance().announceToAll("5) " + _topplayer5.getName());
 		}
 	}
-	
+
 	public void removeSuperHaste(L2PcInstance activeChar)
 	{
 		if (activeChar != null)
 		{
 			L2Effect[] effects = activeChar.getAllEffects();
-			
+
 			for (L2Effect e : effects)
 			{
 				if ((e != null) && (e.getSkill().getId() == Config.CHAOS_SKILL_ID))

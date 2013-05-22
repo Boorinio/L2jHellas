@@ -16,18 +16,12 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.network.serverpackets.StopRotation;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class FinishRotating extends L2GameClientPacket
 {
 	private static final String _C__4B_FINISHROTATING = "[C] 4B FinishRotating";
 
 	private int _degree;
-	@SuppressWarnings("unused")
-    private int _unknown;
+	private int _unknown;
 
 	@Override
 	protected void readImpl()
@@ -40,14 +34,11 @@ public final class FinishRotating extends L2GameClientPacket
 	protected void runImpl()
 	{
 		if (getClient().getActiveChar() == null)
-		    return;
+			return;
 		StopRotation sr = new StopRotation(getClient().getActiveChar().getObjectId(), _degree, 0);
 		getClient().getActiveChar().broadcastPacket(sr);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

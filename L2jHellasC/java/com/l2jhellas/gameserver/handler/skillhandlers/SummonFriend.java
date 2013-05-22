@@ -36,7 +36,8 @@ public class SummonFriend implements ISkillHandler
 {
 	protected static final Logger _log = Logger.getLogger(SummonFriend.class.getName());
 
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.SUMMON_FRIEND
 	};
 

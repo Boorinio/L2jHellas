@@ -25,7 +25,8 @@ import com.l2jhellas.gameserver.templates.L2Item;
 
 /**
  * Format(ch) d
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public final class RequestRefineCancel extends L2GameClientPacket
 {
@@ -38,16 +39,14 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		_targetItemObjId = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance targetItem = (L2ItemInstance)L2World.getInstance().findObject(_targetItemObjId);
+		L2ItemInstance targetItem = (L2ItemInstance) L2World.getInstance().findObject(_targetItemObjId);
 
-		if (activeChar == null) return;
+		if (activeChar == null)
+			return;
 		if (targetItem == null)
 		{
 			activeChar.sendPacket(new ExVariationCancelResult(0));
@@ -63,7 +62,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		}
 
 		// get the price
-		int price=0;
+		int price = 0;
 		switch (targetItem.getItem().getItemGrade())
 		{
 			case L2Item.CRYSTAL_C:
@@ -73,13 +72,13 @@ public final class RequestRefineCancel extends L2GameClientPacket
 					price = 150000;
 				else
 					price = 210000;
-				break;
+			break;
 			case L2Item.CRYSTAL_B:
 				if (targetItem.getCrystalCount() < 1746)
 					price = 240000;
 				else
 					price = 270000;
-				break;
+			break;
 			case L2Item.CRYSTAL_A:
 				if (targetItem.getCrystalCount() < 2160)
 					price = 330000;
@@ -87,10 +86,10 @@ public final class RequestRefineCancel extends L2GameClientPacket
 					price = 390000;
 				else
 					price = 420000;
-				break;
+			break;
 			case L2Item.CRYSTAL_S:
 				price = 480000;
-				break;
+			break;
 			// any other item type is not augmentable
 			default:
 				activeChar.sendPacket(new ExVariationCancelResult(0));
@@ -98,10 +97,12 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		}
 
 		// try to reduce the players adena
-		if (!activeChar.reduceAdena("RequestRefineCancel", price, null, true)) return;
+		if (!activeChar.reduceAdena("RequestRefineCancel", price, null, true))
+			return;
 
 		// unequip item
-		if (targetItem.isEquipped()) activeChar.disarmWeapons();
+		if (targetItem.isEquipped())
+			activeChar.disarmWeapons();
 
 		// remove the augmentation
 		targetItem.removeAugmentation();
@@ -120,13 +121,9 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		activeChar.sendPacket(sm);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_2E_REQUESTREFINECANCEL;
 	}
-
 }

@@ -42,21 +42,22 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public class AdminSpawn implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = {
-	"admin_show_spawns",
-	"admin_spawn",
-	"admin_spawn_monster",
-	"admin_spawn_index",
-	"admin_unspawnall",
-	"admin_respawnall",
-	"admin_spawn_reload",
-	"admin_npc_index",
-	"admin_spawn_once",
-	"admin_show_npcs",
-	"admin_teleport_reload",
-	"admin_spawnnight",
-	"admin_spawnday"
-	};
+	private static final String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
+		"admin_show_spawns",
+		"admin_spawn",
+		"admin_spawn_monster",
+		"admin_spawn_index",
+		"admin_unspawnall",
+		"admin_respawnall",
+		"admin_spawn_reload",
+		"admin_npc_index",
+		"admin_spawn_once",
+		"admin_show_npcs",
+		"admin_teleport_reload",
+		"admin_spawnnight",
+		"admin_spawnday"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

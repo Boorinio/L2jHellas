@@ -59,7 +59,7 @@ public class CharKnownList extends ObjectKnownList
 	/**
 	 * Return True if the L2PcInstance is in _knownPlayer of the L2Character.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param player
 	 *        The L2PcInstance to search in _knownPlayer
 	 */
@@ -125,7 +125,7 @@ public class CharKnownList extends ObjectKnownList
 
 		for (L2Object obj : getKnownObjects().values())
 		{
-			if (obj != null && obj instanceof L2Character)
+			if ((obj != null) && obj instanceof L2Character)
 				result.add((L2Character) obj);
 		}
 

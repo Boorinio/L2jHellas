@@ -20,50 +20,42 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
 import com.l2jhellas.util.Point3D;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestGetOnVehicle extends L2GameClientPacket
 {
-    private static final String _C__5C_GETONVEHICLE = "[C] 5C GetOnVehicle";
+	private static final String _C__5C_GETONVEHICLE = "[C] 5C GetOnVehicle";
 
-    private int _id, _x, _y, _z;
+	private int _id, _x, _y, _z;
 
-    @Override
+	@Override
 	protected void readImpl()
-    {
-        _id = readD();
-        _x = readD();
-        _y = readD();
-        _z = readD();
-    }
+	{
+		_id = readD();
+		_x = readD();
+		_y = readD();
+		_z = readD();
+	}
 
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        L2PcInstance activeChar = getClient().getActiveChar();
-        if (activeChar == null) return;
+	{
+		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+			return;
 
-        L2BoatInstance boat = BoatManager.getInstance().GetBoat(_id);
-        if (boat == null) return;
+		L2BoatInstance boat = BoatManager.getInstance().GetBoat(_id);
+		if (boat == null)
+			return;
 
-        GetOnVehicle Gon = new GetOnVehicle(activeChar,boat,_x,_y,_z);
-        activeChar.setInBoatPosition(new Point3D(_x,_y,_z));
-        activeChar.getPosition().setXYZ(boat.getPosition().getX(),boat.getPosition().getY(),boat.getPosition().getZ());
-        activeChar.broadcastPacket(Gon);
-        activeChar.revalidateZone(true);
+		GetOnVehicle Gon = new GetOnVehicle(activeChar, boat, _x, _y, _z);
+		activeChar.setInBoatPosition(new Point3D(_x, _y, _z));
+		activeChar.getPosition().setXYZ(boat.getPosition().getX(), boat.getPosition().getY(), boat.getPosition().getZ());
+		activeChar.broadcastPacket(Gon);
+		activeChar.revalidateZone(true);
+	}
 
-
-    }
-
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-     */
-    @Override
+	@Override
 	public String getType()
-    {
-        return _C__5C_GETONVEHICLE;
-    }
+	{
+		return _C__5C_GETONVEHICLE;
+	}
 }

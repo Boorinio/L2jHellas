@@ -15,7 +15,6 @@
 package com.l2jhellas.gameserver.model;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class L2ExtractableProductItem

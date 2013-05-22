@@ -24,7 +24,7 @@ import com.l2jhellas.util.StringUtil;
 
 /**
  * Flood protector implementation.
- *
+ * 
  * @author fordfrog
  */
 public final class FloodProtectorAction
@@ -55,13 +55,13 @@ public final class FloodProtectorAction
 	private boolean _logged;
 	/**
 	 * Flag determining whether punishment application is in progress so that we do not apply
-	 * punisment multiple times (flooding).
+	 * Punishment multiple times (flooding).
 	 */
 	private volatile boolean _punishmentInProgress;
 
 	/**
 	 * Creates new instance of FloodProtectorAction.
-	 *
+	 * 
 	 * @param player
 	 *        player for which flood protection is being created
 	 * @param config
@@ -76,7 +76,7 @@ public final class FloodProtectorAction
 
 	/**
 	 * Checks whether the request is flood protected or not.
-	 *
+	 * 
 	 * @param command
 	 *        command issued or short command description
 	 * @return true if action is allowed, otherwise false

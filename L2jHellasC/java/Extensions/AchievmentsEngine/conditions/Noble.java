@@ -31,10 +31,10 @@ public class Noble extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		if (player.isNoble())
 			return true;
-			
+
 		return false;
 	}
 }

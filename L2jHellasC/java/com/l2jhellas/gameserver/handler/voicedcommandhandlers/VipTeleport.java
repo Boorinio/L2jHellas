@@ -24,7 +24,7 @@ public class VipTeleport implements IVoicedCommandHandler
 	{
 		"areavip"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
@@ -85,13 +85,13 @@ public class VipTeleport implements IVoicedCommandHandler
 				activeChar.sendMessage("You must be donator to use this service.");
 				return false;
 			}
-			
+
 			activeChar.teleToLocation(Config.VIP_X, Config.VIP_Y, Config.VIP_Z);
 			activeChar.sendMessage("You have been teleported in Vip Area!");
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{

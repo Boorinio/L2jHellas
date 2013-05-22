@@ -18,14 +18,14 @@ import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 
 /**
  * @author Maktakien
- *
  */
 public class OnVehicleCheckLocation extends L2GameServerPacket
 {
-	private L2BoatInstance _boat;
-	private int _x;
-	private int _y;
-	private int _z;
+	private final L2BoatInstance _boat;
+	private final int _x;
+	private final int _y;
+	private final int _z;
+
 	/**
 	 * @param instance
 	 * @param x
@@ -40,12 +40,8 @@ public class OnVehicleCheckLocation extends L2GameServerPacket
 		_z = z;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 
 		writeC(0x5b);
@@ -56,14 +52,9 @@ public class OnVehicleCheckLocation extends L2GameServerPacket
 		writeD(_boat.getPosition().getHeading());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

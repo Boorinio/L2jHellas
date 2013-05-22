@@ -15,20 +15,13 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- *
- * @author  chris_00
- *
- * close the CommandChannel Information window
- *
+ * @author chris_00
+ *         close the CommandChannel Information window
  */
 public class ExCloseMPCC extends L2GameServerPacket
 {
-
 	private static final String _S__FE_26_EXCLOSEMPCC = "[S] FE:26 ExCloseMPCC";
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -36,13 +29,9 @@ public class ExCloseMPCC extends L2GameServerPacket
 		writeH(0x26);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_26_EXCLOSEMPCC;
 	}
-
 }

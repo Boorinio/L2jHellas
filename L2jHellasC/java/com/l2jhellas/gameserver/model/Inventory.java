@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
@@ -36,10 +35,8 @@ import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * This class manages inventory
- */
 public abstract class Inventory extends ItemContainer
 {
 	protected static final Logger _log = Logger.getLogger(Inventory.class.getName());
@@ -128,7 +125,7 @@ public abstract class Inventory extends ItemContainer
 
 		/**
 		 * Constructor of the ChangeRecorder
-		 *
+		 * 
 		 * @param inventory
 		 */
 		ChangeRecorder(Inventory inventory)
@@ -160,7 +157,7 @@ public abstract class Inventory extends ItemContainer
 
 		/**
 		 * Returns alterations in inventory
-		 *
+		 * 
 		 * @return L2ItemInstance[] : array of alterated items
 		 */
 		public L2ItemInstance[] getChangedItems()
@@ -491,9 +488,9 @@ public abstract class Inventory extends ItemContainer
 	 * if (!(getOwner() != null
 	 * && getOwner() instanceof L2PcInstance))
 	 * return;
-	 *
+	 * 
 	 * L2PcInstance owner = (L2PcInstance)getOwner();
-	 *
+	 * 
 	 * if (item.getItemId() == 6408)
 	 * owner.setIsWearingFormalWear(false);
 	 * }
@@ -502,9 +499,9 @@ public abstract class Inventory extends ItemContainer
 	 * if (!(getOwner() != null
 	 * && getOwner() instanceof L2PcInstance))
 	 * return;
-	 *
+	 * 
 	 * L2PcInstance owner = (L2PcInstance)getOwner();
-	 *
+	 * 
 	 * // If player equip Formal Wear unequip weapons and abort cast/attack
 	 * if (item.getItemId() == 6408)
 	 * {
@@ -521,7 +518,7 @@ public abstract class Inventory extends ItemContainer
 	 * {
 	 * if (!owner.isWearingFormalWear())
 	 * return;
-	 *
+	 * 
 	 * // Don't let weapons be equipped if player is wearing Formal Wear
 	 * if (slot == PAPERDOLL_LHAND
 	 * || slot == PAPERDOLL_RHAND
@@ -551,7 +548,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Returns the instance of new ChangeRecorder
-	 *
+	 * 
 	 * @return ChangeRecorder
 	 */
 	public ChangeRecorder newRecorder()
@@ -561,7 +558,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Drop item from inventory and updates database
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param item
@@ -594,7 +591,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Drop item from inventory by using its <B>objectID</B> and updates database
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param objectId
@@ -634,7 +631,7 @@ public abstract class Inventory extends ItemContainer
 	/**
 	 * Adds item to inventory for further adjustments and Equip it if necessary (itemlocation defined)<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param item
 	 *        : L2ItemInstance to be added from inventory
 	 */
@@ -648,7 +645,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Removes item from inventory for further adjustments.
-	 *
+	 * 
 	 * @param item
 	 *        : L2ItemInstance to be removed from inventory
 	 */
@@ -666,7 +663,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Returns the item in the paperdoll slot
-	 *
+	 * 
 	 * @return L2ItemInstance
 	 */
 	public L2ItemInstance getPaperdollItem(int slot)
@@ -692,7 +689,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Returns the item in the paperdoll L2Item slot
-	 *
+	 * 
 	 * @param L2Item
 	 *        slot identifier
 	 * @return L2ItemInstance
@@ -743,7 +740,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Returns the ID of the item in the paperdol slot
-	 *
+	 * 
 	 * @param slot
 	 *        : int designating the slot
 	 * @return int designating the ID of the item
@@ -781,7 +778,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Returns the objectID associated to the item in the paperdoll slot
-	 *
+	 * 
 	 * @param slot
 	 *        : int pointing out the slot
 	 * @return int designating the objectID
@@ -802,7 +799,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Adds new inventory's paperdoll listener
-	 *
+	 * 
 	 * @param PaperdollListener
 	 *        pointing out the listener
 	 */
@@ -815,7 +812,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Removes a paperdoll listener
-	 *
+	 * 
 	 * @param PaperdollListener
 	 *        pointing out the listener to be deleted
 	 */
@@ -827,7 +824,7 @@ public abstract class Inventory extends ItemContainer
 	/**
 	 * Equips an item in the given slot of the paperdoll.
 	 * <U><I>Remark :</I></U> The item <B>HAS TO BE</B> already in the inventory
-	 *
+	 * 
 	 * @param slot
 	 *        : int pointing out the slot of the paperdoll
 	 * @param item
@@ -880,7 +877,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Return the mask of weared item
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getWearedMask()
@@ -956,7 +953,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Unequips item in body slot and returns alterations.
-	 *
+	 * 
 	 * @param slot
 	 *        : int designating the slot of the paperdoll
 	 * @return L2ItemInstance[] : list of changes
@@ -979,7 +976,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Sets item in slot of the paperdoll to null value
-	 *
+	 * 
 	 * @param pdollSlot
 	 *        : int designating the slot
 	 * @return L2ItemInstance designating the item in slot before change
@@ -991,7 +988,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Unepquips item in slot and returns alterations
-	 *
+	 * 
 	 * @param slot
 	 *        : int designating the slot
 	 * @return L2ItemInstance[] : list of items altered
@@ -1015,7 +1012,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Unequips item in slot (i.e. equips with default value)
-	 *
+	 * 
 	 * @param slot
 	 *        : int designating the slot
 	 */
@@ -1096,7 +1093,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Equips item and returns list of alterations
-	 *
+	 * 
 	 * @param item
 	 *        : L2ItemInstance corresponding to the item
 	 * @return L2ItemInstance[] : list of alterations
@@ -1119,7 +1116,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Equips item in slot of paperdoll.
-	 *
+	 * 
 	 * @param item
 	 *        : L2ItemInstance designating the item and slot used.
 	 */
@@ -1335,7 +1332,7 @@ public abstract class Inventory extends ItemContainer
 
 	/**
 	 * Returns the totalWeight.
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getTotalWeight()
@@ -1346,7 +1343,7 @@ public abstract class Inventory extends ItemContainer
 	/**
 	 * Return the L2ItemInstance of the arrows needed for this bow.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param bow
 	 *        : L2Item designating the bow
 	 * @return L2ItemInstance pointing out arrows for bow
@@ -1388,10 +1385,8 @@ public abstract class Inventory extends ItemContainer
 	@Override
 	public void restore()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT object_id FROM items WHERE owner_id=? AND (loc=? OR loc=?) " + "ORDER BY object_id DESC");
 			statement.setInt(1, getOwner().getObjectId());
 			statement.setString(2, getBaseLocation().name());
@@ -1442,16 +1437,6 @@ public abstract class Inventory extends ItemContainer
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -1459,7 +1444,6 @@ public abstract class Inventory extends ItemContainer
 	 */
 	public void reloadEquippedItems()
 	{
-
 		L2ItemInstance item;
 		int slot;
 

@@ -99,7 +99,7 @@ public class DecayTaskManager
 			}
 			catch (Throwable e)
 			{
-				// TODO: Find out the reason for exception. Unless caught here, mob decay would stop.
+				// TODO
 				_log.warning(e.toString());
 			}
 		}

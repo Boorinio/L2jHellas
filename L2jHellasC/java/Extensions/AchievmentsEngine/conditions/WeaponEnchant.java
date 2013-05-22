@@ -33,11 +33,11 @@ public class WeaponEnchant extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
-		
+
 		L2ItemInstance weapon = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);
-		
+
 		if (weapon != null)
 			if (weapon.getEnchantLevel() >= val)
 				return true;

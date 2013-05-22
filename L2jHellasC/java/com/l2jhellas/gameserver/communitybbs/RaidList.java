@@ -22,7 +22,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class RaidList
 {
@@ -38,7 +38,6 @@ public class RaidList
 	private void loadFromDB(String rfid)
 	{
 		int type = Integer.parseInt(rfid);
-		Connection con = null;
 		int stpoint = 0;
 		int pos = 0;
 		String sort = "";
@@ -51,10 +50,8 @@ public class RaidList
 			stpoint += ExternalConfig.RAID_LIST_RESULTS;
 		}
 
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` " + sort + " Limit " + stpoint + ", " + ExternalConfig.RAID_LIST_RESULTS);
 			ResultSet result = statement.executeQuery();
 			pos = stpoint;
@@ -93,16 +90,6 @@ public class RaidList
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

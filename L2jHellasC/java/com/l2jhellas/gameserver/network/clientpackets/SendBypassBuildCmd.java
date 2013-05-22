@@ -23,8 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class handles all GM commands triggered by //command
- *
- * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:29 $
  */
 public final class SendBypassBuildCmd extends L2GameClientPacket
 {
@@ -46,37 +44,34 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-        if(activeChar == null)
-            return;
+		if (activeChar == null)
+			return;
 
-        String command = "admin_" + _command.split(" ")[0]; 
-                         
-        IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(command); 
-                        
-        if (ach == null)
+		String command = "admin_" + _command.split(" ")[0];
+
+		IAdminCommandHandler ach = AdminCommandHandler.getInstance().getAdminCommandHandler(command);
+
+		if (ach == null)
 		{
-        	if (activeChar.isGM()) 
-        		activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist."); 
-        		                         
-        		_log.warning("No handler registered for admin command '" + command + "'"); 
-        		return;
+			if (activeChar.isGM())
+				activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist.");
+
+			_log.warning("No handler registered for admin command '" + command + "'");
+			return;
 		}
-        if (!AdminCommandAccessRights.getInstance().hasAccess(command , activeChar.getAccessLevel())) 
-        { 
-            activeChar.sendMessage("You don't have the access right to use this command."); 
-         	_log.warning(activeChar.getName() + " tried to use admin command " + command + ", but have no access to use it."); 
-         	return; 
-        } 
-                   
-        if (Config.GMAUDIT) 
-        	GMAudit.auditGMAction(activeChar.getName()+" ["+activeChar.getObjectId()+"]", _command, (activeChar.getTarget() != null?activeChar.getTarget().getName():"no-target")); 
-                   
-        ach.useAdminCommand("admin_" + _command, activeChar);
+		if (!AdminCommandAccessRights.getInstance().hasAccess(command, activeChar.getAccessLevel()))
+		{
+			activeChar.sendMessage("You don't have the access right to use this command.");
+			_log.warning(activeChar.getName() + " tried to use admin command " + command + ", but have no access to use it.");
+			return;
+		}
+
+		if (Config.GMAUDIT)
+			GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", _command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"));
+
+		ach.useAdminCommand("admin_" + _command, activeChar);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

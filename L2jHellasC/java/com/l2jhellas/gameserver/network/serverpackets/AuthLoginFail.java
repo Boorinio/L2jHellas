@@ -14,11 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-/**
- * format  d   rev 417
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
- */
 public class AuthLoginFail extends L2GameServerPacket
 {
 	private static final String _S__12_AUTHLOGINFAIL = "[S] 14 AuthLoginFail";
@@ -34,10 +29,10 @@ public class AuthLoginFail extends L2GameServerPacket
 	public static final int ACCESS_FAILED_TRY_LATER4 = 9;
 	public static final int ACCESS_FAILED_TRY_LATER5 = 10;
 
-	private int _reason;
+	private final int _reason;
 
 	/**
-	 * @param _characters
+	 * @param reason
 	 */
 	public AuthLoginFail(int reason)
 	{
@@ -51,9 +46,6 @@ public class AuthLoginFail extends L2GameServerPacket
 		writeD(_reason);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

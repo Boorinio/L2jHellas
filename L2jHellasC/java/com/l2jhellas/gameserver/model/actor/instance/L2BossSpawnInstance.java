@@ -35,12 +35,12 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 public class L2BossSpawnInstance extends L2NpcInstance
 {
 	private static final SimpleDateFormat Time = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	
+
 	public L2BossSpawnInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
@@ -48,13 +48,13 @@ public class L2BossSpawnInstance extends L2NpcInstance
 		{
 			return;
 		}
-		
+
 		if (this != player.getTarget())
 		{
 			player.setTarget(this);
-			
+
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
-			
+
 			player.sendPacket(new ValidateLocation(this));
 		}
 		else if (!canInteract(player))
@@ -65,23 +65,23 @@ public class L2BossSpawnInstance extends L2NpcInstance
 		{
 			showHtmlWindow(player);
 		}
-		
+
 		player.sendPacket(new ActionFailed());
 	}
-	
+
 	private void showHtmlWindow(L2PcInstance activeChar)
 	{
 		showRbInfo(activeChar);
-		
+
 		activeChar.sendPacket(new ActionFailed());
 	}
-	
+
 	private final void showRbInfo(L2PcInstance player)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><title>Boss Info</title><body><br><center><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32>");
-		
+
 		for (final int boss : ExternalConfig.BOSS_RESPAWN_INFO)
 		{
 			final String name = NpcTable.getInstance().getTemplate(boss).getName();
@@ -109,7 +109,7 @@ public class L2BossSpawnInstance extends L2NpcInstance
 			}
 		}
 		tb.append("<br><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32></center></body></html>");
-		
+
 		html.setHtml(tb.toString());
 		html.replace("%objectId%", String.valueOf(getObjectId()));
 		player.sendPacket(html);

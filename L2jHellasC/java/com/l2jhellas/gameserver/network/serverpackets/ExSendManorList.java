@@ -17,28 +17,31 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import javolution.util.FastList;
 
 /**
- * Format : (h) d [dS]
- * h  sub id
- *
- * d: number of manors
- * [
- * d: id
- * S: manor name
- * ]
+ * Format : (h) d [dS]<BR>
+ * h sub id<BR>
+ * <BR>
+ * d: number of manors<BR>
+ * [<BR>
+ * d: id<BR>
+ * S: manor name<BR>
+ * ]<BR>
+ * 
  * @author l3x
- *
  */
-public class ExSendManorList extends L2GameServerPacket {
+public class ExSendManorList extends L2GameServerPacket
+{
 	private static final String _S__FE_1B_EXSENDMANORLIST = "[S] FE:1B ExSendManorList";
 
-	private FastList<String> _manors;
+	private final FastList<String> _manors;
 
-	public ExSendManorList(FastList<String> manors) {
+	public ExSendManorList(FastList<String> manors)
+	{
 		_manors = manors;
 	}
 
 	@Override
-	protected void writeImpl() {
+	protected void writeImpl()
+	{
 		writeC(0xFE);
 		writeH(0x1B);
 		writeD(_manors.size());
@@ -52,7 +55,8 @@ public class ExSendManorList extends L2GameServerPacket {
 	}
 
 	@Override
-	public String getType() {
+	public String getType()
+	{
 		return _S__FE_1B_EXSENDMANORLIST;
 	}
 }

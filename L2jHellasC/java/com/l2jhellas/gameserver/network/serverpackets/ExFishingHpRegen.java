@@ -17,22 +17,22 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2Character;
 
 /**
- * Format (ch)dddcccd
- * d: cahacter oid
- * d: time left
- * d: fish hp
- * c:
- * c:
- * c: 00 if fish gets damage 02 if fish regens
- * d:
+ * Format (ch)dddcccd<BR>
+ * d: cahacter oid<BR>
+ * d: time left<BR>
+ * d: fish hp<BR>
+ * c:<BR>
+ * c:<BR>
+ * c: 00 if fish gets damage 02 if fish regens<BR>
+ * d:<BR>
+ * 
  * @author -Wooden-
- *
  */
 public class ExFishingHpRegen extends L2GameServerPacket
 {
 	private static final String _S__FE_16_EXFISHINGHPREGEN = "[S] FE:16 ExFishingHPRegen";
-	private L2Character _activeChar;
-	private int _time, _fishHP, _hpMode, _anim, _goodUse, _penalty, _hpBarColor;
+	private final L2Character _activeChar;
+	private final int _time, _fishHP, _hpMode, _anim, _goodUse, _penalty, _hpBarColor;
 
 	public ExFishingHpRegen(L2Character character, int time, int fishHP, int HPmode, int GoodUse, int anim, int penalty, int hpBarColor)
 	{
@@ -46,9 +46,6 @@ public class ExFishingHpRegen extends L2GameServerPacket
 		_hpBarColor = hpBarColor;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -66,13 +63,9 @@ public class ExFishingHpRegen extends L2GameServerPacket
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_16_EXFISHINGHPREGEN;
 	}
-
 }

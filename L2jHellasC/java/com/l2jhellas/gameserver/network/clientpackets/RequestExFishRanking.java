@@ -17,35 +17,29 @@ package com.l2jhellas.gameserver.network.clientpackets;
 /**
  * Format: (ch)
  * just a trigger
- * @author  -Wooden-
- *
+ * 
+ * @author -Wooden-
  */
 public final class RequestExFishRanking extends L2GameClientPacket
 {
-    private static final String _C__D0_1F_REQUESTEXFISHRANKING = "[C] D0:1F RequestExFishRanking";
+	private static final String _C__D0_1F_REQUESTEXFISHRANKING = "[C] D0:1F RequestExFishRanking";
 
-    @Override
+	@Override
 	protected void readImpl()
-    {
-    	// trigger
-    }
+	{
+		// trigger
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        System.out.println("C5: RequestExFishRanking");
-    }
+	{
+		// TODO
+		System.out.println("C5: RequestExFishRanking");
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.BasePacket#getType()
-     */
-    @Override
-    public String getType()
-    {
-        return _C__D0_1F_REQUESTEXFISHRANKING;
-    }
-
+	@Override
+	public String getType()
+	{
+		return _C__D0_1F_REQUESTEXFISHRANKING;
+	}
 }

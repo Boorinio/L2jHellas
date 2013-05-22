@@ -31,10 +31,12 @@ import com.l2jhellas.util.Broadcast;
 public class SoulShots implements IItemHandler
 {
 	// All the item IDs that this handler knows.
-	private static final int[] ITEM_IDS = {
+	private static final int[] ITEM_IDS =
+	{
 	5789, 1835, 1463, 1464, 1465, 1466, 1467
 	};
-	private static final int[] SKILL_IDS = {
+	private static final int[] SKILL_IDS =
+	{
 	2039, 2150, 2151, 2152, 2153, 2154
 	};
 

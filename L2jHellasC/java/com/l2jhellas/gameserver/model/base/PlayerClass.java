@@ -33,13 +33,9 @@ import java.util.Set;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.2 $ $Date: 2004/06/27 08:12:59 $
- */
-public enum PlayerClass {
+public enum PlayerClass
+{
+	/** @formatter:off */
     HumanFighter(Human, Fighter, First), Warrior(Human, Fighter, Second), Gladiator(Human, Fighter,
             Third), Warlord(Human, Fighter, Third), HumanKnight(Human, Fighter, Second), Paladin(Human,
             Fighter, Third), DarkAvenger(Human, Fighter, Third), Rogue(Human, Fighter, Second), TreasureHunter(
@@ -101,130 +97,126 @@ public enum PlayerClass {
             Orc, Mystic, Fourth),
 
     fortuneSeeker(Dwarf, Fighter, Fourth), maestro(Dwarf, Fighter, Fourth);
+    /** @formatter:on */
+	private PlayerRace _race;
+	private ClassLevel _level;
+	private ClassType _type;
 
-    private PlayerRace _race;
-    private ClassLevel _level;
-    private ClassType _type;
+	private static final Set<PlayerClass> mainSubclassSet;
+	private static final Set<PlayerClass> neverSubclassed = EnumSet.of(Overlord, Warsmith);
 
-    private static final Set<PlayerClass> mainSubclassSet;
-    private static final Set<PlayerClass> neverSubclassed = EnumSet.of(Overlord, Warsmith);
+	private static final Set<PlayerClass> subclasseSet1 = EnumSet.of(DarkAvenger, Paladin, TempleKnight, ShillienKnight);
+	private static final Set<PlayerClass> subclasseSet2 = EnumSet.of(TreasureHunter, AbyssWalker, Plainswalker);
+	private static final Set<PlayerClass> subclasseSet3 = EnumSet.of(Hawkeye, SilverRanger, PhantomRanger);
+	private static final Set<PlayerClass> subclasseSet4 = EnumSet.of(Warlock, ElementalSummoner, PhantomSummoner);
+	private static final Set<PlayerClass> subclasseSet5 = EnumSet.of(Sorceror, Spellsinger, Spellhowler);
 
-    private static final Set<PlayerClass> subclasseSet1 = EnumSet.of(DarkAvenger, Paladin, TempleKnight,
-                                                                     ShillienKnight);
-    private static final Set<PlayerClass> subclasseSet2 = EnumSet.of(TreasureHunter, AbyssWalker,
-                                                                     Plainswalker);
-    private static final Set<PlayerClass> subclasseSet3 = EnumSet.of(Hawkeye, SilverRanger,
-                                                                     PhantomRanger);
-    private static final Set<PlayerClass> subclasseSet4 = EnumSet.of(Warlock, ElementalSummoner,
-                                                                     PhantomSummoner);
-    private static final Set<PlayerClass> subclasseSet5 = EnumSet.of(Sorceror, Spellsinger, Spellhowler);
+	private static final EnumMap<PlayerClass, Set<PlayerClass>> subclassSetMap = new EnumMap<PlayerClass, Set<PlayerClass>>(PlayerClass.class);
 
-    private static final EnumMap<PlayerClass, Set<PlayerClass>> subclassSetMap = new EnumMap<PlayerClass, Set<PlayerClass>>(
-                                                                                                                            PlayerClass.class);
+	static
+	{
+		Set<PlayerClass> subclasses = getSet(null, Third);
+		subclasses.removeAll(neverSubclassed);
 
-    static
-    {
-        Set<PlayerClass> subclasses = getSet(null, Third);
-        subclasses.removeAll(neverSubclassed);
+		mainSubclassSet = subclasses;
 
-        mainSubclassSet = subclasses;
+		subclassSetMap.put(DarkAvenger, subclasseSet1);
+		subclassSetMap.put(Paladin, subclasseSet1);
+		subclassSetMap.put(TempleKnight, subclasseSet1);
+		subclassSetMap.put(ShillienKnight, subclasseSet1);
 
-        subclassSetMap.put(DarkAvenger, subclasseSet1);
-        subclassSetMap.put(Paladin, subclasseSet1);
-        subclassSetMap.put(TempleKnight, subclasseSet1);
-        subclassSetMap.put(ShillienKnight, subclasseSet1);
+		subclassSetMap.put(TreasureHunter, subclasseSet2);
+		subclassSetMap.put(AbyssWalker, subclasseSet2);
+		subclassSetMap.put(Plainswalker, subclasseSet2);
 
-        subclassSetMap.put(TreasureHunter, subclasseSet2);
-        subclassSetMap.put(AbyssWalker, subclasseSet2);
-        subclassSetMap.put(Plainswalker, subclasseSet2);
+		subclassSetMap.put(Hawkeye, subclasseSet3);
+		subclassSetMap.put(SilverRanger, subclasseSet3);
+		subclassSetMap.put(PhantomRanger, subclasseSet3);
 
-        subclassSetMap.put(Hawkeye, subclasseSet3);
-        subclassSetMap.put(SilverRanger, subclasseSet3);
-        subclassSetMap.put(PhantomRanger, subclasseSet3);
+		subclassSetMap.put(Warlock, subclasseSet4);
+		subclassSetMap.put(ElementalSummoner, subclasseSet4);
+		subclassSetMap.put(PhantomSummoner, subclasseSet4);
 
-        subclassSetMap.put(Warlock, subclasseSet4);
-        subclassSetMap.put(ElementalSummoner, subclasseSet4);
-        subclassSetMap.put(PhantomSummoner, subclasseSet4);
+		subclassSetMap.put(Sorceror, subclasseSet5);
+		subclassSetMap.put(Spellsinger, subclasseSet5);
+		subclassSetMap.put(Spellhowler, subclasseSet5);
+	}
 
-        subclassSetMap.put(Sorceror, subclasseSet5);
-        subclassSetMap.put(Spellsinger, subclasseSet5);
-        subclassSetMap.put(Spellhowler, subclasseSet5);
-    }
-
-    PlayerClass(PlayerRace pRace, ClassType pType, ClassLevel pLevel)
-    {
-        _race = pRace;
-        _level = pLevel;
-        _type = pType;
-    }
+	PlayerClass(PlayerRace pRace, ClassType pType, ClassLevel pLevel)
+	{
+		_race = pRace;
+		_level = pLevel;
+		_type = pType;
+	}
 
 	@SuppressWarnings("incomplete-switch")
 	public final Set<PlayerClass> getAvailableSubclasses(L2PcInstance player)
-    {
-        Set<PlayerClass> subclasses = null;
+	{
+		Set<PlayerClass> subclasses = null;
 
-        if (_level == Third)
-        {
-            subclasses = EnumSet.copyOf(mainSubclassSet);
+		if (_level == Third)
+		{
+			subclasses = EnumSet.copyOf(mainSubclassSet);
 
-            subclasses.removeAll(neverSubclassed);
-            subclasses.remove(this);
+			subclasses.removeAll(neverSubclassed);
+			subclasses.remove(this);
 
-            switch (player.getRace())
-            {
-                case elf:
-                    subclasses.removeAll(getSet(DarkElf, Third));
-                    break;
-                case darkelf:
-                    subclasses.removeAll(getSet(LightElf, Third));
-                    break;
-            }
+			switch (player.getRace())
+			{
+				case elf:
+					subclasses.removeAll(getSet(DarkElf, Third));
+				break;
+				case darkelf:
+					subclasses.removeAll(getSet(LightElf, Third));
+				break;
+			}
 
-            Set<PlayerClass> unavailableClasses = subclassSetMap.get(this);
+			Set<PlayerClass> unavailableClasses = subclassSetMap.get(this);
 
-            if (unavailableClasses != null)
-            {
-                subclasses.removeAll(unavailableClasses);
-            }
-        }
+			if (unavailableClasses != null)
+			{
+				subclasses.removeAll(unavailableClasses);
+			}
+		}
 
-        return subclasses;
-    }
+		return subclasses;
+	}
 
-    public static final EnumSet<PlayerClass> getSet(PlayerRace race, ClassLevel level)
-    {
-        EnumSet<PlayerClass> allOf = EnumSet.noneOf(PlayerClass.class);
+	public static final EnumSet<PlayerClass> getSet(PlayerRace race, ClassLevel level)
+	{
+		EnumSet<PlayerClass> allOf = EnumSet.noneOf(PlayerClass.class);
 
-        for (PlayerClass playerClass : EnumSet.allOf(PlayerClass.class))
-        {
-            if (race == null || playerClass.isOfRace(race))
-            {
-                if (level == null || playerClass.isOfLevel(level))
-                {
-                    allOf.add(playerClass);
-                }
-            }
-        }
+		for (PlayerClass playerClass : EnumSet.allOf(PlayerClass.class))
+		{
+			if (race == null || playerClass.isOfRace(race))
+			{
+				if (level == null || playerClass.isOfLevel(level))
+				{
+					allOf.add(playerClass);
+				}
+			}
+		}
 
-        return allOf;
-    }
+		return allOf;
+	}
 
-    public final boolean isOfRace(PlayerRace pRace)
-    {
-        return _race == pRace;
-    }
+	public final boolean isOfRace(PlayerRace pRace)
+	{
+		return _race == pRace;
+	}
 
-    public final boolean isOfType(ClassType pType)
-    {
-        return _type == pType;
-    }
+	public final boolean isOfType(ClassType pType)
+	{
+		return _type == pType;
+	}
 
-    public final boolean isOfLevel(ClassLevel pLevel)
-    {
-        return _level == pLevel;
-    }
-    public final ClassLevel getLevel()
-    {
-        return _level;
-    }
+	public final boolean isOfLevel(ClassLevel pLevel)
+	{
+		return _level == pLevel;
+	}
+
+	public final ClassLevel getLevel()
+	{
+		return _level;
+	}
 }

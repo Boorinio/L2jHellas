@@ -15,29 +15,26 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- *
- * sample
- * <p>
- * 7d
- * c1 b2 e0 4a
- * 00 00 00 00
- * <p>
- *
- * format
- * cdd
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
+ * @formatter:off
+ *                sample<BR>
+ *                <p>
+ *                7d<BR>
+ *                c1 b2 e0 4<BR>
+ *                00 00 00 00<BR>
+ *                <p>
+ *                format cdd
+ * @formatter:on
  */
 public class AskJoinAlly extends L2GameServerPacket
 {
 	private static final String _S__A8_ASKJOINALLY_0XA8 = "[S] a8 AskJoinAlly 0xa8";
-	//private static Logger _log = Logger.getLogger(AskJoinAlly.class.getName());
 
-	private String _requestorName;
-    private int _requestorObjId;
+	private final String _requestorName;
+	private final int _requestorObjId;
 
 	/**
-	 *
+	 * @param requestorObjId
+	 * @param requestorName
 	 */
 	public AskJoinAlly(int requestorObjId, String requestorName)
 	{
@@ -49,17 +46,13 @@ public class AskJoinAlly extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0xa8);
-    		writeD(_requestorObjId);
+		writeD(_requestorObjId);
 		writeS(_requestorName);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__A8_ASKJOINALLY_0XA8;
 	}
-
 }

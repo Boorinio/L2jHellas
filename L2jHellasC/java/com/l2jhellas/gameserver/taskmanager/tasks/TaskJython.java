@@ -25,9 +25,9 @@ import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
 public class TaskJython extends Task
 {
 	public static final String NAME = "jython";
-	
+
 	private final PythonInterpreter _python = new PythonInterpreter();
-	
+
 	@Override
 	public String getName()
 	{

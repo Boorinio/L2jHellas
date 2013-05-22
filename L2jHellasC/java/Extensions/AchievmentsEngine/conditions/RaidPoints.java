@@ -32,11 +32,11 @@ public class RaidPoints extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
 
 		RaidBossPointsManager.getInstance();
-		if(RaidBossPointsManager.getPointsByOwnerId(player.getObjectId())>=val)
+		if (RaidBossPointsManager.getPointsByOwnerId(player.getObjectId()) >= val)
 			return true;
 		return false;
 	}

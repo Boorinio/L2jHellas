@@ -50,7 +50,8 @@ public class Achievement
 	{
 		for (String s : _reward.split(";"))
 		{
-			if (s == null || s.isEmpty()) continue;
+			if (s == null || s.isEmpty())
+				continue;
 
 			String[] split = s.split(",");
 			Integer item = 0;

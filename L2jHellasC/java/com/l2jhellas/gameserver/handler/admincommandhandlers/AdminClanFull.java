@@ -24,7 +24,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminClanFull implements IAdminCommandHandler
 {
-	private static final String ADMIN_COMMANDS[] = {
+	private static final String ADMIN_COMMANDS[] =
+	{
 		"admin_clanfull"
 	};
 

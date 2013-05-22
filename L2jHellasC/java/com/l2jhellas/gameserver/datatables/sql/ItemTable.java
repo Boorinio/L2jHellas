@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Item;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -49,6 +48,7 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class ItemTable
 {
@@ -150,7 +150,8 @@ public class ItemTable
 	private static ItemTable _instance;
 
 	/** Table of SQL request in order to obtain items from tables [etcitem], [armor], [weapon] */
-	private static final String[] SQL_ITEM_SELECTS = {
+	private static final String[] SQL_ITEM_SELECTS =
+	{
 	"SELECT item_id, name, crystallizable, item_type, weight, consume_type, material, crystal_type, duration, price, crystal_count, sellable, dropable, destroyable, tradeable FROM etcitem",
 
 	"SELECT item_id, name, bodypart, crystallizable, armor_type, weight, material, crystal_type, avoid_modify, duration, p_def, m_def, mp_bonus, price, crystal_count, sellable, dropable, destroyable, tradeable, item_skill_id, item_skill_lvl FROM armor",
@@ -158,7 +159,8 @@ public class ItemTable
 	"SELECT item_id, name, bodypart, crystallizable, weight, soulshots, spiritshots, material, crystal_type, p_dam, rnd_dam, weaponType, critical, hit_modify, avoid_modify, shield_def, shield_def_rate, atk_speed, mp_consume, m_dam, duration, price, crystal_count, sellable, dropable, destroyable, tradeable, item_skill_id, item_skill_lvl,enchant4_skill_id,enchant4_skill_lvl, onCast_skill_id, onCast_skill_lvl, onCast_skill_chance, onCrit_skill_id, onCrit_skill_lvl, onCrit_skill_chance FROM weapon"
 	};
 
-	private static final String[] SQL_CUSTOM_ITEM_SELECTS = {
+	private static final String[] SQL_CUSTOM_ITEM_SELECTS =
+	{
 	"SELECT item_id, name, crystallizable, item_type, weight, consume_type, material, crystal_type, duration, price, crystal_count, sellable, dropable, destroyable, tradeable FROM custom_etcitem",
 
 	"SELECT item_id, name, bodypart, crystallizable, armor_type, weight, material, crystal_type, avoid_modify, duration, p_def, m_def, mp_bonus,  price, crystal_count, sellable, dropable, destroyable, tradeable, item_skill_id, item_skill_lvl FROM custom_armor",
@@ -206,10 +208,8 @@ public class ItemTable
 		_armors = new FastMap<Integer, L2Armor>();
 		_weapons = new FastMap<Integer, L2Weapon>();
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			for (String selectQuery : SQL_ITEM_SELECTS)
 			{
 				PreparedStatement statement = con.prepareStatement(selectQuery);
@@ -247,77 +247,60 @@ public class ItemTable
 				e.printStackTrace();
 			}
 		}
-		finally
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try
+			for (String selectQuery : SQL_CUSTOM_ITEM_SELECTS)
 			{
-				con.close();
-			}
-			catch (Exception e)
-			{
+				PreparedStatement statement = con.prepareStatement(selectQuery);
+				ResultSet rset = statement.executeQuery();
+
+				// Add item in correct FastMap
+				while (rset.next())
+				{
+					if (selectQuery.endsWith("etcitem"))
+					{
+						Item newItem = readItem(rset);
+
+						if (itemData.containsKey(newItem.id))
+						{
+							itemData.remove(newItem.id);
+						}
+
+						itemData.put(newItem.id, newItem);
+					}
+					else if (selectQuery.endsWith("armor"))
+					{
+						Item newItem = readArmor(rset);
+
+						if (armorData.containsKey(newItem.id))
+						{
+							armorData.remove(newItem.id);
+						}
+
+						armorData.put(newItem.id, newItem);
+					}
+					else if (selectQuery.endsWith("weapon"))
+					{
+						Item newItem = readWeapon(rset);
+
+						if (weaponData.containsKey(newItem.id))
+						{
+							weaponData.remove(newItem.id);
+						}
+
+						weaponData.put(newItem.id, newItem);
+					}
+				}
+				rset.close();
+				statement.close();
 			}
 		}
+		catch (Exception e)
 		{
-			try
+			_log.log(Level.WARNING, getClass().getName() + ": data error on custom_item: ", e);
+			if (Config.DEVELOPER)
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				for (String selectQuery : SQL_CUSTOM_ITEM_SELECTS)
-				{
-					PreparedStatement statement = con.prepareStatement(selectQuery);
-					ResultSet rset = statement.executeQuery();
-
-					// Add item in correct FastMap
-					while (rset.next())
-					{
-						if (selectQuery.endsWith("etcitem"))
-						{
-							Item newItem = readItem(rset);
-
-							if (itemData.containsKey(newItem.id))
-								itemData.remove(newItem.id);
-
-							itemData.put(newItem.id, newItem);
-						}
-						else if (selectQuery.endsWith("armor"))
-						{
-							Item newItem = readArmor(rset);
-
-							if (armorData.containsKey(newItem.id))
-								armorData.remove(newItem.id);
-
-							armorData.put(newItem.id, newItem);
-						}
-						else if (selectQuery.endsWith("weapon"))
-						{
-							Item newItem = readWeapon(rset);
-
-							if (weaponData.containsKey(newItem.id))
-								weaponData.remove(newItem.id);
-
-							weaponData.put(newItem.id, newItem);
-						}
-					}
-					rset.close();
-					statement.close();
-				}
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.WARNING, getClass().getName() + ": data error on custom_item: ", e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
+				e.printStackTrace();
 			}
 		}
 		for (L2Armor armor : SkillsEngine.getInstance().loadArmors(armorData))
@@ -418,13 +401,21 @@ public class ItemTable
 		{
 			item.set.set("type1", L2Item.TYPE1_WEAPON_RING_EARRING_NECKLACE);
 			if (item.set.getInteger("bodypart") == L2Item.SLOT_WOLF)
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_WOLF);
+			}
 			else if (item.set.getInteger("bodypart") == L2Item.SLOT_HATCHLING)
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_HATCHLING);
+			}
 			else if (item.set.getInteger("bodypart") == L2Item.SLOT_BABYPET)
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_BABY);
+			}
 			else
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_STRIDER);
+			}
 
 			item.set.set("bodypart", L2Item.SLOT_R_HAND);
 		}
@@ -486,13 +477,21 @@ public class ItemTable
 		{
 			item.set.set("type1", L2Item.TYPE1_SHIELD_ARMOR);
 			if (item.set.getInteger("bodypart") == L2Item.SLOT_WOLF)
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_WOLF);
+			}
 			else if (item.set.getInteger("bodypart") == L2Item.SLOT_HATCHLING)
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_HATCHLING);
+			}
 			else if (item.set.getInteger("bodypart") == L2Item.SLOT_BABYPET)
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_BABY);
+			}
 			else
+			{
 				item.set.set("type2", L2Item.TYPE2_PET_STRIDER);
+			}
 
 			item.set.set("bodypart", L2Item.SLOT_CHEST);
 		}
@@ -526,27 +525,49 @@ public class ItemTable
 		item.set.set("tradeable", Boolean.valueOf(rset.getString("tradeable")));
 		String itemType = rset.getString("item_type");
 		if (itemType.equals("none"))
+		{
 			item.type = L2EtcItemType.OTHER; // only for default
+		}
 		else if (itemType.equals("castle_guard"))
+		{
 			item.type = L2EtcItemType.SCROLL; // dummy
+		}
 		else if (itemType.equals("material"))
+		{
 			item.type = L2EtcItemType.MATERIAL;
+		}
 		else if (itemType.equals("pet_collar"))
+		{
 			item.type = L2EtcItemType.PET_COLLAR;
+		}
 		else if (itemType.equals("potion"))
+		{
 			item.type = L2EtcItemType.POTION;
+		}
 		else if (itemType.equals("recipe"))
+		{
 			item.type = L2EtcItemType.RECEIPE;
+		}
 		else if (itemType.equals("scroll"))
+		{
 			item.type = L2EtcItemType.SCROLL;
+		}
 		else if (itemType.equals("seed"))
+		{
 			item.type = L2EtcItemType.SEED;
+		}
 		else if (itemType.equals("shot"))
+		{
 			item.type = L2EtcItemType.SHOT;
+		}
 		else if (itemType.equals("spellbook"))
+		{
 			item.type = L2EtcItemType.SPELLBOOK; // Spellbook, Amulet, Blueprint
+		}
 		else if (itemType.equals("herb"))
+		{
 			item.type = L2EtcItemType.HERB;
+		}
 		else if (itemType.equals("arrow"))
 		{
 			item.type = L2EtcItemType.ARROW;
@@ -693,8 +714,7 @@ public class ItemTable
 		}
 
 		// Create a FastLookUp Table called _allTemplates of size : value of the highest item ID
-		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": highest item id used:" + highestId);
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Highest item Id used: " + highestId);
 		_allTemplates = new L2Item[highestId + 1];
 
 		// Insert armor item in Fast Look Up Table
@@ -794,20 +814,25 @@ public class ItemTable
 		}
 
 		if (Config.DEBUG)
+		{
 			_log.log(Level.CONFIG, getClass().getName() + ": Item created  oid:" + item.getObjectId() + " itemid:" + itemId);
+		}
 
 		// Add the L2ItemInstance object to _allObjects of L2world
 		L2World.getInstance().storeObject(item);
 
 		// Set Item parameters
 		if (item.isStackable() && count > 1)
+		{
 			item.setCount(count);
+		}
 
 		if (Config.LOG_ITEMS)
 		{
 			LogRecord record = new LogRecord(Level.INFO, "CREATE:" + process);
 			record.setLoggerName("item");
-			record.setParameters(new Object[] {
+			record.setParameters(new Object[]
+			{
 			item, actor, reference
 			});
 			_logItems.log(record);
@@ -888,7 +913,8 @@ public class ItemTable
 			{
 				LogRecord record = new LogRecord(Level.INFO, "DELETE:" + process);
 				record.setLoggerName("item");
-				record.setParameters(new Object[] {
+				record.setParameters(new Object[]
+				{
 				item, actor, reference
 				});
 				_logItems.log(record);
@@ -897,11 +923,9 @@ public class ItemTable
 			// if it's a pet control item, delete the pet as well
 			if (L2PetDataTable.isPetItem(item.getItemId()))
 			{
-				Connection con = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
 					// Delete the pet in db
-					con = L2DatabaseFactory.getInstance().getConnection();
 					PreparedStatement statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id=?");
 					statement.setInt(1, item.getObjectId());
 					statement.execute();
@@ -913,16 +937,6 @@ public class ItemTable
 					if (Config.DEVELOPER)
 					{
 						e.printStackTrace();
-					}
-				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
 					}
 				}
 			}

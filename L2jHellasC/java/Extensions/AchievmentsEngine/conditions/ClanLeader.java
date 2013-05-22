@@ -29,9 +29,12 @@ public class ClanLeader extends Condition
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
-		if (getValue() == null) return false;
+		if (getValue() == null)
+			return false;
 
-		if (player.getClan() != null) if (player.isClanLeader()) return true;
+		if (player.getClan() != null)
+			if (player.isClanLeader())
+				return true;
 
 		return false;
 	}

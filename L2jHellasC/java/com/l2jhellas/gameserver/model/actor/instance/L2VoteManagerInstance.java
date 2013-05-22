@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,24 +42,16 @@ public class L2VoteManagerInstance extends L2NpcInstance
 	public void onBypassFeedback(final L2PcInstance player, String command)
 	{
 		if (player == null)
-		{
 			return;
-		}
 
 		if (command.startsWith("votehopzone"))
-		{
 			VoteManager.hopvote(player);
-		}
 
 		if (command.startsWith("votetopzone"))
-		{
 			VoteManager.topvote(player);
-		}
 
 		if (command.startsWith("rewards"))
-		{
 			showRewardsHtml(player);
-		}
 
 		if (command.startsWith("reward1"))
 		{
@@ -67,7 +61,6 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			VoteManager.setHasNotVotedTop(player);
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
-
 		if (command.startsWith("reward2"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID2, ExternalConfig.VOTE_REWARD_AMOUNT2, player, null);
@@ -76,7 +69,6 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			VoteManager.setHasNotVotedTop(player);
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
-
 		if (command.startsWith("reward3"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID3, ExternalConfig.VOTE_REWARD_AMOUNT3, player, null);
@@ -85,7 +77,6 @@ public class L2VoteManagerInstance extends L2NpcInstance
 			VoteManager.setHasNotVotedTop(player);
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
-
 		if (command.startsWith("reward4"))
 		{
 			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID4, ExternalConfig.VOTE_REWARD_AMOUNT4, player, null);
@@ -208,28 +199,24 @@ public class L2VoteManagerInstance extends L2NpcInstance
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-
 			if (imgId == 11888)
 			{
 				File captcha = new File("data/images/topzone.png");
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-
 			if (imgId == 65531)
 			{
 				File captcha = new File("data/images/rewards.png");
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-
 			if (imgId == 65532)
 			{
 				File captcha = new File("data/images/check.png");
 				PledgeCrest packet = new PledgeCrest(imgId, DDSConverter.convertToDDS(captcha).array());
 				activeChar.sendPacket(packet);
 			}
-
 			if (imgId == 65533)
 			{
 				File captcha = new File("data/images/noncheck.png");
@@ -241,7 +228,6 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		{
 			activeChar.sendMessage("Could not genarate vote manager logo.");
 		}
-
 	}
 
 	public void showRewardsHtml(L2PcInstance player)
@@ -276,5 +262,4 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		player.sendPacket(html);
 		player.sendPacket(new ActionFailed());
 	}
-
 }

@@ -19,18 +19,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Pauler
  */
-
 public class QuizEvent
 {
-
 	/** Milliseconds until event starts again **/
 	private static int _delay = Config.QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN * 60 * 1000;
 
@@ -63,7 +61,7 @@ public class QuizEvent
 
 	public static void getInstance()
 	{
-		System.out.println("Quiz Event By Pauler Has Started.");
+		System.out.println("Quiz Event has started.");
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
 		{
 			@Override
@@ -150,44 +148,25 @@ public class QuizEvent
 	private static void askQuestion()
 	{
 		String question = "";
-
-		Connection con = null;
-
 		if (_questions == 0)
 		{
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-
 				PreparedStatement statement = con.prepareStatement("SELECT * FROM questions");
 				ResultSet result = statement.executeQuery();
 				while (result.next())
 				{
 					_questions++;
 				}
-
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
 		}
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM questions WHERE `id`=? ORDER BY id DESC");
 			_lastQuestionId++;
 			statement.setInt(1, _lastQuestionId);
@@ -207,26 +186,15 @@ public class QuizEvent
 		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 
 		Announcements.getInstance().gameAnnounceToAll("Type .quiz and then type your answer! The first one who will answer correctly wins.");
 		Announcements.getInstance().gameAnnounceToAll("Question: " + question);
 
-		if (_answer1 != null && !_answer1.equalsIgnoreCase(""))
+		if ((_answer1 != null) && !_answer1.equalsIgnoreCase(""))
 			Announcements.getInstance().gameAnnounceToAll("1. " + _answer1);
-		if (_answer2 != null && !_answer2.equalsIgnoreCase(""))
+		if ((_answer2 != null) && !_answer2.equalsIgnoreCase(""))
 			Announcements.getInstance().gameAnnounceToAll("2. " + _answer2);
-		if (_answer3 != null && !_answer3.equalsIgnoreCase(""))
+		if ((_answer3 != null) && !_answer3.equalsIgnoreCase(""))
 			Announcements.getInstance().gameAnnounceToAll("3. " + _answer3);
 	}
 

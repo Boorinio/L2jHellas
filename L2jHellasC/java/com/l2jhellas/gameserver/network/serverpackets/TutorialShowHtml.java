@@ -17,16 +17,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 public class TutorialShowHtml extends L2GameServerPacket
 {
 	private static final String _S__A0_TUTORIALSHOWHTML = "[S] a0 TutorialShowHtml";
-	private String _html;
+	private final String _html;
 
 	public TutorialShowHtml(String html)
 	{
 		_html = html;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -34,13 +31,9 @@ public class TutorialShowHtml extends L2GameServerPacket
 		writeS(_html);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__A0_TUTORIALSHOWHTML;
 	}
-
 }

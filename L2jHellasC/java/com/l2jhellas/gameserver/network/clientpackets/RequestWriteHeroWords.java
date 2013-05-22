@@ -13,13 +13,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.network.clientpackets;
+
 /**
- * Format chS
- * c (id) 0xD0
- * h (subid) 0x0C
- * S the hero's words :)
+ * Format chS<BR>
+ * c (id) 0xD0<BR>
+ * h (subid) 0x0C<BR>
+ * S the hero's words :)<BR>
+ * 
  * @author -Wooden-
- *
  */
 public final class RequestWriteHeroWords extends L2GameClientPacket
 {
@@ -37,23 +38,15 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 		_heroWords = readS();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
-		// TODO Auto-generated method stub
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__FE_0C_REQUESTWRITEHEROWORDS;
 	}
-
 }

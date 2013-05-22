@@ -18,17 +18,12 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public final class LambdaStats extends Lambda
 {
 	public enum StatsType
 	{
-		PLAYER_LEVEL,
-		TARGET_LEVEL,
-		PLAYER_MAX_HP,
-		PLAYER_MAX_MP
+		PLAYER_LEVEL, TARGET_LEVEL, PLAYER_MAX_HP, PLAYER_MAX_MP
 	}
 
 	private final StatsType _stat;

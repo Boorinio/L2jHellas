@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.skills.NpcBufferSkills;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class NpcBufferSkillIdsTable
 {
@@ -37,13 +37,9 @@ public class NpcBufferSkillIdsTable
 
 	private NpcBufferSkillIdsTable()
 	{
-		Connection con = null;
 		int skillCount = 0;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT npc_id,skill_id,skill_level,skill_fee_id,skill_fee_amount FROM npc_buffer ORDER BY npc_id ASC");
 			ResultSet rset = statement.executeQuery();
 
@@ -83,16 +79,6 @@ public class NpcBufferSkillIdsTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 

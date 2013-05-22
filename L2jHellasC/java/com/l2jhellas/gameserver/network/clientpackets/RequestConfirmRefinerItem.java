@@ -24,7 +24,8 @@ import com.l2jhellas.gameserver.templates.L2Item;
 
 /**
  * Fromat(ch) dd
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public class RequestConfirmRefinerItem extends L2GameClientPacket
 {
@@ -47,18 +48,15 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 		_refinerItemObjId = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance targetItem = (L2ItemInstance)L2World.getInstance().findObject(_targetItemObjId);
-		L2ItemInstance refinerItem = (L2ItemInstance)L2World.getInstance().findObject(_refinerItemObjId);
+		L2ItemInstance targetItem = (L2ItemInstance) L2World.getInstance().findObject(_targetItemObjId);
+		L2ItemInstance refinerItem = (L2ItemInstance) L2World.getInstance().findObject(_refinerItemObjId);
 
-		if (targetItem == null || refinerItem == null) return;
+		if ((targetItem == null) || (refinerItem == null))
+			return;
 
 		int itemGrade = targetItem.getItem().getItemGrade();
 		int refinerItemId = refinerItem.getItem().getItemId();
@@ -70,8 +68,8 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 			return;
 		}
 
-		int gemstoneCount=0;
-		int gemstoneItemId=0;
+		int gemstoneCount = 0;
+		int gemstoneItemId = 0;
 		int lifeStoneLevel = getLifeStoneLevel(refinerItemId);
 		SystemMessage sm = new SystemMessage(SystemMessageId.REQUIRES_S1_S2);
 		switch (itemGrade)
@@ -81,7 +79,7 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 				gemstoneItemId = GEMSTONE_D;
 				sm.addNumber(gemstoneCount);
 				sm.addString("Gemstone D");
-				break;
+			break;
 			case L2Item.CRYSTAL_B:
 				if (lifeStoneLevel < 3)
 				{
@@ -92,7 +90,7 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 				gemstoneItemId = GEMSTONE_D;
 				sm.addNumber(gemstoneCount);
 				sm.addString("Gemstone D");
-				break;
+			break;
 			case L2Item.CRYSTAL_A:
 				if (lifeStoneLevel < 6)
 				{
@@ -103,7 +101,7 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 				gemstoneItemId = GEMSTONE_C;
 				sm.addNumber(gemstoneCount);
 				sm.addString("Gemstone C");
-				break;
+			break;
 			case L2Item.CRYSTAL_S:
 				if (lifeStoneLevel != 10)
 				{
@@ -114,7 +112,7 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 				gemstoneItemId = GEMSTONE_C;
 				sm.addNumber(gemstoneCount);
 				sm.addString("Gemstone C");
-				break;
+			break;
 		}
 
 		activeChar.sendPacket(new ExConfirmVariationRefiner(_refinerItemObjId, refinerItemId, gemstoneItemId, gemstoneCount));
@@ -125,9 +123,12 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 	private int getLifeStoneGrade(int itemId)
 	{
 		itemId -= 8723;
-		if (itemId < 10) return 0; // normal grade
-		if (itemId < 20) return 1; // mid grade
-		if (itemId < 30) return 2; // high grade
+		if (itemId < 10)
+			return 0; // normal grade
+		if (itemId < 20)
+			return 1; // mid grade
+		if (itemId < 30)
+			return 2; // high grade
 		return 3; // top grade
 	}
 
@@ -138,13 +139,9 @@ public class RequestConfirmRefinerItem extends L2GameClientPacket
 		return itemId;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_2A_REQUESTCONFIRMREFINERITEM;
 	}
-
 }

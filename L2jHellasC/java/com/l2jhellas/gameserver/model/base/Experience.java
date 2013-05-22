@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.model.base;
 
 public class Experience
 {
+	/** @formatter:off */
     public final static long LEVEL[]=
     {
                 -1L,  // level 0 (unreachable)
@@ -101,10 +102,10 @@ public class Experience
         4200000000L, //level 80
         6299994999L
     };
-
+    /** @formatter:on */
 	/**
 	 * This is the first UNREACHABLE level.<BR>
-	 *   ex: If you want a max at 80 & 99.99%, you have to put 81.<BR><BR>
+	 * ex: If you want a max at 80 & 99.99%, you have to put 81.<BR>
 	 */
 	public final static byte MAX_LEVEL = 81;
 

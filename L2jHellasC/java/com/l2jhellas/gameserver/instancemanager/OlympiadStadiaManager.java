@@ -63,5 +63,4 @@ public class OlympiadStadiaManager
 				return temp;
 		return null;
 	}
-
 }

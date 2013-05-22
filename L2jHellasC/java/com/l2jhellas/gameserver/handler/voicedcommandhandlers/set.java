@@ -25,7 +25,7 @@ public class set implements IVoicedCommandHandler
 	{
 	"set name", "set home", "set group"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
@@ -44,10 +44,10 @@ public class set implements IVoicedCommandHandler
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{

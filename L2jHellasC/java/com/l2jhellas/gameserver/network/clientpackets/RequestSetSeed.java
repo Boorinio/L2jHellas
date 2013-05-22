@@ -21,20 +21,20 @@ import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.SeedProduction;
 
-
 /**
- * Format: (ch) dd [ddd]
- * d - manor id
- * d - size
- * [
- * d - seed id
- * d - sales
- * d - price
+ * Format: (ch) dd [ddd]<BR>
+ * d - manor id<BR>
+ * d - size<BR>
+ * [<BR>
+ * d - seed id<BR>
+ * d - sales<BR>
+ * d - price<BR>
  * ]
+ * 
  * @author l3x
- *
  */
-public class RequestSetSeed extends L2GameClientPacket {
+public class RequestSetSeed extends L2GameClientPacket
+{
 	private static final String _C__D0_0A_REQUESTSETSEED = "[C] D0:0A RequestSetSeed";
 
 	private int _size;
@@ -83,8 +83,7 @@ public class RequestSetSeed extends L2GameClientPacket {
 			int price = _items[i * 3 + 2];
 			if (id > 0)
 			{
-				SeedProduction s = CastleManorManager.getInstance()
-						.getNewSeedProduction(id, sales, price, sales);
+				SeedProduction s = CastleManorManager.getInstance().getNewSeedProduction(id, sales, price, sales);
 				seeds.add(s);
 			}
 		}

@@ -26,15 +26,15 @@ import com.l2jhellas.gameserver.network.serverpackets.FriendRecvMsg;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
- * Recieve Private (Friend) Message - 0xCC
- * Format: c SS
- * S: Message
+ * Recieve Private (Friend) Message - 0xCC<BR>
+ * Format: c SS<BR>
+ * S: Message<BR>
  * S: Receiving Player
  */
 public final class RequestSendFriendMsg extends L2GameClientPacket
 {
-	private static final String _C__CC_REQUESTSENDMSG = "[C] CC RequestSendMsg";
 	private static Logger _logChat = Logger.getLogger("chat");
+	private static final String _C__CC_REQUESTSENDMSG = "[C] CC RequestSendMsg";
 
 	private String _message;
 	private String _reciever;
@@ -76,7 +76,8 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
 		{
 			LogRecord record = new LogRecord(Level.INFO, _message);
 			record.setLoggerName("chat");
-			record.setParameters(new Object[] {
+			record.setParameters(new Object[]
+			{
 			"PRIV_MSG", "[" + activeChar.getName() + " to " + _reciever + "]"
 			});
 

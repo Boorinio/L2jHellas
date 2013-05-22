@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,18 +27,19 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class ClanPenalty implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = {
+	private static final int[] COMMAND_IDS =
+	{
 		100
 	};
-	
+
 	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
 		if (id != COMMAND_IDS[0])
 			return false;
-		
+
 		String penaltyStr = "No current penalties in effect.";
-		
+
 		TextBuilder htmlContent = new TextBuilder("<html><body>");
 		htmlContent.append("<center><table width=\"270\" border=\"0\" bgcolor=\"111111\">");
 		htmlContent.append("<tr><td width=\"170\">Penalty</td>");
@@ -47,14 +48,14 @@ public class ClanPenalty implements IUserCommandHandler
 		htmlContent.append("<tr><td>" + penaltyStr + "</td></tr>");
 		htmlContent.append("</table></center>");
 		htmlContent.append("</body></html>");
-		
+
 		NpcHtmlMessage penaltyHtml = new NpcHtmlMessage(0);
 		penaltyHtml.setHtml(htmlContent.toString());
 		activeChar.sendPacket(penaltyHtml);
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public int[] getUserCommandList()
 	{

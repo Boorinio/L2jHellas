@@ -35,7 +35,6 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.GmListTable;
@@ -66,11 +65,10 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 import com.l2jhellas.util.DynamicExtension;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class GameStatusThread extends Thread
 {
-	// private static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
-
 	private final Socket _cSocket;
 
 	private final PrintWriter _print;
@@ -203,7 +201,8 @@ public class GameStatusThread extends Thread
 	}
 
 	@Override
-	@SuppressWarnings({
+	@SuppressWarnings(
+	{
 	"deprecation", "null"
 	})
 	public void run()
@@ -766,7 +765,6 @@ public class GameStatusThread extends Thread
 									_print.println(content);
 									continue;
 								}
-
 							}
 						}
 					}
@@ -875,11 +873,8 @@ public class GameStatusThread extends Thread
 
 	private void jailOfflinePlayer(String name, int delay)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?");
 			statement.setInt(1, -114356);
 			statement.setInt(2, -249645);
@@ -903,25 +898,12 @@ public class GameStatusThread extends Thread
 			if (Config.DEBUG)
 				se.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void unjailOfflinePlayer(String name)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?");
 			statement.setInt(1, 17836);
 			statement.setInt(2, 170178);
@@ -944,16 +926,6 @@ public class GameStatusThread extends Thread
 			_print.println("SQLException while jailing player");
 			if (Config.DEBUG)
 				se.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 

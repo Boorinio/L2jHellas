@@ -15,12 +15,12 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
- * Format chS
- * c: (id) 0x39
- * h: (subid) 0x01
- * S: the summon name (or maybe cmd string ?)
+ * Format chS<BR>
+ * c: (id) 0x39<BR>
+ * h: (subid) 0x01<BR>
+ * S: the summon name (or maybe cmd string ?)<BR>
+ * 
  * @author -Wooden-
- *
  */
 public class SuperCmdSummonCmd extends L2GameClientPacket
 {
@@ -28,31 +28,21 @@ public class SuperCmdSummonCmd extends L2GameClientPacket
 	@SuppressWarnings("unused")
 	private String _summonName;
 
-
 	@Override
 	protected void readImpl()
 	{
 		_summonName = readS();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
-		// TODO Auto-generated method stub
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__39_01_SUPERCMDSUMMONCMD;
 	}
-
 }

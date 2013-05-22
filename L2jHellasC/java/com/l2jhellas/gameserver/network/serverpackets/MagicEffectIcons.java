@@ -19,16 +19,13 @@ import java.util.List;
 import javolution.util.FastList;
 
 /**
- *
  * MagicEffectIcons
- * format   h (dhd)
- *
- * @version $Revision: 1.3.2.1.2.6 $ $Date: 2005/04/05 19:41:08 $
+ * format h (dhd)
  */
 public class MagicEffectIcons extends L2GameServerPacket
 {
 	private static final String _S__97_MAGICEFFECTICONS = "[S] 7f MagicEffectIcons";
-	private List<Effect> _effects;
+	private final List<Effect> _effects;
 
 	private class Effect
 	{
@@ -66,16 +63,13 @@ public class MagicEffectIcons extends L2GameServerPacket
 			writeD(temp._skillId);
 			writeH(temp._level);
 
-            if (temp._duration == -1)
-                writeD(-1);
-            else
-			    writeD(temp._duration / 1000);
+			if (temp._duration == -1)
+				writeD(-1);
+			else
+				writeD(temp._duration / 1000);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

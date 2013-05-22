@@ -25,13 +25,13 @@ import com.l2jhellas.gameserver.network.serverpackets.ClanHallDecoration;
 
 /**
  * A clan hall zone
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2ClanHallZone extends L2ZoneType
 {
 	private int _clanHallId;
-	private int[] _spawnLoc;
+	private final int[] _spawnLoc;
 
 	public L2ClanHallZone(int id)
 	{
@@ -61,7 +61,8 @@ public class L2ClanHallZone extends L2ZoneType
 		{
 			_spawnLoc[2] = Integer.parseInt(value);
 		}
-		else super.setParameter(name, value);
+		else
+			super.setParameter(name, value);
 	}
 
 	@Override
@@ -73,15 +74,16 @@ public class L2ClanHallZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_CLANHALL, true);
 
 			ClanHall clanHall = ClanHallManager.getInstance().getClanHallById(_clanHallId);
-			if (clanHall == null) return;
+			if (clanHall == null)
+				return;
 
 			// Send decoration packet
 			ClanHallDecoration deco = new ClanHallDecoration(clanHall);
-			((L2PcInstance)character).sendPacket(deco);
+			character.sendPacket(deco);
 
 			// Send a message
-			if (clanHall.getOwnerId() != 0 && clanHall.getOwnerId() == ((L2PcInstance)character).getClanId())
-				((L2PcInstance)character).sendMessage("You have entered your clan hall");
+			if (clanHall.getOwnerId() != 0 && clanHall.getOwnerId() == ((L2PcInstance) character).getClanId())
+				((L2PcInstance) character).sendMessage("You have entered your clan hall");
 		}
 	}
 
@@ -94,35 +96,42 @@ public class L2ClanHallZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_CLANHALL, false);
 
 			// Send a message
-			if (((L2PcInstance)character).getClanId() != 0
-					&& ClanHallManager.getInstance().getClanHallById(_clanHallId).getOwnerId() == ((L2PcInstance)character).getClanId())
-				((L2PcInstance)character).sendMessage("You have left your clan hall");
+			if (((L2PcInstance) character).getClanId() != 0 && ClanHallManager.getInstance().getClanHallById(_clanHallId).getOwnerId() == ((L2PcInstance) character).getClanId())
+				((L2PcInstance) character).sendMessage("You have left your clan hall.");
 		}
 	}
 
 	@Override
-	public void onDieInside(L2Character character) {}
+	public void onDieInside(L2Character character)
+	{
+	}
 
 	@Override
-	public void onReviveInside(L2Character character) {}
+	public void onReviveInside(L2Character character)
+	{
+	}
 
 	/**
 	 * Removes all foreigners from the clan hall
+	 * 
 	 * @param owningClanId
 	 */
 	public void banishForeigners(int owningClanId)
 	{
 		for (L2Character temp : _characterList.values())
 		{
-			if(!(temp instanceof L2PcInstance)) continue;
-			if (((L2PcInstance)temp).getClanId() == owningClanId) continue;
+			if (!(temp instanceof L2PcInstance))
+				continue;
+			if (((L2PcInstance) temp).getClanId() == owningClanId)
+				continue;
 
-			((L2PcInstance)temp).teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			temp.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 		}
 	}
 
 	/**
 	 * Get the clan hall's spawn
+	 * 
 	 * @return
 	 */
 	public Location getSpawn()

@@ -14,20 +14,12 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
- import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowMiniMap;
- /**
- * sample
 
- * format
- * d
- *
- * @version $Revision: 1 $ $Date: 2005/04/10 00:17:44 $
- */
 public final class RequestShowMiniMap extends L2GameClientPacket
 {
 	private static final String _C__cd_REQUESTSHOWMINIMAP = "[C] cd RequestShowMiniMap";
-
 
 	@Override
 	protected void readImpl()
@@ -40,13 +32,10 @@ public final class RequestShowMiniMap extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-		    return;
+			return;
 		activeChar.sendPacket(new ShowMiniMap(1665));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

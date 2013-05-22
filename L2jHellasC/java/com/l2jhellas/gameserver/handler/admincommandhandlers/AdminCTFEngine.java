@@ -30,8 +30,8 @@ import com.l2jhellas.util.Util;
 
 public class AdminCTFEngine implements IAdminCommandHandler
 {
-	private static final String[]	ADMIN_COMMANDS	=
-	{
+	private static final String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
 		"admin_ctf",
 		"admin_ctf_name",
 		"admin_ctf_desc",
@@ -66,14 +66,13 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		"admin_ctf_autoevent",
 		"admin_ctf_minplayers",
 		"admin_ctf_maxplayers"
-	};
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		try
 		{
-
 			if (command.equals("admin_ctf"))
 				showMainPage(activeChar);
 			else if (command.startsWith("admin_ctf_name "))
@@ -385,8 +384,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		replyMSG.append("    ... name:&nbsp;<font color=\"00FF00\">" + CTF._eventName + "</font><br1>");
 		replyMSG.append("    ... description:&nbsp;<font color=\"00FF00\">" + CTF._eventDesc + "</font><br1>");
 		replyMSG.append("    ... joining location name:&nbsp;<font color=\"00FF00\">" + CTF._joiningLocationName + "</font><br1>");
-		replyMSG.append("    ... joining NPC ID:&nbsp;<font color=\"00FF00\">" + CTF._npcId + " on pos " + CTF._npcX + "," + CTF._npcY + "," + CTF._npcZ
-				+ "</font><br1>");
+		replyMSG.append("    ... joining NPC ID:&nbsp;<font color=\"00FF00\">" + CTF._npcId + " on pos " + CTF._npcX + "," + CTF._npcY + "," + CTF._npcZ + "</font><br1>");
 		replyMSG.append("        <button value=\"Tele->NPC\" action=\"bypass -h admin_ctf_tele_npc\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"><br>");
 		replyMSG.append("    ... reward ID:&nbsp;<font color=\"00FF00\">" + CTF._rewardId + "</font><br1>");
 		if (ItemTable.getInstance().getTemplate(CTF._rewardId) != null)
@@ -423,22 +421,17 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			replyMSG.append("Color: <font color=\"00FF00\">0x" + c.toUpperCase() + "</font><font color=\"" + c + "\"> =) </font>");
 
 			replyMSG.append("</td></tr><tr><td>");
-			replyMSG.append("<button value=\"Tele->Team\" action=\"bypass -h admin_ctf_tele_team " + team
-					+ "\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
+			replyMSG.append("<button value=\"Tele->Team\" action=\"bypass -h admin_ctf_tele_team " + team + "\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
 			replyMSG.append("</td></tr><tr><td>");
-			replyMSG.append(CTF._teamsX.get(CTF._teams.indexOf(team)) + ", " + CTF._teamsY.get(CTF._teams.indexOf(team)) + ", "
-					+ CTF._teamsZ.get(CTF._teams.indexOf(team)));
+			replyMSG.append(CTF._teamsX.get(CTF._teams.indexOf(team)) + ", " + CTF._teamsY.get(CTF._teams.indexOf(team)) + ", " + CTF._teamsZ.get(CTF._teams.indexOf(team)));
 			replyMSG.append("</td></tr><tr><td>");
 			replyMSG.append("Flag Id: <font color=\"00FF00\">" + CTF._flagIds.get(CTF._teams.indexOf(team)) + "</font>");
 			replyMSG.append("</td></tr><tr><td>");
-			replyMSG.append("<button value=\"Tele->Flag\" action=\"bypass -h admin_ctf_tele_flag " + team
-					+ "\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
+			replyMSG.append("<button value=\"Tele->Flag\" action=\"bypass -h admin_ctf_tele_flag " + team + "\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
 			replyMSG.append("</td></tr><tr><td>");
-			replyMSG.append(CTF._flagsX.get(CTF._teams.indexOf(team)) + ", " + CTF._flagsY.get(CTF._teams.indexOf(team)) + ", "
-					+ CTF._flagsZ.get(CTF._teams.indexOf(team)) + "</td></tr>");
+			replyMSG.append(CTF._flagsX.get(CTF._teams.indexOf(team)) + ", " + CTF._flagsY.get(CTF._teams.indexOf(team)) + ", " + CTF._flagsZ.get(CTF._teams.indexOf(team)) + "</td></tr>");
 			if (!CTF._joining && !CTF._started && !CTF._teleport)
-				replyMSG.append("<tr><td width=\"60\"><button value=\"Remove\" action=\"bypass -h admin_ctf_team_remove " + team
-						+ "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr><tr></tr>");
+				replyMSG.append("<tr><td width=\"60\"><button value=\"Remove\" action=\"bypass -h admin_ctf_team_remove " + team + "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr><tr></tr>");
 		}
 
 		replyMSG.append("</table></center>");

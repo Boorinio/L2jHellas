@@ -21,15 +21,10 @@ import com.l2jhellas.gameserver.templates.L2Henna;
  * a monster or a friendly character.
  * it also uses a template to fetch some static values.
  * the templates are hardcoded in the client, so we can rely on them.
- *
- * @version $Revision$ $Date$
  */
-
 public class L2HennaInstance
 {
-	//private static Logger _log = Logger.getLogger(L2HennaInstance.class.getName());
-
-	private L2Henna _template;
+	private final L2Henna _template;
 	private int _symbolId;
 	private int _itemIdDye;
 	private int _price;
@@ -56,21 +51,34 @@ public class L2HennaInstance
 		_statWIT = _template.statWIT;
 	}
 
-	public String getName(){
+	public String getName()
+	{
 		String res = "";
-		if (_statINT>0)res = res + "INT +"+_statINT;
-		else if (_statSTR>0)res = res + "STR +"+_statSTR;
-		else if (_statCON>0)res = res + "CON +"+_statCON;
-		else if (_statMEM>0)res = res + "MEN +"+_statMEM;
-		else if (_statDEX>0)res = res + "DEX +"+_statDEX;
-		else if (_statWIT>0)res = res + "WIT +"+_statWIT;
+		if (_statINT > 0)
+			res = res + "INT +" + _statINT;
+		else if (_statSTR > 0)
+			res = res + "STR +" + _statSTR;
+		else if (_statCON > 0)
+			res = res + "CON +" + _statCON;
+		else if (_statMEM > 0)
+			res = res + "MEN +" + _statMEM;
+		else if (_statDEX > 0)
+			res = res + "DEX +" + _statDEX;
+		else if (_statWIT > 0)
+			res = res + "WIT +" + _statWIT;
 
-		if (_statINT<0)res = res + ", INT "+_statINT;
-		else if (_statSTR<0)res = res + ", STR "+_statSTR;
-		else if (_statCON<0)res = res + ", CON "+_statCON;
-		else if (_statMEM<0)res = res + ", MEN "+_statMEM;
-		else if (_statDEX<0)res = res + ", DEX "+_statDEX;
-		else if (_statWIT<0)res = res + ", WIT "+_statWIT;
+		if (_statINT < 0)
+			res = res + ", INT " + _statINT;
+		else if (_statSTR < 0)
+			res = res + ", STR " + _statSTR;
+		else if (_statCON < 0)
+			res = res + ", CON " + _statCON;
+		else if (_statMEM < 0)
+			res = res + ", MEN " + _statMEM;
+		else if (_statDEX < 0)
+			res = res + ", DEX " + _statDEX;
+		else if (_statWIT < 0)
+			res = res + ", WIT " + _statWIT;
 
 		return res;
 	}
@@ -80,11 +88,10 @@ public class L2HennaInstance
 		return _template;
 	}
 
-
-    public int getSymbolId()
-    {
-        return _symbolId;
-    }
+	public int getSymbolId()
+	{
+		return _symbolId;
+	}
 
 	public void setSymbolId(int SymbolId)
 	{
@@ -92,15 +99,14 @@ public class L2HennaInstance
 	}
 
 	public int getItemIdDye()
-    {
-        return _itemIdDye;
-    }
+	{
+		return _itemIdDye;
+	}
 
 	public void setItemIdDye(int ItemIdDye)
 	{
 		_itemIdDye = ItemIdDye;
 	}
-
 
 	public int getAmountDyeRequire()
 	{
@@ -121,7 +127,6 @@ public class L2HennaInstance
 	{
 		_price = Price;
 	}
-
 
 	public int getStatINT()
 	{

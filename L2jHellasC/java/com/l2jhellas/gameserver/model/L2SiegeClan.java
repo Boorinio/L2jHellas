@@ -56,7 +56,7 @@ public class L2SiegeClan
 		boolean ret = getFlag().remove(flag);
 		// flag.deleteMe();
 		// check if null objects or dups remain in the list.
-		// for some reason, this might be happenning sometimes...
+		// for some reason, this might be happening sometimes...
 		// delete false dupplicates: if this flag got deleted, delete its copies too.
 		if (ret)
 			while (getFlag().remove(flag));

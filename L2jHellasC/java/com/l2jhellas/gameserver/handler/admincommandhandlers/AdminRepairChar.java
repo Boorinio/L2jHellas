@@ -21,10 +21,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class handles following admin commands: - delete = deletes target
@@ -34,11 +34,10 @@ public class AdminRepairChar implements IAdminCommandHandler
 	private static Logger _log = Logger.getLogger(AdminRepairChar.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_restore",
-	"admin_repair"
-	};
-
+	{/** @formatter:off */
+		"admin_restore",
+		"admin_repair"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -50,12 +49,6 @@ public class AdminRepairChar implements IAdminCommandHandler
 		return true;
 	}
 
-	@Override
-	public String[] getAdminCommandList()
-	{
-		return ADMIN_COMMANDS;
-	}
-
 	private void handleRepair(String command)
 	{
 		String[] parts = command.split(" ");
@@ -65,10 +58,8 @@ public class AdminRepairChar implements IAdminCommandHandler
 		}
 
 		String cmd = "UPDATE characters SET x=-84318, y=244579, z=-3730 WHERE char_name=?";
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(cmd);
 			statement.setString(1, parts[1]);
 			statement.execute();
@@ -92,9 +83,8 @@ public class AdminRepairChar implements IAdminCommandHandler
 			}
 
 			// need test
-			try
+			try (Connection con2 = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				statement = con.prepareStatement("DELETE FROM character_shortcuts WHERE char_obj_id=?");
 				statement.setInt(1, objId);
 				statement.execute();
@@ -108,9 +98,8 @@ public class AdminRepairChar implements IAdminCommandHandler
 					e.printStackTrace();
 				}
 			}
-			try
+			try (Connection con3 = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				statement = con.prepareStatement("UPDATE items SET loc=\"INVENTORY\" WHERE owner_id=?");
 				statement.setInt(1, objId);
 				statement.execute();
@@ -125,21 +114,17 @@ public class AdminRepairChar implements IAdminCommandHandler
 					e.printStackTrace();
 				}
 			}
-			// /need test
+			// TODO need test
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not repair char:"+ e);
+			_log.log(Level.WARNING, getClass().getName() + ": could not repair char:" + e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
+	}
+
+	@Override
+	public String[] getAdminCommandList()
+	{
+		return ADMIN_COMMANDS;
 	}
 }

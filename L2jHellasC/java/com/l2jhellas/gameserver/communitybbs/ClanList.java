@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class ClanList
 {
@@ -36,7 +36,6 @@ public class ClanList
 
 	private void loadFromDB(int type)
 	{
-		Connection con = null;
 		int stpoint = 0;
 		int results = 20;
 		String castlename = "";
@@ -47,9 +46,8 @@ public class ClanList
 			stpoint += 20;
 		}
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT clan_id, clan_name, ally_name, leader_id, clan_level, reputation_score, hasCastle, ally_id FROM clan_data ORDER BY `clan_level` desc Limit " + stpoint + ", " + results);
 			ResultSet result = statement.executeQuery();
 			int pos = 0;
@@ -105,16 +103,6 @@ public class ClanList
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

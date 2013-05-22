@@ -29,10 +29,10 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
  */
 public class ChatAll implements IChatHandler
 {
-	private static final int[] COMMAND_IDS = {
+	private static final int[] COMMAND_IDS =
+	{
 		0
 	};
-
 
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
@@ -105,7 +105,7 @@ public class ChatAll implements IChatHandler
 
 				for (L2PcInstance player : plrs)
 				{
-					if (player != null && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
+					if ((player != null) && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
 						player.sendPacket(cs);
 				}
 				activeChar.sendPacket(cs);

@@ -15,23 +15,19 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- * format   ddddd
- *
+ * format ddddd
  * sample
- * 0000: 39  0b 07 10 48  3e 31 10 48  3a f6 00 00  91 5b 00    9...H>1.H:....[.
- * 0010: 00  4c f1 ff ff                                     .L...
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
+ * 0000: 39 0b 07 10 48 3e 31 10 48 3a f6 00 00 91 5b 00 9...H>1.H:....[.
+ * 0010: 00 4c f1 ff ff .L...
  */
 public class TargetSelected extends L2GameServerPacket
 {
 	private static final String _S__39_TARGETSELECTED = "[S] 29 TargetSelected";
-	private int _objectId;
-	private int _targetObjId;
-	private int _x;
-	private int _y;
-	private int _z;
-
+	private final int _objectId;
+	private final int _targetObjId;
+	private final int _x;
+	private final int _y;
+	private final int _z;
 
 	/**
 	 * @param _characters
@@ -56,9 +52,6 @@ public class TargetSelected extends L2GameServerPacket
 		writeD(_z);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

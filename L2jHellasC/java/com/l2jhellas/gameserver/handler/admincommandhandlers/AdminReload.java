@@ -213,7 +213,7 @@ public class AdminReload implements IAdminCommandHandler
 
 	/**
 	 * send reload page
-	 *
+	 * 
 	 * @param admin
 	 */
 	private void sendReloadPage(L2PcInstance player)

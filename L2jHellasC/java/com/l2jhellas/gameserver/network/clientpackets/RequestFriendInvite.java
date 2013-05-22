@@ -21,18 +21,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AskJoinFriend;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class RequestFriendInvite extends L2GameClientPacket
 {
-	private static final String _C__5E_REQUESTFRIENDINVITE = "[C] 5E RequestFriendInvite";
 	private static Logger _log = Logger.getLogger(RequestFriendInvite.class.getName());
+	private static final String _C__5E_REQUESTFRIENDINVITE = "[C] 5E RequestFriendInvite";
 
 	private String _name;
 
@@ -46,7 +46,6 @@ public final class RequestFriendInvite extends L2GameClientPacket
 	protected void runImpl()
 	{
 		SystemMessage sm;
-		Connection con = null;
 		L2PcInstance activeChar = getClient().getActiveChar();
 
 		if (activeChar == null)
@@ -80,7 +79,6 @@ public final class RequestFriendInvite extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-
 		else if (friend == activeChar)
 		{
 			// You cannot add yourself to your own friend list.
@@ -90,9 +88,8 @@ public final class RequestFriendInvite extends L2GameClientPacket
 			return;
 		}
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT char_id FROM character_friends WHERE char_id=? AND friend_id=?");
 			statement.setInt(1, activeChar.getObjectId());
 			statement.setInt(2, friend.getObjectId());
@@ -129,16 +126,6 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, "could not add friend objectid: ", e);
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 

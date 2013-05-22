@@ -22,19 +22,19 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * This class handles commands for GMs to respond to petitions.
- *
+ * 
  * @author Tempy
  */
 public class AdminPetition implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
+	{/** @formatter:off */
 	"admin_view_petitions",
 	"admin_view_petition",
 	"admin_accept_petition",
 	"admin_reject_petition",
 	"admin_reset_petitions"
-	};
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

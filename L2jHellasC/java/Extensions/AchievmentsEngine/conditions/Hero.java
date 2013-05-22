@@ -31,10 +31,10 @@ public class Hero extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		if (player.isHero())
 			return true;
-			
+
 		return false;
 	}
 }

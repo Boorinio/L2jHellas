@@ -28,10 +28,10 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Layane
@@ -163,11 +163,8 @@ public class CrestCache
 				file.renameTo(new File(Config.DATAPACK_ROOT, "data/crests/Crest_" + newId + ".bmp"));
 				_log.log(Level.INFO, getClass().getSimpleName() + ": Renamed Clan crest to new format: Crest_" + newId + ".bmp");
 
-				Connection con = null;
-
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
 					PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET crest_id = ? WHERE clan_id = ?");
 					statement.setInt(1, newId);
 					statement.setInt(2, clan.getClanId());
@@ -180,16 +177,6 @@ public class CrestCache
 					if (Config.DEVELOPER)
 					{
 						e.printStackTrace();
-					}
-				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
 					}
 				}
 

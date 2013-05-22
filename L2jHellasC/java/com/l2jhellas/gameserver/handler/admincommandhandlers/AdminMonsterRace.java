@@ -30,8 +30,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class AdminMonsterRace implements IAdminCommandHandler
 {
-	// private static Logger _log = Logger.getLogger(AdminMonsterRace.class.getName());
-
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_mons"

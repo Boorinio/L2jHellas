@@ -36,15 +36,15 @@ public class AdminAnnouncements implements IAdminCommandHandler
 {
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_list_announcements",
-	"admin_reload_announcements",
-	"admin_announce_announcements",
-	"admin_add_announcement",
-	"admin_del_announcement",
-	"admin_announce",
-	"admin_announce_menu"
-	};
+	{/** @formatter:off */
+		"admin_list_announcements",
+		"admin_reload_announcements",
+		"admin_announce_announcements",
+		"admin_add_announcement",
+		"admin_del_announcement",
+		"admin_announce",
+		"admin_announce_menu"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -86,7 +86,7 @@ public class AdminAnnouncements implements IAdminCommandHandler
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{
-				}// ignore errors
+				}
 			}
 		}
 		else if (command.startsWith("admin_del_announcement"))
@@ -101,14 +101,12 @@ public class AdminAnnouncements implements IAdminCommandHandler
 			{
 			}
 		}
-
-		// Command is admin announce
 		else if (command.startsWith("admin_announce"))
 		{
-
-			// Call method from another class
 			if (Config.GM_ANNOUNCER_NAME)
+			{
 				command += " [" + activeChar.getName() + "]";
+			}
 			Announcements.getInstance().handleAnnounce(command, 15);
 		}
 		else if (command.equals("admin_list_autoannouncements"))
@@ -138,7 +136,7 @@ public class AdminAnnouncements implements IAdminCommandHandler
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{
-				} // ignore errors
+				}
 			}
 		}
 		else if (command.startsWith("admin_del_autoannouncement"))
@@ -153,10 +151,8 @@ public class AdminAnnouncements implements IAdminCommandHandler
 			{
 			}
 		}
-		// Command is admin autoannounce
 		else if (command.startsWith("admin_autoannounce"))
 		{
-			// Call method from another class
 			AutoAnnouncementHandler.getInstance().listAutoAnnouncements(activeChar);
 		}
 		return true;

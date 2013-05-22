@@ -52,9 +52,7 @@ public class QuestManager extends ScriptManager<Quest>
 	{
 		Quest q = getQuest(questFolder);
 		if (q == null)
-		{
 			return false;
-		}
 		return q.reload();
 	}
 
@@ -70,9 +68,7 @@ public class QuestManager extends ScriptManager<Quest>
 	{
 		Quest q = this.getQuest(questId);
 		if (q == null)
-		{
 			return false;
-		}
 		return q.reload();
 	}
 
@@ -85,7 +81,9 @@ public class QuestManager extends ScriptManager<Quest>
 			for (Quest quest : _quests.values())
 			{
 				if (quest != null)
+				{
 					quest.unload();
+				}
 			}
 			// now load all scripts
 			File scripts = new File(Config.DATAPACK_ROOT + "/data/scripts.cfg");
@@ -146,8 +144,7 @@ public class QuestManager extends ScriptManager<Quest>
 		if (old != null)
 		{
 			old.unload();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Replaced: (" + old.getName() + ") with a new version (" + newQuest.getName() + ")");
-
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Replaced: (" + old.getName() + ") with (" + newQuest.getName() + ")");
 		}
 		_quests.put(newQuest.getName(), newQuest);
 	}

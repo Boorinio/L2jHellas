@@ -14,24 +14,14 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.network.serverpackets.CharTemplates;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.3.4.5 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class NewCharacter extends L2GameClientPacket
 {
 	private static final String _C__0E_NEWCHARACTER = "[C] 0E NewCharacter";
-	private static Logger _log = Logger.getLogger(NewCharacter.class.getName());
 
 	@Override
 	protected void readImpl()
@@ -42,46 +32,41 @@ public final class NewCharacter extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		if (Config.DEBUG) _log.fine("CreateNewChar");
-
 		CharTemplates ct = new CharTemplates();
 
 		L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(0);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.fighter);	// human fighter
+		// human fighter
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.fighter);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.mage);	// human mage
+		// human mage
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.mage);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.elvenFighter);	// elf fighter
+		// elf fighter
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.elvenFighter);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.elvenMage);	// elf mage
+		// elf mage
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.elvenMage);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.darkFighter);	// dark elf fighter
+		// dark elf fighter
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.darkFighter);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.darkMage);	// dark elf mage
+		// dark elf mage
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.darkMage);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.orcFighter);	// orc fighter
+		// orc fighter
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.orcFighter);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.orcMage);	// orc mage
+		// orc mage
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.orcMage);
 		ct.addChar(template);
-
-		template = CharTemplateTable.getInstance().getTemplate(ClassId.dwarvenFighter);	// dwarf fighter
+		// dwarf fighter
+		template = CharTemplateTable.getInstance().getTemplate(ClassId.dwarvenFighter);
 		ct.addChar(template);
 
 		sendPacket(ct);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

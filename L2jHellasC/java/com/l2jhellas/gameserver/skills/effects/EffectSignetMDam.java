@@ -58,7 +58,8 @@ final class EffectSignetMDam extends EffectSignet
 				_state++;
 				return true;
 			case 1:
-				getEffected().broadcastPacket(new MagicSkillLaunched(getEffected(), getSkill().getId(), getSkill().getLevel(), new L2Object[] {
+				getEffected().broadcastPacket(new MagicSkillLaunched(getEffected(), getSkill().getId(), getSkill().getLevel(), new L2Object[]
+				{
 					getEffected()
 				}));
 				_state++;
@@ -95,7 +96,7 @@ final class EffectSignetMDam extends EffectSignet
 
 		for (L2Character cha : zone.getCharactersInZone())
 		{
-			if (cha == null || cha == getEffected())
+			if ((cha == null) || cha == getEffected())
 				continue;
 
 			if (cha instanceof L2Attackable || cha instanceof L2PlayableInstance)

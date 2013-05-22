@@ -18,18 +18,18 @@ import com.l2jhellas.gameserver.model.L2Character;
 
 /**
  * Format (ch)ddddd
+ * 
  * @author -Wooden-
- *
  */
 public class ExFishingStart extends L2GameServerPacket
 {
 	private static final String _S__FE_13_EXFISHINGSTART = "[S] FE:13 ExFishingStart";
-	private L2Character _activeChar;
-	private int _x,_y,_z, _fishType;
+	private final L2Character _activeChar;
+	private final int _x, _y, _z, _fishType;
 	@SuppressWarnings("unused")
-	private boolean _isNightLure;
+	private final boolean _isNightLure;
 
-	public ExFishingStart(L2Character character, int fishType, int x, int y,int z, boolean isNightLure)
+	public ExFishingStart(L2Character character, int fishType, int x, int y, int z, boolean isNightLure)
 	{
 		_activeChar = character;
 		_fishType = fishType;
@@ -39,9 +39,6 @@ public class ExFishingStart extends L2GameServerPacket
 		_isNightLure = isNightLure;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -53,18 +50,14 @@ public class ExFishingStart extends L2GameServerPacket
 		writeD(_y); // y poisson
 		writeD(_z); // z poisson
 		writeC(0x00); // night lure
-		writeC(0x00); //??
-		writeC((_fishType >= 7 && _fishType <= 9) ? 0x01 : 0x00); // 0 = day lure  1 = night lure
+		writeC(0x00); // ??
+		writeC((_fishType >= 7 && _fishType <= 9) ? 0x01 : 0x00); // 0 = day lure 1 = night lure
 		writeC(0x00);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_13_EXFISHINGSTART;
 	}
-
 }

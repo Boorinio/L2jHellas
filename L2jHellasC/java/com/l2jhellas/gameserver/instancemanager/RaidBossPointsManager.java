@@ -30,8 +30,8 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Kerberos
@@ -45,10 +45,8 @@ public class RaidBossPointsManager
 	{
 		_list = new FastMap<Integer, Map<Integer, Integer>>();
 		FastList<Integer> _chars = new FastList<Integer>();
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT `charId` FROM `character_raid_points`");
 			ResultSet rset = statement.executeQuery();
 			while (rset.next())
@@ -85,16 +83,6 @@ public class RaidBossPointsManager
 		{
 			_log.log(Level.WARNING, e.getMessage(), e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public static final RaidBossPointsManager getInstance()
@@ -104,10 +92,8 @@ public class RaidBossPointsManager
 
 	public final static void updatePointsInDB(L2PcInstance player, int raidId, int points)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("REPLACE INTO character_raid_points (`charId`,`boss_id`,`points`) VALUES (?,?,?)");
 			statement.setInt(1, player.getObjectId());
@@ -122,16 +108,6 @@ public class RaidBossPointsManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -185,10 +161,8 @@ public class RaidBossPointsManager
 
 	public final static void cleanUp()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("DELETE FROM character_raid_points WHERE charId > 0");
 			statement.executeUpdate();
@@ -202,16 +176,6 @@ public class RaidBossPointsManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

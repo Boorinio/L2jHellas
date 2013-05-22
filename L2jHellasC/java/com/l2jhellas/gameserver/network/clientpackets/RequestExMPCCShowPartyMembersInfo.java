@@ -16,13 +16,13 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
  * Format:(ch) h
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 {
 	private static final String _C__D0_26_REQUESTMPCCSHOWPARTYMEMBERINFO = "[C] D0:26 RequestExMPCCShowPartyMembersInfo";
 	private int _unk;
-
 
 	@Override
 	protected void readImpl()
@@ -30,22 +30,15 @@ public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 		_unk = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
-		System.out.println("C6: RequestExMPCCShowPartyMembersInfo. unk: "+_unk);
+		System.out.println("C6: RequestExMPCCShowPartyMembersInfo. unk: " + _unk);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_26_REQUESTMPCCSHOWPARTYMEMBERINFO;
 	}
-
 }

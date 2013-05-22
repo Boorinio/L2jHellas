@@ -26,9 +26,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class AdminZone implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_zone_check", "admin_zone_reload"
-	};
+	{/** @formatter:off */
+		"admin_zone_check",
+		"admin_zone_reload"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -82,5 +83,4 @@ public class AdminZone implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
 }

@@ -16,12 +16,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * Format: ch dddd
+ * 
  * @author KenM
  */
 public class ExUseSharedGroupItem extends L2GameServerPacket
 {
 	private static final String _S__FE_49_EXUSESHAREDGROUPITEM = "[S] FE:49 ExUseSharedGroupItem";
-	private int _unk1, _unk2, _unk3, _unk4;
+	private final int _unk1, _unk2, _unk3, _unk4;
 
 	public ExUseSharedGroupItem(int unk1, int unk2, int unk3, int unk4)
 	{
@@ -31,9 +32,6 @@ public class ExUseSharedGroupItem extends L2GameServerPacket
 		_unk4 = unk4;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -46,13 +44,9 @@ public class ExUseSharedGroupItem extends L2GameServerPacket
 		writeD(_unk4);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_49_EXUSESHAREDGROUPITEM;
 	}
-
 }

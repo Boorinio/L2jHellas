@@ -14,44 +14,34 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 
 public class StaticObject extends L2GameServerPacket
 {
+	private static final String _S__99_StaticObjectPacket = "[S] 99 StaticObjectPacket";
+	private final L2StaticObjectInstance _staticObject;
 
-        private static final String _S__99_StaticObjectPacket = "[S] 99 StaticObjectPacket";
-        private L2StaticObjectInstance _staticObject;
+	/**
+	 * [S]0x99 StaticObjectPacket dd
+	 * 
+	 * @param _
+	 */
+	public StaticObject(L2StaticObjectInstance StaticObject)
+	{
+		_staticObject = StaticObject;// staticObjectId
+	}
 
-        /**
-         * [S]0x99 StaticObjectPacket   dd
-         * @param _
-         */
+	@Override
+	protected final void writeImpl()
+	{
+		writeC(0x99);
+		writeD(_staticObject.getStaticObjectId());// staticObjectId
+		writeD(_staticObject.getObjectId());// objectId
+	}
 
-        public StaticObject(L2StaticObjectInstance StaticObject)
-        {
-            _staticObject = StaticObject;           // staticObjectId
-
-        }
-
-        @Override
-		protected final void writeImpl()
-        {
-
-            writeC(0x99);
-            writeD(_staticObject.getStaticObjectId());    //staticObjectId
-            writeD(_staticObject.getObjectId());    //objectId
-
-
-        }
-
-
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-     */
-    @Override
+	@Override
 	public String getType()
-    {
-        return _S__99_StaticObjectPacket;
-    }
+	{
+		return _S__99_StaticObjectPacket;
+	}
 }

@@ -16,43 +16,41 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 public class RadarControl extends L2GameServerPacket
 {
-    private static final String _S__EB_RadarControl = "[S] EB RadarControl";
-    private int _showRadar;
-    private int _type;
-    private int _x;
-    private int _y;
-    private int _z;
-    /**
-     * 0xEB RadarControl         ddddd
-     * @param _
-     */
+	private static final String _S__EB_RadarControl = "[S] EB RadarControl";
+	private final int _showRadar;
+	private final int _type;
+	private final int _x;
+	private final int _y;
+	private final int _z;
 
-    public RadarControl(int showRadar, int type, int x , int  y ,int z)
-    {
-        _showRadar = showRadar;         // showRader?? 0 = showradar; 1 = delete radar;
-        _type = type;                   // radar type??
-        _x = x;
-        _y = y;
-        _z = z;
-    }
+	/**
+	 * 0xEB RadarControl ddddd
+	 * 
+	 * @param _
+	 */
+	public RadarControl(int showRadar, int type, int x, int y, int z)
+	{
+		_showRadar = showRadar; // showRader?? 0 = showradar; 1 = delete radar;
+		_type = type; // radar type??
+		_x = x;
+		_y = y;
+		_z = z;
+	}
 
 	@Override
 	protected final void writeImpl()
-    {
-        writeC(0xEB);
-        writeD(_showRadar);
-        writeD(_type);     //maybe type
-        writeD(_x);    //x
-        writeD(_y);    //y
-        writeD(_z);    //z
-    }
+	{
+		writeC(0xEB);
+		writeD(_showRadar);
+		writeD(_type); // maybe type
+		writeD(_x);    // x
+		writeD(_y);    // y
+		writeD(_z);    // z
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-     */
-    @Override
+	@Override
 	public String getType()
-    {
-        return _S__EB_RadarControl;
-    }
+	{
+		return _S__EB_RadarControl;
+	}
 }

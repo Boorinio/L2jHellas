@@ -21,23 +21,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * Support for /clanwarlist command
- *
+ * 
  * @author Tempy
  */
 public class ClanWarsList implements IUserCommandHandler
 {
 	protected static final Logger _log = Logger.getLogger(ClanWarsList.class.getName());
 
-	private static final int[] COMMAND_IDS = {
+	private static final int[] COMMAND_IDS =
+	{
 	88, 89, 90
 	};
 
@@ -56,11 +57,8 @@ public class ClanWarsList implements IUserCommandHandler
 		}
 
 		SystemMessage sm;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
 			if (id == 88)
@@ -126,17 +124,6 @@ public class ClanWarsList implements IUserCommandHandler
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		return true;
 	}
 

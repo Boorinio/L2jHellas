@@ -21,58 +21,58 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
- *
  * @author KenM
  */
 public final class RequestJoinSiege extends L2GameClientPacket
 {
-    private static final String _C__A4_RequestJoinSiege = "[C] a4 RequestJoinSiege";
-    //private static Logger _log = Logger.getLogger(RequestJoinSiege.class.getName());
+	private static final String _C__A4_RequestJoinSiege = "[C] a4 RequestJoinSiege";
 
-    private int _castleId;
-    private int _isAttacker;
-    private int _isJoining;
+	private int _castleId;
+	private int _isAttacker;
+	private int _isJoining;
 
-    @Override
+	@Override
 	protected void readImpl()
-    {
-        _castleId = readD();
-        _isAttacker = readD();
-        _isJoining = readD();
-    }
+	{
+		_castleId = readD();
+		_isAttacker = readD();
+		_isJoining = readD();
+	}
 
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        L2PcInstance activeChar = getClient().getActiveChar();
-        if(activeChar == null) return;
-        if (!activeChar.isClanLeader()) return;
+	{
+		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+			return;
+		if (!activeChar.isClanLeader())
+			return;
 
-        Castle castle = CastleManager.getInstance().getCastleById(_castleId);
-        if (castle == null) return;
+		Castle castle = CastleManager.getInstance().getCastleById(_castleId);
+		if (castle == null)
+			return;
 
-        if (_isJoining == 1)
-        {
-        	if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
-        	{
-        		activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS));
-        		return;
-        	}
-            if (_isAttacker == 1)
-                castle.getSiege().registerAttacker(activeChar);
-            else
-                castle.getSiege().registerDefender(activeChar);
-        }
-        else
-            castle.getSiege().removeSiegeClan(activeChar);
+		if (_isJoining == 1)
+		{
+			if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
+			{
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS));
+				return;
+			}
+			if (_isAttacker == 1)
+				castle.getSiege().registerAttacker(activeChar);
+			else
+				castle.getSiege().registerDefender(activeChar);
+		}
+		else
+			castle.getSiege().removeSiegeClan(activeChar);
 
-        castle.getSiege().listRegisterClan(activeChar);
-    }
+		castle.getSiege().listRegisterClan(activeChar);
+	}
 
-
-    @Override
+	@Override
 	public String getType()
-    {
-        return _C__A4_RequestJoinSiege;
-    }
+	{
+		return _C__A4_RequestJoinSiege;
+	}
 }

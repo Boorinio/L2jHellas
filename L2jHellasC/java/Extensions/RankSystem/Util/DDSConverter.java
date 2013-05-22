@@ -287,10 +287,7 @@ public class DDSConverter
 	{
 		Color acolor1[] =
 		{
-			null,
-			null,
-			new Color(),
-			new Color()
+		null, null, new Color(), new Color()
 		};
 		acolor1[0] = acolor[ai[0]];
 		acolor1[1] = acolor[ai[1]];

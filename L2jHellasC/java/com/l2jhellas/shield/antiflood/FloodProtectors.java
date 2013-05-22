@@ -17,7 +17,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * Collection of flood protectors for single player.
- *
+ * 
  * @author fordfrog
  */
 public final class FloodProtectors
@@ -69,7 +69,7 @@ public final class FloodProtectors
 
 	/**
 	 * Creates new instance of FloodProtectors.
-	 *
+	 * 
 	 * @param player
 	 *        player for which the collection of flood protectors is being created.
 	 */
@@ -91,7 +91,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_useItem}.
-	 *
+	 * 
 	 * @return {@link #_useItem}
 	 */
 	public FloodProtectorAction getUseItem()
@@ -101,7 +101,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_rollDice}.
-	 *
+	 * 
 	 * @return {@link #_rollDice}
 	 */
 	public FloodProtectorAction getRollDice()
@@ -111,7 +111,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_firework}.
-	 *
+	 * 
 	 * @return {@link #_firework}
 	 */
 	public FloodProtectorAction getFirework()
@@ -121,7 +121,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_itemPetSummon}.
-	 *
+	 * 
 	 * @return {@link #_itemPetSummon}
 	 */
 	public FloodProtectorAction getItemPetSummon()
@@ -131,7 +131,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_heroVoice}.
-	 *
+	 * 
 	 * @return {@link #_heroVoice}
 	 */
 	public FloodProtectorAction getHeroVoice()
@@ -141,7 +141,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_globalChat}.
-	 *
+	 * 
 	 * @return {@link #_globalChat}
 	 */
 	public FloodProtectorAction getGlobalChat()
@@ -151,7 +151,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_subclass}.
-	 *
+	 * 
 	 * @return {@link #_subclass}
 	 */
 	public FloodProtectorAction getSubclass()
@@ -161,7 +161,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_dropItem}.
-	 *
+	 * 
 	 * @return {@link #_dropItem}
 	 */
 	public FloodProtectorAction getDropItem()
@@ -171,7 +171,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_serverBypass}.
-	 *
+	 * 
 	 * @return {@link #_serverBypass}
 	 */
 	public FloodProtectorAction getServerBypass()
@@ -181,7 +181,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_multisell}.
-	 *
+	 * 
 	 * @return {@link #_multisell}
 	 */
 	public FloodProtectorAction getMultiSell()
@@ -191,7 +191,7 @@ public final class FloodProtectors
 
 	/**
 	 * Returns {@link #_transaction}.
-	 *
+	 * 
 	 * @return {@link #_transaction}
 	 */
 	public FloodProtectorAction getTransaction()

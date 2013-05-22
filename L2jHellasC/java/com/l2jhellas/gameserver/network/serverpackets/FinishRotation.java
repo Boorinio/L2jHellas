@@ -17,16 +17,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2Character;
 
 /**
- *
- * format  dd
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
+ * format dd
  */
 public class FinishRotation extends L2GameServerPacket
 {
 	private static final String _S__78_FINISHROTATION = "[S] 63 FinishRotation";
-	private int _heading;
-	private int _charObjId;
+	private final int _heading;
+	private final int _charObjId;
 
 	public FinishRotation(L2Character cha)
 	{
@@ -42,9 +39,6 @@ public class FinishRotation extends L2GameServerPacket
 		writeD(_heading);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

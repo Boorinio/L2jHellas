@@ -19,14 +19,14 @@ public class PcColorContainer
 	private final int _color;
 	private final long _regTime;
 	private final long _time;
-	
+
 	public PcColorContainer(int color, long regTime, long time)
 	{
 		_color = color;
 		_regTime = regTime;
 		_time = time;
 	}
-	
+
 	/**
 	 * Returns the color
 	 * 
@@ -36,7 +36,7 @@ public class PcColorContainer
 	{
 		return _color;
 	}
-	
+
 	/**
 	 * Returns the time when the color was registered
 	 * 
@@ -46,7 +46,7 @@ public class PcColorContainer
 	{
 		return _regTime;
 	}
-	
+
 	/**
 	 * Returns the time when the color should be deleted
 	 * 

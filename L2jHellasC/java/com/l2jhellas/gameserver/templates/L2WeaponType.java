@@ -15,10 +15,12 @@
 package com.l2jhellas.gameserver.templates;
 
 /**
- * @author mkizub
- * <BR>Description of Weapon Type
+ * @author mkizub <BR>
+ *         Description of Weapon Type
  */
-public enum L2WeaponType {
+public enum L2WeaponType
+{
+	/** @formatter:off */
 	NONE      ( 1, "Shield"), // Shields!!!
 	SWORD     ( 2, "Sword"),
 	BLUNT     ( 3, "Blunt"),
@@ -33,14 +35,17 @@ public enum L2WeaponType {
     PET       (12, "Pet"),
 	ROD       (13, "Rod"),
 	BIGBLUNT  (14, "Big Blunt"); // Two handed blunt
-
+	/** @formatter:on */
 	private final int _id;
 	private final String _name;
 
 	/**
 	 * Constructor of the L2WeaponType.
-	 * @param id : int designating the ID of the WeaponType
-	 * @param name : String designating the name of the WeaponType
+	 * 
+	 * @param id
+	 *        : int designating the ID of the WeaponType
+	 * @param name
+	 *        : String designating the name of the WeaponType
 	 */
 	private L2WeaponType(int id, String name)
 	{
@@ -50,17 +55,19 @@ public enum L2WeaponType {
 
 	/**
 	 * Returns the ID of the item after applying the mask.
+	 * 
 	 * @return int : ID of the item
 	 */
 	public int mask()
 	{
-		return 1<<_id;
+		return 1 << _id;
 	}
 
-    /**
-     * Returns the name of the WeaponType
-     * @return String
-     */
+	/**
+	 * Returns the name of the WeaponType
+	 * 
+	 * @return String
+	 */
 	@Override
 	public String toString()
 	{

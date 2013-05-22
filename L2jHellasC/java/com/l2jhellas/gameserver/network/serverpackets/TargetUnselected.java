@@ -17,21 +17,18 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2Character;
 
 /**
- * format  dddd
- *
+ * format dddd
  * sample
- * 0000: 3a  69 08 10 48  02 c1 00 00  f7 56 00 00  89 ea ff    :i..H.....V.....
- * 0010: ff  0c b2 d8 61                                     ....a
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
+ * 0000: 3a 69 08 10 48 02 c1 00 00 f7 56 00 00 89 ea ff :i..H.....V.....
+ * 0010: ff 0c b2 d8 61 ....a
  */
 public class TargetUnselected extends L2GameServerPacket
 {
 	private static final String _S__3A_TARGETUNSELECTED = "[S] 2A TargetUnselected";
-	private int _targetObjId;
-	private int _x;
-	private int _y;
-	private int _z;
+	private final int _targetObjId;
+	private final int _x;
+	private final int _y;
+	private final int _z;
 
 	/**
 	 * @param _characters
@@ -52,12 +49,9 @@ public class TargetUnselected extends L2GameServerPacket
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
-//		writeD(_target.getTargetId()); //??  probably not used in client
+		// writeD(_target.getTargetId()); //?? probably not used in client
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

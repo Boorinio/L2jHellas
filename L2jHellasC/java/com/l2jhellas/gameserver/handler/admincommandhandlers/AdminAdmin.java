@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,24 +42,25 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class AdminAdmin implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = {
-	"admin_admin",
-	"admin_admin1",
-	"admin_admin2",
-	"admin_admin3",
-	"admin_admin4",
-	"admin_admin5",
-	"admin_gmliston",
-	"admin_gmlistoff",
-	"admin_silence",
-	"admin_diet",
-	"admin_tradeoff",
-	"admin_set",
-	"admin_set_menu",
-	"admin_set_mod",
-	"admin_saveolymp",
-	"admin_manualhero"
-	};
+	private static final String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
+		"admin_admin",
+		"admin_admin1",
+		"admin_admin2",
+		"admin_admin3",
+		"admin_admin4",
+		"admin_admin5",
+		"admin_gmliston",
+		"admin_gmlistoff",
+		"admin_silence",
+		"admin_diet",
+		"admin_tradeoff",
+		"admin_set",
+		"admin_set_menu",
+		"admin_set_mod",
+		"admin_saveolymp",
+		"admin_manualhero"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

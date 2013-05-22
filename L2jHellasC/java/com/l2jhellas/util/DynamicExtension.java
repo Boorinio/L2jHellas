@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 /**
  * extension loader for l2jhellas
- *
+ * 
  * @author galun
  */
 public class DynamicExtension
@@ -52,7 +52,7 @@ public class DynamicExtension
 
 	/**
 	 * get the singleton of DynamicInstance
-	 *
+	 * 
 	 * @return the singleton instance
 	 */
 	public static DynamicExtension getInstance()
@@ -64,7 +64,7 @@ public class DynamicExtension
 
 	/**
 	 * get an extension object by class name
-	 *
+	 * 
 	 * @param className
 	 *        he class name as defined in the extension properties
 	 * @return the object or null if not found
@@ -108,7 +108,7 @@ public class DynamicExtension
 
 	/**
 	 * init a named extension
-	 *
+	 * 
 	 * @param name
 	 *        the class name and optionally a jar file name delimited with a '@' if the jar file is not
 	 *        in the class path
@@ -163,7 +163,7 @@ public class DynamicExtension
 
 	/**
 	 * get all loaded extensions
-	 *
+	 * 
 	 * @return a String array with the class names
 	 */
 	public String[] getExtensions()
@@ -175,7 +175,7 @@ public class DynamicExtension
 
 	/**
 	 * unload a named extension
-	 *
+	 * 
 	 * @param name
 	 *        the class name and optionally a jar file name delimited with a '@'
 	 */
@@ -217,7 +217,7 @@ public class DynamicExtension
 
 	/**
 	 * unloads a named extension, resets the cache and initializes the extension
-	 *
+	 * 
 	 * @param name
 	 *        the class name and optionally a jar file name delimited with a '@' if the jar file is not
 	 *        in the class path
@@ -231,7 +231,7 @@ public class DynamicExtension
 
 	/**
 	 * register a getter function given a (hopefully) unique name
-	 *
+	 * 
 	 * @param name
 	 *        the name of the function
 	 * @param function
@@ -244,7 +244,7 @@ public class DynamicExtension
 
 	/**
 	 * deregister a getter function
-	 *
+	 * 
 	 * @param name
 	 *        the name used for registering
 	 */
@@ -255,7 +255,7 @@ public class DynamicExtension
 
 	/**
 	 * call a getter function registered with DynamicExtension
-	 *
+	 * 
 	 * @param name
 	 *        the function name
 	 * @param arg
@@ -272,7 +272,7 @@ public class DynamicExtension
 
 	/**
 	 * register a setter function given a (hopefully) unique name
-	 *
+	 * 
 	 * @param name
 	 *        the name of the function
 	 * @param function
@@ -285,7 +285,7 @@ public class DynamicExtension
 
 	/**
 	 * deregister a setter function
-	 *
+	 * 
 	 * @param name
 	 *        the name used for registering
 	 */
@@ -296,7 +296,7 @@ public class DynamicExtension
 
 	/**
 	 * call a setter function registered with DynamicExtension
-	 *
+	 * 
 	 * @param name
 	 *        the function name
 	 * @param arg

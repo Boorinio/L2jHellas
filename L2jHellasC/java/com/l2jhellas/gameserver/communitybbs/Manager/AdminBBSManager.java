@@ -51,7 +51,6 @@ public class AdminBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "102"));
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
-
 	}
 
 	/**

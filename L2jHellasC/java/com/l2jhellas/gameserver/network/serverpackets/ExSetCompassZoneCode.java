@@ -16,7 +16,8 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * Format: ch d
- * @author  KenM
+ * 
+ * @author KenM
  */
 public class ExSetCompassZoneCode extends L2GameServerPacket
 {
@@ -29,16 +30,13 @@ public class ExSetCompassZoneCode extends L2GameServerPacket
 	public static final int PVPZONE = 0x0E;
 	public static final int GENERALZONE = 0x0F;
 
-	private int _zoneType;
+	private final int _zoneType;
 
 	public ExSetCompassZoneCode(int val)
 	{
 		_zoneType = val;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -47,13 +45,9 @@ public class ExSetCompassZoneCode extends L2GameServerPacket
 		writeD(_zoneType);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_32_EXSETCOMPASSZONECODE;
 	}
-
 }

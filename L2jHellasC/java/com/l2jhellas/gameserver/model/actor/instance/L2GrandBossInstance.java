@@ -24,11 +24,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
-/**
- * This class manages all Grand Bosses.
- *
- * @version $Revision: 1.0.0.0 $ $Date: 2006/06/16 $
- */
 public final class L2GrandBossInstance extends L2MonsterInstance
 {
 	private static final int BOSS_MAINTENANCE_INTERVAL = 10000;
@@ -48,7 +43,7 @@ public final class L2GrandBossInstance extends L2MonsterInstance
 
 	/**
 	 * Constructor for L2GrandBossInstance. This represent all grandbosses.
-	 *
+	 * 
 	 * @param objectId
 	 *        ID of the instance
 	 * @param template
@@ -67,7 +62,7 @@ public final class L2GrandBossInstance extends L2MonsterInstance
 
 	/**
 	 * Used by Orfen to set 'teleported' flag, when hp goes to <50%
-	 *
+	 * 
 	 * @param flag
 	 */
 	public void setTeleported(boolean flag)
@@ -94,7 +89,7 @@ public final class L2GrandBossInstance extends L2MonsterInstance
 	 */
 	@Override
 	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
-	{		// [L2J_JP ADD SANDMAN]
+	{
 		switch (getTemplate().npcId)
 		{
 			case 29014: // Orfen

@@ -71,7 +71,7 @@ public class CharStatus
 	 * <BR>
 	 * <li>Target a PC or NPC</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param object
 	 *        L2Character to add to the listener
 	 */
@@ -97,11 +97,11 @@ public class CharStatus
 	/**
 	 * Reduce the current HP of the L2Character and launch the doDie Task if necessary.<BR>
 	 * <BR>
-	 * <B><U> Overriden in </U> :</B><BR>
+	 * <B><U> Overridden in </U> :</B><BR>
 	 * <BR>
 	 * <li>L2Attackable : Update the attacker AggroInfo of the L2Attackable _aggroList</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param i
 	 *        The HP decrease value
 	 * @param attacker
@@ -123,7 +123,7 @@ public class CharStatus
 		{
 			if (((L2PcInstance) getActiveChar()).isInDuel())
 			{
-				// the duel is finishing - players do not recive damage
+				// the duel is finishing - players do not receive damage
 				if (((L2PcInstance) getActiveChar()).getDuelState() == Duel.DUELSTATE_DEAD)
 					return;
 				else if (((L2PcInstance) getActiveChar()).getDuelState() == Duel.DUELSTATE_WINNER)
@@ -136,17 +136,20 @@ public class CharStatus
 				}
 			}
 			if (getActiveChar().isDead() && !getActiveChar().isFakeDeath())
-				return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
+				return; // Disabled == null check so skills like Body to Mind work again until another solution is found
 		}
 		else
 		{
 			if (getActiveChar().isDead())
-				return; // Disabled == null check so skills like Body to Mind work again untill another solution is found
+				return; // Disabled == null check so skills like Body to Mind work again until another solution is found
 
-			if (attacker instanceof L2PcInstance && ((L2PcInstance) attacker).isInDuel() && !(getActiveChar() instanceof L2SummonInstance && ((L2SummonInstance) getActiveChar()).getOwner().getDuelId() == ((L2PcInstance) attacker).getDuelId())) // Duelling
-																																																													// player
-																																																													// attacks
-																																																													// mob
+			/** @formatter:off */
+			if (attacker instanceof L2PcInstance
+					&& ((L2PcInstance) attacker).isInDuel()
+					&& !(getActiveChar() instanceof L2SummonInstance
+					&& ((L2SummonInstance) getActiveChar()).getOwner().getDuelId() == ((L2PcInstance) attacker).getDuelId()))
+				// Duelling player attacks mob
+			/** @formatter:on */
 			{
 				((L2PcInstance) attacker).setDuelState(Duel.DUELSTATE_INTERRUPTED);
 			}
@@ -179,10 +182,10 @@ public class CharStatus
 				else
 					((L2Attackable) getActiveChar()).overhitEnabled(false);
 			}
-			value = getCurrentHp() - value;             // Get diff of Hp vs value
+			value = getCurrentHp() - value; // Get diff of Hp vs value
 			if (value <= 0)
 			{
-				// is the dieing one a duelist? if so change his duel state to dead
+				// is the dyeing one a duelist? if so change his duel state to dead
 				if (getActiveChar() instanceof L2PcInstance && ((L2PcInstance) getActiveChar()).isInDuel())
 				{
 					getActiveChar().disableAllSkills();
@@ -195,9 +198,9 @@ public class CharStatus
 					value = 1;
 				}
 				else
-					value = 0;                         // Set value to 0 if Hp < 0
+					value = 0; // Set value to 0 if Hp < 0
 			}
-			setCurrentHp(value);                        // Set Hp
+			setCurrentHp(value); // Set Hp
 		}
 		else
 		{
@@ -264,7 +267,7 @@ public class CharStatus
 	 * <BR>
 	 * <li>Untarget a PC or NPC</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param object
 	 *        L2Character to add to the listener
 	 */
@@ -478,7 +481,7 @@ public class CharStatus
 	 * Players who must be informed are players that target this L2Character.
 	 * When a RegenTask is in progress sever just need to go through this list to send Server->Client packet StatusUpdate.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @return The list of L2Character to inform or null if empty
 	 */
 	public final Set<L2Character> getStatusListener()

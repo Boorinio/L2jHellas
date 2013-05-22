@@ -35,9 +35,25 @@ import com.l2jhellas.gameserver.skills.Formulas;
 
 public class Continuous implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
-	L2SkillType.BUFF, L2SkillType.DEBUFF, L2SkillType.DOT, L2SkillType.MDOT, L2SkillType.POISON, L2SkillType.BLEED, L2SkillType.HOT, L2SkillType.CPHOT, L2SkillType.MPHOT, L2SkillType.FEAR, L2SkillType.CONT, L2SkillType.WEAKNESS, L2SkillType.REFLECT, L2SkillType.UNDEAD_DEFENSE, L2SkillType.AGGDEBUFF, L2SkillType.FORCE_BUFF
-	};
+	private static final L2SkillType[] SKILL_IDS =
+	{/** @formatter:off */
+	L2SkillType.BUFF,
+	L2SkillType.DEBUFF,
+	L2SkillType.DOT,
+	L2SkillType.MDOT,
+	L2SkillType.POISON,
+	L2SkillType.BLEED,
+	L2SkillType.HOT,
+	L2SkillType.CPHOT,
+	L2SkillType.MPHOT,
+	L2SkillType.FEAR,
+	L2SkillType.CONT,
+	L2SkillType.WEAKNESS,
+	L2SkillType.REFLECT,
+	L2SkillType.UNDEAD_DEFENSE,
+	L2SkillType.AGGDEBUFF,
+	L2SkillType.FORCE_BUFF
+	};/** @formatter:on */
 
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)

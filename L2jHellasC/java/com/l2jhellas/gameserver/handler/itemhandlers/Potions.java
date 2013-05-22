@@ -68,15 +68,24 @@ public class Potions implements IItemHandler
 	}
 
 	private static final int[] ITEM_IDS =
-	{
-	65, 725, 726, 727, 728, 734, 735, 1060, 1061, 1062, 1073, 1374, 1375, 1539, 1540, 5591, 5592, 6035, 6036, 6652, 6553, 6554, 6555, 8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202, 8600, 8601, 8602, 8603, 8604, 8605, 8606, 8607, 8608, 8609, 8610, 8611, 8612, 8613, 8614,
+	{/** @formatter:off */
+	65, 725, 726, 727, 728, 734,
+	735, 1060, 1061, 1062, 1073,
+	1374, 1375, 1539, 1540, 5591,
+	5592, 6035, 6036, 6652, 6553,
+	6554, 6555, 8193, 8194, 8195,
+	8196, 8197, 8198, 8199, 8200,
+	8201, 8202, 8600, 8601, 8602,
+	8603, 8604, 8605, 8606, 8607,
+	8608, 8609, 8610, 8611, 8612,
+	8613, 8614,
 			// elixir of life
 	8622, 8623, 8624, 8625, 8626, 8627,
 			// elixir of Strength
 	8628, 8629, 8630, 8631, 8632, 8633,
 			// elixir of cp
 	8634, 8635, 8636, 8637, 8638, 8639
-	};
+	};/** @formatter:on */
 
 	@Override
 	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
@@ -130,8 +139,7 @@ public class Potions implements IItemHandler
 		{
 		// MANA POTIONS
 			case 726: // mana drug, xml: 2003
-				res = usePotion(activeChar, 2003, 1); // configurable through
-														// xml
+				res = usePotion(activeChar, 2003, 1); // configurable through xml
 			break;
 			case 728: // mana_potion, xml: 2005
 				res = usePotion(activeChar, 2005, 1);

@@ -20,16 +20,11 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.2.1.2.7 $ $Date: 2005/03/27 15:29:39 $
- */
 public class CharTemplates extends L2GameServerPacket
 {
 	// dddddddddddddddddddd
 	private static final String _S__23_CHARTEMPLATES = "[S] 23 CharTemplates";
-	private List<L2PcTemplate> _chars = new FastList<L2PcTemplate>();
+	private final List<L2PcTemplate> _chars = new FastList<L2PcTemplate>();
 
 	public void addChar(L2PcTemplate template)
 	{
@@ -67,9 +62,6 @@ public class CharTemplates extends L2GameServerPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

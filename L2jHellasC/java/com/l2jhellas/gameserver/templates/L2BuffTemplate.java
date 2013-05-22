@@ -26,46 +26,46 @@ public class L2BuffTemplate
 {
 	/** Id of buff template */
 	private final int _templateId;
-	
+
 	/** Name of the buff template */
 	private final String _templateName;
-	
+
 	/** Identifier of the skill (buff) to cast */
 	private final int _skillId;
-	
+
 	/** Order of the skill in template */
 	private final int _skillOrder;
-	
+
 	private final L2Skill _skill;
-	
+
 	/** Level of the skill (buff) to cast */
 	private int _skillLevel;
-	
+
 	/** Force cast, even if same effect present */
 	private final boolean _forceCast;
-	
+
 	/** Condition that player must have to obtain this buff */
 	/** Min player level */
 	private final int _minLevel;
-	
+
 	/** Max player level */
 	private final int _maxLevel;
-	
+
 	/** Player's faction */
 	private final int _faction;
-	
+
 	/** Players's race */
 	private final int _race;
-	
+
 	/** Magus/Fighter class of the player */
 	private final int _class;
-	
+
 	/** Adena price */
 	private final int _adena;
-	
+
 	/** Faction points price */
 	private final int _points;
-	
+
 	/**
 	 * Constructor of L2BuffTemplat.<BR>
 	 * <BR>
@@ -77,12 +77,12 @@ public class L2BuffTemplate
 		_skillId = set.getInteger("skillId");
 		_skillLevel = set.getInteger("skillLevel");
 		_skillOrder = set.getInteger("skillOrder");
-		
+
 		if (_skillLevel == 0)
 			_skillLevel = SkillTable.getInstance().getMaxLevel(_skillId, _skillLevel);
-		
+
 		_skill = SkillTable.getInstance().getInfo(_skillId, _skillLevel);
-		
+
 		_forceCast = (set.getInteger("forceCast") == 1);
 		_minLevel = set.getInteger("minLevel");
 		_maxLevel = set.getInteger("maxLevel");
@@ -92,7 +92,7 @@ public class L2BuffTemplate
 		_adena = set.getInteger("adena");
 		_points = set.getInteger("points");
 	}
-	
+
 	/**
 	 * @return Returns the Id of the buff template
 	 */
@@ -100,7 +100,7 @@ public class L2BuffTemplate
 	{
 		return _templateId;
 	}
-	
+
 	/**
 	 * @return Returns the Name of the buff template
 	 */
@@ -108,7 +108,7 @@ public class L2BuffTemplate
 	{
 		return _templateName;
 	}
-	
+
 	/**
 	 * @return Returns the Id of the buff that the L2PcInstance will receive
 	 */
@@ -116,7 +116,7 @@ public class L2BuffTemplate
 	{
 		return _skillId;
 	}
-	
+
 	/**
 	 * @return Returns the Id of the buff that the L2PcInstance will receive
 	 */
@@ -124,7 +124,7 @@ public class L2BuffTemplate
 	{
 		return _skillOrder;
 	}
-	
+
 	/**
 	 * @return Returns the Level of the buff that the L2PcInstance will receive
 	 */
@@ -132,7 +132,7 @@ public class L2BuffTemplate
 	{
 		return _skillLevel;
 	}
-	
+
 	/**
 	 * @return Returns the Skill that the L2PcInstance will receive
 	 */
@@ -140,7 +140,7 @@ public class L2BuffTemplate
 	{
 		return _skill;
 	}
-	
+
 	/**
 	 * @return Returns the L2PcInstance minimum level to receive buff
 	 */
@@ -148,7 +148,7 @@ public class L2BuffTemplate
 	{
 		return _minLevel;
 	}
-	
+
 	/**
 	 * @return Returns the L2PcInstance maximum level to receive buff
 	 */
@@ -156,7 +156,7 @@ public class L2BuffTemplate
 	{
 		return _maxLevel;
 	}
-	
+
 	/**
 	 * @return Returns the requirement faction to receive buff
 	 */
@@ -164,7 +164,7 @@ public class L2BuffTemplate
 	{
 		return _faction;
 	}
-	
+
 	/**
 	 * @return Returns the price for buff in Adena
 	 */
@@ -172,7 +172,7 @@ public class L2BuffTemplate
 	{
 		return _adena;
 	}
-	
+
 	/**
 	 * @return Returns the price for buff in Event Points
 	 */
@@ -180,7 +180,7 @@ public class L2BuffTemplate
 	{
 		return _points;
 	}
-	
+
 	/**
 	 * @return Is cast animation will be shown
 	 */
@@ -188,7 +188,7 @@ public class L2BuffTemplate
 	{
 		return _forceCast;
 	}
-	
+
 	/**
 	 * @return Returns the result of level check
 	 */
@@ -196,7 +196,7 @@ public class L2BuffTemplate
 	{
 		return ((_minLevel == 0 || player.getLevel() >= _minLevel) && (_maxLevel == 0 || player.getLevel() <= _maxLevel));
 	}
-	
+
 	/**
 	 * @return Returns the result of race check
 	 */
@@ -217,7 +217,7 @@ public class L2BuffTemplate
 			cond = true;
 		return cond;
 	}
-	
+
 	/**
 	 * @return Returns the result of Magus/Fighter class check
 	 */
@@ -225,7 +225,7 @@ public class L2BuffTemplate
 	{
 		return ((_class == 0 || _class == 3) || (_class == 1 && !player.isMageClass()) || (_class == 2 && player.isMageClass()));
 	}
-	
+
 	/**
 	 * @return Returns the result of faction check
 	 */
@@ -234,7 +234,7 @@ public class L2BuffTemplate
 		return true;
 		// return ((_faction == 0 ||player.getFaction = _faction)
 	}
-	
+
 	/**
 	 * @return Returns the result of price check
 	 */
@@ -242,7 +242,7 @@ public class L2BuffTemplate
 	{
 		return ((_adena == 0 || player.getInventory().getAdena() >= _adena) && (_points == 0 || (player.getEventPoints() >= _points)));
 	}
-	
+
 	/**
 	 * @return Returns the result of a the Event Point check
 	 */
@@ -252,7 +252,7 @@ public class L2BuffTemplate
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * @return Returns the result of all player related conditions check
 	 */

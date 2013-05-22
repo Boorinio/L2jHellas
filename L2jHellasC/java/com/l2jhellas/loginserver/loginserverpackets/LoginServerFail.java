@@ -21,7 +21,6 @@ import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
  */
 public class LoginServerFail extends ServerBasePacket
 {
-
 	/**
 	 * @param reason
 	 */

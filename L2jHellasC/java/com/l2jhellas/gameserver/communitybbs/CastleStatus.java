@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CastleStatus
 {
@@ -38,12 +38,8 @@ public class CastleStatus
 
 	private void loadFromDB()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			for (int i = 1; i < 9; i++)
 			{
 				PreparedStatement statement = con.prepareStatement("SELECT clan_name, clan_level FROM clan_data WHERE hasCastle=" + i + ";");
@@ -84,17 +80,6 @@ public class CastleStatus
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

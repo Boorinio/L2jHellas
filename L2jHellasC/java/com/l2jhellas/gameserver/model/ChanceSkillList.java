@@ -23,8 +23,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
- *
- * @author  kombat
+ * @author kombat
  */
 public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
 {
@@ -67,7 +66,7 @@ public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
 
 		onEvent(event, target);
 	}
-	
+
 	public void onEvadedHit(L2Character attacker)
 	{
 		onEvent(ChanceCondition.EVT_EVADED_HIT, attacker);
@@ -113,32 +112,31 @@ public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
 	private void makeCast(L2Skill skill, L2Character target)
 	{
 		try
-        {
-			if(skill.getWeaponDependancy(_owner))
+		{
+			if (skill.getWeaponDependancy(_owner))
 			{
-				if(skill.triggerAnotherSkill()) //should we use this skill or this skill is just referring to another one ...
-			    {
+				if (skill.triggerAnotherSkill()) //should we use this skill or this skill is just referring to another one ...
+				{
 					skill = SkillTable.getInstance().getInfo(skill.getTriggeredId(), skill.getTriggeredLevel());
-			        if(skill == null)
-			        	return;
-			    } 
-				
-			    ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
-			    L2Object[] targets = skill.getTargetList(_owner, false);
-			 
-			    _owner.broadcastPacket(new MagicSkillLaunched(_owner, skill.getDisplayId(), skill.getLevel(), targets));
-			    _owner.broadcastPacket(new MagicSkillUse(_owner, (L2Character)targets[0], skill.getDisplayId(), skill.getLevel(), 0, 0));
-			 
+					if (skill == null)
+						return;
+				}
 
-			                // Launch the magic skill and calculate its effects
-			            
-			   if (handler != null)
-				   handler.useSkill(_owner, skill, targets);
-			   else
-			       skill.useSkill(_owner, targets);
+				ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
+				L2Object[] targets = skill.getTargetList(_owner, false);
+
+				_owner.broadcastPacket(new MagicSkillLaunched(_owner, skill.getDisplayId(), skill.getLevel(), targets));
+				_owner.broadcastPacket(new MagicSkillUse(_owner, (L2Character) targets[0], skill.getDisplayId(), skill.getLevel(), 0, 0));
+
+				// Launch the magic skill and calculate its effects
+
+				if (handler != null)
+					handler.useSkill(_owner, skill, targets);
+				else
+					skill.useSkill(_owner, targets);
 			}
-        }
-		catch(Exception e)
+		}
+		catch (Exception e)
 		{
 		}
 	}

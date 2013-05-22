@@ -31,10 +31,10 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2TradeList;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class TradeController
 {
@@ -120,24 +120,26 @@ public class TradeController
 		else
 		{
 			_log.log(Level.FINER, getClass().getSimpleName() + ": No buylists were found in data folder, using SQL buylist instead.");
-			Connection con = null;
+
 			/*
 			 * Initialize Shop buylist
 			 */
 			int dummyItemCount = 0;
 			boolean LimitedItem = false;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement1 = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[] {
+				PreparedStatement statement1 = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
+				{
 				"shop_id", "npc_id"
 				}) + " FROM merchant_shopids");
 				ResultSet rset1 = statement1.executeQuery();
 				while (rset1.next())
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[] {
+					PreparedStatement statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
+					{
 					"item_id", "price", "shop_id", "order", "count", "time", "currentCount"
-					}) + " FROM merchant_buylists WHERE shop_id=? ORDER BY " + L2DatabaseFactory.getInstance().safetyString(new String[] {
+					}) + " FROM merchant_buylists WHERE shop_id=? ORDER BY " + L2DatabaseFactory.getInstance().safetyString(new String[]
+					{
 						"order"
 					}) + " ASC");
 					statement.setString(1, String.valueOf(rset1.getInt("shop_id")));
@@ -267,16 +269,6 @@ public class TradeController
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 		}
 	}
 
@@ -339,11 +331,9 @@ public class TradeController
 
 	protected void dataTimerSave(int time)
 	{
-		Connection con = null;
 		long timerSave = System.currentTimeMillis() + (long) time * 60 * 60 * 1000;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE merchant_buylists SET savetimer =? WHERE time =?");
 			statement.setLong(1, timerSave);
 			statement.setInt(2, time);
@@ -358,30 +348,18 @@ public class TradeController
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public void dataCountStore()
 	{
-		Connection con = null;
 		PreparedStatement statement;
 
 		int listId;
 		if (_listsTaskItem == null)
 			return;
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 
 			for (L2TradeList list : _listsTaskItem.values())
 			{
@@ -407,17 +385,6 @@ public class TradeController
 		{
 			_log.log(Level.SEVERE, getClass().getName() + ": Could not store Count Item");
 			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
 			{
 				e.printStackTrace();
 			}

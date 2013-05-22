@@ -16,19 +16,14 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- */
 public class CreatureSay extends L2GameServerPacket
 {
 	// ddSS
 	private static final String _S__4A_CREATURESAY = "[S] 4A CreatureSay";
-	private int _objectId;
-	private int _textType;
-	private String _charName;
-	private String _text;
+	private final int _objectId;
+	private final int _textType;
+	private final String _charName;
+	private final String _text;
 
 	/**
 	 * @param _characters
@@ -39,7 +34,7 @@ public class CreatureSay extends L2GameServerPacket
 		_textType = messageType;
 		_charName = charName;
 		_text = text;
-		//setLifeTime(0);
+		// setLifeTime(0);
 	}
 
 	@Override
@@ -54,17 +49,13 @@ public class CreatureSay extends L2GameServerPacket
 		L2PcInstance _pci = getClient().getActiveChar();
 		if (_pci != null)
 		{
-			_pci.broadcastSnoop(_textType,_charName,_text);
+			_pci.broadcastSnoop(_textType, _charName, _text);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__4A_CREATURESAY;
 	}
-
 }

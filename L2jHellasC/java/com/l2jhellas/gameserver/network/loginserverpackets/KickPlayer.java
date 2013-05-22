@@ -14,11 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.loginserverpackets;
 
-
 public class KickPlayer extends LoginServerBasePacket
 {
-
-	private String _account;
+	private final String _account;
 
 	/**
 	 * @param decrypt
@@ -36,5 +34,4 @@ public class KickPlayer extends LoginServerBasePacket
 	{
 		return _account;
 	}
-
 }

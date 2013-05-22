@@ -16,31 +16,25 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * Format: ch d[Sdd]
- * @author  KenM
+ * 
+ * @author KenM
  */
 public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_4A_EXMPCCSHOWPARTYMEMBERINFO = "[S] FE:4A ExMPCCShowPartyMemberInfo";
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x4a);
 
-		//TODO this packet has a list, so im not going to add temp vars ^^
+		// TODO this packet has a list, so im not going to add temp vars ^^
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_4A_EXMPCCSHOWPARTYMEMBERINFO;
 	}
-
 }

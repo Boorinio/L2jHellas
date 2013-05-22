@@ -27,7 +27,8 @@ import com.l2jhellas.util.Point3D;
 
 /**
  * Format: (ch)
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public final class RequestCursedWeaponLocation extends L2GameClientPacket
 {
@@ -36,15 +37,11 @@ public final class RequestCursedWeaponLocation extends L2GameClientPacket
 	@Override
 	protected void readImpl()
 	{
-		//nothing to read it's just a trigger
+		// nothing to read it's just a trigger
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
 		L2Character activeChar = getClient().getActiveChar();
 		if (activeChar == null)
@@ -53,7 +50,8 @@ public final class RequestCursedWeaponLocation extends L2GameClientPacket
 		List<CursedWeaponInfo> list = new FastList<CursedWeaponInfo>();
 		for (CursedWeapon cw : CursedWeaponsManager.getInstance().getCursedWeapons())
 		{
-			if (!cw.isActive()) continue;
+			if (!cw.isActive())
+				continue;
 
 			Point3D pos = cw.getWorldPosition();
 
@@ -61,21 +59,16 @@ public final class RequestCursedWeaponLocation extends L2GameClientPacket
 				list.add(new CursedWeaponInfo(pos, cw.getItemId(), cw.isActivated() ? 1 : 0));
 		}
 
-
-		//send the ExCursedWeaponLocation
+		// send the ExCursedWeaponLocation
 		if (!list.isEmpty())
 		{
 			activeChar.sendPacket(new ExCursedWeaponLocation(list));
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_23_REQUESTCURSEDWEAPONLOCATION;
 	}
-
 }

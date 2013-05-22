@@ -15,36 +15,33 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- *
- * sample
- * <p>
- * 7d
- * c1 b2 e0 4a
- * 00 00 00 00
- * <p>
- *
- * format
- * cdd
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
+ * @formatter:off
+ *                sample<BR>
+ *                <p>
+ *                7d<BR>
+ *                c1 b2 e0 4a<BR>
+ *                00 00 00 00<BR>
+ *                <p>
+ *                format cdd
+ * @formatter:on
  */
 public class AskJoinFriend extends L2GameServerPacket
 {
 	private static final String _S__7d_ASKJoinFriend_0X7d = "[S] 7d AskJoinFriend 0x7d";
-	//private static Logger _log = Logger.getLogger(AskJoinFriend.class.getName());
 
-	private String _requestorName;
-	//private int _itemDistribution;
+	private final String _requestorName;
+
+	// private int _itemDistribution;
 
 	/**
 	 * @param int objectId of the target
 	 * @param int
 	 */
-//	public AskJoinFriend(String requestorName, int itemDistribution)
+	// public AskJoinFriend(String requestorName, int itemDistribution)
 	public AskJoinFriend(String requestorName)
 	{
 		_requestorName = requestorName;
-//		_itemDistribution = itemDistribution;
+		// _itemDistribution = itemDistribution;
 	}
 
 	@Override
@@ -55,13 +52,9 @@ public class AskJoinFriend extends L2GameServerPacket
 		writeD(0);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__7d_ASKJoinFriend_0X7d;
 	}
-
 }

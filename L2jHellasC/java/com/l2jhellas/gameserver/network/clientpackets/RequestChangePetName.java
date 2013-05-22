@@ -24,15 +24,9 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.4.4 $ $Date: 2005/04/06 16:13:48 $
- */
 public final class RequestChangePetName extends L2GameClientPacket
 {
 	private static final String REQUESTCHANGEPETNAME__C__89 = "[C] 89 RequestChangePetName";
-	//private static Logger _log = Logger.getLogger(RequestChangePetName.class.getName());
 
 	private String _name;
 
@@ -63,26 +57,25 @@ public final class RequestChangePetName extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.NAMING_ALREADY_IN_USE_BY_ANOTHER_PET));
 			return;
 		}
-        else if ((_name.length() < 3) || (_name.length() > 16))
+		else if ((_name.length() < 3) || (_name.length() > 16))
 		{
-            SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
-            sm.addString("Your pet's name can be up to 16 characters.");
-			// SystemMessage sm = new SystemMessage(SystemMessage.NAMING_PETNAME_UP_TO_8CHARS);
-        	activeChar.sendPacket(sm);
-        	sm = null;
+			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			sm.addString("Your pet's name can be up to 16 characters.");
+			activeChar.sendPacket(sm);
+			sm = null;
 
 			return;
 		}
-        else if (!PetNameTable.getInstance().isValidPetName(_name))
+		else if (!PetNameTable.getInstance().isValidPetName(_name))
 		{
-        	activeChar.sendPacket(new SystemMessage(SystemMessageId.NAMING_PETNAME_CONTAINS_INVALID_CHARS));
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.NAMING_PETNAME_CONTAINS_INVALID_CHARS));
 			return;
 		}
 
 		pet.setName(_name);
-		pet.broadcastPacket(new NpcInfo(pet, activeChar,1));
+		pet.broadcastPacket(new NpcInfo(pet, activeChar, 1));
 		pet.updateAndBroadcastStatus(1);
-		// The PetInfo packet wipes the PartySpelled (list of active spells' icons).  Re-add them
+		// The PetInfo packet wipes the PartySpelled (list of active spells' icons). Re-add them
 		pet.updateEffectIcons(true);
 
 		// set the flag on the control item to say that the pet has a name

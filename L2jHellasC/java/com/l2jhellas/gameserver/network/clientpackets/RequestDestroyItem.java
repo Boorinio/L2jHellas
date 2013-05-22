@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -32,17 +31,12 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.7.2.4.2.6 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestDestroyItem extends L2GameClientPacket
 {
-	private static final String _C__59_REQUESTDESTROYITEM = "[C] 59 RequestDestroyItem";
 	private static Logger _log = Logger.getLogger(RequestDestroyItem.class.getName());
+	private static final String _C__59_REQUESTDESTROYITEM = "[C] 59 RequestDestroyItem";
 
 	private int _objectId;
 	private int _count;
@@ -60,39 +54,41 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 
 		if (activeChar == null)
-		    return;
+			return;
 
-		if(_count <= 0)
+		if (_count <= 0)
 		{
-			if (_count < 0) Util.handleIllegalPlayerAction(activeChar,"[RequestDestroyItem] count < 0! ban! oid: "+_objectId+" owner: "+activeChar.getName(),Config.DEFAULT_PUNISH);
+			if (_count < 0)
+				Util.handleIllegalPlayerAction(activeChar, "[RequestDestroyItem] count < 0! ban! oId: " + _objectId + " owner: " + activeChar.getName(), Config.DEFAULT_PUNISH);
 			return;
 		}
 
 		int count = _count;
 
 		if (!activeChar.getAntiFlood().getTransaction().tryPerformAction("destroy"))
-		 	{
-		 	  activeChar.sendMessage("You destroying items too fast.");
-		 	  return;
-		 	}
+		{
+			activeChar.sendMessage("You destroying items too fast.");
+			return;
+		}
 
-        if (activeChar.getPrivateStoreType() != 0)
-        {
-            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
-            return;
-        }
+		if (activeChar.getPrivateStoreType() != 0)
+		{
+			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+			return;
+		}
 
 		L2ItemInstance itemToRemove = activeChar.getInventory().getItemByObjectId(_objectId);
-		// if we cant find requested item, its actualy a cheat!
-		if (itemToRemove == null) return;
+		// if we can't find requested item, its actually a cheat!
+		if (itemToRemove == null)
+			return;
 
-		// Cannot discard item that the skill is consumming
+		// Cannot discard item that the skill is consuming
 		if (activeChar.isCastingNow())
 		{
-			if (activeChar.getCurrentSkill() != null && activeChar.getCurrentSkill().getSkill().getItemConsumeId() == itemToRemove.getItemId())
+			if ((activeChar.getCurrentSkill() != null) && activeChar.getCurrentSkill().getSkill().getItemConsumeId() == itemToRemove.getItemId())
 			{
-	            activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
-	            return;
+				activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
+				return;
 			}
 		}
 
@@ -103,20 +99,18 @@ public final class RequestDestroyItem extends L2GameClientPacket
 			return;
 		}
 
-        if(!itemToRemove.isStackable() && count > 1)
-        {
-        	Util.handleIllegalPlayerAction(activeChar,"[RequestDestroyItem] count > 1 but item is not stackable! oid: "+_objectId+" owner: "+activeChar.getName(),Config.DEFAULT_PUNISH);
-            return;
-        }
+		if (!itemToRemove.isStackable() && count > 1)
+		{
+			Util.handleIllegalPlayerAction(activeChar, "[RequestDestroyItem] count > 1 but item is not stackable! oid: " + _objectId + " owner: " + activeChar.getName(), Config.DEFAULT_PUNISH);
+			return;
+		}
 
 		if (_count > itemToRemove.getCount())
 			count = itemToRemove.getCount();
 
-
 		if (itemToRemove.isEquipped())
 		{
-			L2ItemInstance[] unequiped =
-				activeChar.getInventory().unEquipItemInSlotAndRecord(itemToRemove.getEquipSlot());
+			L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(itemToRemove.getEquipSlot());
 			InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
 			{
@@ -130,8 +124,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 
 		if (L2PetDataTable.isPetItem(itemId))
 		{
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
 				if (activeChar.getPet() != null && activeChar.getPet().getControlItemId() == _objectId)
 				{
@@ -139,7 +132,6 @@ public final class RequestDestroyItem extends L2GameClientPacket
 				}
 
 				// if it's a pet control item, delete the pet
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id=?");
 				statement.setInt(1, _objectId);
 				statement.execute();
@@ -149,27 +141,26 @@ public final class RequestDestroyItem extends L2GameClientPacket
 			{
 				_log.log(Level.WARNING, "could not delete pet objectid: ", e);
 			}
-			finally
-			{
-				try { con.close(); } catch (Exception e) {}
-			}
 		}
 
 		L2ItemInstance removedItem = activeChar.getInventory().destroyItem("Destroy", _objectId, count, activeChar, null);
 
-		if(removedItem == null)
+		if (removedItem == null)
 			return;
 
 		if (!Config.FORCE_INVENTORY_UPDATE)
 		{
 			InventoryUpdate iu = new InventoryUpdate();
-			if (removedItem.getCount() == 0) iu.addRemovedItem(removedItem);
-			else iu.addModifiedItem(removedItem);
+			if (removedItem.getCount() == 0)
+				iu.addRemovedItem(removedItem);
+			else
+				iu.addModifiedItem(removedItem);
 
-			//client.getConnection().sendPacket(iu);
+			// client.getConnection().sendPacket(iu);
 			activeChar.sendPacket(iu);
 		}
-		else sendPacket(new ItemList(activeChar, true));
+		else
+			sendPacket(new ItemList(activeChar, true));
 
 		StatusUpdate su = new StatusUpdate(activeChar.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
@@ -179,9 +170,6 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		world.removeObject(removedItem);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

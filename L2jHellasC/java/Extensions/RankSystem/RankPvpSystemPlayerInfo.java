@@ -352,7 +352,7 @@ public class RankPvpSystemPlayerInfo
 
 	/**
 	 * Generate HTML table for images.
-	 *
+	 * 
 	 * @param player
 	 * @param targetPvpStats
 	 * @return

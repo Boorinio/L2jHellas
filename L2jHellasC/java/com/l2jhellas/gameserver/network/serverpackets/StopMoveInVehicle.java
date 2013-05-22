@@ -18,13 +18,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * @author Maktakien
- *
  */
-public class StopMoveInVehicle  extends L2GameServerPacket
+public class StopMoveInVehicle extends L2GameServerPacket
 {
+	private final L2PcInstance _activeChar;
+	private final int _boatId;
 
-	private L2PcInstance _activeChar;
-	private int _boatId;
 	/**
 	 * @param player
 	 * @param boatid
@@ -35,9 +34,6 @@ public class StopMoveInVehicle  extends L2GameServerPacket
 		_boatId = boatid;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -50,14 +46,9 @@ public class StopMoveInVehicle  extends L2GameServerPacket
 		writeD(_activeChar.getPosition().getHeading());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
-		// TODO Auto-generated method stub
 		return "[S] 72 StopMoveInVehicle";
 	}
-
 }

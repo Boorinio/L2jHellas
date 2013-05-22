@@ -20,23 +20,19 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- *
- * @version $Revision: 1.6.2.1.2.5 $ $Date: 2005/03/27 15:29:57 $
- */
 public class PartySmallWindowAll extends L2GameServerPacket
 {
 	private static final String _S__63_PARTYSMALLWINDOWALL = "[S] 4e PartySmallWindowAll";
 	private List<L2PcInstance> _partyMembers = new FastList<L2PcInstance>();
-	private L2PcInstance _exclude;
+	private final L2PcInstance _exclude;
 
 	public void setPartyList(List<L2PcInstance> party)
 	{
-		_partyMembers = party; 
-	} 
-	
-	public PartySmallWindowAll(L2PcInstance exclude, List<L2PcInstance> party) 
-	{ 
+		_partyMembers = party;
+	}
+
+	public PartySmallWindowAll(L2PcInstance exclude, List<L2PcInstance> party)
+	{
 		_exclude = exclude;
 		_partyMembers = party;
 	}
@@ -45,19 +41,19 @@ public class PartySmallWindowAll extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x4e);
-        writeD(_partyMembers.get(0).getObjectId()); // c3 party leader id
-        writeD(_partyMembers.get(0).getParty().getLootDistribution());//c3 party loot type (0,1,2,....)
-		writeD(_partyMembers.size()-1);
+		writeD(_partyMembers.get(0).getObjectId()); // c3 party leader id
+		writeD(_partyMembers.get(0).getParty().getLootDistribution());// c3 party loot type (0,1,2,....)
+		writeD(_partyMembers.size() - 1);
 
-		for(L2PcInstance member: _partyMembers)
+		for (L2PcInstance member : _partyMembers)
 		{
 			if (member != _exclude)
 			{
 				writeD(member.getObjectId());
 				writeS(member.getName());
 
-				writeD((int) member.getCurrentCp()); //c4
-				writeD(member.getMaxCp()); //c4
+				writeD((int) member.getCurrentCp()); // c4
+				writeD(member.getMaxCp()); // c4
 
 				writeD((int) member.getCurrentHp());
 				writeD(member.getMaxHp());
@@ -65,15 +61,12 @@ public class PartySmallWindowAll extends L2GameServerPacket
 				writeD(member.getMaxMp());
 				writeD(member.getLevel());
 				writeD(member.getClassId().getId());
-				writeD(0);//writeD(0x01); ??
+				writeD(0);// writeD(0x01); ??
 				writeD(0);
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

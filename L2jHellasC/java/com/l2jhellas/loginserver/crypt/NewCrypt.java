@@ -111,7 +111,7 @@ public class NewCrypt
 	/**
 	 * Packet is first XOR encoded with <code>key</code> Then, the last 4 bytes are overwritten with the the XOR "key".
 	 * Thus this assume that there is enough room for the key to fit without overwriting data.
-	 *
+	 * 
 	 * @param raw
 	 *        The raw bytes to be encrypted
 	 * @param key
@@ -125,11 +125,11 @@ public class NewCrypt
 	/**
 	 * Packet is first XOR encoded with <code>key</code> Then, the last 4 bytes are overwritten with the the XOR "key".
 	 * Thus this assume that there is enough room for the key to fit without overwriting data.
-	 *
+	 * 
 	 * @param raw
 	 *        The raw bytes to be encrypted
 	 * @param offset
-	 *        The begining of the data to be encrypted
+	 *        The beginning of the data to be encrypted
 	 * @param size
 	 *        Length of the data to be encrypted
 	 * @param key

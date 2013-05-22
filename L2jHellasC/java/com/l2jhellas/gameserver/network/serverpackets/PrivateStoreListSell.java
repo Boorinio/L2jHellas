@@ -18,20 +18,15 @@ import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.3.2.6 $ $Date: 2005/03/27 15:29:57 $
- */
 public class PrivateStoreListSell extends L2GameServerPacket
 {
-//	private static final String _S__B4_PRIVATEBUYLISTSELL = "[S] 9b PrivateBuyListSell";
+	// private static final String _S__B4_PRIVATEBUYLISTSELL = "[S] 9b PrivateBuyListSell";
 	private static final String _S__B4_PRIVATESTORELISTSELL = "[S] 9b PrivateStoreListSell";
 	private L2PcInstance _storePlayer;
-	private L2PcInstance _activeChar;
-	private int _playerAdena;
-	private boolean _packageSale;
-	private TradeList.TradeItem[] _items;
+	private final L2PcInstance _activeChar;
+	private final int _playerAdena;
+	private final boolean _packageSale;
+	private final TradeList.TradeItem[] _items;
 
 	// player's private shop
 	public PrivateStoreListSell(L2PcInstance player, L2PcInstance storePlayer)
@@ -44,7 +39,8 @@ public class PrivateStoreListSell extends L2GameServerPacket
 	}
 
 	// lease shop
-	@Deprecated public PrivateStoreListSell(L2PcInstance player, L2MerchantInstance storeMerchant)
+	@Deprecated
+	public PrivateStoreListSell(L2PcInstance player, L2MerchantInstance storeMerchant)
 	{
 		_activeChar = player;
 		_playerAdena = _activeChar.getAdena();
@@ -66,19 +62,16 @@ public class PrivateStoreListSell extends L2GameServerPacket
 			writeD(item.getItem().getType2());
 			writeD(item.getObjectId());
 			writeD(item.getItem().getItemId());
-            writeD(item.getCount());
+			writeD(item.getCount());
 			writeH(0x00);
 			writeH(item.getEnchant());
 			writeH(0x00);
 			writeD(item.getItem().getBodyPart());
-			writeD(item.getPrice()); //your price
-			writeD(item.getItem().getReferencePrice()); //store price
+			writeD(item.getPrice()); // your price
+			writeD(item.getItem().getReferencePrice()); // store price
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -81,7 +81,7 @@ public class ShowBoard extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x6e);
-		writeC(0x01); //c4 1 to show community 00 to hide
+		writeC(0x01); // c4 1 to show community 00 to hide
 		writeS("bypass _bbshome"); // top
 		writeS("bypass _bbsgetfav"); // favorite
 		writeS("bypass _bbsloc"); // region
@@ -92,12 +92,11 @@ public class ShowBoard extends L2GameServerPacket
 		writeS("bypass bbs_add_fav"); // add fav.
 		if (!_id.equals("1002"))
 		{
-			// getBytes is a very costy operation, and should only be called once
+			// getBytes is a very costly operation, and should only be called once
 			byte htmlBytes[] = null;
 			if (_htmlCode != null)
 				htmlBytes = _htmlCode.getBytes();
-			byte data[] = new byte[2 + 2 + 2 + _id.getBytes().length * 2 + 2
-				* ((_htmlCode != null) ? htmlBytes.length : 0)];
+			byte data[] = new byte[2 + 2 + 2 + _id.getBytes().length * 2 + 2 * ((_htmlCode != null) ? htmlBytes.length : 0)];
 			int i = 0;
 			for (int j = 0; j < _id.getBytes().length; j++, i += 2)
 			{
@@ -123,7 +122,7 @@ public class ShowBoard extends L2GameServerPacket
 			data[i] = 0;
 			i++;
 			data[i] = 0;
-			//writeS(_htmlCode); // current page
+			// writeS(_htmlCode); // current page
 			writeB(data);
 		}
 		else
@@ -132,15 +131,12 @@ public class ShowBoard extends L2GameServerPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__6E_SHOWBOARD;
 	}
-	
+
 	public static void separateAndSend(String html, L2PcInstance player)
 	{
 		if (html.length() < 4090)
@@ -148,21 +144,18 @@ public class ShowBoard extends L2GameServerPacket
 			player.sendPacket(new ShowBoard(html, "101"));
 			player.sendPacket(new ShowBoard(null, "102"));
 			player.sendPacket(new ShowBoard(null, "103"));
-			
 		}
 		else if (html.length() < 8180)
 		{
 			player.sendPacket(new ShowBoard(html.substring(0, 4090), "101"));
 			player.sendPacket(new ShowBoard(html.substring(4090, html.length()), "102"));
 			player.sendPacket(new ShowBoard(null, "103"));
-			
 		}
 		else if (html.length() < 12270)
 		{
 			player.sendPacket(new ShowBoard(html.substring(0, 4090), "101"));
 			player.sendPacket(new ShowBoard(html.substring(4090, 8180), "102"));
 			player.sendPacket(new ShowBoard(html.substring(8180, html.length()), "103"));
-			
 		}
 	}
 }

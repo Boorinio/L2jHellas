@@ -22,19 +22,20 @@ import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 
 /**
- * Format: (ch) dd [dddc]
- * d - manor id
- * d - size
- * [
- * d - crop id
- * d - sales
- * d - price
- * c - reward type
+ * Format: (ch) dd [dddc]<BR>
+ * d - manor id<BR>
+ * d - size<BR>
+ * [<BR>
+ * d - crop id<BR>
+ * d - sales<BR>
+ * d - price<BR>
+ * c - reward type<BR>
  * ]
+ * 
  * @author l3x
- *
  */
-public class RequestSetCrop extends L2GameClientPacket {
+public class RequestSetCrop extends L2GameClientPacket
+{
 	private static final String _C__D0_0B_REQUESTSETCROP = "[C] D0:0B RequestSetCrop";
 
 	private int _size;
@@ -68,7 +69,7 @@ public class RequestSetCrop extends L2GameClientPacket {
 	}
 
 	@Override
-    protected void runImpl()
+	protected void runImpl()
 	{
 		if (_size < 1)
 			return;
@@ -87,8 +88,7 @@ public class RequestSetCrop extends L2GameClientPacket {
 			}
 		}
 
-		CastleManager.getInstance().getCastleById(_manorId).setCropProcure(crops,
-				CastleManorManager.PERIOD_NEXT);
+		CastleManager.getInstance().getCastleById(_manorId).setCropProcure(crops, CastleManorManager.PERIOD_NEXT);
 		if (Config.ALT_MANOR_SAVE_ALL_ACTIONS)
 			CastleManager.getInstance().getCastleById(_manorId).saveCropData(CastleManorManager.PERIOD_NEXT);
 	}

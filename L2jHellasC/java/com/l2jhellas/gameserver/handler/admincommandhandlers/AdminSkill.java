@@ -50,19 +50,20 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 public class AdminSkill implements IAdminCommandHandler
 {
 	protected static final Logger _log = Logger.getLogger(AdminSkill.class.getName());
-	private static final String[] ADMIN_COMMANDS = {
-	"admin_show_skills",
-	"admin_remove_skills",
-	"admin_skill_list",
-	"admin_skill_index",
-	"admin_add_skill",
-	"admin_remove_skill",
-	"admin_get_skills",
-	"admin_reset_skills",
-	"admin_give_all_skills",
-	"admin_remove_all_skills",
-	"admin_add_clan_skill"
-	};
+	private static final String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
+		"admin_show_skills",
+		"admin_remove_skills",
+		"admin_skill_list",
+		"admin_skill_index",
+		"admin_add_skill",
+		"admin_remove_skill",
+		"admin_get_skills",
+		"admin_reset_skills",
+		"admin_give_all_skills",
+		"admin_remove_all_skills",
+		"admin_add_clan_skill"
+	};/** @formatter:on */
 
 	private static L2Skill[] adminSkills;
 
@@ -167,7 +168,7 @@ public class AdminSkill implements IAdminCommandHandler
 	/**
 	 * This function will give all the skills that the target can learn at
 	 * his/her level
-	 *
+	 * 
 	 * @param activeChar
 	 *        : the gm char
 	 */

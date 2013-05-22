@@ -15,25 +15,18 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- *
- * @author  devScarlet & mrTJO
+ * @author devScarlet & mrTJO
  */
 public class ServerClose extends L2GameServerPacket
 {
 	private static final String _S__26_SERVERCLOSE = "[S] 26 ServerClose";
 
-	/**
-	 * @see com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0x26);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

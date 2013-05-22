@@ -22,27 +22,28 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
- * <p>Format: (c) Sd
+ * <p>
+ * Format: (c) Sd
  * <ul>
  * <li>S: content</li>
  * <li>d: type</li>
- * </ul></p>
+ * </ul>
+ * </p>
+ * 
  * @author -Wooden-, TempyIncursion
- *
  */
 public final class RequestPetition extends L2GameClientPacket
 {
 	private static final String _C__7F_RequestPetition = "[C] 7F RequestPetition";
-	//private static Logger _log = Logger.getLogger(RequestPetition.class.getName());
 
 	private String _content;
-	private int _type;       // 1 = on : 0 = off;
+	private int _type; // 1 = on : 0 = off;
 
 	@Override
 	protected void readImpl()
 	{
 		_content = readS();
-		_type    = readD();
+		_type = readD();
 	}
 
 	@Override
@@ -110,10 +111,7 @@ public final class RequestPetition extends L2GameClientPacket
 		sm = null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
-	 @Override
+	@Override
 	public String getType()
 	{
 		return _C__7F_RequestPetition;

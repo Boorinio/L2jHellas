@@ -26,9 +26,11 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class Craft implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
-	L2SkillType.COMMON_CRAFT, L2SkillType.DWARVEN_CRAFT
-	};
+	private static final L2SkillType[] SKILL_IDS =
+	{/** @formatter:off */
+	L2SkillType.COMMON_CRAFT,
+	L2SkillType.DWARVEN_CRAFT
+	};/** @formatter:on */
 
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)

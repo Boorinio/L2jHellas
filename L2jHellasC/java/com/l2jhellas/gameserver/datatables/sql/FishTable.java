@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.FishData;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author -Nemesiss-
@@ -48,10 +48,8 @@ public class FishTable
 	{
 		// Create table that contains all fish data
 		int count = 0;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			_fishsEasy = new FastList<FishData>();
 			_fishsNormal = new FastList<FishData>();
 			_fishsHard = new FastList<FishData>();
@@ -95,16 +93,6 @@ public class FishTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + count + " Fishes.");

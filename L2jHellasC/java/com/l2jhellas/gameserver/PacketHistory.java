@@ -24,10 +24,10 @@ class PacketHistory
 {
 	@SuppressWarnings("rawtypes")
 	protected Map<Class, Long> _info;
-    protected long _timeStamp;
+	protected long _timeStamp;
 
-    protected static final XMLFormat<PacketHistory> PACKET_HISTORY_XML = new XMLFormat<PacketHistory>(PacketHistory.class)
-    {
+	protected static final XMLFormat<PacketHistory> PACKET_HISTORY_XML = new XMLFormat<PacketHistory>(PacketHistory.class)
+	{
 
 		@SuppressWarnings("rawtypes")
 		@Override
@@ -45,5 +45,5 @@ class PacketHistory
 			for (Class<?> cls : packetHistory._info.keySet())
 				xml.setAttribute(cls.getSimpleName(), packetHistory._info.get(cls));
 		}
-    };
+	};
 }

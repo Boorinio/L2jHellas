@@ -19,7 +19,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
  * @author zabbix
- * Lets drink to code!
+ *         Lets drink to code!
  */
 public class L2BlacksmithInstance extends L2FolkInstance
 {
@@ -36,7 +36,7 @@ public class L2BlacksmithInstance extends L2FolkInstance
 			int listId = Integer.parseInt(command.substring(9).trim());
 			L2Multisell.getInstance().SeparateAndSend(listId, player, false, getCastle().getTaxRate());
 		}
-		super.onBypassFeedback(player,command);
+		super.onBypassFeedback(player, command);
 	}
 
 	@Override
@@ -44,13 +44,9 @@ public class L2BlacksmithInstance extends L2FolkInstance
 	{
 		String pom = "";
 		if (val == 0)
-		{
 			pom = "" + npcId;
-		}
 		else
-		{
 			pom = npcId + "-" + val;
-		}
 
 		return "data/html/blacksmith/" + pom + ".htm";
 	}

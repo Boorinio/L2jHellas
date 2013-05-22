@@ -24,8 +24,9 @@ import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 public class QuizCmd implements IVoicedCommandHandler
 {
 
-	public static final String[] VOICED_COMMANDS = {
-	"quiz"
+	public static final String[] VOICED_COMMANDS =
+	{
+		"quiz"
 	};
 
 	@Override
@@ -51,5 +52,4 @@ public class QuizCmd implements IVoicedCommandHandler
 	{
 		return VOICED_COMMANDS;
 	}
-
 }

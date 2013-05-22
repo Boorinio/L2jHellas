@@ -16,60 +16,56 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 public class Ride extends L2GameServerPacket
 {
-    private static final String _S__86_Ride = "[S] 86 Ride";
-    public static final int ACTION_MOUNT = 1;
-    public static final int ACTION_DISMOUNT = 0;
-    private int _id;
-    private int _bRide;
-    private int _rideType;
-    private int _rideClassID;
+	private static final String _S__86_Ride = "[S] 86 Ride";
+	public static final int ACTION_MOUNT = 1;
+	public static final int ACTION_DISMOUNT = 0;
+	private final int _id;
+	private final int _bRide;
+	private int _rideType;
+	private final int _rideClassID;
 
-    public Ride(int id, int action, int rideClassId)
-    {
-        _id = id; // charobjectID
-        _bRide = action; // 1 for mount ; 2 for dismount
-        _rideClassID = rideClassId + 1000000; // npcID
+	public Ride(int id, int action, int rideClassId)
+	{
+		_id = id; // charobjectID
+		_bRide = action; // 1 for mount ; 2 for dismount
+		_rideClassID = rideClassId + 1000000; // npcID
 
-        if (rideClassId == 12526 || //wind strider
-            rideClassId == 12527 || //star strider
-            rideClassId == 12528) //twilight strider
-        {
-            _rideType = 1; // 1 for Strider ; 2 for wyvern
-        }
-        else if (rideClassId == 12621) // wyvern
-        {
-            _rideType = 2; // 1 for Strider ; 2 for wyvern
-        }
-    }
+		if (rideClassId == 12526 || // wind strider
+		rideClassId == 12527 || // star strider
+		rideClassId == 12528) // twilight strider
+		{
+			_rideType = 1; // 1 for Strider ; 2 for wyvern
+		}
+		else if (rideClassId == 12621) // wyvern
+		{
+			_rideType = 2; // 1 for Strider ; 2 for wyvern
+		}
+	}
 
-    @Override
-    public void runImpl()
-    {
+	@Override
+	public void runImpl()
+	{
 
-    }
+	}
 
-    public int getMountType()
-    {
-        return _rideType;
-    }
+	public int getMountType()
+	{
+		return _rideType;
+	}
 
-    @Override
+	@Override
 	protected final void writeImpl()
-    {
+	{
+		writeC(0x86);
+		writeD(_id);
+		writeD(_bRide);
+		writeD(_rideType);
+		writeD(_rideClassID);
+	}
 
-        writeC(0x86);
-        writeD(_id);
-        writeD(_bRide);
-        writeD(_rideType);
-        writeD(_rideClassID);
-    }
-
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-     */
-    @Override
+	@Override
 	public String getType()
-    {
-        return _S__86_Ride;
-    }
+	{
+		return _S__86_Ride;
+	}
 }

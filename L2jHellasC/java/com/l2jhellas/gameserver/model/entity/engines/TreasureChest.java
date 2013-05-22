@@ -21,7 +21,7 @@ public class TreasureChest
 	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
 	private static FastSet<L2NpcInstance> _Npcs = new FastSet<L2NpcInstance>();
 	private static int x = 87377, y = 20459, z = -5270, i;
-	
+
 	public static void registration()
 	{
 		ZodiacMain.ZodiacRegisterActive = true;
@@ -37,21 +37,16 @@ public class TreasureChest
 		waitSecs(60);
 		for (L2PcInstance players : L2World.getInstance().getAllPlayers())
 		{
-			
 			if (players.isinZodiac)
-			{
-				
 				_players.add(players);
-				
-			}
 		}
 		if (_players != null)
 			startevent();
 		else
 			Announcements.getInstance().announceToAll("Event was cancelled cause no one registered!");
-		
+
 	}
-	
+
 	public static void startevent()
 	{
 		ZodiacMain.ZodiacRegisterActive = false;
@@ -68,7 +63,7 @@ public class TreasureChest
 			_Npcs.add(npcs);
 		}
 	}
-	
+
 	public static void LuckyOne(L2PcInstance killer)
 	{
 		if (Rnd.get(40) == 2)
@@ -78,7 +73,7 @@ public class TreasureChest
 			cleanthemess();
 		}
 	}
-	
+
 	public static void cleanthemess()
 	{
 		for (L2PcInstance players : _players)
@@ -93,7 +88,7 @@ public class TreasureChest
 		_players.clear();
 		_Npcs.clear();
 	}
-	
+
 	public static void waitSecs(int i)
 	{
 		try
@@ -105,7 +100,7 @@ public class TreasureChest
 			ie.printStackTrace();
 		}
 	}
-	
+
 	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
 	{
 		L2NpcInstance result = null;

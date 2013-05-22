@@ -34,7 +34,8 @@ public class AdminDisconnect implements IAdminCommandHandler
 {
 	protected static final Logger _log = Logger.getLogger(AdminDisconnect.class.getName());
 
-	private static final String[] ADMIN_COMMANDS = {
+	private static final String[] ADMIN_COMMANDS =
+	{
 		"admin_character_disconnect"
 	};
 

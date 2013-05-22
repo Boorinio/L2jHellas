@@ -28,8 +28,7 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
- *
- * @author  chris_00
+ * @author chris_00
  */
 public class L2CommandChannel
 {
@@ -39,9 +38,8 @@ public class L2CommandChannel
 
 	/**
 	 * Creates a New Command Channel and Add the Leaders party to the CC
-	 *
+	 * 
 	 * @param CommandChannelLeader
-	 *
 	 */
 	public L2CommandChannel(L2PcInstance leader)
 	{
@@ -55,6 +53,7 @@ public class L2CommandChannel
 
 	/**
 	 * Adds a Party to the Command Channel
+	 * 
 	 * @param Party
 	 */
 	public void addParty(L2Party party)
@@ -68,6 +67,7 @@ public class L2CommandChannel
 
 	/**
 	 * Removes a Party from the Command Channel
+	 * 
 	 * @param Party
 	 */
 	public void removeParty(L2Party party)
@@ -81,10 +81,10 @@ public class L2CommandChannel
 		}
 		party.setCommandChannel(null);
 		party.broadcastToPartyMembers(new ExCloseMPCC());
-		if(_partys.size() < 2)
+		if (_partys.size() < 2)
 		{
 			SystemMessage sm = SystemMessage.sendString("The Command Channel was disbanded.");
-    		broadcastToChannelMembers(sm);
+			broadcastToChannelMembers(sm);
 			disbandChannel();
 		}
 	}
@@ -96,7 +96,7 @@ public class L2CommandChannel
 	{
 		for (L2Party party : _partys)
 		{
-			if(party != null)
+			if (party != null)
 				removeParty(party);
 		}
 		_partys = null;
@@ -110,7 +110,7 @@ public class L2CommandChannel
 		int count = 0;
 		for (L2Party party : _partys)
 		{
-			if(party != null)
+			if (party != null)
 				count += party.getMemberCount();
 		}
 		return count;
@@ -118,6 +118,7 @@ public class L2CommandChannel
 
 	/**
 	 * Broadcast packet to every channelmember
+	 * 
 	 * @param L2GameServerPacket
 	 */
 	public void broadcastToChannelMembers(L2GameServerPacket gsp)
@@ -126,22 +127,22 @@ public class L2CommandChannel
 		{
 			for (L2Party party : _partys)
 			{
-				if(party != null)
+				if (party != null)
 					party.broadcastToPartyMembers(gsp);
 			}
 		}
 	}
 
 	public void broadcastCSToChannelMembers(CreatureSay gsp, L2PcInstance broadcaster)
-	{ 
-		if (_partys != null && !_partys.isEmpty()) 
-		{ 
-			for (L2Party party : _partys) 
-			{ 
-				if(party != null) 
-					party.broadcastCSToPartyMembers(gsp, broadcaster); 
-			} 
-		} 
+	{
+		if (_partys != null && !_partys.isEmpty())
+		{
+			for (L2Party party : _partys)
+			{
+				if (party != null)
+					party.broadcastCSToPartyMembers(gsp, broadcaster);
+			}
+		}
 	}
 
 	/**
@@ -166,13 +167,16 @@ public class L2CommandChannel
 	}
 
 	/**
-	 *
 	 * @return Level of CC
 	 */
-	public int getLevel() { return _channelLvl; }
+	public int getLevel()
+	{
+		return _channelLvl;
+	}
 
 	/**
-	 * @param sets the leader of the Command Channel
+	 * @param sets
+	 *        the leader of the Command Channel
 	 */
 	public void setChannelLeader(L2PcInstance leader)
 	{
@@ -193,7 +197,7 @@ public class L2CommandChannel
 	 * Antharas: MemberCount > 225<br>
 	 * Valakas: MemberCount > 99<br>
 	 * normal RaidBoss: MemberCount > 18
-	 *
+	 * 
 	 * @param obj
 	 * @return true if proper condition for RaidWar
 	 */
@@ -201,22 +205,22 @@ public class L2CommandChannel
 	{
 		if (!(obj instanceof L2RaidBossInstance) || !(obj instanceof L2GrandBossInstance))
 			return false;
-		int npcId = ((L2Attackable)obj).getNpcId();
-		switch(npcId)
+		int npcId = ((L2Attackable) obj).getNpcId();
+		switch (npcId)
 		{
-	    	case 29001: // Queen Ant
-	    	case 29006: // Core
-	    	case 29014: // Orfen
-	    	case 29022: // Zaken
-	    		return (getMemberCount() > 36);
-	    	case 29020: // Baium
-	    		return (getMemberCount() > 56);
-	    	case 29019: // Antharas
-	    		return (getMemberCount() > 225);
-	    	case 29028: // Valakas
-	    		return (getMemberCount() > 99);
-	    	default: // normal Raidboss
-	    		return (getMemberCount() > 18);
+			case 29001: // Queen Ant
+			case 29006: // Core
+			case 29014: // Orfen
+			case 29022: // Zaken
+				return (getMemberCount() > 36);
+			case 29020: // Baium
+				return (getMemberCount() > 56);
+			case 29019: // Antharas
+				return (getMemberCount() > 225);
+			case 29028: // Valakas
+				return (getMemberCount() > 99);
+			default: // normal Raidboss
+				return (getMemberCount() > 18);
 		}
 	}
 }

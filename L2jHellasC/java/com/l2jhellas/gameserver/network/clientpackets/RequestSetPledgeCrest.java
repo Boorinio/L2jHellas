@@ -21,19 +21,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestSetPledgeCrest extends L2GameClientPacket
 {
 	private static final String _C__53_REQUESTSETPLEDGECREST = "[C] 53 RequestSetPledgeCrest";
@@ -113,16 +108,13 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 
 			if (!crestCache.savePledgeCrest(newId, _data))
 			{
-				_log.log(Level.INFO, "Error loading crest of clan:" + clan.getName());
+				_log.log(Level.WARNING, "Error loading crest of clan:" + clan.getName());
 				return;
 			}
 
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET crest_id = ? WHERE clan_id = ?");
+				PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET crest_id=? WHERE clan_id=?");
 				statement.setInt(1, newId);
 				statement.setInt(2, clan.getClanId());
 				statement.executeUpdate();
@@ -136,23 +128,12 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 
 			clan.setCrestId(newId);
 			clan.setHasCrest(true);
 
 			for (L2PcInstance member : clan.getOnlineMembers(""))
 				member.broadcastUserInfo();
-
 		}
 	}
 

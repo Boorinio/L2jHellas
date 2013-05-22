@@ -214,7 +214,7 @@ public class CommunityBoard
 		if (activeChar == null)
 			return;
 
-		if (Config.COMMUNITY_TYPE.equals("full"))
+		if (Config.COMMUNITY_TYPE.equals("Full"))
 		{
 			if (url.equals("Topic"))
 			{

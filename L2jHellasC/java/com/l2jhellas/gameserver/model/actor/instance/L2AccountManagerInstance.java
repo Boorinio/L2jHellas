@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,7 +26,6 @@ import javolution.text.TextBuilder;
 import Extensions.AccountManager.L2Emailer;
 
 import com.l2jhellas.Base64;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -33,6 +34,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class L2AccountManagerInstance extends L2FolkInstance
 {
@@ -40,16 +42,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 	{
 		super(objectId, template);
 	}
-	
+
 	class maildelay implements Runnable
 	{
 		private final L2PcInstance p;
-		
+
 		public maildelay(L2PcInstance player)
 		{
 			p = player;
 		}
-		
+
 		@Override
 		public void run()
 		{
@@ -67,20 +69,18 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				e.printStackTrace();
 			}
 			successhtml(p);
-			
 		}
-		
 	}
-	
+
 	class secmaildelay implements Runnable
 	{
 		private final L2PcInstance p;
-		
+
 		public secmaildelay(L2PcInstance player)
 		{
 			p = player;
 		}
-		
+
 		@Override
 		public void run()
 		{
@@ -100,16 +100,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			secsuccesshtml(p);
 		}
 	}
-	
+
 	class changemaildelay implements Runnable
 	{
 		private final L2PcInstance p;
-		
+
 		public changemaildelay(L2PcInstance player)
 		{
 			p = player;
 		}
-		
+
 		@Override
 		public void run()
 		{
@@ -129,7 +129,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			successchangehtml(p);
 		}
 	}
-	
+
 	@Override
 	public void onBypassFeedback(final L2PcInstance player, String command)
 	{
@@ -137,20 +137,20 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		{
 			return;
 		}
-		
+
 		if (command.startsWith("changeEmail"))
 		{
 			sendingHtml(player);
 			ThreadPoolManager.getInstance().scheduleGeneral(new changemaildelay(player), 1000);
 		}
-		
+
 		if (command.startsWith("generateCode"))
 		{
 			sendingHtml(player);
 			ThreadPoolManager.getInstance().scheduleGeneral(new maildelay(player), 1000);
-			
+
 		}
-		
+
 		if (command.startsWith("changeSec"))
 		{
 			if (!hasSubSec(player))
@@ -163,12 +163,12 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				ThreadPoolManager.getInstance().scheduleGeneral(new secmaildelay(player), 1000);
 			}
 		}
-		
+
 		if (command.startsWith("forgPass"))
 		{
 			forgPassHtml(player);
 		}
-		
+
 		if (command.startsWith("change_password"))
 		{
 			StringTokenizer st = new StringTokenizer(command);
@@ -193,7 +193,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 			}
 		}
-		
+
 		if (command.startsWith("change_sec"))
 		{
 			StringTokenizer st = new StringTokenizer(command);
@@ -218,7 +218,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 			}
 		}
-		
+
 		if (command.startsWith("resetPass"))
 		{
 			StringTokenizer st = new StringTokenizer(command);
@@ -233,7 +233,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 					acc = st.nextToken();
 					cha = st.nextToken();
 					ans = st.nextToken();
-					
+
 				}
 				else
 				{
@@ -246,7 +246,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 			}
 		}
-		
+
 		if (command.startsWith("change_email"))
 		{
 			StringTokenizer st = new StringTokenizer(command);
@@ -271,7 +271,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 			}
 		}
-		
+
 		if (command.startsWith("submitcode"))
 		{
 			try
@@ -280,18 +280,17 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				StringTokenizer s = new StringTokenizer(value, " ");
 				int _code = 0;
 				int _dbcode = getCode(player);
-				
+
 				try
 				{
-					
 					_code = Integer.parseInt(s.nextToken());
-					
+
 					if (Integer.toString(_code).length() != 4)
 					{
 						player.sendMessage("You have to fill the pin box with 4 numbers.Not more, not less.");
 						return;
 					}
-					
+
 					if (_code == _dbcode)
 					{
 						changepasshtml(player);
@@ -300,9 +299,8 @@ public class L2AccountManagerInstance extends L2FolkInstance
 					{
 						player.sendMessage("The code we sent and the code you submitted does not match. You are not able to change your pass. Try again.");
 					}
-					
 				}
-				
+
 				catch (Exception e)
 				{
 					player.sendMessage("The Code must be 4 numbers.");
@@ -312,9 +310,8 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 				player.sendMessage("The Code must be 4 numbers.");
 			}
-			
 		}
-		
+
 		if (command.startsWith("submitchangecode"))
 		{
 			try
@@ -323,18 +320,17 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				StringTokenizer s = new StringTokenizer(value, " ");
 				int _code = 0;
 				int _dbcode = getMailCode(player);
-				
+
 				try
 				{
-					
 					_code = Integer.parseInt(s.nextToken());
-					
+
 					if (Integer.toString(_code).length() != 4)
 					{
 						player.sendMessage("You have to fill the pin box with 4 numbers.Not more, not less.");
 						return;
 					}
-					
+
 					if (_code == _dbcode)
 					{
 						changeemailhtml(player);
@@ -343,9 +339,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 					{
 						player.sendMessage("The code we sent and the code you submitted does not match. You are not able to change your email. Try again.");
 					}
-					
 				}
-				
 				catch (Exception e)
 				{
 					player.sendMessage("The Code must be 4 numbers.");
@@ -356,7 +350,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				player.sendMessage("The Code must be 4 numbers.");
 			}
 		}
-		
+
 		if (command.startsWith("submitseccode"))
 		{
 			try
@@ -365,17 +359,17 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				StringTokenizer s = new StringTokenizer(value, " ");
 				int _code = 0;
 				int _dbcode = getSecCode(player);
-				
+
 				try
 				{
 					_code = Integer.parseInt(s.nextToken());
-					
+
 					if (Integer.toString(_code).length() != 4)
 					{
 						player.sendMessage("You have to fill the pin box with 4 numbers.Not more, not less.");
 						return;
 					}
-					
+
 					if (_code == _dbcode)
 					{
 						changesechtml(player);
@@ -384,9 +378,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 					{
 						player.sendMessage("The code we sent and the code you submitted does not match. You are not able to change your security answer. Try again.");
 					}
-					
 				}
-				
 				catch (Exception e)
 				{
 					player.sendMessage("The Code must be 4 numbers.");
@@ -397,7 +389,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				player.sendMessage("The Code must be 4 numbers.");
 			}
 		}
-		
+
 		if (command.startsWith("submitemail"))
 		{
 			try
@@ -406,38 +398,25 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				StringTokenizer s = new StringTokenizer(value, " ");
 				String email1 = null;
 				// String email2 = null;
-				
+
 				try
 				{
 					email1 = s.nextToken();
 					// email2 = s.nextToken();
-					
+
 					try
 					{
-						Connection con = null;
-						try
+						try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 						{
-							con = L2DatabaseFactory.getInstance().getConnection();
-							
 							PreparedStatement statement = con.prepareStatement("UPDATE characters SET email=? WHERE obj_Id=?");
 							statement.setString(1, email1);
 							statement.setInt(2, player.getObjectId());
 							statement.execute();
 							statement.close();
-							
+
 						}
 						catch (Exception e)
 						{
-						}
-						finally
-						{
-							try
-							{
-								con.close();
-							}
-							catch (Exception e)
-							{
-							}
 						}
 						player.sendMessage("We successfully added your email " + email1 + " to our database");
 						setHasSubEmail(player);
@@ -445,9 +424,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 					catch (Exception e)
 					{
 					}
-					
 				}
-				
 				catch (Exception e)
 				{
 					player.sendMessage("Something went wrong.");
@@ -457,9 +434,8 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 				player.sendMessage("Something went wrong.");
 			}
-			
 		}
-		
+
 		if (command.startsWith("submitanswer"))
 		{
 			try
@@ -468,47 +444,25 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				StringTokenizer s = new StringTokenizer(value, " ");
 				String answer = null;
 				// String email2 = null;
-				
+
 				try
 				{
 					answer = s.nextToken();
-					
-					try
+
+					try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 					{
-						Connection con = null;
-						try
-						{
-							con = L2DatabaseFactory.getInstance().getConnection();
-							
-							PreparedStatement statement = con.prepareStatement("UPDATE characters SET answer=? WHERE obj_Id=?");
-							statement.setString(1, answer);
-							statement.setInt(2, player.getObjectId());
-							statement.execute();
-							statement.close();
-							
-						}
-						catch (Exception e)
-						{
-						}
-						finally
-						{
-							try
-							{
-								con.close();
-							}
-							catch (Exception e)
-							{
-							}
-						}
-						player.sendMessage("We successfully added your security answer " + answer + " to our database");
-						setHasSubSec(player);
+						PreparedStatement statement = con.prepareStatement("UPDATE characters SET answer=? WHERE obj_Id=?");
+						statement.setString(1, answer);
+						statement.setInt(2, player.getObjectId());
+						statement.execute();
+						statement.close();
 					}
 					catch (Exception e)
 					{
 					}
-					
+					player.sendMessage("We successfully added your security answer " + answer + " to our database");
+					setHasSubSec(player);
 				}
-				
 				catch (Exception e)
 				{
 					player.sendMessage("Something went wrong.");
@@ -518,9 +472,9 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 				player.sendMessage("Something went wrong.");
 			}
-			
+
 		}
-		
+
 		if (command.startsWith("addSec"))
 		{
 			if (hasSubSec(player))
@@ -528,7 +482,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			else
 				addSecHtml(player);
 		}
-		
+
 		if (command.startsWith("forgSec"))
 		{
 			if (!hasSubSec(player))
@@ -538,16 +492,13 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			else
 			{
 				String answer = null;
-				Connection con = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
-					
 					PreparedStatement statement = con.prepareStatement("SELECT answer FROM characters WHERE obj_Id=?");
 					statement.setInt(1, player.getObjectId());
-					
+
 					ResultSet rset = statement.executeQuery();
-					
+
 					while (rset.next())
 					{
 						answer = rset.getString("answer");
@@ -556,16 +507,6 @@ public class L2AccountManagerInstance extends L2FolkInstance
 				}
 				catch (Exception e)
 				{
-				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
-					}
 				}
 				String[] email =
 				{
@@ -583,12 +524,12 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			}
 		}
 	}
-	
+
 	public void addSecHtml(L2PcInstance player)
 	{
 		TextBuilder tb = new TextBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
-		
+
 		tb.append("<html><head><title>Add Security Question</title></head>");
 		tb.append("<body>");
 		tb.append("<center>");
@@ -616,30 +557,26 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("<img src=\"l2ui_ch3.herotower_deco\" width=256 height=32 align=center>");
 		tb.append("</center>");
 		tb.append("</body></html>");
-		
+
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
 	}
-	
+
 	private boolean hasSubSec(L2PcInstance player)
 	{
 		int hasSubSec = -1;
-		Connection con = null;
-		
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("SELECT hasSubSec FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				hasSubSec = rset.getInt("hasSubSec");
 			}
-			
+
 			if (hasSubSec == 1)
 				return true;
 			else if (hasSubSec == 0)
@@ -648,19 +585,9 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return false;
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
@@ -668,13 +595,13 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		{
 			return;
 		}
-		
+
 		if (this != player.getTarget())
 		{
 			player.setTarget(this);
-			
+
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
-			
+
 			player.sendPacket(new ValidateLocation(this));
 		}
 		else if (!canInteract(player))
@@ -685,26 +612,25 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		{
 			showHtmlWindow(player);
 		}
-		
+
 		player.sendPacket(new ActionFailed());
 	}
-	
+
 	private void showHtmlWindow(L2PcInstance activeChar)
 	{
 		if (hasSubEmail(activeChar))
 			mainHtml(activeChar);
 		else
 			subhtml(activeChar);
-		
+
 		activeChar.sendPacket(new ActionFailed());
 	}
-	
+
 	private void sendingHtml(L2PcInstance activeChar)
 	{
-		
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><head><title>Please Wait</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -716,17 +642,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("</table>");
 		tb.append("</center>");
 		tb.append("</body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-	
+
 	void secsuccesshtml(L2PcInstance activeChar)
 	{
-		
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><head><title>Success!</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -749,17 +674,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("</center>");
 		tb.append("<br>");
 		tb.append("</body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-	
+
 	void successchangehtml(L2PcInstance activeChar)
 	{
-		
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><head><title>Success!</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -782,17 +706,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("</center>");
 		tb.append("<br>");
 		tb.append("</body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-	
+
 	void successhtml(L2PcInstance activeChar)
 	{
-		
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><head><title>Success!</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -815,17 +738,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("</center>");
 		tb.append("<br>");
 		tb.append("</body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-	
+
 	private void mainHtml(L2PcInstance activeChar)
 	{
-		
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><head><title>Account manager</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -844,32 +766,28 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("<button value=\"Change Email Address\" action=\"bypass -h npc_" + getObjectId() + "_changeEmail\" width=204 height=21 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
 		tb.append("<button value=\"Forgot My Password\" action=\"bypass -h npc_" + getObjectId() + "_forgPass\" width=204 height=21 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
 		tb.append("</center>");
-		
+
 		tb.append("</body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-	
+
 	public static boolean hasSubEmail(L2PcInstance player)
 	{
 		int hasSubEmail = -1;
-		Connection con = null;
-		
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("SELECT hasSubEmail FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				hasSubEmail = rset.getInt("hasSubEmail");
 			}
-			
+
 			if (hasSubEmail == 1)
 				return true;
 			else if (hasSubEmail == 0)
@@ -878,325 +796,189 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return false;
 	}
-	
+
 	public static void setHasSubEmail(L2PcInstance player)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasSubEmail=? WHERE obj_Id=?");
 			statement.setInt(1, 1);
 			statement.setInt(2, player.getObjectId());
 			statement.execute();
 			statement.close();
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
-	
+
 	private void setHasSubSec(L2PcInstance player)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasSubSec=? WHERE obj_Id=?");
 			statement.setInt(1, 1);
 			statement.setInt(2, player.getObjectId());
 			statement.execute();
 			statement.close();
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
-	
+
 	public void generateCode(L2PcInstance player)
 	{
 		int code = Rnd.get(1000, 9999);
-		Connection con = null;
-		
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET emailcode=? WHERE obj_Id=?");
 			statement.setInt(1, code);
 			statement.setInt(2, player.getObjectId());
 			statement.execute();
 			statement.close();
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-		
 	}
-	
+
 	public void generatechangeCode(L2PcInstance player)
 	{
 		int code = Rnd.get(1000, 9999);
-		Connection con = null;
-		
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET emailchangecode=? WHERE obj_Id=?");
 			statement.setInt(1, code);
 			statement.setInt(2, player.getObjectId());
 			statement.execute();
 			statement.close();
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-		
 	}
-	
+
 	public void generateSecCode(L2PcInstance player)
 	{
 		int code = Rnd.get(1000, 9999);
-		Connection con = null;
-		
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET secCode=? WHERE obj_Id=?");
 			statement.setInt(1, code);
 			statement.setInt(2, player.getObjectId());
 			statement.execute();
 			statement.close();
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-		
 	}
-	
+
 	public int getCode(L2PcInstance player)
 	{
 		int code = -1;
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			statement = con.prepareStatement("SELECT emailcode FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				code = rset.getInt("emailcode");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return code;
 	}
-	
+
 	public int getMailCode(L2PcInstance player)
 	{
 		int code = -1;
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			statement = con.prepareStatement("SELECT emailchangecode FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				code = rset.getInt("emailchangecode");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return code;
 	}
-	
+
 	public int getChangeCode(L2PcInstance player)
 	{
 		int code = -1;
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			statement = con.prepareStatement("SELECT emailchangecode FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				code = rset.getInt("emailchangecode");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return code;
 	}
-	
+
 	public int getSecCode(L2PcInstance player)
 	{
 		int code = -1;
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			statement = con.prepareStatement("SELECT secCode FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				code = rset.getInt("secCode");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return code;
 	}
-	
+
 	public void changesechtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><title>Change your security answer.</title>");
 		tb.append("<body>");
 		tb.append("<center>");
@@ -1212,16 +994,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("Repeat New Answer: <edit var=\"repeatnew\" width=100 height=15><br><br>");
 		tb.append("<button value=\"Change Answer\" action=\"bypass -h npc_" + getObjectId() + "_change_sec $new $repeatnew\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\">");
 		tb.append("</center></body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
 	}
-	
+
 	public void forgPassHtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><title>Forgot my password.</title>");
 		tb.append("<body>");
 		tb.append("<center>");
@@ -1237,16 +1019,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("Char's Security Answer: <edit var=\"ans\" width=100 height=15><br><br>");
 		tb.append("<button value=\"Reset Password\" action=\"bypass -h npc_" + getObjectId() + "_resetPass $acc $cha $ans\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\">");
 		tb.append("</center></body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
 	}
-	
+
 	public void changepasshtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><title>Change your pass.</title>");
 		tb.append("<body>");
 		tb.append("<center>");
@@ -1261,16 +1043,16 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("Repeat New Password: <edit var=\"repeatnew\" width=100 height=15><br><br>");
 		tb.append("<button value=\"Change Password\" action=\"bypass -h npc_" + getObjectId() + "_change_password $new $repeatnew\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\">");
 		tb.append("</center></body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
 	}
-	
+
 	public void changeemailhtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
-		
+
 		tb.append("<html><title>Change your Email.</title>");
 		tb.append("<body>");
 		tb.append("<center>");
@@ -1285,11 +1067,11 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("Repeat New Email: <multiedit var=\"repeatnew\" width=150 height=15><br><br>");
 		tb.append("<button value=\"Change Email\" action=\"bypass -h npc_" + getObjectId() + "_change_email $new $repeatnew\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\">");
 		tb.append("</center></body></html>");
-		
+
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
 	}
-	
+
 	public static boolean changePassword(String newPass, String repeatNewPass, L2PcInstance activeChar)
 	{
 		if (newPass.length() < 5)
@@ -1307,16 +1089,13 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			activeChar.sendMessage("Repeated password doesn't match the new password.");
 			return false;
 		}
-		
-		Connection con = null;
-		try
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			
 			MessageDigest md = MessageDigest.getInstance("SHA");
 			byte[] password = newPass.getBytes("UTF-8");
 			password = md.digest(password);
-			
-			con = L2DatabaseFactory.getInstance().getConnection();
+
 			PreparedStatement statement = con.prepareStatement("UPDATE accounts SET password=? WHERE login=?");
 			statement.setString(1, Base64.encodeBytes(password));
 			statement.setString(2, activeChar.getAccountName());
@@ -1328,105 +1107,68 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		{
 			_log.warning("could not update the password of account: " + activeChar.getAccountName());
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return true;
 	}
-	
+
 	public static boolean resetPass(String acc, String ans, String cha, L2PcInstance activeChar)
 	{
 		String answer = null;
 		String email = null;
-		Connection con = null;
-		
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("SELECT answer FROM characters WHERE account_name=?,char_name=?");
 			statement.setString(1, acc);
 			statement.setString(2, cha);
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				answer = rset.getString("answer");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-		
+
 		if (!ans.equalsIgnoreCase(answer))
 		{
 			activeChar.sendMessage("The answer we have in our database with the one you submitted does not fit. Please try again");
 			return false;
 		}
-		
-		try
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			PreparedStatement statement = con.prepareStatement("SELECT email FROM characters WHERE account_name=?");
 			statement.setString(1, acc);
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				email = rset.getString("email");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-		
-		try
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			String newPass = Integer.toString(Rnd.get(1000000, 9999999));
-			
+
 			MessageDigest md = MessageDigest.getInstance("SHA");
 			byte[] password = newPass.getBytes("UTF-8");
 			password = md.digest(password);
-			
-			con = L2DatabaseFactory.getInstance().getConnection();
+
 			PreparedStatement statement2 = con.prepareStatement("UPDATE accounts SET password=? WHERE login=?");
 			statement2.setString(1, Base64.encodeBytes(password));
 			statement2.setString(2, acc);
 			statement2.execute();
 			statement2.close();
-			
+
 			String[] mail =
 			{
 				email
@@ -1439,29 +1181,18 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			{
 				e.printStackTrace();
 			}
-			
+
 			activeChar.sendMessage("Congratulations! The password of the account " + acc + " has been reset succesfully. Go to your email and get your new password!");
 		}
 		catch (Exception e)
 		{
 			_log.warning("could not update the password of account: " + activeChar.getAccountName());
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return true;
 	}
-	
+
 	public static boolean changeAnswer(String newSec, String repeatNewSec, L2PcInstance activeChar)
 	{
-		
 		if (newSec.length() > 50)
 		{
 			activeChar.sendMessage("The new answer is too long!");
@@ -1472,12 +1203,9 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			activeChar.sendMessage("Repeated answer doesn't match the new answer.");
 			return false;
 		}
-		
-		Connection con = null;
-		try
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET answer=? WHERE obj_Id=?");
 			statement.setString(1, newSec);
 			statement.setInt(2, activeChar.getObjectId());
@@ -1489,22 +1217,11 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		{
 			_log.warning("could not update the answer of account: " + activeChar.getAccountName());
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return true;
 	}
-	
+
 	public static boolean changeEmail(String newMail, String repeatNewMail, L2PcInstance activeChar)
 	{
-		
 		if (newMail.length() > 50)
 		{
 			activeChar.sendMessage("The new email is too long!");
@@ -1515,12 +1232,9 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			activeChar.sendMessage("Repeated email doesn't match the new email.");
 			return false;
 		}
-		
-		Connection con = null;
-		try
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET email=? WHERE obj_Id=?");
 			statement.setString(1, newMail);
 			statement.setInt(2, activeChar.getObjectId());
@@ -1532,60 +1246,37 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		{
 			_log.warning("could not update the email of account: " + activeChar.getAccountName());
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return true;
 	}
-	
+
 	public static String getEmailAddress(L2PcInstance player)
 	{
 		String email = null;
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			
 			statement = con.prepareStatement("SELECT email FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-			
+
 			ResultSet rset = statement.executeQuery();
-			
+
 			while (rset.next())
 			{
 				email = rset.getString("email");
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return email;
 	}
-	
+
 	public void subhtml(L2PcInstance player)
 	{
 		TextBuilder tb = new TextBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
-		
+
 		tb.append("<html><head><title>Submit your Email</title></head>");
 		tb.append("<body>");
 		tb.append("<center>");
@@ -1612,7 +1303,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		tb.append("<img src=\"l2ui_ch3.herotower_deco\" width=256 height=32 align=center>");
 		tb.append("</center>");
 		tb.append("</body></html>");
-		
+
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
 	}

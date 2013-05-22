@@ -32,20 +32,20 @@ public class SkillEnchant extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
-		
-		for(L2Skill s : player.getAllSkills())
+
+		for (L2Skill s : player.getAllSkills())
 		{
 			String lvl = String.valueOf(s.getLevel());
-			if(lvl.length() > 2)
+			if (lvl.length() > 2)
 			{
 				int sklvl = Integer.parseInt(lvl.substring(1));
-				if(sklvl>=val)
+				if (sklvl >= val)
 					return true;
 			}
 		}
-	
+
 		return false;
 	}
 }

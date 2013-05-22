@@ -37,7 +37,7 @@ public class L2StaticObjectInstance extends L2Object
 	public static final int INTERACTION_DISTANCE = 150;
 
 	private int _staticObjectId;
-	private int _type = -1;         // 0 - map signs, 1 - throne , 2 - arena signs
+	private int _type = -1; // 0 - map signs, 1 - throne , 2 - arena signs
 	private int _x;
 	private int _y;
 	private String _texture;
@@ -59,8 +59,6 @@ public class L2StaticObjectInstance extends L2Object
 		_staticObjectId = StaticObjectId;
 	}
 
-	/**
-     */
 	public L2StaticObjectInstance(int objectId)
 	{
 		super(objectId);
@@ -96,7 +94,7 @@ public class L2StaticObjectInstance extends L2Object
 
 	/**
 	 * this is called when a player interacts with this NPC
-	 *
+	 * 
 	 * @param player
 	 */
 	@Override
@@ -110,11 +108,9 @@ public class L2StaticObjectInstance extends L2Object
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
-
 		}
 		else
 		{
-
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
 
@@ -149,7 +145,6 @@ public class L2StaticObjectInstance extends L2Object
 				player.sendPacket(new ActionFailed());
 			}
 		}
-
 	}
 
 	@Override

@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -35,6 +34,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author yellowperil & Fulminus
@@ -72,7 +72,8 @@ public class MercTicketManager
 	// TODO move all these values into siege.ini
 	// max tickets per merc type = 10 + (castleid * 2)?
 	// max ticker per castle = 40 + (castleid * 20)?
-	private static final int[] MAX_MERC_PER_TYPE = {
+	private static final int[] MAX_MERC_PER_TYPE =
+	{
 	10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, // Gludio
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, // Dion
 	10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, // Giran
@@ -84,7 +85,8 @@ public class MercTicketManager
 	20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
 	// Schuttgart
 	};
-	private static final int[] MERCS_MAX_PER_CASTLE = {
+	private static final int[] MERCS_MAX_PER_CASTLE =
+	{
 	100,  // Gludio
 	150,  // Dion
 	200, // Giran
@@ -97,7 +99,8 @@ public class MercTicketManager
 	// Schuttgart
 	};
 
-	private static final int[] ITEM_IDS = {
+	private static final int[] ITEM_IDS =
+	{
 	3960, 3961, 3962, 3963, 3964, 3965, 3966, 3967, 3968, 3969, 6038, 6039, 6040, 6041, 6042, 6043, 6044, 6045, 6046, 6047, 	// Gludio
 	3973, 3974, 3975, 3976, 3977, 3978, 3979, 3980, 3981, 3982, 6051, 6052, 6053, 6054, 6055, 6056, 6057, 6058, 6059, 6060, 	// Dion
 	3986, 3987, 3988, 3989, 3990, 3991, 3992, 3993, 3994, 3995, 6064, 6065, 6066, 6067, 6068, 6069, 6070, 6071, 6072, 6073, 	// Giran
@@ -110,7 +113,8 @@ public class MercTicketManager
 	// Schuttgart
 	};
 
-	private static final int[] NPC_IDS = {
+	private static final int[] NPC_IDS =
+	{
 	35010, 35011, 35012, 35013, 35014, 35015, 35016, 35017, 35018, 35019, 35030, 35031, 35032, 35033, 35034, 35035, 35036, 35037, 35038, 35039, // Gludio
 	35010, 35011, 35012, 35013, 35014, 35015, 35016, 35017, 35018, 35019, 35030, 35031, 35032, 35033, 35034, 35035, 35036, 35037, 35038, 35039, // Dion
 	35010, 35011, 35012, 35013, 35014, 35015, 35016, 35017, 35018, 35019, 35030, 35031, 35032, 35033, 35034, 35035, 35036, 35037, 35038, 35039, // Giran
@@ -159,14 +163,11 @@ public class MercTicketManager
 
 	private final void load()
 	{
-		Connection con = null;
 		// load merc tickets into the world
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
-
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE isHired = 1");
 			rs = statement.executeQuery();
 
@@ -219,16 +220,6 @@ public class MercTicketManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

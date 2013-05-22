@@ -25,11 +25,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
-/**
- * This class ...
- *
- * @version $Revision: 1.7.2.4.2.9 $ $Date: 2005/04/11 10:05:54 $
- */
+
 public final class NpcInfo extends L2GameServerPacket
 {
 	private static final String _S__22_NPCINFO = "[S] 16 NpcInfo";
@@ -40,14 +36,14 @@ public final class NpcInfo extends L2GameServerPacket
 	private int _mAtkSpd, _pAtkSpd;
 	private int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd, _flyWalkSpd;
 	private int _rhand, _lhand, _chest, _val;
-    private int _collisionHeight, _collisionRadius;
-    private String _name = "";
-    private L2Summon _summon;
-    private String _title = "";
-    int _clanCrest = 0;
-    int _allyCrest = 0;
-    int _allyId = 0;
-    int _clanId = 0;
+	private int _collisionHeight, _collisionRadius;
+	private String _name = "";
+	private L2Summon _summon;
+	private String _title = "";
+	int _clanCrest = 0;
+	int _allyCrest = 0;
+	int _allyId = 0;
+	int _clanId = 0;
 	private int _form = 0;
 
 	/**
@@ -55,68 +51,66 @@ public final class NpcInfo extends L2GameServerPacket
 	 */
 	public NpcInfo(L2NpcInstance cha, L2Character attacker)
 	{
-		    if(cha.getMxcPoly() != null)
-		    {
-			        attacker.sendPacket(new MxCPolyInfo(cha));
-			        return;
-		    }
-		
-		
+		if (cha.getMxcPoly() != null)
+		{
+			attacker.sendPacket(new MxCPolyInfo(cha));
+			return;
+		}
+
 		_activeChar = cha;
 		_idTemplate = cha.getTemplate().idTemplate;
 		_isAttackable = cha.isAutoAttackable(attacker);
-		_rhand = cha.getRightHandItem(); 
-		_lhand = cha.getLeftHandItem(); 
+		_rhand = cha.getRightHandItem();
+		_lhand = cha.getLeftHandItem();
 		_isSummoned = false;
-        _collisionHeight = cha.getCollisionHeight();
-        _collisionRadius = cha.getCollisionRadius();
-        if (cha.getTemplate().serverSideName)
-        	_name = cha.getTemplate().name;
+		_collisionHeight = cha.getCollisionHeight();
+		_collisionRadius = cha.getCollisionRadius();
+		if (cha.getTemplate().serverSideName)
+			_name = cha.getTemplate().name;
 
-        if (cha.isChampion())
+		if (cha.isChampion())
 			_title = (Config.CHAMPION_TITLE);
-        else if (cha.getTemplate().serverSideTitle)
-    		_title = cha.getTemplate().title;
-    	else
-    		_title = cha.getTitle();
+		else if (cha.getTemplate().serverSideTitle)
+			_title = cha.getTemplate().title;
+		else
+			_title = cha.getTitle();
 
-        if (Config.SHOW_NPC_LVL && _activeChar instanceof L2MonsterInstance)
-	    {
+		if (Config.SHOW_NPC_LVL && _activeChar instanceof L2MonsterInstance)
+		{
 			String t = "Lv " + cha.getLevel() + (cha.getAggroRange() > 0 ? "*" : "");
 			if (_title != null)
 				t += " " + _title;
 
 			_title = t;
-	    }
-        
-        		if(ExternalConfig.SHOW_NPC_CREST)
-        			{
-        				if(cha instanceof L2NpcInstance && cha.isInsideZone(L2Character.ZONE_PEACE) && cha.getCastle().getOwnerId() != 0)
-        				{
-        					int _x,_y,_z;
-        					_x = cha.getX();
-        					_y = cha.getY();
-        					_z = cha.getZ();
-        					L2TownZone Town;
-				Town = TownManager.getTown(_x, _y, _z);
-        					if(Town != null)
-        					{
-        						int townId = Town.getTownId();
-        						if(townId != 33 && townId != 22)
-        						{
-        							L2Clan clan;
-        							clan = ClanTable.getInstance().getClan(cha.getCastle().getOwnerId());
-        							_clanCrest = clan.getCrestId();
-        							_clanId = clan.getClanId();
-        							_allyCrest = clan.getAllyCrestId();
-        							_allyId = clan.getAllyId();
-        					}
-        					}
-        				}
-        			}
-        	
+		}
 
-        _x = _activeChar.getX();
+		if (ExternalConfig.SHOW_NPC_CREST)
+		{
+			if (cha instanceof L2NpcInstance && cha.isInsideZone(L2Character.ZONE_PEACE) && cha.getCastle().getOwnerId() != 0)
+			{
+				int _x, _y, _z;
+				_x = cha.getX();
+				_y = cha.getY();
+				_z = cha.getZ();
+				L2TownZone Town;
+				Town = TownManager.getTown(_x, _y, _z);
+				if (Town != null)
+				{
+					int townId = Town.getTownId();
+					if (townId != 33 && townId != 22)
+					{
+						L2Clan clan;
+						clan = ClanTable.getInstance().getClan(cha.getCastle().getOwnerId());
+						_clanCrest = clan.getCrestId();
+						_clanId = clan.getClanId();
+						_allyCrest = clan.getAllyCrestId();
+						_allyId = clan.getAllyId();
+					}
+				}
+			}
+		}
+
+		_x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
 		_heading = _activeChar.getHeading();
@@ -133,36 +127,36 @@ public final class NpcInfo extends L2GameServerPacket
 		_activeChar = cha;
 		_summon = cha;
 		_idTemplate = cha.getTemplate().idTemplate;
-		_isAttackable = cha.isAutoAttackable(attacker); //(cha.getKarma() > 0);
+		_isAttackable = cha.isAutoAttackable(attacker); // (cha.getKarma() > 0);
 		_rhand = cha.getWeapon();
 		_lhand = 0;
 		setChest(cha.getArmor());
 		setVal(val);
-        _collisionHeight = _activeChar.getTemplate().collisionHeight;
-        _collisionRadius = _activeChar.getTemplate().collisionRadius;
-        _name = cha.getName();
-        _title = cha.getOwner() != null ? (cha.getOwner().isOnline() == 0 ? "" : cha.getOwner().getName()) : ""; // when owner online, summon will show in title owner name
-        int npcId = _summon.getTemplate().npcId;
-        if (npcId == 16041 || npcId == 16042)
-        {
-        	if(_summon.getLevel() > 84)
-        		setForm(3);
-        	else if(_summon.getLevel() > 79) 
-        		setForm(2);
-        	else if(_summon.getLevel() > 74)
-        		setForm(1);
-        }
-        else if (npcId == 16025 || npcId == 16037)
-        {
-        	if(_summon.getLevel() > 69)
-        		setForm(3);
-        	else if(_summon.getLevel() > 64) 
-        		setForm(2);
-        	else if(_summon.getLevel() > 59) 
-        		setForm(1);
-        }
+		_collisionHeight = _activeChar.getTemplate().collisionHeight;
+		_collisionRadius = _activeChar.getTemplate().collisionRadius;
+		_name = cha.getName();
+		_title = cha.getOwner() != null ? (cha.getOwner().isOnline() == 0 ? "" : cha.getOwner().getName()) : ""; // when owner online, summon will show in title owner name
+		int npcId = _summon.getTemplate().npcId;
+		if (npcId == 16041 || npcId == 16042)
+		{
+			if (_summon.getLevel() > 84)
+				setForm(3);
+			else if (_summon.getLevel() > 79)
+				setForm(2);
+			else if (_summon.getLevel() > 74)
+				setForm(1);
+		}
+		else if (npcId == 16025 || npcId == 16037)
+		{
+			if (_summon.getLevel() > 69)
+				setForm(3);
+			else if (_summon.getLevel() > 64)
+				setForm(2);
+			else if (_summon.getLevel() > 59)
+				setForm(1);
+		}
 
-        _x = _activeChar.getX();
+		_x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
 		_heading = _activeChar.getHeading();
@@ -173,24 +167,24 @@ public final class NpcInfo extends L2GameServerPacket
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
-	
+
 	public NpcInfo(L2Summon cha, L2Character attacker)
 	{
 		_activeChar = cha;
 		_idTemplate = cha.getTemplate().idTemplate;
-		_isAttackable = cha.isAutoAttackable(attacker); //(cha.getKarma() > 0);
+		_isAttackable = cha.isAutoAttackable(attacker); // (cha.getKarma() > 0);
 		_rhand = 0;
 		_lhand = 0;
 		_isSummoned = cha.isShowSummonAnimation();
-        _collisionHeight = _activeChar.getTemplate().collisionHeight;
-        _collisionRadius = _activeChar.getTemplate().collisionRadius;
-        if (cha.getTemplate().serverSideName || cha instanceof L2PetInstance)
-    	{
-            _name = _activeChar.getName();
-    		_title = cha.getTitle();
-    	}
+		_collisionHeight = _activeChar.getTemplate().collisionHeight;
+		_collisionRadius = _activeChar.getTemplate().collisionRadius;
+		if (cha.getTemplate().serverSideName || cha instanceof L2PetInstance)
+		{
+			_name = _activeChar.getName();
+			_title = cha.getTitle();
+		}
 
-        _x = _activeChar.getX();
+		_x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
 		_heading = _activeChar.getHeading();
@@ -205,16 +199,15 @@ public final class NpcInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		    if(_activeChar == null)
-		    	    return;
-		
-		       if (_activeChar instanceof L2Summon)
-		    if (((L2Summon)_activeChar).getOwner() != null
-                    && ((L2Summon)_activeChar).getOwner().getAppearance().getInvisible())
-                return;
+		if (_activeChar == null)
+			return;
+
+		if (_activeChar instanceof L2Summon)
+			if (((L2Summon) _activeChar).getOwner() != null && ((L2Summon) _activeChar).getOwner().getAppearance().getInvisible())
+				return;
 		writeC(0x16);
 		writeD(_activeChar.getObjectId());
-		writeD(_idTemplate+1000000);  // npctype id
+		writeD(_idTemplate + 1000000); // npctype id
 		writeD(_isAttackable ? 1 : 0);
 		writeD(_x);
 		writeD(_y);
@@ -225,58 +218,55 @@ public final class NpcInfo extends L2GameServerPacket
 		writeD(_pAtkSpd);
 		writeD(_runSpd);
 		writeD(_walkSpd);
-		writeD(_swimRunSpd/*0x32*/);  // swimspeed
-		writeD(_swimWalkSpd/*0x32*/);  // swimspeed
+		writeD(_swimRunSpd/* 0x32 */); // swimspeed
+		writeD(_swimWalkSpd/* 0x32 */); // swimspeed
 		writeD(_flRunSpd);
 		writeD(_flWalkSpd);
 		writeD(_flyRunSpd);
 		writeD(_flyWalkSpd);
-		writeF(1.1/*_activeChar.getProperMultiplier()*/);
-		//writeF(1/*_activeChar.getAttackSpeedMultiplier()*/);
-		writeF(_pAtkSpd/277.478340719);
+		writeF(1.1/* _activeChar.getProperMultiplier() */);
+		// writeF(1/*_activeChar.getAttackSpeedMultiplier()*/);
+		writeF(_pAtkSpd / 277.478340719);
 		writeF(_collisionRadius);
 		writeF(_collisionHeight);
 		writeD(_rhand); // right hand weapon
 		writeD(0);
 		writeD(_lhand); // left hand weapon
-		writeC(1);	// name above char 1=true ... ??
+		writeC(1); // name above char 1=true ... ??
 		writeC(_activeChar.isRunning() ? 1 : 0);
 		writeC(_activeChar.isInCombat() ? 1 : 0);
 		writeC(_activeChar.isAlikeDead() ? 1 : 0);
-		writeC(_isSummoned ? 2 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
+		writeC(_isSummoned ? 2 : 0); // invisible ?? 0=false 1=true 2=summoned (only works if model has a summon animation)
 		writeS(_name);
 		writeS(_title);
 		writeD(0);
 		writeD(0);
-		writeD(0000);  // hmm karma ??
+		writeD(0000); // hmm karma ??
 
-		writeD(_activeChar.getAbnormalEffect());  // C2
-				if(ExternalConfig.SHOW_NPC_CREST)
-					{
-						writeD(_clanId);
-						writeD(_clanCrest);
-						writeD(_allyId);
-						writeD(_allyCrest);
-					}
-					else
-					{
-						writeD(0000);
-						writeD(0000);
-						writeD(0000);
-						writeD(0000);
-						writeC(0000);
-					}
+		writeD(_activeChar.getAbnormalEffect()); // C2
+		if (ExternalConfig.SHOW_NPC_CREST)
+		{
+			writeD(_clanId);
+			writeD(_clanCrest);
+			writeD(_allyId);
+			writeD(_allyCrest);
+		}
+		else
+		{
+			writeD(0000);
+			writeD(0000);
+			writeD(0000);
+			writeD(0000);
+			writeC(0000);
+		}
 
-		writeC(0x00);  // C3  team circle 1-blue, 2-red
+		writeC(0x00); // C3 team circle 1-blue, 2-red
 		writeF(_collisionRadius);
 		writeF(_collisionHeight);
-		writeD(0x00);  // C4
-		writeD(0x00);  // C6
+		writeD(0x00); // C4
+		writeD(0x00); // C6
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
@@ -284,7 +274,8 @@ public final class NpcInfo extends L2GameServerPacket
 	}
 
 	/**
-	 * @param chest The chest to set.
+	 * @param chest
+	 *        The chest to set.
 	 */
 	public void setChest(int chest)
 	{
@@ -300,7 +291,8 @@ public final class NpcInfo extends L2GameServerPacket
 	}
 
 	/**
-	 * @param val The val to set.
+	 * @param val
+	 *        The val to set.
 	 */
 	public void setVal(int val)
 	{
@@ -316,7 +308,8 @@ public final class NpcInfo extends L2GameServerPacket
 	}
 
 	/**
-	 * @param form The form to set.
+	 * @param form
+	 *        The form to set.
 	 */
 	public void setForm(int form)
 	{

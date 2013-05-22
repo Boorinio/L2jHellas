@@ -21,14 +21,13 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 
-
 public class castle implements IVoicedCommandHandler
 {
 	private static final String[] VOICED_COMMANDS =
 	{
 	"open doors", "close doors", "ride wyvern"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
@@ -42,7 +41,7 @@ public class castle implements IVoicedCommandHandler
 			{
 				door.openMe();
 			}
-			
+
 		}
 		else if (command.startsWith(VOICED_COMMANDS[1]) && target.equals("castle") && (activeChar.isClanLeader()))
 		{
@@ -54,7 +53,7 @@ public class castle implements IVoicedCommandHandler
 			{
 				door.closeMe();
 			}
-			
+
 		}
 		else if (command.startsWith(VOICED_COMMANDS[2]) && target.equals("castle"))
 		{
@@ -67,11 +66,10 @@ public class castle implements IVoicedCommandHandler
 				activeChar.broadcastPacket(mount);
 				activeChar.setMountType(mount.getMountType());
 			}
-			
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{

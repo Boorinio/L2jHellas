@@ -14,12 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
- */
 public class CharCreateFail extends L2GameServerPacket
 {
 	private static final String _S__26_CHARCREATEFAIL = "[S] 1a CharCreateFail";
@@ -29,7 +23,7 @@ public class CharCreateFail extends L2GameServerPacket
 	public static final int REASON_NAME_ALREADY_EXISTS = 0x02;
 	public static final int REASON_16_ENG_CHARS = 0x03;
 
-	private int _error;
+	private final int _error;
 
 	public CharCreateFail(int errorCode)
 	{
@@ -43,13 +37,9 @@ public class CharCreateFail extends L2GameServerPacket
 		writeD(_error);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__26_CHARCREATEFAIL;
 	}
-
 }

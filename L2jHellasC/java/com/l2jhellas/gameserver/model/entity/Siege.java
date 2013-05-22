@@ -22,7 +22,6 @@ import java.util.List;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -52,6 +51,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SiegeInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Siege
 {
@@ -454,7 +454,7 @@ public class Siege
 	/**
 	 * Announce to player.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param message
 	 *        The String of the message to send to player
 	 * @param inAreaOnly
@@ -521,7 +521,7 @@ public class Siege
 	/**
 	 * Approve clan as defender for siege<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clanId
 	 *        The int of player's clan id
 	 */
@@ -548,7 +548,7 @@ public class Siege
 	/**
 	 * Return true if clan is attacker<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clan
 	 *        The L2Clan of the player
 	 */
@@ -560,7 +560,7 @@ public class Siege
 	/**
 	 * Return true if clan is defender<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clan
 	 *        The L2Clan of the player
 	 */
@@ -572,7 +572,7 @@ public class Siege
 	/**
 	 * Return true if clan is defender waiting approval<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clan
 	 *        The L2Clan of the player
 	 */
@@ -584,10 +584,8 @@ public class Siege
 	/** Clear all registered siege clans from database for castle */
 	public void clearSiegeClan()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("DELETE FROM siege_clans WHERE castle_id=?");
 			statement.setInt(1, getCastle().getCastleId());
 			statement.execute();
@@ -610,25 +608,13 @@ public class Siege
 			System.out.println("Exception: clearSiegeClan(): " + e.getMessage());
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/** Clear all siege clans waiting for approval from database for castle */
 	public void clearSiegeWaitingClan()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("DELETE FROM siege_clans WHERE castle_id=? and type = 2");
 			statement.setInt(1, getCastle().getCastleId());
 			statement.execute();
@@ -640,16 +626,6 @@ public class Siege
 		{
 			System.out.println("Exception: clearSiegeWaitingClan(): " + e.getMessage());
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 
@@ -758,7 +734,7 @@ public class Siege
 	/**
 	 * Register clan as attacker<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param player
 	 *        The L2PcInstance of the player trying to register
 	 */
@@ -790,7 +766,7 @@ public class Siege
 	/**
 	 * Register clan as defender<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param player
 	 *        The L2PcInstance of the player trying to register
 	 */
@@ -810,7 +786,7 @@ public class Siege
 	/**
 	 * Remove clan from siege<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clanId
 	 *        The int of player's clan id
 	 */
@@ -819,11 +795,9 @@ public class Siege
 		if (clanId <= 0)
 			return;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("DELETE FROM siege_clans WHERE castle_id=? and clan_id=?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM siege_clans WHERE castle_id=? AND clan_id=?");
 			statement.setInt(1, getCastle().getCastleId());
 			statement.setInt(2, clanId);
 			statement.execute();
@@ -834,28 +808,18 @@ public class Siege
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Remove clan from siege<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param player
 	 *        The L2PcInstance of player/clan being removed
 	 */
 	public void removeSiegeClan(L2Clan clan)
 	{
-		if (clan == null || clan.getHasCastle() == getCastle().getCastleId() || !SiegeManager.getInstance().checkIsRegistered(clan, getCastle().getCastleId()))
+		if ((clan == null) || clan.getHasCastle() == getCastle().getCastleId() || !SiegeManager.getInstance().checkIsRegistered(clan, getCastle().getCastleId()))
 			return;
 		removeSiegeClan(clan.getClanId());
 	}
@@ -863,7 +827,7 @@ public class Siege
 	/**
 	 * Remove clan from siege<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param player
 	 *        The L2PcInstance of player/clan being removed
 	 */
@@ -928,7 +892,7 @@ public class Siege
 	/**
 	 * Add clan as attacker<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clanId
 	 *        The int of clan's id
 	 */
@@ -940,7 +904,7 @@ public class Siege
 	/**
 	 * Add clan as defender<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clanId
 	 *        The int of clan's id
 	 */
@@ -953,7 +917,7 @@ public class Siege
 	 * <p>
 	 * Add clan as defender with the specified type
 	 * </p>
-	 *
+	 * 
 	 * @param clanId
 	 *        The int of clan's id
 	 * @param type
@@ -967,7 +931,7 @@ public class Siege
 	/**
 	 * Add clan as defender waiting approval<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clanId
 	 *        The int of clan's id
 	 */
@@ -979,7 +943,7 @@ public class Siege
 	/**
 	 * Return true if the player can register.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param player
 	 *        The L2PcInstance of the player trying to register
 	 */
@@ -989,7 +953,7 @@ public class Siege
 			player.sendMessage("The deadline to register for the siege of " + getCastle().getName() + " has passed.");
 		else if (getIsInProgress())
 			player.sendMessage("This is not the time for siege registration and so registration and cancellation cannot be done.");
-		else if (player.getClan() == null || player.getClan().getLevel() < SiegeManager.getInstance().getSiegeClanMinLevel())
+		else if ((player.getClan() == null) || (player.getClan().getLevel() < SiegeManager.getInstance().getSiegeClanMinLevel()))
 			player.sendMessage("Only clans with Level " + SiegeManager.getInstance().getSiegeClanMinLevel() + " and higher may register for a castle siege.");
 		else if (player.getClan().getHasCastle() > 0)
 			player.sendMessage("You cannot register because your clan already own a castle.");
@@ -1006,7 +970,7 @@ public class Siege
 	/**
 	 * Return the correct siege date as Calendar.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param siegeDate
 	 *        The Calendar siege date and time
 	 */
@@ -1043,8 +1007,7 @@ public class Siege
 	/** Load siege clans. */
 	private void loadSiegeClan()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			getAttackerClans().clear();
 			getDefenderClans().clear();
@@ -1057,9 +1020,7 @@ public class Siege
 			PreparedStatement statement = null;
 			ResultSet rs = null;
 
-			con = L2DatabaseFactory.getInstance().getConnection();
-
-			statement = con.prepareStatement("SELECT clan_id,type FROM siege_clans where castle_id=?");
+			statement = con.prepareStatement("SELECT clan_id,type FROM siege_clans WHERE castle_id=?");
 			statement.setInt(1, getCastle().getCastleId());
 			rs = statement.executeQuery();
 
@@ -1081,16 +1042,6 @@ public class Siege
 		{
 			System.out.println("Exception: loadSiegeClan(): " + e.getMessage());
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 
@@ -1161,11 +1112,9 @@ public class Siege
 	/** Save siege date to database. */
 	private void saveSiegeDate()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement("Update castle SET siegeDate = ? WHERE id = ?");
+			PreparedStatement statement = con.prepareStatement("UPDATE castle SET siegeDate=? WHERE id=?");
 			statement.setLong(1, getSiegeDate().getTimeInMillis());
 			statement.setInt(2, getCastle().getCastleId());
 			statement.execute();
@@ -1177,22 +1126,12 @@ public class Siege
 			System.out.println("Exception: saveSiegeDate(): " + e.getMessage());
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Save registration to database.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clan
 	 *        The L2Clan of player
 	 * @param typeId
@@ -1203,25 +1142,18 @@ public class Siege
 		if (clan.getHasCastle() > 0)
 			return;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			if (typeId == 0 || typeId == 2 || typeId == -1)
-			{
+			if ((typeId == 0) || (typeId == 2) || (typeId == -1))
 				if (getDefenderClans().size() + getDefenderWaitingClans().size() >= SiegeManager.getInstance().getDefenderMaxClans())
 					return;
-			}
-			else
-			{
-				if (getAttackerClans().size() >= SiegeManager.getInstance().getAttackerMaxClans())
+				else if (getAttackerClans().size() >= SiegeManager.getInstance().getAttackerMaxClans())
 					return;
-			}
 
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			if (!isUpdateRegistration)
 			{
-				statement = con.prepareStatement("INSERT INTO siege_clans (clan_id,castle_id,type,castle_owner) values (?,?,?,0)");
+				statement = con.prepareStatement("INSERT INTO siege_clans (clan_id,castle_id,type,castle_owner) VALUES (?,?,?,0)");
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, getCastle().getCastleId());
 				statement.setInt(3, typeId);
@@ -1230,7 +1162,7 @@ public class Siege
 			}
 			else
 			{
-				statement = con.prepareStatement("Update siege_clans set type = ? where castle_id = ? and clan_id = ?");
+				statement = con.prepareStatement("UPDATE siege_clans SET type=? WHERE castle_id=? AND clan_id=?");
 				statement.setInt(1, typeId);
 				statement.setInt(2, getCastle().getCastleId());
 				statement.setInt(3, clan.getClanId());
@@ -1259,16 +1191,6 @@ public class Siege
 			System.out.println("Exception: saveSiegeClan(L2Clan clan, int typeId, boolean isUpdateRegistration): " + e.getMessage());
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/** Set the date for the next siege. */
@@ -1285,7 +1207,7 @@ public class Siege
 	/** Spawn artifact. */
 	private void spawnArtifact(int Id)
 	{
-		// Set artefact array size if one does not exist
+		// Set artifact array size if one does not exist
 		if (_artifacts == null)
 			_artifacts = new FastList<L2ArtefactInstance>();
 
@@ -1403,7 +1325,7 @@ public class Siege
 
 	public final Castle getCastle()
 	{
-		if (_castle == null || _castle.length <= 0)
+		if ((_castle == null) || (_castle.length <= 0))
 			return null;
 		return _castle[0];
 	}
@@ -1418,7 +1340,7 @@ public class Siege
 	public final L2SiegeClan getDefenderClan(int clanId)
 	{
 		for (L2SiegeClan sc : getDefenderClans())
-			if (sc != null && sc.getClanId() == clanId)
+			if ((sc != null) && (sc.getClanId() == clanId))
 				return sc;
 		return null;
 	}
@@ -1440,7 +1362,7 @@ public class Siege
 	public final L2SiegeClan getDefenderWaitingClan(int clanId)
 	{
 		for (L2SiegeClan sc : getDefenderWaitingClans())
-			if (sc != null && sc.getClanId() == clanId)
+			if ((sc != null) && (sc.getClanId() == clanId))
 				return sc;
 		return null;
 	}

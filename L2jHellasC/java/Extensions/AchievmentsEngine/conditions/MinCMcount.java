@@ -31,11 +31,11 @@ public class MinCMcount extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		if (player.getClan() != null)
 		{
 			int val = Integer.parseInt(getValue().toString());
-			
+
 			if (player.getClan().getMembersCount() >= val)
 				return true;
 		}

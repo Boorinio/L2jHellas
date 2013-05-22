@@ -20,7 +20,7 @@ import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 
 /**
  * @author -Wooden-
- * Format: ddddd
+ *         Format: ddddd
  */
 public class AuthGameGuard extends L2LoginClientPacket
 {

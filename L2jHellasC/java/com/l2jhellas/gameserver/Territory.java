@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.L2Territory;
-import com.l2jhellas.util.SqlUtils;
+import com.l2jhellas.util.database.SqlUtils;
 
 public class Territory
 {
@@ -53,7 +53,8 @@ public class Territory
 	{
 		_territory = new FastMap<Integer, L2Territory>();
 
-		Integer[][] point = SqlUtils.get2DIntArray(new String[] {
+		Integer[][] point = SqlUtils.get2DIntArray(new String[]
+		{
 		"loc_id", "loc_x", "loc_y", "loc_zmin", "loc_zmax", "proc"
 		}, "locations", "loc_id > 0");
 		for (Integer[] row : point)

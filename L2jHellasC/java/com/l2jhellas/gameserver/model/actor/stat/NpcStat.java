@@ -23,28 +23,28 @@ public class NpcStat extends CharStat
 	public NpcStat(L2NpcInstance activeChar)
 	{
 		super(activeChar);
-		
+
 		setLevel(getActiveChar().getTemplate().level);
 	}
-	
+
 	@Override
 	public L2NpcInstance getActiveChar()
 	{
 		return (L2NpcInstance) super.getActiveChar();
 	}
-	
+
 	@Override
 	public final int getMaxHp()
 	{
 		return (int) calcStat(Stats.MAX_HP, getActiveChar().getTemplate().baseHpMax * (getActiveChar().isChampion() ? Config.CHAMPION_HP : 1), null, null);
 	}
-	
+
 	@Override
 	public int getWalkSpeed()
 	{
 		return getRunSpeed() / 2;
 	}
-	
+
 	@Override
 	public float getMovementSpeedMultiplier()
 	{
@@ -55,5 +55,4 @@ public class NpcStat extends CharStat
 			val = val / 2;
 		return val;
 	}
-	
 }

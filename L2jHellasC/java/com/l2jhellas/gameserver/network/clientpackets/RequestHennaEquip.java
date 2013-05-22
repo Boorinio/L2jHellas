@@ -29,15 +29,13 @@ import com.l2jhellas.util.Util;
 public final class RequestHennaEquip extends L2GameClientPacket
 {
 	private static final String _C__BC_RequestHennaEquip = "[C] bc RequestHennaEquip";
-	// private static Logger _log = Logger.getLogger(RequestHennaEquip.class.getName());
 	private int _symbolId;
 
 	// format cd
-
 	/**
 	 * packet type id 0xbb
 	 * format: cd
-	 *
+	 * 
 	 * @param decrypt
 	 */
 	@Override
@@ -113,7 +111,6 @@ public final class RequestHennaEquip extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_DRAW_SYMBOL));
 			if ((!activeChar.isGM()) && (cheater))
 				Util.handleIllegalPlayerAction(activeChar, "Exploit attempt: Character " + activeChar.getName() + " of account " + activeChar.getAccountName() + " tryed to add a forbidden henna.", Config.DEFAULT_PUNISH);
-
 		}
 	}
 

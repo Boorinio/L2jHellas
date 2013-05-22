@@ -1,20 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.geodata.pathfinding;
 
@@ -39,7 +35,7 @@ public abstract class PathFinding
 {
 	public static PathFinding getInstance()
 	{
-		if(!Config.GEODATA_CELLFINDING)
+		if (!Config.GEODATA_CELLFINDING)
 			return GeoPathFinding.getInstance(); //Higher Memory Usage, Smaller Cpu Usage
 		return CellPathFinding.getInstance(); // Cell pathfinding, calculated directly from geodata files
 	}
@@ -63,9 +59,9 @@ public abstract class PathFinding
 		try
 		{
 			int i = 0;
-			while(i < 800)
+			while (i < 800)
 			{
-				if(to_visit.isEmpty())
+				if (to_visit.isEmpty())
 				{
 					// No Path found
 					return null;
@@ -73,17 +69,17 @@ public abstract class PathFinding
 
 				Node node = to_visit.removeFirst();
 
-				if(node.equals(end)) //path found!
+				if (node.equals(end)) //path found!
 					return constructPath(node);
 				i++;
 				visited.add(node);
 				node.attachNeighbors();
 				Node[] neighbors = node.getNeighbors();
-				if(neighbors == null)
+				if (neighbors == null)
 					continue;
-				for(Node n : neighbors)
+				for (Node n : neighbors)
 				{
-					if(!visited.contains(n) && !to_visit.contains(n))
+					if (!visited.contains(n) && !to_visit.contains(n))
 					{
 						n.setParent(node);
 						to_visit.add(n);
@@ -128,9 +124,9 @@ public abstract class PathFinding
 			int dx, dy, dz;
 			boolean added;
 			int i = 0;
-			while(i < 3500)
+			while (i < 3500)
 			{
-				if(to_visit.isEmpty())
+				if (to_visit.isEmpty())
 				{
 					// No Path found
 					return null;
@@ -141,7 +137,7 @@ public abstract class PathFinding
 				i++;
 
 				node.attachNeighbors();
-				if(node.equals(end))
+				if (node.equals(end))
 				{
 					//path found! note that node z coordinate is updated only in attach
 					//to improve performance (alternative: much more checks)
@@ -150,29 +146,29 @@ public abstract class PathFinding
 				}
 
 				Node[] neighbors = node.getNeighbors();
-				if(neighbors == null)
+				if (neighbors == null)
 					continue;
-				for(Node n : neighbors)
+				for (Node n : neighbors)
 				{
-					if(!known.contains(n))
+					if (!known.contains(n))
 					{
 						added = false;
 						n.setParent(node);
 						dx = targetx - n.getNodeX();
 						dy = targety - n.getNodeY();
 						dz = targetz - n.getZ();
-						n.setCost(dx * dx + dy * dy + dz / 2 * dz/*+n.getCost()*/);
-						for(int index = 0; index < to_visit.size(); index++)
+						n.setCost(dx * dx + dy * dy + dz / 2 * dz/* +n.getCost() */);
+						for (int index = 0; index < to_visit.size(); index++)
 						{
 							// supposed to find it quite early..
-							if(to_visit.get(index).getCost() > n.getCost())
+							if (to_visit.get(index).getCost() > n.getCost())
 							{
 								to_visit.add(index, n);
 								added = true;
 								break;
 							}
 						}
-						if(!added)
+						if (!added)
 							to_visit.add(n);
 						known.add(n);
 					}
@@ -212,9 +208,9 @@ public abstract class PathFinding
 			int dx, dy;
 			boolean added;
 			int i = 0;
-			while(i < 550)
+			while (i < 550)
 			{
-				if(to_visit.isEmpty())
+				if (to_visit.isEmpty())
 				{
 					// No Path found
 					return null;
@@ -222,7 +218,7 @@ public abstract class PathFinding
 
 				Node node = to_visit.remove(0);
 
-				if(node.equals(end)) //path found!
+				if (node.equals(end)) //path found!
 				{
 					return constructPath2(node);
 				}
@@ -230,28 +226,28 @@ public abstract class PathFinding
 				visited.add(node);
 				node.attachNeighbors();
 				Node[] neighbors = node.getNeighbors();
-				if(neighbors == null)
+				if (neighbors == null)
 					continue;
-				for(Node n : neighbors)
+				for (Node n : neighbors)
 				{
-					if(!visited.contains(n) && !to_visit.contains(n))
+					if (!visited.contains(n) && !to_visit.contains(n))
 					{
 						added = false;
 						n.setParent(node);
 						dx = targetx - n.getNodeX();
 						dy = targety - n.getNodeY();
 						n.setCost(dx * dx + dy * dy);
-						for(int index = 0; index < to_visit.size(); index++)
+						for (int index = 0; index < to_visit.size(); index++)
 						{
 							// supposed to find it quite early..
-							if(to_visit.get(index).getCost() > n.getCost())
+							if (to_visit.get(index).getCost() > n.getCost())
 							{
 								to_visit.add(index, n);
 								added = true;
 								break;
 							}
 						}
-						if(!added)
+						if (!added)
 							to_visit.add(n);
 					}
 				}
@@ -282,9 +278,9 @@ public abstract class PathFinding
 		try
 		{
 			int i = 0;
-			while(i < 800)//TODO! Add limit to cfg
+			while (i < 800)//TODO! Add limit to cfg
 			{
-				if(to_visit.isEmpty())
+				if (to_visit.isEmpty())
 				{
 					// No Path found
 					return null;
@@ -295,7 +291,7 @@ public abstract class PathFinding
 				{
 					node = to_visit.removeFirst();
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					// No Path found
 					if (Config.DEBUG)
@@ -303,19 +299,17 @@ public abstract class PathFinding
 
 					return null;
 				}
-				if(node.equals(end)) //path found!
+				if (node.equals(end)) //path found!
 					return constructPath(node);
 				visited.add(node);
 				node.attachNeighbors();
-				for(Node n : node.getNeighbors())
+				for (Node n : node.getNeighbors())
 				{
-					if(!visited.contains(n) && !to_visit.contains(n))
+					if (!visited.contains(n) && !to_visit.contains(n))
 					{
 						i++;
 						n.setParent(node);
-						n.setCost(Math.abs(start_x - n.getNodeX())
-							+ Math.abs(start_y - n.getNodeY()) + Math.abs(end_x - n.getNodeX())
-							+ Math.abs(end_y - n.getNodeY()));
+						n.setCost(Math.abs(start_x - n.getNodeX()) + Math.abs(start_y - n.getNodeY()) + Math.abs(end_x - n.getNodeX()) + Math.abs(end_y - n.getNodeY()));
 						to_visit.add(n);
 					}
 				}
@@ -334,7 +328,7 @@ public abstract class PathFinding
 	{
 		ArrayList<Node> tmp = L2Collections.newArrayList();
 
-		while(node.getParent() != null)
+		while (node.getParent() != null)
 		{
 			tmp.add(node);
 
@@ -347,14 +341,14 @@ public abstract class PathFinding
 
 		ArrayUtils.reverse(path);
 
-		for(int lastValid = 0; lastValid < path.length - 1;)
+		for (int lastValid = 0; lastValid < path.length - 1;)
 		{
 			final Node lastValidNode = path[lastValid];
 
 			int low = lastValid;
 			int high = path.length - 1;
 
-			while(low < high)
+			while (low < high)
 			{
 				final int mid = ((low + high) >> 1) + 1;
 				final Node midNode = path[mid];
@@ -362,19 +356,19 @@ public abstract class PathFinding
 				final int deltaNodeX = Math.abs(midNode.getNodeX() - lastValidNode.getNodeX());
 				final int deltaNodeY = Math.abs(midNode.getNodeY() - lastValidNode.getNodeY());
 
-				if(delta <= 1)
+				if (delta <= 1)
 				{
 					low = mid;
 				}
-				else if(delta % 2 == 0 && deltaNodeX == delta / 2 && deltaNodeY == delta / 2)
+				else if (delta % 2 == 0 && deltaNodeX == delta / 2 && deltaNodeY == delta / 2)
 				{
 					low = mid;
 				}
-				else if(deltaNodeX == delta || deltaNodeY == delta)
+				else if (deltaNodeX == delta || deltaNodeY == delta)
 				{
 					low = mid;
 				}
-				else if(GeoData.getInstance().canMoveFromToTarget(lastValidNode.getX(), lastValidNode.getY(), lastValidNode.getZ(), midNode.getX(), midNode.getY(), midNode.getZ()))
+				else if (GeoData.getInstance().canMoveFromToTarget(lastValidNode.getX(), lastValidNode.getY(), lastValidNode.getZ(), midNode.getX(), midNode.getY(), midNode.getZ()))
 				{
 					low = mid;
 				}
@@ -386,7 +380,7 @@ public abstract class PathFinding
 
 			final int nextValid = low;
 
-			for(int i = lastValid + 1; i < nextValid; i++)
+			for (int i = lastValid + 1; i < nextValid; i++)
 				path[i] = null;
 
 			lastValid = nextValid;
@@ -402,12 +396,12 @@ public abstract class PathFinding
 		int previousdirectiony = -1000;
 		int directionx;
 		int directiony;
-		while(node.getParent() != null)
+		while (node.getParent() != null)
 		{
 			// only add a new route point if moving direction changes
 			directionx = node.getNodeX() - node.getParent().getNodeX();
 			directiony = node.getNodeY() - node.getParent().getNodeY();
-			if(directionx != previousdirectionx || directiony != previousdirectiony)
+			if (directionx != previousdirectionx || directiony != previousdirectiony)
 			{
 				previousdirectionx = directionx;
 				previousdirectiony = directiony;
@@ -427,44 +421,44 @@ public abstract class PathFinding
 
 	/**
 	 * Convert geodata position to pathnode position
-	 *
+	 * 
 	 * @param geo_pos
 	 * @return pathnode position
 	 */
 	public final short getNodePos(int geo_pos)
 	{
-		return (short)(geo_pos >> 3); //OK?
+		return (short) (geo_pos >> 3); //OK?
 	}
 
 	/**
 	 * Convert node position to pathnode block position
-	 *
+	 * 
 	 * @param node_pos
 	 * @return pathnode block position (0...255)
 	 */
 	public final short getNodeBlock(int node_pos)
 	{
-		return (short)(node_pos % 256);
+		return (short) (node_pos % 256);
 	}
 
 	public final byte getRegionX(int node_pos)
 	{
-		return (byte)((node_pos >> 8) + 16);
+		return (byte) ((node_pos >> 8) + 16);
 	}
 
 	public final byte getRegionY(int node_pos)
 	{
-		return (byte)((node_pos >> 8) + 10);
+		return (byte) ((node_pos >> 8) + 10);
 	}
 
 	public final short getRegionOffset(byte rx, byte ry)
 	{
-		return (short)((rx << 5) + ry);
+		return (short) ((rx << 5) + ry);
 	}
 
 	/**
 	 * Convert pathnode x to World x position
-	 *
+	 * 
 	 * @param node_x
 	 * @return
 	 */
@@ -475,7 +469,7 @@ public abstract class PathFinding
 
 	/**
 	 * Convert pathnode y to World y position
-	 *
+	 * 
 	 * @param node_y
 	 * @return
 	 */

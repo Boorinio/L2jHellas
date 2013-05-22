@@ -14,16 +14,10 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- */
 public class RestartResponse extends L2GameServerPacket
 {
 	private static final String _S__74_RESTARTRESPONSE = "[S] 74 RestartResponse";
-	private String _message;
+	private final String _message;
 
 	public RestartResponse()
 	{
@@ -35,13 +29,10 @@ public class RestartResponse extends L2GameServerPacket
 	{
 		writeC(0x5f);
 
-		writeD(0x01);	//01-ok
+		writeD(0x01); // 01-ok
 		writeS(_message);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -19,22 +19,19 @@ import com.l2jhellas.gameserver.model.L2Skill;
 
 /**
  * Format: (ch) d [dd]
- *
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public class PledgeSkillList extends L2GameServerPacket
 {
 	private static final String _S__FE_39_PLEDGESKILLLIST = "[S] FE:39 PledgeSkillList";
-	private L2Clan _clan;
+	private final L2Clan _clan;
 
 	public PledgeSkillList(L2Clan clan)
 	{
 		_clan = clan;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -43,16 +40,13 @@ public class PledgeSkillList extends L2GameServerPacket
 		writeC(0xfe);
 		writeH(0x39);
 		writeD(skills.length);
-		for(L2Skill sk : skills)
+		for (L2Skill sk : skills)
 		{
 			writeD(sk.getId());
 			writeD(sk.getLevel());
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

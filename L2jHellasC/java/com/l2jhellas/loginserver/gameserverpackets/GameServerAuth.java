@@ -28,7 +28,7 @@ import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
  * d max players
  * d hexid size
  * b hexid
- *
+ * 
  * @author -Wooden-
  */
 public class GameServerAuth extends ClientBasePacket

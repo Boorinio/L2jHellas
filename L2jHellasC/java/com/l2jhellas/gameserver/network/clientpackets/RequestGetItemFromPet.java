@@ -22,15 +22,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.4.4 $ $Date: 2005/03/29 23:15:33 $
- */
 public final class RequestGetItemFromPet extends L2GameClientPacket
 {
-	private static final String REQUESTGETITEMFROMPET__C__8C = "[C] 8C RequestGetItemFromPet";
 	private static Logger _log = Logger.getLogger(RequestGetItemFromPet.class.getName());
+	private static final String REQUESTGETITEMFROMPET__C__8C = "[C] 8C RequestGetItemFromPet";
 
 	private int _objectId;
 	private int _amount;
@@ -49,7 +44,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null || player.getPet() == null || !(player.getPet() instanceof L2PetInstance))
+		if ((player == null) || (player.getPet() == null) || !(player.getPet() instanceof L2PetInstance))
 			return;
 		L2PetInstance pet = (L2PetInstance) player.getPet();
 

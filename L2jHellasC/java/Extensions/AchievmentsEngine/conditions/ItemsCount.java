@@ -39,7 +39,7 @@ public class ItemsCount extends Condition
 			StringTokenizer st = new StringTokenizer(s, ",");
 			int id = 0;
 			int ammount = 0;
-			
+
 			try
 			{
 				id = Integer.parseInt(st.nextToken());

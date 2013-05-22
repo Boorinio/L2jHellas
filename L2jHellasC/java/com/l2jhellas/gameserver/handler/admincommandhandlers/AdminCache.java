@@ -29,7 +29,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class AdminCache implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
+	{/** @formatter:off */
 		"admin_cache_htm_rebuild",
 		"admin_cache_htm_reload",
 		"admin_cache_reload_path",
@@ -37,7 +37,7 @@ public class AdminCache implements IAdminCommandHandler
 		"admin_cache_crest_rebuild",
 		"admin_cache_crest_reload",
 		"admin_cache_crest_fix"
-	};
+	};/** @formatter:on */
 
 	@Override
 	public String[] getAdminCommandList()

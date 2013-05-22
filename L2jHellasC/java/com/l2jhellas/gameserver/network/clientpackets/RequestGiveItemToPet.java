@@ -26,15 +26,10 @@ import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.2.1.2.5 $ $Date: 2005/03/29 23:15:33 $
- */
 public final class RequestGiveItemToPet extends L2GameClientPacket
 {
-	private static final String REQUESTCIVEITEMTOPET__C__8B = "[C] 8B RequestGiveItemToPet";
 	private static Logger _log = Logger.getLogger(RequestGetItemFromPet.class.getName());
+	private static final String REQUESTCIVEITEMTOPET__C__8B = "[C] 8B RequestGiveItemToPet";
 
 	private int _objectId;
 	private int _amount;
@@ -50,7 +45,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null || player.getPet() == null || !(player.getPet() instanceof L2PetInstance))
+		if ((player == null) || (player.getPet() == null) || !(player.getPet() instanceof L2PetInstance))
 			return;
 
 		// Alt game - Karma punishment
@@ -66,12 +61,11 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 
 		if (player.getPrivateStoreType() != 0)
 		{
-			player.sendMessage("Cannot exchange items while trading");
+			player.sendMessage("Cannot exchange items while trading.");
 			return;
 		}
 
 		// Exploit Fix for Hero weapons Uses pet Inventory to buy New One.
-		// [L2JOneo Code Modded To L2Dot By Stefoulis15]
 		L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
 		if (item.isAugmented() && item != null)
 		{
@@ -86,7 +80,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		}
 		if ((item.getItem().getItemType() == L2WeaponType.ROD) || ((item.getItemId() >= 6611) && (item.getItemId() <= 6621)) || ((item.getItemId() >= 7816) && (item.getItemId() <= 7831)) || item.isShadowItem())
 		{
-			player.sendMessage("Hero Weapons Protection , You Can't Use Pet's Inventory.");
+			player.sendMessage("Hero weapons protection, you can't use pet's inventory.");
 			return;
 		}
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("giveitemtopet"))

@@ -27,7 +27,6 @@ import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -42,30 +41,31 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author terry
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class AdminEditNpc implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminEditChar.class.getName());
 	private final static int PAGE_LIMIT = 7;
 
-	private static final String[] ADMIN_COMMANDS = {
-	"admin_edit_npc",
-	"admin_save_npc",
-	"admin_show_droplist",
-	"admin_edit_drop",
-	"admin_add_drop",
-	"admin_del_drop",
-	"admin_showShop",
-	"admin_showShopList",
-	"admin_addShopItem",
-	"admin_delShopItem",
-	"admin_editShopItem",
-	"admin_close_window"
-	};
+	private static final String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
+		"admin_edit_npc",
+		"admin_save_npc",
+		"admin_show_droplist",
+		"admin_edit_drop",
+		"admin_add_drop",
+		"admin_del_drop",
+		"admin_showShop",
+		"admin_showShopList",
+		"admin_addShopItem",
+		"admin_delShopItem",
+		"admin_editShopItem",
+		"admin_close_window"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -499,10 +499,8 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 	private void storeTradeList(int itemID, int price, int tradeListID, int order)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO merchant_buylists (`item_id`,`price`,`shop_id`,`order`) VALUES (" + itemID + "," + price + "," + tradeListID + "," + order + ")");
 			stmt.execute();
 			stmt.close();
@@ -511,25 +509,12 @@ public class AdminEditNpc implements IAdminCommandHandler
 		{
 			esql.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private void updateTradeList(int itemID, int price, int tradeListID, int order)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement stmt = con.prepareStatement("UPDATE merchant_buylists SET `price`='" + price + "' WHERE `shop_id`='" + tradeListID + "' AND `order`='" + order + "'");
 			stmt.execute();
 			stmt.close();
@@ -542,25 +527,12 @@ public class AdminEditNpc implements IAdminCommandHandler
 				esql.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private void deleteTradeList(int tradeListID, int order)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement stmt = con.prepareStatement("DELETE FROM merchant_buylists WHERE `shop_id`='" + tradeListID + "' AND `order`='" + order + "'");
 			stmt.execute();
 			stmt.close();
@@ -573,26 +545,13 @@ public class AdminEditNpc implements IAdminCommandHandler
 				esql.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private int findOrderTradeList(int itemID, int price, int tradeListID)
 	{
-		Connection con = null;
 		int order = 0;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement stmt = con.prepareStatement("SELECT * FROM merchant_buylists WHERE `shop_id`='" + tradeListID + "' AND `item_id` ='" + itemID + "' AND `price` = '" + price + "'");
 			ResultSet rs = stmt.executeQuery();
 			rs.first();
@@ -608,17 +567,6 @@ public class AdminEditNpc implements IAdminCommandHandler
 			if (Config.DEVELOPER)
 			{
 				esql.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
 			}
 		}
 		return order;
@@ -875,12 +823,8 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 	private void showEditDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT mobId, itemId, min, max, category, chance FROM droplist WHERE mobId=" + npcId + " AND itemId=" + itemId + " AND category=" + category);
 			ResultSet dropData = statement.executeQuery();
 
@@ -917,16 +861,6 @@ public class AdminEditNpc implements IAdminCommandHandler
 		catch (Exception e)
 		{
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void showAddDropData(L2PcInstance activeChar, L2NpcTemplate npcData)
@@ -955,12 +889,8 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 	private void updateDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("UPDATE droplist SET min=?, max=?, chance=? WHERE mobId=? AND itemId=? AND category=?");
 			statement.setInt(1, min);
 			statement.setInt(2, max);
@@ -1007,26 +937,12 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void addDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("INSERT INTO droplist(mobId, itemId, min, max, category, chance) VALUES (?,?,?,?,?,?)");
 			statement.setInt(1, npcId);
 			statement.setInt(2, itemId);
@@ -1057,25 +973,12 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void deleteDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			if (npcId > 0)
 			{
 				PreparedStatement statement2 = con.prepareStatement("DELETE FROM droplist WHERE mobId=? AND itemId=? AND category=?");
@@ -1106,17 +1009,6 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 	}
 
 	private void reLoadNpcDropList(int npcId)
@@ -1129,15 +1021,14 @@ public class AdminEditNpc implements IAdminCommandHandler
 		npcData.clearAllDropData();
 
 		// get the drops
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			L2DropData dropData = null;
 
 			npcData.getDropData().clear();
 
-			PreparedStatement statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[] {
+			PreparedStatement statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
+			{
 			"mobId", "itemId", "min", "max", "category", "chance"
 			}) + " FROM droplist WHERE mobId=?");
 			statement.setInt(1, npcId);
@@ -1164,16 +1055,6 @@ public class AdminEditNpc implements IAdminCommandHandler
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

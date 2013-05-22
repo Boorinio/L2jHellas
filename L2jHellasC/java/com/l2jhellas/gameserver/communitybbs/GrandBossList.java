@@ -21,8 +21,8 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.instancemanager.games.Lottery;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class GrandBossList
 {
@@ -37,17 +37,14 @@ public class GrandBossList
 
 	private void loadFromDB()
 	{
-		Connection con = null;
 		int pos = 0;
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT boss_id, status FROM grandboss_data");
 			ResultSet result = statement.executeQuery();
 
-			nextnpc:
-			while (result.next())
+			nextnpc: while (result.next())
 			{
 				int npcid = result.getInt("boss_id");
 				int status = result.getInt("status");
@@ -79,16 +76,6 @@ public class GrandBossList
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

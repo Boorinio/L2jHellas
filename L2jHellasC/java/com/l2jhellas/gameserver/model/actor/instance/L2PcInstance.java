@@ -43,7 +43,6 @@ import Extensions.RankSystem.RankPvpSystemRankPointsReward;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.GmListTable;
@@ -222,13 +221,11 @@ import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class represents all player characters in the world. There is always a
- * client-thread connected to this (except if a player-store is activated upon
- * logout).
- *
- * @version $Revision: 1.66.2.41.2.33 $ $Date: 2005/04/11 10:06:09 $
+ * client-thread connected to this (except if a player-store is activated upon logout).
  */
 public final class L2PcInstance extends L2PlayableInstance
 {
@@ -238,7 +235,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	// Chaos Event.
 	public int _chaosKills;
 	public boolean _inChaosEvent = false;
-	public boolean isinZodiac;
+	public boolean isinZodiac = false;
 	public int ZodiacPoints;
 	public int CountIps;
 
@@ -279,7 +276,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String DELETE_CHAR_HENNAS = "DELETE FROM character_hennas WHERE char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SHORTCUTS = "DELETE FROM character_shortcuts WHERE char_obj_id=? AND class_index=?";
 
-	// Character Recommentations
+	// Character Recommendations
 	private static final String RESTORE_CHAR_RECOMS = "SELECT char_id,target_id FROM character_recommends WHERE char_id=?";
 	private static final String ADD_CHAR_RECOM = "INSERT INTO character_recommends (char_id,target_id) VALUES (?,?)";
 	private static final String DELETE_CHAR_RECOMS = "DELETE FROM character_recommends WHERE char_id=?";
@@ -345,7 +342,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			getPlayer().setRecentFakeDeath(false);
 			for (L2CubicInstance cubic : getCubics().values())
 				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+				{
 					cubic.doAction(target);
+				}
 		}
 
 		@Override
@@ -369,11 +368,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				default:
 				{
 					L2Object mainTarget = skill.getFirstOfTargetList(L2PcInstance.this);
-					if (mainTarget == null || !(mainTarget instanceof L2Character))
+					if ((mainTarget == null) || !(mainTarget instanceof L2Character))
 						return;
 					for (L2CubicInstance cubic : getCubics().values())
 						if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+						{
 							cubic.doAction((L2Character) mainTarget);
+						}
 				}
 				break;
 			}
@@ -398,7 +399,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 
 		if (_forceBuff == null)
+		{
 			_forceBuff = new ForceBuff(this, (L2PcInstance) target, skill);
+		}
 	}
 
 	private L2GameClient _client;
@@ -453,8 +456,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	private int _curWeightPenalty = 0;
 
-	private int _lastCompassZone; // the last compass zone update send to the
-									// client
+	private int _lastCompassZone; // the last compass zone update send to the client
 	private byte _zoneValidateCounter = 4;
 
 	private boolean _isIn7sDungeon = false;
@@ -464,10 +466,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private long _jailTimer = 0;
 	private ScheduledFuture<?> _jailTask;
 
-	private PunishLevel _punishLevel = PunishLevel.NONE; // TODO Clean up,
-															// delete old
-															// methods and add
-															// this one...
+	private PunishLevel _punishLevel = PunishLevel.NONE; // TODO Clean up, delete old methods and add this one...
 	private long _punishTimer = 0;
 	private ScheduledFuture<?> _punishTask;
 
@@ -559,15 +558,15 @@ public final class L2PcInstance extends L2PlayableInstance
 	private final Point3D _lastClientPosition = new Point3D(0, 0, 0);
 	private final Point3D _lastServerPosition = new Point3D(0, 0, 0);
 
-	/** The number of recommandation obtained by the L2PcInstance */
+	/** The number of recommendation obtained by the L2PcInstance */
 	private int _recomHave; // how much I was recommended by others
 
-	/** The number of recommandation that the L2PcInstance can give */
-	private int _recomLeft; // how many recomendations I can give to others
+	/** The number of recommendation that the L2PcInstance can give */
+	private int _recomLeft; // how many recommendations I can give to others
 
-	/** Date when recom points were updated last time */
+	/** Date when recommendation points were updated last time */
 	private long _lastRecomUpdate;
-	/** List with the recomendations that I've give */
+	/** List with the recommendations that I've give */
 	private final List<Integer> _recomChars = new FastList<Integer>();
 
 	/** The random number of the L2PcInstance */
@@ -612,10 +611,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	/** Premium Service */
 	private void createPSdb()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(INSERT_PREMIUMSERVICE);
 			statement.setString(1, _accountName);
 			statement.setInt(2, 0);
@@ -634,24 +631,12 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			return;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private static void PStimeOver(String account)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE);
 			statement.setInt(1, 0);
 			statement.setLong(2, 0);
@@ -667,25 +652,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private static void restorePremServiceData(L2PcInstance player, String account)
 	{
 		boolean sucess = false;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(RESTORE_PREMIUMSERVICE);
 			statement.setString(1, account);
 			ResultSet rset = statement.executeQuery();
@@ -700,10 +673,14 @@ public final class L2PcInstance extends L2PlayableInstance
 						player.setPremiumService(0);
 					}
 					else
+					{
 						player.setPremiumService(rset.getInt("premium_service"));
+					}
 				}
 				else
+				{
 					player.setPremiumService(0);
+				}
 			}
 			statement.close();
 		}
@@ -713,16 +690,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 		if (sucess == false)
@@ -771,7 +738,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private L2TamedBeastInstance _tamedBeast = null;
 
 	// client radar
-	// TODO: This needs to be better intergrated and saved/loaded
+	// TODO: This needs to be better integrated and saved/loaded
 	private L2Radar _radar;
 
 	// these values are only stored temporarily
@@ -1083,7 +1050,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		player.setBaseClass(player.getClassId());
 
 		if (Config.ALT_GAME_NEW_CHAR_ALWAYS_IS_NEWBIE)
+		{
 			player.setNewbie(true);
+		}
 
 		// Add the player in the characters table of the database
 		boolean ok = player.createDb();
@@ -1119,22 +1088,34 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// karma and pvp may not be required
 		if (getPvpFlag() != 0)
+		{
 			result |= RelationChanged.RELATION_PVP_FLAG;
+		}
 		if (getKarma() > 0)
+		{
 			result |= RelationChanged.RELATION_HAS_KARMA;
+		}
 
 		if (isClanLeader())
+		{
 			result |= RelationChanged.RELATION_LEADER;
+		}
 
 		if (getSiegeState() != 0)
 		{
 			result |= RelationChanged.RELATION_INSIEGE;
 			if (getSiegeState() != target.getSiegeState())
+			{
 				result |= RelationChanged.RELATION_ENEMY;
+			}
 			else
+			{
 				result |= RelationChanged.RELATION_ALLY;
+			}
 			if (getSiegeState() == 1)
+			{
 				result |= RelationChanged.RELATION_ATTACKER;
+			}
 		}
 
 		if (getClan() != null && target.getClan() != null)
@@ -1143,7 +1124,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				result |= RelationChanged.RELATION_1SIDED_WAR;
 				if (getClan().isAtWarWith(target.getClan().getClanId()))
+				{
 					result |= RelationChanged.RELATION_MUTUAL_WAR;
+				}
 			}
 		}
 		return result;
@@ -1220,7 +1203,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// them to _inventory
 		getInventory().restore();
 		if (!Config.WAREHOUSE_CACHE)
+		{
 			getWarehouse();
+		}
 		getFreight().restore();
 	}
 
@@ -1238,7 +1223,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public final PcKnownList getKnownList()
 	{
 		if (super.getKnownList() == null || !(super.getKnownList() instanceof PcKnownList))
+		{
 			setKnownList(new PcKnownList(this));
+		}
 		return (PcKnownList) super.getKnownList();
 	}
 
@@ -1246,7 +1233,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public final PcStat getStat()
 	{
 		if (super.getStat() == null || !(super.getStat() instanceof PcStat))
+		{
 			setStat(new PcStat(this));
+		}
 		return (PcStat) super.getStat();
 	}
 
@@ -1254,7 +1243,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public final PcStatus getStatus()
 	{
 		if (super.getStatus() == null || !(super.getStatus() instanceof PcStatus))
+		{
 			setStatus(new PcStatus(this));
+		}
 		return (PcStatus) super.getStatus();
 	}
 
@@ -1296,7 +1287,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			synchronized (this)
 			{
 				if (_ai == null)
+				{
 					_ai = new L2PlayerAI(new L2PcInstance.AIAccessor());
+				}
 			}
 		}
 
@@ -1322,13 +1315,21 @@ public final class L2PcInstance extends L2PlayableInstance
 		int y = getY() + Rnd.nextInt(6000) - 3000;
 
 		if (x > Universe.MAX_X)
+		{
 			x = Universe.MAX_X;
+		}
 		if (x < Universe.MIN_X)
+		{
 			x = Universe.MIN_X;
+		}
 		if (y > Universe.MAX_Y)
+		{
 			y = Universe.MAX_Y;
+		}
 		if (y < Universe.MIN_Y)
+		{
 			y = Universe.MIN_Y;
+		}
 
 		int z = getZ();
 
@@ -1383,8 +1384,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		return (getPrivateStoreType() > 0);
 	}
 
-	// public boolean isInCraftMode() { return (getPrivateStoreType() ==
-	// STORE_PRIVATE_MANUFACTURE); }
+	// public boolean isInCraftMode() { return (getPrivateStoreType() == STORE_PRIVATE_MANUFACTURE); }
 
 	public boolean isInCraftMode()
 	{
@@ -1479,18 +1479,26 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void unregisterRecipeList(int recipeId)
 	{
 		if (_dwarvenRecipeBook.containsKey(recipeId))
+		{
 			_dwarvenRecipeBook.remove(recipeId);
+		}
 		else if (_commonRecipeBook.containsKey(recipeId))
+		{
 			_commonRecipeBook.remove(recipeId);
+		}
 		else
+		{
 			_log.warning("Attempted to remove unknown RecipeList: " + recipeId);
+		}
 
 		L2ShortCut[] allShortCuts = getAllShortCuts();
 
 		for (L2ShortCut sc : allShortCuts)
 		{
 			if (sc != null && sc.getId() == recipeId && sc.getType() == L2ShortCut.TYPE_RECIPE)
+			{
 				deleteShortCut(sc.getSlot(), sc.getPage());
+			}
 		}
 	}
 
@@ -1551,7 +1559,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		int len = questStateArray.length;
 		QuestState[] tmp = new QuestState[len + 1];
 		for (int i = 0; i < len; i++)
+		{
 			tmp[i] = questStateArray[i];
+		}
 		tmp[len] = state;
 		return tmp;
 	}
@@ -1568,10 +1578,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			int questId = qs.getQuest().getQuestIntId();
 			if ((questId > 999) || (questId < 1))
+			{
 				continue;
+			}
 
 			if (!qs.isStarted() && !Config.DEVELOPER)
+			{
 				continue;
+			}
 
 			quests.add(qs.getQuest());
 		}
@@ -1600,12 +1614,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				// Copy the current L2PcInstance QuestState in the QuestState table
 				if (states == null)
+				{
 					states = new QuestState[]
 					{
 						getQuestState(quest.getName())
 					};
+				}
 				else
+				{
 					states = addToQuestStateArray(states, getQuestState(quest.getName()));
+				}
 			}
 		}
 
@@ -1634,12 +1652,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				// Copy the current L2PcInstance QuestState in the QuestState table
 				if (states == null)
+				{
 					states = new QuestState[]
 					{
 						getQuestState(quest.getName())
 					};
+				}
 				else
+				{
 					states = addToQuestStateArray(states, getQuestState(quest.getName()));
+				}
 			}
 		}
 
@@ -1673,12 +1695,16 @@ public final class L2PcInstance extends L2PlayableInstance
 					if (getQuestState(quest.getName()) != null)
 					{
 						if (states == null)
+						{
 							states = new QuestState[]
 							{
 								getQuestState(quest.getName())
 							};
+						}
 						else
+						{
 							states = addToQuestStateArray(states, getQuestState(quest.getName()));
+						}
 					}
 				}
 			}
@@ -1692,7 +1718,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		QuestState retval = null;
 		if (event == null)
+		{
 			event = "";
+		}
 		if (!_quests.containsKey(quest))
 			return retval;
 		QuestState qs = getQuestState(quest);
@@ -1722,7 +1750,9 @@ public final class L2PcInstance extends L2PlayableInstance
 							if ((state.getQuest().getQuestIntId() == qs.getQuest().getQuestIntId()))
 							{
 								if (qs.getQuest().notifyEvent(event, npc, this))
+								{
 									showQuestWindow(quest, State.getStateName(qs.getState()));
+								}
 
 								retval = qs;
 							}
@@ -1744,7 +1774,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (content != null)
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("Showing quest window for quest " + questId + " state " + stateId + " html path: " + path);
+			}
 
 			NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
 			npcReply.setHtml(content);
@@ -1871,15 +1903,21 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// If this player has a pet update the pets pvp flag as well
 		if (getPet() != null)
+		{
 			sendPacket(new RelationChanged(getPet(), getRelation(this), false));
+		}
 
 		for (L2PcInstance target : getKnownList().getKnownPlayers().values())
 		{
 			if (target == null)
+			{
 				continue;
+			}
 			target.sendPacket(new RelationChanged(this, getRelation(this), isAutoAttackable(target)));
 			if (getPet() != null)
+			{
 				target.sendPacket(new RelationChanged(getPet(), getRelation(this), isAutoAttackable(target)));
+			}
 		}
 	}
 
@@ -1891,12 +1929,16 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// This function is called very often from movement code
 		if (force)
+		{
 			_zoneValidateCounter = 4;
+		}
 		else
 		{
 			_zoneValidateCounter--;
 			if (_zoneValidateCounter < 0)
+			{
 				_zoneValidateCounter = 4;
+			}
 			else
 				return;
 		}
@@ -1940,7 +1982,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (_lastCompassZone == ExSetCompassZoneCode.GENERALZONE)
 				return;
 			if (_lastCompassZone == ExSetCompassZoneCode.SIEGEWARZONE2)
+			{
 				updatePvPStatus();
+			}
 			_lastCompassZone = ExSetCompassZoneCode.GENERALZONE;
 			ExSetCompassZoneCode cz = new ExSetCompassZoneCode(ExSetCompassZoneCode.GENERALZONE);
 			sendPacket(cz);
@@ -2050,7 +2094,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	protected void incRecomHave()
 	{
 		if (_recomHave < 255)
+		{
 			_recomHave++;
+		}
 	}
 
 	/**
@@ -2061,11 +2107,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setRecomHave(int value)
 	{
 		if (value > 255)
+		{
 			_recomHave = 255;
+		}
 		else if (value < 0)
+		{
 			_recomHave = 0;
+		}
 		else
+		{
 			_recomHave = value;
+		}
 	}
 
 	/**
@@ -2084,17 +2136,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	protected void decRecomLeft()
 	{
 		if (_recomLeft > 0)
+		{
 			_recomLeft--;
+		}
 	}
 
 	public void giveRecom(L2PcInstance target)
 	{
 		if (Config.ALT_RECOMMEND)
 		{
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement(ADD_CHAR_RECOM);
 				statement.setInt(1, getObjectId());
 				statement.setInt(2, target.getObjectId());
@@ -2107,16 +2159,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}
@@ -2162,16 +2204,22 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setKarma(int karma)
 	{
 		if (karma < 0)
+		{
 			karma = 0;
+		}
 		if (_karma == 0 && karma > 0)
 		{
 			for (L2Object object : getKnownList().getKnownObjects().values())
 			{
 				if (object == null || !(object instanceof L2GuardInstance))
+				{
 					continue;
+				}
 
 				if (((L2GuardInstance) object).getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
+				{
 					((L2GuardInstance) object).getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
+				}
 			}
 		}
 		else if (_karma > 0 && karma == 0)
@@ -2237,13 +2285,21 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				newWeightPenalty = 0;
 				if (weightproc > 500 && weightproc < 666)
+				{
 					newWeightPenalty = 1;
+				}
 				else if (weightproc > 500 && weightproc < 800)
+				{
 					newWeightPenalty = 2;
+				}
 				else if (weightproc > 500 && weightproc < 1000)
+				{
 					newWeightPenalty = 3;
+				}
 				else if (weightproc > 500 && weightproc > 1000)
+				{
 					newWeightPenalty = 4;
+				}
 				if (_curWeightPenalty != newWeightPenalty)
 				{
 					_curWeightPenalty = newWeightPenalty;
@@ -2273,23 +2329,31 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				int crystaltype = item.getItem().getCrystalType();
 				if (crystaltype > newPenalty)
+				{
 					newPenalty = crystaltype;
+				}
 			}
 		}
 
 		newPenalty = newPenalty - getExpertiseIndex();
 
 		if (newPenalty <= 0 || Config.DISABLE_GRADE_PENALTY)
+		{
 			newPenalty = 0;
+		}
 
 		if (getExpertisePenalty() != newPenalty)
 		{
 			_expertisePenalty = newPenalty;
 
 			if (newPenalty > 0)
+			{
 				super.addSkill(SkillTable.getInstance().getInfo(4267, 1)); // level used to be new Penalty
+			}
 			else
+			{
 				super.removeSkill(getKnownSkill(4267));
+			}
 
 			sendPacket(new EtcStatusUpdate(this));
 		}
@@ -2306,9 +2370,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			L2Skill effectSkill = currenteffect.getSkill();
 
 			if (currenteffect.getSkill().isToggle())
+			{
 				currenteffect.exit();
-			// Ignore all buff skills that are party related (ie. songs, dances)
-			// while still remaining weapon dependant on cast though.
+			}
 			else if (!effectSkill.isOffensive() && !(effectSkill.getTargetType() == L2SkillTargetType.TARGET_PARTY && effectSkill.getSkillType() == L2SkillType.BUFF))
 			{
 				// Check to rest to assure current effect meets weapon
@@ -2317,7 +2381,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					sendMessage(effectSkill.getName() + " cannot be used with this weapon.");
 					if (Config.DEBUG)
+					{
 						_log.info("   | Skill " + effectSkill.getName() + " has been disabled for (" + getName() + "); Reason: Incompatible Weapon Type.");
+					}
 					currenteffect.exit();
 				}
 			}
@@ -2396,11 +2462,17 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getLvlJoinedAcademy() != 0 && _clan != null && PlayerClass.values()[Id].getLevel() == ClassLevel.Third)
 		{
 			if (getLvlJoinedAcademy() <= 16)
+			{
 				_clan.setReputationScore(_clan.getReputationScore() + 400, true);
+			}
 			else if (getLvlJoinedAcademy() >= 39)
+			{
 				_clan.setReputationScore(_clan.getReputationScore() + 170, true);
+			}
 			else
+			{
 				_clan.setReputationScore(_clan.getReputationScore() + (400 - (getLvlJoinedAcademy() - 16) * 10), true);
+			}
 			_clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(_clan));
 			setLvlJoinedAcademy(0);
 			// oust pledge member from the academy, cuz he has finished his 2nd
@@ -2434,7 +2506,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		// If we dont have a Enchant Item, we are not enchanting.
 		if (scroll == null)
+		{
 			setIsEnchanting(false);
+		}
 		_activeEnchantItem = scroll;
 	}
 
@@ -2563,14 +2637,18 @@ public final class L2PcInstance extends L2PlayableInstance
 			skill = removeSkill(skill);
 
 			if (Config.DEBUG && skill != null)
+			{
 				_log.fine("removed skill 'Lucky' from " + getName());
+			}
 		}
 
 		// Calculate the current higher Expertise of the L2PcInstance
 		for (int i = 0; i < EXPERTISE_LEVELS.length; i++)
 		{
 			if (lvl >= EXPERTISE_LEVELS[i])
+			{
 				setExpertiseIndex(i);
+			}
 		}
 
 		// Add the Expertise skill corresponding to its Expertise level
@@ -2580,13 +2658,17 @@ public final class L2PcInstance extends L2PlayableInstance
 			addSkill(skill, true);
 
 			if (Config.DEBUG)
+			{
 				_log.fine("awarded " + getName() + " with new expertise.");
+			}
 
 		}
 		else
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("No skills awarded at lvl: " + lvl);
+			}
 		}
 
 		// Active skill dwarven craft
@@ -2637,11 +2719,15 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Add noble skills if noble
 		if (isNoble())
+		{
 			setNoble(true);
+		}
 
 		// Add Hero skills if hero
 		if (isHero())
+		{
 			setHero(true);
+		}
 
 		// Add clan skills
 		if (getClan() != null && getClan().getReputationScore() >= 0)
@@ -2650,7 +2736,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			for (L2Skill sk : skills)
 			{
 				if (sk.getMinPledgeClass() <= getPledgeClass())
+				{
 					addSkill(sk, false);
+				}
 			}
 		}
 
@@ -2683,7 +2771,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 
 				if (getSkillLevel(sk.getId()) == -1)
+				{
 					skillCounter++;
+				}
 
 				addSkill(sk, true);
 			}
@@ -2918,11 +3008,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void standUp()
 	{
 		if (L2Event.active && eventSitForced)
+		{
 			sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up ...");
+		}
 		else if (TvT._sitForced && _inEventTvT || CTF._sitForced && _inEventCTF || DM._sitForced && _inEventDM || VIP._sitForced && _inEventVIP)
+		{
 			sendMessage("The Admin/GM handle if you sit or stand in this match!");
+		}
 		else if (isAway())
+		{
 			sendMessage("You can't stand up if your Status is Away");
+		}
 		else if (_waitTypeSitting && !isInStoreMode() && !isAlikeDead())
 		{
 			if (_relax)
@@ -2958,7 +3054,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			_warehouse.restore();
 		}
 		if (Config.WAREHOUSE_CACHE)
+		{
 			WarehouseCacheManager.getInstance().addCacheTask(this);
+		}
 		return _warehouse;
 	}
 
@@ -2968,7 +3066,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void clearWarehouse()
 	{
 		if (_warehouse != null)
+		{
 			_warehouse.deleteMe();
+		}
 		_warehouse = null;
 	}
 
@@ -3053,7 +3153,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				sendPacket(iu);
 			}
 			else
+			{
 				sendPacket(new ItemList(this, false));
+			}
 		}
 	}
 
@@ -3078,7 +3180,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (count > getAdena())
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+			}
 			return false;
 		}
 
@@ -3095,7 +3199,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				sendPacket(iu);
 			}
 			else
+			{
 				sendPacket(new ItemList(this, false));
+			}
 
 			if (sendMessage)
 			{
@@ -3144,7 +3250,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				sendPacket(iu);
 			}
 			else
+			{
 				sendPacket(new ItemList(this, false));
+			}
 		}
 	}
 
@@ -3169,7 +3277,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (count > getAncientAdena())
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+			}
 
 			return false;
 		}
@@ -3214,22 +3324,20 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void addItem(String process, int itemId, long countL, L2Object reference, boolean sendMessage)
 	{
 		int count = 0;
-		count = (int)countL;
-		if(count!=countL)
+		count = (int) countL;
+		if (count != countL)
 		{
 			count = 1;
 		}
 
-		if(count > 0)
+		if (count > 0)
 		{
 			// Sends message to client if requested
-			if(sendMessage && (!isCastingNow()
-							&& ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB
-							|| ItemTable.getInstance().createDummyItem(itemId).getItemType() != L2EtcItemType.HERB))
+			if (sendMessage && (!isCastingNow() && ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB || ItemTable.getInstance().createDummyItem(itemId).getItemType() != L2EtcItemType.HERB))
 			{
-				if(count > 1)
+				if (count > 1)
 				{
-					if(process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
+					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
 						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 						sm.addItemName(itemId);
@@ -3248,7 +3356,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				else
 				{
-					if(process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
+					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
 						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
 						sm.addItemName(itemId);
@@ -3265,14 +3373,14 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 			}
 			//Auto use herbs - autoloot
-			if(ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB) //If item is herb dont add it to iv :]
+			if (ItemTable.getInstance().createDummyItem(itemId).getItemType() == L2EtcItemType.HERB) //If item is herb dont add it to iv :]
 			{
-				if(!isCastingNow())
+				if (!isCastingNow())
 				{
 					L2ItemInstance herb = new L2ItemInstance(_charId, itemId);
 					IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getItemId());
 
-					if(handler == null)
+					if (handler == null)
 					{
 						_log.warning("No item handler registered for Herb - item ID " + herb.getItemId() + ".");
 					}
@@ -3280,7 +3388,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						handler.useItem(this, herb);
 
-						if(_herbstask >= 100)
+						if (_herbstask >= 100)
 						{
 							_herbstask -= 100;
 						}
@@ -3302,7 +3410,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				L2ItemInstance item = _inventory.addItem(process, itemId, count, this, reference);
 
 				// Send inventory update packet
-				if(!Config.FORCE_INVENTORY_UPDATE)
+				if (!Config.FORCE_INVENTORY_UPDATE)
 				{
 					InventoryUpdate playerIU = new InventoryUpdate();
 					playerIU.addItem(item);
@@ -3321,11 +3429,11 @@ public final class L2PcInstance extends L2PlayableInstance
 				su = null;
 
 				// If over capacity, drop the item
-				if(!isGM() && !_inventory.validateCapacity(item))
+				if (!isGM() && !_inventory.validateCapacity(item))
 				{
 					dropItem("InvDrop", item, null, true);
 				}
-				else if(CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+				else if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
 				{
 					CursedWeaponsManager.getInstance().activate(this, item);
 				}
@@ -3401,9 +3509,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// If over capacity, drop the item
 			if (!isGM() && !_inventory.validateCapacity(0))
+			{
 				dropItem("InvDrop", newitem, null, true);
-
-			// Cursed Weapon
+			}
 			else if (CursedWeaponsManager.getInstance().isCursed(newitem.getItemId()))
 			{
 				CursedWeaponsManager.getInstance().activate(this, newitem);
@@ -3476,12 +3584,16 @@ public final class L2PcInstance extends L2PlayableInstance
 					L2ItemInstance herb = new L2ItemInstance(_charId, itemId);
 					IItemHandler handler = ItemHandler.getInstance().getItemHandler(herb.getItemId());
 					if (handler == null)
+					{
 						_log.warning("No item handler registered for Herb - item ID " + herb.getItemId() + ".");
+					}
 					else
 					{
 						handler.useItem(this, herb);
 						if (_herbstask >= 100)
+						{
 							_herbstask -= 100;
+						}
 					}
 				}
 				else
@@ -3503,7 +3615,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					sendPacket(playerIU);
 				}
 				else
+				{
 					sendPacket(new ItemList(this, false));
+				}
 
 				// Update current load as well
 				StatusUpdate su = new StatusUpdate(getObjectId());
@@ -3512,11 +3626,13 @@ public final class L2PcInstance extends L2PlayableInstance
 
 				// If over capacity, drop the item
 				if (!isGM() && !_inventory.validateCapacity(0))
+				{
 					dropItem("InvDrop", item, null, true);
-
-				// Cursed Weapon
+				}
 				else if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
+				{
 					CursedWeaponsManager.getInstance().activate(this, item);
+				}
 			}
 		}
 	}
@@ -3545,7 +3661,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (item == null)
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+			}
 
 			return false;
 		}
@@ -3558,7 +3676,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(playerIU);
 		}
 		else
+		{
 			sendPacket(new ItemList(this, false));
+		}
 
 		// Update current load as well
 		StatusUpdate su = new StatusUpdate(getObjectId());
@@ -3603,7 +3723,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (item == null || item.getCount() < count || _inventory.destroyItem(process, objectId, count, this, reference) == null)
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+			}
 
 			return false;
 		}
@@ -3616,7 +3738,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(playerIU);
 		}
 		else
+		{
 			sendPacket(new ItemList(this, false));
+		}
 
 		// Update current load as well
 		StatusUpdate su = new StatusUpdate(getObjectId());
@@ -3661,7 +3785,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (item == null || item.getCount() < count)
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+			}
 			return false;
 		}
 
@@ -3675,7 +3801,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 				// could do also without saving, but let's save approx 1 of 10
 				if (GameTimeController.getGameTicks() % 10 == 0)
+				{
 					item.updateDatabase();
+				}
 				_inventory.refreshWeight();
 			}
 		}
@@ -3693,7 +3821,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(playerIU);
 		}
 		else
+		{
 			sendPacket(new ItemList(this, false));
+		}
 
 		// Update current load as well
 		StatusUpdate su = new StatusUpdate(getObjectId());
@@ -3738,7 +3868,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (item == null || item.getCount() < count || _inventory.destroyItemByItemId(process, itemId, count, this, reference) == null)
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+			}
 
 			return false;
 		}
@@ -3751,7 +3883,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(playerIU);
 		}
 		else
+		{
 			sendPacket(new ItemList(this, false));
+		}
 
 		// Update current load as well
 		StatusUpdate su = new StatusUpdate(getObjectId());
@@ -3794,7 +3928,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (item.isWear())
 			{
 				if (item.isEquipped())
+				{
 					getInventory().unEquipItemInSlotAndRecord(item.getEquipSlot());
+				}
 
 				if (_inventory.destroyItem(process, item, this, reference) == null)
 				{
@@ -3861,14 +3997,20 @@ public final class L2PcInstance extends L2PlayableInstance
 			InventoryUpdate playerIU = new InventoryUpdate();
 
 			if (oldItem.getCount() > 0 && oldItem != newItem)
+			{
 				playerIU.addModifiedItem(oldItem);
+			}
 			else
+			{
 				playerIU.addRemovedItem(oldItem);
+			}
 
 			sendPacket(playerIU);
 		}
 		else
+		{
 			sendPacket(new ItemList(this, false));
+		}
 
 		// Update current load as well
 		StatusUpdate playerSU = new StatusUpdate(getObjectId());
@@ -3885,14 +4027,20 @@ public final class L2PcInstance extends L2PlayableInstance
 				InventoryUpdate playerIU = new InventoryUpdate();
 
 				if (newItem.getCount() > count)
+				{
 					playerIU.addModifiedItem(newItem);
+				}
 				else
+				{
 					playerIU.addNewItem(newItem);
+				}
 
 				targetPlayer.sendPacket(playerIU);
 			}
 			else
+			{
 				targetPlayer.sendPacket(new ItemList(targetPlayer, false));
+			}
 
 			// Update current load as well
 			playerSU = new StatusUpdate(targetPlayer.getObjectId());
@@ -3904,9 +4052,13 @@ public final class L2PcInstance extends L2PlayableInstance
 			PetInventoryUpdate petIU = new PetInventoryUpdate();
 
 			if (newItem.getCount() > count)
+			{
 				petIU.addModifiedItem(newItem);
+			}
 			else
+			{
 				petIU.addNewItem(newItem);
+			}
 
 			((PetInventory) target).getOwner().getOwner().sendPacket(petIU);
 		}
@@ -3937,7 +4089,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (item == null)
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+			}
 
 			return false;
 		}
@@ -3947,17 +4101,25 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (Config.AUTODESTROY_ITEM_AFTER > 0 && Config.DESTROY_DROPPED_PLAYER_ITEM && !Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
 		{
 			if ((item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM) || !item.isEquipable())
+			{
 				ItemsAutoDestroy.getInstance().addItem(item);
+			}
 		}
 		if (Config.DESTROY_DROPPED_PLAYER_ITEM)
 		{
 			if (!item.isEquipable() || (item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM))
+			{
 				item.setProtected(false);
+			}
 			else
+			{
 				item.setProtected(true);
+			}
 		}
 		else
+		{
 			item.setProtected(true);
+		}
 
 		// Send inventory update packet
 		if (!Config.FORCE_INVENTORY_UPDATE)
@@ -3967,7 +4129,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(playerIU);
 		}
 		else
+		{
 			sendPacket(new ItemList(this, false));
+		}
 
 		// Update current load as well
 		StatusUpdate su = new StatusUpdate(getObjectId());
@@ -4018,7 +4182,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (item == null)
 		{
 			if (sendMessage)
+			{
 				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+			}
 
 			return null;
 		}
@@ -4028,17 +4194,25 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (Config.AUTODESTROY_ITEM_AFTER > 0 && Config.DESTROY_DROPPED_PLAYER_ITEM && !Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
 		{
 			if ((item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM) || !item.isEquipable())
+			{
 				ItemsAutoDestroy.getInstance().addItem(item);
+			}
 		}
 		if (Config.DESTROY_DROPPED_PLAYER_ITEM)
 		{
 			if (!item.isEquipable() || (item.isEquipable() && Config.DESTROY_EQUIPABLE_PLAYER_ITEM))
+			{
 				item.setProtected(false);
+			}
 			else
+			{
 				item.setProtected(true);
+			}
 		}
 		else
+		{
 			item.setProtected(true);
+		}
 
 		// Send inventory update packet
 		if (!Config.FORCE_INVENTORY_UPDATE)
@@ -4103,7 +4277,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getPet() != null && getPet().getControlItemId() == objectId || getMountObjectID() == objectId)
 		{
 			if (Config.DEBUG)
+			{
 				_log.finest(getObjectId() + ": player tried to " + action + " item controling pet");
+			}
 
 			return null;
 		}
@@ -4111,16 +4287,16 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getActiveEnchantItem() != null && getActiveEnchantItem().getObjectId() == objectId)
 		{
 			if (Config.DEBUG)
+			{
 				_log.finest(getObjectId() + ":player tried to " + action + " an enchant scroll he was using");
+			}
 
 			return null;
 		}
 
 		if (item.isWear())
-		{
 			// cannot drop/trade wear-items
 			return null;
-		}
 
 		// We cannot put a Weapon with Augmention in WH while casting (Possible
 		// Exploit)
@@ -4136,9 +4312,13 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setProtection(boolean protect)
 	{
 		if (Config.DEVELOPER && (protect || (_protectEndTime > 0)))
+		{
 			System.out.println(getName() + ": Protection " + (protect ? "ON " + (GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND) : "OFF") + " (currently " + GameTimeController.getGameTicks() + ")");
+		}
 		else
+		{
 			_protectEndTime = protect ? GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND : 0;
+		}
 	}
 
 	/**
@@ -4270,12 +4450,16 @@ public final class L2PcInstance extends L2PlayableInstance
 			// The color to display in the select window is White
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
 			if (player != this)
+			{
 				player.sendPacket(new ValidateLocation(this));
+			}
 		}
 		else
 		{
 			if (player != this)
+			{
 				player.sendPacket(new ValidateLocation(this));
+			}
 			// Check if this L2PcInstance has a Private Store
 			if (getPrivateStoreType() != 0)
 			{
@@ -4370,10 +4554,14 @@ public final class L2PcInstance extends L2PlayableInstance
 					if (Config.GEODATA > 0)
 					{
 						if (GeoData.getInstance().canSeeTarget(player, this))
+						{
 							player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
+						}
 					}
 					else
+					{
 						player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
+					}
 				}
 			}
 		}
@@ -4486,7 +4674,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (isInParty() && (needCpUpdate || needHpUpdate || needMpUpdate(352)))
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("Send status for party window of " + getObjectId() + "(" + getName() + ") to his party. CP: " + getCurrentCp() + " HP: " + getCurrentHp() + " MP: " + getCurrentMp());
+			}
 			// Send the Server->Client packet PartySmallWindowUpdate with
 			// current HP, MP and Level to all other L2PcInstance of the Party
 			PartySmallWindowUpdate update = new PartySmallWindowUpdate(this);
@@ -4506,7 +4696,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					if (player.getOlympiadGameId() == getOlympiadGameId() && player.isOlympiadStart())
 					{
 						if (Config.DEBUG)
+						{
 							_log.fine("Send status for Olympia window of " + getObjectId() + "(" + getName() + ") to " + player.getObjectId() + "(" + player.getName() + "). CP: " + getCurrentCp() + " HP: " + getCurrentHp() + " MP: " + getCurrentMp());
+						}
 						player.sendPacket(olyInfo);
 					}
 				}
@@ -4518,7 +4710,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				for (L2PcInstance spectator : Olympiad.getInstance().getSpectators(_olympiadGameId))
 				{
 					if (spectator == null)
+					{
 						continue;
+					}
 					spectator.sendPacket(olyInfo);
 				}
 			}
@@ -4538,15 +4732,25 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (isGM())
 				return;
 			if ((pvpKillAmount >= (Config.PVP_AMOUNT1)) && (pvpKillAmount <= (Config.PVP_AMOUNT2)))
+			{
 				getAppearance().setNameColor(Config.NAME_COLOR_FOR_PVP_AMOUNT1);
+			}
 			else if ((pvpKillAmount >= (Config.PVP_AMOUNT2)) && (pvpKillAmount <= (Config.PVP_AMOUNT3)))
+			{
 				getAppearance().setNameColor(Config.NAME_COLOR_FOR_PVP_AMOUNT2);
+			}
 			else if ((pvpKillAmount >= (Config.PVP_AMOUNT3)) && (pvpKillAmount <= (Config.PVP_AMOUNT4)))
+			{
 				getAppearance().setNameColor(Config.NAME_COLOR_FOR_PVP_AMOUNT3);
+			}
 			else if ((pvpKillAmount >= (Config.PVP_AMOUNT4)) && (pvpKillAmount <= (Config.PVP_AMOUNT5)))
+			{
 				getAppearance().setNameColor(Config.NAME_COLOR_FOR_PVP_AMOUNT4);
+			}
 			else if (pvpKillAmount >= (Config.PVP_AMOUNT5))
+			{
 				getAppearance().setNameColor(Config.NAME_COLOR_FOR_PVP_AMOUNT5);
+			}
 		}
 	}
 
@@ -4557,15 +4761,25 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (isGM())
 				return;
 			if ((pkKillAmount >= (Config.PK_AMOUNT1)) && (pkKillAmount <= (Config.PVP_AMOUNT2)))
+			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT1);
+			}
 			else if ((pkKillAmount >= (Config.PK_AMOUNT2)) && (pkKillAmount <= (Config.PVP_AMOUNT3)))
+			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT2);
+			}
 			else if ((pkKillAmount >= (Config.PK_AMOUNT3)) && (pkKillAmount <= (Config.PVP_AMOUNT4)))
+			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT3);
+			}
 			else if ((pkKillAmount >= (Config.PK_AMOUNT4)) && (pkKillAmount <= (Config.PVP_AMOUNT5)))
+			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT4);
+			}
 			else if (pkKillAmount >= (Config.PK_AMOUNT5))
+			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT5);
+			}
 		}
 	}
 
@@ -4599,7 +4813,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Send a Server->Client packet CharInfo to all L2PcInstance in
 		// _KnownPlayers of the L2PcInstance
 		if (Config.DEBUG)
+		{
 			_log.fine("players to notify:" + getKnownList().getKnownPlayers().size() + " packet: [S] 03 CharInfo");
+		}
 
 		Broadcast.toKnownPlayers(this, new CharInfo(this));
 	}
@@ -4612,7 +4828,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Send a Server->Client packet TitleUpdate to all L2PcInstance in
 		// _KnownPlayers of the L2PcInstance
 		if (Config.DEBUG)
+		{
 			_log.fine("players to notify:" + getKnownList().getKnownPlayers().size() + " packet: [S] cc TitleUpdate");
+		}
 
 		Broadcast.toKnownPlayers(this, new TitleUpdate(this));
 	}
@@ -4632,13 +4850,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public int getAllyCrestId()
 	{
 		if (getClanId() == 0)
-		{
 			return 0;
-		}
 		if (getClan().getAllyId() == 0)
-		{
 			return 0;
-		}
 		return getClan().getAllyCrestId();
 	}
 
@@ -4738,18 +4952,26 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(new ActionFailed());
 
 			if (temp.getPrivateStoreType() == STORE_PRIVATE_SELL || temp.getPrivateStoreType() == STORE_PRIVATE_PACKAGE_SELL)
+			{
 				sendPacket(new PrivateStoreListSell(this, temp));
+			}
 			else if (temp.getPrivateStoreType() == STORE_PRIVATE_BUY)
+			{
 				sendPacket(new PrivateStoreListBuy(this, temp));
+			}
 			else if (temp.getPrivateStoreType() == STORE_PRIVATE_MANUFACTURE)
+			{
 				sendPacket(new RecipeShopSellList(this, temp));
+			}
 
 		}
 		else
 		{
 			// _interactTarget=null should never happen but one never knows ^^;
 			if (target != null)
+			{
 				target.onAction(this);
+			}
 		}
 	}
 
@@ -4772,11 +4994,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void doAutoLoot(L2Attackable target, L2Attackable.RewardItem item)
 	{
 		if (isInParty())
+		{
 			getParty().distributeItem(this, item, false, target);
+		}
 		else if (item.getItemId() == 57)
+		{
 			addAdena("Loot", item.getCount(), target, true);
+		}
 		else
+		{
 			addItem("Loot", item.getItemId(), item.getCount(), target, true);
+		}
 	}
 
 	/**
@@ -4820,7 +5048,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Send a Server->Client packet StopMove to this L2PcInstance
 		StopMove sm = new StopMove(getObjectId(), getX(), getY(), getZ(), getHeading());
 		if (Config.DEBUG)
+		{
 			_log.fine("pickup pos: " + target.getX() + " " + target.getY() + " " + target.getZ());
+		}
 		sendPacket(sm);
 
 		synchronized (target)
@@ -4876,12 +5106,16 @@ public final class L2PcInstance extends L2PlayableInstance
 				return;
 			}
 			if (target.getItemLootShedule() != null && (target.getOwnerId() == getObjectId() || isInLooterParty(target.getOwnerId())))
+			{
 				target.resetOwnerTimer();
+			}
 
 			// Remove the L2ItemInstance from the world and send server->client GetItem packets
 			target.pickupMe(this);
-			if (Config.SAVE_DROPPED_ITEM) // item must be removed from ItemsOnGroundManager if is active
+			if (Config.SAVE_DROPPED_ITEM)
+			{
 				ItemsOnGroundManager.getInstance().removeObject(target);
+			}
 
 		}
 
@@ -4890,9 +5124,13 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			IItemHandler handler = ItemHandler.getInstance().getItemHandler(target.getItemId());
 			if (handler == null)
+			{
 				_log.fine("No item handler registered for item ID " + target.getItemId() + ".");
+			}
 			else
+			{
 				handler.useItem(this, target);
+			}
 			ItemTable.getInstance().destroyItem("Consume", target, this, null);
 		}
 		// Cursed Weapons are not distributed
@@ -4924,8 +5162,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// Check if a Party is in progress
 			if (isInParty())
+			{
 				getParty().distributeItem(this, target);
-			// Target is adena
+			}
 			else if (target.getItemId() == 57 && getInventory().getAdenaInstance() != null)
 			{
 				addAdena("Pickup", target.getCount(), null, true);
@@ -4933,7 +5172,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			// Target is regular item
 			else
+			{
 				addItem("Pickup", target, null, true);
+			}
 		}
 	}
 
@@ -4954,26 +5195,32 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		// Check if the new target is visible
 		if (newTarget != null && !newTarget.isVisible())
+		{
 			newTarget = null;
+		}
 
 		// Prevents /target exploiting
 		if (newTarget != null && Math.abs(newTarget.getZ() - getZ()) > 1000)
+		{
 			newTarget = null;
+		}
 
 		if (!isGM())
 		{
 			// Can't target and attack festival monsters if not participant
 			if ((newTarget instanceof L2FestivalMonsterInstance) && !isFestivalParticipant())
+			{
 				newTarget = null;
-
-			// Can't target and attack rift invaders if not in the same room
+			}
 			else if (isInParty() && getParty().isInDimensionalRift())
 			{
 				byte riftType = getParty().getDimensionalRift().getType();
 				byte riftRoom = getParty().getDimensionalRift().getCurrentRoom();
 
 				if (newTarget != null && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(newTarget.getX(), newTarget.getY(), newTarget.getZ()))
+				{
 					newTarget = null;
+				}
 			}
 		}
 
@@ -4988,7 +5235,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Remove the L2PcInstance from the _statusListener of the old
 			// target if it was a L2Character
 			if (oldTarget instanceof L2Character)
+			{
 				((L2Character) oldTarget).removeStatusListener(this);
+			}
 		}
 
 		// Add the L2PcInstance to the _statusListener of the new target if it's
@@ -5172,7 +5421,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					ptarget.sendMessage("Request to Engage has been >ACCEPTED<");
 				}
 				else
+				{
 					ptarget.sendMessage("Request to Engage has been >DENIED<!");
+				}
 			}
 		}
 	}
@@ -5238,10 +5489,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			@SuppressWarnings("unused")
 			boolean playerKill = false;
 			// Rank PvP System by Masterio
-			if(ExternalConfig.RANK_PVP_SYSTEM_ENABLED)
+			if (ExternalConfig.RANK_PVP_SYSTEM_ENABLED)
 			{
 				RankPvpSystem rps = new RankPvpSystem(killer, this);
-				if(_rankPvpSystemComboKill != null)
+				if (_rankPvpSystemComboKill != null)
 				{ // shout defeat msg if player have combo level > 0
 					_rankPvpSystemComboKill.shoutDefeatMessage(this);
 					_rankPvpSystemComboKill = null; // reset current combo for victim.
@@ -5252,8 +5503,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				sendMessage("You will be revived in your spot");
 			}
-			if (CaptureThem.CaptureThemRunning &&(pk.isinZodiac && pk.isinZodiac))
+			if (CaptureThem.CaptureThemRunning && (pk.isinZodiac && pk.isinZodiac))
+			{
 				pk.ZodiacPoints++;
+			}
 			if (PeloponnesianWar.PeloRunning && isinZodiac)
 			{
 				isinZodiac = false;
@@ -5328,7 +5581,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					sendMessage("You will be revived and teleported to team flag in " + Config.CTF_REVIVE_DELAY / 1000 + " seconds!");
 
 					if (_haveFlagCTF)
+					{
 						removeCTFFlagOnDie();
+					}
 
 					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 					{
@@ -5382,7 +5637,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (VIP._started)
 				{
 					if (_isTheVIP && pk._inEventVIP)
+					{
 						VIP.vipDied();
+					}
 					else if (_isTheVIP && !pk._inEventVIP)
 					{
 						Announcements.getInstance().announceToAll("VIP Killed by non-event character. VIP going back to initial spawn.");
@@ -5405,9 +5662,13 @@ public final class L2PcInstance extends L2PlayableInstance
 							{
 								doRevive();
 								if (_isVIP)
+								{
 									teleToLocation(VIP._startX, VIP._startY, VIP._startZ);
+								}
 								else
+								{
 									teleToLocation(VIP._endX, VIP._endY, VIP._endZ);
+								}
 							}
 						}, 20000);
 					}
@@ -5427,7 +5688,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				pk.kills.add(getName());
 			}
 			if (pk != null && Config.ENABLE_HITMAN_EVENT)
+			{
 				Hitman.getInstance().onDeath(pk, this);
+			}
 
 			// Clear resurrect xp calculation
 			setExpBeforeDeath(0);
@@ -5469,7 +5732,9 @@ public final class L2PcInstance extends L2PlayableInstance
 							// function of the calculated Death Penalty
 							// NOTE: deathPenalty +- Exp will update karma
 							if (getSkillLevel(L2Skill.SKILL_LUCKY) < 0 || getStat().getLevel() > 9)
+							{
 								deathPenalty((pk != null && getClan() != null && pk.getClan() != null && pk.getClan().isAtWarWith(getClanId())));
+							}
 						}
 						else
 						{
@@ -5495,14 +5760,20 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		if (_forceBuff != null)
+		{
 			_forceBuff.delete();
+		}
 
 		for (L2Character character : getKnownList().getKnownCharacters())
 			if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
+			{
 				character.abortCast();
+			}
 
 		if (isInParty() && getParty().isInDimensionalRift())
+		{
 			getParty().getDimensionalRift().getDeadMemberList().add(this);
+		}
 
 		// calculate death penalty buff
 		calculateDeathPenaltyBuffLevel(killer);
@@ -5574,7 +5845,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					nonDroppableListPet.contains(itemDrop.getItemId()) || // Item listed in the non droppable pet item list
 					getPet() != null && getPet().getControlItemId() == itemDrop.getItemId() // Control Item of active pet
 					)
+					{
 						continue;
+					}
 
 					if (itemDrop.isEquipped())
 					{
@@ -5583,8 +5856,9 @@ public final class L2PcInstance extends L2PlayableInstance
 						itemDropPercent = itemDrop.getItem().getType2() == L2Item.TYPE2_WEAPON ? dropEquipWeapon : dropEquip;
 						getInventory().unEquipItemInSlotAndRecord(itemDrop.getEquipSlot());
 					}
-					else
+					else {
 						itemDropPercent = dropItem; // Item in inventory
+					}
 
 					// NOTE: Each time an item is dropped, the chance of another
 					// item being dropped gets lesser (dropCount * 2)
@@ -5625,7 +5899,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			karmaLost *= (getLevel() / 100.0); // divide by 0.charLVL
 			karmaLost = Math.round(karmaLost);
 			if (karmaLost < 0)
+			{
 				karmaLost = 1;
+			}
 
 			// Decrease Karma of the L2PcInstance and Send it a Server->Client
 			// StatusUpdate packet with Karma and PvP Flag if necessary
@@ -5644,9 +5920,13 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		L2PcInstance targetPlayer = null;
 		if (target instanceof L2PcInstance)
+		{
 			targetPlayer = (L2PcInstance) target;
+		}
 		else if (target instanceof L2Summon)
+		{
 			targetPlayer = ((L2Summon) target).getOwner();
+		}
 
 		if (targetPlayer == null)
 			return; // Target player is null
@@ -5693,10 +5973,14 @@ public final class L2PcInstance extends L2PlayableInstance
 			increasePvpKills();
 
 			if (_inChaosEvent && targetPlayer._inChaosEvent)
+			{
 				_chaosKills++;
+			}
 
 			if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
+			{
 				Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
+			}
 			return;
 		}
 		else
@@ -5715,8 +5999,10 @@ public final class L2PcInstance extends L2PlayableInstance
 							_chaosKills++;
 						}
 
-						if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL) // Announces a PvP kill
+						if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
+						{
 							Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
+						}
 						return;
 					}
 				}
@@ -5732,8 +6018,10 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						_chaosKills++;
 					}
-					if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL) // Announces a PvP kill
+					if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
+					{
 						Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
+					}
 				}
 			}
 			else if (targetPlayer.getPvpFlag() == 0) // Target player doesn't have karma
@@ -5741,8 +6029,10 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (Config.ENABLE_HITMAN_EVENT && Config.HITMAN_TAKE_KARMA && Hitman.getInstance().exists(targetPlayer.getObjectId()))
 					return;
 				increasePkKillsAndKarma(targetPlayer.getLevel());
-				if (target instanceof L2PcInstance && Config.ANNOUNCE_PK_KILL) // Announces a Pk kill
+				if (target instanceof L2PcInstance && Config.ANNOUNCE_PK_KILL)
+				{
 					Announcements.getInstance().announceToAll("Player " + this.getName() + " has assassinated Player " + target.getName());
+				}
 			}
 			else if (targetPlayer.getPvpFlag() == 0 && !(_inChaosEvent && _inChaosEvent(target)))
 			{
@@ -5771,7 +6061,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if ((TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF))
 			return;
 
-		if(!ExternalConfig.LEGAL_COUNTER_ALTT_ENABLED)
+		if (!ExternalConfig.LEGAL_COUNTER_ALTT_ENABLED)
 		{
 			// Add karma to attacker and increase its PK counter
 			setPvpKills(getPvpKills() + 1);
@@ -5788,10 +6078,14 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendMessage("You will be rewarded for pvp kill!");
 		}
 		if (Config.CUSTOM_MSG_ALLOWED)
+		{
 			sendMessage("Good fight,enemy pwned:)");
+		}
 
 		if (Config.PVP_PK_TITLE)
+		{
 			updateTitle();
+		}
 
 		// Update the character's name color if they reached any of the 5 PvP
 		// levels.
@@ -5835,20 +6129,32 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Check if the attacker has a PK counter greater than 0
 		if (pkPKCount > 0)
+		{
 			pkCountMulti = pkPKCount / 2;
+		}
 		else
+		{
 			pkCountMulti = 1;
+		}
 		if (pkCountMulti < 1)
+		{
 			pkCountMulti = 1;
+		}
 
 		// Calculate the level difference Multiplier between attacker and killed
 		// L2PcInstance
 		if (pkLVL > targLVL)
+		{
 			lvlDiffMulti = pkLVL / targLVL;
+		}
 		else
+		{
 			lvlDiffMulti = 1;
+		}
 		if (lvlDiffMulti < 1)
+		{
 			lvlDiffMulti = 1;
+		}
 
 		// Calculate the new Karma of the attacker : newKarma =
 		// baseKarma*pkCountMulti*lvlDiffMulti
@@ -5857,13 +6163,19 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Make sure newKarma is less than karmaLimit and higher than baseKarma
 		if (newKarma < baseKarma)
+		{
 			newKarma = baseKarma;
+		}
 		if (newKarma > karmaLimit)
+		{
 			newKarma = karmaLimit;
+		}
 
 		// Fix to prevent overflow (=> karma has a max value of 2 147 483 647)
 		if (getKarma() > (Integer.MAX_VALUE - newKarma))
+		{
 			newKarma = Integer.MAX_VALUE - getKarma();
+		}
 
 		// Add karma to attacker and increase its PK counter
 		if (Config.DEFAULT_PK_SYSTEM)
@@ -5921,14 +6233,22 @@ public final class L2PcInstance extends L2PlayableInstance
 		// value
 		int karmaLost = 0;
 		if (expGained > Integer.MAX_VALUE)
+		{
 			karmaLost = Integer.MAX_VALUE;
+		}
 		else
+		{
 			karmaLost = (int) expGained;
+		}
 
 		if (karmaLost < Config.KARMA_LOST_BASE)
+		{
 			karmaLost = Config.KARMA_LOST_BASE;
+		}
 		if (karmaLost > getKarma())
+		{
 			karmaLost = getKarma();
+		}
 
 		return karmaLost;
 	}
@@ -5946,7 +6266,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_NORMAL_TIME);
 
 		if (getPvpFlag() == 0)
+		{
 			startPvPFlag();
+		}
 	}
 
 	public void updatePvPStatus(L2Character target)
@@ -5954,9 +6276,13 @@ public final class L2PcInstance extends L2PlayableInstance
 		L2PcInstance player_target = null;
 
 		if (target instanceof L2PcInstance)
+		{
 			player_target = (L2PcInstance) target;
+		}
 		else if (target instanceof L2Summon)
+		{
 			player_target = ((L2Summon) target).getOwner();
+		}
 
 		if (player_target == null)
 			return;
@@ -5969,11 +6295,17 @@ public final class L2PcInstance extends L2PlayableInstance
 		if ((!isInsideZone(ZONE_PVP) || !player_target.isInsideZone(ZONE_PVP)) && player_target.getKarma() == 0)
 		{
 			if (checkIfPvP(player_target))
+			{
 				setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_PVP_TIME);
+			}
 			else
+			{
 				setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_NORMAL_TIME);
+			}
 			if (getPvpFlag() == 0)
+			{
 				startPvPFlag();
+			}
 		}
 
 	}
@@ -6011,24 +6343,36 @@ public final class L2PcInstance extends L2PlayableInstance
 		// The death steal you some Exp
 		double percentLost = 7.0;
 		if (getLevel() >= 76)
+		{
 			percentLost = 2.0;
+		}
 		else if (getLevel() >= 40)
+		{
 			percentLost = 4.0;
+		}
 
 		if (getKarma() > 0)
+		{
 			percentLost *= Config.RATE_KARMA_EXP_LOST;
+		}
 
 		if (isFestivalParticipant() || atwar || isInsideZone(ZONE_SIEGE))
+		{
 			percentLost /= 4.0;
+		}
 
 		// Calculate the Experience loss
 		long lostExp = 0;
 		if (!atEvent && !_inEventTvT && !_inEventDM && !_inEventCTF && (!_inEventVIP && !VIP._started))
 		{
 			if (lvl < Experience.MAX_LEVEL)
+			{
 				lostExp = Math.round((getStat().getExpForLevel(lvl + 1) - getStat().getExpForLevel(lvl)) * percentLost / 100);
+			}
 			else
+			{
 				lostExp = Math.round((getStat().getExpForLevel(Experience.MAX_LEVEL) - getStat().getExpForLevel(Experience.MAX_LEVEL - 1)) * percentLost / 100);
+			}
 		}
 		// Get the Experience before applying penalty
 		setExpBeforeDeath(getExp());
@@ -6036,13 +6380,17 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getCharmOfCourage())
 		{
 			if (getSiegeState() > 0 && isInsideZone(ZONE_SIEGE))
+			{
 				lostExp = 0;
+			}
 		}
 
 		setCharmOfCourage(false);
 
 		if (Config.DEBUG)
+		{
 			_log.fine(getName() + " died and lost " + lostExp + " experience.");
+		}
 
 		// Set the new Experience value of the L2PcInstance
 		getStat().addExp(-lostExp);
@@ -6324,7 +6672,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		_activeTradeList = null;
 		sendPacket(new SendTradeDone(1));
 		if (successfull)
+		{
 			sendPacket(new SystemMessage(SystemMessageId.TRADE_SUCCESSFUL));
+		}
 	}
 
 	public void startTrade(L2PcInstance partner)
@@ -6340,7 +6690,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		L2PcInstance partner = _activeTradeList.getPartner();
 		if (partner != null)
+		{
 			partner.onTradeCancel(this);
+		}
 		onTradeCancel(this);
 	}
 
@@ -6369,7 +6721,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public TradeList getSellList()
 	{
 		if (_sellList == null)
+		{
 			_sellList = new TradeList(this);
+		}
 		return _sellList;
 	}
 
@@ -6380,7 +6734,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public TradeList getBuyList()
 	{
 		if (_buyList == null)
+		{
 			_buyList = new TradeList(this);
+		}
 		return _buyList;
 	}
 
@@ -6480,13 +6836,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public boolean isClanLeader()
 	{
 		if (getClan() == null)
-		{
 			return false;
-		}
 		else
-		{
 			return getObjectId() == getClan().getLeaderId();
-		}
 	}
 
 	/**
@@ -6501,7 +6853,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		L2ItemInstance arrows = getInventory().destroyItem("Consume", getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LHAND), 1, this, null);
 
 		if (Config.DEBUG)
+		{
 			_log.fine("arrow count:" + (arrows == null ? 0 : arrows.getCount()));
+		}
 
 		if (arrows == null || arrows.getCount() == 0)
 		{
@@ -6509,7 +6863,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			_arrowItem = null;
 
 			if (Config.DEBUG)
+			{
 				_log.fine("removed arrows count");
+			}
 			sendPacket(new ItemList(this, false));
 		}
 		else
@@ -6521,7 +6877,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				sendPacket(iu);
 			}
 			else
+			{
 				sendPacket(new ItemList(this, false));
+			}
 		}
 	}
 
@@ -6572,7 +6930,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Unequip the weapon
 		L2ItemInstance wpn = getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);
 		if (wpn == null)
+		{
 			wpn = getInventory().getPaperdollItem(Inventory.PAPERDOLL_LRHAND);
+		}
 		if (wpn != null)
 		{
 			if (wpn.isWear())
@@ -6580,12 +6940,16 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// Remove augementation boni on unequip
 			if (wpn.isAugmented())
+			{
 				wpn.getAugmentation().removeBoni(this);
+			}
 
 			L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
 			InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
+			{
 				iu.addModifiedItem(unequiped[i]);
+			}
 			sendPacket(iu);
 
 			abortAttack();
@@ -6621,7 +6985,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(sld.getItem().getBodyPart());
 			InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
+			{
 				iu.addModifiedItem(unequiped[i]);
+			}
 			sendPacket(iu);
 
 			abortAttack();
@@ -6770,7 +7136,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			_accessLevel = AccessLevels._masterAccessLevel;
 		}
 		else if (level == AccessLevels._userAccessLevelNum)
+		{
 			_accessLevel = AccessLevels._userAccessLevel;
+		}
 		else
 		{
 			L2AccessLevel accessLevel = AccessLevels.getInstance().getAccessLevel(level);
@@ -6815,8 +7183,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (Config.EVERYBODY_HAS_ADMIN_RIGHTS)
 			return AccessLevels._masterAccessLevel;
-		else if (_accessLevel == null) /* This is here because inventory etc. is loaded before access level on login, so it is not null */
+		else if (_accessLevel == null)
+		{
 			setAccessLevel(AccessLevels._userAccessLevelNum);
+		}
 
 		return _accessLevel;
 	}
@@ -6867,9 +7237,13 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Send a Server->Client packet UserInfo to this L2PcInstance and
 		// CharInfo to all L2PcInstance in its _KnownPlayers (broadcast)
 		if (broadcastType == 1)
+		{
 			this.sendPacket(new UserInfo(this));
+		}
 		if (broadcastType == 2)
+		{
 			broadcastUserInfo();
+		}
 	}
 
 	/**
@@ -6909,10 +7283,14 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setOnlineStatus(boolean isOnline)
 	{
 		if (_isOnline != isOnline)
+		{
 			_isOnline = isOnline;
+		}
 
 		if (Config.ENABLE_HITMAN_EVENT && Hitman.getInstance().exists(getObjectId()))
+		{
 			Hitman.getInstance().getTarget(getObjectId()).setOnline(isOnline);
+		}
 		// Update the characters table of the database with online status and lastAccess (called when login and logout)
 		updateOnlineStatus();
 	}
@@ -6920,7 +7298,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setIsIn7sDungeon(boolean isIn7sDungeon)
 	{
 		if (_isIn7sDungeon != isIn7sDungeon)
+		{
 			_isIn7sDungeon = isIn7sDungeon;
+		}
 
 		updateIsIn7sDungeonStatus();
 	}
@@ -6932,11 +7312,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void updateOnlineStatus()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET online=?, lastAccess=? WHERE obj_Id=?");
 			statement.setInt(1, isOnline());
 			statement.setLong(2, System.currentTimeMillis());
@@ -6952,25 +7329,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public void updateIsIn7sDungeonStatus()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET isIn7sDungeon=?, lastAccess=? WHERE obj_Id=?");
 			statement.setInt(1, isIn7sDungeon() ? 1 : 0);
 			statement.setLong(2, System.currentTimeMillis());
@@ -6986,16 +7350,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -7004,10 +7358,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	private boolean createDb()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement("INSERT INTO characters " + "(account_name,obj_Id,char_name,level,maxHp,curHp,maxCp,curCp,maxMp,curMp," + "acc,crit,evasion,mAtk,mDef,mSpd,pAtk,pDef,pSpd,runSpd,walkSpd," + "str,con,dex,_int,men,wit,face,hairStyle,hairColor,sex," + "movement_multiplier,attack_speed_multiplier,colRad,colHeight," + "exp,sp,karma,pvpkills,pkkills,clanid,maxload,race,classid,deletetime," + "cancraft,title,accesslevel,online,isin7sdungeon,clan_privs,wantspeace," + "base_class,newbie,nobless,power_grade,last_recom_date) " + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			statement.setString(1, _accountName);
@@ -7079,16 +7431,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			return false;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return true;
 	}
 
@@ -7109,13 +7451,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static L2PcInstance restore(int objectId)
 	{
 		L2PcInstance player = null;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve the L2PcInstance from the characters table of the database
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement(RESTORE_CHARACTER);
 			statement.setInt(1, objectId);
 			ResultSet rset = statement.executeQuery();
@@ -7239,7 +7577,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						for (SubClass subClass : player.getSubClasses().values())
 							if (subClass.getClassId() == activeClassId)
+							{
 								player._classIndex = subClass.getClassIndex();
+							}
 					}
 				}
 				if (player.getClassIndex() == 0 && activeClassId != player.getBaseClass())
@@ -7252,7 +7592,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					_log.warning("Player " + player.getName() + " reverted to base class. Possibly has tried a relogin exploit while subclassing.");
 				}
 				else
+				{
 					player._activeClass = activeClassId;
+				}
 
 				player.setApprentice(rset.getInt("apprentice"));
 				player.setSponsor(rset.getInt("sponsor"));
@@ -7260,9 +7602,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				player.setIsIn7sDungeon((rset.getInt("isin7sdungeon") == 1) ? true : false);
 				player.setInJail((rset.getInt("in_jail") == 1) ? true : false);
 				if (player.isInJail())
+				{
 					player.setJailTimer(rset.getLong("jail_timer"));
+				}
 				else
+				{
 					player.setJailTimer(0);
+				}
 
 				CursedWeaponsManager.getInstance().checkPlayer(player);
 
@@ -7327,7 +7673,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			// Restore pet if exists in the world
 			player.setPet(L2World.getInstance().getPet(player.getObjectId()));
 			if (player.getPet() != null)
+			{
 				player.getPet().setOwner(player);
+			}
 
 			// Update the overloaded status of the L2PcInstance
 			player.refreshOverloaded();
@@ -7338,16 +7686,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -7414,11 +7752,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	private static boolean restoreSubClassData(L2PcInstance player)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(RESTORE_CHAR_SUBCLASSES);
 			statement.setInt(1, player.getObjectId());
 
@@ -7446,16 +7781,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -7501,11 +7826,15 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Retrieve from the database all recom data of this L2PcInstance and
 		// add to _recomChars.
 		if (Config.ALT_RECOMMEND)
+		{
 			restoreRecom();
+		}
 
 		// Retrieve from the database the recipe book of this L2PcInstance.
 		if (!isSubClassActive())
+		{
 			restoreRecipeBook();
+		}
 	}
 
 	/**
@@ -7521,11 +7850,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getCommonRecipeBook().length == 0 && getDwarvenRecipeBook().length == 0)
 			return;
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("DELETE FROM character_recipebook WHERE char_id=?");
 			statement.setInt(1, getObjectId());
 			statement.execute();
@@ -7560,16 +7886,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -7577,11 +7893,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	private void restoreRecipeBook()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT id, type FROM character_recipebook WHERE char_id=?");
 			statement.setInt(1, getObjectId());
 			ResultSet rset = statement.executeQuery();
@@ -7592,9 +7905,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				recipe = RecipeController.getInstance().getRecipeList(rset.getInt("id") - 1);
 
 				if (rset.getInt("type") == 1)
+				{
 					registerDwarvenRecipeList(recipe);
+				}
 				else
+				{
 					registerCommonRecipeList(recipe);
+				}
 			}
 
 			rset.close();
@@ -7608,16 +7925,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -7628,7 +7935,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		// update client coords, if these look like true
 		if (isInsideRadius(getClientX(), getClientY(), 1000, true))
+		{
 			setXYZ(getClientX(), getClientY(), getClientZ());
+		}
 
 		storeCharBase();
 		storeCharSub();
@@ -7638,9 +7947,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	private void storeCharBase()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Get the exp, level, and sp of base class to store in base table
 			int currentClassIndex = getClassIndex();
@@ -7650,7 +7957,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			int sp = getStat().getSp();
 			_classIndex = currentClassIndex;
 
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
 			// Update base class
@@ -7705,7 +8011,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			long totalOnlineTime = _onlineTime;
 
 			if (_onlineBeginTime > 0)
+			{
 				totalOnlineTime += (System.currentTimeMillis() - _onlineBeginTime) / 1000;
+			}
 
 			statement.setLong(41, totalOnlineTime);
 			statement.setInt(42, isInJail() ? 1 : 0);
@@ -7741,25 +8049,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void storeCharSub()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
 			if (getTotalSubClasses() > 0)
@@ -7787,16 +8082,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void storeEffect()
@@ -7804,10 +8089,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (!Config.STORE_SKILL_COOLTIME)
 			return;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
 			// Delete all current stored effects for char to avoid dupe
@@ -7884,16 +8167,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/** ChatFilterCounter */
@@ -7951,7 +8224,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Add or update a L2PcInstance skill in the character_skills table of
 		// the database
 		if (store)
+		{
 			storeSkill(newSkill, oldSkill, -1);
+		}
 
 		return oldSkill;
 	}
@@ -7993,13 +8268,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// calculator set of the L2Character
 		L2Skill oldSkill = super.removeSkill(skill);
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			// Remove or update a L2PcInstance skill from the character_skills
-			// table of the database
-			con = L2DatabaseFactory.getInstance().getConnection();
+			// Remove or update a L2PcInstance skill from the character_skills table of the database
 			PreparedStatement statement;
 
 			if (oldSkill != null)
@@ -8020,23 +8291,15 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		L2ShortCut[] allShortCuts = getAllShortCuts();
 
 		for (L2ShortCut sc : allShortCuts)
 		{
 			if (sc != null && skill != null && sc.getId() == skill.getId() && sc.getType() == L2ShortCut.TYPE_SKILL)
+			{
 				deleteShortCut(sc.getSlot(), sc.getPage());
+			}
 		}
 
 		return oldSkill;
@@ -8054,13 +8317,12 @@ public final class L2PcInstance extends L2PlayableInstance
 		int classIndex = _classIndex;
 
 		if (newClassIndex > -1)
-			classIndex = newClassIndex;
-
-		Connection con = null;
-
-		try
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
+			classIndex = newClassIndex;
+		}
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
 			PreparedStatement statement;
 
 			if (oldSkill != null && newSkill != null)
@@ -8097,16 +8359,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -8130,38 +8382,60 @@ public final class L2PcInstance extends L2PlayableInstance
 				// If the skill was found and the level is possible to obtain
 				// for his class everything is ok
 				if (temp.getId() == skillid)
+				{
 					continue skill_loop;
+				}
 			}
 
 			// Exclude noble skills
 			if (isNoble() && NobleSkillTable.isNobleSkill(skillid))
+			{
 				continue skill_loop;
+			}
 			// Exclude hero skills
 			if (isHero() && HeroSkillTable.isHeroSkill(skillid))
+			{
 				continue skill_loop;
+			}
 			// Exclude cursed weapon skills
 			if (isCursedWeaponEquiped() && skillid == CursedWeaponsManager.getInstance().getCursedWeapon(_cursedWeaponEquipedId).getSkillId())
+			{
 				continue skill_loop;
+			}
 			// Exclude clan skills
 			if (getClan() != null && (skillid >= 370 && skillid <= 391))
+			{
 				continue skill_loop;
+			}
 			// Exclude seal of ruler / build siege hq
 			if (getClan() != null && getClan().getLeaderId() == getObjectId() && (skillid == 246 || skillid == 247))
+			{
 				continue skill_loop;
+			}
 			// Exclude fishing skills and common skills + dwarfen craft
 			if (skillid >= 1312 && skillid <= 1322)
+			{
 				continue skill_loop;
+			}
 			if (skillid >= 1368 && skillid <= 1373)
+			{
 				continue skill_loop;
+			}
 			// Exclude sa / enchant bonus / penality etc. skills
 			if (skillid >= 3000 && skillid < 7000)
+			{
 				continue skill_loop;
+			}
 			// Exclude Skills from AllowedSkills in options.ini
 			if (Config.ALLOWED_SKILLS_LIST.contains(skillid))
+			{
 				continue skill_loop;
+			}
 			// Exclude VIP character
 			if (isDonator())
+			{
 				continue skill_loop;
+			}
 			// Remove skill and do a lil log message
 			removeSkill(skill);
 			sendMessage("Skill " + skill.getName() + " removed and gm informed!");
@@ -8176,18 +8450,17 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	private void restoreSkills()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve all skills of this L2PcInstance from the database
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(Config.ALT_SUBCLASS_SKILLS ? RESTORE_SKILLS_FOR_CHAR_ALT_SUBCLASS : RESTORE_SKILLS_FOR_CHAR);
 
 			statement.setInt(1, getObjectId());
 
 			if (!Config.ALT_SUBCLASS_SKILLS)
+			{
 				statement.setInt(2, getClassIndex());
+			}
 
 			ResultSet rset = statement.executeQuery();
 
@@ -8198,7 +8471,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				int level = rset.getInt("skill_level");
 
 				if (id > 9000)
+				 {
 					continue; // fake skills for base stats
+				}
 
 				// Create a L2Skill object for each record
 				L2Skill skill = SkillTable.getInstance().getInfo(id, level);
@@ -8219,16 +8494,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -8238,11 +8503,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void restoreEffects()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			ResultSet rset;
 
@@ -8267,7 +8529,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 				// Just incase the admin minipulated this table incorrectly :x
 				if (skillId == -1 || effectCount == -1 || effectCurTime == -1 || reuseDelay < 0)
+				{
 					continue;
+				}
 
 				L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
 
@@ -8307,7 +8571,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				long reuseDelay = rset.getLong("reuse_delay");
 
 				if (reuseDelay <= 0)
+				{
 					continue;
+				}
 
 				disableSkill(skillId, reuseDelay);
 				addTimeStamp(new TimeStamp(skillId, reuseDelay));
@@ -8329,16 +8595,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		updateEffectIcons();
 	}
@@ -8350,25 +8606,26 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	private void restoreHenna()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(RESTORE_CHAR_HENNAS);
 			statement.setInt(1, getObjectId());
 			statement.setInt(2, getClassIndex());
 			ResultSet rset = statement.executeQuery();
 
 			for (int i = 0; i < 3; i++)
+			{
 				_henna[i] = null;
+			}
 
 			while (rset.next())
 			{
 				int slot = rset.getInt("slot");
 
 				if (slot < 1 || slot > 3)
+				{
 					continue;
+				}
 
 				int symbol_id = rset.getInt("symbol_id");
 
@@ -8397,16 +8654,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		// Calculate Henna modifiers of this L2PcInstance
 		recalcHennaStats();
@@ -8419,11 +8666,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	private void restoreRecom()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(RESTORE_CHAR_RECOMS);
 			statement.setInt(1, getObjectId());
 			ResultSet rset = statement.executeQuery();
@@ -8443,16 +8687,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -8465,7 +8699,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		for (int i = 0; i < 3; i++)
 			if (_henna[i] != null)
+			{
 				totalSlots--;
+			}
 
 		if (totalSlots <= 0)
 			return 0;
@@ -8492,11 +8728,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		L2HennaInstance henna = _henna[slot];
 		_henna[slot] = null;
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(DELETE_CHAR_HENNA);
 			statement.setInt(1, getObjectId());
 			statement.setInt(2, slot + 1);
@@ -8510,16 +8743,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -8567,11 +8790,8 @@ public final class L2PcInstance extends L2PlayableInstance
 				// Calculate Henna modifiers of this L2PcInstance
 				recalcHennaStats();
 
-				Connection con = null;
-
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
 					PreparedStatement statement = con.prepareStatement(ADD_CHAR_HENNA);
 					statement.setInt(1, getObjectId());
 					statement.setInt(2, henna.getSymbolId());
@@ -8588,17 +8808,6 @@ public final class L2PcInstance extends L2PlayableInstance
 						e.printStackTrace();
 					}
 				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
-					}
-				}
-
 				// Send Server->Client HennaInfo packet to this L2PcInstance
 				HennaInfo hi = new HennaInfo(this);
 				sendPacket(hi);
@@ -8630,7 +8839,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		for (int i = 0; i < 3; i++)
 		{
 			if (_henna[i] == null)
+			{
 				continue;
+			}
 			_hennaINT += _henna[i].getStatINT();
 			_hennaSTR += _henna[i].getStatSTR();
 			_hennaMEN += _henna[i].getStatMEM();
@@ -8640,17 +8851,29 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		if (_hennaINT > 5)
+		{
 			_hennaINT = 5;
+		}
 		if (_hennaSTR > 5)
+		{
 			_hennaSTR = 5;
+		}
 		if (_hennaMEN > 5)
+		{
 			_hennaMEN = 5;
+		}
 		if (_hennaCON > 5)
+		{
 			_hennaCON = 5;
+		}
 		if (_hennaWIT > 5)
+		{
 			_hennaWIT = 5;
+		}
 		if (_hennaDEX > 5)
+		{
 			_hennaDEX = 5;
+		}
 	}
 
 	/**
@@ -8728,7 +8951,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			sendMessage("You have been chat banned by a server admin.");
 			if (_banchat_timer > 0)
+			{
 				_BanChatTask = ThreadPoolManager.getInstance().scheduleGeneral(new SchedChatUnban(this), _banchat_timer);
+			}
 		}
 		else
 		{
@@ -9016,7 +9241,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 
 			if (Config.DEBUG && getQueuedSkill() != null)
+			{
 				_log.info(getQueuedSkill().getSkill().getName() + " is already queued for " + getName() + ".");
+			}
 
 			// Create a new SkillDat object and queue it in the player
 			// _queuedSkill
@@ -9024,9 +9251,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(new ActionFailed());
 			return;
 		}
-		if (getQueuedSkill() != null) // wiping out previous values, after
-										// casting has been aborted
+		if (getQueuedSkill() != null)
+		{
+			// casting has been aborted
 			setQueuedSkill(null, false, false);
+		}
 
 		// ************************************* Check Target *******************************************
 
@@ -9493,9 +9722,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (target instanceof L2Summon)
 			{
 				if (((L2Summon) target).isInsideZone(ZONE_PVP))
-				{
 					return true;
-				}
 				character = ((L2Summon) target).getOwner();
 			}
 			else
@@ -9554,7 +9781,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void consumeItem(int itemConsumeId, int itemCount)
 	{
 		if (itemConsumeId != 0 && itemCount != 0)
+		{
 			destroyItemByItemId("Consume", itemConsumeId, itemCount, null, false);
+		}
 	}
 
 	/**
@@ -9854,7 +10083,9 @@ public final class L2PcInstance extends L2PlayableInstance
 							handler = ItemHandler.getInstance().getItemHandler(itemId);
 
 							if (handler != null)
+							{
 								handler.useItem(this, item);
+							}
 						}
 					}
 					else
@@ -9864,7 +10095,9 @@ public final class L2PcInstance extends L2PlayableInstance
 							handler = ItemHandler.getInstance().getItemHandler(itemId);
 
 							if (handler != null)
+							{
 								handler.useItem(this, item);
+							}
 						}
 					}
 				}
@@ -9903,7 +10136,9 @@ public final class L2PcInstance extends L2PlayableInstance
 							handler = ItemHandler.getInstance().getItemHandler(itemId);
 
 							if (handler != null)
+							{
 								handler.useItem(this, item);
+							}
 						}
 					}
 					else
@@ -9913,7 +10148,9 @@ public final class L2PcInstance extends L2PlayableInstance
 							handler = ItemHandler.getInstance().getItemHandler(itemId);
 
 							if (handler != null)
+							{
 								handler.useItem(this, item);
+							}
 						}
 					}
 				}
@@ -9938,7 +10175,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				L2PcInstance.this.sendPacket(msg);
 			}
 			else
+			{
 				stopWarnUserTakeBreak();
+			}
 		}
 	}
 
@@ -9961,7 +10200,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			double reduceHp = getMaxHp() / 100.0;
 
 			if (reduceHp < 1)
+			{
 				reduceHp = 1;
+			}
 
 			reduceCurrentHp(reduceHp, L2PcInstance.this, false);
 			// reduced hp, becouse not rest
@@ -10094,7 +10335,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void enterOlympiadObserverMode(int x, int y, int z, int id)
 	{
 		if (getPet() != null)
+		{
 			getPet().unSummon(this);
+		}
 
 		if (getCubics().size() > 0)
 		{
@@ -10110,7 +10353,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		_olympiadGameId = id;
 		_obsX = getX();
 		if (isSitting())
+		{
 			standUp();
+		}
 		_obsY = getY();
 		_obsZ = getZ();
 		setTarget(null);
@@ -10128,13 +10373,19 @@ public final class L2PcInstance extends L2PlayableInstance
 		setXYZ(_obsX, _obsY, _obsZ);
 		setIsParalyzed(false);
 		if (!AdminCommandAccessRights.getInstance().hasAccess("admin_invis", getAccessLevel()))
+		{
 			getAppearance().setVisible();
+		}
 
 		if (!AdminCommandAccessRights.getInstance().hasAccess("admin_invul", getAccessLevel()))
+		{
 			setIsInvul(false);
+		}
 
 		if (getAI() != null)
+		{
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+		}
 
 		_observerMode = false;
 		sendPacket(new ObservationReturn(this));
@@ -10147,10 +10398,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		sendPacket(new ExOlympiadMode(0));
 		teleToLocation(_obsX, _obsY, _obsZ, true);
 		if (!AdminCommandAccessRights.getInstance().hasAccess("admin_invis", getAccessLevel()))
+		{
 			getAppearance().setVisible();
+		}
 
 		if (!AdminCommandAccessRights.getInstance().hasAccess("admin_invul", getAccessLevel()))
+		{
 			setIsInvul(false);
+		}
 		if (getAI() != null)
 		{
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
@@ -10166,7 +10421,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Donator Color and title update
 		// Note: this code can be used for GM's too
 		if (isDonator())
+		{
 			getAppearance().setNameColor(Config.DONATOR_NAME_COLOR);
+		}
 		broadcastUserInfo();
 	}
 
@@ -10291,11 +10548,8 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		String HERO_COUNT = "SELECT count FROM heroes WHERE char_name=?";
 		int _count = 0;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(HERO_COUNT);
 			statement.setString(1, getName());
 			ResultSet rset = statement.executeQuery();
@@ -10315,22 +10569,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				_log.log(Level.WARNING, getClass().getName() + " Could not get heroes." + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
 
 		if (_count != 0)
 			return _count;
@@ -10348,18 +10586,24 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (hero && _baseClass == _activeClass)
 		{
 			for (L2Skill s : HeroSkillTable.GetHeroSkills())
+			 {
 				addSkill(s, false); // Dont Save Hero skills to database
+			}
 		}
 		else if (getCount() >= Config.HERO_COUNT && hero && Config.ALLOW_HERO_SUBSKILL)
 		{
 			for (L2Skill s : HeroSkillTable.GetHeroSkills())
+			 {
 				addSkill(s, false); // Dont Save Hero skills to database
+			}
 		}
 		else
 		{
 			for (L2Skill s : HeroSkillTable.GetHeroSkills())
+			 {
 				super.removeSkill(s); // Just Remove skills from nonHero
 										// characters
+			}
 		}
 		_hero = hero;
 
@@ -10527,11 +10771,18 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void setNoble(boolean val)
 	{
 		if (val)
+		{
 			for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
+			 {
 				addSkill(s, false); // Dont Save Noble skills to Sql
-		else
+			}
+		}
+		else {
 			for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
+			 {
 				super.removeSkill(s); // Just Remove skills without deleting
+			}
+		}
 										// from Sql
 		_noble = val;
 
@@ -10591,7 +10842,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			int skilllvl = Config.CLAN_SKILLS.get(skillid).intValue();
 			L2Skill skill = SkillTable.getInstance().getInfo(skillid.intValue(), skilllvl);
 			if (skill != null)
+			{
 				addSkill(skill, true);
+			}
 			getClan().addNewSkill(skill);
 			sendSkillList();
 		}
@@ -10599,7 +10852,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		L2Clan clan = getClan();
 		clan.setReputationScore(clan.getReputationScore() + Config.REPUTATION_QUANTITY, true);
 		sendMessage((new StringBuilder()).append("Admin give to you ").append(Config.REPUTATION_QUANTITY).append(" Reputation Points.").toString());
-		sendMessage("GM give to you all Clan Skills");
+		sendMessage("GM give to you all Clan Skills.");
 	}
 
 	public void setAllianceWithVarkaKetra(int sideAndLvlOfAlliance)
@@ -10636,9 +10889,13 @@ public final class L2PcInstance extends L2PlayableInstance
 			for (L2Skill s : player.getAllSkills())
 			{
 				if (s == null)
+				{
 					continue;
+				}
 				if (s.getId() > 9000)
+				 {
 					continue; // Fake skills to change base stats
+				}
 				sl.addSkill(s.getId(), s.getLevel(), s.isPassive());
 			}
 		}
@@ -10692,12 +10949,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		newClass.setClassId(classId);
 		newClass.setClassIndex(classIndex);
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Store the basic info about this new sub-class.
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(ADD_CHAR_SUBCLASS);
 			statement.setInt(1, getObjectId());
 			statement.setInt(2, newClass.getClassId());
@@ -10717,22 +10971,14 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			return false;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		// Commit after database INSERT incase exception is thrown.
 		getSubClasses().put(newClass.getClassIndex(), newClass);
 
 		if (Config.DEBUG)
+		{
 			_log.info(getName() + " added class ID " + classId + " as a sub class at index " + classIndex + ".");
+		}
 
 		ClassId subTemplate = ClassId.values()[classId];
 		Collection<L2SkillLearn> skillTree = SkillTreeTable.getInstance().getAllowedSkills(subTemplate);
@@ -10750,7 +10996,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				L2Skill newSkill = SkillTable.getInstance().getInfo(skillInfo.getId(), skillInfo.getLevel());
 
 				if (prevSkill != null && (prevSkill.getLevel() > newSkill.getLevel()))
+				{
 					continue;
+				}
 
 				prevSkillList.put(newSkill.getId(), newSkill);
 				storeSkill(newSkill, prevSkill, classIndex);
@@ -10758,7 +11006,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		if (Config.DEBUG)
+		{
 			_log.info(getName() + " was given " + getAllSkills().length + " skills for their new sub class.");
+		}
 
 		return true;
 	}
@@ -10780,13 +11030,12 @@ public final class L2PcInstance extends L2PlayableInstance
 		int oldClassId = getSubClasses().get(classIndex).getClassId();
 
 		if (Config.DEBUG)
-			_log.info(getName() + " has requested to modify sub class index " + classIndex + " from class ID " + oldClassId + " to " + newClassId + ".");
-
-		Connection con = null;
-
-		try
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
+			_log.info(getName() + " has requested to modify sub class index " + classIndex + " from class ID " + oldClassId + " to " + newClassId + ".");
+		}
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
 			PreparedStatement statement;
 
 			// Remove all henna info stored for this sub-class.
@@ -10836,17 +11085,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			getSubClasses().remove(classIndex);
 			return false;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		getSubClasses().remove(classIndex);
 		return addSubClass(newClassId, classIndex);
 	}
@@ -10859,7 +11097,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public Map<Integer, SubClass> getSubClasses()
 	{
 		if (_subClasses == null)
+		{
 			_subClasses = new FastMap<Integer, SubClass>();
+		}
 
 		return _subClasses;
 	}
@@ -10915,18 +11155,24 @@ public final class L2PcInstance extends L2PlayableInstance
 		// be different
 		for (L2ItemInstance temp : getInventory().getAugmentedItems())
 			if (temp != null && temp.isEquipped())
+			{
 				temp.getAugmentation().removeBoni(this);
+			}
 
 		// Delete a force buff upon class change.
 		if (_forceBuff != null)
+		{
 			abortCast();
+		}
 
 		// Stop casting for any player that may be casting a force buff on this
 		// l2pcinstance.
 		for (L2Character character : getKnownList().getKnownCharacters())
 		{
 			if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
+			{
 				character.abortCast();
+			}
 		}
 		/*
 		 * 1. Call store() before modifying _classIndex to avoid skill effects
@@ -10958,7 +11204,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		_classIndex = classIndex;
 
 		if (isInParty())
+		{
 			getParty().recalculatePartyLevel();
+		}
 
 		/*
 		 * Update the character's change in class status.
@@ -10976,10 +11224,14 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		for (L2ItemInstance temp : getInventory().getAugmentedItems())
 			if (temp != null && temp.isEquipped())
+			{
 				temp.getAugmentation().removeBoni(this);
+			}
 
 		if (getPet() != null && getPet() instanceof L2SummonInstance)
+		{
 			getPet().unSummon(this);
+		}
 
 		if (getCubics().size() > 0)
 		{
@@ -10994,22 +11246,30 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Delete a force buff upon class change.
 		if (_forceBuff != null)
+		{
 			_forceBuff.delete();
+		}
 
 		// Stop casting for any player that may be casting a force buff on this
 		// l2pcinstance.
 		for (L2Character character : getKnownList().getKnownCharacters())
 		{
 			if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
+			{
 				character.abortCast();
+			}
 		}
 
 		for (L2Skill oldSkill : getAllSkills())
+		{
 			super.removeSkill(oldSkill);
+		}
 
 		// Yesod: Rebind CursedWeapon passive.
 		if (isCursedWeaponEquiped())
+		{
 			CursedWeaponsManager.getInstance().givePassive(_cursedWeaponEquipedId);
+		}
 
 		stopAllEffects();
 
@@ -11044,17 +11304,25 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		for (int i = 0; i < 3; i++)
+		{
 			_henna[i] = null;
+		}
 
 		restoreHenna();
 		sendPacket(new HennaInfo(this));
 
 		if (getCurrentHp() > getMaxHp())
+		{
 			setCurrentHp(getMaxHp());
+		}
 		if (getCurrentMp() > getMaxMp())
+		{
 			setCurrentMp(getMaxMp());
+		}
 		if (getCurrentCp() > getMaxCp())
+		{
 			setCurrentCp(getMaxCp());
+		}
 		broadcastUserInfo();
 		refreshOverloaded();
 		refreshExpertisePenalty();
@@ -11087,7 +11355,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void startWarnUserTakeBreak()
 	{
 		if (_taskWarnUserTakeBreak == null)
+		{
 			_taskWarnUserTakeBreak = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new WarnUserTakeBreak(), 7200000, 7200000);
+		}
 	}
 
 	public void stopRentPet()
@@ -11096,7 +11366,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			// if the rent of a wyvern expires while over a flying zone, tp to down before unmounting
 			if (checkLandingState() && getMountType() == 2)
+			{
 				teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			}
 
 			if (setMountType(0)) // this should always be true now, since we teleported already
 			{
@@ -11121,7 +11393,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void startRentPet(int seconds)
 	{
 		if (_taskRentPet == null)
+		{
 			_taskRentPet = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new RentPetTask(), seconds * 1000L, seconds * 1000L);
+		}
 	}
 
 	public boolean isRentedPet()
@@ -11205,11 +11479,17 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (isGM())
 		{
 			if (_isInvul)
+			{
 				sendMessage("Entering world in Invulnerable mode.");
+			}
 			if (getAppearance().getInvisible())
+			{
 				sendMessage("Entering world in Invisible mode.");
+			}
 			if (getMessageRefusal())
+			{
 				sendMessage("Entering world in Message Refusal mode.");
+			}
 		}
 		revalidateZone(true);
 	}
@@ -11240,10 +11520,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (Config.ALT_RECOMMEND)
 		{
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement(DELETE_CHAR_RECOMS);
 				statement.setInt(1, getObjectId());
 				statement.execute();
@@ -11257,16 +11535,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}
@@ -11287,13 +11555,17 @@ public final class L2PcInstance extends L2PlayableInstance
 			_recomHave -= 3;
 		}
 		if (_recomHave < 0)
+		{
 			_recomHave = 0;
+		}
 
 		// If we have to update last update time, but it's now before 13, we
 		// should set it to yesterday
 		Calendar update = Calendar.getInstance();
 		if (update.get(Calendar.HOUR_OF_DAY) < 13)
+		{
 			update.add(Calendar.DAY_OF_MONTH, -1);
+		}
 		update.set(Calendar.HOUR_OF_DAY, 13);
 		_lastRecomUpdate = update.getTimeInMillis();
 	}
@@ -11323,7 +11595,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (isInParty() && getParty().isInDimensionalRift())
 		{
 			if (!DimensionalRiftManager.getInstance().checkIfInPeaceZone(getX(), getY(), getZ()))
+			{
 				getParty().getDimensionalRift().memberRessurected(this);
+			}
 		}
 		if (isinZodiac && CaptureThem.CaptureThemRunning)
 		{
@@ -11385,11 +11659,14 @@ public final class L2PcInstance extends L2PlayableInstance
 			else
 			{
 				if (Pet)
+				{
 					Reviver.sendPacket(new SystemMessage(SystemMessageId.PET_CANNOT_RES));
 				// A pet cannot be resurrected while it's owner is in the process of resurrecting.
-				else
+				}
+				else {
 					Reviver.sendPacket(new SystemMessage(SystemMessageId.MASTER_CANNOT_RES));
 				// While a pet is attempting to resurrect, it cannot help in resurrecting its master.
+				}
 			}
 			return;
 		}
@@ -11397,9 +11674,13 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			_reviveRequested = 1;
 			if (isPhoenixBlessed())
+			{
 				_revivePower = 100;
+			}
 			else
+			{
 				_revivePower = Formulas.getInstance().calculateSkillResurrectRestorePercent(skill.getPower(), Reviver.getWIT());
+			}
 
 			_revivePet = Pet;
 			sendPacket(new ConfirmDlg(SystemMessageId.RESSURECTION_REQUEST.getId(), Reviver.getName()));
@@ -11423,16 +11704,24 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (!_revivePet)
 			{
 				if (_revivePower != 0)
+				{
 					doRevive(_revivePower);
+				}
 				else
+				{
 					doRevive();
+				}
 			}
 			else if (getPet() != null)
 			{
 				if (_revivePower != 0)
+				{
 					getPet().doRevive(_revivePower);
+				}
 				else
+				{
 					getPet().doRevive();
+				}
 			}
 		}
 		_reviveRequested = 0;
@@ -11458,7 +11747,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void onActionRequest()
 	{
 		if (isSpawnProtected())
+		{
 			sendMessage("You are no longer under teleport protection.");
+		}
 		stopAbnormalEffect(2097152);
 		setProtection(false);
 	}
@@ -11494,7 +11785,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		if (Config.ALLOW_WATER)
+		{
 			checkWaterState();
+		}
 
 		// Modify the position of the tamed beast if necessary (normal pets are
 		// handled by super...though
@@ -11538,7 +11831,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Check if the position has alreday be calculated
 		if (m._moveTimestamp == 0)
+		{
 			m._moveTimestamp = m._moveStartTime;
+		}
 
 		// Check if the position has alreday be calculated
 		if (m._moveTimestamp == gameTicks)
@@ -11634,7 +11929,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// notify the tamed beast of attacks
 		if (getTrainedBeast() != null)
+		{
 			getTrainedBeast().onOwnerGotAttacked(attacker);
+		}
 	}
 
 	@Override
@@ -11644,7 +11941,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// notify the tamed beast of attacks
 		if (getTrainedBeast() != null)
+		{
 			getTrainedBeast().onOwnerGotAttacked(attacker);
+		}
 	}
 
 	public void broadcastSnoop(int type, String name, String _text)
@@ -11655,14 +11954,18 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			for (L2PcInstance pci : _snoopListener)
 				if (pci != null)
+				{
 					pci.sendPacket(sn);
+				}
 		}
 	}
 
 	public void addSnooper(L2PcInstance pci)
 	{
 		if (!_snoopListener.contains(pci))
+		{
 			_snoopListener.add(pci);
+		}
 	}
 
 	public void removeSnooper(L2PcInstance pci)
@@ -11673,7 +11976,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	public void addSnooped(L2PcInstance pci)
 	{
 		if (!_snoopedPlayer.contains(pci))
+		{
 			_snoopedPlayer.add(pci);
+		}
 	}
 
 	public void removeSnooped(L2PcInstance pci)
@@ -11705,7 +12010,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		for (String bp : _validBypass)
 		{
 			if (bp == null)
+			{
 				continue;
+			}
 
 			// _log.warning("[BypassValidation]"+getName()+" '"+bp+"'");
 			if (bp.equals(cmd))
@@ -11715,7 +12022,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		for (String bp : _validBypass2)
 		{
 			if (bp == null)
+			{
 				continue;
+			}
 
 			// _log.warning("[BypassValidation]"+getName()+" '"+bp+"'");
 			if (cmd.startsWith(bp))
@@ -11741,7 +12050,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getPet() != null && getPet().getControlItemId() == objectId || getMountObjectID() == objectId)
 		{
 			if (Config.DEBUG)
+			{
 				_log.finest(getObjectId() + ": player tried to " + action + " item controling pet");
+			}
 
 			return false;
 		}
@@ -11749,22 +12060,20 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getActiveEnchantItem() != null && getActiveEnchantItem().getObjectId() == objectId)
 		{
 			if (Config.DEBUG)
+			{
 				_log.finest(getObjectId() + ":player tried to " + action + " an enchant scroll he was using");
+			}
 
 			return false;
 		}
 
 		if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
-		{
 			// can not trade a cursed weapon
 			return false;
-		}
 
 		if (item.isWear())
-		{
 			// cannot drop/trade wear-items
 			return false;
-		}
 
 		return true;
 	}
@@ -11849,7 +12158,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Check if the L2PcInstance is in observer mode to set its position to
 		// its position before entering in observer mode
 		if (inObserverMode())
+		{
 			setXYZ(_obsX, _obsY, _obsZ);
+		}
 
 		// Set the online Flag to True or False and update the characters table
 		// of the database with online status and lastAccess (called when login
@@ -11895,15 +12206,21 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Remove from world regions zones
 		if (getWorldRegion() != null)
+		{
 			getWorldRegion().removeFromZones(this);
+		}
 
 		try
 		{
 			if (_forceBuff != null)
+			{
 				_forceBuff.delete();
+			}
 			for (L2Character character : getKnownList().getKnownCharacters())
 				if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
+				{
 					character.abortCast();
+				}
 		}
 		catch (Throwable t)
 		{
@@ -11931,6 +12248,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Remove the L2PcInstance from the world
 		if (isVisible())
+		{
 			try
 			{
 				decayMe();
@@ -11939,9 +12257,11 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				_log.log(Level.SEVERE, "deleteMe()", t);
 			}
+		}
 
 		// If a Party is in progress, leave it
 		if (isInParty())
+		{
 			try
 			{
 				leaveParty();
@@ -11950,6 +12270,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				_log.log(Level.SEVERE, "deleteMe()", t);
 			}
+		}
 
 		// If the L2PcInstance has Pet, unsummon it
 		if (getPet() != null)
@@ -11971,7 +12292,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				L2ClanMember clanMember = getClan().getClanMember(getName());
 				if (clanMember != null)
+				{
 					clanMember.setPlayerInstance(null);
+				}
 			}
 			catch (Throwable t)
 			{
@@ -12018,7 +12341,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			_log.log(Level.SEVERE, "deleteMe()", t);
 		}
 		if (Config.WAREHOUSE_CACHE)
+		{
 			WarehouseCacheManager.getInstance().remCacheTask(this);
+		}
 
 		// Update database with items in its freight and remove them from the world
 		try
@@ -12048,14 +12373,20 @@ public final class L2PcInstance extends L2PlayableInstance
 		FloodProtector.getInstance().removePlayer(getObjectId());
 
 		if (getClanId() > 0)
+		 {
 			getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
 		// ClanTable.getInstance().getClan(getClanId()).broadcastToOnlineMembers(new PledgeShowMemberListAdd(this));
+		}
 
 		for (L2PcInstance player : _snoopedPlayer)
+		{
 			player.removeSnooper(this);
+		}
 
 		for (L2PcInstance player : _snoopListener)
+		{
 			player.removeSnooped(this);
+		}
 
 		// Remove L2Object object from _allObjects of L2World
 		L2World.getInstance().removeObject(this);
@@ -12102,7 +12433,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		sendPacket(new SystemMessage(SystemMessageId.CAST_LINE_AND_START_FISHING));
 		ExFishingStart efs = null;
 		if (!GameTimeController.getInstance().isNowNight() && _lure.isNightLure())
+		{
 			_fish.setType(-1);
+		}
 		// sendMessage("Hook x,y: " + _x + "," + _y + " - Water Z, Player Z:" + _z + ", " + getZ()); //debug line, uncoment to show coordinates used in fishing.
 		efs = new ExFishingStart(this, _fish.getType(), _x, _y, _z, _lure.isNightLure());
 		broadcastPacket(efs);
@@ -12131,11 +12464,14 @@ public final class L2PcInstance extends L2PlayableInstance
 				int lureid = _lure.getItemId();
 				isNoob = _fish.getGroup() == 0;
 				isUpperGrade = _fish.getGroup() == 2;
-				if (lureid == 6519 || lureid == 6522 || lureid == 6525 || lureid == 8505 || lureid == 8508 || lureid == 8511) // low
-																																// grade
+				if (lureid == 6519 || lureid == 6522 || lureid == 6525 || lureid == 8505 || lureid == 8508 || lureid == 8511)
+				{
+					// grade
 					checkDelay = Math.round((float) (_fish.getGutsCheckTime() * (1.33)));
-				else if (lureid == 6520 || lureid == 6523 || lureid == 6526 || (lureid >= 8505 && lureid <= 8513) || (lureid >= 7610 && lureid <= 7613) || (lureid >= 7807 && lureid <= 7809) || (lureid >= 8484 && lureid <= 8486))// medium
-																																																									// grade,
+				}
+				else if (lureid == 6520 || lureid == 6523 || lureid == 6526 || (lureid >= 8505 && lureid <= 8513) || (lureid >= 7610 && lureid <= 7613) || (lureid >= 7807 && lureid <= 7809) || (lureid >= 8484 && lureid <= 8486))
+				{
+					// grade,
 																																																									// beginner,
 																																																									// prize-winning
 																																																									// &
@@ -12143,9 +12479,12 @@ public final class L2PcInstance extends L2PlayableInstance
 																																																									// special
 																																																									// bait
 					checkDelay = Math.round((float) (_fish.getGutsCheckTime() * (1.00)));
-				else if (lureid == 6521 || lureid == 6524 || lureid == 6527 || lureid == 8507 || lureid == 8510 || lureid == 8513) // high
-																																	// grade
+				}
+				else if (lureid == 6521 || lureid == 6524 || lureid == 6527 || lureid == 8507 || lureid == 8510 || lureid == 8513)
+				{
+					// grade
 					checkDelay = Math.round((float) (_fish.getGutsCheckTime() * (0.66)));
+				}
 			}
 			_taskforfish = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new LookingForFishTask(_fish.getWaitTime(), _fish.getFishGuts(), _fish.getType(), isNoob, isUpperGrade), 10000, checkDelay);
 		}
@@ -12181,35 +12520,59 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					case 7807: // green lure, preferred by fast-moving (nimble) fish (type 5)
 						if (check <= 54)
+						{
 							type = 5;
+						}
 						else if (check <= 77)
+						{
 							type = 4;
+						}
 						else
+						{
 							type = 6;
+						}
 					break;
 					case 7808: // purple lure, preferred by fat fish (type 4)
 						if (check <= 54)
+						{
 							type = 4;
+						}
 						else if (check <= 77)
+						{
 							type = 6;
+						}
 						else
+						{
 							type = 5;
+						}
 					break;
 					case 7809: // yellow lure, preferred by ugly fish (type 6)
 						if (check <= 54)
+						{
 							type = 6;
+						}
 						else if (check <= 77)
+						{
 							type = 5;
+						}
 						else
+						{
 							type = 4;
+						}
 					break;
 					case 8486: // prize-winning fishing lure for beginners
 						if (check <= 33)
+						{
 							type = 4;
+						}
 						else if (check <= 66)
+						{
 							type = 5;
+						}
 						else
+						{
 							type = 6;
+						}
 					break;
 				}
 			break;
@@ -12228,13 +12591,21 @@ public final class L2PcInstance extends L2PlayableInstance
 					case 6521:
 					case 8507:
 						if (check <= 54)
+						{
 							type = 1;
+						}
 						else if (check <= 74)
+						{
 							type = 0;
+						}
 						else if (check <= 94)
+						{
 							type = 2;
+						}
 						else
+						{
 							type = 3;
+						}
 					break;
 					case 6522: // all theese lures (purple) are prefered by fat fish (type 0)
 					case 8508:
@@ -12242,13 +12613,21 @@ public final class L2PcInstance extends L2PlayableInstance
 					case 6524:
 					case 8510:
 						if (check <= 54)
+						{
 							type = 0;
+						}
 						else if (check <= 74)
+						{
 							type = 1;
+						}
 						else if (check <= 94)
+						{
 							type = 2;
+						}
 						else
+						{
 							type = 3;
+						}
 					break;
 					case 6525: // all theese lures (yellow) are prefered by ugly fish (type 2)
 					case 8511:
@@ -12256,21 +12635,35 @@ public final class L2PcInstance extends L2PlayableInstance
 					case 6527:
 					case 8513:
 						if (check <= 55)
+						{
 							type = 2;
+						}
 						else if (check <= 74)
+						{
 							type = 1;
+						}
 						else if (check <= 94)
+						{
 							type = 0;
+						}
 						else
+						{
 							type = 3;
+						}
 					break;
 					case 8484: // prize-winning fishing lure
 						if (check <= 33)
+						{
 							type = 0;
+						}
 						else if (check <= 66)
+						{
 							type = 1;
+						}
 						else
+						{
 							type = 2;
+						}
 					break;
 				}
 			break;
@@ -12279,35 +12672,59 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					case 8506: // green lure, preferred by fast-moving (nimble) fish (type 8)
 						if (check <= 54)
+						{
 							type = 8;
+						}
 						else if (check <= 77)
+						{
 							type = 7;
+						}
 						else
+						{
 							type = 9;
+						}
 					break;
 					case 8509: // purple lure, preferred by fat fish (type 7)
 						if (check <= 54)
+						{
 							type = 7;
+						}
 						else if (check <= 77)
+						{
 							type = 9;
+						}
 						else
+						{
 							type = 8;
+						}
 					break;
 					case 8512: // yellow lure, preferred by ugly fish (type 9)
 						if (check <= 54)
+						{
 							type = 9;
+						}
 						else if (check <= 77)
+						{
 							type = 8;
+						}
 						else
+						{
 							type = 7;
+						}
 					break;
 					case 8485: // prize-winning fishing lure
 						if (check <= 33)
+						{
 							type = 7;
+						}
 						else if (check <= 66)
+						{
 							type = 8;
+						}
 						else
+						{
 							type = 9;
+						}
 					break;
 				}
 		}
@@ -12321,7 +12738,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		for (L2Effect e : effects)
 		{
 			if (e.getSkill().getId() == 2274)
+			{
 				skilllvl = (int) e.getSkill().getPower(this);
+			}
 		}
 		if (skilllvl <= 0)
 			return 1;
@@ -12344,7 +12763,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			randomlvl = skilllvl + 1;
 			if (randomlvl > 27)
+			{
 				randomlvl = 27;
+			}
 		}
 
 		return randomlvl;
@@ -12365,7 +12786,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		_fishz = 0;
 		broadcastUserInfo();
 		if (_fishCombat == null)
+		{
 			sendPacket(new SystemMessage(SystemMessageId.BAIT_LOST_FISH_GOT_AWAY));
+		}
 		_fishCombat = null;
 		_lure = null;
 		// Ends fishing
@@ -12536,14 +12959,18 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (currentSkill == null)
 		{
 			if (Config.DEBUG)
+			{
 				_log.info("Setting current skill: NULL for " + getName() + ".");
+			}
 
 			_currentSkill = null;
 			return;
 		}
 
 		if (Config.DEBUG)
+		{
 			_log.info("Setting current skill: " + currentSkill.getName() + " (ID: " + currentSkill.getId() + ") for " + getName() + ".");
+		}
 
 		_currentSkill = new SkillDat(currentSkill, ctrlPressed, shiftPressed);
 	}
@@ -12562,14 +12989,18 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (queuedSkill == null)
 		{
 			if (Config.DEBUG)
+			{
 				_log.info("Setting queued skill: NULL for " + getName() + ".");
+			}
 
 			_queuedSkill = null;
 			return;
 		}
 
 		if (Config.DEBUG)
+		{
 			_log.info("Setting queued skill: " + queuedSkill.getName() + " (ID: " + queuedSkill.getId() + ") for " + getName() + ".");
+		}
 
 		_queuedSkill = new SkillDat(queuedSkill, ctrlPressed, shiftPressed);
 	}
@@ -12606,9 +13037,13 @@ public final class L2PcInstance extends L2PlayableInstance
 			NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
 			String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_in.htm");
 			if (jailInfos != null)
+			{
 				htmlMsg.setHtml(jailInfos);
+			}
 			else
+			{
 				htmlMsg.setHtml("<html><body>You have been put in jail by an admin.</body></html>");
+			}
 			sendPacket(htmlMsg);
 
 			teleToLocation(-114356, -249645, -2984, true); // Jail
@@ -12619,9 +13054,13 @@ public final class L2PcInstance extends L2PlayableInstance
 			NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
 			String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_out.htm");
 			if (jailInfos != null)
+			{
 				htmlMsg.setHtml(jailInfos);
+			}
 			else
+			{
 				htmlMsg.setHtml("<html><body>You are free for now, respect server rules!</body></html>");
+			}
 			sendPacket(htmlMsg);
 
 			teleToLocation(17836, 170178, -3507, true); // Floran
@@ -12655,7 +13094,9 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// If player escaped, put him back in jail
 			if (!isInsideZone(ZONE_JAIL))
+			{
 				teleToLocation(-114356, -249645, -2984, true);
+			}
 		}
 	}
 
@@ -12667,7 +13108,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				long delay = _jailTask.getDelay(TimeUnit.MILLISECONDS);
 				if (delay < 0)
+				{
 					delay = 0;
+				}
 				setJailTimer(delay);
 			}
 			_jailTask.cancel(false);
@@ -12753,7 +13196,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (!(Config.DEATH_PENALTY_CHANCE == 0))
 		{
 			if (Rnd.get(100) <= Config.DEATH_PENALTY_CHANCE && !(killer instanceof L2PcInstance) && !(this.isGM()) && !(this.getCharmOfLuck() && (killer instanceof L2GrandBossInstance || killer instanceof L2RaidBossInstance)))
+			{
 				increaseDeathPenaltyBuffLevel();
+			}
 		}
 	}
 
@@ -12767,7 +13212,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			L2Skill skill = SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel());
 
 			if (skill != null)
+			{
 				removeSkill(skill, true);
+			}
 		}
 
 		_deathPenaltyBuffLevel++;
@@ -12787,7 +13234,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		L2Skill skill = SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel());
 
 		if (skill != null)
+		{
 			removeSkill(skill, true);
+		}
 
 		_deathPenaltyBuffLevel--;
 
@@ -12811,7 +13260,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		L2Skill skill = SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel());
 
 		if (skill != null)
+		{
 			removeSkill(skill, true);
+		}
 
 		if (getDeathPenaltyBuffLevel() > 0)
 		{
@@ -12926,9 +13377,13 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// Check if hit is critical
 		if (pcrit)
+		{
 			sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT));
+		}
 		if (mcrit)
+		{
 			sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT_MAGIC));
+		}
 
 		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DID_S1_DMG);
 		sm.addNumber(damage);
@@ -12947,11 +13402,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		long banLength = 0;
 		String banReason = "";
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(BAN_CHAT_GET);
 			statement.setString(1, getName());
 			ResultSet rset = statement.executeQuery();
@@ -12968,16 +13420,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -13014,11 +13456,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			banLengthMSec = nowTime + (banLength * 1000);
 		}
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(BAN_CHAT_SET);
 			statement.setLong(1, banLengthMSec);
 			statement.setString(2, banReason);
@@ -13035,23 +13474,15 @@ public final class L2PcInstance extends L2PlayableInstance
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		if (isChatBanned())
 		{
 			long banLengthMins = banLength / 60;
 			sendMessage("Your chat is banned (" + banLengthMins + " min)");
 			if (banReason == "")
+			{
 				banReason = "-";
+			}
 			sendMessage("Reason: " + banReason);
 		}
 		else
@@ -13169,9 +13600,13 @@ public final class L2PcInstance extends L2PlayableInstance
 						NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
 						String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_out.htm");
 						if (jailInfos != null)
+						{
 							htmlMsg.setHtml(jailInfos);
+						}
 						else
+						{
 							htmlMsg.setHtml("<html><body>You are free for now, respect server rules!</body></html>");
+						}
 						sendPacket(htmlMsg);
 						stopPunishTask(true);
 						teleToLocation(17836, 170178, -3507, true); // Floran
@@ -13197,7 +13632,9 @@ public final class L2PcInstance extends L2PlayableInstance
 					sendMessage("You are chat banned for " + delayInMinutes + " minutes.");
 				}
 				else
+				{
 					sendMessage("You have been chat banned");
+				}
 				break;
 
 			}
@@ -13221,9 +13658,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
 				String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_in.htm");
 				if (jailInfos != null)
+				{
 					htmlMsg.setHtml(jailInfos);
+				}
 				else
+				{
 					htmlMsg.setHtml("<html><body>You have been put in jail by an admin.</body></html>");
+				}
 				sendPacket(htmlMsg);
 				setInstanceId(0);
 
@@ -13269,7 +13710,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				// If player escaped, put him back in jail
 				if (!isInsideZone(ZONE_JAIL))
+				{
 					teleToLocation(-114356, -249645, -2984, true);
+				}
 			}
 		}
 	}
@@ -13282,7 +13725,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				long delay = _punishTask.getDelay(TimeUnit.MILLISECONDS);
 				if (delay < 0)
+				{
 					delay = 0;
+				}
 				setPunishTimer(delay);
 			}
 			_punishTask.cancel(false);
@@ -13459,7 +13904,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 		}
 		else if (answer == 0)
+		{
 			sendMessage("You don't want to continue with the Event.");
+		}
 		else
 			return;
 	}
@@ -13490,13 +13937,11 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public void getAchievemntData()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			PreparedStatement insertStatement;
 			ResultSet rs;
-			con = L2DatabaseFactory.getInstance().getConnection();
 
 			statement = con.prepareStatement("SELECT * FROM achievements WHERE owner_id=" + getObjectId());
 
@@ -13510,19 +13955,21 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (rs.next())
 			{
 				_completedAchievements.clear();
-				for (int i=1; i <=ilosc; i++)
+				for (int i = 1; i <= ilosc; i++)
 				{
 					int a = rs.getInt("a" + i);
 
 					if (!_completedAchievements.contains(i))
 						if (a == 1 || String.valueOf(a).startsWith("1"))
+						{
 							_completedAchievements.add(i);
+						}
 				}
 			}
 			else
 			{
 				//Player hasnt entry in database, means we have to create it.
-				for (int i=1; i <=ilosc; i++)
+				for (int i = 1; i <= ilosc; i++)
 				{
 					values += ", a" + i;
 					questionMarks += ", 0";
@@ -13539,51 +13986,32 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			_log.warning("[ACHIEVEMENTS ENGINE GETDATA]" + e);
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
-	public void saveAchievementData(int achievementID,int objid)
+	public void saveAchievementData(int achievementID, int objid)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			Statement statement = con.createStatement();
-			if (achievementID==4 || achievementID==6 || achievementID==11 || achievementID==13)
+			if (achievementID == 4 || achievementID == 6 || achievementID == 11 || achievementID == 13)
 			{
-				statement.executeUpdate("UPDATE achievements SET a" + achievementID + "=1"+objid+" WHERE owner_id=" + getObjectId());
+				statement.executeUpdate("UPDATE achievements SET a" + achievementID + "=1" + objid + " WHERE owner_id=" + getObjectId());
 			}
 			else
+			{
 				statement.executeUpdate("UPDATE achievements SET a" + achievementID + "=1 WHERE owner_id=" + getObjectId());
+			}
 
 			statement.close();
 
 			if (!_completedAchievements.contains(achievementID))
+			{
 				_completedAchievements.add(achievementID);
+			}
 		}
 		catch (SQLException e)
 		{
 			_log.warning("[ACHIEVEMENTS SAVE GETDATA]" + e);
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 }

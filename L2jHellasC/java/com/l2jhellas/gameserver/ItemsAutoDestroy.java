@@ -37,16 +37,19 @@ public class ItemsAutoDestroy
 	{
 		_items = new FastList<L2ItemInstance>();
 		_sleep = Config.AUTODESTROY_ITEM_AFTER * 1000;
-		if (_sleep == 0) // it should not happened as it is not called when AUTODESTROY_ITEM_AFTER = 0 but we never know..
+		if (_sleep == 0)
+		{
 			_sleep = 3600000;
-		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckItemsForDestroy(), 5000, 5000);
+		}
+		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckItemsForDestroy(), _sleep, _sleep);
+		_log.log(Level.INFO, "ItemsAutoDestroy: Time " + _sleep / 1000 + ".");
 	}
 
 	public static ItemsAutoDestroy getInstance()
 	{
 		if (_instance == null)
 		{
-			_log.log(Level.INFO, "ItemsAutoDestroy: Initializing.");
+			_log.log(Level.INFO, "ItemsAutoDestroy: Initialized.");
 			_instance = new ItemsAutoDestroy();
 		}
 		return _instance;
@@ -61,7 +64,9 @@ public class ItemsAutoDestroy
 	public synchronized void removeItems()
 	{
 		if (Config.DEBUG)
+		{
 			_log.log(Level.CONFIG, getClass().getName() + ": " + _items.size() + " items to check.");
+		}
 
 		if (_items.isEmpty())
 			return;
@@ -70,7 +75,9 @@ public class ItemsAutoDestroy
 		for (L2ItemInstance item : _items)
 		{
 			if (item == null || item.getDropTime() == 0 || item.getLocation() != L2ItemInstance.ItemLocation.VOID)
+			{
 				_items.remove(item);
+			}
 			else
 			{
 				if (item.getItemType() == L2EtcItemType.HERB)
@@ -81,7 +88,9 @@ public class ItemsAutoDestroy
 						L2World.getInstance().removeObject(item);
 						_items.remove(item);
 						if (Config.SAVE_DROPPED_ITEM)
+						{
 							ItemsOnGroundManager.getInstance().removeObject(item);
+						}
 					}
 				}
 				else if ((curtime - item.getDropTime()) > _sleep)
@@ -90,12 +99,16 @@ public class ItemsAutoDestroy
 					L2World.getInstance().removeObject(item);
 					_items.remove(item);
 					if (Config.SAVE_DROPPED_ITEM)
+					{
 						ItemsOnGroundManager.getInstance().removeObject(item);
+					}
 				}
 			}
 		}
 		if (Config.DEBUG)
+		{
 			_log.log(Level.CONFIG, getClass().getName() + ": " + _items.size() + " items remaining.");
+		}
 	}
 
 	protected class CheckItemsForDestroy extends Thread

@@ -17,14 +17,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
- * @author  devScarlet
+ * @author devScarlet
  */
 public class NicknameChanged extends L2GameServerPacket
 {
 	private static final String _S__CC_TITLE_UPDATE = "[S] cc NicknameChanged";
-	private String _title;
-	private int _objectId;
+	private final String _title;
+	private final int _objectId;
 
 	public NicknameChanged(L2PcInstance cha)
 	{
@@ -32,9 +31,6 @@ public class NicknameChanged extends L2GameServerPacket
 		_title = cha.getTitle();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -43,13 +39,9 @@ public class NicknameChanged extends L2GameServerPacket
 		writeS(_title);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__CC_TITLE_UPDATE;
 	}
-
 }

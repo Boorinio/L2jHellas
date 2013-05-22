@@ -20,49 +20,42 @@ import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-
 /**
- * Format: (ch) d [SdSdSdd]
- * d: size
- * [
- * S: hero name
- * d: hero class ID
- * S: hero clan name
- * d: hero clan crest id
- * S: hero ally name
- * d: hero Ally id
- * d: count
- * ]
+ * Format: (ch) d [SdSdSdd]<BR>
+ * d: size<BR>
+ * [<BR>
+ * S: hero name<BR>
+ * d: hero class ID<BR>
+ * S: hero clan name<BR>
+ * d: hero clan crest id<BR>
+ * S: hero ally name<BR>
+ * d: hero Ally id<BR>
+ * d: count<BR>
+ * ]<BR>
+ * 
  * @author -Wooden-
- * Format from KenM
- *
- * Re-written by godson
- *
+ *         Re-written godson
  */
 public class ExHeroList extends L2GameServerPacket
 {
 	private static final String _S__FE_23_EXHEROLIST = "[S] FE:23 ExHeroList";
-	private Map<Integer, StatsSet> _heroList;
+	private final Map<Integer, StatsSet> _heroList;
 
 	public ExHeroList()
 	{
 		_heroList = Hero.getInstance().getHeroes();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x23);
 		writeD(_heroList.size());
 
-		for(Integer heroId : _heroList.keySet())
+		for (Integer heroId : _heroList.keySet())
 		{
-            StatsSet hero = _heroList.get(heroId);
+			StatsSet hero = _heroList.get(heroId);
 			writeS(hero.getString(Olympiad.CHAR_NAME));
 			writeD(hero.getInteger(Olympiad.CLASS_ID));
 			writeS(hero.getString(Hero.CLAN_NAME, ""));
@@ -71,16 +64,11 @@ public class ExHeroList extends L2GameServerPacket
 			writeD(hero.getInteger(Hero.ALLY_CREST, 0));
 			writeD(hero.getInteger(Hero.COUNT));
 		}
-
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_23_EXHEROLIST;
 	}
-
 }

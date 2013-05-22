@@ -19,11 +19,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.SSQStatus;
 
 /**
- * Seven Signs Record Update Request
- *
- * packet type id 0xc7
+ * Seven Signs Record Update Request<BR>
+ * packet type id 0xc7<BR>
  * format: cc
- *
+ * 
  * @author Tempy
  */
 public final class RequestSSQStatus extends L2GameClientPacket
@@ -43,18 +42,15 @@ public final class RequestSSQStatus extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-		    return;
+			return;
 
-        if ((SevenSigns.getInstance().isSealValidationPeriod() || SevenSigns.getInstance().isCompResultsPeriod()) && _page == 4)
-            return;
+		if ((SevenSigns.getInstance().isSealValidationPeriod() || SevenSigns.getInstance().isCompResultsPeriod()) && _page == 4)
+			return;
 
 		SSQStatus ssqs = new SSQStatus(activeChar, _page);
 		activeChar.sendPacket(ssqs);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

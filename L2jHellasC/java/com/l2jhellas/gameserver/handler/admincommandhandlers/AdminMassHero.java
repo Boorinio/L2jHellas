@@ -21,7 +21,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class AdminMassHero implements IAdminCommandHandler
 {
-	private static String[] ADMIN_COMMANDS = {
+	private static String[] ADMIN_COMMANDS =
+	{
 		"admin_masshero"
 	};
 

@@ -19,13 +19,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class handles following admin commands:
@@ -63,7 +63,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 	 * if a character name is provided, will try to reach it either from L2World
 	 * or from
 	 * a database connection.
-	 *
+	 * 
 	 * @param command
 	 * @param activeChar
 	 */
@@ -94,10 +94,8 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 				onLineChange(activeChar, player, lvl);
 			else
 			{
-				Connection con = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
 					PreparedStatement statement = con.prepareStatement("UPDATE characters SET accesslevel=? WHERE char_name=?");
 					statement.setInt(1, lvl);
 					statement.setString(2, name);
@@ -115,16 +113,6 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 					if (Config.DEVELOPER)
 					{
 						se.printStackTrace();
-					}
-				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
 					}
 				}
 			}

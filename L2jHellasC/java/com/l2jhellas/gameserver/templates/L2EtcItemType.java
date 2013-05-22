@@ -19,6 +19,7 @@ package com.l2jhellas.gameserver.templates;
  */
 public enum L2EtcItemType
 {
+	/** @formatter:off */
 	ARROW      ( 0, "Arrow"),
 	MATERIAL   ( 1, "Material"),
 	PET_COLLAR ( 2, "PetCollar"),
@@ -32,13 +33,13 @@ public enum L2EtcItemType
     SEED       (10, "Seed"),
     SHOT       (11, "Shot"),
     HERB	   (12, "Herb");
-
+	/** @formatter:on */
 	final int _id;
 	final String _name;
 
 	/**
 	 * Constructor of the L2EtcItemType.
-	 *
+	 * 
 	 * @param id
 	 *        : int designating the ID of the EtcItemType
 	 * @param name
@@ -52,7 +53,7 @@ public enum L2EtcItemType
 
 	/**
 	 * Returns the ID of the item after applying the mask.
-	 *
+	 * 
 	 * @return int : ID of the item
 	 */
 	public int mask()
@@ -62,7 +63,7 @@ public enum L2EtcItemType
 
 	/**
 	 * Returns the name of the EtcItemType
-	 *
+	 * 
 	 * @return String
 	 */
 	@Override

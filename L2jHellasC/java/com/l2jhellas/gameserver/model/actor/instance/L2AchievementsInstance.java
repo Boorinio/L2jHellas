@@ -87,14 +87,16 @@ public class L2AchievementsInstance extends L2NpcInstance
 							player.saveAchievementData(id, objid);
 							AchievementsManager.getInstance().rewardForAchievement(id, player);
 						}
-						else player.sendMessage("This item was already used to earn this achievement.");
+						else
+							player.sendMessage("This item was already used to earn this achievement.");
 					}
 					else
 					{
 						player.sendMessage("Seems you don't meet the achievements requirements now.");
 					}
 				}
-				else player.sendMessage("You must equip your weapon in order to get rewarded.");
+				else
+					player.sendMessage("You must equip your weapon in order to get rewarded.");
 			}
 			else if (id == 6 || id == 18)
 			{
@@ -106,7 +108,8 @@ public class L2AchievementsInstance extends L2NpcInstance
 					player.saveAchievementData(id, clid);
 					AchievementsManager.getInstance().rewardForAchievement(id, player);
 				}
-				else player.sendMessage("Current clan was already rewarded for this achievement.");
+				else
+					player.sendMessage("Current clan was already rewarded for this achievement.");
 			}
 			else
 			{
@@ -170,8 +173,7 @@ public class L2AchievementsInstance extends L2NpcInstance
 			for (Achievement a : AchievementsManager.getInstance().getAchievementList().values())
 			{
 				tb.append(getTableColor(i));
-				tb.append("<tr><td width=270 align=\"left\">" + a.getName() + "</td><td width=50 align=\"right\"><a action=\"bypass -h npc_%objectId%_achievementInfo "
-								+ a.getID() + "\">info</a></td><td width=200 align=\"center\">" + getStatusString(a.getID(), player) + "</td></tr></table>");
+				tb.append("<tr><td width=270 align=\"left\">" + a.getName() + "</td><td width=50 align=\"right\"><a action=\"bypass -h npc_%objectId%_achievementInfo " + a.getID() + "\">info</a></td><td width=200 align=\"center\">" + getStatusString(a.getID(), player) + "</td></tr></table>");
 				i++;
 			}
 
@@ -199,8 +201,7 @@ public class L2AchievementsInstance extends L2NpcInstance
 
 		if (a.meetAchievementRequirements(player) && !player.getCompletedAchievements().contains(achievementID))
 		{
-			tb.append("<button value=\"Receive Reward!\" action=\"bypass -h npc_%objectId%_getReward "
-							+ a.getID() + "\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21>");
+			tb.append("<button value=\"Receive Reward!\" action=\"bypass -h npc_%objectId%_getReward " + a.getID() + "\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21>");
 		}
 
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1s\"><br>");
@@ -310,8 +311,10 @@ public class L2AchievementsInstance extends L2NpcInstance
 	@SuppressWarnings("static-method")
 	private String getTableColor(int i)
 	{
-		if (i % 2 == 0) return "<table width=270 border=0 bgcolor=\"444444\">";
-		else return "<table width=270 border=0>";
+		if (i % 2 == 0)
+			return "<table width=270 border=0 bgcolor=\"444444\">";
+		else
+			return "<table width=270 border=0>";
 	}
 
 	private String getConditionsStatus(int achievementID, L2PcInstance player)
@@ -328,8 +331,10 @@ public class L2AchievementsInstance extends L2NpcInstance
 			s += "<tr><td width=270 align=\"left\">" + c.getName() + "</td><td width=100 align=\"left\">" + c.getValue() + "</td><td width=200 align=\"center\">";
 			i++;
 
-			if (c.meetConditionRequirements(player)) s += completed;
-			else s += notcompleted;
+			if (c.meetConditionRequirements(player))
+				s += completed;
+			else
+				s += notcompleted;
 		}
 		return s;
 	}

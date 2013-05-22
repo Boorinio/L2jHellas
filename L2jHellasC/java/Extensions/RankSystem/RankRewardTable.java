@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Masterio
@@ -91,10 +91,8 @@ public class RankRewardTable
 
 	private void load()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM rank_pvp_system_rank_rewards");
 
 			ResultSet rset = statement.executeQuery();
@@ -118,20 +116,6 @@ public class RankRewardTable
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-				{
-					con.close();
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 }

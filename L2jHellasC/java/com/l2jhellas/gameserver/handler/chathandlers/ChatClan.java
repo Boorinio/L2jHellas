@@ -27,7 +27,7 @@ public class ChatClan implements IChatHandler
 	{
 		4
 	};
-	
+
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
@@ -37,7 +37,7 @@ public class ChatClan implements IChatHandler
 			activeChar.getClan().broadcastCSToOnlineMembers(cs, activeChar);
 		}
 	}
-	
+
 	@Override
 	public int[] getChatTypeList()
 	{

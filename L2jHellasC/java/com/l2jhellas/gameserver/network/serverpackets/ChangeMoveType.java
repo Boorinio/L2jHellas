@@ -17,14 +17,9 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2Character;
 
 /**
- *
- * sample
- *
- * 0000: 3e 2a 89 00 4c 01 00 00 00                         .|...
- *
- * format   dd
- *
- * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:57 $
+ * sample<BR>
+ * 0000: 3e 2a 89 00 4c 01 00 00 00 .|...<BR>
+ * format dd
  */
 public class ChangeMoveType extends L2GameServerPacket
 {
@@ -32,8 +27,8 @@ public class ChangeMoveType extends L2GameServerPacket
 	public static final int WALK = 0;
 	public static final int RUN = 1;
 
-	private int _charObjId;
-	private boolean _running;
+	private final int _charObjId;
+	private final boolean _running;
 
 	public ChangeMoveType(L2Character character)
 	{
@@ -47,12 +42,9 @@ public class ChangeMoveType extends L2GameServerPacket
 		writeC(0x2e);
 		writeD(_charObjId);
 		writeD(_running ? RUN : WALK);
-		writeD(0); //c2
+		writeD(0); // c2
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

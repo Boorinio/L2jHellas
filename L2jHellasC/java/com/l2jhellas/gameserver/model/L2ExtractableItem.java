@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model;
 import javolution.util.FastList;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class L2ExtractableItem
@@ -41,5 +40,4 @@ public class L2ExtractableItem
 	{
 		return _products;
 	}
-
 }

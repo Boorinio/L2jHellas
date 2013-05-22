@@ -33,10 +33,12 @@ import com.l2jhellas.util.Broadcast;
 public class FishShots implements IItemHandler
 {
 	// All the item IDs that this handler knows.
-	private static final int[] ITEM_IDS = {
+	private static final int[] ITEM_IDS =
+	{
 	6535, 6536, 6537, 6538, 6539, 6540
 	};
-	private static final int[] SKILL_IDS = {
+	private static final int[] SKILL_IDS =
+	{
 	2181, 2182, 2183, 2184, 2185, 2186
 	};
 

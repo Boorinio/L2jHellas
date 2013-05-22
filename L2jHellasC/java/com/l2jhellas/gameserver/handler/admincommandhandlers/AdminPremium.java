@@ -22,23 +22,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AdminPremium implements IAdminCommandHandler
 {
 	private static final Logger _log = Logger.getLogger(AdminPremium.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_premium_menu",
-	"admin_premium_add1",
-	"admin_premium_add2",
-	"admin_premium_add3",
-	"admin_premium_add4",
-	"admin_premium_add5"
-	};
+	{/** @formatter:off */
+		"admin_premium_menu",
+		"admin_premium_add1",
+		"admin_premium_add2",
+		"admin_premium_add3",
+		"admin_premium_add4",
+		"admin_premium_add5"
+	};/** @formatter:on */
 
 	private static final String UPDATE_PREMIUMSERVICE = "UPDATE account_premium SET premium_service=?,enddate=? WHERE account_name=?";
 
@@ -117,23 +117,15 @@ public class AdminPremium implements IAdminCommandHandler
 		return true;
 	}
 
-	@Override
-	public String[] getAdminCommandList()
-	{
-		return ADMIN_COMMANDS;
-	}
-
 	private void addPremiumServices(int Hours, String AccName)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			Calendar finishtime = Calendar.getInstance();
 			finishtime.setTimeInMillis(System.currentTimeMillis());
 			finishtime.set(Calendar.SECOND, 0);
 			finishtime.add(Calendar.HOUR, Hours);
 
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE);
 			statement.setInt(1, 1);
 			statement.setLong(2, finishtime.getTimeInMillis());
@@ -149,16 +141,11 @@ public class AdminPremium implements IAdminCommandHandler
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-			}
-		}
+	}
+
+	@Override
+	public String[] getAdminCommandList()
+	{
+		return ADMIN_COMMANDS;
 	}
 }

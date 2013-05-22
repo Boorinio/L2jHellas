@@ -33,20 +33,23 @@ public class L2BossZone extends L2ZoneType
 	private String _zoneName;
 	private int _timeInvade;
 	private boolean _enabled = true; // default value, unless overridden by xml...
-	
+
 	// track the times that players got disconnected. Players are allowed
 	// to log back into the zone as long as their log-out was within _timeInvade
 	// time...
 	// <player objectId, expiration time in milliseconds>
-	private FastMap<Integer, Long> _playerAllowedReEntryTimes;
-	
-	// track the players admitted to the zone who should be allowed back in 
-	// after reboot/server downtime (outside of their control), within 30 
+	private final FastMap<Integer, Long> _playerAllowedReEntryTimes;
+
+	// track the players admitted to the zone who should be allowed back in
+	// after reboot/server downtime (outside of their control), within 30
 	// of server restart
 	private L2FastList<Integer> _playersAllowed;
-	private int[] _oustLoc = { 0, 0, 0 };
+	private int[] _oustLoc =
+	{
+	0, 0, 0
+	};
 	protected L2FastList<L2Character> _raidList = new L2FastList<L2Character>();
-	
+
 	public L2BossZone(int id)
 	{
 		super(id);
@@ -54,7 +57,7 @@ public class L2BossZone extends L2ZoneType
 		_playersAllowed = new L2FastList<Integer>();
 		_oustLoc = new int[3];
 	}
-	
+
 	@Override
 	public void setParameter(String name, String value)
 	{
@@ -62,7 +65,6 @@ public class L2BossZone extends L2ZoneType
 		{
 			_zoneName = value;
 		}
-		
 		else if (name.equals("InvadeTime"))
 		{
 			_timeInvade = Integer.parseInt(value);
@@ -88,7 +90,7 @@ public class L2BossZone extends L2ZoneType
 			super.setParameter(name, value);
 		}
 	}
-	
+
 	@Override
 	/**
 	 * Boss zones have special behaviors for player characters. Players are
@@ -98,7 +100,7 @@ public class L2BossZone extends L2ZoneType
 	 * any one of the following: 1) A player logs out while in a zone
 	 * (Expiration gets set to logoutTime + _timeInvade) 2) An external source
 	 * (such as a quest or AI of NPC) set up the player for entry.
-	 * 
+	 *
 	 * There exists one more case in which the player will be allowed to enter.
 	 * That is if the server recently rebooted (boot-up time more recent than
 	 * currentTime - _timeInvade) AND the player was in the zone prior to reboot.
@@ -116,14 +118,14 @@ public class L2BossZone extends L2ZoneType
 					player.sendMessage("You entered " + _zoneName);
 					return;
 				}
-				// if player has been (previously) cleared by npc/ai for entry and the zone is 
+				// if player has been (previously) cleared by npc/ai for entry and the zone is
 				// set to receive players (aka not waiting for boss to respawn)
 				if (_playersAllowed.contains(player.getObjectId()))
 				{
 					// Get the information about this player's last logout-exit from
 					// this zone.
 					Long expirationTime = _playerAllowedReEntryTimes.get(player.getObjectId());
-					
+
 					// with legal entries, do nothing.
 					if (expirationTime == null) // legal null expirationTime entries
 					{
@@ -148,7 +150,7 @@ public class L2BossZone extends L2ZoneType
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onExit(L2Character character)
 	{
@@ -181,7 +183,7 @@ public class L2BossZone extends L2ZoneType
 			}
 			if (character instanceof L2PlayableInstance)
 			{
-				if (getCharactersInside() != null && !getCharactersInside().isEmpty())
+				if ((getCharactersInside() != null) && !getCharactersInside().isEmpty())
 				{
 					_raidList.clear();
 					int count = 0;
@@ -214,36 +216,36 @@ public class L2BossZone extends L2ZoneType
 			((L2Attackable) character).returnHome();
 		}
 	}
-	
+
 	public void setZoneEnabled(boolean flag)
 	{
 		if (_enabled != flag)
 			oustAllPlayers();
-		
+
 		_enabled = flag;
 	}
-	
+
 	public String getZoneName()
 	{
 		return _zoneName;
 	}
-	
+
 	public int getTimeInvade()
 	{
 		return _timeInvade;
 	}
-	
+
 	public void setAllowedPlayers(L2FastList<Integer> players)
 	{
 		if (players != null)
 			_playersAllowed = players;
 	}
-	
+
 	public L2FastList<Integer> getAllowedPlayers()
 	{
 		return _playersAllowed;
 	}
-	
+
 	public boolean isPlayerAllowed(L2PcInstance player)
 	{
 		if (player.isGM())
@@ -259,7 +261,7 @@ public class L2BossZone extends L2ZoneType
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Some GrandBosses send all players in zone to a specific part of the zone,
 	 * rather than just removing them all. If this is the case, this command should
@@ -269,12 +271,12 @@ public class L2BossZone extends L2ZoneType
 	 * @param y
 	 * @param z
 	 */
-	
+
 	public void movePlayersTo(int x, int y, int z)
 	{
 		if (_characterList == null || _characterList.isEmpty())
 			return;
-		
+
 		for (L2Character character : _characterList.values())
 		{
 			if (character == null)
@@ -287,15 +289,16 @@ public class L2BossZone extends L2ZoneType
 			}
 		}
 	}
-	public void removePlayer(L2PcInstance player) 
- { 
- 	  if(!player.isGM()) 
- 	 { 
- 	       _playersAllowed.remove(Integer.valueOf(player.getObjectId())); 
- 	       _playerAllowedReEntryTimes.remove(player.getObjectId()); 
- 	 } 
-  } 
-	
+
+	public void removePlayer(L2PcInstance player)
+	{
+		if (!player.isGM())
+		{
+			_playersAllowed.remove(Integer.valueOf(player.getObjectId()));
+			_playerAllowedReEntryTimes.remove(player.getObjectId());
+		}
+	}
+
 	/**
 	 * Occasionally, all players need to be sent out of the zone (for example,
 	 * if the players are just running around without fighting for too long, or
@@ -308,7 +311,7 @@ public class L2BossZone extends L2ZoneType
 	{
 		if (_characterList == null || _characterList.isEmpty())
 			return;
-		
+
 		for (L2Character character : _characterList.values())
 		{
 			if (character == null)
@@ -328,14 +331,17 @@ public class L2BossZone extends L2ZoneType
 		_playerAllowedReEntryTimes.clear();
 		_playersAllowed.clear();
 	}
-	
+
 	/**
 	 * This function is to be used by external sources, such as quests and AI
-	 * in order to allow a player for entry into the zone for some time.  Naturally
+	 * in order to allow a player for entry into the zone for some time. Naturally
 	 * if the player does not enter within the allowed time, he/she will be
-	 * teleported out again... 
-	 * @param player: reference to the player we wish to allow 
-	 * @param durationInSec: amount of time in seconds during which entry is valid.
+	 * teleported out again...
+	 * 
+	 * @param player
+	 *        : reference to the player we wish to allow
+	 * @param durationInSec
+	 *        : amount of time in seconds during which entry is valid.
 	 */
 	public void allowPlayerEntry(L2PcInstance player, int durationInSec)
 	{
@@ -346,12 +352,12 @@ public class L2BossZone extends L2ZoneType
 			_playerAllowedReEntryTimes.put(player.getObjectId(), System.currentTimeMillis() + durationInSec * 1000);
 		}
 	}
-	
+
 	@Override
 	public void onDieInside(L2Character character)
 	{
 	}
-	
+
 	@Override
 	public void onReviveInside(L2Character character)
 	{

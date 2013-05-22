@@ -19,18 +19,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.3.4.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestFriendList extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestFriendList.class.getName());
@@ -51,20 +45,17 @@ public final class RequestFriendList extends L2GameClientPacket
 			return;
 
 		SystemMessage sm;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT friend_id, friend_name FROM character_friends WHERE char_id=?");
 			statement.setInt(1, activeChar.getObjectId());
 
 			ResultSet rset = statement.executeQuery();
 
-			//======<Friend List>======
+			// ======<Friend List>======
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_HEAD));
 
-            L2PcInstance friend = null;
+			L2PcInstance friend = null;
 			while (rset.next())
 			{
 				// int friendId = rset.getInt("friend_id");
@@ -73,31 +64,29 @@ public final class RequestFriendList extends L2GameClientPacket
 
 				if (friend == null)
 				{
-				    //	(Currently: Offline)
-				    sm = new SystemMessage(SystemMessageId.S1_OFFLINE);
-				    sm.addString(friendName);
+					// (Currently: Offline)
+					sm = new SystemMessage(SystemMessageId.S1_OFFLINE);
+					sm.addString(friendName);
 				}
 				else
 				{
-				    //(Currently: Online)
-				    sm = new SystemMessage(SystemMessageId.S1_ONLINE);
-				    sm.addString(friendName);
+					// (Currently: Online)
+					sm = new SystemMessage(SystemMessageId.S1_ONLINE);
+					sm.addString(friendName);
 				}
 
 				activeChar.sendPacket(sm);
 			}
 
-			//=========================
+			// =========================
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
 			sm = null;
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			_log.warning("Error in /friendlist for " + activeChar + ": " + e);
-		}
-		finally	{
-			try {con.close();} catch (Exception e) {}
 		}
 	}
 

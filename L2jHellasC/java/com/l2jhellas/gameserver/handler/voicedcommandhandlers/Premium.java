@@ -29,7 +29,7 @@ public class Premium implements IVoicedCommandHandler
 	{
 		"premium"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
@@ -59,7 +59,7 @@ public class Premium implements IVoicedCommandHandler
 				html3.append("<tr><td> <font color=\"70FFCA\">3.Does not effect Party members.</font></td></tr>");
 				html3.append("</table>");
 				html3.append("</center></body></html>");
-				
+
 				preReply.setHtml(html3.toString());
 				activeChar.sendPacket(preReply);
 			}
@@ -68,7 +68,7 @@ public class Premium implements IVoicedCommandHandler
 				long _end_prem_date = 0L;
 				_end_prem_date = Extensions.PremiumService.Prem.getInstance().getPremServiceData(activeChar.getAccountName());
 				NpcHtmlMessage preReply = new NpcHtmlMessage(5);
-				
+
 				TextBuilder html3 = new TextBuilder("<html><body><title>Premium Account Details</title><center>");
 				html3.append("<table>");
 				html3.append("<tr><td><center>Thank you for supporting YOUR server.<br><br></td></tr>");
@@ -85,14 +85,14 @@ public class Premium implements IVoicedCommandHandler
 				html3.append("<tr><td><font color=\"70FFCA\">3.Does not effect Party members.<br><br></font></td></tr>");
 				html3.append("</table>");
 				html3.append("</center></body></html>");
-				
+
 				preReply.setHtml(html3.toString());
 				activeChar.sendPacket(preReply);
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{

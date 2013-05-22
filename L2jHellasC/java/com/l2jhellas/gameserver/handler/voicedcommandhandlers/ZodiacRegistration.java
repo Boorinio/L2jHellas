@@ -36,18 +36,18 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 	{
 	"join", "leave"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		String Ip = activeChar.getClient().getConnection().getInetAddress().getHostAddress();
-		
+
 		if (command.startsWith(VOICED_COMMANDS[0]) && ZodiacMain.isEligible(activeChar, Ip))
 		{
 			activeChar.isinZodiac = true;
 			activeChar.sendMessage("You are now registered!");
 			ZodiacMain.Ips.add(Ip);
-			if(CastleWars.CastleWarsRunning)
+			if (CastleWars.CastleWarsRunning)
 			{
 				String Castle_Path = "data/html/zodiac/CastleTutorial.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Castle_Path);
@@ -55,7 +55,7 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 				html.setFile(Castle_Path);
 				activeChar.sendPacket(html);
 			}
-			else if(CaptureThem.CaptureThemRunning)
+			else if (CaptureThem.CaptureThemRunning)
 			{
 				String Capture_Path = "data/html/zodiac/Tutorial.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Capture_Path);
@@ -63,7 +63,7 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 				html.setFile(Capture_Path);
 				activeChar.sendPacket(html);
 			}
-			else if(PeloponnesianWar.PeloRunning)
+			else if (PeloponnesianWar.PeloRunning)
 			{
 				String Pelo_Path = "data/html/zodiac/TutorialPelo.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Pelo_Path);
@@ -71,7 +71,7 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 				html.setFile(Pelo_Path);
 				activeChar.sendPacket(html);
 			}
-			else if(ProtectTheLdr.ProtectisRunning)
+			else if (ProtectTheLdr.ProtectisRunning)
 			{
 				String Protect_Path = "data/html/zodiac/ProtectTuto.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Protect_Path);
@@ -79,7 +79,7 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 				html.setFile(Protect_Path);
 				activeChar.sendPacket(html);
 			}
-			else if(TreasureChest.TreasureRunning)
+			else if (TreasureChest.TreasureRunning)
 			{
 				String Capture_Path = "data/html/zodiac/Treasure.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Capture_Path);
@@ -96,7 +96,7 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{

@@ -18,12 +18,13 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 
-public class L2JHellasInfo 
+public class L2JHellasInfo
 {
 	/**
-	 *  l2jhellasInfo
+	 * l2jhellasInfo
 	 */
 	private static final Logger _log = Logger.getLogger(GameServer.class.getName());
+
 	public static final void showInfo()
 	{
 		_log.info("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -                              Interlude Project                                                                      Owner                                                                           Boorinio                                                ======================================================                          ====  ====  ============  ===  ============      =====                          ====  ====  ============  ===  ===========  ====  ====                          ====  ====  ============  ===  ===========  ====  ====                          ====  ====  ====   =====  ===  ====   =====  =========                          ====        ===  =  ====  ===  ===  =  ======  =======                          ====  ====  ===     ====  ===  ======  ========  =====                          ====  ====  ===  =======  ===  ====    ===  ====  ====                          ====  ====  ===  =  ====  ===  ===  =  ===  ====  ====                          ====  ====  ====   =====  ===  ====    ====      =====                          ======================================================                                        Contact: tzou_08@yahoo.gr                                                      Forum: http://l2jhellas.eu/                            - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -             Server Version: " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE);

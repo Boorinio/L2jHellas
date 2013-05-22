@@ -18,8 +18,6 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class Condition implements ConditionListener
 {
@@ -51,7 +49,7 @@ public abstract class Condition implements ConditionListener
 	public final boolean test(Env env)
 	{
 		boolean res = testImpl(env);
-		if (_listener != null && res != _result)
+		if ((_listener != null) && res != _result)
 		{
 			_result = res;
 			notifyChanged();

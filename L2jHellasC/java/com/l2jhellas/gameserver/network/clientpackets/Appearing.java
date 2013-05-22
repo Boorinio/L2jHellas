@@ -18,14 +18,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 /**
- * Appearing Packet Handler
- * <p>
- * <p>
+ * Appearing Packet Handler<BR>
  * 0000: 30
- * <p>
- * <p>
- *
- * @version $Revision: 1.3.4.4 $ $Date: 2005/03/29 23:15:33 $
  */
 public final class Appearing extends L2GameClientPacket
 {

@@ -16,15 +16,14 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * Format: (ch)ddd
- *
  */
 public class ExConfirmVariationItem extends L2GameServerPacket
 {
 	private static final String _S__FE_52_EXCONFIRMVARIATIONITEM = "[S] FE:52 ExConfirmVariationItem";
 
-	private int _itemObjId;
-	private int _unk1;
-	private int _unk2;
+	private final int _itemObjId;
+	private final int _unk1;
+	private final int _unk2;
 
 	public ExConfirmVariationItem(int itemObjId)
 	{
@@ -33,9 +32,6 @@ public class ExConfirmVariationItem extends L2GameServerPacket
 		_unk2 = 1;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -46,13 +42,9 @@ public class ExConfirmVariationItem extends L2GameServerPacket
 		writeD(_unk2);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_52_EXCONFIRMVARIATIONITEM;
 	}
-
 }

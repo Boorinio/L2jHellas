@@ -40,7 +40,7 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * This class manages the augmentation data and can also create new augmentations.
- *
+ * 
  * @author durgus
  */
 public class AugmentationData
@@ -338,7 +338,7 @@ public class AugmentationData
 
 	/**
 	 * Generate a new random augmentation
-	 *
+	 * 
 	 * @param item
 	 * @param lifeStoneLevel
 	 * @param lifeSoneGrade
@@ -447,7 +447,7 @@ public class AugmentationData
 
 	/**
 	 * Returns the stat and basestat boni for a given augmentation id
-	 *
+	 * 
 	 * @param augmentationId
 	 * @return
 	 */

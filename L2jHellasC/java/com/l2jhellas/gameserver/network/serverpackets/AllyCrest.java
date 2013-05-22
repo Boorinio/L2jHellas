@@ -14,35 +14,29 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-
 /**
- * <code>
- * sample
- * 0000: c7 6d 06 00 00 36 05 00 00 42 4d 36 05 00 00 00    .m...6...BM6....
- * 0010: 00 00 00 36 04 00 00 28 00 00 00 10 00 00 00 10    ...6...(........
- * 0020: 00 00 00 01 00 08 00 00 00 00 00 00 01 00 00 c4    ................
- * 0030: ...
- * 0530: 10 91 00 00 00 60 9b d1 01 e4 6e ee 52 97 dd       .....`....n.R..
- * </code>
- *
- *
- * format   dd x...x
- *
- * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
+ * @formatter:off
+ *                sample<BR>
+ *                0000: c7 6d 06 00 00 36 05 00 00 42 4d 36 05 00 00 00 .m...6...BM6....<BR>
+ *                0010: 00 00 00 36 04 00 00 28 00 00 00 10 00 00 00 10 ...6...(........<BR>
+ *                0020: 00 00 00 01 00 08 00 00 00 00 00 00 01 00 00 c4 ................<BR>
+ *                0030: ...<BR>
+ *                0530: 10 91 00 00 00 60 9b d1 01 e4 6e ee 52 97 dd .....`....n.R..<BR>
+ *                format dd x...x
+ * @formatter:on
  */
 public class AllyCrest extends L2GameServerPacket
 {
 	private static final String _S__C7_ALLYCREST = "[S] ae AllyCrest";
-    //private static Logger _log = Logger.getLogger(AllyCrest.class.getName());
-	private int _crestId;
-	private int _crestSize;
+	private final int _crestId;
+	private final int _crestSize;
 	private byte[] _data;
 
-	public AllyCrest(int crestId,byte[] data)
+	public AllyCrest(int crestId, byte[] data)
 	{
 		_crestId = crestId;
-        _data = data;
-        _crestSize = _data.length;
+		_data = data;
+		_crestSize = _data.length;
 	}
 
 	@Override
@@ -55,9 +49,6 @@ public class AllyCrest extends L2GameServerPacket
 		_data = null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

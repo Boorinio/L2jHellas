@@ -16,28 +16,17 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * This class makes runImpl() and writeImpl() abstract for custom classes outside of this package
- *
- * @version $Revision: $ $Date: $
- * @author  galun
+ * 
+ * @author galun
  */
 public abstract class AbstractServerBasePacket extends L2GameServerPacket
 {
-
-    /**
-     * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#runImpl()
-     */
-    @Override
+	@Override
 	abstract public void runImpl();
 
-    /**
-     * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-     */
-    @Override
+	@Override
 	abstract protected void writeImpl();
 
-    /**
-     * @see com.l2jhellas.gameserver.BasePacket#getType()
-     */
-    @Override
+	@Override
 	abstract public String getType();
 }

@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,22 +23,18 @@ import com.l2jhellas.gameserver.model.ItemContainer;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.entity.Castle;
 
-/**
- * Thorgrim - 2005
- * Class managing periodical events with castle
- */
 public class CastleUpdater implements Runnable
 {
 	protected static Logger _log = Logger.getLogger(CastleUpdater.class.getName());
 	private final L2Clan _clan;
 	private int _runCount = 0;
-	
+
 	public CastleUpdater(L2Clan clan, int runCount)
 	{
 		_clan = clan;
 		_runCount = runCount;
 	}
-	
+
 	@Override
 	public void run()
 	{
@@ -65,9 +61,9 @@ public class CastleUpdater implements Runnable
 		}
 		catch (Throwable e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not save data."+ e);
-								if (Config.DEVELOPER)
-								{
+			_log.log(Level.WARNING, getClass().getName() + ": could not save data." + e);
+			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
 			}
 		}

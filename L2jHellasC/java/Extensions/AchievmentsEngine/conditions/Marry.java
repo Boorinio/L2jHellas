@@ -31,10 +31,10 @@ public class Marry extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		if (player.isMarried())
 			return true;
-			
+
 		return false;
 	}
 }

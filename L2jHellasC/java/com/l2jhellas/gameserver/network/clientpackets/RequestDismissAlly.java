@@ -18,15 +18,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestDismissAlly extends L2GameClientPacket
 {
 	private static final String _C__86_REQUESTDISMISSALLY = "[C] 86 RequestDismissAlly";
-	//static Logger _log = Logger.getLogger(RequestDismissAlly.class.getName());
 
 	@Override
 	protected void readImpl()
@@ -40,7 +34,7 @@ public final class RequestDismissAlly extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		{
-		    return;
+			return;
 		}
 		if (!activeChar.isClanLeader())
 		{
@@ -50,9 +44,6 @@ public final class RequestDismissAlly extends L2GameClientPacket
 		activeChar.getClan().dissolveAlly(activeChar);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

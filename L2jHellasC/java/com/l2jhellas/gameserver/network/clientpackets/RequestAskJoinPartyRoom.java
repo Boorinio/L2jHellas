@@ -16,33 +16,30 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
  * Format: (ch) S
- * @author  -Wooden-
- *
+ * 
+ * @author -Wooden-
  */
 public class RequestAskJoinPartyRoom extends L2GameClientPacket
 {
-    private static final String _C__D0_14_REQUESTASKJOINPARTYROOM = "[C] D0:14 RequestAskJoinPartyRoom";
-    private String _player; // not tested, just guessed
+	private static final String _C__D0_14_REQUESTASKJOINPARTYROOM = "[C] D0:14 RequestAskJoinPartyRoom";
+	private String _player; // not tested, just guessed
 
-
-    @Override
+	@Override
 	protected void readImpl()
-    {
-        _player = readS();
-    }
+	{
+		_player = readS();
+	}
 
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        // TODO
-        System.out.println("C5:RequestAskJoinPartyRoom: S: "+_player);
-    }
+	{
+		// TODO
+		System.out.println("C5:RequestAskJoinPartyRoom: S: " + _player);
+	}
 
-
-    @Override
-    public String getType()
-    {
-        return _C__D0_14_REQUESTASKJOINPARTYROOM;
-    }
-
+	@Override
+	public String getType()
+	{
+		return _C__D0_14_REQUESTASKJOINPARTYROOM;
+	}
 }

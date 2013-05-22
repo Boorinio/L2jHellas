@@ -19,8 +19,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * The Monster Derby Track Zone
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2DerbyTrackZone extends L2PeaceZone
 {
@@ -50,9 +50,12 @@ public class L2DerbyTrackZone extends L2PeaceZone
 	}
 
 	@Override
-	public void onDieInside(L2Character character) {}
+	public void onDieInside(L2Character character)
+	{
+	}
 
 	@Override
-	public void onReviveInside(L2Character character) {}
-
+	public void onReviveInside(L2Character character)
+	{
+	}
 }

@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.skills.Stats;
 
 public class ManaHeal implements ISkillHandler
 {
-
 	private static final L2SkillType[] SKILL_IDS =
 	{
 	L2SkillType.MANAHEAL, L2SkillType.MANARECHARGE, L2SkillType.MANAHEAL_PERCENT

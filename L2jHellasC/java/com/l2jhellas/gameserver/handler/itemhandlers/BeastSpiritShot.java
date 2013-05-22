@@ -30,7 +30,7 @@ import com.l2jhellas.util.Broadcast;
 
 /**
  * Beast SpiritShot Handler
- *
+ * 
  * @author Tempy
  */
 public class BeastSpiritShot implements IItemHandler

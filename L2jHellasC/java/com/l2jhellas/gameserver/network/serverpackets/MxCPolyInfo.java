@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 
 /**
- * 
  * @author Velvet
  */
 public class MxCPolyInfo extends L2GameServerPacket
@@ -104,7 +103,7 @@ public class MxCPolyInfo extends L2GameServerPacket
 		writeC(_activeChar.isRunning() ? 1 : 0);
 		writeC(_activeChar.isInCombat() ? 1 : 0);
 		writeC(_activeChar.isAlikeDead() ? 1 : 0);
-		write('C',0,3);
+		write('C', 0, 3);
 		writeH(0);
 		writeC(0x00);
 		writeD(_activeChar.getAbnormalEffect());
@@ -119,7 +118,7 @@ public class MxCPolyInfo extends L2GameServerPacket
 		writeC(0);
 		writeC(_activeChar.getMxcPoly().getIsHero());
 		writeC(0);
-		write('D',0,3);
+		write('D', 0, 3);
 		writeD(_activeChar.getMxcPoly().getNameColor());
 		writeD(0x00);
 		writeD(_activeChar.getMxcPoly().getPledge());
@@ -136,16 +135,16 @@ public class MxCPolyInfo extends L2GameServerPacket
 			{
 				case 'C':
 					writeC(value);
-					break;
+				break;
 				case 'D':
 					writeD(value);
-					break;
+				break;
 				case 'F':
 					writeF(value);
-					break;
+				break;
 				case 'H':
 					writeH(value);
-					break;
+				break;
 			}
 		}
 	}

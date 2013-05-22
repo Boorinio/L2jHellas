@@ -29,7 +29,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
@@ -48,6 +47,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author sandman
@@ -75,61 +75,41 @@ public class FourSepulchersManager
 	protected ScheduledFuture<?> _changeAttackTimeTask = null;
 	protected ScheduledFuture<?> _onPartyAnnihilatedTask = null;
 
-	private final int[][] _startHallSpawn = {
-	{
-	181632, -85587, -7218
-	}, {
-	179963, -88978, -7218
-	}, {
-	173217, -86132, -7218
-	}, {
-	175608, -82296, -7218
-	}
+	private final int[][] _startHallSpawn =
+	{/** @formatter:off */
+		{181632, -85587, -7218},
+		{179963, -88978, -7218},
+		{173217, -86132, -7218},
+		{175608, -82296, -7218}
 	};
 
-	private final int[][][] _shadowSpawnLoc = {
+	private final int[][][] _shadowSpawnLoc =
 	{
-	{
-	25339, 191231, -85574, -7216, 33380
-	}, {
-	25349, 189534, -88969, -7216, 32768
-	}, {
-	25346, 173195, -76560, -7215, 49277
-	}, {
-	25342, 175591, -72744, -7215, 49317
-	}
-	}, {
-	{
-	25342, 191231, -85574, -7216, 33380
-	}, {
-	25339, 189534, -88969, -7216, 32768
-	}, {
-	25349, 173195, -76560, -7215, 49277
-	}, {
-	25346, 175591, -72744, -7215, 49317
-	}
-	}, {
-	{
-	25346, 191231, -85574, -7216, 33380
-	}, {
-	25342, 189534, -88969, -7216, 32768
-	}, {
-	25339, 173195, -76560, -7215, 49277
-	}, {
-	25349, 175591, -72744, -7215, 49317
-	}
-	}, {
-	{
-	25349, 191231, -85574, -7216, 33380
-	}, {
-	25346, 189534, -88969, -7216, 32768
-	}, {
-	25342, 173195, -76560, -7215, 49277
-	}, {
-	25339, 175591, -72744, -7215, 49317
-	}
-	},
-	};
+		{
+			{25339, 191231, -85574, -7216, 33380},
+			{25349, 189534, -88969, -7216, 32768},
+			{25346, 173195, -76560, -7215, 49277},
+			{25342, 175591, -72744, -7215, 49317}
+		},
+		{
+			{25342, 191231, -85574, -7216, 33380},
+			{25339, 189534, -88969, -7216, 32768},
+			{25349, 173195, -76560, -7215, 49277},
+			{25346, 175591, -72744, -7215, 49317}
+		},
+		{
+			{25346, 191231, -85574, -7216, 33380},
+			{25342, 189534, -88969, -7216, 32768},
+			{25339, 173195, -76560, -7215, 49277},
+			{25349, 175591, -72744, -7215, 49317}
+		},
+		{
+			{25349, 191231, -85574, -7216, 33380},
+			{25346, 189534, -88969, -7216, 32768},
+			{25342, 173195, -76560, -7215, 49277},
+			{25339, 175591, -72744, -7215, 49317}
+		},
+	};/** @formatter:on */
 
 	protected FastMap<Integer, Boolean> _archonSpawned = new FastMap<Integer, Boolean>();
 	protected FastMap<Integer, Boolean> _hallInUse = new FastMap<Integer, Boolean>();
@@ -440,13 +420,10 @@ public class FourSepulchersManager
 
 	private void loadMysteriousBox()
 	{
-		Connection con = null;
-
 		_mysteriousBoxSpawns.clear();
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT id, count, npc_templateid, locx, locy, locz, heading, respawn_delay, key_npc_id FROM four_sepulchers_spawnlist WHERE spawntype = ? ORDER BY id");
 			statement.setInt(1, 0);
 			ResultSet rset = statement.executeQuery();
@@ -487,16 +464,6 @@ public class FourSepulchersManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -544,12 +511,8 @@ public class FourSepulchersManager
 		_physicalMonsters.clear();
 
 		int loaded = 0;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement1 = con.prepareStatement("SELECT Distinct key_npc_id FROM four_sepulchers_spawnlist WHERE spawntype = ? ORDER BY key_npc_id");
 			statement1.setInt(1, 1);
 			ResultSet rset1 = statement1.executeQuery();
@@ -607,30 +570,15 @@ public class FourSepulchersManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void loadMagicalMonsters()
 	{
-
 		_magicalMonsters.clear();
 
 		int loaded = 0;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement1 = con.prepareStatement("SELECT Distinct key_npc_id FROM four_sepulchers_spawnlist WHERE spawntype = ? ORDER BY key_npc_id");
 			statement1.setInt(1, 2);
 			ResultSet rset1 = statement1.executeQuery();
@@ -688,16 +636,6 @@ public class FourSepulchersManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void loadDukeMonsters()
@@ -706,12 +644,8 @@ public class FourSepulchersManager
 		_archonSpawned.clear();
 
 		int loaded = 0;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement1 = con.prepareStatement("SELECT Distinct key_npc_id FROM four_sepulchers_spawnlist WHERE spawntype = ? ORDER BY key_npc_id");
 			statement1.setInt(1, 5);
 			ResultSet rset1 = statement1.executeQuery();
@@ -770,16 +704,6 @@ public class FourSepulchersManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void loadEmperorsGraveMonsters()
@@ -787,12 +711,8 @@ public class FourSepulchersManager
 		_emperorsGraveNpcs.clear();
 
 		int loaded = 0;
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement1 = con.prepareStatement("SELECT Distinct key_npc_id FROM four_sepulchers_spawnlist WHERE spawntype = ? ORDER BY key_npc_id");
 			statement1.setInt(1, 6);
 			ResultSet rset1 = statement1.executeQuery();
@@ -850,22 +770,13 @@ public class FourSepulchersManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	protected void initLocationShadowSpawns()
 	{
 		int locNo = Rnd.get(4);
-		final int[] gateKeeper = {
+		final int[] gateKeeper =
+		{
 		31929, 31934, 31939, 31944
 		};
 
@@ -1445,7 +1356,8 @@ public class FourSepulchersManager
 		int locNo = Rnd.get(4);
 		// _log.info("FourSepulchersManager.LocationShadowSpawns: Location index
 		// is " + locNo + ".");
-		final int[] gateKeeper = {
+		final int[] gateKeeper =
+		{
 		31929, 31934, 31939, 31944
 		};
 

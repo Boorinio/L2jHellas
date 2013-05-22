@@ -65,8 +65,8 @@ import Extensions.AchievmentsEngine.conditions.eventWins;
 import Extensions.AchievmentsEngine.conditions.events;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AchievementsManager
 {
@@ -177,15 +177,13 @@ public class AchievementsManager
 
 	/**
 	 * Alter table, catch exception if already exist.
-	 *
+	 * 
 	 * @param fieldID
 	 */
 	private static void alterTable(int fieldID)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			Statement statement = con.createStatement();
 			statement.executeUpdate("ALTER TABLE achievements ADD a" + fieldID + " INT DEFAULT 0");
 			statement.close();
@@ -193,16 +191,6 @@ public class AchievementsManager
 		catch (SQLException e)
 		{
 
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 
@@ -233,7 +221,8 @@ public class AchievementsManager
 		for (String binds : _binded)
 		{
 			String[] spl = binds.split("@");
-			if (spl[0].equals(String.valueOf(obj)) && spl[1].equals(String.valueOf(ach))) return true;
+			if (spl[0].equals(String.valueOf(obj)) && spl[1].equals(String.valueOf(ach)))
+				return true;
 		}
 		return false;
 	}
@@ -250,6 +239,7 @@ public class AchievementsManager
 
 	private static void addToConditionList(String nodeName, Object value, FastList<Condition> conditions)
 	{
+		/** @formatter:off */
 		if (nodeName.equals("minLevel")) conditions.add(new Level(value));
 		else if (nodeName.equals("minPvPCount")) conditions.add(new Pvp(value));
 		else if (nodeName.equals("minPkCount")) conditions.add(new Pk(value));
@@ -278,22 +268,22 @@ public class AchievementsManager
 		else if (nodeName.equals("eventKills")) conditions.add(new eventKills(value));
 		else if (nodeName.equals("events")) conditions.add(new events(value));
 		else if (nodeName.equals("eventWins")) conditions.add(new eventWins(value));
+		/** @formatter:on */
 	}
 
 	public void loadUsed()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
-			con = L2DatabaseFactory.getInstance().getConnection();
 			String sql = "SELECT ";
 			for (int i = 1; i <= getAchievementList().size(); i++)
 			{
-				if (i != getAchievementList().size()) sql = sql + "a" + i + ",";
-				else sql = sql + "a" + i;
-
+				if (i != getAchievementList().size())
+					sql = sql + "a" + i + ",";
+				else
+					sql = sql + "a" + i;
 			}
 
 			sql = sql + " FROM achievements";
@@ -320,16 +310,6 @@ public class AchievementsManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

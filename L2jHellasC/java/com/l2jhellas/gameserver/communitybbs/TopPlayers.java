@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,7 +26,7 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class TopPlayers
 {
@@ -41,34 +43,31 @@ public class TopPlayers
 
 	private void loadDB(String file)
 	{
-		Connection con = null;
-
 		switch (file)
 		{
 			case "toppvp":
 				sort = "pvpkills";
-				break;
+			break;
 			case "toppk":
 				sort = "pkkills";
-				break;
+			break;
 			case "topadena":
 				sort = "SUM(it.count)";
-				break;
+			break;
 			case "toprbrank":
 				sort = "SUM(chr.points)";
-				break;
+			break;
 			case "toponline":
 				sort = "onlinetime";
-				break;
+			break;
 			default:
 			break;
 
 		}
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			pos = 0;
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY " + sort + " DESC LIMIT " + ExternalConfig.TOP_PLAYER_RESULTS);
 
 			ResultSet result = statement.executeQuery();
@@ -97,17 +96,6 @@ public class TopPlayers
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-
 			}
 		}
 	}

@@ -22,7 +22,7 @@ import com.l2jhellas.gameserver.network.clientpackets.L2GameClientPacket;
 /**
  * This interface can be implemented by custom extensions to l2j to get packets
  * before the normal processing of PacketHandler
- *
+ * 
  * @author galun
  */
 public interface CustomPacketHandlerInterface
@@ -31,7 +31,7 @@ public interface CustomPacketHandlerInterface
 	/**
 	 * interface for a custom packet handler to check received packets
 	 * PacketHandler will take care of the packet if this function returns null.
-	 *
+	 * 
 	 * @param data
 	 *        the packet
 	 * @param client

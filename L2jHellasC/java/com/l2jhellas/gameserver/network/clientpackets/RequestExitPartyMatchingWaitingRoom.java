@@ -17,36 +17,29 @@ package com.l2jhellas.gameserver.network.clientpackets;
 /**
  * Format: (ch)
  * this is just a trigger : no data
- * @author  -Wooden-
- *
+ * 
+ * @author -Wooden-
  */
 public final class RequestExitPartyMatchingWaitingRoom extends L2GameClientPacket
 {
-    private static final String _C__D0_17_REQUESTEXITPARTYMATCHINGWAITINGROOM = "[C] D0:17 RequestExitPartyMatchingWaitingRoom";
+	private static final String _C__D0_17_REQUESTEXITPARTYMATCHINGWAITINGROOM = "[C] D0:17 RequestExitPartyMatchingWaitingRoom";
 
-    @Override
+	@Override
 	protected void readImpl()
-    {
-    	//trigger
-    }
+	{
+		// trigger
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        // TODO
-        System.out.println("C5: RequestExitPartyMatchingWaitingRoom");
-    }
+	{
+		// TODO
+		System.out.println("C5: RequestExitPartyMatchingWaitingRoom");
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.BasePacket#getType()
-     */
-    @Override
-    public String getType()
-    {
-        return _C__D0_17_REQUESTEXITPARTYMATCHINGWAITINGROOM;
-    }
-
+	@Override
+	public String getType()
+	{
+		return _C__D0_17_REQUESTEXITPARTYMATCHINGWAITINGROOM;
+	}
 }

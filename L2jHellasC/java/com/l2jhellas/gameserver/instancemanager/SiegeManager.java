@@ -30,7 +30,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -41,6 +40,7 @@ import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class SiegeManager
 {
@@ -87,7 +87,7 @@ public class SiegeManager
 	/**
 	 * Return true if character summon<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param activeChar
 	 *        The L2Character of the character can summon
 	 */
@@ -119,7 +119,7 @@ public class SiegeManager
 	/**
 	 * Return true if the clan is registered or owner of a castle<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param clan
 	 *        The L2Clan of the player
 	 */
@@ -131,11 +131,9 @@ public class SiegeManager
 		if (clan.getHasCastle() > 0)
 			return true;
 
-		Connection con = null;
 		boolean register = false;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT clan_id FROM siege_clans WHERE clan_id=? AND castle_id=?");
 			statement.setInt(1, clan.getClanId());
 			statement.setInt(2, castleid);
@@ -156,16 +154,6 @@ public class SiegeManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 		return register;

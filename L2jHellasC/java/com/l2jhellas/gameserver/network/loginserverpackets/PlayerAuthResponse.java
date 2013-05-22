@@ -16,13 +16,11 @@ package com.l2jhellas.gameserver.network.loginserverpackets;
 
 /**
  * @author -Wooden-
- *
  */
 public class PlayerAuthResponse extends LoginServerBasePacket
 {
-
-	private String _account;
-	private boolean _authed;
+	private final String _account;
+	private final boolean _authed;
 
 	/**
 	 * @param decrypt
@@ -50,5 +48,4 @@ public class PlayerAuthResponse extends LoginServerBasePacket
 	{
 		return _authed;
 	}
-
 }

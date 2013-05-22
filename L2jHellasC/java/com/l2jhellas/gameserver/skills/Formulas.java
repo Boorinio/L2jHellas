@@ -57,22 +57,28 @@ public final class Formulas
 
 	public static final int MAX_STAT_VALUE = 100;
 
-	private static final double[] STRCompute = new double[] {
+	private static final double[] STRCompute = new double[]
+	{
 	1.036, 34.845
 	}; // {1.016, 28.515}; for C1
-	private static final double[] INTCompute = new double[] {
+	private static final double[] INTCompute = new double[]
+	{
 	1.020, 31.375
 	}; // {1.020, 31.375}; for C1
-	private static final double[] DEXCompute = new double[] {
+	private static final double[] DEXCompute = new double[]
+	{
 	1.009, 19.360
 	}; // {1.009, 19.360}; for C1
-	private static final double[] WITCompute = new double[] {
+	private static final double[] WITCompute = new double[]
+	{
 	1.050, 20.000
 	}; // {1.050, 20.000}; for C1
-	private static final double[] CONCompute = new double[] {
+	private static final double[] CONCompute = new double[]
+	{
 	1.030, 27.632
 	}; // {1.015, 12.488}; for C1
-	private static final double[] MENCompute = new double[] {
+	private static final double[] MENCompute = new double[]
+	{
 	1.010, -0.060
 	}; // {1.010, -0.060}; for C1
 
@@ -857,7 +863,7 @@ public final class Formulas
 	 * <BR>
 	 * FuncAtkAccuracy -> Math.sqrt(_player.getDEX())*6+_player.getLevel()<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param cha
 	 *        L2PcInstance or L2Summon that must obtain basic Func objects
 	 */
@@ -1057,7 +1063,7 @@ public final class Formulas
 
 			// Calculate Movement bonus
 			if (player.isSitting())
-				cpRegenMultiplier *= 1.5;      // Sitting
+				cpRegenMultiplier *= 1.5; // Sitting
 			else if (!player.isMoving())
 				cpRegenMultiplier *= 1.1; // Staying
 			else if (player.isRunning())
@@ -1120,7 +1126,7 @@ public final class Formulas
 		if (siegeClan == null || siegeClan.getFlag().size() == 0 || !Util.checkIfInRange(200, activeChar, siegeClan.getFlag().get(0), true))
 			return 0;
 
-		return 1.5; // If all is true, then modifer will be 50% more
+		return 1.5; // If all is true, then modifier will be 50% more
 	}
 
 	/** Calculate blow damage based on cAtk */
@@ -1178,8 +1184,8 @@ public final class Formulas
 
 	/**
 	 * Calculated damage caused by ATTACK of attacker on target,
-	 * called separatly for each weapon, if dual-weapon is used.
-	 *
+	 * called separately for each weapon, if dual-weapon is used.
+	 * 
 	 * @param attacker
 	 *        player or NPC that makes ATTACK
 	 * @param target
@@ -1238,7 +1244,7 @@ public final class Formulas
 					damage += skillpower;
 			}
 		}
-		// defence modifier depending of the attacker weapon
+		// Defense modifier depending of the attacker weapon
 		L2Weapon weapon = attacker.getActiveWeaponItem();
 		Stats stat = null;
 		if (weapon != null)
@@ -1353,7 +1359,7 @@ public final class Formulas
 			damage = 0;
 		}
 
-		// Dmg bonusses in PvP fight
+		// Dmg bonuses in PvP fight
 		if ((attacker instanceof L2PcInstance || attacker instanceof L2Summon) && (target instanceof L2PcInstance || target instanceof L2Summon))
 		{
 			if (skill == null)
@@ -1433,7 +1439,7 @@ public final class Formulas
 		else if (mcrit)
 			damage *= 4;
 
-		// Pvp bonusses for dmg
+		// Pvp bonuses for dmg
 		if ((attacker instanceof L2PcInstance || attacker instanceof L2Summon) && (target instanceof L2PcInstance || target instanceof L2Summon))
 		{
 			if (skill.isMagic())
@@ -1556,7 +1562,7 @@ public final class Formulas
 	 * 0 = shield defense doesn't succeed<br>
 	 * 1 = shield defense succeed<br>
 	 * 2 = perfect block<br>
-	 *
+	 * 
 	 * @param attacker
 	 * @param target
 	 * @param sendSysMsg
@@ -1602,7 +1608,7 @@ public final class Formulas
 		return shldSuccess;
 	}
 
-	/** Returns true if shield defence successfull */
+	/** Returns true if shield defense successful */
 	public static byte calcShldUse(L2Character attacker, L2Character target)
 	{
 		return calcShldUse(attacker, target, true);
@@ -1866,19 +1872,7 @@ public final class Formulas
 		}
 
 		if (Config.DEVELOPER)
-			System.out.println(skill.getName()
-				+ ": "
-				+ value
-				+ ", "
-				+ statmodifier
-				+ ", "
-				+ lvlmodifier
-				+ ", "
-				+ resmodifier
-				+ ", "
-				+ ((int) (Math.pow((double) attacker.getMAtk(target, skill)
-					/ target.getMDef(attacker, skill), 0.2) * 100) - 100) + ", " + ssmodifier + " ==> "
-				+ rate);
+			System.out.println(skill.getName() + ": " + value + ", " + statmodifier + ", " + lvlmodifier + ", " + resmodifier + ", " + ((int) (Math.pow((double) attacker.getMAtk(target, skill) / target.getMDef(attacker, skill), 0.2) * 100) - 100) + ", " + ssmodifier + " ==> " + rate);
 		return (Rnd.get(100) < rate);
 	}
 

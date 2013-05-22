@@ -40,14 +40,14 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 public class AdminCursedWeapons implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_cw_info",
-	"admin_cw_remove",
-	"admin_cw_goto",
-	"admin_cw_reload",
-	"admin_cw_add",
-	"admin_cw_info_menu"
-	};
+	{/** @formatter:off */
+		"admin_cw_info",
+		"admin_cw_remove",
+		"admin_cw_goto",
+		"admin_cw_reload",
+		"admin_cw_add",
+		"admin_cw_info_menu"
+	};/** @formatter:on */
 	private int itemId;
 
 	@Override

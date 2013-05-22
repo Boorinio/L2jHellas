@@ -20,9 +20,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class ClanWarehouse extends Warehouse
 {
-	//private static final Logger _log = Logger.getLogger(PcWarehouse.class.getName());
-
-	private L2Clan _clan;
+	private final L2Clan _clan;
 
 	public ClanWarehouse(L2Clan clan)
 	{
@@ -30,14 +28,37 @@ public final class ClanWarehouse extends Warehouse
 	}
 
 	@Override
-	public int getOwnerId() { return _clan.getClanId(); }
+	public int getOwnerId()
+	{
+		return _clan.getClanId();
+	}
+
 	@Override
-	public L2PcInstance getOwner() { return _clan.getLeader().getPlayerInstance(); }
+	public L2PcInstance getOwner()
+	{
+		return _clan.getLeader().getPlayerInstance();
+	}
+
 	@Override
-	public ItemLocation getBaseLocation() { return ItemLocation.CLANWH; }
-	public String getLocationId() { return "0"; }
-    public int getLocationId(boolean dummy) { return 0; }
-    public void setLocationId(L2PcInstance dummy) { }
+	public ItemLocation getBaseLocation()
+	{
+		return ItemLocation.CLANWH;
+	}
+
+	public String getLocationId()
+	{
+		return "0";
+	}
+
+	public int getLocationId(boolean dummy)
+	{
+		return 0;
+	}
+
+	public void setLocationId(L2PcInstance dummy)
+	{
+	}
+
 	@Override
 	public boolean validateCapacity(int slots)
 	{

@@ -20,55 +20,47 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * Format: (ch) Sd
- * @author  -Wooden-
- *
+ * 
+ * @author -Wooden-
  */
 public final class RequestPledgeSetMemberPowerGrade extends L2GameClientPacket
 {
-    private static final String _C__D0_1C_REQUESTPLEDGESETMEMBERPOWERGRADE = "[C] D0:1C RequestPledgeSetMemberPowerGrade";
-    private int _powerGrade;
-    private String _member;
+	private static final String _C__D0_1C_REQUESTPLEDGESETMEMBERPOWERGRADE = "[C] D0:1C RequestPledgeSetMemberPowerGrade";
+	private int _powerGrade;
+	private String _member;
 
-
-    @Override
+	@Override
 	protected void readImpl()
-    {
-        _member = readS();
-        _powerGrade = readD();
-    }
+	{
+		_member = readS();
+		_powerGrade = readD();
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-     */
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        L2PcInstance activeChar = getClient().getActiveChar();
-        if(activeChar == null)
-        	return;
-        L2Clan clan = activeChar.getClan();
-        if(clan == null)
-        	return;
-        L2ClanMember member = clan.getClanMember(_member);
-        if(member == null)
-        	return;
-        if(member.getPledgeType() == L2Clan.SUBUNIT_ACADEMY)
-        {
-        	// also checked from client side
-        	activeChar.sendMessage("You cannot change academy member grade");
-        	return;
-        }
-        member.setPowerGrade(_powerGrade);
-        clan.broadcastClanStatus();
-    }
+	{
+		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+			return;
+		L2Clan clan = activeChar.getClan();
+		if (clan == null)
+			return;
+		L2ClanMember member = clan.getClanMember(_member);
+		if (member == null)
+			return;
+		if (member.getPledgeType() == L2Clan.SUBUNIT_ACADEMY)
+		{
+			// also checked from client side
+			activeChar.sendMessage("You cannot change academy member grade");
+			return;
+		}
+		member.setPowerGrade(_powerGrade);
+		clan.broadcastClanStatus();
+	}
 
-    /**
-     * @see com.l2jhellas.gameserver.BasePacket#getType()
-     */
-    @Override
-    public String getType()
-    {
-        return _C__D0_1C_REQUESTPLEDGESETMEMBERPOWERGRADE;
-    }
-
+	@Override
+	public String getType()
+	{
+		return _C__D0_1C_REQUESTPLEDGESETMEMBERPOWERGRADE;
+	}
 }

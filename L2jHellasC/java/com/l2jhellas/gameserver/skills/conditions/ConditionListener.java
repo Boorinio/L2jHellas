@@ -16,8 +16,6 @@ package com.l2jhellas.gameserver.skills.conditions;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public interface ConditionListener
 {

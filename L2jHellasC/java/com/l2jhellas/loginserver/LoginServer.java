@@ -31,10 +31,10 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.Server;
 import com.l2jhellas.status.Status;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 import com.l2jserver.mmocore.network.SelectorConfig;
 import com.l2jserver.mmocore.network.SelectorThread;
 
@@ -97,13 +97,10 @@ public class LoginServer
 			try
 			{
 				if (is != null)
-				{
 					is.close();
-				}
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
 			}
 		}
 
@@ -298,7 +295,6 @@ public class LoginServer
 			String[] parts;
 			try
 			{
-
 				while ((line = reader.readLine()) != null)
 				{
 					line = line.trim();
@@ -310,11 +306,8 @@ public class LoginServer
 
 						// discard comments in the line, if any
 						line = parts[0];
-
 						parts = line.split(" ");
-
 						String address = parts[0];
-
 						long duration = 0;
 
 						if (parts.length > 1)

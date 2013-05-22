@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -40,14 +39,15 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class PcStat extends PlayableStat
 {
-	private static Logger _log = Logger.getLogger(L2PcInstance.class.getName());
+	private static Logger _log = Logger.getLogger(PcStat.class.getName());
 
-	private int _oldMaxHp;      // stats watch
-	private int _oldMaxMp;      // stats watch
-	private int _oldMaxCp;      // stats watch
+	private int _oldMaxHp; // stats watch
+	private int _oldMaxMp; // stats watch
+	private int _oldMaxCp; // stats watch
 
 	public PcStat(L2PcInstance activeChar)
 	{
@@ -94,7 +94,7 @@ public class PcStat extends PlayableStat
 	 * level, manage the increase level task (Max MP, Max MP, Recommendation, Expertise and beginner skills...)</li> <li>If the L2PcInstance increases it's level, send a
 	 * Server->Client packet UserInfo to the L2PcInstance</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param addToExp
 	 *        The Experience value to add
 	 * @param addToSp
@@ -188,20 +188,18 @@ public class PcStat extends PlayableStat
 			{
 				if (getActiveChar().getLevel() >= Experience.MIN_NEWBIE_LEVEL && getActiveChar().getLevel() < Experience.MAX_NEWBIE_LEVEL && !getActiveChar().isNewbie())
 				{
-					Connection con = null;
-					try
+					try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 					{
-						con = L2DatabaseFactory.getInstance().getConnection();
 						PreparedStatement statement;
 
-						statement = con.prepareStatement("SELECT value FROM account_data WHERE (account_name=?) AND (var='newbie_char')");
+						statement = con.prepareStatement("SELECT value FROM account_data WHERE account_name=? AND var=newbie_char");
 						statement.setString(1, getActiveChar().getAccountName());
 						ResultSet rset = statement.executeQuery();
 
 						if (!rset.next())
 						{
 							PreparedStatement statement1;
-							statement1 = con.prepareStatement("INSERT INTO account_data (account_name, var, value) VALUES (?, 'newbie_char', ?)");
+							statement1 = con.prepareStatement("INSERT INTO account_data (account_name, var, value) VALUES (?, newbie_char, ?)");
 							statement1.setString(1, getActiveChar().getAccountName());
 							statement1.setInt(2, getActiveChar().getObjectId());
 							statement1.executeUpdate();
@@ -220,16 +218,6 @@ public class PcStat extends PlayableStat
 						if (Config.DEVELOPER)
 						{
 							e.printStackTrace();
-						}
-					}
-					finally
-					{
-						try
-						{
-							con.close();
-						}
-						catch (Exception e)
-						{
 						}
 					}
 				};
@@ -367,9 +355,7 @@ public class PcStat extends PlayableStat
 		{
 			_oldMaxCp = val;
 			if (getActiveChar().getStatus().getCurrentCp() != val)
-			{
 				getActiveChar().getStatus().setCurrentCp(getActiveChar().getStatus().getCurrentCp());
-			}
 		}
 		return val;
 	}
@@ -383,11 +369,10 @@ public class PcStat extends PlayableStat
 		{
 			_oldMaxHp = val;
 
-			// Launch a regen task if the new Max HP is higher than the old one
+			// Launch a regeneration task if the new Max HP is higher than the old one
 			if (getActiveChar().getStatus().getCurrentHp() != val)
 				getActiveChar().getStatus().setCurrentHp(getActiveChar().getStatus().getCurrentHp()); // trigger start of regeneration
 		}
-
 		return val;
 	}
 
@@ -401,11 +386,11 @@ public class PcStat extends PlayableStat
 		{
 			_oldMaxMp = val;
 
-			// Launch a regen task if the new Max MP is higher than the old one
+			// Launch a regeneration task if the new Max MP is higher than the old one
 			if (getActiveChar().getStatus().getCurrentMp() != val)
-				getActiveChar().getStatus().setCurrentMp(getActiveChar().getStatus().getCurrentMp()); // trigger start of regeneration
+				getActiveChar().getStatus().setCurrentMp(getActiveChar().getStatus().getCurrentMp());
+			// trigger start of regeneration
 		}
-
 		return val;
 	}
 

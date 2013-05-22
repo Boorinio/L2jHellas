@@ -23,12 +23,12 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.PlayerToAssasinate;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Hitman
 {
@@ -39,10 +39,10 @@ public class Hitman
 	// Data Strings
 	private static String SQL_SELECT = "SELECT targetId, clientId, target_name, bounty, pending_delete FROM hitman_list";
 	private static String SQL_DELETE = "DELETE FROM hitman_list WHERE targetId=?";
-	private static String SQL_SAVEING = "REPLACE INTO `hitman_list` VALUES (?, ?, ?, ?, ?)";
+	private static String SQL_SAVEING = "REPLACE INTO hitman_list VALUES (?, ?, ?, ?, ?)";
 	private static String[] SQL_OFFLINE =
 	{
-	"SELECT * FROM characters WHERE char_name=?", "SELECT * from characters WHERE obj_Id=?"
+	"SELECT * FROM characters WHERE char_name=?", "SELECT * FROM characters WHERE obj_Id=?"
 	};
 
 	// Clean every 15 mins ^^
@@ -52,7 +52,9 @@ public class Hitman
 	public static boolean start()
 	{
 		if (Config.ENABLE_HITMAN_EVENT)
+		{
 			getInstance();
+		}
 
 		return _instance != null;
 	}
@@ -60,7 +62,9 @@ public class Hitman
 	public static Hitman getInstance()
 	{
 		if (_instance == null)
+		{
 			_instance = new Hitman();
+		}
 
 		return _instance;
 	}
@@ -75,9 +79,8 @@ public class Hitman
 	{
 		FastMap<Integer, PlayerToAssasinate> map = new FastMap<Integer, PlayerToAssasinate>();
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement(SQL_SELECT);
 			ResultSet rs = st.executeQuery();
 
@@ -90,9 +93,13 @@ public class Hitman
 				boolean pending = rs.getInt("pending_delete") == 1;
 
 				if (pending)
+				{
 					removeTarget(targetId, false);
+				}
 				else
+				{
 					map.put(targetId, new PlayerToAssasinate(targetId, clientId, bounty, target_name));
+				}
 			}
 			_log.info("Hitman: Loaded " + map.size() + " Assassination Target(s)");
 			rs.close();
@@ -146,17 +153,18 @@ public class Hitman
 				activeChar.setHitmanTarget(0);
 			}
 			else
+			{
 				activeChar.sendMessage("Your target is still at large.");
+			}
 		}
 	}
 
 	public void save()
 	{
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			for (PlayerToAssasinate pta : _targets.values())
 			{
-				Connection con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement st = con.prepareStatement(SQL_SAVEING);
 				st.setInt(1, pta.getObjectId());
 				st.setInt(2, pta.getClientId());
@@ -215,7 +223,9 @@ public class Hitman
 			client.setHitmanTarget(player.getObjectId());
 		}
 		else
+		{
 			client.sendMessage("Player name invalid. The user does not exist.");
+		}
 	}
 
 	public class AISystem implements Runnable
@@ -223,13 +233,14 @@ public class Hitman
 		@Override
 		public void run()
 		{
-			if (Config.DEBUG)
-				_log.info("Cleaning sequance initiated.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Cleaning sequance initiated.");
 
 			for (PlayerToAssasinate target : _targets.values())
 			{
 				if (target.isPendingDelete())
+				{
 					removeTarget(target.getObjectId(), true);
+				}
 			}
 			save();
 		}
@@ -237,9 +248,8 @@ public class Hitman
 
 	public void removeTarget(int obId, boolean live)
 	{
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement(SQL_DELETE);
 			st.setInt(1, obId);
 			st.execute();
@@ -247,7 +257,9 @@ public class Hitman
 			con.close();
 
 			if (live)
+			{
 				_targets.remove(obId);
+			}
 		}
 		catch (Exception e)
 		{
@@ -269,7 +281,9 @@ public class Hitman
 			PlayerToAssasinate pta = _targets.get(client.getHitmanTarget());
 
 			if (!_targets.containsKey(pta.getObjectId()))
+			{
 				client.sendMessage("There is no hit on that player.");
+			}
 			else if (pta.getClientId() == client.getObjectId())
 			{
 				removeTarget(pta.getObjectId(), true);
@@ -277,14 +291,18 @@ public class Hitman
 				client.setHitmanTarget(0);
 			}
 			else
+			{
 				client.sendMessage("You are not the actual owner of that target!.");
+			}
 		}
 		else if (target != null && CharNameTable.getInstance().doesCharNameExist(name))
 		{
 			PlayerToAssasinate pta = _targets.get(target.getObjectId());
 
 			if (!_targets.containsKey(pta.getObjectId()))
+			{
 				client.sendMessage("There is no hit on that player.");
+			}
 			else if (pta.getClientId() == client.getObjectId())
 			{
 				removeTarget(pta.getObjectId(), true);
@@ -293,29 +311,36 @@ public class Hitman
 				client.setHitmanTarget(0);
 			}
 			else
+			{
 				client.sendMessage("You are not the actual owner of that target!.");
+			}
 		}
 		else
+		{
 			client.sendMessage("Player name invalid. The user does not exist.");
+		}
 	}
 
 	/**
-	 * Its useing a array in case in a future update more values will be added
+	 * Its using a array in case in a future update more values will be added
 	 *
 	 * @param name
 	 */
 	public String[] getOfflineData(String name, int objId)
 	{
 		String[] set = new String[2];
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			Connection con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement(objId > 0 ? SQL_OFFLINE[1] : SQL_OFFLINE[0]);
 
 			if (objId > 0)
+			{
 				st.setInt(1, objId);
+			}
 			else
+			{
 				st.setString(1, name);
+			}
 
 			ResultSet rs = st.executeQuery();
 

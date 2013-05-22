@@ -27,7 +27,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -35,6 +34,7 @@ import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class SkillTreeTable
 {
@@ -58,7 +58,7 @@ public class SkillTreeTable
 	/**
 	 * Return the minimum level needed to have this Expertise.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param grade
 	 *        The grade level searched
 	 */
@@ -83,7 +83,7 @@ public class SkillTreeTable
 	/**
 	 * Each class receives new skill on certain levels, this methods allow the retrieval of the minimun character level
 	 * of given class required to learn a given skill
-	 *
+	 * 
 	 * @param skillId
 	 *        The iD of the skill
 	 * @param classID
@@ -126,12 +126,8 @@ public class SkillTreeTable
 	{
 		int classId = 0;
 		int count = 0;
-
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM class_list ORDER BY id");
 			ResultSet classlist = statement.executeQuery();
 
@@ -197,7 +193,7 @@ public class SkillTreeTable
 		int count2 = 0;
 		int count3 = 0;
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			_fishingSkillTrees = new FastList<L2SkillLearn>();
 			_expandDwarfCraftSkillTrees = new FastList<L2SkillLearn>();
@@ -245,7 +241,7 @@ public class SkillTreeTable
 		}
 
 		int count4 = 0;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			_enchantSkillTrees = new FastList<L2EnchantSkillLearn>();
 
@@ -290,7 +286,7 @@ public class SkillTreeTable
 		}
 
 		int count5 = 0;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			_pledgeSkillTrees = new FastList<L2PledgeSkillLearn>();
 
@@ -327,16 +323,6 @@ public class SkillTreeTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + count2 + " general, " + count3 + " dwarven, " + count4 + " enchant, " + count5 + " pledge skills.");
@@ -539,7 +525,7 @@ public class SkillTreeTable
 
 	/**
 	 * Returns all allowed skills for a given class.
-	 *
+	 * 
 	 * @param classId
 	 * @return all allowed skills for a given class.
 	 */

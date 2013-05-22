@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
@@ -55,12 +54,8 @@ import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.15.2.10.2.16 $ $Date: 2005/04/06 16:13:40 $
- */
 public class L2PetInstance extends L2Summon
 {
 	protected static final Logger _logPet = Logger.getLogger(L2PetInstance.class.getName());
@@ -343,7 +338,7 @@ public class L2PetInstance extends L2Summon
 
 	/**
 	 * Destroys item from inventory and send a Server->Client InventoryUpdate packet to the L2PcInstance.
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param objectId
@@ -354,7 +349,7 @@ public class L2PetInstance extends L2Summon
 	 *        : L2Object Object referencing current action like NPC selling item or previous item in transformation
 	 * @param sendMessage
 	 *        : boolean Specifies whether to send message to Client about this action
-	 * @return boolean informing if the action was successfull
+	 * @return boolean informing if the action was successful
 	 */
 	@Override
 	public boolean destroyItem(String process, int objectId, int count, L2Object reference, boolean sendMessage)
@@ -386,7 +381,7 @@ public class L2PetInstance extends L2Summon
 
 	/**
 	 * Destroy item from inventory by using its <B>itemId</B> and send a Server->Client InventoryUpdate packet to the L2PcInstance.
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param itemId
@@ -397,7 +392,7 @@ public class L2PetInstance extends L2Summon
 	 *        : L2Object Object referencing current action like NPC selling item or previous item in transformation
 	 * @param sendMessage
 	 *        : boolean Specifies whether to send message to Client about this action
-	 * @return boolean informing if the action was successfull
+	 * @return boolean informing if the action was successful
 	 */
 	@Override
 	public boolean destroyItemByItemId(String process, int itemId, int count, L2Object reference, boolean sendMessage)
@@ -472,7 +467,7 @@ public class L2PetInstance extends L2Summon
 
 		if (!(object instanceof L2ItemInstance))
 		{
-			// dont try to pickup anything that is not an item :)
+			// Don't try to pickup anything that is not an item :)
 			_logPet.log(Level.WARNING, getClass().getName() + ": trying to pickup wrong target." + object);
 			getOwner().sendPacket(new ActionFailed());
 			return;
@@ -595,7 +590,7 @@ public class L2PetInstance extends L2Summon
 
 	/**
 	 * Transfers item to another inventory
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param itemId
@@ -707,9 +702,9 @@ public class L2PetInstance extends L2Summon
 
 	/**
 	 * Remove the Pet from DB and its associated item from the player inventory
-	 *
+	 * 
 	 * @param owner
-	 *        The owner from whose invenory we should delete the item
+	 *        The owner from whose inventory we should delete the item
 	 */
 	public void destroyControlItem(L2PcInstance owner)
 	{
@@ -745,10 +740,8 @@ public class L2PetInstance extends L2Summon
 		}
 
 		// pet control item no longer exists, delete the pet from the db
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id=?");
 			statement.setInt(1, getControlItemId());
 			statement.execute();
@@ -760,16 +753,6 @@ public class L2PetInstance extends L2Summon
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -837,8 +820,7 @@ public class L2PetInstance extends L2Summon
 
 	private static L2PetInstance restore(L2ItemInstance control, L2NpcTemplate template, L2PcInstance owner)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			L2PetInstance pet;
 			if (template.type.compareToIgnoreCase("L2BabyPet") == 0)
@@ -846,7 +828,6 @@ public class L2PetInstance extends L2Summon
 			else
 				pet = new L2PetInstance(IdFactory.getInstance().getNextId(), template, owner, control);
 
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT item_obj_id, name, level, curHp, curMp, exp, sp, karma, pkkills, fed FROM pets WHERE item_obj_id=?");
 			statement.setInt(1, control.getObjectId());
 			ResultSet rset = statement.executeQuery();
@@ -885,16 +866,6 @@ public class L2PetInstance extends L2Summon
 			}
 			return null;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	@Override
@@ -908,13 +879,11 @@ public class L2PetInstance extends L2Summon
 
 		String req;
 		if (!isRespawned())
-			req = "INSERT INTO pets (name,level,curHp,curMp,exp,sp,karma,pkkills,fed,item_obj_id) " + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+			req = "INSERT INTO pets (name,level,curHp,curMp,exp,sp,karma,pkkills,fed,item_obj_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
 		else
-			req = "UPDATE pets SET name=?,level=?,curHp=?,curMp=?,exp=?,sp=?,karma=?,pkkills=?,fed=? " + "WHERE item_obj_id = ?";
-		Connection con = null;
-		try
+			req = "UPDATE pets SET name=?,level=?,curHp=?,curMp=?,exp=?,sp=?,karma=?,pkkills=?,fed=? WHERE item_obj_id=?";
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(req);
 			statement.setString(1, getName());
 			statement.setInt(2, getStat().getLevel());
@@ -936,16 +905,6 @@ public class L2PetInstance extends L2Summon
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -1023,7 +982,6 @@ public class L2PetInstance extends L2Summon
 	private void deathPenalty()
 	{
 		// TODO Need Correct Penalty
-
 		int lvl = getStat().getLevel();
 		double percentLost = -0.07 * lvl + 6.5;
 
@@ -1132,7 +1090,7 @@ public class L2PetInstance extends L2Summon
 	@Override
 	public final int getSkillLevel(int skillId)
 	{
-		if (_skills == null || _skills.get(skillId) == null)
+		if ((_skills == null) || (_skills.get(skillId) == null))
 			return -1;
 		int lvl = getLevel();
 		return lvl > 70 ? 7 + (lvl - 70) / 5 : lvl / 10;

@@ -91,7 +91,7 @@ public class AttackStanceTaskManager
 			}
 			catch (Throwable e)
 			{
-				// TODO: Find out the reason for exception. Unless caught here, players remain in attack positions.
+				// TODO
 				_log.warning(e.toString());
 			}
 		}

@@ -30,7 +30,7 @@ import com.l2jhellas.gameserver.skills.l2skills.L2SkillSummon;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 public enum L2SkillType
-{
+{/** @formatter:off */
 	// Damage
 	PDAM,
 	MDAM,
@@ -74,7 +74,7 @@ public enum L2SkillType
 	MANARECHARGE,
 	MPHOT,
 	GIVE_SP,
-	
+
 	// Aggro
 	AGGDAMAGE,
 	AGGREDUCE,
@@ -149,36 +149,36 @@ public enum L2SkillType
 	FORCE_BUFF,
 	FUSION,
 	CLAN_GATE,
-	
+
 	//Done in core
 	COREDONE,
 
     // unimplemented
     NOTDONE;
+	/** @formatter:on */
+	private final Class<? extends L2Skill> _class;
 
-    private final Class<? extends L2Skill> _class;
+	public L2Skill makeSkill(StatsSet set)
+	{
+		try
+		{
+			Constructor<? extends L2Skill> c = _class.getConstructor(StatsSet.class);
 
-    public L2Skill makeSkill(StatsSet set)
-    {
-        try
-        {
-            Constructor<? extends L2Skill> c = _class.getConstructor(StatsSet.class);
+			return c.newInstance(set);
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 
-            return c.newInstance(set);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
+	private L2SkillType()
+	{
+		_class = L2SkillDefault.class;
+	}
 
-    private L2SkillType()
-    {
-        _class = L2SkillDefault.class;
-    }
-
-    private L2SkillType(Class<? extends L2Skill> classType)
-    {
-        _class = classType;
-    }
+	private L2SkillType(Class<? extends L2Skill> classType)
+	{
+		_class = classType;
+	}
 }

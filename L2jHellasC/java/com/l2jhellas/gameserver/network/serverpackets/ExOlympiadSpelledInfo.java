@@ -20,21 +20,15 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
 /**
- * This class ...
- *
- * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- *
  * @author godson
  */
 public class ExOlympiadSpelledInfo extends L2GameServerPacket
 {
 	// chdd(dhd)
 	private static final String _S__FE_2A_OLYMPIADSPELLEDINFO = "[S] FE:2A ExOlympiadSpelledInfo";
-	private L2PcInstance _player;
-	private List<Effect> _effects;
-
+	private final L2PcInstance _player;
+	private final List<Effect> _effects;
 
 	private class Effect
 	{
@@ -53,7 +47,7 @@ public class ExOlympiadSpelledInfo extends L2GameServerPacket
 	public ExOlympiadSpelledInfo(L2PcInstance player)
 	{
 		_effects = new FastList<Effect>();
-        _player = player;
+		_player = player;
 	}
 
 	public void addEffect(int skillId, int dat, int duration)
@@ -64,23 +58,20 @@ public class ExOlympiadSpelledInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-        if (_player == null)
-            return;
+		if (_player == null)
+			return;
 		writeC(0xfe);
 		writeH(0x2a);
 		writeD(_player.getObjectId());
 		writeD(_effects.size());
-        for (Effect temp : _effects)
-        {
-        	writeD(temp._skillId);
-        	writeH(temp._dat);
-        	writeD(temp._duration/1000);
-        }
+		for (Effect temp : _effects)
+		{
+			writeD(temp._skillId);
+			writeH(temp._dat);
+			writeD(temp._duration / 1000);
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

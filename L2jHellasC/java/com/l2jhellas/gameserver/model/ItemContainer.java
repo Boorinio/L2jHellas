@@ -24,12 +24,12 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2Item;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Advi
@@ -51,7 +51,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Returns the ownerID of the inventory
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getOwnerId()
@@ -61,7 +61,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Returns the quantity of items in the inventory
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getSize()
@@ -71,7 +71,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Returns the list of items in inventory
-	 *
+	 * 
 	 * @return L2ItemInstance : items in inventory
 	 */
 	public L2ItemInstance[] getItems()
@@ -82,7 +82,7 @@ public abstract class ItemContainer
 	/**
 	 * Returns the item from inventory by using its <B>itemId</B><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param itemId
 	 *        : int designating the ID of the item
 	 * @return L2ItemInstance designating the item or null if not found in inventory
@@ -99,7 +99,7 @@ public abstract class ItemContainer
 	/**
 	 * Returns the item from inventory by using its <B>itemId</B><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param itemId
 	 *        : int designating the ID of the item
 	 * @param itemToIgnore
@@ -117,7 +117,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Returns item from inventory by using its <B>objectId</B>
-	 *
+	 * 
 	 * @param objectId
 	 *        : int designating the ID of the object
 	 * @return L2ItemInstance designating the item or null if not found in inventory
@@ -133,7 +133,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Gets count of item in the inventory
-	 *
+	 * 
 	 * @param itemId
 	 *        : Item to look for
 	 * @param enchantLevel
@@ -157,7 +157,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Adds item to inventory
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param item
@@ -214,7 +214,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Adds item to inventory
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param itemId
@@ -281,7 +281,7 @@ public abstract class ItemContainer
 	/**
 	 * Adds Wear/Try On item to inventory<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param itemId
@@ -322,7 +322,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Transfers item to another inventory
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param itemId
@@ -405,7 +405,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Destroy item from inventory and updates database
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param item
@@ -437,7 +437,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Destroy item from inventory by using its <B>objectID</B> and updates database
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param objectId
@@ -476,7 +476,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Destroy item from inventory by using its <B>itemId</B> and updates database
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param itemId
@@ -515,7 +515,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Destroy all items from inventory and updates database
-	 *
+	 * 
 	 * @param process
 	 *        : String Identifier of process triggering this action
 	 * @param actor
@@ -548,7 +548,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Adds item to inventory for further adjustments.
-	 *
+	 * 
 	 * @param item
 	 *        : L2ItemInstance to be added from inventory
 	 */
@@ -559,7 +559,7 @@ public abstract class ItemContainer
 
 	/**
 	 * Removes item from inventory for further adjustments.
-	 *
+	 * 
 	 * @param item
 	 *        : L2ItemInstance to be removed from inventory
 	 */
@@ -614,10 +614,8 @@ public abstract class ItemContainer
 	 */
 	public void restore()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT object_id FROM items WHERE owner_id=? AND (loc=?) " + "ORDER BY object_id DESC");
 			statement.setInt(1, getOwnerId());
 			statement.setString(2, getBaseLocation().name());
@@ -652,16 +650,6 @@ public abstract class ItemContainer
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public boolean validateCapacity(int slots)
@@ -673,5 +661,4 @@ public abstract class ItemContainer
 	{
 		return true;
 	}
-
 }

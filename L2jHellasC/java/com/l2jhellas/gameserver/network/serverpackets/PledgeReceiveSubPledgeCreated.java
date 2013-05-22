@@ -17,13 +17,12 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 
 /**
- *
- * @author  -Wooden-
+ * @author -Wooden-
  */
 public class PledgeReceiveSubPledgeCreated extends L2GameServerPacket
 {
 	private static final String _S__FE_3F_PLEDGERECEIVESUBPLEDGECREATED = "[S] FE:3F PledgeReceiveSubPledgeCreated";
-	private SubPledge _subPledge;
+	private final SubPledge _subPledge;
 
 	/**
 	 * @param member
@@ -33,9 +32,6 @@ public class PledgeReceiveSubPledgeCreated extends L2GameServerPacket
 		_subPledge = subPledge;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -43,18 +39,14 @@ public class PledgeReceiveSubPledgeCreated extends L2GameServerPacket
 		writeH(0x3f);
 
 		writeD(0x01);
-        writeD(_subPledge.getId());
-        writeS(_subPledge.getName());
-        writeS(_subPledge.getLeaderName());
+		writeD(_subPledge.getId());
+		writeS(_subPledge.getName());
+		writeS(_subPledge.getLeaderName());
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_3F_PLEDGERECEIVESUBPLEDGECREATED;
 	}
-
 }

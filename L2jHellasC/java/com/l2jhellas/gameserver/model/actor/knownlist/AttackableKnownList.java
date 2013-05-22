@@ -46,7 +46,7 @@ public class AttackableKnownList extends NpcKnownList
 
 		// FIXME: This is a temporary solution
 		L2CharacterAI ai = getActiveChar().getAI();
-		if (ai != null && (known == null || known.isEmpty()))
+		if ((ai != null) && ((known == null) || known.isEmpty()))
 		{
 			ai.setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}

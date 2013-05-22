@@ -31,12 +31,12 @@ public class Pk extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
-		
+
 		if (player.getPkKills() >= val)
 			return true;
-		
+
 		return false;
 	}
 }

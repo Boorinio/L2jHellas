@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -40,6 +39,7 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CursedWeapon
 {
@@ -118,11 +118,8 @@ public class CursedWeapon
 				// Remove from Db
 				_log.log(Level.INFO, getClass().getName() + ": " + _name + " being removed offline.");
 
-				Connection con = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
-
 					// Delete the item
 					PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE owner_id=? AND item_id=?");
 					statement.setInt(1, _playerId);
@@ -161,16 +158,6 @@ public class CursedWeapon
 					if (Config.DEVELOPER)
 					{
 						e.printStackTrace();
-					}
-				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
 					}
 				}
 			}
@@ -356,7 +343,6 @@ public class CursedWeapon
 
 			return true;
 		}
-
 		return false;
 	}
 
@@ -448,12 +434,9 @@ public class CursedWeapon
 		if (Config.DEBUG)
 			_log.log(Level.CONFIG, getClass().getName() + ": Saving data to disk.");
 
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			// Delete previous datas
 			statement = con.prepareStatement("DELETE FROM cursed_weapons WHERE itemId = ?");
 			statement.setInt(1, _itemId);
@@ -480,23 +463,6 @@ public class CursedWeapon
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				statement.close();
-			}
-			catch (Exception e)
-			{
-			}
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

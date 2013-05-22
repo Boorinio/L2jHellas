@@ -29,12 +29,14 @@ public class Adena extends Condition
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
-		if (getValue() == null) return false;
+		if (getValue() == null)
+			return false;
 		else
 		{
 			long val = Integer.parseInt(getValue().toString());
 
-			if (player.getInventory().getAdena() >= val) return true;
+			if (player.getInventory().getAdena() >= val)
+				return true;
 		}
 		return false;
 	}

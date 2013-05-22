@@ -32,7 +32,8 @@ import com.l2jhellas.logs.LogRecorder;
 
 public class Mdam implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 	L2SkillType.MDAM, L2SkillType.DEATHLINK
 	};
 

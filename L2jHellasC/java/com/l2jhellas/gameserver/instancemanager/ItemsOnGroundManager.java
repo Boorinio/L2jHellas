@@ -25,17 +25,17 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class manage all items on ground
- *
+ * 
  * @author DiezelMax - original idea
  * @author Enforcer - actual build
  */
@@ -76,15 +76,14 @@ public class ItemsOnGroundManager
 		// if DestroyPlayerDroppedItem was previously false, items curently protected will be added to ItemsAutoDestroy
 		if (Config.DESTROY_DROPPED_PLAYER_ITEM)
 		{
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
 				String str = null;
 				if (!Config.DESTROY_EQUIPABLE_PLAYER_ITEM) // Recycle Misc
 					str = "UPDATE itemsonground SET drop_time=? WHERE drop_time=-1 AND equipable=0";
 				else if (Config.DESTROY_EQUIPABLE_PLAYER_ITEM) // Recycle All
 					str = "UPDATE itemsonground SET drop_time=? WHERE drop_time=-1";
-				con = L2DatabaseFactory.getInstance().getConnection();
+
 				PreparedStatement statement = con.prepareStatement(str);
 				statement.setLong(1, System.currentTimeMillis());
 				statement.execute();
@@ -98,85 +97,61 @@ public class ItemsOnGroundManager
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 		}
 
 		// Add items to world
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try
+			Statement s = con.createStatement();
+			ResultSet result;
+			int count = 0;
+			result = s.executeQuery("SELECT object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable FROM itemsonground");
+			while (result.next())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				Statement s = con.createStatement();
-				ResultSet result;
-				int count = 0;
-				result = s.executeQuery("SELECT object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable FROM itemsonground");
-				while (result.next())
+				L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
+				L2World.getInstance().storeObject(item);
+				if (item.isStackable() && result.getInt(3) > 1) // this check and..
+					item.setCount(result.getInt(3));
+				if (result.getInt(4) > 0)			// this, are really necessary?
+					item.setEnchantLevel(result.getInt(4));
+				item.getPosition().setWorldPosition(result.getInt(5), result.getInt(6), result.getInt(7));
+				item.getPosition().setWorldRegion(L2World.getInstance().getRegion(item.getPosition().getWorldPosition()));
+				item.getPosition().getWorldRegion().addVisibleObject(item);
+				item.setDropTime(result.getLong(8));
+				if (result.getLong(8) == -1)
+					item.setProtected(true);
+				else
+					item.setProtected(false);
+				item.setIsVisible(true);
+				L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion(), null);
+				_items.add(item);
+				count++;
+				// add to ItemsAutoDestroy only items not protected
+				if (!Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
 				{
-					L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
-					L2World.getInstance().storeObject(item);
-					if (item.isStackable() && result.getInt(3) > 1) // this check and..
-						item.setCount(result.getInt(3));
-					if (result.getInt(4) > 0)			// this, are really necessary?
-						item.setEnchantLevel(result.getInt(4));
-					item.getPosition().setWorldPosition(result.getInt(5), result.getInt(6), result.getInt(7));
-					item.getPosition().setWorldRegion(L2World.getInstance().getRegion(item.getPosition().getWorldPosition()));
-					item.getPosition().getWorldRegion().addVisibleObject(item);
-					item.setDropTime(result.getLong(8));
-					if (result.getLong(8) == -1)
-						item.setProtected(true);
-					else
-						item.setProtected(false);
-					item.setIsVisible(true);
-					L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion(), null);
-					_items.add(item);
-					count++;
-					// add to ItemsAutoDestroy only items not protected
-					if (!Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
+					if (result.getLong(8) > -1)
 					{
-						if (result.getLong(8) > -1)
-						{
-							if ((Config.AUTODESTROY_ITEM_AFTER > 0 && item.getItemType() != L2EtcItemType.HERB) || (Config.HERB_AUTO_DESTROY_TIME > 0 && item.getItemType() == L2EtcItemType.HERB))
-								ItemsAutoDestroy.getInstance().addItem(item);
-						}
+						if ((Config.AUTODESTROY_ITEM_AFTER > 0 && item.getItemType() != L2EtcItemType.HERB) || (Config.HERB_AUTO_DESTROY_TIME > 0 && item.getItemType() == L2EtcItemType.HERB))
+							ItemsAutoDestroy.getInstance().addItem(item);
 					}
 				}
-				result.close();
-				s.close();
-				if (count > 0)
-					_log.log(Level.INFO, getClass().getSimpleName() + ": restored " + count + " items.");
-				else
-					_log.log(Level.INFO, getClass().getSimpleName() + ": Initializing ItemsOnGroundManager.");
 			}
-			catch (Exception e)
-			{
-				_log.log(Level.WARNING, getClass().getName() + ": error while loading ItemsOnGround " + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
-			}
+			result.close();
+			s.close();
+			if (count > 0)
+				_log.log(Level.INFO, getClass().getSimpleName() + ": restored " + count + " items.");
+			else
+				_log.log(Level.INFO, getClass().getSimpleName() + ": Initializing ItemsOnGroundManager.");
 		}
-		finally
+		catch (Exception e)
 		{
-			try
+			_log.log(Level.WARNING, getClass().getName() + ": error while loading ItemsOnGround " + e);
+			if (Config.DEVELOPER)
 			{
-				con.close();
-			}
-			catch (Exception e)
-			{
+				e.printStackTrace();
 			}
 		}
+
 		if (Config.EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD)
 			emptyTable();
 	}
@@ -207,11 +182,9 @@ public class ItemsOnGroundManager
 
 	public void emptyTable()
 	{
-		java.sql.Connection conn = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			conn = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement del = conn.prepareStatement("DELETE FROM itemsonground");
+			PreparedStatement del = con.prepareStatement("DELETE FROM itemsonground");
 			del.execute();
 			del.close();
 		}
@@ -221,16 +194,6 @@ public class ItemsOnGroundManager
 			if (Config.DEVELOPER)
 			{
 				e1.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				conn.close();
-			}
-			catch (Exception e1)
-			{
 			}
 		}
 	}
@@ -254,14 +217,11 @@ public class ItemsOnGroundManager
 
 			for (L2ItemInstance item : _items)
 			{
-
 				if (CursedWeaponsManager.getInstance().isCursed(item.getItemId()))
 					continue; // Cursed Items not saved to ground, prevent double save
 
-				Connection con = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
 					PreparedStatement statement = con.prepareStatement("INSERT INTO itemsonground(object_id,item_id,count,enchant_level,x,y,z,drop_time,equipable) VALUES (?,?,?,?,?,?,?,?,?)");
 					statement.setInt(1, item.getObjectId());
 					statement.setInt(2, item.getItemId());
@@ -288,16 +248,6 @@ public class ItemsOnGroundManager
 					if (Config.DEVELOPER)
 					{
 						e.printStackTrace();
-					}
-				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
 					}
 				}
 			}

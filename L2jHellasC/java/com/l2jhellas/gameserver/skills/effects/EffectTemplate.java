@@ -26,8 +26,6 @@ import com.l2jhellas.gameserver.skills.funcs.Lambda;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public final class EffectTemplate
 {
@@ -111,7 +109,8 @@ public final class EffectTemplate
 	{
 		if (funcTemplates == null)
 		{
-			funcTemplates = new FuncTemplate[] {
+			funcTemplates = new FuncTemplate[]
+			{
 				f
 			};
 		}

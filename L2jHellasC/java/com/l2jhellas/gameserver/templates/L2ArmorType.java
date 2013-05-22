@@ -19,19 +19,24 @@ package com.l2jhellas.gameserver.templates;
  */
 public enum L2ArmorType
 {
-	NONE      ( 1, "None"),
-	LIGHT     ( 2, "Light"),
-	HEAVY     ( 3, "Heavy"),
-	MAGIC     ( 4, "Magic"),
-    PET       ( 5, "Pet");
+	/** @formatter:off */
+	NONE  ( 1, "None"),
+	LIGHT ( 2, "Light"),
+	HEAVY ( 3, "Heavy"),
+	MAGIC ( 4, "Magic"),
+    PET   ( 5, "Pet");
+	/** @formatter:on */
 
 	final int _id;
 	final String _name;
 
 	/**
 	 * Constructor of the L2ArmorType.
-	 * @param id : int designating the ID of the ArmorType
-	 * @param name : String designating the name of the ArmorType
+	 * 
+	 * @param id
+	 *        : int designating the ID of the ArmorType
+	 * @param name
+	 *        : String designating the name of the ArmorType
 	 */
 	L2ArmorType(int id, String name)
 	{
@@ -41,15 +46,17 @@ public enum L2ArmorType
 
 	/**
 	 * Returns the ID of the ArmorType after applying a mask.
+	 * 
 	 * @return int : ID of the ArmorType after mask
 	 */
 	public int mask()
 	{
-		return 1<<(_id+16);
+		return 1 << (_id + 16);
 	}
 
 	/**
 	 * Returns the name of the ArmorType
+	 * 
 	 * @return String
 	 */
 	@Override

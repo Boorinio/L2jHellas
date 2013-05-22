@@ -27,7 +27,7 @@ public class QuestTimer
 		@Override
 		public void run()
 		{
-			if (this == null || !getIsActive())
+			if ((this == null) || !getIsActive())
 				return;
 
 			try
@@ -85,7 +85,7 @@ public class QuestTimer
 
 	/**
 	 * public method to compare if this timer matches with the key attributes passed.
-	 *
+	 * 
 	 * @param quest
 	 *        : Quest instance to which the timer is attached
 	 * @param name
@@ -99,7 +99,7 @@ public class QuestTimer
 	{
 		if ((quest == null) || (name == null))
 			return false;
-		if ((quest != getQuest()) || name.compareToIgnoreCase(getName()) != 0)
+		if ((quest != getQuest()) || (name.compareToIgnoreCase(getName()) != 0))
 			return false;
 		return ((npc == getNpc()) && (player == getPlayer()));
 	}

@@ -30,7 +30,8 @@ public class IntList
 			return getIntegerList(range.split(","));
 		}
 
-		int[] list = {
+		int[] list =
+		{
 			getInt(range)
 		};
 		return list;

@@ -44,7 +44,7 @@ public class SiegeGuardKnownList extends AttackableKnownList
 			getActiveChar().getHomeLocation();
 
 		// Check if siege is in progress
-		if (getActiveChar().getCastle() != null && getActiveChar().getCastle().getSiege().getIsInProgress())
+		if ((getActiveChar().getCastle() != null) && getActiveChar().getCastle().getSiege().getIsInProgress())
 		{
 			L2PcInstance player = null;
 			if (object instanceof L2PcInstance)
@@ -53,15 +53,13 @@ public class SiegeGuardKnownList extends AttackableKnownList
 				player = ((L2Summon) object).getOwner();
 
 			// Check if player is not the defender
-			if (player != null && (player.getClan() == null || getActiveChar().getCastle().getSiege().getAttackerClan(player.getClan()) != null))
+			if ((player != null) && ((player.getClan() == null) || (getActiveChar().getCastle().getSiege().getAttackerClan(player.getClan()) != null)))
 			{
-				// if (Config.DEBUG) _log.fine(getObjectId()+": PK "+player.getObjectId()+" entered scan range");
+				//if (Config.DEBUG)	_log.fine(getObjectId() + ": PK " + player.getObjectId() + " entered scan range");
 				if (getActiveChar().getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
 					getActiveChar().getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);// (L2Character)object);
 			}
-
 		}
-
 		return true;
 	}
 

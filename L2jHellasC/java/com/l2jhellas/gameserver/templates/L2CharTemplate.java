@@ -24,7 +24,7 @@ public class L2CharTemplate
 	public final int baseWIT;
 	public final int baseMEN;
 	public final float baseHpMax;
-    public final float baseCpMax;
+	public final float baseCpMax;
 	public final float baseMpMax;
 
 	/** HP Regen base */
@@ -82,15 +82,16 @@ public class L2CharTemplate
 
 	public final boolean isUndead;
 
-    //C4 Stats
-    public final int baseMpConsumeRate;
-    public final int baseHpConsumeRate;
+	//C4 Stats
+	public final int baseMpConsumeRate;
+	public final int baseHpConsumeRate;
 
 	public final int collisionRadius;
 	public final int collisionHeight;
 
 	public L2CharTemplate(StatsSet set)
 	{
+		/** @formatter:off */
 		// Base stats
 		baseSTR        = set.getInteger("baseSTR");
 		baseCON        = set.getInteger("baseCON");
@@ -159,5 +160,6 @@ public class L2CharTemplate
 		// Geometry
 		collisionRadius    = set.getInteger("collision_radius");
 		collisionHeight    = set.getInteger("collision_height");
+		/** @formatter:on */
 	}
 }

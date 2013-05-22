@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 /**
  * Format (ch) dd
+ * 
  * @author -Wooden-
- *
  */
 public final class RequestWithdrawPartyRoom extends L2GameClientPacket
 {
@@ -28,7 +28,6 @@ public final class RequestWithdrawPartyRoom extends L2GameClientPacket
 	private int _data1;
 	private int _data2;
 
-
 	@Override
 	protected void readImpl()
 	{
@@ -36,24 +35,16 @@ public final class RequestWithdrawPartyRoom extends L2GameClientPacket
 		_data2 = readD();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
-		// TODO Auto-generated method stub
 		_log.info("This packet is not well known : RequestWithdrawPartyRoom");
-		_log.info("Data received: d:"+_data1+" d:"+_data2);
+		_log.info("Data received: d:" + _data1 + " d:" + _data2);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_02_REQUESTWITHDRAWPARTYROOM;
 	}
-
 }

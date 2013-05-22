@@ -21,56 +21,62 @@ import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 import com.l2jhellas.gameserver.model.entity.Castle;
 
-
 /**
- * format(packet 0xFE)
- * ch dd [dddc]
- * c  - id
- * h  - sub id
- *
- * d  - crop id
- * d  - size
- *
- * [
- * d  - manor name
- * d  - buy residual
- * d  - buy price
- * c  - reward type
- * ]
- *
+ * format(packet 0xFE)<BR>
+ * ch dd [dddc]<BR>
+ * c - id<BR>
+ * h - sub id<BR>
+ * <BR>
+ * d - crop id<BR>
+ * d - size<BR>
+ * <BR>
+ * [<BR>
+ * d - manor name<BR>
+ * d - buy residual<BR>
+ * d - buy price<BR>
+ * c - reward type<BR>
+ * ]<BR>
+ * 
  * @author l3x
  */
-public class ExShowProcureCropDetail extends L2GameServerPacket {
+public class ExShowProcureCropDetail extends L2GameServerPacket
+{
 	private static final String _S__FE_22_EXSHOWPROCURECROPDETAIL = "[S] FE:22 ExShowProcureCropDetail";
 
-	private int _cropId;
-	private FastMap<Integer, CropProcure> _castleCrops;
+	private final int _cropId;
+	private final FastMap<Integer, CropProcure> _castleCrops;
 
-	public ExShowProcureCropDetail(int cropId) {
+	public ExShowProcureCropDetail(int cropId)
+	{
 		_cropId = cropId;
 		_castleCrops = new FastMap<Integer, CropProcure>();
 
-		for (Castle c : CastleManager.getInstance().getCastles()) {
+		for (Castle c : CastleManager.getInstance().getCastles())
+		{
 			CropProcure cropItem = c.getCrop(_cropId, CastleManorManager.PERIOD_CURRENT);
-			if (cropItem != null && cropItem.getAmount() > 0) {
+			if (cropItem != null && cropItem.getAmount() > 0)
+			{
 				_castleCrops.put(c.getCastleId(), cropItem);
 			}
 		}
 	}
 
 	@Override
-	public void runImpl() {
+	public void runImpl()
+	{
 	}
 
 	@Override
-	public void writeImpl() {
+	public void writeImpl()
+	{
 		writeC(0xFE);
 		writeH(0x22);
 
 		writeD(_cropId); // crop id
-		writeD(_castleCrops.size());       // size
+		writeD(_castleCrops.size());  // size
 
-		for (int manorId : _castleCrops.keySet()) {
+		for (int manorId : _castleCrops.keySet())
+		{
 			CropProcure crop = _castleCrops.get(manorId);
 			writeD(manorId);          // manor name
 			writeD(crop.getAmount()); // buy residual
@@ -80,8 +86,8 @@ public class ExShowProcureCropDetail extends L2GameServerPacket {
 	}
 
 	@Override
-	public String getType() {
+	public String getType()
+	{
 		return _S__FE_22_EXSHOWPROCURECROPDETAIL;
 	}
-
 }

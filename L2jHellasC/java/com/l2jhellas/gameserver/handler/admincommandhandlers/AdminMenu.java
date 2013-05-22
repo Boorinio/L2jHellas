@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
@@ -33,6 +32,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class handles following admin commands:
@@ -43,18 +43,18 @@ public class AdminMenu implements IAdminCommandHandler
 	private static final Logger _log = Logger.getLogger(AdminMenu.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_char_manage",
-	"admin_teleport_character_to_menu",
-	"admin_recall_char_menu",
-	"admin_recall_party_menu",
-	"admin_recall_clan_menu",
-	"admin_goto_char_menu",
-	"admin_kick_menu",
-	"admin_kill_menu",
-	"admin_ban_menu",
-	"admin_unban_menu"
-	};
+	{/** @formatter:off */
+		"admin_char_manage",
+		"admin_teleport_character_to_menu",
+		"admin_recall_char_menu",
+		"admin_recall_party_menu",
+		"admin_recall_clan_menu",
+		"admin_goto_char_menu",
+		"admin_kick_menu",
+		"admin_kill_menu",
+		"admin_ban_menu",
+		"admin_unban_menu"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -288,10 +288,8 @@ public class AdminMenu implements IAdminCommandHandler
 
 	private void setAccountAccessLevel(String player, L2PcInstance activeChar, int banLevel)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			String stmt = "SELECT account_name FROM characters WHERE char_name = ?";
 			PreparedStatement statement = con.prepareStatement(stmt);
 			statement.setString(1, player);
@@ -319,16 +317,6 @@ public class AdminMenu implements IAdminCommandHandler
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

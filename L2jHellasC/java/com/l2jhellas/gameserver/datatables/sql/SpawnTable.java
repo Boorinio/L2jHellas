@@ -25,12 +25,12 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class SpawnTable
 {
@@ -61,11 +61,8 @@ public class SpawnTable
 
 	private void fillSpawnTable()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT id, count, npc_templateid, locx, locy, locz, heading, respawn_delay, loc_id, periodOfDay FROM spawnlist ORDER BY id");
 			ResultSet rset = statement.executeQuery();
 
@@ -143,16 +140,6 @@ public class SpawnTable
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		Util.printSection("Spawnlist");
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
@@ -175,11 +162,8 @@ public class SpawnTable
 
 		if (storeInDb)
 		{
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("INSERT INTO spawnlist (id,count,npc_templateid,locx,locy,locz,heading,respawn_delay,loc_id) VALUES (?,?,?,?,?,?,?,?,?)");
 				statement.setInt(1, spawn.getId());
 				statement.setInt(2, spawn.getAmount());
@@ -202,16 +186,6 @@ public class SpawnTable
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 		}
 	}
 
@@ -222,11 +196,8 @@ public class SpawnTable
 
 		if (updateDb)
 		{
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("DELETE FROM spawnlist WHERE id=?");
 				statement.setInt(1, spawn.getId());
 				statement.execute();
@@ -241,16 +212,6 @@ public class SpawnTable
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 		}
 	}
 
@@ -263,7 +224,7 @@ public class SpawnTable
 	/**
 	 * Get all the spawn of a NPC<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param npcId
 	 *        : ID of the NPC to find.
 	 * @return

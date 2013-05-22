@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class SkillSpellbookTable
 {
@@ -45,11 +45,8 @@ public class SkillSpellbookTable
 	private SkillSpellbookTable()
 	{
 		_skillSpellbooks = new FastMap<Integer, Integer>();
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT skill_id, item_id FROM skill_spellbooks");
 			ResultSet spbooks = statement.executeQuery();
 
@@ -67,16 +64,6 @@ public class SkillSpellbookTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

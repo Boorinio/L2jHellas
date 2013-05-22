@@ -20,7 +20,7 @@ import java.util.Calendar;
  * Class contains informations about victim. <br>
  * Example: How many times Killer killed Victim? <br>
  * Answer: getKills().
- *
+ * 
  * @author Masterio
  */
 public class Pvp
@@ -346,7 +346,7 @@ public class Pvp
 
 	/**
 	 * If Kill Day == System Day
-	 *
+	 * 
 	 * @return
 	 */
 	private boolean checkToday()

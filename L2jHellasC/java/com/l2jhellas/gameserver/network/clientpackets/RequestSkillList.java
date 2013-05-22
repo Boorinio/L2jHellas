@@ -16,22 +16,16 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.3.4.2 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestSkillList extends L2GameClientPacket
 {
 	private static final String _C__3F_REQUESTSKILLLIST = "[C] 3F RequestSkillList";
-	//private static Logger _log = Logger.getLogger(RequestSkillList.class.getName());
-    @SuppressWarnings("unused")
-	private int _unk1;
-    @SuppressWarnings("unused")
-	private int _unk2;
-    @SuppressWarnings("unused")
-	private int _unk3;
 
+	@SuppressWarnings("unused")
+	private int _unk1;
+	@SuppressWarnings("unused")
+	private int _unk2;
+	@SuppressWarnings("unused")
+	private int _unk3;
 
 	@Override
 	protected void readImpl()
@@ -43,16 +37,13 @@ public final class RequestSkillList extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance cha = getClient().getActiveChar();
-        
-        if (cha == null)
-            return;
 
-        cha.sendSkillList(); 
+		if (cha == null)
+			return;
+
+		cha.sendSkillList();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -60,7 +60,7 @@ final class EffectSignetAntiSummon extends EffectSignet
 				else
 					owner = (L2PcInstance) cha;
 
-				if (owner != null && owner.getPet() != null)
+				if ((owner != null) && (owner.getPet() != null))
 				{
 					if (mpConsume > caster.getCurrentMp())
 					{

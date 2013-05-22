@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.List;
@@ -45,9 +59,8 @@ public class PeloponnesianWar
 	{
 	-3773, -3773, -3773, -3773, -3646, -3646, -3646, -3646,
 	};
-	
+
 	public static void startevent()
-	
 	{
 		PeloRunning = true;
 		ZodiacMain.ZodiacRegisterActive = true;
@@ -84,7 +97,7 @@ public class PeloponnesianWar
 					player.broadcastUserInfo();
 					alaksokolies = true;
 				}
-				
+
 			}
 		}
 		spawnProtectors();
@@ -121,7 +134,7 @@ public class PeloponnesianWar
 		}
 		cleanthemess();
 	}
-	
+
 	public static void cleanthemess()
 	{
 		for (L2PcInstance participant : _participants)
@@ -147,47 +160,39 @@ public class PeloponnesianWar
 		_athenians.clear();
 		_spartans.clear();
 	}
-	
+
 	private static void reward(boolean Athenians)
 	{
 		if (Athenians)
 		{
 			for (L2PcInstance athenians : _athenians)
 			{
-				
+
 				athenians.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, athenians, true);
-				
+
 			}
 		}
 		else
 		{
 			for (L2PcInstance spartans : _spartans)
 			{
-				
+
 				spartans.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, spartans, true);
-				
+
 			}
 		}
 	}
-	
+
 	public static void checkwhowon()
 	{
 		for (L2PcInstance winner : _participants)
 		{
 			if (winner.isinZodiac && _athenians.contains(winner))
-			{
-				
 				continuez = true;
-			}
 			if (winner.isinZodiac && _spartans.contains(winner))
-			{
-				
 				continuez2 = true;
-			}
 			if (continuez && continuez2)
-			{
 				Announcements.getInstance().announceToAll("Both representatives are alive blame them for not getting a reward!");
-			}
 			else if (continuez)
 			{
 				Announcements.getInstance().announceToAll("Athenians won!");
@@ -200,7 +205,7 @@ public class PeloponnesianWar
 			}
 		}
 	}
-	
+
 	public static void finalround()
 	{
 		for (L2PcInstance athenian : _athenians)
@@ -232,22 +237,18 @@ public class PeloponnesianWar
 			}
 		}
 	}
-	
+
 	public static void teleportplayers()
 	{
 		for (L2PcInstance player : _participants)
 		{
 			if (_athenians.contains(player))
-			{
 				player.teleToLocation(athenianx, atheniany, athenianz);
-			}
 			else
-			{
 				player.teleToLocation(spartanx, spartany, spartanz);
-			}
 		}
 	}
-	
+
 	public static void spawnProtectors()
 	{
 		L2NpcInstance protector = null;
@@ -257,18 +258,18 @@ public class PeloponnesianWar
 			_protectors.add(protector);
 		}
 	}
-	
+
 	public static void RemoveAthenian(String name)
 	{
 		_athenians.remove(name);
-		
+
 	}
-	
+
 	public static void RemoveSpartan(String name)
 	{
 		_spartans.remove(name);
 	}
-	
+
 	public static void waitSecs(int i)
 	{
 		try
@@ -280,7 +281,7 @@ public class PeloponnesianWar
 			ie.printStackTrace();
 		}
 	}
-	
+
 	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
 	{
 		L2NpcInstance result = null;
@@ -305,5 +306,4 @@ public class PeloponnesianWar
 		}
 		return null;
 	}
-	
 }

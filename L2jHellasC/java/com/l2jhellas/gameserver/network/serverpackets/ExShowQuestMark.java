@@ -15,38 +15,28 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- *
- * @author  Luca Baldi
+ * @author Luca Baldi
  */
 public class ExShowQuestMark extends L2GameServerPacket
 {
-	private int _questId;
+	private final int _questId;
 
 	public ExShowQuestMark(int questId)
 	{
 		_questId = questId;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
-		// TODO Auto-generated method stub
 		writeC(0xfe);
 		writeH(0x1a);
 		writeD(_questId);
 	}
-
 }

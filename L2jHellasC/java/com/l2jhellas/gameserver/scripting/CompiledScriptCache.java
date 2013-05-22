@@ -37,7 +37,7 @@ import com.l2jhellas.Config;
 
 /**
  * Cache of Compiled Scripts
- *
+ * 
  * @author KenM
  */
 public class CompiledScriptCache implements Serializable

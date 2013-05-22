@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * @author Maktakien
- *
  */
 public class MoveToLocationInVehicle extends L2GameServerPacket
 {
@@ -28,6 +27,7 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 	private int _boatId;
 	private L2CharPosition _destination;
 	private L2CharPosition _origin;
+
 	/**
 	 * @param actor
 	 * @param destination
@@ -35,31 +35,31 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 	 */
 	public MoveToLocationInVehicle(L2Character actor, L2CharPosition destination, L2CharPosition origin)
 	{
-		if (!(actor instanceof L2PcInstance)) return;
+		if (!(actor instanceof L2PcInstance))
+			return;
 
-		L2PcInstance player = (L2PcInstance)actor;
+		L2PcInstance player = (L2PcInstance) actor;
 
-		if (player.getBoat() == null) return;
+		if (player.getBoat() == null)
+			return;
 
 		_charObjId = player.getObjectId();
 		_boatId = player.getBoat().getObjectId();
 		_destination = destination;
 		_origin = origin;
-	/*	_pci.sendMessage("_destination : x " + x +" y " + y + " z " + z);
-		_pci.sendMessage("_boat : x " + _pci.getBoat().getX() +" y " + _pci.getBoat().getY() + " z " + _pci.getBoat().getZ());
-		_pci.sendMessage("-----------");*/
+		/*
+		 * _pci.sendMessage("_destination : x " + x +" y " + y + " z " + z);
+		 * _pci.sendMessage("_boat : x " + _pci.getBoat().getX() +" y " + _pci.getBoat().getY() + " z " + _pci.getBoat().getZ());
+		 * _pci.sendMessage("-----------");
+		 */
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
-	protected
-	void writeImpl()
+	protected void writeImpl()
 	{
 		writeC(0x71);
-        writeD(_charObjId);
-        writeD(_boatId);
+		writeD(_charObjId);
+		writeD(_boatId);
 		writeD(_destination.x);
 		writeD(_destination.y);
 		writeD(_destination.z);
@@ -68,13 +68,9 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 		writeD(_origin.z);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return "[S] 71 MoveToLocationInVehicle";
 	}
-
 }

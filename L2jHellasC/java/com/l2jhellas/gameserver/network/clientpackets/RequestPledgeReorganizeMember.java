@@ -19,10 +19,10 @@ import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 
-
 /**
  * Format: (ch) dSdS
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public final class RequestPledgeReorganizeMember extends L2GameClientPacket
 {
@@ -44,33 +44,26 @@ public final class RequestPledgeReorganizeMember extends L2GameClientPacket
 		_unk2 = readS();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-	      if(activeChar == null)
-		       	return;
-		     //do we need powers to do that??
-		  L2Clan clan = activeChar.getClan();
-		      if(clan == null)
-		       	return;
-		  L2ClanMember member = clan.getClanMember(_memberName);
-		      if(member == null)
-		       	return;
-		  member.setPledgeType(_newPledgeType);
-		  clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(member));
+		if (activeChar == null)
+			return;
+		// do we need powers to do that??
+		L2Clan clan = activeChar.getClan();
+		if (clan == null)
+			return;
+		L2ClanMember member = clan.getClanMember(_memberName);
+		if (member == null)
+			return;
+		member.setPledgeType(_newPledgeType);
+		clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(member));
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_24_REQUESTPLEDGEREORGANIZEMEMBER;
 	}
-
 }

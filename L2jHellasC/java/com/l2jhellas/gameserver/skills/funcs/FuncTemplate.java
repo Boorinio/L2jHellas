@@ -23,8 +23,6 @@ import com.l2jhellas.gameserver.skills.conditions.Condition;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public final class FuncTemplate
 {
@@ -53,7 +51,8 @@ public final class FuncTemplate
 		}
 		try
 		{
-			constructor = func.getConstructor(new Class[] {
+			constructor = func.getConstructor(new Class[]
+			{
 			Stats.class, // stats to update
 			Integer.TYPE, // order of execution
 			Object.class, // owner

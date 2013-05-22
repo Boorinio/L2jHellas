@@ -16,53 +16,48 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2Clan;
 
-
 public class ManagePledgePower extends L2GameServerPacket
 {
-    private static final String _S__30_MANAGEPLEDGEPOWER = "[S] 30 ManagePledgePower";
+	private static final String _S__30_MANAGEPLEDGEPOWER = "[S] 30 ManagePledgePower";
 
-    private int _action;
-    private L2Clan _clan;
-    private int _rank;
-    private int _privs;
+	private final int _action;
+	private final L2Clan _clan;
+	private final int _rank;
+	private int _privs;
 
-    public ManagePledgePower(L2Clan clan, int action, int rank)
-    {
-        _clan = clan;
-        _action = action;
-        _rank = rank;
-    }
+	public ManagePledgePower(L2Clan clan, int action, int rank)
+	{
+		_clan = clan;
+		_action = action;
+		_rank = rank;
+	}
 
-    @Override
+	@Override
 	protected final void writeImpl()
-    {
-        if(_action == 1)
-        {
-        	_privs = _clan.getRankPrivs(_rank);
-        }
-        else
-        {
-            return;
-        	/*
-            if (L2World.getInstance().findObject(_clanId) == null)
-                return;
+	{
+		if (_action == 1)
+		{
+			_privs = _clan.getRankPrivs(_rank);
+		}
+		else
+		{
+			return;
+			/*
+			 * if (L2World.getInstance().findObject(_clanId) == null)
+			 * return;
+			 * 
+			 * privs = ((L2PcInstance)L2World.getInstance().findObject(_clanId)).getClanPrivileges();
+			 */
+		}
+		writeC(0x30);
+		writeD(0);
+		writeD(0);
+		writeD(_privs);
+	}
 
-			privs = ((L2PcInstance)L2World.getInstance().findObject(_clanId)).getClanPrivileges();
-			*/
-        }
-        writeC(0x30);
-        writeD(0);
-        writeD(0);
-        writeD(_privs);
-   }
-
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-     */
-    @Override
+	@Override
 	public String getType()
-    {
-        return _S__30_MANAGEPLEDGEPOWER;
-    }
-
+	{
+		return _S__30_MANAGEPLEDGEPOWER;
+	}
 }

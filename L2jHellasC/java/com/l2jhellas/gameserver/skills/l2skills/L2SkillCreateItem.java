@@ -32,7 +32,7 @@ public class L2SkillCreateItem extends L2Skill
 	private final int[] _createItemId;
 	private final int _createItemCount;
 	private final int _randomCount;
-	
+
 	public L2SkillCreateItem(StatsSet set)
 	{
 		super(set);
@@ -40,13 +40,13 @@ public class L2SkillCreateItem extends L2Skill
 		_createItemCount = set.getInteger("create_item_count", 0);
 		_randomCount = set.getInteger("random_count", 1);
 	}
-	
+
 	@Override
 	public void useSkill(L2Character activeChar, L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
-		if (_createItemId == null || _createItemCount == 0)
+		if ((_createItemId == null) || (_createItemCount == 0))
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE);
 			activeChar.sendPacket(sm);
@@ -61,7 +61,7 @@ public class L2SkillCreateItem extends L2Skill
 			giveItems(player, _createItemId[rndid], count);
 		}
 	}
-	
+
 	/**
 	 * @param activeChar
 	 * @param itemId
@@ -75,7 +75,7 @@ public class L2SkillCreateItem extends L2Skill
 			return;
 		item.setCount(count);
 		activeChar.getInventory().addItem("Skill", item, activeChar, activeChar);
-		
+
 		if (count > 1)
 		{
 			SystemMessage smsg = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);

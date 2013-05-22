@@ -17,16 +17,9 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.RecipeController;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * @author Administrator
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 {
-    private static final String _C__AF_REQUESTRECIPEITEMMAKESELF = "[C] AF RequestRecipeItemMakeSelf";
-	//private static Logger _log = Logger.getLogger(RequestSellItem.class.getName());
+	private static final String _C__AF_REQUESTRECIPEITEMMAKESELF = "[C] AF RequestRecipeItemMakeSelf";
 
 	private int _id;
 
@@ -41,30 +34,26 @@ public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-		    return;
+			return;
 
-        if (activeChar.getPrivateStoreType() != 0)
-        {
-            activeChar.sendMessage("Cannot make items while trading");
-            return;
-        }
+		if (activeChar.getPrivateStoreType() != 0)
+		{
+			activeChar.sendMessage("Cannot make items while trading.");
+			return;
+		}
 
-        if (activeChar.isInCraftMode())
-        {
-            activeChar.sendMessage("Currently in Craft Mode");
-            return;
-        }
+		if (activeChar.isInCraftMode())
+		{
+			activeChar.sendMessage("Currently in craft mode.");
+			return;
+		}
 
 		RecipeController.getInstance().requestMakeItem(activeChar, _id);
 	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-     */
-    @Override
+	@Override
 	public String getType()
-    {
-        return _C__AF_REQUESTRECIPEITEMMAKESELF;
-    }
-
+	{
+		return _C__AF_REQUESTRECIPEITEMMAKESELF;
+	}
 }

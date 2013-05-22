@@ -14,16 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.1.2.4 $ $Date: 2005/03/27 15:29:57 $
- */
 public class StopRotation extends L2GameServerPacket
 {
 	private static final String _S__78_STOPROTATION = "[S] 63 StopRotation";
-	private int _charObjId, _degree, _speed;
-		          
+	private final int _charObjId, _degree, _speed;
+
 	public StopRotation(int objid, int degree, int speed)
 	{
 		_charObjId = objid;
@@ -41,9 +36,6 @@ public class StopRotation extends L2GameServerPacket
 		writeC(0);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

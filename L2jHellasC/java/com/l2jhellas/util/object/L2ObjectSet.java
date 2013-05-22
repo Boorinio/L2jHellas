@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.util;
+package com.l2jhellas.util.object;
 
 import java.util.Iterator;
 
@@ -58,5 +58,4 @@ public abstract class L2ObjectSet<T extends L2Object> implements Iterable<T>
 
 	@Override
 	public abstract Iterator<T> iterator();
-
 }

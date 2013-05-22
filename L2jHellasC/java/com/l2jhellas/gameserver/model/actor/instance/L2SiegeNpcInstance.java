@@ -21,15 +21,8 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * This class ...
- *
- * @version $Revision$ $Date$
- */
 public class L2SiegeNpcInstance extends L2FolkInstance
 {
-	//private static Logger _log = Logger.getLogger(L2SiegeNpcInstance.class.getName());
-
 	public L2SiegeNpcInstance(int objectID, L2NpcTemplate template)
 	{
 		super(objectID, template);
@@ -37,12 +30,14 @@ public class L2SiegeNpcInstance extends L2FolkInstance
 
 	/**
 	 * this is called when a player interacts with this NPC
+	 * 
 	 * @param player
 	 */
 	@Override
 	public void onAction(L2PcInstance player)
 	{
-		if (!canTarget(player)) return;
+		if (!canTarget(player))
+			return;
 
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
@@ -73,30 +68,31 @@ public class L2SiegeNpcInstance extends L2FolkInstance
 		player.sendPacket(new ActionFailed());
 	}
 
-    /**
-     * If siege is in progress shows the Busy HTML<BR>
-     * else Shows the SiegeInfo window
-     * @param player
-     */
+	/**
+	 * If siege is in progress shows the Busy HTML<BR>
+	 * else Shows the SiegeInfo window
+	 * 
+	 * @param player
+	 */
 	public void showSiegeInfoWindow(L2PcInstance player)
 	{
-	    if (validateCondition(player))
-            getCastle().getSiege().listRegisterClan(player);
-        else
-        {
-            NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-            html.setFile("data/html/siege/" + getTemplate().npcId + "-busy.htm");
-            html.replace("%castlename%",getCastle().getName());
-            html.replace("%objectId%",String.valueOf(getObjectId()));
-            player.sendPacket(html);
-            player.sendPacket( new ActionFailed() );
-        }
+		if (validateCondition(player))
+			getCastle().getSiege().listRegisterClan(player);
+		else
+		{
+			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+			html.setFile("data/html/siege/" + getTemplate().npcId + "-busy.htm");
+			html.replace("%castlename%", getCastle().getName());
+			html.replace("%objectId%", String.valueOf(getObjectId()));
+			player.sendPacket(html);
+			player.sendPacket(new ActionFailed());
+		}
 	}
 
 	private boolean validateCondition(L2PcInstance player)
 	{
-        if (getCastle().getSiege().getIsInProgress())
-            return false;       // Busy because of siege
+		if (getCastle().getSiege().getIsInProgress())
+			return false; // Busy because of siege
 
 		return true;
 	}

@@ -32,7 +32,8 @@ public class RaidKill extends Condition
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
-		if (getValue() == null) return false;
+		if (getValue() == null)
+			return false;
 
 		int val = Integer.parseInt(getValue().toString());
 

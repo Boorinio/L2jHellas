@@ -29,19 +29,19 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Admin Command Handler for Mammon NPCs
- *
+ * 
  * @author Tempy
  */
 public class AdminMammon implements IAdminCommandHandler
 {
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_mammon_find",
-	"admin_mammon_respawn",
-	"admin_list_spawns",
-	"admin_msg"
-	};
+	{/** @formatter:off */
+		"admin_mammon_find",
+		"admin_mammon_respawn",
+		"admin_list_spawns",
+		"admin_msg"
+	};/** @formatter:on */
 
 	private final boolean _isSealValidation = SevenSigns.getInstance().isSealValidationPeriod();
 

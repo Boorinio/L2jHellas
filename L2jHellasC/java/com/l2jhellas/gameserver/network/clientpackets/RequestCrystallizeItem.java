@@ -32,17 +32,10 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.3.2.5 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestCrystallizeItem extends L2GameClientPacket
 {
-	private static final String _C__72_REQUESTDCRYSTALLIZEITEM = "[C] 72 RequestCrystallizeItem";
-
 	private static Logger _log = Logger.getLogger(RequestCrystallizeItem.class.getName());
+	private static final String _C__72_REQUESTDCRYSTALLIZEITEM = "[C] 72 RequestCrystallizeItem";
 
 	private int _objectId;
 	private int _count;
@@ -110,7 +103,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		}
 
 		L2ItemInstance itemToRemove = activeChar.getInventory().getItemByObjectId(_objectId);
-		if (itemToRemove == null || itemToRemove.isWear())
+		if ((itemToRemove == null) || itemToRemove.isWear())
 		{
 			return;
 		}
@@ -132,7 +125,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		}
 
 		// Check if the user can crystallize B items and return if false;
-		if (itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_B && skillLevel <= 2)
+		if ((itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_B) && (skillLevel <= 2))
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
@@ -143,7 +136,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		}
 
 		// Check if the user can crystallize A items and return if false;
-		if (itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_A && skillLevel <= 3)
+		if ((itemToRemove.getItem().getCrystalType() == L2Item.CRYSTAL_A) && (skillLevel <= 3))
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
@@ -230,11 +223,6 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		activeChar.setInCrystallize(false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -16,8 +16,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
  * format (ch) d
+ * 
  * @author -Wooden-
- *
  */
 public final class RequestOustFromPartyRoom extends L2GameClientPacket
 {
@@ -34,7 +34,6 @@ public final class RequestOustFromPartyRoom extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// TODO Auto-generated method stub
 
 	}
 
@@ -43,5 +42,4 @@ public final class RequestOustFromPartyRoom extends L2GameClientPacket
 	{
 		return _C__D0_01_REQUESTOUSTFROMPARTYROOM;
 	}
-
 }

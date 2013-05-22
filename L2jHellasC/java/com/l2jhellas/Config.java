@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -181,6 +183,10 @@ public final class Config
 	public static boolean ALT_DEV_NO_SPAWNS;
 	public static boolean ALT_DEV_NO_SCRIPT;
 	public static boolean ALT_DEV_NO_RB;
+	public static boolean VERBOSE_LOADING;
+	public static boolean ATTEMPT_COMPILATION;
+	public static boolean USE_COMPILED_CACHE;
+	public static boolean PURGE_ERROR_LOG;
 	public static int FS_TIME_ATTACK;
 	public static int FS_TIME_COOLDOWN;
 	public static int FS_TIME_ENTRY;
@@ -1089,15 +1095,25 @@ public final class Config
 				FS_TIME_WARMUP = Integer.parseInt(altSettings.getProperty("TimeOfWarmUp", "2"));
 				FS_PARTY_MEMBER_COUNT = Integer.parseInt(altSettings.getProperty("NumberOfNecessaryPartyMembers", "4"));
 				if (FS_TIME_ATTACK <= 0)
+				{
 					FS_TIME_ATTACK = 50;
+				}
 				if (FS_TIME_COOLDOWN <= 0)
+				{
 					FS_TIME_COOLDOWN = 5;
+				}
 				if (FS_TIME_ENTRY <= 0)
+				{
 					FS_TIME_ENTRY = 3;
+				}
 				if (FS_TIME_ENTRY <= 0)
+				{
 					FS_TIME_ENTRY = 3;
+				}
 				if (FS_TIME_ENTRY <= 0)
+				{
 					FS_TIME_ENTRY = 3;
+				}
 				RIFT_MIN_PARTY_SIZE = Integer.parseInt(altSettings.getProperty("RiftMinPartySize", "5"));
 				RIFT_MAX_JUMPS = Integer.parseInt(altSettings.getProperty("MaxRiftJumps", "4"));
 				RIFT_SPAWN_DELAY = Integer.parseInt(altSettings.getProperty("RiftSpawnDelay", "10000"));
@@ -1491,7 +1507,9 @@ public final class Config
 						while ((line = lnr.readLine()) != null)
 						{
 							if (line.trim().length() == 0 || line.startsWith("#"))
+							{
 								continue;
+							}
 							FILTER_LIST.add(line.trim());
 						}
 						_log.info("Chat Filter: Loaded " + FILTER_LIST.size() + " words ");
@@ -1535,7 +1553,9 @@ public final class Config
 						{
 						}
 						if (!skill.equals(""))
+						{
 							System.out.println((new StringBuilder()).append("[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills \"").append(skillSplit[0]).append("\"").append(skillSplit[1]).toString());
+						}
 					}
 
 				}
@@ -1640,12 +1660,6 @@ public final class Config
 				optionsSettings.load(is);
 				is.close();
 
-				TEST_SERVER = Boolean.parseBoolean(optionsSettings.getProperty("TestServer", "False"));
-				SERVER_LIST_TESTSERVER = Boolean.parseBoolean(optionsSettings.getProperty("ListTestServer", "False"));
-				EVERYBODY_HAS_ADMIN_RIGHTS = Boolean.parseBoolean(optionsSettings.getProperty("EverybodyHasAdminRights", "False"));
-				SERVER_LIST_BRACKET = Boolean.valueOf(optionsSettings.getProperty("ServerListBrackets", "False"));
-				SERVER_LIST_CLOCK = Boolean.valueOf(optionsSettings.getProperty("ServerListClock", "False"));
-				SERVER_GMONLY = Boolean.valueOf(optionsSettings.getProperty("ServerGMOnly", "False"));
 				ZONE_TOWN = Integer.parseInt(optionsSettings.getProperty("ZoneTown", "0"));
 				DEFAULT_GLOBAL_CHAT = optionsSettings.getProperty("GlobalChat", "GLOBAL");
 				DEFAULT_TRADE_CHAT = optionsSettings.getProperty("TradeChat", "ON");
@@ -1714,17 +1728,11 @@ public final class Config
 				SHOW_STATUS_COMMUNITYBOARD = Boolean.valueOf(optionsSettings.getProperty("ShowStatusOnCommunityBoard", "True"));
 				NAME_PAGE_SIZE_COMMUNITYBOARD = Integer.parseInt(optionsSettings.getProperty("NamePageSizeOnCommunityBoard", "50"));
 				NAME_PER_ROW_COMMUNITYBOARD = Integer.parseInt(optionsSettings.getProperty("NamePerRowOnCommunityBoard", "5"));
-				THREAD_P_EFFECTS = Integer.parseInt(optionsSettings.getProperty("ThreadPoolSizeEffects", "6"));
-				THREAD_P_GENERAL = Integer.parseInt(optionsSettings.getProperty("ThreadPoolSizeGeneral", "15"));
-				GENERAL_PACKET_THREAD_CORE_SIZE = Integer.parseInt(optionsSettings.getProperty("GeneralPacketThreadCoreSize", "4"));
-				IO_PACKET_THREAD_CORE_SIZE = Integer.parseInt(optionsSettings.getProperty("UrgentPacketThreadCoreSize", "2"));
-				GENERAL_THREAD_CORE_SIZE = Integer.parseInt(optionsSettings.getProperty("GeneralThreadCoreSize", "4"));
 				AI_MAX_THREAD = Integer.parseInt(optionsSettings.getProperty("AiMaxThread", "10"));
-				PACKET_LIFETIME = Integer.parseInt(optionsSettings.getProperty("PacketLifeTime", "0"));
 				GRIDS_ALWAYS_ON = Boolean.parseBoolean(optionsSettings.getProperty("GridsAlwaysOn", "False"));
 				GRID_NEIGHBOR_TURNON_TIME = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOnTime", "30"));
 				GRID_NEIGHBOR_TURNOFF_TIME = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));
-				FLOODPROTECTOR_INITIALSIZE = Integer.parseInt(optionsSettings.getProperty("FloodProtectorInitialSize", "50"));
+
 
 				// ---------------------------------------------------
 				// Configuration values not found in config files
@@ -1849,22 +1857,27 @@ public final class Config
 				VIP_ON_START_REMOVE_ALL_EFFECTS = Boolean.parseBoolean(EventSettings.getProperty("VIPOnStartRemoveAllEffects", "true"));
 				VIP_MIN_LEVEL = Integer.parseInt(EventSettings.getProperty("VIPMinLevel", "1"));
 				if (VIP_MIN_LEVEL < 1)
+				{
 					VIP_MIN_LEVEL = 1; // can't be set less then lvl 1
+				}
 				VIP_MAX_LEVEL = Integer.parseInt(EventSettings.getProperty("VIPMaxLevel", "85"));
 				if (VIP_MAX_LEVEL < VIP_MIN_LEVEL)
-					VIP_MAX_LEVEL = VIP_MIN_LEVEL + 1; // can't be set less then
-														// Min Level
+				{
+					VIP_MAX_LEVEL = VIP_MIN_LEVEL + 1; // can't be set less thenMin Level
+				}
 				VIP_MIN_PARTICIPANTS = Integer.parseInt(EventSettings.getProperty("VIPMinParticipants", "10"));
 				if (VIP_MIN_PARTICIPANTS < 10)
+				{
 					VIP_MIN_PARTICIPANTS = 10; // can't be set less then lvl 10
+				}
 
 				ZODIAC_ENABLE = Boolean.parseBoolean(EventSettings.getProperty("Zodiace", "true"));
 				ZODIAC_REWARD = Integer.parseInt(EventSettings.getProperty("ZodiadReward", "3470"));
 				ZODIAC_REWARD_COUN = Integer.parseInt(EventSettings.getProperty("ZodiadRewardc", "1"));
-				ZODIAC_VOTE_MINUTES= Integer.parseInt(EventSettings.getProperty("VotingMin", "5"));
-				SAME_IP_ZODIAC= Boolean.parseBoolean(EventSettings.getProperty("SameIpProtection", "true"));
-				INITIAL_START= Integer.parseInt(EventSettings.getProperty("MinutesInitial", "10"));
-				BETWEEN_EVENTS =Integer.parseInt(EventSettings.getProperty("MinutesAfterEvent", "60"));
+				ZODIAC_VOTE_MINUTES = Integer.parseInt(EventSettings.getProperty("VotingMin", "5"));
+				SAME_IP_ZODIAC = Boolean.parseBoolean(EventSettings.getProperty("SameIpProtection", "true"));
+				INITIAL_START = Integer.parseInt(EventSettings.getProperty("MinutesInitial", "10"));
+				BETWEEN_EVENTS = Integer.parseInt(EventSettings.getProperty("MinutesAfterEvent", "60"));
 
 				FIRST_TVT_DELAY = Integer.parseInt(EventSettings.getProperty("FirstEventDelay", "10"));
 				TVT_AURA = Boolean.parseBoolean(EventSettings.getProperty("TvTAura", "true"));
@@ -1891,7 +1904,9 @@ public final class Config
 				TVT_JOIN_CURSED = Boolean.parseBoolean(EventSettings.getProperty("TvTJoinWithCursedWeapon", "true"));
 				TVT_REVIVE_DELAY = Long.parseLong(EventSettings.getProperty("TVTReviveDelay", "20000"));
 				if (TVT_REVIVE_DELAY < 1000)
+				{
 					TVT_REVIVE_DELAY = 1000; // can't be set less then 1 second
+				}
 
 				ENABLE_HITMAN_EVENT = Boolean.parseBoolean(EventSettings.getProperty("EnableHitmanEvent", "False"));
 				HITMAN_TAKE_KARMA = Boolean.parseBoolean(EventSettings.getProperty("HitmansTakekarma", "True"));
@@ -1903,7 +1918,9 @@ public final class Config
 				DM_ON_START_UNSUMMON_PET = Boolean.parseBoolean(EventSettings.getProperty("DMOnStartUnsummonPet", "true"));
 				DM_REVIVE_DELAY = Long.parseLong(EventSettings.getProperty("DMReviveDelay", "20000"));
 				if (DM_REVIVE_DELAY < 1000)
+				{
 					DM_REVIVE_DELAY = 1000; // can't be set less then 1 second
+				}
 
 				CTF_EVEN_TEAMS = EventSettings.getProperty("CTFEvenTeams", "BALANCE");
 				CTF_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventSettings.getProperty("CTFAllowInterference", "false"));
@@ -1917,7 +1934,9 @@ public final class Config
 				CTF_REVIVE_RECOVERY = Boolean.parseBoolean(EventSettings.getProperty("CTFReviveRecovery", "false"));
 				CTF_REVIVE_DELAY = Long.parseLong(EventSettings.getProperty("CTFReviveDelay", "20000"));
 				if (CTF_REVIVE_DELAY < 1000)
+				{
 					CTF_REVIVE_DELAY = 1000; // can't be set less then 1 second
+				}
 				RAID_SYSTEM_ENABLED = Boolean.parseBoolean(EventSettings.getProperty("RaidEnginesEnabled", "false"));
 				RAID_SYSTEM_GIVE_BUFFS = Boolean.parseBoolean(EventSettings.getProperty("RaidGiveBuffs", "true"));
 				RAID_SYSTEM_RESURRECT_PLAYER = Boolean.parseBoolean(EventSettings.getProperty("RaidResurrectPlayer", "true"));
@@ -1979,7 +1998,9 @@ public final class Config
 					{
 						String[] PremSplit = PremiumIDs.split(",");
 						if (PremSplit.length != 2)
+						{
 							_log.warning(StringUtil.concat("[PremiumRate]: invalid config property -> EnchantList \"", PremiumIDs, "\""));
+						}
 						else
 						{
 							try
@@ -1989,7 +2010,9 @@ public final class Config
 							catch (NumberFormatException nfe)
 							{
 								if (!PremiumIDs.isEmpty())
+								{
 									_log.warning(StringUtil.concat("[PremiumRate]: invalid config property -> EnchantList \"", PremSplit[0], "\"", PremSplit[1]));
+								}
 							}
 						}
 					}
@@ -2062,7 +2085,9 @@ public final class Config
 					{
 						String[] enchantSplit = enchant.split(",");
 						if (enchantSplit.length != 2)
+						{
 							_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						}
 						else
 						{
 							try
@@ -2072,7 +2097,9 @@ public final class Config
 							catch (NumberFormatException nfe)
 							{
 								if (!enchant.isEmpty())
+								{
 									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								}
 							}
 						}
 					}
@@ -2083,7 +2110,9 @@ public final class Config
 					{
 						String[] enchantSplit = enchant.split(",");
 						if (enchantSplit.length != 2)
+						{
 							_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						}
 						else
 						{
 							try
@@ -2093,7 +2122,9 @@ public final class Config
 							catch (NumberFormatException nfe)
 							{
 								if (!enchant.isEmpty())
+								{
 									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								}
 							}
 						}
 					}
@@ -2104,7 +2135,9 @@ public final class Config
 					{
 						String[] enchantSplit = enchant.split(",");
 						if (enchantSplit.length != 2)
+						{
 							_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						}
 						else
 						{
 							try
@@ -2114,7 +2147,9 @@ public final class Config
 							catch (NumberFormatException nfe)
 							{
 								if (!enchant.isEmpty())
+								{
 									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								}
 							}
 						}
 					}
@@ -2125,7 +2160,9 @@ public final class Config
 					{
 						String[] enchantSplit = enchant.split(",");
 						if (enchantSplit.length != 2)
+						{
 							_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						}
 						else
 						{
 							try
@@ -2135,7 +2172,9 @@ public final class Config
 							catch (NumberFormatException nfe)
 							{
 								if (!enchant.isEmpty())
+								{
 									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								}
 							}
 						}
 					}
@@ -2146,7 +2185,9 @@ public final class Config
 					{
 						String[] enchantSplit = enchant.split(",");
 						if (enchantSplit.length != 2)
+						{
 							_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						}
 						else
 						{
 							try
@@ -2156,7 +2197,9 @@ public final class Config
 							catch (NumberFormatException nfe)
 							{
 								if (!enchant.isEmpty())
+								{
 									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								}
 							}
 						}
 					}
@@ -2167,7 +2210,9 @@ public final class Config
 					{
 						String[] enchantSplit = enchant.split(",");
 						if (enchantSplit.length != 2)
+						{
 							_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						}
 						else
 						{
 							try
@@ -2177,7 +2222,9 @@ public final class Config
 							catch (NumberFormatException nfe)
 							{
 								if (!enchant.isEmpty())
+								{
 									_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								}
 							}
 						}
 					}
@@ -2208,7 +2255,10 @@ public final class Config
 				ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoSpawns", "False"));
 				ALT_DEV_NO_SCRIPT = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoScripts", "False"));
 				ALT_DEV_NO_RB = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoRaidbosses", "False"));
-
+				VERBOSE_LOADING = Boolean.parseBoolean(serverSettings.getProperty("VerboseLoading", "False"));
+				ATTEMPT_COMPILATION = Boolean.parseBoolean(serverSettings.getProperty("AttemptCompilation", "False"));
+				USE_COMPILED_CACHE = Boolean.parseBoolean(serverSettings.getProperty("UseCompiledCache", "False"));
+				PURGE_ERROR_LOG = Boolean.parseBoolean(serverSettings.getProperty("PurgeErrorLog", "False"));
 				GAMESERVER_HOSTNAME = serverSettings.getProperty("GameserverHostname");
 				PORT_GAME = Integer.parseInt(serverSettings.getProperty("GameserverPort", "7777"));
 				EXTERNAL_HOSTNAME = serverSettings.getProperty("ExternalHostname", "*");
@@ -2226,12 +2276,26 @@ public final class Config
 				PET_NAME_TEMPLATE = serverSettings.getProperty("PetNameTemplate", ".*");
 				MAX_CHARACTERS_NUMBER_PER_ACCOUNT = Integer.parseInt(serverSettings.getProperty("CharMaxNumber", "0"));
 				MAXIMUM_ONLINE_USERS = Integer.parseInt(serverSettings.getProperty("MaximumOnlineUsers", "100"));
+				FLOODPROTECTOR_INITIALSIZE = Integer.parseInt(serverSettings.getProperty("FloodProtectorInitialSize", "50"));
 				MIN_PROTOCOL_REVISION = Integer.parseInt(serverSettings.getProperty("MinProtocolRevision", "660"));
 				MAX_PROTOCOL_REVISION = Integer.parseInt(serverSettings.getProperty("MaxProtocolRevision", "665"));
 				ALLOW_DUALBOX = Boolean.parseBoolean(serverSettings.getProperty("AllowDualBox", "True"));
 				ENABLE_PACKET_PROTECTION = Boolean.parseBoolean(serverSettings.getProperty("PacketProtection", "False"));
 				MAX_UNKNOWN_PACKETS = Integer.parseInt(serverSettings.getProperty("UnknownPacketsBeforeBan", "5"));
 				UNKNOWN_PACKETS_PUNISHMENT = Integer.parseInt(serverSettings.getProperty("UnknownPacketsPunishment", "2"));
+				TEST_SERVER = Boolean.parseBoolean(serverSettings.getProperty("TestServer", "False"));
+				SERVER_LIST_TESTSERVER = Boolean.parseBoolean(serverSettings.getProperty("ListTestServer", "False"));
+				EVERYBODY_HAS_ADMIN_RIGHTS = Boolean.parseBoolean(serverSettings.getProperty("EverybodyHasAdminRights", "False"));
+				SERVER_LIST_BRACKET = Boolean.valueOf(serverSettings.getProperty("ServerListBrackets", "False"));
+				SERVER_LIST_CLOCK = Boolean.valueOf(serverSettings.getProperty("ServerListClock", "False"));
+				SERVER_GMONLY = Boolean.valueOf(serverSettings.getProperty("ServerGMOnly", "False"));
+				THREAD_P_EFFECTS = Integer.parseInt(serverSettings.getProperty("ThreadPoolSizeEffects", "6"));
+				THREAD_P_GENERAL = Integer.parseInt(serverSettings.getProperty("ThreadPoolSizeGeneral", "15"));
+				GENERAL_PACKET_THREAD_CORE_SIZE = Integer.parseInt(serverSettings.getProperty("GeneralPacketThreadCoreSize", "4"));
+				IO_PACKET_THREAD_CORE_SIZE = Integer.parseInt(serverSettings.getProperty("UrgentPacketThreadCoreSize", "2"));
+				GENERAL_THREAD_CORE_SIZE = Integer.parseInt(serverSettings.getProperty("GeneralThreadCoreSize", "4"));
+				PACKET_LIFETIME = Integer.parseInt(serverSettings.getProperty("PacketLifeTime", "0"));
+
 				if (MIN_PROTOCOL_REVISION > MAX_PROTOCOL_REVISION)
 				{
 					_log.log(Level.WARNING, "Config: MinProtocolRevision is bigger than MaxProtocolRevision in server configuration file.");
@@ -2256,57 +2320,83 @@ public final class Config
 
 				Antharas_Wait_Time = Integer.parseInt(grandbossSettings.getProperty("AntharasWaitTime", "10"));
 				if (Antharas_Wait_Time < 3 || Antharas_Wait_Time > 60)
+				{
 					Antharas_Wait_Time = 10;
+				}
 				Antharas_Wait_Time = Antharas_Wait_Time * 60000;
 				Interval_Of_Antharas_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfAntharasSpawn", "192"));
 				Interval_Of_Baium_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfBaiumSpawn", "121"));
 				Random_Of_Baium_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfBaiumSpawn", "8"));
 				if (Interval_Of_Antharas_Spawn < 1 || Interval_Of_Antharas_Spawn > 192)
+				{
 					Interval_Of_Antharas_Spawn = 192;
+				}
 				Interval_Of_Antharas_Spawn = Interval_Of_Antharas_Spawn * 3600000;
 				Random_Of_Antharas_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfAntharasSpawn", "145"));
 				if (Random_Of_Antharas_Spawn < 1 || Random_Of_Antharas_Spawn > 192)
+				{
 					Random_Of_Antharas_Spawn = 145;
+				}
 				Random_Of_Antharas_Spawn = Random_Of_Antharas_Spawn * 3600000;
 				Interval_Of_Core_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfCoreSpawn", "27"));
 				if (Interval_Of_Core_Spawn < 1 || Interval_Of_Core_Spawn > 192)
+				{
 					Interval_Of_Core_Spawn = 27;
+				}
 				Interval_Of_Core_Spawn = Interval_Of_Core_Spawn * 3600000;
 				Random_Of_Core_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfCoreSpawn", "47"));
 				if (Random_Of_Core_Spawn < 1 || Random_Of_Core_Spawn > 192)
+				{
 					Random_Of_Core_Spawn = 47;
+				}
 				Random_Of_Core_Spawn = Random_Of_Core_Spawn * 3600000;
 				Interval_Of_Orfen_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfOrfenSpawn", "28"));
 				if (Interval_Of_Orfen_Spawn < 1 || Interval_Of_Orfen_Spawn > 192)
+				{
 					Interval_Of_Orfen_Spawn = 28;
+				}
 				Interval_Of_Orfen_Spawn = Interval_Of_Orfen_Spawn * 3600000;
 				Random_Of_Orfen_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfOrfenSpawn", "41"));
 				if (Random_Of_Orfen_Spawn < 1 || Random_Of_Orfen_Spawn > 192)
+				{
 					Random_Of_Orfen_Spawn = 41;
+				}
 				Random_Of_Orfen_Spawn = Random_Of_Orfen_Spawn * 3600000;
 				Interval_Of_QueenAnt_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfQueenAntSpawn", "19"));
 				if (Interval_Of_QueenAnt_Spawn < 1 || Interval_Of_QueenAnt_Spawn > 192)
+				{
 					Interval_Of_QueenAnt_Spawn = 19;
+				}
 				Interval_Of_QueenAnt_Spawn = Interval_Of_QueenAnt_Spawn * 3600000;
 				Random_Of_QueenAnt_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfQueenAntSpawn", "35"));
 				if (Random_Of_QueenAnt_Spawn < 1 || Random_Of_QueenAnt_Spawn > 192)
+				{
 					Random_Of_QueenAnt_Spawn = 35;
+				}
 				Random_Of_QueenAnt_Spawn = Random_Of_QueenAnt_Spawn * 3600000;
 				Interval_Of_Zaken_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfZakenSpawn", "19"));
 				if (Interval_Of_Zaken_Spawn < 1 || Interval_Of_Zaken_Spawn > 192)
+				{
 					Interval_Of_Zaken_Spawn = 19;
+				}
 				Interval_Of_Zaken_Spawn = Interval_Of_Zaken_Spawn * 3600000;
 				Random_Of_Zaken_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfZakenSpawn", "35"));
 				if (Random_Of_Zaken_Spawn < 1 || Random_Of_Zaken_Spawn > 192)
+				{
 					Random_Of_Zaken_Spawn = 35;
+				}
 				Random_Of_Zaken_Spawn = Random_Of_Zaken_Spawn * 3600000;
 				Interval_Of_Sailren_Spawn = Integer.parseInt(grandbossSettings.getProperty("IntervalOfSailrenSpawn", "12"));
 				if (Interval_Of_Sailren_Spawn < 1 || Interval_Of_Sailren_Spawn > 192)
+				{
 					Interval_Of_Sailren_Spawn = 12;
+				}
 				Interval_Of_Sailren_Spawn = Interval_Of_Sailren_Spawn * 3600000;
 				Random_Of_Sailren_Spawn = Integer.parseInt(grandbossSettings.getProperty("RandomOfSailrenSpawn", "24"));
 				if (Random_Of_Sailren_Spawn < 1 || Random_Of_Sailren_Spawn > 192)
+				{
 					Random_Of_Sailren_Spawn = 24;
+				}
 				Random_Of_Sailren_Spawn = Random_Of_Sailren_Spawn * 3600000;
 			}
 			catch (Exception e)
@@ -2496,502 +2586,962 @@ public final class Config
 	{
 		// Server settings
 		if (pName.equalsIgnoreCase("PremiumRateXp"))
+		{
 			PREMIUM_RATE_XP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PremiumRateSp"))
+		{
 			PREMIUM_RATE_SP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PremiumRateDropSpoil"))
+		{
 			PREMIUM_RATE_DROP_SPOIL = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PremiumRateDropItems"))
+		{
 			PREMIUM_RATE_DROP_ITEMS = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PremiumRateDropQuest"))
+		{
 			PREMIUM_RATE_DROP_QUEST = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PremiumRateRaidDropItems"))
+		{
 			PREMIUM_RATE_DROP_ITEMS_BY_RAID = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateXp"))
+		{
 			RATE_XP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateSp"))
+		{
 			RATE_SP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RatePartyXp"))
+		{
 			RATE_PARTY_XP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RatePartySp"))
+		{
 			RATE_PARTY_SP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateQuestsReward"))
+		{
 			RATE_QUESTS_REWARD = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateDropAdena"))
+		{
 			RATE_DROP_ADENA = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateConsumableCost"))
+		{
 			RATE_CONSUMABLE_COST = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateDropItems"))
+		{
 			RATE_DROP_ITEMS = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateDropSpoil"))
+		{
 			RATE_DROP_SPOIL = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateDropManor"))
+		{
 			RATE_DROP_MANOR = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateDropQuest"))
+		{
 			RATE_DROP_QUEST = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateKarmaExpLost"))
+		{
 			RATE_KARMA_EXP_LOST = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RateSiegeGuardsPrice"))
+		{
 			RATE_SIEGE_GUARDS_PRICE = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PlayerDropLimit"))
+		{
 			PLAYER_DROP_LIMIT = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PlayerRateDrop"))
+		{
 			PLAYER_RATE_DROP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PlayerRateDropItem"))
+		{
 			PLAYER_RATE_DROP_ITEM = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PlayerRateDropEquip"))
+		{
 			PLAYER_RATE_DROP_EQUIP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PlayerRateDropEquipWeapon"))
+		{
 			PLAYER_RATE_DROP_EQUIP_WEAPON = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("KarmaDropLimit"))
+		{
 			KARMA_DROP_LIMIT = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("KarmaRateDrop"))
+		{
 			KARMA_RATE_DROP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("KarmaRateDropItem"))
+		{
 			KARMA_RATE_DROP_ITEM = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("KarmaRateDropEquip"))
+		{
 			KARMA_RATE_DROP_EQUIP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("KarmaRateDropEquipWeapon"))
+		{
 			KARMA_RATE_DROP_EQUIP_WEAPON = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AutoDestroyDroppedItemAfter"))
+		{
 			AUTODESTROY_ITEM_AFTER = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DestroyPlayerDroppedItem"))
+		{
 			DESTROY_DROPPED_PLAYER_ITEM = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DestroyEquipableItem"))
+		{
 			DESTROY_EQUIPABLE_PLAYER_ITEM = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("SaveDroppedItem"))
+		{
 			SAVE_DROPPED_ITEM = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EmptyDroppedItemTableAfterLoad"))
+		{
 			EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("SaveDroppedItemInterval"))
+		{
 			SAVE_DROPPED_ITEM_INTERVAL = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ClearDroppedItemTable"))
+		{
 			CLEAR_DROPPED_ITEM_TABLE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PreciseDropCalculation"))
+		{
 			PRECISE_DROP_CALCULATION = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MultipleItemDrop"))
+		{
 			MULTIPLE_ITEM_DROP = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CoordSynchronize"))
+		{
 			COORD_SYNCHRONIZE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DeleteCharAfterDays"))
+		{
 			DELETE_DAYS = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowDiscardItem"))
+		{
 			ALLOW_DISCARDITEM = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowFreight"))
+		{
 			ALLOW_FREIGHT = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowWarehouse"))
+		{
 			ALLOW_WAREHOUSE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowWear"))
+		{
 			ALLOW_WEAR = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WearDelay"))
+		{
 			WEAR_DELAY = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WearPrice"))
+		{
 			WEAR_PRICE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowWater"))
+		{
 			ALLOW_WATER = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowRentPet"))
+		{
 			ALLOW_RENTPET = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowBoat"))
+		{
 			ALLOW_BOAT = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowCursedWeapons"))
+		{
 			ALLOW_CURSED_WEAPONS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowManor"))
+		{
 			ALLOW_MANOR = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("BypassValidation"))
+		{
 			BYPASS_VALIDATION = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CommunityType"))
+		{
 			COMMUNITY_TYPE = pValue.toLowerCase();
+		}
 		else if (pName.equalsIgnoreCase("BBSDefault"))
+		{
 			BBS_DEFAULT = pValue;
+		}
 		else if (pName.equalsIgnoreCase("ShowLevelOnCommunityBoard"))
+		{
 			SHOW_LEVEL_COMMUNITYBOARD = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ShowStatusOnCommunityBoard"))
+		{
 			SHOW_STATUS_COMMUNITYBOARD = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("NamePageSizeOnCommunityBoard"))
+		{
 			NAME_PAGE_SIZE_COMMUNITYBOARD = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("NamePerRowOnCommunityBoard"))
+		{
 			NAME_PER_ROW_COMMUNITYBOARD = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ShowServerNews"))
+		{
 			SERVER_NEWS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ShowNpcLevel"))
+		{
 			SHOW_NPC_LVL = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ForceInventoryUpdate"))
+		{
 			FORCE_INVENTORY_UPDATE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AutoDeleteInvalidQuestData"))
+		{
 			AUTODELETE_INVALID_QUEST_DATA = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumOnlineUsers"))
+		{
 			MAXIMUM_ONLINE_USERS = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PacketProtection"))
+		{
 			ENABLE_PACKET_PROTECTION = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("UnknownPacketsBeforeBan"))
+		{
 			MAX_UNKNOWN_PACKETS = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("UnknownPacketsPunishment"))
+		{
 			UNKNOWN_PACKETS_PUNISHMENT = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ZoneTown"))
+		{
 			ZONE_TOWN = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CheckKnownList"))
+		{
 			CHECK_KNOWN = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ReputationScorePerKill"))
+		{
 			ALT_REPUTATION_SCORE_PER_KILL = Integer.parseInt(pValue);
-
-		// Other settings
+		}
 		else if (pName.equalsIgnoreCase("UseDeepBlueDropRules"))
+		{
 			DEEPBLUE_DROP_RULES = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowGuards"))
+		{
 			ALLOW_GUARDS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CancelLesserEffect"))
+		{
 			EFFECT_CANCELING = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WyvernSpeed"))
+		{
 			WYVERN_SPEED = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("StriderSpeed"))
+		{
 			STRIDER_SPEED = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumSlotsForNoDwarf"))
+		{
 			INVENTORY_MAXIMUM_NO_DWARF = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumSlotsForDwarf"))
+		{
 			INVENTORY_MAXIMUM_DWARF = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumSlotsForGMPlayer"))
+		{
 			INVENTORY_MAXIMUM_GM = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumWarehouseSlotsForNoDwarf"))
+		{
 			WAREHOUSE_SLOTS_NO_DWARF = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumWarehouseSlotsForDwarf"))
+		{
 			WAREHOUSE_SLOTS_DWARF = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumWarehouseSlotsForClan"))
+		{
 			WAREHOUSE_SLOTS_CLAN = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaximumFreightSlots"))
+		{
 			FREIGHT_SLOTS = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("HpRegenMultiplier"))
+		{
 			HP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MpRegenMultiplier"))
+		{
 			MP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CpRegenMultiplier"))
+		{
 			CP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RaidHpRegenMultiplier"))
+		{
 			RAID_HP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RaidMpRegenMultiplier"))
+		{
 			RAID_MP_REGEN_MULTIPLIER = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RaidPhysicalDefenceMultiplier"))
+		{
 			RAID_P_DEFENCE_MULTIPLIER = Double.parseDouble(pValue) / 100;
+		}
 		else if (pName.equalsIgnoreCase("RaidMagicalDefenceMultiplier"))
+		{
 			RAID_M_DEFENCE_MULTIPLIER = Double.parseDouble(pValue) / 100;
+		}
 		else if (pName.equalsIgnoreCase("RaidMinionRespawnTime"))
+		{
 			RAID_MINION_RESPAWN_TIMER = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("StartingAdena"))
+		{
 			STARTING_ADENA = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("StartingAncientAdena"))
+		{
 			STARTING_ANCIENT = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("UnstuckInterval"))
+		{
 			UNSTUCK_INTERVAL = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PlayerSpawnProtection"))
+		{
 			PLAYER_SPAWN_PROTECTION = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PartyXpCutoffMethod"))
+		{
 			PARTY_XP_CUTOFF_METHOD = pValue;
+		}
 		else if (pName.equalsIgnoreCase("PartyXpCutoffPercent"))
+		{
 			PARTY_XP_CUTOFF_PERCENT = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PartyXpCutoffLevel"))
+		{
 			PARTY_XP_CUTOFF_LEVEL = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RespawnRestoreCP"))
+		{
 			RESPAWN_RESTORE_CP = Double.parseDouble(pValue) / 100;
+		}
 		else if (pName.equalsIgnoreCase("RespawnRestoreHP"))
+		{
 			RESPAWN_RESTORE_HP = Double.parseDouble(pValue) / 100;
+		}
 		else if (pName.equalsIgnoreCase("RespawnRestoreMP"))
+		{
 			RESPAWN_RESTORE_MP = Double.parseDouble(pValue) / 100;
+		}
 		else if (pName.equalsIgnoreCase("MaxPvtStoreSlotsDwarf"))
+		{
 			MAX_PVTSTORE_SLOTS_DWARF = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaxPvtStoreSlotsOther"))
+		{
 			MAX_PVTSTORE_SLOTS_OTHER = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("StoreSkillCooltime"))
+		{
 			STORE_SKILL_COOLTIME = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AnnounceMammonSpawn"))
+		{
 			ANNOUNCE_MAMMON_SPAWN = Boolean.valueOf(pValue);
-
-		// Alternative settings
+		}
 		else if (pName.equalsIgnoreCase("AltGameTiredness"))
+		{
 			ALT_GAME_TIREDNESS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameCreation"))
+		{
 			ALT_GAME_CREATION = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameCreationSpeed"))
+		{
 			ALT_GAME_CREATION_SPEED = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameCreationXpRate"))
+		{
 			ALT_GAME_CREATION_XP_RATE = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameCreationSpRate"))
+		{
 			ALT_GAME_CREATION_SP_RATE = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltWeightLimit"))
+		{
 			ALT_WEIGHT_LIMIT = Double.parseDouble(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltBlacksmithUseRecipes"))
+		{
 			ALT_BLACKSMITH_USE_RECIPES = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameSkillLearn"))
+		{
 			ALT_GAME_SKILL_LEARN = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("RemoveCastleCirclets"))
+		{
 			REMOVE_CASTLE_CIRCLETS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameCancelByHit"))
 		{
 			ALT_GAME_CANCEL_BOW = pValue.equalsIgnoreCase("bow") || pValue.equalsIgnoreCase("all");
 			ALT_GAME_CANCEL_CAST = pValue.equalsIgnoreCase("cast") || pValue.equalsIgnoreCase("all");
 		}
 		else if (pName.equalsIgnoreCase("AltShieldBlocks"))
+		{
 			ALT_GAME_SHIELD_BLOCKS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltPerfectShieldBlockRate"))
+		{
 			ALT_PERFECT_SHLD_BLOCK = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("Delevel"))
+		{
 			ALT_GAME_DELEVEL = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MagicFailures"))
+		{
 			ALT_GAME_MAGICFAILURES = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameMobAttackAI"))
+		{
 			ALT_GAME_MOB_ATTACK_AI = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltMobAgroInPeaceZone"))
+		{
 			ALT_MOB_AGRO_IN_PEACEZONE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameExponentXp"))
+		{
 			ALT_GAME_EXPONENT_XP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameExponentSp"))
+		{
 			ALT_GAME_EXPONENT_SP = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameFreights"))
+		{
 			ALT_GAME_FREIGHTS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltGameFreightPrice"))
+		{
 			ALT_GAME_FREIGHT_PRICE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltPartyRange"))
+		{
 			ALT_PARTY_RANGE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltPartyRange2"))
+		{
 			ALT_PARTY_RANGE2 = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CraftingEnabled"))
+		{
 			IS_CRAFTING_ENABLED = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("LifeCrystalNeeded"))
+		{
 			LIFE_CRYSTAL_NEEDED = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("SpBookNeeded"))
+		{
 			SP_BOOK_NEEDED = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AutoLoot"))
+		{
 			AUTO_LOOT = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AutoLootHerbs"))
+		{
 			AUTO_LOOT_HERBS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltKarmaPlayerCanBeKilledInPeaceZone"))
+		{
 			ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltFlaggedPlayerCanUseGK"))
+		{
 			ALT_GAME_FLAGGED_PLAYER_CAN_USE_GK = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltKarmaPlayerCanShop"))
+		{
 			ALT_GAME_KARMA_PLAYER_CAN_SHOP = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltKarmaPlayerCanUseGK"))
+		{
 			ALT_GAME_KARMA_PLAYER_CAN_USE_GK = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltKarmaPlayerCanTeleport"))
+		{
 			ALT_GAME_KARMA_PLAYER_CAN_TELEPORT = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltKarmaPlayerCanTrade"))
+		{
 			ALT_GAME_KARMA_PLAYER_CAN_TRADE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltKarmaPlayerCanUseWareHouse"))
+		{
 			ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltRequireCastleForDawn"))
+		{
 			ALT_GAME_REQUIRE_CASTLE_DAWN = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltRequireClanCastle"))
+		{
 			ALT_GAME_REQUIRE_CLAN_CASTLE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltFreeTeleporting"))
+		{
 			ALT_GAME_FREE_TELEPORT = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltSubClassSkills"))
+		{
 			ALT_SUBCLASS_SKILLS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaxPAtkSpeed"))
+		{
 			MAX_PATK_SPEED = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaxMAtkSpeed"))
+		{
 			MAX_MATK_SPEED = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowLowLevelTrade"))
+		{
 			ALLOW_LOW_LEVEL_TRADE = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AllowPotsInPvP"))
+		{
 			ALLOW_POTS_IN_PVP = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DisableGradePenalty"))
+		{
 			DISABLE_GRADE_PENALTY = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DisableWeightPenalty"))
+		{
 			DISABLE_WEIGHT_PENALTY = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltSubClassWithoutQuests"))
+		{
 			ALT_GAME_SUBCLASS_WITHOUT_QUESTS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltNewCharAlwaysIsNewbie"))
+		{
 			ALT_GAME_NEW_CHAR_ALWAYS_IS_NEWBIE = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AltMembersCanWithdrawFromClanWH"))
+		{
 			ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DwarfRecipeLimit"))
+		{
 			DWARF_RECIPE_LIMIT = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CommonRecipeLimit"))
+		{
 			COMMON_RECIPE_LIMIT = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CastleShieldRestriction"))
+		{
 			CASTLE_SHIELD = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ClanHallShieldRestriction"))
+		{
 			CLANHALL_SHIELD = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ApellaArmorsRestriction"))
+		{
 			APELLA_ARMORS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("OathArmorsRestriction"))
+		{
 			OATH_ARMORS = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CastleLordsCrownRestriction"))
+		{
 			CASTLE_CROWN = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CastleCircletsRestriction"))
+		{
 			CASTLE_CIRCLETS = Boolean.valueOf(pValue);
-
-		// ChampionMobs MOD
+		}
 		else if (pName.equalsIgnoreCase("ChampionSpecialItemLevelDiff"))
+		{
 			CHAMPION_SPCL_LVL_DIFF = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionEnable"))
+		{
 			CHAMPION_ENABLE = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionFrequency"))
+		{
 			CHAMPION_FREQUENCY = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionHp"))
+		{
 			CHAMPION_HP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionHpRegen"))
+		{
 			CHAMPION_HP_REGEN = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionAtk"))
+		{
 			CHAMPION_ATK = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionSpdAtk"))
+		{
 			CHAMPION_SPD_ATK = Float.parseFloat(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionRewards"))
+		{
 			CHAMPION_REWARDS = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionAdenasRewards"))
+		{
 			CHAMPION_ADENA = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionExpSp"))
+		{
 			CHAMPION_EXP_SP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionBoss"))
+		{
 			CHAMPION_BOSS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionMinLevel"))
+		{
 			CHAMPION_MIN_LEVEL = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionMaxLevel"))
+		{
 			CHAMPION_MAX_LEVEL = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionMinions"))
+		{
 			CHAMPION_MINIONS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionSpecialItemChance"))
+		{
 			CHAMPION_SPCL_CHANCE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionSpecialItemID"))
+		{
 			CHAMPION_SPCL_ITEM = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ChampionSpecialItemAmount"))
+		{
 			CHAMPION_SPCL_QTY = Integer.parseInt(pValue);
-
-		// MOD Wedding System
+		}
 		else if (pName.equalsIgnoreCase("AllowWedding"))
+		{
 			MOD_ALLOW_WEDDING = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingPrice"))
+		{
 			MOD_WEDDING_PRICE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AutoLootRaid"))
+		{
 			AUTO_LOOT_RAID = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingPunishInfidelity"))
+		{
 			MOD_WEDDING_PUNISH_INFIDELITY = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingTeleport"))
+		{
 			MOD_WEDDING_TELEPORT = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingTeleportPrice"))
+		{
 			MOD_WEDDING_TELEPORT_PRICE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingTeleportDuration"))
+		{
 			MOD_WEDDING_TELEPORT_DURATION = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingAllowSameSex"))
+		{
 			MOD_WEDDING_SAMESEX = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingFormalWear"))
+		{
 			MOD_WEDDING_FORMALWEAR = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("WeddingDivorceCosts"))
+		{
 			MOD_WEDDING_DIVORCE_COSTS = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AddExpAtPvp"))
+		{
 			ADD_EXP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AddSpAtPvp"))
+		{
 			ADD_SP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AbortRestart"))
+		{
 			ABORT_RR = (pValue);
-
-		// Faction Good vs Evil
+		}
 		else if (pName.equalsIgnoreCase("EnableFaction"))
+		{
 			MOD_GVE_ENABLE_FACTION = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PlayerGetAdenaByPvP"))
+		{
 			MOD_GVE_GET_ADENA_BY_PVP = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AmmountAdenaGetByPvP"))
+		{
 			MOD_GVE_AMMOUNT_ADENA_BY_PVP = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("ActiveAnimSS"))
+		{
 			MOD_GVE_ACTIVE_ANIM_SS = Boolean.valueOf(pValue);
-
-		// Event Settings
+		}
 		else if (pName.equalsIgnoreCase("CTFEvenTeams"))
+		{
 			CTF_EVEN_TEAMS = pValue;
+		}
 		else if (pName.equalsIgnoreCase("CTFAllowInterference"))
+		{
 			CTF_ALLOW_INTERFERENCE = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CTFAllowPotions"))
+		{
 			CTF_ALLOW_POTIONS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CTFAllowSummon"))
+		{
 			CTF_ALLOW_SUMMON = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CTFOnStartRemoveAllEffects"))
+		{
 			CTF_ON_START_REMOVE_ALL_EFFECTS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CTFOnStartUnsummonPet"))
+		{
 			CTF_ON_START_UNSUMMON_PET = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CTFReviveDelay"))
+		{
 			CTF_REVIVE_DELAY = Long.parseLong(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CTFEvenTeams"))
+		{
 			CTF_EVEN_TEAMS = pValue;
+		}
 		else if (pName.equalsIgnoreCase("TvTAllowInterference"))
+		{
 			TVT_ALLOW_INTERFERENCE = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("TvTAllowPotions"))
+		{
 			TVT_ALLOW_POTIONS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("TvTAllowSummon"))
+		{
 			TVT_ALLOW_SUMMON = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("TvTOnStartRemoveAllEffects"))
+		{
 			TVT_ON_START_REMOVE_ALL_EFFECTS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("TvTOnStartUnsummonPet"))
+		{
 			TVT_ON_START_UNSUMMON_PET = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("TvTEvenTeams"))
+		{
 			TVT_EVEN_TEAMS = pValue;
+		}
 		else if (pName.equalsIgnoreCase("DMAllowInterference"))
+		{
 			DM_ALLOW_INTERFERENCE = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DMAllowPotions"))
+		{
 			DM_ALLOW_POTIONS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DMAllowSummon"))
+		{
 			DM_ALLOW_SUMMON = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DMOnStartRemoveAllEffects"))
+		{
 			DM_ON_START_REMOVE_ALL_EFFECTS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("DMOnStartUnsummonPet"))
+		{
 			DM_ON_START_UNSUMMON_PET = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("VIPAllowInterference"))
+		{
 			VIP_ALLOW_INTERFERENCE = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("VIPAllowPotions"))
+		{
 			VIP_ALLOW_POTIONS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("VIPOnStartRemoveAllEffects"))
+		{
 			VIP_ON_START_REMOVE_ALL_EFFECTS = Boolean.parseBoolean(pValue);
+		}
 		else if (pName.equalsIgnoreCase("VIPMinLevel"))
+		{
 			VIP_MIN_LEVEL = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("VIPMaxLevel"))
+		{
 			VIP_MAX_LEVEL = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("VIPMinParticipants"))
+		{
 			VIP_MIN_PARTICIPANTS = Integer.parseInt(pValue);
-
-		// Rate Settings
+		}
 		else if (pName.equalsIgnoreCase("EnchantChanceWeapon"))
+		{
 			ENCHANT_CHANCE_WEAPON = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EnchantChanceArmor"))
+		{
 			ENCHANT_CHANCE_ARMOR = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EnchantChanceJewelry"))
+		{
 			ENCHANT_CHANCE_JEWELRY = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EnchantMaxWeapon"))
+		{
 			ENCHANT_MAX_WEAPON = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EnchantMaxArmor"))
+		{
 			ENCHANT_MAX_ARMOR = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EnchantMaxJewelry"))
+		{
 			ENCHANT_MAX_JEWELRY = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EnchantSafeMax"))
+		{
 			ENCHANT_SAFE_MAX = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("EnchantSafeMaxFull"))
+		{
 			ENCHANT_SAFE_MAX_FULL = Integer.parseInt(pValue);
-
-		// PvP Settings
+		}
 		else if (pName.equalsIgnoreCase("MinKarma"))
+		{
 			KARMA_MIN_KARMA = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MaxKarma"))
+		{
 			KARMA_MAX_KARMA = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("XPDivider"))
+		{
 			KARMA_XP_DIVIDER = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("BaseKarmaLost"))
+		{
 			KARMA_LOST_BASE = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("CanGMDropEquipment"))
+		{
 			KARMA_DROP_GM = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AwardPKKillPVPPoint"))
+		{
 			KARMA_AWARD_PK_KILL = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("MinimumPKRequiredToDrop"))
+		{
 			KARMA_PK_LIMIT = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PvPVsNormalTime"))
+		{
 			PVP_NORMAL_TIME = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("PvPVsPvPTime"))
+		{
 			PVP_PVP_TIME = Integer.parseInt(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AnnouncePvPKill"))
+		{
 			ANNOUNCE_PVP_KILL = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("AnnouncePkKill"))
+		{
 			ANNOUNCE_PK_KILL = Boolean.valueOf(pValue);
+		}
 		else if (pName.equalsIgnoreCase("GlobalChat"))
+		{
 			DEFAULT_GLOBAL_CHAT = pValue;
+		}
 		else if (pName.equalsIgnoreCase("TradeChat"))
+		{
 			DEFAULT_TRADE_CHAT = pValue;
+		}
 		else if (pName.equalsIgnoreCase("MenuStyle"))
+		{
 			GM_ADMIN_MENU_STYLE = pValue;
+		}
 		else
 			return false;
 		return true;
@@ -3100,7 +3650,9 @@ public final class Config
 			while ((line = lnr.readLine()) != null)
 			{
 				if (line.trim().length() == 0 || line.startsWith("#"))
+				{
 					continue;
+				}
 
 				FILTER_LIST.add(line.trim());
 			}

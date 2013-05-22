@@ -30,7 +30,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.instancemanager.ArenaManager;
 import com.l2jhellas.gameserver.instancemanager.FishingZoneManager;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -55,6 +54,7 @@ import com.l2jhellas.gameserver.model.zone.type.L2NoLandingZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class ZoneData
 {
@@ -78,17 +78,12 @@ public class ZoneData
 
 	private final void load()
 	{
-		Connection con = null;
 		int zoneCount = 0;
-
 		// Get the world regions
 		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
-
 		// Load the zone xml
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			// Get a sql connection here
-			con = L2DatabaseFactory.getInstance().getConnection();
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(false);
@@ -172,10 +167,12 @@ public class ZoneData
 								// cuboids need exactly 2 points to be defined. Other polygons need at least 3 (one per vertex)
 								if (zoneShape.equals("Cuboid"))
 								{
-									int[] x = {
+									int[] x =
+									{
 									0, 0
 									};
-									int[] y = {
+									int[] y =
+									{
 									0, 0
 									};
 									boolean successfulLoad = true;
@@ -325,16 +322,6 @@ public class ZoneData
 				e.printStackTrace();
 			}
 			return;
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 		GrandBossManager.getInstance().initZones();
 		_log.log(Level.INFO, getClass().getSimpleName() + ": loaded " + zoneCount + " zones.");

@@ -28,13 +28,13 @@ public class EffectTargetMe extends L2Effect
 	{
 		super(env, template);
 	}
-	
+
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.TARGET_ME;
 	}
-	
+
 	@Override
 	public boolean onStart()
 	{
@@ -44,13 +44,13 @@ public class EffectTargetMe extends L2Effect
 		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, getEffector());
 		return true;
 	}
-	
+
 	@Override
 	public void onExit()
 	{
 		// nothing
 	}
-	
+
 	@Override
 	public boolean onActionTime()
 	{

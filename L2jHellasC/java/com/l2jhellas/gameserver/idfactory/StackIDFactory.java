@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class StackIDFactory extends IdFactory
 {
@@ -40,10 +40,8 @@ public class StackIDFactory extends IdFactory
 		_curOID = FIRST_OID;
 		_tempOID = FIRST_OID;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			// con.createStatement().execute("drop table if exists tmp_obj_id");
 
 			int[] tmp_obj_ids = extractUsedObjectIDTable();
@@ -69,16 +67,6 @@ public class StackIDFactory extends IdFactory
 			if (Config.DEVELOPER)
 			{
 				e1.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -149,7 +137,7 @@ public class StackIDFactory extends IdFactory
 
 	/**
 	 * return a used Object ID back to the pool
-	 *
+	 * 
 	 * @param object
 	 *        ID
 	 */

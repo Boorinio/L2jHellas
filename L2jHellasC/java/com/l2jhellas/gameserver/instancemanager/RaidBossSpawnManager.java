@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
@@ -37,21 +36,20 @@ import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author godson
  **/
 public class RaidBossSpawnManager
 {
-
 	private static Logger _log = Logger.getLogger(RaidBossSpawnManager.class.getName());
 
 	private static RaidBossSpawnManager _instance;
 	protected static Map<Integer, L2RaidBossInstance> _bosses;
 	protected static Map<Integer, L2Spawn> _spawns;
 	protected static Map<Integer, StatsSet> _storedInfo;
-	@SuppressWarnings("rawtypes")
-	protected static Map<Integer, ScheduledFuture> _schedules;
+	protected static Map<Integer, ScheduledFuture> _schedules; //TODO sto shutdown vgazei NPE
 
 	public static enum StatusEnum
 	{
@@ -66,7 +64,9 @@ public class RaidBossSpawnManager
 	public static RaidBossSpawnManager getInstance()
 	{
 		if (_instance == null)
+		{
 			_instance = new RaidBossSpawnManager();
+		}
 
 		return _instance;
 	}
@@ -79,12 +79,8 @@ public class RaidBossSpawnManager
 		_storedInfo = new FastMap<Integer, StatsSet>();
 		_spawns = new FastMap<Integer, L2Spawn>();
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM raidboss_spawnlist ORDER BY boss_id");
 			ResultSet rset = statement.executeQuery();
 
@@ -132,16 +128,6 @@ public class RaidBossSpawnManager
 		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private class spawnSchedule implements Runnable
@@ -159,9 +145,13 @@ public class RaidBossSpawnManager
 			L2RaidBossInstance raidboss = null;
 
 			if (bossId == 25328)
+			{
 				raidboss = DayNightSpawnManager.getInstance().handleBoss(_spawns.get(bossId));
+			}
 			else
+			{
 				raidboss = (L2RaidBossInstance) _spawns.get(bossId).doSpawn();
+			}
 
 			if (raidboss != null)
 			{
@@ -244,9 +234,13 @@ public class RaidBossSpawnManager
 			L2RaidBossInstance raidboss = null;
 
 			if (bossId == 25328)
+			{
 				raidboss = DayNightSpawnManager.getInstance().handleBoss(spawnDat);
+			}
 			else
+			{
 				raidboss = (L2RaidBossInstance) spawnDat.doSpawn();
+			}
 
 			if (raidboss != null)
 			{
@@ -278,11 +272,8 @@ public class RaidBossSpawnManager
 
 		if (storeInDb)
 		{
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("INSERT INTO raidboss_spawnlist (boss_id,amount,loc_x,loc_y,loc_z,heading,respawn_time,currentHp,currentMp) VALUES (?,?,?,?,?,?,?,?,?)");
 				statement.setInt(1, spawnDat.getNpcid());
 				statement.setInt(2, spawnDat.getAmount());
@@ -305,16 +296,6 @@ public class RaidBossSpawnManager
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 		}
 	}
 
@@ -331,7 +312,9 @@ public class RaidBossSpawnManager
 		_spawns.remove(bossId);
 
 		if (_bosses.containsKey(bossId))
+		{
 			_bosses.remove(bossId);
+		}
 
 		if (_schedules.containsKey(bossId))
 		{
@@ -341,15 +324,14 @@ public class RaidBossSpawnManager
 		}
 
 		if (_storedInfo.containsKey(bossId))
+		{
 			_storedInfo.remove(bossId);
+		}
 
 		if (updateDb)
 		{
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("DELETE FROM raidboss_spawnlist WHERE boss_id=?");
 				statement.setInt(1, bossId);
 				statement.execute();
@@ -364,16 +346,6 @@ public class RaidBossSpawnManager
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 		}
 	}
 
@@ -381,24 +353,26 @@ public class RaidBossSpawnManager
 	{
 		for (Integer bossId : _storedInfo.keySet())
 		{
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-
 				L2RaidBossInstance boss = _bosses.get(bossId);
 
 				if (boss == null)
+				{
 					continue;
+				}
 
 				if (boss.getRaidStatus().equals(StatusEnum.ALIVE))
+				{
 					updateStatus(boss, false);
+				}
 
 				StatsSet info = _storedInfo.get(bossId);
 
 				if (info == null)
+				{
 					continue;
+				}
 
 				PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist SET respawn_time = ?, currentHP = ?, currentMP = ? WHERE boss_id = ?");
 				statement.setLong(1, info.getLong("respawnTime"));
@@ -415,16 +389,6 @@ public class RaidBossSpawnManager
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}

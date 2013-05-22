@@ -31,10 +31,10 @@ public class AdminInvul implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminInvul.class.getName());
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_invul",
-	"admin_setinvul"
-	};
+	{/** @formatter:off */
+		"admin_invul",
+		"admin_setinvul"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -52,12 +52,6 @@ public class AdminInvul implements IAdminCommandHandler
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public String[] getAdminCommandList()
-	{
-		return ADMIN_COMMANDS;
 	}
 
 	private void handleInvul(L2PcInstance activeChar)
@@ -78,5 +72,11 @@ public class AdminInvul implements IAdminCommandHandler
 				_log.log(Level.CONFIG, getClass().getName() + ": Gm activated invul mode for character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
 		}
 		activeChar.sendMessage(text);
+	}
+
+	@Override
+	public String[] getAdminCommandList()
+	{
+		return ADMIN_COMMANDS;
 	}
 }

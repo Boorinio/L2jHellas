@@ -160,7 +160,7 @@ public class RankPvpSystem
 	/**
 	 * Check all conditions and increase or not PvP <br>
 	 * (rank points are increased in addRankPointsForKiller() method)
-	 *
+	 * 
 	 * @param pvp
 	 * @param systemTime
 	 * @param systemDay
@@ -239,7 +239,7 @@ public class RankPvpSystem
 
 	/**
 	 * Shout current kills, kills_today, etc.
-	 *
+	 * 
 	 * @param pvp
 	 */
 	private void shoutPvpMessage(Pvp pvp)
@@ -438,7 +438,7 @@ public class RankPvpSystem
 	 * [1] - Bonus points for War.<br>
 	 * [2] - Bonus points for Area.<br>
 	 * [3] - Bonus points for Combo.
-	 *
+	 * 
 	 * @param pvp
 	 * @param killerPvpStats
 	 * @param victimPvpStats
@@ -523,7 +523,7 @@ public class RankPvpSystem
 
 	/**
 	 * Method used for Combo Kill System.
-	 *
+	 * 
 	 * @param killTime
 	 */
 	private void shoutComboKill(long killTime)
@@ -555,7 +555,7 @@ public class RankPvpSystem
 
 	/**
 	 * Return TRUE if at event or at olympiad.
-	 *
+	 * 
 	 * @param player
 	 * @return
 	 */
@@ -578,7 +578,7 @@ public class RankPvpSystem
 	/**
 	 * Check Basic conditions for RPS, it's mean check if can I add +1 into kills and kills_today.<br>
 	 * Basic mean: if killer is: in olympiad, in event, in restricted zone, etc.
-	 *
+	 * 
 	 * @param killer
 	 * @param victim
 	 * @return TRUE if conditions are correct.
@@ -783,7 +783,7 @@ public class RankPvpSystem
 
 	/**
 	 * Return True if it's Legal Kill (without farm check).
-	 *
+	 * 
 	 * @param killer
 	 * @param victim
 	 * @return
@@ -811,7 +811,7 @@ public class RankPvpSystem
 	/**
 	 * If returns TRUE is OK (no farming detected).<BR>
 	 * Checking: Party, Clan/Ally, IP, self-kill.
-	 *
+	 * 
 	 * @param player1
 	 * @param player2
 	 * @return

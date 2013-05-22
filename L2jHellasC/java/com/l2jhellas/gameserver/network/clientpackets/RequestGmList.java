@@ -17,9 +17,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.GmListTable;
 
 /**
- * This class handles RequestGmLista packet triggered by /gmlist command
- *
- * @version $Revision: 1.1.4.2 $ $Date: 2005/03/27 15:29:30 $
+ * This class handles RequestGmList
+ * a packet triggered by /gmlist command
  */
 public final class RequestGmList extends L2GameClientPacket
 {
@@ -35,13 +34,10 @@ public final class RequestGmList extends L2GameClientPacket
 	protected void runImpl()
 	{
 		if (getClient().getActiveChar() == null)
-		    return;
+			return;
 		GmListTable.getInstance().sendListToPlayer(getClient().getActiveChar());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

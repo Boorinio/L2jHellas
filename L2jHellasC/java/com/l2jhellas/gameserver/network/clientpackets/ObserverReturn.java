@@ -16,15 +16,9 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.7.4.4 $ $Date: 2005/03/27 18:46:19 $
- */
 public final class ObserverReturn extends L2GameClientPacket
 {
 	private static final String OBSRETURN__C__04 = "[C] b8 ObserverReturn";
-	//private static Logger _log = Logger.getLogger(Action.class.getName());
 
 	@Override
 	protected void readImpl()
@@ -37,13 +31,11 @@ public final class ObserverReturn extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-		if (activeChar.inObserverMode()) activeChar.leaveObserverMode();
-		//activeChar.teleToLocation(activeChar.getObsX(), activeChar.getObsY(), activeChar.getObsZ());
-	}
+		if (activeChar.inObserverMode())
+			activeChar.leaveObserverMode();
+		// activeChar.teleToLocation(activeChar.getObsX(), activeChar.getObsY(), activeChar.getObsZ());
+	}// TODO this is not working?
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

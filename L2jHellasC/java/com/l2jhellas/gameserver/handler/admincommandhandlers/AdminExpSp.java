@@ -30,21 +30,19 @@ import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
 /**
- * This class handles following admin commands: <li>add_exp_sp_to_character
- * <i>shows menu for add or remove</i> <li>add_exp_sp exp sp <i>Adds exp & sp to
- * target, displays menu if a parameter is missing</i> <li>remove_exp_sp exp sp
- * <i>Removes exp & sp from target, displays menu if a parameter is missing</i>
+ * This class handles following admin commands: <li>add_exp_sp_to_character <i>shows menu for add or remove</i> <li>add_exp_sp exp sp <i>Adds exp & sp to target, displays menu if a
+ * parameter is missing</i> <li>remove_exp_sp exp sp <i>Removes exp & sp from target, displays menu if a parameter is missing</i>
  */
 public class AdminExpSp implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminExpSp.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_add_exp_sp_to_character",
-	"admin_add_exp_sp",
-	"admin_remove_exp_sp"
-	};
+	{/** @formatter:off */
+		"admin_add_exp_sp_to_character",
+		"admin_add_exp_sp",
+		"admin_remove_exp_sp"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

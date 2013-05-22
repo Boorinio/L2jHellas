@@ -83,7 +83,7 @@ public class Duel
 		{
 			// increase countdown so that start task can teleport players
 			_countdown++;
-			// inform players that they will be portet shortly
+			// inform players that they will be ported shortly
 			SystemMessage sm = new SystemMessage(SystemMessageId.IN_A_MOMENT_YOU_WILL_BE_TRANSPORTED_TO_THE_SITE_WHERE_THE_DUEL_WILL_TAKE_PLACE);
 			broadcastToTeam1(sm);
 			broadcastToTeam2(sm);
@@ -300,7 +300,7 @@ public class Duel
 
 	/**
 	 * Check if a player engaged in pvp combat (only for 1on1 duels)
-	 *
+	 * 
 	 * @return returns true if a duelist is engaged in Pvp combat
 	 */
 	public boolean isDuelistInPvp(boolean sendMessage)
@@ -310,7 +310,7 @@ public class Duel
 			// Party duels take place in arenas - should be no other players there
 			return false;
 		}
-		else if (_playerA.getPvpFlag() != 0 || _playerB.getPvpFlag() != 0)
+		else if ((_playerA.getPvpFlag() != 0) || (_playerB.getPvpFlag() != 0))
 		{
 			if (sendMessage)
 			{
@@ -398,7 +398,7 @@ public class Duel
 		broadcastToTeam1(ps);
 		broadcastToTeam2(ps);
 
-		// start duelling task
+		// start dueling task
 		ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleDuelTask(this), 1000);
 	}
 
@@ -427,7 +427,7 @@ public class Duel
 
 	/**
 	 * Restore player conditions
-	 *
+	 * 
 	 * @param was
 	 *        the duel canceled?
 	 */
@@ -472,7 +472,7 @@ public class Duel
 
 	/**
 	 * Get the duel id
-	 *
+	 * 
 	 * @return id
 	 */
 	public int getId()
@@ -482,7 +482,7 @@ public class Duel
 
 	/**
 	 * Returns the remaining time
-	 *
+	 * 
 	 * @return remaining time
 	 */
 	public int getRemainingTime()
@@ -491,8 +491,8 @@ public class Duel
 	}
 
 	/**
-	 * Get the player that requestet the duel
-	 *
+	 * Get the player that requested the duel
+	 * 
 	 * @return duel requester
 	 */
 	public L2PcInstance getPlayerA()
@@ -502,7 +502,7 @@ public class Duel
 
 	/**
 	 * Get the player that was challenged
-	 *
+	 * 
 	 * @return challenged player
 	 */
 	public L2PcInstance getPlayerB()
@@ -512,7 +512,7 @@ public class Duel
 
 	/**
 	 * Returns whether this is a party duel or not
-	 *
+	 * 
 	 * @return is party duel
 	 */
 	public boolean isPartyDuel()
@@ -532,7 +532,7 @@ public class Duel
 
 	/**
 	 * teleport all players to the given coordinates
-	 *
+	 * 
 	 * @param x
 	 * @param y
 	 * @param z
@@ -558,14 +558,14 @@ public class Duel
 	}
 
 	/**
-	 * Broadcast a packet to the challanger team
+	 * Broadcast a packet to the challenger team
 	 */
 	public void broadcastToTeam1(L2GameServerPacket packet)
 	{
 		if (_playerA == null)
 			return;
 
-		if (_partyDuel && _playerA.getParty() != null)
+		if (_partyDuel && (_playerA.getParty() != null))
 		{
 			for (L2PcInstance temp : _playerA.getParty().getPartyMembers())
 				temp.sendPacket(packet);
@@ -582,7 +582,7 @@ public class Duel
 		if (_playerB == null)
 			return;
 
-		if (_partyDuel && _playerB.getParty() != null)
+		if (_partyDuel && (_playerB.getParty() != null))
 		{
 			for (L2PcInstance temp : _playerB.getParty().getPartyMembers())
 				temp.sendPacket(packet);
@@ -593,12 +593,12 @@ public class Duel
 
 	/**
 	 * Get the duel winner
-	 *
+	 * 
 	 * @return winner
 	 */
 	public L2PcInstance getWinner()
 	{
-		if (!getFinished() || _playerA == null || _playerB == null)
+		if (!getFinished() || (_playerA == null) || (_playerB == null))
 			return null;
 		if (_playerA.getDuelState() == DUELSTATE_WINNER)
 			return _playerA;
@@ -609,12 +609,12 @@ public class Duel
 
 	/**
 	 * Get the duel looser
-	 *
+	 * 
 	 * @return looser
 	 */
 	public L2PcInstance getLooser()
 	{
-		if (!getFinished() || _playerA == null || _playerB == null)
+		if (!getFinished() || (_playerA == null) || (_playerB == null))
 			return null;
 		if (_playerA.getDuelState() == DUELSTATE_WINNER)
 			return _playerB;
@@ -624,7 +624,7 @@ public class Duel
 	}
 
 	/**
-	 * Playback the bow animation for all loosers
+	 * Playback the bow animation for all losers
 	 */
 	public void playKneelAnimation()
 	{
@@ -633,7 +633,7 @@ public class Duel
 		if (looser == null)
 			return;
 
-		if (_partyDuel && looser.getParty() != null)
+		if (_partyDuel && (looser.getParty() != null))
 		{
 			for (L2PcInstance temp : looser.getParty().getPartyMembers())
 				temp.broadcastPacket(new SocialAction(temp.getObjectId(), 7));
@@ -644,7 +644,7 @@ public class Duel
 
 	/**
 	 * Do the countdown and send message to players if necessary
-	 *
+	 * 
 	 * @return current count
 	 */
 	public int countdown()
@@ -672,14 +672,14 @@ public class Duel
 
 	/**
 	 * The duel has reached a state in which it can no longer continue
-	 *
+	 * 
 	 * @param duel
 	 *        result
 	 */
 	@SuppressWarnings("incomplete-switch")
 	public void endDuel(DuelResultEnum result)
 	{
-		if (_playerA == null || _playerB == null)
+		if ((_playerA == null) || (_playerB == null))
 		{
 			// clean up
 			_playerConditions.clear();
@@ -744,7 +744,7 @@ public class Duel
 			break;
 			case Canceled:
 				stopFighting();
-				// dont restore hp, mp, cp
+				// Don't restore hp, mp, cp
 				restorePlayerConditions(true);
 				// TODO: is there no other message for a canceled duel?
 				// send SystemMessage
@@ -783,13 +783,13 @@ public class Duel
 
 	/**
 	 * Did a situation occur in which the duel has to be ended?
-	 *
+	 * 
 	 * @return DuelResultEnum duel status
 	 */
 	public DuelResultEnum checkEndDuelCondition()
 	{
 		// one of the players might leave during duel
-		if (_playerA == null || _playerB == null)
+		if ((_playerA == null) || (_playerB == null))
 			return DuelResultEnum.Canceled;
 
 		// got a duel surrender request?
@@ -823,7 +823,7 @@ public class Duel
 		else if (!_partyDuel)
 		{
 			// Duel was interrupted e.g.: player was attacked by mobs / other players
-			if (_playerA.getDuelState() == DUELSTATE_INTERRUPTED || _playerB.getDuelState() == DUELSTATE_INTERRUPTED)
+			if ((_playerA.getDuelState() == DUELSTATE_INTERRUPTED) || (_playerB.getDuelState() == DUELSTATE_INTERRUPTED))
 				return DuelResultEnum.Canceled;
 
 			// Are the players too far apart?
@@ -835,7 +835,14 @@ public class Duel
 				return DuelResultEnum.Canceled;
 
 			// is one of the players in a Siege, Peace or PvP zone?
-			if (_playerA.isInsideZone(L2Character.ZONE_PEACE) || _playerB.isInsideZone(L2Character.ZONE_PEACE) || _playerA.isInsideZone(L2Character.ZONE_SIEGE) || _playerB.isInsideZone(L2Character.ZONE_SIEGE) || _playerA.isInsideZone(L2Character.ZONE_PVP) || _playerB.isInsideZone(L2Character.ZONE_PVP))
+			if (_playerA.isInsideZone(L2Character.ZONE_PEACE)
+/** @formatter:off */
+					|| _playerB.isInsideZone(L2Character.ZONE_PEACE)
+					|| _playerA.isInsideZone(L2Character.ZONE_SIEGE)
+					|| _playerB.isInsideZone(L2Character.ZONE_SIEGE)
+					|| _playerA.isInsideZone(L2Character.ZONE_PVP)
+					|| _playerB.isInsideZone(L2Character.ZONE_PVP))
+				/** @formatter:on */
 				return DuelResultEnum.Canceled;
 		}
 
@@ -844,13 +851,13 @@ public class Duel
 
 	/**
 	 * Register a surrender request
-	 *
+	 * 
 	 * @param surrendering
 	 *        player
 	 */
 	public void doSurrender(L2PcInstance player)
 	{
-		// already recived a surrender request
+		// already received a surrender request
 		if (_surrenderRequest != 0)
 			return;
 
@@ -905,7 +912,7 @@ public class Duel
 
 	/**
 	 * This function is called whenever a player was defeated in a duel
-	 *
+	 * 
 	 * @param dieing
 	 *        player
 	 */
@@ -940,7 +947,7 @@ public class Duel
 		}
 		else
 		{
-			if (player != _playerA && player != _playerB)
+			if ((player != _playerA) && (player != _playerB))
 				_log.warning("Error in onPlayerDefeat(): player is not part of this 1vs1 duel");
 
 			if (_playerA == player)
@@ -952,19 +959,19 @@ public class Duel
 
 	/**
 	 * This function is called whenever a player leaves a party
-	 *
+	 * 
 	 * @param leaving
 	 *        player
 	 */
 	public void onRemoveFromParty(L2PcInstance player)
 	{
-		// if it isnt a party duel ignore this
+		// if it isn't a party duel ignore this
 		if (!_partyDuel)
 			return;
 
 		// this player is leaving his party during party duel
-		// if hes either playerA or playerB cancel the duel and port the players back
-		if (player == _playerA || player == _playerB)
+		// if he's either playerA or playerB cancel the duel and port the players back
+		if ((player == _playerA) || (player == _playerB))
 		{
 			for (FastList.Node<PlayerCondition> e = _playerConditions.head(), end = _playerConditions.tail(); (e = e.getNext()) != end;)
 			{

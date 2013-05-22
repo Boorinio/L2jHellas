@@ -17,12 +17,9 @@ package com.l2jhellas.gameserver.model;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 /**
- * 
  * @author Rayan RPG
- * @since 927
- *
  */
-public class L2NpcWalkerNode 
+public class L2NpcWalkerNode
 {
 	private int _routeId;
 	private int _npcId;
@@ -32,14 +29,14 @@ public class L2NpcWalkerNode
 	private int _moveY;
 	private int _moveZ;
 	private int _delay;
-	
+
 	private boolean _running;
 
 	public void setRunning(boolean val)
 	{
 		_running = val;
 	}
-	
+
 	public void setRouteId(int id)
 	{
 		_routeId = id;
@@ -119,32 +116,36 @@ public class L2NpcWalkerNode
 	{
 		return _delay;
 	}
-	
+
 	public boolean getRunning()
 	{
 		return _running;
 	}
-	
+
 	/**
-	 * Constructor of L2NpcWalker.<BR><BR>
+	 * Constructor of L2NpcWalker.<BR>
+	 * <BR>
 	 */
 	public L2NpcWalkerNode()
 	{
-		
+
 	}
-	
+
 	/**
-	 * Constructor of L2NpcWalker.<BR><BR>
-	 * @param set The StatsSet object to transfert data to the method
+	 * Constructor of L2NpcWalker.<BR>
+	 * <BR>
+	 * 
+	 * @param set
+	 *        The StatsSet object to transfert data to the method
 	 */
 	public L2NpcWalkerNode(StatsSet set)
-	{		
-		_npcId       = set.getInteger("npc_id");
-		_movePoint   = set.getString("move_point");
-		_chatText    = set.getString("chatText");
-		_moveX       = set.getInteger("move_x");
-		_moveX       = set.getInteger("move_y");
-		_moveX       = set.getInteger("move_z");
-		_delay       = set.getInteger("delay");
+	{
+		_npcId = set.getInteger("npc_id");
+		_movePoint = set.getString("move_point");
+		_chatText = set.getString("chatText");
+		_moveX = set.getInteger("move_x");
+		_moveX = set.getInteger("move_y");
+		_moveX = set.getInteger("move_z");
+		_delay = set.getInteger("delay");
 	}
 }

@@ -25,8 +25,8 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Masterio
@@ -81,9 +81,7 @@ public class PvpTable
 		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
 		{
 			if (e.getValue().getKillerObjId() == killerId && e.getValue().getVictimObjId() == victimId)
-			{
 				return e.getValue();
-			}
 		}
 
 		// create and getPvp:
@@ -260,10 +258,8 @@ public class PvpTable
 	private void load()
 	{
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM rank_pvp_system");
 
 			ResultSet rset = statement.executeQuery();
@@ -298,32 +294,13 @@ public class PvpTable
 		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-				{
-					con.close();
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-
 	}
 
 	public void updateDB()
 	{
-
-		Connection con = null;
 		Statement statement = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.createStatement();
 
 			// search new or updated fields in PvpTable:
@@ -352,21 +329,6 @@ public class PvpTable
 		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-				{
-					con.close();
-					con = null;
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
@@ -374,10 +336,8 @@ public class PvpTable
 	 */
 	private static void cleanPvpTable()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("DELETE FROM rank_pvp_system WHERE (SELECT (lastAccess) FROM characters WHERE obj_Id = killer_id) < ?");
 
 			// calculate ignore time:
@@ -385,32 +345,13 @@ public class PvpTable
 			long ignoreTime = c.getTimeInMillis() - ExternalConfig.DATABASE_CLEANER_REPEAT_TIME;
 
 			statement.setLong(1, ignoreTime);
-
 			statement.execute();
-
-			statement.close();
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-				{
-					con.close();
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-
 		System.out.println("Cleaned Pvp Table with players who are inactive for longer than " + Math.round((double) ExternalConfig.DATABASE_CLEANER_REPEAT_TIME / 86400000) + " day(s).");
-
 	}
 
 	private static class PvpTableSchedule implements Runnable

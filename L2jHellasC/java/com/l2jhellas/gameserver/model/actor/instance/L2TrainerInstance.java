@@ -16,34 +16,29 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.5.4.8 $ $Date: 2005/04/02 15:57:52 $
- */
 public final class L2TrainerInstance extends L2FolkInstance
 {
-    /**
-     * @param template
-     */
-    public L2TrainerInstance(int objectId, L2NpcTemplate template)
-    {
-        super(objectId, template);
-    }
+	/**
+	 * @param template
+	 */
+	public L2TrainerInstance(int objectId, L2NpcTemplate template)
+	{
+		super(objectId, template);
+	}
 
-    @Override
-    public String getHtmlPath(int npcId, int val)
-    {
-        String pom = "";
-        if (val == 0)
-        {
-            pom = "" + npcId;
-        }
-        else
-        {
-            pom = npcId + "-" + val;
-        }
+	@Override
+	public String getHtmlPath(int npcId, int val)
+	{
+		String pom = "";
+		if (val == 0)
+		{
+			pom = "" + npcId;
+		}
+		else
+		{
+			pom = npcId + "-" + val;
+		}
 
-        return "data/html/trainer/" + pom + ".htm";
-    }
+		return "data/html/trainer/" + pom + ".htm";
+	}
 }

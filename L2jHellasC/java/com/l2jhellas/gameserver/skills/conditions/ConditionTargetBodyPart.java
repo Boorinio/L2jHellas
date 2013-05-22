@@ -21,8 +21,6 @@ import com.l2jhellas.gameserver.templates.L2Item;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ConditionTargetBodyPart extends Condition
 {

@@ -26,10 +26,10 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.templates.L2Henna;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class HennaTreeTable
 {
@@ -48,10 +48,8 @@ public class HennaTreeTable
 		_hennaTrees = new FastMap<ClassId, List<L2HennaInstance>>();
 		int classId = 0;
 		int count = 0;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT class_name, id, parent_id FROM class_list ORDER BY id");
 			ResultSet classlist = statement.executeQuery();
 			List<L2HennaInstance> list;
@@ -108,16 +106,6 @@ public class HennaTreeTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + count + " Henna Tree Templates.");

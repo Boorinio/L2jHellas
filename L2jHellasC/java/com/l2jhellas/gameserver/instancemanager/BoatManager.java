@@ -75,13 +75,15 @@ public class BoatManager
 			while ((line = lnr.readLine()) != null)
 			{
 				if (line.trim().length() == 0 || line.startsWith("#"))
+				{
 					continue;
+				}
 				L2BoatInstance boat = parseLine(line);
 				boat.spawn();
 				_staticItems.put(boat.getObjectId(), boat);
 				if (Config.DEBUG)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Boat ID : " + boat.getObjectId());
+					_log.log(Level.CONFIG, getClass().getName() + ": Boat ID : " + boat.getObjectId());
 				}
 			}
 		}
@@ -211,7 +213,9 @@ public class BoatManager
 	public L2BoatInstance GetBoat(int boatId)
 	{
 		if (_staticItems == null)
+		{
 			_staticItems = new FastMap<Integer, L2BoatInstance>();
+		}
 		return _staticItems.get(boatId);
 	}
 }

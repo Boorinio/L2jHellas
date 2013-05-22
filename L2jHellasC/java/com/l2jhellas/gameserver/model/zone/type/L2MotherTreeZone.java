@@ -23,8 +23,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * A mother-trees zone
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2MotherTreeZone extends L2ZoneType
 {
@@ -38,12 +38,13 @@ public class L2MotherTreeZone extends L2ZoneType
 	{
 		if (character instanceof L2PcInstance)
 		{
-			L2PcInstance player = (L2PcInstance)character;
+			L2PcInstance player = (L2PcInstance) character;
 
 			if (player.isInParty())
 			{
 				for (L2PcInstance member : player.getParty().getPartyMembers())
-					if (member.getRace() != Race.elf) return;
+					if (member.getRace() != Race.elf)
+						return;
 			}
 
 			player.setInsideZone(L2Character.ZONE_MOTHERTREE, true);
@@ -57,14 +58,17 @@ public class L2MotherTreeZone extends L2ZoneType
 		if (character instanceof L2PcInstance && character.isInsideZone(L2Character.ZONE_MOTHERTREE))
 		{
 			character.setInsideZone(L2Character.ZONE_MOTHERTREE, false);
-			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.EXIT_SHADOW_MOTHER_TREE));
+			character.sendPacket(new SystemMessage(SystemMessageId.EXIT_SHADOW_MOTHER_TREE));
 		}
 	}
 
 	@Override
-	public void onDieInside(L2Character character) {}
+	public void onDieInside(L2Character character)
+	{
+	}
 
 	@Override
-	public void onReviveInside(L2Character character) {}
-
+	public void onReviveInside(L2Character character)
+	{
+	}
 }

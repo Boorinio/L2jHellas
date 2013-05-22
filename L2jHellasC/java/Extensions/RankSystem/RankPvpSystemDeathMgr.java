@@ -49,7 +49,7 @@ public class RankPvpSystemDeathMgr
 
 	/**
 	 * Always use this constructor as default!
-	 *
+	 * 
 	 * @param killer
 	 * @param victim
 	 */
@@ -129,7 +129,7 @@ public class RankPvpSystemDeathMgr
 
 	/**
 	 * Return true if item exists. Searched by item id.
-	 *
+	 * 
 	 * @param itemObjId
 	 * @return
 	 */

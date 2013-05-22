@@ -28,15 +28,10 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.2.1.2.5 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class RequestPrivateStoreBuy extends L2GameClientPacket
 {
-	private static final String _C__79_REQUESTPRIVATESTOREBUY = "[C] 79 RequestPrivateStoreBuy";
 	private static Logger _log = Logger.getLogger(RequestPrivateStoreBuy.class.getName());
+	private static final String _C__79_REQUESTPRIVATESTOREBUY = "[C] 79 RequestPrivateStoreBuy";
 
 	private int _storePlayerId;
 	private int _count;
@@ -81,7 +76,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		}
 
 		L2Object object = L2World.getInstance().findObject(_storePlayerId);
-		if (object == null || !(object instanceof L2PcInstance))
+		if ((object == null) || !(object instanceof L2PcInstance))
 			return;
 
 		L2PcInstance storePlayer = (L2PcInstance) object;
@@ -92,7 +87,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		if (storeList == null)
 			return;
 
-		// L2Dot Faction Good vs Evil
+		// Faction Good vs Evil
 		if (Config.MOD_GVE_ENABLE_FACTION)
 		{
 			if ((storePlayer.isevil() && player.isgood()) || (storePlayer.isgood() && player.isevil()))
@@ -109,7 +104,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			return;
 		}
 
-		// FIXME: this check should be (and most probabliy is) done in the TradeList mechanics
+		// FIXME: this check should be (and most probably is) done in the TradeList mechanics
 		long priceTotal = 0;
 
 		for (ItemRequest ir : _items)
@@ -136,7 +131,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			priceTotal += ir.getPrice() * ir.getCount();
 		}
 
-		// FIXME: this check should be (and most probabliy is) done in the TradeList mechanics
+		// FIXME: this check should be (and most probably is) done in the TradeList mechanics
 		if (priceTotal < 0 || priceTotal > Integer.MAX_VALUE)
 		{
 			String msgErr = "[RequestPrivateStoreBuy] player " + getClient().getActiveChar().getName() + " tried an overflow exploit, ban this player!";

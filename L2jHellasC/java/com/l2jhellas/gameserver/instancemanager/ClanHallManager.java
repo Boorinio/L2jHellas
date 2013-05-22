@@ -24,10 +24,10 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Steuf
@@ -76,13 +76,11 @@ public class ClanHallManager
 	/** Load All Clan Hall */
 	private final void load()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			int id;
 			PreparedStatement statement;
 			ResultSet rs;
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("SELECT * FROM clanhall ORDER BY id");
 			rs = statement.executeQuery();
 			while (rs.next())
@@ -117,16 +115,6 @@ public class ClanHallManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -190,10 +178,10 @@ public class ClanHallManager
 	 * {
 	 * for (Map.Entry<Integer, ClanHall> ch : _clanHall.entrySet())
 	 * if (ch.getValue().getZone().isInsideZone(x, y, z)) return ch.getValue();
-	 *
+	 * 
 	 * for (Map.Entry<Integer, ClanHall> ch : _freeClanHall.entrySet())
 	 * if (ch.getValue().getZone().isInsideZone(x, y, z)) return ch.getValue();
-	 *
+	 * 
 	 * return null;
 	 * }
 	 */

@@ -72,10 +72,6 @@ import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 abstract class DocumentBase
 {
 	static Logger _log = Logger.getLogger(DocumentBase.class.getName());
@@ -167,7 +163,7 @@ abstract class DocumentBase
 			else if ("effect".equalsIgnoreCase(n.getNodeName()))
 			{
 				if (template instanceof EffectTemplate)
-					throw new RuntimeException("Nested effects");
+					_log.log(Level.WARNING, getClass().getName() + ": Nested effects");
 				attachEffect(n, template, condition);
 			}
 		}
@@ -647,7 +643,7 @@ abstract class DocumentBase
 		NamedNodeMap attrs = n.getAttributes();
 		String name = attrs.getNamedItem("name").getNodeValue();
 		if (name.charAt(0) != '#')
-			throw new IllegalArgumentException("Table name must start with #");
+			_log.log(Level.WARNING, getClass().getName() + ": Table name must start with #");
 		StringTokenizer data = new StringTokenizer(n.getFirstChild().getNodeValue());
 		List<String> array = new FastList<String>();
 		while (data.hasMoreTokens())
@@ -700,7 +696,7 @@ abstract class DocumentBase
 					return new LambdaConst(Double.parseDouble(getValue(field, template)));
 				}
 				// failed
-				throw new IllegalArgumentException("Unknown value " + val);
+				_log.log(Level.WARNING, getClass().getName() + ": Unknown value " + val);
 			}
 			else
 			{
@@ -712,7 +708,7 @@ abstract class DocumentBase
 		while (n != null && n.getNodeType() != Node.ELEMENT_NODE)
 			n = n.getNextSibling();
 		if (n == null || !"val".equals(n.getNodeName()))
-			throw new IllegalArgumentException("Value not specified");
+			_log.log(Level.WARNING, getClass().getName() + ": Value not specified");
 
 		for (n = n.getFirstChild(); n != null; n = n.getNextSibling())
 		{
@@ -733,7 +729,7 @@ abstract class DocumentBase
 			else if (template instanceof Integer)
 				return getTableValue(value, ((Integer) template).intValue());
 			else
-				throw new IllegalStateException();
+				_log.log(Level.WARNING, getClass().getName() + ": error");
 		}
 		return value;
 	}

@@ -16,18 +16,12 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.network.serverpackets.StartRotation;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class StartRotating extends L2GameClientPacket
 {
 	private static final String _C__4A_STARTROTATING = "[C] 4A StartRotating";
 
 	private int _degree;
 	private int _side;
-
 
 	@Override
 	protected void readImpl()
@@ -40,14 +34,11 @@ public final class StartRotating extends L2GameClientPacket
 	protected void runImpl()
 	{
 		if (getClient().getActiveChar() == null)
-		    return;
+			return;
 		StartRotation br = new StartRotation(getClient().getActiveChar().getObjectId(), _degree, _side, 0);
 		getClient().getActiveChar().broadcastPacket(br);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -14,15 +14,12 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-
 /**
  * @author zabbix
- * Lets drink to code!
+ *         Lets drink to code!
  */
 public final class DummyPacket extends L2GameClientPacket
 {
-	//private static Logger _log = Logger.getLogger(DummyPacket.class.getName());
-
 	@Override
 	protected void readImpl()
 	{

@@ -33,21 +33,19 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Util;
 
 /**
- * Format: cdd[dd]
- * c    // id (0xC4)
- *
- * d    // manor id
- * d    // seeds to buy
- * [
- * d    // seed id
- * d    // count
- * ]
+ * Format: cdd[dd]<BR>
+ * c // id (0xC4)<BR>
+ * <BR>
+ * d // manor id<BR>
+ * d // seeds to buy<BR>
+ * [<BR>
+ * d // seed id<BR>
+ * d // count<BR>
+ * ]<BR>
+ * 
  * @param decrypt
  * @author l3x
  */
-
-
-
 public class RequestBuySeed extends L2GameClientPacket
 {
 	private static final String _C__C4_REQUESTBUYSEED = "[C] C4 RequestBuySeed";
@@ -56,13 +54,13 @@ public class RequestBuySeed extends L2GameClientPacket
 	private int _manorId;
 	private int[] _items; // size _count * 2
 
-    @Override
+	@Override
 	protected void readImpl()
 	{
 		_manorId = readD();
 		_count = readD();
 
-		if (_count > 500 || _count * 8 < _buf.remaining()) // check values
+		if ((_count > 500) || ((_count * 8) < _buf.remaining())) // check values
 		{
 			_count = 0;
 			return;
@@ -118,7 +116,7 @@ public class RequestBuySeed extends L2GameClientPacket
 			int price = 0;
 			int residual = 0;
 
-			SeedProduction seed = castle.getSeed(seedId,CastleManorManager.PERIOD_CURRENT);
+			SeedProduction seed = castle.getSeed(seedId, CastleManorManager.PERIOD_CURRENT);
 			price = seed.getPrice();
 			residual = seed.getCanProduce();
 
@@ -140,11 +138,7 @@ public class RequestBuySeed extends L2GameClientPacket
 
 		if (totalPrice > Integer.MAX_VALUE)
 		{
-			Util.handleIllegalPlayerAction(player, "Warning!! Character "
-					+ player.getName() + " of account "
-					+ player.getAccountName() + " tried to purchase over "
-					+ Integer.MAX_VALUE + " adena worth of goods.",
-					Config.DEFAULT_PUNISH);
+			Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to purchase over " + Integer.MAX_VALUE + " adena worth of goods.", Config.DEFAULT_PUNISH);
 			return;
 		}
 
@@ -180,17 +174,13 @@ public class RequestBuySeed extends L2GameClientPacket
 				count = 0;
 
 			// Update Castle Seeds Amount
-			SeedProduction seed = castle.getSeed(seedId,
-					CastleManorManager.PERIOD_CURRENT);
+			SeedProduction seed = castle.getSeed(seedId, CastleManorManager.PERIOD_CURRENT);
 			seed.setCanProduce(seed.getCanProduce() - count);
 			if (Config.ALT_MANOR_SAVE_ALL_ACTIONS)
-				CastleManager.getInstance().getCastleById(_manorId).updateSeed(
-						seed.getId(), seed.getCanProduce(),
-						CastleManorManager.PERIOD_CURRENT);
+				CastleManager.getInstance().getCastleById(_manorId).updateSeed(seed.getId(), seed.getCanProduce(), CastleManorManager.PERIOD_CURRENT);
 
 			// Add item to Inventory and adjust update packet
-			L2ItemInstance item = player.getInventory().addItem("Buy", seedId,
-					count, player, target);
+			L2ItemInstance item = player.getInventory().addItem("Buy", seedId, count, player, target);
 
 			if (item.getCount() > count)
 				playerIU.addModifiedItem(item);

@@ -120,8 +120,7 @@ public class Point3D implements Serializable
 		return (dx * dx) + (dy * dy);
 	}
 
-	public static boolean distanceLessThan(Point3D point1, Point3D point2,
-			double distance)
+	public static boolean distanceLessThan(Point3D point1, Point3D point2, double distance)
 	{
 		return distanceSquared(point1, point2) < distance * distance;
 	}

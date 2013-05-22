@@ -24,7 +24,8 @@ import com.l2jhellas.gameserver.templates.L2Item;
 
 /**
  * Format:(ch) d
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public final class RequestConfirmTargetItem extends L2GameClientPacket
 {
@@ -41,16 +42,14 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 		_itemObjId = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance item = (L2ItemInstance)L2World.getInstance().findObject(_itemObjId);
+		L2ItemInstance item = (L2ItemInstance) L2World.getInstance().findObject(_itemObjId);
 
-		if (item == null) return;
+		if (item == null)
+			return;
 
 		if (activeChar.getLevel() < 46)
 		{
@@ -67,9 +66,8 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.ONCE_AN_ITEM_IS_AUGMENTED_IT_CANNOT_BE_AUGMENTED_AGAIN));
 			return;
 		}
-		//TODO: can do better? : currently: using isdestroyable() as a check for hero / cursed weapons
-		else if (itemGrade < L2Item.CRYSTAL_C || itemType != L2Item.TYPE2_WEAPON || !item.isDestroyable() ||
-				item.isShadowItem())
+		// TODO: can do better? : currently: using isdestroyable() as a check for hero / cursed weapons
+		else if (itemGrade < L2Item.CRYSTAL_C || itemType != L2Item.TYPE2_WEAPON || !item.isDestroyable() || item.isShadowItem())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM));
 			return;
@@ -106,13 +104,9 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 		activeChar.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_CATALYST_FOR_AUGMENTATION));
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_29_REQUESTCONFIRMTARGETITEM;
 	}
-
 }

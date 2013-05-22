@@ -31,12 +31,13 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class AdminBanChat implements IAdminCommandHandler
 {
-	private static String[] ADMIN_COMMANDS = {
-	"admin_banchat",
-	"admin_unbanchat",
-	"admin_unbanchat_all",
-	"admin_banchat_all"
-	};
+	private static String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
+		"admin_banchat",
+		"admin_unbanchat",
+		"admin_unbanchat_all",
+		"admin_banchat_all"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance admin)

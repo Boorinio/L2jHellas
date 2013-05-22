@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 
-
 public class GMAudit
 {
 	static

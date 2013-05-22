@@ -18,44 +18,33 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMatchDetail;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:29:30 $
- */
-
 public final class RequestPartyMatchDetail extends L2GameClientPacket
 {
 	private static final String _C__71_REQUESTPARTYMATCHDETAIL = "[C] 71 RequestPartyMatchDetail";
-	//private static Logger _log = Logger.getLogger(RequestPartyMatchDetail.class.getName());
 
 	private int _objectId;
-    @SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private int _unk1;
-
 
 	@Override
 	protected void readImpl()
 	{
 		_objectId = readD();
-        //TODO analyse value unk1
-        _unk1 = readD();
+		// TODO analyze value unk1
+		_unk1 = readD();
 	}
 
 	@Override
 	protected void runImpl()
 	{
-		//TODO: this packet is currently for starting auto join
+		// TODO: this packet is currently for starting auto join
 		L2PcInstance player = (L2PcInstance) L2World.getInstance().findObject(_objectId);
 		if (player == null)
-		    return;
+			return;
 		PartyMatchDetail details = new PartyMatchDetail(player);
 		sendPacket(details);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

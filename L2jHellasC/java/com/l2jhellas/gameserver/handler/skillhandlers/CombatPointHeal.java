@@ -25,8 +25,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class CombatPointHeal implements ISkillHandler
 {
-
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.COMBATPOINTHEAL
 	};
 

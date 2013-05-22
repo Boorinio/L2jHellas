@@ -29,13 +29,15 @@ public class ClanLevel extends Condition
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
-		if (getValue() == null) return false;
+		if (getValue() == null)
+			return false;
 
 		if (player.getClan() != null)
 		{
 			int val = Integer.parseInt(getValue().toString());
 
-			if (player.getClan().getLevel() >= val) return true;
+			if (player.getClan().getLevel() >= val)
+				return true;
 		}
 		return false;
 	}

@@ -222,7 +222,8 @@ public class RegionBBSManager extends BaseBBSManager
 				{
 					LogRecord record = new LogRecord(Level.INFO, ar3);
 					record.setLoggerName("chat");
-					record.setParameters(new Object[] {
+					record.setParameters(new Object[]
+					{
 					"TELL", "[" + activeChar.getName() + " to " + receiver.getName() + "]"
 					});
 					_logChat.log(record);

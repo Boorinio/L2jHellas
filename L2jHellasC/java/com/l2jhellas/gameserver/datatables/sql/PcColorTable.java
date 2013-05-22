@@ -24,9 +24,9 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.PcColorContainer;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class PcColorTable
 {
@@ -38,12 +38,9 @@ public class PcColorTable
 
 	PcColorTable()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			Vector<String> deleteNames = new Vector<String>();
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM character_colors");
 			ResultSet rs = ps.executeQuery();
 
@@ -83,21 +80,11 @@ public class PcColorTable
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Returns the instance of this class, assign a new object to _instance if it's null
-	 *
+	 * 
 	 * @return PcColorTable
 	 */
 	public static PcColorTable getInstance()
@@ -110,7 +97,7 @@ public class PcColorTable
 
 	/**
 	 * Sets the name color of the L2PcInstance if it name is on the list
-	 *
+	 * 
 	 * @param activeChar
 	 */
 	public synchronized static void process(L2PcInstance activeChar)
@@ -130,7 +117,7 @@ public class PcColorTable
 
 	/**
 	 * Adds the name of the L2PcInstance to the list with the color values
-	 *
+	 * 
 	 * @param activeChar
 	 * @param color
 	 * @param regTime
@@ -147,11 +134,8 @@ public class PcColorTable
 				return;
 		}
 
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement psIns = con.prepareStatement("INSERT INTO character_colors VALUES (?,?,?,?)");
 			psIns.setString(1, charName);
 			psIns.setInt(2, color);
@@ -172,22 +156,12 @@ public class PcColorTable
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
 	 * Returns true if the name is deleted successfully from list, otherwise false
 	 * Deletes the name from the list
-	 *
+	 * 
 	 * @param charName
 	 * @return boolean
 	 */
@@ -199,12 +173,8 @@ public class PcColorTable
 			return false;
 
 		colorContainer = null;
-
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement psDel = con.prepareStatement("DELETE FROM character_colors WHERE char_name=?");
 			psDel.setString(1, charName);
 			psDel.executeUpdate();
@@ -220,17 +190,6 @@ public class PcColorTable
 			}
 			return false;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		return true;
 	}
 }

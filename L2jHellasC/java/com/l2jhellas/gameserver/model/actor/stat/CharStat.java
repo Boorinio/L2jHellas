@@ -212,7 +212,9 @@ public class CharStat
 		criticalHit /= 10;
 		// Set a cap of Critical Hit at 500
 		if (criticalHit > Config.MAX_PCRIT_RATE)
+		{
 			criticalHit = Config.MAX_PCRIT_RATE;
+		}
 
 		return criticalHit;
 	}
@@ -225,11 +227,14 @@ public class CharStat
 
 		double mrate = calcStat(Stats.MCRITICAL_RATE, _activeChar.getTemplate().baseMCritRate, target, skill);
 		if (mrate > Config.MAX_MCRIT_RATE)
+		{
 			mrate = Config.MAX_MCRIT_RATE;
+		}
 		return (int) mrate;
 	}
 
-	/** Return the Critical Damage rate
+	/**
+	 * Return the Critical Damage rate
 	 * (base+modifier) of the L2Character.
 	 */
 	public final double getCriticalDmg(L2Character target, double init)
@@ -237,8 +242,9 @@ public class CharStat
 		return calcStat(Stats.CRITICAL_DAMAGE, init, target, null);
 	}
 
-	/** Return the MEN
-	 *  of the L2Character (base+modifier).
+	/**
+	 * Return the MEN
+	 * of the L2Character (base+modifier).
 	 */
 	public final int getMEN()
 	{
@@ -248,8 +254,9 @@ public class CharStat
 		return (int) calcStat(Stats.STAT_MEN, _activeChar.getTemplate().baseMEN, null, null);
 	}
 
-	/** Return the STR
-	 *  of the L2Character (base+modifier).
+	/**
+	 * Return the STR
+	 * of the L2Character (base+modifier).
 	 */
 	public final int getSTR()
 	{
@@ -258,8 +265,10 @@ public class CharStat
 
 		return (int) calcStat(Stats.STAT_STR, _activeChar.getTemplate().baseSTR, null, null);
 	}
-	/** Return the WIT
-	 *  of the L2Character (base+modifier).
+
+	/**
+	 * Return the WIT
+	 * of the L2Character (base+modifier).
 	 */
 	public final int getWIT()
 	{
@@ -269,8 +278,9 @@ public class CharStat
 		return (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseWIT, null, null);
 	}
 
-	/** Return the CON
-	 *  of the L2Character (base+modifier).
+	/**
+	 * Return the CON
+	 * of the L2Character (base+modifier).
 	 */
 	public final int getCON()
 	{
@@ -280,7 +290,8 @@ public class CharStat
 		return (int) calcStat(Stats.STAT_CON, _activeChar.getTemplate().baseCON, null, null);
 	}
 
-	/** Return the DEX
+	/**
+	 * Return the DEX
 	 * of the L2Character (base+modifier).
 	 */
 	public final int getDEX()
@@ -291,8 +302,9 @@ public class CharStat
 		return (int) calcStat(Stats.STAT_DEX, _activeChar.getTemplate().baseDEX, null, null);
 	}
 
-	/** Return the INT
-	 *  of the L2Character (base+modifier).
+	/**
+	 * Return the INT
+	 * of the L2Character (base+modifier).
 	 */
 	public int getINT()
 	{
@@ -302,8 +314,9 @@ public class CharStat
 		return (int) calcStat(Stats.STAT_INT, _activeChar.getTemplate().baseINT, null, null);
 	}
 
-	/** Return the Attack Evasion
-	 *  rate (base+modifier) of the L2Character.
+	/**
+	 * Return the Attack Evasion
+	 * rate (base+modifier) of the L2Character.
 	 */
 	public int getEvasionRate(L2Character target)
 	{
@@ -667,7 +680,9 @@ public class CharStat
 			return 1;
 		float bonusAtk = 1;
 		if (_activeChar.isChampion())
+		{
 			bonusAtk = Config.CHAMPION_ATK;
+		}
 		double attack = _activeChar.getTemplate().baseMAtk * bonusAtk;
 		// Get the skill type to calculate its effect in function of base stats
 		// of the L2Character target
@@ -724,7 +739,9 @@ public class CharStat
 
 		// Add the power of the skill to the attack effect
 		if (skill != null)
+		{
 			attack += skill.getPower();
+		}
 
 		// Calculate modifiers Magic Attack
 		double val = calcStat(Stats.MAGIC_ATTACK, attack, target, skill);
@@ -811,7 +828,9 @@ public class CharStat
 			return 1;
 		float bonusSpdAtk = 1;
 		if (_activeChar.isChampion())
+		{
 			bonusSpdAtk = Config.CHAMPION_SPD_ATK;
+		}
 		double val = calcStat(Stats.MAGIC_ATTACK_SPEED, _activeChar.getTemplate().baseMAtkSpd * bonusSpdAtk, null, null);
 		val /= _activeChar.getArmourExpertisePenalty();
 		if (_activeChar instanceof L2PcInstance)
@@ -908,7 +927,9 @@ public class CharStat
 
 		// Calculate modifier for Raid Bosses
 		if (_activeChar.isRaid() || _activeChar.isBoss())
+		{
 			defence *= Config.RAID_M_DEFENCE_MULTIPLIER;
+		}
 
 		// Calculate modifiers Magic Attack
 		double val = calcStat(Stats.MAGIC_DEFENCE, defence, target, skill);
@@ -1031,7 +1052,9 @@ public class CharStat
 			return 1;
 		float bonusAtk = 1;
 		if (_activeChar.isChampion())
+		{
 			bonusAtk = Config.CHAMPION_ATK;
+		}
 		double val = calcStat(Stats.POWER_ATTACK, _activeChar.getTemplate().basePAtk * bonusAtk, target, null);
 		if (_activeChar instanceof L2PcInstance)
 		{
@@ -1149,7 +1172,9 @@ public class CharStat
 			return 1;
 		float bonusAtk = 1;
 		if (_activeChar.isChampion())
+		{
 			bonusAtk = Config.CHAMPION_SPD_ATK;
+		}
 		double val = (calcStat(Stats.POWER_ATTACK_SPEED, _activeChar.getTemplate().basePAtkSpd * bonusAtk, null, null) / _activeChar.getArmourExpertisePenalty());
 		if (_activeChar instanceof L2PcInstance)
 		{
@@ -1244,7 +1269,9 @@ public class CharStat
 
 		// Calculate modifier for Raid Bosses
 		if (_activeChar.isRaid() || _activeChar.isBoss())
+		{
 			defence *= Config.RAID_P_DEFENCE_MULTIPLIER;
+		}
 
 		// Calculate modifiers Magic Attack
 		double val = calcStat(Stats.POWER_DEFENCE, defence, target, null);
@@ -1346,93 +1373,94 @@ public class CharStat
 
 		// err we should be adding TO the persons run speed
 		// not making it a constant
-		int val = (int) calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null) + Config.RUN_SPD_BOOST;
-
+		//int val = (int) calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null) + Config.RUN_SPD_BOOST;
+		double val = (calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null) + Config.RUN_SPD_BOOST);
+		if (_activeChar instanceof L2PcInstance)
+		{//FIXME
+			switch (((L2PcInstance) _activeChar).getClassId().getId())
+			{
+				case 88:
+					return (int) val + BalancerMain.walkplus88;
+				case 89:
+					return (int) val + BalancerMain.walkplus89;
+				case 90:
+					return (int) val + BalancerMain.walkplus90;
+				case 91:
+					return (int) val + BalancerMain.walkplus91;
+				case 92:
+					return (int) val + BalancerMain.walkplus92;
+				case 93:
+					return (int) val + BalancerMain.walkplus93;
+				case 94:
+					return (int) val + BalancerMain.walkplus94;
+				case 95:
+					return (int) val + BalancerMain.walkplus95;
+				case 96:
+					return (int) val + BalancerMain.walkplus96;
+				case 97:
+					return (int) val + BalancerMain.walkplus97;
+				case 98:
+					return (int) val + BalancerMain.walkplus98;
+				case 99:
+					return (int) val + BalancerMain.walkplus99;
+				case 100:
+					return (int) val + BalancerMain.walkplus100;
+				case 101:
+					return (int) val + BalancerMain.walkplus101;
+				case 102:
+					return (int) val + BalancerMain.walkplus102;
+				case 103:
+					return (int) val + BalancerMain.walkplus103;
+				case 104:
+					return (int) val + BalancerMain.walkplus104;
+				case 105:
+					return (int) val + BalancerMain.walkplus105;
+				case 106:
+					return (int) val + BalancerMain.walkplus106;
+				case 107:
+					return (int) val + BalancerMain.walkplus107;
+				case 108:
+					return (int) val + BalancerMain.walkplus108;
+				case 109:
+					return (int) val + BalancerMain.walkplus109;
+				case 110:
+					return (int) val + BalancerMain.walkplus110;
+				case 111:
+					return (int) val + BalancerMain.walkplus111;
+				case 112:
+					return (int) val + BalancerMain.walkplus112;
+				case 113:
+					return (int) val + BalancerMain.walkplus113;
+				case 114:
+					return (int) val + BalancerMain.walkplus114;
+				case 115:
+					return (int) val + BalancerMain.walkplus115;
+				case 116:
+					return (int) val + BalancerMain.walkplus116;
+				case 117:
+					return (int) val + BalancerMain.walkplus117;
+				case 118:
+					return (int) val + BalancerMain.walkplus118;
+			}
+		}
 		if (_activeChar.isFlying())
 		{
 			val += Config.WYVERN_SPEED;
-			return val;
+			return (int) val;
 		}
 		if (_activeChar.isRiding())
 		{
 			val += Config.STRIDER_SPEED;
-			return val;
+			return (int) val;
 		}
 		val /= _activeChar.getArmourExpertisePenalty();
 
 		// Apply max run speed cap.
 		if (val > Config.MAX_RUN_SPEED)
-			val = Config.MAX_RUN_SPEED;
-
-		if (_activeChar instanceof L2PcInstance)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return val + BalancerMain.walkplus88;
-				case 89:
-					return val + BalancerMain.walkplus89;
-				case 90:
-					return val + BalancerMain.walkplus90;
-				case 91:
-					return val + BalancerMain.walkplus91;
-				case 92:
-					return val + BalancerMain.walkplus92;
-				case 93:
-					return val + BalancerMain.walkplus93;
-				case 94:
-					return val + BalancerMain.walkplus94;
-				case 95:
-					return val + BalancerMain.walkplus95;
-				case 96:
-					return val + BalancerMain.walkplus96;
-				case 97:
-					return val + BalancerMain.walkplus97;
-				case 98:
-					return val + BalancerMain.walkplus98;
-				case 99:
-					return val + BalancerMain.walkplus99;
-				case 100:
-					return val + BalancerMain.walkplus100;
-				case 101:
-					return val + BalancerMain.walkplus101;
-				case 102:
-					return val + BalancerMain.walkplus102;
-				case 103:
-					return val + BalancerMain.walkplus103;
-				case 104:
-					return val + BalancerMain.walkplus104;
-				case 105:
-					return val + BalancerMain.walkplus105;
-				case 106:
-					return val + BalancerMain.walkplus106;
-				case 107:
-					return val + BalancerMain.walkplus107;
-				case 108:
-					return val + BalancerMain.walkplus108;
-				case 109:
-					return val + BalancerMain.walkplus109;
-				case 110:
-					return val + BalancerMain.walkplus110;
-				case 111:
-					return val + BalancerMain.walkplus111;
-				case 112:
-					return val + BalancerMain.walkplus112;
-				case 113:
-					return val + BalancerMain.walkplus113;
-				case 114:
-					return val + BalancerMain.walkplus114;
-				case 115:
-					return val + BalancerMain.walkplus115;
-				case 116:
-					return val + BalancerMain.walkplus116;
-				case 117:
-					return val + BalancerMain.walkplus117;
-				case 118:
-					return val + BalancerMain.walkplus118;
-			}
+			val = Config.MAX_RUN_SPEED;
 		}
-		return val;
+		return (int) val;
 	}
 
 	/** Return the ShieldDef rate (base+modifier) of the L2Character. */
@@ -1459,82 +1487,9 @@ public class CharStat
 			return 1;
 
 		if (_activeChar instanceof L2PcInstance)
-		{
 			return (getRunSpeed() * 70) / 100;
-		}
 		else
-		{
-			double val = calcStat(Stats.WALK_SPEED, _activeChar.getTemplate().baseWalkSpd, null, null);
-			if (_activeChar instanceof L2PcInstance)
-			{
-				switch (((L2PcInstance) _activeChar).getClassId().getId())
-				{
-					case 88:
-						return (int) val + BalancerMain.walkplus88;
-					case 89:
-						return (int) val + BalancerMain.walkplus89;
-					case 90:
-						return (int) val + BalancerMain.walkplus90;
-					case 91:
-						return (int) val + BalancerMain.walkplus91;
-					case 92:
-						return (int) val + BalancerMain.walkplus92;
-					case 93:
-						return (int) val + BalancerMain.walkplus93;
-					case 94:
-						return (int) val + BalancerMain.walkplus94;
-					case 95:
-						return (int) val + BalancerMain.walkplus95;
-					case 96:
-						return (int) val + BalancerMain.walkplus96;
-					case 97:
-						return (int) val + BalancerMain.walkplus97;
-					case 98:
-						return (int) val + BalancerMain.walkplus98;
-					case 99:
-						return (int) val + BalancerMain.walkplus99;
-					case 100:
-						return (int) val + BalancerMain.walkplus100;
-					case 101:
-						return (int) val + BalancerMain.walkplus101;
-					case 102:
-						return (int) val + BalancerMain.walkplus102;
-					case 103:
-						return (int) val + BalancerMain.walkplus103;
-					case 104:
-						return (int) val + BalancerMain.walkplus104;
-					case 105:
-						return (int) val + BalancerMain.walkplus105;
-					case 106:
-						return (int) val + BalancerMain.walkplus106;
-					case 107:
-						return (int) val + BalancerMain.walkplus107;
-					case 108:
-						return (int) val + BalancerMain.walkplus108;
-					case 109:
-						return (int) val + BalancerMain.walkplus109;
-					case 110:
-						return (int) val + BalancerMain.walkplus110;
-					case 111:
-						return (int) val + BalancerMain.walkplus111;
-					case 112:
-						return (int) val + BalancerMain.walkplus112;
-					case 113:
-						return (int) val + BalancerMain.walkplus113;
-					case 114:
-						return (int) val + BalancerMain.walkplus114;
-					case 115:
-						return (int) val + BalancerMain.walkplus115;
-					case 116:
-						return (int) val + BalancerMain.walkplus116;
-					case 117:
-						return (int) val + BalancerMain.walkplus117;
-					case 118:
-						return (int) val + BalancerMain.walkplus118;
-				}
-			}
-			return (int) val;
-		}
+			return (int) calcStat(Stats.WALK_SPEED, _activeChar.getTemplate().baseWalkSpd, null, null);
 	}
 
 	/** Return the mpConsume. */
@@ -1544,7 +1499,9 @@ public class CharStat
 			return 1;
 		int mpconsume = skill.getMpConsume();
 		if (skill.isDance() && _activeChar != null && _activeChar.getDanceCount() > 0)
+		{
 			mpconsume += _activeChar.getDanceCount() * skill.getNextDanceMpCost();
+		}
 		return (int) calcStat(Stats.MP_CONSUME, mpconsume, null, skill);
 	}
 
@@ -1559,7 +1516,8 @@ public class CharStat
 
 	public int getAttackElement()
 	{
-		double tempVal = 0, stats[] = {
+		double tempVal = 0, stats[] =
+		{
 		_fire, _water, _wind, _earth, _holy, _dark
 		};
 

@@ -31,12 +31,12 @@ public class Sub extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
-		
+
 		if (player.getSubClasses().size() >= val)
 			return true;
-		
+
 		return false;
 	}
 }

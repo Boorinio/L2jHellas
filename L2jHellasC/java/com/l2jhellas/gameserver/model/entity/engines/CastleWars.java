@@ -3,21 +3,21 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * @author Boorinio
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.List;
+
+import javolution.util.FastList;
+import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -29,9 +29,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-import javolution.util.FastList;
-import javolution.util.FastSet;
-
+/**
+ * @author Boorinio
+ */
 public class CastleWars
 {
 	private static List<L2PcInstance> _defenders = new FastList<L2PcInstance>();
@@ -60,10 +60,10 @@ public class CastleWars
 	{
 	345, 128, 235,
 	};
-	
+
 	public static void openRegi()
 	{
-		ZodiacMain.ZodiacRegisterActive=true;
+		ZodiacMain.ZodiacRegisterActive = true;
 		Announcements.getInstance().announceToAll("CastleWars Event has Started!");
 		Announcements.getInstance().announceToAll("Type .join to enter or .leave to leave!");
 		Announcements.getInstance().announceToAll("You have 10 minutes to register!");
@@ -75,32 +75,30 @@ public class CastleWars
 		Announcements.getInstance().announceToAll("You have 1 minute to register!");
 		waitSecs(60);
 		CastleWarsRunning = true;
-		ZodiacMain.ZodiacRegisterActive=false;
+		ZodiacMain.ZodiacRegisterActive = false;
 		isFinished = false;
 		stopRegi();
 		preparecastle();
 		shufflePlayers();
 		teleportThem();
 		if (!isFinished)
-		Announcements.getInstance().announceToAll("You have 10 minutes until the event is over!");
+			Announcements.getInstance().announceToAll("You have 10 minutes until the event is over!");
 		waitSecs(300);
 		if (!isFinished)
-		Announcements.getInstance().announceToAll("You have 5 minutes until the event is over!");
+			Announcements.getInstance().announceToAll("You have 5 minutes until the event is over!");
 		waitSecs(180);
 		if (!isFinished)
-		Announcements.getInstance().announceToAll("You have 2 minutes until the event is over!");
+			Announcements.getInstance().announceToAll("You have 2 minutes until the event is over!");
 		waitSecs(60);
 		if (!isFinished)
-		Announcements.getInstance().announceToAll("You have 1 minute until the event is over!");
+			Announcements.getInstance().announceToAll("You have 1 minute until the event is over!");
 		waitSecs(60);
 		if (!isFinished)
 		{
 			defendersWin();
-			
 		}
-		
 	}
-	
+
 	public static void preparecastle()
 	{
 		DoorTable.getInstance().getDoor(22130001).openMe();
@@ -122,7 +120,7 @@ public class CastleWars
 			_flags.add(flags);
 		}
 	}
-	
+
 	public static void cleanevent()
 	{
 		for (L2PcInstance defender : _defenders)
@@ -144,7 +142,7 @@ public class CastleWars
 		for (L2NpcInstance flags : _flags)
 		{
 			flags.deleteMe();
-			
+
 		}
 		flagskilled = 0;
 		_flags.clear();
@@ -163,7 +161,7 @@ public class CastleWars
 		DoorTable.getInstance().getDoor(22130010).closeMe();
 		DoorTable.getInstance().getDoor(22130006).closeMe();
 	}
-	
+
 	public static void defendersWin()
 	{
 		Announcements.getInstance().announceToAll("Defenders Won the event they protected the flags!");
@@ -175,28 +173,27 @@ public class CastleWars
 		isFinished = true;
 		cleanevent();
 	}
+
 	public static boolean isattacker(L2PcInstance player)
 	{
-		
-		if(_attackers.contains(player.getName()))
-		{
+
+		if (_attackers.contains(player.getName()))
 			return true;
-		}
 		else
 			return false;
-		
+
 	}
+
 	public static boolean isdefender(L2PcInstance player)
 	{
-		
-		if(_defenders.contains(player.getName()))
-		{
+
+		if (_defenders.contains(player.getName()))
 			return true;
-		}
 		else
 			return false;
-		
+
 	}
+
 	public static void attackersWin()
 	{
 		if (flagskilled == 3)
@@ -205,13 +202,13 @@ public class CastleWars
 			for (L2PcInstance attacker : _attackers)
 			{
 				attacker.sendMessage("Congratulations! Here is a reward for your effort!");
-				attacker.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN,attacker, true);
+				attacker.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, attacker, true);
 			}
 			isFinished = true;
 			cleanevent();
 		}
 	}
-	
+
 	public static void teleportThem()
 	{
 		for (L2PcInstance defender : _defenders)
@@ -223,12 +220,12 @@ public class CastleWars
 			attacker.teleToLocation(attackersx, attackersy, attackersz);
 		}
 	}
-	
+
 	public static void stopRegi()
 	{
 		Announcements.getInstance().announceToAll("Registrations are now over!");
 	}
-	
+
 	public static void shufflePlayers()
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
@@ -254,7 +251,7 @@ public class CastleWars
 			}
 		}
 	}
-	
+
 	public static void waitSecs(int i)
 	{
 		try
@@ -266,7 +263,7 @@ public class CastleWars
 			ie.printStackTrace();
 		}
 	}
-	
+
 	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
 	{
 		L2NpcInstance result = null;

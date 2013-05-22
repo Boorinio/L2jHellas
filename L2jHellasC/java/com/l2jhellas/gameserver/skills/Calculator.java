@@ -88,7 +88,6 @@ public final class Calculator
 				return false;
 		}
 		return true;
-
 	}
 
 	/**
@@ -147,7 +146,6 @@ public final class Calculator
 			_functions = _emptyFuncs;
 		else
 			_functions = tmp;
-
 	}
 
 	/**
@@ -168,7 +166,6 @@ public final class Calculator
 			}
 		}
 		return modifiedStats;
-
 	}
 
 	/**
@@ -181,6 +178,5 @@ public final class Calculator
 
 		for (int i = 0; i < funcs.length; i++)
 			funcs[i].calc(env);
-
 	}
 }

@@ -24,10 +24,10 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Pauler
@@ -36,7 +36,8 @@ public class MailCmd implements IVoicedCommandHandler
 {
 	private static final Logger _log = Logger.getLogger(MailCmd.class.getName());
 
-	public static final String[] VOICED_COMMANDS = {
+	public static final String[] VOICED_COMMANDS =
+	{
 	"mailread", "mailsend"
 	};
 
@@ -68,10 +69,8 @@ public class MailCmd implements IVoicedCommandHandler
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><head><title>Inbox</title></head><body>");
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE `to`=? ORDER BY id DESC");
 			statement.setString(1, activeChar.getName());
 			ResultSet result = statement.executeQuery();

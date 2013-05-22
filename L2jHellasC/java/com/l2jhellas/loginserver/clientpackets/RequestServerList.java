@@ -58,8 +58,8 @@ public class RequestServerList extends L2LoginClientPacket
 	{
 		if (super._buf.remaining() >= 8)
 		{
-			_skey1  = readD(); // loginOk 1
-			_skey2  = readD(); // loginOk 2
+			_skey1 = readD(); // loginOk 1
+			_skey2 = readD(); // loginOk 2
 			return true;
 		}
 		else
@@ -68,9 +68,6 @@ public class RequestServerList extends L2LoginClientPacket
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.mmocore.ClientPacket#run()
-	 */
 	@Override
 	public void run()
 	{

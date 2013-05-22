@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <servers_list>
-	<!-- server list from c3 (only english names) -->
+	<!-- server list (only English names) -->
 	<server id="1" name="Bartz" />
 	<server id="2" name="Sieghardt" />
 	<server id="3" name="Kain" />
@@ -69,10 +69,10 @@
 	<server id="66" name="Carneiar" />
 	<server id="67" name="Dwyllios" />
 	<server id="68" name="Baium" />
-	<server id="69" name="Hallate" />
+	<server id="69" name="Nightwolf" />
 	<server id="70" name="Zaken" />
 	<server id="71" name="Core" />
-	<server id="72" name="72" />
+	<server id="72" name="Hallate" />
 	<server id="73" name="73" />
 	<server id="74" name="74" />
 	<server id="75" name="75" />
@@ -127,5 +127,5 @@
 	<server id="124" name="124" />
 	<server id="125" name="125" />
 	<server id="126" name="126" />
-	<server id="127" name="??" />
+	<server id="127" name="127" />
 </servers_list>

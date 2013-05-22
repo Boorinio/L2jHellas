@@ -17,23 +17,18 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
- *
- *
  * sample
  * b0
- * d8 a8 10 48  objectId
+ * d8 a8 10 48 objectId
  * 00 00 00 00
  * 00 00 00 00
  * 00 00
- *
- * format   ddddS
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
+ * format ddddS
  */
 public class PartyMatchDetail extends L2GameServerPacket
 {
 	private static final String _S__B0_PARTYMATCHDETAIL = "[S] 97 PartyMatchDetail";
-	private L2PcInstance _activeChar;
+	private final L2PcInstance _activeChar;
 
 	/**
 	 * @param allPlayers
@@ -67,14 +62,11 @@ public class PartyMatchDetail extends L2GameServerPacket
 			writeD(0); // hide class
 		}
 
-		writeD(0); //c2
+		writeD(0); // c2
 
 		writeS("  " + _activeChar.getPartyMatchingMemo()); // seems to be bugged.. first 2 chars get stripped away
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

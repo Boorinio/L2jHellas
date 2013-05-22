@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -30,6 +31,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 /**
  * This class handles following admin commands:
  * - heal = restores HP/MP/CP on target, name or radius
+ *
+ * @author Nightwolf
  */
 public class AdminHeal implements IAdminCommandHandler
 {
@@ -46,7 +49,9 @@ public class AdminHeal implements IAdminCommandHandler
 		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
 
 		if (command.equals("admin_heal"))
+		{
 			handleRes(activeChar);
+		}
 		else if (command.startsWith("admin_heal"))
 		{
 			try
@@ -57,7 +62,9 @@ public class AdminHeal implements IAdminCommandHandler
 			catch (StringIndexOutOfBoundsException e)
 			{
 				if (Config.DEBUG)
+				{
 					_log.log(Level.WARNING, getClass().getName() + ": Heal error: " + e);
+				}
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Incorrect target/radius specified.");
 				activeChar.sendPacket(sm);
@@ -79,14 +86,15 @@ public class AdminHeal implements IAdminCommandHandler
 
 	private void handleRes(L2PcInstance activeChar, String player)
 	{
-
 		L2Object obj = activeChar.getTarget();
 		if (player != null)
 		{
 			L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 
 			if (plyr != null)
+			{
 				obj = plyr;
+			}
 			else
 			{
 				try
@@ -99,7 +107,9 @@ public class AdminHeal implements IAdminCommandHandler
 							L2Character character = (L2Character) object;
 							character.setCurrentHpMp(character.getMaxHp(), character.getMaxMp());
 							if (object instanceof L2PcInstance)
+							{
 								character.setCurrentCp(character.getMaxCp());
+							}
 						}
 					}
 					activeChar.sendMessage("Healed within " + radius + " unit radius.");
@@ -111,16 +121,46 @@ public class AdminHeal implements IAdminCommandHandler
 			}
 		}
 		if (obj == null)
+		{
 			obj = activeChar;
+			activeChar.sendMessage("No target heal self casted.");
+		}
 		if ((obj != null) && (obj instanceof L2Character))
 		{
 			L2Character target = (L2Character) obj;
 			target.setCurrentHpMp(target.getMaxHp(), target.getMaxMp());
 			if (target instanceof L2PcInstance)
+			{
 				target.setCurrentCp(target.getMaxCp());
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") healed character " + target.getName());
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ") healed character " + target.getName() + "(" + target.getObjectId() + ")");
+			}
+			else if (target instanceof L2MonsterInstance)
+			{
+				if (target.isChampion() && Config.CHAMPION_ENABLE)
+				{
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " healed champion " + target.getName() + "(" + target.getObjectId() + ")");
+				}
+				if (target.isBoss())
+				{
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " healed grand boss " + target.getName() + "(" + target.getObjectId() + ")");
+				}
+				if (target.isRaidMinion())
+				{
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " healed raid minion " + target.getName() + "(" + target.getObjectId() + ")");
+				}
+				else if (target.isRaid())
+				{
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " healed raid " + target.getName() + "(" + target.getObjectId() + ")");
+				}
+				else if (((L2MonsterInstance) target).isMob())
+				{
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed monster " + target.getName() + "(" + target.getObjectId() + ")");
+				}
+				else
+				{
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed etc " + target.getName() + "(" + target.getObjectId() + ")");
+				}
+			}
 		}
-		else
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
 	}
 }

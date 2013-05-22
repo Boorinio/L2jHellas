@@ -23,11 +23,11 @@ import javax.crypto.Cipher;
 
 /**
  * @author -Wooden-
- *
  */
 public class BlowFishKey extends GameServerBasePacket
 {
 	private static Logger _log = Logger.getLogger(BlowFishKey.class.getName());
+
 	/**
 	 * @param blowfishKey
 	 * @param publicKey
@@ -35,14 +35,14 @@ public class BlowFishKey extends GameServerBasePacket
 	public BlowFishKey(byte[] blowfishKey, RSAPublicKey publicKey)
 	{
 		writeC(0x00);
-		byte[] encrypted =null;
+		byte[] encrypted = null;
 		try
 		{
 			Cipher rsaCipher = Cipher.getInstance("RSA/ECB/nopadding");
-	        rsaCipher.init(Cipher.ENCRYPT_MODE, publicKey);
-	        encrypted = rsaCipher.doFinal(blowfishKey);
+			rsaCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			encrypted = rsaCipher.doFinal(blowfishKey);
 		}
-		catch(GeneralSecurityException e)
+		catch (GeneralSecurityException e)
 		{
 			_log.severe("Error While encrypting blowfish key for transmision (Crypt error)");
 			e.printStackTrace();
@@ -51,13 +51,9 @@ public class BlowFishKey extends GameServerBasePacket
 		writeB(encrypted);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.gameserverpackets.GameServerBasePacket#getContent()
-	 */
 	@Override
 	public byte[] getContent() throws IOException
 	{
 		return getBytes();
 	}
-
 }

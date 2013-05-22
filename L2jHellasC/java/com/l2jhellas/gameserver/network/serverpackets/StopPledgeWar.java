@@ -16,27 +16,27 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 public class StopPledgeWar extends L2GameServerPacket
 {
-    private static final String _S__7f_STOPPLEDGEWAR = "[S] 67 StopPledgeWar";
-    private String _pledgeName;
-    private String _playerName;
+	private static final String _S__7f_STOPPLEDGEWAR = "[S] 67 StopPledgeWar";
+	private final String _pledgeName;
+	private final String _playerName;
 
-    public StopPledgeWar(String pledge, String charName)
-    {
-        _pledgeName = pledge;
-        _playerName = charName;
-    }
+	public StopPledgeWar(String pledge, String charName)
+	{
+		_pledgeName = pledge;
+		_playerName = charName;
+	}
 
-    @Override
+	@Override
 	protected final void writeImpl()
-    {
-        writeC(0x67);
-        writeS(_pledgeName);
-        writeS(_playerName);
-    }
+	{
+		writeC(0x67);
+		writeS(_pledgeName);
+		writeS(_playerName);
+	}
 
-    @Override
+	@Override
 	public String getType()
-    {
-        return _S__7f_STOPPLEDGEWAR;
-    }
+	{
+		return _S__7f_STOPPLEDGEWAR;
+	}
 }

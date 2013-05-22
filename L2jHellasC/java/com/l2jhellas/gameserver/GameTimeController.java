@@ -62,7 +62,7 @@ public class GameTimeController
 		_timer.start();
 
 		_timerWatcher = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new TimerWatcher(), 0, 1000);
-        ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new BroadcastSunState(), 0, 600000);
+		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new BroadcastSunState(), 0, 600000);
 	}
 
 	public boolean isNowNight()
@@ -81,32 +81,36 @@ public class GameTimeController
 	}
 
 	/**
-	 * Add a L2Character to movingObjects of GameTimeController.<BR><BR>
-	 *
-	 * <B><U> Concept</U> :</B><BR><BR>
-	 * All L2Character in movement are identified in <B>movingObjects</B> of GameTimeController.<BR><BR>
-	 *
-	 * @param cha The L2Character to add to movingObjects of GameTimeController
-	 *
+	 * Add a L2Character to movingObjects of GameTimeController.<BR>
+	 * <BR>
+	 * <B><U> Concept</U> :</B><BR>
+	 * <BR>
+	 * All L2Character in movement are identified in <B>movingObjects</B> of GameTimeController.<BR>
+	 * <BR>
+	 * 
+	 * @param cha
+	 *        The L2Character to add to movingObjects of GameTimeController
 	 */
 	public synchronized void registerMovingObject(L2Character cha)
 	{
-		if(cha == null) return;
+		if (cha == null)
+			return;
 		if (!_movingObjects.contains(cha))
 			_movingObjects.add(cha);
 	}
 
 	/**
-	 * Move all L2Characters contained in movingObjects of GameTimeController.<BR><BR>
-	 *
-	 * <B><U> Concept</U> :</B><BR><BR>
-	 * All L2Character in movement are identified in <B>movingObjects</B> of GameTimeController.<BR><BR>
-	 *
-	 * <B><U> Actions</U> :</B><BR><BR>
-	 * <li>Update the position of each L2Character </li>
-	 * <li>If movement is finished, the L2Character is removed from movingObjects </li>
-	 * <li>Create a task to update the _knownObject and _knowPlayers of each L2Character that finished its movement and of their already known L2Object then notify AI with EVT_ARRIVED </li><BR><BR>
-	 *
+	 * Move all L2Characters contained in movingObjects of GameTimeController.<BR>
+	 * <BR>
+	 * <B><U> Concept</U> :</B><BR>
+	 * <BR>
+	 * All L2Character in movement are identified in <B>movingObjects</B> of GameTimeController.<BR>
+	 * <BR>
+	 * <B><U> Actions</U> :</B><BR>
+	 * <BR>
+	 * <li>Update the position of each L2Character</li> <li>If movement is finished, the L2Character is removed from movingObjects</li> <li>Create a task to update the _knownObject
+	 * and _knowPlayers of each L2Character that finished its movement and of their already known L2Object then notify AI with EVT_ARRIVED</li><BR>
+	 * <BR>
 	 */
 	protected synchronized void moveObjects()
 	{
@@ -167,7 +171,7 @@ public class GameTimeController
 			{
 				for (;;)
 				{
-					int _oldTicks=_gameTicks; // save old ticks value to avoid moving objects 2x in same tick
+					int _oldTicks = _gameTicks; // save old ticks value to avoid moving objects 2x in same tick
 					long runtime = System.currentTimeMillis() - _gameStartTime; // from server boot to now
 
 					_gameTicks = (int) (runtime / MILLIS_IN_TICK); // new ticks value (ticks now)
@@ -215,7 +219,8 @@ public class GameTimeController
 	}
 
 	/**
-	 * Update the _knownObject and _knowPlayers of each L2Character that finished its movement and of their already known L2Object then notify AI with EVT_ARRIVED.<BR><BR>
+	 * Update the _knownObject and _knowPlayers of each L2Character that finished its movement and of their already known L2Object then notify AI with EVT_ARRIVED.<BR>
+	 * <BR>
 	 */
 	class MovingObjectArrived implements Runnable
 	{
@@ -236,7 +241,9 @@ public class GameTimeController
 					cha.getKnownList().updateKnownObjects();
 					cha.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
 				}
-				catch (NullPointerException e) {}
+				catch (NullPointerException e)
+				{
+				}
 			}
 		}
 	}
@@ -254,9 +261,9 @@ public class GameTimeController
 
 			if (tempIsNight != _isNight) // If diff day/night state
 			{
-	            _isNight = tempIsNight; // Set current day/night varible to value of temp varible
-	            DayNightSpawnManager.getInstance().notifyChangeMode();
-            }
+				_isNight = tempIsNight; // Set current day/night varible to value of temp varible
+				DayNightSpawnManager.getInstance().notifyChangeMode();
+			}
 		}
 	}
 }

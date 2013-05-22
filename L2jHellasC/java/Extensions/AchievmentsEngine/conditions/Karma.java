@@ -31,12 +31,12 @@ public class Karma extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
-		
+
 		if (player.getKarma() >= val)
 			return true;
-		
+
 		return false;
 	}
 }

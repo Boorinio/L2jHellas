@@ -19,30 +19,28 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 
 /**
- * Format: ch
+ * Format: ch<BR>
  * Trigger packet
- * @author  KenM
+ * 
+ * @author KenM
  */
 public class ExShowVariationMakeWindow extends L2GameServerPacket
 {
 	private static final String _S__FE_50_EXSHOWVARIATIONMAKEWINDOW = "[S] FE:50 ExShowVariationMakeWindow";
 
 	boolean _safety = true;
-	 	       
+
 	public ExShowVariationMakeWindow(L2PcInstance player, L2NpcInstance npc)
 	{
-	 if(player == null)
-	   _safety = false;
-	 if(npc == null)
-	  _safety = false;
-	 	
-	 if(_safety)
-	 player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION));
+		if (player == null)
+			_safety = false;
+		if (npc == null)
+			_safety = false;
+
+		if (_safety)
+			player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION));
 	}
-	
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
+
 	@Override
 	protected void writeImpl()
 	{
@@ -50,13 +48,9 @@ public class ExShowVariationMakeWindow extends L2GameServerPacket
 		writeH(0x50);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_50_EXSHOWVARIATIONMAKEWINDOW;
 	}
-
 }

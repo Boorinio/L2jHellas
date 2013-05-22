@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.util;
+package com.l2jhellas.util.object;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -21,9 +21,14 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
 
-public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
+public class WorldObjectSet<T extends L2Object> extends L2ObjectSet<T>
 {
-	Map<Integer, T> _objectMap = new FastMap<Integer, T>().setShared(true);
+	private final Map<Integer, T> _objectMap;
+
+	public WorldObjectSet()
+	{
+		_objectMap = new FastMap<Integer, T>().setShared(true);
+	}
 
 	@Override
 	public int size()
@@ -46,29 +51,19 @@ public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
 	@Override
 	public void put(T obj)
 	{
-		if (obj != null)
-			_objectMap.put(obj.getObjectId(), obj);
+		_objectMap.put(obj.getObjectId(), obj);
 	}
 
 	@Override
 	public void remove(T obj)
 	{
-		if (obj != null)
-			_objectMap.remove(obj.getObjectId());
-	}
-
-	@Override
-	public T get(int id)
-	{
-		return _objectMap.get(id);
+		_objectMap.remove(obj.getObjectId());
 	}
 
 	@Override
 	public boolean contains(T obj)
 	{
-		if (obj == null)
-			return false;
-		return _objectMap.get(obj.getObjectId()) != null;
+		return _objectMap.containsKey(obj.getObjectId());
 	}
 
 	@Override

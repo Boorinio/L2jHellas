@@ -19,7 +19,6 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,10 +27,10 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Setekh
@@ -69,11 +68,8 @@ public class SiegeReward
 
 	private void loadOfflineMembers()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement("SELECT charId, itemId, count, castle_name, rewarded FROM reward_list");
 			ResultSet rs = st.executeQuery();
 
@@ -125,25 +121,12 @@ public class SiegeReward
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
-			}
-		}
 	}
 
 	public void deleteRewarded(int charId, int itemId)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement st = con.prepareStatement("DELETE FROM reward_list WHERE charId=? AND itemId=?");
 			st.setInt(1, charId);
 			st.setInt(2, itemId);
@@ -156,16 +139,6 @@ public class SiegeReward
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
 			}
 		}
 	}
@@ -207,12 +180,8 @@ public class SiegeReward
 
 	public void storeDataBase(int charId, String castleName)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			for (RewardInfoz rewz : _list)
 			{
 				PreparedStatement st = con.prepareStatement("REPLACE INTO reward_list VALUES (?,?,?,?,?)");
@@ -231,16 +200,6 @@ public class SiegeReward
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (SQLException e)
-			{
 			}
 		}
 	}

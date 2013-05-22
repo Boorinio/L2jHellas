@@ -44,10 +44,10 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 	private int _foodSkillId;
 	private static final int MAX_DISTANCE_FROM_HOME = 30000;
 	private static final int MAX_DISTANCE_FROM_OWNER = 2000;
-	private static final int MAX_DURATION = 1200000;	// 20 minutes
-	private static final int DURATION_CHECK_INTERVAL = 60000;	// 1 minute
-	private static final int DURATION_INCREASE_INTERVAL = 20000;	// 20 secs (gained upon feeding)
-	private static final int BUFF_INTERVAL = 5000;	// 5 seconds
+	private static final int MAX_DURATION = 1200000; // 20 minutes
+	private static final int DURATION_CHECK_INTERVAL = 60000; // 1 minute
+	private static final int DURATION_INCREASE_INTERVAL = 20000; // 20 secs (gained upon feeding)
+	private static final int BUFF_INTERVAL = 5000;// 5 seconds
 	private int _remainingTime = MAX_DURATION;
 	private int _homeX, _homeY, _homeZ;
 	private L2PcInstance _owner;
@@ -182,7 +182,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 		}
 		else
 		{
-			doDespawn();	// despawn if no owner
+			doDespawn(); // despawn if no owner
 		}
 	}
 
@@ -324,7 +324,8 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 			{
 				L2Object oldTarget = owner.getTarget();
 				owner.setTarget(_tamedBeast);
-				L2Object[] targets = {
+				L2Object[] targets =
+				{
 					_tamedBeast
 				};
 
@@ -344,7 +345,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 			/*
 			 * There are too many conflicting reports about whether distance from home should
 			 * be taken into consideration. Disabled for now.
-			 *
+			 * 
 			 * if (_tamedBeast.isTooFarFromHome())
 			 * _tamedBeast.setRemainingTime(-1);
 			 */

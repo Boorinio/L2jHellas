@@ -24,9 +24,9 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class builds a list of skills that L2BufferInstance will be able to
@@ -37,19 +37,14 @@ import com.l2jhellas.gameserver.skills.SkillTable;
  * players.
  * Example: <br>
  * <br>
- * <li>Prophet and similar</li>
- * <li>Songs</li>
- * <li>Dances</li>
- * <li>Newbie buffs</li>
- * <li>Advanced buffs</li>
- * <li>Vip buffs</li>
- * <font color="red"><b>IMPORTANT: type must not contain spaces</b></font> <br>
+ * <li>Prophet and similar</li> <li>Songs</li> <li>Dances</li> <li>Newbie buffs</li> <li>Advanced buffs</li> <li>Vip buffs</li> <font color="red"><b>IMPORTANT: type must not
+ * contain spaces</b></font> <br>
  * <br>
  * The whole info is stored in different FastList objects, one per each group. These
  * lists contain a collection of L2Skills. Finally, these objects are stored in a
  * new FastMap which has group as key and previous maps as values.<br>
  * <br>
- *
+ * 
  * @author House
  */
 
@@ -76,12 +71,10 @@ public class BufferSkillsTable
 
 	private void load()
 	{
-		Connection con = null;
-
 		/*
 		 * Fist of all whole info is load into an map: auxMap. Info about buff types is
 		 * also collected now into a list: typeList.
-		 *
+		 * 
 		 * Prizes for buffs are also read and stored.
 		 */
 		int id = 0;
@@ -91,9 +84,8 @@ public class BufferSkillsTable
 		int count = 0;
 		int typesCount = 0;
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(SQL_LOAD_SKILLS);
 			ResultSet rs = statement.executeQuery();
 
@@ -126,16 +118,6 @@ public class BufferSkillsTable
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 
 		/*
 		 * Now building final maps with sorted info.
@@ -156,7 +138,7 @@ public class BufferSkillsTable
 
 	/**
 	 * This method returns a list of L2Skill objects whose type equals skillType
-	 *
+	 * 
 	 * @param skillType
 	 * @return A list of L2Skill or null if skillType doesn't match.
 	 */

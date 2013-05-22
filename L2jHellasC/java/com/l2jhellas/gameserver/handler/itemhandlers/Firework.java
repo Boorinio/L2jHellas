@@ -37,7 +37,7 @@ public class Firework implements IItemHandler
 			return; // prevent Class cast exception
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		int itemId = item.getItemId();
-
+		/** @formatter:off */
 		if (activeChar.isInOlympiadMode()
 				|| activeChar.inObserverMode()
 				|| activeChar.inObserverMode()
@@ -47,7 +47,7 @@ public class Firework implements IItemHandler
 				|| activeChar.isStunned()
 				|| activeChar.isDead()
 				|| activeChar.isAlikeDead())
-		{
+		{/** @formatter:on */
 			activeChar.sendPacket(new ActionFailed());
 			return;
 		}

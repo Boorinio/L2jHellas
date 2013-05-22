@@ -19,9 +19,7 @@ import org.apache.bsf.BSFManager;
 public class Expression
 {
 	private final BSFManager _context;
-	@SuppressWarnings("unused")
 	private final String _lang;
-	@SuppressWarnings("unused")
 	private final String _code;
 
 	public static Object eval(String lang, String code)

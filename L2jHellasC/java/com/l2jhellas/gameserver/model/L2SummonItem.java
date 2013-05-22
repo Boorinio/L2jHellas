@@ -15,14 +15,13 @@
 package com.l2jhellas.gameserver.model;
 
 /**
- *
  * @author -Nemesiss-
  */
 public class L2SummonItem
 {
 	private final int _itemId;
-	private final int  _npcId;
-	private final byte  _type;
+	private final int _npcId;
+	private final byte _type;
 
 	public L2SummonItem(int itemId, int npcId, byte type)
 	{

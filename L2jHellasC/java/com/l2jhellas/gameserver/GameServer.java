@@ -34,7 +34,6 @@ import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.RemoteConnector;
 import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.cache.CrestCache;
@@ -127,6 +126,7 @@ import com.l2jhellas.status.Status;
 import com.l2jhellas.util.DynamicExtension;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 import com.l2jserver.mmocore.network.SelectorConfig;
 import com.l2jserver.mmocore.network.SelectorThread;
 
@@ -166,8 +166,6 @@ public class GameServer
 		DayNightSpawnManager.getInstance().notifyChangeMode();
 		AutoChatHandler.getInstance();
 		Universe.getInstance();
-		if (Config.ZODIAC_ENABLE)
-			ZodiacMain.ZodiacIn();
 		FloodProtector.getInstance();
 		StaticObjects.getInstance();
 		TeleportLocationTable.getInstance();
@@ -178,8 +176,7 @@ public class GameServer
 		Util.printSection("Skills");
 		if (!SkillTable.getInstance().isInitialized())
 		{
-			_log.info("Could not find the extraced files. Please Check Your Data.");
-			throw new Exception("Could not initialize the skill table");
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
 		SkillTreeTable.getInstance();
 		SkillSpellbookTable.getInstance();
@@ -189,22 +186,24 @@ public class GameServer
 		Util.printSection("Items");
 		if (!ItemTable.getInstance().isInitialized())
 		{
-			_log.info("Could not find the extraced files. Please Check Your Data.");
-			throw new Exception("Could not initialize the item table");
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
 		ArmorSetsTable.getInstance();
 		ExtractableItemsData.getInstance();
 		SummonItemsData.getInstance();
 		if (Config.ALLOWFISHING)
+		{
 			FishTable.getInstance();
+		}
 
 		Util.printSection("Npc");
 		if (Config.ALLOW_NPC_WALKERS)
+		{
 			NpcWalkerRoutesTable.getInstance().load();
+		}
 		if (!NpcTable.getInstance().isInitialized())
 		{
-			_log.info("Could not find the extraced files. Please Check Your Data.");
-			throw new Exception("Could not initialize the npc table");
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
 
 		Util.printSection("Characters");
@@ -227,7 +226,9 @@ public class GameServer
 		Util.printSection("Geodata");
 		GeoData.getInstance();
 		if (Config.GEODATA == 2)
+		{
 			PathFinding.getInstance();
+		}
 
 		Util.printSection("Economy");
 		TradeController.getInstance();
@@ -247,9 +248,13 @@ public class GameServer
 
 		// util inside spawntable cause unknown problem -.-
 		if (!Config.ALT_DEV_NO_SPAWNS)
+		{
 			SpawnTable.getInstance();
+		}
 		else
-			_log.log(Level.INFO, "Spawns: disabled.");
+		{
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Spawns disabled by config.");
+		}
 		if (!Config.ALT_DEV_NO_RB)
 		{
 			RaidBossSpawnManager.getInstance();
@@ -257,7 +262,9 @@ public class GameServer
 			RaidBossPointsManager.init();
 		}
 		else
-			_log.info("RaidBoss: disable load.");
+		{
+			_log.log(Level.INFO, getClass().getSimpleName() + ": RaidBoss disabled by config.");
+		}
 
 		Util.printSection("Dimensional Rift");
 		DimensionalRiftManager.getInstance();
@@ -270,17 +277,25 @@ public class GameServer
 		MercTicketManager.getInstance();
 		PetitionManager.getInstance();
 		CursedWeaponsManager.getInstance();
-		TaskManager.getInstance();
 		FourSepulchersManager.getInstance();
 		L2PetDataTable.getInstance().loadPetsData();
 		if (Config.ACCEPT_GEOEDITOR_CONN)
+		{
 			GeoEditorListener.getInstance();
+		}
 		if (Config.SAVE_DROPPED_ITEM)
+		{
 			ItemsOnGroundManager.getInstance();
+		}
 		if (Config.AUTODESTROY_ITEM_AFTER > 0 || Config.HERB_AUTO_DESTROY_TIME > 0)
+		{
 			ItemsAutoDestroy.getInstance();
+		}
 		DoorTable.getInstance();
 		BoatManager.getInstance();
+
+		Util.printSection("Tasks");
+		TaskManager.getInstance();
 
 		Util.printSection("Manor");
 		L2Manor.getInstance();
@@ -309,7 +324,9 @@ public class GameServer
 			QuestManager.getInstance().report();
 		}
 		else
+		{
 			_log.log(Level.INFO, getClass().getSimpleName() + ": Quests are disabled by Config.");
+		}
 
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
@@ -361,7 +378,7 @@ public class GameServer
 		}
 		else
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts: Disabled by Config.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts are disabled by Config.");
 		}
 
 		Util.printSection("Customs");
@@ -378,26 +395,44 @@ public class GameServer
 		TopTable.getInstance();
 		ServerSideImage.getInstance().load();
 
+		if (Config.ZODIAC_ENABLE)
+		{
+			ZodiacMain.ZodiacIn();
+		}
 		if (ExternalConfig.ENABLED_RCON)
+		{
 			RemoteConnector.getInstance();
+		}
 		if (Config.ENABLED_QUIZ_EVENT)
+		{
 			QuizEvent.getInstance();
+		}
 		if (Config.ALLOW_AWAY_STATUS)
+		{
 			AwayManager.getInstance();
+		}
 		BalanceLoad.loadBalance();
 		if (ExternalConfig.ALLOW_SEQURITY_QUE)
+		{
 			AntiBot.getInstance();
+		}
 		if (ExternalConfig.ALLOW_ANTI_AFK)
+		{
 			AntiAfk.getInstance();
+		}
 		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
 		{
 			_log.log(Level.INFO, "Restart System: Auto Restart System is Enabled.");
 			Restart.getInstance().StartCalculationOfNextRestartTime();
 		}
 		else
+		{
 			_log.log(Level.INFO, "Restart System: Auto Restart System is Disabled.");
+		}
 		if (Config.MOD_ALLOW_WEDDING)
+		{
 			CoupleManager.getInstance();
+		}
 
 		Util.printSection("Dynamic Extensions");
 		// initialize the dynamic extension loader
@@ -450,7 +485,9 @@ public class GameServer
 			{
 				_log.log(Level.SEVERE, getClass().getSimpleName() + ": WARNING: The GameServer bind address is invalid, using all avaliable IPs. Reason: " + e1.getMessage());
 				if (Config.DEVELOPER)
+				{
 					e1.printStackTrace();
+				}
 			}
 		}
 		try
@@ -461,7 +498,9 @@ public class GameServer
 		{
 			_log.log(Level.SEVERE, getClass().getSimpleName() + ": FATAL: Failed to open server socket. Reason: " + e.getMessage());
 			if (Config.DEVELOPER)
+			{
 				e.printStackTrace();
+			}
 			System.exit(1);
 		}
 
@@ -493,7 +532,9 @@ public class GameServer
 		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
 
 		if (Config.USE_SAY_FILTER)
+		{
 			new File(Config.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
+		}
 
 		/*** Main ***/
 		// Create directories

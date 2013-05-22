@@ -14,14 +14,17 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -35,10 +38,10 @@ public class AdminRes implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminRes.class.getName());
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_res",
-	"admin_res_monster"
-	};
+	{/** @formatter:off */
+		"admin_res",
+		"admin_res_monster"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -47,13 +50,21 @@ public class AdminRes implements IAdminCommandHandler
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
 		if (command.startsWith("admin_res "))
+		{
 			handleRes(activeChar, command.split(" ")[1]);
+		}
 		else if (command.equals("admin_res"))
+		{
 			handleRes(activeChar);
+		}
 		else if (command.startsWith("admin_res_monster "))
+		{
 			handleNonPlayerRes(activeChar, command.split(" ")[1]);
+		}
 		else if (command.equals("admin_res_monster"))
+		{
 			handleNonPlayerRes(activeChar);
+		}
 
 		return true;
 	}
@@ -90,7 +101,9 @@ public class AdminRes implements IAdminCommandHandler
 					int radius = Integer.parseInt(resParam);
 
 					for (L2PcInstance knownPlayer : activeChar.getKnownList().getKnownPlayersInRadius(radius))
+					{
 						doResurrect(knownPlayer);
+					}
 
 					activeChar.sendMessage("Resurrected all players within a " + radius + " unit radius.");
 					return;
@@ -104,7 +117,9 @@ public class AdminRes implements IAdminCommandHandler
 		}
 
 		if (obj == null)
+		{
 			obj = activeChar;
+		}
 
 		if (obj instanceof L2ControllableMobInstance)
 		{
@@ -112,8 +127,38 @@ public class AdminRes implements IAdminCommandHandler
 			return;
 		}
 
+		if (obj instanceof L2PcInstance)
+		{
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected character " + obj.getName() + "(" + obj.getObjectId() + ")");
+		}
+		else if (obj instanceof L2MonsterInstance)
+		{
+			if (((L2MonsterInstance) obj).isChampion() && Config.CHAMPION_ENABLE)
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected champion " + obj.getName() + "(" + obj.getObjectId() + ")");
+			}
+			else if (((L2MonsterInstance) obj).isBoss())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected grand boss " + obj.getName() + "(" + obj.getObjectId() + ")");
+			}
+			else if (((L2MonsterInstance) obj).isRaidMinion())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected raid minion " + obj.getName() + "(" + obj.getObjectId() + ")");
+			}
+			else if (((L2MonsterInstance) obj).isRaid())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected raid " + obj.getName() + "(" + obj.getObjectId() + ")");
+			}
+			else if (((L2MonsterInstance) obj).isMob())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected monster " + obj.getName() + "(" + obj.getObjectId() + ")");
+			}
+			else
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected etc " + obj.getName() + "(" + obj.getObjectId() + ")");
+			}
+		}
 		doResurrect((L2Character) obj);
-		_log.fine("GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") resurrected character " + obj.getObjectId());
 	}
 
 	private void handleNonPlayerRes(L2PcInstance activeChar)
@@ -135,7 +180,9 @@ public class AdminRes implements IAdminCommandHandler
 
 				for (L2Character knownChar : activeChar.getKnownList().getKnownCharactersInRadius(radius))
 					if (!(knownChar instanceof L2PcInstance) && !(knownChar instanceof L2ControllableMobInstance))
+					{
 						doResurrect(knownChar);
+					}
 
 				activeChar.sendMessage("Resurrected all non-players within a " + radius + " unit radius.");
 			}
@@ -162,11 +209,13 @@ public class AdminRes implements IAdminCommandHandler
 
 		// If the target is a player, then restore the XP lost on death.
 		if (targetChar instanceof L2PcInstance)
+		{
 			((L2PcInstance) targetChar).restoreExp(100.0);
-
-		// If the target is an NPC, then abort it's auto decay and respawn.
+		}
 		else
+		{
 			DecayTaskManager.getInstance().cancelDecayTask(targetChar);
+		}
 
 		targetChar.doRevive();
 	}

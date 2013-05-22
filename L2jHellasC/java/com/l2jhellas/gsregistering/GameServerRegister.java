@@ -24,10 +24,10 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.loginserver.GameServerTable;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class GameServerRegister
 {
@@ -128,11 +128,9 @@ public class GameServerRegister
 
 	public static void cleanRegisteredGameServersFromDB()
 	{
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("DELETE FROM gameservers");
 			statement.executeUpdate();
 			statement.close();
@@ -140,23 +138,6 @@ public class GameServerRegister
 		catch (SQLException e)
 		{
 			System.out.println("SQL error while cleaning registered servers: " + e);
-		}
-		finally
-		{
-			try
-			{
-				statement.close();
-			}
-			catch (Exception e)
-			{
-			}
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 }

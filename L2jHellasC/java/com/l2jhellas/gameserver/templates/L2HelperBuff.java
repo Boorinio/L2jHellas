@@ -44,7 +44,6 @@ public class L2HelperBuff
 	 */
 	public L2HelperBuff(StatsSet set)
 	{
-
 		_lowerLevel = set.getInteger("lowerLevel");
 		_upperLevel = set.getInteger("upperLevel");
 		_skillID = set.getInteger("skillID");
@@ -54,12 +53,11 @@ public class L2HelperBuff
 			_isMagicClass = false;
 		else
 			_isMagicClass = true;
-
 	}
 
 	/**
 	 * Returns the lower level that the L2PcInstance must achieve in order to obtain this buff
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getLowerLevel()
@@ -69,7 +67,7 @@ public class L2HelperBuff
 
 	/**
 	 * Returns the upper level that the L2PcInstance mustn't exceed in order to obtain this buff
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getUpperLevel()
@@ -79,7 +77,7 @@ public class L2HelperBuff
 
 	/**
 	 * Returns the ID of the buff that the L2PcInstance will receive
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getSkillID()
@@ -89,7 +87,7 @@ public class L2HelperBuff
 
 	/**
 	 * Returns the Level of the buff that the L2PcInstance will receive
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getSkillLevel()
@@ -99,7 +97,7 @@ public class L2HelperBuff
 
 	/**
 	 * Returns if this Buff can be cast on a fighter or a mystic
-	 *
+	 * 
 	 * @return boolean : False if it's a fighter class Buff
 	 */
 	public boolean isMagicClassBuff()

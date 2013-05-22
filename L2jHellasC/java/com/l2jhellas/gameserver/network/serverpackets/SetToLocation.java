@@ -17,21 +17,19 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2Character;
 
 /**
- *
- * 0000: 76  7a 07 80 49  ea 01 00 00  c1 37 fe    uz..Ic'.J.....7. <p>
- * 0010: ff 9e c3 03 00 8f f3 ff ff                         .........<p>
+ * 0000: 76 7a 07 80 49 ea 01 00 00 c1 37 fe uz..Ic'.J.....7.
  * <p>
- *
- * format   dddddd		(player id, target id, distance, startx, starty, startz)<p>
- *
- *
- * @version $Revision: 1.3.4.3 $ $Date: 2005/03/27 15:29:57 $
+ * 0010: ff 9e c3 03 00 8f f3 ff ff .........
+ * <p>
+ * <p>
+ * format dddddd (player id, target id, distance, startx, starty, startz)
+ * <p>
  */
 public class SetToLocation extends L2GameServerPacket
 {
 	private static final String _S__76_SETTOLOCATION = "[S] 76 SetToLocation";
-	private int _charObjId;
-	private int _x, _y, _z, _heading;
+	private final int _charObjId;
+	private final int _x, _y, _z, _heading;
 
 	public SetToLocation(L2Character character)
 	{
@@ -54,9 +52,6 @@ public class SetToLocation extends L2GameServerPacket
 		writeD(_heading);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

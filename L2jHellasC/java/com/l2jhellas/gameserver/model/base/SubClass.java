@@ -17,132 +17,131 @@ package com.l2jhellas.gameserver.model.base;
 import com.l2jhellas.Config;
 
 /**
- * Character Sub-Class Definition
- * <BR>
+ * Character Sub-Class Definition <BR>
  * Used to store key information about a character's sub-class.
- *
+ * 
  * @author Tempy
  */
 public final class SubClass
 {
-    private PlayerClass _class;
-    private long _exp = Experience.LEVEL[40];
-    private int _sp = 0;
-    private byte _level = 40;
-    private int _classIndex = 1;
+	private PlayerClass _class;
+	private long _exp = Experience.LEVEL[40];
+	private int _sp = 0;
+	private byte _level = 40;
+	private int _classIndex = 1;
 
-    public SubClass(int classId, long exp, int sp, byte level, int classIndex)
-    {
-    	_class = PlayerClass.values()[classId];
-    	_exp = exp;
-    	_sp = sp;
-    	_level = level;
-    	_classIndex = classIndex;
-    }
+	public SubClass(int classId, long exp, int sp, byte level, int classIndex)
+	{
+		_class = PlayerClass.values()[classId];
+		_exp = exp;
+		_sp = sp;
+		_level = level;
+		_classIndex = classIndex;
+	}
 
-    public SubClass(int classId, int classIndex)
-    {
-        // Used for defining a sub class using default values for XP, SP and player level.
-        _class = PlayerClass.values()[classId];
-        _classIndex = classIndex;
-    }
+	public SubClass(int classId, int classIndex)
+	{
+		// Used for defining a sub class using default values for XP, SP and player level.
+		_class = PlayerClass.values()[classId];
+		_classIndex = classIndex;
+	}
 
-    public SubClass()
-    {
-        // Used for specifying ALL attributes of a sub class directly,
-        // using the preset default values.
-    }
+	public SubClass()
+	{
+		// Used for specifying ALL attributes of a sub class directly,
+		// using the preset default values.
+	}
 
-    public PlayerClass getClassDefinition()
-    {
-        return _class;
-    }
+	public PlayerClass getClassDefinition()
+	{
+		return _class;
+	}
 
-    public int getClassId()
-    {
-        return _class.ordinal();
-    }
+	public int getClassId()
+	{
+		return _class.ordinal();
+	}
 
-    public long getExp()
-    {
-    	if (Config.MOD_GVE_ENABLE_FACTION)
-        	_exp = Experience.LEVEL[81];
-    	
-    	if (Config.MAX_LVL_AFTER_SUB)
-    		_exp = Experience.LEVEL[81];
-    	
-        return _exp;
-    }
+	public long getExp()
+	{
+		if (Config.MOD_GVE_ENABLE_FACTION)
+			_exp = Experience.LEVEL[81];
 
-    public int getSp()
-    {
-        return _sp;
-    }
+		if (Config.MAX_LVL_AFTER_SUB)
+			_exp = Experience.LEVEL[81];
 
-    public byte getLevel()
-    {
-    	if (Config.MOD_GVE_ENABLE_FACTION)
-        	_level = 80;
-    	
-    	if (Config.MAX_LVL_AFTER_SUB)
-    		_level = 80;
-    	
-        return _level;
-    }
+		return _exp;
+	}
 
-    public int getClassIndex()
-    {
-        return _classIndex;
-    }
+	public int getSp()
+	{
+		return _sp;
+	}
 
-    public void setClassId(int classId)
-    {
-        _class = PlayerClass.values()[classId];
-    }
+	public byte getLevel()
+	{
+		if (Config.MOD_GVE_ENABLE_FACTION)
+			_level = 80;
 
-    public void setExp(long expValue)
-    {
+		if (Config.MAX_LVL_AFTER_SUB)
+			_level = 80;
+
+		return _level;
+	}
+
+	public int getClassIndex()
+	{
+		return _classIndex;
+	}
+
+	public void setClassId(int classId)
+	{
+		_class = PlayerClass.values()[classId];
+	}
+
+	public void setExp(long expValue)
+	{
 		if (expValue > Experience.LEVEL[Experience.MAX_LEVEL])
 			expValue = Experience.LEVEL[Experience.MAX_LEVEL];
 
-        _exp = expValue;
-    }
+		_exp = expValue;
+	}
 
-    public void setSp(int spValue)
-    {
-        _sp = spValue;
-    }
+	public void setSp(int spValue)
+	{
+		_sp = spValue;
+	}
 
-    public void setClassIndex(int classIndex)
-    {
-        _classIndex = classIndex;
-    }
+	public void setClassIndex(int classIndex)
+	{
+		_classIndex = classIndex;
+	}
 
-    public void setLevel(byte levelValue)
-    {
-        if (levelValue > (Experience.MAX_LEVEL - 1))
-            levelValue = (Experience.MAX_LEVEL - 1);
-        else if (levelValue < 40)
-        	    levelValue = 40;
+	public void setLevel(byte levelValue)
+	{
+		if (levelValue > (Experience.MAX_LEVEL - 1))
+			levelValue = (Experience.MAX_LEVEL - 1);
+		else if (levelValue < 40)
+			levelValue = 40;
 
-        _level = levelValue;
-    }
+		_level = levelValue;
+	}
 
-    public void incLevel()
-    {
-        if (getLevel() == (Experience.MAX_LEVEL))
-            return;
+	public void incLevel()
+	{
+		if (getLevel() == (Experience.MAX_LEVEL))
+			return;
 
-        _level++;
-        setExp(Experience.LEVEL[getLevel()]);
-    }
+		_level++;
+		setExp(Experience.LEVEL[getLevel()]);
+	}
 
-    public void decLevel()
-    {
-    	if (getLevel() == 40)
-            return;
+	public void decLevel()
+	{
+		if (getLevel() == 40)
+			return;
 
-        _level--;
-        setExp(Experience.LEVEL[getLevel()]);
-    }
+		_level--;
+		setExp(Experience.LEVEL[getLevel()]);
+	}
 }

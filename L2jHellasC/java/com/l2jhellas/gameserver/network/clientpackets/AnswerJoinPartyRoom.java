@@ -16,13 +16,13 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
  * Format: (ch) d
- *
+ * 
  * @author -Wooden-
  */
 public final class AnswerJoinPartyRoom extends L2GameClientPacket
 {
 	private static final String _C__D0_15_ANSWERJOINPARTYROOM = "[C] D0:15 AnswerJoinPartyRoom";
-	@SuppressWarnings("unused")
+
 	private int _requesterID; // not tested, just guessed
 
 	@Override
@@ -43,5 +43,4 @@ public final class AnswerJoinPartyRoom extends L2GameClientPacket
 	{
 		return _C__D0_15_ANSWERJOINPARTYROOM;
 	}
-
 }

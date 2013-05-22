@@ -16,16 +16,11 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.4.2.1.2.5 $ $Date: 2005/03/27 15:29:57 $
- */
 public class PartySmallWindowAdd extends L2GameServerPacket
 {
 	private static final String _S__64_PARTYSMALLWINDOWADD = "[S] 4f PartySmallWindowAdd";
 
-	private L2PcInstance _member;
+	private final L2PcInstance _member;
 
 	public PartySmallWindowAdd(L2PcInstance member)
 	{
@@ -36,14 +31,14 @@ public class PartySmallWindowAdd extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x4f);
-		L2PcInstance player =  getClient().getActiveChar();
+		L2PcInstance player = getClient().getActiveChar();
 		writeD(player.getObjectId()); // c3
-		writeD(0);//writeD(0x04); ?? //c3
+		writeD(0);// writeD(0x04); ?? //c3
 		writeD(_member.getObjectId());
 		writeS(_member.getName());
 
-		writeD((int) _member.getCurrentCp()); //c4
-		writeD(_member.getMaxCp()); //c4
+		writeD((int) _member.getCurrentCp()); // c4
+		writeD(_member.getMaxCp()); // c4
 
 		writeD((int) _member.getCurrentHp());
 		writeD(_member.getMaxHp());
@@ -51,13 +46,10 @@ public class PartySmallWindowAdd extends L2GameServerPacket
 		writeD(_member.getMaxMp());
 		writeD(_member.getLevel());
 		writeD(_member.getClassId().getId());
-		writeD(0);//writeD(0x01); ??
+		writeD(0);// writeD(0x01); ??
 		writeD(0);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

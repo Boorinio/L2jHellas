@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * <ul>
  * <li>admin_unblockip</li>
  * </ul>
- *
  */
 public class AdminUnblockIp implements IAdminCommandHandler
 {
@@ -76,5 +75,4 @@ public class AdminUnblockIp implements IAdminCommandHandler
 		_log.log(Level.WARNING, getClass().getSimpleName() + ": Banned IP:" + ipAddress + " removed by GM " + activeChar.getName());
 		return true;
 	}
-
 }

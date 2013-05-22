@@ -23,17 +23,10 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.1.2.4 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class CannotMoveAnymore extends L2GameClientPacket
 {
-	private static final String _C__36_STOPMOVE = "[C] 36 CannotMoveAnymore";
-
 	private static Logger _log = Logger.getLogger(CannotMoveAnymore.class.getName());
+	private static final String _C__36_STOPMOVE = "[C] 36 CannotMoveAnymore";
 
 	private int _x;
 	private int _y;
@@ -57,19 +50,13 @@ public final class CannotMoveAnymore extends L2GameClientPacket
 			return;
 
 		if (Config.DEBUG)
-			_log.fine("client: x:" + _x + " y:" + _y + " z:" + _z
-					+ " server x:" + player.getX() + " y:" + player.getY()
-					+ " z:" + player.getZ());
+			_log.fine("client: x:" + _x + " y:" + _y + " z:" + _z + " server x:" + player.getX() + " y:" + player.getY() + " z:" + player.getZ());
 		if (player.getAI() != null)
 		{
-			player.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED_BLOCKED,
-					new L2CharPosition(_x, _y, _z, _heading));
+			player.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED_BLOCKED, new L2CharPosition(_x, _y, _z, _heading));
 		}
-		if (player instanceof L2PcInstance
-				&& ((L2PcInstance) player).getParty() != null)
-			((L2PcInstance) player).getParty().broadcastToPartyMembers(
-					((L2PcInstance) player),
-					new PartyMemberPosition((L2PcInstance) player));
+		if (player instanceof L2PcInstance && ((L2PcInstance) player).getParty() != null)
+			((L2PcInstance) player).getParty().broadcastToPartyMembers(((L2PcInstance) player), new PartyMemberPosition((L2PcInstance) player));
 
 		// player.stopMove();
 		//
@@ -86,11 +73,6 @@ public final class CannotMoveAnymore extends L2GameClientPacket
 		// getClient().getActiveChar().broadcastPacket(sr);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

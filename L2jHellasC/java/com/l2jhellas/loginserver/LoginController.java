@@ -37,13 +37,13 @@ import javolution.util.FastSet;
 
 import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.crypt.ScrambledKeyPair;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class LoginController
 {
@@ -116,7 +116,7 @@ public class LoginController
 	/**
 	 * This is mostly to force the initialization of the Crypto Implementation, avoiding it being done on runtime when its first needed.<BR>
 	 * In short it avoids the worst-case execution time on runtime by doing it on loading.
-	 *
+	 * 
 	 * @param key
 	 *        Any private RSA Key just for testing purposes.
 	 * @throws GeneralSecurityException
@@ -235,11 +235,11 @@ public class LoginController
 
 	/**
 	 * Adds the address to the ban list of the login server, with the given duration.
-	 *
+	 * 
 	 * @param address
 	 *        The Address to be banned.
 	 * @param expiration
-	 *        Timestamp in miliseconds when this ban expires
+	 *        Timestamp in milliseconds when this ban expires
 	 * @throws UnknownHostException
 	 *         if the address is invalid.
 	 */
@@ -251,11 +251,11 @@ public class LoginController
 
 	/**
 	 * Adds the address to the ban list of the login server, with the given duration.
-	 *
+	 * 
 	 * @param address
 	 *        The Address to be banned.
 	 * @param duration
-	 *        is miliseconds
+	 *        is milliseconds
 	 */
 	public void addBanForAddress(InetAddress address, long duration)
 	{
@@ -287,7 +287,7 @@ public class LoginController
 
 	/**
 	 * Remove the specified address from the ban list
-	 *
+	 * 
 	 * @param address
 	 *        The address to be removed from the ban list
 	 * @return true if the ban was removed, false if there was no ban for this ip
@@ -299,7 +299,7 @@ public class LoginController
 
 	/**
 	 * Remove the specified address from the ban list
-	 *
+	 * 
 	 * @param address
 	 *        The address to be removed from the ban list
 	 * @return true if the ban was removed, false if there was no ban for this ip or the address was invalid.
@@ -401,12 +401,9 @@ public class LoginController
 
 			if (loginOk && client.getLastServer() != serverId)
 			{
-				Connection con = null;
 				PreparedStatement statement = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
-
 					String stmt = "UPDATE accounts SET lastServer = ? WHERE login = ?";
 					statement = con.prepareStatement(stmt);
 					statement.setInt(1, serverId);
@@ -418,23 +415,6 @@ public class LoginController
 				{
 					_log.warning("WARNING: Could not set lastServer: " + e);
 				}
-				finally
-				{
-					try
-					{
-						con.close();
-					}
-					catch (Exception e)
-					{
-					}
-					try
-					{
-						statement.close();
-					}
-					catch (Exception e)
-					{
-					}
-				}
 			}
 			return loginOk;
 		}
@@ -443,12 +423,9 @@ public class LoginController
 
 	public void setAccountAccessLevel(String account, int banLevel)
 	{
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			String stmt = "UPDATE accounts SET access_level=? WHERE login=?";
 			statement = con.prepareStatement(stmt);
 			statement.setInt(1, banLevel);
@@ -460,27 +437,14 @@ public class LoginController
 		{
 			_log.warning("WARNING: Could not set accessLevel: " + e);
 		}
-		finally
-		{
-			try
-			{
-				statement.close();
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public boolean isGM(String user)
 	{
 		boolean ok = false;
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement("SELECT access_level FROM accounts WHERE login=?");
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
@@ -500,23 +464,6 @@ public class LoginController
 			_log.log(Level.WARNING, getClass().getName() + "  Could not check GM state: " + e.getMessage(), e);
 			ok = false;
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-			try
-			{
-				statement.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return ok;
 	}
 
@@ -524,7 +471,7 @@ public class LoginController
 	 * <p>
 	 * This method returns one of the cached {@link ScrambledKeyPair ScrambledKeyPairs} for communication with Login Clients.
 	 * </p>
-	 *
+	 * 
 	 * @return a scrambled keypair
 	 */
 	public ScrambledKeyPair getScrambledRSAKeyPair()
@@ -534,7 +481,7 @@ public class LoginController
 
 	/**
 	 * user name is not case sensitive any more
-	 *
+	 * 
 	 * @param user
 	 * @param password
 	 * @param address
@@ -554,8 +501,7 @@ public class LoginController
 			return false;
 		}
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			MessageDigest md = MessageDigest.getInstance("SHA");
 			byte[] raw = password.getBytes("UTF-8");
@@ -565,7 +511,6 @@ public class LoginController
 			int access = 0;
 			int lastServer = 1;
 
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT password, access_level, lastServer FROM accounts WHERE login=?");
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
@@ -582,7 +527,7 @@ public class LoginController
 			rset.close();
 			statement.close();
 
-			// if account doesnt exists
+			// if account doesn't exists
 			if (expected == null)
 			{
 				if (Config.AUTO_CREATE_ACCOUNTS)
@@ -631,7 +576,6 @@ public class LoginController
 
 			if (ok)
 			{
-
 				client.setAccessLevel(access);
 				client.setLastServer(lastServer);
 				statement = con.prepareStatement("UPDATE accounts SET lastactive=?, lastIP=? WHERE login=?");
@@ -646,16 +590,6 @@ public class LoginController
 		{
 			_log.warning("WARNING: Could not check password: " + e);
 			ok = false;
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 
 		if (!ok)
@@ -694,10 +628,8 @@ public class LoginController
 	{
 		boolean ok = false;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT access_level FROM accounts WHERE login=?");
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
@@ -716,16 +648,6 @@ public class LoginController
 			// out of bounds should not be possible
 			_log.warning("WARNING: Could not check ban state: " + e);
 			ok = false;
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 
 		return ok;

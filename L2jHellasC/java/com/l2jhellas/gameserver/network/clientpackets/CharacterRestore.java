@@ -16,18 +16,12 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.4.2.1.2.2 $ $Date: 2005/03/27 15:29:29 $
- */
 public final class CharacterRestore extends L2GameClientPacket
 {
 	private static final String _C__62_CHARACTERRESTORE = "[C] 62 CharacterRestore";
-	//private static Logger _log = Logger.getLogger(CharacterRestore.class.getName());
 
 	// cd
-    private int _charSlot;
+	private int _charSlot;
 
 	@Override
 	protected void readImpl()
@@ -38,18 +32,18 @@ public final class CharacterRestore extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-	    try
-	    {
-		getClient().markRestoredChar(_charSlot);
-	    } catch (Exception e){}
+		try
+		{
+			getClient().markRestoredChar(_charSlot);
+		}
+		catch (Exception e)
+		{
+		}
 		CharSelectInfo cl = new CharSelectInfo(getClient().getAccountName(), getClient().getSessionId().playOkID1, 0);
 		sendPacket(cl);
 		getClient().setCharSelection(cl.getCharInfo());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

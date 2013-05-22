@@ -43,10 +43,11 @@ public class NpcBufferSkills
 		Integer skillFeeId = _skillFeeIds.get(skillId);
 		Integer skillFeeAmount = _skillFeeAmounts.get(skillId);
 
-		if (skillLevel == null || skillFeeId == null || skillFeeAmount == null)
+		if ((skillLevel == null) || (skillFeeId == null) || (skillFeeAmount == null))
 			return null;
 
-		return new int[] {
+		return new int[]
+		{
 		skillLevel, skillFeeId, skillFeeAmount
 		};
 	}

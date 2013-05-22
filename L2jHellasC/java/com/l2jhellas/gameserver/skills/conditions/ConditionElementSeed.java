@@ -23,7 +23,8 @@ import com.l2jhellas.gameserver.skills.effects.EffectSeed;
  */
 public class ConditionElementSeed extends Condition
 {
-	private static int[] seedSkills = {
+	private static int[] seedSkills =
+	{
 	1285, 1286, 1287, 426, 427
 	};
 	private final int[] _requiredSeeds;

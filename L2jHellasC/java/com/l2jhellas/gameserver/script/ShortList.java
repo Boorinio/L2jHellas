@@ -30,7 +30,8 @@ public class ShortList
 			return getShortList(range.split(","));
 		}
 
-		short[] list = {
+		short[] list =
+		{
 			getShort(range)
 		};
 		return list;

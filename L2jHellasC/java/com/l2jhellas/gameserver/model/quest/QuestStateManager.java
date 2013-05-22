@@ -94,7 +94,7 @@ public class QuestStateManager
 	{
 		for (int i = 0; i < getQuestStates().size(); i++)
 		{
-			if (getQuestStates().get(i).getPlayer() != null && getQuestStates().get(i).getPlayer().getObjectId() == player.getObjectId())
+			if ((getQuestStates().get(i).getPlayer() != null) && (getQuestStates().get(i).getPlayer().getObjectId() == player.getObjectId()))
 				return getQuestStates().get(i);
 
 		}

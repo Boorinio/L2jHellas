@@ -21,7 +21,8 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 public class VoiceInfo implements IVoicedCommandHandler
 {
-	private static String[] VOICED_COMMANDS = {
+	private static String[] VOICED_COMMANDS =
+	{
 		"info"
 	};
 

@@ -16,14 +16,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * Format: (ch)ddd
- *
  */
 public class ExConfirmCancelItem extends L2GameServerPacket
 {
 	private static final String _S__FE_56_EXCONFIRMCANCELITEM = "[S] FE:56 ExConfirmCancelItem";
 
-	private int _itemObjId;
-	private int _price;
+	private final int _itemObjId;
+	private final int _price;
 
 	public ExConfirmCancelItem(int itemObjId, int price)
 	{
@@ -31,9 +30,6 @@ public class ExConfirmCancelItem extends L2GameServerPacket
 		_price = price;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -47,13 +43,9 @@ public class ExConfirmCancelItem extends L2GameServerPacket
 		writeD(0x01);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_56_EXCONFIRMCANCELITEM;
 	}
-
 }

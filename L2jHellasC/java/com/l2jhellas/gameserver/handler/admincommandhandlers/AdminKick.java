@@ -26,10 +26,10 @@ import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 public class AdminKick implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_kick",
-	"admin_kick_non_gm"
-	};
+	{/** @formatter:off */
+		"admin_kick",
+		"admin_kick_non_gm"
+	};/** @formatter:off */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

@@ -19,8 +19,6 @@ import com.l2jhellas.gameserver.templates.L2Weapon;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ConditionTargetUsesWeaponKind extends Condition
 {
@@ -34,7 +32,6 @@ public class ConditionTargetUsesWeaponKind extends Condition
 	@Override
 	public boolean testImpl(Env env)
 	{
-
 		if (env.target == null)
 			return false;
 

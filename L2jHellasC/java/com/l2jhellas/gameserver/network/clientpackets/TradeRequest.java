@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -30,7 +28,6 @@ import com.l2jhellas.util.Util;
 public final class TradeRequest extends L2GameClientPacket
 {
 	private static final String TRADEREQUEST__C__15 = "[C] 15 TradeRequest";
-	private static Logger _log = Logger.getLogger(TradeRequest.class.getName());
 
 	private int _objectId;
 
@@ -49,13 +46,13 @@ public final class TradeRequest extends L2GameClientPacket
 
 		if (!player.getAccessLevel().allowTransaction())
 		{
-			player.sendMessage("Transactions are disable for your Access Level");
+			player.sendMessage("Transactions are disabled for your Access Level.");
 			sendPacket(new ActionFailed());
 			return;
 		}
 
 		L2Object target = L2World.getInstance().findObject(_objectId);
-		if (target == null || !player.getKnownList().knowsObject(target) || !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
+		if ((target == null) || !player.getKnownList().knowsObject(target) || !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 			return;
@@ -65,7 +62,7 @@ public final class TradeRequest extends L2GameClientPacket
 
 		if (partner.isInOlympiadMode() || player.isInOlympiadMode())
 		{
-			player.sendMessage("You or your target cant request trade in Olympiad mode");
+			player.sendMessage("You or your target cant request trade in Olympiad mode.");
 			return;
 		}
 
@@ -73,47 +70,43 @@ public final class TradeRequest extends L2GameClientPacket
 		L2PcInstance player2 = (L2PcInstance) target;
 		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
 		{
-			player.sendMessage("You Can't Trade with Different Faction");
+			player.sendMessage("You Can't Trade with Different Faction.");
 			return;
 		}
 
 		if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
 		{
-			player.sendMessage("You Can't Trade with Different Faction");
+			player.sendMessage("You can't trade with different faction.");
 			return;
 		}
 
 		// Alt game - Karma punishment
-		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && (player.getKarma() > 0 || partner.getKarma() > 0))
+		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && ((player.getKarma() > 0) || (partner.getKarma() > 0)))
 		{
 			player.sendMessage("Chaotic players can't use Trade.");
 			return;
 		}
 
-		if (player.getPrivateStoreType() != 0 || partner.getPrivateStoreType() != 0)
+		if ((player.getPrivateStoreType() != 0) || (partner.getPrivateStoreType() != 0))
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
 			return;
 		}
 
 		if (!Config.ALLOW_LOW_LEVEL_TRADE)
-			if (player.getLevel() <= 76 || player.getLevel() > 1)
+			if ((player.getLevel() <= 76) || (player.getLevel() > 1))
 			{
-				player.sendMessage("You Cannot Trade a Lower Level Character");
+				player.sendMessage("You can't trade with a lower level character.");
 			}
 
 		if (player.isProcessingTransaction())
 		{
-			if (Config.DEBUG)
-				_log.fine("already trading with someone");
 			player.sendPacket(new SystemMessage(SystemMessageId.ALREADY_TRADING));
 			return;
 		}
 
 		if (partner.isProcessingRequest() || partner.isProcessingTransaction())
 		{
-			if (Config.DEBUG)
-				_log.info("transaction already in progress.");
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 			sm.addString(partner.getName());
 			player.sendPacket(sm);
@@ -122,7 +115,7 @@ public final class TradeRequest extends L2GameClientPacket
 
 		if (partner.getTradeRefusal())
 		{
-			player.sendMessage("Target is in trade refusal mode");
+			player.sendMessage("Target is in trade refusal mode.");
 			return;
 		}
 
@@ -132,8 +125,8 @@ public final class TradeRequest extends L2GameClientPacket
 			player.sendPacket(sm);
 			return;
 		}
-		if (BlockList.isBlocked(partner, player))
 
+		if (BlockList.isBlocked(partner, player))
 		{
 			player.sendMessage("Target has added you in his/her blocklist.");
 			return;

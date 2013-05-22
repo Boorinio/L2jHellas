@@ -19,10 +19,9 @@ import java.util.logging.Logger;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
-
 /**
  * @author zabbix
- * Lets drink to code!
+ *         Lets drink to code!
  */
 public final class RequestLinkHtml extends L2GameClientPacket
 {
@@ -40,12 +39,12 @@ public final class RequestLinkHtml extends L2GameClientPacket
 	public void runImpl()
 	{
 		L2PcInstance actor = getClient().getActiveChar();
-		if(actor == null)
+		if (actor == null)
 			return;
 
-		if(_link.contains("..") || !_link.contains(".htm"))
+		if (_link.contains("..") || !_link.contains(".htm"))
 		{
-			_log.warning("[RequestLinkHtml] hack? link contains prohibited characters: '"+_link+"', skipped");
+			_log.warning("[RequestLinkHtml] hack? link contains prohibited characters: '" + _link + "', skipped.");
 			return;
 		}
 

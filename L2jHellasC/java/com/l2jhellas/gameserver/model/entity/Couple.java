@@ -22,9 +22,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author evill33t
@@ -44,15 +44,12 @@ public class Couple
 	{
 		_Id = coupleId;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
 
-			con = L2DatabaseFactory.getInstance().getConnection();
-
-			statement = con.prepareStatement("SELECT * FROM mods_wedding WHERE id = ?");
+			statement = con.prepareStatement("SELECT * FROM mods_wedding WHERE id=?");
 			statement.setInt(1, _Id);
 			rs = statement.executeQuery();
 
@@ -79,16 +76,6 @@ public class Couple
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public Couple(L2PcInstance player1, L2PcInstance player2)
@@ -105,13 +92,11 @@ public class Couple
 		_weddingDate = Calendar.getInstance();
 		_weddingDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			_Id = IdFactory.getInstance().getNextId();
-			statement = con.prepareStatement("INSERT INTO mods_wedding (id, player1Id, player2Id, married, affianceDate, weddingDate) VALUES (?, ?, ?, ?, ?, ?)");
+			statement = con.prepareStatement("INSERT INTO mods_wedding (id, player1Id, player2Id, married, affianceDate, weddingDate) VALUES (?,?,?,?,?,?)");
 			statement.setInt(1, _Id);
 			statement.setInt(2, _player1Id);
 			statement.setInt(3, _player2Id);
@@ -131,27 +116,15 @@ public class Couple
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public void marry()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
-			statement = con.prepareStatement("UPDATE mods_wedding SET married = ?, weddingDate = ? WHERE id = ?");
+			statement = con.prepareStatement("UPDATE mods_wedding SET married=?, weddingDate=? WHERE id=?");
 			statement.setBoolean(1, true);
 			_weddingDate = Calendar.getInstance();
 			statement.setLong(2, _weddingDate.getTimeInMillis());
@@ -168,24 +141,12 @@ public class Couple
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	public void divorce()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
 			statement = con.prepareStatement("DELETE FROM mods_wedding WHERE id=?");
@@ -198,16 +159,6 @@ public class Couple
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

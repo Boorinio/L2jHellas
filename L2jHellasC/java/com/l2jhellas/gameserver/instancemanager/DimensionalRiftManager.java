@@ -34,7 +34,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -46,6 +45,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * Thanks to L2Fortress and balancer.ru - kombat
@@ -78,11 +78,8 @@ public class DimensionalRiftManager
 
 	private void loadRooms()
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement s = con.prepareStatement("SELECT * FROM dimensional_rift");
 			ResultSet rs = s.executeQuery();
 
@@ -119,16 +116,6 @@ public class DimensionalRiftManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -396,15 +383,18 @@ public class DimensionalRiftManager
 			_yMax = (yMax - 128);
 			_zMin = zMin;
 			_zMax = zMax;
-			_teleportCoords = new int[] {
+			_teleportCoords = new int[]
+			{
 			xT, yT, zT
 			};
 			_isBossRoom = isBossRoom;
 			_roomSpawns = new FastList<L2Spawn>();
 			_roomMobs = new FastList<L2NpcInstance>();
-			_s = new Polygon(new int[] {
+			_s = new Polygon(new int[]
+			{
 			xMin, xMax, xMax, xMin
-			}, new int[] {
+			}, new int[]
+			{
 			yMin, yMin, yMax, yMax
 			}, 4);
 		}

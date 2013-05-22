@@ -26,9 +26,6 @@ public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient
 {
 	private static Logger _log = Logger.getLogger(L2LoginClientPacket.class.getName());
 
-	/**
-	 * @see com.l2jhellas.mmocore.ClientPacket#read()
-	 */
 	@Override
 	protected final boolean read()
 	{

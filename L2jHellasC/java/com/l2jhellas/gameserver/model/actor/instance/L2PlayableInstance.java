@@ -26,20 +26,14 @@ import com.l2jhellas.gameserver.templates.L2CharTemplate;
  * <BR>
  * L2PlayableInstance :<BR>
  * <BR>
- * <li>L2PcInstance</li> <li>L2Summon</li><BR>
- * <BR>
+ * <li>L2PcInstance</li> <li>L2Summon</li>
  */
-
 public abstract class L2PlayableInstance extends L2Character
 {
 
-	private boolean _isNoblesseBlessed = false; // for Noblesse Blessing skill,
-												// restores buffs after death
-	private boolean _getCharmOfLuck = false; // Charm of Luck - During a
-												// Raid/Boss war, decreased
-												// chance for death penalty
-	private boolean _isPhoenixBlessed = false; // for Soul of The PPhoenix or
-												// Salvation buffs
+	private boolean _isNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
+	private boolean _getCharmOfLuck = false; // Charm of Luck - During a Raid/Boss war, decreased chance for death penalty
+	private boolean _isPhoenixBlessed = false; // for Soul of The PPhoenix or Salvation buffs
 	private boolean _ProtectionBlessing = false;
 	private String _lastTownName = null;
 	private int _hitmanTarget = 0;
@@ -51,7 +45,7 @@ public abstract class L2PlayableInstance extends L2Character
 	 * <BR>
 	 * <li>Call the L2Character constructor to create an empty _skills slot and link copy basic Calculator set to this L2PlayableInstance</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param objectId
 	 *        Identifier of the object to initialized
 	 * @param template
@@ -61,8 +55,8 @@ public abstract class L2PlayableInstance extends L2Character
 	{
 		super(objectId, template);
 		getKnownList();	// init knownlist
-		getStat();			// init stats
-		getStatus();		// init status
+		getStat(); // init stats
+		getStatus(); // init status
 	}
 
 	@Override
@@ -76,7 +70,7 @@ public abstract class L2PlayableInstance extends L2Character
 	@Override
 	public PlayableStat getStat()
 	{
-		if (super.getStat() == null || !(super.getStat() instanceof PlayableStat))
+		if ((super.getStat() == null) || !(super.getStat() instanceof PlayableStat))
 			setStat(new PlayableStat(this));
 		return (PlayableStat) super.getStat();
 	}
@@ -84,7 +78,7 @@ public abstract class L2PlayableInstance extends L2Character
 	@Override
 	public PlayableStatus getStatus()
 	{
-		if (super.getStatus() == null || !(super.getStatus() instanceof PlayableStatus))
+		if ((super.getStatus() == null) || !(super.getStatus() instanceof PlayableStatus))
 			setStatus(new PlayableStatus(this));
 		return (PlayableStatus) super.getStatus();
 	}

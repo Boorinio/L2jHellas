@@ -41,7 +41,6 @@ public class L2Henna
 		statMEM = set.getInteger("stat_MEM");
 		statDEX = set.getInteger("stat_DEX");
 		statWIT = set.getInteger("stat_WIT");
-
 	}
 
 	public int getSymbolId()

@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.ArrayList;
@@ -25,7 +39,7 @@ public class ZodiacMain
 	0, 0, 0, 0, 0
 	};
 	public static boolean voting;
-	
+
 	public static void ZodiacIn()
 	{
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
@@ -37,7 +51,7 @@ public class ZodiacMain
 			}
 		}, 60 * 1000 * Config.INITIAL_START);
 	}
-	
+
 	public static void startVoting()
 	{
 		voting = true;
@@ -146,10 +160,10 @@ public class ZodiacMain
 				voting = false;
 				endit();
 			break;
-		
+
 		}
 	}
-	
+
 	public static void showHtmlWindow(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
@@ -184,10 +198,10 @@ public class ZodiacMain
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-	
+
 	public static void showFinalWindow(L2PcInstance player)
 	{
-		
+
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		TextBuilder tb = new TextBuilder("");
 		tb.append("<html><title>Zodiac Event Engine</title><body>Current Votes:<br>");
@@ -201,13 +215,13 @@ public class ZodiacMain
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
 	}
-	
+
 	public static void endit()
 	{
 		max = -1;
 		for (i = 0; i < 5; i++)
 		{
-			if (count[i] > max && !(count[i]==0))
+			if (count[i] > max && !(count[i] == 0))
 				max = i;
 		}
 		if (max == 0)
@@ -245,7 +259,7 @@ public class ZodiacMain
 			waitSecs(10);
 			TreasureChest.registration();
 		}
-		else if(max == -1)
+		else if (max == -1)
 		{
 			Announcements.getInstance().announceToAll("No votes event canceled!");
 		}
@@ -257,13 +271,13 @@ public class ZodiacMain
 		waitSecs(Config.BETWEEN_EVENTS * 60);
 		startVoting();
 	}
-	
+
 	public static boolean isEligible(L2PcInstance player, String ip)
 	{
-		
+
 		if (player.isinZodiac)
 		{
-			player.sendMessage("You are Already in Zodiac");
+			player.sendMessage("You are Already in Zodiac.");
 			return false;
 		}
 		if (!ZodiacRegisterActive)
@@ -273,7 +287,7 @@ public class ZodiacMain
 		}
 		if (player.getLevel() < 76)
 		{
-			player.sendMessage("You are lower than 76 lvl");
+			player.sendMessage("You are lower than 76 level.");
 			return false;
 		}
 		if (player.isInJail())
@@ -283,17 +297,17 @@ public class ZodiacMain
 		}
 		if (player.isInOlympiadMode())
 		{
-			player.sendMessage("You are in olympiad mode");
+			player.sendMessage("You are in olympiad mode.");
 			return false;
 		}
 		if (hasbots(ip) && Config.SAME_IP_ZODIAC)
 		{
-			player.sendMessage("You have already joinned with that ip");
+			player.sendMessage("You have already joinned with that ip.");
 			return false;
 		}
 		return true;
 	}
-	
+
 	public static void waitSecs(int i)
 	{
 		try
@@ -305,15 +319,12 @@ public class ZodiacMain
 			ie.printStackTrace();
 		}
 	}
-	
+
 	public static boolean hasbots(String ip)
 	{
 		if (Ips.contains(ip))
-		{
 			return true;
-		}
 		else
 			return false;
 	}
-	
 }

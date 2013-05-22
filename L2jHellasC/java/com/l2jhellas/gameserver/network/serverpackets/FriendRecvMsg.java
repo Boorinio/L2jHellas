@@ -15,22 +15,21 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- * Send Private (Friend) Message
- *
- * Format: c dSSS
- *
- * d: Unknown
- * S: Sending Player
- * S: Receiving Player
- * S: Message
- *
+ * Send Private (Friend) Message<BR>
+ * Format: c dSSS<BR>
+ * d: Unknown<BR>
+ * S: Sending Player<BR>
+ * S: Receiving Player<BR>
+ * S: Message<BR>
+ * <BR>
+ * 
  * @author Tempy
  */
 public class FriendRecvMsg extends L2GameServerPacket
 {
 	private static final String _S__FD_FRIENDRECVMSG = "[S] FD FriendRecvMsg";
 
-	private String _sender, _receiver, _message;
+	private final String _sender, _receiver, _message;
 
 	public FriendRecvMsg(String sender, String reciever, String message)
 	{

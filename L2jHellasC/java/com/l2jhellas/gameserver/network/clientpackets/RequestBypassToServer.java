@@ -23,7 +23,6 @@ import Extensions.RankSystem.RankPvpSystemPlayerInfo;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.CommunityBoard;
 import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
@@ -45,11 +44,11 @@ import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class RequestBypassToServer extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
-
 	private static final String _C__21_REQUESTBYPASSTOSERVER = "[C] 21 RequestBypassToServer";
 
 	// S
@@ -193,10 +192,8 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				if (title.equalsIgnoreCase("") || title == null)
 					title = "(No Subject)";
 
-				Connection con = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
 					PreparedStatement statement = con.prepareStatement("INSERT INTO mails VALUES ('0',?,?,?,?)");
 					statement.setString(1, activeChar.getName());
 					statement.setString(2, to);
@@ -212,7 +209,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					e.printStackTrace();
 					_log.log(Level.SEVERE, e.getMessage(), e);
 				}
-
 			}
 			else if (_command.startsWith("delMsg"))
 			{
@@ -220,10 +216,8 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				st.nextToken();
 
 				int messageId = Integer.parseInt(st.nextToken());
-				Connection con = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					con = L2DatabaseFactory.getInstance().getConnection();
 					PreparedStatement statement = con.prepareStatement("DELETE FROM mails WHERE id=?");
 					statement.setInt(1, messageId);
 					statement.execute();
@@ -251,11 +245,8 @@ public final class RequestBypassToServer extends L2GameClientPacket
 
 						try
 						{
-							Connection con = null;
-							try
+							try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 							{
-								con = L2DatabaseFactory.getInstance().getConnection();
-
 								PreparedStatement statement = con.prepareStatement("UPDATE characters SET email=? WHERE obj_Id=?");
 								statement.setString(1, email1);
 								statement.setInt(2, activeChar.getObjectId());
@@ -265,17 +256,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 							catch (Exception e)
 							{
 								e.printStackTrace();
-							}
-							finally
-							{
-								try
-								{
-									con.close();
-								}
-								catch (Exception e)
-								{
-									e.printStackTrace();
-								}
 							}
 
 							activeChar.sendMessage("We successfully added your email " + email1 + " to our database");
@@ -395,7 +375,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					((L2NpcInstance) object).onBypassFeedback(activeChar, _command);
 				}
 			}
-			// Navigate throught Manor windows
+			// Navigate through Manor windows
 			else if (_command.startsWith("manor_menu_select?"))
 			{
 				L2Object object = activeChar.getTarget();
@@ -493,11 +473,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		{
 			_log.log(Level.WARNING, "Bad RequestBypassToServer: ", e);
 		}
-
-		// finally
-		// {
-		// activeChar.clearBypass();
-		// }
 	}
 
 	/**
@@ -515,7 +490,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			temp.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(activeChar.getX(), activeChar.getY(), activeChar.getZ(), 0));
 			// temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
 		}
-
 	}
 
 	private void playerHelp(L2PcInstance activeChar, String path)

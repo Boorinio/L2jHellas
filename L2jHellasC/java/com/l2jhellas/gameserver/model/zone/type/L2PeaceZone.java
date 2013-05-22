@@ -19,8 +19,8 @@ import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 
 /**
  * A peaceful zone
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2PeaceZone extends L2ZoneType
 {
@@ -34,10 +34,12 @@ public class L2PeaceZone extends L2ZoneType
 	{
 		character.setInsideZone(L2Character.ZONE_PEACE, true);
 
-		/*if (character instanceof L2PcInstance)
-		{
-			((L2PcInstance)character).sendMessage("You entered a peace zone!");
-		}*/
+		/*
+		 * if (character instanceof L2PcInstance)
+		 * {
+		 * ((L2PcInstance)character).sendMessage("You entered a peace zone!");
+		 * }
+		 */
 	}
 
 	@Override
@@ -45,17 +47,21 @@ public class L2PeaceZone extends L2ZoneType
 	{
 		character.setInsideZone(L2Character.ZONE_PEACE, false);
 
-		/*if (character instanceof L2PcInstance)
-		{
-			((L2PcInstance)character).sendMessage("You exited a peace zone!");
-		}*/
+		/*
+		 * if (character instanceof L2PcInstance)
+		 * {
+		 * ((L2PcInstance)character).sendMessage("You exited a peace zone!");
+		 * }
+		 */
 	}
 
+	@Override
+	public void onDieInside(L2Character character)
+	{
+	}
 
 	@Override
-	public void onDieInside(L2Character character) {}
-
-	@Override
-	public void onReviveInside(L2Character character) {}
-
+	public void onReviveInside(L2Character character)
+	{
+	}
 }

@@ -32,7 +32,7 @@ public class ObjectPosition
 	private final L2Object _activeObject;
 	private int _heading = 0;
 	private Point3D _worldPosition;
-	private L2WorldRegion _worldRegion;         // Object localization : Used for items/chars that are seen in the world
+	private L2WorldRegion _worldRegion;// Object localization : Used for items/chars that are seen in the world
 
 	public ObjectPosition(L2Object activeObject)
 	{
@@ -86,7 +86,7 @@ public class ObjectPosition
 	 * <BR>
 	 * <B><U> Concept</U> :</B><BR>
 	 * <BR>
-	 * A L2Object is invisble if <B>_hidden</B>=true or <B>_worldregion</B>==null <BR>
+	 * A L2Object is invisible if <B>_hidden</B>=true or <B>_worldregion</B>==null <BR>
 	 * <BR>
 	 * <B><U> Assert </U> :</B><BR>
 	 * <BR>
@@ -114,7 +114,7 @@ public class ObjectPosition
 	}
 
 	/**
-	 * checks if current object changed its region, if so, update referencies
+	 * checks if current object changed its region, if so, update references
 	 */
 	public void updateWorldRegion()
 	{

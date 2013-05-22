@@ -16,18 +16,11 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
-/**
- * This class ...
- *
- * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- */
 public class ObservationReturn extends L2GameServerPacket
 {
 	// ddSS
 	private static final String _S__E0_OBSERVRETURN = "[S] E0 ObservationReturn";
-	private L2PcInstance _activeChar;
-
+	private final L2PcInstance _activeChar;
 
 	/**
 	 * @param _characters
@@ -37,19 +30,15 @@ public class ObservationReturn extends L2GameServerPacket
 		_activeChar = observer;
 	}
 
-
 	@Override
 	protected final void writeImpl()
 	{
-		writeC( 0xe0 );
-		writeD( _activeChar.getObsX() );
-		writeD( _activeChar.getObsY() );
-		writeD( _activeChar.getObsZ() );
+		writeC(0xe0);
+		writeD(_activeChar.getObsX());
+		writeD(_activeChar.getObsY());
+		writeD(_activeChar.getObsZ());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

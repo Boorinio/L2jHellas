@@ -38,16 +38,19 @@ import com.l2jhellas.gameserver.model.entity.Castle;
  * - closeall = close all coloseum door
  * - open = open selected door
  * - close = close selected door
- *
+ * 
  * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminDoorControl implements IAdminCommandHandler
 {
 	private static DoorTable _doorTable;
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_open", "admin_close", "admin_openall", "admin_closeall"
-	};
+	{/** @formatter:off */
+		"admin_open",
+		"admin_close",
+		"admin_openall",
+		"admin_closeall"
+	};/** @formatter:on */
 
 	// private static final Map<String, Integer> doorMap = new FastMap<String,
 	// Integer>(); //FIXME: should we jute remove this?

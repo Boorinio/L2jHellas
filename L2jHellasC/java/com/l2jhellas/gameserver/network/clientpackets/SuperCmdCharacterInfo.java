@@ -15,12 +15,12 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 /**
- * Format chS
- * c: (id) 0x39
- * h: (subid) 0x00
+ * Format chS<BR>
+ * c: (id) 0x39<BR>
+ * h: (subid) 0x00<BR>
  * S: the character name (or maybe cmd string ?)
+ * 
  * @author -Wooden-
- *
  */
 public final class SuperCmdCharacterInfo extends L2GameClientPacket
 {
@@ -28,30 +28,21 @@ public final class SuperCmdCharacterInfo extends L2GameClientPacket
 	@SuppressWarnings("unused")
 	private String _characterName;
 
-
 	@Override
 	protected void readImpl()
 	{
 		_characterName = readS();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
-		// TODO Auto-generated method stub
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__39_00_SUPERCMDCHARACTERINFO;
 	}
-
 }

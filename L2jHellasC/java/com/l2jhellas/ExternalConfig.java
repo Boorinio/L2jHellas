@@ -619,7 +619,7 @@ public final class ExternalConfig
 			LOGIN_SERVER_SCHEDULE_RESTART = Boolean.parseBoolean(AutoSettings.getProperty("LoginRestartSchedule", "False"));
 			LOGIN_SERVER_SCHEDULE_RESTART_TIME = Long.parseLong(AutoSettings.getProperty("LoginRestartTime", "24"));
 			ALLOW_SEQURITY_QUE = Boolean.valueOf(AutoSettings.getProperty("AllowSecurityQuestion", "True"));
-			SECURITY_QUE_TIME = Integer.parseInt(AutoSettings.getProperty("Securitytime", "20"));
+			SECURITY_QUE_TIME = Integer.parseInt(AutoSettings.getProperty("SecurityTime", "20"));
 			ALLOW_ANTI_AFK = Boolean.valueOf(AutoSettings.getProperty("AllowAntiAfk", "True"));
 			MINUTES_AFK_PLAYERS = Integer.parseInt(AutoSettings.getProperty("AntiAfkMinutes", "20"));
 			ALLOW_PRIVATE_ANTI_BOT = Boolean.valueOf(AutoSettings.getProperty("AllowPrivateAntiBot", "False"));

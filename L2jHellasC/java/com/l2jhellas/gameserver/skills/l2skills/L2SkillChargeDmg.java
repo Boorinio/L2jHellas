@@ -113,7 +113,7 @@ public class L2SkillChargeDmg extends L2Skill
 			}
 
 			// TODO: should we use dual or not?
-			// because if so, damage are lowered but we dont do anything special with dual then
+			// because if so, damage are lowered but we don't do anything special with dual then
 			// like in doAttackHitByDual which in fact does the calcPhysDam call twice
 
 			// boolean dual = caster.isUsingDualWeapon();

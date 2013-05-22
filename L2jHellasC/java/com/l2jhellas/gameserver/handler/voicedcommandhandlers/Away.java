@@ -26,7 +26,8 @@ import com.l2jhellas.gameserver.model.entity.Siege;
  */
 public class Away implements IVoicedCommandHandler
 {
-	private static final String[] VOICED_COMMANDS = {
+	private static final String[] VOICED_COMMANDS =
+	{
 	"away", "back"
 	};
 

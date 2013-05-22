@@ -117,6 +117,7 @@
   </for>
 </skill>
 <skill id="7029" levels="4" name="Super Haste">
+  <table name="#pAtk"> 1 100 1000 10000 </table>
   <table name="#Tab-runSpd"> 1.5 2 3 4 </table>
   <table name="#Tab-mReuse"> 1 2 4 30 </table>
   <table name="#Tab-mAtkSpd"> 1.5 1.8 3 4 </table>
@@ -133,6 +134,8 @@
       <div order="0x30" stat="mReuse" val="#Tab-mReuse"/>
       <mul order="0x30" stat="mAtkSpd" val="#Tab-mAtkSpd"/>
       <mul order="0x30" stat="pAtkSpd" val="#Tab-pAtkSpd"/>
+	  <mul order="0x30" stat="pAtk" val="#pAtk"/>
+	  <mul order="0x30" stat="mAtk" val="#pAtk"/>
     </effect>
   </for>
 </skill>

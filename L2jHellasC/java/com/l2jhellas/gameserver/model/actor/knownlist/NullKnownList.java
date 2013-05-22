@@ -19,14 +19,12 @@ import com.l2jhellas.gameserver.model.L2Object;
 
 public class NullKnownList extends ObjectKnownList
 {
-
 	/**
 	 * @param activeObject
 	 */
 	public NullKnownList(L2Object activeObject)
 	{
 		super(activeObject);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

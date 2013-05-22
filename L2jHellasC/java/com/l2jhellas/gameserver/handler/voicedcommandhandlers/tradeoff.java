@@ -22,7 +22,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class tradeoff implements IVoicedCommandHandler
 {
-	private static final String[] VOICED_COMMANDS = {
+	private static final String[] VOICED_COMMANDS =
+	{
 	"tradeoff", "tradeon"
 	};
 

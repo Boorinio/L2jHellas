@@ -20,11 +20,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExSendManorList;
 
 /**
- * Format: ch
- * c (id) 0xD0
+ * Format: ch<BR>
+ * c (id) 0xD0<BR>
  * h (subid) 0x08
+ * 
  * @author l3x
- *
  */
 public class RequestManorList extends L2GameClientPacket
 {
@@ -50,9 +50,8 @@ public class RequestManorList extends L2GameClientPacket
 		manorsName.add("rune");
 		manorsName.add("schuttgart");
 		ExSendManorList manorlist = new ExSendManorList(manorsName);
-		if(manorlist!=null && player!=null)
-		player.sendPacket(manorlist);
-
+		if (manorlist != null && player != null)
+			player.sendPacket(manorlist);
 	}
 
 	@Override

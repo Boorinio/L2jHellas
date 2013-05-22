@@ -52,9 +52,31 @@ public class AdminTeleport implements IAdminCommandHandler
 {
 	protected static final Logger _log = Logger.getLogger(AdminTeleport.class.getName());
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_show_moves", "admin_show_moves_other", "admin_show_teleport", "admin_teleport_to_character", "admin_teleportto", "admin_move_to", "admin_teleport_character", "admin_recall", "admin_walk", "admin_explore", "teleportto", "recall", "admin_recall_npc", "admin_gonorth", "admin_gosouth", "admin_goeast", "admin_gowest", "admin_goup", "admin_godown", "admin_tele", "admin_teleto", "admin_instant_move", "admin_sendhome",
-	};
+	{/** @formatter:off */
+		"admin_show_moves",
+		"admin_show_moves_other",
+		"admin_show_teleport",
+		"admin_teleport_to_character",
+		"admin_teleportto",
+		"admin_move_to",
+		"admin_teleport_character",
+		"admin_recall",
+		"admin_walk",
+		"admin_explore",
+		"teleportto",
+		"recall",
+		"admin_recall_npc",
+		"admin_gonorth",
+		"admin_gosouth",
+		"admin_goeast",
+		"admin_gowest",
+		"admin_goup",
+		"admin_godown",
+		"admin_tele",
+		"admin_teleto",
+		"admin_instant_move",
+		"admin_sendhome"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -109,138 +131,137 @@ public class AdminTeleport implements IAdminCommandHandler
 			{
 			}
 		}
-			if (command.equals("admin_show_moves_other"))
+		if (command.equals("admin_show_moves_other"))
+		{
+			AdminHelpPage.showHelpPage(activeChar, "tele/other.html");
+		}
+		else if (command.equals("admin_show_teleport"))
+		{
+			showTeleportCharWindow(activeChar);
+		}
+		else if (command.equals("admin_recall_npc"))
+		{
+			recallNPC(activeChar);
+		}
+		else if (command.equals("admin_teleport_to_character"))
+		{
+			teleportToCharacter(activeChar, activeChar.getTarget());
+		}
+		else if (command.equals("admin_explore") && Config.ACTIVATE_POSITION_RECORDER)
+		{
+			activeChar._exploring = !activeChar._exploring;
+			activeChar.explore();
+		}
+		else if (command.startsWith("admin_walk"))
+		{
+			try
 			{
-				AdminHelpPage.showHelpPage(activeChar, "tele/other.html");
+				String val = command.substring(11);
+				StringTokenizer st = new StringTokenizer(val);
+				String x1 = st.nextToken();
+				int x = Integer.parseInt(x1);
+				String y1 = st.nextToken();
+				int y = Integer.parseInt(y1);
+				String z1 = st.nextToken();
+				int z = Integer.parseInt(z1);
+				L2CharPosition pos = new L2CharPosition(x, y, z, 0);
+				activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, pos);
 			}
-			else if (command.equals("admin_show_teleport"))
+			catch (Exception e)
 			{
-				showTeleportCharWindow(activeChar);
-			}
-			else if (command.equals("admin_recall_npc"))
-			{
-				recallNPC(activeChar);
-			}
-			else if (command.equals("admin_teleport_to_character"))
-			{
-				teleportToCharacter(activeChar, activeChar.getTarget());
-			}
-			else if (command.equals("admin_explore") && Config.ACTIVATE_POSITION_RECORDER)
-			{
-				activeChar._exploring = !activeChar._exploring;
-				activeChar.explore();
-			}
-			else if (command.startsWith("admin_walk"))
-			{
-				try
+				if (Config.DEVELOPER)
 				{
-					String val = command.substring(11);
-					StringTokenizer st = new StringTokenizer(val);
-					String x1 = st.nextToken();
-					int x = Integer.parseInt(x1);
-					String y1 = st.nextToken();
-					int y = Integer.parseInt(y1);
-					String z1 = st.nextToken();
-					int z = Integer.parseInt(z1);
-					L2CharPosition pos = new L2CharPosition(x, y, z, 0);
-					activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, pos);
-				}
-				catch (Exception e)
-				{
-					if (Config.DEVELOPER)
-					{
-						e.printStackTrace();
-					}
-				}
-			}
-			else if (command.startsWith("admin_move_to"))
-			{
-				try
-				{
-					String val = command.substring(14);
-					teleportTo(activeChar, val);
-				}
-				catch (StringIndexOutOfBoundsException e)
-				{
-					// Case of empty or missing coordinates
-					AdminHelpPage.showHelpPage(activeChar, "teleports.htm");
+					e.printStackTrace();
 				}
 			}
-			else if (command.startsWith("admin_teleport_character"))
+		}
+		else if (command.startsWith("admin_move_to"))
+		{
+			try
 			{
-				try
-				{
-					String val = command.substring(25);
+				String val = command.substring(14);
+				teleportTo(activeChar, val);
+			}
+			catch (StringIndexOutOfBoundsException e)
+			{
+				// Case of empty or missing coordinates
+				AdminHelpPage.showHelpPage(activeChar, "teleports.htm");
+			}
+		}
+		else if (command.startsWith("admin_teleport_character"))
+		{
+			try
+			{
+				String val = command.substring(25);
 
-					teleportCharacter(activeChar, val);
-				}
-				catch (StringIndexOutOfBoundsException e)
-				{
-					// Case of empty coordinates
-					activeChar.sendMessage("Wrong or no Coordinates given.");
-					showTeleportCharWindow(activeChar); // back to character
-														// teleport
-				}
+				teleportCharacter(activeChar, val);
 			}
-			else if (command.startsWith("admin_teleportto "))
+			catch (StringIndexOutOfBoundsException e)
 			{
-				try
-				{
-					String targetName = command.substring(17);
-					L2PcInstance player = L2World.getInstance().getPlayer(targetName);
-					teleportToCharacter(activeChar, player);
-				}
-				catch (StringIndexOutOfBoundsException e)
-				{
-				}
+				// Case of empty coordinates
+				activeChar.sendMessage("Wrong or no Coordinates given.");
+				showTeleportCharWindow(activeChar); // back to character teleport
 			}
-			else if (command.startsWith("admin_recall "))
+		}
+		else if (command.startsWith("admin_teleportto "))
+		{
+			try
 			{
-				try
-				{
-					String targetName = command.substring(13);
-					L2PcInstance player = L2World.getInstance().getPlayer(targetName);
-					teleportCharacter(player, activeChar.getX(), activeChar.getY(), activeChar.getZ());
-				}
-				catch (StringIndexOutOfBoundsException e)
-				{
-				}
+				String targetName = command.substring(17);
+				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				teleportToCharacter(activeChar, player);
 			}
-			else if (command.equals("admin_tele"))
+			catch (StringIndexOutOfBoundsException e)
 			{
+			}
+		}
+		else if (command.startsWith("admin_recall "))
+		{
+			try
+			{
+				String targetName = command.substring(13);
+				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				teleportCharacter(player, activeChar.getX(), activeChar.getY(), activeChar.getZ());
+			}
+			catch (StringIndexOutOfBoundsException e)
+			{
+			}
+		}
+		else if (command.equals("admin_tele"))
+		{
+			showTeleportWindow(activeChar);
+		}
+		else if (command.startsWith("admin_go"))
+		{
+			int intVal = 150;
+			int x = activeChar.getX(), y = activeChar.getY(), z = activeChar.getZ();
+			try
+			{
+				String val = command.substring(8);
+				StringTokenizer st = new StringTokenizer(val);
+				String dir = st.nextToken();
+				if (st.hasMoreTokens())
+					intVal = Integer.parseInt(st.nextToken());
+				if (dir.equals("east"))
+					x += intVal;
+				else if (dir.equals("west"))
+					x -= intVal;
+				else if (dir.equals("north"))
+					y -= intVal;
+				else if (dir.equals("south"))
+					y += intVal;
+				else if (dir.equals("up"))
+					z += intVal;
+				else if (dir.equals("down"))
+					z -= intVal;
+				activeChar.teleToLocation(x, y, z, false);
 				showTeleportWindow(activeChar);
 			}
-			else if (command.startsWith("admin_go"))
+			catch (Exception e)
 			{
-				int intVal = 150;
-				int x = activeChar.getX(), y = activeChar.getY(), z = activeChar.getZ();
-				try
-				{
-					String val = command.substring(8);
-					StringTokenizer st = new StringTokenizer(val);
-					String dir = st.nextToken();
-					if (st.hasMoreTokens())
-						intVal = Integer.parseInt(st.nextToken());
-					if (dir.equals("east"))
-						x += intVal;
-					else if (dir.equals("west"))
-						x -= intVal;
-					else if (dir.equals("north"))
-						y -= intVal;
-					else if (dir.equals("south"))
-						y += intVal;
-					else if (dir.equals("up"))
-						z += intVal;
-					else if (dir.equals("down"))
-						z -= intVal;
-					activeChar.teleToLocation(x, y, z, false);
-					showTeleportWindow(activeChar);
-				}
-				catch (Exception e)
-				{
-					activeChar.sendMessage("Usage: //go<north|south|east|west|up|down> [offset] (default 150)");
-				}
+				activeChar.sendMessage("Usage: //go<north|south|east|west|up|down> [offset] (default 150)");
 			}
+		}
 
 		return true;
 	}

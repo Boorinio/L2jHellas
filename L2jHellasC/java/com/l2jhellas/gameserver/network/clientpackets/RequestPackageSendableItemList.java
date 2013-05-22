@@ -18,15 +18,15 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PackageSendableList;
 
 /**
- * Format: (c)d
+ * Format: (c)d<BR>
  * d: char object id (?)
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public final class RequestPackageSendableItemList extends L2GameClientPacket
 {
 	private static final String _C_9E_REQUESTPACKAGESENDABLEITEMLIST = "[C] 9E RequestPackageSendableItemList";
 	private int _objectID;
-
 
 	@Override
 	protected void readImpl()
@@ -34,29 +34,22 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 		_objectID = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	public void runImpl()
 	{
 		/*
-		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_objectID);
-		if(target == null)
-			return;
-		*/
+		 * L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_objectID);
+		 * if(target == null)
+		 * return;
+		 */
 		L2ItemInstance[] items = getClient().getActiveChar().getInventory().getAvailableItems(true);
 		// build list...
 		sendPacket(new PackageSendableList(items, _objectID));
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C_9E_REQUESTPACKAGESENDABLEITEMLIST;
 	}
-
 }

@@ -65,7 +65,7 @@ public class L2CharacterAI extends AbstractAI
 	/**
 	 * Constructor of L2CharacterAI.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param accessor
 	 *        The AI accessor of the L2Character
 	 */
@@ -968,7 +968,7 @@ public class L2CharacterAI extends AbstractAI
 	 * <BR>
 	 * <li>L2PLayerAI, L2SummonAI</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param target
 	 *        The targeted L2Object
 	 * @param offset
@@ -1073,7 +1073,7 @@ public class L2CharacterAI extends AbstractAI
 	 * <BR>
 	 * <li>L2PLayerAI, L2SummonAI</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param target
 	 *        The targeted L2Object
 	 * @return True if the target is lost or dead (false if fakedeath)
@@ -1108,7 +1108,7 @@ public class L2CharacterAI extends AbstractAI
 	 * <BR>
 	 * <li>L2PLayerAI, L2SummonAI</li><BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param target
 	 *        The targeted L2Object
 	 * @return True if the target is lost

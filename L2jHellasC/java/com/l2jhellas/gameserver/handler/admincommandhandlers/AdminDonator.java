@@ -21,13 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AdminDonator implements IAdminCommandHandler
 {
@@ -61,12 +61,9 @@ public class AdminDonator implements IAdminCommandHandler
 				player.updateNameTitleColor();
 				sm.addString("You are no longer a server donator.");
 				GmListTable.broadcastMessageToGMs("GM " + activeChar.getName() + " removed donator stat of player" + target.getName());
-				Connection connection = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					connection = L2DatabaseFactory.getInstance().getConnection();
-
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
+					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;
@@ -79,15 +76,15 @@ public class AdminDonator implements IAdminCommandHandler
 
 					if (objId == 0)
 					{
-						connection.close();
+						con.close();
 						return false;
 					}
 
-					statement = connection.prepareStatement("UPDATE characters SET donator=0 WHERE obj_Id=?");
+					statement = con.prepareStatement("UPDATE characters SET donator=0 WHERE obj_Id=?");
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
-					connection.close();
+					con.close();
 				}
 				catch (Exception e)
 				{
@@ -95,16 +92,6 @@ public class AdminDonator implements IAdminCommandHandler
 					if (Config.DEVELOPER)
 					{
 						e.printStackTrace();
-					}
-				}
-				finally
-				{
-					try
-					{
-						connection.close();
-					}
-					catch (Exception e)
-					{
 					}
 				}
 			}
@@ -114,12 +101,9 @@ public class AdminDonator implements IAdminCommandHandler
 				player.updateNameTitleColor();
 				sm.addString("You are now a server donator, congratulations!");
 				GmListTable.broadcastMessageToGMs("GM " + activeChar.getName() + " has given donator stat for player " + target.getName() + ".");
-				Connection connection = null;
-				try
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					connection = L2DatabaseFactory.getInstance().getConnection();
-
-					PreparedStatement statement = connection.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
+					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
 					ResultSet rset = statement.executeQuery();
 					int objId = 0;
@@ -132,15 +116,15 @@ public class AdminDonator implements IAdminCommandHandler
 
 					if (objId == 0)
 					{
-						connection.close();
+						con.close();
 						return false;
 					}
 
-					statement = connection.prepareStatement("UPDATE characters SET donator=1 WHERE obj_Id=?");
+					statement = con.prepareStatement("UPDATE characters SET donator=1 WHERE obj_Id=?");
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
-					connection.close();
+					con.close();
 				}
 				catch (Exception e)
 				{
@@ -150,17 +134,6 @@ public class AdminDonator implements IAdminCommandHandler
 						e.printStackTrace();
 					}
 				}
-				finally
-				{
-					try
-					{
-						connection.close();
-					}
-					catch (Exception e)
-					{
-					}
-				}
-
 			}
 			player.sendPacket(sm);
 			player.broadcastUserInfo();

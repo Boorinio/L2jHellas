@@ -37,7 +37,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskCleanUp;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskJython;
@@ -46,6 +45,7 @@ import com.l2jhellas.gameserver.taskmanager.tasks.TaskRecom;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskRestart;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskSevenSignsUpdate;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskShutdown;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author Layane
@@ -55,12 +55,14 @@ public final class TaskManager
 	protected static final Logger _log = Logger.getLogger(TaskManager.class.getName());
 	private static TaskManager _instance;
 
-	protected static final String[] SQL_STATEMENTS = {
-	"SELECT id,task,type,last_activation,param1,param2,param3 FROM global_tasks",
-	"UPDATE global_tasks SET last_activation=? WHERE id=?",
-	"SELECT id FROM global_tasks WHERE task=?",
-	"INSERT INTO global_tasks (task,type,last_activation,param1,param2,param3) VALUES(?,?,?,?,?,?)"
-	};
+	protected static final String[] SQL_STATEMENTS =
+	{/** @formatter:off */
+		"SELECT id,task,type,last_activation,param1,param2,param3 FROM global_tasks",
+		"UPDATE global_tasks SET last_activation=? WHERE id=?",
+		"SELECT id FROM global_tasks WHERE task=?",
+		"INSERT INTO global_tasks (task,type,last_activation,param1,param2,param3) VALUES(?,?,?,?,?,?)"
+
+	};/** @formatter:on */
 
 	private final FastMap<Integer, Task> _tasks = new FastMap<Integer, Task>();
 	protected final FastList<ExecutedTask> _currentTasks = new FastList<ExecutedTask>();
@@ -80,7 +82,8 @@ public final class TaskManager
 			type = ptype;
 			id = rset.getInt("id");
 			lastActivation = rset.getLong("last_activation");
-			params = new String[] {
+			params = new String[]
+			{
 			rset.getString("param1"), rset.getString("param2"), rset.getString("param3")
 			};
 		}
@@ -91,11 +94,8 @@ public final class TaskManager
 			task.onTimeElapsed(this);
 
 			lastActivation = System.currentTimeMillis();
-			Connection con = null;
-
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement(SQL_STATEMENTS[1]);
 				statement.setLong(1, lastActivation);
 				statement.setInt(2, id);
@@ -108,16 +108,6 @@ public final class TaskManager
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 
@@ -167,7 +157,6 @@ public final class TaskManager
 
 			_currentTasks.remove(this);
 		}
-
 	}
 
 	public static TaskManager getInstance()
@@ -208,52 +197,35 @@ public final class TaskManager
 
 	private void startAllTasks()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try
+			PreparedStatement statement = con.prepareStatement(SQL_STATEMENTS[0]);
+			ResultSet rset = statement.executeQuery();
+
+			while (rset.next())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement(SQL_STATEMENTS[0]);
-				ResultSet rset = statement.executeQuery();
+				Task task = _tasks.get(rset.getString("task").trim().toLowerCase().hashCode());
 
-				while (rset.next())
+				if (task == null)
+					continue;
+
+				TaskTypes type = TaskTypes.valueOf(rset.getString("type"));
+
+				if (type != TYPE_NONE)
 				{
-					Task task = _tasks.get(rset.getString("task").trim().toLowerCase().hashCode());
-
-					if (task == null)
-						continue;
-
-					TaskTypes type = TaskTypes.valueOf(rset.getString("type"));
-
-					if (type != TYPE_NONE)
-					{
-						ExecutedTask current = new ExecutedTask(task, type, rset);
-						if (launchTask(current))
-							_currentTasks.add(current);
-					}
-
+					ExecutedTask current = new ExecutedTask(task, type, rset);
+					if (launchTask(current))
+						_currentTasks.add(current);
 				}
 
-				rset.close();
-				statement.close();
-
 			}
-			catch (Exception e)
-			{
-				_log.severe("error while loading Global Task table " + e);
-				e.printStackTrace();
-			}
+			rset.close();
+			statement.close();
 		}
-		finally
+		catch (Exception e)
 		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
+			_log.severe("error while loading Global Task table " + e);
+			e.printStackTrace();
 		}
 	}
 
@@ -342,10 +314,8 @@ public final class TaskManager
 			}
 
 			task.scheduled = scheduler.scheduleGeneralAtFixedRate(task, delay, interval);
-
 			return true;
 		}
-
 		return false;
 	}
 
@@ -356,11 +326,8 @@ public final class TaskManager
 
 	public static boolean addUniqueTask(String task, TaskTypes type, String param1, String param2, String param3, long lastActivation)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(SQL_STATEMENTS[2]);
 			statement.setString(1, task);
 			ResultSet rset = statement.executeQuery();
@@ -390,17 +357,6 @@ public final class TaskManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		return false;
 	}
 
@@ -411,11 +367,8 @@ public final class TaskManager
 
 	public static boolean addTask(String task, TaskTypes type, String param1, String param2, String param3, long lastActivation)
 	{
-		Connection con = null;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement(SQL_STATEMENTS[3]);
 			statement.setString(1, task);
 			statement.setString(2, type.toString());
@@ -436,17 +389,6 @@ public final class TaskManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		return false;
 	}
 }

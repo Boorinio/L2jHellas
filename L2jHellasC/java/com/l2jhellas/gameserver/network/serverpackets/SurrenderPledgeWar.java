@@ -16,27 +16,27 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 public class SurrenderPledgeWar extends L2GameServerPacket
 {
-    private static final String _S__81_SURRENDERPLEDGEWAR = "[S] 69 SurrenderPledgeWar";
-    private String _pledgeName;
-    private String _playerName;
+	private static final String _S__81_SURRENDERPLEDGEWAR = "[S] 69 SurrenderPledgeWar";
+	private final String _pledgeName;
+	private final String _playerName;
 
-    public SurrenderPledgeWar(String pledge, String charName)
-    {
-        _pledgeName = pledge;
-        _playerName = charName;
-    }
+	public SurrenderPledgeWar(String pledge, String charName)
+	{
+		_pledgeName = pledge;
+		_playerName = charName;
+	}
 
-    @Override
+	@Override
 	protected final void writeImpl()
-    {
-        writeC(0x69);
-        writeS(_pledgeName);
-        writeS(_playerName);
-    }
+	{
+		writeC(0x69);
+		writeS(_pledgeName);
+		writeS(_playerName);
+	}
 
-    @Override
+	@Override
 	public String getType()
-    {
-        return _S__81_SURRENDERPLEDGEWAR;
-    }
+	{
+		return _S__81_SURRENDERPLEDGEWAR;
+	}
 }

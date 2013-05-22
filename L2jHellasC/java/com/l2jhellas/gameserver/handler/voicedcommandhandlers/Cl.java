@@ -25,20 +25,20 @@ public class Cl implements IVoicedCommandHandler
 	{
 		"cl"
 	};
-	
+
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		
+
 		if (command.equalsIgnoreCase(VOICED_COMMANDS[0]))
 		{
-			
+
 			if (activeChar.getClan() == null)
 				return false;
-			
+
 			L2PcInstance leader = null;
 			leader = (L2PcInstance) L2World.getInstance().findObject(activeChar.getClan().getLeaderId());
-			
+
 			if (leader == null)
 			{
 				activeChar.sendMessage("Your partner is not online.");
@@ -135,11 +135,11 @@ public class Cl implements IVoicedCommandHandler
 			int leaderx = 0;
 			int leadery = 0;
 			int leaderz = 0;
-			
+
 			leaderx = leader.getX();
 			leadery = leader.getY();
 			leaderz = leader.getZ();
-			
+
 			activeChar.teleToLocation(leaderx, leadery, leaderz);
 			activeChar.sendMessage("You have been teleported to your leader!");
 			activeChar.getInventory().destroyItemByItemId("RessSystem", 3470, 1, activeChar, activeChar.getTarget());
@@ -147,11 +147,10 @@ public class Cl implements IVoicedCommandHandler
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String[] getVoicedCommandList()
 	{
 		return VOICED_COMMANDS;
 	}
-	
 }

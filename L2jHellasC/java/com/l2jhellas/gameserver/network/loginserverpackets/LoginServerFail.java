@@ -14,19 +14,22 @@
  */
 package com.l2jhellas.gameserver.network.loginserverpackets;
 
-
 public class LoginServerFail extends LoginServerBasePacket
 {
 
-	private static final String[] REASONS = {"None" ,
-	                                        "Reason: ip banned",
-	                                        "Reason: ip reserved",
-	                                        "Reason: wrong hexid",
-	                                        "Reason: id reserved",
-	                                        "Reason: no free ID",
-	                                        "Not authed",
-	                                        "Reason: already logged in"};
-	private int _reason;
+	private static final String[] REASONS =
+	{/** @formatter:off */
+		"None",
+		"Reason: ip banned",
+		"Reason: ip reserved",
+		"Reason: wrong hexid",
+		"Reason: id reserved",
+		"Reason: no free ID",
+		"Not authed",
+		"Reason: already logged in"
+	};/** @formatter:on */
+	private final int _reason;
+
 	/**
 	 * @param decrypt
 	 */
@@ -45,5 +48,4 @@ public class LoginServerFail extends LoginServerBasePacket
 	{
 		return _reason;
 	}
-
 }

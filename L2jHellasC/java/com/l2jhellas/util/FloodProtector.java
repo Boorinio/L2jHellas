@@ -22,7 +22,7 @@ import com.l2jhellas.gameserver.GameTimeController;
 
 /**
  * Flood protector
- *
+ * 
  * @author durgus
  */
 public class FloodProtector
@@ -44,7 +44,8 @@ public class FloodProtector
 	private static final int PROTECTEDACTIONSIZE = 2;
 
 	// reuse delays for protected actions (in game ticks 1 tick = 100ms)
-	private static final int[] REUSEDELAY = new int[] {
+	private static final int[] REUSEDELAY = new int[]
+	{
 	4, 42
 	};
 
@@ -61,7 +62,7 @@ public class FloodProtector
 	/**
 	 * Add a new player to the flood protector
 	 * (should be done for all players when they enter the world)
-	 *
+	 * 
 	 * @param playerObjId
 	 */
 	public void registerNewPlayer(int playerObjId)
@@ -78,7 +79,7 @@ public class FloodProtector
 	/**
 	 * Remove a player from the flood protector
 	 * (should be done if player loggs off)
-	 *
+	 * 
 	 * @param playerObjId
 	 */
 	public void removePlayer(int playerObjId)
@@ -88,7 +89,7 @@ public class FloodProtector
 
 	/**
 	 * Return the size of the flood protector
-	 *
+	 * 
 	 * @return size
 	 */
 	public int getSize()
@@ -98,7 +99,7 @@ public class FloodProtector
 
 	/**
 	 * Try to perform the requested action
-	 *
+	 * 
 	 * @param playerObjId
 	 * @param action
 	 * @return true if the action may be performed

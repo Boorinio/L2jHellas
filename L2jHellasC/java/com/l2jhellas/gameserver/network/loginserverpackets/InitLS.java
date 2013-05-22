@@ -14,11 +14,10 @@
  */
 package com.l2jhellas.gameserver.network.loginserverpackets;
 
-
 public class InitLS extends LoginServerBasePacket
 {
-	private int _rev;
-	private byte[] _key;
+	private final int _rev;
+	private final byte[] _key;
 
 	public int getRevision()
 	{
@@ -29,6 +28,7 @@ public class InitLS extends LoginServerBasePacket
 	{
 		return _key;
 	}
+
 	/**
 	 * @param decrypt
 	 */
@@ -39,5 +39,4 @@ public class InitLS extends LoginServerBasePacket
 		int size = readD();
 		_key = readB(size);
 	}
-
 }

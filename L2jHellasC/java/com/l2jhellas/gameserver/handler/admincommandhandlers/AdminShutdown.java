@@ -32,11 +32,11 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 public class AdminShutdown implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_server_shutdown",
-	"admin_server_restart",
-	"admin_server_abort"
-	};
+	{/** @formatter:off */
+		"admin_server_shutdown",
+		"admin_server_restart",
+		"admin_server_abort"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -109,5 +109,4 @@ public class AdminShutdown implements IAdminCommandHandler
 	{
 		Shutdown.getInstance().abort(activeChar);
 	}
-
 }

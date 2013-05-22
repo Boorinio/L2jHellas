@@ -29,13 +29,11 @@ import com.l2jhellas.util.Util;
 
 /**
  * @author _drunk_
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
-
 public class TakeCastle implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.TAKECASTLE
 	};
 
@@ -67,7 +65,7 @@ public class TakeCastle implements ISkillHandler
 	/**
 	 * Return true if character clan place a flag<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param activeChar
 	 *        The L2Character of the character placing the flag
 	 */

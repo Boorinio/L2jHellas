@@ -18,21 +18,18 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 
 /**
  * sample
- * 0000: 17  1a 95 20 48  9b da 12 40  44 17 02 00  03 f0 fc ff  98 f1 ff ff                                     .....
- *
- * format  ddddd
- *
- * @version $Revision: 1.3.2.1.2.3 $ $Date: 2005/03/27 15:29:39 $
+ * 0000: 17 1a 95 20 48 9b da 12 40 44 17 02 00 03 f0 fc ff 98 f1 ff ff .....
+ * format ddddd
  */
 public class GetItem extends L2GameServerPacket
 {
 	private static final String _S__17_GETITEM = "[S] 0d GetItem";
-	private L2ItemInstance _item;
-	private int _playerId;
+	private final L2ItemInstance _item;
+	private final int _playerId;
 
 	public GetItem(L2ItemInstance item, int playerId)
 	{
-		_item=item;
+		_item = item;
 		_playerId = playerId;
 	}
 
@@ -48,13 +45,9 @@ public class GetItem extends L2GameServerPacket
 		writeD(_item.getZ());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__17_GETITEM;
 	}
-
 }

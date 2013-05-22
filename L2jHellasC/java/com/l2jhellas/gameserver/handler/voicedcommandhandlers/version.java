@@ -20,7 +20,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class allows a player to type the command .version
- *
+ * 
  * @author l2jhellas
  */
 public class version implements IVoicedCommandHandler

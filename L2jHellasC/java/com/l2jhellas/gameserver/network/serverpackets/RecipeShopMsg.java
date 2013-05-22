@@ -16,15 +16,10 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- */
 public class RecipeShopMsg extends L2GameServerPacket
 {
 	private static final String _S__DB_RecipeShopMsg = "[S] db RecipeShopMsg";
-	private L2PcInstance _activeChar;
+	private final L2PcInstance _activeChar;
 
 	public RecipeShopMsg(L2PcInstance player)
 	{
@@ -36,12 +31,9 @@ public class RecipeShopMsg extends L2GameServerPacket
 	{
 		writeC(0xdb);
 		writeD(_activeChar.getObjectId());
-		writeS(_activeChar.getCreateList().getStoreName());//_activeChar.getTradeList().getSellStoreName());
+		writeS(_activeChar.getCreateList().getStoreName());// _activeChar.getTradeList().getSellStoreName());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

@@ -20,8 +20,6 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ConditionPlayerRace extends Condition
 {

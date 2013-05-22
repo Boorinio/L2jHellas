@@ -41,7 +41,6 @@ public class BitSetIDFactory extends IdFactory
 				increaseBitSetCapacity();
 			}
 		}
-
 	}
 
 	protected BitSetIDFactory()

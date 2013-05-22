@@ -21,11 +21,10 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 
-
 /**
  * A damage zone
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2DamageZone extends L2ZoneType
 {
@@ -47,7 +46,8 @@ public class L2DamageZone extends L2ZoneType
 		{
 			_damagePerSec = Integer.parseInt(value);
 		}
-		else super.setParameter(name, value);
+		else
+			super.setParameter(name, value);
 	}
 
 	@Override
@@ -81,12 +81,14 @@ public class L2DamageZone extends L2ZoneType
 
 	class ApplyDamage implements Runnable
 	{
-		private L2DamageZone _dmgZone;
+		private final L2DamageZone _dmgZone;
+
 		ApplyDamage(L2DamageZone zone)
 		{
 			_dmgZone = zone;
 		}
 
+		@Override
 		public void run()
 		{
 			for (L2Character temp : _dmgZone.getCharacterList())
@@ -100,9 +102,13 @@ public class L2DamageZone extends L2ZoneType
 	}
 
 	@Override
-	public void onDieInside(L2Character character) {}
+	public void onDieInside(L2Character character)
+	{
+	}
 
 	@Override
-	public void onReviveInside(L2Character character) {}
+	public void onReviveInside(L2Character character)
+	{
+	}
 
 }

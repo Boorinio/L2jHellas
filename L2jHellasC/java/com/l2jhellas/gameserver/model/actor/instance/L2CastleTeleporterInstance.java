@@ -14,12 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-/**
- * @author NightMarez
- * @version $Revision: 1.3.2.2.2.5 $ $Date: 2005/03/27 15:29:32 $
- *
- */
-
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
@@ -30,11 +24,11 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-
+/**
+ * @author NightMarez
+ */
 public final class L2CastleTeleporterInstance extends L2FolkInstance
 {
-	//private static Logger _log = Logger.getLogger(L2TeleporterInstance.class.getName());
-
 	private static final int COND_ALL_FALSE = 0;
 	private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	private static final int COND_OWNER = 2;
@@ -60,7 +54,10 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 
 		if (actualCommand.equalsIgnoreCase("goto"))
 		{
-			if (st.countTokens() <= 0) {return;}
+			if (st.countTokens() <= 0)
+			{
+				return;
+			}
 			int whereTo = Integer.parseInt(st.nextToken());
 			if (condition == COND_REGULAR)
 			{
@@ -70,7 +67,10 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 			else if (condition == COND_OWNER)
 			{
 				int minPrivilegeLevel = 0; // NOTE: Replace 0 with highest level when privilege level is implemented
-				if (st.countTokens() >= 1) {minPrivilegeLevel = Integer.parseInt(st.nextToken());}
+				if (st.countTokens() >= 1)
+				{
+					minPrivilegeLevel = Integer.parseInt(st.nextToken());
+				}
 				if (10 >= minPrivilegeLevel) // NOTE: Replace 10 with privilege level of player
 					doTeleport(player, whereTo);
 				else
@@ -97,7 +97,6 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 
 		return "data/html/teleporter/" + pom + ".htm";
 	}
-
 
 	@Override
 	public void showChatWindow(L2PcInstance player)
@@ -130,10 +129,10 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 		L2TeleportLocation list = TeleportLocationTable.getInstance().getTemplate(val);
 		if (list != null)
 		{
-			if(player.reduceAdena("Teleport", list.getPrice(), player.getLastFolkNPC(), true))
+			if (player.reduceAdena("Teleport", list.getPrice(), player.getLastFolkNPC(), true))
 			{
 				if (Config.DEBUG)
-					_log.fine("Teleporting player "+player.getName()+" to new location: "+list.getLocX()+":"+list.getLocY()+":"+list.getLocZ());
+					_log.fine("Teleporting player " + player.getName() + " to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());
 
 				// teleport
 				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
@@ -142,14 +141,14 @@ public final class L2CastleTeleporterInstance extends L2FolkInstance
 		}
 		else
 		{
-			_log.warning("No teleport destination with id:" +val);
+			_log.warning("No teleport destination with id:" + val);
 		}
-		player.sendPacket( new ActionFailed() );
+		player.sendPacket(new ActionFailed());
 	}
 
 	private int validateCondition(L2PcInstance player)
 	{
-		if (player.getClan() != null && getCastle() != null)
+		if ((player.getClan() != null) && (getCastle() != null))
 		{
 			if (getCastle().getSiege().getIsInProgress())
 				return COND_BUSY_BECAUSE_OF_SIEGE;                    // Busy because of siege

@@ -32,10 +32,10 @@ import com.l2jhellas.gameserver.templates.L2Item;
 public class AdminCreateItem implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
+	{/** @formatter:off */
 		"admin_itemcreate",
 		"admin_create_item"
-	};
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

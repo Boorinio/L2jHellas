@@ -15,32 +15,24 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- *
  * Format: ch
- * @author  devScarlet & mrTJO
+ * 
+ * @author devScarlet & mrTJO
  */
 public class ExShowSlideshowKamael extends L2GameServerPacket
 {
 	private static final String _S__FE_5B_EXSHOWSLIDESHOWKAMAEL = "[S] FE:5B ExShowSlideshowKamael";
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x5b);
-
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_5B_EXSHOWSLIDESHOWKAMAEL;
 	}
-
 }

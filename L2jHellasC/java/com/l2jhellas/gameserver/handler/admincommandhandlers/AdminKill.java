@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -37,14 +38,15 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * radius will be killed.
  * - kill_monster <radius> = If radius is specified, then ALL non-players only
  * in that radius will be killed.
+ *
+ * @author Nightwolf
  */
 public class AdminKill implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_kill",
-	"admin_kill_monster"
+	"admin_kill", "admin_kill_monster"
 	};
 
 	@Override
@@ -71,8 +73,10 @@ public class AdminKill implements IAdminCommandHandler
 							int radius = Integer.parseInt(st.nextToken());
 							for (L2Character knownChar : plyr.getKnownList().getKnownCharactersInRadius(radius))
 							{
-								if (knownChar == null || knownChar instanceof L2ControllableMobInstance || knownChar.equals(activeChar))
+								if ((knownChar == null) || (knownChar instanceof L2ControllableMobInstance) || knownChar.equals(activeChar))
+								{
 									continue;
+								}
 
 								kill(activeChar, knownChar);
 							}
@@ -99,8 +103,10 @@ public class AdminKill implements IAdminCommandHandler
 
 						for (L2Character knownChar : activeChar.getKnownList().getKnownCharactersInRadius(radius))
 						{
-							if (knownChar == null || knownChar instanceof L2ControllableMobInstance || knownChar.equals(activeChar))
+							if ((knownChar == null) || (knownChar instanceof L2ControllableMobInstance) || knownChar.equals(activeChar))
+							{
 								continue;
+							}
 							kill(activeChar, knownChar);
 						}
 
@@ -117,10 +123,14 @@ public class AdminKill implements IAdminCommandHandler
 			else
 			{
 				L2Object obj = activeChar.getTarget();
-				if (obj == null || obj instanceof L2ControllableMobInstance || !(obj instanceof L2Character))
+				if ((obj == null) || (obj instanceof L2ControllableMobInstance) || !(obj instanceof L2Character))
+				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+				}
 				else
+				{
 					kill(activeChar, (L2Character) obj);
+				}
 			}
 		}
 		return true;
@@ -131,14 +141,40 @@ public class AdminKill implements IAdminCommandHandler
 		if (target instanceof L2PcInstance)
 		{
 			if (!((L2PcInstance) target).isGM())
+			{
 				target.stopAllEffects(); // e.g. invincibility effect
+			}
 			target.reduceCurrentHp(target.getMaxHp() + target.getMaxCp() + 1, activeChar);
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed character " + target.getName() + "(" + target.getObjectId() + ")");
 		}
-		if (target.isChampion())
-			target.reduceCurrentHp(target.getMaxHp() * Config.CHAMPION_HP + 1, activeChar);
-		else
+		else if (target instanceof L2MonsterInstance)
+		{
+			if (target.isChampion() && Config.CHAMPION_ENABLE)
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed champion " + target.getName() + "(" + target.getObjectId() + ")");
+			}
+			else if (target.isBoss())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed grand boss " + target.getName() + "(" + target.getObjectId() + ")");
+			}
+			else if (target.isRaidMinion())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed raid minion " + target.getName() + "(" + target.getObjectId() + ")");
+			}
+			else if (target.isRaid())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed raid " + target.getName() + "(" + target.getObjectId() + ")");
+			}
+			else if (((L2MonsterInstance) target).isMob())
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed monster " + target.getName() + "(" + target.getObjectId() + ")");
+			}
+			else
+			{
+				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed etc " + target.getName() + "(" + target.getObjectId() + ")");
+			}
 			target.reduceCurrentHp(target.getMaxHp() + 1, activeChar);
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed character " + target.getObjectId());
+		}
 	}
 
 	@Override

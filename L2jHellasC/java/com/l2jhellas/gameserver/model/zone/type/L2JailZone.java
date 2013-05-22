@@ -22,8 +22,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * A jail zone
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2JailZone extends L2ZoneType
 {
@@ -39,7 +39,7 @@ public class L2JailZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_JAIL, true);
 			character.setInsideZone(L2Character.ZONE_PVP, true);
-			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
+			character.sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
 
@@ -50,21 +50,23 @@ public class L2JailZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_JAIL, false);
 			character.setInsideZone(L2Character.ZONE_PVP, false);
-			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
-		
+			character.sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 		}
-		
-		                              if (((L2PcInstance) character).isInJail())  
-		                                      {  
-			                                              ((L2PcInstance) character).teleToLocation(-114356, -249645, -2984, false); // Jail  
-			                                              ((L2PcInstance) character).sendMessage("You won't escape from jail!");  
-			                                               } 
+
+		if (((L2PcInstance) character).isInJail())
+		{
+			character.teleToLocation(-114356, -249645, -2984, false); // Jail
+			((L2PcInstance) character).sendMessage("You won't escape from jail!");
+		}
 	}
 
 	@Override
-	public void onDieInside(L2Character character) {}
+	public void onDieInside(L2Character character)
+	{
+	}
 
 	@Override
-	public void onReviveInside(L2Character character) {}
-
+	public void onReviveInside(L2Character character)
+	{
+	}
 }

@@ -1,20 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.geodata.pathfinding.geonodes;
 
@@ -74,22 +70,22 @@ public final class GeoPathFinding extends PathFinding
 
 		Node start = readNode(gx, gy, gz);
 		Node end = readNode(gtx, gty, gtz);
-		if(start == null || end == null)
+		if (start == null || end == null)
 			return null;
-		if(Math.abs(start.getZ() - z) > 55)
+		if (Math.abs(start.getZ() - z) > 55)
 			return null; // not correct layer
-		if(Math.abs(end.getZ() - tz) > 55)
+		if (Math.abs(end.getZ() - tz) > 55)
 			return null; // not correct layer
-		if(start.equals(end))
+		if (start.equals(end))
 			return null;
 		// TODO: Find closest path node we CAN access. Now only checks if we can not reach the closest
 		Location temp = GeoData.getInstance().moveCheck(x, y, z, start.getX(), start.getY(), start.getZ());
-		if(temp.getX() != start.getX() || temp.getY() != start.getY())
+		if (temp.getX() != start.getX() || temp.getY() != start.getY())
 			return null; //   cannot reach closest...
 
 		// TODO: Find closest path node around target, now only checks if final location can be reached
 		temp = GeoData.getInstance().moveCheck(tx, ty, tz, end.getX(), end.getY(), end.getZ());
-		if(temp.getX() != end.getX() || temp.getY() != end.getY())
+		if (temp.getX() != end.getX() || temp.getY() != end.getY())
 			return null; //   cannot reach closest...
 
 		//return searchAStar(start, end);
@@ -113,97 +109,97 @@ public final class GeoPathFinding extends PathFinding
 
 		//Region for sure will change, we must read from correct file
 		byte neighbor = pn.get(idx++); //N
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) node_x;
 			new_node_y = (short) (node_y - 1);
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
 		}
 		neighbor = pn.get(idx++); //NE
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) (node_x + 1);
 			new_node_y = (short) (node_y - 1);
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
 		}
 		neighbor = pn.get(idx++); //E
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) (node_x + 1);
 			new_node_y = (short) node_y;
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
 		}
 		neighbor = pn.get(idx++); //SE
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) (node_x + 1);
 			new_node_y = (short) (node_y + 1);
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
 		}
 		neighbor = pn.get(idx++); //S
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) node_x;
 			new_node_y = (short) (node_y + 1);
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
 		}
 		neighbor = pn.get(idx++); //SW
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) (node_x - 1);
 			new_node_y = (short) (node_y + 1);
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
 		}
 		neighbor = pn.get(idx++); //W
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) (node_x - 1);
 			new_node_y = (short) node_y;
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
 		}
 		neighbor = pn.get(idx++); //NW
-		if(neighbor > 0)
+		if (neighbor > 0)
 		{
 			neighbor--;
 			new_node_x = (short) (node_x - 1);
 			new_node_y = (short) (node_y - 1);
 			newNode = readNode(new_node_x, new_node_y, neighbor);
-			if(newNode != null)
+			if (newNode != null)
 			{
 				Neighbors[index++] = newNode;
 			}
@@ -213,8 +209,8 @@ public final class GeoPathFinding extends PathFinding
 
 	private Node readNode(short node_x, short node_y, byte layer)
 	{
-		short regoffset = getRegionOffset(getRegionX(node_x),getRegionY(node_y));
-		if(!pathNodesExist(regoffset))
+		short regoffset = getRegionOffset(getRegionX(node_x), getRegionY(node_y));
+		if (!pathNodesExist(regoffset))
 			return null;
 		short nbx = getNodeBlock(node_x);
 		short nby = getNodeBlock(node_y);
@@ -223,7 +219,7 @@ public final class GeoPathFinding extends PathFinding
 		//reading
 		byte nodes = pn.get(idx);
 		idx += layer * 10 + 1;//byte + layer*10byte
-		if(nodes < layer)
+		if (nodes < layer)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": SmthWrong!");
 		}
@@ -237,7 +233,7 @@ public final class GeoPathFinding extends PathFinding
 		short node_x = getNodePos(gx);
 		short node_y = getNodePos(gy);
 		short regoffset = getRegionOffset(getRegionX(node_x), getRegionY(node_y));
-		if(!pathNodesExist(regoffset))
+		if (!pathNodesExist(regoffset))
 			return null;
 		short nbx = getNodeBlock(node_x);
 		short nby = getNodeBlock(node_y);
@@ -247,10 +243,10 @@ public final class GeoPathFinding extends PathFinding
 		byte nodes = pn.get(idx++);
 		int idx2 = 0; //create index to nearlest node by z
 		short last_z = Short.MIN_VALUE;
-		while(nodes > 0)
+		while (nodes > 0)
 		{
 			short node_z = pn.getShort(idx);
-			if(Math.abs(last_z - z) > Math.abs(node_z - z))
+			if (Math.abs(last_z - z) > Math.abs(node_z - z))
 			{
 				last_z = node_z;
 				idx2 = idx + 2;
@@ -270,8 +266,8 @@ public final class GeoPathFinding extends PathFinding
 		try
 		{
 			_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Path Nodes...");
-			File Data = new File(Config.DATAPACK_ROOT+"/data/pathnode/pn_index.txt");
-			if(!Data.exists())
+			File Data = new File(Config.DATAPACK_ROOT + "/data/pathnode/pn_index.txt");
+			if (!Data.exists())
 				return;
 
 			reader = new FileReader(Data);
@@ -279,9 +275,9 @@ public final class GeoPathFinding extends PathFinding
 			lnr = new LineNumberReader(buff);
 
 			String line;
-			while((line = lnr.readLine()) != null)
+			while ((line = lnr.readLine()) != null)
 			{
-				if(line.trim().length() == 0)
+				if (line.trim().length() == 0)
 					continue;
 				StringTokenizer st = new StringTokenizer(line, "_");
 				byte rx = Byte.parseByte(st.nextToken());
@@ -289,7 +285,7 @@ public final class GeoPathFinding extends PathFinding
 				LoadPathNodeFile(rx, ry);
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": failed loading path nodes. " + e);
 			if (Config.DEVELOPER)
@@ -299,12 +295,12 @@ public final class GeoPathFinding extends PathFinding
 		}
 		finally
 		{
-			if(lnr != null)
+			if (lnr != null)
 				try
 				{
 					lnr.close();
 				}
-				catch(Exception e1)
+				catch (Exception e1)
 				{
 					if (Config.DEVELOPER)
 					{
@@ -312,12 +308,12 @@ public final class GeoPathFinding extends PathFinding
 					}
 				}
 
-			if(buff != null)
+			if (buff != null)
 				try
 				{
 					buff.close();
 				}
-				catch(Exception e1)
+				catch (Exception e1)
 				{
 					if (Config.DEVELOPER)
 					{
@@ -325,12 +321,12 @@ public final class GeoPathFinding extends PathFinding
 					}
 				}
 
-			if(reader != null)
+			if (reader != null)
 				try
 				{
 					reader.close();
 				}
-				catch(Exception e1)
+				catch (Exception e1)
 				{
 					if (Config.DEVELOPER)
 					{
@@ -342,11 +338,11 @@ public final class GeoPathFinding extends PathFinding
 
 	private void LoadPathNodeFile(byte rx, byte ry)
 	{
-		String fname = Config.DATAPACK_ROOT+"/data/pathnode/" + rx + "_" + ry + ".pn";
+		String fname = Config.DATAPACK_ROOT + "/data/pathnode/" + rx + "_" + ry + ".pn";
 		short regionoffset = getRegionOffset(rx, ry);
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loading " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
 		File Pn = new File(fname);
-		int node = 0,size, index = 0;
+		int node = 0, size, index = 0;
 		RandomAccessFile raf = null;
 		FileChannel roChannel = null;
 		try
@@ -354,9 +350,9 @@ public final class GeoPathFinding extends PathFinding
 			// Create a read-only memory-mapped file
 			raf = new RandomAccessFile(Pn, "r");
 			roChannel = raf.getChannel();
-			size = (int)roChannel.size();
+			size = (int) roChannel.size();
 			MappedByteBuffer nodes;
-			if(Config.FORCE_GEODATA) //Force O/S to Loads this buffer's content into physical memory.
+			if (Config.FORCE_GEODATA) //Force O/S to Loads this buffer's content into physical memory.
 				//it is not guarantee, because the underlying operating system may have paged out some of the buffer's data
 				nodes = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, size).load();
 			else
@@ -365,7 +361,7 @@ public final class GeoPathFinding extends PathFinding
 			// Indexing pathnode files, so we will know where each block starts
 			IntBuffer indexs = IntBuffer.allocate(65536);
 
-			while(node < 65536)
+			while (node < 65536)
 			{
 				byte layer = nodes.get(index);
 				indexs.put(node++, index);
@@ -374,9 +370,9 @@ public final class GeoPathFinding extends PathFinding
 			_pathNodesIndex.set(regionoffset, indexs);
 			_pathNodes.set(regionoffset, nodes);
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Failed to Load PathNode File: "+fname+"\n", e);
+			_log.log(Level.WARNING, getClass().getName() + ": Failed to Load PathNode File: " + fname + "\n", e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -384,22 +380,22 @@ public final class GeoPathFinding extends PathFinding
 		}
 		finally
 		{
-			if(roChannel != null)
+			if (roChannel != null)
 				try
 				{
 					roChannel.close();
 				}
-				catch(Exception e1)
+				catch (Exception e1)
 				{
 					e1.printStackTrace();
 				}
 
-			if(raf != null)
+			if (raf != null)
 				try
 				{
 					raf.close();
 				}
-				catch(Exception e1)
+				catch (Exception e1)
 				{
 					e1.printStackTrace();
 				}

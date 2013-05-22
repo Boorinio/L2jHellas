@@ -14,14 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
-/**
- * @author SqueezeD Edited By TheEnd
- */
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +24,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
@@ -45,7 +39,11 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
+/**
+ * @author SqueezeD Edited By TheEnd
+ */
 public class DM
 {
 	private final static Logger _log = Logger.getLogger(DM.class.getName());
@@ -457,15 +455,12 @@ public class DM
 		_playerY = 0;
 		_playerZ = 0;
 
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
 
-			con = L2DatabaseFactory.getInstance().getConnection();
-
-			statement = con.prepareStatement("Select * from dm");
+			statement = con.prepareStatement("SELECT * FROM dm");
 			rs = statement.executeQuery();
 
 			while (rs.next())
@@ -493,33 +488,19 @@ public class DM
 		{
 			_log.log(Level.WARNING, " Exception: DM.loadData(): " + e.getMessage());
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public static void saveData()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
-			statement = con.prepareStatement("Delete from dm");
+			statement = con.prepareStatement("DELETE FROM dm");
 			statement.execute();
 			statement.close();
 
-			statement = con.prepareStatement("INSERT INTO dm (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, rewardId, rewardAmount, color, playerX, playerY, playerZ ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			statement = con.prepareStatement("INSERT INTO dm (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, rewardId, rewardAmount, color, playerX, playerY, playerZ ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			statement.setString(1, _eventName);
 			statement.setString(2, _eventDesc);
 			statement.setString(3, _joiningLocationName);
@@ -541,18 +522,6 @@ public class DM
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, " Exception: DM.saveData(): " + e.getMessage());
-		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -681,9 +650,7 @@ public class DM
 	public static void removePlayer(L2PcInstance player)
 	{
 		if (player != null)
-		{
 			_players.remove(player);
-		}
 	}
 
 	public static void cleanDM()

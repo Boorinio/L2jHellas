@@ -28,8 +28,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public final class RequestDuelStart extends L2GameClientPacket
 {
-	private static final String _C__D0_27_REQUESTDUELSTART = "[C] D0:27 RequestDuelStart";
 	private static Logger _log = Logger.getLogger(RequestDuelStart.class.getName());
+	private static final String _C__D0_27_REQUESTDUELSTART = "[C] D0:27 RequestDuelStart";
 	private String _player;
 	private int _partyDuel;
 
@@ -40,9 +40,6 @@ public final class RequestDuelStart extends L2GameClientPacket
 		_partyDuel = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
@@ -184,13 +181,9 @@ public final class RequestDuelStart extends L2GameClientPacket
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_27_REQUESTDUELSTART;
 	}
-
 }

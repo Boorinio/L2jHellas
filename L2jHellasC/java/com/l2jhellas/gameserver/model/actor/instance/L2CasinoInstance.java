@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,55 +29,55 @@ import com.l2jhellas.util.Rnd;
 public class L2CasinoInstance extends L2NpcInstance
 {
 	public String filename;
-	
+
 	public L2CasinoInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-	
+
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if (player == null)
 			return;
-		
+
 		if (command.startsWith("play1") && player.getInventory().getInventoryItemCount(9142, 0) >= 2)
 			Casino1(player);
 		else
-			player.sendMessage("You don't have enough items");
+			player.sendMessage("You don't have enough items.");
 		if (command.startsWith("play2") && player.getInventory().getInventoryItemCount(9142, 0) >= 4)
 			Casino2(player);
 		else
-			player.sendMessage("You don't have enough items");
+			player.sendMessage("You don't have enough items.");
 		if (command.startsWith("play3") && player.getInventory().getInventoryItemCount(9142, 0) >= 8)
 			Casino3(player);
 		else
-			player.sendMessage("You don't have enough items");
+			player.sendMessage("You don't have enough items.");
 		if (command.startsWith("play4") && player.getInventory().getInventoryItemCount(9142, 0) >= 16)
 			Casino4(player);
 		else
-			player.sendMessage("You don't have enough items");
+			player.sendMessage("You don't have enough items.");
 		if (command.startsWith("play5") && player.getInventory().getInventoryItemCount(57, 0) >= 500000)
 			Casino5(player);
 		else
-			player.sendMessage("You don't have enough items");
+			player.sendMessage("You don't have enough items.");
 		if (command.startsWith("play6") && player.getInventory().getInventoryItemCount(57, 0) >= 1000000)
 			Casino6(player);
 		else
-			player.sendMessage("You don't have enough items");
+			player.sendMessage("You don't have enough items.");
 		if (command.startsWith("play7") && player.getInventory().getInventoryItemCount(57, 0) >= 10000000)
 			Casino7(player);
 		else
-			player.sendMessage("You don't have enough items");
+			player.sendMessage("You don't have enough items.");
 	}
-	
+
 	public static void displayCongrats(L2PcInstance player)
 	{
 		MagicSkillUse MSU = new MagicSkillUse(player, player, 2024, 1, 1, 0);
 		player.broadcastPacket(MSU);
-		player.sendMessage("Congratulations! you won");
+		player.sendMessage("Congratulations, you won!");
 	}
-	
+
 	@Override
 	public void showChatWindow(L2PcInstance player, int val)
 	{
@@ -87,7 +87,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
 		player.sendPacket(msg);
 	}
-	
+
 	private static String casinoWindow(L2PcInstance player)
 	{
 		TextBuilder tb = new TextBuilder();
@@ -126,7 +126,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.sendPacket(new ActionFailed());
 		return tb.toString();
 	}
-	
+
 	public static void Casino1(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -139,11 +139,11 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-		
+
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(2);
-		
+
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 2)
 		{
 			if (chance == 0)
@@ -164,7 +164,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-	
+
 	public static void Casino2(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -177,11 +177,11 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-		
+
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-		
+
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 4)
 		{
 			if (chance == 0)
@@ -193,14 +193,14 @@ public class L2CasinoInstance extends L2NpcInstance
 			}
 			if (chance == 1)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 9142, 4, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
 			}
 			if (chance == 2)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 9142, 4, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
@@ -209,7 +209,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-	
+
 	public static void Casino3(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -225,7 +225,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-		
+
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 8)
 		{
 			if (chance == 0)
@@ -237,14 +237,14 @@ public class L2CasinoInstance extends L2NpcInstance
 			}
 			if (chance == 1)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 9142, 8, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
 			}
 			if (chance == 2)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 9142, 8, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
@@ -253,6 +253,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		else
 			player.sendMessage("You do not have enough items.");
 	}
+
 	public static void Casino4(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -265,11 +266,11 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-		
+
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-		
+
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 16)
 		{
 			if (chance == 0)
@@ -281,14 +282,14 @@ public class L2CasinoInstance extends L2NpcInstance
 			}
 			if (chance == 1)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 9142, 16, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
 			}
 			if (chance == 2)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 9142, 16, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
@@ -296,7 +297,8 @@ public class L2CasinoInstance extends L2NpcInstance
 		}
 		else
 			player.sendMessage("You do not have enough items.");
-	}	
+	}
+
 	public static void Casino5(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -309,11 +311,11 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-		
+
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(2);
-		
+
 		if (player.getInventory().getInventoryItemCount(57, 0) >= 500000)
 		{
 			if (chance == 0)
@@ -325,7 +327,7 @@ public class L2CasinoInstance extends L2NpcInstance
 			}
 			if (chance == 1)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 57, 500000, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
@@ -334,6 +336,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		else
 			player.sendMessage("You do not have enough items.");
 	}
+
 	public static void Casino6(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -346,11 +349,11 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-		
+
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-		
+
 		if (player.getInventory().getInventoryItemCount(57, 0) >= 1000000)
 		{
 			if (chance == 0)
@@ -362,7 +365,7 @@ public class L2CasinoInstance extends L2NpcInstance
 			}
 			if (chance == 1)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 57, 1000000, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
@@ -378,6 +381,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		else
 			player.sendMessage("You do not have enough items.");
 	}
+
 	public static void Casino7(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -390,11 +394,11 @@ public class L2CasinoInstance extends L2NpcInstance
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-		
+
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-		
+
 		if (player.getInventory().getInventoryItemCount(57, 0) >= 10000000)
 		{
 			if (chance == 0)
@@ -406,14 +410,14 @@ public class L2CasinoInstance extends L2NpcInstance
 			}
 			if (chance == 1)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 57, 10000000, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);
 			}
 			if (chance == 2)
 			{
-				player.sendMessage("You lost the bet");
+				player.sendMessage("You lost the bet.");
 				player.getInventory().destroyItemByItemId("Adena", 57, 10000000, player, null);
 				ItemList il = new ItemList(player.getClient().getActiveChar(), true);
 				player.sendPacket(il);

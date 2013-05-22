@@ -19,6 +19,7 @@ package com.l2jhellas.gameserver.taskmanager;
  */
 public enum TaskTypes
 {
+	/** @formatter:off */
     TYPE_NONE,
     TYPE_TIME,
     TYPE_SHEDULED,
@@ -26,4 +27,5 @@ public enum TaskTypes
     TYPE_GLOBAL_TASK,
     TYPE_STARTUP,
     TYPE_SPECIAL
+    /** @formatter:on */
 }

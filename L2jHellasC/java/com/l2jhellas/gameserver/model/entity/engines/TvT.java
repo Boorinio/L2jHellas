@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
@@ -49,6 +48,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class TvT
 {
@@ -163,7 +163,7 @@ public class TvT
 	{
 		if (!checkTeamOk())
 		{
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[addTeam(" + teamName + ")]: checkTeamOk() = false");
 			return;
 		}
@@ -206,14 +206,14 @@ public class TvT
 	{
 		if (!checkTeamOk() || _teams.isEmpty())
 		{
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[removeTeam(" + teamName + ")]: checkTeamOk() = false");
 			return;
 		}
 
 		if (teamPlayersCount(teamName) > 0)
 		{
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[removeTeam(" + teamName + ")]: teamPlayersCount(teamName) > 0");
 			return;
 		}
@@ -279,7 +279,7 @@ public class TvT
 		if (!startJoinOk())
 		{
 			activeChar.sendMessage("Event not setted propertly.");
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[startJoin(" + activeChar.getName() + ")]: startJoinOk() = false");
 			return;
 		}
@@ -297,7 +297,7 @@ public class TvT
 		if (!startJoinOk())
 		{
 			_log.log(Level.WARNING, " Event not setted propertly.");
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[startJoin(startJoinOk() = false");
 			return;
 		}
@@ -314,7 +314,7 @@ public class TvT
 	{
 		if (!startJoinOk())
 		{
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[startJoin]: startJoinOk() = false");
 			return false;
 		}
@@ -556,7 +556,7 @@ public class TvT
 
 		if (!startEventOk())
 		{
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[startEvent(" + activeChar.getName() + ")]: startEventOk() = false");
 			return;
 		}
@@ -586,7 +586,7 @@ public class TvT
 	{
 		if (!startEventOk())
 		{
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[startEvent]: startEventOk() = false");
 			return false;
 		}
@@ -813,7 +813,7 @@ public class TvT
 	{
 		if (!finishEventOk())
 		{
-			if (Config.DEVELOPER || Config.DEBUG)
+			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[finishEvent]: finishEventOk() = false");
 			return;
 		}
@@ -844,7 +844,7 @@ public class TvT
 		teleportFinish();
 	}
 
-	// show loosers and winners animations
+	// show losers and winners animations
 	public static void playKneelAnimation(String teamName)
 	{
 		for (L2PcInstance player : _players)
@@ -1073,15 +1073,11 @@ public class TvT
 		_minPlayers = 0;
 		_maxPlayers = 0;
 		_intervalBetweenMatchs = 0;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
-
-			con = L2DatabaseFactory.getInstance().getConnection();
-
-			statement = con.prepareStatement("Select * from tvt");
+			statement = con.prepareStatement("SELECT * FROM tvt");
 			rs = statement.executeQuery();
 
 			int teams = 0;
@@ -1114,7 +1110,7 @@ public class TvT
 				index = 0;
 			while (index < teams && index > -1)
 			{
-				statement = con.prepareStatement("Select * from tvt_teams where teamId = ?");
+				statement = con.prepareStatement("SELECT * FROM tvt_teams WHERE teamId=?");
 				statement.setInt(1, index);
 				rs = statement.executeQuery();
 				while (rs.next())
@@ -1139,29 +1135,15 @@ public class TvT
 		{
 			_log.log(Level.WARNING, " Exception: TvT.loadData(): " + e.getMessage());
 		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public static void saveData()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 
-			statement = con.prepareStatement("Delete from tvt");
+			statement = con.prepareStatement("DELETE FROM tvt");
 			statement.execute();
 			statement.close();
 
@@ -1187,7 +1169,7 @@ public class TvT
 			statement.execute();
 			statement.close();
 
-			statement = con.prepareStatement("Delete from tvt_teams");
+			statement = con.prepareStatement("DELETE FROM tvt_teams");
 			statement.execute();
 			statement.close();
 
@@ -1211,18 +1193,6 @@ public class TvT
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, " Exception: TvT.saveData(): " + e.getMessage());
-		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -1646,11 +1616,8 @@ public class TvT
 							player.teleToLocation(_npcX, _npcY, _npcZ, false);
 						else
 						{
-							Connection con = null;
-							try
+							try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 							{
-								con = L2DatabaseFactory.getInstance().getConnection();
-
 								PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=? WHERE char_name=?");
 								statement.setInt(1, _npcX);
 								statement.setInt(2, _npcY);
@@ -1662,18 +1629,6 @@ public class TvT
 							catch (SQLException se)
 							{
 								_log.log(Level.WARNING, "" + se);
-							}
-							finally
-							{
-								try
-								{
-									if (con != null)
-										con.close();
-								}
-								catch (SQLException e)
-								{
-									e.printStackTrace();
-								}
 							}
 						}
 					}
@@ -1814,7 +1769,7 @@ public class TvT
 
 	/**
 	 * Returns the event type by name.
-	 *
+	 * 
 	 * @param value
 	 * @return
 	 */
@@ -1850,7 +1805,7 @@ public class TvT
 
 	/**
 	 * returns the interval between each event
-	 *
+	 * 
 	 * @return
 	 */
 	public static int getIntervalBetweenMatchs()

@@ -155,7 +155,6 @@ public class L2Event
 
 	public static void spawn(L2PcInstance target, int npcid)
 	{
-
 		L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(npcid);
 
 		try
@@ -185,13 +184,11 @@ public class L2Event
 			spawn.getLastSpawn().broadcastPacket(new MagicSkillUse(spawn.getLastSpawn(), spawn.getLastSpawn(), 1034, 1, 1, 1));
 
 			npcs.add(String.valueOf(spawn.getLastSpawn().getObjectId()));
-
 		}
 		catch (Exception e)
 		{
 			System.out.println(e);
 		}
-
 	}
 
 	public static void announceAllPlayers(String text)
@@ -202,12 +199,10 @@ public class L2Event
 		{
 			player.sendPacket(cs);
 		}
-
 	}
 
 	public static boolean isOnEvent(L2PcInstance player)
 	{
-
 		for (int k = 0; k < L2Event.teamsNumber; k++)
 		{
 			Iterator<?> it = L2Event.players.get(k + 1).iterator();
@@ -220,12 +215,10 @@ public class L2Event
 			}
 		}
 		return false;
-
 	}
 
 	public static void inscribePlayer(L2PcInstance player)
 	{
-
 		try
 		{
 			L2Event.participatingPlayers.add(player.getName());
@@ -267,7 +260,6 @@ public class L2Event
 
 	public static void restoreAndTeleChar(L2PcInstance target)
 	{
-
 		try
 		{
 			restoreChar(target);

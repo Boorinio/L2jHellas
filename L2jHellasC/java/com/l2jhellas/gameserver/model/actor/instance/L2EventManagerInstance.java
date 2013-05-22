@@ -26,13 +26,11 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
  * This Class manages all the Requests to join a Raid Event.
- *
+ * 
  * @author polbat02
  */
 public class L2EventManagerInstance extends L2NpcInstance
 {
-	// Local Variables Definition
-	// --------------------------
 	/** Number of Current Events */
 	public static int _currentEvents = 0;
 	/** Players from which we're waiting an answer */
@@ -93,7 +91,7 @@ public class L2EventManagerInstance extends L2NpcInstance
 					{
 						if (player.getClan() == null)
 						{
-							player.sendMessage("You Don't have a Clan!");
+							player.sendMessage("You don't have a clan!");
 							return;
 						}
 						L2PcInstance[] onlineclanMembers = player.getClan().getOnlineMembers("");
@@ -117,7 +115,7 @@ public class L2EventManagerInstance extends L2NpcInstance
 						{
 							String reason;
 							if (_finalPlayers.size() > 1)
-								reason = ": Only 1 Clan Member Online.";
+								reason = ": Only 1 clan member Online.";
 							else if (_finalPlayers.size() < minPeople)
 								reason = ": Not enough members online to participate.";
 							else
@@ -131,7 +129,7 @@ public class L2EventManagerInstance extends L2NpcInstance
 					{
 						if (player.getParty() == null)
 						{
-							player.sendMessage("You DON'T have a Party!");
+							player.sendMessage("You don't have a party!");
 							return;
 						}
 						List<L2PcInstance> partyMembers = player.getParty().getPartyMembers();

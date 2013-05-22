@@ -8,7 +8,7 @@ from com.l2jhellas.gameserver.network.serverpackets  import CreatureSay
 from com.l2jhellas.gameserver.model.quest  import State
 from com.l2jhellas.gameserver.model.quest  import QuestState
 from com.l2jhellas.gameserver.model.quest.jython  import QuestJython as JQuest
-from com.l2jhellas  import L2DatabaseFactory
+from com.l2jhellas.util.database import L2DatabaseFactory
 
 qn = "503_PursuitClanAmbition"
 qd = "Pursuit Clan Ambition"

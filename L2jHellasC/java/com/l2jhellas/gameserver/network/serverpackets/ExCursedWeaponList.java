@@ -18,22 +18,19 @@ import java.util.List;
 
 /**
  * Format: (ch) d[d]
- *
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public class ExCursedWeaponList extends L2GameServerPacket
 {
 	private static final String _S__FE_45_EXCURSEDWEAPONLIST = "[S] FE:45 ExCursedWeaponList";
-	private List<Integer> _cursedWeaponIds;
+	private final List<Integer> _cursedWeaponIds;
 
 	public ExCursedWeaponList(List<Integer> cursedWeaponIds)
 	{
 		_cursedWeaponIds = cursedWeaponIds;
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -41,19 +38,15 @@ public class ExCursedWeaponList extends L2GameServerPacket
 		writeH(0x45);
 
 		writeD(_cursedWeaponIds.size());
-		for(Integer i : _cursedWeaponIds)
+		for (Integer i : _cursedWeaponIds)
 		{
 			writeD(i.intValue());
 		}
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_45_EXCURSEDWEAPONLIST;
 	}
-
 }

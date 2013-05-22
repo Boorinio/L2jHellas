@@ -16,12 +16,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
 /**
- * This class ...
- *
- * @version $Revision: 1.4.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- *
  * @author godson
  */
 public class ExOlympiadUserInfo extends L2GameServerPacket
@@ -32,11 +27,12 @@ public class ExOlympiadUserInfo extends L2GameServerPacket
 
 	/**
 	 * @param _player
-	 * @param _side (1 = right, 2 = left)
+	 * @param _side
+	 *        (1 = right, 2 = left)
 	 */
 	public ExOlympiadUserInfo(L2PcInstance player)
 	{
-		_activeChar = player;		
+		_activeChar = player;
 	}
 
 	@Override
@@ -47,15 +43,12 @@ public class ExOlympiadUserInfo extends L2GameServerPacket
 		writeD(_activeChar.getObjectId());
 		writeS(_activeChar.getName());
 		writeD(_activeChar.getClassId().getId());
-		writeD((int)_activeChar.getCurrentHp());
+		writeD((int) _activeChar.getCurrentHp());
 		writeD(_activeChar.getMaxHp());
-		writeD((int)_activeChar.getCurrentCp());
+		writeD((int) _activeChar.getCurrentCp());
 		writeD(_activeChar.getMaxCp());
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

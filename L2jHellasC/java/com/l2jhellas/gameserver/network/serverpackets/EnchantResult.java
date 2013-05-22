@@ -16,9 +16,9 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 public class EnchantResult extends L2GameServerPacket
 {
-	public static final EnchantResult CANCELLED = new EnchantResult(2);	
+	public static final EnchantResult CANCELLED = new EnchantResult(2);
 	private static final String _S__81_ENCHANTRESULT = "[S] 81 EnchantResult";
-	private int _unknown;
+	private final int _unknown;
 
 	public EnchantResult(int unknown)
 	{
@@ -32,9 +32,6 @@ public class EnchantResult extends L2GameServerPacket
 		writeD(_unknown);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

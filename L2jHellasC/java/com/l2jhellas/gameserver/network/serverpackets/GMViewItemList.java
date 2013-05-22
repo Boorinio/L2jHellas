@@ -17,20 +17,12 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
-/**
- *
- * @version $Revision: 1.1.2.1.2.3 $ $Date: 2005/03/27 15:29:57 $
- */
 public class GMViewItemList extends L2GameServerPacket
 {
-	//private static Logger _log = Logger.getLogger(GMViewItemList.class.getName());
 	private static final String _S__AD_GMVIEWITEMLIST = "[S] 94 GMViewItemList";
-	private L2ItemInstance[] _items;
-	private L2PcInstance _cha;
-	private String _playerName;
-
-
+	private final L2ItemInstance[] _items;
+	private final L2PcInstance _cha;
+	private final String _playerName;
 
 	public GMViewItemList(L2PcInstance cha)
 	{
@@ -72,9 +64,6 @@ public class GMViewItemList extends L2GameServerPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

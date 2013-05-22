@@ -23,13 +23,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Lottery
 {
@@ -91,10 +91,8 @@ public class Lottery
 	public void increasePrize(int count)
 	{
 		_prize += count;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement(UPDATE_PRICE);
 			statement.setInt(1, getPrize());
@@ -109,16 +107,6 @@ public class Lottery
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -143,11 +131,9 @@ public class Lottery
 		@Override
 		public void run()
 		{
-			Connection con = null;
 			PreparedStatement statement;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				statement = con.prepareStatement(SELECT_LAST_LOTTERY);
 				ResultSet rset = statement.executeQuery();
 
@@ -200,16 +186,6 @@ public class Lottery
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 
 			if (Config.DEBUG)
 				_log.log(Level.CONFIG, getClass().getName() + ": Starting ticket sell for lottery #" + getId() + ".");
@@ -239,9 +215,8 @@ public class Lottery
 			ThreadPoolManager.getInstance().scheduleGeneral(new stopSellingTickets(), _enddate - System.currentTimeMillis() - 10 * MINUTE);
 			ThreadPoolManager.getInstance().scheduleGeneral(new finishLottery(), _enddate - System.currentTimeMillis());
 
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				statement = con.prepareStatement(INSERT_LOTTERY);
 				statement.setInt(1, 1);
 				statement.setInt(2, getId());
@@ -257,16 +232,6 @@ public class Lottery
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}
@@ -346,11 +311,9 @@ public class Lottery
 			int count3 = 0;
 			int count4 = 0;
 
-			Connection con = null;
 			PreparedStatement statement;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				statement = con.prepareStatement(SELECT_LOTTERY_ITEM);
 				statement.setInt(1, getId());
 				ResultSet rset = statement.executeQuery();
@@ -401,16 +364,6 @@ public class Lottery
 					e.printStackTrace();
 				}
 			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
-				}
-			}
 
 			int prize4 = count4 * Config.ALT_LOTTERY_2_AND_1_NUMBER_PRIZE;
 			int prize1 = 0;
@@ -454,9 +407,8 @@ public class Lottery
 				Announcements.getInstance().announceToAll(sm);
 			}
 
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				statement = con.prepareStatement(UPDATE_LOTTERY);
 				statement.setInt(1, getPrize());
 				statement.setInt(2, newprize);
@@ -475,16 +427,6 @@ public class Lottery
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 
@@ -542,12 +484,9 @@ public class Lottery
 		0, 0
 		};
 
-		Connection con = null;
 		PreparedStatement statement;
-
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			statement = con.prepareStatement(SELECT_LOTTERY_TICKET);
 			statement.setInt(1, id);
 			ResultSet rset = statement.executeQuery();
@@ -614,17 +553,6 @@ public class Lottery
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
-
 		return res;
 	}
 }

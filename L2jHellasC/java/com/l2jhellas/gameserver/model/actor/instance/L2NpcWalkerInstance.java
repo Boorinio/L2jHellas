@@ -23,18 +23,17 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-
 /**
  * This class manages some npcs can walk in the city. <br>
- * It inherits all methods from L2NpcInstance. <br><br>
- *
- * @original author Rayan RPG for L2Emu Project
- * @since 819
+ * It inherits all methods from L2NpcInstance.
+ * 
+ * @author Rayan
  */
 public class L2NpcWalkerInstance extends L2NpcInstance
 {
 	/**
-	 * Constructor of L2NpcWalkerInstance (use L2Character and L2NpcInstance constructor).<BR><BR>
+	 * Constructor of L2NpcWalkerInstance (use L2Character and L2NpcInstance constructor).<BR>
+	 * <BR>
 	 */
 	public L2NpcWalkerInstance(int objectId, L2NpcTemplate template)
 	{
@@ -43,47 +42,50 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 	}
 
 	/**
-	 * AI can't be deattached, npc must move always with the same AI instance.
-	 * @param newAI AI to set for this L2NpcWalkerInstance
+	 * AI can't be detached, npc must move always with the same AI instance.
+	 * 
+	 * @param newAI
+	 *        AI to set for this L2NpcWalkerInstance
 	 */
 	@Override
 	public void setAI(L2CharacterAI newAI)
 	{
-		if(_ai == null) 
-			super.setAI(newAI);	
+		if (_ai == null)
+			super.setAI(newAI);
 	}
 
 	@Override
 	public void onSpawn()
 	{
-		((L2NpcWalkerAI) getAI()).setHomeX(getX());  
-	 	((L2NpcWalkerAI) getAI()).setHomeY(getY());  
-	 	((L2NpcWalkerAI) getAI()).setHomeZ(getZ());
+		((L2NpcWalkerAI) getAI()).setHomeX(getX());
+		((L2NpcWalkerAI) getAI()).setHomeY(getY());
+		((L2NpcWalkerAI) getAI()).setHomeZ(getZ());
 	}
 
 	/**
 	 * Sends a chat to all _knowObjects
-	 * @param chat message to say
+	 * 
+	 * @param chat
+	 *        message to say
 	 */
 	public void broadcastChat(String chat)
 	{
 		Map<Integer, L2PcInstance> _knownPlayers = getKnownList().getKnownPlayers();
 
-		if(_knownPlayers == null)
+		if (_knownPlayers == null)
 		{
-			if(Config.DEVELOPER)
+			if (Config.DEVELOPER)
 				_log.info("broadcastChat _players == null");
 			return;
 		}
 
 		//we send message to known players only!
-		if(_knownPlayers.size() > 0)
+		if (_knownPlayers.size() > 0)
 		{
 			CreatureSay cs = new CreatureSay(getObjectId(), 0, getName(), chat);
 
 			//we interact and list players here
-			for(L2PcInstance players : _knownPlayers.values())
-
+			for (L2PcInstance players : _knownPlayers.values())
 				//finally send packet :D
 				players.sendPacket(cs);
 		}
@@ -91,17 +93,24 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 
 	/**
 	 * NPCs are immortal
-	 * @param i ignore it
-	 * @param attacker  ignore it
-	 * @param awake  ignore it
+	 * 
+	 * @param i
+	 *        ignore it
+	 * @param attacker
+	 *        ignore it
+	 * @param awake
+	 *        ignore it
 	 */
 	@Override
 	public void reduceCurrentHp(double i, L2Character attacker, boolean awake)
-	{}
+	{
+	}
 
 	/**
 	 * NPCs are immortal
-	 * @param killer ignore it
+	 * 
+	 * @param killer
+	 *        ignore it
 	 * @return false
 	 */
 	@Override
@@ -113,16 +122,17 @@ public class L2NpcWalkerInstance extends L2NpcInstance
 	@Override
 	public L2CharacterAI getAI()
 	{
-		return  super.getAI();
+		return super.getAI();
 	}
 
 	protected class L2NpcWalkerAIAccessor extends L2Character.AIAccessor
 	{
 		/**
-		 * AI can't be deattached.
+		 * AI can't be detached.
 		 */
 		@Override
 		public void detachAI()
-		{}
+		{
+		}
 	}
 }

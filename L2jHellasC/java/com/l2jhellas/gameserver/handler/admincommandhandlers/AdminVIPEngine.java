@@ -26,29 +26,29 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 public class AdminVIPEngine implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = {
-			"admin_vip",
-			"admin_vip_setteam",
-			"admin_vip_randomteam",
-			"admin_vip_settime",
-			"admin_vip_endnpc",
-			"admin_vip_setdelay",
-			"admin_vip_joininit",
-			"admin_vip_joinnpc",
-			"admin_vip_joinlocxyz",
-			"admin_vip_setarea",
-			"admin_vip_vipreward",
-			"admin_vip_viprewardamount",
-			"admin_vip_thevipreward",
-			"admin_vip_theviprewardamount",
-			"admin_vip_notvipreward",
-			"admin_vip_notviprewardamount",
-	};
+	private static final String[] ADMIN_COMMANDS =
+	{/** @formatter:off */
+		"admin_vip",
+		"admin_vip_setteam",
+		"admin_vip_randomteam",
+		"admin_vip_settime",
+		"admin_vip_endnpc",
+		"admin_vip_setdelay",
+		"admin_vip_joininit",
+		"admin_vip_joinnpc",
+		"admin_vip_joinlocxyz",
+		"admin_vip_setarea",
+		"admin_vip_vipreward",
+		"admin_vip_viprewardamount",
+		"admin_vip_thevipreward",
+		"admin_vip_theviprewardamount",
+		"admin_vip_notvipreward",
+		"admin_vip_notviprewardamount"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-
 		if (command.equals("admin_vip"))
 			showMainPage(activeChar);
 

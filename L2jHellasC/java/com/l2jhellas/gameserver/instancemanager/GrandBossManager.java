@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
@@ -33,6 +32,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.L2FastList;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author DaRkRaGe
@@ -58,7 +58,7 @@ public class GrandBossManager
 	 * <li>29045 Frintezza</li>
 	 * <li>29046-29047 Scarlet van Halisha</li>
 	 * </ul>
-	 *
+	 * 
 	 * It handles the saving of hp, mp, location, and status
 	 * of all Grand Bosses. It also manages the zones associated
 	 * with the Grand Bosses.
@@ -115,11 +115,8 @@ public class GrandBossManager
 		_bosses = new FastMap<Integer, L2GrandBossInstance>();
 		_storedInfo = new FastMap<Integer, StatsSet>();
 		_bossStatus = new FastMap<Integer, Integer>();
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM grandboss_data ORDER BY boss_id");
 			ResultSet rset = statement.executeQuery();
 
@@ -166,16 +163,6 @@ public class GrandBossManager
 				e.printStackTrace();
 			}
 		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	/**
@@ -183,8 +170,6 @@ public class GrandBossManager
 	 */
 	public void initZones()
 	{
-		Connection con = null;
-
 		FastMap<Integer, L2FastList<Integer>> zones = new FastMap<Integer, L2FastList<Integer>>();
 
 		if (_zones == null)
@@ -200,10 +185,8 @@ public class GrandBossManager
 			zones.put(zone.getId(), new L2FastList<Integer>());
 		}
 
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM grandboss_list ORDER BY player_id");
 			ResultSet rset = statement.executeQuery();
 
@@ -230,16 +213,6 @@ public class GrandBossManager
 		catch (Exception e)
 		{
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 
 		for (L2BossZone zone : _zones)
@@ -353,12 +326,9 @@ public class GrandBossManager
 
 	private void storeToDb()
 	{
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-
 			statement = con.prepareStatement(DELETE_GRAND_BOSS_LIST);
 			statement.executeUpdate();
 			statement.close();
@@ -422,16 +392,6 @@ public class GrandBossManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

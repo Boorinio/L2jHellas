@@ -28,7 +28,8 @@ import com.l2jhellas.util.Rnd;
  */
 public class GetPlayer implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.GET_PLAYER
 	};
 

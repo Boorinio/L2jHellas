@@ -21,7 +21,7 @@ import javax.script.ScriptException;
 
 /**
  * Abstract class for classes that are meant to be implemented by scripts.<BR>
- *
+ * 
  * @author KenM
  */
 public abstract class ManagedScript
@@ -39,7 +39,7 @@ public abstract class ManagedScript
 	/**
 	 * Attempts to reload this script and to refresh the necessary bindings with it ScriptControler.<BR>
 	 * Subclasses of this class should override this method to properly refresh their bindings when necessary.
-	 *
+	 * 
 	 * @return true if and only if the script was reloaded, false otherwise.
 	 */
 	public boolean reload()

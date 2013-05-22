@@ -41,8 +41,7 @@ public class Pdam implements ISkillHandler
 
 	private static final L2SkillType[] SKILL_IDS =
 	{
-		L2SkillType.PDAM,
-		L2SkillType.FATAL
+	L2SkillType.PDAM, L2SkillType.FATAL
 	// SkillType.CHARGEDAM
 	};
 

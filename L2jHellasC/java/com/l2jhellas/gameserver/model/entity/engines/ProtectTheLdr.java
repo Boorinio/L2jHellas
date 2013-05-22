@@ -3,17 +3,14 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * @author Boorinio
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
@@ -31,23 +28,26 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
+/**
+ * @author Boorinio
+ */
 public class ProtectTheLdr
 {
 	public static List<L2PcInstance> _Team1 = new FastList<L2PcInstance>();
 	public static List<L2PcInstance> _Team2 = new FastList<L2PcInstance>();
-	public static int team1x=-19790;
-	public static int team1y=-21023;
-	public static int team1z=-3025;
-	private static int leader1=36007;
-	public static int team2x=-21780,team2y=-20976,team2z=-3027,leader2=36008;
-	private static int leader2x=-21717,leader2y=-20859,leader2z=-3027;
-	private static int leader1x=-19846,leader1y=-20859,leader1z=-3027;
-	public static boolean ProtectisRunning,alaksokolies;
+	public static int team1x = -19790;
+	public static int team1y = -21023;
+	public static int team1z = -3025;
+	private static int leader1 = 36007;
+	public static int team2x = -21780, team2y = -20976, team2z = -3027, leader2 = 36008;
+	private static int leader2x = -21717, leader2y = -20859, leader2z = -3027;
+	private static int leader1x = -19846, leader1y = -20859, leader1z = -3027;
+	public static boolean ProtectisRunning, alaksokolies;
 	private static FastSet<L2NpcInstance> _leaders = new FastSet<L2NpcInstance>();
-	
+
 	public static void startevent()
 	{
-		ZodiacMain.ZodiacRegisterActive=true;
+		ZodiacMain.ZodiacRegisterActive = true;
 		Announcements.getInstance().announceToAll("ProtectTheLeader Event has Started!");
 		Announcements.getInstance().announceToAll("Type .join to enter or .leave to leave!");
 		Announcements.getInstance().announceToAll("You have 10 minutes to register!");
@@ -58,53 +58,56 @@ public class ProtectTheLdr
 		waitSecs(60);
 		Announcements.getInstance().announceToAll("You have 1 minute to register!");
 		waitSecs(60);
-		ZodiacMain.ZodiacRegisterActive=false;
-		ProtectisRunning=true;
+		ZodiacMain.ZodiacRegisterActive = false;
+		ProtectisRunning = true;
 		Announcements.getInstance().announceToAll("Registrations are now over!");
 		shufflePlayers();
 		teleportplayers();
 		L2NpcInstance spawn1 = null;
 		L2NpcInstance spawn2 = null;
-		spawn1=addSpawn(leader1,leader1x, leader1y,leader1z);
-		spawn2=addSpawn(leader2,leader2x, leader2y,leader2z);
+		spawn1 = addSpawn(leader1, leader1x, leader1y, leader1z);
+		spawn2 = addSpawn(leader2, leader2x, leader2y, leader2z);
 		_leaders.add(spawn1);
 		_leaders.add(spawn2);
 		Announcements.getInstance().announceToAll("Go kill the enemy's Leader rb!");
 	}
+
 	public static void team1wins()
 	{
 		Announcements.getInstance().announceToAll("Team 1 won team's 2 leader is dead!");
-		for(L2PcInstance member: _Team1)
+		for (L2PcInstance member : _Team1)
 		{
-			
+
 			member.sendMessage("Congratulations! The enemy leader is dead!");
-			member.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN,member, true);
+			member.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, member, true);
 		}
 		cleanthemess();
 	}
+
 	public static void team2wins()
 	{
 		Announcements.getInstance().announceToAll("Team 2 won team's 1 leader is dead!");
-		for(L2PcInstance member: _Team2)
+		for (L2PcInstance member : _Team2)
 		{
-			
+
 			member.sendMessage("Congratulations! The enemy leader is dead!");
-			member.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN,member, true);
+			member.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, member, true);
 		}
 		cleanthemess();
 	}
+
 	public static void cleanthemess()
 	{
-		for(L2PcInstance member: _Team1)
+		for (L2PcInstance member : _Team1)
 		{
 			member.getAppearance().setNameColor(0xFFFFFF);
 			member.setTitle("");
 			member.broadcastUserInfo();
 			member.isinZodiac = false;
 			member.teleToLocation(82743, 148219, -3470);
-			
+
 		}
-		for(L2PcInstance member: _Team2)
+		for (L2PcInstance member : _Team2)
 		{
 			member.getAppearance().setNameColor(0xFFFFFF);
 			member.setTitle("");
@@ -115,21 +118,23 @@ public class ProtectTheLdr
 		for (L2NpcInstance leader : _leaders)
 		{
 			leader.deleteMe();
-			
+
 		}
-		ProtectisRunning=false;
+		ProtectisRunning = false;
 	}
+
 	public static void teleportplayers()
 	{
-	for(L2PcInstance member: _Team1)
-	{
-		member.teleToLocation(team1x,team1y,team1z);
+		for (L2PcInstance member : _Team1)
+		{
+			member.teleToLocation(team1x, team1y, team1z);
+		}
+		for (L2PcInstance member : _Team2)
+		{
+			member.teleToLocation(team2x, team2y, team2z);
+		}
 	}
-	for(L2PcInstance member: _Team2)
-	{
-		member.teleToLocation(team2x,team2y,team2z);
-	}
-	}
+
 	public static void shufflePlayers()
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
@@ -155,7 +160,7 @@ public class ProtectTheLdr
 			}
 		}
 	}
-	
+
 	public static void waitSecs(int i)
 	{
 		try
@@ -167,7 +172,7 @@ public class ProtectTheLdr
 			ie.printStackTrace();
 		}
 	}
-	
+
 	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
 	{
 		L2NpcInstance result = null;
@@ -192,5 +197,4 @@ public class ProtectTheLdr
 		}
 		return null;
 	}
-	
 }

@@ -19,14 +19,12 @@ import java.io.IOException;
 /**
  * This file is based on the Blowfish Engine that is part of
  * the BouncyCastle JCE
- *
  * Copyright (c) 2000 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge, publish, distribute,
  * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
  * The above copyright notice and this permission notice shall be included in all copies
  * or substantial portions of the Software.
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
@@ -37,6 +35,7 @@ import java.io.IOException;
  */
 public class BlowfishEngine
 {
+	/** @formatter:off */
     private final static int[] KP = {0x243F6A88, 0x85A308D3, 0x13198A2E, 0x03707344, 0xA4093822,
                                      0x299F31D0, 0x082EFA98, 0xEC4E6C89, 0x452821E6, 0x38D01377,
                                      0xBE5466CF, 0x34E90C6C, 0xC0AC29B7, 0xC97C50DD, 0x3F84D5B5,
@@ -249,227 +248,227 @@ public class BlowfishEngine
                                       0x02FB8A8C, 0x01C36AE4, 0xD6EBE1F9, 0x90D4F869, 0xA65CDEA0,
                                       0x3F09252D, 0xC208E69F, 0xB74E6132, 0xCE77E25B, 0x578FDFE3,
                                       0x3AC372E6};
-    //====================================
-    // Useful constants
-    //====================================
-    private static final int ROUNDS = 16;
-    private static final int BLOCK_SIZE = 8; // bytes = 64 bits
-    private static final int SBOX_SK = 256;
-    private static final int P_SZ = ROUNDS + 2;
-    private final int[] S0, S1, S2, S3; // the s-boxes
-    private final int[] P; // the p-array
-    private boolean encrypting = false;
-    private byte[] workingKey = null;
+    /** @formatter:on */
+	//====================================
+	// Useful constants
+	//====================================
+	private static final int ROUNDS = 16;
+	private static final int BLOCK_SIZE = 8; // bytes = 64 bits
+	private static final int SBOX_SK = 256;
+	private static final int P_SZ = ROUNDS + 2;
+	private final int[] S0, S1, S2, S3; // the s-boxes
+	private final int[] P; // the p-array
+	private boolean encrypting = false;
+	private byte[] workingKey = null;
 
-    public BlowfishEngine()
-    {
-        S0 = new int[SBOX_SK];
-        S1 = new int[SBOX_SK];
-        S2 = new int[SBOX_SK];
-        S3 = new int[SBOX_SK];
-        P = new int[P_SZ];
-    }
+	public BlowfishEngine()
+	{
+		S0 = new int[SBOX_SK];
+		S1 = new int[SBOX_SK];
+		S2 = new int[SBOX_SK];
+		S3 = new int[SBOX_SK];
+		P = new int[P_SZ];
+	}
 
-    /**
-     * initialise a Blowfish cipher.
-     *
-     * @param encryption
-     *            whether or not we are for encryption.
-     * @param key
-     *            the key used to set up the cipher.
-     * @exception IllegalArgumentException
-     *                if the params argument is inappropriate.
-     */
-    public void init(boolean pEncrypting, byte[] key)
-    {
-        encrypting = pEncrypting;
-        workingKey = key;
-        setKey(workingKey);
-        return;
-    }
+	/**
+	 * Initialize a Blowfish cipher.
+	 * 
+	 * @param encryption
+	 *        whether or not we are for encryption.
+	 * @param key
+	 *        the key used to set up the cipher.
+	 * @exception IllegalArgumentException
+	 *            if the params argument is inappropriate.
+	 */
+	public void init(boolean pEncrypting, byte[] key)
+	{
+		encrypting = pEncrypting;
+		workingKey = key;
+		setKey(workingKey);
+		return;
+	}
 
-    public String getAlgorithmName()
-    {
-        return "Blowfish";
-    }
+	public String getAlgorithmName()
+	{
+		return "Blowfish";
+	}
 
-    public final int processBlock(byte[] in, int inOff, byte[] out, int outOff) throws IOException
-    {
-        if (workingKey == null)
-        {
-            throw new IllegalStateException("Blowfish not initialised");
-        }
-        if ((inOff + BLOCK_SIZE) > in.length)
-        {
-            throw new IOException("input buffer too short");
-        }
-        if ((outOff + BLOCK_SIZE) > out.length)
-        {
-            throw new IOException("output buffer too short");
-        }
-        if (encrypting)
-        {
-            encryptBlock(in, inOff, out, outOff);
-        }
-        else
-        {
-            decryptBlock(in, inOff, out, outOff);
-        }
-        return BLOCK_SIZE;
-    }
+	public final int processBlock(byte[] in, int inOff, byte[] out, int outOff) throws IOException
+	{
+		if (workingKey == null)
+		{
+			throw new IllegalStateException("Blowfish not initialised");
+		}
+		if ((inOff + BLOCK_SIZE) > in.length)
+		{
+			throw new IOException("input buffer too short");
+		}
+		if ((outOff + BLOCK_SIZE) > out.length)
+		{
+			throw new IOException("output buffer too short");
+		}
+		if (encrypting)
+		{
+			encryptBlock(in, inOff, out, outOff);
+		}
+		else
+		{
+			decryptBlock(in, inOff, out, outOff);
+		}
+		return BLOCK_SIZE;
+	}
 
-    public void reset()
-    {
-    }
+	public void reset()
+	{
+	}
 
-    public int getBlockSize()
-    {
-        return BLOCK_SIZE;
-    }
+	public int getBlockSize()
+	{
+		return BLOCK_SIZE;
+	}
 
-    //==================================
-    // Private Implementation
-    //==================================
-    private int func(int x)
-    {
-        return (((S0[(x >>> 24)] + S1[(x >>> 16) & 0xff]) ^ S2[(x >>> 8) & 0xff]) + S3[x & 0xff]);
-    }
+	//==================================
+	// Private Implementation
+	//==================================
+	private int func(int x)
+	{
+		return (((S0[(x >>> 24)] + S1[(x >>> 16) & 0xff]) ^ S2[(x >>> 8) & 0xff]) + S3[x & 0xff]);
+	}
 
-    /**
-     * apply the encryption cycle to each value pair in the table.
-     */
-    private void processTable(int xl, int xr, int[] table)
-    {
-        int size = table.length;
-        for (int s = 0; s < size; s += 2)
-        {
-            xl ^= P[0];
-            for (int i = 1; i < ROUNDS; i += 2)
-            {
-                xr ^= func(xl) ^ P[i];
-                xl ^= func(xr) ^ P[i + 1];
-            }
-            xr ^= P[ROUNDS + 1];
-            table[s] = xr;
-            table[s + 1] = xl;
-            xr = xl; // end of cycle swap
-            xl = table[s];
-        }
-    }
+	/**
+	 * apply the encryption cycle to each value pair in the table.
+	 */
+	private void processTable(int xl, int xr, int[] table)
+	{
+		int size = table.length;
+		for (int s = 0; s < size; s += 2)
+		{
+			xl ^= P[0];
+			for (int i = 1; i < ROUNDS; i += 2)
+			{
+				xr ^= func(xl) ^ P[i];
+				xl ^= func(xr) ^ P[i + 1];
+			}
+			xr ^= P[ROUNDS + 1];
+			table[s] = xr;
+			table[s + 1] = xl;
+			xr = xl; // end of cycle swap
+			xl = table[s];
+		}
+	}
 
-    private void setKey(byte[] key)
-    {
-        /*
-         * - comments are from _Applied Crypto_, Schneier, p338 please be
-         * careful comparing the two, AC numbers the arrays from 1, the
-         * enclosed code from 0.
-         *
-         * (1) Initialise the S-boxes and the P-array, with a fixed string This
-         * string contains the hexadecimal digits of pi (3.141...)
-         */
-        System.arraycopy(KS0, 0, S0, 0, SBOX_SK);
-        System.arraycopy(KS1, 0, S1, 0, SBOX_SK);
-        System.arraycopy(KS2, 0, S2, 0, SBOX_SK);
-        System.arraycopy(KS3, 0, S3, 0, SBOX_SK);
-        System.arraycopy(KP, 0, P, 0, P_SZ);
-        /*
-         * (2) Now, XOR P[0] with the first 32 bits of the key, XOR P[1] with
-         * the second 32-bits of the key, and so on for all bits of the key (up
-         * to P[17]). Repeatedly cycle through the key bits until the entire
-         * P-array has been XOR-ed with the key bits
-         */
-        int keyLength = key.length;
-        int keyIndex = 0;
-        for (int i = 0; i < P_SZ; i++)
-        {
-            // get the 32 bits of the key, in 4 * 8 bit chunks
-            int data = 0x0000000;
-            for (int j = 0; j < 4; j++)
-            {
-                // create a 32 bit block
-                data = (data << 8) | (key[keyIndex++] & 0xff);
-                // wrap when we get to the end of the key
-                if (keyIndex >= keyLength)
-                {
-                    keyIndex = 0;
-                }
-            }
-            // XOR the newly created 32 bit chunk onto the P-array
-            P[i] ^= data;
-        }
-        /*
-         * (3) Encrypt the all-zero string with the Blowfish algorithm, using
-         * the subkeys described in (1) and (2)
-         *
-         * (4) Replace P1 and P2 with the output of step (3)
-         *
-         * (5) Encrypt the output of step(3) using the Blowfish algorithm, with
-         * the modified subkeys.
-         *
-         * (6) Replace P3 and P4 with the output of step (5)
-         *
-         * (7) Continue the process, replacing all elements of the P-array and
-         * then all four S-boxes in order, with the output of the continuously
-         * changing Blowfish algorithm
-         */
-        processTable(0, 0, P);
-        processTable(P[P_SZ - 2], P[P_SZ - 1], S0);
-        processTable(S0[SBOX_SK - 2], S0[SBOX_SK - 1], S1);
-        processTable(S1[SBOX_SK - 2], S1[SBOX_SK - 1], S2);
-        processTable(S2[SBOX_SK - 2], S2[SBOX_SK - 1], S3);
-    }
+	private void setKey(byte[] key)
+	{
+		/*
+		 * - comments are from _Applied Crypto_, Schneier, p338 please be
+		 * careful comparing the two, AC numbers the arrays from 1, the
+		 * enclosed code from 0.
+		 * 
+		 * (1) Initialize the S-boxes and the P-array, with a fixed string This
+		 * string contains the hexadecimal digits of pi (3.141...)
+		 */
+		System.arraycopy(KS0, 0, S0, 0, SBOX_SK);
+		System.arraycopy(KS1, 0, S1, 0, SBOX_SK);
+		System.arraycopy(KS2, 0, S2, 0, SBOX_SK);
+		System.arraycopy(KS3, 0, S3, 0, SBOX_SK);
+		System.arraycopy(KP, 0, P, 0, P_SZ);
+		/*
+		 * (2) Now, XOR P[0] with the first 32 bits of the key, XOR P[1] with
+		 * the second 32-bits of the key, and so on for all bits of the key (up
+		 * to P[17]). Repeatedly cycle through the key bits until the entire
+		 * P-array has been XOR-ed with the key bits
+		 */
+		int keyLength = key.length;
+		int keyIndex = 0;
+		for (int i = 0; i < P_SZ; i++)
+		{
+			// get the 32 bits of the key, in 4 * 8 bit chunks
+			int data = 0x0000000;
+			for (int j = 0; j < 4; j++)
+			{
+				// create a 32 bit block
+				data = (data << 8) | (key[keyIndex++] & 0xff);
+				// wrap when we get to the end of the key
+				if (keyIndex >= keyLength)
+				{
+					keyIndex = 0;
+				}
+			}
+			// XOR the newly created 32 bit chunk onto the P-array
+			P[i] ^= data;
+		}
+		/*
+		 * (3) Encrypt the all-zero string with the Blowfish algorithm, using
+		 * the subkeys described in (1) and (2)
+		 * 
+		 * (4) Replace P1 and P2 with the output of step (3)
+		 * 
+		 * (5) Encrypt the output of step(3) using the Blowfish algorithm, with
+		 * the modified subkeys.
+		 * 
+		 * (6) Replace P3 and P4 with the output of step (5)
+		 * 
+		 * (7) Continue the process, replacing all elements of the P-array and
+		 * then all four S-boxes in order, with the output of the continuously
+		 * changing Blowfish algorithm
+		 */
+		processTable(0, 0, P);
+		processTable(P[P_SZ - 2], P[P_SZ - 1], S0);
+		processTable(S0[SBOX_SK - 2], S0[SBOX_SK - 1], S1);
+		processTable(S1[SBOX_SK - 2], S1[SBOX_SK - 1], S2);
+		processTable(S2[SBOX_SK - 2], S2[SBOX_SK - 1], S3);
+	}
 
-    /**
-     * Encrypt the given input starting at the given offset and place the
-     * result in the provided buffer starting at the given offset. The input
-     * will be an exact multiple of our blocksize.
-     */
-    private void encryptBlock(byte[] src, int srcIndex, byte[] dst, int dstIndex)
-    {
-        int xl = bytesTo32bits(src, srcIndex);
-        int xr = bytesTo32bits(src, srcIndex + 4);
-        xl ^= P[0];
-        for (int i = 1; i < ROUNDS; i += 2)
-        {
-            xr ^= func(xl) ^ P[i];
-            xl ^= func(xr) ^ P[i + 1];
-        }
-        xr ^= P[ROUNDS + 1];
-        bits32ToBytes(xr, dst, dstIndex);
-        bits32ToBytes(xl, dst, dstIndex + 4);
-    }
+	/**
+	 * Encrypt the given input starting at the given offset and place the
+	 * result in the provided buffer starting at the given offset. The input
+	 * will be an exact multiple of our blocksize.
+	 */
+	private void encryptBlock(byte[] src, int srcIndex, byte[] dst, int dstIndex)
+	{
+		int xl = bytesTo32bits(src, srcIndex);
+		int xr = bytesTo32bits(src, srcIndex + 4);
+		xl ^= P[0];
+		for (int i = 1; i < ROUNDS; i += 2)
+		{
+			xr ^= func(xl) ^ P[i];
+			xl ^= func(xr) ^ P[i + 1];
+		}
+		xr ^= P[ROUNDS + 1];
+		bits32ToBytes(xr, dst, dstIndex);
+		bits32ToBytes(xl, dst, dstIndex + 4);
+	}
 
-    /**
-     * Decrypt the given input starting at the given offset and place the
-     * result in the provided buffer starting at the given offset. The input
-     * will be an exact multiple of our blocksize.
-     */
-    private void decryptBlock(byte[] src, int srcIndex, byte[] dst, int dstIndex)
-    {
-        int xl = bytesTo32bits(src, srcIndex);
-        int xr = bytesTo32bits(src, srcIndex + 4);
-        xl ^= P[ROUNDS + 1];
-        for (int i = ROUNDS; i > 0; i -= 2)
-        {
-            xr ^= func(xl) ^ P[i];
-            xl ^= func(xr) ^ P[i - 1];
-        }
-        xr ^= P[0];
-        bits32ToBytes(xr, dst, dstIndex);
-        bits32ToBytes(xl, dst, dstIndex + 4);
-    }
+	/**
+	 * Decrypt the given input starting at the given offset and place the
+	 * result in the provided buffer starting at the given offset. The input
+	 * will be an exact multiple of our blocksize.
+	 */
+	private void decryptBlock(byte[] src, int srcIndex, byte[] dst, int dstIndex)
+	{
+		int xl = bytesTo32bits(src, srcIndex);
+		int xr = bytesTo32bits(src, srcIndex + 4);
+		xl ^= P[ROUNDS + 1];
+		for (int i = ROUNDS; i > 0; i -= 2)
+		{
+			xr ^= func(xl) ^ P[i];
+			xl ^= func(xr) ^ P[i - 1];
+		}
+		xr ^= P[0];
+		bits32ToBytes(xr, dst, dstIndex);
+		bits32ToBytes(xl, dst, dstIndex + 4);
+	}
 
-    private int bytesTo32bits(byte[] b, int i)
-    {
-        return ((b[i + 3] & 0xff) << 24) | ((b[i + 2] & 0xff) << 16) | ((b[i + 1] & 0xff) << 8)
-            | ((b[i] & 0xff));
-    }
+	private int bytesTo32bits(byte[] b, int i)
+	{
+		return ((b[i + 3] & 0xff) << 24) | ((b[i + 2] & 0xff) << 16) | ((b[i + 1] & 0xff) << 8) | ((b[i] & 0xff));
+	}
 
-    private void bits32ToBytes(int in, byte[] b, int offset)
-    {
-        b[offset] = (byte) in;
-        b[offset + 1] = (byte) (in >> 8);
-        b[offset + 2] = (byte) (in >> 16);
-        b[offset + 3] = (byte) (in >> 24);
-    }
+	private void bits32ToBytes(int in, byte[] b, int offset)
+	{
+		b[offset] = (byte) in;
+		b[offset + 1] = (byte) (in >> 8);
+		b[offset + 2] = (byte) (in >> 16);
+		b[offset + 3] = (byte) (in >> 24);
+	}
 }

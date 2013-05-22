@@ -32,7 +32,8 @@ import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 
 public class Resurrect implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.RESURRECT
 	};
 

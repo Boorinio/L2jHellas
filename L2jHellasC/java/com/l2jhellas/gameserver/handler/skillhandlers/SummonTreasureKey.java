@@ -33,7 +33,8 @@ public class SummonTreasureKey implements ISkillHandler
 {
 	protected static final Logger _log = Logger.getLogger(SummonTreasureKey.class.getName());
 
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.SUMMON_TREASURE_KEY
 	};
 

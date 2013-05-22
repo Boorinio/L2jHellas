@@ -1,20 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.util.geodata;
 
@@ -95,12 +91,12 @@ public final class L2Collections
 	private static class EmptyCollection implements Collection<Object>
 	{
 		protected static final Collection<Object> INSTANCE = new EmptyCollection();
-	
+
 		protected EmptyCollection()
 		{
-			
+
 		}
-		
+
 		@Override
 		public boolean add(Object e)
 		{
@@ -175,18 +171,18 @@ public final class L2Collections
 		@Override
 		public <T> T[] toArray(T[] a)
 		{
-			if(a.length != 0)
-				a = (T[])Array.newInstance(a.getClass().getComponentType(), 0);
+			if (a.length != 0)
+				a = (T[]) Array.newInstance(a.getClass().getComponentType(), 0);
 
 			return a;
 		}
 	}
-	
+
 	private static final class EmptySet extends EmptyCollection implements Set<Object>
 	{
 		protected static final Set<Object> INSTANCE = new EmptySet();
 	}
-	
+
 	private static final class EmptyList extends EmptyCollection implements List<Object>
 	{
 		protected static final List<Object> INSTANCE = new EmptyList();
@@ -382,8 +378,8 @@ public final class L2Collections
 		@Override
 		public <T> T[] moveToArray(T[] array)
 		{
-			if(array.length != 0)
-				array = (T[])Array.newInstance(array.getClass().getComponentType(), 0);
+			if (array.length != 0)
+				array = (T[]) Array.newInstance(array.getClass().getComponentType(), 0);
 
 			return array;
 		}
@@ -391,7 +387,7 @@ public final class L2Collections
 		@Override
 		public <T> T[] moveToArray(Class<T> clazz)
 		{
-			return (T[])Array.newInstance(clazz, 0);
+			return (T[]) Array.newInstance(clazz, 0);
 		}
 
 		@Override
@@ -433,32 +429,32 @@ public final class L2Collections
 
 	protected static <T> ListIterator<T> emptyListIterator()
 	{
-		return (ListIterator<T>)EmptyListIterator.INSTANCE;
+		return (ListIterator<T>) EmptyListIterator.INSTANCE;
 	}
 
 	protected static <T> Collection<T> emptyCollection()
 	{
-		return (Collection<T>)EmptyCollection.INSTANCE;
+		return (Collection<T>) EmptyCollection.INSTANCE;
 	}
 
 	public static <T> Set<T> emptySet()
 	{
-		return (Set<T>)EmptySet.INSTANCE;
+		return (Set<T>) EmptySet.INSTANCE;
 	}
 
 	public static <T> List<T> emptyList()
 	{
-		return (List<T>)EmptyList.INSTANCE;
+		return (List<T>) EmptyList.INSTANCE;
 	}
 
 	public static <K, V> Map<K, V> emptyMap()
 	{
-		return (Map<K, V>)EmptyMap.INSTANCE;
+		return (Map<K, V>) EmptyMap.INSTANCE;
 	}
 
 	public static <T> Bunch<T> emptyBunch()
 	{
-		return (Bunch<T>)EmptyBunch.INSTANCE;
+		return (Bunch<T>) EmptyBunch.INSTANCE;
 	}
 
 	public static <T> Iterable<T> filteredIterable(Class<T> clazz, Iterable<? super T> iterable)
@@ -532,7 +528,7 @@ public final class L2Collections
 		@Override
 		public E next()
 		{
-			if(!hasNext())
+			if (!hasNext())
 				throw new NoSuchElementException();
 
 			E next = _next;
@@ -544,16 +540,16 @@ public final class L2Collections
 
 		private void step()
 		{
-			while(_iterator.hasNext())
+			while (_iterator.hasNext())
 			{
 				Object next = _iterator.next();
 
-				if(next == null || !_clazz.isInstance(next))
+				if (next == null || !_clazz.isInstance(next))
 					continue;
 
-				if(_filter == null || _filter.accept((E)next))
+				if (_filter == null || _filter.accept((E) next))
 				{
-					_next = (E)next;
+					_next = (E) next;
 					return;
 				}
 			}
@@ -625,7 +621,7 @@ public final class L2Collections
 		@Override
 		public T next()
 		{
-			if(!hasNext())
+			if (!hasNext())
 				throw new NoSuchElementException();
 
 			T next = _next;
@@ -637,16 +633,16 @@ public final class L2Collections
 
 		private void step()
 		{
-			while(_iterator.hasNext())
+			while (_iterator.hasNext())
 			{
 				S src = _iterator.next();
 
-				if(src == null)
+				if (src == null)
 					continue;
 
 				T next = _converter.convert(src);
 
-				if(next != null)
+				if (next != null)
 				{
 					_next = next;
 					return;
@@ -668,8 +664,7 @@ public final class L2Collections
 		return new ConcatenatedIterable<T>(iterable1, iterable2);
 	}
 
-	public static <T> Iterable<T> concatenatedIterable(Iterable<? extends T> iterable1,
-		Iterable<? extends T> iterable2, Iterable<? extends T> iterable3)
+	public static <T> Iterable<T> concatenatedIterable(Iterable<? extends T> iterable1, Iterable<? extends T> iterable2, Iterable<? extends T> iterable3)
 	{
 		return new ConcatenatedIterable<T>(iterable1, iterable2, iterable3);
 	}
@@ -684,8 +679,7 @@ public final class L2Collections
 		return new ConcatenatedIterator<T>(iterable1, iterable2);
 	}
 
-	public static <T> Iterator<T> concatenatedIterator(Iterable<? extends T> iterable1,
-		Iterable<? extends T> iterable2, Iterable<? extends T> iterable3)
+	public static <T> Iterator<T> concatenatedIterator(Iterable<? extends T> iterable1, Iterable<? extends T> iterable2, Iterable<? extends T> iterable3)
 	{
 		return new ConcatenatedIterator<T>(iterable1, iterable2, iterable3);
 	}
@@ -721,7 +715,7 @@ public final class L2Collections
 		protected ConcatenatedIterator(Iterable<? extends E>... iterables)
 		{
 			_iterables = iterables;
-			
+
 			validateIterator();
 		}
 
@@ -736,7 +730,7 @@ public final class L2Collections
 		@Override
 		public E next()
 		{
-			if(!hasNext())
+			if (!hasNext())
 				throw new NoSuchElementException();
 
 			return _iterator.next();
@@ -744,11 +738,11 @@ public final class L2Collections
 
 		private void validateIterator()
 		{
-			while(_iterator == null || !_iterator.hasNext())
+			while (_iterator == null || !_iterator.hasNext())
 			{
 				_index++;
 
-				if(_index >= _iterables.length)
+				if (_index >= _iterables.length)
 					return;
 
 				_iterator = _iterables[_index].iterator();
@@ -763,7 +757,8 @@ public final class L2Collections
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static final ObjectPool<ArrayList> ARRAY_LISTS = new ObjectPool<ArrayList>() {
+	private static final ObjectPool<ArrayList> ARRAY_LISTS = new ObjectPool<ArrayList>()
+	{
 		@Override
 		protected void reset(ArrayList list)
 		{
@@ -778,7 +773,8 @@ public final class L2Collections
 	};
 
 	@SuppressWarnings("rawtypes")
-	private static final ObjectPool<L2FastSet> L2_FAST_SETS = new ObjectPool<L2FastSet>() {
+	private static final ObjectPool<L2FastSet> L2_FAST_SETS = new ObjectPool<L2FastSet>()
+	{
 		@Override
 		protected void reset(L2FastSet list)
 		{

@@ -37,8 +37,8 @@ import com.l2jhellas.util.Util;
  */
 public final class SendWareHouseDepositList extends L2GameClientPacket
 {
-	private static final String _C__31_SENDWAREHOUSEDEPOSITLIST = "[C] 31 SendWareHouseDepositList";
 	private static Logger _log = Logger.getLogger(SendWareHouseDepositList.class.getName());
+	private static final String _C__31_SENDWAREHOUSEDEPOSITLIST = "[C] 31 SendWareHouseDepositList";
 
 	private int _count;
 	private int[] _items;
@@ -49,7 +49,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 		_count = readD();
 
 		// check packet list size
-		if (_count < 0 || _count * 8 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET)
+		if ((_count < 0) || (_count * 8 > _buf.remaining()) || (_count > Config.MAX_ITEM_IN_PACKET))
 		{
 			_count = 0;
 		}
@@ -85,7 +85,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 		if (warehouse == null)
 			return;
 		L2FolkInstance manager = player.getLastFolkNPC();
-		if ((manager == null || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM())
+		if (((manager == null) || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM())
 			return;
 
 		if ((warehouse instanceof ClanWarehouse) && !player.getAccessLevel().allowTransaction())
@@ -96,18 +96,18 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 
 		if (player.getActiveEnchantItem() != null)
 		{
-			player.setAccessLevel(-100); // Thanks Fakoykas
+			player.setAccessLevel(-100);
 			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " Tried To Use Enchant Exploit , And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
 			return;
 		}
 
 		// Alt game - Karma punishment
-		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && player.getKarma() > 0)
+		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && (player.getKarma() > 0))
 			return;
 
 		if (player.getActiveEnchantItem() != null)
 		{
-			player.setAccessLevel(-100); // Thanks Fakoykas
+			player.setAccessLevel(-100);
 			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " Tried To Use Enchant Exploit , And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
 			return;
 		}
@@ -151,7 +151,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 		}
 
 		// Check if enough adena and charge the fee
-		if (currentAdena < fee || !player.reduceAdena("Warehouse", fee, player.getLastFolkNPC(), false))
+		if ((currentAdena < fee) || !player.reduceAdena("Warehouse", fee, player.getLastFolkNPC(), false))
 		{
 			sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			return;

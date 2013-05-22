@@ -63,13 +63,10 @@ public class L2XmassTreeInstance extends L2NpcInstance
 
 				MagicSkillUse msu = new MagicSkillUse(_caster, player, skill.getId(), 1, skill.getHitTime(), 0);
 				broadcastPacket(msu);
-
 				return true;
 			}
-
 			return false;
 		}
-
 	}
 
 	public L2XmassTreeInstance(int objectId, L2NpcTemplate template)
@@ -98,5 +95,4 @@ public class L2XmassTreeInstance extends L2NpcInstance
 	{
 		return false;
 	}
-
 }

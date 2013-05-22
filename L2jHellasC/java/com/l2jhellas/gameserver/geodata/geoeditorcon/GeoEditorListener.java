@@ -1,20 +1,16 @@
 /*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- * http://www.gnu.org/copyleft/gpl.html
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.geodata.geoeditorcon;
 
@@ -25,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-
 
 public class GeoEditorListener extends Thread
 {
@@ -52,7 +47,7 @@ public class GeoEditorListener extends Thread
 		{
 			_serverSocket = new ServerSocket(PORT);
 		}
-		catch(IOException e)
+		catch (IOException e)
 		{
 			if (Config.DEBUG)
 				e.printStackTrace();
@@ -71,7 +66,7 @@ public class GeoEditorListener extends Thread
 
 	public String getStatus()
 	{
-		if(_geoEditor != null && _geoEditor.isWorking())
+		if (_geoEditor != null && _geoEditor.isWorking())
 		{
 			return "Geoeditor connected.";
 		}
@@ -84,10 +79,10 @@ public class GeoEditorListener extends Thread
 		Socket connection = null;
 		try
 		{
-			while(true)
+			while (true)
 			{
 				connection = _serverSocket.accept();
-				if(_geoEditor != null && _geoEditor.isWorking())
+				if (_geoEditor != null && _geoEditor.isWorking())
 				{
 					_log.log(Level.WARNING, "Geoeditor already connected!");
 					connection.close();
@@ -98,7 +93,7 @@ public class GeoEditorListener extends Thread
 				_geoEditor.start();
 			}
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			if (Config.DEVELOPER)
 			{
@@ -107,9 +102,10 @@ public class GeoEditorListener extends Thread
 			_log.log(Level.WARNING, "GeoEditorListener: ", e);
 			try
 			{
-				if(connection != null) connection.close();
+				if (connection != null)
+					connection.close();
 			}
-			catch(Exception e2)
+			catch (Exception e2)
 			{
 				if (Config.DEVELOPER)
 				{
@@ -123,7 +119,7 @@ public class GeoEditorListener extends Thread
 			{
 				_serverSocket.close();
 			}
-			catch(IOException io)
+			catch (IOException io)
 			{
 				if (Config.DEVELOPER)
 				{

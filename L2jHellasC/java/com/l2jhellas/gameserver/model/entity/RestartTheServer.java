@@ -21,16 +21,13 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 /**
  * @author SkyLanceR
  */
-
 public class RestartTheServer
 {
 	public static void playerRestart(L2PcInstance activeChar, boolean restart)
 	{
 		RestartVoteVariable e = new RestartVoteVariable();
-		
+
 		if (e.getVoteCount("restart") > ExternalConfig.VOTES_NEEDED_FOR_RESTART)
-		{
 			Shutdown.getInstance().startShutdown(activeChar, 60, restart);
-		}
 	}
 }

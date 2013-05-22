@@ -51,7 +51,7 @@ public class PcStatus extends PlayableStatus
 		{
 			if (getActiveChar().isInDuel())
 			{
-				// the duel is finishing - players do not recive damage
+				// the duel is finishing - players do not receive damage
 				if (getActiveChar().getDuelState() == Duel.DUELSTATE_DEAD)
 					return;
 				else if (getActiveChar().getDuelState() == Duel.DUELSTATE_WINNER)
@@ -92,7 +92,7 @@ public class PcStatus extends PlayableStatus
 				{
 					summon.reduceCurrentHp(tDmg, attacker);
 					value -= tDmg;
-					fullValue = (int) value; // reduce the annouced value here as player will get a message about summon dammage
+					fullValue = (int) value; // reduce the announced value here as player will get a message about summon damage
 				}
 			}
 

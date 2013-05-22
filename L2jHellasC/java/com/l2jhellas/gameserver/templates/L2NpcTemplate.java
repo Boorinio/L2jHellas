@@ -46,7 +46,7 @@ import com.l2jhellas.gameserver.skills.Stats;
 public final class L2NpcTemplate extends L2CharTemplate
 {
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
-
+	/** @formatter:off */
 	public final int     npcId;
     public final int     idTemplate;
 	public final String  type;
@@ -68,40 +68,44 @@ public final class L2NpcTemplate extends L2CharTemplate
     public final AbsorbCrystalType absorbType;
 	private final boolean _isQuestMonster;
 	public Race race;
-
-    public static enum AbsorbCrystalType
-    {
-        LAST_HIT,
-        FULL_PARTY,
-        PARTY_ONE_RANDOM
-    }
-
-    public static enum Race
+	/** @formatter:on */
+	public static enum AbsorbCrystalType
 	{
-    	UNDEAD,
-    	MAGICCREATURE,
-    	BEAST,
-    	ANIMAL,
-    	PLANT,
-    	HUMANOID,
-    	SPIRIT,
-    	ANGEL,
-    	DEMON,
-    	DRAGON,
-    	GIANT,
-    	BUG,
-    	FAIRIE,
-    	HUMAN,
-    	ELVE,
-    	DARKELVE,
-    	ORC,
-    	DWARVE,
-    	OTHER,
-    	NONLIVING,
-    	SIEGEWEAPON,
-    	DEFENDINGARMY,
-    	MERCENARIE,
-    	UNKNOWN
+		/** @formatter:off */
+		LAST_HIT,
+		FULL_PARTY,
+		PARTY_ONE_RANDOM
+        /** @formatter:on */
+	}
+
+	public static enum Race
+	{
+		/** @formatter:off */
+		UNDEAD,
+		MAGICCREATURE,
+ 		BEAST,
+ 		ANIMAL,
+ 		PLANT,
+ 		HUMANOID,
+ 		SPIRIT,
+ 		ANGEL,
+ 		DEMON,
+ 		DRAGON,
+ 		GIANT,
+ 		BUG,
+ 		FAIRIE,
+ 		HUMAN,
+ 		ELVE,
+ 		DARKELVE,
+ 		ORC,
+ 		DWARVE,
+ 		OTHER,
+ 		NONLIVING,
+ 		SIEGEWEAPON,
+ 		DEFENDINGARMY,
+ 		MERCENARIE,
+ 		UNKNOWN
+ 		/** @formatter:on */
 	}
 
 	private final StatsSet _npcStatsSet;
@@ -121,9 +125,9 @@ public final class L2NpcTemplate extends L2CharTemplate
 	/**
 	 * Constructor of L2Character.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param set
-	 *        The StatsSet object to transfert data to the method
+	 *        The StatsSet object to transfer data to the method
 	 */
 	public L2NpcTemplate(StatsSet set)
 	{
@@ -309,7 +313,8 @@ public final class L2NpcTemplate extends L2CharTemplate
 
 		if (_questEvents.get(EventType) == null)
 		{
-			_questEvents.put(EventType, new Quest[] {
+			_questEvents.put(EventType, new Quest[]
+			{
 				q
 			});
 		}

@@ -25,9 +25,9 @@ public class L2SiegeSummonInstance extends L2SummonInstance
 	public static final int SWOOP_CANNON_ID = 14839;
 
 	public L2SiegeSummonInstance(int objectId, L2NpcTemplate template, L2PcInstance owner, L2Skill skill)
-    {
-        super(objectId, template, owner, skill);
-    }
+	{
+		super(objectId, template, owner, skill);
+	}
 
 	@Override
 	public void onSpawn()
@@ -36,7 +36,7 @@ public class L2SiegeSummonInstance extends L2SummonInstance
 		if (!getOwner().isGM() && !this.isInsideZone(L2Character.ZONE_SIEGE))
 		{
 			unSummon(getOwner());
-			getOwner().sendMessage("Summon was unsummoned because it exited siege zone");
+			getOwner().sendMessage("Summon was unsummoned because it exited siege zone.");
 		}
 	}
 }

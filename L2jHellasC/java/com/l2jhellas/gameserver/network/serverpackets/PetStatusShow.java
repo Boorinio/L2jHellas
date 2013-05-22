@@ -17,15 +17,12 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.gameserver.model.L2Summon;
 
 /**
- * This class ...
- *
  * @author Yme
- * @version $Revision: 1.3.2.2.2.4 $ $Date: 2005/03/29 23:15:10 $
  */
 public class PetStatusShow extends L2GameServerPacket
 {
 	private static final String _S__C9_PETSTATUSSHOW = "[S] B0 PetStatusShow";
-	private int _summonType;
+	private final int _summonType;
 
 	public PetStatusShow(L2Summon summon)
 	{

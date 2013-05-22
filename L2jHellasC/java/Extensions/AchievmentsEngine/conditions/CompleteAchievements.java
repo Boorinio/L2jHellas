@@ -29,11 +29,13 @@ public class CompleteAchievements extends Condition
 	@Override
 	public boolean meetConditionRequirements(L2PcInstance player)
 	{
-		if (getValue() == null) return false;
+		if (getValue() == null)
+			return false;
 
 		int val = Integer.parseInt(getValue().toString());
 
-		if (player.getCompletedAchievements().size() >= val) return true;
+		if (player.getCompletedAchievements().size() >= val)
+			return true;
 
 		return false;
 	}

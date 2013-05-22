@@ -17,15 +17,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 /**
  * Format: ch
  * Trigger packet
- * @author  KenM
+ * 
+ * @author KenM
  */
 public class ExRequestHackShield extends L2GameServerPacket
 {
 	private static final String _S__FE_48_EXREQUESTHACKSHIELD = "[S] FE:48 ExRequestHackShield";
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -33,13 +31,9 @@ public class ExRequestHackShield extends L2GameServerPacket
 		writeH(0x48);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_48_EXREQUESTHACKSHIELD;
 	}
-
 }

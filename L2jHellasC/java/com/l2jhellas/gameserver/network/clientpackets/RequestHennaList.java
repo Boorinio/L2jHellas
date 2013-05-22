@@ -21,40 +21,38 @@ import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
 
 /**
  * RequestHennaList - 0xba
- *
+ * 
  * @author Tempy
  */
 public final class RequestHennaList extends L2GameClientPacket
 {
-    private static final String _C__BA_RequestHennaList = "[C] ba RequestHennaList";
+	private static final String _C__BA_RequestHennaList = "[C] ba RequestHennaList";
 
-    // This is just a trigger packet...
-    @SuppressWarnings("unused")
-    private int _unknown;
+	// This is just a trigger packet...
+	@SuppressWarnings("unused")
+	private int _unknown;
 
-    @Override
+	@Override
 	protected void readImpl()
-    {
-        _unknown = readD(); // ??
-    }
+	{
+		_unknown = readD(); // ??
+	}
 
-    @Override
+	@Override
 	protected void runImpl()
-    {
-        L2PcInstance activeChar = getClient().getActiveChar();
-        if (activeChar == null) return;
+	{
+		L2PcInstance activeChar = getClient().getActiveChar();
+		if (activeChar == null)
+			return;
 
-        L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(activeChar.getClassId());
-        HennaEquipList he = new HennaEquipList(activeChar, henna);
-        activeChar.sendPacket(he);
-    }
+		L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(activeChar.getClassId());
+		HennaEquipList he = new HennaEquipList(activeChar, henna);
+		activeChar.sendPacket(he);
+	}
 
-    /* (non-Javadoc)
-     * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-     */
-    @Override
+	@Override
 	public String getType()
-    {
-        return _C__BA_RequestHennaList;
-    }
+	{
+		return _C__BA_RequestHennaList;
+	}
 }

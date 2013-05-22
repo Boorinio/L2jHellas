@@ -34,16 +34,16 @@ public class HeroCount extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		int val = Integer.parseInt(getValue().toString());
-		for(int hero: Hero.getInstance().getHeroes().keySet())
+		for (int hero : Hero.getInstance().getHeroes().keySet())
 		{
-			if(hero==player.getObjectId())
+			if (hero == player.getObjectId())
 			{
 				StatsSet sts = Hero.getInstance().getHeroes().get(hero);
-				if(sts.getString(Olympiad.CHAR_NAME).equals(player.getName()))
+				if (sts.getString(Olympiad.CHAR_NAME).equals(player.getName()))
 				{
-					if(sts.getInteger(Hero.COUNT)>=val)
+					if (sts.getInteger(Hero.COUNT) >= val)
 						return true;
 				}
 			}

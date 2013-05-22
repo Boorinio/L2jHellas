@@ -16,16 +16,13 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
  * Format: (ch)
- *
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public class ExOrcMove extends L2GameServerPacket
 {
 	private static final String _S__FE_44_EXORCMOVE = "[S] FE:44 ExOrcMove";
 
-	/**
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
@@ -33,13 +30,9 @@ public class ExOrcMove extends L2GameServerPacket
 		writeH(0x44);
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_44_EXORCMOVE;
 	}
-
 }

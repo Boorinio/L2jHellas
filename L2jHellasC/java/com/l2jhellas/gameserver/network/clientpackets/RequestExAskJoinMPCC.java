@@ -24,14 +24,12 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Format: (ch) S
+ * 
  * @author chris_00
- *
- * D0 0D 00 5A 00 77 00 65 00 72 00 67 00 00 00
- *
+ *         D0 0D 00 5A 00 77 00 65 00 72 00 67 00 00 00
  */
 public final class RequestExAskJoinMPCC extends L2GameClientPacket
 {
-	//private static Logger _log = Logger.getLogger(RequestExAskJoinMPCC.class.getName());
 	private static final String _C__D0_0D_REQUESTEXASKJOINMPCC = "[C] D0:0D RequestExAskJoinMPCC";
 	private String _name;
 
@@ -45,83 +43,66 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		if(activeChar == null)
+		if (activeChar == null)
 			return;
 
 		L2PcInstance player = L2World.getInstance().getPlayer(_name);
-		if(player == null)
+		if (player == null)
 			return;
 		// invite yourself? ;)
-		if(activeChar.isInParty() && player.isInParty() && activeChar.getParty().equals(player.getParty()))
+		if (activeChar.isInParty() && player.isInParty() && activeChar.getParty().equals(player.getParty()))
 			return;
 
-		//activeChar is in a Party?
+		// activeChar is in a Party?
 		if (activeChar.isInParty())
 		{
 			L2Party activeParty = activeChar.getParty();
-			//activeChar is PartyLeader? && activeChars Party is already in a CommandChannel?
+			// activeChar is PartyLeader? && activeChars Party is already in a CommandChannel?
 			if (activeParty.getPartyMembers().get(0).equals(activeChar))
 			{
 				// if activeChars Party is in CC, is activeChar CCLeader?
 				if (activeParty.isInCommandChannel() && activeParty.getCommandChannel().getChannelLeader().equals(activeChar))
 				{
-					//in CC and the CCLeader
-					//target in a party?
+					// in CC and the CCLeader
+					// target in a party?
 					if (player.isInParty())
 					{
-						//targets party already in a CChannel?
+						// targets party already in a CChannel?
 						if (player.getParty().isInCommandChannel())
-						{
 							activeChar.sendMessage("Your target is already in a CommandChannel");
-						}
 						else
-						{
-							//ready to open a new CC
-							//send request to targets Party's PartyLeader
+							// ready to open a new CC
+							// send request to targets Party's PartyLeader
 							askJoinMPCC(activeChar, player);
-						}
 					}
 					else
-					{
 						activeChar.sendMessage("Your target has no Party.");
-					}
 
 				}
 				else if (activeParty.isInCommandChannel() && !activeParty.getCommandChannel().getChannelLeader().equals(activeChar))
-				{
-					//in CC, but not the CCLeader
+					// in CC, but not the CCLeader
 					activeChar.sendMessage("Only the CommandChannelLeader can give out an invite.");
-				}
+
 				else
 				{
-					//target in a party?
+					// target in a party?
 					if (player.isInParty())
 					{
-						//targets party already in a CChannel?
+						// targets party already in a CChannel?
 						if (player.getParty().isInCommandChannel())
-						{
 							activeChar.sendMessage("Your target is already in a CommandChannel");
-						}
 						else
-						{
-							//ready to open a new CC
-							//send request to targets Party's PartyLeader
+							// ready to open a new CC
+							// send request to targets Party's PartyLeader
 							askJoinMPCC(activeChar, player);
-						}
 					}
 					else
-					{
 						activeChar.sendMessage("Your target has no Party.");
-					}
 				}
 			}
 			else
-			{
 				activeChar.sendMessage("Only the Partyleader can give out an invite.");
-			}
 		}
-
-
 	}
 
 	private void askJoinMPCC(L2PcInstance requestor, L2PcInstance target)
@@ -152,22 +133,15 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 		{
 			requestor.onTransactionRequest(target);
 			target.getParty().getPartyMembers().get(0).sendPacket(new ExAskJoinMPCC(requestor.getName()));
-		    requestor.sendMessage("You invited "+target.getName()+" to your Command Channel.");
+			requestor.sendMessage("You invited " + target.getName() + " to your Command Channel.");
 		}
 		else
-		{
-		    requestor.sendPacket(new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER));
-
-		}
+			requestor.sendPacket(new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER));
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_0D_REQUESTEXASKJOINMPCC;
 	}
-
 }

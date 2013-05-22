@@ -96,7 +96,7 @@ public class GmListTable
 
 	/**
 	 * GM will be displayed on clients gmlist
-	 *
+	 * 
 	 * @param player
 	 */
 	public void showGm(L2PcInstance player)
@@ -108,7 +108,7 @@ public class GmListTable
 
 	/**
 	 * GM will no longer be displayed on clients gmlist
-	 *
+	 * 
 	 * @param player
 	 */
 	public void hideGm(L2PcInstance player)

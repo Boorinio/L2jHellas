@@ -26,22 +26,21 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class handles commands for gm to forge packets
- *
+ * 
  * @author Maktakien
  */
 public class AdminPForge implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_forge",
-	"admin_forge2",
-	"admin_forge3"
-	};
+	{/** @formatter:off */
+		"admin_forge",
+		"admin_forge2",
+		"admin_forge3"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-
 		if (command.equals("admin_forge"))
 		{
 			showMainPage(activeChar);

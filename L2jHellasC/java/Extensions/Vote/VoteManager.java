@@ -30,10 +30,10 @@ import Extensions.Vote.Tasks.TriesResetTask;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class VoteManager
 {
@@ -72,7 +72,7 @@ public class VoteManager
 			String inputLine;
 			while ((inputLine = in.readLine()) != null)
 			{
-				if (inputLine.contains("no steal make love")||inputLine.contains("no votes here")||inputLine.contains("bang, you don't have votes")||inputLine.contains("la vita e bella"))
+				if (inputLine.contains("no steal make love") || inputLine.contains("no votes here") || inputLine.contains("bang, you don't have votes") || inputLine.contains("la vita e bella"))
 				{
 					votes = Integer.valueOf(inputLine.split(">")[2].replace("</span", ""));
 					break;
@@ -593,7 +593,6 @@ public class VoteManager
 			{
 				tries = rset.getInt("tries");
 			}
-
 		}
 		catch (Exception e)
 		{
@@ -639,7 +638,6 @@ public class VoteManager
 			{
 				monthVotes = rset.getInt("monthVotes");
 			}
-
 		}
 		catch (Exception e)
 		{
@@ -664,7 +662,6 @@ public class VoteManager
 			{
 				totalVotes = rset.getInt("totalVotes");
 			}
-
 		}
 		catch (Exception e)
 		{
@@ -711,7 +708,6 @@ public class VoteManager
 			{
 				bigMonthVotes = rset.getInt("SUM(monthVotes)");
 			}
-
 		}
 		catch (Exception e)
 		{

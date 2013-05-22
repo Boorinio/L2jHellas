@@ -32,12 +32,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class AdminAutoAnnouncements implements IAdminCommandHandler
 {
 	private static String[] ADMIN_COMMANDS =
-	{
-	"admin_list_autoannouncements",
-	"admin_add_autoannouncement",
-	"admin_del_autoannouncement",
-	"admin_autoannounce"
-	};
+	{/** @formatter:off */
+		"admin_list_autoannouncements",
+		"admin_add_autoannouncement",
+		"admin_del_autoannouncement",
+		"admin_autoannounce"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance admin)
@@ -71,7 +71,7 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{
-				}// ignore errors
+				}
 			}
 		}
 		else if (command.startsWith("admin_del_autoannouncement"))
@@ -86,11 +86,8 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 			{
 			}
 		}
-
-		// Command is admin autoannounce
 		else if (command.startsWith("admin_autoannounce"))
 		{
-			// Call method from another class
 			AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
 		}
 

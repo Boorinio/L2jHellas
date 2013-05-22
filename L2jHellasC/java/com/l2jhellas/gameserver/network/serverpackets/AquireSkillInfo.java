@@ -19,24 +19,22 @@ import java.util.List;
 import javolution.util.FastList;
 
 /**
- * <code>
- * sample
- *
- * a4
- * 4d000000 01000000 98030000 			Attack Aura, level 1, sp cost
- * 01000000 							number of requirements
- * 05000000 47040000 0100000 000000000	   1 x spellbook advanced ATTACK                                                 .
- * </code>
- *
- * format   ddd d (dddd)
- *
- * @version $Revision: 1.3.2.1.2.4 $ $Date: 2005/03/27 15:29:39 $
+ * @formatter:off
+ *                sample<BR>
+ * <BR>
+ *                a4<BR>
+ *                4d000000 01000000 98030000 Attack Aura, level 1, sp cost<BR>
+ *                01000000 number of requirements<BR>
+ *                05000000 47040000 0100000 000000000 1 x spellbook advanced ATTACK<BR>
+ *                .
+ *                format ddd d (dddd)<BR>
+ * @formatter:on
  */
 public class AquireSkillInfo extends L2GameServerPacket
 {
 	private static final String _S__A4_AQUIRESKILLINFO = "[S] 8b AquireSkillInfo";
-	private List<Req> _reqs;
-	private int _id, _level, _spCost, _mode;
+	private final List<Req> _reqs;
+	private final int _id, _level, _spCost, _mode;
 
 	private class Req
 	{
@@ -75,7 +73,7 @@ public class AquireSkillInfo extends L2GameServerPacket
 		writeD(_id);
 		writeD(_level);
 		writeD(_spCost);
-		writeD(_mode); //c4
+		writeD(_mode); // c4
 
 		writeD(_reqs.size());
 
@@ -88,13 +86,9 @@ public class AquireSkillInfo extends L2GameServerPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__A4_AQUIRESKILLINFO;
 	}
-
 }

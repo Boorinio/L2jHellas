@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -52,23 +51,35 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.StringUtil;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AdminEditChar implements IAdminCommandHandler
 {
 	protected static final Logger _log = Logger.getLogger(AdminEditChar.class.getName());
 
 	private static String[] ADMIN_COMMANDS =
-	{
-	"admin_changename", // changes char name
-	"admin_changename_menu", "admin_edit_character", "admin_current_player", "admin_nokarma", "admin_setkarma", "admin_character_list", // same as character_info, kept for
-																																		// compatibility purposes
-	"admin_character_info", // given a player name, displays an information window
-	"admin_show_characters", "admin_find_character", "admin_find_ip", // find all the player connections from a given IPv4 number
-	"admin_find_account", // list all the characters from an account (useful for GMs w/o DB access)
-	"admin_find_dualbox", // list all the IPs with more than 1 char logged in (dualbox)
-	"admin_save_modifications", // consider it deprecated...
-	"admin_rec", "admin_setclass", "admin_settitle", "admin_setsex", "admin_setcolor", "admin_fullfood", "admin_remclanwait", "admin_setcp", "admin_sethp", "admin_setmp", "admin_setchar_cp", "admin_setchar_hp", "admin_setchar_mp"
-	};
+	{/** @formatter:off */
+		"admin_changename", // changes char name
+		"admin_changename_menu", "admin_edit_character", "admin_current_player", "admin_nokarma", "admin_setkarma", "admin_character_list", // same as character_info, kept for compatibility purposes
+		"admin_character_info", // given a player name, displays an information window
+		"admin_show_characters", "admin_find_character", "admin_find_ip", // find all the player connections from a given IPv4 number
+		"admin_find_account", // list all the characters from an account (useful for GMs w/o DB access)
+		"admin_find_dualbox", // list all the IPs with more than 1 char logged in (dualbox)
+		"admin_save_modifications", // consider it deprecated...
+		"admin_rec",
+		"admin_setclass",
+		"admin_settitle",
+		"admin_setsex",
+		"admin_setcolor",
+		"admin_fullfood",
+		"admin_remclanwait",
+		"admin_setcp",
+		"admin_sethp",
+		"admin_setmp",
+		"admin_setchar_cp",
+		"admin_setchar_hp",
+		"admin_setchar_mp"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -1048,8 +1059,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	 */
 	private void updateDatabase(L2PcInstance player, boolean newHero, boolean newNoble)
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// prevents any NPE.
 			// ----------------
@@ -1064,7 +1074,6 @@ public class AdminEditChar implements IAdminCommandHandler
 
 			// Database Connection
 			// ---------------------------------------------
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement stmt = con.prepareStatement(insert ? DATA_INSERT : DATA_DELETE);
 
 			// custom variables
@@ -1113,17 +1122,6 @@ public class AdminEditChar implements IAdminCommandHandler
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": Error: could not update database: ", e);
-		}
-		finally
-		{
-			try
-			{
-				if (con != null)
-					con.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 

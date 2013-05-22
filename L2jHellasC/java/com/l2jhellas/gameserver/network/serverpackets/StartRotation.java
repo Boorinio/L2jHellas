@@ -14,16 +14,15 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-
 public final class StartRotation extends L2GameServerPacket
 {
 	private static final String _S__62_STARTROTATION = "[S] 62 StartRotation";
-	
-	private int _charObjId;
-	private int _degree;
-	private int _side;
-	private int _speed;	
-	
+
+	private final int _charObjId;
+	private final int _degree;
+	private final int _side;
+	private final int _speed;
+
 	public StartRotation(int objId, int degree, int side, int speed)
 	{
 		_charObjId = objId;
@@ -42,9 +41,6 @@ public final class StartRotation extends L2GameServerPacket
 		writeD(_speed);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.network.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

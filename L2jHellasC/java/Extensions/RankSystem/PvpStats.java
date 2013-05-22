@@ -20,7 +20,7 @@ import com.l2jhellas.ExternalConfig;
 
 /**
  * Class contains Character PvP statistics like sum of kills, sum of rank points, etc.
- *
+ * 
  * @author Masterio
  */
 public class PvpStats
@@ -60,7 +60,7 @@ public class PvpStats
 
 	/**
 	 * Add Rank Points to Total Rank Points and update Rank.
-	 *
+	 * 
 	 * @param rankPoints
 	 */
 	public void addTotalRankPoints(long rankPoints)
@@ -179,7 +179,7 @@ public class PvpStats
 
 	/**
 	 * Set Total Rank Points and update Rank.
-	 *
+	 * 
 	 * @param _totalRankPoints
 	 *        the _totalRankPoints to set
 	 */

@@ -19,19 +19,12 @@ import com.l2jhellas.gameserver.skills.Env;
 
 /**
  * @author mkizub
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class ConditionPlayerState extends Condition
 {
 	public enum CheckPlayerState
 	{
-		RESTING,
-		MOVING,
-		RUNNING,
-		FLYING,
-		BEHIND,
-		FRONT
+		RESTING, MOVING, RUNNING, FLYING, BEHIND, FRONT
 	}
 
 	private final CheckPlayerState _check;

@@ -28,7 +28,6 @@ import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 /**
  * ServerList
  * Format: cc [cddcchhcdc]
- *
  * c: server list size (number of servers)
  * c: ?
  * [ (repeat for each servers)
@@ -41,19 +40,18 @@ import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
  * h: max number of players
  * c: 0 if server is down
  * d: 2nd bit: clock
- *    3rd bit: wont dsiplay server name
- *    4th bit: test server (used by client?)
+ * 3rd bit: wont dsiplay server name
+ * 4th bit: test server (used by client?)
  * c: 0 if you dont want to display brackets in front of sever name
  * ]
- *
- * Server will be considered as Good when the number of  online players
+ * Server will be considered as Good when the number of online players
  * is less than half the maximum. as Normal between half and 4/5
  * and Full when there's more than 4/5 of the maximum number of players
  */
 public final class ServerList extends L2LoginServerPacket
 {
-	private List<ServerData> _servers;
-	private int _lastServer;
+	private final List<ServerData> _servers;
+	private final int _lastServer;
 
 	class ServerData
 	{
@@ -68,8 +66,7 @@ public final class ServerList extends L2LoginServerPacket
 		protected int _status;
 		protected int _serverId;
 
-		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers,
-				int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id)
+		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers, int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id)
 		{
 			_ip = pIp;
 			_port = pPort;
@@ -108,11 +105,9 @@ public final class ServerList extends L2LoginServerPacket
 		}
 	}
 
-	public void addServer(String ip, int port, boolean pvp, boolean testServer, int currentPlayer,
-			int maxPlayer, boolean brackets, boolean clock, int status, int server_id)
+	public void addServer(String ip, int port, boolean pvp, boolean testServer, int currentPlayer, int maxPlayer, boolean brackets, boolean clock, int status, int server_id)
 	{
-		_servers.add(new ServerData(ip, port, pvp, testServer, currentPlayer, maxPlayer, brackets,
-				clock, status, server_id));
+		_servers.add(new ServerData(ip, port, pvp, testServer, currentPlayer, maxPlayer, brackets, clock, status, server_id));
 	}
 
 	@Override

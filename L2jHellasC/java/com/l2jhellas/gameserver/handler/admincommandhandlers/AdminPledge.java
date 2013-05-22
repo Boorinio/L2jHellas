@@ -38,7 +38,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class AdminPledge implements IAdminCommandHandler
 {
-	private static final String[] ADMIN_COMMANDS = {
+	private static final String[] ADMIN_COMMANDS =
+	{
 		"admin_pledge"
 	};
 
@@ -151,5 +152,4 @@ public class AdminPledge implements IAdminCommandHandler
 	{
 		AdminHelpPage.showHelpPage(activeChar, "game_menu.htm");
 	}
-
 }

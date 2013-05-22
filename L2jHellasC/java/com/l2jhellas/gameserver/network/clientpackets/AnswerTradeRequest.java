@@ -22,15 +22,9 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SendTradeDone;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.5.4.2 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class AnswerTradeRequest extends L2GameClientPacket
 {
 	private static final String _C__40_ANSWERTRADEREQUEST = "[C] 40 AnswerTradeRequest";
-	// private static Logger _log = Logger.getLogger(AnswerTradeRequest.class.getName());
 
 	private int _response;
 
@@ -57,17 +51,17 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 		L2PcInstance player2 = player.getActiveRequester();
 		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
 		{
-			player.sendMessage("You Cant Trade with Different Faction");
+			player.sendMessage("You can't trade with different Faction.");
 			return;
 		}
 		if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
 		{
-			player.sendMessage("You Cant Trade with Different Faction");
+			player.sendMessage("You can't trade with different Faction.");
 			return;
 		}
 
 		L2PcInstance partner = player.getActiveRequester();
-		if (partner == null || L2World.getInstance().findObject(partner.getObjectId()) == null)
+		if ((partner == null) || (L2World.getInstance().findObject(partner.getObjectId()) == null))
 		{
 			// Trade partner not found, cancel trade
 			player.sendPacket(new SendTradeDone(0));
@@ -80,7 +74,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 			return;
 		}
 
-		if (_response == 1 && !partner.isRequestExpired())
+		if ((_response == 1) && !partner.isRequestExpired())
 		{
 			player.startTrade(partner);
 			partner.setAllowTrade(true);

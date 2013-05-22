@@ -40,9 +40,9 @@ import javolution.xml.stream.XMLStreamException;
 import javolution.xml.stream.XMLStreamReaderImpl;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * @author KenM
@@ -135,7 +135,7 @@ public class GameServerTable
 		}
 		catch (FileNotFoundException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " servername.xml could not be loaded: file not found" + e);
+			_log.log(Level.WARNING, getClass().getName() + " ServerName.xml could not be loaded: file not found" + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -159,27 +159,32 @@ public class GameServerTable
 
 	private void loadRegisteredGameServers() throws SQLException
 	{
-		Connection con = null;
 		PreparedStatement statement = null;
-
-		int id;
-		con = L2DatabaseFactory.getInstance().getConnection();
-		statement = con.prepareStatement("SELECT * FROM gameservers");
-		ResultSet rset = statement.executeQuery();
-		GameServerInfo gsi;
-		while (rset.next())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			id = rset.getInt("server_id");
-			gsi = new GameServerInfo(id, stringToHex(rset.getString("hexid")));
-			_gameServerTable.put(id, gsi);
-		}
-		rset.close();
-		statement.close();
-		con.close();
+			int id;
 
-		rset = null;
-		statement = null;
-		gsi = null;
+			statement = con.prepareStatement("SELECT * FROM gameservers");
+			ResultSet rset = statement.executeQuery();
+			GameServerInfo gsi;
+			while (rset.next())
+			{
+				id = rset.getInt("server_id");
+				gsi = new GameServerInfo(id, stringToHex(rset.getString("hexid")));
+				_gameServerTable.put(id, gsi);
+			}
+			rset.close();
+			statement.close();
+			con.close();
+
+			rset = null;
+			statement = null;
+			gsi = null;
+		}
+		catch (Exception e)
+		{
+
+		}
 	}
 
 	public Map<Integer, GameServerInfo> getRegisteredGameServers()
@@ -237,12 +242,10 @@ public class GameServerTable
 
 	public void registerServerOnDB(byte[] hexId, int id, String externalHost)
 	{
-		Connection con = null;
 		PreparedStatement statement = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
-			statement = con.prepareStatement("INSERT INTO gameservers (hexid,server_id,host) values (?,?,?)");
+			statement = con.prepareStatement("INSERT INTO gameservers (hexid,server_id,host) VALUES (?,?,?)");
 			statement.setString(1, hexToString(hexId));
 			statement.setInt(2, id);
 			statement.setString(3, externalHost);
@@ -255,16 +258,6 @@ public class GameServerTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}

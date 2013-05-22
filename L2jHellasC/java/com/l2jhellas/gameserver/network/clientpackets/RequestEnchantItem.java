@@ -44,13 +44,16 @@ public final class RequestEnchantItem extends L2GameClientPacket
 {
 	protected static final Logger _log = Logger.getLogger(Inventory.class.getName());
 	private static final String _C__58_REQUESTENCHANTITEM = "[C] 58 RequestEnchantItem";
-	private static final int[] ENCHANT_SCROLLS = {
+	private static final int[] ENCHANT_SCROLLS =
+	{
 	729, 730, 947, 948, 951, 952, 955, 956, 959, 960
 	};
-	private static final int[] CRYSTAL_SCROLLS = {
+	private static final int[] CRYSTAL_SCROLLS =
+	{
 	731, 732, 949, 950, 953, 954, 957, 958, 961, 962
 	};
-	private static final int[] BLESSED_SCROLLS = {
+	private static final int[] BLESSED_SCROLLS =
+	{
 	6569, 6570, 6571, 6572, 6573, 6574, 6575, 6576, 6577, 6578
 	};
 
@@ -95,7 +98,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
 		L2ItemInstance scroll = activeChar.getActiveEnchantItem();
 		activeChar.setActiveEnchantItem(null);
-		if (item == null || scroll == null)
+		if ((item == null) || (scroll == null))
 			return;
 
 		// can't enchant rods, hero weapons and shadow items
@@ -543,7 +546,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		activeChar.sendPacket(new EnchantResult(item.getEnchantLevel())); // FIXME i'm really not sure about this...
 		activeChar.sendPacket(new ItemList(activeChar, false)); // TODO update only the enchanted item
 		activeChar.broadcastUserInfo();
-		if(Rnd.get(100)<=ExternalConfig.ENCHANT_BOT_CHANCE&&ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+		if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
 			PrivateAntiBot.privateantibot(activeChar);
 	}
 

@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
@@ -32,6 +31,7 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CastleManager
 {
@@ -51,7 +51,8 @@ public class CastleManager
 
 	private List<Castle> _castles;
 
-	private static final int _castleCirclets[] = {
+	private static final int _castleCirclets[] =
+	{
 	0, 6838, 6835, 6839, 6837, 6840, 6834, 6836, 8182, 8183
 	};
 
@@ -85,13 +86,10 @@ public class CastleManager
 
 	private final void load()
 	{
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
 			ResultSet rs;
-
-			con = L2DatabaseFactory.getInstance().getConnection();
 
 			statement = con.prepareStatement("SELECT id FROM castle ORDER BY id");
 			rs = statement.executeQuery();
@@ -111,17 +109,6 @@ public class CastleManager
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 	}
@@ -278,10 +265,8 @@ public class CastleManager
 				}
 			}
 			// else offline-player circlet removal
-			Connection con = null;
-			try
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				con = L2DatabaseFactory.getInstance().getConnection();
 				PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE owner_id = ? AND item_id = ?");
 				statement.setInt(1, member.getObjectId());
 				statement.setInt(2, circletId);
@@ -294,16 +279,6 @@ public class CastleManager
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
-				}
-			}
-			finally
-			{
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}

@@ -20,10 +20,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class GMViewSkillInfo extends L2GameServerPacket
 {
 	private static final String _S__91_GMViewSkillInfo = "[S] 91 GMViewSkillInfo";
-	private L2PcInstance _activeChar;
+	private final L2PcInstance _activeChar;
 	private L2Skill[] _skills;
 
-	public GMViewSkillInfo (L2PcInstance cha)
+	public GMViewSkillInfo(L2PcInstance cha)
 	{
 		_activeChar = cha;
 		_skills = _activeChar.getAllSkills();
@@ -44,13 +44,10 @@ public class GMViewSkillInfo extends L2GameServerPacket
 			writeD(skill.isPassive() ? 1 : 0);
 			writeD(skill.getLevel());
 			writeD(skill.getId());
-            writeC(0x00); //c5
+			writeC(0x00); // c5
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

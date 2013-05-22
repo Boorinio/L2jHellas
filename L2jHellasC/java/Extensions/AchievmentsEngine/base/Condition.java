@@ -18,7 +18,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public abstract class Condition
 {
-	private Object _value;
+	private final Object _value;
 	private String _name;
 
 	public Condition(Object value)

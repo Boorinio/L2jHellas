@@ -18,7 +18,8 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * Blowfish keygen for GameServer client connections
- * @author  KenM
+ * 
+ * @author KenM
  */
 public class BlowFishKeygen
 {
@@ -28,7 +29,6 @@ public class BlowFishKeygen
 	static
 	{
 		// init the GS encryption keys on class load
-
 		for (int i = 0; i < CRYPT_KEYS_SIZE; i++)
 		{
 			// randomize the 8 first bytes
@@ -58,6 +58,7 @@ public class BlowFishKeygen
 	/**
 	 * Returns a key from this keygen pool, the logical ownership is retained by this keygen.<BR>
 	 * Thus when getting a key with interests other then read-only a copy must be performed.<BR>
+	 * 
 	 * @return A key from this keygen pool.
 	 */
 	public static byte[] getRandomKey()

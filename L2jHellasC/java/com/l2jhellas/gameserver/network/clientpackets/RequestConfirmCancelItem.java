@@ -24,7 +24,8 @@ import com.l2jhellas.gameserver.templates.L2Item;
 
 /**
  * Format(ch) d
- * @author  -Wooden-
+ * 
+ * @author -Wooden-
  */
 public final class RequestConfirmCancelItem extends L2GameClientPacket
 {
@@ -41,24 +42,21 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 		_itemId = readD();
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
-	protected
-	void runImpl()
+	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance item = (L2ItemInstance)L2World.getInstance().findObject(_itemId);
+		L2ItemInstance item = (L2ItemInstance) L2World.getInstance().findObject(_itemId);
 
-		if (activeChar == null || item == null) return;
+		if ((activeChar == null) || (item == null))
+			return;
 		if (!item.isAugmented())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM));
 			return;
 		}
 
-		int price=0;
+		int price = 0;
 		switch (item.getItem().getItemGrade())
 		{
 			case L2Item.CRYSTAL_C:
@@ -68,13 +66,13 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 					price = 150000;
 				else
 					price = 210000;
-				break;
+			break;
 			case L2Item.CRYSTAL_B:
 				if (item.getCrystalCount() < 1746)
 					price = 240000;
 				else
 					price = 270000;
-				break;
+			break;
 			case L2Item.CRYSTAL_A:
 				if (item.getCrystalCount() < 2160)
 					price = 330000;
@@ -82,25 +80,20 @@ public final class RequestConfirmCancelItem extends L2GameClientPacket
 					price = 390000;
 				else
 					price = 420000;
-				break;
+			break;
 			case L2Item.CRYSTAL_S:
 				price = 480000;
-				break;
+			break;
 			// any other item type is not augmentable
 			default:
 				return;
 		}
-
 		activeChar.sendPacket(new ExConfirmCancelItem(_itemId, price));
 	}
 
-	/**
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_2D_REQUESTCONFIRMCANCELITEM;
 	}
-
 }

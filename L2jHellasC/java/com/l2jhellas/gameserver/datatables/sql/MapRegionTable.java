@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.instancemanager.ArenaManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
@@ -35,6 +34,7 @@ import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class MapRegionTable
 {
@@ -65,10 +65,8 @@ public class MapRegionTable
 		int count2 = 0;
 
 		// LineNumberReader lnr = null;
-		Connection con = null;
-		try
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			con = L2DatabaseFactory.getInstance().getConnection();
 			PreparedStatement statement = con.prepareStatement("SELECT region, sec0, sec1, sec2, sec3, sec4, sec5, sec6, sec7, sec8, sec9 FROM mapregion");
 			ResultSet rset = statement.executeQuery();
 			int region;
@@ -86,8 +84,7 @@ public class MapRegionTable
 
 			rset.close();
 			statement.close();
-			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": " + count2 + " mapregion loaded.");
+			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count2 + " mapregion loaded.");
 		}
 		catch (Exception e)
 		{
@@ -95,16 +92,6 @@ public class MapRegionTable
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			}
-			catch (Exception e)
-			{
 			}
 		}
 
@@ -385,19 +372,21 @@ public class MapRegionTable
 					{
 						L2ClanHallZone zone = clanhall.getZone();
 						if (zone != null)
-						{
 							return zone.getSpawn();
-						}
 					}
 				}
 
 				// If teleport to castle
 				if (teleportWhere == TeleportWhereType.Castle)
+				{
 					castle = CastleManager.getInstance().getCastleByOwner(player.getClan());
+				}
 
 				// Check if player is on castle ground
 				if (castle == null)
+				{
 					castle = CastleManager.getInstance().getCastle(player);
+				}
 
 				if (castle != null && castle.getCastleId() > 0)
 				{

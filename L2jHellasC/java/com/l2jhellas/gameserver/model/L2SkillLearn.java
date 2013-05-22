@@ -14,11 +14,6 @@
  */
 package com.l2jhellas.gameserver.model;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.2.4.2 $ $Date: 2005/03/27 15:29:33 $
- */
 public final class L2SkillLearn
 {
 	// these two build the primary key
@@ -83,10 +78,12 @@ public final class L2SkillLearn
 	{
 		return _spCost;
 	}
+
 	public int getIdCost()
 	{
 		return _costid;
 	}
+
 	public int getCostCount()
 	{
 		return _costcount;

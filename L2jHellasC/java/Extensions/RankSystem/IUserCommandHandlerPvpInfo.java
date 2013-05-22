@@ -23,7 +23,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class IUserCommandHandlerPvpInfo implements IUserCommandHandler
 {
-	private static final int[] COMMAND_IDS = {
+	private static final int[] COMMAND_IDS =
+	{
 		ExternalConfig.PVP_INFO_USER_COMMAND_ID
 	};
 

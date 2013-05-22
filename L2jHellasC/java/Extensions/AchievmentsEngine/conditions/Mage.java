@@ -31,10 +31,10 @@ public class Mage extends Condition
 	{
 		if (getValue() == null)
 			return false;
-		
+
 		if (player.isMageClass())
 			return true;
-			
+
 		return false;
 	}
 }

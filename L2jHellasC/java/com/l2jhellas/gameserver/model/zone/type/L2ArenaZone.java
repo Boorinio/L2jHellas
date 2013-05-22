@@ -22,14 +22,13 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * An arena
- *
- * @author  durgus
+ * 
+ * @author durgus
  */
 public class L2ArenaZone extends L2ZoneType
 {
-	@SuppressWarnings("unused")
 	private String _arenaName;
-	private int[] _spawnLoc;
+	private final int[] _spawnLoc;
 
 	public L2ArenaZone(int id)
 	{
@@ -57,7 +56,8 @@ public class L2ArenaZone extends L2ZoneType
 		{
 			_spawnLoc[2] = Integer.parseInt(value);
 		}
-		else super.setParameter(name, value);
+		else
+			super.setParameter(name, value);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class L2ArenaZone extends L2ZoneType
 
 		if (character instanceof L2PcInstance)
 		{
-			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
+			character.sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
 
@@ -78,7 +78,7 @@ public class L2ArenaZone extends L2ZoneType
 
 		if (character instanceof L2PcInstance)
 		{
-			((L2PcInstance)character).sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+			character.sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 		}
 	}
 
@@ -86,14 +86,14 @@ public class L2ArenaZone extends L2ZoneType
 	public void onDieInside(L2Character character)
 	{
 	}
-	
+
 	@Override
 	public void onReviveInside(L2Character character)
 	{
 	}
 
 	public final int[] getSpawnLoc()
-    {
-    	return _spawnLoc;
-    }
+	{
+		return _spawnLoc;
+	}
 }

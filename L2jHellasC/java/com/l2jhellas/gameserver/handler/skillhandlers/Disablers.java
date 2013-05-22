@@ -42,14 +42,34 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * This Handles Disabler skills
- *
+ * 
  * @author _drunk_
  */
 public class Disablers implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
-	L2SkillType.STUN, L2SkillType.ROOT, L2SkillType.SLEEP, L2SkillType.CONFUSION, L2SkillType.AGGDAMAGE, L2SkillType.AGGREDUCE, L2SkillType.AGGREDUCE_CHAR, L2SkillType.AGGREMOVE, L2SkillType.UNBLEED, L2SkillType.UNPOISON, L2SkillType.MUTE, L2SkillType.FAKE_DEATH, L2SkillType.CONFUSE_MOB_ONLY, L2SkillType.NEGATE, L2SkillType.CANCEL, L2SkillType.PARALYZE, L2SkillType.ERASE, L2SkillType.MAGE_BANE, L2SkillType.WARRIOR_BANE, L2SkillType.BETRAY
-	};
+	private static final L2SkillType[] SKILL_IDS =
+	{/** @formatter:off */
+	L2SkillType.STUN,
+	L2SkillType.ROOT,
+	L2SkillType.SLEEP,
+	L2SkillType.CONFUSION,
+	L2SkillType.AGGDAMAGE,
+	L2SkillType.AGGREDUCE,
+	L2SkillType.AGGREDUCE_CHAR,
+	L2SkillType.AGGREMOVE,
+	L2SkillType.UNBLEED,
+	L2SkillType.UNPOISON,
+	L2SkillType.MUTE,
+	L2SkillType.FAKE_DEATH,
+	L2SkillType.CONFUSE_MOB_ONLY,
+	L2SkillType.NEGATE,
+	L2SkillType.CANCEL,
+	L2SkillType.PARALYZE,
+	L2SkillType.ERASE,
+	L2SkillType.MAGE_BANE,
+	L2SkillType.WARRIOR_BANE,
+	L2SkillType.BETRAY
+	};/** @formatter:on */
 
 	private String[] _negateStats = null;
 	private final float _negatePower = 0.f;
@@ -135,8 +155,7 @@ public class Disablers implements ISkillHandler
 
 			L2Character target = (L2Character) targets[index];
 
-			if (target == null || target.isDead()) // bypass if target is null
-													// or dead
+			if (target == null || target.isDead()) // bypass if target is null or dead
 				continue;
 
 			switch (type)
@@ -569,7 +588,8 @@ public class Disablers implements ISkillHandler
 									System.out.println("Couldn't find skill handler for HEAL.");
 									continue;
 								}
-								L2Object tgts[] = new L2Object[] {
+								L2Object tgts[] = new L2Object[]
+								{
 									target
 								};
 								try

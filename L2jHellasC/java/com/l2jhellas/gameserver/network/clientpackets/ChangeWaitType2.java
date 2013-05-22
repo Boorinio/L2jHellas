@@ -21,15 +21,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ChairSit;
 
-/**
- * This class ...
- *
- * @version $Revision: 1.1.4.3 $ $Date: 2005/03/27 15:29:30 $
- */
 public final class ChangeWaitType2 extends L2GameClientPacket
 {
 	private static final String _C__1D_CHANGEWAITTYPE2 = "[C] 1D ChangeWaitType2";
-
 	private boolean _typeStand;
 
 	@Override
@@ -43,7 +37,7 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		L2Object target = player.getTarget();
-		if(getClient() != null && player != null)
+		if (getClient() != null && player != null)
 		{
 			if (player.isOutOfControl())
 			{
@@ -51,17 +45,20 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 				return;
 			}
 
-			if (player.getMountType() != 0) //prevent sit/stand if you riding
+			if (player.getMountType() != 0) // prevent sit/stand if you riding
 				return;
-			if (target != null
+
+			if ((target != null)
+/** @formatter:off */
 					&& !player.isSitting()
 					&& target instanceof L2StaticObjectInstance
-					&& ((L2StaticObjectInstance)target).getType() == 1
-					&& CastleManager.getInstance().getCastle(target) != null
+					&& (((L2StaticObjectInstance)target).getType() == 1)
+					&& (CastleManager.getInstance().getCastle(target) != null)
 					&& player.isInsideRadius(target, L2StaticObjectInstance.INTERACTION_DISTANCE, false, false)
+					/** @formatter:on */
 			)
 			{
-				ChairSit cs = new ChairSit(player,((L2StaticObjectInstance)target).getStaticObjectId());
+				ChairSit cs = new ChairSit(player, ((L2StaticObjectInstance) target).getStaticObjectId());
 				player.sendPacket(cs);
 				player.sitDown();
 				player.broadcastPacket(cs);
@@ -73,9 +70,6 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{

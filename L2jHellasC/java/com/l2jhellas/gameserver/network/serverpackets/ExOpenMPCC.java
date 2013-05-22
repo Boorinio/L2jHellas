@@ -15,35 +15,23 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 /**
- *
- * @author  chris_00
- *
- * opens the CommandChannel Information window
- *
+ * @author chris_00
+ *         opens the CommandChannel Information window
  */
 public class ExOpenMPCC extends L2GameServerPacket
 {
-
 	private static final String _S__FE_25_EXOPENMPCC = "[S] FE:25 ExOpenMPCC";
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.serverpackets.ServerBasePacket#writeImpl()
-	 */
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x25);
-
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _S__FE_25_EXOPENMPCC;
 	}
-
 }

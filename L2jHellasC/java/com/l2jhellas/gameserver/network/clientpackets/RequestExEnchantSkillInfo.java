@@ -25,17 +25,16 @@ import com.l2jhellas.gameserver.network.serverpackets.ExEnchantSkillInfo;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
- * Format chdd
- * c: (id) 0xD0
- * h: (subid) 0x06
- * d: skill id
+ * Format chdd<BR>
+ * c: (id) 0xD0<BR>
+ * h: (subid) 0x06<BR>
+ * d: skill id<BR>
  * d: skill lvl
+ * 
  * @author -Wooden-
- *
  */
 public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 {
-	//private static Logger _log = Logger.getLogger(RequestAquireSkill.class.getName());
 	private static final String _C__D0_06_REQUESTEXENCHANTSKILLINFO = "[C] D0:06 RequestExEnchantSkillInfo";
 	private int _skillId;
 	private int _skillLvl;
@@ -47,75 +46,66 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 		_skillLvl = readD();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.clientpackets.ClientBasePacket#runImpl()
-	 */
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 
-        if (activeChar == null)
-            return;
+		if (activeChar == null)
+			return;
 
-        if (activeChar.getLevel() < 76)
-            return;
+		if (activeChar.getLevel() < 76)
+			return;
 
-        L2FolkInstance trainer = activeChar.getLastFolkNPC();
+		L2FolkInstance trainer = activeChar.getLastFolkNPC();
 
-        if ((trainer == null || !activeChar.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !activeChar.isGM())
-            return;
+		if (((trainer == null) || !activeChar.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !activeChar.isGM())
+			return;
 
-        L2Skill skill = SkillTable.getInstance().getInfo(_skillId, _skillLvl);
+		L2Skill skill = SkillTable.getInstance().getInfo(_skillId, _skillLvl);
 
-        boolean canteach = false;
+		boolean canteach = false;
 
-        if (skill == null || skill.getId() != _skillId)
-        {
-            //_log.warning("enchant skill id " + _skillID + " level " + _skillLvl
-            //    + " is undefined. aquireEnchantSkillInfo failed.");
-        	activeChar.sendMessage("This skill doesn't yet have enchant info in Datapack");
-            return;
-        }
+		if ((skill == null) || (skill.getId() != _skillId))
+		{
+			_log.warning("enchant skill id " + _skillId + " level " + _skillLvl + " is undefined. aquireEnchantSkillInfo failed. report this to http://l2jhellas.eu/ forum.");
+			activeChar.sendMessage("This skill doesn't yet have enchant info in Datapack");
+			return;
+		}
 
-        if (!trainer.getTemplate().canTeach(activeChar.getClassId()))
-        	return; // cheater
+		if (!trainer.getTemplate().canTeach(activeChar.getClassId()))
+			return; // cheater
 
-        L2EnchantSkillLearn[] skills = SkillTreeTable.getInstance().getAvailableEnchantSkills(activeChar);
+		L2EnchantSkillLearn[] skills = SkillTreeTable.getInstance().getAvailableEnchantSkills(activeChar);
 
-        for (L2EnchantSkillLearn s : skills)
-        {
-        	if (s.getId() == _skillId && s.getLevel() == _skillLvl)
-        	{
-        		canteach = true;
-        		break;
-        	}
-        }
+		for (L2EnchantSkillLearn s : skills)
+		{
+			if (s.getId() == _skillId && s.getLevel() == _skillLvl)
+			{
+				canteach = true;
+				break;
+			}
+		}
 
-        if (!canteach)
-        	return; // cheater
+		if (!canteach)
+			return; // cheater
 
-        int requiredSp = SkillTreeTable.getInstance().getSkillSpCost(activeChar, skill);
-        int requiredExp = SkillTreeTable.getInstance().getSkillExpCost(activeChar, skill);
-        byte rate = SkillTreeTable.getInstance().getSkillRate(activeChar, skill);
-        ExEnchantSkillInfo asi = new ExEnchantSkillInfo(skill.getId(), skill.getLevel(), requiredSp, requiredExp, rate);
+		int requiredSp = SkillTreeTable.getInstance().getSkillSpCost(activeChar, skill);
+		int requiredExp = SkillTreeTable.getInstance().getSkillExpCost(activeChar, skill);
+		byte rate = SkillTreeTable.getInstance().getSkillRate(activeChar, skill);
+		ExEnchantSkillInfo asi = new ExEnchantSkillInfo(skill.getId(), skill.getLevel(), requiredSp, requiredExp, rate);
 
-        if (Config.ES_SP_BOOK_NEEDED && (skill.getLevel() == 101 || skill.getLevel() == 141)) // only first lvl requires book
-        {
-        	int spbId = 6622;
-        	asi.addRequirement(4, spbId, 1, 0);
-        }
-        sendPacket(asi);
-
+		if (Config.ES_SP_BOOK_NEEDED && (skill.getLevel() == 101 || skill.getLevel() == 141)) // only first lvl requires book
+		{
+			int spbId = 6622;
+			asi.addRequirement(4, spbId, 1, 0);
+		}
+		sendPacket(asi);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.l2jhellas.gameserver.BasePacket#getType()
-	 */
 	@Override
 	public String getType()
 	{
 		return _C__D0_06_REQUESTEXENCHANTSKILLINFO;
 	}
-
 }

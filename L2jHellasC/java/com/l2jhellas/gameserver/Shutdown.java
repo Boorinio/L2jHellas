@@ -21,7 +21,6 @@ import Extensions.RankSystem.PvpTable;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
-import com.l2jhellas.L2DatabaseFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -38,6 +37,7 @@ import com.l2jhellas.gameserver.network.gameserverpackets.ServerStatus;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Broadcast;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * This class provides the functions for shutting down and restarting the server
@@ -56,22 +56,22 @@ public class Shutdown extends Thread
 	public static final int GM_SHUTDOWN = 1;
 	public static final int GM_RESTART = 2;
 	public static final int ABORT = 3;
-	private static final String[] MODE_TEXT = {
+	private static final String[] MODE_TEXT =
+	{
 	"SIGTERM", "shutting down", "restarting", "aborting"
 	};
 
 	/**
-	 * This function starts a shutdown countdown from Telnet (Copied from
-	 * Function startShutdown())
-	 *
+	 * This function starts a shutdown countdown from Telnet
+	 * (Copied from function startShutdown())
+	 * 
 	 * @param ip
-	 *        IP Which Issued shutdown command
+	 *        IP Which issued shutdown command
 	 * @param seconds
 	 *        seconds until shutdown
 	 * @param restart
 	 *        true if the server will restart after shutdown
 	 */
-
 	public void startTelnetShutdown(String IP, int seconds, boolean restart)
 	{
 		Announcements _an = Announcements.getInstance();
@@ -79,9 +79,13 @@ public class Shutdown extends Thread
 		// _an.announceToAll("Server is " + _modeText[shutdownMode] + " in "+seconds+ " seconds!");
 
 		if (restart)
+		{
 			_shutdownMode = GM_RESTART;
+		}
 		else
+		{
 			_shutdownMode = GM_SHUTDOWN;
+		}
 
 		if (_shutdownMode > 0)
 		{
@@ -95,7 +99,9 @@ public class Shutdown extends Thread
 		}
 
 		if (_counterInstance != null)
+		{
 			_counterInstance._abort();
+		}
 		_counterInstance = new Shutdown(seconds, restart);
 		_counterInstance.start();
 	}
@@ -113,7 +119,9 @@ public class Shutdown extends Thread
 		_an.announceToAll("Server " + Config.ABORT_RR + " aborts " + MODE_TEXT[_shutdownMode] + " and continues normal operation!");
 
 		if (_counterInstance != null)
+		{
 			_counterInstance._abort();
+		}
 	}
 
 	/**
@@ -141,9 +149,13 @@ public class Shutdown extends Thread
 		}
 		_secondsShut = seconds;
 		if (restart)
+		{
 			_shutdownMode = GM_RESTART;
+		}
 		else
+		{
 			_shutdownMode = GM_SHUTDOWN;
+		}
 	}
 
 	public void autoRestart(int time)
@@ -165,7 +177,9 @@ public class Shutdown extends Thread
 	public static Shutdown getInstance()
 	{
 		if (_instance == null)
+		{
 			_instance = new Shutdown();
+		}
 
 		return _instance;
 	}
@@ -243,9 +257,13 @@ public class Shutdown extends Thread
 
 			// server will quit, when this function ends.
 			if (_instance._shutdownMode == GM_RESTART)
+			{
 				Runtime.getRuntime().halt(2);
+			}
 			else
+			{
 				Runtime.getRuntime().halt(0);
+			}
 		}
 		else
 		{
@@ -284,9 +302,13 @@ public class Shutdown extends Thread
 		_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") issued shutdown command. " + MODE_TEXT[_shutdownMode] + " in " + seconds + " seconds!");
 
 		if (restart)
+		{
 			_shutdownMode = GM_RESTART;
+		}
 		else
+		{
 			_shutdownMode = GM_SHUTDOWN;
+		}
 
 		if (_shutdownMode > 0)
 		{
@@ -300,7 +322,9 @@ public class Shutdown extends Thread
 		}
 
 		if (_counterInstance != null)
+		{
 			_counterInstance._abort();
+		}
 
 		// the main instance should only run for shutdown hook, so we start a new instance
 		_counterInstance = new Shutdown(seconds, restart);
@@ -320,7 +344,9 @@ public class Shutdown extends Thread
 		_an.announceToAll("Server " + Config.ABORT_RR + " aborts " + MODE_TEXT[_shutdownMode] + " and continues normal operation!");
 
 		if (_counterInstance != null)
+		{
 			_counterInstance._abort();
+		}
 	}
 
 	/**
@@ -406,7 +432,9 @@ public class Shutdown extends Thread
 				Thread.sleep(delay);
 
 				if (_shutdownMode == ABORT)
+				{
 					break;
+				}
 			}
 		}
 		catch (InterruptedException e)
@@ -435,14 +463,16 @@ public class Shutdown extends Thread
 
 		}
 		if (Config.ACTIVATE_POSITION_RECORDER)
+		{
 			Universe.getInstance().implode(true);
+		}
 		try
 		{
 			_an.announceToAll("Server " + Config.ABORT_RR + " is " + MODE_TEXT[_shutdownMode] + " NOW!");
 		}
 		catch (Throwable t)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Failed to " + MODE_TEXT[_shutdownMode] + t);
+			System.out.println("Failed to " + MODE_TEXT[_shutdownMode] + t);
 		}
 		TimeCounter tc = new TimeCounter();
 		TimeCounter tc1 = new TimeCounter();
@@ -451,37 +481,39 @@ public class Shutdown extends Thread
 
 		// Seven Signs data is now saved along with Festival data.
 		if (!SevenSigns.getInstance().isSealValidationPeriod())
+		{
 			SevenSignsFestival.getInstance().saveFestivalData(false);
+		}
 
 		// Save Seven Signs data before closing. :)
 		SevenSigns.getInstance().saveSevenSignsData(null, true);
 
 		// Save all raidboss and GrandBoss status ^_^
 		RaidBossSpawnManager.getInstance().cleanUp();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": All RaidBoss info saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		System.out.println("All RaidBoss info saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		GrandBossManager.getInstance().cleanUp();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": All GrandBoss info saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		System.out.println("All GrandBoss info saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		TradeController.getInstance().dataCountStore();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": All Items saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		System.out.println("All Items saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		try
 		{
 			Olympiad.getInstance().save();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Failed to save olympiad." + e);
+			System.err.println("Failed to save olympiad." + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
 			}
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": All Olympiad Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		System.out.println("All Olympiad Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		// Save Cursed Weapons data before closing.
 		CursedWeaponsManager.getInstance().saveData();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": All Cursed weapons Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		System.out.println("All Cursed weapons Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		// Save all manor data
 		CastleManorManager.getInstance().save();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": All Manor Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		System.out.println("All Manor Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		// Save all global (non-player specific) Quest data that needs to
 		// persist after reboot
 		QuestManager.getInstance().save();
@@ -489,14 +521,14 @@ public class Shutdown extends Thread
 		if (Hitman.start())
 		{
 			Hitman.getInstance().save();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": All Hitman Lists saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			System.out.println("All Hitman Lists saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		}
 
 		// Rank PvP System by Masterio:
 		if (ExternalConfig.RANK_PVP_SYSTEM_ENABLED)
 		{
 			PvpTable.getInstance().updateDB();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": All Rank System Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			System.out.println("All Rank System Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		}
 
 		// Save items on ground before closing
@@ -504,10 +536,10 @@ public class Shutdown extends Thread
 		{
 			ItemsOnGroundManager.getInstance().saveInDb();
 			ItemsOnGroundManager.getInstance().cleanUp();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": All items on ground saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			System.out.println("All items on ground saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Data saved. All players disconnected, shutting down.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-		_log.log(Level.INFO, getClass().getSimpleName() + ": The server has been successfully shut down in " + tc1.getEstimatedTime() + " ms.");
+		System.out.println("Data saved. All players disconnected, shutting down.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+		System.out.println("The server has been successfully shut down in " + tc1.getEstimatedTime() + " ms.");
 
 		try
 		{

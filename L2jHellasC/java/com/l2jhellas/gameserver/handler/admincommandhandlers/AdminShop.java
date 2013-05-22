@@ -36,10 +36,10 @@ public class AdminShop implements IAdminCommandHandler
 	private static Logger _log = Logger.getLogger(AdminShop.class.getName());
 
 	private static final String[] ADMIN_COMMANDS =
-	{
-	"admin_buy",
-	"admin_gmshop"
-	};
+	{/** @formatter:off */
+		"admin_buy",
+		"admin_gmshop"
+	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)

@@ -26,7 +26,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class DeluxeKey implements ISkillHandler
 {
-	private static final L2SkillType[] SKILL_IDS = {
+	private static final L2SkillType[] SKILL_IDS =
+	{
 		L2SkillType.DELUXE_KEY_UNLOCK
 	};
 
@@ -46,7 +47,6 @@ public class DeluxeKey implements ISkillHandler
 		// This is just a dummy skill handler for the golden food and crystal
 		// food skills,
 		// since the AI responce onSkillUse handles the rest.
-
 	}
 
 	@Override
