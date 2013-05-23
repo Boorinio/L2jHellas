@@ -102,7 +102,8 @@ effectRange|effectId|effectNpcId|effectPoint|flyCourse|killByDOT|expNeeded|giveC
 maxCharges|staticReuse|staticHitTime|bestowTriggered|triggeredLevel|activationChance|
 chanceType|bestowed|abnormalLvl|maxNegated|activationtime|activationchance|soulMaxConsumeCount|
 needCharges|consumeCharges|negatePower|pvpMulti|targetConsumeId|targetConsumeCount|triggerAnotherSkill|
-feed|continueAfterMax|referenceId
+feed|continueAfterMax|referenceId|saveVs|cancelIfHit|triggerEffectId|initialEffectDelay|
+numCharges
 )
  #IMPLIED>
 <!ATTLIST set val CDATA #REQUIRED>
@@ -131,6 +132,8 @@ feed|continueAfterMax|referenceId
 <!ATTLIST effect abnormal CDATA #IMPLIED>
 <!ATTLIST effect noicon CDATA #IMPLIED>
 <!ATTLIST effect self CDATA #IMPLIED>
+<!ATTLIST effect effectPower CDATA #IMPLIED>
+<!ATTLIST effect effectType CDATA #IMPLIED>
 
 <!ATTLIST mul val CDATA #REQUIRED>
 <!ATTLIST mul order CDATA #IMPLIED>
@@ -150,7 +153,7 @@ stunVuln|rootVuln|PhysicalMpConsumeRate|poisonVuln|MpConsume|poleWpnVuln|
 pAtk-magicCreatures|pDef-animals|pDef-dragons|pDef-insects|pDef-monsters|
 pDef-plants|pAtk-magic|bowReuse|sleepProf|poisonProf|paralyzeProf|stunProf|
 dualFistWpnVuln|bleedProf|rootProf|derangementProf|swordWpnVuln|dualWpnVuln|
-bigSwordWpnVuln
+bigSwordWpnVuln|pAtk-dragon|pAtk-animal|pAtk-beast|pAtk-insect|pAtk-plant
 )
  #IMPLIED>
 
@@ -173,6 +176,7 @@ bigSwordWpnVuln
  msg gives the error message if condition (using) is not valid
 -->
 <!ATTLIST cond msg CDATA #IMPLIED>
+<!ATTLIST cond msgId CDATA #IMPLIED>
 
 <!ATTLIST enchant1 name CDATA #REQUIRED>
 <!ATTLIST enchant1 val CDATA #REQUIRED>
@@ -198,3 +202,4 @@ bigSwordWpnVuln
 <!ATTLIST player battle_force CDATA #IMPLIED>
 <!ATTLIST player behind CDATA #IMPLIED>
 <!ATTLIST player spell_force CDATA #IMPLIED>
+<!ATTLIST player seed_any CDATA #IMPLIED>

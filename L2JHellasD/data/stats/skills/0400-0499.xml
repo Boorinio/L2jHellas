@@ -583,7 +583,7 @@
   <set name="hitTime" val="15000"/>
   <set name="skillType" val="SEED"/>
   <set name="isMagic" val="true"/>
-    <set name="cancelIfHit" val="true"/>
+  <set name="cancelIfHit" val="true"/>
   <set name="reuseDelay" val="30000"/>
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="400"/>
@@ -598,7 +598,7 @@
   <set name="hitTime" val="15000"/>
   <set name="skillType" val="SEED"/>
   <set name="isMagic" val="true"/>
-    <set name="cancelIfHit" val="true"/>
+  <set name="cancelIfHit" val="true"/>
   <set name="reuseDelay" val="30000"/>
   <set name="operateType" val="OP_ACTIVE"/>
   <set name="castRange" val="400"/>

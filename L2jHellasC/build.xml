@@ -68,7 +68,7 @@
 					<attribute name="Implementation-URL" value="http://www.l2jhellas.eu/" />
 					<attribute name="Implementation-Version" value="${revision}" />
 					<attribute name="Main-Class" value="com.l2jhellas.Server"/>
-					<attribute name="Class-Path" value=". bsf.jar bsh-2.0b4.jar bsh-engine.jar c3p0-0.9.1.2.jar ecj.jar java-engine.jar javolution.jar jython.jar jython-engine.jar mail.jar mmocore.jar mysql-connector-java-5.1.22-bin.jar	worldwind.jar"/>
+					<attribute name="Class-Path" value=". bsf-2.4.0.jar bsh-2.0b4.jar c3p0-0.9.1.2.jar ecj.jar java-engine.jar javolution.jar jython.jar jython-engine.jar mail.jar mmocore.jar mysql-connector-java-5.1.22-bin.jar worldwind.jar"/>
 				</manifest>
 		</jar>
 		<copy todir="${build.dist.login.lib}">
@@ -213,13 +213,14 @@
 		</copy>
 		
 		<!-- Finalizing -->
-        <zip destfile="${build}/L2J Hellas Core.zip" basedir="${build.dist}" level="9" />
+        <zip destfile="${build}/L2J_Hellas_Core_${revision}.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
 		<mkdir dir="C:/L2JHellas/Backup" />
-		<unzip src="${build}/L2J Hellas Core.zip" dest="C:/L2JHellas" />
-		<copy file="${build}/L2J Hellas Core.zip" todir="C:/L2JHellas/Backup"></copy>
+		<unzip src="${build}/L2J_Hellas_Core_${revision}.zip" dest="C:/L2JHellas" />
+		<copy file="${build}/L2J_Hellas_Core_${revision}.zip" todir="C:/L2JHellas/Backup"></copy>
 		<echo>L2J Hellas Server version:${revision} stored in C:/L2JHellas.</echo>
-		<echo>Please visit our forum http://l2jhellas.eu/ for bugs.</echo>
+		<echo>Please visit our forum http://l2jhellas.eu/</echo>
+		<echo>Owner Boorinio.</echo>
     </target>   
     
 	<!-- Version -->
