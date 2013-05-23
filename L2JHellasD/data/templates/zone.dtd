@@ -1,0 +1,12 @@
+<!ELEMENT list (zone)*>
+
+<!ATTLIST zone
+        id CDATA #REQUIRED
+        type CDATA #REQUIRED
+        shape CDATA #REQUIRED
+        minZ CDATA #REQUIRED
+        maxZ CDATA #REQUIRED>
+<!ELEMENT stat (id|type|shape|minZ|maxZ)*>
+<!ATTLIST stat
+        name CDATA #REQUIRED
+        val CDATA #REQUIRED>
