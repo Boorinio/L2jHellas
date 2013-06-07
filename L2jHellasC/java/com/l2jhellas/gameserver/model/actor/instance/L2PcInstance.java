@@ -5503,7 +5503,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				sendMessage("You will be revived in your spot");
 			}
-			if (CaptureThem.CaptureThemRunning && (pk.isinZodiac && pk.isinZodiac))
+			if (CaptureThem.CaptureThemRunning && (isinZodiac && pk.isinZodiac))
 			{
 				pk.ZodiacPoints++;
 			}

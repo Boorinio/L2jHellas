@@ -1227,7 +1227,7 @@ public class L2Attackable extends L2NpcInstance
 		}
 		else
 			return 0;
-		if (ai._attacker instanceof L2PcInstance && (((L2PcInstance) ai._attacker).getAppearance().getInvisible() || ai._attacker.isInvul()))
+		if (ai != null && ai._attacker instanceof L2PcInstance && (((L2PcInstance) ai._attacker).getAppearance().getInvisible() || ai._attacker.isInvul()))
 		{
 			// Remove Object Should Use This Method and Can be Blocked While
 			// Interacting

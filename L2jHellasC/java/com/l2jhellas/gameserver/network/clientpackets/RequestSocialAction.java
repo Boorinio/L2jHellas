@@ -51,7 +51,11 @@ public class RequestSocialAction extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-
+		if(activeChar.isDead())
+		{
+			activeChar.sendMessage("You can't perform social actions while dead");
+			return;
+		}
 		// check if its the actionId is allowed
 		if (_actionId < 2 || _actionId > 13)
 		{
