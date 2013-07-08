@@ -26,7 +26,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -38,7 +38,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Petition Manager
- * 
+ *
  * @author Tempy
  */
 public final class PetitionManager
@@ -153,7 +153,9 @@ public final class PetitionManager
 
 			// End petition consultation and inform them, if they are still online.
 			if (getPetitioner() != null && getPetitioner().isOnline() == 1)
+			{
 				getPetitioner().sendPacket(new SystemMessage(SystemMessageId.THIS_END_THE_PETITION_PLEASE_PROVIDE_FEEDBACK));
+			}
 
 			getCompletedPetitions().put(getId(), this);
 			return (getPendingPetitions().remove(getId()) != null);
@@ -203,13 +205,8 @@ public final class PetitionManager
 		public void sendPetitionerPacket(L2GameServerPacket responsePacket)
 		{
 			if (getPetitioner() == null || getPetitioner().isOnline() == 0)
-			{
-				// Allows petitioners to see the results of their petition when
-				// they log back into the game.
-
 				// endPetitionConsultation(PetitionState.Petitioner_Missing);
 				return;
-			}
 
 			getPetitioner().sendPacket(responsePacket);
 		}
@@ -306,19 +303,25 @@ public final class PetitionManager
 	public void checkPetitionMessages(L2PcInstance petitioner)
 	{
 		if (petitioner != null)
+		{
 			for (Petition currPetition : getPendingPetitions().values())
 			{
 				if (currPetition == null)
+				{
 					continue;
+				}
 
 				if (currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == petitioner.getObjectId())
 				{
 					for (CreatureSay logMessage : currPetition.getLogMessages())
+					{
 						petitioner.sendPacket(logMessage);
+					}
 
 					return;
 				}
 			}
+		}
 	}
 
 	public boolean endActivePetition(L2PcInstance player)
@@ -329,7 +332,9 @@ public final class PetitionManager
 		for (Petition currPetition : getPendingPetitions().values())
 		{
 			if (currPetition == null)
+			{
 				continue;
+			}
 
 			if (currPetition.getResponder() != null && currPetition.getResponder().getObjectId() == player.getObjectId())
 				return (currPetition.endPetitionConsultation(PetitionState.Completed));
@@ -363,19 +368,27 @@ public final class PetitionManager
 		for (Petition currPetition : getPendingPetitions().values())
 		{
 			if (currPetition == null)
+			{
 				continue;
+			}
 
 			if (currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == player.getObjectId())
+			{
 				petitionCount++;
+			}
 		}
 
 		for (Petition currPetition : getCompletedPetitions().values())
 		{
 			if (currPetition == null)
+			{
 				continue;
+			}
 
 			if (currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == player.getObjectId())
+			{
 				petitionCount++;
+			}
 		}
 
 		return petitionCount;
@@ -386,7 +399,9 @@ public final class PetitionManager
 		for (Petition currPetition : getPendingPetitions().values())
 		{
 			if (currPetition == null)
+			{
 				continue;
+			}
 
 			if (currPetition.getState() == PetitionState.In_Process)
 				return true;
@@ -407,17 +422,23 @@ public final class PetitionManager
 	public boolean isPlayerInConsultation(L2PcInstance player)
 	{
 		if (player != null)
+		{
 			for (Petition currPetition : getPendingPetitions().values())
 			{
 				if (currPetition == null)
+				{
 					continue;
+				}
 
 				if (currPetition.getState() != PetitionState.In_Process)
+				{
 					continue;
+				}
 
 				if ((currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == player.getObjectId()) || (currPetition.getResponder() != null && currPetition.getResponder().getObjectId() == player.getObjectId()))
 					return true;
 			}
+		}
 
 		return false;
 	}
@@ -430,14 +451,18 @@ public final class PetitionManager
 	public boolean isPlayerPetitionPending(L2PcInstance petitioner)
 	{
 		if (petitioner != null)
+		{
 			for (Petition currPetition : getPendingPetitions().values())
 			{
 				if (currPetition == null)
+				{
 					continue;
+				}
 
 				if (currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == petitioner.getObjectId())
 					return true;
 			}
+		}
 
 		return false;
 	}
@@ -471,7 +496,9 @@ public final class PetitionManager
 		for (Petition currPetition : getPendingPetitions().values())
 		{
 			if (currPetition == null)
+			{
 				continue;
+			}
 
 			if (currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == player.getObjectId())
 			{
@@ -503,21 +530,31 @@ public final class PetitionManager
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM HH:mm z");
 
 		if (getPendingPetitionCount() == 0)
+		{
 			htmlContent.append("<tr><td colspan=\"4\">There are no currently pending petitions.</td></tr>");
+		}
 		else
+		{
 			htmlContent.append("<tr><td></td><td><font color=\"999999\">Petitioner</font></td>" + "<td><font color=\"999999\">Petition Type</font></td><td><font color=\"999999\">Submitted</font></td></tr>");
+		}
 
 		for (Petition currPetition : getPendingPetitions().values())
 		{
 			if (currPetition == null)
+			{
 				continue;
+			}
 
 			htmlContent.append("<tr><td>");
 
 			if (currPetition.getState() != PetitionState.In_Process)
+			{
 				htmlContent.append("<button value=\"View\" action=\"bypass -h admin_view_petition " + currPetition.getId() + "\" width=\"40\" height=\"15\" back=\"sek.cbui94\" fore=\"sek.cbui92\">");
+			}
 			else
+			{
 				htmlContent.append("<font color=\"999999\">In Process</font>");
+			}
 
 			htmlContent.append("</td><td>" + currPetition.getPetitioner().getName() + "</td><td>" + currPetition.getTypeAsString() + "</td><td>" + dateFormat.format(new Date(currPetition.getSubmitTime())) + "</td></tr>");
 		}
@@ -538,8 +575,7 @@ public final class PetitionManager
 
 		// Notify all GMs that a new petition has been submitted.
 		String msgContent = petitioner.getName() + " has submitted a new petition."; // (ID: " + newPetitionId + ").";
-		GmListTable.broadcastToGMs(new CreatureSay(petitioner.getObjectId(), 17, "Petition System", msgContent));
-
+		AdminTable.getInstance().broadcastToGMs(new CreatureSay(petitioner.getObjectId(), Say2.HERO_VOICE, "Petition System", msgContent));
 		return newPetitionId;
 	}
 

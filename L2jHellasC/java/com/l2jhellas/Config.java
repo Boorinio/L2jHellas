@@ -142,6 +142,8 @@ public final class Config
 	public static boolean ALT_BLACKSMITH_USE_RECIPES;
 	public static boolean ALT_GAME_SUBCLASS_WITHOUT_QUESTS;
 	public static byte MAX_SUBCLASS;
+	public static byte MAX_SUBCLASS_LEVEL;
+	public static byte BASE_SUBCLASS_LEVEL;
 	public static int MAX_PATK_SPEED;
 	public static int MAX_MATK_SPEED;
 	public static int MAX_PATACK;
@@ -306,11 +308,6 @@ public final class Config
 	// SERVER_VERSION_FILE
 	public static String SERVER_VERSION;
 	public static String SERVER_BUILD_DATE;
-
-	// ADMIN_FILE
-	public static int MASTERACCESS_LEVEL;
-	public static int MASTERACCESS_NAME_COLOR;
-	public static int MASTERACCESS_TITLE_COLOR;
 
 	public static boolean GM_HERO_AURA;
 	public static boolean GM_STARTUP_INVULNERABLE;
@@ -1051,6 +1048,8 @@ public final class Config
 				ALT_BLACKSMITH_USE_RECIPES = Boolean.parseBoolean(altSettings.getProperty("AltBlacksmithUseRecipes", "True"));
 				ALT_GAME_SUBCLASS_WITHOUT_QUESTS = Boolean.parseBoolean(altSettings.getProperty("AltSubClassWithoutQuests", "False"));
 				MAX_SUBCLASS = Byte.parseByte(altSettings.getProperty("MaxSubclass", "3"));
+				BASE_SUBCLASS_LEVEL = Byte.parseByte(altSettings.getProperty("BaseSubclassLevel", "40"));
+				MAX_SUBCLASS_LEVEL = Byte.parseByte(altSettings.getProperty("MaxSubclassLevel", "80"));
 				MAX_PATK_SPEED = Integer.parseInt(altSettings.getProperty("MaxPAtkSpeed", "1800"));
 				MAX_MATK_SPEED = Integer.parseInt(altSettings.getProperty("MaxMAtkSpeed", "2000"));
 				MAX_PATACK = Integer.parseInt(altSettings.getProperty("Max_Patack", "500"));
@@ -1260,9 +1259,6 @@ public final class Config
 				GM_TITLE_COLOR_ENABLED = Boolean.parseBoolean(AdminSettings.getProperty("GMTitleColorEnabled", "False"));
 				ADMIN_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("AdminTitleColor", "00FF00"));
 				GM_TITLE_COLOR = Integer.decode("0x" + AdminSettings.getProperty("GMTitleColor", "FFFF00"));
-				MASTERACCESS_LEVEL = Integer.parseInt(AdminSettings.getProperty("MasterAccessLevel", "127"));
-				MASTERACCESS_NAME_COLOR = Integer.decode(StringUtil.concat("0x", AdminSettings.getProperty("MasterNameColor", "00FF00")));
-				MASTERACCESS_TITLE_COLOR = Integer.decode(StringUtil.concat("0x", AdminSettings.getProperty("MasterTitleColor", "00FF00")));
 				GM_HERO_AURA = Boolean.parseBoolean(AdminSettings.getProperty("GMHeroAura", "False"));
 			}
 			catch (Exception e)

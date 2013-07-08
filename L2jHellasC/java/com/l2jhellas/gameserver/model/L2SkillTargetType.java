@@ -48,4 +48,4 @@ public enum L2SkillTargetType
 	TARGET_GROUND,
 	TARGET_AREA_ANGEL
 }
-/** @formatter:oN */
+/** @formatter:on */

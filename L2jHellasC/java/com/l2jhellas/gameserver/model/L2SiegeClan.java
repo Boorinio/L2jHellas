@@ -77,7 +77,8 @@ public class L2SiegeClan
 						break;
 					}
 		}
-
+		
+		_numFlagsAdded--; // remove flag count
 		flag.deleteMe();
 		return ret;
 	}

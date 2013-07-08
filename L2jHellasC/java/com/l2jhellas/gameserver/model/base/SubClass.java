@@ -15,19 +15,21 @@
 package com.l2jhellas.gameserver.model.base;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 
 /**
  * Character Sub-Class Definition <BR>
  * Used to store key information about a character's sub-class.
- * 
  * @author Tempy
  */
 public final class SubClass
 {
+	private static final byte _maxLevel = Config.MAX_SUBCLASS_LEVEL < ExperienceData.getInstance().getMaxLevel() ? Config.MAX_SUBCLASS_LEVEL : (byte) (ExperienceData.getInstance().getMaxLevel() - 1);
+
 	private PlayerClass _class;
-	private long _exp = Experience.LEVEL[40];
+	private long _exp = ExperienceData.getInstance().getExpForLevel(Config.BASE_SUBCLASS_LEVEL);
 	private int _sp = 0;
-	private byte _level = 40;
+	private byte _level = Config.BASE_SUBCLASS_LEVEL;
 	private int _classIndex = 1;
 
 	public SubClass(int classId, long exp, int sp, byte level, int classIndex)
@@ -64,12 +66,6 @@ public final class SubClass
 
 	public long getExp()
 	{
-		if (Config.MOD_GVE_ENABLE_FACTION)
-			_exp = Experience.LEVEL[81];
-
-		if (Config.MAX_LVL_AFTER_SUB)
-			_exp = Experience.LEVEL[81];
-
 		return _exp;
 	}
 
@@ -80,15 +76,14 @@ public final class SubClass
 
 	public byte getLevel()
 	{
-		if (Config.MOD_GVE_ENABLE_FACTION)
-			_level = 80;
-
-		if (Config.MAX_LVL_AFTER_SUB)
-			_level = 80;
-
 		return _level;
 	}
 
+	/**
+	 * First Sub-Class is index 1.
+	 *
+	 * @return int _classIndex
+	 */
 	public int getClassIndex()
 	{
 		return _classIndex;
@@ -101,8 +96,10 @@ public final class SubClass
 
 	public void setExp(long expValue)
 	{
-		if (expValue > Experience.LEVEL[Experience.MAX_LEVEL])
-			expValue = Experience.LEVEL[Experience.MAX_LEVEL];
+		if (expValue > (ExperienceData.getInstance().getExpForLevel(_maxLevel + 1) - 1))
+		{
+			expValue = ExperienceData.getInstance().getExpForLevel(_maxLevel + 1) - 1;
+		}
 
 		_exp = expValue;
 	}
@@ -119,29 +116,33 @@ public final class SubClass
 
 	public void setLevel(byte levelValue)
 	{
-		if (levelValue > (Experience.MAX_LEVEL - 1))
-			levelValue = (Experience.MAX_LEVEL - 1);
-		else if (levelValue < 40)
-			levelValue = 40;
+		if (levelValue > _maxLevel)
+		{
+			levelValue = _maxLevel;
+		}
+		else if (levelValue < Config.BASE_SUBCLASS_LEVEL)
+		{
+			levelValue = Config.BASE_SUBCLASS_LEVEL;
+		}
 
 		_level = levelValue;
 	}
 
 	public void incLevel()
 	{
-		if (getLevel() == (Experience.MAX_LEVEL))
+		if (getLevel() == _maxLevel)
 			return;
 
 		_level++;
-		setExp(Experience.LEVEL[getLevel()]);
+		setExp(ExperienceData.getInstance().getExpForLevel(getLevel()));
 	}
 
 	public void decLevel()
 	{
-		if (getLevel() == 40)
+		if (getLevel() == Config.BASE_SUBCLASS_LEVEL)
 			return;
 
 		_level--;
-		setExp(Experience.LEVEL[getLevel()]);
+		setExp(ExperienceData.getInstance().getExpForLevel(getLevel()));
 	}
 }

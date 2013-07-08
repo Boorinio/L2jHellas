@@ -27,23 +27,23 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2PetData;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-public class L2PetDataTable
+public class PetDataTable
 {
-	private static Logger _log = Logger.getLogger(L2PetDataTable.class.getName());
-	private static L2PetDataTable _instance;
+	private static Logger _log = Logger.getLogger(PetDataTable.class.getName());
+	private static PetDataTable _instance;
 
 	// private static final int[] PET_LIST = { 12077, 12312, 12313, 12311, 12527, 12528, 12526 };
 	private static Map<Integer, Map<Integer, L2PetData>> _petTable;
 
-	public static L2PetDataTable getInstance()
+	public static PetDataTable getInstance()
 	{
 		if (_instance == null)
-			_instance = new L2PetDataTable();
+			_instance = new PetDataTable();
 
 		return _instance;
 	}
 
-	private L2PetDataTable()
+	private PetDataTable()
 	{
 		_petTable = new FastMap<Integer, Map<Integer, L2PetData>>();
 	}

@@ -46,10 +46,10 @@ public class TeleportLocationTable
 
 	private TeleportLocationTable()
 	{
-		reloadAll();
+		reload();
 	}
 
-	public void reloadAll()
+	public void reload()
 	{
 		_teleports = new FastMap<Integer, L2TeleportLocation>();
 

@@ -24,7 +24,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
@@ -115,7 +115,9 @@ public final class L2World
 		if (_allObjects.get(object.getObjectId()) != null)
 		{
 			if (Config.DEBUG)
+			{
 				_log.warning("[L2World] objectId " + object.getObjectId() + " already exist in OID map!");
+			}
 			return;
 		}
 
@@ -136,7 +138,7 @@ public final class L2World
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Delete item from inventory, tranfer Item from inventory to warehouse</li> <li>Crystallize item</li> <li>Remove NPC/PC/Pet from the world</li><BR>
-	 * 
+	 *
 	 * @param object
 	 *        L2Object to remove from _allObjects of L2World
 	 */
@@ -149,15 +151,19 @@ public final class L2World
 	public void removeObjects(List<L2Object> list)
 	{
 		for (L2Object o : list)
+		 {
 			_allObjects.remove(o);  // suggestion by whatev
 		//IdFactory.getInstance().releaseId(object.getObjectId());
+		}
 	}
 
 	public void removeObjects(L2Object[] objects)
 	{
 		for (L2Object o : objects)
+		 {
 			_allObjects.remove(o);  // suggestion by whatev
 		//IdFactory.getInstance().releaseId(object.getObjectId());
+		}
 	}
 
 	public long timeRemoveObject(L2Object object)
@@ -174,7 +180,7 @@ public final class L2World
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Client packets : Action, AttackRequest, RequestJoinParty, RequestJoinPledge...</li><BR>
-	 * 
+	 *
 	 * @param oID
 	 *        Identifier of the L2Object
 	 */
@@ -195,7 +201,7 @@ public final class L2World
 	 * Added by Tempy - 08 Aug 05
 	 * Allows easy retrieval of all visible objects in world.
 	 * -- do not use that function, its unsafe!
-	 * 
+	 *
 	 * @deprecated
 	 */
 	@Deprecated
@@ -207,7 +213,7 @@ public final class L2World
 	/**
 	 * Get the count of all visible objects in world.<br>
 	 * <br>
-	 * 
+	 *
 	 * @return count off all L2World objects
 	 */
 	public final int getAllVisibleObjectsCount()
@@ -219,9 +225,9 @@ public final class L2World
 	 * Return a table containing all GMs.<BR>
 	 * <BR>
 	 */
-	public FastList<L2PcInstance> getAllGMs()
+	public List<L2PcInstance> getAllGMs()
 	{
-		return GmListTable.getInstance().getAllGms(true);
+		return AdminTable.getInstance().getAllGms(true);
 	}
 
 	/**
@@ -248,7 +254,7 @@ public final class L2World
 	/**
 	 * Return how many players are online.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @return number of online players.
 	 */
 	public int getAllPlayersCount()
@@ -269,7 +275,7 @@ public final class L2World
 	/**
 	 * Return the player instance corresponding to the given name.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param name
 	 *        Name of the player to get Instance
 	 */
@@ -292,7 +298,7 @@ public final class L2World
 	/**
 	 * Return the pet instance from the given ownerId.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param ownerId
 	 *        ID of the owner
 	 */
@@ -304,7 +310,7 @@ public final class L2World
 	/**
 	 * Add the given pet instance from the given ownerId.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param ownerId
 	 *        ID of the owner
 	 * @param pet
@@ -318,7 +324,7 @@ public final class L2World
 	/**
 	 * Remove the given pet instance.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param ownerId
 	 *        ID of the owner
 	 */
@@ -330,7 +336,7 @@ public final class L2World
 	/**
 	 * Remove the given pet instance.<BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param pet
 	 *        the pet to remove
 	 */
@@ -362,7 +368,7 @@ public final class L2World
 	 * <BR>
 	 * <li>Drop an Item</li> <li>Spawn a L2Character</li> <li>Apply Death Penalty of a L2PcInstance</li><BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param object
 	 *        L2object to add in the world
 	 * @param newregion
@@ -395,10 +401,14 @@ public final class L2World
 			if (Config.MOD_GVE_ENABLE_FACTION)
 			{
 				if (((L2PcInstance) object).isgood())
+				{
 					_allgoodPlayers.put(player.getName().toLowerCase(), player);
+				}
 
 				if (((L2PcInstance) object).isevil())
+				{
 					_allevilPlayers.put(player.getName().toLowerCase(), player);
+				}
 			}
 			_allPlayers.put(player.getName().toLowerCase(), player);
 		}
@@ -407,7 +417,9 @@ public final class L2World
 		// in a circular area of 2000 units
 		FastList<L2Object> visibles = getVisibleObjects(object, 2000);
 		if (Config.DEBUG)
+		{
 			_log.finest("objects in range:" + visibles.size());
+		}
 
 		// tell the player about the surroundings
 		// Go through the visible objects contained in the circular area
@@ -470,7 +482,7 @@ public final class L2World
 	 * <BR>
 	 * <li>Pickup an Item</li> <li>Decay a L2Character</li><BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param object
 	 *        L2object to remove from the world
 	 * @param oldregion
@@ -498,13 +510,17 @@ public final class L2World
 					// If object is a L2PcInstance, remove the L2Object from the L2ObjectHashSet(L2PcInstance) _knownPlayer of the surrounding L2WorldRegion L2Characters
 					// If object is targeted by one of the surrounding L2WorldRegion L2Characters, cancel ATTACK and cast
 					if (obj != null && obj.getKnownList() != null)
+					{
 						obj.getKnownList().removeKnownObject(object);
+					}
 
 					// Remove surrounding L2WorldRegion L2Characters from the L2ObjectHashSet(L2Object) _KnownObjects of object
 					// If surrounding L2WorldRegion L2Characters is a L2PcInstance, remove it from the L2ObjectHashSet(L2PcInstance) _knownPlayer of object
 					// TODO Delete this line if all the stuff is done by the next line object.removeAllKnownObjects()
 					if (object.getKnownList() != null)
+					{
 						object.getKnownList().removeKnownObject(obj);
+					}
 				}
 			}
 
@@ -517,7 +533,9 @@ public final class L2World
 			if (object instanceof L2PcInstance)
 			{
 				if (!((L2PcInstance) object).isTeleporting())
+				{
 					removeFromAllPlayers((L2PcInstance) object);
+				}
 
 				// If selected L2Object is a GM L2PcInstance, remove it from Set(L2PcInstance) _gmList of GmListTable
 				//if (((L2PcInstance)object).isGM())
@@ -538,7 +556,7 @@ public final class L2World
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Find Close Objects for L2Character</li><BR>
-	 * 
+	 *
 	 * @param object
 	 *        L2object that determine the current L2WorldRegion
 	 */
@@ -562,11 +580,17 @@ public final class L2World
 			for (L2Object _object : _regions.get(i).getVisibleObjects())
 			{
 				if (_object == null)
+				{
 					continue;
+				}
 				if (_object.equals(object))
+				 {
 					continue;   // skip our own character
+				}
 				if (!_object.isVisible())
+				 {
 					continue;   // skip dying objects
+				}
 
 				result.add(_object);
 			}
@@ -586,7 +610,7 @@ public final class L2World
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Define the aggrolist of monster</li> <li>Define visible objects of a L2Object</li> <li>Skill : Confusion...</li><BR>
-	 * 
+	 *
 	 * @param object
 	 *        L2object that determine the center of the circular area
 	 * @param radius
@@ -614,9 +638,13 @@ public final class L2World
 			for (L2Object _object : _regions.get(i).getVisibleObjects())
 			{
 				if (_object == null)
+				{
 					continue;
+				}
 				if (_object.equals(object))
+				 {
 					continue;   // skip our own character
+				}
 
 				int x1 = _object.getX();
 				int y1 = _object.getY();
@@ -631,7 +659,9 @@ public final class L2World
 				// If the visible object is inside the circular area
 				// add the object to the FastList result
 				if (dx * dx + dy * dy < sqRadius)
+				{
 					result.add(_object);
+				}
 			}
 		}
 
@@ -650,7 +680,7 @@ public final class L2World
 	 * <BR>
 	 * <li>Define the target list of a skill</li> <li>Define the target list of a polearm attack</li><BR>
 	 * <BR>
-	 * 
+	 *
 	 * @param object
 	 *        L2object that determine the center of the circular area
 	 * @param radius
@@ -678,9 +708,13 @@ public final class L2World
 			for (L2Object _object : _regions.get(i).getVisibleObjects())
 			{
 				if (_object == null)
+				{
 					continue;
+				}
 				if (_object.equals(object))
+				 {
 					continue;   // skip our own character
+				}
 
 				int x1 = _object.getX();
 				int y1 = _object.getY();
@@ -695,7 +729,9 @@ public final class L2World
 				long dz = z1 - z;
 
 				if (dx * dx + dy * dy + dz * dz < sqRadius)
+				{
 					result.add(_object);
+				}
 			}
 		}
 
@@ -713,7 +749,7 @@ public final class L2World
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Find Close Objects for L2Character</li><BR>
-	 * 
+	 *
 	 * @param object
 	 *        L2object that determine the current L2WorldRegion
 	 */
@@ -742,13 +778,19 @@ public final class L2World
 				L2PlayableInstance _object = _playables.next();
 
 				if (_object == null)
+				{
 					continue;
+				}
 
 				if (_object.equals(object))
+				 {
 					continue;   // skip our own character
+				}
 
-				if (!_object.isVisible()) // GM invisible is different than this...
+				if (!_object.isVisible())
+				 {
 					continue;   // skip dying objects
+				}
 
 				result.add(_object);
 			}
@@ -763,7 +805,7 @@ public final class L2World
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Set position of a new L2Object (drop, spawn...)</li> <li>Update position of a L2Object after a movement</li><BR>
-	 * 
+	 *
 	 * @param Point3D
 	 *        point position of the object
 	 */
@@ -780,7 +822,7 @@ public final class L2World
 	/**
 	 * Returns the whole 2d array containing the world regions
 	 * used by ZoneData.java to setup zones inside the world regions
-	 * 
+	 *
 	 * @return
 	 */
 	public L2WorldRegion[][] getAllWorldRegions()
@@ -794,7 +836,7 @@ public final class L2World
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Init L2WorldRegions</li><BR>
-	 * 
+	 *
 	 * @param x
 	 *        X position of the object
 	 * @param y

@@ -46,6 +46,8 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PartySmallWindowAll;
 import com.l2jhellas.gameserver.network.serverpackets.PartySmallWindowDeleteAll;
+import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListAll;
+import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SetSummonRemainTime;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -365,7 +367,9 @@ public class AdminEditChar implements IAdminCommandHandler
 					}
 					if (player.getClan() != null)
 					{
-						player.getClan().broadcastClanStatus();
+						player.getClan().updateClanMember(player);
+						player.getClan().broadcastToOnlineMembers(new PledgeShowMemberListUpdate(player));
+						player. sendPacket(new PledgeShowMemberListAll(player.getClan(), player));
 					}
 
 					RegionBBSManager.getInstance().changeCommunityBoard();

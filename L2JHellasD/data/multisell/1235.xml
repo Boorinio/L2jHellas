@@ -2,7 +2,7 @@
 <!-- Apella Trader -->
 <!-- by Demolidor -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true"
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true"
 	applyTaxes="true">
 
 	<!-- Sealed Apella Helm -->

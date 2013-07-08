@@ -3,22 +3,22 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
+import com.l2jhellas.gameserver.datatables.sql.PetDataTable;
+import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -66,17 +66,21 @@ public class PetStat extends SummonStat
 	@Override
 	public final boolean addLevel(byte value)
 	{
-		if (getLevel() + value > (Experience.MAX_LEVEL - 1))
+		if (getLevel() + value > (ExperienceData.getInstance().getMaxLevel() - 1))
 			return false;
 
 		boolean levelIncreased = super.addLevel(value);
 
 		// Sync up exp with current level
 		if (getExp() > getExpForLevel(getLevel() + 1) || getExp() < getExpForLevel(getLevel()))
-			setExp(Experience.LEVEL[getLevel()]);
+		{
+			setExp(ExperienceData.getInstance().getExpForLevel(getLevel()));
+		}
 
 		if (levelIncreased)
+		{
 			getActiveChar().getOwner().sendMessage("Your pet has increased it's level.");
+		}
 
 		StatusUpdate su = new StatusUpdate(getActiveChar().getObjectId());
 		su.addAttribute(StatusUpdate.LEVEL, getLevel());
@@ -89,7 +93,9 @@ public class PetStat extends SummonStat
 		getActiveChar().updateEffectIcons(true);
 
 		if (getActiveChar().getControlItem() != null)
+		{
 			getActiveChar().getControlItem().setEnchantLevel(getLevel());
+		}
 
 		return levelIncreased;
 	}
@@ -97,7 +103,7 @@ public class PetStat extends SummonStat
 	@Override
 	public final long getExpForLevel(int level)
 	{
-		return L2PetDataTable.getInstance().getPetData(getActiveChar().getNpcId(), level).getPetMaxExp();
+		return PetDataTable.getInstance().getPetData(getActiveChar().getNpcId(), level).getPetMaxExp();
 	}
 
 	@Override
@@ -122,11 +128,13 @@ public class PetStat extends SummonStat
 		getActiveChar().stopFeed();
 		super.setLevel(value);
 
-		getActiveChar().setPetData(L2PetDataTable.getInstance().getPetData(getActiveChar().getTemplate().npcId, getLevel()));
+		getActiveChar().setPetData(PetDataTable.getInstance().getPetData(getActiveChar().getTemplate().npcId, getLevel()));
 		getActiveChar().startFeed(false);
 
 		if (getActiveChar().getControlItem() != null)
+		{
 			getActiveChar().getControlItem().setEnchantLevel(getLevel());
+		}
 	}
 
 	public final int getMaxFeed()
@@ -201,7 +209,9 @@ public class PetStat extends SummonStat
 			}
 		}
 		if (skill != null)
+		{
 			attack += skill.getPower();
+		}
 		return (int) calcStat(Stats.MAGIC_ATTACK, attack, target, skill);
 	}
 

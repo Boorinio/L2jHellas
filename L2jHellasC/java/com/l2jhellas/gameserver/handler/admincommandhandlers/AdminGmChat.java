@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -40,11 +40,17 @@ public class AdminGmChat implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.startsWith("admin_gmchat"))
+		{
 			handleGmChat(command, activeChar);
+		}
 		else if (command.startsWith("admin_snoop"))
+		{
 			snoop(command, activeChar);
+		}
 		if (command.startsWith("admin_gmchat_menu"))
+		{
 			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
+		}
 		return true;
 	}
 
@@ -87,12 +93,16 @@ public class AdminGmChat implements IAdminCommandHandler
 			int offset = 0;
 			String text;
 			if (command.contains("menu"))
+			{
 				offset = 17;
+			}
 			else
+			{
 				offset = 13;
+			}
 			text = command.substring(offset);
 			CreatureSay cs = new CreatureSay(0, 9, activeChar.getName(), text);
-			GmListTable.broadcastToGMs(cs);
+			AdminTable.getInstance().broadcastToGMs(cs);
 		}
 		catch (StringIndexOutOfBoundsException e)
 		{

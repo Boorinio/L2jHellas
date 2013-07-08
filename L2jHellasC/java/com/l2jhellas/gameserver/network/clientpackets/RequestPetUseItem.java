@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
+import com.l2jhellas.gameserver.datatables.sql.PetDataTable;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -79,25 +79,25 @@ public final class RequestPetUseItem extends L2GameClientPacket
 		// check if the item matches the pet
 		if (item.isEquipable())
 		{
-			if (L2PetDataTable.isWolf(pet.getNpcId()) && // wolf
+			if (PetDataTable.isWolf(pet.getNpcId()) && // wolf
 			item.getItem().isForWolf())
 			{
 				useItem(pet, item, activeChar);
 				return;
 			}
-			else if (L2PetDataTable.isHatchling(pet.getNpcId()) && // hatchlings
+			else if (PetDataTable.isHatchling(pet.getNpcId()) && // hatchlings
 			item.getItem().isForHatchling())
 			{
 				useItem(pet, item, activeChar);
 				return;
 			}
-			else if (L2PetDataTable.isStrider(pet.getNpcId()) && // striders
+			else if (PetDataTable.isStrider(pet.getNpcId()) && // striders
 			item.getItem().isForStrider())
 			{
 				useItem(pet, item, activeChar);
 				return;
 			}
-			else if (L2PetDataTable.isBaby(pet.getNpcId()) && // baby pets (buffalo, cougar, kookaboora)
+			else if (PetDataTable.isBaby(pet.getNpcId()) && // baby pets (buffalo, cougar, kookaboora)
 			item.getItem().isForBabyPet())
 			{
 				useItem(pet, item, activeChar);
@@ -109,34 +109,34 @@ public final class RequestPetUseItem extends L2GameClientPacket
 				return;
 			}
 		}
-		else if (L2PetDataTable.isPetFood(itemId))
+		else if (PetDataTable.isPetFood(itemId))
 		{
-			if (L2PetDataTable.isWolf(pet.getNpcId()) && L2PetDataTable.isWolfFood(itemId))
+			if (PetDataTable.isWolf(pet.getNpcId()) && PetDataTable.isWolfFood(itemId))
 			{
 				feed(activeChar, pet, item);
 				return;
 			}
-			if (L2PetDataTable.isSinEater(pet.getNpcId()) && L2PetDataTable.isSinEaterFood(itemId))
+			if (PetDataTable.isSinEater(pet.getNpcId()) && PetDataTable.isSinEaterFood(itemId))
 			{
 				feed(activeChar, pet, item);
 				return;
 			}
-			else if (L2PetDataTable.isHatchling(pet.getNpcId()) && L2PetDataTable.isHatchlingFood(itemId))
+			else if (PetDataTable.isHatchling(pet.getNpcId()) && PetDataTable.isHatchlingFood(itemId))
 			{
 				feed(activeChar, pet, item);
 				return;
 			}
-			else if (L2PetDataTable.isStrider(pet.getNpcId()) && L2PetDataTable.isStriderFood(itemId))
+			else if (PetDataTable.isStrider(pet.getNpcId()) && PetDataTable.isStriderFood(itemId))
 			{
 				feed(activeChar, pet, item);
 				return;
 			}
-			else if (L2PetDataTable.isWyvern(pet.getNpcId()) && L2PetDataTable.isWyvernFood(itemId))
+			else if (PetDataTable.isWyvern(pet.getNpcId()) && PetDataTable.isWyvernFood(itemId))
 			{
 				feed(activeChar, pet, item);
 				return;
 			}
-			else if (L2PetDataTable.isBaby(pet.getNpcId()) && L2PetDataTable.isBabyFood(itemId))
+			else if (PetDataTable.isBaby(pet.getNpcId()) && PetDataTable.isBabyFood(itemId))
 			{
 				feed(activeChar, pet, item);
 			}

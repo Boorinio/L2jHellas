@@ -23,9 +23,13 @@ public final class AttackRequest extends L2GameClientPacket
 {
 	// cddddc
 	private int _objectId;
+	@SuppressWarnings("unused")
 	private int _originX;
+	@SuppressWarnings("unused")
 	private int _originY;
+	@SuppressWarnings("unused")
 	private int _originZ;
+	@SuppressWarnings("unused")
 	private int _attackId;
 
 	private static final String _C__0A_ATTACKREQUEST = "[C] 0A AttackRequest";
@@ -46,6 +50,15 @@ public final class AttackRequest extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
+		
+        // Like L2OFF
+        if(activeChar.isAttackingNow() && activeChar.isMoving())
+        {
+            // If target is not attackable, send a Server->Client packet ActionFailed
+            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            return;
+        }
+
 		// avoid using expensive operations if not needed
 		L2Object target;
 		if (activeChar.getTargetId() == _objectId)

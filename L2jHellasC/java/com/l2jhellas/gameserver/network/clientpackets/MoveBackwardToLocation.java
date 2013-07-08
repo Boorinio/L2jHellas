@@ -25,8 +25,12 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
+import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
+import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.Util;
 
+@SuppressWarnings("unused")
 public class MoveBackwardToLocation extends L2GameClientPacket
 {
 	// cdddddd
@@ -68,7 +72,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			if (Config.KICK_L2WALKER)
 			{
 				L2PcInstance activeChar = getClient().getActiveChar();
-				activeChar.systemSendMessage(SystemMessageId.HACKING_TOOL);
+				activeChar.sendPacket(SystemMessageId.HACKING_TOOL);
 				try
 				{
 					Thread.sleep(5000);
@@ -78,7 +82,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 				}
 				finally
 				{
-					_log.warning("Player used L2Walker, and got kicked.");
+					Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " trying to use L2Walker!", IllegalPlayerAction.PUNISH_KICK);
 					activeChar.closeNetConnection();
 				}
 			}
@@ -92,6 +96,33 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
+		// Like L2OFF movements prohibited when char is sitting
+        if (activeChar.isSitting())
+        {
+            getClient().sendPacket(ActionFailed.STATIC_PACKET);
+            return;
+        }
+        
+        // Like L2OFF movements prohibited when char is teleporting
+        if (activeChar.isTeleporting())
+        {
+        	activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+            return;
+        }
+        
+        // Like L2OFF the enchant window will close
+        if (activeChar.getActiveEnchantItem() != null)
+        {
+            activeChar.sendPacket(new EnchantResult(0));
+            activeChar.setActiveEnchantItem(null);
+        }
+        
+        if (_targetX == _originX && _targetY == _originY && _targetZ == _originZ)
+        {
+            activeChar.sendPacket(new StopMove(activeChar));
+            return;
+        }
+        
 		_curX = activeChar.getX();
 		_curY = activeChar.getY();
 		_curZ = activeChar.getZ();
@@ -100,6 +131,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		{
 			activeChar.setInBoat(false);
 		}
+		
 		if (activeChar.getTeleMode() > 0)
 		{
 			if (activeChar.getTeleMode() == 1)
@@ -134,6 +166,14 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 				activeChar.sendPacket(new ActionFailed());
 				return;
 			}
+			
+			// This is to avoid exploit with Hit + Fast movement
+            if((activeChar.isMoving() && activeChar.isAttackingNow()))
+            {
+                activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+                return;
+            }
+            
 			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_targetX, _targetY, _targetZ, 0));
 
 			if (activeChar.getParty() != null)

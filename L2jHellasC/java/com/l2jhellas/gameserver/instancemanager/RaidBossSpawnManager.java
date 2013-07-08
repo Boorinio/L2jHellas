@@ -27,10 +27,10 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -164,7 +164,7 @@ public class RaidBossSpawnManager
 
 				_storedInfo.put(bossId, info);
 
-				GmListTable.broadcastMessageToGMs("Spawning Raid Boss " + raidboss.getName());
+				AdminTable.getInstance().broadcastMessageToGMs("Spawning Raid Boss " + raidboss.getName());
 
 				_bosses.put(bossId, raidboss);
 			}
@@ -468,7 +468,7 @@ public class RaidBossSpawnManager
 
 		_storedInfo.put(raidboss.getNpcId(), info);
 
-		GmListTable.broadcastMessageToGMs("Spawning Raid Boss " + raidboss.getName());
+		AdminTable.getInstance().broadcastMessageToGMs("Spawning Raid Boss " + raidboss.getName());
 
 		_bosses.put(raidboss.getNpcId(), raidboss);
 	}

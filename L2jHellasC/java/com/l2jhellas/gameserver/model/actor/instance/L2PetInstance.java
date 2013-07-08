@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
+import com.l2jhellas.gameserver.datatables.sql.PetDataTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
@@ -83,7 +83,7 @@ public class L2PetInstance extends L2Summon
 	public final L2PetData getPetData()
 	{
 		if (_data == null)
-			_data = L2PetDataTable.getInstance().getPetData(getTemplate().npcId, getStat().getLevel());
+			_data = PetDataTable.getInstance().getPetData(getTemplate().npcId, getStat().getLevel());
 
 		return _data;
 	}
@@ -133,7 +133,7 @@ public class L2PetInstance extends L2Summon
 					getOwner().sendMessage("Your pet is too hungry to stay summoned.");
 				}
 
-				int foodId = L2PetDataTable.getFoodItemId(getTemplate().npcId);
+				int foodId = PetDataTable.getFoodItemId(getTemplate().npcId);
 				if (foodId == 0)
 					return;
 
@@ -206,7 +206,7 @@ public class L2PetInstance extends L2Summon
 		_inventory = new PetInventory(this);
 
 		int npcId = template.npcId;
-		_mountable = L2PetDataTable.isMountable(npcId);
+		_mountable = PetDataTable.isMountable(npcId);
 	}
 
 	@Override

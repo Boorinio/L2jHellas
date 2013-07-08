@@ -1149,7 +1149,7 @@ public class Quest extends ManagedScript
 
 		// Create handler to file linked to the quest
 		String directory = getDescr().toLowerCase();
-		String content = HtmCache.getInstance().getHtm("data/scripts/" + directory + "/" + questId + "/" + fileName);
+		String content = HtmCache.getInstance().getHtmForce("data/scripts/" + directory + "/" + questId + "/" + fileName);
 
 		if (content == null)
 			content = HtmCache.getInstance().getHtmForce("data/scripts/quests/" + questId + "/" + fileName);

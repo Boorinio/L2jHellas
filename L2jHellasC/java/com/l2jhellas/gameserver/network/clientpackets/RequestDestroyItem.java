@@ -20,10 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
+import com.l2jhellas.gameserver.datatables.sql.PetDataTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -122,7 +121,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 			activeChar.broadcastUserInfo();
 		}
 
-		if (L2PetDataTable.isPetItem(itemId))
+		if (PetDataTable.isPetItem(itemId))
 		{
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
@@ -166,8 +165,8 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
 		activeChar.sendPacket(su);
 
-		L2World world = L2World.getInstance();
-		world.removeObject(removedItem);
+		//L2World world = L2World.getInstance();
+		//world.removeObject(removedItem);
 	}
 
 	@Override

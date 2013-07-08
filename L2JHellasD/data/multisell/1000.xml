@@ -2,7 +2,7 @@
 <!-- Exchange the equipment for pets with the high grade equipment -->
 <!-- This list is best used in exc_multisel -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true">
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 	<item id="1">
 		<production id="3439" count="1" />
 		<ingredient id="2505" count="1" />

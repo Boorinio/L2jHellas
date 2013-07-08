@@ -46,7 +46,7 @@ public class Book implements IItemHandler
 		final int itemId = item.getItemId();
 
 		String filename = "data/html/help/" + itemId + ".htm";
-		String content = HtmCache.getInstance().getHtm(filename);
+		String content = HtmCache.getInstance().getHtmForce(filename);
 
 		// Quest item: Lidia's diary
 		if (itemId == 7064)
@@ -55,18 +55,9 @@ public class Book implements IItemHandler
 			activeChar.sendPacket(new RadarControl(0, 1, 51995, -51265, -3104));
 		}
 
-		if (content == null)
-		{
-			NpcHtmlMessage html = new NpcHtmlMessage(1);
-			html.setHtml("<html><body>My Text is missing:<br>" + filename + "</body></html>");
-			activeChar.sendPacket(html);
-		}
-		else
-		{
-			NpcHtmlMessage itemReply = new NpcHtmlMessage(5);
-			itemReply.setHtml(content);
-			activeChar.sendPacket(itemReply);
-		}
+		NpcHtmlMessage itemReply = new NpcHtmlMessage(5);
+		itemReply.setHtml(content);
+		activeChar.sendPacket(itemReply);
 
 		activeChar.sendPacket(new ActionFailed());
 	}

@@ -273,6 +273,8 @@ public final class RequestActionUse extends L2GameClientPacket
 						Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
 						activeChar.broadcastPacket(dismount);
 						activeChar.setMountObjectID(0);
+						activeChar.broadcastStatusUpdate();
+						activeChar.broadcastUserInfo();
 					}
 				}
 			break;
@@ -285,17 +287,34 @@ public final class RequestActionUse extends L2GameClientPacket
 			case 37:
 				if (activeChar.isAlikeDead())
 				{
-					getClient().sendPacket(new ActionFailed());
+					getClient().sendPacket(ActionFailed.STATIC_PACKET);
 					return;
 				}
-				if (activeChar.getPrivateStoreType() != 0)
+				// Like L2OFF - You can't open Manufacture when you are in private store
+				if (activeChar.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_BUY || activeChar.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL)
+				{
+					getClient().sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+				// Like L2OFF - You can't open Manufacture when you are sitting
+				if (activeChar.isSitting() && activeChar.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_MANUFACTURE)
+				{
+					getClient().sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+				// You can't open Manufacture when the task is lunched
+				if(activeChar.isSittingTaskLunched())
+				{
+					sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+				if (activeChar.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_MANUFACTURE)
 				{
 					activeChar.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+					if (activeChar.isSitting())
+						activeChar.standUp();
 					activeChar.broadcastUserInfo();
 				}
-				if (activeChar.isSitting())
-					activeChar.standUp();
-
 				if (activeChar.getCreateList() == null)
 				{
 					activeChar.setCreateList(new L2ManufactureList());
@@ -334,20 +353,37 @@ public final class RequestActionUse extends L2GameClientPacket
 				// Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
 				if (activeChar.isAlikeDead())
 				{
-					getClient().sendPacket(new ActionFailed());
+					getClient().sendPacket(ActionFailed.STATIC_PACKET);
 					return;
 				}
-				if (activeChar.getPrivateStoreType() != 0)
+				// Like L2OFF - You can't open Manufacture when you are in private store
+				if (activeChar.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_BUY || activeChar.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL)
+				{
+					getClient().sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+				// Like L2OFF - You can't open Manufacture when you are sitting
+				if (activeChar.isSitting() && activeChar.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_MANUFACTURE)
+				{
+					getClient().sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+				// You can't open Manufacture when the task is lunched
+				if(activeChar.isSittingTaskLunched())
+				{
+					sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+				if (activeChar.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_MANUFACTURE)
 				{
 					activeChar.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+					if (activeChar.isSitting())
+						activeChar.standUp();
 					activeChar.broadcastUserInfo();
 				}
-				if (activeChar.isSitting())
-					activeChar.standUp();
-
 				if (activeChar.getCreateList() == null)
 					activeChar.setCreateList(new L2ManufactureList());
-
+				
 				activeChar.sendPacket(new RecipeShopManageList(activeChar, false));
 			break;
 			case 52: // unsummon

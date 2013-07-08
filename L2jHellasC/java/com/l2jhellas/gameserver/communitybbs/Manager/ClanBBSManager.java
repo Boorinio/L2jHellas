@@ -89,7 +89,8 @@ public class ClanBBSManager extends BaseBBSManager
 		}
 		else if (command.startsWith("_bbsclan_clannotice_edit;"))
 		{
-			clanNotice(activeChar, activeChar.getClan().getClanId());
+			if (activeChar != null && activeChar.getClan() != null)
+				clanNotice(activeChar, activeChar.getClan().getClanId());
 		}
 		else if (command.startsWith("_bbsclan_clannotice_enable"))
 		{

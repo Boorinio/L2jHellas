@@ -332,7 +332,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 
 		if (merchant != null)
 		{
-			String html = HtmCache.getInstance().getHtm("data/html/" + htmlFolder + "/" + merchant.getNpcId() + "-bought.htm");
+			String html = HtmCache.getInstance().getHtmForce("data/html/" + htmlFolder + "/" + merchant.getNpcId() + "-bought.htm");
 
 			if (html != null)
 			{

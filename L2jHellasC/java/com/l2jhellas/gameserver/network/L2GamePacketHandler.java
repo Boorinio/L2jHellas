@@ -19,9 +19,9 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.clientpackets.*;
 import com.l2jhellas.util.Util;
@@ -226,7 +226,9 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					break;
 					case 0x31:
 						if (Config.ALLOW_WAREHOUSE)
+						{
 							msg = new SendWareHouseDepositList();
+						}
 					break;
 					case 0x32:
 						msg = new SendWareHouseWithDrawList();
@@ -517,7 +519,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					// // RequestSurrenderAllianceWar
 					// break;
 					case 0x9d:
-					// RequestSkillCoolTime
+						msg = new RequestSkillCoolTime();
 					/*
 					 * if (Config.DEBUG)
 					 * _log.info("Request Skill Cool Time .. ignored");
@@ -852,14 +854,14 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 			case (1):
 				if (client.getActiveChar() != null)
 				{
-					GmListTable.broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets.");
+					AdminTable.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets.");
 				}
 			break;
 			case (2):
 				_log.warning("PacketProtection: " + client.toString() + " got kicked due flooding of unknown packets.");
 				if (client.getActiveChar() != null)
 				{
-					GmListTable.broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got kicked.");
+					AdminTable.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got kicked.");
 					client.getActiveChar().sendMessage("You are will be kicked for unknown packet flooding, GM informed.");
 					client.getActiveChar().closeNetConnection();
 				}
@@ -869,7 +871,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				LoginServerThread.getInstance().sendAccessLevel(client.getAccountName(), -99);
 				if (client.getActiveChar() != null)
 				{
-					GmListTable.broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got banned.");
+					AdminTable.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got banned.");
 					client.getActiveChar().sendMessage("You are banned for unknown packet flooding, GM informed.");
 					client.getActiveChar().closeNetConnection();
 				}
@@ -890,15 +892,21 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 		try
 		{
 			if (rp.getClient().getState() == GameClientState.IN_GAME)
+			{
 				ThreadPoolManager.getInstance().executePacket(rp);
+			}
 			else
+			{
 				ThreadPoolManager.getInstance().executeIOPacket(rp);
+			}
 		}
 		catch (RejectedExecutionException e)
 		{
 			// if the server is shutdown we ignore
 			if (!ThreadPoolManager.getInstance().isShutdown())
+			{
 				_log.severe("Failed executing: " + rp.getClass().getSimpleName() + " for Client: " + rp.getClient().toString());
+			}
 		}
 	}
 }

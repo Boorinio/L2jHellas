@@ -7,12 +7,12 @@
 	<classpathentry exported="true" kind="lib" path="lib/c3p0-0.9.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ecj.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/java-engine.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/javolution.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jython-engine.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jython.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mail.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mmocore.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/worldwind.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javolution.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

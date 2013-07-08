@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.MobGroup;
@@ -27,6 +26,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.Broadcast;
 
 /**

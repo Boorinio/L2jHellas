@@ -17,8 +17,11 @@ package com.l2jhellas.gameserver.model.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
@@ -91,7 +94,9 @@ public class Siege
 	// - id=856 msg=[The siege of $s1 has ended in a draw.]
 	// id=285 msg=[Clan $s1 has succeeded in engraving the ruler!]
 	// - id=287 msg=[The opponent clan has begun to engrave the ruler.]
-
+	private final SimpleDateFormat fmt = new SimpleDateFormat("H:mm.");
+	protected static final Logger _log = Logger.getLogger(Siege.class.getName());
+	
 	public static enum TeleportWhoType
 	{
 		All, Attacker, DefenderNotOwner, Owner, Spectator
@@ -249,10 +254,13 @@ public class Siege
 		if (getIsInProgress())
 		{
 			announceToPlayer("The siege of " + getCastle().getName() + " has finished!", false);
-
+			_log.info("[SIEGE] The siege of " + getCastle().getName() + " has finished! " + fmt.format(new Date(System.currentTimeMillis())));
+			
 			if (getCastle().getOwnerId() <= 0)
+			{
 				announceToPlayer("The siege of " + getCastle().getName() + " has ended in a draw.", false);
-
+				_log.info("[SIEGE] The siege of " + getCastle().getName() + " has ended in a draw. " + fmt.format(new Date(System.currentTimeMillis())));
+			}
 			removeFlags(); // Removes all flags. Note: Remove flag before teleporting players
 			teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
 			teleportPlayer(Siege.TeleportWhoType.DefenderNotOwner, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
@@ -448,6 +456,7 @@ public class Siege
 			ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleEndSiegeTask(getCastle()), 1000); // Prepare auto end task
 
 			announceToPlayer("The siege of " + getCastle().getName() + " has started!", false);
+			_log.info("[SIEGE] The siege of " + getCastle().getName() + " has started! "+fmt.format(new Date(System.currentTimeMillis())));
 		}
 	}
 

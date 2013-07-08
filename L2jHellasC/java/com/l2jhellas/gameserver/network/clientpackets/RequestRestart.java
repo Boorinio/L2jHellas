@@ -44,22 +44,15 @@ public final class RequestRestart extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
-		{
 			return;
-		}
-		if (player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
+		if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
 		{
-			player.sendMessage("You cant logout in olympiad mode.");
+			player.sendMessage("You can't logout in olympiad mode.");
 			return;
 		}
 		if (player.isinZodiac)
 		{
-			player.sendMessage("You cant logout while in zodiac.");
-			return;
-		}
-		if (player.isDead())
-		{
-			player.sendMessage("You cant logout while dead.");
+			player.sendMessage("You can't logout while in zodiac.");
 			return;
 		}
 		if (player.isTeleporting())
@@ -72,7 +65,7 @@ public final class RequestRestart extends L2GameClientPacket
 
 		if (player.getPrivateStoreType() != 0)
 		{
-			player.sendMessage("Cannot restart while trading");
+			player.sendMessage("You can't logout while trading.");
 			return;
 		}
 
@@ -86,12 +79,6 @@ public final class RequestRestart extends L2GameClientPacket
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.CANT_RESTART_WHILE_FIGHTING));
 			player.sendPacket(new ActionFailed());
-			return;
-		}
-
-		if (player.getOlympiadGameId() > 0 || player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
-		{
-			player.sendMessage("Cannot restart while in Olympiad.");
 			return;
 		}
 
@@ -109,7 +96,9 @@ public final class RequestRestart extends L2GameClientPacket
 			L2Party playerParty = player.getParty();
 
 			if (playerParty != null)
+			{
 				player.getParty().broadcastToPartyMembers(SystemMessage.sendString(player.getName() + " has been removed from the upcoming festival."));
+			}
 		}
 		if (player.isFlying())
 		{

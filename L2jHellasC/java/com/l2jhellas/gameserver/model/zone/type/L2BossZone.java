@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.GameServer;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
@@ -118,6 +119,26 @@ public class L2BossZone extends L2ZoneType
 					player.sendMessage("You entered " + _zoneName);
 					return;
 				}
+				
+                // Ignore the check for Van Halter zone id 12014 if player got marks
+                if (getId() == 12014)
+                {
+                	L2ItemInstance VisitorsMark = player.getInventory().getItemByItemId(8064);
+                    L2ItemInstance FadedVisitorsMark = player.getInventory().getItemByItemId(8065);
+                    L2ItemInstance PagansMark = player.getInventory().getItemByItemId(8067);
+                    long mark1 = VisitorsMark == null ? 0 : VisitorsMark.getCount();
+                    long mark2 = FadedVisitorsMark == null ? 0 : FadedVisitorsMark.getCount();
+                    long mark3 = PagansMark == null ? 0 : PagansMark.getCount();
+                    if (mark1 != 0 || mark2 != 0 || mark3 != 0)
+                        return;                
+                }
+                
+                if (!player.isGM() && player.isFlying() && ! player.isFlying())
+                {
+                    player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+                    return;
+                }
+                
 				// if player has been (previously) cleared by npc/ai for entry and the zone is
 				// set to receive players (aka not waiting for boss to respawn)
 				if (_playersAllowed.contains(player.getObjectId()))

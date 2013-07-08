@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.instancemanager.PetitionManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -29,7 +29,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * <li>d: Unknown</li>
  * </ul>
  * </p>
- * 
+ *
  * @author -Wooden-, TempyIncursion
  */
 public final class RequestPetitionCancel extends L2GameClientPacket
@@ -54,9 +54,13 @@ public final class RequestPetitionCancel extends L2GameClientPacket
 		if (PetitionManager.getInstance().isPlayerInConsultation(activeChar))
 		{
 			if (activeChar.isGM())
+			{
 				PetitionManager.getInstance().endActivePetition(activeChar);
+			}
 			else
+			{
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.PETITION_UNDER_PROCESS));
+			}
 		}
 		else
 		{
@@ -73,13 +77,17 @@ public final class RequestPetitionCancel extends L2GameClientPacket
 
 					// Notify all GMs that the player's pending petition has been cancelled.
 					String msgContent = activeChar.getName() + " has canceled a pending petition.";
-					GmListTable.broadcastToGMs(new CreatureSay(activeChar.getObjectId(), 17, "Petition System", msgContent));
+					AdminTable.getInstance().broadcastToGMs(new CreatureSay(activeChar.getObjectId(), 17, "Petition System", msgContent));
 				}
 				else
+				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.FAILED_CANCEL_PETITION_TRY_LATER));
+				}
 			}
 			else
+			{
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.PETITION_NOT_SUBMITTED));
+			}
 		}
 	}
 

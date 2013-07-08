@@ -41,7 +41,6 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 public class SummonItems implements IItemHandler
 {
 	@Override
-	@SuppressWarnings("unused")
 	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar = (L2PcInstance) playable;
@@ -80,8 +79,9 @@ public class SummonItems implements IItemHandler
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ALREADY_HAVE_A_PET));
 			return;
 		}
-
-		if (activeChar.isAttackingNow())
+		
+		// Like L2OFF you can't summon pet in combat
+		if (activeChar.isAttackingNow() || activeChar.isInCombat())
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
 			return;
@@ -117,8 +117,8 @@ public class SummonItems implements IItemHandler
 				{
 					L2Spawn spawn = new L2Spawn(npcTemplate);
 
-					if (spawn == null)
-						return;
+					//if (spawn == null)
+					//return;
 
 					spawn.setId(IdFactory.getInstance().getNextId());
 					spawn.setLocx(activeChar.getX());
@@ -206,6 +206,8 @@ public class SummonItems implements IItemHandler
 			}
 			catch (Throwable e)
 			{
+				if (Config.DEBUG)
+                    e.printStackTrace();
 			}
 		}
 	}
@@ -232,6 +234,8 @@ public class SummonItems implements IItemHandler
 			}
 			catch (Throwable e)
 			{
+				if (Config.DEBUG)
+                    e.printStackTrace();
 			}
 		}
 	}

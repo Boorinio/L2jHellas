@@ -30,14 +30,13 @@ import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.Announcements;
-import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
-import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
@@ -200,26 +199,40 @@ public class EnterWorld extends L2GameClientPacket
 
 		if (activeChar.isGM())
 		{
-			if (Config.GM_STARTUP_INVULNERABLE && AdminCommandAccessRights.getInstance().hasAccess("admin_invul", activeChar.getAccessLevel()))
+			if (Config.GM_STARTUP_INVULNERABLE && AdminTable.getInstance().hasAccess("admin_invul", activeChar.getAccessLevel()))
+			{
 				activeChar.setIsInvul(true);
+			}
 
-			if (Config.GM_STARTUP_INVISIBLE && AdminCommandAccessRights.getInstance().hasAccess("admin_invisible", activeChar.getAccessLevel()))
+			if (Config.GM_STARTUP_INVISIBLE && AdminTable.getInstance().hasAccess("admin_invisible", activeChar.getAccessLevel()))
+			{
 				activeChar.getAppearance().setInvisible();
+			}
 
-			if (Config.GM_STARTUP_SILENCE && AdminCommandAccessRights.getInstance().hasAccess("admin_silence", activeChar.getAccessLevel()))
+			if (Config.GM_STARTUP_SILENCE && AdminTable.getInstance().hasAccess("admin_silence", activeChar.getAccessLevel()))
+			{
 				activeChar.setMessageRefusal(true);
+			}
 
-			if (Config.GM_STARTUP_AUTO_LIST && AdminCommandAccessRights.getInstance().hasAccess("admin_gmliston", activeChar.getAccessLevel()))
-				GmListTable.getInstance().addGm(activeChar, false);
+			if (Config.GM_STARTUP_AUTO_LIST && AdminTable.getInstance().hasAccess("admin_gmliston", activeChar.getAccessLevel()))
+			{
+				AdminTable.getInstance().addGm(activeChar, false);
+			}
 			else
-				GmListTable.getInstance().addGm(activeChar, true);
+			{
+				AdminTable.getInstance().addGm(activeChar, true);
+			}
 
 			if (Config.GM_TITLE_COLOR_ENABLED)
 			{
 				if (activeChar.getAccessLevel().getLevel() >= 100)
+				{
 					activeChar.getAppearance().setTitleColor(Config.ADMIN_TITLE_COLOR);
+				}
 				else if (activeChar.getAccessLevel().getLevel() >= 75)
+				{
 					activeChar.getAppearance().setTitleColor(Config.GM_TITLE_COLOR);
+				}
 			}
 		}
 		if (Config.RAID_SYSTEM_ENABLED)
@@ -261,10 +274,14 @@ public class EnterWorld extends L2GameClientPacket
 		CrownManager.getInstance().checkCrowns(activeChar);
 
 		if (Config.PVP_COLOR_SYSTEM_ENABLED)
+		{
 			activeChar.updatePvPColor(activeChar.getPvpKills());
+		}
 
 		if (Config.PK_COLOR_SYSTEM_ENABLED)
+		{
 			activeChar.updatePkColor(activeChar.getPkKills());
+		}
 
 		if (Config.ANNOUNCE_HERO_LOGIN && activeChar.isHero())
 		{
@@ -281,26 +298,38 @@ public class EnterWorld extends L2GameClientPacket
 				{
 					Castle castle = CastleManager.getInstance().getCastleById(clan.getHasCastle());
 					if ((castle != null) && (activeChar.getObjectId() == clan.getLeaderId()))
+					{
 						Announcements.getInstance().announceToAll("Lord " + activeChar.getName() + " Ruler Of " + castle.getName() + " Castle is Now Online!");
+					}
 				}
 			}
 		}
 
 		if (Config.PLAYER_SPAWN_PROTECTION > 0)
+		{
 			activeChar.setProtection(true);
+		}
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 
 		if (L2Event.active && L2Event.connectionLossData.containsKey(activeChar.getName()) && L2Event.isOnEvent(activeChar))
+		{
 			L2Event.restoreChar(activeChar);
+		}
 		else if (L2Event.connectionLossData.containsKey(activeChar.getName()))
+		{
 			L2Event.restoreAndTeleChar(activeChar);
+		}
 
 		if (SevenSigns.getInstance().isSealValidationPeriod())
+		{
 			sendPacket(new SignsSky());
+		}
 
 		// buff and status icons
 		if (Config.STORE_SKILL_COOLTIME)
+		{
 			activeChar.restoreEffects();
+		}
 
 		activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 
@@ -332,7 +361,9 @@ public class EnterWorld extends L2GameClientPacket
 		// apply augmentation bonus for equipped items
 		for (L2ItemInstance temp : activeChar.getInventory().getAugmentedItems())
 			if (temp != null && temp.isEquipped())
+			{
 				temp.getAugmentation().applyBoni(activeChar);
+			}
 
 		// Expand Skill
 		ExStorageMaxCount esmc = new ExStorageMaxCount(activeChar);
@@ -372,14 +403,18 @@ public class EnterWorld extends L2GameClientPacket
 		Quest.playerEnter(activeChar);
 		// check player skills
 		if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN)
+		{
 			activeChar.checkAllowedSkills();
+		}
 		PetitionManager.getInstance().checkPetitionMessages(activeChar);
 
 		// Account Manager
 		if (ExternalConfig.ALLOW_ACCOUNT_MANAGER)
 		{
 			if (!L2AccountManagerInstance.hasSubEmail(activeChar))
+			{
 				ThreadPoolManager.getInstance().scheduleGeneral(new entermail(activeChar), 20000);
+			}
 		}
 
 		if ((activeChar.getFirstEffect(426) != null) || (activeChar.getFirstEffect(427) != null))
@@ -442,7 +477,9 @@ public class EnterWorld extends L2GameClientPacket
 		}
 
 		if (Config.ALLOW_WATER)
+		{
 			activeChar.checkWaterState();
+		}
 
 		if (Config.SHOW_HTML_WELCOME)
 		{
@@ -497,9 +534,13 @@ public class EnterWorld extends L2GameClientPacket
 		}
 
 		if (Config.ENABLE_HITMAN_EVENT)
+		{
 			Hitman.getInstance().onEnterWorld(activeChar);
+		}
 		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(activeChar.getObjectId()))
+		{
 			activeChar.setHero(true);
+		}
 
 		setPledgeClass(activeChar);
 
@@ -534,11 +575,17 @@ public class EnterWorld extends L2GameClientPacket
 			for (Siege siege : SiegeManager.getInstance().getSieges())
 			{
 				if (!siege.getIsInProgress())
+				{
 					continue;
+				}
 				if (siege.checkIsAttacker(activeChar.getClan()))
+				{
 					activeChar.setSiegeState((byte) 1);
+				}
 				else if (siege.checkIsDefender(activeChar.getClan()))
+				{
 					activeChar.setSiegeState((byte) 2);
+				}
 			}
 			// Add message at connection if clanHall not paid.
 			// Possibly this is custom...
@@ -563,29 +610,45 @@ public class EnterWorld extends L2GameClientPacket
 		RegionBBSManager.getInstance().changeCommunityBoard();
 
 		if (Config.GAMEGUARD_ENFORCE)
+		{
 			activeChar.sendPacket(new GameGuardQuery());
+		}
 
 		if (TvT._savePlayers.contains(activeChar.getName()))
+		{
 			TvT.addDisconnectedPlayer(activeChar);
+		}
 
 		if (CTF._savePlayers.contains(activeChar.getName()))
+		{
 			CTF.addDisconnectedPlayer(activeChar);
+		}
 
 		if (DM._savePlayers.contains(activeChar.getName()))
+		{
 			DM.addDisconnectedPlayer(activeChar);
+		}
 
 		if (VIP._savePlayers.contains(activeChar.getName()))
+		{
 			VIP.addDisconnectedPlayer(activeChar);
+		}
 
 		if (ExternalConfig.ALLOW_REMOTE_CLASS_MASTER)
 		{
 			ClassLevel lvlnow = PlayerClass.values()[activeChar.getClassId().getId()].getLevel();
 			if (activeChar.getLevel() >= 20 && lvlnow == ClassLevel.First)
+			{
 				L2ClassMasterInstance.ClassMaster.onAction(activeChar);
+			}
 			else if (activeChar.getLevel() >= 40 && lvlnow == ClassLevel.Second)
+			{
 				L2ClassMasterInstance.ClassMaster.onAction(activeChar);
+			}
 			else if (activeChar.getLevel() >= 76 && lvlnow == ClassLevel.Third)
+			{
 				L2ClassMasterInstance.ClassMaster.onAction(activeChar);
+			}
 		}
 
 		if (!Config.ALLOW_DUALBOX && activeChar != null)
@@ -621,7 +684,9 @@ public class EnterWorld extends L2GameClientPacket
 			if (cl.getPlayer1Id() == _chaid || cl.getPlayer2Id() == _chaid)
 			{
 				if (cl.getMaried())
+				{
 					cha.setMarried(true);
+				}
 
 				cha.setCoupleId(cl.getId());
 
@@ -787,20 +852,26 @@ public class EnterWorld extends L2GameClientPacket
 	{
 		int pledgeClass = 0;
 		if (activeChar.getClan() != null)
+		{
 			pledgeClass = activeChar.getClan().getClanMember(activeChar.getObjectId()).calculatePledgeClass(activeChar);
+		}
 
 		if (activeChar.isNoble() && pledgeClass < 5)
+		{
 			pledgeClass = 5;
+		}
 
 		if (activeChar.isHero())
+		{
 			pledgeClass = 8;
+		}
 
 		activeChar.setPledgeClass(pledgeClass);
 	}
 
 	/**
 	 * TODO nightwolf remove from here
-	 * 
+	 *
 	 * @param player
 	 */
 	public void subhtml(L2PcInstance player)
@@ -846,8 +917,7 @@ public class EnterWorld extends L2GameClientPacket
 	{
 		for (L2PcInstance player : _onlineplayers)
 		{
-			String file = "data/html/chaos/warning.htm";
-			String html = HtmCache.getInstance().getHtm(file);
+			String html = HtmCache.getInstance().getHtmForce("data/html/chaos/warning.htm");
 			NpcHtmlMessage warning = new NpcHtmlMessage(1);
 			warning.setHtml(html);
 

@@ -2,7 +2,7 @@
 
 <!-- adventure guildsman - use life crystals (giran) -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true">
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 	<!-- Chakram c -->
 	<item id="1">
 		<ingredient id="8158" count="102" />

@@ -1460,7 +1460,7 @@ public class L2NpcInstance extends L2Character
 			questId = qs.getQuest().getName();
 			String stateId = State.getStateName(qs.getState());
 			String path = "data/scripts/quests/" + questId + "/" + stateId + ".htm";
-			content = HtmCache.getInstance().getHtm(path); // TODO path for quests html
+			content = HtmCache.getInstance().getHtmForce(path); // TODO path for quests html
 
 			if (Config.DEBUG)
 			{
@@ -1893,7 +1893,7 @@ public class L2NpcInstance extends L2Character
 	 */
 	private boolean showPkDenyChatWindow(L2PcInstance player, String type)
 	{
-		String html = HtmCache.getInstance().getHtm("data/html/" + type + "/" + getNpcId() + "-pk.htm");
+		String html = HtmCache.getInstance().getHtmForce("data/html/" + type + "/" + getNpcId() + "-pk.htm");
 
 		if (html != null)
 		{

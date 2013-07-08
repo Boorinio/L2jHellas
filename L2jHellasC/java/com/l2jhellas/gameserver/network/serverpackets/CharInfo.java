@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -21,6 +23,7 @@ import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -54,35 +57,27 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * 00d0: 00 00
  * <p>
  * <p>
- * dddddSdddddddddddddddddddddddddddffffdddSdddccccccc (h)<BR>
+ * dddddSdddddddddddddddddddddddddddffffdddSdddccccccc (h)
  * <p>
- * dddddSdddddddddddddddddddddddddddffffdddSdddddccccccch<BR>
- * dddddSddddddddddddddddddddddddddddffffdddSdddddccccccch (h) c (dchd) ddc dcc c cddd d<BR>
+ * dddddSdddddddddddddddddddddddddddffffdddSdddddccccccch dddddSddddddddddddddddddddddddddddffffdddSdddddccccccch (h) c (dchd) ddc dcc c cddd d
  * dddddSdddddddddddddddhhhhhhhhhhhhhhhhhhhhhhhhddddddddddddddffffdddSdddddccccccch [h] c (ddhd) ddc c ddc cddd d d dd d d d
+ * 
  */
 public class CharInfo extends L2GameServerPacket
 {
 	private static final Logger _log = Logger.getLogger(CharInfo.class.getName());
 
 	private static final String _S__03_CHARINFO = "[S] 03 CharInfo";
-	private final L2PcInstance _activeChar;
-	private final Inventory _inv;
-	private final int _x, _y, _z, _heading;
-	private final int _mAtkSpd, _pAtkSpd;
-	private final int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd;
-
-	private int _flRunSpd;
-
-	private int _flWalkSpd;
-
-	private int _flyRunSpd;
-
-	private int _flyWalkSpd;
-	private final float _moveMultiplier, _attackSpeedMultiplier;
-	private final int _maxCp;
+	private L2PcInstance _activeChar;
+	private Inventory _inv;
+	private int _x, _y, _z, _heading;
+	private int _mAtkSpd, _pAtkSpd;
+	private int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd, _flRunSpd, _flWalkSpd, _flyRunSpd, _flyWalkSpd;
+	private float _moveMultiplier, _attackSpeedMultiplier;
+	private int _maxCp;
 
 	/**
-	 * @param _characters
+	 * @param cha
 	 */
 	public CharInfo(L2PcInstance cha)
 	{
@@ -106,16 +101,16 @@ public class CharInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		boolean gmSeeInvis = false;
+		boolean receiver_is_gm = false;
 
-		if (_activeChar.getAppearance().getInvisible())
+		L2PcInstance tmp = getClient().getActiveChar();
+		if (tmp != null && tmp.isGM())
 		{
-			L2PcInstance tmp = getClient().getActiveChar();
-			if (tmp != null && tmp.isGM())
-				gmSeeInvis = true;
-			else
-				return;
+			receiver_is_gm = true;
 		}
+
+		if (!receiver_is_gm && _activeChar.getAppearance().getInvisible())
+			return;
 
 		if (_activeChar.getPoly().isMorphed())
 		{
@@ -149,23 +144,24 @@ public class CharInfo extends L2GameServerPacket
 				writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_RHAND)); // right hand weapon
 				writeD(0);
 				writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_LHAND)); // left hand weapon
-				writeC(1);// name above char 1=true ... ??
+				writeC(1); // name above char 1=true ... ??
 				writeC(_activeChar.isRunning() ? 1 : 0);
 				writeC(_activeChar.isInCombat() ? 1 : 0);
 				writeC(_activeChar.isAlikeDead() ? 1 : 0);
 
-				if (gmSeeInvis)
-				{
-					writeC(0);
-				}
-				else
-				{
-					writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0); // invisible ?? 0=false 1=true 2=summoned (only works if model has a summon animation)
-				}
+				//if(gmSeeInvis)
+				//{
+				writeC(0); //if the charinfo is written means receiver can see the char
+				//}
+				//else
+				//{
+				//    writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0); // invisible ?? 0=false  1=true   2=summoned (only works if model has a summon animation)
+				//}
 
 				writeS(_activeChar.getName());
 
-				if (gmSeeInvis)
+				if (_activeChar.getAppearance().getInvisible())
+				//if(gmSeeInvis)
 				{
 					writeS("Invisible");
 				}
@@ -178,7 +174,8 @@ public class CharInfo extends L2GameServerPacket
 				writeD(0);
 				writeD(0000); // hmm karma ??
 
-				if (gmSeeInvis)
+				if (_activeChar.getAppearance().getInvisible())
+				//if(gmSeeInvis)
 				{
 					writeD((_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH));
 				}
@@ -211,9 +208,13 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_activeChar.getAppearance().getSex() ? 1 : 0);
 
 			if (_activeChar.getClassIndex() == 0)
+			{
 				writeD(_activeChar.getClassId().getId());
+			}
 			else
+			{
 				writeD(_activeChar.getBaseClass());
+			}
 
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
 			writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
@@ -278,7 +279,8 @@ public class CharInfo extends L2GameServerPacket
 			writeD(_activeChar.getAppearance().getHairColor());
 			writeD(_activeChar.getAppearance().getFace());
 
-			if (gmSeeInvis)
+			if (_activeChar.getAppearance().getInvisible())
+			//if(gmSeeInvis)
 			{
 				writeS("Invisible");
 			}
@@ -295,30 +297,39 @@ public class CharInfo extends L2GameServerPacket
 			// Therefore RelationChanged packet with that info is required
 			writeD(0);
 
-			writeC(_activeChar.isSitting() ? 0 : 1);// standing = 1 sitting = 0
-			writeC(_activeChar.isRunning() ? 1 : 0);// running = 1 walking = 0
+			writeC(_activeChar.isSitting() ? 0 : 1); // standing = 1  sitting = 0
+			writeC(_activeChar.isRunning() ? 1 : 0); // running = 1   walking = 0
 			writeC(_activeChar.isInCombat() ? 1 : 0);
 			writeC(_activeChar.isAlikeDead() ? 1 : 0);
 
-			if (gmSeeInvis)
+			//if(gmSeeInvis)
+			//{
+			writeC(0); //if the charinfo is written means receiver can see the char
+			//}
+			//else
+			//{
+			//    writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0); // invisible = 1  visible =0
+			//}
+
+			writeC(_activeChar.getMountType()); // 1 on strider   2 on wyvern   0 no mount
+			writeC(_activeChar.getPrivateStoreType()); //  1 - sellshop
+
+			final Map<Integer, L2CubicInstance> cubics = _activeChar.getCubics();
+
+			Set<Integer> cubicsIds = cubics.keySet();
+
+			writeH(cubicsIds.size());
+			for (Integer id : cubicsIds)
 			{
-				writeC(0);
-			}
-			else
-			{
-				writeC(_activeChar.getAppearance().getInvisible() ? 1 : 0);	// invisible = 1 visible =0
+				if (id != null)
+					writeH(id);
 			}
 
-			writeC(_activeChar.getMountType());	// 1 on strider 2 on wyvern 0 no mount
-			writeC(_activeChar.getPrivateStoreType()); // 1 - sellshop
+			writeC(_activeChar.isInParty() ? 1 : 0);
+			//writeC(0x00); // find party members
 
-			writeH(_activeChar.getCubics().size());
-			for (int id : _activeChar.getCubics().keySet())
-				writeH(id);
-
-			writeC(0x00); // find party members
-
-			if (gmSeeInvis)
+			if (_activeChar.getAppearance().getInvisible())
+			//if(gmSeeInvis)
 			{
 				writeD((_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH));
 			}
@@ -327,8 +338,8 @@ public class CharInfo extends L2GameServerPacket
 				writeD(_activeChar.getAbnormalEffect());
 			}
 
-			writeC(_activeChar.getRecomLeft()); // Changed by Thorgrim
-			writeH(_activeChar.getRecomHave()); // Blue value for name (0 = white, 255 = pure blue)
+			writeC(_activeChar.getRecomLeft()); //Changed by Thorgrim
+			writeH(_activeChar.getRecomHave()); //Blue value for name (0 = white, 255 = pure blue)
 			writeD(_activeChar.getClassId().getId());
 
 			writeD(_maxCp);
@@ -336,17 +347,23 @@ public class CharInfo extends L2GameServerPacket
 			writeC(_activeChar.isMounted() ? 0 : _activeChar.getEnchantEffect());
 
 			if (_activeChar.getTeam() == 1)
-				writeC(0x01); // team circle around feet 1= Blue, 2 = red
+			{
+				writeC(0x01); //team circle around feet 1= Blue, 2 = red
+			}
 			else if (_activeChar.getTeam() == 2)
-				writeC(0x02); // team circle around feet 1= Blue, 2 = red
+			{
+				writeC(0x02); //team circle around feet 1= Blue, 2 = red
+			}
 			else
-				writeC(0x00); // team circle around feet 1= Blue, 2 = red
+			{
+				writeC(0x00); //team circle around feet 1= Blue, 2 = red
+			}
 
 			writeD(_activeChar.getClanCrestLargeId());
 			writeC(_activeChar.isNoble() ? 1 : 0); // Symbol on char menu ctrl+I
 			writeC((_activeChar.isHero() || (_activeChar.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // Hero Aura
 
-			writeC(_activeChar.isFishing() ? 1 : 0); // 0x01: Fishing Mode (Cant be undone by setting back to 0)
+			writeC(_activeChar.isFishing() ? 1 : 0); //0x01: Fishing Mode (Cant be undone by setting back to 0)
 			writeD(_activeChar.GetFishx());
 			writeD(_activeChar.GetFishy());
 			writeD(_activeChar.GetFishz());
@@ -360,12 +377,16 @@ public class CharInfo extends L2GameServerPacket
 
 			writeD(_activeChar.getAppearance().getTitleColor());
 
-			// writeD(0x00); // ??
+			//writeD(0x00); // ??
 
 			if (_activeChar.isCursedWeaponEquiped())
+			{
 				writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()));
+			}
 			else
+			{
 				writeD(0x00);
+			}
 		}
 	}
 

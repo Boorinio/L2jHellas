@@ -2,7 +2,7 @@
 
 <!-- Gold Bank Multisell -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true">
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 
   <!-- Gold Bar To Adena-->
   <item id="1">

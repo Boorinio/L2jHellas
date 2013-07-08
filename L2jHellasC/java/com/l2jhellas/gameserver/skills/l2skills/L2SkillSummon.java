@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -26,7 +27,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
-import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -55,12 +55,12 @@ public class L2SkillSummon extends L2Skill
 			if (_isCubic)
 			{
 				if (getTargetType() != L2SkillTargetType.TARGET_SELF)
-				{
 					return true; // Player is always able to cast mass cubic skill
-				}
 				int mastery = player.getSkillLevel(L2Skill.SKILL_CUBIC_MASTERY);
 				if (mastery < 0)
+				{
 					mastery = 0;
+				}
 				int count = player.getCubics().size();
 				if (count > mastery)
 				{
@@ -94,6 +94,10 @@ public class L2SkillSummon extends L2Skill
 
 		L2PcInstance activeChar = (L2PcInstance) caster;
 
+        // Skill 2046 only used for animation
+        if(getId() == 2046)
+            return;
+
 		if (_npcId == 0)
 		{
 			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
@@ -109,11 +113,15 @@ public class L2SkillSummon extends L2Skill
 				for (L2Object obj : targets)
 				{
 					if (!(obj instanceof L2PcInstance))
+					{
 						continue;
+					}
 					L2PcInstance player = ((L2PcInstance) obj);
 					int mastery = player.getSkillLevel(L2Skill.SKILL_CUBIC_MASTERY);
 					if (mastery < 0)
+					{
 						mastery = 0;
+					}
 					if (mastery == 0 && player.getCubics().size() > 0)
 					{
 						// Player can have only 1 cubic - we shuld replace old cubic with new one
@@ -125,7 +133,9 @@ public class L2SkillSummon extends L2Skill
 						player.getCubics().clear();
 					}
 					if (player.getCubics().size() > mastery)
+					{
 						continue;
+					}
 					if (player.getCubics().containsKey(_npcId))
 					{
 						player.sendMessage("You already have such cubic");
@@ -144,11 +154,15 @@ public class L2SkillSummon extends L2Skill
 			{
 				int mastery = activeChar.getSkillLevel(L2Skill.SKILL_CUBIC_MASTERY);
 				if (mastery < 0)
+				{
 					mastery = 0;
+				}
 				if (activeChar.getCubics().size() > mastery)
 				{
 					if (Config.DEBUG)
+					{
 						_log.fine("player can't summon any more cubics. ignore summon skill");
+					}
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.CUBIC_SUMMONING_FAILED));
 					return;
 				}
@@ -166,28 +180,34 @@ public class L2SkillSummon extends L2Skill
 		if (activeChar.getPet() != null || activeChar.isMounted())
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("player has a pet already. ignore summon skill");
+			}
 			return;
 		}
 
 		L2SummonInstance summon;
 		L2NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(_npcId);
 		if (summonTemplate.type.equalsIgnoreCase("L2SiegeSummon"))
+		{
 			summon = new L2SiegeSummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
+		}
 		else
+		{
 			summon = new L2SummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
+		}
 
 		summon.setName(summonTemplate.name);
 		summon.setTitle(activeChar.getName());
 		summon.setExpPenalty(_expPenalty);
-		if (summon.getLevel() >= Experience.LEVEL.length)
+		if (summon.getLevel() >= ExperienceData.getInstance().getMaxLevel())
 		{
-			summon.getStat().setExp(Experience.LEVEL[Experience.LEVEL.length - 1]);
+			summon.getStat().setExp(ExperienceData.getInstance().getExpForLevel(ExperienceData.getInstance().getMaxPetLevel() - 1));
 			_log.warning("Summon (" + summon.getName() + ") NpcID: " + summon.getNpcId() + " has a level above 75. Please rectify.");
 		}
 		else
 		{
-			summon.getStat().setExp(Experience.LEVEL[(summon.getLevel() % Experience.LEVEL.length)]);
+			summon.getStat().setExp(ExperienceData.getInstance().getExpForLevel(summon.getLevel() % ExperienceData.getInstance().getMaxPetLevel()));
 		}
 		summon.setCurrentHp(summon.getMaxHp());
 		summon.setCurrentMp(summon.getMaxMp());
@@ -200,5 +220,10 @@ public class L2SkillSummon extends L2Skill
 
 		summon.setFollowStatus(true);
 		summon.setShowSummonAnimation(false); // addVisibleObject created the info packets with summon animation
+	}
+
+	public final boolean isCubic()
+	{
+		return _isCubic;
 	}
 }

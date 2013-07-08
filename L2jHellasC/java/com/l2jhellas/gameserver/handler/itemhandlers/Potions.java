@@ -79,11 +79,11 @@ public class Potions implements IItemHandler
 	8603, 8604, 8605, 8606, 8607,
 	8608, 8609, 8610, 8611, 8612,
 	8613, 8614,
-			// elixir of life
+	// elixir of life
 	8622, 8623, 8624, 8625, 8626, 8627,
-			// elixir of Strength
+	// elixir of Strength
 	8628, 8629, 8630, 8631, 8632, 8633,
-			// elixir of cp
+	// elixir of cp
 	8634, 8635, 8636, 8637, 8638, 8639
 	};/** @formatter:on */
 

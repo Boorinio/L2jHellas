@@ -921,7 +921,7 @@ public class ItemTable
 			}
 
 			// if it's a pet control item, delete the pet as well
-			if (L2PetDataTable.isPetItem(item.getItemId()))
+			if (PetDataTable.isPetItem(item.getItemId()))
 			{
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{

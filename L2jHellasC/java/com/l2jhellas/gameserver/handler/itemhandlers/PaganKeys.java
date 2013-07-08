@@ -101,9 +101,8 @@ public class PaganKeys implements IItemHandler
 					activeChar.sendMessage("Incorrect Door.");
 				}
 			break;
-			case 8274: // Chapelkey, Capel Door has a Gatekeeper?? I use this
-						// key for Altar Entrance
-				if (door.getDoorName().startsWith("Altar_Entrance"))
+			case 8274: // Chapelkey, Capel Door has a Gatekeeper?? I use this key for Altar Entrance and Chapel_Door
+				if (door.getDoorName().startsWith("Altar_Entrance") || door.getDoorName().startsWith("Chapel_Door"))
 				{
 					if (openChance > 0 && Rnd.get(100) < openChance)
 					{

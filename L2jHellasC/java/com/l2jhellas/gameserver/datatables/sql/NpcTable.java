@@ -459,7 +459,7 @@ public class NpcTable
 	}
 
 	// just wrapper
-	public void reloadAllNpc()
+	public void reload()
 	{
 		restoreNpcData();
 	}

@@ -38,17 +38,16 @@ public class ConsoleLogFormatter extends Formatter
 		output.append(CRLF);
 		if (record.getThrown() != null)
 		{
-			try
+			try (StringWriter sw = new StringWriter();
+					PrintWriter pw = new PrintWriter(sw))
 			{
-				StringWriter sw = new StringWriter();
-				PrintWriter pw = new PrintWriter(sw);
 				record.getThrown().printStackTrace(pw);
-				pw.close();
 				output.append(sw.toString());
 				output.append(CRLF);
 			}
 			catch (Exception ex)
 			{
+				//
 			}
 		}
 		return output.toString();

@@ -19,10 +19,10 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
@@ -63,7 +63,9 @@ public class AdminSpawn implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_show_spawns"))
+		{
 			AdminHelpPage.showHelpPage(activeChar, "spawns.htm");
+		}
 		else if (command.startsWith("admin_spawn_index"))
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");
@@ -87,7 +89,9 @@ public class AdminSpawn implements IAdminCommandHandler
 			}
 		}
 		else if (command.equals("admin_show_npcs"))
+		{
 			AdminHelpPage.showHelpPage(activeChar, "npcs.htm");
+		}
 		else if (command.startsWith("admin_npc_index"))
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");
@@ -120,13 +124,21 @@ public class AdminSpawn implements IAdminCommandHandler
 				int respawnTime = 0;
 				int mobCount = 1;
 				if (st.hasMoreTokens())
+				{
 					mobCount = Integer.parseInt(st.nextToken());
+				}
 				if (st.hasMoreTokens())
+				{
 					respawnTime = Integer.parseInt(st.nextToken());
+				}
 				if (cmd.equalsIgnoreCase("admin_spawn_once"))
+				{
 					spawnMonster(activeChar, id, respawnTime, mobCount, false);
+				}
 				else
+				{
 					spawnMonster(activeChar, id, respawnTime, mobCount, true);
+				}
 			}
 			catch (Exception e)
 			{	// Case of wrong or missing monster data
@@ -136,16 +148,22 @@ public class AdminSpawn implements IAdminCommandHandler
 		else if (command.startsWith("admin_unspawnall"))
 		{
 			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+			{
 				player.sendPacket(new SystemMessage(SystemMessageId.NPC_SERVER_NOT_OPERATING));
+			}
 			RaidBossSpawnManager.getInstance().cleanUp();
 			DayNightSpawnManager.getInstance().cleanUp();
 			L2World.getInstance().deleteVisibleNpcSpawns();
-			GmListTable.broadcastMessageToGMs("NPC Unspawn completed!");
+			AdminTable.getInstance().broadcastMessageToGMs("NPC Unspawn completed!");
 		}
 		else if (command.startsWith("admin_spawnday"))
+		{
 			DayNightSpawnManager.getInstance().spawnDayCreatures();
+		}
 		else if (command.startsWith("admin_spawnnight"))
+		{
 			DayNightSpawnManager.getInstance().spawnNightCreatures();
+		}
 		else if (command.startsWith("admin_respawnall") || command.startsWith("admin_spawn_reload"))
 		{
 			// make sure all spawns are deleted
@@ -153,15 +171,15 @@ public class AdminSpawn implements IAdminCommandHandler
 			DayNightSpawnManager.getInstance().cleanUp();
 			L2World.getInstance().deleteVisibleNpcSpawns();
 			// now respawn all
-			NpcTable.getInstance().reloadAllNpc();
+			NpcTable.getInstance().reload();
 			SpawnTable.getInstance().reloadAll();
 			RaidBossSpawnManager.getInstance().reloadBosses();
-			GmListTable.broadcastMessageToGMs("NPC Respawn completed!");
+			AdminTable.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
 		}
 		else if (command.startsWith("admin_teleport_reload"))
 		{
-			TeleportLocationTable.getInstance().reloadAll();
-			GmListTable.broadcastMessageToGMs("Teleport List Table reloaded.");
+			TeleportLocationTable.getInstance().reload();
+			AdminTable.getInstance().broadcastMessageToGMs("Teleport List Table reloaded.");
 		}
 		return true;
 	}
@@ -176,7 +194,9 @@ public class AdminSpawn implements IAdminCommandHandler
 	{
 		L2Object target = activeChar.getTarget();
 		if (target == null)
+		{
 			target = activeChar;
+		}
 		if (target != activeChar)
 			return;
 
@@ -204,16 +224,24 @@ public class AdminSpawn implements IAdminCommandHandler
 			spawn.setHeading(activeChar.getHeading());
 			spawn.setRespawnDelay(respawnTime);
 			if (RaidBossSpawnManager.getInstance().isDefined(spawn.getNpcid()))
+			{
 				activeChar.sendMessage("You cannot spawn another instance of " + template1.name + ".");
+			}
 			else
 			{
 				if (RaidBossSpawnManager.getInstance().getValidTemplate(spawn.getNpcid()) != null)
+				{
 					RaidBossSpawnManager.getInstance().addNewSpawn(spawn, 0, template1.getStatsSet().getDouble("baseHpMax"), template1.getStatsSet().getDouble("baseMpMax"), permanent);
+				}
 				else
+				{
 					SpawnTable.getInstance().addNewSpawn(spawn, permanent);
+				}
 				spawn.init();
 				if (!permanent)
+				{
 					spawn.stopRespawn();
+				}
 				activeChar.sendMessage("Created " + template1.name + " on " + target.getObjectId());
 			}
 		}
@@ -252,9 +280,13 @@ public class AdminSpawn implements IAdminCommandHandler
 
 		// End
 		if (ended)
+		{
 			tb.append(end2);
+		}
 		else
+		{
 			tb.append(end1);
+		}
 
 		activeChar.sendPacket(new NpcHtmlMessage(5, tb.toString()));
 	}
@@ -283,9 +315,13 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 		// End
 		if (ended)
+		{
 			tb.append(end2);
+		}
 		else
+		{
 			tb.append(end1);
+		}
 		activeChar.sendPacket(new NpcHtmlMessage(5, tb.toString()));
 	}
 }

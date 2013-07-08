@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.instancemanager.PetitionManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -29,7 +29,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  * <li>d: type</li>
  * </ul>
  * </p>
- * 
+ *
  * @author -Wooden-, TempyIncursion
  */
 public final class RequestPetition extends L2GameClientPacket
@@ -53,7 +53,7 @@ public final class RequestPetition extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
-		if (!GmListTable.getInstance().isGmOnline(false))
+		if (!AdminTable.getInstance().isGmOnline(false))
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.NO_GM_PROVIDING_SERVICE_NOW));
 			return;

@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -37,7 +37,9 @@ public class AdminGm implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_gm"))
+		{
 			handleGm(activeChar);
+		}
 
 		return true;
 	}
@@ -52,7 +54,7 @@ public class AdminGm implements IAdminCommandHandler
 	{
 		if (activeChar.isGM())
 		{
-			GmListTable.getInstance().deleteGm(activeChar);
+			AdminTable.getInstance().deleteGm(activeChar);
 			activeChar.tempAc = activeChar.getAccessLevel().getLevel();
 			activeChar.setAccessLevel(0);
 
@@ -61,7 +63,7 @@ public class AdminGm implements IAdminCommandHandler
 		}
 		else
 		{
-			GmListTable.getInstance().addGm(activeChar, false);
+			AdminTable.getInstance().addGm(activeChar, false);
 			activeChar.setAccessLevel(activeChar.tempAc);
 
 			activeChar.sendMessage("You now have GM status.");

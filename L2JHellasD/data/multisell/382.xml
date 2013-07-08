@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!-- Quest 382: Kail's Magic Coin - Head Blacksmith Vergara -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true">
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 	<item id="1">
 		<ingredient id="5961" count="10" />
 		<ingredient id="5962" count="10" />

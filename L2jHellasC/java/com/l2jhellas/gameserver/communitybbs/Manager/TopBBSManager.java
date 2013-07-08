@@ -48,7 +48,7 @@ public class TopBBSManager extends BaseBBSManager
 		if (command.equals("_bbstop") | command.equals("_bbshome"))
 		{
 			filepath = path + "index.htm";
-			content = HtmCache.getInstance().getHtm(filepath);
+			content = HtmCache.getInstance().getHtmForce(filepath);
 			separateAndSend(content, activeChar);
 		}
 		else if (command.startsWith("_bbstop;"))
@@ -65,7 +65,7 @@ public class TopBBSManager extends BaseBBSManager
 				separateAndSend(content, activeChar);
 				return;
 			}
-			content = HtmCache.getInstance().getHtm(filepath);
+			content = HtmCache.getInstance().getHtmForce(filepath);
 
 			if (content.isEmpty())
 				content = "<html><body><br><br><center>Content Empty: The command " + command + " points to an invalid or empty html file(" + filepath + ").</center></body></html>";

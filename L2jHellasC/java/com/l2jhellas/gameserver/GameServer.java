@@ -45,8 +45,6 @@ import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.csv.StaticObjects;
 import com.l2jhellas.gameserver.datatables.csv.SummonItemsData;
-import com.l2jhellas.gameserver.datatables.sql.AccessLevels;
-import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -55,19 +53,21 @@ import com.l2jhellas.gameserver.datatables.sql.HelperBuffTable;
 import com.l2jhellas.gameserver.datatables.sql.HennaTable;
 import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.L2PetDataTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.MaxCheatersTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
+import com.l2jhellas.gameserver.datatables.sql.PetDataTable;
 import com.l2jhellas.gameserver.datatables.sql.SkillSpellbookTable;
 import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.ZoneData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
@@ -141,6 +141,7 @@ public class GameServer
 	private static Status _statusServer;
 	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
 
+
 	public SelectorThread<L2GameClient> getSelectorThread()
 	{
 		return _selectorThread;
@@ -211,13 +212,12 @@ public class GameServer
 		{
 			ForumsBBSManager.getInstance();
 		}
+		ExperienceData.getInstance();
 		ClanTable.getInstance();
 		CharTemplateTable.getInstance();
 		LevelUpData.getInstance();
-		AccessLevels.getInstance();
-		AdminCommandAccessRights.getInstance();
 		CrownManager.getInstance();
-		GmListTable.getInstance();
+		AdminTable.getInstance();
 		HennaTable.getInstance();
 		HennaTreeTable.getInstance();
 		HelperBuffTable.getInstance();
@@ -278,7 +278,7 @@ public class GameServer
 		PetitionManager.getInstance();
 		CursedWeaponsManager.getInstance();
 		FourSepulchersManager.getInstance();
-		L2PetDataTable.getInstance().loadPetsData();
+		PetDataTable.getInstance().loadPetsData();
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 		{
 			GeoEditorListener.getInstance();
@@ -535,7 +535,7 @@ public class GameServer
 		{
 			new File(Config.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 		}
-
+		;
 		/*** Main ***/
 		// Create directories
 		File logFolder = new File(Config.DATAPACK_ROOT, LOG_FOLDER);

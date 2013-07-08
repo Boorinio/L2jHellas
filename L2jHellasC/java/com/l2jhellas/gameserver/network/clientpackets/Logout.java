@@ -64,7 +64,9 @@ public final class Logout extends L2GameClientPacket
 		if (AttackStanceTaskManager.getInstance().getAttackStanceTask(player))
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("Player " + player.getName() + " tried to logout while fighting.");
+			}
 
 			player.sendPacket(new SystemMessage(SystemMessageId.CANT_LOGOUT_WHILE_FIGHTING));
 			player.sendPacket(new ActionFailed());
@@ -80,6 +82,7 @@ public final class Logout extends L2GameClientPacket
 		if (player.isAway())
 		{
 			player.sendMessage("You can't restart in Away mode.");
+			return;
 		}
 		if (player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
 		{
@@ -100,7 +103,9 @@ public final class Logout extends L2GameClientPacket
 			L2Party playerParty = player.getParty();
 
 			if (playerParty != null)
+			{
 				player.getParty().broadcastToPartyMembers(SystemMessage.sendString(player.getName() + " has been removed from the upcoming festival."));
+			}
 		}
 		if (player.isFlying())
 		{

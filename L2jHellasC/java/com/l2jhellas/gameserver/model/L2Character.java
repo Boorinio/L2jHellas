@@ -1631,6 +1631,9 @@ public abstract class L2Character extends L2Object
 		// Set target to null and cancel Attack or Cast
 		setTarget(null);
 
+        if (isAfraid())
+        	stopFear(null);
+        
 		// Stop movement
 		stopMove(null);
 
@@ -1941,6 +1944,9 @@ public abstract class L2Character extends L2Object
 
 	public void setIsImmobilized(boolean value)
 	{
+		// Stop this if he is moving
+        this.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+        
 		_isImmobilized = value;
 	}
 
@@ -6957,7 +6963,34 @@ public abstract class L2Character extends L2Object
 		else
 			return false;
 	}
+	
+    /**
+     * Return True if the L2Character is side the target and can't be seen.<BR>
+     * <BR>
+     * @param target the target
+     * @return true, if is side
+     */
+    public boolean isSide(L2Object target)
+    {
+        if (target == null)
+            return false;
+        if (target instanceof L2Character)
+        {
+            if (isBehindTarget() || isFrontTarget())
+                return false;
+        }
+        return true;
+    }
 
+    /**
+     * Checks if is side target.
+     * @return true, if is side target
+     */
+    public boolean isSideTarget()
+    {
+        return isSide(getTarget());
+    }
+    
 	/**
 	 * Return 1.<BR>
 	 * <BR>

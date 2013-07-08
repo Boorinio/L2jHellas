@@ -37,13 +37,13 @@ import java.util.StringTokenizer;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
-import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.Shutdown;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.instancemanager.Manager;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -81,21 +81,33 @@ public class GameStatusThread extends Thread
 		if (Config.DEVELOPER)
 		{
 			if (type == 1)
+			{
 				System.out.println("TELNET | " + text);
+			}
 			else if (type == 2)
+			{
 				System.out.print("TELNET | " + text);
+			}
 			else if (type == 3)
+			{
 				System.out.print(text);
+			}
 			else if (type == 4)
+			{
 				System.out.println(text);
+			}
 			else
+			{
 				System.out.println("TELNET | " + text);
+			}
 		}
 		else
 		{
 			// only print output if the message is rejected
 			if (type == 5)
+			{
 				System.out.println("TELNET | " + text);
+			}
 		}
 	}
 
@@ -111,7 +123,9 @@ public class GameStatusThread extends Thread
 
 		// read and loop thru list of IPs, compare with newIP
 		if (Config.DEVELOPER)
+		{
 			telnetOutput(2, "");
+		}
 
 		try
 		{
@@ -123,7 +137,9 @@ public class GameStatusThread extends Thread
 			String HostList = telnetSettings.getProperty("ListOfHosts", "127.0.0.1,localhost");
 
 			if (Config.DEVELOPER)
+			{
 				telnetOutput(3, "Comparing ip to list...");
+			}
 
 			// compare
 			String ipToCompare = null;
@@ -133,21 +149,29 @@ public class GameStatusThread extends Thread
 				{
 					ipToCompare = InetAddress.getByName(ip).getHostAddress();
 					if (clientStringIP.equals(ipToCompare))
+					{
 						result = true;
+					}
 					if (Config.DEVELOPER)
+					{
 						telnetOutput(3, clientStringIP + " = " + ipToCompare + "(" + ip + ") = " + result);
+					}
 				}
 			}
 		}
 		catch (IOException e)
 		{
 			if (Config.DEVELOPER)
+			{
 				telnetOutput(4, "");
+			}
 			telnetOutput(1, "Error: " + e);
 		}
 
 		if (Config.DEVELOPER)
+		{
 			telnetOutput(4, "Allow IP: " + result);
+		}
 		return result;
 	}
 
@@ -274,15 +298,23 @@ public class GameStatusThread extends Thread
 					for (L2Object obj : L2World.getInstance().getAllVisibleObjects())
 					{
 						if (obj == null)
+						{
 							continue;
+						}
 						if (obj instanceof L2Character)
 							if (((L2Character) obj).hasAI())
+							{
 								AICount++;
+							}
 						if (obj instanceof L2ItemInstance)
 							if (((L2ItemInstance) obj).getLocation() == L2ItemInstance.ItemLocation.VOID)
+							{
 								itemVoidCount++;
+							}
 							else
+							{
 								itemCount++;
+							}
 
 						else if (obj instanceof L2MonsterInstance)
 						{
@@ -291,15 +323,25 @@ public class GameStatusThread extends Thread
 							minionsGroupCount += ((L2MonsterInstance) obj).getTotalSpawnedMinionsGroups();
 						}
 						else if (obj instanceof L2NpcInstance)
+						{
 							npcCount++;
+						}
 						else if (obj instanceof L2PcInstance)
+						{
 							pcCount++;
+						}
 						else if (obj instanceof L2Summon)
+						{
 							summonCount++;
+						}
 						else if (obj instanceof L2DoorInstance)
+						{
 							doorCount++;
+						}
 						else if (obj instanceof L2Character)
+						{
 							charCount++;
+						}
 					}
 					_print.println("Server Status: ");
 					_print.println("  --->  Player Count: " + playerCount + "/" + max);
@@ -386,7 +428,7 @@ public class GameStatusThread extends Thread
 					{
 						_usrCommand = _usrCommand.substring(7);
 						CreatureSay cs = new CreatureSay(0, 9, "Telnet GM Broadcast from " + _cSocket.getInetAddress().getHostAddress(), _usrCommand);
-						GmListTable.broadcastToGMs(cs);
+						AdminTable.getInstance().broadcastToGMs(cs);
 						_print.println("Your Message Has Been Sent To " + getOnlineGMS() + " GM(s).");
 					}
 					catch (StringIndexOutOfBoundsException e)
@@ -399,14 +441,16 @@ public class GameStatusThread extends Thread
 					int igm = 0;
 					String gmList = "";
 
-					for (String player : GmListTable.getInstance().getAllGmNames(true))
+					for (String player : AdminTable.getInstance().getAllGmNames(true))
 					{
 						gmList = gmList + ", " + player;
 						igm++;
 					}
 					_print.println("There are currently " + igm + " GM(s) online...");
 					if (gmList != "")
+					{
 						_print.println(gmList);
+					}
 				}
 				/*
 				 * else if (_usrCommand.startsWith("unblock"))
@@ -545,7 +589,9 @@ public class GameStatusThread extends Thread
 							_print.println("Character " + playerObj.getName() + " jailed for " + (delay > 0 ? delay + " minutes." : "ever!"));
 						}
 						else
+						{
 							jailOfflinePlayer(playerObj.getName(), delay);
+						}
 					}
 					catch (NoSuchElementException nsee)
 					{
@@ -554,7 +600,9 @@ public class GameStatusThread extends Thread
 					catch (Exception e)
 					{
 						if (Config.DEBUG)
+						{
 							e.printStackTrace();
+						}
 					}
 				}
 				else if (_usrCommand.startsWith("unjail"))
@@ -571,7 +619,9 @@ public class GameStatusThread extends Thread
 							_print.println("Character " + playerObj.getName() + " removed from jail");
 						}
 						else
+						{
 							unjailOfflinePlayer(playerObj.getName());
+						}
 					}
 					catch (NoSuchElementException nsee)
 					{
@@ -580,7 +630,9 @@ public class GameStatusThread extends Thread
 					catch (Exception e)
 					{
 						if (Config.DEBUG)
+						{
 							e.printStackTrace();
+						}
 					}
 				}
 				else if (_usrCommand.startsWith("debug") && _usrCommand.length() > 6)
@@ -692,7 +744,7 @@ public class GameStatusThread extends Thread
 						else if (type.equals("npc"))
 						{
 							_print.print("Reloading npc templates... ");
-							NpcTable.getInstance().reloadAllNpc();
+							NpcTable.getInstance().reload();
 							_print.print("done\n");
 						}
 						else if (type.equals("html"))
@@ -738,7 +790,9 @@ public class GameStatusThread extends Thread
 							for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 							{
 								if (player.getPrivateStoreType() == 0)
+								{
 									continue;
+								}
 
 								TradeList list = null;
 								String content = "";
@@ -778,7 +832,9 @@ public class GameStatusThread extends Thread
 					if (args.length > 1)
 					{
 						for (int i = 1; i < args.length; i++)
+						{
 							DynamicExtension.getInstance().reload(args[i]);
+						}
 					}
 					else
 					{
@@ -791,7 +847,9 @@ public class GameStatusThread extends Thread
 					if (args.length > 1)
 					{
 						for (int i = 1; i < args.length; i++)
+						{
 							_print.print(DynamicExtension.getInstance().initExtension(args[i]) + "\r\n");
+						}
 					}
 					else
 					{
@@ -804,7 +862,9 @@ public class GameStatusThread extends Thread
 					if (args.length > 1)
 					{
 						for (int i = 1; i < args.length; i++)
+						{
 							_print.print(DynamicExtension.getInstance().unloadExtension(args[i]) + "\r\n");
+						}
 					}
 					else
 					{
@@ -814,7 +874,9 @@ public class GameStatusThread extends Thread
 				else if (_usrCommand.startsWith("extlist"))
 				{
 					for (String e : DynamicExtension.getInstance().getExtensions())
+					{
 						_print.print(e + "\r\n");
+					}
 				}
 				else if (_usrCommand.startsWith("get"))
 				{
@@ -823,16 +885,22 @@ public class GameStatusThread extends Thread
 					{
 						String[] args = _usrCommand.substring(3).split("\\s+");
 						if (args.length == 1)
+						{
 							o = DynamicExtension.getInstance().get(args[0], null);
+						}
 						else
+						{
 							o = DynamicExtension.getInstance().get(args[0], args[1]);
+						}
 					}
 					catch (Exception ex)
 					{
 						_print.print(ex.toString() + "\r\n");
 					}
 					if (o != null)
+					{
 						_print.print(o.toString() + "\r\n");
+					}
 				}
 				else if (_usrCommand.length() > 0)
 				{
@@ -840,11 +908,17 @@ public class GameStatusThread extends Thread
 					{
 						String[] args = _usrCommand.split("\\s+");
 						if (args.length == 1)
+						{
 							DynamicExtension.getInstance().set(args[0], null, null);
+						}
 						else if (args.length == 2)
+						{
 							DynamicExtension.getInstance().set(args[0], null, args[1]);
+						}
 						else
+						{
 							DynamicExtension.getInstance().set(args[0], args[1], args[2]);
+						}
 					}
 					catch (Exception ex)
 					{
@@ -888,15 +962,21 @@ public class GameStatusThread extends Thread
 			statement.close();
 
 			if (count == 0)
+			{
 				_print.println("Character not found!");
+			}
 			else
+			{
 				_print.println("Character " + name + " jailed for " + (delay > 0 ? delay + " minutes." : "ever!"));
+			}
 		}
 		catch (SQLException se)
 		{
 			_print.println("SQLException while jailing player");
 			if (Config.DEBUG)
+			{
 				se.printStackTrace();
+			}
 		}
 	}
 
@@ -917,21 +997,27 @@ public class GameStatusThread extends Thread
 			statement.close();
 
 			if (count == 0)
+			{
 				_print.println("Character not found!");
+			}
 			else
+			{
 				_print.println("Character " + name + " set free.");
+			}
 		}
 		catch (SQLException se)
 		{
 			_print.println("SQLException while jailing player");
 			if (Config.DEBUG)
+			{
 				se.printStackTrace();
+			}
 		}
 	}
 
 	private int getOnlineGMS()
 	{
-		return GmListTable.getInstance().getAllGms(true).size();
+		return AdminTable.getInstance().getAllGms(true).size();
 	}
 
 	private String getUptime(int time)

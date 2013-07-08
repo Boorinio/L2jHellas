@@ -1001,7 +1001,7 @@ public class L2Attackable extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Could not calculate rewards." + e);
+			_log.log(Level.SEVERE, getClass().getName() + ": Could not calculate rewards." + e.getMessage());
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();

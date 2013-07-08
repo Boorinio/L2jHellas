@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!-- Quest 343_UnderTheShadowOfTheIvoryTower: exchange Orbs -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true">
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 	<!-- Haste Potion: 10 Orbs -->
 	<item id="1">
 		<ingredient id="4364" count="10" />

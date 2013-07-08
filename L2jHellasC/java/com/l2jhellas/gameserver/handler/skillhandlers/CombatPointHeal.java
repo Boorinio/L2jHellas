@@ -34,11 +34,9 @@ public class CombatPointHeal implements ISkillHandler
 	public void useSkill(L2Character actChar, L2Skill skill, L2Object[] targets)
 	{
 		// L2Character activeChar = actChar;
-
-		L2Character target = null;
-
 		for (int index = 0; index < targets.length; index++)
 		{
+			L2Character target = null;
 			target = (L2Character) targets[index];
 
 			double cp = skill.getPower();

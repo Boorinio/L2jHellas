@@ -250,13 +250,9 @@ public final class ExternalConfig
 			DATABASE_CLEANER_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("DatabaseCleanerEnabled", "false"));
 			DATABASE_CLEANER_REPEAT_TIME = Integer.parseInt(ccSettings.getProperty("DatabaseCleanerRepeatTime", "0"));
 			if (DATABASE_CLEANER_REPEAT_TIME <= 0)
-			{
 				DATABASE_CLEANER_ENABLED = false;
-			}
 			else
-			{
 				DATABASE_CLEANER_REPEAT_TIME *= 86400000;
-			}
 
 			PVP_REWARD_ID = Integer.parseInt(ccSettings.getProperty("PvpRewardId", "6392"));
 			PVP_REWARD_AMOUNT = Integer.parseInt(ccSettings.getProperty("PvpRewardAmmount", "1"));
@@ -279,8 +275,7 @@ public final class ExternalConfig
 			String id7[] = ccSettings.getProperty("TitleColors", "").split(",");
 
 			if (RANK_PVP_SYSTEM_ENABLED || RANK_REWARD_ENABLED || RANKS_ENABLED)
-			{
-				if (id1.length != id2.length || id1.length != id3.length || id1.length != id4.length || id1.length != id5.length || id1.length != id6.length || id1.length != id7.length)
+				if ((id1.length != id2.length) || (id1.length != id3.length) || (id1.length != id4.length) || (id1.length != id5.length) || (id1.length != id6.length) || (id1.length != id7.length))
 				{
 					_log.info("ERROR: Rank PvP System Config: Arrays sizes should be the same!");
 
@@ -294,7 +289,6 @@ public final class ExternalConfig
 
 				}
 				else
-				{
 					for (int i = 0; i < id1.length; i++)
 					{
 						Rank rank = new Rank();
@@ -310,8 +304,6 @@ public final class ExternalConfig
 
 						RANKS.put(id1.length - i, rank);
 					}
-				}
-			}
 
 			NICK_COLOR_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("NickColorEnabled", "false"));
 			TITLE_COLOR_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TitleColorEnabled", "false"));
@@ -319,9 +311,7 @@ public final class ExternalConfig
 			RANK_POINTS_DOWN_COUNT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankPointsDownCountEnabled", "false"));
 			RANK_POINTS_DOWN_AMOUNTS = new FastList<Integer>();
 			for (String id : ccSettings.getProperty("RankPointsDownAmounts", "").split(","))
-			{
 				RANK_POINTS_DOWN_AMOUNTS.add(Integer.parseInt(id));
-			}
 
 			RANK_SHOUT_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankShoutInfoOnKillEnabled", "false"));
 			RANK_SHOUT_BONUS_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankShoutBonusInfoOnKillEnabled", "false"));
@@ -329,25 +319,20 @@ public final class ExternalConfig
 			RANK_REWARD_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("RankRewardForInnocentKillEnabled", "false"));
 			WAR_KILLS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("WarKillsEnabled", "false"));
 			if (WAR_KILLS_ENABLED)
-			{
 				WAR_RANK_POINTS_RATIO = Double.parseDouble(ccSettings.getProperty("WarRankPointsRatio", "1.0"));
-			}
 			else
-			{
 				WAR_RANK_POINTS_RATIO = 1.0;
-			}
 
 			COMBO_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillEnabled", "false"));
 			COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillProtectionWithLegalKillEnabled", "false"));
 			COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillProtectionNoRepeatEnabled", "false"));
 
 			String propertyValue = ccSettings.getProperty("ComboKillLocalAreaMessages");
-			if (propertyValue != null && propertyValue.length() > 0)
+			if ((propertyValue != null) && (propertyValue.length() > 0))
 			{
 
 				String[] propertySplit = propertyValue.split(";");
 				if (propertySplit.length > 0)
-				{
 					for (String skill : propertySplit)
 					{
 
@@ -357,7 +342,6 @@ public final class ExternalConfig
 							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
 						}
 						else
-						{
 							try
 							{
 								COMBO_KILL_LOCAL_AREA_MESSAGES.put(Integer.parseInt(skillSplit[0]), skillSplit[1]);
@@ -365,22 +349,17 @@ public final class ExternalConfig
 							catch (NumberFormatException nfe)
 							{
 								if (!skill.isEmpty())
-								{
 									_log.warning(StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-								}
 							}
-						}
 					}
-				}
 			}
 
 			propertyValue = ccSettings.getProperty("ComboKillGlobalAreaMessages", "");
-			if (propertyValue != null && propertyValue.length() > 0)
+			if ((propertyValue != null) && (propertyValue.length() > 0))
 			{
 
 				String[] propertySplit = ccSettings.getProperty("ComboKillGlobalAreaMessages").split(";");
 				if (propertySplit.length > 0)
-				{
 					for (String skill : propertySplit)
 					{
 
@@ -390,7 +369,6 @@ public final class ExternalConfig
 							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
 						}
 						else
-						{
 							try
 							{
 								COMBO_KILL_GLOBAL_AREA_MESSAGES.put(Integer.parseInt(skillSplit[0]), skillSplit[1]);
@@ -398,13 +376,9 @@ public final class ExternalConfig
 							catch (NumberFormatException nfe)
 							{
 								if (!skill.isEmpty())
-								{
 									_log.warning(StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-								}
 							}
-						}
 					}
-				}
 			}
 
 			COMBO_KILL_ALT_MESSAGES_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillAltMessagesEnabled", "false"));
@@ -419,12 +393,11 @@ public final class ExternalConfig
 			COMBO_KILL_RANK_POINTS_RATIO_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillRankPointsRatioEnabled", "false"));
 
 			propertyValue = ccSettings.getProperty("ComboKillRankPointsRatio", "");
-			if (propertyValue != null && propertyValue.length() > 0)
+			if ((propertyValue != null) && (propertyValue.length() > 0))
 			{
 
 				String[] propertySplit = ccSettings.getProperty("ComboKillRankPointsRatio").split(";");
 				if (propertySplit.length > 0)
-				{
 					for (String skill : propertySplit)
 					{
 
@@ -434,7 +407,6 @@ public final class ExternalConfig
 							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
 						}
 						else
-						{
 							try
 							{
 								COMBO_KILL_RANK_POINTS_RATIO.put(Integer.parseInt(skillSplit[0]), Double.parseDouble(skillSplit[1]));
@@ -442,27 +414,20 @@ public final class ExternalConfig
 							catch (NumberFormatException nfe)
 							{
 								if (!skill.isEmpty())
-								{
 									_log.warning(StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-								}
 							}
-						}
 					}
-				}
 			}
 
 			COMBO_KILL_ON_EVENTS_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("ComboKillOnEventsEnabled", "false"));
 
 			// additional security for combo kill system:
-			if (COMBO_KILL_LOCAL_AREA_MESSAGES.size() == 0 && COMBO_KILL_GLOBAL_AREA_MESSAGES.size() == 0)
-			{
+			if ((COMBO_KILL_LOCAL_AREA_MESSAGES.size() == 0) && (COMBO_KILL_GLOBAL_AREA_MESSAGES.size() == 0))
 				COMBO_KILL_ENABLED = false;
-			}
 
 			int i = 0;
 			String tempStr = ccSettings.getProperty("AllowedZonesIds");
-			if (tempStr != null && tempStr.length() > 0)
-			{
+			if ((tempStr != null) && (tempStr.length() > 0))
 				for (String rZoneId : tempStr.split(","))
 				{
 					try
@@ -475,12 +440,10 @@ public final class ExternalConfig
 					}
 					i++;
 				}
-			}
 
 			i = 0;
 			tempStr = ccSettings.getProperty("RestrictedZonesIds");
-			if (tempStr != null && tempStr.length() > 0)
-			{
+			if ((tempStr != null) && (tempStr.length() > 0))
 				for (String rZoneId : tempStr.split(","))
 				{
 					try
@@ -493,7 +456,6 @@ public final class ExternalConfig
 					}
 					i++;
 				}
-			}
 			LEGAL_KILL_MIN_LVL = Integer.parseInt(ccSettings.getProperty("LegalKillMinLvl", "1"));
 			LEGAL_KILL_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("LegalKillForPkKillerEnabled", "true"));
 			LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("LegalKillForInnocentKillerEnabled", "false"));
@@ -512,8 +474,7 @@ public final class ExternalConfig
 
 			i = 0;
 			tempStr = ccSettings.getProperty("DeathManagerRestrictedZonesIds");
-			if (tempStr != null && tempStr.length() > 0)
-			{
+			if ((tempStr != null) && (tempStr.length() > 0))
 				for (String rZoneId : tempStr.split(","))
 				{
 					try
@@ -526,15 +487,13 @@ public final class ExternalConfig
 					}
 					i++;
 				}
-			}
 
 			propertyValue = ccSettings.getProperty("RankPointsBonusZonesIds", "");
-			if (propertyValue != null && propertyValue.length() > 0)
+			if ((propertyValue != null) && (propertyValue.length() > 0))
 			{
 
 				String[] propertySplit = ccSettings.getProperty("RankPointsBonusZonesIds", "").split(";");
 				if (propertySplit.length > 0)
-				{
 					for (String skill : propertySplit)
 					{
 
@@ -544,7 +503,6 @@ public final class ExternalConfig
 							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
 						}
 						else
-						{
 							try
 							{
 
@@ -553,13 +511,9 @@ public final class ExternalConfig
 							catch (NumberFormatException nfe)
 							{
 								if (!skill.isEmpty())
-								{
 									_log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-								}
 							}
-						}
 					}
-				}
 			}
 
 			TOTAL_KILLS_IN_SHOUT_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("TotalKillsInShoutEnabled", "true"));
@@ -574,22 +528,16 @@ public final class ExternalConfig
 
 			PVP_TABLE_UPDATE_INTERVAL = (Integer.parseInt(ccSettings.getProperty("PvpTableUpdateInterval", "1")) * 60000);
 			if (PVP_TABLE_UPDATE_INTERVAL < 1)
-			{
 				PVP_TABLE_UPDATE_INTERVAL = 60000;
-			}
 
 			TOP_TABLE_UPDATE_INTERVAL = (Integer.parseInt(ccSettings.getProperty("TopTableUpdateInterval", "60")) * 60000);
 			if (TOP_TABLE_UPDATE_INTERVAL < 10)
-			{
 				TOP_TABLE_UPDATE_INTERVAL = 3600000;
-			}
 
 			COMMUNITY_BOARD_TOP_LIST_ENABLED = Boolean.parseBoolean(ccSettings.getProperty("CommunityBoardTopListEnabled", "true"));
 			COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT = Integer.parseInt(ccSettings.getProperty("CommunityBoardTopListIgnoreTimeLimit", "0"));
 			if (COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT > 0)
-			{
 				COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT *= 86400000;
-			}
 
 			IMAGE_PREFIX = Integer.parseInt(ccSettings.getProperty("ImagePrefix", "1"));
 
@@ -598,9 +546,7 @@ public final class ExternalConfig
 		{
 			_log.log(Level.WARNING, "Config: Failed to Load " + Rank_Config + " File.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		// Load Vote System Config file (if exists)
@@ -630,9 +576,7 @@ public final class ExternalConfig
 		{
 			_log.log(Level.WARNING, "Config: Failed to Load " + Automation_Config + " File.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		// Load Vote System Config file (if exists)
@@ -660,9 +604,7 @@ public final class ExternalConfig
 		{
 			_log.log(Level.WARNING, "Config: Failed to Load " + Vote_Config + " File.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		// Load Smart CB Config file (if exists)
@@ -680,12 +622,8 @@ public final class ExternalConfig
 			ALLOW_CLASS_MASTERSCB = smartCB.getProperty("AllowClassMastersCB", "0");
 			CLASS_MASTERS_PRICE_ITEMCB = Integer.parseInt(smartCB.getProperty("ClassMastersPriceItemCB", "57"));
 			if ((ALLOW_CLASS_MASTERSCB.length() != 0) && (!ALLOW_CLASS_MASTERSCB.equals("0")))
-			{
 				for (String id : ALLOW_CLASS_MASTERSCB.split(","))
-				{
 					ALLOW_CLASS_MASTERS_LISTCB.add(Integer.valueOf(Integer.parseInt(id)));
-				}
-			}
 			CLASS_MASTERS_PRICECB = smartCB.getProperty("ClassMastersPriceCB", "0,0,0");
 			if (CLASS_MASTERS_PRICECB.length() >= 5)
 			{
@@ -701,9 +639,7 @@ public final class ExternalConfig
 		{
 			_log.log(Level.WARNING, "Config: Failed to Load " + Smart_CB + " File.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		// Load Custom Npc's Config file (if exists)
@@ -737,9 +673,7 @@ public final class ExternalConfig
 			String[] notenchantable = CustomNpcs.getProperty("BossList", "29028,29019,29020,29045,29022,29001,29014,29006").split(",");
 			BOSS_RESPAWN_INFO = new int[notenchantable.length];
 			for (int i = 0; i < notenchantable.length; i++)
-			{
 				BOSS_RESPAWN_INFO[i] = Integer.parseInt(notenchantable[i]);
-			}
 			Arrays.sort(BOSS_RESPAWN_INFO);
 			RAID_INFO_SHOW_TIME = Boolean.parseBoolean(CustomNpcs.getProperty("InfoShowTime", "False"));
 		}
@@ -747,9 +681,7 @@ public final class ExternalConfig
 		{
 			_log.log(Level.WARNING, "Config: Failed to Load " + Custom_Npc + " File.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		// Try to load RCON_CONFIG_FILE (if exist)
@@ -769,9 +701,7 @@ public final class ExternalConfig
 		{
 			_log.log(Level.WARNING, "Config: Failed to Load " + RCON_CONFIG_FILE + " File.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

@@ -65,9 +65,7 @@ public class ZoneData
 	public static final ZoneData getInstance()
 	{
 		if (_instance == null)
-		{
 			_instance = new ZoneData();
-		}
 		return _instance;
 	}
 
@@ -80,38 +78,35 @@ public class ZoneData
 	{
 		int zoneCount = 0;
 		// Get the world regions
-		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
+		final L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
 		// Load the zone xml
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 
-			File file = new File(Config.DATAPACK_ROOT + "/data/zones/zone.xml");
+			final File file = new File(Config.DATAPACK_ROOT + "/data/xml/zone.xml");
 			if (!file.exists())
 			{
 				_log.log(Level.WARNING, getClass().getName() + ": zone.xml file is missing.");
 				return;
 			}
 
-			Document doc = factory.newDocumentBuilder().parse(file);
+			final Document doc = factory.newDocumentBuilder().parse(file);
 
 			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
-			{
 				if ("list".equalsIgnoreCase(n.getNodeName()))
-				{
 					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
-					{
 						if ("zone".equalsIgnoreCase(d.getNodeName()))
 						{
 							NamedNodeMap attrs = d.getAttributes();
-							int zoneId = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
-							int minZ = Integer.parseInt(attrs.getNamedItem("minZ").getNodeValue());
-							int maxZ = Integer.parseInt(attrs.getNamedItem("maxZ").getNodeValue());
-							String zoneType = attrs.getNamedItem("type").getNodeValue();
-							String zoneShape = attrs.getNamedItem("shape").getNodeValue();
+							final int zoneId = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
+							final int minZ = Integer.parseInt(attrs.getNamedItem("minZ").getNodeValue());
+							final int maxZ = Integer.parseInt(attrs.getNamedItem("maxZ").getNodeValue());
+							final String zoneType = attrs.getNamedItem("type").getNodeValue();
+							final String zoneShape = attrs.getNamedItem("shape").getNodeValue();
 
 							// Create the zone
 							L2ZoneType temp = null;
@@ -161,24 +156,23 @@ public class ZoneData
 								statement = con.prepareStatement("SELECT x,y FROM zone_vertices WHERE id=? ORDER BY 'order' ASC ");
 
 								statement.setInt(1, zoneId);
-								ResultSet rset = statement.executeQuery();
+								final ResultSet rset = statement.executeQuery();
 
 								// Create this zone. Parsing for cuboids is a bit different than for other polygons
 								// cuboids need exactly 2 points to be defined. Other polygons need at least 3 (one per vertex)
 								if (zoneShape.equals("Cuboid"))
 								{
-									int[] x =
+									final int[] x =
 									{
 									0, 0
 									};
-									int[] y =
+									final int[] y =
 									{
 									0, 0
 									};
 									boolean successfulLoad = true;
 
 									for (int i = 0; i < 2; i++)
-									{
 										if (rset.next())
 										{
 											x[i] = rset.getInt("x");
@@ -192,7 +186,6 @@ public class ZoneData
 											successfulLoad = false;
 											break;
 										}
-									}
 
 									if (successfulLoad)
 										temp.setZone(new ZoneCuboid(x[0], x[1], y[0], y[1], minZ, maxZ));
@@ -201,7 +194,7 @@ public class ZoneData
 								}
 								else if (zoneShape.equals("NPoly"))
 								{
-									FastList<Integer> fl_x = new FastList<Integer>(), fl_y = new FastList<Integer>();
+									final FastList<Integer> fl_x = new FastList<Integer>(), fl_y = new FastList<Integer>();
 
 									// Load the rest
 									while (rset.next())
@@ -214,8 +207,8 @@ public class ZoneData
 									if ((fl_x.size() == fl_y.size()) && (fl_x.size() > 2))
 									{
 										// Create arrays
-										int[] aX = new int[fl_x.size()];
-										int[] aY = new int[fl_y.size()];
+										final int[] aX = new int[fl_x.size()];
+										final int[] aY = new int[fl_y.size()];
 
 										// This runs only at server startup so dont complain :>
 										for (int i = 0; i < fl_x.size(); i++)
@@ -246,27 +239,23 @@ public class ZoneData
 								rset.close();
 								statement.close();
 							}
-							catch (Exception e)
+							catch (final Exception e)
 							{
 								_log.log(Level.WARNING, getClass().getName() + ": Failed to load zone coordinates: " + e);
 								if (Config.DEVELOPER)
-								{
 									e.printStackTrace();
-								}
 							}
 
 							// Check for aditional parameters
 							for (Node cd = d.getFirstChild(); cd != null; cd = cd.getNextSibling())
-							{
 								if ("stat".equalsIgnoreCase(cd.getNodeName()))
 								{
 									attrs = cd.getAttributes();
-									String name = attrs.getNamedItem("name").getNodeValue();
-									String val = attrs.getNamedItem("val").getNodeValue();
+									final String name = attrs.getNamedItem("name").getNodeValue();
+									final String val = attrs.getNamedItem("val").getNodeValue();
 
 									temp.setParameter(name, val);
 								}
-							}
 
 							// Skip checks for fishing zones & add to fishing zone manager
 							if (temp instanceof L2FishingZone)
@@ -279,7 +268,6 @@ public class ZoneData
 							// currently 11136 test for each zone :>
 							int ax, ay, bx, by;
 							for (int x = 0; x < worldRegions.length; x++)
-							{
 								for (int y = 0; y < worldRegions[x].length; y++)
 								{
 									ax = (x - L2World.OFFSET_X) << L2World.SHIFT_BY;
@@ -290,13 +278,10 @@ public class ZoneData
 									if (temp.getZone().intersectsRectangle(ax, bx, ay, by))
 									{
 										if (Config.DEBUG)
-										{
 											_log.log(Level.CONFIG, getClass().getName() + ": Zone (" + zoneId + ") added to: " + x + " " + y);
-										}
 										worldRegions[x][y].addZone(temp);
 									}
 								}
-							}
 
 							// Special managers for arenas, towns...
 							if (temp instanceof L2ArenaZone)
@@ -310,17 +295,12 @@ public class ZoneData
 							// Increase the counter
 							zoneCount++;
 						}
-					}
-				}
-			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": Error while loading zones.", e);
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 			return;
 		}
 		GrandBossManager.getInstance().initZones();

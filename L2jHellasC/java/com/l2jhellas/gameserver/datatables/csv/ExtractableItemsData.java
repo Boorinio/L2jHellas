@@ -15,12 +15,12 @@
 package com.l2jhellas.gameserver.datatables.csv;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ExtractableItem;
@@ -31,7 +31,7 @@ public class ExtractableItemsData
 	protected static final Logger _log = Logger.getLogger(ExtractableItemsData.class.getName());
 
 	// Map<itemid, L2ExtractableItem>
-	private FastMap<Integer, L2ExtractableItem> _items;
+	private HashMap<Integer, L2ExtractableItem> _items;
 
 	private static ExtractableItemsData _instance = null;
 
@@ -43,11 +43,12 @@ public class ExtractableItemsData
 		return _instance;
 	}
 
+	@SuppressWarnings("resource")
 	public ExtractableItemsData()
 	{
-		_items = new FastMap<Integer, L2ExtractableItem>();
+		_items = new HashMap<Integer, L2ExtractableItem>();
 
-		Scanner s;
+		Scanner s = null;
 
 		try
 		{
@@ -77,7 +78,6 @@ public class ExtractableItemsData
 				continue;
 
 			String[] lineSplit = line.split(";");
-			boolean ok = true;
 			int itemID = 0;
 
 			try
@@ -92,29 +92,21 @@ public class ExtractableItemsData
 				{
 					e.printStackTrace();
 				}
-				ok = false;
+				return;
 			}
 
-			if (!ok)
-				continue;
-
-			FastList<L2ExtractableProductItem> product_temp = new FastList<L2ExtractableProductItem>();
+			List<L2ExtractableProductItem> product_temp = new ArrayList<L2ExtractableProductItem>(lineSplit.length);
 
 			for (int i = 0; i < lineSplit.length - 1; i++)
 			{
-				ok = true;
-
 				String[] lineSplit2 = lineSplit[i + 1].split(",");
 
 				if (lineSplit2.length != 3)
 				{
 					_log.log(Level.WARNING, getClass().getName() + ": Extractable items data: Error in line " + lineCount + " -> wrong seperator!");
 					_log.log(Level.WARNING, getClass().getName() + ": 		" + line);
-					ok = false;
-				}
-
-				if (!ok)
 					continue;
+				}
 
 				int production = 0, amount = 0, chance = 0;
 
@@ -128,14 +120,10 @@ public class ExtractableItemsData
 				{
 					_log.log(Level.WARNING, getClass().getName() + ": Extractable items data: Error in line " + lineCount + " -> incomplete/invalid production data or wrong seperator!");
 					_log.log(Level.WARNING, getClass().getName() + ": 		" + line, e);
-					ok = false;
+					continue;
 				}
 
-				if (!ok)
-					continue;
-
-				L2ExtractableProductItem product = new L2ExtractableProductItem(production, amount, chance);
-				product_temp.add(product);
+				product_temp.add(new L2ExtractableProductItem(production, amount, chance));
 			}
 
 			int fullChances = 0;
@@ -149,8 +137,7 @@ public class ExtractableItemsData
 				_log.log(Level.WARNING, getClass().getName() + ": 		" + line);
 				continue;
 			}
-			L2ExtractableItem product = new L2ExtractableItem(itemID, product_temp);
-			_items.put(itemID, product);
+			_items.put(itemID, new L2ExtractableItem(itemID, product_temp));
 		}
 
 		s.close();

@@ -2,7 +2,7 @@
 
 <!-- Tickets for pet collars Exchange -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true">
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 
 	<!-- Baby cougar chime for Pet Exchange Ticket: Cougar -->
 	<item id="1">

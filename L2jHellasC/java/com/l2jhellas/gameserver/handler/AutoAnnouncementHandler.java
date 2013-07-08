@@ -70,7 +70,6 @@ public class AutoAnnouncementHandler
 				numLoaded++;
 
 				registerGlobalAnnouncement(rs.getInt("id"), rs.getString("announcement"), rs.getLong("delay"));
-
 			}
 
 			statement.close();
@@ -168,18 +167,16 @@ public class AutoAnnouncementHandler
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("INSERT INTO auto_announcements (id,announcement,delay) " + "VALUES (?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO auto_announcements (id,announcement,delay) VALUES (?,?,?)");
 			statement.setInt(1, nextId);
 			statement.setString(2, announcementTexts);
 			statement.setLong(3, announcementDelay);
 
 			statement.executeUpdate();
-
-			statement.close();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could Not Insert Auto Announcment into DataBase: Reason: " + "Duplicate Id" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Could Not Insert Auto Announcment into DataBase: Reason: Duplicate Id" + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();

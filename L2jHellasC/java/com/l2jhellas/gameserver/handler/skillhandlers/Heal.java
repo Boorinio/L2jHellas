@@ -21,6 +21,7 @@ import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -68,7 +69,14 @@ public class Heal implements ISkillHandler
 			// We should not heal walls and door
 			if (target instanceof L2DoorInstance)
 				continue;
-
+			
+			// We should not heal siege flags
+            if (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 35062)
+            {
+                activeChar.getActingPlayer().sendMessage("You cannot heal siege flags!");
+                continue;
+            }
+            
 			// Player holding a cursed weapon can't be healed and can't heal
 			if (target != activeChar)
 			{

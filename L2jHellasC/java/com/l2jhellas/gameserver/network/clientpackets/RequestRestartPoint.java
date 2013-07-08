@@ -149,9 +149,10 @@ public final class RequestRestartPoint extends L2GameClientPacket
 					break;
 				}
 
-				// Teleport and revive
-				activeChar.setIsPendingRevive(true);
+				// Teleport and revive, like L2OFF char must stand up in city.
+				activeChar.setIsIn7sDungeon(false);
 				activeChar.teleToLocation(loc, true);
+				activeChar.setIsPendingRevive(true);
 			}
 			catch (Throwable e)
 			{

@@ -27,11 +27,7 @@ public class ShopBBSManager extends BaseBBSManager
 	{
 		if (command.equals("_bbsshop"))
 		{
-			String content = HtmCache.getInstance().getHtm("data/html/CommunityBoard/shop.htm");
-			if (content == null)
-			{
-				content = "<html><body><br><br><center>404 :File Not foud: 'data/html/CommunityBoard/shop.htm' </center></body></html>";
-			}
+			String content = HtmCache.getInstance().getHtmForce("data/html/CommunityBoard/shop.htm");
 			separateAndSend(content, activeChar);
 		}
 		else if (command.startsWith("_bbsshop;"))

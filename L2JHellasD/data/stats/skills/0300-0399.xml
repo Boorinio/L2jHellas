@@ -1479,15 +1479,13 @@
 				</mul>
 				<basemul order="0x30" stat="rCrit" val="0.3"> <!-- Critical Chance from side +30% -->
 					<and>
-						<player front="False" />
-						<player behind="False" />
+						<player side="True" />
 						<using kind="Dagger" />
 					</and>
 				</basemul>
 				<mul order="0x30" stat="blowRate" val="1.3"> <!-- Blow land rate from side +30% -->
 					<and>
-						<player front="False" />
-						<player behind="False" />
+						<player side="True" />
 					</and>
 				</mul>
 				<basemul order="0x30" stat="rCrit" val="0.6"> <!-- Critical Chance from back +60% -->

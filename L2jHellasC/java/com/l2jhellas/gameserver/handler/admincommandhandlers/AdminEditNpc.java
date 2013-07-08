@@ -576,15 +576,12 @@ public class AdminEditNpc implements IAdminCommandHandler
 	{
 		String target = "npc_%objectId%_Buy";
 
-		String content = HtmCache.getInstance().getHtm("data/html/merchant/" + merchantID + ".htm");
+		String content = HtmCache.getInstance().getHtmForce("data/html/merchant/" + merchantID + ".htm");
 
+		content = HtmCache.getInstance().getHtmForce("data/html/merchant/30001.htm");
 		if (content == null)
-		{
-			content = HtmCache.getInstance().getHtm("data/html/merchant/30001.htm");
-			if (content == null)
-				return null;
-		}
-
+			return null;
+		
 		List<L2TradeList> tradeLists = new FastList<L2TradeList>();
 
 		String[] lines = content.split("\n");
@@ -611,54 +608,49 @@ public class AdminEditNpc implements IAdminCommandHandler
 	private void Show_Npc_Property(L2PcInstance activeChar, L2NpcTemplate npc)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		String content = HtmCache.getInstance().getHtm("data/html/admin/editnpc.htm");
+		String content = HtmCache.getInstance().getHtmForce("data/html/admin/editnpc.htm");
 
-		if (content != null)
-		{
-			adminReply.setHtml(content);
-			adminReply.replace("%npcId%", String.valueOf(npc.npcId));
-			adminReply.replace("%templateId%", String.valueOf(npc.idTemplate));
-			adminReply.replace("%name%", npc.name);
-			adminReply.replace("%serverSideName%", npc.serverSideName == true ? "1" : "0");
-			adminReply.replace("%title%", npc.title);
-			adminReply.replace("%serverSideTitle%", npc.serverSideTitle == true ? "1" : "0");
-			adminReply.replace("%collisionRadius%", String.valueOf(npc.collisionRadius));
-			adminReply.replace("%collisionHeight%", String.valueOf(npc.collisionHeight));
-			adminReply.replace("%level%", String.valueOf(npc.level));
-			adminReply.replace("%sex%", String.valueOf(npc.sex));
-			adminReply.replace("%type%", String.valueOf(npc.type));
-			adminReply.replace("%attackRange%", String.valueOf(npc.baseAtkRange));
-			adminReply.replace("%hp%", String.valueOf(npc.baseHpMax));
-			adminReply.replace("%mp%", String.valueOf(npc.baseMpMax));
-			adminReply.replace("%hpRegen%", String.valueOf(npc.baseHpReg));
-			adminReply.replace("%mpRegen%", String.valueOf(npc.baseMpReg));
-			adminReply.replace("%str%", String.valueOf(npc.baseSTR));
-			adminReply.replace("%con%", String.valueOf(npc.baseCON));
-			adminReply.replace("%dex%", String.valueOf(npc.baseDEX));
-			adminReply.replace("%int%", String.valueOf(npc.baseINT));
-			adminReply.replace("%wit%", String.valueOf(npc.baseWIT));
-			adminReply.replace("%men%", String.valueOf(npc.baseMEN));
-			adminReply.replace("%exp%", String.valueOf(npc.rewardExp));
-			adminReply.replace("%sp%", String.valueOf(npc.rewardSp));
-			adminReply.replace("%pAtk%", String.valueOf(npc.basePAtk));
-			adminReply.replace("%pDef%", String.valueOf(npc.basePDef));
-			adminReply.replace("%mAtk%", String.valueOf(npc.baseMAtk));
-			adminReply.replace("%mDef%", String.valueOf(npc.baseMDef));
-			adminReply.replace("%pAtkSpd%", String.valueOf(npc.basePAtkSpd));
-			adminReply.replace("%aggro%", String.valueOf(npc.aggroRange));
-			adminReply.replace("%mAtkSpd%", String.valueOf(npc.baseMAtkSpd));
-			adminReply.replace("%rHand%", String.valueOf(npc.rhand));
-			adminReply.replace("%lHand%", String.valueOf(npc.lhand));
-			adminReply.replace("%armor%", String.valueOf(npc.armor));
-			adminReply.replace("%walkSpd%", String.valueOf(npc.baseWalkSpd));
-			adminReply.replace("%runSpd%", String.valueOf(npc.baseRunSpd));
-			adminReply.replace("%factionId%", npc.factionId == null ? "" : npc.factionId);
-			adminReply.replace("%factionRange%", String.valueOf(npc.factionRange));
-			adminReply.replace("%isUndead%", npc.isUndead ? "1" : "0");
-			adminReply.replace("%absorbLevel%", String.valueOf(npc.absorbLevel));
-		}
-		else
-			adminReply.setHtml("<html><head><body>File not found: data/html/admin/editnpc.htm</body></html>");
+		adminReply.setHtml(content);
+		adminReply.replace("%npcId%", String.valueOf(npc.npcId));
+		adminReply.replace("%templateId%", String.valueOf(npc.idTemplate));
+		adminReply.replace("%name%", npc.name);
+		adminReply.replace("%serverSideName%", npc.serverSideName == true ? "1" : "0");
+		adminReply.replace("%title%", npc.title);
+		adminReply.replace("%serverSideTitle%", npc.serverSideTitle == true ? "1" : "0");
+		adminReply.replace("%collisionRadius%", String.valueOf(npc.collisionRadius));
+		adminReply.replace("%collisionHeight%", String.valueOf(npc.collisionHeight));
+		adminReply.replace("%level%", String.valueOf(npc.level));
+		adminReply.replace("%sex%", String.valueOf(npc.sex));
+		adminReply.replace("%type%", String.valueOf(npc.type));
+		adminReply.replace("%attackRange%", String.valueOf(npc.baseAtkRange));
+		adminReply.replace("%hp%", String.valueOf(npc.baseHpMax));
+		adminReply.replace("%mp%", String.valueOf(npc.baseMpMax));
+		adminReply.replace("%hpRegen%", String.valueOf(npc.baseHpReg));
+		adminReply.replace("%mpRegen%", String.valueOf(npc.baseMpReg));
+		adminReply.replace("%str%", String.valueOf(npc.baseSTR));
+		adminReply.replace("%con%", String.valueOf(npc.baseCON));
+		adminReply.replace("%dex%", String.valueOf(npc.baseDEX));
+		adminReply.replace("%int%", String.valueOf(npc.baseINT));
+		adminReply.replace("%wit%", String.valueOf(npc.baseWIT));
+		adminReply.replace("%men%", String.valueOf(npc.baseMEN));
+		adminReply.replace("%exp%", String.valueOf(npc.rewardExp));
+		adminReply.replace("%sp%", String.valueOf(npc.rewardSp));
+		adminReply.replace("%pAtk%", String.valueOf(npc.basePAtk));
+		adminReply.replace("%pDef%", String.valueOf(npc.basePDef));
+		adminReply.replace("%mAtk%", String.valueOf(npc.baseMAtk));
+		adminReply.replace("%mDef%", String.valueOf(npc.baseMDef));
+		adminReply.replace("%pAtkSpd%", String.valueOf(npc.basePAtkSpd));
+		adminReply.replace("%aggro%", String.valueOf(npc.aggroRange));
+		adminReply.replace("%mAtkSpd%", String.valueOf(npc.baseMAtkSpd));
+		adminReply.replace("%rHand%", String.valueOf(npc.rhand));
+		adminReply.replace("%lHand%", String.valueOf(npc.lhand));
+		adminReply.replace("%armor%", String.valueOf(npc.armor));
+		adminReply.replace("%walkSpd%", String.valueOf(npc.baseWalkSpd));
+		adminReply.replace("%runSpd%", String.valueOf(npc.baseRunSpd));
+		adminReply.replace("%factionId%", npc.factionId == null ? "" : npc.factionId);
+		adminReply.replace("%factionRange%", String.valueOf(npc.factionRange));
+		adminReply.replace("%isUndead%", npc.isUndead ? "1" : "0");
+		adminReply.replace("%absorbLevel%", String.valueOf(npc.absorbLevel));
 		activeChar.sendPacket(adminReply);
 	}
 
@@ -818,7 +810,6 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
-
 	}
 
 	private void showEditDropData(L2PcInstance activeChar, int npcId, int itemId, int category)

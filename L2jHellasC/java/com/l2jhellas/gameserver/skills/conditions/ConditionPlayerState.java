@@ -24,7 +24,7 @@ public class ConditionPlayerState extends Condition
 {
 	public enum CheckPlayerState
 	{
-		RESTING, MOVING, RUNNING, FLYING, BEHIND, FRONT
+		RESTING, MOVING, RUNNING, FLYING, BEHIND, FRONT, SIDE
 	}
 
 	private final CheckPlayerState _check;
@@ -56,6 +56,8 @@ public class ConditionPlayerState extends Condition
 			case BEHIND:
 				return env.player.isBehindTarget() == _required;
 			case FRONT:
+				return env.player.isFrontTarget() == _required;
+			case SIDE:
 				return env.player.isFrontTarget() == _required;
 		}
 		return !_required;

@@ -28,10 +28,10 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameServer;
+import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
@@ -126,9 +126,9 @@ public class RegionBBSManager extends BaseBBSManager
 			{
 				long nextLevelExp = 0;
 				long nextLevelExpNeeded = 0;
-				if (player.getLevel() < (Experience.MAX_LEVEL - 1))
+				if (player.getLevel() < (ExperienceData.getInstance().getMaxLevel() - 1))
 				{
-					nextLevelExp = Experience.LEVEL[player.getLevel() + 1];
+					nextLevelExp = ExperienceData.getInstance().getExpForLevel(player.getLevel() + 1);
 					nextLevelExpNeeded = nextLevelExp - player.getExp();
 				}
 
@@ -477,6 +477,7 @@ public class RegionBBSManager extends BaseBBSManager
 					htmlCode.append("<td align=right width=190><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 				else
 					htmlCode.append("<td align=right width=190><button value=\"Prev\" action=\"bypass _bbsloc;page;" + (page - 1) + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+				
 				htmlCode.append("<td FIXWIDTH=10></td>");
 				htmlCode.append("<td align=center valign=top width=200>Displaying " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + 1) + " - " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + getOnlinePlayers(page).size()) + " player(s)</td>");
 				htmlCode.append("<td FIXWIDTH=10></td>");
@@ -484,6 +485,7 @@ public class RegionBBSManager extends BaseBBSManager
 					htmlCode.append("<td width=190><button value=\"Next\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 				else
 					htmlCode.append("<td width=190><button value=\"Next\" action=\"bypass _bbsloc;page;" + (page + 1) + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+				
 				htmlCode.append("</tr>");
 				htmlCode.append("</table>");
 			}
@@ -543,8 +545,8 @@ public class RegionBBSManager extends BaseBBSManager
 			for (L2PcInstance player : getOnlinePlayers(page))
 			{
 				if ((player == null) || (player.getAppearance().getInvisible()))
-					continue;                           // Go to next
-
+					continue;// Go to next
+				
 				cell++;
 
 				if (cell == 1)
@@ -553,22 +555,36 @@ public class RegionBBSManager extends BaseBBSManager
 				htmlCode.append("<td align=left valign=top FIXWIDTH=110><a action=\"bypass _bbsloc;playerinfo;" + player.getName() + "\">");
 
 				if (player.isGM())
+				{
 					htmlCode.append("<font color=\"ffe400\">" + player.getName() + "</font>");
+				}
 				else if (player.isAway() && Config.ALLOW_AWAY_STATUS)
+				{
 					htmlCode.append(player.getName() + " *Away* ");
+				}
 				else if (player.isHero())
+				{
 					htmlCode.append("<font color=\"f9f8a3\">" + player.getName() + "</font>");
+				}
 				else if (player.isNoble())
+				{
 					htmlCode.append("<font color=\"a3f6f9\">" + player.getName() + "</font>");
+				}
 				else if (player.getKarma() > 0)
+				{
 					htmlCode.append("<font color=\"ff0000\">" + player.getName() + "</font>");
+				}
 				else
+				{
 					htmlCode.append(player.getName());
+				}
 
 				htmlCode.append("</a></td>");
 
 				if (cell < Config.NAME_PER_ROW_COMMUNITYBOARD)
+				{
 					htmlCode.append(colSpacer);
+				}
 
 				if (cell == Config.NAME_PER_ROW_COMMUNITYBOARD)
 				{
@@ -577,7 +593,9 @@ public class RegionBBSManager extends BaseBBSManager
 				}
 			}
 			if (cell > 0 && cell < Config.NAME_PER_ROW_COMMUNITYBOARD)
+			{
 				htmlCode.append(trClose);
+			}
 			htmlCode.append("</table><br></td></tr>");
 
 			htmlCode.append(trOpen);
@@ -592,16 +610,24 @@ public class RegionBBSManager extends BaseBBSManager
 
 				htmlCode.append("<tr>");
 				if (page == 1)
+				{
 					htmlCode.append("<td align=right width=190><button value=\"Prev\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+				}
 				else
+				{
 					htmlCode.append("<td align=right width=190><button value=\"Prev\" action=\"bypass _bbsloc;page;" + (page - 1) + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+				}
 				htmlCode.append("<td FIXWIDTH=10></td>");
 				htmlCode.append("<td align=center valign=top width=200>Displaying " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + 1) + " - " + (((page - 1) * Config.NAME_PAGE_SIZE_COMMUNITYBOARD) + getOnlinePlayers(page).size()) + " player(s)</td>");
 				htmlCode.append("<td FIXWIDTH=10></td>");
 				if (getOnlineCount("pl") <= (page * Config.NAME_PAGE_SIZE_COMMUNITYBOARD))
+				{
 					htmlCode.append("<td width=190><button value=\"Next\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+				}
 				else
+				{
 					htmlCode.append("<td width=190><button value=\"Next\" action=\"bypass _bbsloc;page;" + (page + 1) + "\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+				}
 				htmlCode.append("</tr>");
 				htmlCode.append("</table>");
 			}

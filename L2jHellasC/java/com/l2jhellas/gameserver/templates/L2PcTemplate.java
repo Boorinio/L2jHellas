@@ -30,9 +30,10 @@ public class L2PcTemplate extends L2CharTemplate
 
 	/** The Class object of the L2PcInstance */
 	public final ClassId classId;
-
 	public final Race race;
 	public final String className;
+	public final int _currentCollisionRadius;
+	public final int _currentCollisionHeight;
 
 	public final int spawnX;
 	public final int spawnY;
@@ -54,6 +55,8 @@ public class L2PcTemplate extends L2CharTemplate
 		classId = ClassId.values()[set.getInteger("classId")];
 		race = Race.values()[set.getInteger("raceId")];
 		className = set.getString("className");
+		_currentCollisionRadius = set.getInteger("collision_radius");
+		_currentCollisionHeight = set.getInteger("collision_height");
 
 		spawnX = set.getInteger("spawnX");
 		spawnY = set.getInteger("spawnY");
@@ -79,7 +82,23 @@ public class L2PcTemplate extends L2CharTemplate
 		if (item != null)
 			_items.add(item);
 	}
-
+	
+	/**
+	 * @return
+	 */
+	public double getCollisionRadius()
+	{
+		return _currentCollisionRadius;
+	}
+	
+	/**
+	 * @return
+	 */
+	public double getCollisionHeight()
+	{
+		return _currentCollisionHeight;
+	}
+	
 	/**
 	 * @return itemIds of all the starter equipment
 	 */

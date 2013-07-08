@@ -14,7 +14,12 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
+import java.io.File;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.script.ScriptException;
 
 import Extensions.Balancer.BalanceLoad;
 
@@ -33,6 +38,7 @@ import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SkillSpellbookTable;
 import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.Manager;
@@ -40,6 +46,7 @@ import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.L2Multisell;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -49,6 +56,8 @@ import com.l2jhellas.gameserver.skills.SkillTable;
  */
 public class AdminReload implements IAdminCommandHandler
 {
+	private static final Logger _log = Logger.getLogger(AdminReload.class.getName());
+	
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_reload"
@@ -57,17 +66,21 @@ public class AdminReload implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-
 		if (command.startsWith("admin_reload"))
 		{
 			sendReloadPage(activeChar);
 			StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
-
+			if (!st.hasMoreTokens())
+			{
+				activeChar.sendMessage("You need to specify a type to reload!");
+				activeChar.sendMessage("Usage: //reload <multisell|teleport|skill|(npc|npcs)|(htm|html)|(item|items)|access|instancemanager|npcwalkers|quests|configs|tradelist|pccolor|crest|(cw|cursed)|levelupdata|summonitems|balancer|extitems|nobleskill|heroskill|skilltrees|spellbooks>");
+				return false;
+			}
+			
+			final String type = st.nextToken();
 			try
 			{
-				String type = st.nextToken();
-
 				if (type.equals("multisell"))
 				{
 					L2Multisell.getInstance().reload();
@@ -76,7 +89,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.startsWith("teleport"))
 				{
-					TeleportLocationTable.getInstance().reloadAll();
+					TeleportLocationTable.getInstance().reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Teleport location table reloaded.");
 				}
@@ -86,29 +99,35 @@ public class AdminReload implements IAdminCommandHandler
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All skills has been reloaded.");
 				}
-				else if (type.equals("npc"))
+				else if (type.equals("npc") || type.equals("npcs"))
 				{
-					NpcTable.getInstance().reloadAllNpc();
+					NpcTable.getInstance().reload();
+					activeChar.sendMessage("All NPCs have been reloaded");
 					sendReloadPage(activeChar);
-					activeChar.sendMessage("Npcs has been reloaded.");
 				}
-				else if (type.startsWith("htm"))
+				else if (type.startsWith("htm") || type.startsWith("html"))
 				{
 					HtmCache.getInstance().reload();
 					sendReloadPage(activeChar);
-					activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " megabytes on " + HtmCache.getInstance().getLoadedFiles() + " files loaded");
+					activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " megabytes on " + HtmCache.getInstance().getLoadedFiles() + " files loaded.");
 				}
-				else if (type.startsWith("item"))
+				else if (type.startsWith("item") || type.startsWith("items"))
 				{
 					ItemTable.getInstance().reload();
 					sendReloadPage(activeChar);
-					activeChar.sendMessage("Item templates has been reloaded.");
+					activeChar.sendMessage("Item table has been reloaded.");
+				}
+				else if (type.startsWith("access"))
+				{
+					AdminTable.getInstance().load();
+					activeChar.sendMessage("Access Rights have been reloaded.");
 				}
 				else if (type.startsWith("instancemanager"))
 				{
 					Manager.reloadAll();
 					sendReloadPage(activeChar);
-					activeChar.sendMessage("All instance manager has been reloaded.");
+					activeChar.sendMessage("All instance managers has been reloaded.");
+					//TODO
 				}
 				else if (type.startsWith("npcwalkers"))
 				{
@@ -119,7 +138,9 @@ public class AdminReload implements IAdminCommandHandler
 				else if (type.startsWith("quests"))
 				{
 					String folder = "quests";
+					QuestManager.getInstance().reloadAllQuests();
 					QuestManager.getInstance().reload(folder);
+					QuestManager.getInstance().report();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Quests has been Reloaded.");
 				}
@@ -148,7 +169,7 @@ public class AdminReload implements IAdminCommandHandler
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Crest Table has been reloaded.");
 				}
-				else if (type.equals("cw"))
+				else if (type.equals("cw") || type.equals("cursed"))
 				{
 					CursedWeaponsManager.getInstance().reload();
 					sendReloadPage(activeChar);
@@ -202,10 +223,26 @@ public class AdminReload implements IAdminCommandHandler
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Extractable items has been reloaded.");
 				}
+				else if (type.startsWith("handler"))
+				{
+					File file = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/MasterHandler.java");
+					try
+					{
+						L2ScriptEngineManager.getInstance().executeScript(file);
+						activeChar.sendMessage("All handlers have been reloaded");
+					}
+					catch (ScriptException e)
+					{
+						L2ScriptEngineManager.getInstance().reportScriptFileError(file, e);
+						activeChar.sendMessage("There was an error while loading handlers.");
+					}
+				}
 			}
 			catch (Exception e)
 			{
-				activeChar.sendMessage("Usage: //reload <type>");
+				activeChar.sendMessage("An error occured while reloading " + type + " !");
+				activeChar.sendMessage("Usage: //reload <multisell|teleport|skill|(npc|npcs)|(htm|html)|(item|items)|access|instancemanager|npcwalkers|quests|configs|tradelist|pccolor|crest|(cw|cursed)|levelupdata|summonitems|balancer|extitems|nobleskill|heroskill|skilltrees|spellbooks>");
+				_log.log(Level.WARNING, "An error occured while reloading " + type + ": " + e.getMessage(), e);
 			}
 		}
 		return true;
@@ -218,11 +255,7 @@ public class AdminReload implements IAdminCommandHandler
 	 */
 	private void sendReloadPage(L2PcInstance player)
 	{
-		String html = HtmCache.getInstance().getHtm("data/html/admin/reload_menu.htm");
-		if (html == null)
-		{
-			html = "<html><body><br><br><center><font color=LEVEL>404:</font> File Not Found</center></body></html>";
-		}
+		String html = HtmCache.getInstance().getHtmForce("data/html/admin/reload_menu.htm");
 		player.sendPacket(new NpcHtmlMessage(1, html));
 	}
 

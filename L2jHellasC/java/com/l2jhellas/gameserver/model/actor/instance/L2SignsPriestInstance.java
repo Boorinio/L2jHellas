@@ -447,7 +447,7 @@ public class L2SignsPriestInstance extends L2FolkInstance
 						stoneCount = stoneInstance.getCount();
 
 					path = SevenSigns.SEVEN_SIGNS_HTML_PATH + "signs_17.htm";
-					content = HtmCache.getInstance().getHtm(path);
+					content = HtmCache.getInstance().getHtmForce(path);
 
 					if (content != null)
 					{

@@ -19,7 +19,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class IllegalPlayerAction implements Runnable
@@ -67,7 +67,7 @@ public final class IllegalPlayerAction implements Runnable
 		});
 		_logAudit.log(record);
 
-		GmListTable.broadcastMessageToGMs(_message);
+		AdminTable.getInstance().broadcastMessageToGMs(_message);
 
 		switch (_punishment)
 		{

@@ -19,8 +19,8 @@ import java.util.StringTokenizer;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.logs.GMAudit;
 
 /**
  * @author Luno, Dezmond

@@ -17,13 +17,13 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands:
@@ -73,12 +73,12 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_gmliston"))
 		{
-			GmListTable.getInstance().showGm(activeChar);
+			AdminTable.getInstance().showGm(activeChar);
 			activeChar.sendMessage("Registerd into gm list");
 		}
 		else if (command.startsWith("admin_gmlistoff"))
 		{
-			GmListTable.getInstance().hideGm(activeChar);
+			AdminTable.getInstance().hideGm(activeChar);
 			activeChar.sendMessage("Removed from gm list");
 		}
 		else if (command.startsWith("admin_silence"))
@@ -194,23 +194,33 @@ public class AdminAdmin implements IAdminCommandHandler
 				String pName = parameter[0].trim();
 				String pValue = parameter[1].trim();
 				if (Config.setParameterValue(pName, pValue))
+				{
 					activeChar.sendMessage("parameter " + pName + " succesfully set to " + pValue);
+				}
 				else
+				{
 					activeChar.sendMessage("Invalid parameter!");
+				}
 			}
 			catch (Exception e)
 			{
 				if (cmd.length == 2)
+				{
 					activeChar.sendMessage("Usage: //set parameter=vaue");
+				}
 			}
 			finally
 			{
 				if (cmd.length == 3)
 				{
 					if (cmd[2].equalsIgnoreCase("menu"))
+					{
 						AdminHelpPage.showHelpPage(activeChar, "settings.htm");
+					}
 					else if (cmd[2].equalsIgnoreCase("mod"))
+					{
 						AdminHelpPage.showHelpPage(activeChar, "mods_menu.htm");
+					}
 				}
 			}
 		}
@@ -253,9 +263,13 @@ public class AdminAdmin implements IAdminCommandHandler
 			break;
 			default:
 				if (Config.GM_ADMIN_MENU_STYLE.equals("modern"))
+				{
 					filename = "main";
+				}
 				else
+				{
 					filename = "classic";
+				}
 			break;
 		}
 		AdminHelpPage.showHelpPage(activeChar, filename + "_menu.htm");

@@ -19,6 +19,7 @@ public class Manager
 	public static void reloadAll()
 	{
 		AuctionManager.getInstance().reload();
+		//TODO AdminReload.java
 		//FQuestManager.getInstance().reload();
 	}
 }

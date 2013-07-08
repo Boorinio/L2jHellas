@@ -86,9 +86,12 @@ import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminSkill;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminSpawn;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTarget;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTeleport;
+import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTest;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTvTEngine;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminUnblockIp;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminVIPEngine;
+import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminWalker;
+import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminWho;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminZone;
 
 public class AdminCommandHandler
@@ -112,6 +115,11 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminBBS());
 		registerAdminCommandHandler(new AdminCache());
 		registerAdminCommandHandler(new AdminChangeAccessLevel());
+		if (Config.ENABLED_CHAOS_EVENT)
+		{
+			registerAdminCommandHandler(new AdminChaos());
+		}
+		registerAdminCommandHandler(new AdminClanFull());
 		registerAdminCommandHandler(new AdminCreateItem());
 		registerAdminCommandHandler(new AdminCursedWeapons());
 		registerAdminCommandHandler(new AdminDelete());
@@ -159,6 +167,7 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminSpawn());
 		registerAdminCommandHandler(new AdminTarget());
 		registerAdminCommandHandler(new AdminTeleport());
+		registerAdminCommandHandler(new AdminTest());
 		registerAdminCommandHandler(new AdminUnblockIp());
 		registerAdminCommandHandler(new AdminZone());
 		registerAdminCommandHandler(new AdminDonator());
@@ -171,9 +180,8 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new Balancer());
 		registerAdminCommandHandler(new AdminPremium());
 		registerAdminCommandHandler(new AdminReload());
-		if (Config.ENABLED_CHAOS_EVENT)
-			registerAdminCommandHandler(new AdminChaos());
-		registerAdminCommandHandler(new AdminClanFull());
+		registerAdminCommandHandler(new AdminWho());
+		registerAdminCommandHandler(new AdminWalker());
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}
@@ -184,7 +192,9 @@ public class AdminCommandHandler
 		for (int i = 0; i < ids.length; i++)
 		{
 			if (Config.DEBUG)
+			{
 				_log.log(Level.CONFIG, getClass().getName() + ": Adding handler for command " + ids[i]);
+			}
 			_datatable.put(ids[i].hashCode(), handler);
 		}
 	}
@@ -194,10 +204,14 @@ public class AdminCommandHandler
 		String command = adminCommand;
 
 		if (adminCommand.indexOf(" ") != -1)
+		{
 			command = adminCommand.substring(0, adminCommand.indexOf(" "));
+		}
 
 		if (Config.DEBUG)
+		{
 			_log.log(Level.CONFIG, getClass().getName() + ": getting handler for command: " + command + " -> " + (_datatable.get(command.hashCode()) != null));
+		}
 		return _datatable.get(command.hashCode());
 	}
 

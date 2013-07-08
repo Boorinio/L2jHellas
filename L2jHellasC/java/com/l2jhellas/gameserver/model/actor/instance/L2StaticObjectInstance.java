@@ -128,7 +128,7 @@ public class L2StaticObjectInstance extends L2Object
 				if (_type == 2)
 				{
 					String filename = "data/html/signboard.htm";
-					String content = HtmCache.getInstance().getHtm(filename);
+					String content = HtmCache.getInstance().getHtmForce(filename);
 					NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 
 					if (content == null)

@@ -25,10 +25,9 @@ import com.l2jhellas.Config;
 import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.CommunityBoard;
-import com.l2jhellas.gameserver.datatables.sql.AdminCommandAccessRights;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -44,6 +43,7 @@ import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class RequestBypassToServer extends L2GameClientPacket
@@ -85,13 +85,15 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				if (ach == null)
 				{
 					if (activeChar.isGM())
+					{
 						activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist.");
+					}
 
 					_log.warning("No handler registered for admin command '" + command + "'");
 					return;
 				}
 
-				if (!AdminCommandAccessRights.getInstance().hasAccess(command, activeChar.getAccessLevel()))
+				if (!AdminTable.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access rights to use this command.");
 					_log.warning(activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
@@ -99,7 +101,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				}
 
 				if (Config.GMAUDIT)
+				{
 					GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", _command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"));
+				}
 
 				ach.useAdminCommand(_command, activeChar);
 			}
@@ -163,12 +167,16 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				String message = "";;
 
 				if (st.hasMoreTokens())
+				{
 					to = st.nextToken();
+				}
 				else
 					return;
 
 				if (st.hasMoreTokens())
+				{
 					title = st.nextToken();
+				}
 				else
 					return;
 
@@ -190,7 +198,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				}
 
 				if (title.equalsIgnoreCase("") || title == null)
+				{
 					title = "(No Subject)";
+				}
 
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
@@ -286,66 +296,102 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				int endOfId = _command.indexOf('_', 5);
 				String id;
 				if (endOfId > 0)
+				{
 					id = _command.substring(4, endOfId);
+				}
 				else
+				{
 					id = _command.substring(4);
+				}
 				try
 				{
 					L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
 
 					if (_command.substring(endOfId + 1).startsWith("event_participate"))
+					{
 						L2Event.inscribePlayer(activeChar);
+					}
 					else if (_command.substring(endOfId + 1).startsWith("vip_joinVIPTeam"))
+					{
 						VIP.addPlayerVIP(activeChar);
+					}
 					else if (_command.substring(endOfId + 1).startsWith("vip_joinNotVIPTeam"))
+					{
 						VIP.addPlayerNotVIP(activeChar);
+					}
 					else if (_command.substring(endOfId + 1).startsWith("vip_finishVIP"))
+					{
 						VIP.vipWin(activeChar);
+					}
 					else if (_command.substring(endOfId + 1).startsWith("tvt_player_join "))
 					{
 						String teamName = _command.substring(endOfId + 1).substring(16);
 
 						if (TvT._joining)
+						{
 							TvT.addPlayer(activeChar, teamName);
+						}
 						else
+						{
 							activeChar.sendMessage("The event is already started. You can not join now!");
+						}
 					}
 					else if (_command.substring(endOfId + 1).startsWith("tvt_player_leave"))
 					{
 						if (TvT._joining)
+						{
 							TvT.removePlayer(activeChar);
+						}
 						else
+						{
 							activeChar.sendMessage("The event is already started. You can not leave now!");
+						}
 					}
 					else if (_command.substring(endOfId + 1).startsWith("dmevent_player_join"))
 					{
 						if (DM._joining)
+						{
 							DM.addPlayer(activeChar);
+						}
 						else
+						{
 							activeChar.sendMessage("The event is already started. You can not join now!");
+						}
 					}
 					else if (_command.substring(endOfId + 1).startsWith("dmevent_player_leave"))
 					{
 						if (DM._joining)
+						{
 							DM.removePlayer(activeChar);
+						}
 						else
+						{
 							activeChar.sendMessage("The event is already started. You can not leave now!");
+						}
 					}
 					else if (_command.substring(endOfId + 1).startsWith("ctf_player_join "))
 					{
 						String teamName = _command.substring(endOfId + 1).substring(16);
 
 						if (CTF._joining)
+						{
 							CTF.addPlayer(activeChar, teamName);
+						}
 						else
+						{
 							activeChar.sendMessage("The event is already started. You can not join now!");
+						}
 					}
 					else if (_command.substring(endOfId + 1).startsWith("ctf_player_leave"))
 					{
 						if (CTF._joining)
+						{
 							CTF.removePlayer(activeChar);
+						}
 						else
+						{
 							activeChar.sendMessage("The event is already started. You can not leave now!");
+						}
 					}
 
 					else if (((ExternalConfig.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)) || (object != null && object instanceof L2NpcInstance && endOfId > 0 && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false)))
@@ -404,9 +450,13 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				String p = _command.substring(6).trim();
 				int idx = p.indexOf(' ');
 				if (idx < 0)
+				{
 					player.processQuestEvent(p, "");
+				}
 				else
+				{
 					player.processQuestEvent(p.substring(0, idx), p.substring(idx).trim());
+				}
 			}
 			// Balancer: ->
 			// -------------------------------------------------------------------------------

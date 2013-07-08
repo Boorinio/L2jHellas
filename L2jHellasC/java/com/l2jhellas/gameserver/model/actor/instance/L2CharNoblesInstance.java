@@ -105,8 +105,7 @@ public class L2CharNoblesInstance extends L2NpcInstance
 	 */
 	public void showInfoWindow(L2PcInstance player, String htm)
 	{
-		String html = null;
-		html = HtmCache.getInstance().getHtm("data/html/mods/nobless/" + htm);
+		String html = HtmCache.getInstance().getHtmForce("data/html/mods/nobless/" + htm);
 
 		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(html);

@@ -16,8 +16,8 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import com.l2jhellas.gameserver.GmListTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.Location;
@@ -43,14 +43,22 @@ public class AdminZone implements IAdminCommandHandler
 		if (actualCommand.equalsIgnoreCase("admin_zone_check"))
 		{
 			if (activeChar.isInsideZone(L2Character.ZONE_PVP))
+			{
 				activeChar.sendMessage("This is a PvP zone.");
+			}
 			else
+			{
 				activeChar.sendMessage("This is NOT a PvP zone.");
+			}
 
 			if (activeChar.isInsideZone(L2Character.ZONE_NOLANDING))
+			{
 				activeChar.sendMessage("This is a no landing zone.");
+			}
 			else
+			{
 				activeChar.sendMessage("This is NOT a no landing zone.");
+			}
 
 			activeChar.sendMessage("MapRegion: x:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getX()) + " y:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getY()));
 
@@ -73,7 +81,7 @@ public class AdminZone implements IAdminCommandHandler
 		else if (actualCommand.equalsIgnoreCase("admin_zone_reload"))
 		{
 			// TODO: ZONETODO ZoneManager.getInstance().reload();
-			GmListTable.broadcastMessageToGMs("Zones can not be reloaded in this version.");
+			AdminTable.getInstance().broadcastMessageToGMs("Zones can not be reloaded in this version.");
 		}
 		return true;
 	}

@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -60,7 +60,7 @@ public class AdminDonator implements IAdminCommandHandler
 				player.setDonator(false);
 				player.updateNameTitleColor();
 				sm.addString("You are no longer a server donator.");
-				GmListTable.broadcastMessageToGMs("GM " + activeChar.getName() + " removed donator stat of player" + target.getName());
+				AdminTable.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " removed donator stat of player" + target.getName());
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
 					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
@@ -100,7 +100,7 @@ public class AdminDonator implements IAdminCommandHandler
 				player.setDonator(true);
 				player.updateNameTitleColor();
 				sm.addString("You are now a server donator, congratulations!");
-				GmListTable.broadcastMessageToGMs("GM " + activeChar.getName() + " has given donator stat for player " + target.getName() + ".");
+				AdminTable.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " has given donator stat for player " + target.getName() + ".");
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
 					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");

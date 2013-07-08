@@ -17,9 +17,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GmListTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
-import com.l2jhellas.gameserver.model.GMAudit;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -28,6 +27,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2Item;
+import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -71,9 +71,7 @@ public final class RequestDropItem extends L2GameClientPacket
 			return;
 		}
 		if (item.getItemType() == L2EtcItemType.QUEST)
-		{
 			return;
-		}
 		int itemId = item.getItemId();
 
 		// Cursed Weapons cannot be dropped
@@ -130,7 +128,9 @@ public final class RequestDropItem extends L2GameClientPacket
 		if ((L2Item.TYPE2_QUEST == item.getItem().getType2()) && !activeChar.isGM())
 		{
 			if (Config.DEBUG)
+			{
 				_log.finest(activeChar.getObjectId() + ":player tried to drop quest item");
+			}
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_EXCHANGE_ITEM));
 			return;
 		}
@@ -138,13 +138,17 @@ public final class RequestDropItem extends L2GameClientPacket
 		if (!activeChar.isInsideRadius(_x, _y, 150, false) || (Math.abs(_z - activeChar.getZ()) > 50))
 		{
 			if (Config.DEBUG)
+			{
 				_log.finest(activeChar.getObjectId() + ": trying to drop too far away");
+			}
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_DISTANCE_TOO_FAR));
 			return;
 		}
 
 		if (Config.DEBUG)
+		{
 			_log.fine("requested drop item " + _objectId + "(" + item.getCount() + ") at " + _x + "/" + _y + "/" + _z);
+		}
 
 		if (item.isEquipped())
 		{
@@ -166,7 +170,9 @@ public final class RequestDropItem extends L2GameClientPacket
 		L2ItemInstance dropedItem = activeChar.dropItem("Drop", _objectId, _count, _x, _y, _z, null, false);
 
 		if (Config.DEBUG)
+		{
 			_log.fine("dropping " + _objectId + " item(" + _count + ") at: " + _x + " " + _y + " " + _z);
+		}
 
 		// activeChar.broadcastUserInfo();
 
@@ -180,7 +186,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		{
 			String msg = "Character (" + activeChar.getName() + ") has dropped (" + dropedItem.getCount() + ")adena at (" + _x + "," + _y + "," + _z + ")";
 			_log.warning(msg);
-			GmListTable.broadcastMessageToGMs(msg);
+			AdminTable.getInstance().broadcastMessageToGMs(msg);
 		}
 	}
 

@@ -31,9 +31,13 @@ public class CharacterSelected extends L2GameClientPacket
 	// cd
 	private int _charSlot;
 
+	@SuppressWarnings("unused")
 	private int _unk1; 	// new in C4
+	@SuppressWarnings("unused")
 	private int _unk2;	// new in C4
+	@SuppressWarnings("unused")
 	private int _unk3;	// new in C4
+	@SuppressWarnings("unused")
 	private int _unk4;	// new in C4
 
 	@Override
@@ -68,7 +72,9 @@ public class CharacterSelected extends L2GameClientPacket
 				{
 					// The L2PcInstance must be created here, so that it can be attached to the L2GameClient
 					if (Config.DEBUG)
+					{
 						_log.fine("selected slot:" + _charSlot);
+					}
 
 					// load up character from disk
 					L2PcInstance cha = getClient().loadCharFromDisk(_charSlot);

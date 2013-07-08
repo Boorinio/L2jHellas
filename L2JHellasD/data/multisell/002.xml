@@ -2,7 +2,7 @@
 
 <!-- Teleporter scroll multisell -->
 <list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/exchange.xsd" maintainEnchantment="true">
+	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 
 	<!-- SoE to Talking Island -->
 	<item id="1">

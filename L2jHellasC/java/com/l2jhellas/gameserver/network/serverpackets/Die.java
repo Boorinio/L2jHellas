@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.datatables.sql.AccessLevels;
+import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
 import com.l2jhellas.gameserver.model.L2Attackable;
@@ -37,7 +37,7 @@ public class Die extends L2GameServerPacket
 	private final int _charObjId;
 	private final boolean _fake;
 	private boolean _sweepable;
-	private L2AccessLevel _access = AccessLevels._userAccessLevel;
+	private L2AccessLevel _access = AdminTable.getInstance().getAccessLevel(0);
 	private com.l2jhellas.gameserver.model.L2Clan _clan;
 	L2Character _activeChar;
 	private boolean _funEvent;
@@ -58,7 +58,9 @@ public class Die extends L2GameServerPacket
 		_charObjId = cha.getObjectId();
 		_fake = !cha.isDead();
 		if (cha instanceof L2Attackable)
+		{
 			_sweepable = ((L2Attackable) cha).isSweepActive();
+		}
 
 	}
 

@@ -1573,7 +1573,13 @@ public final class Formulas
 		double shldRate = target.calcStat(Stats.SHIELD_RATE, 0, attacker, null) * DEXbonus[target.getDEX()];
 		if (shldRate == 0.0)
 			return 0;
-
+		
+		// Check for passive skill Aegis (316) or Aegis Stance (318)
+        // Like L2OFF you can't parry if your target is behind you
+		if (target.getKnownSkill(316) == null && target.getFirstEffect(318) == null)
+            if (target.isBehind(attacker) || !target.isFront(attacker) || !attacker.isFront(target))
+                return 0;
+		
 		byte shldSuccess = 0;
 		// if attacker
 		// if attacker use bow and target wear shield, shield block rate is multiplied by 1.3 (30%)
@@ -1587,7 +1593,7 @@ public final class Formulas
 		}
 		else if (shldRate > Rnd.get(100))
 		{
-			shldSuccess = 1;
+			shldSuccess = 1;	
 		}
 
 		if (sendSysMsg && target instanceof L2PcInstance)

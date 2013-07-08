@@ -24,13 +24,13 @@ import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2ShortCut;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateOk;
@@ -85,7 +85,9 @@ public final class CharacterCreate extends L2GameClientPacket
 		if (CharNameTable.getInstance().accountCharNumber(getClient().getAccountName()) >= Config.MAX_CHARACTERS_NUMBER_PER_ACCOUNT && Config.MAX_CHARACTERS_NUMBER_PER_ACCOUNT != 0)
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("Max number of characters reached. Creation failed.");
+			}
 
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_TOO_MANY_CHARACTERS);
 			sendPacket(ccf);
@@ -94,7 +96,9 @@ public final class CharacterCreate extends L2GameClientPacket
 		else if (CharNameTable.getInstance().doesCharNameExist(_name))
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("charname: " + _name + " already exists. creation failed.");
+			}
 
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_NAME_ALREADY_EXISTS);
 			sendPacket(ccf);
@@ -103,14 +107,18 @@ public final class CharacterCreate extends L2GameClientPacket
 		else if ((_name.length() < 3) || (_name.length() > 16) || !Util.isAlphaNumeric(_name) || !isValidName(_name))
 		{
 			if (Config.DEBUG)
+			{
 				_log.fine("charname: " + _name + " is invalid. creation failed.");
+			}
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_16_ENG_CHARS);
 			sendPacket(ccf);
 			return;
 		}
 
 		if (Config.DEBUG)
+		{
 			_log.fine("charname: " + _name + " classId: " + _classId);
+		}
 
 		L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(_classId);
 		if (template == null || template.classBaseLevel > 1)
@@ -158,7 +166,9 @@ public final class CharacterCreate extends L2GameClientPacket
 	private void initNewChar(L2GameClient client, L2PcInstance newChar)
 	{
 		if (Config.DEBUG)
+		{
 			_log.fine("Character init start");
+		}
 		L2World.getInstance().storeObject(newChar);
 
 		L2PcTemplate template = newChar.getTemplate();
@@ -170,14 +180,18 @@ public final class CharacterCreate extends L2GameClientPacket
 
 		if (Config.ALLOW_CREATE_LVL)
 		{
-			long tXp = Experience.LEVEL[Config.CUSTOM_START_LVL];
+			long tXp = ExperienceData.getInstance().getExpForLevel(Config.CUSTOM_START_LVL);
 			newChar.addExpAndSp(tXp, 0);
 		}
 		if (Config.CHAR_TITLE)
+		{
 			newChar.setTitle(Config.ADD_CHAR_TITLE);
+		}
 
 		if (Config.PVP_PK_TITLE)
+		{
 			newChar.setTitle(Config.PVP_TITLE_PREFIX + "0" + Config.PK_TITLE_PREFIX + "0 ");
+		}
 		L2ShortCut shortcut;
 		// add attack shortcut
 		shortcut = new L2ShortCut(0, 0, 3, 2, -1, 1);
@@ -205,7 +219,9 @@ public final class CharacterCreate extends L2GameClientPacket
 			if (item.isEquipable())
 			{
 				if (newChar.getActiveWeaponItem() == null || !(item.getItem().getType2() != L2Item.TYPE2_WEAPON))
+				{
 					newChar.getInventory().equipItemAndRecord(item);
+				}
 			}
 		}
 
@@ -224,7 +240,9 @@ public final class CharacterCreate extends L2GameClientPacket
 				newChar.registerShortCut(shortcut);
 			}
 			if (Config.DEBUG)
+			{
 				_log.fine("adding starter skill:" + startSkills[i].getId() + " / " + startSkills[i].getLevel());
+			}
 		}
 		L2GameClient.saveCharToDisk(newChar);
 		newChar.deleteMe(); // release the world of this character and it's inventory
@@ -235,7 +253,9 @@ public final class CharacterCreate extends L2GameClientPacket
 		client.getConnection().sendPacket(cl);
 		client.setCharSelection(cl.getCharInfo());
 		if (Config.DEBUG)
+		{
 			_log.fine("Character init end");
+		}
 	}
 
 	@Override
