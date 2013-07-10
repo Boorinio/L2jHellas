@@ -548,6 +548,8 @@ public class GameServer
 		pathnode.mkdir();
 		File geodata = new File(Config.DATAPACK_ROOT, "data/geodata");
 		geodata.mkdir();
+		File donates = new File(Config.DATAPACK_ROOT, "data/donates");
+		donates.mkdir();
 
 		// Create input stream for log file -- or store file data into memory
 		InputStream is = new FileInputStream(new File(LOG_NAME));
