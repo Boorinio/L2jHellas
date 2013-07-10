@@ -68,7 +68,7 @@
 					<attribute name="Implementation-URL" value="http://www.l2jhellas.eu/" />
 					<attribute name="Implementation-Version" value="${revision}" />
 					<attribute name="Main-Class" value="com.l2jhellas.Server"/>
-					<attribute name="Class-Path" value=". bsf-2.4.0.jar bsh-2.0b4.jar c3p0-0.9.1.2.jar ecj.jar java-engine.jar javolution.jar jython.jar jython-engine.jar mail.jar mmocore.jar mysql-connector-java-5.1.22-bin.jar worldwind.jar"/>
+					<attribute name="Class-Path" value=". bsf-2.4.0.jar bsh-2.0b4.jar c3p0-0.9.1.2.jar ecj.jar java-engine.jar javolution.jar jython.jar jython-engine.jar mail.jar mmocore.jar mysql-connector-java-5.1.22-bin.jar worldwind.jar Subnet-1.0.jar"/>
 				</manifest>
 		</jar>
 		<copy todir="${build.dist.login.lib}">
@@ -189,6 +189,8 @@
 				<include name="hexid.txt"/>
 				<include name="mmocore.ini"/>
 				<include name="ServerName.xml"/>
+				<include name="default-ipconfig.xml"/>
+				<include name="ipconfig.xsd"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config/Network">

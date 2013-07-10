@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -51,7 +50,11 @@ public class AdminTable extends DocumentParser
 	private final Map<L2PcInstance, Boolean> _gmList;
 	//private final FastMap<L2PcInstance, Boolean> _gmList;
 	private int _highestLevel = 0;
-	private AdminTable()
+	
+	/** 
+	 * Instantiates a new admin table. 
+	 */ 
+	protected AdminTable()
 	{
 		_accessLevels = new HashMap<>();
 		_adminCommandAccessRights = new HashMap<>();
@@ -60,14 +63,14 @@ public class AdminTable extends DocumentParser
 	}
 
 	@Override
-	protected void parseDocument(Document doc)
+	protected void parseDocument()
 	{
 		NamedNodeMap attrs;
 		Node attr;
 		StatsSet set;
 		L2AccessLevel level;
 		L2AdminCommandAccessRight command;
-		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+		for (Node n = getCurrentDocument().getFirstChild(); n != null; n = n.getNextSibling())
 		{
 			if ("list".equalsIgnoreCase(n.getNodeName()))
 			{
@@ -194,7 +197,7 @@ public class AdminTable extends DocumentParser
 
 	public List<L2PcInstance> getAllGms(boolean includeHidden)
 	{
-		List<L2PcInstance> tmpGmList = new ArrayList<>();
+		final List<L2PcInstance> tmpGmList = new ArrayList<>();
 
 		for (Entry<L2PcInstance, Boolean> entry : _gmList.entrySet())
 		{
@@ -209,7 +212,7 @@ public class AdminTable extends DocumentParser
 
 	public List<String> getAllGmNames(boolean includeHidden)
 	{
-		List<String> tmpGmList = new ArrayList<>();
+		final List<String> tmpGmList = new ArrayList<>();
 
 		for (Entry<L2PcInstance, Boolean> entry : _gmList.entrySet())
 		{

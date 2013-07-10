@@ -9,6 +9,7 @@ SET CLASSPATH=%CLASSPATH%;./lib/jython.jar
 SET CLASSPATH=%CLASSPATH%;./lib/jython-engine.jar
 SET CLASSPATH=%CLASSPATH%;./lib/mail.jar
 SET CLASSPATH=%CLASSPATH%;./lib/worldwind.jar
+SET CLASSPATH=%CLASSPATH%;./lib/Subnet-1.0.jar
 REM L2JHellas Core
 SET CLASSPATH=%CLASSPATH%;./lib/l2jhellas.jar
 REM MMOCore

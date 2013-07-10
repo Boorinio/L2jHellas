@@ -9,7 +9,7 @@ set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.5\bin
 REM DB INFO
 set gsuser=root
 set gspass=
-set gsdb=l2jhellasgs
+set gsdb=l2jhellas
 set gshost=localhost
 REM ################################################
 

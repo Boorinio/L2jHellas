@@ -9,6 +9,7 @@ CLASSPATH=${CLASSPATH}:./lib/jython-engine.jar
 
 CLASSPATH=${CLASSPATH}:./lib/mail.jar
 CLASSPATH=${CLASSPATH}:./lib/worldwind.jar
+CLASSPATH=${CLASSPATH}:./lib/Subnet-1.0.jar
 
 # MMOCore
 CLASSPATH=${CLASSPATH}:./lib/mmocore.jar
