@@ -66,14 +66,14 @@ public class L2BossSpawnInstance extends L2NpcInstance
 			showHtmlWindow(player);
 		}
 
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showHtmlWindow(L2PcInstance activeChar)
 	{
 		showRbInfo(activeChar);
 
-		activeChar.sendPacket(new ActionFailed());
+		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private final void showRbInfo(L2PcInstance player)

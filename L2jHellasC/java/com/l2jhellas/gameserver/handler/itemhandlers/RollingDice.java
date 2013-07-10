@@ -55,7 +55,7 @@ public class RollingDice implements IItemHandler
 			if (number == 0)
 			{
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_NOT_THROW_THE_DICE_AT_THIS_TIME_TRY_AGAIN_LATER));
-				activeChar.sendPacket(new ActionFailed());
+				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 

@@ -131,7 +131,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		int objectId = IdFactory.getInstance().getNextId();
 		L2PcInstance newChar = L2PcInstance.create(objectId, template, getClient().getAccountName(), _name, _hairStyle, _hairColor, _face, _sex != 0);
 		newChar.setCurrentHp(template.baseHpMax);
-		newChar.setCurrentCp(template.baseCpMax);
+		newChar.setCurrentCp(0);
 		newChar.setCurrentMp(template.baseMpMax);
 
 		// send acknowledgment

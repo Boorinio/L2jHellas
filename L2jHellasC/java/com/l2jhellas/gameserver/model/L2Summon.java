@@ -183,7 +183,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		if (player == _owner && player.getTarget() == this)
 		{
 			player.sendPacket(new PetStatusShow(this));
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		else if (player.getTarget() != this)
 		{
@@ -224,7 +224,7 @@ public abstract class L2Summon extends L2PlayableInstance
 			else
 			{
 				// This Action Failed packet avoids player getting stuck when clicking three or more times
-				player.sendPacket(new ActionFailed());
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 				if (Config.GEODATA > 0)
 				{
 					if (GeoData.getInstance().canSeeTarget(player, this))
@@ -753,7 +753,7 @@ public abstract class L2Summon extends L2PlayableInstance
 			if (getOwner() != null && getOwner().isInOlympiadMode() && !getOwner().isOlympiadStart())
 			{
 				// if L2PcInstance is in Olympia and the match isn't already start, send a Server->Client packet ActionFailed
-				sendPacket(new ActionFailed());
+				sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 

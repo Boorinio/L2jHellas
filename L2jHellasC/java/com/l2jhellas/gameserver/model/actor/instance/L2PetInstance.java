@@ -248,7 +248,7 @@ public class L2PetInstance extends L2Summon
 				updateRefOwner(player);
 			}
 			player.sendPacket(new PetStatusShow(this));
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		else
 		{
@@ -469,7 +469,7 @@ public class L2PetInstance extends L2Summon
 		{
 			// Don't try to pickup anything that is not an item :)
 			_logPet.log(Level.WARNING, getClass().getName() + ": trying to pickup wrong target." + object);
-			getOwner().sendPacket(new ActionFailed());
+			getOwner().sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -496,13 +496,13 @@ public class L2PetInstance extends L2Summon
 		{
 			if (!target.isVisible())
 			{
-				getOwner().sendPacket(new ActionFailed());
+				getOwner().sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 
 			if (target.getOwnerId() != 0 && target.getOwnerId() != getOwner().getObjectId() && !getOwner().isInLooterParty(target.getOwnerId()))
 			{
-				getOwner().sendPacket(new ActionFailed());
+				getOwner().sendPacket(ActionFailed.STATIC_PACKET);
 
 				if (target.getItemId() == 57)
 				{

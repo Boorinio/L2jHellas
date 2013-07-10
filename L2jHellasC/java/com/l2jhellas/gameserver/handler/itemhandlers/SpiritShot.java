@@ -61,7 +61,7 @@ public class SpiritShot implements IItemHandler
 		if (activeChar.isParalyzed())
 		{
 			activeChar.sendMessage("You can't use this while you are Paralyzed.");
-			activeChar.sendPacket(new ActionFailed());
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

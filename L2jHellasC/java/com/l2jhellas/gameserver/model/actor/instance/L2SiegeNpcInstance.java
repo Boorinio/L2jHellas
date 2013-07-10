@@ -65,7 +65,7 @@ public class L2SiegeNpcInstance extends L2FolkInstance
 			}
 		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class L2SiegeNpcInstance extends L2FolkInstance
 			html.replace("%castlename%", getCastle().getName());
 			html.replace("%objectId%", String.valueOf(getObjectId()));
 			player.sendPacket(html);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 

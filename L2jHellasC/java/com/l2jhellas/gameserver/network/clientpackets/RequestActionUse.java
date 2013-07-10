@@ -70,14 +70,14 @@ public final class RequestActionUse extends L2GameClientPacket
 		// Don't do anything if player is dead
 		if (activeChar.isAlikeDead())
 		{
-			getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
 		// don't do anything if player is confused
 		if (activeChar.isOutOfControl())
 		{
-			getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		L2Summon pet = activeChar.getPet();
@@ -140,7 +140,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					if (activeChar.isInOlympiadMode() && !activeChar.isOlympiadStart())
 					{
 						// if L2PcInstance is in Olympiad and the match isn't already start, send a Server->Client packet ActionFailed
-						activeChar.sendPacket(new ActionFailed());
+						activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 						return;
 					}
 

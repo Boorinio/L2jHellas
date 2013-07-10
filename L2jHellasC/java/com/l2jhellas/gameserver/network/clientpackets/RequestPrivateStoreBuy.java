@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ItemRequest;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -30,7 +28,6 @@ import com.l2jhellas.util.Util;
 
 public final class RequestPrivateStoreBuy extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestPrivateStoreBuy.class.getName());
 	private static final String _C__79_REQUESTPRIVATESTOREBUY = "[C] 79 RequestPrivateStoreBuy";
 
 	private int _storePlayerId;
@@ -72,6 +69,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("privatestorebuy"))
 		{
 			player.sendMessage("You buying items too fast.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -85,14 +83,17 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 
 		TradeList storeList = storePlayer.getSellList();
 		if (storeList == null)
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
-
+		}
 		// Faction Good vs Evil
 		if (Config.MOD_GVE_ENABLE_FACTION)
 		{
 			if ((storePlayer.isevil() && player.isgood()) || (storePlayer.isgood() && player.isevil()))
 			{
 				player.sendMessage("You cant Buy from Different Faction");
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 		}
@@ -100,7 +101,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		if (!player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");
-			sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -141,8 +142,8 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 
 		if (player.getAdena() < priceTotal)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
-			sendPacket(new ActionFailed());
+			player.sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -158,7 +159,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 
 		if (!storeList.PrivateStoreBuy(player, _items, (int) priceTotal))
 		{
-			sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			_log.warning("PrivateStore buy has failed due to invalid list or request. Player: " + player.getName() + ", Private store of: " + storePlayer.getName());
 			return;
 		}

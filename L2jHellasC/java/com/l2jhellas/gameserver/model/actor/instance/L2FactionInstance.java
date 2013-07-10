@@ -48,7 +48,7 @@ public class L2FactionInstance extends L2FolkInstance
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken();
 		@SuppressWarnings("unused")
@@ -64,14 +64,14 @@ public class L2FactionInstance extends L2FolkInstance
 			if (player.isgood())
 			{
 				player.sendMessage("You already are in " + Config.MOD_GVE_NAME_TEAM_GOOD + " faction ");
-				player.sendPacket(new ActionFailed());
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 			}
 			else
 			{
 				if (player.isevil())
 				{
 					player.sendMessage("You cant change faction.");
-					player.sendPacket(new ActionFailed());
+					player.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				else
 				{
@@ -80,7 +80,7 @@ public class L2FactionInstance extends L2FolkInstance
 					if (getgoods > getevils)
 					{
 						player.sendMessage("You Cant Use " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");
-						player.sendPacket(new ActionFailed());
+						player.sendPacket(ActionFailed.STATIC_PACKET);
 					}
 					else
 					{
@@ -135,14 +135,14 @@ public class L2FactionInstance extends L2FolkInstance
 			if (player.isevil())
 			{
 				player.sendMessage("You already are in " + Config.MOD_GVE_NAME_TEAM_EVIL + " faction.");
-				player.sendPacket(new ActionFailed());
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 			}
 			else
 			{
 				if (player.isgood())
 				{
 					player.sendMessage("You can't change faction.");
-					player.sendPacket(new ActionFailed());
+					player.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				else
 				{
@@ -151,7 +151,7 @@ public class L2FactionInstance extends L2FolkInstance
 					if (getevils > getgoods)
 					{
 						player.sendMessage("You cant use " + Config.MOD_GVE_NAME_TEAM_EVIL + " faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");
-						player.sendPacket(new ActionFailed());
+						player.sendPacket(ActionFailed.STATIC_PACKET);
 					}
 					else
 					{
@@ -237,12 +237,12 @@ public class L2FactionInstance extends L2FolkInstance
 			broadcastPacket(sa);
 			player.setLastFolkNPC(this);
 			showMessageWindow(player);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		else
 		{
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 

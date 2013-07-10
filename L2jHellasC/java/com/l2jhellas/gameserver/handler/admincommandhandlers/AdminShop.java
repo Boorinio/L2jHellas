@@ -98,6 +98,6 @@ public class AdminShop implements IAdminCommandHandler
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": no buylist with id:" + val);
 		}
-		activeChar.sendPacket(new ActionFailed());
+		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 }

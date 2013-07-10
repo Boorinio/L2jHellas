@@ -19,6 +19,7 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class AllyDismiss extends L2GameClientPacket
@@ -44,40 +45,46 @@ public final class AllyDismiss extends L2GameClientPacket
 
 		if (player.getClan() == null)
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER));
 			return;
 		}
 		L2Clan leaderClan = player.getClan();
 		if (leaderClan.getAllyId() == 0)
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.NO_CURRENT_ALLIANCES));
 			return;
 		}
 		if (!player.isClanLeader() || leaderClan.getClanId() != leaderClan.getAllyId())
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER));
 			return;
 		}
 		L2Clan clan = ClanTable.getInstance().getClanByName(_clanName);
 		if (clan == null)
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.CLAN_DOESNT_EXISTS));
 			return;
 		}
 		if (clan.getClanId() == leaderClan.getClanId())
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.ALLIANCE_LEADER_CANT_WITHDRAW));
 			return;
 		}
 		if (clan.getAllyId() != leaderClan.getAllyId())
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.DIFFERANT_ALLIANCE));
 			return;
 		}
 
 		long currentTime = System.currentTimeMillis();
 		leaderClan.setAllyPenaltyExpiryTime(
-/** @formatter:off */
+				/** @formatter:off */
         		currentTime + Config.ALT_ACCEPT_CLAN_DAYS_WHEN_DISMISSED * 86400000L,
         		L2Clan.PENALTY_TYPE_DISMISS_CLAN); //24*60*60*1000 = 86400000
         		/** @formatter:on */
@@ -86,7 +93,7 @@ public final class AllyDismiss extends L2GameClientPacket
 		clan.setAllyId(0);
 		clan.setAllyName(null);
 		clan.setAllyPenaltyExpiryTime(
-/** @formatter:off */
+				/** @formatter:off */
         		currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_DISMISSED * 86400000L,
         		L2Clan.PENALTY_TYPE_CLAN_DISMISSED); //24*60*60*1000 = 86400000
         		/** @formatter:on */

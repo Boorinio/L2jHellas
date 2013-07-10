@@ -79,7 +79,7 @@ public class L2FishermanInstance extends L2FolkInstance
 			_log.warning("buylist id:" + val);
 		}
 
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showSellWindow(L2PcInstance player)
@@ -92,7 +92,7 @@ public class L2FishermanInstance extends L2FolkInstance
 		if (Config.DEBUG)
 			_log.fine("Showing sell window");
 
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	@Override
@@ -169,6 +169,6 @@ public class L2FishermanInstance extends L2FolkInstance
 			player.sendPacket(asl);
 		}
 
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 }

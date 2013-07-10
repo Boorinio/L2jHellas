@@ -38,9 +38,11 @@ import com.l2jhellas.util.Util;
 public class RequestBuyProcure extends L2GameClientPacket
 {
 	private static final String _C__C3_REQUESTBUYPROCURE = "[C] C3 RequestBuyProcure";
+	@SuppressWarnings("unused")
 	private int _listId;
 	private int _count;
 	private int[] _items;
+	@SuppressWarnings("unused")
 	private List<CropProcure> _procureList = new FastList<CropProcure>();
 
 	@Override
@@ -86,7 +88,7 @@ public class RequestBuyProcure extends L2GameClientPacket
 
 		if (_count < 1)
 		{
-			sendPacket(new ActionFailed());
+			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

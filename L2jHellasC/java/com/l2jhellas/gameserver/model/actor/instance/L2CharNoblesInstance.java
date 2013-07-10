@@ -84,12 +84,12 @@ public class L2CharNoblesInstance extends L2NpcInstance
 			NpcHtmlMessage html = new NpcHtmlMessage(1);
 			html.setHtml(NPC_MENU);
 			sendHtmlMessage(player, html);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		else
 		{
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 

@@ -69,7 +69,7 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 			}
 		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class L2CastleBlacksmithInstance extends L2FolkInstance
 
 	private void showMessageWindow(L2PcInstance player, int val)
 	{
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 		String filename = "data/html/castleblacksmith/castleblacksmith-no.htm";
 
 		int condition = validateCondition(player);

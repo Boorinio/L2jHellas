@@ -90,7 +90,7 @@ public class SummonItems implements IItemHandler
 		if (activeChar.isParalyzed())
 		{
 			activeChar.sendMessage("You Cannot Use This While You Are Paralyzed");
-			activeChar.sendPacket(new ActionFailed());
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

@@ -141,12 +141,12 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 				html.setHtml(sb.toString());
 				player.sendPacket(html);
 			}
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		else
 		{
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 

@@ -44,7 +44,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 		if (!player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");
-			sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		// MODS Faction Good vs Evil
@@ -52,11 +52,13 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			player.sendMessage("You can't trade with different Faction.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			player.sendMessage("You can't trade with different Faction.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -70,7 +72,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 			player.setActiveRequester(null);
 			player.setAllowTrade(true);
 			partner.setAllowTrade(true);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -85,7 +87,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 			SystemMessage msg = new SystemMessage(SystemMessageId.S1_DENIED_TRADE_REQUEST);
 			msg.addString(player.getName());
 			partner.sendPacket(msg);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.setAllowTrade(true);
 		}
 

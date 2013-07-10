@@ -78,7 +78,7 @@ public final class RequestRestart extends L2GameClientPacket
 		if (AttackStanceTaskManager.getInstance().getAttackStanceTask(player))
 		{
 			player.sendPacket(new SystemMessage(SystemMessageId.CANT_RESTART_WHILE_FIGHTING));
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -90,7 +90,7 @@ public final class RequestRestart extends L2GameClientPacket
 			if (SevenSignsFestival.getInstance().isFestivalInitialized())
 			{
 				player.sendPacket(SystemMessage.sendString("You cannot restart while you are a participant in a festival."));
-				player.sendPacket(new ActionFailed());
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 			L2Party playerParty = player.getParty();

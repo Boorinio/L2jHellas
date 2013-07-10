@@ -101,7 +101,7 @@ public class Potions implements IItemHandler
 
 		if (activeChar.isSitting())
 		{
-			playable.sendPacket(new ActionFailed());
+			playable.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

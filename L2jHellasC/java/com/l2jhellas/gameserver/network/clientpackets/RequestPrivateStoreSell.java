@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ItemRequest;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -27,7 +25,6 @@ import com.l2jhellas.util.Util;
 
 public final class RequestPrivateStoreSell extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestPrivateStoreSell.class.getName());
 	// private static final String _C__96_SENDPRIVATESTOREBUYBUYLIST = "[C] 96 SendPrivateStoreBuyBuyList";
 	private static final String _C__96_REQUESTPRIVATESTORESELL = "[C] 96 RequestPrivateStoreSell";
 
@@ -85,32 +82,54 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
+		{
 			return;
+		}
+		
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("privatestoresell"))
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendMessage("You selling items too fast");
 			return;
 		}
 		L2Object object = L2World.getInstance().findObject(_storePlayerId);
 		if (object == null || !(object instanceof L2PcInstance))
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
+		
 		L2PcInstance storePlayer = (L2PcInstance) object;
 		if (storePlayer.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_BUY)
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
+		
 		TradeList storeList = storePlayer.getBuyList();
 		if (storeList == null)
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
+       
+		// Check if player didn't choose any items
+        if (_items == null || _items.length == 0)
+        {
+        	player.sendPacket(ActionFailed.STATIC_PACKET);
+            return;
+        }
 
 		if (!player.getAccessLevel().allowTransaction())
 		{
-			player.sendMessage("Transactions are disable for your Access Level");
-			sendPacket(new ActionFailed());
+			player.sendMessage("Transactions are disable for your Access Level.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
 		if (storePlayer.getAdena() < _price)
 		{
-			sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			storePlayer.sendMessage("You have not enough adena, canceling PrivateBuy.");
 			storePlayer.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
 			storePlayer.broadcastUserInfo();
@@ -122,14 +141,15 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 		{
 			if ((storePlayer.isevil() && player.isgood()) || (storePlayer.isgood() && player.isevil()))
 			{
-				player.sendMessage("You cant sell on Different Faction");
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+				player.sendMessage("You cant sell on enemy Faction.");
 				return;
 			}
 		}
 
 		if (!storeList.PrivateStoreSell(player, _items, _price))
 		{
-			sendPacket(new ActionFailed());
+			 player.sendPacket(ActionFailed.STATIC_PACKET);
 			_log.warning("PrivateStore sell has failed due to invalid list or request. Player: " + player.getName() + ", Private store of: " + storePlayer.getName());
 			return;
 		}

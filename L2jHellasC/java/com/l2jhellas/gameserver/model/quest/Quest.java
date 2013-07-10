@@ -361,7 +361,7 @@ public class Quest extends ManagedScript
 			return showResult(player, res);
 		// else tell the player that
 		else
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		// note: if the default html for this npc needs to be shown, onFirstTalk should
 		// call npc.showChatWindow(player) and then return null.
 		return true;
@@ -550,7 +550,7 @@ public class Quest extends ManagedScript
 			npcReply.setHtml(res);
 			npcReply.replace("%playername%", player.getName());
 			player.sendPacket(npcReply);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		else
 		{
@@ -1164,7 +1164,7 @@ public class Quest extends ManagedScript
 			npcReply.setHtml(content);
 			npcReply.replace("%playername%", player.getName());
 			player.sendPacket(npcReply);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		return content;
 	}

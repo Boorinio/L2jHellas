@@ -50,12 +50,12 @@ public class ScrollOfResurrection implements IItemHandler
 		}
 		if (activeChar.isInOlympiadMode())
 		{
-			activeChar.sendPacket(new ActionFailed());
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		if (activeChar.inObserverMode())
 		{
-			activeChar.sendPacket(new ActionFailed());
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		if (activeChar.isMovementDisabled())

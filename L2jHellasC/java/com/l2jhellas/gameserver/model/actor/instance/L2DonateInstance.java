@@ -114,12 +114,12 @@ public class L2DonateInstance extends L2FolkInstance
 			broadcastPacket(sa);
 			player.setLastFolkNPC(this);
 			showHtmlWindow(player);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		else
 		{
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-			player.sendPacket(new ActionFailed());
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 
 	}

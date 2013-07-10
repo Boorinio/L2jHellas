@@ -53,7 +53,7 @@ public class BlessedSpiritShot implements IItemHandler
 		if (activeChar.isParalyzed())
 		{
 			activeChar.sendMessage("You cannot use this while you are paralyzed.");
-			activeChar.sendPacket(new ActionFailed());
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

@@ -123,7 +123,7 @@ public class L2CasinoInstance extends L2NpcInstance
 		tb.append("</center>");
 		tb.append("<center><img src=\"L2UI.SquareGray\" width=\"280\" height=\"1\">");
 		tb.append("</body></html>");
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 		return tb.toString();
 	}
 

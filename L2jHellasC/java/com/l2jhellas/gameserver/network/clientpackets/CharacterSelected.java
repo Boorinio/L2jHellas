@@ -81,7 +81,7 @@ public class CharacterSelected extends L2GameClientPacket
 					if (cha == null)
 					{
 						_log.severe("Character could not be loaded (slot:" + _charSlot + ")");
-						sendPacket(new ActionFailed());
+						sendPacket(ActionFailed.STATIC_PACKET);
 						return;
 					}
 					if (cha.getAccessLevel().getLevel() < 0)

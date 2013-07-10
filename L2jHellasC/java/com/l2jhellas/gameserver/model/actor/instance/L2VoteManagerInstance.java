@@ -186,7 +186,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
-		activeChar.sendPacket(new ActionFailed());
+		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	public static void generateLogo(L2PcInstance activeChar, int imgId)
@@ -260,6 +260,6 @@ public class L2VoteManagerInstance extends L2NpcInstance
 
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 }

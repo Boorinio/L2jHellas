@@ -528,7 +528,7 @@ public class CTF
 					{
 						if (_player.isRiding() || _player.isFlying())
 						{
-							_player.sendPacket(new ActionFailed());
+							_player.sendPacket(ActionFailed.STATIC_PACKET);
 							break;
 						}
 

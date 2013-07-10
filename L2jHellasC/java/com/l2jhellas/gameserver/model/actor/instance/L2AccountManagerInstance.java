@@ -613,7 +613,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 			showHtmlWindow(player);
 		}
 
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showHtmlWindow(L2PcInstance activeChar)
@@ -623,7 +623,7 @@ public class L2AccountManagerInstance extends L2FolkInstance
 		else
 			subhtml(activeChar);
 
-		activeChar.sendPacket(new ActionFailed());
+		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void sendingHtml(L2PcInstance activeChar)

@@ -30,8 +30,11 @@ public final class Action extends L2GameClientPacket
 
 	// cddddc
 	private int _objectId;
+	@SuppressWarnings("unused")
 	private int _originX;
+	@SuppressWarnings("unused")
 	private int _originY;
+	@SuppressWarnings("unused")
 	private int _originZ;
 	private int _actionId;
 
@@ -71,7 +74,7 @@ public final class Action extends L2GameClientPacket
 		if (obj == null)
 		{
 			// pressing e.g. pickup many times quickly would get you here
-			getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -92,13 +95,13 @@ public final class Action extends L2GameClientPacket
 				default:
 					// Invalid action detected (probably client cheating), log this
 					_log.warning("Character: " + activeChar.getName() + " requested invalid action: " + _actionId);
-					getClient().sendPacket(new ActionFailed());
+					getClient().sendPacket(ActionFailed.STATIC_PACKET);
 				break;
 			}
 		}
 		else
 			// Actions prohibited when in trade
-			getClient().sendPacket(new ActionFailed());
+			getClient().sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	@Override

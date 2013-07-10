@@ -55,7 +55,7 @@ public class Unlock implements ISkillHandler
 				if (!door.isUnlockable())
 				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.UNABLE_TO_UNLOCK_DOOR));
-					activeChar.sendPacket(new ActionFailed());
+					activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 					return;
 				}
 
@@ -78,7 +78,7 @@ public class Unlock implements ISkillHandler
 				L2ChestInstance chest = (L2ChestInstance) targetList[index];
 				if (chest.getCurrentHp() <= 0 || chest.isInteracted())
 				{
-					activeChar.sendPacket(new ActionFailed());
+					activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 					return;
 				}
 				else

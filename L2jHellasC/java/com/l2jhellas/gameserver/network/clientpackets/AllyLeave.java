@@ -18,6 +18,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class AllyLeave extends L2GameClientPacket
@@ -35,24 +36,29 @@ public final class AllyLeave extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
+		
 		if (player.getClan() == null)
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER));
 			return;
 		}
 		if (!player.isClanLeader())
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.ONLY_CLAN_LEADER_WITHDRAW_ALLY));
 			return;
 		}
 		L2Clan clan = player.getClan();
 		if (clan.getAllyId() == 0)
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.NO_CURRENT_ALLIANCES));
 			return;
 		}
 		if (clan.getClanId() == clan.getAllyId())
 		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendPacket(new SystemMessage(SystemMessageId.ALLIANCE_LEADER_CANT_WITHDRAW));
 			return;
 		}
@@ -61,10 +67,10 @@ public final class AllyLeave extends L2GameClientPacket
 		clan.setAllyId(0);
 		clan.setAllyName(null);
 		clan.setAllyPenaltyExpiryTime(
-/** @formatter:off */
-        		currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_LEAVED * 86400000L,
-        		L2Clan.PENALTY_TYPE_CLAN_LEAVED); //24*60*60*1000 = 86400000
-/** @formatter:on */
+				/** @formatter:off */
+				currentTime + Config.ALT_ALLY_JOIN_DAYS_WHEN_LEAVED * 86400000L,
+				L2Clan.PENALTY_TYPE_CLAN_LEAVED); //24*60*60*1000 = 86400000
+				/** @formatter:on */
 		clan.updateClanInDB();
 		player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_WITHDRAWN_FROM_ALLIANCE));
 	}

@@ -103,7 +103,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance
 			}
 		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showBuyWindow(L2PcInstance player, String val)
@@ -125,7 +125,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance
 			_log.info("buylist id:" + val);
 		}
 
-		player.sendPacket(new ActionFailed());
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance
 
 			if (CastleManorManager.getInstance().isUnderMaintenance())
 			{
-				player.sendPacket(new ActionFailed());
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 				player.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
 				return;
 			}

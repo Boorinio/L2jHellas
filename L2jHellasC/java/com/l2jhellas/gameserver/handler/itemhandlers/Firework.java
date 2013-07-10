@@ -48,7 +48,7 @@ public class Firework implements IItemHandler
 				|| activeChar.isDead()
 				|| activeChar.isAlikeDead())
 		{/** @formatter:on */
-			activeChar.sendPacket(new ActionFailed());
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

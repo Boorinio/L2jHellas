@@ -27,6 +27,8 @@ public class L2ShortCut
 	private final int _type;
 	private final int _id;
 	private final int _level;
+	/** Augmented Item */
+	private L2Augmentation _augmentation = null;
 
 	public L2ShortCut(int slotId, int pageId, int shortcutType, int shortcutId, int shortcutLevel, int unknown)
 	{
@@ -61,5 +63,25 @@ public class L2ShortCut
 	public int getType()
 	{
 		return _type;
+	}
+	
+	/**
+	 * Returns whether this item is augmented or not
+	 *
+	 * @return true if augmented
+	 */
+	public boolean isAugmented()
+	{
+		return _augmentation == null ? false : true;
+	}
+	
+	/**
+	 * Returns the augmentation object for this item
+	 *
+	 * @return augmentation
+	 */
+	public L2Augmentation getAugmentation()
+	{
+		return _augmentation;
 	}
 }
