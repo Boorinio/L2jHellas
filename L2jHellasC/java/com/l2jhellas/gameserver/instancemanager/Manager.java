@@ -18,8 +18,31 @@ public class Manager
 {
 	public static void reloadAll()
 	{
+		//ArenaManager.
 		AuctionManager.getInstance().reload();
-		//TODO AdminReload.java
-		//FQuestManager.getInstance().reload();
-	}
-}
+		//AwayManager.
+		BoatManager.getInstance().reload();
+		CastleManager.getInstance().reload();
+		ClanHallManager.getInstance().reload();
+		CoupleManager.getInstance().reload();
+		CursedWeaponsManager.getInstance().reload();
+		DayNightSpawnManager.getInstance().reload();
+		//DimensionalRiftManager.getInstance().reload();
+		//DuelManager
+		//FishingZoneManager.
+		//FourSepulchersManager.getInstance().
+		GrandBossManager.getInstance().reload();
+		ItemsOnGroundManager.getInstance().reload();
+		MercTicketManager.getInstance().reload();
+		//OlympiadStadiaManager.getInstance().reload();
+		//PetitionManager.getInstance().
+		//QuestManager.getInstance().reloadAllQuests();
+		RaidBossPointsManager.getInstance().reload();
+		RaidBossSpawnManager.getInstance().reload();
+		//SiegeGuardManager.getInstance().
+		//SiegeManager.getInstance().
+		//SiegeReward.getInstance().
+		//TownManager.getInstance().reload();
+		//ZoneManager.getInstance().reload();
+	}// osa exoun reload(); vgazoun NPE apo to deftero-trito reload kai meta
+}// osa den exoun reload(); xreiazonte

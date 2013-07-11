@@ -55,23 +55,23 @@ public class ClanHallManager
 	{
 		return _loaded;
 	}
-
+	
+	/**
+	 *  Reload All Clan Hall
+	 */
+	public final void reload()
+	{
+		_clanHall.clear();
+		_freeClanHall.clear();
+		load();
+	}
+	
 	private ClanHallManager()
 	{
 		_clanHall = new FastMap<Integer, ClanHall>();
 		_freeClanHall = new FastMap<Integer, ClanHall>();
 		load();
 	}
-
-	/** Reload All Clan Hall */
-	/*
-	 * public final void reload() Cant reload atm - would loose zone info
-	 * {
-	 * _clanHall.clear();
-	 * _freeClanHall.clear();
-	 * load();
-	 * }
-	 */
 
 	/** Load All Clan Hall */
 	private final void load()

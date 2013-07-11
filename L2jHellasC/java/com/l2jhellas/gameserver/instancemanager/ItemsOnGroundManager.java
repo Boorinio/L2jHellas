@@ -63,7 +63,12 @@ public class ItemsOnGroundManager
 		}
 		return _instance;
 	}
-
+	
+	public void reload()
+	{
+		_instance.load();
+	}
+	
 	private void load()
 	{
 		// If SaveDroppedItem is false, may want to delete all items previously stored to avoid add old items on reactivate

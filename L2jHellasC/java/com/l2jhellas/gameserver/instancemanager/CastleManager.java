@@ -84,6 +84,12 @@ public class CastleManager
 		return index;
 	}
 
+	public void reload()
+	{
+		_castles.clear();
+		load();
+	}
+	
 	private final void load()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -267,7 +273,7 @@ public class CastleManager
 			// else offline-player circlet removal
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE owner_id = ? AND item_id = ?");
+				PreparedStatement statement = con.prepareStatement("DELETE FROM items WHERE owner_id=? AND item_id=?");
 				statement.setInt(1, member.getObjectId());
 				statement.setInt(2, circletId);
 				statement.execute();

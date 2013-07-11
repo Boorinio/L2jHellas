@@ -50,6 +50,7 @@ import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.Util;
 
 /**
  * @author KidZor
@@ -127,7 +128,6 @@ public class AdminReload implements IAdminCommandHandler
 					Manager.reloadAll();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All instance managers has been reloaded.");
-					//TODO
 				}
 				else if (type.startsWith("npcwalkers"))
 				{
@@ -144,7 +144,7 @@ public class AdminReload implements IAdminCommandHandler
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Quests has been Reloaded.");
 				}
-				else if (type.equals("configs"))
+				else if (type.equals("configs") || type.equals("config"))
 				{
 					ExternalConfig.load();
 					Config.load();
@@ -236,6 +236,7 @@ public class AdminReload implements IAdminCommandHandler
 						L2ScriptEngineManager.getInstance().reportScriptFileError(file, e);
 						activeChar.sendMessage("There was an error while loading handlers.");
 					}
+					sendReloadPage(activeChar);
 				}
 			}
 			catch (Exception e)
@@ -257,6 +258,7 @@ public class AdminReload implements IAdminCommandHandler
 	{
 		String html = HtmCache.getInstance().getHtmForce("data/html/admin/reload_menu.htm");
 		player.sendPacket(new NpcHtmlMessage(1, html));
+		Util.printSection("Reload");
 	}
 
 	@Override

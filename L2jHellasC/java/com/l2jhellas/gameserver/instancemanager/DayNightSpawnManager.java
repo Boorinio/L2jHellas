@@ -47,6 +47,12 @@ public class DayNightSpawnManager
 		return _instance;
 	}
 
+	public void reload()
+	{
+		cleanUp();
+		_instance = new DayNightSpawnManager();
+	}
+	
 	private DayNightSpawnManager()
 	{
 		_dayCreatures = new FastMap<L2Spawn, L2NpcInstance>();

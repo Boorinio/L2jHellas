@@ -108,6 +108,12 @@ public class GrandBossManager
 		init();
 	}
 
+	public void reload()
+	{
+		cleanUp();
+		init();
+	}
+	
 	private void init()
 	{
 		_zones = new L2FastList<L2BossZone>();

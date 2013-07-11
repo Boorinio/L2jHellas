@@ -51,7 +51,7 @@ public class CoupleManager
 
 	public void reload()
 	{
-		getCouples().clear();
+		_couples.clear();
 		load();
 	}
 
@@ -62,7 +62,7 @@ public class CoupleManager
 			PreparedStatement statement;
 			ResultSet rs;
 
-			statement = con.prepareStatement("Select id FROM mods_wedding ORDER BY id");
+			statement = con.prepareStatement("SELECT id FROM mods_wedding ORDER BY id");
 			rs = statement.executeQuery();
 
 			while (rs.next())

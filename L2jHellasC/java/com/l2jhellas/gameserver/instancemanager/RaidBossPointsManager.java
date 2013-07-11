@@ -41,13 +41,19 @@ public class RaidBossPointsManager
 	protected static final Logger _log = Logger.getLogger(RaidBossPointsManager.class.getName());
 	protected static FastMap<Integer, Map<Integer, Integer>> _list;
 
+	public void reload()
+	{
+		_list.clear();
+		init();
+	}
+	
 	public final static void init()
 	{
 		_list = new FastMap<Integer, Map<Integer, Integer>>();
 		FastList<Integer> _chars = new FastList<Integer>();
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT `charId` FROM `character_raid_points`");
+			PreparedStatement statement = con.prepareStatement("SELECT charId FROM character_raid_points");
 			ResultSet rset = statement.executeQuery();
 			while (rset.next())
 			{
@@ -59,7 +65,7 @@ public class RaidBossPointsManager
 			{
 				int charId = n.getValue();
 				FastMap<Integer, Integer> values = new FastMap<Integer, Integer>();
-				statement = con.prepareStatement("SELECT `boss_id`,`points` FROM `character_raid_points` WHERE `charId`=?");
+				statement = con.prepareStatement("SELECT boss_id,points FROM character_raid_points WHERE charId=?");
 				statement.setInt(1, charId);
 				rset = statement.executeQuery();
 				while (rset.next())
@@ -95,7 +101,7 @@ public class RaidBossPointsManager
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
-			statement = con.prepareStatement("REPLACE INTO character_raid_points (`charId`,`boss_id`,`points`) VALUES (?,?,?)");
+			statement = con.prepareStatement("REPLACE INTO character_raid_points (charId,boss_id,points) VALUES (?,?,?)");
 			statement.setInt(1, player.getObjectId());
 			statement.setInt(2, raidId);
 			statement.setInt(3, points);

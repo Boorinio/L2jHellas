@@ -162,7 +162,7 @@ public class AuctionManager
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
-			statement = con.prepareStatement("INSERT INTO `auction` VALUES " + ITEM_INIT_DATA[i]);
+			statement = con.prepareStatement("INSERT INTO auction VALUES " + ITEM_INIT_DATA[i]);
 			statement.execute();
 			statement.close();
 			_auctions.add(new Auction(id));

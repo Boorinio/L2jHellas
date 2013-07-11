@@ -658,6 +658,7 @@ public final class Config
 	public static float RAID_MIN_RESPAWN_MULTIPLIER;
 	public static float RAID_MAX_RESPAWN_MULTIPLIER;
 	public static double RAID_MINION_RESPAWN_TIMER;
+	public static boolean RB_IMMEDIATE_INFORM;
 	public static int PLAYER_SPAWN_PROTECTION;
 	public static int UNSTUCK_INTERVAL;
 	public static String PARTY_XP_CUTOFF_METHOD;
@@ -1797,6 +1798,7 @@ public final class Config
 				HP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("HpRegenMultiplier", "100")) / 100;
 				MP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("MpRegenMultiplier", "100")) / 100;
 				CP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("CpRegenMultiplier", "100")) / 100;
+				
 				RAID_HP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("RaidHpRegenMultiplier", "100")) / 100;
 				RAID_MP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("RaidMpRegenMultiplier", "100")) / 100;
 				RAID_P_DEFENCE_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("RaidPhysicalDefenceMultiplier", "100")) / 100;
@@ -1804,6 +1806,7 @@ public final class Config
 				RAID_MIN_RESPAWN_MULTIPLIER = Float.parseFloat(otherSettings.getProperty("RaidMinRespawnMultiplier", "1.0"));
 				RAID_MAX_RESPAWN_MULTIPLIER = Float.parseFloat(otherSettings.getProperty("RaidMaxRespawnMultiplier", "1.0"));
 				RAID_MINION_RESPAWN_TIMER = Integer.parseInt(otherSettings.getProperty("RaidMinionRespawnTime", "300000"));
+				RB_IMMEDIATE_INFORM = Boolean.parseBoolean(otherSettings.getProperty("RaidImmediateDBupdate", "True"));
 				PLAYER_SPAWN_PROTECTION = Integer.parseInt(otherSettings.getProperty("PlayerSpawnProtection", "0"));
 				UNSTUCK_INTERVAL = Integer.parseInt(otherSettings.getProperty("UnstuckInterval", "300"));
 				PARTY_XP_CUTOFF_METHOD = otherSettings.getProperty("PartyXpCutoffMethod", "percentage");

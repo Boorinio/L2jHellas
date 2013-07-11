@@ -57,6 +57,12 @@ public class BoatManager
 	{
 	}
 
+	public void reload()
+	{
+		_staticItems.clear();
+		load();
+	}
+	
 	private final void load()
 	{
 		_initialized = true;

@@ -71,7 +71,12 @@ public class RaidBossSpawnManager
 		return _instance;
 	}
 
-	@SuppressWarnings("rawtypes")
+	public void reload()
+	{
+		cleanUp();
+		init();
+	}
+	
 	private void init()
 	{
 		_bosses = new FastMap<Integer, L2RaidBossInstance>();
@@ -200,9 +205,9 @@ public class RaidBossSpawnManager
 			futureSpawn = ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(boss.getNpcId()), respawn_delay);
 
 			_schedules.put(boss.getNpcId(), futureSpawn);
-			// To update immediately Database uncomment on the following line, to post the hour of respawn raid boss on your site for example or to envisage a crash landing of the
-			// waiter.
-			// updateDb();
+			
+			if (Config.RB_IMMEDIATE_INFORM)
+				updateDb();
 		}
 		else
 		{
@@ -374,7 +379,7 @@ public class RaidBossSpawnManager
 					continue;
 				}
 
-				PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist SET respawn_time = ?, currentHP = ?, currentMP = ? WHERE boss_id = ?");
+				PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist SET respawn_time=?, currentHP=?, currentMP=? WHERE boss_id=?");
 				statement.setLong(1, info.getLong("respawnTime"));
 				statement.setDouble(2, info.getDouble("currentHP"));
 				statement.setDouble(3, info.getDouble("currentMP"));

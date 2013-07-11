@@ -112,7 +112,7 @@ public class ZoneManager
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 
-			File file = new File(Config.DATAPACK_ROOT + "/data/zones/zone.xml");
+			File file = new File(Config.DATAPACK_ROOT + "/data/xml/zone.xml");
 			if (!file.exists())
 			{
 				_log.log(Level.WARNING, getClass().getName() + ": The zone.xml file is missing.");
@@ -359,7 +359,7 @@ public class ZoneManager
 			return;
 		}
 
-		_log.log(Level.FINE, getClass().getSimpleName() + ":  loaded " + zoneCount + " zones.");
+		_log.log(Level.FINE, getClass().getSimpleName() + ": loaded " + zoneCount + " zones.");
 	}
 
 	/**

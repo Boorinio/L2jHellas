@@ -168,7 +168,7 @@ public class MercTicketManager
 		{
 			PreparedStatement statement;
 			ResultSet rs;
-			statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE isHired = 1");
+			statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE isHired=1");
 			rs = statement.executeQuery();
 
 			int npcId;
