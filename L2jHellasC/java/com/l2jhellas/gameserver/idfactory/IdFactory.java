@@ -211,6 +211,7 @@ public abstract class IdFactory
 			}
 			catch (SQLException e)
 			{
+				if(Config.DEBUG)
 				_log.log(Level.WARNING, getClass().getSimpleName() + ": Table could not dropped. (does not exists)");
 				if (Config.DEVELOPER)
 				{
@@ -223,7 +224,6 @@ public abstract class IdFactory
 			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT obj_Id FROM characters");
 			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT object_id FROM items");
 			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT clan_id FROM clan_data");
-			// s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " SELECT crest_id FROM clan_data WHERE crest_id > 0");
 			s.executeUpdate("INSERT INTO temporaryObjectTable (object_id)" + " select object_id from itemsonground");
 
 			ResultSet result = s.executeQuery("SELECT count(object_id) FROM temporaryObjectTable");
@@ -231,7 +231,6 @@ public abstract class IdFactory
 			result.next();
 			int size = result.getInt(1);
 			int[] tmp_obj_ids = new int[size];
-			// System.out.println("tmp table size: " + tmp_obj_ids.length);
 			result.close();
 
 			result = s.executeQuery("SELECT object_id FROM temporaryObjectTable ORDER BY object_id");

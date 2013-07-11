@@ -128,9 +128,9 @@ public class AdminHeal implements IAdminCommandHandler
 		if ((obj != null) && (obj instanceof L2Character))
 		{
 			L2Character target = (L2Character) obj;
-			target.setCurrentHpMp(target.getMaxHp(), target.getMaxMp());
-			if (target instanceof L2PcInstance)
+			if (target instanceof L2PcInstance && !target.isDead())
 			{
+				target.setCurrentHpMp(target.getMaxHp(), target.getMaxMp());
 				target.setCurrentCp(target.getMaxCp());
 				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ") healed character " + target.getName() + "(" + target.getObjectId() + ")");
 			}
