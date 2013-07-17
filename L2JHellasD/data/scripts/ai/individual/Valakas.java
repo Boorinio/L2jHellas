@@ -22,6 +22,7 @@ import java.util.Collection;
 import javolution.util.FastList;
 import ai.group_template.L2AttackableAIScript;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -157,7 +158,7 @@ public class Valakas extends L2AttackableAIScript
 			if (status == WAITING)
 			{
 				// Start timer to lock entry after 30 minutes
-				startQuestTimer("1001", 1800000, valakas, null);
+				startQuestTimer("1001", Config.Valakas_Wait_Time, valakas, null);
 			}
 			else if (status == FIGHTING)
 			{
@@ -961,7 +962,7 @@ public class Valakas extends L2AttackableAIScript
 		npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 2000, 130, -1, 0, 10000));
 		npc.broadcastPacket(new PlaySound(1, "B03_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 		GrandBossManager.getInstance().setBossStatus(VALAKAS, DEAD);
-		long respawnTime = ((192 + Rnd.get(145)) * 3600000);
+		long respawnTime = ((Config.Interval_Of_Valakas_Spawn + Rnd.get(Config.Random_Of_Valakas_Spawn)) * 3600000);
 		this.startQuestTimer("valakas_unlock", respawnTime, null, null);
 		// also save the respawn time so that the info is maintained past reboots
 		StatsSet info = GrandBossManager.getInstance().getStatsSet(VALAKAS);

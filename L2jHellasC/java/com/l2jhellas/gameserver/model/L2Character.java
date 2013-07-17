@@ -1692,8 +1692,6 @@ public abstract class L2Character extends L2Object
 	/** Sets HP, MP and CP and revives the L2Character. */
 	public void doRevive()
 	{
-		if (!isKilledAlready())
-			return;
 		if (!isTeleporting())
 		{
 			setIsPendingRevive(false);
@@ -1724,11 +1722,6 @@ public abstract class L2Character extends L2Object
 			if (getWorldRegion() != null)
 				getWorldRegion().onRevive(this);
 		}
-
-		// Start broadcast status
-		broadcastPacket(new Revive(this));
-		if (getWorldRegion() != null)
-			getWorldRegion().onRevive(this);
 		else
 			setIsPendingRevive(true);
 	}
