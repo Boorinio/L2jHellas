@@ -12,7 +12,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import Extensions.Balancer.BalancerMain;
+import Extensions.Balancer.BalanceLoad;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -60,7 +60,7 @@ public class CharStat
 	 * order are executed in unspecified order. The result of the calculation is
 	 * stored in the value property of an Env class instance.<BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param stat
 	 *        The stat to calculate the new value with modifiers
 	 * @param init
@@ -114,75 +114,14 @@ public class CharStat
 			return 0;
 
 		double val = (calcStat(Stats.ACCURACY_COMBAT, 0, null, null) / _activeChar.getWeaponExpertisePenalty());
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.accplus88;
-				case 89:
-					return (int) val + BalancerMain.accplus89;
-				case 90:
-					return (int) val + BalancerMain.accplus90;
-				case 91:
-					return (int) val + BalancerMain.accplus91;
-				case 92:
-					return (int) val + BalancerMain.accplus92;
-				case 93:
-					return (int) val + BalancerMain.accplus93;
-				case 94:
-					return (int) val + BalancerMain.accplus94;
-				case 95:
-					return (int) val + BalancerMain.accplus95;
-				case 96:
-					return (int) val + BalancerMain.accplus96;
-				case 97:
-					return (int) val + BalancerMain.accplus97;
-				case 98:
-					return (int) val + BalancerMain.accplus98;
-				case 99:
-					return (int) val + BalancerMain.accplus99;
-				case 100:
-					return (int) val + BalancerMain.accplus100;
-				case 101:
-					return (int) val + BalancerMain.accplus101;
-				case 102:
-					return (int) val + BalancerMain.accplus102;
-				case 103:
-					return (int) val + BalancerMain.accplus103;
-				case 104:
-					return (int) val + BalancerMain.accplus104;
-				case 105:
-					return (int) val + BalancerMain.accplus105;
-				case 106:
-					return (int) val + BalancerMain.accplus106;
-				case 107:
-					return (int) val + BalancerMain.accplus107;
-				case 108:
-					return (int) val + BalancerMain.accplus108;
-				case 109:
-					return (int) val + BalancerMain.accplus109;
-				case 110:
-					return (int) val + BalancerMain.accplus110;
-				case 111:
-					return (int) val + BalancerMain.accplus111;
-				case 112:
-					return (int) val + BalancerMain.accplus112;
-				case 113:
-					return (int) val + BalancerMain.accplus113;
-				case 114:
-					return (int) val + BalancerMain.accplus114;
-				case 115:
-					return (int) val + BalancerMain.accplus115;
-				case 116:
-					return (int) val + BalancerMain.accplus116;
-				case 117:
-					return (int) val + BalancerMain.accplus117;
-				case 118:
-					return (int) val + BalancerMain.accplus118;
-			}
+			val += BalanceLoad.Accuracy[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val > 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	public L2Character getActiveChar()
@@ -324,75 +263,14 @@ public class CharStat
 			return 1;
 
 		double val = (calcStat(Stats.EVASION_RATE, 0, target, null) / _activeChar.getArmourExpertisePenalty());
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.evasionplus88;
-				case 89:
-					return (int) val + BalancerMain.evasionplus89;
-				case 90:
-					return (int) val + BalancerMain.evasionplus90;
-				case 91:
-					return (int) val + BalancerMain.evasionplus91;
-				case 92:
-					return (int) val + BalancerMain.evasionplus92;
-				case 93:
-					return (int) val + BalancerMain.evasionplus93;
-				case 94:
-					return (int) val + BalancerMain.evasionplus94;
-				case 95:
-					return (int) val + BalancerMain.evasionplus95;
-				case 96:
-					return (int) val + BalancerMain.evasionplus96;
-				case 97:
-					return (int) val + BalancerMain.evasionplus97;
-				case 98:
-					return (int) val + BalancerMain.evasionplus98;
-				case 99:
-					return (int) val + BalancerMain.evasionplus99;
-				case 100:
-					return (int) val + BalancerMain.evasionplus100;
-				case 101:
-					return (int) val + BalancerMain.evasionplus101;
-				case 102:
-					return (int) val + BalancerMain.evasionplus102;
-				case 103:
-					return (int) val + BalancerMain.evasionplus103;
-				case 104:
-					return (int) val + BalancerMain.evasionplus104;
-				case 105:
-					return (int) val + BalancerMain.evasionplus105;
-				case 106:
-					return (int) val + BalancerMain.evasionplus106;
-				case 107:
-					return (int) val + BalancerMain.evasionplus107;
-				case 108:
-					return (int) val + BalancerMain.evasionplus108;
-				case 109:
-					return (int) val + BalancerMain.evasionplus109;
-				case 110:
-					return (int) val + BalancerMain.evasionplus110;
-				case 111:
-					return (int) val + BalancerMain.evasionplus111;
-				case 112:
-					return (int) val + BalancerMain.evasionplus112;
-				case 113:
-					return (int) val + BalancerMain.evasionplus113;
-				case 114:
-					return (int) val + BalancerMain.evasionplus114;
-				case 115:
-					return (int) val + BalancerMain.evasionplus115;
-				case 116:
-					return (int) val + BalancerMain.evasionplus116;
-				case 117:
-					return (int) val + BalancerMain.evasionplus117;
-				case 118:
-					return (int) val + BalancerMain.evasionplus118;
-			}
+			val += BalanceLoad.Evasion[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val >= 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	public long getExp()
@@ -433,75 +311,14 @@ public class CharStat
 			return 1;
 
 		double val = calcStat(Stats.MAX_CP, _activeChar.getTemplate().baseCpMax, null, null);
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.cpplus88;
-				case 89:
-					return (int) val + BalancerMain.cpplus89;
-				case 90:
-					return (int) val + BalancerMain.cpplus90;
-				case 91:
-					return (int) val + BalancerMain.cpplus91;
-				case 92:
-					return (int) val + BalancerMain.cpplus92;
-				case 93:
-					return (int) val + BalancerMain.cpplus93;
-				case 94:
-					return (int) val + BalancerMain.cpplus94;
-				case 95:
-					return (int) val + BalancerMain.cpplus95;
-				case 96:
-					return (int) val + BalancerMain.cpplus96;
-				case 97:
-					return (int) val + BalancerMain.cpplus97;
-				case 98:
-					return (int) val + BalancerMain.cpplus98;
-				case 99:
-					return (int) val + BalancerMain.cpplus99;
-				case 100:
-					return (int) val + BalancerMain.cpplus100;
-				case 101:
-					return (int) val + BalancerMain.cpplus101;
-				case 102:
-					return (int) val + BalancerMain.cpplus102;
-				case 103:
-					return (int) val + BalancerMain.cpplus103;
-				case 104:
-					return (int) val + BalancerMain.cpplus104;
-				case 105:
-					return (int) val + BalancerMain.cpplus105;
-				case 106:
-					return (int) val + BalancerMain.cpplus106;
-				case 107:
-					return (int) val + BalancerMain.cpplus107;
-				case 108:
-					return (int) val + BalancerMain.cpplus108;
-				case 109:
-					return (int) val + BalancerMain.cpplus109;
-				case 110:
-					return (int) val + BalancerMain.cpplus110;
-				case 111:
-					return (int) val + BalancerMain.cpplus111;
-				case 112:
-					return (int) val + BalancerMain.cpplus112;
-				case 113:
-					return (int) val + BalancerMain.cpplus113;
-				case 114:
-					return (int) val + BalancerMain.cpplus114;
-				case 115:
-					return (int) val + BalancerMain.cpplus115;
-				case 116:
-					return (int) val + BalancerMain.cpplus116;
-				case 117:
-					return (int) val + BalancerMain.cpplus117;
-				case 118:
-					return (int) val + BalancerMain.cpplus118;
-			}
+			val += BalanceLoad.CP[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val >= 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	public int getMaxHp()
@@ -510,75 +327,14 @@ public class CharStat
 			return 1;
 
 		double val = calcStat(Stats.MAX_HP, _activeChar.getTemplate().baseHpMax, null, null);
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.hpplus88;
-				case 89:
-					return (int) val + BalancerMain.hpplus89;
-				case 90:
-					return (int) val + BalancerMain.hpplus90;
-				case 91:
-					return (int) val + BalancerMain.hpplus91;
-				case 92:
-					return (int) val + BalancerMain.hpplus92;
-				case 93:
-					return (int) val + BalancerMain.hpplus93;
-				case 94:
-					return (int) val + BalancerMain.hpplus94;
-				case 95:
-					return (int) val + BalancerMain.hpplus95;
-				case 96:
-					return (int) val + BalancerMain.hpplus96;
-				case 97:
-					return (int) val + BalancerMain.hpplus97;
-				case 98:
-					return (int) val + BalancerMain.hpplus98;
-				case 99:
-					return (int) val + BalancerMain.hpplus99;
-				case 100:
-					return (int) val + BalancerMain.hpplus100;
-				case 101:
-					return (int) val + BalancerMain.hpplus101;
-				case 102:
-					return (int) val + BalancerMain.hpplus102;
-				case 103:
-					return (int) val + BalancerMain.hpplus103;
-				case 104:
-					return (int) val + BalancerMain.hpplus104;
-				case 105:
-					return (int) val + BalancerMain.hpplus105;
-				case 106:
-					return (int) val + BalancerMain.hpplus106;
-				case 107:
-					return (int) val + BalancerMain.hpplus107;
-				case 108:
-					return (int) val + BalancerMain.hpplus108;
-				case 109:
-					return (int) val + BalancerMain.hpplus109;
-				case 110:
-					return (int) val + BalancerMain.hpplus110;
-				case 111:
-					return (int) val + BalancerMain.hpplus111;
-				case 112:
-					return (int) val + BalancerMain.hpplus112;
-				case 113:
-					return (int) val + BalancerMain.hpplus113;
-				case 114:
-					return (int) val + BalancerMain.hpplus114;
-				case 115:
-					return (int) val + BalancerMain.hpplus115;
-				case 116:
-					return (int) val + BalancerMain.hpplus116;
-				case 117:
-					return (int) val + BalancerMain.hpplus117;
-				case 118:
-					return (int) val + BalancerMain.hpplus118;
-			}
+			val += BalanceLoad.HP[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val > 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	public int getMaxMp()
@@ -587,76 +343,14 @@ public class CharStat
 			return 1;
 
 		double val = calcStat(Stats.MAX_MP, _activeChar.getTemplate().baseMpMax, null, null);
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.mpplus88;
-				case 89:
-					return (int) val + BalancerMain.mpplus89;
-				case 90:
-					return (int) val + BalancerMain.mpplus90;
-				case 91:
-					return (int) val + BalancerMain.mpplus91;
-				case 92:
-					return (int) val + BalancerMain.mpplus92;
-				case 93:
-					return (int) val + BalancerMain.mpplus93;
-				case 94:
-					return (int) val + BalancerMain.mpplus94;
-				case 95:
-					return (int) val + BalancerMain.mpplus95;
-				case 96:
-					return (int) val + BalancerMain.mpplus96;
-				case 97:
-					return (int) val + BalancerMain.mpplus97;
-				case 98:
-					return (int) val + BalancerMain.mpplus98;
-				case 99:
-					return (int) val + BalancerMain.mpplus99;
-				case 100:
-					return (int) val + BalancerMain.mpplus100;
-				case 101:
-					return (int) val + BalancerMain.mpplus101;
-				case 102:
-					return (int) val + BalancerMain.mpplus102;
-				case 103:
-					return (int) val + BalancerMain.mpplus103;
-				case 104:
-					return (int) val + BalancerMain.mpplus104;
-				case 105:
-					return (int) val + BalancerMain.mpplus105;
-				case 106:
-					return (int) val + BalancerMain.mpplus106;
-				case 107:
-					return (int) val + BalancerMain.mpplus107;
-				case 108:
-					return (int) val + BalancerMain.mpplus108;
-				case 109:
-					return (int) val + BalancerMain.mpplus109;
-				case 110:
-					return (int) val + BalancerMain.mpplus110;
-				case 111:
-					return (int) val + BalancerMain.mpplus111;
-				case 112:
-					return (int) val + BalancerMain.mpplus112;
-				case 113:
-					return (int) val + BalancerMain.mpplus113;
-				case 114:
-					return (int) val + BalancerMain.mpplus114;
-				case 115:
-					return (int) val + BalancerMain.mpplus115;
-				case 116:
-					return (int) val + BalancerMain.mpplus116;
-				case 117:
-					return (int) val + BalancerMain.mpplus117;
-				case 118:
-					return (int) val + BalancerMain.mpplus118;
-			}
+			val += BalanceLoad.MP[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-
-		return (int) val;
+		if (val >= 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	/**
@@ -667,7 +361,7 @@ public class CharStat
 	 * <BR>
 	 * <li>Calculate Magic damage</li> <BR>
 	 * <BR>
-	 *
+	 * 
 	 * @param target
 	 *        The L2Character targeted by the skill
 	 * @param skill
@@ -745,77 +439,15 @@ public class CharStat
 
 		// Calculate modifiers Magic Attack
 		double val = calcStat(Stats.MAGIC_ATTACK, attack, target, skill);
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.matkplus88;
-				case 89:
-					return (int) val + BalancerMain.matkplus89;
-				case 90:
-					return (int) val + BalancerMain.matkplus90;
-				case 91:
-					return (int) val + BalancerMain.matkplus91;
-				case 92:
-					return (int) val + BalancerMain.matkplus92;
-				case 93:
-					return (int) val + BalancerMain.matkplus93;
-				case 94:
-					return (int) val + BalancerMain.matkplus94;
-				case 95:
-					return (int) val + BalancerMain.matkplus95;
-				case 96:
-					return (int) val + BalancerMain.matkplus96;
-				case 97:
-					return (int) val + BalancerMain.matkplus97;
-				case 98:
-					return (int) val + BalancerMain.matkplus98;
-				case 99:
-					return (int) val + BalancerMain.matkplus99;
-				case 100:
-					return (int) val + BalancerMain.matkplus100;
-				case 101:
-					return (int) val + BalancerMain.matkplus101;
-				case 102:
-					return (int) val + BalancerMain.matkplus102;
-				case 103:
-					return (int) val + BalancerMain.matkplus103;
-				case 104:
-					return (int) val + BalancerMain.matkplus104;
-				case 105:
-					return (int) val + BalancerMain.matkplus105;
-				case 106:
-					return (int) val + BalancerMain.matkplus106;
-				case 107:
-					return (int) val + BalancerMain.matkplus107;
-				case 108:
-					return (int) val + BalancerMain.matkplus108;
-				case 109:
-					return (int) val + BalancerMain.matkplus109;
-				case 110:
-					return (int) val + BalancerMain.matkplus110;
-				case 111:
-					return (int) val + BalancerMain.matkplus111;
-				case 112:
-					return (int) val + BalancerMain.matkplus112;
-				case 113:
-					return (int) val + BalancerMain.matkplus113;
-				case 114:
-					return (int) val + BalancerMain.matkplus114;
-				case 115:
-					return (int) val + BalancerMain.matkplus115;
-				case 116:
-					return (int) val + BalancerMain.matkplus116;
-				case 117:
-					return (int) val + BalancerMain.matkplus117;
-				case 118:
-					return (int) val + BalancerMain.matkplus118;
-			}
-		}
+			val += BalanceLoad.MAtk[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 
-		// Calculate modifiers Magic Attack
-		return (int) val;
+		}
+		if (val > 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	/**
@@ -833,75 +465,14 @@ public class CharStat
 		}
 		double val = calcStat(Stats.MAGIC_ATTACK_SPEED, _activeChar.getTemplate().baseMAtkSpd * bonusSpdAtk, null, null);
 		val /= _activeChar.getArmourExpertisePenalty();
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.matksplus88;
-				case 89:
-					return (int) val + BalancerMain.matksplus89;
-				case 90:
-					return (int) val + BalancerMain.matksplus90;
-				case 91:
-					return (int) val + BalancerMain.matksplus91;
-				case 92:
-					return (int) val + BalancerMain.matksplus92;
-				case 93:
-					return (int) val + BalancerMain.matksplus93;
-				case 94:
-					return (int) val + BalancerMain.matksplus94;
-				case 95:
-					return (int) val + BalancerMain.matksplus95;
-				case 96:
-					return (int) val + BalancerMain.matksplus96;
-				case 97:
-					return (int) val + BalancerMain.matksplus97;
-				case 98:
-					return (int) val + BalancerMain.matksplus98;
-				case 99:
-					return (int) val + BalancerMain.matksplus99;
-				case 100:
-					return (int) val + BalancerMain.matksplus100;
-				case 101:
-					return (int) val + BalancerMain.matksplus101;
-				case 102:
-					return (int) val + BalancerMain.matksplus102;
-				case 103:
-					return (int) val + BalancerMain.matksplus103;
-				case 104:
-					return (int) val + BalancerMain.matksplus104;
-				case 105:
-					return (int) val + BalancerMain.matksplus105;
-				case 106:
-					return (int) val + BalancerMain.matksplus106;
-				case 107:
-					return (int) val + BalancerMain.matksplus107;
-				case 108:
-					return (int) val + BalancerMain.matksplus108;
-				case 109:
-					return (int) val + BalancerMain.matksplus109;
-				case 110:
-					return (int) val + BalancerMain.matksplus110;
-				case 111:
-					return (int) val + BalancerMain.matksplus111;
-				case 112:
-					return (int) val + BalancerMain.matksplus112;
-				case 113:
-					return (int) val + BalancerMain.matksplus113;
-				case 114:
-					return (int) val + BalancerMain.matksplus114;
-				case 115:
-					return (int) val + BalancerMain.matksplus115;
-				case 116:
-					return (int) val + BalancerMain.matksplus116;
-				case 117:
-					return (int) val + BalancerMain.matksplus117;
-				case 118:
-					return (int) val + BalancerMain.matksplus118;
-			}
+			val += BalanceLoad.MAtkSpd[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val >= 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	/**
@@ -911,7 +482,7 @@ public class CharStat
 	 * <B><U> Example of use </U> :</B><BR>
 	 * <BR>
 	 * <li>Calculate Magic damage</li> <BR>
-	 *
+	 * 
 	 * @param target
 	 *        The L2Character targeted by the skill
 	 * @param skill
@@ -933,76 +504,14 @@ public class CharStat
 
 		// Calculate modifiers Magic Attack
 		double val = calcStat(Stats.MAGIC_DEFENCE, defence, target, skill);
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.mdefplus88;
-				case 89:
-					return (int) val + BalancerMain.mdefplus89;
-				case 90:
-					return (int) val + BalancerMain.mdefplus90;
-				case 91:
-					return (int) val + BalancerMain.mdefplus91;
-				case 92:
-					return (int) val + BalancerMain.mdefplus92;
-				case 93:
-					return (int) val + BalancerMain.mdefplus93;
-				case 94:
-					return (int) val + BalancerMain.mdefplus94;
-				case 95:
-					return (int) val + BalancerMain.mdefplus95;
-				case 96:
-					return (int) val + BalancerMain.mdefplus96;
-				case 97:
-					return (int) val + BalancerMain.mdefplus97;
-				case 98:
-					return (int) val + BalancerMain.mdefplus98;
-				case 99:
-					return (int) val + BalancerMain.mdefplus99;
-				case 100:
-					return (int) val + BalancerMain.mdefplus100;
-				case 101:
-					return (int) val + BalancerMain.mdefplus101;
-				case 102:
-					return (int) val + BalancerMain.mdefplus102;
-				case 103:
-					return (int) val + BalancerMain.mdefplus103;
-				case 104:
-					return (int) val + BalancerMain.mdefplus104;
-				case 105:
-					return (int) val + BalancerMain.mdefplus105;
-				case 106:
-					return (int) val + BalancerMain.mdefplus106;
-				case 107:
-					return (int) val + BalancerMain.mdefplus107;
-				case 108:
-					return (int) val + BalancerMain.mdefplus108;
-				case 109:
-					return (int) val + BalancerMain.mdefplus109;
-				case 110:
-					return (int) val + BalancerMain.mdefplus110;
-				case 111:
-					return (int) val + BalancerMain.mdefplus111;
-				case 112:
-					return (int) val + BalancerMain.mdefplus112;
-				case 113:
-					return (int) val + BalancerMain.mdefplus113;
-				case 114:
-					return (int) val + BalancerMain.mdefplus114;
-				case 115:
-					return (int) val + BalancerMain.mdefplus115;
-				case 116:
-					return (int) val + BalancerMain.mdefplus116;
-				case 117:
-					return (int) val + BalancerMain.mdefplus117;
-				case 118:
-					return (int) val + BalancerMain.mdefplus118;
-			}
+			val += BalanceLoad.MDef[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		// Calculate modifiers Magic Attack
-		return (int) val;
+		if (val >= 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	public float getMovementSpeedMultiplier()
@@ -1056,75 +565,14 @@ public class CharStat
 			bonusAtk = Config.CHAMPION_ATK;
 		}
 		double val = calcStat(Stats.POWER_ATTACK, _activeChar.getTemplate().basePAtk * bonusAtk, target, null);
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.patkplus88;
-				case 89:
-					return (int) val + BalancerMain.patkplus89;
-				case 90:
-					return (int) val + BalancerMain.patkplus90;
-				case 91:
-					return (int) val + BalancerMain.patkplus91;
-				case 92:
-					return (int) val + BalancerMain.patkplus92;
-				case 93:
-					return (int) val + BalancerMain.patkplus93;
-				case 94:
-					return (int) val + BalancerMain.patkplus94;
-				case 95:
-					return (int) val + BalancerMain.patkplus95;
-				case 96:
-					return (int) val + BalancerMain.patkplus96;
-				case 97:
-					return (int) val + BalancerMain.patkplus97;
-				case 98:
-					return (int) val + BalancerMain.patkplus98;
-				case 99:
-					return (int) val + BalancerMain.patkplus99;
-				case 100:
-					return (int) val + BalancerMain.patkplus100;
-				case 101:
-					return (int) val + BalancerMain.patkplus101;
-				case 102:
-					return (int) val + BalancerMain.patkplus102;
-				case 103:
-					return (int) val + BalancerMain.patkplus103;
-				case 104:
-					return (int) val + BalancerMain.patkplus104;
-				case 105:
-					return (int) val + BalancerMain.patkplus105;
-				case 106:
-					return (int) val + BalancerMain.patkplus106;
-				case 107:
-					return (int) val + BalancerMain.patkplus107;
-				case 108:
-					return (int) val + BalancerMain.patkplus108;
-				case 109:
-					return (int) val + BalancerMain.patkplus109;
-				case 110:
-					return (int) val + BalancerMain.patkplus110;
-				case 111:
-					return (int) val + BalancerMain.patkplus111;
-				case 112:
-					return (int) val + BalancerMain.patkplus112;
-				case 113:
-					return (int) val + BalancerMain.patkplus113;
-				case 114:
-					return (int) val + BalancerMain.patkplus114;
-				case 115:
-					return (int) val + BalancerMain.patkplus115;
-				case 116:
-					return (int) val + BalancerMain.patkplus116;
-				case 117:
-					return (int) val + BalancerMain.patkplus117;
-				case 118:
-					return (int) val + BalancerMain.patkplus118;
-			}
+			val += BalanceLoad.PAtk[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val >= 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	/** Return the PAtk Modifier against animals. */
@@ -1176,75 +624,14 @@ public class CharStat
 			bonusAtk = Config.CHAMPION_SPD_ATK;
 		}
 		double val = (calcStat(Stats.POWER_ATTACK_SPEED, _activeChar.getTemplate().basePAtkSpd * bonusAtk, null, null) / _activeChar.getArmourExpertisePenalty());
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.patksplus88;
-				case 89:
-					return (int) val + BalancerMain.patksplus89;
-				case 90:
-					return (int) val + BalancerMain.patksplus90;
-				case 91:
-					return (int) val + BalancerMain.patksplus91;
-				case 92:
-					return (int) val + BalancerMain.patksplus92;
-				case 93:
-					return (int) val + BalancerMain.patksplus93;
-				case 94:
-					return (int) val + BalancerMain.patksplus94;
-				case 95:
-					return (int) val + BalancerMain.patksplus95;
-				case 96:
-					return (int) val + BalancerMain.patksplus96;
-				case 97:
-					return (int) val + BalancerMain.patksplus97;
-				case 98:
-					return (int) val + BalancerMain.patksplus98;
-				case 99:
-					return (int) val + BalancerMain.patksplus99;
-				case 100:
-					return (int) val + BalancerMain.patksplus100;
-				case 101:
-					return (int) val + BalancerMain.patksplus101;
-				case 102:
-					return (int) val + BalancerMain.patksplus102;
-				case 103:
-					return (int) val + BalancerMain.patksplus103;
-				case 104:
-					return (int) val + BalancerMain.patksplus104;
-				case 105:
-					return (int) val + BalancerMain.patksplus105;
-				case 106:
-					return (int) val + BalancerMain.patksplus106;
-				case 107:
-					return (int) val + BalancerMain.patksplus107;
-				case 108:
-					return (int) val + BalancerMain.patksplus108;
-				case 109:
-					return (int) val + BalancerMain.patksplus109;
-				case 110:
-					return (int) val + BalancerMain.patksplus110;
-				case 111:
-					return (int) val + BalancerMain.patksplus111;
-				case 112:
-					return (int) val + BalancerMain.patksplus112;
-				case 113:
-					return (int) val + BalancerMain.patksplus113;
-				case 114:
-					return (int) val + BalancerMain.patksplus114;
-				case 115:
-					return (int) val + BalancerMain.patksplus115;
-				case 116:
-					return (int) val + BalancerMain.patksplus116;
-				case 117:
-					return (int) val + BalancerMain.patksplus117;
-				case 118:
-					return (int) val + BalancerMain.patksplus118;
-			}
+			val += BalanceLoad.PAtkSpd[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val > 0)
+			return (int) val;
+		else
+			return 0;
 	}
 
 	/** Return the PAtk Modifier against undead. */
@@ -1275,75 +662,14 @@ public class CharStat
 
 		// Calculate modifiers Magic Attack
 		double val = calcStat(Stats.POWER_DEFENCE, defence, target, null);
-		if (_activeChar instanceof L2PcInstance)
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 		{
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
-			{
-				case 88:
-					return (int) val + BalancerMain.pdefplus88;
-				case 89:
-					return (int) val + BalancerMain.pdefplus89;
-				case 90:
-					return (int) val + BalancerMain.pdefplus90;
-				case 91:
-					return (int) val + BalancerMain.pdefplus91;
-				case 92:
-					return (int) val + BalancerMain.pdefplus92;
-				case 93:
-					return (int) val + BalancerMain.pdefplus93;
-				case 94:
-					return (int) val + BalancerMain.pdefplus94;
-				case 95:
-					return (int) val + BalancerMain.pdefplus95;
-				case 96:
-					return (int) val + BalancerMain.pdefplus96;
-				case 97:
-					return (int) val + BalancerMain.pdefplus97;
-				case 98:
-					return (int) val + BalancerMain.pdefplus98;
-				case 99:
-					return (int) val + BalancerMain.pdefplus99;
-				case 100:
-					return (int) val + BalancerMain.pdefplus100;
-				case 101:
-					return (int) val + BalancerMain.pdefplus101;
-				case 102:
-					return (int) val + BalancerMain.pdefplus102;
-				case 103:
-					return (int) val + BalancerMain.pdefplus103;
-				case 104:
-					return (int) val + BalancerMain.pdefplus104;
-				case 105:
-					return (int) val + BalancerMain.pdefplus105;
-				case 106:
-					return (int) val + BalancerMain.pdefplus106;
-				case 107:
-					return (int) val + BalancerMain.pdefplus107;
-				case 108:
-					return (int) val + BalancerMain.pdefplus108;
-				case 109:
-					return (int) val + BalancerMain.pdefplus109;
-				case 110:
-					return (int) val + BalancerMain.pdefplus110;
-				case 111:
-					return (int) val + BalancerMain.pdefplus111;
-				case 112:
-					return (int) val + BalancerMain.pdefplus112;
-				case 113:
-					return (int) val + BalancerMain.pdefplus113;
-				case 114:
-					return (int) val + BalancerMain.pdefplus114;
-				case 115:
-					return (int) val + BalancerMain.pdefplus115;
-				case 116:
-					return (int) val + BalancerMain.pdefplus116;
-				case 117:
-					return (int) val + BalancerMain.pdefplus117;
-				case 118:
-					return (int) val + BalancerMain.pdefplus118;
-			}
+			val += BalanceLoad.PDef[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		}
-		return (int) val;
+		if (val >= 0)
+			return (int) val;
+		else
+			return 0;
 
 	}
 
@@ -1373,75 +699,18 @@ public class CharStat
 
 		// err we should be adding TO the persons run speed
 		// not making it a constant
-		//int val = (int) calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null) + Config.RUN_SPD_BOOST;
+		// int val = (int) calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null) + Config.RUN_SPD_BOOST;
 		double val = (calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null) + Config.RUN_SPD_BOOST);
 		if (_activeChar instanceof L2PcInstance)
-		{//FIXME
-			switch (((L2PcInstance) _activeChar).getClassId().getId())
+		{
+			if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			{
-				case 88:
-					return (int) val + BalancerMain.walkplus88;
-				case 89:
-					return (int) val + BalancerMain.walkplus89;
-				case 90:
-					return (int) val + BalancerMain.walkplus90;
-				case 91:
-					return (int) val + BalancerMain.walkplus91;
-				case 92:
-					return (int) val + BalancerMain.walkplus92;
-				case 93:
-					return (int) val + BalancerMain.walkplus93;
-				case 94:
-					return (int) val + BalancerMain.walkplus94;
-				case 95:
-					return (int) val + BalancerMain.walkplus95;
-				case 96:
-					return (int) val + BalancerMain.walkplus96;
-				case 97:
-					return (int) val + BalancerMain.walkplus97;
-				case 98:
-					return (int) val + BalancerMain.walkplus98;
-				case 99:
-					return (int) val + BalancerMain.walkplus99;
-				case 100:
-					return (int) val + BalancerMain.walkplus100;
-				case 101:
-					return (int) val + BalancerMain.walkplus101;
-				case 102:
-					return (int) val + BalancerMain.walkplus102;
-				case 103:
-					return (int) val + BalancerMain.walkplus103;
-				case 104:
-					return (int) val + BalancerMain.walkplus104;
-				case 105:
-					return (int) val + BalancerMain.walkplus105;
-				case 106:
-					return (int) val + BalancerMain.walkplus106;
-				case 107:
-					return (int) val + BalancerMain.walkplus107;
-				case 108:
-					return (int) val + BalancerMain.walkplus108;
-				case 109:
-					return (int) val + BalancerMain.walkplus109;
-				case 110:
-					return (int) val + BalancerMain.walkplus110;
-				case 111:
-					return (int) val + BalancerMain.walkplus111;
-				case 112:
-					return (int) val + BalancerMain.walkplus112;
-				case 113:
-					return (int) val + BalancerMain.walkplus113;
-				case 114:
-					return (int) val + BalancerMain.walkplus114;
-				case 115:
-					return (int) val + BalancerMain.walkplus115;
-				case 116:
-					return (int) val + BalancerMain.walkplus116;
-				case 117:
-					return (int) val + BalancerMain.walkplus117;
-				case 118:
-					return (int) val + BalancerMain.walkplus118;
+				val += BalanceLoad.Speed[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 			}
+			if (val > 0)
+				return (int) val;
+			else
+				return 0;
 		}
 		if (_activeChar.isFlying())
 		{

@@ -18,7 +18,8 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Extensions.Balancer.BalancerMain;
+import Extensions.Balancer.Balancer;
+import Extensions.Balancer.BalancerEdit;
 import Extensions.RankSystem.RankPvpSystemPlayerInfo;
 
 import com.l2jhellas.Config;
@@ -460,9 +461,57 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			}
 			// Balancer: ->
 			// -------------------------------------------------------------------------------
-			else if (_command.startsWith("Balance "))
+			else if (_command.startsWith("bp_balance"))
 			{
-				BalancerMain.handleCommands(getClient(), _command.substring(8));
+				String bp = _command.substring(11);
+				StringTokenizer st = new StringTokenizer(bp);
+				
+				if (st.countTokens() != 1)
+				{
+					return;
+				}
+				
+				int classId = Integer.parseInt(st.nextToken());
+				
+				Balancer.sendBalanceWindow(classId, activeChar);
+			}
+			
+			else if (_command.startsWith("bp_add"))
+			{
+				String bp = _command.substring(7);
+				StringTokenizer st = new StringTokenizer(bp);
+				
+				if (st.countTokens() != 3)
+				{
+					return;
+				}
+				
+				String stat = st.nextToken();
+				int classId = Integer.parseInt(st.nextToken()),
+					value = Integer.parseInt(st.nextToken());
+				
+				BalancerEdit.editStat(stat, classId, value, true);
+				
+				Balancer.sendBalanceWindow(classId, activeChar);
+			}
+			
+			else if (_command.startsWith("bp_rem"))
+			{
+				String bp = _command.substring(7);
+				StringTokenizer st = new StringTokenizer(bp);
+				
+				if (st.countTokens() != 3)
+				{
+					return;
+				}
+				
+				String stat = st.nextToken();
+				int classId = Integer.parseInt(st.nextToken()),
+					value = Integer.parseInt(st.nextToken());
+				
+				BalancerEdit.editStat(stat, classId, value, false);
+				
+				Balancer.sendBalanceWindow(classId, activeChar);
 			}
 			// Rank PvP System by Masterio --------------------------------------------
 			else if (_command.equals("_rps_equip"))

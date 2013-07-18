@@ -189,7 +189,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("balancer"))
 				{
-					BalanceLoad.loadBalance();
+					BalanceLoad.LoadEm();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Balance stats for classes has been reloaded.");
 				}

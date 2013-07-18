@@ -411,7 +411,7 @@ public class GameServer
 		{
 			AwayManager.getInstance();
 		}
-		BalanceLoad.loadBalance();
+		BalanceLoad.LoadEm();
 		if (ExternalConfig.ALLOW_SEQURITY_QUE)
 		{
 			AntiBot.getInstance();
