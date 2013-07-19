@@ -38,6 +38,7 @@ public class BalanceLoad
 		{
 			Evasion[z] = loadEvasion(88 + z);
 			Speed[z] = loadSpeed(z + 88);
+			MAtk[z] = loadMAtk(z + 88);
 			PAtk[z] = loadPAtk(z + 88);
 			PDef[z] = loadPDef(z + 88);
 			MDef[z] = loadMDef(z + 88);
