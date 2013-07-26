@@ -5272,7 +5272,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				addItem("Pickup", target, null, true);
 				
 				// Like L2OFF Auto-Equip arrows if player has a bow and player picks up arrows.
-				if (target.getItem() != null && target.getItem().getItemType() == L2EtcItemType.ARROW)
+				if (target.getItem() != null && target.getItem().getItemType() == L2EtcItemType.ARROW && getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND).getItemType() == L2WeaponType.BOW )
 					checkAndEquipArrows();
 			}
 		}

@@ -358,6 +358,7 @@ public final class Config
 	public static int MOD_WEDDING_TELEPORT_DURATION;
 	public static boolean MOD_WEDDING_SAMESEX;
 	public static boolean MOD_WEDDING_FORMALWEAR;
+	public static boolean CUPID_TO_PLAYERS;
 	public static int MOD_WEDDING_DIVORCE_COSTS;
 	public static boolean MOD_WEDDING_ANNOUNCE;
 	public static boolean BANKING_SYSTEM_ENABLED;
@@ -1411,6 +1412,7 @@ public final class Config
 				MOD_WEDDING_TELEPORT_DURATION = Integer.parseInt(L2JHellasSettings.getProperty("WeddingTeleportDuration", "60"));
 				MOD_WEDDING_SAMESEX = Boolean.parseBoolean(L2JHellasSettings.getProperty("WeddingAllowSameSex", "False"));
 				MOD_WEDDING_FORMALWEAR = Boolean.parseBoolean(L2JHellasSettings.getProperty("WeddingFormalWear", "True"));
+				CUPID_TO_PLAYERS = Boolean.parseBoolean(L2JHellasSettings.getProperty("CupidToPlayers", "True"));
 				MOD_WEDDING_DIVORCE_COSTS = Integer.parseInt(L2JHellasSettings.getProperty("WeddingDivorceCosts", "20"));
 				MOD_WEDDING_ANNOUNCE = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnounceWeddings", "True"));
 				BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JHellasSettings.getProperty("BankingEnabled", "False"));

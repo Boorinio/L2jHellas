@@ -144,21 +144,21 @@ public class L2WeddingManagerInstance extends L2NpcInstance
 					player.broadcastPacket(MSU);
 					MSU = new MagicSkillUse(ptarget, ptarget, 2230, 1, 1, 0);
 					ptarget.broadcastPacket(MSU);
-
+					if(Config.CUPID_TO_PLAYERS)
+					{
+						player.addItem("Cupids Bow", 9140, 1, player, true);
+						player.addSkill(SkillTable.getInstance().getInfo(3261, 1));
+						ptarget.addItem("Cupids Bow", 9140, 1, player, true);
+						ptarget.addSkill(SkillTable.getInstance().getInfo(3261, 1));
+						player.getInventory().updateDatabase();
+						ptarget.getInventory().updateDatabase();
+					}
 					// fireworks
 					L2Skill skill = SkillTable.getInstance().getInfo(2025, 1);
 					if (skill != null)
 					{
-						MSU = new MagicSkillUse(player, player, 2025, 1, 1, 0);
-						player.sendPacket(MSU);
-						player.broadcastPacket(MSU);
-						player.useMagic(skill, false, false);
-
-						MSU = new MagicSkillUse(ptarget, ptarget, 2025, 1, 1, 0);
-						ptarget.sendPacket(MSU);
-						ptarget.broadcastPacket(MSU);
-						ptarget.useMagic(skill, false, false);
-
+						player.useMagic(skill, true, true);
+						ptarget.useMagic(skill, true, true);
 					}
 
 					if (Config.MOD_WEDDING_ANNOUNCE)
@@ -201,7 +201,6 @@ public class L2WeddingManagerInstance extends L2NpcInstance
 						{
 							String strItem = Integer.toString(item3.getItemId());
 							String frmWear = Integer.toString(6408);
-							player.sendMessage(strItem);
 							if (strItem.equals(frmWear))
 							{
 								player.setIsWearingFormalWear(true);

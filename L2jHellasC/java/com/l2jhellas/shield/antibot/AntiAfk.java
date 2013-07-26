@@ -47,7 +47,7 @@ public class AntiAfk
 		waitSecs(60 * ExternalConfig.MINUTES_AFK_PLAYERS);
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
-			if (player.botx == player.getX() && player.boty == player.getY() && player.botz == player.getZ())
+			if (player.botx == player.getX() && player.boty == player.getY() && player.botz == player.getZ() && !player.isGM())
 			{
 				player.sendMessage("BB bot or afk player!");
 				player.closeNetConnection();

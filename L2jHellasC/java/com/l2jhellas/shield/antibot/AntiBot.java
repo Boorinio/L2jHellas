@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ public class AntiBot
 	Rnd.get(-100, 100), Rnd.get(100), Rnd.get(-100, 100), Rnd.get(100),
 	};
 	static int option = Rnd.get(0, 7);
-
+	
 	public static void getInstance()
 	{
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
@@ -46,19 +46,22 @@ public class AntiBot
 			}
 		}, 60 * 1000 * ExternalConfig.SECURITY_QUE_TIME);
 	}
-
+	
 	public static void startantibot()
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
-			showHtmlWindow(player);
-			player.sendMessage("You have 2 minutes to vote.");
+			if (!player.isGM())
+			{
+				showHtmlWindow(player);
+				player.sendMessage("You have 2 minutes to vote.");
+			}
 		}
 		isvoting = true;
 		waitSecs(120);
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
 		{
-			if (!player.PassedProt)
+			if (!player.PassedProt && !player.isGM())
 			{
 				player.sendMessage("BB bot or afk player!");
 				player.closeNetConnection();
@@ -72,7 +75,7 @@ public class AntiBot
 		waitSecs(60 * ExternalConfig.SECURITY_QUE_TIME);
 		startantibot();
 	}
-
+	
 	public static void showHtmlWindow(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
@@ -150,7 +153,7 @@ public class AntiBot
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-
+	
 	public static void waitSecs(int i)
 	{
 		try
