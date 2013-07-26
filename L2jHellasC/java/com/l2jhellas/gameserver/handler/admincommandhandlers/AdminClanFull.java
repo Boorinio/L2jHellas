@@ -29,10 +29,6 @@ public class AdminClanFull implements IAdminCommandHandler
 		"admin_clanfull"
 	};
 
-	public AdminClanFull()
-	{
-	}
-
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -54,11 +50,11 @@ public class AdminClanFull implements IAdminCommandHandler
 	private void adminAddClanSkill(L2PcInstance activeChar)
 	{
 		L2Object target = activeChar.getTarget();
+		L2PcInstance player = null;
 
 		if (target == null)
 			target = activeChar;
 
-		L2PcInstance player = null;
 		if (target instanceof L2PcInstance)
 		{
 			player = (L2PcInstance) target;

@@ -15,6 +15,8 @@
 package com.l2jhellas.gameserver.handler.voicedcommandhandlers;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
@@ -32,6 +34,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class ZodiacRegistration implements IVoicedCommandHandler
 {
+	private static Logger _log = Logger.getLogger(ZodiacRegistration.class.getName());
 	private static final String[] VOICED_COMMANDS =
 	{
 	"join", "leave"
@@ -51,6 +54,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			{
 				String Castle_Path = "data/html/zodiac/CastleTutorial.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Castle_Path);
+				if (!mainText.exists())
+				{
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Castle_Path + " check your files.");
+				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Castle_Path);
 				activeChar.sendPacket(html);
@@ -59,6 +66,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			{
 				String Capture_Path = "data/html/zodiac/Tutorial.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Capture_Path);
+				if (!mainText.exists())
+				{
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Capture_Path + " check your files.");
+				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);
 				activeChar.sendPacket(html);
@@ -67,6 +78,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			{
 				String Pelo_Path = "data/html/zodiac/TutorialPelo.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Pelo_Path);
+				if (!mainText.exists())
+				{
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Pelo_Path + " check your files.");
+				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Pelo_Path);
 				activeChar.sendPacket(html);
@@ -75,6 +90,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			{
 				String Protect_Path = "data/html/zodiac/ProtectTuto.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Protect_Path);
+				if (!mainText.exists())
+				{
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Protect_Path + " check your files.");
+				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Protect_Path);
 				activeChar.sendPacket(html);
@@ -83,6 +102,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			{
 				String Capture_Path = "data/html/zodiac/Treasure.htm";
 				File mainText = new File(Config.DATAPACK_ROOT, Capture_Path);
+				if (!mainText.exists())
+				{
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Capture_Path + " check your files.");
+				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);
 				activeChar.sendPacket(html);

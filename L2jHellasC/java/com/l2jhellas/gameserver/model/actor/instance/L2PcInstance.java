@@ -13488,7 +13488,7 @@ public final class L2PcInstance extends L2PlayableInstance
             return Math.max(stamp - System.currentTimeMillis(), 0L);
         }
 
-        protected boolean hasNotPassed()
+        public boolean hasNotPassed()
         {
             return System.currentTimeMillis() < stamp;
         }

@@ -43,13 +43,12 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
  **/
 public class RaidBossSpawnManager
 {
-	private static Logger _log = Logger.getLogger(RaidBossSpawnManager.class.getName());
-
-	private static RaidBossSpawnManager _instance;
+	protected final static Logger _log = Logger.getLogger(RaidBossSpawnManager.class.getName());
+	
 	protected static Map<Integer, L2RaidBossInstance> _bosses;
 	protected static Map<Integer, L2Spawn> _spawns;
 	protected static Map<Integer, StatsSet> _storedInfo;
-	protected static Map<Integer, ScheduledFuture> _schedules; //TODO sto shutdown vgazei NPE
+	protected static Map<Integer, ScheduledFuture<?>> _schedules;
 
 	public static enum StatusEnum
 	{
@@ -63,12 +62,7 @@ public class RaidBossSpawnManager
 
 	public static RaidBossSpawnManager getInstance()
 	{
-		if (_instance == null)
-		{
-			_instance = new RaidBossSpawnManager();
-		}
-
-		return _instance;
+		return SingletonHolder._instance;
 	}
 
 	public void reload()
@@ -79,10 +73,10 @@ public class RaidBossSpawnManager
 	
 	private void init()
 	{
-		_bosses = new FastMap<Integer, L2RaidBossInstance>();
-		_schedules = new FastMap<Integer, ScheduledFuture>();
-		_storedInfo = new FastMap<Integer, StatsSet>();
-		_spawns = new FastMap<Integer, L2Spawn>();
+		_bosses = new FastMap<>();
+		_schedules = new FastMap<>();
+		_storedInfo = new FastMap<>();
+		_spawns = new FastMap<>();
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -520,5 +514,10 @@ public class RaidBossSpawnManager
 		_schedules.clear();
 		_storedInfo.clear();
 		_spawns.clear();
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final RaidBossSpawnManager _instance = new RaidBossSpawnManager();
 	}
 }

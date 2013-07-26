@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +51,6 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.StringUtil;
 import com.l2jhellas.util.Util;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AdminEditChar implements IAdminCommandHandler
 {
@@ -1055,82 +1052,4 @@ public class AdminEditChar implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	/**
-	 * @param activeChar
-	 * @param newHero
-	 * @param new noble
-	 */
-	private void updateDatabase(L2PcInstance player, boolean newHero, boolean newNoble)
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			// prevents any NPE.
-			// ----------------
-			if (player == null)
-				return;
-
-			// Define more variables
-			// ---------------------------------------------
-			String charName = player.getName();
-			int obj_Id = player.getObjectId();
-			boolean insert = newHero || newNoble;
-
-			// Database Connection
-			// ---------------------------------------------
-			PreparedStatement stmt = con.prepareStatement(insert ? DATA_INSERT : DATA_DELETE);
-
-			// custom variables
-			// ---------------------------------------------
-			boolean isNoble = player.isNoble();
-			boolean isHero = player.isHero();
-			boolean isDonator = player.isDonator();
-
-			// if it is a new hero insert proper data
-			// ---------------------------------------------
-			if (newHero)
-			{
-				stmt.setInt(1, obj_Id);
-				stmt.setString(2, charName);
-				stmt.setInt(3, 1); // sets new char as hero
-				stmt.setInt(4, isNoble ? 1 : 0); // keeps noble data if already
-													// set
-				stmt.setInt(5, isDonator ? 1 : 0); // keeps donator data if
-													// already set
-				stmt.execute();
-				stmt.close();
-			}
-			// if it is a new noble inserts and keeps proper data
-			// ---------------------------------------------
-			else if (newNoble)
-			{
-				stmt.setInt(1, obj_Id);
-				stmt.setString(2, charName);
-				stmt.setInt(3, isHero ? 1 : 0); // keeps hero data if any
-				stmt.setInt(4, 1); // sets char as noble
-				stmt.setInt(5, isDonator ? 1 : 0); // keeps donator data if any
-				stmt.execute();
-				stmt.close();
-			}
-			else
-			// not a new hero or noble so we delete data
-			// ---------------------------------------------
-			{
-				stmt.setInt(1, newHero ? 0 : 1);
-				stmt.setInt(2, newNoble ? 0 : 1);
-				stmt.setInt(3, obj_Id);
-				stmt.execute();
-				stmt.close();
-			}
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error: could not update database: ", e);
-		}
-	}
-
-	// Updates That Will be Executed by MySQL
-	// ---------------------------------------------
-	String DATA_INSERT = "REPLACE INTO characters_custom_data (obj_Id, char_name, hero, noble, donator) VALUES (?,?,?,?,?)";
-	String DATA_DELETE = "UPDATE characters_custom_data SET hero = ?, noble = ? WHERE obj_Id=?";
 }

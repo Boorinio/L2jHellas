@@ -104,7 +104,7 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 		}
 	}
 
-	private void notifyFriends(L2PcInstance cha)
+	public void notifyFriends(L2PcInstance cha)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

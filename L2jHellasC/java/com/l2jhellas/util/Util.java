@@ -376,7 +376,9 @@ public final class Util
 	 */
 	private static void printCpuInfo()
 	{
-		_log.info("Avaible CPU(s): " + Runtime.getRuntime().availableProcessors());
+		_log.info("");
+		_log.info("Hardware/Software Info");
+		_log.info("Avaible Processor's: " + Runtime.getRuntime().availableProcessors());
 		_log.info("Processor(s) Identifier: " + System.getenv("PROCESSOR_IDENTIFIER"));
 	}
 
@@ -385,8 +387,13 @@ public final class Util
 	 */
 	private static void printOSInfo()
 	{
+		_log.info("");
 		_log.info("OS: " + System.getProperty("os.name") + " Build: " + System.getProperty("os.version"));
-		_log.info("OS Arch: " + System.getProperty("os.arch"));
+		
+		if (System.getProperty("os.arch").equalsIgnoreCase("x86"))
+			_log.info("OS Architecture: 32Bit System.");
+		else
+			_log.info("OS Architecture: 64Bit System.");
 	}
 
 	/**
@@ -394,6 +401,7 @@ public final class Util
 	 */
 	private static void printJreInfo()
 	{
+		_log.info("");
 		_log.info("Java Platform Information");
 		_log.info("Java Runtime  Name: " + System.getProperty("java.runtime.name"));
 		_log.info("Java Version: " + System.getProperty("java.version"));
@@ -405,10 +413,14 @@ public final class Util
 	 */
 	public static void printRuntimeInfo()
 	{
+		// 1024 * 1024 = 1048576
+		_log.info("");
 		_log.info("Runtime Information");
-		_log.info("Current Free Heap Size: " + (Runtime.getRuntime().freeMemory() / 1024 / 1024) + " mb");
-		_log.info("Current Heap Size: " + (Runtime.getRuntime().totalMemory() / 1024 / 1024) + " mb");
-		_log.info("Maximum Heap Size: " + (Runtime.getRuntime().maxMemory() / 1024 / 1024) + " mb");
+		_log.info("Maximum Memory Size: " + (Runtime.getRuntime().maxMemory() / 1048576) + "MB");
+		_log.info("Total Memory Size: " + (Runtime.getRuntime().totalMemory() / 1048576) + "MB");
+		_log.info("Used Memory Size: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576) + "MB");
+		_log.info("Free Memory Size: " + (Runtime.getRuntime().freeMemory() / 1048576) + "MB");
+		_log.info("");
 	}
 
 	/**
@@ -433,6 +445,7 @@ public final class Util
 	 */
 	private static void printJvmInfo()
 	{
+		_log.info("");
 		_log.info("Virtual Machine Information (JVM)");
 		_log.info("JVM Name: " + System.getProperty("java.vm.name"));
 		_log.info("JVM installation directory: " + System.getProperty("java.home"));
@@ -449,7 +462,7 @@ public final class Util
 		printSystemTime();
 		printOSInfo();
 		printCpuInfo();
-		// printRuntimeInfo();
+		//printRuntimeInfo();
 		printJreInfo();
 		printJvmInfo();
 	}

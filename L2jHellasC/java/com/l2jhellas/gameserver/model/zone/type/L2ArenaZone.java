@@ -27,7 +27,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
  */
 public class L2ArenaZone extends L2ZoneType
 {
-	private String _arenaName;
+	public String _arenaName;
 	private final int[] _spawnLoc;
 
 	public L2ArenaZone(int id)

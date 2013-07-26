@@ -449,17 +449,10 @@ public class GameServer
 			}
 		}
 
-		Util.printSection("Info");
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Maximum Numbers of Connected Players: " + Config.MAXIMUM_ONLINE_USERS);
-		// maxMemory is the upper limit the jvm can use, totalMemory the size of
-		// the current allocation pool, freeMemory the unused memory in the
-		// allocation pool
-		long freeMem = (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime().freeMemory()) / 1048576; // 1024 * 1024 = 1048576;
-		long totalMem = Runtime.getRuntime().maxMemory() / 1048576;
-		_log.log(Level.INFO, getClass().getSimpleName() + ": GameServer Initiated, Used Memory " + freeMem + " Mb from total " + totalMem + " Mb");
-		Util.printRuntimeInfo();
+		// run garbage collector
+		System.gc();
 
-		Util.printSection("Game Server");
+		Util.printSection("Game Server Info");
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 		_log.log(Level.INFO, getClass().getSimpleName() + ": IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
 		if (!IdFactory.getInstance().isInitialized())
@@ -505,6 +498,7 @@ public class GameServer
 		}
 
 		_selectorThread.start();
+		Util.printRuntimeInfo();
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
 		long serverLoadEnd = System.currentTimeMillis();
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Server Started in: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
