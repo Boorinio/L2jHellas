@@ -917,7 +917,7 @@ public class EnterWorld extends L2GameClientPacket
 	{
 		for (L2PcInstance player : _onlineplayers)
 		{
-			String html = HtmCache.getInstance().getHtmForce("data/html/chaos/warning.htm");
+			String html = HtmCache.getInstance().getHtm("data/html/chaos/warning.htm");
 			NpcHtmlMessage warning = new NpcHtmlMessage(1);
 			warning.setHtml(html);
 

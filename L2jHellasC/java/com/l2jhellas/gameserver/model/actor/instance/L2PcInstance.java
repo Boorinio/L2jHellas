@@ -1783,7 +1783,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private void showQuestWindow(String questId, String stateId)
 	{
 		String path = "data/scripts/quests/" + questId + "/" + stateId + ".htm";
-		String content = HtmCache.getInstance().getHtmForce(path); // TODO path for quests html
+		String content = HtmCache.getInstance().getHtm(path); // TODO path for quests html
 
 		if (content != null)
 		{
@@ -13176,7 +13176,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 			// Open a Html message to inform the player
 			NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
-			String jailInfos = HtmCache.getInstance().getHtmForce("data/html/jail_in.htm");
+			String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_in.htm");
 			if (jailInfos != null)
 			{
 				htmlMsg.setHtml(jailInfos);
@@ -13193,7 +13193,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			// Open a Html message to inform the player
 			NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
-			String jailInfos = HtmCache.getInstance().getHtmForce("data/html/jail_out.htm");
+			String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_out.htm");
 			if (jailInfos != null)
 			{
 				htmlMsg.setHtml(jailInfos);
@@ -13805,7 +13805,7 @@ public final class L2PcInstance extends L2PlayableInstance
 						_punishLevel = state;
 						// Open a Html message to inform the player
 						NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
-						String jailInfos = HtmCache.getInstance().getHtmForce("data/html/jail_out.htm");
+						String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_out.htm");
 						if (jailInfos != null)
 						{
 							htmlMsg.setHtml(jailInfos);
@@ -13863,7 +13863,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 				// Open a Html message to inform the player
 				NpcHtmlMessage htmlMsg = new NpcHtmlMessage(0);
-				String jailInfos = HtmCache.getInstance().getHtmForce("data/html/jail_in.htm");
+				String jailInfos = HtmCache.getInstance().getHtm("data/html/jail_in.htm");
 				if (jailInfos != null)
 				{
 					htmlMsg.setHtml(jailInfos);

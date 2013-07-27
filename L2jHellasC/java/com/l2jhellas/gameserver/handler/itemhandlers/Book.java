@@ -46,7 +46,7 @@ public class Book implements IItemHandler
 		final int itemId = item.getItemId();
 
 		String filename = "data/html/help/" + itemId + ".htm";
-		String content = HtmCache.getInstance().getHtmForce(filename);
+		String content = HtmCache.getInstance().getHtm(filename);
 
 		// Quest item: Lidia's diary
 		if (itemId == 7064)

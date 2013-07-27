@@ -112,7 +112,7 @@ public class Announcements
 
 	public void listAnnouncements(L2PcInstance activeChar)
 	{
-		String content = HtmCache.getInstance().getHtmForce("data/html/admin/announce.htm");
+		String content = HtmCache.getInstance().getHtm("data/html/admin/announce.htm");
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setHtml(content);
 		TextBuilder replyMSG = new TextBuilder("<br>");

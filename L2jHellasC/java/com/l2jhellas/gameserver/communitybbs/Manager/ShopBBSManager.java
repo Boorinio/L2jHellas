@@ -27,7 +27,7 @@ public class ShopBBSManager extends BaseBBSManager
 	{
 		if (command.equals("_bbsshop"))
 		{
-			String content = HtmCache.getInstance().getHtmForce("data/html/CommunityBoard/shop.htm");
+			String content = HtmCache.getInstance().getHtm("data/html/CommunityBoard/shop.htm");
 			separateAndSend(content, activeChar);
 		}
 		else if (command.startsWith("_bbsshop;"))

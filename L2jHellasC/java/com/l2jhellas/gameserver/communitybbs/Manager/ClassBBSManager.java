@@ -106,7 +106,7 @@ public class ClassBBSManager extends BaseBBSManager
 		html.append("</center>");
 		html.append("<br>");
 		html.append("<br>");
-		String content = HtmCache.getInstance().getHtmForce("data/html/CommunityBoard/classmaster.htm");
+		String content = HtmCache.getInstance().getHtm("data/html/CommunityBoard/classmaster.htm");
 		content = content.replace("%classmaster%", html.toString());
 		separateAndSend(content, activeChar);
 

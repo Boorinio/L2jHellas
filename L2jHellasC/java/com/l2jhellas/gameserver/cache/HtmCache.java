@@ -170,7 +170,7 @@ public class HtmCache
 		return content;
 	}
 	
-	private String getHtm(String path)
+	public String getHtm(String path)
 	{
 		if ((path == null) || path.isEmpty())
 		{

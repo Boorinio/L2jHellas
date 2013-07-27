@@ -256,7 +256,7 @@ public class AdminReload implements IAdminCommandHandler
 	 */
 	private void sendReloadPage(L2PcInstance player)
 	{
-		String html = HtmCache.getInstance().getHtmForce("data/html/admin/reload_menu.htm");
+		String html = HtmCache.getInstance().getHtm("data/html/admin/reload_menu.htm");
 		player.sendPacket(new NpcHtmlMessage(1, html));
 		Util.printSection("Reload");
 	}

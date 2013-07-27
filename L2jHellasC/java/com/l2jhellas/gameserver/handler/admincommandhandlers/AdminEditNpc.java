@@ -576,9 +576,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 	{
 		String target = "npc_%objectId%_Buy";
 
-		String content = HtmCache.getInstance().getHtmForce("data/html/merchant/" + merchantID + ".htm");
+		String content = HtmCache.getInstance().getHtm("data/html/merchant/" + merchantID + ".htm");
 
-		content = HtmCache.getInstance().getHtmForce("data/html/merchant/30001.htm");
+		content = HtmCache.getInstance().getHtm("data/html/merchant/30001.htm");
 		if (content == null)
 			return null;
 		
@@ -608,7 +608,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	private void Show_Npc_Property(L2PcInstance activeChar, L2NpcTemplate npc)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		String content = HtmCache.getInstance().getHtmForce("data/html/admin/editnpc.htm");
+		String content = HtmCache.getInstance().getHtm("data/html/admin/editnpc.htm");
 
 		adminReply.setHtml(content);
 		adminReply.replace("%npcId%", String.valueOf(npc.npcId));

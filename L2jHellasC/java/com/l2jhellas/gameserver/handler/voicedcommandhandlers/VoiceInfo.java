@@ -30,7 +30,7 @@ public class VoiceInfo implements IVoicedCommandHandler
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		String htmFile = "data/html/mods/VoicedInfo.htm";
-		String htmContent = HtmCache.getInstance().getHtmForce(htmFile);
+		String htmContent = HtmCache.getInstance().getHtm(htmFile);
 		NpcHtmlMessage infoHtml = new NpcHtmlMessage(1);
 		infoHtml.setHtml(htmContent);
 		activeChar.sendPacket(infoHtml);

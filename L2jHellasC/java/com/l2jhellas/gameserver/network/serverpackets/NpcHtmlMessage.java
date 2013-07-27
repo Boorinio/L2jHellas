@@ -163,7 +163,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 
 	public boolean setFile(String path)
 	{
-		String content = HtmCache.getInstance().getHtmForce(path);
+		String content = HtmCache.getInstance().getHtm(path);
 
 		if (content == null)
 		{

@@ -190,7 +190,7 @@ public final class RequestSellItem extends L2GameClientPacket
 		}
 		player.addAdena("Sell", (int) totalPrice, merchant, false);
 
-		String html = HtmCache.getInstance().getHtmForce("data/html/" + htmlFolder + "/" + merchant.getNpcId() + "-sold.htm");
+		String html = HtmCache.getInstance().getHtm("data/html/" + htmlFolder + "/" + merchant.getNpcId() + "-sold.htm");
 
 		if (html != null)
 		{

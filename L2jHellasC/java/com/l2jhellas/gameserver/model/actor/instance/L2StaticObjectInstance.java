@@ -128,13 +128,13 @@ public class L2StaticObjectInstance extends L2Object
 				if (_type == 2)
 				{
 					String filename = "data/html/signboard.htm";
-					String content = HtmCache.getInstance().getHtmForce(filename);
+					String content = HtmCache.getInstance().getHtm(filename);
 					NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 
-					if (content == null)
-						html.setHtml("<html><body>Signboard is missing:<br>" + filename + "</body></html>");
-					else
+					if (content != null)
 						html.setHtml(content);
+					else
+						html.setHtml("<html><body>Signboard is missing:<br>" + filename + "</body></html>");
 
 					player.sendPacket(html);
 					player.sendPacket(ActionFailed.STATIC_PACKET);
