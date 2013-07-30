@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,14 +46,14 @@ public class L2DatabaseFactory
 				Config.DATABASE_MAX_CONNECTIONS = 2;
 				_log.warning("A minimum of " + Config.DATABASE_MAX_CONNECTIONS + " db connections are required.");
 			}
-
+			
 			_source = new ComboPooledDataSource();
 			_source.setAutoCommitOnClose(true);
-
+			
 			_source.setInitialPoolSize(10);
 			_source.setMinPoolSize(10);
 			_source.setMaxPoolSize(Math.max(10, Config.DATABASE_MAX_CONNECTIONS));
-
+			
 			_source.setAcquireRetryAttempts(0); // try to obtain connections indefinitely (0 = never quit)
 			_source.setAcquireRetryDelay(500); // 500 milliseconds wait before try to acquire connection again
 			_source.setCheckoutTimeout(0); // 0 = wait indefinitely for new connection
@@ -111,7 +111,7 @@ public class L2DatabaseFactory
 			throw new SQLException("Could not init DB connection:" + e.getMessage());
 		}
 	}
-
+	
 	/**
 	 * Prepared query select.
 	 * 
@@ -143,7 +143,7 @@ public class L2DatabaseFactory
 		String query = "SELECT " + msSqlTop1 + safetyString(fields) + " FROM " + tableName + " WHERE " + whereClause + mySqlTop1;
 		return query;
 	}
-
+	
 	/**
 	 * Shutdown.
 	 */
@@ -166,7 +166,7 @@ public class L2DatabaseFactory
 			_log.log(Level.INFO, "", e);
 		}
 	}
-
+	
 	/**
 	 * Safety string.
 	 * 
@@ -179,7 +179,7 @@ public class L2DatabaseFactory
 		// NOTE: Use brace as a safety precaution just in case name is a reserved word
 		final char braceLeft;
 		final char braceRight;
-
+		
 		if (getProviderType() == ProviderType.MsSql)
 		{
 			braceLeft = '[';
@@ -257,7 +257,7 @@ public class L2DatabaseFactory
 			c = con;
 			exp = e;
 		}
-
+		
 		@Override
 		public void run()
 		{

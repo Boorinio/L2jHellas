@@ -1321,6 +1321,7 @@ public abstract class Inventory extends ItemContainer
 	{
 		int weight = 0;
 
+		if(!Config.DISABLE_WEIGHT_PENALTY)
 		for (L2ItemInstance item : _items)
 		{
 			if (item != null && item.getItem() != null)

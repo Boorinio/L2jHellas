@@ -139,10 +139,9 @@ public class AdminReload implements IAdminCommandHandler
 				{
 					String folder = "quests";
 					QuestManager.getInstance().reloadAllQuests();
-					QuestManager.getInstance().reload(folder);
 					QuestManager.getInstance().report();
 					sendReloadPage(activeChar);
-					activeChar.sendMessage("Quests has been Reloaded.");
+					activeChar.sendMessage("Quests has been reloaded.");
 				}
 				else if (type.equals("configs") || type.equals("config"))
 				{

@@ -113,7 +113,6 @@ public final class Config
 	public static boolean RESTORE_EFFECTS_ON_SUBCLASS_CHANGE;
 	public static boolean AUTO_LOOT;
 	public static boolean AUTO_LOOT_RAID;
-	public static boolean AUTO_LOOT_BOSS;
 	public static boolean AUTO_LOOT_HERBS;
 	public static boolean AUTO_LEARN_SKILLS;
 	public static boolean CHECK_SKILLS_ON_ENTER;
@@ -1020,7 +1019,6 @@ public final class Config
 				BANKING2_SYSTEM_ENABLED = Boolean.parseBoolean(altSettings.getProperty("Banking2Enabled", "True"));
 				BANKING2_SYSTEM_GOLDBARS = Integer.parseInt(altSettings.getProperty("Banking2GoldbarCount", "10000000"));
 				BANKING2_SYSTEM_ADENA = Integer.parseInt(altSettings.getProperty("Banking2AdenaCount", "1"));
-				AUTO_LOOT_BOSS = Boolean.parseBoolean(altSettings.getProperty("AutoLootBoss", "False"));
 				AUTO_LOOT_HERBS = Boolean.parseBoolean(altSettings.getProperty("AutoLootHerbs", "False"));
 				AUTO_LEARN_SKILLS = Boolean.parseBoolean(altSettings.getProperty("AutoLearnSkills", "False"));
 				CHECK_SKILLS_ON_ENTER = Boolean.parseBoolean(altSettings.getProperty("CheckSkillsOnEnter", "False"));

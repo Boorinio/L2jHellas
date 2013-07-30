@@ -14,17 +14,13 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.quest.Quest;
-import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.scripting.ScriptManager;
 
 public class QuestManager extends ScriptManager<Quest>
@@ -71,31 +67,6 @@ public class QuestManager extends ScriptManager<Quest>
 			return false;
 		return q.reload();
 	}
-
-	public final void reloadAllQuests()
-	{
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Reloading Server Scripts.");
-		try
-		{
-			// unload all scripts
-			for (Quest quest : _quests.values())
-			{
-				if (quest != null)
-				{
-					quest.unload();
-				}
-			}
-			// now load all scripts
-			File scripts = new File(Config.DATAPACK_ROOT + "/data/scripts.cfg");
-			L2ScriptEngineManager.getInstance().executeScriptList(scripts);
-			QuestManager.getInstance().report();
-		}
-		catch (IOException ioe)
-		{
-			_log.log(Level.SEVERE, getClass().getSimpleName() + ": Failed loading scripts.cfg, no script going to be loaded.");
-		}
-	}
-
 	public final void report()
 	{
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _quests.size() + " quests.");
@@ -171,5 +142,18 @@ public class QuestManager extends ScriptManager<Quest>
 	public String getScriptManagerName()
 	{
 		return "QuestManager";
+	}
+
+	public void reloadAllQuests()
+	{
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Reloading Server Scripts.");
+		for (Quest quest : _quests.values())
+		{
+			if (quest != null)
+			{
+				quest.reload();
+			}
+		}
+		
 	}
 }
