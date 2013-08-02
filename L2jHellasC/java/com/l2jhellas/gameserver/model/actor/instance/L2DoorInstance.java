@@ -348,7 +348,7 @@ public class L2DoorInstance extends L2Character
 
 	public boolean isAttackable(L2Character attacker)
 	{
-		return isAutoAttackable(attacker);
+		return (attacker != null && attacker instanceof L2PcInstance && getCastle() != null && getCastle().getCastleId() > 0 && getCastle().getSiege().getIsInProgress() && getCastle().getSiege().checkIsAttacker(((L2PcInstance) attacker).getClan()));
 	}
 
 	@Override

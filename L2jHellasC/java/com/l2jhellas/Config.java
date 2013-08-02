@@ -122,6 +122,7 @@ public final class Config
 	public static boolean SP_BOOK_NEEDED;
 	public static boolean ES_SP_BOOK_NEEDED;
 	public static boolean ALT_GAME_SKILL_LEARN;
+	public static boolean NPCS_ATTACKABLE;
 	public static int ALT_PARTY_RANGE;
 	public static int ALT_PARTY_RANGE2;
 	public static double ALT_WEIGHT_LIMIT;
@@ -1032,6 +1033,7 @@ public final class Config
 				SP_BOOK_NEEDED = Boolean.parseBoolean(altSettings.getProperty("SpBookNeeded", "True"));
 				ES_SP_BOOK_NEEDED = Boolean.parseBoolean(altSettings.getProperty("EnchantSkillSpBookNeeded", "True"));
 				ALT_GAME_SKILL_LEARN = Boolean.parseBoolean(altSettings.getProperty("AltGameSkillLearn", "False"));
+				NPCS_ATTACKABLE = Boolean.parseBoolean(altSettings.getProperty("AttackableNpcs", "False"));
 				ALT_PARTY_RANGE = Integer.parseInt(altSettings.getProperty("AltPartyRange", "1600"));
 				ALT_PARTY_RANGE2 = Integer.parseInt(altSettings.getProperty("AltPartyRange2", "1400"));
 				ALT_WEIGHT_LIMIT = Double.parseDouble(altSettings.getProperty("AltWeightLimit", "1"));
@@ -1356,7 +1358,7 @@ public final class Config
 				NAME_COLOR_FOR_PVP_AMOUNT2 = Integer.decode("0x" + L2JHellasSettings.getProperty("ColorForAmount2", "00FF00"));
 				NAME_COLOR_FOR_PVP_AMOUNT3 = Integer.decode("0x" + L2JHellasSettings.getProperty("ColorForAmount3", "0000FF"));
 				NAME_COLOR_FOR_PVP_AMOUNT4 = Integer.decode("0x" + L2JHellasSettings.getProperty("ColorForAmount4", "F66F66"));
-				NAME_COLOR_FOR_PVP_AMOUNT5 = Integer.decode("0x" + L2JHellasSettings.getProperty("ColorForAmount4", "FF0000"));
+				NAME_COLOR_FOR_PVP_AMOUNT5 = Integer.decode("0x" + L2JHellasSettings.getProperty("ColorForAmount5", "FF0000"));
 				PK_COLOR_SYSTEM_ENABLED = Boolean.parseBoolean(L2JHellasSettings.getProperty("EnablePkColorSystem", "False"));
 				PK_AMOUNT1 = Integer.parseInt(L2JHellasSettings.getProperty("PkAmount1", "20"));
 				PK_AMOUNT2 = Integer.parseInt(L2JHellasSettings.getProperty("PkAmount2", "50"));

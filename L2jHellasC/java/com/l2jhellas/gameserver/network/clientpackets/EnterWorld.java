@@ -69,6 +69,7 @@ import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Die;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
@@ -719,6 +720,7 @@ public class EnterWorld extends L2GameClientPacket
 				}
 			}
 		}
+		activeChar.sendPacket(ActionFailed.STATIC_PACKET); //just to avoid target issues
 	}
 	
 	/**
