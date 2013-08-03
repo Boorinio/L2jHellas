@@ -75,7 +75,7 @@ public class CaptureThem
 	public static void stopRegistration()
 	{
 		Announcements.getInstance().announceToAll("CaptureThem Registration is Over!");
-		for (L2PcInstance players : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance players : L2World.getAllPlayers())
 		{
 			ZodiacMain.ZodiacRegisterActive = false;
 			if (players.isinZodiac)

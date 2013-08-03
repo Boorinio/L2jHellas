@@ -70,7 +70,7 @@ public class AdminMenu implements IAdminCommandHandler
 			if (data.length == 5)
 			{
 				String playerName = data[1];
-				L2PcInstance player = L2World.getInstance().getPlayer(playerName);
+				L2PcInstance player = L2World.getPlayer(playerName);
 				if (player != null)
 					teleportCharacter(player, Integer.parseInt(data[2]), Integer.parseInt(data[3]), Integer.parseInt(data[4]), activeChar, "Admin is teleporting you.");
 			}
@@ -81,7 +81,7 @@ public class AdminMenu implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(23);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				L2PcInstance player = L2World.getPlayer(targetName);
 				teleportCharacter(player, activeChar.getX(), activeChar.getY(), activeChar.getZ(), activeChar, "Admin is teleporting you.");
 			}
 			catch (StringIndexOutOfBoundsException e)
@@ -94,7 +94,7 @@ public class AdminMenu implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(24);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				L2PcInstance player = L2World.getPlayer(targetName);
 				if (player == null)
 				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
@@ -119,7 +119,7 @@ public class AdminMenu implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(23);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				L2PcInstance player = L2World.getPlayer(targetName);
 				if (player == null)
 				{
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
@@ -145,7 +145,7 @@ public class AdminMenu implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(21);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				L2PcInstance player = L2World.getPlayer(targetName);
 				teleportToCharacter(activeChar, player);
 			}
 			catch (StringIndexOutOfBoundsException e)
@@ -163,7 +163,7 @@ public class AdminMenu implements IAdminCommandHandler
 			{
 				st.nextToken();
 				String player = st.nextToken();
-				L2PcInstance plyr = L2World.getInstance().getPlayer(player);
+				L2PcInstance plyr = L2World.getPlayer(player);
 				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
 				if (plyr != null)
 				{
@@ -183,7 +183,7 @@ public class AdminMenu implements IAdminCommandHandler
 			{
 				st.nextToken();
 				String player = st.nextToken();
-				L2PcInstance plyr = L2World.getInstance().getPlayer(player);
+				L2PcInstance plyr = L2World.getPlayer(player);
 				if (plyr != null)
 				{
 					plyr.logout();
@@ -224,7 +224,7 @@ public class AdminMenu implements IAdminCommandHandler
 		String filename = "main_menu.htm";
 		if (player != null)
 		{
-			L2PcInstance plyr = L2World.getInstance().getPlayer(player);
+			L2PcInstance plyr = L2World.getPlayer(player);
 			if (plyr != null)
 				target = plyr;
 			activeChar.sendMessage("You killed " + plyr.getName());

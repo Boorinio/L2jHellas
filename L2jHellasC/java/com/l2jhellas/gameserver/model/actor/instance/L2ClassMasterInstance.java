@@ -46,7 +46,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 	public static L2ClassMasterInstance ClassMaster = new L2ClassMasterInstance(31228, NpcTable.getInstance().getTemplate(31228));
 	static
 	{
-		L2World.getInstance().storeObject(ClassMaster);
+		L2World.storeObject(ClassMaster);
 	}
 
 	/**

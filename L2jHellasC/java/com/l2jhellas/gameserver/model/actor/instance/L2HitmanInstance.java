@@ -134,7 +134,7 @@ public class L2HitmanInstance extends L2NpcInstance
 		TextBuilder content = new TextBuilder("<html><head><body><center>");
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		PlayerToAssasinate pta = Hitman.getInstance().getTargets().get(objectId);
-		L2PcInstance target = L2World.getInstance().getPlayer(pta.getName());
+		L2PcInstance target = L2World.getPlayer(pta.getName());
 		MapRegionTable map = MapRegionTable.getInstance();
 
 		content.append("<img src=L2Font-e.mini_logo-e width=245 height=80>");

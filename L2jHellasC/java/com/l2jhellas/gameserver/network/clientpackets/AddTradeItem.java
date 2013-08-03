@@ -54,7 +54,7 @@ public final class AddTradeItem extends L2GameClientPacket
 		if (trade == null)
 			return;
 
-		if ((trade.getPartner() == null) || (L2World.getInstance().findObject(trade.getPartner().getObjectId()) == null))
+		if ((trade.getPartner() == null) || (L2World.findObject(trade.getPartner().getObjectId()) == null))
 		{
 			// Trade partner not found, cancel trade
 			SystemMessage msg = new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);

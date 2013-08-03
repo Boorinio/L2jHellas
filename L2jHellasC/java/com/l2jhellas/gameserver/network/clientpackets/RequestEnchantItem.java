@@ -527,8 +527,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 
 				activeChar.broadcastUserInfo();
 
-				L2World world = L2World.getInstance();
-				world.removeObject(destroyItem);
+				L2World.removeObject(destroyItem);
 			}
 			else
 			{

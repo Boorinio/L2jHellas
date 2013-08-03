@@ -203,7 +203,7 @@ public class Announcements
 	{
 		CreatureSay cs = new CreatureSay(0, 18, "", "Announcements: " + text);
 
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			if (player != null)
 				if (player.isOnline() != 0)
@@ -217,7 +217,7 @@ public class Announcements
 	{
 		CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", text);
 
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			player.sendPacket(cs);
 		}
@@ -226,7 +226,7 @@ public class Announcements
 	public void announceToAll(SystemMessage sm)
 	{
 
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			player.sendPacket(sm);
 		}

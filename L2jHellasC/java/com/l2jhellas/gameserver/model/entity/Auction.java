@@ -338,8 +338,8 @@ public class Auction
 				statement.setLong(7, System.currentTimeMillis());
 				statement.execute();
 				statement.close();
-				if (L2World.getInstance().getPlayer(_highestBidderName) != null)
-					L2World.getInstance().getPlayer(_highestBidderName).sendMessage("You have been out bidded.");
+				if (L2World.getPlayer(_highestBidderName) != null)
+					L2World.getPlayer(_highestBidderName).sendMessage("You have been out bidded.");
 			}
 			_highestBidderId = bidder.getClanId();
 			_highestBidderMaxBid = bid;
@@ -390,8 +390,8 @@ public class Auction
 				returnItem(b.getClanName(), 57, 9 * b.getBid() / 10, false); // 10 % tax
 			else
 			{
-				if (L2World.getInstance().getPlayer(b.getName()) != null)
-					L2World.getInstance().getPlayer(b.getName()).sendMessage("Congratulation you have won ClanHall!");
+				if (L2World.getPlayer(b.getName()) != null)
+					L2World.getPlayer(b.getName()).sendMessage("Congratulation you have won ClanHall!");
 			}
 			ClanTable.getInstance().getClanByName(b.getClanName()).setAuctionBiddedAt(0, true);
 		}

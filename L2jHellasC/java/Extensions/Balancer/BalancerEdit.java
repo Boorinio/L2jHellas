@@ -62,7 +62,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -103,7 +103,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -144,7 +144,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -185,7 +185,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -226,7 +226,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -267,7 +267,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -308,7 +308,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -349,7 +349,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -390,7 +390,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -431,7 +431,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -472,7 +472,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{
@@ -513,7 +513,7 @@ public class BalancerEdit
 					System.err.println("Error while saving balance stats to database.");
 					e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getInstance().getAllPlayers())
+				for (L2PcInstance p : L2World.getAllPlayers())
 				{
 					if (p.getClassId().getId() == classId)
 					{

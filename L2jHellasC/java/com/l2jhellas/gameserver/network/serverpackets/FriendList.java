@@ -81,7 +81,7 @@ public class FriendList extends L2GameServerPacket
 					if (friendId == _activeChar.getObjectId())
 						continue;
 
-					L2PcInstance friend = L2World.getInstance().getPlayer(friendName);
+					L2PcInstance friend = L2World.getPlayer(friendName);
 
 					writeH(0); // ??
 					writeD(friendId);

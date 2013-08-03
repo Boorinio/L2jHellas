@@ -102,7 +102,7 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 		TextBuilder htmlCode = new TextBuilder("<html><body><br>");
 		htmlCode.append("<table border=0><tr><td FIXWIDTH=15></td><td align=center>L2JHellas Community Board<img src=\"sek.cbui355\" width=610 height=1></td></tr><tr><td FIXWIDTH=15></td><td>");
-		L2PcInstance player = L2World.getInstance().getPlayer(name);
+		L2PcInstance player = L2World.getPlayer(name);
 
 		if (player != null)
 		{
@@ -188,7 +188,7 @@ public class RegionBBSManager extends BaseBBSManager
 			try
 			{
 
-				L2PcInstance receiver = L2World.getInstance().getPlayer(ar2);
+				L2PcInstance receiver = L2World.getPlayer(ar2);
 				if (receiver == null)
 				{
 					htmlCode.append("Player not found!<br><button value=\"Back\" action=\"bypass _bbsloc;playerinfo;" + ar2 + "\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
@@ -289,7 +289,7 @@ public class RegionBBSManager extends BaseBBSManager
 
 	public synchronized void changeCommunityBoard()
 	{
-		Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers();
+		Collection<L2PcInstance> players = L2World.getAllPlayers();
 		FastList<L2PcInstance> sortedPlayers = new FastList<L2PcInstance>();
 		sortedPlayers.addAll(players);
 		players = null;
@@ -412,7 +412,7 @@ public class RegionBBSManager extends BaseBBSManager
 			htmlCode.append(trClose);
 
 			htmlCode.append(trOpen);
-			htmlCode.append(tdOpen + L2World.getInstance().getAllVisibleObjectsCount() + " Object count</td>");
+			htmlCode.append(tdOpen + L2World.getAllVisibleObjectsCount() + " Object count</td>");
 			htmlCode.append(trClose);
 
 			htmlCode.append(trOpen);

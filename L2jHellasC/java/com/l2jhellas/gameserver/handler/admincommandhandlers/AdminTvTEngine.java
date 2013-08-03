@@ -249,7 +249,7 @@ public class AdminTvTEngine implements IAdminCommandHandler
 			{
 				st.nextToken();
 				String plyr = st.nextToken();
-				L2PcInstance playerToKick = L2World.getInstance().getPlayer(plyr);
+				L2PcInstance playerToKick = L2World.getPlayer(plyr);
 				if (playerToKick != null)
 				{
 					TvT.kickPlayerFromTvt(playerToKick);

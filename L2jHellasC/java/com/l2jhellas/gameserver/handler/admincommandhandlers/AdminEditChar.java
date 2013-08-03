@@ -93,7 +93,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			try
 			{
 				String val = command.substring(21);
-				L2PcInstance target = L2World.getInstance().getPlayer(val);
+				L2PcInstance target = L2World.getPlayer(val);
 				if (target != null)
 					showCharacterInfo(activeChar, target);
 				else
@@ -343,10 +343,10 @@ public class AdminEditChar implements IAdminCommandHandler
 					player = (L2PcInstance) target;
 					oldName = player.getName();
 
-					L2World.getInstance().removeFromAllPlayers(player);
+					L2World.removeFromAllPlayers(player);
 					player.setName(val);
 					player.store();
-					L2World.getInstance().addToAllPlayers(player);
+					L2World.addToAllPlayers(player);
 
 					player.sendMessage("Your name has been changed by a GM.");
 					player.broadcastUserInfo();
@@ -643,7 +643,7 @@ public class AdminEditChar implements IAdminCommandHandler
 
 	private void listCharacters(L2PcInstance activeChar, int page)
 	{
-		Collection<L2PcInstance> allPlayers = L2World.getInstance().getAllPlayers();
+		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 
 		int MaxCharactersPerPage = 20;
@@ -858,7 +858,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	{
 		int CharactersFound = 0;
 		String name;
-		Collection<L2PcInstance> allPlayers = L2World.getInstance().getAllPlayers();
+		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/charfind.htm");
@@ -901,7 +901,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	{
 		if (!IpAdress.matches("^(?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2(?:[0-4][0-9]|5[0-5]))\\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2(?:[0-4][0-9]|5[0-5]))$"))
 			throw new IllegalArgumentException("Malformed IPv4 number");
-		Collection<L2PcInstance> allPlayers = L2World.getInstance().getAllPlayers();
+		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 		int CharactersFound = 0;
 		String name, ip = "0.0.0.0";
@@ -950,7 +950,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		{
 			String account = null;
 			Map<Integer, String> chars;
-			L2PcInstance player = L2World.getInstance().getPlayer(characterName);
+			L2PcInstance player = L2World.getPlayer(characterName);
 			if (player == null)
 				throw new IllegalArgumentException("Player doesn't exist");
 			chars = player.getAccountChars();
@@ -976,7 +976,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	@SuppressWarnings("unchecked")
 	private void findDualbox(L2PcInstance activeChar, int multibox) throws IllegalArgumentException
 	{
-		Collection<String> allPlayers = ((Map<Integer, String>) L2World.getInstance().getAllPlayers()).values();
+		Collection<String> allPlayers = ((Map<Integer, String>) L2World.getAllPlayers()).values();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 		Map<String, List<L2PcInstance>> ipMap = new HashMap<String, List<L2PcInstance>>();
 

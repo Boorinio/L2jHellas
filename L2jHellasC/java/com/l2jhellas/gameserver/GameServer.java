@@ -159,7 +159,7 @@ public class GameServer
 		CrestCache.getInstance();
 
 		Util.printSection("World");
-		L2World.getInstance();
+		L2World.init();
 		MapRegionTable.getInstance();
 		Announcements.getInstance();
 		AutoAnnouncementHandler.getInstance();

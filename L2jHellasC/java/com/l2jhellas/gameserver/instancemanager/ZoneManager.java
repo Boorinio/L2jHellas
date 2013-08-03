@@ -82,7 +82,7 @@ public class ZoneManager
 
 		// Get the world regions
 		int count = 0;
-		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
+		L2WorldRegion[][] worldRegions = L2World.getAllWorldRegions();
 		for (int x = 0; x < worldRegions.length; x++)
 		{
 			for (int y = 0; y < worldRegions[x].length; y++)
@@ -103,7 +103,7 @@ public class ZoneManager
 		_zones.clear();
 
 		// Get the world regions
-		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
+		L2WorldRegion[][] worldRegions = L2World.getAllWorldRegions();
 
 		// Load the zone xml
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -403,7 +403,7 @@ public class ZoneManager
 	 */
 	public FastList<L2ZoneType> getZones(int x, int y)
 	{
-		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
+		L2WorldRegion region = L2World.getRegion(x, y);
 		FastList<L2ZoneType> temp = new FastList<L2ZoneType>();
 		for (L2ZoneType zone : region.getZones())
 		{
@@ -423,7 +423,7 @@ public class ZoneManager
 	 */
 	public FastList<L2ZoneType> getZones(int x, int y, int z)
 	{
-		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
+		L2WorldRegion region = L2World.getRegion(x, y);
 		FastList<L2ZoneType> temp = new FastList<L2ZoneType>();
 		for (L2ZoneType zone : region.getZones())
 		{

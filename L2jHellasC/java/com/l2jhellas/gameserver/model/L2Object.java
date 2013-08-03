@@ -153,8 +153,8 @@ public abstract class L2Object
 		// this can synchronize on others instancies, so it's out of
 		// synchronized, to avoid deadlocks
 		// Remove the L2Object from the world
-		L2World.getInstance().removeVisibleObject(this, reg);
-		L2World.getInstance().removeObject(this);
+		L2World.removeVisibleObject(this, reg);
+		L2World.removeObject(this);
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance().removeObject(this);
 	}
@@ -213,12 +213,12 @@ public abstract class L2Object
 		// this can synchronize on others instancies, so it's out of
 		// synchronized, to avoid deadlocks
 		// Remove the L2ItemInstance from the world
-		L2World.getInstance().removeVisibleObject(this, oldregion);
+		L2World.removeVisibleObject(this, oldregion);
 	}
 
 	public void refreshID()
 	{
-		L2World.getInstance().removeObject(this);
+		L2World.removeObject(this);
 		IdFactory.getInstance().releaseId(getObjectId());
 		_objectId = IdFactory.getInstance().getNextId();
 	}
@@ -248,10 +248,10 @@ public abstract class L2Object
 		{
 			// Set the x,y,z position of the L2Object spawn and update its _worldregion
 			_isVisible = true;
-			getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
+			getPosition().setWorldRegion(L2World.getRegion(getPosition().getWorldPosition()));
 
 			// Add the L2Object spawn in the _allobjects of L2World
-			L2World.getInstance().storeObject(this);
+			L2World.storeObject(this);
 
 			// Add the L2Object spawn to _visibleObjects and if necessary to _allplayers of its L2WorldRegion
 			getPosition().getWorldRegion().addVisibleObject(this);
@@ -260,7 +260,7 @@ public abstract class L2Object
 		// this can synchronize on others instancies, so it's out of
 		// synchronized, to avoid deadlocks
 		// Add the L2Object spawn in the world as a visible object
-		L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion(), null);
+		L2World.addVisibleObject(this, getPosition().getWorldRegion(), null);
 
 		onSpawn();
 	}
@@ -285,10 +285,10 @@ public abstract class L2Object
 				y = L2World.MAP_MIN_Y + 5000;
 
 			getPosition().setWorldPosition(x, y, z);
-			getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
+			getPosition().setWorldRegion(L2World.getRegion(getPosition().getWorldPosition()));
 
 			// Add the L2Object spawn in the _allobjects of L2World
-			L2World.getInstance().storeObject(this);
+			L2World.storeObject(this);
 
 			// Add the L2Object spawn to _visibleObjects and if necessary to _allplayers of its L2WorldRegion
 			getPosition().getWorldRegion().addVisibleObject(this);
@@ -297,7 +297,7 @@ public abstract class L2Object
 		// this can synchronize on others instances, so it's out of
 		// synchronized, to avoid deadlocks
 		// Add the L2Object spawn in the world as a visible object
-		L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion(), null);
+		L2World.addVisibleObject(this, getPosition().getWorldRegion(), null);
 
 		onSpawn();
 	}

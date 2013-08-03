@@ -105,7 +105,7 @@ public class TopBBSManager extends BaseBBSManager
 					content = content.replaceAll("%gboss%", gb.loadGrandBossList());
 				break;
 				case "stats":
-					content = content.replace("%online%", Integer.toString(L2World.getInstance().getAllPlayersCount()));
+					content = content.replace("%online%", Integer.toString(L2World.getAllPlayersCount()));
 					content = content.replace("%servercapacity%", Integer.toString(Config.MAXIMUM_ONLINE_USERS));
 					content = content.replace("%serverruntime%", getServerRunTime());
 					if (ExternalConfig.ALLOW_REAL_ONLINE_STATS)
@@ -174,14 +174,14 @@ public class TopBBSManager extends BaseBBSManager
 	public String getRealOnline()
 	{
 		int counter = 0;
-		for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance onlinePlayer : L2World.getAllPlayers())
 		{
 			if (onlinePlayer.isOnline() == 1 && onlinePlayer.getClient() != null && !onlinePlayer.getClient().isDetached())
 			{
 				counter++;
 			}
 		}
-		String realOnline = "<tr><td fixwidth=11></td><td FIXWIDTH=280>Players Active</td><td FIXWIDTH=470><font color=26e600>" + counter + "</font></td></tr>" + "<tr><td fixwidth=11></td><td FIXWIDTH=280>Players Shops</td><td FIXWIDTH=470><font color=26e600>" + (L2World.getInstance().getAllPlayersCount() - counter) + "</font></td></tr>";
+		String realOnline = "<tr><td fixwidth=11></td><td FIXWIDTH=280>Players Active</td><td FIXWIDTH=470><font color=26e600>" + counter + "</font></td></tr>" + "<tr><td fixwidth=11></td><td FIXWIDTH=280>Players Shops</td><td FIXWIDTH=470><font color=26e600>" + (L2World.getAllPlayersCount() - counter) + "</font></td></tr>";
 		return realOnline;
 	}
 }

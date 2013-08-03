@@ -85,7 +85,7 @@ public class L2DonateInstance extends L2FolkInstance
 				out.close();
 				player.sendMessage("Donation sent.Now you have to wait until a gm checks your donation!");
 
-				Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers();
+				Collection<L2PcInstance> pls = L2World.getAllPlayers();
 				for (L2PcInstance gms : pls)
 				{
 					if (gms.isGM())

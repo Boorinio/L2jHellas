@@ -306,7 +306,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				}
 				try
 				{
-					L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
+					L2Object object = L2World.findObject(Integer.parseInt(id));
 
 					if (_command.substring(endOfId + 1).startsWith("event_participate"))
 					{

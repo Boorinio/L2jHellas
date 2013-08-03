@@ -321,8 +321,7 @@ public class L2TradeList
 			}
 			else
 			{
-				L2World world = L2World.getInstance();
-				world.removeObject(playerItem);
+				L2World.removeObject(playerItem);
 				update.addRemovedItem(playerItem);
 			}
 
@@ -537,8 +536,7 @@ public class L2TradeList
 				}
 				else
 				{
-					L2World world = L2World.getInstance();
-					world.removeObject(sellerItem);
+					L2World.removeObject(sellerItem);
 					sellerupdate.addRemovedItem(sellerItem);
 				}
 

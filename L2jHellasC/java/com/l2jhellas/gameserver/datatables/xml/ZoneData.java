@@ -78,7 +78,7 @@ public class ZoneData
 	{
 		int zoneCount = 0;
 		// Get the world regions
-		final L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
+		final L2WorldRegion[][] worldRegions = L2World.getAllWorldRegions();
 		// Load the zone xml
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

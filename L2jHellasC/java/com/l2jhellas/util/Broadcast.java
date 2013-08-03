@@ -147,9 +147,9 @@ public final class Broadcast
 	public static void toAllOnlinePlayers(L2GameServerPacket mov)
 	{
 		if (Config.DEBUG)
-			_log.fine("Players to notify: " + L2World.getInstance().getAllPlayersCount() + " (with packet " + mov.getType() + ")");
+			_log.fine("Players to notify: " + L2World.getAllPlayersCount() + " (with packet " + mov.getType() + ")");
 
-		for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance onlinePlayer : L2World.getAllPlayers())
 		{
 			if (onlinePlayer == null)
 				continue;

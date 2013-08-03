@@ -37,7 +37,7 @@ public class ObjectPosition
 	public ObjectPosition(L2Object activeObject)
 	{
 		_activeObject = activeObject;
-		setWorldRegion(L2World.getInstance().getRegion(getWorldPosition()));
+		setWorldRegion(L2World.getRegion(getWorldPosition()));
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class ObjectPosition
 
 		try
 		{
-			if (L2World.getInstance().getRegion(getWorldPosition()) != getWorldRegion())
+			if (L2World.getRegion(getWorldPosition()) != getWorldRegion())
 				updateWorldRegion();
 		}
 		catch (Exception e)
@@ -121,7 +121,7 @@ public class ObjectPosition
 		if (!getActiveObject().isVisible())
 			return;
 
-		L2WorldRegion newRegion = L2World.getInstance().getRegion(getWorldPosition());
+		L2WorldRegion newRegion = L2World.getRegion(getWorldPosition());
 		if (newRegion != getWorldRegion())
 		{
 			getWorldRegion().removeVisibleObject(getActiveObject());

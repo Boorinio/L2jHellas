@@ -75,8 +75,8 @@ public class L2FactionInstance extends L2FolkInstance
 				}
 				else
 				{
-					int getevils = L2World.getInstance().getAllevilPlayers().size();
-					int getgoods = L2World.getInstance().getAllgoodPlayers().size();
+					int getevils = L2World.getAllevilPlayers().size();
+					int getgoods = L2World.getAllgoodPlayers().size();
 					if (getgoods > getevils)
 					{
 						player.sendMessage("You Cant Use " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");
@@ -146,8 +146,8 @@ public class L2FactionInstance extends L2FolkInstance
 				}
 				else
 				{
-					int getevils = L2World.getInstance().getAllevilPlayers().size();
-					int getgoods = L2World.getInstance().getAllgoodPlayers().size();
+					int getevils = L2World.getAllevilPlayers().size();
+					int getgoods = L2World.getAllgoodPlayers().size();
 					if (getevils > getgoods)
 					{
 						player.sendMessage("You cant use " + Config.MOD_GVE_NAME_TEAM_EVIL + " faction because Online number of " + Config.MOD_GVE_NAME_TEAM_EVIL + " is smaller.");

@@ -64,7 +64,7 @@ public final class AttackRequest extends L2GameClientPacket
 		if (activeChar.getTargetId() == _objectId)
 			target = activeChar.getTarget();
 		else
-			target = L2World.getInstance().findObject(_objectId);
+			target = L2World.findObject(_objectId);
 		if (target == null)
 			return;
 		if (activeChar.getTarget() != target)

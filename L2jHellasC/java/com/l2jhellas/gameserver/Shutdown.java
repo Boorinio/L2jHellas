@@ -591,7 +591,7 @@ public class Shutdown extends Thread
 	 */
 	private void disconnectAllCharacters()
 	{
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			// Logout Character
 			try
@@ -613,7 +613,7 @@ public class Shutdown extends Thread
 			_log.log(Level.INFO, "", t);
 		}
 
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			try
 			{

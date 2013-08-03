@@ -193,7 +193,7 @@ public class EnterWorld extends L2GameClientPacket
 				}
 			}
 		}
-		// if (L2World.getInstance().findObject(activeChar.getObjectId()) != null)
+		// if (L2World.findObject(activeChar.getObjectId()) != null)
 		// {
 		// _log.warning("User already exist in OID map! User " + activeChar.getName() + " is character clone.");
 		// activeChar.closeNetConnection();// TODO uncommented this
@@ -704,7 +704,7 @@ public class EnterWorld extends L2GameClientPacket
 		if (!Config.ALLOW_DUALBOX && activeChar != null)
 		{
 			String thisip = activeChar.getClient().getConnection().getInetAddress().getHostAddress();
-			Collection<L2PcInstance> allPlayers = L2World.getInstance().getAllPlayers();
+			Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
 			L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 			for (L2PcInstance player : players)
 			{
@@ -762,7 +762,7 @@ public class EnterWorld extends L2GameClientPacket
 		if (cha.getPartnerId() != 0)
 		{
 			L2PcInstance partner;
-			partner = (L2PcInstance) L2World.getInstance().findObject(cha.getPartnerId());
+			partner = (L2PcInstance) L2World.findObject(cha.getPartnerId());
 			
 			if (partner != null)
 			{
@@ -795,7 +795,7 @@ public class EnterWorld extends L2GameClientPacket
 			{
 				friendName = rset.getString("friend_name");
 				
-				friend = L2World.getInstance().getPlayer(friendName);
+				friend = L2World.getPlayer(friendName);
 				
 				if (friend != null) // friend logged in.
 				{
@@ -851,7 +851,7 @@ public class EnterWorld extends L2GameClientPacket
 	{
 		if (activeChar.getSponsor() != 0)
 		{
-			L2PcInstance sponsor = (L2PcInstance) L2World.getInstance().findObject(activeChar.getSponsor());
+			L2PcInstance sponsor = (L2PcInstance) L2World.findObject(activeChar.getSponsor());
 			
 			if (sponsor != null)
 			{
@@ -862,7 +862,7 @@ public class EnterWorld extends L2GameClientPacket
 		}
 		else if (activeChar.getApprentice() != 0)
 		{
-			L2PcInstance apprentice = (L2PcInstance) L2World.getInstance().findObject(activeChar.getApprentice());
+			L2PcInstance apprentice = (L2PcInstance) L2World.findObject(activeChar.getApprentice());
 			
 			if (apprentice != null)
 			{

@@ -107,7 +107,7 @@ public class ObjectKnownList
 
 		if (isActiveObjectPlayable)
 		{
-			Collection<L2Object> objects = L2World.getInstance().getVisibleObjects(getActiveObject());
+			Collection<L2Object> objects = L2World.getVisibleObjects(getActiveObject());
 			if (objects == null)
 				return;
 
@@ -129,7 +129,7 @@ public class ObjectKnownList
 		}
 		else
 		{
-			Collection<L2PlayableInstance> playables = L2World.getInstance().getVisiblePlayable(getActiveObject());
+			Collection<L2PlayableInstance> playables = L2World.getVisiblePlayable(getActiveObject());
 			if (playables == null)
 				return;
 

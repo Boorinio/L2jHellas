@@ -72,7 +72,7 @@ public class ChristmasTree implements IItemHandler
 			spawn.setLocx(target.getX());
 			spawn.setLocy(target.getY());
 			spawn.setLocz(target.getZ());
-			L2World.getInstance().storeObject(spawn.spawnOne());
+			L2World.storeObject(spawn.spawnOne());
 
 			activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
 

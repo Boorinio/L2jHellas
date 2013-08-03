@@ -155,7 +155,7 @@ public final class L2GuardInstance extends L2Attackable
 			_log.finer(getObjectId() + ": Home location set to" + " X:" + _homeX + " Y:" + _homeY + " Z:" + _homeZ);
 
 		// check the region where this mob is, do not activate the AI if region is inactive.
-		L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY());
+		L2WorldRegion region = L2World.getRegion(getX(), getY());
 		if ((region != null) && (!region.isActive()))
 			((L2AttackableAI) getAI()).stopAITask();
 	}

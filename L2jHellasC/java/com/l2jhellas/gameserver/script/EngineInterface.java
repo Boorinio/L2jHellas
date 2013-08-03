@@ -28,7 +28,6 @@ import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
@@ -54,7 +53,7 @@ public interface EngineInterface
 
 	public TeleportLocationTable teleTable = TeleportLocationTable.getInstance();
 	public LevelUpData levelUpData = LevelUpData.getInstance();
-	public L2World world = L2World.getInstance();
+	//public L2World world = L2World.getInstance();
 	public SpawnTable spawnTable = SpawnTable.getInstance();
 	public GameTimeController gameTimeController = GameTimeController.getInstance();
 	public Announcements announcements = Announcements.getInstance();

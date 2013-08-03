@@ -54,7 +54,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance requestor = getClient().getActiveChar();
-		L2PcInstance target = L2World.getInstance().getPlayer(_name);
+		L2PcInstance target = L2World.getPlayer(_name);
 
 		if (requestor == null)
 			return;

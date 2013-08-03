@@ -478,7 +478,7 @@ public class Siege
 		}
 
 		// Get all players
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			player.sendMessage(message);
 		}
@@ -704,7 +704,7 @@ public class Siege
 	{
 		List<L2PcInstance> players = new FastList<L2PcInstance>();
 
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			// quick check from player states, which don't include siege number however
 			if (!player.isInsideZone(L2Character.ZONE_SIEGE) || player.getSiegeState() != 0)

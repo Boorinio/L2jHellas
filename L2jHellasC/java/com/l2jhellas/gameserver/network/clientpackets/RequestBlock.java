@@ -45,7 +45,7 @@ public final class RequestBlock extends L2GameClientPacket
 		if (_type == BLOCK || _type == UNBLOCK)
 		{
 			_name = readS();
-			_target = L2World.getInstance().getPlayer(_name);
+			_target = L2World.getPlayer(_name);
 		}
 	}
 

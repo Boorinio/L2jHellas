@@ -41,7 +41,7 @@ public class OnlinePlayers implements IVoicedCommandHandler
 	public void showPlayers(L2PcInstance player, String target)
 	{
 		player.sendMessage("====================\n");
-		player.sendMessage("There are " + L2World.getInstance().getAllPlayers().size() + " players online\n");
+		player.sendMessage("There are " + L2World.getAllPlayers().size() + " players online\n");
 		player.sendMessage("====================");
 
 	}

@@ -131,7 +131,7 @@ public class RemoteConnector
 							{
 								try
 								{
-									L2PcInstance player = L2World.getInstance().getPlayer(str.nextToken());
+									L2PcInstance player = L2World.getPlayer(str.nextToken());
 
 									player.setAccountAccesslevel(-100);
 									RegionBBSManager.getInstance().changeCommunityBoard();
@@ -159,7 +159,7 @@ public class RemoteConnector
 						{
 							try
 							{
-								Shutdown.getInstance().startShutdown(L2World.getInstance().getPlayer(adminUsername), 120, false);
+								Shutdown.getInstance().startShutdown(L2World.getPlayer(adminUsername), 120, false);
 							}
 							catch (Exception e)
 							{
@@ -170,7 +170,7 @@ public class RemoteConnector
 						{
 							try
 							{
-								Shutdown.getInstance().startShutdown(L2World.getInstance().getPlayer(adminUsername), 120, true);
+								Shutdown.getInstance().startShutdown(L2World.getPlayer(adminUsername), 120, true);
 							}
 							catch (Exception e)
 							{

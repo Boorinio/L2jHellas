@@ -55,9 +55,9 @@ public final class RequestRefine extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-		L2ItemInstance targetItem = (L2ItemInstance) L2World.getInstance().findObject(_targetItemObjId);
-		L2ItemInstance refinerItem = (L2ItemInstance) L2World.getInstance().findObject(_refinerItemObjId);
-		L2ItemInstance gemstoneItem = (L2ItemInstance) L2World.getInstance().findObject(_gemstoneItemObjId);
+		L2ItemInstance targetItem = (L2ItemInstance) L2World.findObject(_targetItemObjId);
+		L2ItemInstance refinerItem = (L2ItemInstance) L2World.findObject(_refinerItemObjId);
+		L2ItemInstance gemstoneItem = (L2ItemInstance) L2World.findObject(_gemstoneItemObjId);
 		/** @formatter:off */
 		if ((targetItem == null) || (refinerItem == null) || (gemstoneItem == null) ||
 				(targetItem.getOwnerId() != activeChar.getObjectId()) ||

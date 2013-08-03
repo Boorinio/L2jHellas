@@ -171,7 +171,7 @@ public class L2PetInstance extends L2Summon
 
 	public synchronized static L2PetInstance spawnPet(L2NpcTemplate template, L2PcInstance owner, L2ItemInstance control)
 	{
-		if (L2World.getInstance().getPet(owner.getObjectId()) != null)
+		if (L2World.getPet(owner.getObjectId()) != null)
 			return null; // owner has a pet listed in world
 
 		L2PetInstance pet = restore(control, template, owner);
@@ -179,7 +179,7 @@ public class L2PetInstance extends L2Summon
 		if (pet != null)
 		{
 			pet.setTitle(owner.getName());
-			L2World.getInstance().addPet(owner.getObjectId(), pet);
+			L2World.addPet(owner.getObjectId(), pet);
 		}
 
 		return pet;
@@ -709,7 +709,7 @@ public class L2PetInstance extends L2Summon
 	public void destroyControlItem(L2PcInstance owner)
 	{
 		// remove the pet instance from world
-		L2World.getInstance().removePet(owner.getObjectId());
+		L2World.removePet(owner.getObjectId());
 
 		// delete from inventory
 		try
@@ -727,8 +727,7 @@ public class L2PetInstance extends L2Summon
 
 			owner.broadcastUserInfo();
 
-			L2World world = L2World.getInstance();
-			world.removeObject(removedItem);
+			L2World.removeObject(removedItem);
 		}
 		catch (Exception e)
 		{
@@ -962,7 +961,7 @@ public class L2PetInstance extends L2Summon
 		super.unSummon(owner);
 
 		if (!isDead())
-			L2World.getInstance().removePet(owner.getObjectId());
+			L2World.removePet(owner.getObjectId());
 	}
 
 	/**
@@ -1101,8 +1100,8 @@ public class L2PetInstance extends L2Summon
 		int oldOwnerId = getOwner().getObjectId();
 
 		setOwner(owner);
-		L2World.getInstance().removePet(oldOwnerId);
-		L2World.getInstance().addPet(oldOwnerId, this);
+		L2World.removePet(oldOwnerId);
+		L2World.addPet(oldOwnerId, this);
 	}
 
 	@Override

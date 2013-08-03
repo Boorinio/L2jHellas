@@ -149,7 +149,7 @@ public final class Logout extends L2GameClientPacket
 			{
 				friendName = rset.getString("friend_name");
 
-				friend = L2World.getInstance().getPlayer(friendName);
+				friend = L2World.getPlayer(friendName);
 
 				if (friend != null) // friend logged in.
 				{

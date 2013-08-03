@@ -384,10 +384,10 @@ public class AdminEffects implements IAdminCommandHandler
 						oldName = activeChar.getName();
 					}
 					if (player instanceof L2PcInstance)
-						L2World.getInstance().removeFromAllPlayers((L2PcInstance) player);
+						L2World.removeFromAllPlayers((L2PcInstance) player);
 					player.setName(name);
 					if (player instanceof L2PcInstance)
-						L2World.getInstance().addVisibleObject(player, null, null);
+						L2World.addVisibleObject(player, null, null);
 					if (player instanceof L2PcInstance)
 					{
 						CharInfo info1 = new CharInfo((L2PcInstance) player);
@@ -480,7 +480,7 @@ public class AdminEffects implements IAdminCommandHandler
 					target = st.nextToken();
 					if (target != null)
 					{
-						L2PcInstance player = L2World.getInstance().getPlayer(target);
+						L2PcInstance player = L2World.getPlayer(target);
 						if (player != null)
 						{
 							if (performSocial(social, player, activeChar))
@@ -542,7 +542,7 @@ public class AdminEffects implements IAdminCommandHandler
 					target = st.nextToken();
 					if (target != null)
 					{
-						L2PcInstance player = L2World.getInstance().getPlayer(target);
+						L2PcInstance player = L2World.getPlayer(target);
 						if (player != null)
 						{
 							if (performAbnormal(abnormal, player))
@@ -714,7 +714,7 @@ public class AdminEffects implements IAdminCommandHandler
 		else
 			activeChar.sendMessage("Usage: //atmosphere <signsky dawn|dusk>|<sky day|night|red>");
 		if (packet != null)
-			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance player : L2World.getAllPlayers())
 				player.sendPacket(packet);
 	}
 

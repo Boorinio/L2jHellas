@@ -544,7 +544,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 			targetPlayerStr = command.split(" ")[2];
 
 			if (targetPlayerStr != null)
-				targetPlayer = L2World.getInstance().getPlayer(targetPlayerStr);
+				targetPlayer = L2World.getPlayer(targetPlayerStr);
 
 			if (targetPlayer == null)
 				targetPlayer = activeChar;

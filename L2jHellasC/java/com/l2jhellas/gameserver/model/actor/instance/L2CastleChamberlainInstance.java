@@ -310,7 +310,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 			{
 
 				L2PcInstance leader;
-				leader = (L2PcInstance) L2World.getInstance().findObject(player.getClan().getLeaderId());
+				leader = (L2PcInstance) L2World.findObject(player.getClan().getLeaderId());
 				if (leader == null)
 				{
 					player.sendMessage("Your Leader is not online.");

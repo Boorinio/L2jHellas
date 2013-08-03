@@ -1751,7 +1751,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (getLastQuestNpcObject() > 0)
 			{
-				L2Object object = L2World.getInstance().findObject(getLastQuestNpcObject());
+				L2Object object = L2World.findObject(getLastQuestNpcObject());
 				if (object instanceof L2NpcInstance && isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false))
 				{
 					L2NpcInstance npc = (L2NpcInstance) object;
@@ -4330,7 +4330,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		// TODO: if we remove objects that are not visisble from the L2World,
 		// we'll have to remove this check
-		if (L2World.getInstance().findObject(objectId) == null)
+		if (L2World.findObject(objectId) == null)
 		{
 			_log.finest(getObjectId() + ": player tried to " + action + " item not available in L2World");
 			return null;
@@ -5511,7 +5511,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 		else
 		{
-			L2PcInstance ptarget = (L2PcInstance) L2World.getInstance().findObject(_engageid);
+			L2PcInstance ptarget = (L2PcInstance) L2World.findObject(_engageid);
 			setEngageRequest(false, 0);
 			if (ptarget != null)
 			{
@@ -7706,7 +7706,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				restorePremServiceData(player, rset.getString("account_name"));
 
 				// Add the L2PcInstance object in _allObjects
-				// L2World.getInstance().storeObject(player);
+				// L2World.storeObject(player);
 
 				// Set the x,y,z position of the L2PcInstance and make it
 				// invisible
@@ -7748,7 +7748,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			player.setCurrentMp(currentMp);
 
 			// Restore pet if exists in the world
-			player.setPet(L2World.getInstance().getPet(player.getObjectId()));
+			player.setPet(L2World.getPet(player.getObjectId()));
 			if (player.getPet() != null)
 			{
 				player.getPet().setOwner(player);
@@ -9816,7 +9816,7 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	public boolean isInLooterParty(int LooterId)
 	{
-		L2PcInstance looter = (L2PcInstance) L2World.getInstance().findObject(LooterId);
+		L2PcInstance looter = (L2PcInstance) L2World.findObject(LooterId);
 
 		// if L2PcInstance is in a CommandChannel
 		if (isInParty() && getParty().isInCommandChannel() && looter != null)
@@ -12530,7 +12530,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		// Remove L2Object object from _allObjects of L2World
-		L2World.getInstance().removeObject(this);
+		L2World.removeObject(this);
 	}
 
 	private FishData _fish;

@@ -42,7 +42,7 @@ public class ChatHeroVoice implements IChatHandler
 			}
 
 			CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
-			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance player : L2World.getAllPlayers())
 				if (!BlockList.isBlocked(player, activeChar))
 					player.sendPacket(cs);
 		}

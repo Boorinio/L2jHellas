@@ -41,7 +41,7 @@ public class TaskRecom extends Task
 	@Override
 	public void onTimeElapsed(ExecutedTask task)
 	{
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			player.restartRecom();
 			player.sendPacket(new UserInfo(player));

@@ -43,7 +43,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance targetItem = (L2ItemInstance) L2World.getInstance().findObject(_targetItemObjId);
+		L2ItemInstance targetItem = (L2ItemInstance) L2World.findObject(_targetItemObjId);
 
 		if (activeChar == null)
 			return;

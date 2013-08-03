@@ -39,7 +39,7 @@ public class ChatShout implements IChatHandler
 	{
 		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 
-		Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers();
+		Collection<L2PcInstance> pls = L2World.getAllPlayers();
 
 		if (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("on") || (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("gm") && activeChar.isGM()))
 		{

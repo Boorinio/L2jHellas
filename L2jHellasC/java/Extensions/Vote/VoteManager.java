@@ -193,7 +193,7 @@ public class VoteManager
 
 	public static String whosVoting()
 	{
-		for (L2PcInstance voter : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance voter : L2World.getAllPlayers())
 		{
 			if (voter.isVoting())
 			{
@@ -269,7 +269,7 @@ public class VoteManager
 		}
 		else if (((lastVoteHopzone + voteDelay) < System.currentTimeMillis()) && (getTries(player) > 0))
 		{
-			for (L2PcInstance j : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance j : L2World.getAllPlayers())
 			{
 				if (j.isVoting())
 				{
@@ -285,7 +285,7 @@ public class VoteManager
 		}
 		else if ((getTries(player) <= 0) && ((lastVoteHopzone + voteDelay) < System.currentTimeMillis()))
 		{
-			for (L2PcInstance j : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance j : L2World.getAllPlayers())
 			{
 				if (j.isVoting())
 				{
@@ -373,7 +373,7 @@ public class VoteManager
 		}
 		else if ((getTries(player) <= 0) && ((lastVoteTopzone + voteDelay) < System.currentTimeMillis()))
 		{
-			for (L2PcInstance j : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance j : L2World.getAllPlayers())
 			{
 				if (j.isVoting())
 				{
@@ -388,7 +388,7 @@ public class VoteManager
 		}
 		else if (((lastVoteTopzone + voteDelay) < System.currentTimeMillis()) && (getTries(player) > 0))
 		{
-			for (L2PcInstance j : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance j : L2World.getAllPlayers())
 			{
 				if (j.isVoting())
 				{

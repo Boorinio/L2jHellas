@@ -215,7 +215,7 @@ public class L2SkillSummon extends L2Skill
 		summon.setRunning();
 		activeChar.setPet(summon);
 
-		L2World.getInstance().storeObject(summon);
+		L2World.storeObject(summon);
 		summon.spawnMe(activeChar.getX() + 50, activeChar.getY() + 100, activeChar.getZ());
 
 		summon.setFollowStatus(true);

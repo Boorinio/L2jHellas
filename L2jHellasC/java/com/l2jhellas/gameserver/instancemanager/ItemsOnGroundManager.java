@@ -114,13 +114,13 @@ public class ItemsOnGroundManager
 			while (result.next())
 			{
 				L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
-				L2World.getInstance().storeObject(item);
+				L2World.storeObject(item);
 				if (item.isStackable() && result.getInt(3) > 1) // this check and..
 					item.setCount(result.getInt(3));
 				if (result.getInt(4) > 0)			// this, are really necessary?
 					item.setEnchantLevel(result.getInt(4));
 				item.getPosition().setWorldPosition(result.getInt(5), result.getInt(6), result.getInt(7));
-				item.getPosition().setWorldRegion(L2World.getInstance().getRegion(item.getPosition().getWorldPosition()));
+				item.getPosition().setWorldRegion(L2World.getRegion(item.getPosition().getWorldPosition()));
 				item.getPosition().getWorldRegion().addVisibleObject(item);
 				item.setDropTime(result.getLong(8));
 				if (result.getLong(8) == -1)
@@ -128,7 +128,7 @@ public class ItemsOnGroundManager
 				else
 					item.setProtected(false);
 				item.setIsVisible(true);
-				L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion(), null);
+				L2World.addVisibleObject(item, item.getPosition().getWorldRegion(), null);
 				_items.add(item);
 				count++;
 				// add to ItemsAutoDestroy only items not protected

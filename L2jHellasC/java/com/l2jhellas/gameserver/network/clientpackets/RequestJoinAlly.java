@@ -41,7 +41,7 @@ public final class RequestJoinAlly extends L2GameClientPacket
 		{
 			return;
 		}
-		if (!(L2World.getInstance().findObject(_id) instanceof L2PcInstance))
+		if (!(L2World.findObject(_id) instanceof L2PcInstance))
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
 			return;
@@ -51,7 +51,7 @@ public final class RequestJoinAlly extends L2GameClientPacket
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER));
 			return;
 		}
-		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_id);
+		L2PcInstance target = (L2PcInstance) L2World.findObject(_id);
 		L2Clan clan = activeChar.getClan();
 		if (!clan.checkAllyJoinCondition(activeChar, target))
 			return;

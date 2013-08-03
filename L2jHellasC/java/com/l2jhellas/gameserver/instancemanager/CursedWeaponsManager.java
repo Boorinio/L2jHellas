@@ -392,7 +392,7 @@ public class CursedWeaponsManager
 
 	public static void announce(SystemMessage sm)
 	{
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			if (player == null)
 				continue;

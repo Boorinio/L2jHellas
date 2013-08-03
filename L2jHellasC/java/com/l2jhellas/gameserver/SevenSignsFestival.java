@@ -1186,7 +1186,7 @@ public class SevenSignsFestival implements SpawnListener
 
 	private void addReputationPointsForPartyMemberClan(String partyMemberName)
 	{
-		L2PcInstance player = L2World.getInstance().getPlayer(partyMemberName);
+		L2PcInstance player = L2World.getPlayer(partyMemberName);
 		if (player != null)
 		{
 			if (player.getClan() != null)
@@ -1294,7 +1294,7 @@ public class SevenSignsFestival implements SpawnListener
 		saveFestivalData(updateSettings);
 
 		// Remove any unused blood offerings from online players.
-		for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance onlinePlayer : L2World.getAllPlayers())
 		{
 			try
 			{

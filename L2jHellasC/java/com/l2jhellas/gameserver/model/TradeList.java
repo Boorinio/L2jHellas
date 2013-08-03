@@ -317,7 +317,7 @@ public class TradeList
 			_log.warning(_owner.getName() + ": Attempt to modify locked TradeList!");
 			return null;
 		}
-		L2Object o = L2World.getInstance().findObject(objectId);
+		L2Object o = L2World.findObject(objectId);
 
 		if (o == null || !(o instanceof L2ItemInstance))
 		{
@@ -543,7 +543,7 @@ public class TradeList
 	private boolean validate()
 	{
 		// Check for Owner validity
-		if (_owner == null || L2World.getInstance().findObject(_owner.getObjectId()) == null)
+		if (_owner == null || L2World.findObject(_owner.getObjectId()) == null)
 		{
 			_log.warning("Invalid owner of TradeList");
 			return false;

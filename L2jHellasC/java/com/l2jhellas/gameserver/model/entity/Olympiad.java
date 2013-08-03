@@ -1978,7 +1978,7 @@ public class Olympiad
 					_sm3.addNumber(pointDiff);
 					broadcastMessage(_sm3, true);
 
-					_playerOne = L2World.getInstance().getPlayer(_playerOneName); // why
+					_playerOne = L2World.getPlayer(_playerOneName); // why
 																					// this...
 					try
 					{
@@ -2013,7 +2013,7 @@ public class Olympiad
 					_sm3.addNumber(pointDiff);
 					broadcastMessage(_sm3, true);
 
-					_playerTwo = L2World.getInstance().getPlayer(_playerTwoName); // why
+					_playerTwo = L2World.getPlayer(_playerTwoName); // why
 																					// this...
 					try
 					{
@@ -2231,7 +2231,7 @@ public class Olympiad
 		final int charId = p.getObjectId();
 
 		Olympiad.getInstance().getOlympiadGames().get(p.getOlympiadGameId());
-		L2PcInstance _opponent = L2World.getInstance().getPlayer(p.getName());
+		L2PcInstance _opponent = L2World.getPlayer(p.getName());
 		final StatsSet playerStat = getNobleStats(p.getObjectId());
 		final int playerPoints = playerStat.getInteger(POINTS);
 		final int lostPoints = playerPoints / 3;

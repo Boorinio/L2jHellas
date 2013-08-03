@@ -1166,7 +1166,7 @@ public class SevenSigns
 	{
 		SystemMessage sm = new SystemMessage(sysMsgId);
 
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			player.sendPacket(sm);
 		}
@@ -1405,7 +1405,7 @@ public class SevenSigns
 	 */
 	protected void teleLosingCabalFromDungeons(String compWinner)
 	{
-		for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance onlinePlayer : L2World.getAllPlayers())
 		{
 			StatsSet currPlayer = getPlayerData(onlinePlayer);
 
@@ -1528,7 +1528,7 @@ public class SevenSigns
 
 			SignsSky ss = new SignsSky();
 
-			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance player : L2World.getAllPlayers())
 			{
 				player.sendPacket(ss);
 			}

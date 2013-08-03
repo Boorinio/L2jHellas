@@ -55,7 +55,7 @@ public class ZodiacMain
 	public static void startVoting()
 	{
 		voting = true;
-		for (L2PcInstance players : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance players : L2World.getAllPlayers())
 		{
 			showHtmlWindow(players);
 		}

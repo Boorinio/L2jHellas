@@ -121,7 +121,7 @@ public class Hitman
 		{
 			PlayerToAssasinate pta = _targets.get(target.getObjectId());
 			String name = getOfflineData(null, pta.getClientId())[1];
-			L2PcInstance client = L2World.getInstance().getPlayer(name);
+			L2PcInstance client = L2World.getPlayer(name);
 
 			target.sendMessage("You have been assassinated. Your bounty is 0.");
 
@@ -185,7 +185,7 @@ public class Hitman
 
 	public void putHitOn(L2PcInstance client, String playerName, int bounty)
 	{
-		L2PcInstance player = L2World.getInstance().getPlayer(playerName);
+		L2PcInstance player = L2World.getPlayer(playerName);
 
 		if (client.getHitmanTarget() > 0)
 		{
@@ -269,7 +269,7 @@ public class Hitman
 
 	public void cancelAssasination(String name, L2PcInstance client)
 	{
-		L2PcInstance target = L2World.getInstance().getPlayer(name);
+		L2PcInstance target = L2World.getPlayer(name);
 
 		if (client.getHitmanTarget() <= 0)
 		{

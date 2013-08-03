@@ -34,7 +34,7 @@ public class AdminMassHero implements IAdminCommandHandler
 
 		if (command.startsWith(ADMIN_COMMANDS[0])) // admin_masshero
 		{
-			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance player : L2World.getAllPlayers())
 			{
 				if (player instanceof L2PcInstance)
 				{

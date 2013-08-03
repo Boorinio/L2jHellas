@@ -117,7 +117,7 @@ public class AdminTeleport implements IAdminCommandHandler
 					return false;
 				}
 				String targetName = param[1];
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				L2PcInstance player = L2World.getPlayer(targetName);
 				if (player != null)
 				{
 					Location loc = MapRegionTable.getInstance().getTeleToLocation(player, MapRegionTable.TeleportWhereType.Town);
@@ -208,7 +208,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(17);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				L2PcInstance player = L2World.getPlayer(targetName);
 				teleportToCharacter(activeChar, player);
 			}
 			catch (StringIndexOutOfBoundsException e)
@@ -220,7 +220,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(13);
-				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
+				L2PcInstance player = L2World.getPlayer(targetName);
 				teleportCharacter(player, activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			}
 			catch (StringIndexOutOfBoundsException e)

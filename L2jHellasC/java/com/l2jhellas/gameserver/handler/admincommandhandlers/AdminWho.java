@@ -31,7 +31,7 @@ public class AdminWho implements IAdminCommandHandler
 	{
 		if (command.equalsIgnoreCase("admin_who"))
 		{
-			activeChar.sendMessage("SYS: Online Players:" + L2World.getInstance().getAllPlayers().size() + "/" + Config.MAXIMUM_ONLINE_USERS + ".");
+			activeChar.sendMessage("SYS: Online Players:" + L2World.getAllPlayers().size() + "/" + Config.MAXIMUM_ONLINE_USERS + ".");
 		}
 		return true;
 	}

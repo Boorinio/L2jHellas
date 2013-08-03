@@ -49,7 +49,7 @@ public class AntiBot
 	
 	public static void startantibot()
 	{
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			if (!player.isGM())
 			{
@@ -59,7 +59,7 @@ public class AntiBot
 		}
 		isvoting = true;
 		waitSecs(120);
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			if (!player.PassedProt && !player.isGM())
 			{
@@ -68,7 +68,7 @@ public class AntiBot
 			}
 		}
 		isvoting = false;
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			player.PassedProt = false;
 		}

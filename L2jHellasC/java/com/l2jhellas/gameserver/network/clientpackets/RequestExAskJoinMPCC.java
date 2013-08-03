@@ -46,7 +46,7 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
-		L2PcInstance player = L2World.getInstance().getPlayer(_name);
+		L2PcInstance player = L2World.getPlayer(_name);
 		if (player == null)
 			return;
 		// invite yourself? ;)

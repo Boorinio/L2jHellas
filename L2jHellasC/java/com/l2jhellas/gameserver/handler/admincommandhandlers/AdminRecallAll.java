@@ -35,7 +35,7 @@ public class AdminRecallAll implements IAdminCommandHandler
 	{
 		if (command.startsWith("admin_recallall"))
 		{
-			for (L2PcInstance players : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance players : L2World.getAllPlayers())
 			{
 				teleportTo(players, activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			}

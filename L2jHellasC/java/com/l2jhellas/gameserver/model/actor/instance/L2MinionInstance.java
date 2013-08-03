@@ -79,7 +79,7 @@ public final class L2MinionInstance extends L2MonsterInstance
 		}
 
 		// check the region where this mob is, do not activate the AI if region is inactive.
-		L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY());
+		L2WorldRegion region = L2World.getRegion(getX(), getY());
 		if ((region != null) && (!region.isActive()))
 			((L2AttackableAI) getAI()).stopAITask();
 	}

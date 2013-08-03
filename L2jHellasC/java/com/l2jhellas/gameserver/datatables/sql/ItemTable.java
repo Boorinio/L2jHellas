@@ -819,7 +819,7 @@ public class ItemTable
 		}
 
 		// Add the L2ItemInstance object to _allObjects of L2world
-		L2World.getInstance().storeObject(item);
+		L2World.storeObject(item);
 
 		// Set Item parameters
 		if (item.isStackable() && count > 1)
@@ -906,7 +906,7 @@ public class ItemTable
 			item.setLocation(ItemLocation.VOID);
 			item.setLastChange(L2ItemInstance.REMOVED);
 
-			L2World.getInstance().removeObject(item);
+			L2World.removeObject(item);
 			IdFactory.getInstance().releaseId(item.getObjectId());
 
 			if (Config.LOG_ITEMS)

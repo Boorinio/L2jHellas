@@ -421,7 +421,7 @@ public class L2SepulcherNpcInstance extends L2NpcInstance
 	{
 		if (msg == null || msg.isEmpty())
 			return;// wrong usage
-		Collection<L2PcInstance> knownPlayers = L2World.getInstance().getAllPlayers();
+		Collection<L2PcInstance> knownPlayers = L2World.getAllPlayers();
 		if ((knownPlayers == null) || knownPlayers.isEmpty())
 			return;
 		CreatureSay sm = new CreatureSay(0, Say2.SHOUT, this.getName(), msg);

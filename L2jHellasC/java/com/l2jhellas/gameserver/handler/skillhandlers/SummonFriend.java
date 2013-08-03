@@ -62,7 +62,7 @@ public class SummonFriend implements ISkillHandler
 		}
 
 		// check for summoner not in raid areas
-		FastList<L2Object> objects = L2World.getInstance().getVisibleObjects(activeChar, 5000);
+		FastList<L2Object> objects = L2World.getVisibleObjects(activeChar, 5000);
 
 		if (objects != null)
 		{

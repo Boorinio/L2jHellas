@@ -53,7 +53,7 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
-		L2PcInstance targetPlayer = L2World.getInstance().getPlayer(_reciever);
+		L2PcInstance targetPlayer = L2World.getPlayer(_reciever);
 		if (targetPlayer == null)
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));

@@ -46,7 +46,7 @@ public final class RequestConfirmTargetItem extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance item = (L2ItemInstance) L2World.getInstance().findObject(_itemObjId);
+		L2ItemInstance item = (L2ItemInstance) L2World.findObject(_itemObjId);
 
 		if (item == null)
 			return;

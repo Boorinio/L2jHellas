@@ -189,7 +189,7 @@ public class CursedWeapon
 			else if (_item != null)
 			{
 				_item.decayMe();
-				L2World.getInstance().removeObject(_item);
+				L2World.removeObject(_item);
 				_log.log(Level.INFO, getClass().getName() + ": " + _name + " item has been removed from World.");
 			}
 		}
@@ -254,7 +254,7 @@ public class CursedWeapon
 			// RedSky and Earthquake
 			ExRedSky packet = new ExRedSky(10);
 			Earthquake eq = new Earthquake(player.getX(), player.getY(), player.getZ(), 14, 3);
-			for (L2PcInstance aPlayer : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance aPlayer : L2World.getAllPlayers())
 			{
 				aPlayer.sendPacket(packet);
 				aPlayer.sendPacket(eq);

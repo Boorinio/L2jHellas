@@ -101,7 +101,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
 		}
 		else
 		{
-			L2PcInstance ptarget = (L2PcInstance) L2World.getInstance().findObject(player.getPartnerId());
+			L2PcInstance ptarget = (L2PcInstance) L2World.findObject(player.getPartnerId());
 			// partner online ?
 			if ((ptarget == null) || (ptarget.isOnline() == 0))
 			{

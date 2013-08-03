@@ -5907,7 +5907,7 @@ public abstract class L2Character extends L2Object
 	{
 		try
 		{
-			L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY());
+			L2WorldRegion region = L2World.getRegion(getX(), getY());
 			return ((region != null) && (region.isActive()));
 		}
 		catch (Exception e)

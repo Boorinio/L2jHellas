@@ -35,7 +35,7 @@ public class TreasureChest
 		waitSecs(60);
 		Announcements.getInstance().announceToAll("You have 1 minute to register!");
 		waitSecs(60);
-		for (L2PcInstance players : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance players : L2World.getAllPlayers())
 		{
 			if (players.isinZodiac)
 				_players.add(players);

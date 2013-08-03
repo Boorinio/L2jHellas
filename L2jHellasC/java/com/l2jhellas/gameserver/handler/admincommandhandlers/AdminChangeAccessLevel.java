@@ -89,7 +89,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 		{
 			String name = parts[1];
 			int lvl = Integer.parseInt(parts[2]);
-			L2PcInstance player = L2World.getInstance().getPlayer(name);
+			L2PcInstance player = L2World.getPlayer(name);
 			if (player != null)
 				onLineChange(activeChar, player, lvl);
 			else

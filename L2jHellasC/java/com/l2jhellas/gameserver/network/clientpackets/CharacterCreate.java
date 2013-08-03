@@ -169,7 +169,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			_log.fine("Character init start");
 		}
-		L2World.getInstance().storeObject(newChar);
+		L2World.storeObject(newChar);
 
 		L2PcTemplate template = newChar.getTemplate();
 
@@ -246,7 +246,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		}
 		L2GameClient.saveCharToDisk(newChar);
 		newChar.deleteMe(); // release the world of this character and it's inventory
-		L2World.getInstance().removeObject(newChar);
+		L2World.removeObject(newChar);
 
 		// send char list
 		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);

@@ -484,7 +484,7 @@ public class CastleManorManager
 			L2PcInstance clanLeader = null;
 			if (clan != null)
 			{
-				clanLeader = L2World.getInstance().getPlayer(clan.getLeader().getName());
+				clanLeader = L2World.getPlayer(clan.getLeader().getName());
 			}
 			if (clanLeader != null)
 			{
@@ -544,7 +544,7 @@ public class CastleManorManager
 				L2PcInstance clanLeader = null;
 				if (clan != null)
 				{
-					clanLeader = L2World.getInstance().getPlayer(clan.getLeader().getName());
+					clanLeader = L2World.getPlayer(clan.getLeader().getName());
 				}
 				if (clanLeader != null)
 				{

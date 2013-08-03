@@ -76,7 +76,7 @@ public class PeloponnesianWar
 		waitSecs(60);
 		Announcements.getInstance().announceToAll("Registrations closed!");
 		ZodiacMain.ZodiacRegisterActive = false;
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			if (player.isinZodiac)
 			{

@@ -95,7 +95,7 @@ public class AdminBanChat implements IAdminCommandHandler
 		L2PcInstance targetPlayer = null;
 
 		// chat instance
-		targetPlayer = L2World.getInstance().getPlayer(cmdParams[1]);
+		targetPlayer = L2World.getPlayer(cmdParams[1]);
 
 		if (targetPlayer == null)
 		{

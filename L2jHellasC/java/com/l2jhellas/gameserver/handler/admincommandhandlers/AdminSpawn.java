@@ -147,13 +147,13 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_unspawnall"))
 		{
-			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance player : L2World.getAllPlayers())
 			{
 				player.sendPacket(new SystemMessage(SystemMessageId.NPC_SERVER_NOT_OPERATING));
 			}
 			RaidBossSpawnManager.getInstance().cleanUp();
 			DayNightSpawnManager.getInstance().cleanUp();
-			L2World.getInstance().deleteVisibleNpcSpawns();
+			L2World.deleteVisibleNpcSpawns();
 			AdminTable.getInstance().broadcastMessageToGMs("NPC Unspawn completed!");
 		}
 		else if (command.startsWith("admin_spawnday"))
@@ -169,7 +169,7 @@ public class AdminSpawn implements IAdminCommandHandler
 			// make sure all spawns are deleted
 			RaidBossSpawnManager.getInstance().cleanUp();
 			DayNightSpawnManager.getInstance().cleanUp();
-			L2World.getInstance().deleteVisibleNpcSpawns();
+			L2World.deleteVisibleNpcSpawns();
 			// now respawn all
 			NpcTable.getInstance().reload();
 			SpawnTable.getInstance().reloadAll();

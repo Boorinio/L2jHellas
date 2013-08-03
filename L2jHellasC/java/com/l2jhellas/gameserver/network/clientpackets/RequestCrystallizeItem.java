@@ -216,10 +216,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		activeChar.sendPacket(su);
 
 		activeChar.broadcastUserInfo();
-
-		L2World world = L2World.getInstance();
-		world.removeObject(removedItem);
-
+		L2World.removeObject(removedItem);
 		activeChar.setInCrystallize(false);
 	}
 

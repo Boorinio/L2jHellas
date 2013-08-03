@@ -66,7 +66,7 @@ public class AdminAnnouncements implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_announce_announcements"))
 		{
-			for (L2PcInstance player : L2World.getInstance().getAllPlayers())
+			for (L2PcInstance player : L2World.getAllPlayers())
 			{
 				Announcements.getInstance().showAnnouncements(player);
 			}

@@ -591,7 +591,7 @@ public abstract class ItemContainer
 		List<L2Object> items = new FastList<L2Object>(_items);
 		_items.clear();
 
-		L2World.getInstance().removeObjects(items);
+		L2World.removeObjects(items);
 	}
 
 	/**
@@ -629,7 +629,7 @@ public abstract class ItemContainer
 				if (item == null)
 					continue;
 
-				L2World.getInstance().forceObject(item);
+				L2World.forceObject(item);
 
 				// If stackable item is found in inventory just add to current quantity
 				if (item.isStackable() && getItemByItemId(item.getItemId()) != null)

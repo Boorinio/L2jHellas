@@ -63,7 +63,7 @@ public class AdminKill implements IAdminCommandHandler
 			if (st.hasMoreTokens())
 			{
 				String firstParam = st.nextToken();
-				L2PcInstance plyr = L2World.getInstance().getPlayer(firstParam);
+				L2PcInstance plyr = L2World.getPlayer(firstParam);
 				if (plyr != null)
 				{
 					if (st.hasMoreTokens())
