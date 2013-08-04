@@ -33,7 +33,6 @@ import Extensions.RankSystem.Util.ServerSideImage;
 import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.RemoteConnector;
 import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.cache.CrestCache;
@@ -399,7 +398,7 @@ public class GameServer
 		{
 			ZodiacMain.ZodiacIn();
 		}
-		if (ExternalConfig.ENABLED_RCON)
+		if (Config.ENABLED_RCON)
 		{
 			RemoteConnector.getInstance();
 		}
@@ -412,15 +411,15 @@ public class GameServer
 			AwayManager.getInstance();
 		}
 		BalanceLoad.LoadEm();
-		if (ExternalConfig.ALLOW_SEQURITY_QUE)
+		if (Config.ALLOW_SEQURITY_QUE)
 		{
 			AntiBot.getInstance();
 		}
-		if (ExternalConfig.ALLOW_ANTI_AFK)
+		if (Config.ALLOW_ANTI_AFK)
 		{
 			AntiAfk.getInstance();
 		}
-		if (ExternalConfig.RESTART_BY_TIME_OF_DAY)
+		if (Config.RESTART_BY_TIME_OF_DAY)
 		{
 			_log.log(Level.INFO, "Restart System: Auto Restart System is Enabled.");
 			Restart.getInstance().StartCalculationOfNextRestartTime();
@@ -552,7 +551,6 @@ public class GameServer
 
 		Util.printSection("Configs");
 		Config.load();
-		ExternalConfig.load();
 		_log.log(Level.INFO, "Configs Loaded.");
 
 		Util.printSection("Script Engine");

@@ -14,7 +14,7 @@
  */
 package Extensions.RankSystem;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.Manager.BaseBBSManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
@@ -24,7 +24,7 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
-		if (command.startsWith("_bbsrps:") && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+		if (command.startsWith("_bbsrps:") && Config.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 		{
 			int page = 0;
 			try
@@ -44,7 +44,7 @@ public class RankPvpSystemBBSManager extends BaseBBSManager
 		else
 		{
 			ShowBoard sb = null;
-			if (command.startsWith("_bbsrps:") && !ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+			if (command.startsWith("_bbsrps:") && !Config.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 			{
 				sb = new ShowBoard("<html><body><br><br><center>Community Board Top List is disabled in config file</center><br><br></body></html>", "101");
 			}

@@ -20,7 +20,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.concurrent.ScheduledFuture;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -55,16 +55,16 @@ public class L2ProtectorInstance extends L2NpcInstance
 			for (L2PcInstance player : getKnownList().getKnownPlayers().values())
 
 			{
-				if (player.getKarma() > 0 && ExternalConfig.PROTECTOR_PLAYER_PK || player.getPvpFlag() != 0 && ExternalConfig.PROTECTOR_PLAYER_PVP)
+				if (player.getKarma() > 0 && Config.PROTECTOR_PLAYER_PK || player.getPvpFlag() != 0 && Config.PROTECTOR_PLAYER_PVP)
 				{
-					handleCast(player, ExternalConfig.PROTECTOR_SKILLID, ExternalConfig.PROTECTOR_SKILLLEVEL);
+					handleCast(player, Config.PROTECTOR_SKILLID, Config.PROTECTOR_SKILLLEVEL);
 				}
 			}
 		}
 
 		private boolean handleCast(L2PcInstance player, int skillId, int skillLevel)
 		{
-			if (player.isGM() || player.isDead() || !player.isVisible() || !isInsideRadius(player, ExternalConfig.PROTECTOR_RADIUS_ACTION, false, false))
+			if (player.isGM() || player.isDead() || !player.isVisible() || !isInsideRadius(player, Config.PROTECTOR_RADIUS_ACTION, false, false))
 				return false;
 
 			L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
@@ -73,9 +73,9 @@ public class L2ProtectorInstance extends L2NpcInstance
 			{
 				int objId = _caster.getObjectId();
 				skill.getEffects(_caster, player);
-				broadcastPacket(new MagicSkillUse(_caster, player, skillId, skillLevel, ExternalConfig.PROTECTOR_SKILLTIME, 0));
-				if (ExternalConfig.SEND_MESSAGE)
-					broadcastPacket(new CreatureSay(objId, 0, String.valueOf(getName()), ExternalConfig.PROTECTOR_MESSAGE));
+				broadcastPacket(new MagicSkillUse(_caster, player, skillId, skillLevel, Config.PROTECTOR_SKILLTIME, 0));
+				if (Config.SEND_MESSAGE)
+					broadcastPacket(new CreatureSay(objId, 0, String.valueOf(getName()), Config.PROTECTOR_MESSAGE));
 				skill = null;
 				return true;
 			}

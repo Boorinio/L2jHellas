@@ -493,7 +493,7 @@ public abstract class L2Character extends L2Object
 	/**
 	 * Not Implemented.<BR>
 	 * <BR>
-	 * <B><U> Overriden in </U> :</B><BR>
+	 * <B><U> Overridden in </U> :</B><BR>
 	 * <BR>
 	 * <li>L2PcInstance</li><BR>
 	 * <BR>
@@ -508,8 +508,11 @@ public abstract class L2Character extends L2Object
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Stop the movement of the L2Character</li> <li>Set the x,y,z position of the L2Object and if necessary modify its _worldRegion</li> <li>Send a Server->Client packet
-	 * TeleportToLocationt to the L2Character AND to all L2PcInstance in its _KnownPlayers</li> <li>Modify the position of the pet if necessary</li><BR>
+	 * <li>Stop the movement of the L2Character</li>
+	 * <li>Set the x,y,z position of the L2Object and if necessary modify its _worldRegion</li>
+	 * <li>Send a Server->Client packet
+	 * TeleportToLocationt to the L2Character AND to all L2PcInstance in its _KnownPlayers</li>
+	 * <li>Modify the position of the pet if necessary</li><BR>
 	 * <BR>
 	 */
 	public void teleToLocation(int x, int y, int z, boolean allowRandomOffset)
@@ -690,8 +693,7 @@ public abstract class L2Character extends L2Object
 			((L2PcInstance) this).sendPacket(new SystemMessage(SystemMessageId.CANNOT_ATTACK_WITH_FISHING_POLE));
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 			
-			ActionFailed af = new ActionFailed();
-			sendPacket(af);
+			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
@@ -5771,9 +5773,10 @@ public abstract class L2Character extends L2Object
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>If L2Character or target is in a town area, send a system message TARGET_IN_PEACEZONE a Server->Client packet ActionFailed</li> <li>If target is confused, send a
-	 * Server->Client packet ActionFailed</li> <li>If L2Character is a L2ArtefactInstance, send a Server->Client packet ActionFailed</li> <li>Send a Server->Client packet
-	 * MyTargetSelected to start attack and Notify AI with AI_INTENTION_ATTACK</li><BR>
+	 * <li>If L2Character or target is in a town area, send a system message TARGET_IN_PEACEZONE a Server->Client packet ActionFailed</li>
+	 * <li>If target is confused, send a * Server->Client packet ActionFailed</li>
+	 * <li>If L2Character is a L2ArtefactInstance, send a Server->Client packet ActionFailed</li>
+	 * <li>Send a Server->Client packet * MyTargetSelected to start attack and Notify AI with AI_INTENTION_ATTACK</li><BR>
 	 * <BR>
 	 * 
 	 * @param player

@@ -25,7 +25,6 @@ import javolution.text.TextBuilder;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class TopPlayers
@@ -68,7 +67,7 @@ public class TopPlayers
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			pos = 0;
-			PreparedStatement statement = con.prepareStatement("SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY " + sort + " DESC LIMIT " + ExternalConfig.TOP_PLAYER_RESULTS);
+			PreparedStatement statement = con.prepareStatement("SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY " + sort + " DESC LIMIT " + Config.TOP_PLAYER_RESULTS);
 
 			ResultSet result = statement.executeQuery();
 
@@ -107,7 +106,7 @@ public class TopPlayers
 
 	private void addChar(int position, String name, int classid, int pvp, int pk, int raid, String adenas, String online, boolean isOnline)
 	{
-		_topList.append("<table border=0 cellspacing=0 cellpadding=2 bgcolor=050505 height=" + ExternalConfig.TOP_PLAYER_ROW_HEIGHT + "><tr><td FIXWIDTH=5></td>");
+		_topList.append("<table border=0 cellspacing=0 cellpadding=2 bgcolor=050505 height=" + Config.TOP_PLAYER_ROW_HEIGHT + "><tr><td FIXWIDTH=5></td>");
 		_topList.append("<td FIXWIDTH=27>" + position + ".</td>");
 		_topList.append("<td FIXWIDTH=160>" + name + "</td>");
 		_topList.append("<td FIXWIDTH=145>" + className(classid) + "</td>");

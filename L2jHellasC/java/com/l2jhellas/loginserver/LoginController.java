@@ -35,13 +35,13 @@ import javolution.util.FastCollection.Record;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
 
-import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.crypt.ScrambledKeyPair;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.logs.LogRecorder;
+import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 

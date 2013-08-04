@@ -25,7 +25,6 @@ import javax.mail.MessagingException;
 import javolution.text.TextBuilder;
 import Extensions.AccountManager.L2Emailer;
 
-import com.l2jhellas.Base64;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -33,6 +32,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 

@@ -14,7 +14,7 @@
  */
 package Extensions.RankSystem;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -25,7 +25,7 @@ public class IUserCommandHandlerPvpInfo implements IUserCommandHandler
 {
 	private static final int[] COMMAND_IDS =
 	{
-		ExternalConfig.PVP_INFO_USER_COMMAND_ID
+		Config.PVP_INFO_USER_COMMAND_ID
 	};
 
 	@Override

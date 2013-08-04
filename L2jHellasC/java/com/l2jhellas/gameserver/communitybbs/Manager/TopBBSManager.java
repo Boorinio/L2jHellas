@@ -18,7 +18,6 @@ import java.io.File;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.CastleStatus;
@@ -108,7 +107,7 @@ public class TopBBSManager extends BaseBBSManager
 					content = content.replace("%online%", Integer.toString(L2World.getAllPlayersCount()));
 					content = content.replace("%servercapacity%", Integer.toString(Config.MAXIMUM_ONLINE_USERS));
 					content = content.replace("%serverruntime%", getServerRunTime());
-					if (ExternalConfig.ALLOW_REAL_ONLINE_STATS)
+					if (Config.ALLOW_REAL_ONLINE_STATS)
 						content = content.replace("%serveronline%", getRealOnline());
 					else
 						content = content.replace("%serveronline%", "");

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 import Extensions.RankSystem.Util.ServerSideImage;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -137,7 +137,7 @@ public class RankPvpSystemPlayerInfo
 		tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 		tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
 
-		if (ExternalConfig.RANKS_ENABLED)
+		if (Config.RANKS_ENABLED)
 		{
 
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank</font></td>");
@@ -152,7 +152,7 @@ public class RankPvpSystemPlayerInfo
 
 		}
 
-		if (ExternalConfig.TOTAL_KILLS_IN_PVPINFO_ENABLED)
+		if (Config.TOTAL_KILLS_IN_PVPINFO_ENABLED)
 		{
 			// legal/total kills:
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal/Total Kills</font></td>");
@@ -169,10 +169,10 @@ public class RankPvpSystemPlayerInfo
 			tb.append("</td></tr>");
 		}
 
-		if (ExternalConfig.WAR_KILLS_ENABLED)
+		if (Config.WAR_KILLS_ENABLED)
 		{
 
-			if (ExternalConfig.TOTAL_KILLS_IN_PVPINFO_ENABLED)
+			if (Config.TOTAL_KILLS_IN_PVPINFO_ENABLED)
 			{
 				// war legal/total kills:
 				tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Legal/Total War Kills</font></td>");
@@ -194,13 +194,13 @@ public class RankPvpSystemPlayerInfo
 		tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 		tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
 
-		if (ExternalConfig.RANKS_ENABLED)
+		if (Config.RANKS_ENABLED)
 		{
 
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP for kill</font></td>");
 			tb.append("<td width=135 height=22 align=left>");
 			tb.append("<font color=ffa000>" + targetPvpStats.getRank().getPointsForKill() + "</font>");
-			if (ExternalConfig.RANK_POINTS_CUT_ENABLED)
+			if (Config.RANK_POINTS_CUT_ENABLED)
 			{
 				// get player PvpStats:
 				PvpStats playerPvpStats = PvpTable.getInstance().getPvpStats(player.getObjectId());
@@ -212,7 +212,7 @@ public class RankPvpSystemPlayerInfo
 			}
 			tb.append("</td></tr>");
 
-			if (ExternalConfig.RANK_REWARD_ENABLED)
+			if (Config.RANK_REWARD_ENABLED)
 			{
 				tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank Reward</font></td>");
 				tb.append("<td width=135 height=22 align=left>");
@@ -222,28 +222,28 @@ public class RankPvpSystemPlayerInfo
 
 		}
 
-		if (ExternalConfig.PVP_REWARD_ENABLED)
+		if (Config.PVP_REWARD_ENABLED)
 		{
 			tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>PvP Reward</font></td>");
 			tb.append("<td width=135 height=22 align=left>");
-			tb.append("<font color=ffa000>" + ExternalConfig.PVP_REWARD_AMOUNT + " </font><font color=FFFF00>" + ItemTable.getInstance().getTemplate(ExternalConfig.PVP_REWARD_ID).getName() + "</font>");
+			tb.append("<font color=ffa000>" + Config.PVP_REWARD_AMOUNT + " </font><font color=FFFF00>" + ItemTable.getInstance().getTemplate(Config.PVP_REWARD_ID).getName() + "</font>");
 			tb.append("</td></tr>");
 		}
 
-		if (!player.equals(playerTarget) && ExternalConfig.PROTECTION_TIME_RESET > 0)
+		if (!player.equals(playerTarget) && Config.PROTECTION_TIME_RESET > 0)
 		{
 			long sys_time = System.currentTimeMillis();
-			if (ExternalConfig.PROTECTION_TIME_RESET > 0 && (sys_time - (1000 * 60 * ExternalConfig.PROTECTION_TIME_RESET) < pvp2.getKillTime()))
+			if (Config.PROTECTION_TIME_RESET > 0 && (sys_time - (1000 * 60 * Config.PROTECTION_TIME_RESET) < pvp2.getKillTime()))
 			{ // show time to legal kill
-				if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED) && ExternalConfig.RANKS_ENABLED)
+				if ((Config.PVP_REWARD_ENABLED || Config.RANK_REWARD_ENABLED) && Config.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP/Reward Protection</font></td>");
 				}
-				else if (ExternalConfig.RANKS_ENABLED)
+				else if (Config.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank Points Protection</font></td>");
 				}
-				else if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED))
+				else if ((Config.PVP_REWARD_ENABLED || Config.RANK_REWARD_ENABLED))
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Reward Protection</font></td>");
 				}
@@ -253,15 +253,15 @@ public class RankPvpSystemPlayerInfo
 			}
 			else
 			{
-				if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED) && ExternalConfig.RANKS_ENABLED)
+				if ((Config.PVP_REWARD_ENABLED || Config.RANK_REWARD_ENABLED) && Config.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>RP/Reward Protection</font></td>");
 				}
-				else if (ExternalConfig.RANKS_ENABLED)
+				else if (Config.RANKS_ENABLED)
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Rank Points Protection</font></td>");
 				}
-				else if ((ExternalConfig.PVP_REWARD_ENABLED || ExternalConfig.RANK_REWARD_ENABLED))
+				else if ((Config.PVP_REWARD_ENABLED || Config.RANK_REWARD_ENABLED))
 				{
 					tb.append("<tr><td width=135 height=22 align=left><font color=ae9977>Reward Protection</font></td>");
 				}
@@ -281,7 +281,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<tr><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td><td width=135 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"135\" height=\"1\"></img></td></tr>");
 			tb.append("<tr><td width=135 height=12></td><td width=135 height=12></td></tr>");
 
-			if (ExternalConfig.TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED)
+			if (Config.TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED)
 			{
 				// legal/total kills on me:
 				tb.append("<tr><td width=135 height=22 align=left>");
@@ -305,9 +305,9 @@ public class RankPvpSystemPlayerInfo
 			tb.append("</table>");
 		}
 
-		if (player.equals(playerTarget) && ExternalConfig.RANK_POINTS_REWARD_ENABLED)
+		if (player.equals(playerTarget) && Config.RANK_POINTS_REWARD_ENABLED)
 		{
-			if (ExternalConfig.RANK_POINTS_REWARD_ENABLED)
+			if (Config.RANK_POINTS_REWARD_ENABLED)
 			{
 				player._rankPvpSystemRankPointsReward = new RankPvpSystemRankPointsReward(player);
 			}
@@ -321,13 +321,13 @@ public class RankPvpSystemPlayerInfo
 				tb.append("<tr><td width=270 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></img></td></tr>");
 				tb.append("<tr><td width=270 height=12></td></tr>");
 
-				tb.append("<tr><td width=270 align=center><button value=\"Get Reward\" action=\"bypass -h _rps_reward\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\"></td></tr>");
+				tb.append("<tr><td width=270 align=center><button value=\"Get Reward\" action=\"bypass -h _rps_reward\" width=" + Config.BUTTON_W + " height=" + Config.BUTTON_H + " back=\"" + Config.BUTTON_DOWN + "\" fore=\"" + Config.BUTTON_UP + "\"></td></tr>");
 
 				tb.append("</table>");
 			}
 		}
 
-		if (ExternalConfig.DEATH_MANAGER_DETAILS_ENABLED && player._rankPvpSystemDeathMgr != null && player.isDead() && playerTarget.getObjectId() == player._rankPvpSystemDeathMgr.getKiller().getObjectId())
+		if (Config.DEATH_MANAGER_DETAILS_ENABLED && player._rankPvpSystemDeathMgr != null && player.isDead() && playerTarget.getObjectId() == player._rankPvpSystemDeathMgr.getKiller().getObjectId())
 		{ // playerTarget is not real target its handler to current killer. //getKiller() store last killer.
 			// button show equipment:
 			tb.append("<table border=0 cellspacing=0 cellpadding=0>");
@@ -336,7 +336,7 @@ public class RankPvpSystemPlayerInfo
 			tb.append("<tr><td width=270 HEIGHT=1><img src=\"L2UI.Squaregray\" width=\"270\" height=\"1\"></img></td></tr>");
 			tb.append("<tr><td width=270 height=12></td></tr>");
 
-			tb.append("<tr><td width=270 align=center><button value=\"Details\" action=\"bypass -h _rps_equip\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\"></td></tr>");
+			tb.append("<tr><td width=270 align=center><button value=\"Details\" action=\"bypass -h _rps_equip\" width=" + Config.BUTTON_W + " height=" + Config.BUTTON_H + " back=\"" + Config.BUTTON_DOWN + "\" fore=\"" + Config.BUTTON_UP + "\"></td></tr>");
 
 			tb.append("</table>");
 		}
@@ -417,9 +417,9 @@ public class RankPvpSystemPlayerInfo
 		int percent = 0;
 
 		int rankId = targetPvpStats.getRank().getId();
-		if (ExternalConfig.RANKS.containsKey(rankId + 1))
+		if (Config.RANKS.containsKey(rankId + 1))
 		{ // check if next rank exists
-			nextRP = ExternalConfig.RANKS.get(rankId + 1).getMinPoints();
+			nextRP = Config.RANKS.get(rankId + 1).getMinPoints();
 		}
 
 		if (nextRP >= minRP)

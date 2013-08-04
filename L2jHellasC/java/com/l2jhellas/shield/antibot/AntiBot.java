@@ -16,7 +16,7 @@ package com.l2jhellas.shield.antibot;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -44,7 +44,7 @@ public class AntiBot
 			{
 				startantibot();
 			}
-		}, 60 * 1000 * ExternalConfig.SECURITY_QUE_TIME);
+		}, 60 * 1000 * Config.SECURITY_QUE_TIME);
 	}
 	
 	public static void startantibot()
@@ -72,7 +72,7 @@ public class AntiBot
 		{
 			player.PassedProt = false;
 		}
-		waitSecs(60 * ExternalConfig.SECURITY_QUE_TIME);
+		waitSecs(60 * Config.SECURITY_QUE_TIME);
 		startantibot();
 	}
 	

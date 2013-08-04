@@ -15,7 +15,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.TownManager;
 import com.l2jhellas.gameserver.model.L2Character;
@@ -84,7 +83,7 @@ public final class NpcInfo extends L2GameServerPacket
 			_title = t;
 		}
 
-		if (ExternalConfig.SHOW_NPC_CREST)
+		if (Config.SHOW_NPC_CREST)
 		{
 			if (cha instanceof L2NpcInstance && cha.isInsideZone(L2Character.ZONE_PEACE) && cha.getCastle().getOwnerId() != 0)
 			{
@@ -244,7 +243,7 @@ public final class NpcInfo extends L2GameServerPacket
 		writeD(0000); // hmm karma ??
 
 		writeD(_activeChar.getAbnormalEffect()); // C2
-		if (ExternalConfig.SHOW_NPC_CREST)
+		if (Config.SHOW_NPC_CREST)
 		{
 			writeD(_clanId);
 			writeD(_clanCrest);

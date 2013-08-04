@@ -17,7 +17,6 @@ import java.util.StringTokenizer;
 import Extensions.RankSystem.RankPvpSystemBBSManager;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.communitybbs.Manager.ClanBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.ClassBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
@@ -177,7 +176,7 @@ public class CommunityBoard
 				ShopBBSManager.getInstance().parsecmd("_bbsshop;" + st.nextToken(), activeChar);
 				L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(st.nextToken()), activeChar, false, 0);
 			}
-			else if (command.startsWith("_bbsrps") && ExternalConfig.RANK_PVP_SYSTEM_ENABLED && ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+			else if (command.startsWith("_bbsrps") && Config.RANK_PVP_SYSTEM_ENABLED && Config.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 			{ //to Custom PvP System BBS Manager
 				RankPvpSystemBBSManager.getInstance().parsecmd(command, activeChar);
 			}

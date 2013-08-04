@@ -22,7 +22,6 @@ import javolution.util.FastMap;
 import Extensions.RankSystem.IVoicedCommandHandlerPvpInfo;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Away;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Banking;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ChaosCmd;
@@ -78,13 +77,13 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new version());
 		if (Config.ALLOW_PLAYERS_REFUSAL)
 			registerVoicedCommandHandler(new pmoff());
-		if (ExternalConfig.ALLOW_SERVER_RESTART_COMMAND)
+		if (Config.ALLOW_SERVER_RESTART_COMMAND)
 			registerVoicedCommandHandler(new ServerRestartVote());
 		if (Config.ONLINE_VOICE_ALLOW)
 			registerVoicedCommandHandler(new OnlinePlayers());
 		if (Config.BANKING_SYSTEM_ENABLED)
 			registerVoicedCommandHandler(new Banking());
-		if (ExternalConfig.PVP_INFO_COMMAND_ENABLED && ExternalConfig.RANK_PVP_SYSTEM_ENABLED && !ExternalConfig.PVP_INFO_USER_COMMAND_ENABLED)
+		if (Config.PVP_INFO_COMMAND_ENABLED && Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_INFO_USER_COMMAND_ENABLED)
 			registerVoicedCommandHandler(new IVoicedCommandHandlerPvpInfo());
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 			registerVoicedCommandHandler(new MailCmd());

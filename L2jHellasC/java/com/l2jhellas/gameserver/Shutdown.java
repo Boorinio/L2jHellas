@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import Extensions.RankSystem.PvpTable;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -525,7 +524,7 @@ public class Shutdown extends Thread
 		}
 
 		// Rank PvP System by Masterio:
-		if (ExternalConfig.RANK_PVP_SYSTEM_ENABLED)
+		if (Config.RANK_PVP_SYSTEM_ENABLED)
 		{
 			PvpTable.getInstance().updateDB();
 			System.out.println("All Rank System Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");

@@ -262,14 +262,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				filename = "mods";
 			break;
 			default:
-				if (Config.GM_ADMIN_MENU_STYLE.equals("modern"))
-				{
-					filename = "main";
-				}
-				else
-				{
-					filename = "classic";
-				}
+				filename = "main";
 			break;
 		}
 		AdminHelpPage.showHelpPage(activeChar, filename + "_menu.htm");

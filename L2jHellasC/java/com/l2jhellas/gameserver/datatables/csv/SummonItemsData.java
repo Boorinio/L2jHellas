@@ -28,6 +28,7 @@ public class SummonItemsData
 {
 	private static Logger _log = Logger.getLogger(SummonItemsData.class.getName());
 	private FastMap<Integer, L2SummonItem> _summonitems;
+	public int commentLinesCount = 0;
 
 	private static SummonItemsData _instance;
 
@@ -59,8 +60,7 @@ public class SummonItemsData
 			return;
 		}
 
-		@SuppressWarnings("unused")
-		int lineCount = 0, commentLinesCount = 0;
+		int lineCount = 0;
 
 		while (s.hasNextLine())
 		{
@@ -70,7 +70,7 @@ public class SummonItemsData
 
 			if (line.startsWith("#"))
 			{
-				commentLinesCount++;
+				commentLinesCount ++;
 				continue;
 			}
 			else if (line.equals(""))

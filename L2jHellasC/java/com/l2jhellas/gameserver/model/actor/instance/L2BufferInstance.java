@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.BufferSkillsTable;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -222,8 +222,8 @@ public class L2BufferInstance extends L2FolkInstance
 	private int getFee(FastList<L2Skill> list)
 	{
 		int fee = 0;
-		if (ExternalConfig.NPCBUFFER_STATIC_BUFF_COST >= 0)
-			return (list.size() * ExternalConfig.NPCBUFFER_STATIC_BUFF_COST);
+		if (Config.NPCBUFFER_STATIC_BUFF_COST >= 0)
+			return (list.size() * Config.NPCBUFFER_STATIC_BUFF_COST);
 		else
 		{
 			for (L2Skill sk : list)

@@ -22,7 +22,6 @@ import javolution.util.FastMap;
 import Extensions.RankSystem.IUserCommandHandlerPvpInfo;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelDelete;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelLeave;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelListUpdate;
@@ -68,7 +67,7 @@ public class UserCommandHandler
 		registerUserCommandHandler(new ChannelLeave());
 		registerUserCommandHandler(new ChannelDelete());
 		registerUserCommandHandler(new ChannelListUpdate());
-		if (ExternalConfig.PVP_INFO_USER_COMMAND_ENABLED && ExternalConfig.PVP_INFO_COMMAND_ENABLED)
+		if (Config.PVP_INFO_USER_COMMAND_ENABLED && Config.PVP_INFO_COMMAND_ENABLED)
 			registerUserCommandHandler(new IUserCommandHandlerPvpInfo());
 
 		_log.log(Level.FINE, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");

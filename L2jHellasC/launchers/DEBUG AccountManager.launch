@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/L2jHellasC/java/com/l2jhellas/accountmanager/SQLAccountManager.java"/>
+<listEntry value="/L2JHellasC/java/com/l2jhellas/tools/accountmanager/SQLAccountManager.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -11,6 +11,6 @@
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.l2jhellas.accountmanager.SQLAccountManager"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="L2jHellasC"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.l2jhellas.tools.accountmanager.SQLAccountManager"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="L2JHellasC"/>
 </launchConfiguration>

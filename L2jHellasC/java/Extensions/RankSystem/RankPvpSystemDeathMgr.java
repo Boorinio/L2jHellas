@@ -17,7 +17,7 @@ package Extensions.RankSystem;
 import javolution.text.TextBuilder;
 import javolution.util.FastMap;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -70,7 +70,7 @@ public class RankPvpSystemDeathMgr
 		_killerMaxMP = killer.getMaxMp();
 
 		// load item killer list:
-		if (_killer != null && ExternalConfig.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
+		if (_killer != null && Config.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
 		{
 
 			// searching all equipped items by killer:
@@ -183,7 +183,7 @@ public class RankPvpSystemDeathMgr
 		tb.append("</table>");
 
 		// show item list:
-		if (ExternalConfig.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
+		if (Config.DEATH_MANAGER_SHOW_ITEMS_ENABLED)
 		{
 
 			tb.append("<table width=270 border=0 cellspacing=0 cellpadding=2 bgcolor=000000>");
@@ -257,7 +257,7 @@ public class RankPvpSystemDeathMgr
 		tb.append("<table border=0 cellspacing=0 cellpadding=0>");
 		tb.append("<tr><td width=270 height=12 align=center><font color=808080>- killer state in kill moment -</font></td></tr>");
 		tb.append("<tr><td width=270 height=12></td></tr>");
-		tb.append("<tr><td width=270 align=center><button value=\"Back\" action=\"bypass -h _rps_info\"  width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\"></td></tr>");
+		tb.append("<tr><td width=270 align=center><button value=\"Back\" action=\"bypass -h _rps_info\"  width=" + Config.BUTTON_W + " height=" + Config.BUTTON_H + " back=\"" + Config.BUTTON_DOWN + "\" fore=\"" + Config.BUTTON_UP + "\"></td></tr>");
 		tb.append("</table>");
 
 		tb.append("</center></body></html>");

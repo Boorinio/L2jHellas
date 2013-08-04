@@ -30,11 +30,8 @@ public final class Action extends L2GameClientPacket
 
 	// cddddc
 	private int _objectId;
-	@SuppressWarnings("unused")
 	private int _originX;
-	@SuppressWarnings("unused")
 	private int _originY;
-	@SuppressWarnings("unused")
 	private int _originZ;
 	private int _actionId;
 
@@ -55,6 +52,7 @@ public final class Action extends L2GameClientPacket
 		{
 			_log.fine("Action:" + _actionId);
 			_log.fine("oid:" + _objectId);
+			_log.fine("x,y,z :" + _originX + ", " + _originY + ", " + _originZ);
 		}
 
 		// Get the current L2PcInstance of the player

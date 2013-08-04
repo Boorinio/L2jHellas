@@ -54,8 +54,7 @@ public class CharChangePotions implements IItemHandler
 
 		if (activeChar.isAllSkillsDisabled())
 		{
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

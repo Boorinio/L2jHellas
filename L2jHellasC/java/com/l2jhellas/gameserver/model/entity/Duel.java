@@ -267,7 +267,6 @@ public class Duel
 	 */
 	private void stopFighting()
 	{
-		ActionFailed af = new ActionFailed();
 		if (_partyDuel)
 		{
 			for (L2PcInstance temp : _playerA.getParty().getPartyMembers())
@@ -275,14 +274,14 @@ public class Duel
 				temp.abortCast();
 				temp.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 				temp.setTarget(null);
-				temp.sendPacket(af);
+				temp.sendPacket(ActionFailed.STATIC_PACKET);
 			}
 			for (L2PcInstance temp : _playerB.getParty().getPartyMembers())
 			{
 				temp.abortCast();
 				temp.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 				temp.setTarget(null);
-				temp.sendPacket(af);
+				temp.sendPacket(ActionFailed.STATIC_PACKET);
 			}
 		}
 		else
@@ -293,8 +292,8 @@ public class Duel
 			_playerA.setTarget(null);
 			_playerB.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 			_playerB.setTarget(null);
-			_playerA.sendPacket(af);
-			_playerB.sendPacket(af);
+			_playerA.sendPacket(ActionFailed.STATIC_PACKET);
+			_playerB.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 

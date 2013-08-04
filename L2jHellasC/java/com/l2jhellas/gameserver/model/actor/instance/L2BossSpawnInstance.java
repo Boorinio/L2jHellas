@@ -17,7 +17,7 @@ import java.util.Date;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -82,7 +82,7 @@ public class L2BossSpawnInstance extends L2NpcInstance
 		TextBuilder tb = new TextBuilder();
 		tb.append("<html><title>Boss Info</title><body><br><center><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32>");
 
-		for (final int boss : ExternalConfig.BOSS_RESPAWN_INFO)
+		for (final int boss : Config.BOSS_RESPAWN_INFO)
 		{
 			final String name = NpcTable.getInstance().getTemplate(boss).getName();
 			final StatsSet stats = GrandBossManager.getInstance().getStatsSet(boss);
@@ -102,7 +102,7 @@ public class L2BossSpawnInstance extends L2NpcInstance
 			{
 				tb.append("<center><table width=\"280\">");
 				tb.append("<tr><td width=\"95\"><font color=\"00C3FF\">" + name + "</font>:</td><td width=\"165\" align=\"right\"> " + "<font color=\"FF0000\">Is Dead");
-				if (ExternalConfig.RAID_INFO_SHOW_TIME)
+				if (Config.RAID_INFO_SHOW_TIME)
 					tb.append("" + " " + "" + "</font>" + " " + " <font color=\"32C332\">" + Time.format(new Date(delay)) + "</font>" + "</td></tr></table><br1>");
 				else
 					tb.append("</font></td></tr></table>");

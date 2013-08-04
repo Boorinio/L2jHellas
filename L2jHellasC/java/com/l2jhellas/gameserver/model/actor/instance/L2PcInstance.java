@@ -42,7 +42,6 @@ import Extensions.RankSystem.RankPvpSystemDeathMgr;
 import Extensions.RankSystem.RankPvpSystemRankPointsReward;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
@@ -238,7 +237,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	private static final String DELETE_SKILL_FROM_CHAR = "DELETE FROM character_skills WHERE skill_id=? AND char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SKILLS = "DELETE FROM character_skills WHERE char_obj_id=? AND class_index=?";
 	private static final String ADD_SKILL_SAVE = "INSERT INTO character_skills_save (char_obj_id,skill_id,skill_level,effect_count,effect_cur_time,reuse_delay,systime,restore_type,class_index,buff_index) VALUES (?,?,?,?,?,?,?,?,?,?)";
-	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time, reuse_delay FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=? ORDER BY buff_index ASC";
+	private static final String RESTORE_SKILL_SAVE = "SELECT skill_id,skill_level,effect_count,effect_cur_time,reuse_delay,systime FROM character_skills_save WHERE char_obj_id=? AND class_index=? AND restore_type=? ORDER BY buff_index ASC";
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 
 	// Character Character
@@ -4850,19 +4849,19 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (isGM())
 				return;
-			if ((pkKillAmount >= (Config.PK_AMOUNT1)) && (pkKillAmount <= (Config.PVP_AMOUNT2)))
+			if ((pkKillAmount >= (Config.PK_AMOUNT1)) && (pkKillAmount <= (Config.PK_AMOUNT2)))
 			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT1);
 			}
-			else if ((pkKillAmount >= (Config.PK_AMOUNT2)) && (pkKillAmount <= (Config.PVP_AMOUNT3)))
+			else if ((pkKillAmount >= (Config.PK_AMOUNT2)) && (pkKillAmount <= (Config.PK_AMOUNT3)))
 			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT2);
 			}
-			else if ((pkKillAmount >= (Config.PK_AMOUNT3)) && (pkKillAmount <= (Config.PVP_AMOUNT4)))
+			else if ((pkKillAmount >= (Config.PK_AMOUNT3)) && (pkKillAmount <= (Config.PK_AMOUNT4)))
 			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT3);
 			}
-			else if ((pkKillAmount >= (Config.PK_AMOUNT4)) && (pkKillAmount <= (Config.PVP_AMOUNT5)))
+			else if ((pkKillAmount >= (Config.PK_AMOUNT4)) && (pkKillAmount <= (Config.PK_AMOUNT5)))
 			{
 				getAppearance().setTitleColor(Config.TITLE_COLOR_FOR_PK_AMOUNT4);
 			}
@@ -4872,8 +4871,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 		}
 	}
-
 	// PVP - PK Color System End
+	
 	/**
 	 * Send a Server->Client packet UserInfo to this L2PcInstance and CharInfo
 	 * to all L2PcInstance in its _KnownPlayers.<BR>
@@ -5053,7 +5052,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				sendPacket(new RecipeShopSellList(this, temp));
 			}
-
 		}
 		else
 		{
@@ -5589,7 +5587,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			@SuppressWarnings("unused")
 			boolean playerKill = false;
 			// Rank PvP System by Masterio
-			if (ExternalConfig.RANK_PVP_SYSTEM_ENABLED)
+			if (Config.RANK_PVP_SYSTEM_ENABLED)
 			{
 				RankPvpSystem rps = new RankPvpSystem(killer, this);
 				if (_rankPvpSystemComboKill != null)
@@ -5656,7 +5654,6 @@ public final class L2PcInstance extends L2PlayableInstance
 					}, Config.TVT_REVIVE_DELAY);
 				}
 			}
-
 			else if (_inEventTvT)
 			{
 				if (TvT._teleport || TvT._started)
@@ -5673,7 +5670,6 @@ public final class L2PcInstance extends L2PlayableInstance
 					}, Config.TVT_REVIVE_DELAY);
 				}
 			}
-
 			else if (_inEventCTF)
 			{
 				if (CTF._teleport || CTF._started)
@@ -5696,7 +5692,6 @@ public final class L2PcInstance extends L2PlayableInstance
 					}, Config.CTF_REVIVE_DELAY);
 				}
 			}
-
 			else if ((killer instanceof L2PcInstance && ((L2PcInstance) killer)._inEventDM) && _inEventDM)
 			{
 				if (DM._teleport || DM._started)
@@ -5731,7 +5726,6 @@ public final class L2PcInstance extends L2PlayableInstance
 					}, Config.DM_REVIVE_DELAY);
 				}
 			}
-
 			else if (pk != null && _inEventVIP)
 			{
 				if (VIP._started)
@@ -5951,12 +5945,12 @@ public final class L2PcInstance extends L2PlayableInstance
 
 					if (itemDrop.isEquipped())
 					{
-						// Set proper chance according to Item type of equipped
-						// Item
+						// Set proper chance according to Item type of equipped Item
 						itemDropPercent = itemDrop.getItem().getType2() == L2Item.TYPE2_WEAPON ? dropEquipWeapon : dropEquip;
 						getInventory().unEquipItemInSlotAndRecord(itemDrop.getEquipSlot());
 					}
-					else {
+					else
+					{
 						itemDropPercent = dropItem; // Item in inventory
 					}
 
@@ -6067,7 +6061,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 
 		// Check if it's pvp
-
 		if ((isgood() && targetPlayer.isevil()) || isevil() && targetPlayer.isgood() || (checkIfPvP(target) && targetPlayer.getPvpFlag() != 0) || (isInsideZone(ZONE_PVP) && targetPlayer.isInsideZone(ZONE_PVP)))
 		{
 			increasePvpKills();
@@ -6147,21 +6140,23 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Increase the pvp kills count and send the info to the player
+	 * Increase the pvp kills count in Chaos Event.
 	 */
-
 	public boolean _inChaosEvent(L2Character target)
 	{
 		L2PcInstance targetPlayer = target.getActingPlayer();
 		return targetPlayer._inChaosEvent;
 	}
-
+	
+	/**
+	 * Increase the pvp kills count and send the info to the player
+	 */
 	public void increasePvpKills()
 	{
 		if ((TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF))
 			return;
 
-		if (!ExternalConfig.LEGAL_COUNTER_ALTT_ENABLED)
+		if (!Config.LEGAL_COUNTER_ALTT_ENABLED)
 		{
 			// Add karma to attacker and increase its PK counter
 			setPvpKills(getPvpKills() + 1);
@@ -6169,7 +6164,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (Config.PVPEXPSP_SYSTEM)
 		{
 			addExpAndSp(Config.ADD_EXP, Config.ADD_SP);
-			sendMessage("Earned Exp & SP for a pvp kill");
+			sendMessage("Earned Exp & SP for a pvp kill.");
 		}
 		if (Config.ALLOW_PVP_REWARD)
 		{
@@ -6187,12 +6182,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			updateTitle();
 		}
 
-		// Update the character's name color if they reached any of the 5 PvP
-		// levels.
+		// Update the character's name color if they reached any of the 5 PvP levels.
 		updatePvPColor(getPvpKills());
 		broadcastUserInfo();
-		// Send a Server->Client UserInfo packet to attacker with its Karma and
-		// PK Counter
+		// Send a Server->Client UserInfo packet to attacker with its Karma and PK Counter
 		sendPacket(new UserInfo(this));
 	}
 
@@ -6305,12 +6298,10 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			updateTitle();
 		}
-		// Update the character's title color if they reached any of the 5 PK
-		// levels.
+		// Update the character's title color if they reached any of the 5 PK levels.
 		updatePkColor(getPkKills());
 		broadcastUserInfo();
-		// Send a Server->Client UserInfo packet to attacker with its Karma and
-		// PK Counter
+		// Send a Server->Client UserInfo packet to attacker with its Karma and PK Counter
 		sendPacket(new UserInfo(this));
 	}
 
@@ -6407,7 +6398,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				startPvPFlag();
 			}
 		}
-
 	}
 
 	/**
@@ -7019,7 +7009,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Disarm the player's weapon and shield.<BR>
-	 * <BR>
 	 */
 	public boolean disarmWeapons()
 	{
@@ -7055,8 +7044,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			abortAttack();
 			broadcastUserInfo();
 
-			// this can be 0 if the user pressed the right mousebutton twice
-			// very fast
+			// this can be 0 if the user pressed the right mousebutton twice very fast
 			if (unequiped.length > 0)
 			{
 				SystemMessage sm = null;
@@ -7093,8 +7081,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			abortAttack();
 			broadcastUserInfo();
 
-			// this can be 0 if the user pressed the right mousebutton twice
-			// very fast
+			// this can be 0 if the user pressed the right mousebutton twice very fast
 			if (unequiped.length > 0)
 			{
 				SystemMessage sm = null;
@@ -7149,8 +7136,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Return True if the L2PcInstance is invulnerable.<BR>
-	 * <BR>
+	 * Return True if the L2PcInstance is invulnerable.
 	 */
 	@Override
 	public boolean isInvul()
@@ -7159,7 +7145,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Return True if the L2PcInstance has a Party in progress.<BR>
+	 * Return True if the L2PcInstance has a Party in progress.
 	 * <BR>
 	 */
 	@Override
@@ -7169,8 +7155,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Set the _party object of the L2PcInstance (without joining it).<BR>
-	 * <BR>
+	 * Set the _party object of the L2PcInstance (without joining it).
 	 */
 	public void setParty(L2Party party)
 	{
@@ -7178,8 +7163,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Set the _party object of the L2PcInstance AND join it.<BR>
-	 * <BR>
+	 * Set the _party object of the L2PcInstance AND join it.
 	 */
 	public void joinParty(L2Party party)
 	{
@@ -7193,8 +7177,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Manage the Leave Party task of the L2PcInstance.<BR>
-	 * <BR>
+	 * Manage the Leave Party task of the L2PcInstance.
 	 */
 	public void leaveParty()
 	{
@@ -7206,8 +7189,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Return the _party object of the L2PcInstance.<BR>
-	 * <BR>
+	 * Return the _party object of the L2PcInstance.
 	 */
 	@Override
 	public L2Party getParty()
@@ -7216,8 +7198,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Return True if the L2PcInstance is a GM.<BR>
-	 * <BR>
+	 * Return True if the L2PcInstance is a GM.
 	 */
 	public boolean isGM()
 	{
@@ -7225,8 +7206,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Set the _accessLevel of the L2PcInstance.<BR>
-	 * <BR>
+	 * Set the _accessLevel of the L2PcInstance.
 	 */
 	public void setAccessLevel(int level)
 	{
@@ -7253,8 +7233,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 
 	/**
-	 * Return the _accessLevel of the L2PcInstance.<BR>
-	 * <BR>
+	 * Return the _accessLevel of the L2PcInstance.
 	 */
 	public L2AccessLevel getAccessLevel()
 	{
@@ -7276,7 +7255,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Manage a cancel cast task for the L2PcInstance.<BR>
-	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
 	 * <li>Set the Intention of the AI to AI_INTENTION_IDLE</li> <li>Enable all skills (set _allSkillsDisabled to False)</li> <li>Send a Server->Client Packet MagicSkillCanceld to
@@ -7305,7 +7283,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * packet UserInfo/StatusUpdate to this L2PcInstance and
 	 * CharInfo/StatusUpdate to all L2PcInstance in its _KnownPlayers
 	 * (broadcast).<BR>
-	 * <BR>
 	 */
 	public void updateAndBroadcastStatus(int broadcastType)
 	{
@@ -7326,7 +7303,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Send a Server->Client StatusUpdate packet with Karma and PvP Flag to the
 	 * L2PcInstance and all L2PcInstance to inform (broadcast).<BR>
-	 * <BR>
 	 */
 	public void setKarmaFlag(int flag)
 	{
@@ -7340,7 +7316,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Send a Server->Client StatusUpdate packet with Karma to the L2PcInstance
 	 * and all L2PcInstance to inform (broadcast).<BR>
-	 * <BR>
 	 */
 	public void broadcastKarma()
 	{
@@ -7355,7 +7330,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * Set the online Flag to True or False and update the characters table of
 	 * the database with online status and lastAccess (called when login and
 	 * logout).<BR>
-	 * <BR>
 	 */
 	public void setOnlineStatus(boolean isOnline)
 	{
@@ -7385,7 +7359,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Update the characters table of the database with online status and
 	 * lastAccess of this L2PcInstance (called when login and logout).<BR>
-	 * <BR>
 	 */
 	public void updateOnlineStatus()
 	{
@@ -7431,7 +7404,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Create a new player in the characters table of the database.<BR>
-	 * <BR>
 	 */
 	private boolean createDb()
 	{
@@ -7769,9 +7741,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		return player;
 	}
 
-	/**
-	 * @return
-	 */
 	public Forum getMail()
 	{
 		if (_forumMail == null)
@@ -7788,17 +7757,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _forumMail;
 	}
 
-	/**
-	 * @param forum
-	 */
 	public void setMail(Forum forum)
 	{
 		_forumMail = forum;
 	}
 
-	/**
-	 * @return
-	 */
 	public Forum getMemo()
 	{
 		if (_forumMemo == null)
@@ -7815,9 +7778,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _forumMemo;
 	}
 
-	/**
-	 * @param forum
-	 */
 	public void setMemo(Forum forum)
 	{
 		_forumMemo = forum;
@@ -8006,7 +7966,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Update L2PcInstance stats in the characters table of the database.<BR>
-	 * <BR>
 	 */
 	public synchronized void store()
 	{
@@ -8264,7 +8223,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return True if the L2PcInstance is on line.<BR>
-	 * <BR>
 	 */
 	public int isOnline()
 	{
@@ -8526,7 +8484,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Retrieve from the database all skills of this L2PcInstance and add them
 	 * to _skills.<BR>
-	 * <BR>
 	 */
 	private void restoreSkills()
 	{
@@ -8551,7 +8508,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				int level = rset.getInt("skill_level");
 
 				if (id > 9000)
-				 {
+				{
 					continue; // fake skills for base stats
 				}
 
@@ -8585,6 +8542,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
+			long delaytime = System.currentTimeMillis() - getLastAccess();
+			
 			PreparedStatement statement;
 			ResultSet rset;
 
@@ -8606,6 +8565,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				int effectCount = rset.getInt("effect_count");
 				int effectCurTime = rset.getInt("effect_cur_time");
 				long reuseDelay = rset.getLong("reuse_delay");
+				long systime = rset.getLong("systime");
 
 				// Just incase the admin minipulated this table incorrectly :x
 				if (skillId == -1 || effectCount == -1 || effectCurTime == -1 || reuseDelay < 0)
@@ -8620,7 +8580,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (reuseDelay > 10)
 				{
 					disableSkill(skillId, reuseDelay);
-					addTimeStamp(new TimeStamp(skillId, reuseDelay));
+					addTimeStamp(new TimeStamp(skillId, reuseDelay, systime));
 				}
 
 				for (L2Effect effect : getAllEffects())
@@ -8649,23 +8609,28 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				int skillId = rset.getInt("skill_id");
 				long reuseDelay = rset.getLong("reuse_delay");
-
+				long systime = rset.getLong("systime");
+				
+				reuseDelay = reuseDelay - delaytime;
+				
 				if (reuseDelay <= 0)
 				{
 					continue;
 				}
 
-				disableSkill(skillId, reuseDelay);
-				addTimeStamp(new TimeStamp(skillId, reuseDelay));
+				disableSkill(skillId, (long)reuseDelay);
+				addTimeStamp(new TimeStamp(skillId, (long)reuseDelay, (long)systime));
 			}
 			rset.close();
 			statement.close();
 
-			statement = con.prepareStatement(DELETE_SKILL_SAVE);
-			statement.setInt(1, getObjectId());
-			statement.setInt(2, getClassIndex());
-			statement.executeUpdate();
-			statement.close();
+			// Remove previously restored skills
+			try (PreparedStatement del = con.prepareStatement(DELETE_SKILL_SAVE))
+			{
+				del.setInt(1, getObjectId());
+				del.setInt(2, getClassIndex());
+				del.executeUpdate();
+			} 
 		}
 		catch (Exception e)
 		{
@@ -8682,7 +8647,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Retrieve from the database all Henna of this L2PcInstance, add them to
 	 * _henna and calculate stats of the L2PcInstance.<BR>
-	 * <BR>
 	 */
 	private void restoreHenna()
 	{
@@ -8742,7 +8706,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Retrieve from the database all Recommendation data of this L2PcInstance,
 	 * add to _recomChars and calculate stats of the L2PcInstance.<BR>
-	 * <BR>
 	 */
 	private void restoreRecom()
 	{
@@ -8771,7 +8734,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the number of Henna empty slot of the L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public int getHennaEmptySlots()
 	{
@@ -8793,7 +8755,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * Remove a Henna of the L2PcInstance, save update in the character_hennas
 	 * table of the database and send Server->Client HennaInfo/UserInfo packet
 	 * to this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public boolean removeHenna(int slot)
 	{
@@ -8850,7 +8811,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * Add a Henna to the L2PcInstance, save update in the character_hennas
 	 * table of the database and send Server->Client HennaInfo/UserInfo packet
 	 * to this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public boolean addHenna(L2HennaInstance henna)
 	{
@@ -8905,7 +8865,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Calculate Henna modifiers of this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	private void recalcHennaStats()
 	{
@@ -8958,7 +8917,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the Henna of this L2PcInstance corresponding to the selected slot.<BR>
-	 * <BR>
 	 */
 	public L2HennaInstance getHenna(int slot)
 	{
@@ -8970,7 +8928,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the INT Henna modifier of this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public int getHennaStatINT()
 	{
@@ -8979,7 +8936,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the STR Henna modifier of this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public int getHennaStatSTR()
 	{
@@ -8988,7 +8944,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the CON Henna modifier of this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public int getHennaStatCON()
 	{
@@ -8997,7 +8952,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the MEN Henna modifier of this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public int getHennaStatMEN()
 	{
@@ -9006,7 +8960,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the WIT Henna modifier of this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public int getHennaStatWIT()
 	{
@@ -9015,7 +8968,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the DEX Henna modifier of this L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public int getHennaStatDEX()
 	{
@@ -9900,7 +9852,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Reduce Item quantity of the L2PcInstance Inventory and send it a
 	 * Server->Client packet InventoryUpdate.<BR>
-	 * <BR>
 	 */
 	@Override
 	public void consumeItem(int itemConsumeId, int itemCount)
@@ -9913,7 +9864,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return True if the L2PcInstance is a Mage.<BR>
-	 * <BR>
 	 */
 	public boolean isMageClass()
 	{
@@ -9928,7 +9878,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Set the type of Pet mounted (0 : none, 1 : Stridder, 2 : Wyvern) and send
 	 * a Server->Client packet InventoryUpdate to the L2PcInstance.<BR>
-	 * <BR>
 	 */
 	public boolean checkLandingState()
 	{
@@ -9983,7 +9932,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return the type of Pet mounted (0 : none, 1 : Stridder, 2 : Wyvern).<BR>
-	 * <BR>
 	 */
 	public int getMountType()
 	{
@@ -10019,7 +9967,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Disable the Inventory and create a new task to enable it after 1.5s.<BR>
-	 * <BR>
 	 */
 	public void tempInvetoryDisable()
 	{
@@ -10095,7 +10042,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Add a L2CubicInstance to the L2PcInstance _cubics.<BR>
-	 * <BR>
 	 */
 	public void addCubic(int id, int level)
 	{
@@ -10105,7 +10051,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Remove a L2CubicInstance from the L2PcInstance _cubics.<BR>
-	 * <BR>
 	 */
 	public void delCubic(int id)
 	{
@@ -10115,7 +10060,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Return the L2CubicInstance corresponding to the Identifier of the
 	 * L2PcInstance _cubics.<BR>
-	 * <BR>
 	 */
 	public L2CubicInstance getCubic(int id)
 	{
@@ -10131,7 +10075,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Return the modifier corresponding to the Enchant Effect of the Active
 	 * Weapon (Min : 127).<BR>
-	 * <BR>
 	 */
 	public int getEnchantEffect()
 	{
@@ -10146,7 +10089,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Set the _lastFolkNpc of the L2PcInstance corresponding to the last Folk
 	 * wich one the player talked.<BR>
-	 * <BR>
 	 */
 	public void setLastFolkNPC(L2FolkInstance folkNpc)
 	{
@@ -10156,7 +10098,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Return the _lastFolkNpc of the L2PcInstance corresponding to the last
 	 * Folk wich one the player talked.<BR>
-	 * <BR>
 	 */
 	public L2FolkInstance getLastFolkNPC()
 	{
@@ -10165,7 +10106,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Set the Silent Moving mode Flag.<BR>
-	 * <BR>
 	 */
 	public void setSilentMoving(boolean flag)
 	{
@@ -10174,7 +10114,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return True if the Silent Moving mode is active.<BR>
-	 * <BR>
 	 */
 	public boolean isSilentMoving()
 	{
@@ -10183,7 +10122,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Return True if L2PcInstance is a participant in the Festival of Darkness.<BR>
-	 * <BR>
 	 */
 	public boolean isFestivalParticipant()
 	{
@@ -10251,32 +10189,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					if (!summon)
 					{
-						if (itemId == 1463 || itemId == 1464 || itemId == 1465 || itemId == 1466 || itemId == 1467 || itemId == 1835 || itemId == 5789 /*
-																																						 * ||
-																																						 * itemId
-																																						 * ==
-																																						 * 6535
-																																						 * ||
-																																						 * itemId
-																																						 * ==
-																																						 * 6536
-																																						 * ||
-																																						 * itemId
-																																						 * ==
-																																						 * 6537
-																																						 * ||
-																																						 * itemId
-																																						 * ==
-																																						 * 6538
-																																						 * ||
-																																						 * itemId
-																																						 * ==
-																																						 * 6539
-																																						 * ||
-																																						 * itemId
-																																						 * ==
-																																						 * 6540
-																																						 */)
+						if (itemId == 1463 || itemId == 1464 || itemId == 1465 || itemId == 1466 || itemId == 1467 || itemId == 1835 || itemId == 5789) // || itemId == 6535 || itemId == 6536 || itemId == 6537 || itemId == 6538 || itemId == 6539 || itemId == 6540)
 						{
 							handler = ItemHandler.getInstance().getItemHandler(itemId);
 
@@ -11831,8 +11744,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (_reviveRequested != 1 || (!isDead() && !_revivePet) || (_revivePet && getPet() != null && !getPet().isDead()))
 			return;
 
-		// If character refuse a PhoenixBlessed autoress, cancel all buffs he
-		// had
+		// If character refuse a PhoenixBlessed autoress, cancel all buffs he had
 		if (answer == 0 && ((L2PlayableInstance) this).isPhoenixBlessed())
 		{
 			((L2PlayableInstance) this).stopPhoenixBlessing(null);
@@ -11893,18 +11805,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		setProtection(false);
 	}
 
-	/**
-	 * @param expertiseIndex
-	 *        The expertiseIndex to set.
-	 */
 	public void setExpertiseIndex(int expertiseIndex)
 	{
 		_expertiseIndex = expertiseIndex;
 	}
 
-	/**
-	 * @return Returns the expertiseIndex.
-	 */
 	public int getExpertiseIndex()
 	{
 		return _expertiseIndex;
@@ -12225,34 +12130,21 @@ public final class L2PcInstance extends L2PlayableInstance
 		_validBypass2.clear();
 	}
 
-	/**
-	 * @return Returns the inBoat.
-	 */
 	public boolean isInBoat()
 	{
 		return _inBoat;
 	}
 
-	/**
-	 * @param inBoat
-	 *        The inBoat to set.
-	 */
 	public void setInBoat(boolean inBoat)
 	{
 		_inBoat = inBoat;
 	}
 
-	/**
-	 * @return
-	 */
 	public L2BoatInstance getBoat()
 	{
 		return _boat;
 	}
 
-	/**
-	 * @param boat
-	 */
 	public void setBoat(L2BoatInstance boat)
 	{
 		_boat = boat;
@@ -12268,9 +12160,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _inCrystallize;
 	}
 
-	/**
-	 * @return
-	 */
 	public Point3D getInBoatPosition()
 	{
 		return _inBoatPosition;
@@ -12612,13 +12501,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				else if (lureid == 6520 || lureid == 6523 || lureid == 6526 || (lureid >= 8505 && lureid <= 8513) || (lureid >= 7610 && lureid <= 7613) || (lureid >= 7807 && lureid <= 7809) || (lureid >= 8484 && lureid <= 8486))
 				{
-					// grade,
-																																																									// beginner,
-																																																									// prize-winning
-																																																									// &
-																																																									// quest
-																																																									// special
-																																																									// bait
+					// grade, beginner, prize-winning & quest special bait
 					checkDelay = Math.round((float) (_fish.getGutsCheckTime() * (1.00)));
 				}
 				else if (lureid == 6521 || lureid == 6524 || lureid == 6527 || lureid == 8507 || lureid == 8510 || lureid == 8513)
@@ -13069,7 +12952,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Get the current skill in use or return null.<BR>
-	 * <BR>
 	 */
 	public SkillDat getCurrentSkill()
 	{
@@ -13093,7 +12975,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Create a new SkillDat object and set the player _currentSkill.<BR>
-	 * <BR>
 	 */
 	public void setCurrentSkill(L2Skill currentSkill, boolean ctrlPressed, boolean shiftPressed)
 	{
@@ -13123,7 +13004,6 @@ public final class L2PcInstance extends L2PlayableInstance
 
 	/**
 	 * Create a new SkillDat object and queue it in the player _queuedSkill.<BR>
-	 * <BR>
 	 */
 	public void setQueuedSkill(L2Skill queuedSkill, boolean ctrlPressed, boolean shiftPressed)
 	{
@@ -13278,17 +13158,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 	}
 
-	/**
-	 * @return
-	 */
 	public int getPowerGrade()
 	{
 		return _powerGrade;
 	}
 
-	/**
-	 * @return
-	 */
 	public void setPowerGrade(int power)
 	{
 		_powerGrade = power;
@@ -14255,22 +14129,11 @@ public final class L2PcInstance extends L2PlayableInstance
 		_currentPetSkill = new SkillDat(currentSkill, ctrlPressed, shiftPressed);
 	}
 
-	/**
-	 * Checks if is stored.
-	 * 
-	 * @return true, if is stored
-	 */
 	public boolean isStored()
 	{
 		return _isStored;
 	}
 
-	/**
-	 * Sets the stored.
-	 * 
-	 * @param a
-	 *        the new stored
-	 */
 	public void setStored(boolean a)
 	{
 		_isStored = a;

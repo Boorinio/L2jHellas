@@ -50,8 +50,8 @@ public class BoatManager
 	}
 
 	private Map<Integer, L2BoatInstance> _staticItems = new FastMap<Integer, L2BoatInstance>();
-	@SuppressWarnings("unused")
-	private boolean _initialized;
+
+	public boolean _initialized;
 
 	public BoatManager()
 	{

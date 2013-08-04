@@ -25,11 +25,11 @@ import java.util.Locale;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
 import com.l2jhellas.tools.ngl.ConsoleLocalizator;
 import com.l2jhellas.tools.ngl.LocaleCodes;
+import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**

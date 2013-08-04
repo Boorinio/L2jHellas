@@ -21,7 +21,6 @@ import Extensions.RankSystem.Util.DDSConverter;
 import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -55,7 +54,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 
 		if (command.startsWith("reward1"))
 		{
-			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID1, ExternalConfig.VOTE_REWARD_AMOUNT1, player, null);
+			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID1, Config.VOTE_REWARD_AMOUNT1, player, null);
 			player.sendMessage("Wise choise!");
 			VoteManager.setHasNotVotedHop(player);
 			VoteManager.setHasNotVotedTop(player);
@@ -63,7 +62,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		}
 		if (command.startsWith("reward2"))
 		{
-			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID2, ExternalConfig.VOTE_REWARD_AMOUNT2, player, null);
+			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID2, Config.VOTE_REWARD_AMOUNT2, player, null);
 			player.sendMessage("Wise choise!");
 			VoteManager.setHasNotVotedHop(player);
 			VoteManager.setHasNotVotedTop(player);
@@ -71,7 +70,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		}
 		if (command.startsWith("reward3"))
 		{
-			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID3, ExternalConfig.VOTE_REWARD_AMOUNT3, player, null);
+			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID3, Config.VOTE_REWARD_AMOUNT3, player, null);
 			player.sendMessage("Wise choise!");
 			VoteManager.setHasNotVotedHop(player);
 			VoteManager.setHasNotVotedTop(player);
@@ -79,7 +78,7 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		}
 		if (command.startsWith("reward4"))
 		{
-			player.getInventory().addItem("reward", ExternalConfig.VOTE_REWARD_ID4, ExternalConfig.VOTE_REWARD_AMOUNT4, player, null);
+			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID4, Config.VOTE_REWARD_AMOUNT4, player, null);
 			player.sendMessage("Wise choise!");
 			VoteManager.setHasNotVotedHop(player);
 			VoteManager.setHasNotVotedTop(player);
@@ -247,12 +246,12 @@ public class L2VoteManagerInstance extends L2NpcInstance
 		tb.append("</center>");
 		tb.append("<center>");
 		tb.append("<td valign=\"top\"><font color=\"FF6600\">Choose your reward " + player.getName() + ".</font>");
-		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID1).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT1 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward1\" width=204 height=20>");
-		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID2).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT2 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward2\" width=204 height=20>");
-		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID3).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT3 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward3\" width=204 height=20>");
-		if (VoteManager.getTotalVotes(player) >= ExternalConfig.EXTRA_REW_VOTE_AM)
+		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID1).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT1 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward1\" width=204 height=20>");
+		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID2).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT2 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward2\" width=204 height=20>");
+		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID3).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT3 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward3\" width=204 height=20>");
+		if (VoteManager.getTotalVotes(player) >= Config.EXTRA_REW_VOTE_AM)
 		{
-			tb.append("<font color=\"FF6600\">Due to your votes you now have a 4th choise!</font><br><button value=\"Item:" + ItemTable.getInstance().getTemplate(ExternalConfig.VOTE_REWARD_ID4).getName() + "   Amount:" + ExternalConfig.VOTE_REWARD_AMOUNT4 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward4\" width=204 height=20>");
+			tb.append("<font color=\"FF6600\">Due to your votes you now have a 4th choise!</font><br><button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID4).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT4 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward4\" width=204 height=20>");
 		}
 		tb.append("</center>");
 

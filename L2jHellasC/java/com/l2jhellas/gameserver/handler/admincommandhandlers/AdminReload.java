@@ -24,7 +24,6 @@ import javax.script.ScriptException;
 import Extensions.Balancer.BalanceLoad;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -137,7 +136,6 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.startsWith("quests"))
 				{
-					String folder = "quests";
 					QuestManager.getInstance().reloadAllQuests();
 					QuestManager.getInstance().report();
 					sendReloadPage(activeChar);
@@ -145,7 +143,6 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("configs") || type.equals("config"))
 				{
-					ExternalConfig.load();
 					Config.load();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Server Configs has been Reloaded.");

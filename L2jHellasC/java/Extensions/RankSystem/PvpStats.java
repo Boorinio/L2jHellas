@@ -16,7 +16,7 @@ package Extensions.RankSystem;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 
 /**
  * Class contains Character PvP statistics like sum of kills, sum of rank points, etc.
@@ -264,7 +264,7 @@ public class PvpStats
 	public void onUpdateRankPoints()
 	{
 
-		for (FastMap.Entry<Integer, Rank> e = ExternalConfig.RANKS.head(), end = ExternalConfig.RANKS.tail(); (e = e.getNext()) != end;)
+		for (FastMap.Entry<Integer, Rank> e = Config.RANKS.head(), end = Config.RANKS.tail(); (e = e.getNext()) != end;)
 		{
 			// set up rank for current rank points:
 			if (e.getValue().getMinPoints() <= getTotalRankPoints())
@@ -275,9 +275,9 @@ public class PvpStats
 		}
 
 		// if not set any rank, set minimum rank:
-		if (ExternalConfig.RANKS.tail() != null)
+		if (Config.RANKS.tail() != null)
 		{
-			setRank(ExternalConfig.RANKS.tail().getValue());
+			setRank(Config.RANKS.tail().getValue());
 		}
 	}
 

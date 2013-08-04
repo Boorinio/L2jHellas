@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/L2jHellasC/java/com/l2jhellas/loginserver/LoginServer.java"/>
+<listEntry value="/L2JHellasC/java/com/l2jhellas/loginserver/LoginServer.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -14,7 +14,7 @@
 <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
 <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_default"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.l2jhellas.loginserver.LoginServer"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="L2jHellasC"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="L2JHellasC"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx64m"/>
 <booleanAttribute key="yk-capture-cpu-on-exit" value="false"/>
 <booleanAttribute key="yk-capture-memory-on-exit" value="false"/>

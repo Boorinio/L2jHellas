@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.shield.antibot;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -44,7 +44,7 @@ public class AntiAfk
 			player.boty = player.getY();
 			player.botz = player.getZ();
 		}
-		waitSecs(60 * ExternalConfig.MINUTES_AFK_PLAYERS);
+		waitSecs(60 * Config.MINUTES_AFK_PLAYERS);
 		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			if (player.botx == player.getX() && player.boty == player.getY() && player.botz == player.getZ() && !player.isGM())
@@ -53,7 +53,7 @@ public class AntiAfk
 				player.closeNetConnection();
 			}
 		}
-		waitSecs(60 * ExternalConfig.MINUTES_AFK_PLAYERS);
+		waitSecs(60 * Config.MINUTES_AFK_PLAYERS);
 		antiafksystem();
 	}
 

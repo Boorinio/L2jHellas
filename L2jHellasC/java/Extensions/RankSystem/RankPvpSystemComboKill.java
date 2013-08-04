@@ -17,7 +17,7 @@ package Extensions.RankSystem;
 import javolution.util.FastList;
 import javolution.util.FastMap.Entry;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
@@ -41,13 +41,13 @@ public class RankPvpSystemComboKill
 	 */
 	public boolean addVictim(int victimId, long killTime)
 	{
-		if (!ExternalConfig.COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED)
+		if (!Config.COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED)
 		{
 			setComboLevel(getComboLevel() + 1);
 			setLastKillTime(killTime);
 			return true;
 		}
-		else if (ExternalConfig.COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED)
+		else if (Config.COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED)
 		{
 			if (!getVictims().contains(victimId))
 			{
@@ -70,20 +70,20 @@ public class RankPvpSystemComboKill
 	{
 		String msg = null;
 		CreatureSay cs;
-		if (!ExternalConfig.COMBO_KILL_ALT_MESSAGES_ENABLED)
+		if (!Config.COMBO_KILL_ALT_MESSAGES_ENABLED)
 		{
-			if (ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.containsKey(getComboLevel()))
+			if (Config.COMBO_KILL_LOCAL_AREA_MESSAGES.containsKey(getComboLevel()))
 			{
-				msg = ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.get(getComboLevel());
+				msg = Config.COMBO_KILL_LOCAL_AREA_MESSAGES.get(getComboLevel());
 				msg = msg.replace("%killer%", killer.getName());
 				msg = msg.replace("%victim%", victim.getName());
 				msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
 				cs = new CreatureSay(0, Say2.SHOUT, "", msg);
 				Broadcast.toSelfAndKnownPlayers(killer, cs);
 			}
-			else if (ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.containsKey(getComboLevel()))
+			else if (Config.COMBO_KILL_GLOBAL_AREA_MESSAGES.containsKey(getComboLevel()))
 			{
-				msg = ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.get(getComboLevel());
+				msg = Config.COMBO_KILL_GLOBAL_AREA_MESSAGES.get(getComboLevel());
 				msg = msg.replace("%killer%", killer.getName());
 				msg = msg.replace("%victim%", victim.getName());
 				msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
@@ -93,18 +93,18 @@ public class RankPvpSystemComboKill
 			else
 			{
 				// global have higher priority than local.
-				if (ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getKey() != null && getComboLevel() > ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getKey())
+				if (Config.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getKey() != null && getComboLevel() > Config.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getKey())
 				{ // if combo size greater than global max key.
-					msg = ExternalConfig.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getValue();
+					msg = Config.COMBO_KILL_GLOBAL_AREA_MESSAGES.tail().getPrevious().getValue();
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
 					cs = new CreatureSay(0, Say2.SHOUT, "", msg);
 					Broadcast.toAllOnlinePlayers(cs);
 				}
-				else if (ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getKey() != null && getComboLevel() > ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getKey())
+				else if (Config.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getKey() != null && getComboLevel() > Config.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getKey())
 				{// if combo size greater than local max key.
-					msg = ExternalConfig.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getValue();
+					msg = Config.COMBO_KILL_LOCAL_AREA_MESSAGES.tail().getPrevious().getValue();
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
@@ -117,9 +117,9 @@ public class RankPvpSystemComboKill
 		{
 			if (getComboLevel() > 1)
 			{
-				if (ExternalConfig.COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL > 0 && getComboLevel() >= ExternalConfig.COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL)
+				if (Config.COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL > 0 && getComboLevel() >= Config.COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL)
 				{
-					msg = ExternalConfig.COMBO_KILL_ALT_MESSAGE;
+					msg = Config.COMBO_KILL_ALT_MESSAGE;
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
@@ -128,7 +128,7 @@ public class RankPvpSystemComboKill
 				}
 				else
 				{
-					msg = ExternalConfig.COMBO_KILL_ALT_MESSAGE;
+					msg = Config.COMBO_KILL_ALT_MESSAGE;
 					msg = msg.replace("%killer%", killer.getName());
 					msg = msg.replace("%victim%", victim.getName());
 					msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
@@ -148,11 +148,11 @@ public class RankPvpSystemComboKill
 	 */
 	public void shoutDefeatMessage(L2PcInstance killer)
 	{
-		if (ExternalConfig.COMBO_KILL_DEFEAT_MESSAGE_ENABLED)
+		if (Config.COMBO_KILL_DEFEAT_MESSAGE_ENABLED)
 		{
-			if (getComboLevel() >= ExternalConfig.COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL)
+			if (getComboLevel() >= Config.COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL)
 			{
-				String msg = ExternalConfig.COMBO_KILL_DEFEAT_MESSAGE;
+				String msg = Config.COMBO_KILL_DEFEAT_MESSAGE;
 				msg = msg.replace("%killer%", killer.getName());
 				msg = msg.replace("%combo_level%", Integer.toString(getComboLevel()));
 				CreatureSay cs = new CreatureSay(0, Say2.SHOUT, "", msg);
@@ -171,7 +171,7 @@ public class RankPvpSystemComboKill
 		if (getComboLevel() > 0)
 		{
 			// checking if combo size is in combo rank points ratio table:
-			Entry<Integer, Double> entry = ExternalConfig.COMBO_KILL_RANK_POINTS_RATIO.getEntry(getComboLevel());
+			Entry<Integer, Double> entry = Config.COMBO_KILL_RANK_POINTS_RATIO.getEntry(getComboLevel());
 
 			if (entry != null)
 			{
@@ -179,7 +179,7 @@ public class RankPvpSystemComboKill
 			}
 
 			// if not, then check the last element of table. Reason: combo size can be greater than max table value, then killer should get max ratio:
-			Entry<Integer, Double> tail = ExternalConfig.COMBO_KILL_RANK_POINTS_RATIO.tail().getPrevious();
+			Entry<Integer, Double> tail = Config.COMBO_KILL_RANK_POINTS_RATIO.tail().getPrevious();
 
 			if (tail != null && tail.getKey() < getComboLevel())
 			{

@@ -24,7 +24,7 @@ import java.util.Calendar;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -43,7 +43,7 @@ public class PvpTable
 		Calendar c = Calendar.getInstance();
 		long startTime = c.getTimeInMillis();
 
-		if (ExternalConfig.DATABASE_CLEANER_ENABLED)
+		if (Config.DATABASE_CLEANER_ENABLED)
 		{
 			cleanPvpTable();
 		}
@@ -54,7 +54,7 @@ public class PvpTable
 		long endTime = c.getTimeInMillis();
 		System.out.println(" - PvpTable loaded " + (this.getPvpTable().size()) + " objects in " + (endTime - startTime) + " ms.");
 
-		ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), ExternalConfig.PVP_TABLE_UPDATE_INTERVAL);
+		ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), Config.PVP_TABLE_UPDATE_INTERVAL);
 	}
 
 	public static PvpTable getInstance()
@@ -342,7 +342,7 @@ public class PvpTable
 
 			// calculate ignore time:
 			Calendar c = Calendar.getInstance();
-			long ignoreTime = c.getTimeInMillis() - ExternalConfig.DATABASE_CLEANER_REPEAT_TIME;
+			long ignoreTime = c.getTimeInMillis() - Config.DATABASE_CLEANER_REPEAT_TIME;
 
 			statement.setLong(1, ignoreTime);
 			statement.execute();
@@ -351,7 +351,7 @@ public class PvpTable
 		{
 			e.printStackTrace();
 		}
-		System.out.println("Cleaned Pvp Table with players who are inactive for longer than " + Math.round((double) ExternalConfig.DATABASE_CLEANER_REPEAT_TIME / 86400000) + " day(s).");
+		System.out.println("Cleaned Pvp Table with players who are inactive for longer than " + Math.round((double) Config.DATABASE_CLEANER_REPEAT_TIME / 86400000) + " day(s).");
 	}
 
 	private static class PvpTableSchedule implements Runnable
@@ -367,7 +367,7 @@ public class PvpTable
 			if (!TopTable.getInstance().isUpdating())
 			{
 				PvpTable.getInstance().updateDB();
-				ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), ExternalConfig.PVP_TABLE_UPDATE_INTERVAL);
+				ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), Config.PVP_TABLE_UPDATE_INTERVAL);
 			}
 			else
 			{

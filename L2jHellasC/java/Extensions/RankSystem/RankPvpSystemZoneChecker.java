@@ -17,7 +17,7 @@ package Extensions.RankSystem;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -33,11 +33,11 @@ public class RankPvpSystemZoneChecker
 	 */
 	public static final boolean isInPvpAllowedZone(L2PcInstance activeChar)
 	{
-		if (ExternalConfig.ALLOWED_ZONES_IDS.size() == 0)
+		if (Config.ALLOWED_ZONES_IDS.size() == 0)
 		{
 			return true;
 		}
-		for (FastList.Node<Integer> n = ExternalConfig.ALLOWED_ZONES_IDS.head(), end = ExternalConfig.ALLOWED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
+		for (FastList.Node<Integer> n = Config.ALLOWED_ZONES_IDS.head(), end = Config.ALLOWED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
 		{
 			if (activeChar.isInsideZone(n.getValue().byteValue()))
 			{
@@ -55,7 +55,7 @@ public class RankPvpSystemZoneChecker
 	 */
 	public static final boolean isInPvpRestrictedZone(L2PcInstance activeChar)
 	{
-		for (FastList.Node<Integer> n = ExternalConfig.RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
+		for (FastList.Node<Integer> n = Config.RESTRICTED_ZONES_IDS.head(), end = Config.RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
 		{
 			if (activeChar.isInsideZone(n.getValue().byteValue()))
 			{
@@ -73,7 +73,7 @@ public class RankPvpSystemZoneChecker
 	 */
 	public static final boolean isInDMRestrictedZone(L2PcInstance activeChar)
 	{
-		for (FastList.Node<Integer> n = ExternalConfig.DEATH_MANAGER_RESTRICTED_ZONES_IDS.head(), end = ExternalConfig.DEATH_MANAGER_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
+		for (FastList.Node<Integer> n = Config.DEATH_MANAGER_RESTRICTED_ZONES_IDS.head(), end = Config.DEATH_MANAGER_RESTRICTED_ZONES_IDS.tail(); (n = n.getNext()) != end;)
 		{
 			if (activeChar.isInsideZone(n.getValue().byteValue()))
 			{
@@ -91,7 +91,7 @@ public class RankPvpSystemZoneChecker
 	 */
 	public static final double getZoneBonusRatio(L2PcInstance player)
 	{
-		for (FastMap.Entry<Integer, Double> e = ExternalConfig.RANK_POINTS_BONUS_ZONES_IDS.head(), end = ExternalConfig.RANK_POINTS_BONUS_ZONES_IDS.tail(); (e = e.getNext()) != end;)
+		for (FastMap.Entry<Integer, Double> e = Config.RANK_POINTS_BONUS_ZONES_IDS.head(), end = Config.RANK_POINTS_BONUS_ZONES_IDS.tail(); (e = e.getNext()) != end;)
 		{
 			if (player.isInsideZone(e.getKey().byteValue()))
 			{

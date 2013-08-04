@@ -22,7 +22,6 @@ import javolution.util.FastMap.Entry;
 import Extensions.RankSystem.Rank;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 
@@ -39,7 +38,7 @@ public class ServerSideImage
 	private FastMap<Integer, File> _nameImages = new FastMap<Integer, File>();
 	private FastMap<Integer, File> _expImages = new FastMap<Integer, File>();
 
-	public final int IMG_PREFIX = ExternalConfig.IMAGE_PREFIX;
+	public final int IMG_PREFIX = Config.IMAGE_PREFIX;
 
 	private ServerSideImage()
 	{
@@ -65,7 +64,7 @@ public class ServerSideImage
 	public void load()
 	{
 
-		for (Entry<Integer, Rank> e = ExternalConfig.RANKS.head(), end = ExternalConfig.RANKS.tail(); (e = e.getNext()) != end;)
+		for (Entry<Integer, Rank> e = Config.RANKS.head(), end = Config.RANKS.tail(); (e = e.getNext()) != end;)
 		{
 
 			String src = null;

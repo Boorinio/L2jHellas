@@ -76,8 +76,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -85,15 +84,14 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		if (inventory != null)
 		{
 			L2ItemInstance item = inventory.getItemByObjectId(_objectId);
-			if (item == null || item.isWear())
+			if ((item == null) || item.isWear())
 			{
-				ActionFailed af = new ActionFailed();
-				activeChar.sendPacket(af);
+				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 
 			int itemId = item.getItemId();
-			if ((itemId >= 6611 && itemId <= 6621) || itemId == 6842)
+			if (((itemId >= 6611) && (itemId <= 6621)) || (itemId == 6842))
 				return;
 
 			if (_count > item.getCount())
@@ -119,8 +117,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -130,8 +127,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -141,8 +137,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
@@ -152,8 +147,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			SystemMessage sm = new SystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
 			activeChar.sendPacket(sm);
 			sm = null;
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

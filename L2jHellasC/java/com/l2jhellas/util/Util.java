@@ -59,29 +59,11 @@ public final class Util
 		return angleTarget;
 	}
 
-	/**
-	 * @param x1
-	 * @param y1
-	 * @param z1
-	 * @param x2
-	 * @param y2
-	 * @return
-	 */
 	public static double calculateDistance(int x1, int y1, int z1, int x2, int y2)
 	{
 		return calculateDistance(x1, y1, 0, x2, y2, 0, false);
 	}
 
-	/**
-	 * @param x1
-	 * @param y1
-	 * @param z1
-	 * @param x2
-	 * @param y2
-	 * @param z2
-	 * @param includeZAxis
-	 * @return
-	 */
 	public static double calculateDistance(int x1, int y1, int z1, int x2, int y2, int z2, boolean includeZAxis)
 	{
 		double dx = (double) x1 - x2;
@@ -96,12 +78,6 @@ public final class Util
 			return Math.sqrt((dx * dx) + (dy * dy));
 	}
 
-	/**
-	 * @param obj1
-	 * @param obj2
-	 * @param includeZAxis
-	 * @return
-	 */
 	public static double calculateDistance(L2Object obj1, L2Object obj2, boolean includeZAxis)
 	{
 		if (obj1 == null || obj2 == null)
@@ -109,14 +85,6 @@ public final class Util
 		return calculateDistance(obj1.getPosition().getX(), obj1.getPosition().getY(), obj1.getPosition().getZ(), obj2.getPosition().getX(), obj2.getPosition().getY(), obj2.getPosition().getZ(), includeZAxis);
 	}
 
-	/**
-	 * Capitalizes the first letter of a string, and returns the result.<BR>
-	 * (Based on ucfirst() function of PHP)
-	 * 
-	 * @param String
-	 *        str
-	 * @return String containing the modified string.
-	 */
 	public static String capitalizeFirst(String str)
 	{
 		str = str.trim();
@@ -127,9 +95,6 @@ public final class Util
 		return str;
 	}
 
-	/**
-	 * @param print
-	 */
 	public static void printSection(String print)
 	{
 		int maxlength = 79;
@@ -146,14 +111,6 @@ public final class Util
 		System.out.println(print);
 	}
 
-	/**
-	 * Capitalizes the first letter of every "word" in a string.<BR>
-	 * (Based on ucwords() function of PHP)
-	 * 
-	 * @param String
-	 *        str
-	 * @return String containing the modified string.
-	 */
 	public static String capitalizeWords(String str)
 	{
 		char[] charArray = str.toCharArray();
@@ -173,13 +130,6 @@ public final class Util
 		return result;
 	}
 
-	/**
-	 * @param range
-	 * @param obj1
-	 * @param obj2
-	 * @param includeZAxis
-	 * @return
-	 */
 	public static boolean checkIfInRange(int range, L2Object obj1, L2Object obj2, boolean includeZAxis)
 	{
 		if (obj1 == null || obj2 == null)
@@ -211,33 +161,17 @@ public final class Util
 		}
 	}
 
-	/**
-	 * @param heading
-	 * @return
-	 */
 	public static double convertHeadingToDegree(int heading)
 	{
 		double degree = heading / 182.044444444;
 		return degree;
 	}
 
-	/**
-	 * @param obj1
-	 * @param obj2
-	 * @return
-	 */
 	public final static int calculateHeadingFrom(L2Object obj1, L2Object obj2)
 	{
 		return calculateHeadingFrom(obj1.getX(), obj1.getY(), obj2.getX(), obj2.getY());
 	}
 
-	/**
-	 * @param obj1X
-	 * @param obj1Y
-	 * @param obj2X
-	 * @param obj2Y
-	 * @return
-	 */
 	public final static int calculateHeadingFrom(int obj1X, int obj1Y, int obj2X, int obj2Y)
 	{
 		double angleTarget = Math.toDegrees(Math.atan2(obj2Y - obj1Y, obj2X - obj1X));
@@ -246,11 +180,6 @@ public final class Util
 		return (int) (angleTarget * 182.044444444);
 	}
 
-	/**
-	 * @param dx
-	 * @param dy
-	 * @return
-	 */
 	public final static int calculateHeadingFrom(double dx, double dy)
 	{
 		double angleTarget = Math.toDegrees(Math.atan2(dy, dx));
@@ -259,13 +188,6 @@ public final class Util
 		return (int) (angleTarget * 182.044444444);
 	}
 
-	/**
-	 * Returns the number of "words" in a given string.
-	 * 
-	 * @param String
-	 *        str
-	 * @return int numWords
-	 */
 	public static int countWords(String str)
 	{
 		return str.trim().split(" ").length;
@@ -325,10 +247,6 @@ public final class Util
 		return (Math.round(val * exponent) / exponent);
 	}
 
-	/**
-	 * @param text
-	 * @return
-	 */
 	public static boolean isAlphaNumeric(String text)
 	{
 		if (text == null)
@@ -414,13 +332,11 @@ public final class Util
 	public static void printRuntimeInfo()
 	{
 		// 1024 * 1024 = 1048576
-		_log.info("");
 		_log.info("Runtime Information");
 		_log.info("Maximum Memory Size: " + (Runtime.getRuntime().maxMemory() / 1048576) + "MB");
 		_log.info("Total Memory Size: " + (Runtime.getRuntime().totalMemory() / 1048576) + "MB");
 		_log.info("Used Memory Size: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576) + "MB");
 		_log.info("Free Memory Size: " + (Runtime.getRuntime().freeMemory() / 1048576) + "MB");
-		_log.info("");
 	}
 
 	/**
@@ -467,10 +383,6 @@ public final class Util
 		printJvmInfo();
 	}
 
-	/**
-	 * @param color
-	 * @return
-	 */
 	public static String reverseColor(String color)
 	{
 		char[] ch1 = color.toCharArray();
@@ -485,31 +397,16 @@ public final class Util
 		return new String(ch2);
 	}
 
-	/**
-	 * converts a given time from minutes -> milliseconds
-	 * 
-	 * @param string
-	 * @return
-	 */
 	public static int convertMinutesToMiliseconds(int minutesToConvert)
 	{
 		return minutesToConvert * 60000;
 	}
 
-	/**
-	 * @param ipAddress
-	 * @return
-	 */
 	public static boolean isInternalIP(String ipAddress)
 	{
 		return (ipAddress.startsWith("192.168.") || ipAddress.startsWith("10.") || ipAddress.startsWith("127.0.0.1"));
 	}
 
-	/**
-	 * @param data
-	 * @param len
-	 * @return
-	 */
 	public static String printData(byte[] data, int len)
 	{
 		TextBuilder result = new TextBuilder();

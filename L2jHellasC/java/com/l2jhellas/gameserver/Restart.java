@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 
 public class Restart
 {
@@ -57,7 +57,7 @@ public class Restart
 			Calendar StartTime = null;
 			long flush2 = 0, datime = 0;
 			int count = 0;
-			for (String timeOfDay : ExternalConfig.RESTART_INTERVAL_BY_TIME_OF_DAY)
+			for (String timeOfDay : Config.RESTART_INTERVAL_BY_TIME_OF_DAY)
 			{
 				StartTime = Calendar.getInstance();
 				StartTime.setLenient(true);
@@ -97,7 +97,7 @@ public class Restart
 		public void run()
 		{
 			_log.log(Level.INFO, getClass().getSimpleName() + ": Start automated restart GameServer.");
-			Shutdown.getInstance().autoRestart(ExternalConfig.RESTART_SECONDS);
+			Shutdown.getInstance().autoRestart(Config.RESTART_SECONDS);
 		}
 	}
 }

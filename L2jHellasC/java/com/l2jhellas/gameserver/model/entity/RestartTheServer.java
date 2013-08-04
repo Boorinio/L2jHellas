@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.entity;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Shutdown;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -27,7 +27,7 @@ public class RestartTheServer
 	{
 		RestartVoteVariable e = new RestartVoteVariable();
 
-		if (e.getVoteCount("restart") > ExternalConfig.VOTES_NEEDED_FOR_RESTART)
+		if (e.getVoteCount("restart") > Config.VOTES_NEEDED_FOR_RESTART)
 			Shutdown.getInstance().startShutdown(activeChar, 60, restart);
 	}
 }

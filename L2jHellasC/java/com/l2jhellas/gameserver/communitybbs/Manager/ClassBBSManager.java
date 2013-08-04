@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -50,24 +50,24 @@ public class ClassBBSManager extends BaseBBSManager
 		int level = activeChar.getLevel();
 		TextBuilder html = new TextBuilder("");
 		html.append("<center>");
-		if ((ExternalConfig.ALLOW_CLASS_MASTERS_LISTCB.isEmpty()) || (!ExternalConfig.ALLOW_CLASS_MASTERS_LISTCB.contains(Integer.valueOf(jobLevel))))
+		if ((Config.ALLOW_CLASS_MASTERS_LISTCB.isEmpty()) || (!Config.ALLOW_CLASS_MASTERS_LISTCB.contains(Integer.valueOf(jobLevel))))
 		{
 			jobLevel = 3;
 		}
-		if (((level >= 20) && (jobLevel == 0)) || ((level >= 40) && (jobLevel == 1)) || ((level >= 76) && (jobLevel == 2) && (ExternalConfig.ALLOW_CLASS_MASTERS_LISTCB.contains(Integer.valueOf(jobLevel)))))
+		if (((level >= 20) && (jobLevel == 0)) || ((level >= 40) && (jobLevel == 1)) || ((level >= 76) && (jobLevel == 2) && (Config.ALLOW_CLASS_MASTERS_LISTCB.contains(Integer.valueOf(jobLevel)))))
 		{
 			html.append("<br>");
 			html.append("<center>");
 			html.append("<table width=600>");
 			html.append("<tr><td><center>");
-			L2Item item = ItemTable.getInstance().getTemplate(ExternalConfig.CLASS_MASTERS_PRICE_ITEMCB);
+			L2Item item = ItemTable.getInstance().getTemplate(Config.CLASS_MASTERS_PRICE_ITEMCB);
 			html.append("You Have To Pay: <font color=\"LEVEL\">");
-			html.append(Util.formatAdena(ExternalConfig.CLASS_MASTERS_PRICE_LISTCB[jobLevel])).append("</font> <font color=\"LEVEL\">").append(item.getName()).append("</font> for proffesion.<br>");
+			html.append(Util.formatAdena(Config.CLASS_MASTERS_PRICE_LISTCB[jobLevel])).append("</font> <font color=\"LEVEL\">").append(item.getName()).append("</font> for proffesion.<br>");
 			for (ClassId cid : ClassId.values())
 			{
 				if ((cid.childOf(classId)) && (cid.level() == (classId.level() + 1)))
 				{
-					html.append("<br><center><button value=\"").append(cid.name()).append("\" action=\"bypass -h _bbsclass;change_class;").append(cid.getId()).append(";").append(ExternalConfig.CLASS_MASTERS_PRICE_LISTCB[jobLevel]).append("\" width=250 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></center>");
+					html.append("<br><center><button value=\"").append(cid.name()).append("\" action=\"bypass -h _bbsclass;change_class;").append(cid.getId()).append(";").append(Config.CLASS_MASTERS_PRICE_LISTCB[jobLevel]).append("\" width=250 height=25 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></center>");
 				}
 			}
 			html.append("</center></td>");
@@ -117,15 +117,15 @@ public class ClassBBSManager extends BaseBBSManager
 			st.nextToken();
 			short val = Short.parseShort(st.nextToken());
 			int price = Integer.parseInt(st.nextToken());
-			L2Item item = ItemTable.getInstance().getTemplate(ExternalConfig.CLASS_MASTERS_PRICE_ITEMCB);
+			L2Item item = ItemTable.getInstance().getTemplate(Config.CLASS_MASTERS_PRICE_ITEMCB);
 			L2ItemInstance pay = activeChar.getInventory().getItemByItemId(item.getItemId());
 			if ((pay != null) && (pay.getCount() >= price))
 			{
-				activeChar.destroyItemByItemId("ClassMaster", ExternalConfig.CLASS_MASTERS_PRICE_ITEMCB, price, activeChar, true);
+				activeChar.destroyItemByItemId("ClassMaster", Config.CLASS_MASTERS_PRICE_ITEMCB, price, activeChar, true);
 				changeClass(activeChar, val);
 				parsecmd("_bbsclass;", activeChar);
 			}
-			else if (ExternalConfig.CLASS_MASTERS_PRICE_ITEMCB == 57)
+			else if (Config.CLASS_MASTERS_PRICE_ITEMCB == 57)
 			{
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			}

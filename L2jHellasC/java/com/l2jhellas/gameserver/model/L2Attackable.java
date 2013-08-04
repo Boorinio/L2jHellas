@@ -24,7 +24,6 @@ import javolution.util.FastMap;
 import Extensions.RaidEvent.L2RaidEvent;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -341,11 +340,11 @@ public class L2Attackable extends L2NpcInstance
 	private L2CommandChannel _firstCommandChannelAttacked = null;
 	private CommandChannelTimer _commandChannelTimer = null;
 	
-	/** True if a Soul Crystal was successfuly used on the L2Attackable */
+	/** True if a Soul Crystal was successfully used on the L2Attackable */
 	private boolean _absorbed;
 	
 	/**
-	 * The table containing all L2PcInstance that successfuly absorbed the soul
+	 * The table containing all L2PcInstance that successfully absorbed the soul
 	 * of this L2Attackable
 	 */
 	private final FastMap<L2PcInstance, AbsorberInfo> _absorbersList = new FastMap<L2PcInstance, AbsorberInfo>().setShared(true);
@@ -1248,7 +1247,7 @@ public class L2Attackable extends L2NpcInstance
 	}
 	
 	/**
-	 * Calculates quantity of items for specific drop acording to current
+	 * Calculates quantity of items for specific drop according to current
 	 * situation <br>
 	 * 
 	 * @param drop
@@ -1788,7 +1787,7 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && !isRaid())
 					{
 						player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
-						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 						{
 							PrivateAntiBot.privateantibot(player);//Anti bot security question
 						}
@@ -1824,7 +1823,7 @@ public class L2Attackable extends L2NpcInstance
 			if (Config.AUTO_LOOT)
 			{
 				player.doAutoLoot(this, item);
-				if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 				{
 					PrivateAntiBot.privateantibot(player);
 				}
@@ -1851,7 +1850,7 @@ public class L2Attackable extends L2NpcInstance
 				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 					{
 						PrivateAntiBot.privateantibot(player);
 					}
@@ -1887,7 +1886,7 @@ public class L2Attackable extends L2NpcInstance
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-							if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 							{
 								PrivateAntiBot.privateantibot(player);
 							}
@@ -1914,7 +1913,7 @@ public class L2Attackable extends L2NpcInstance
 				{
 					DropItem(player, item);
 				}
-				if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 				{
 					PrivateAntiBot.privateantibot(player);
 				}
@@ -1941,7 +1940,7 @@ public class L2Attackable extends L2NpcInstance
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-							if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+							if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 							{
 								PrivateAntiBot.privateantibot(player);
 							}
@@ -1963,7 +1962,7 @@ public class L2Attackable extends L2NpcInstance
 				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 					{
 						PrivateAntiBot.privateantibot(player);
 					}
@@ -1986,7 +1985,7 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 						{
 							PrivateAntiBot.privateantibot(player);
 						}
@@ -2008,7 +2007,7 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 						{
 							PrivateAntiBot.privateantibot(player);
 						}
@@ -2030,7 +2029,7 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 						{
 							PrivateAntiBot.privateantibot(player);
 						}
@@ -2051,7 +2050,7 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 						{
 							PrivateAntiBot.privateantibot(player);
 						}
@@ -2073,7 +2072,7 @@ public class L2Attackable extends L2NpcInstance
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-						if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 						{
 							PrivateAntiBot.privateantibot(player);
 						}

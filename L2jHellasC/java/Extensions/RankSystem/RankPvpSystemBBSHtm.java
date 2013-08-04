@@ -16,7 +16,7 @@ package Extensions.RankSystem;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -44,7 +44,7 @@ public final class RankPvpSystemBBSHtm
 
 			file = prepareHeaderName(page, file);
 
-			if (ExternalConfig.RANKS_ENABLED)
+			if (Config.RANKS_ENABLED)
 			{
 
 				file = file.replace("%button_1%", getNextButton(page));
@@ -166,10 +166,10 @@ public final class RankPvpSystemBBSHtm
 			if (!playerInfo)
 			{
 
-				if (ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT > 0)
+				if (Config.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT > 0)
 				{
 
-					file = file.replace("%message%", "You're out of 500, or you did not kill anyone or even killed more than " + Math.round((double) ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT / 86400000) + " days ago.");
+					file = file.replace("%message%", "You're out of 500, or you did not kill anyone or even killed more than " + Math.round((double) Config.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT / 86400000) + " days ago.");
 
 				}
 				else
@@ -206,13 +206,13 @@ public final class RankPvpSystemBBSHtm
 			if (page == 1)
 			{
 
-				list += "<button value=\"Refresh\" action=\"bypass _bbsrps:1\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\">";
+				list += "<button value=\"Refresh\" action=\"bypass _bbsrps:1\" width=" + Config.BUTTON_W + " height=" + Config.BUTTON_H + " back=\"" + Config.BUTTON_DOWN + "\" fore=\"" + Config.BUTTON_UP + "\">";
 
 			}
 			else
 			{
 
-				list += "<button value=\"Refresh\" action=\"bypass _bbsrps:0\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\">";
+				list += "<button value=\"Refresh\" action=\"bypass _bbsrps:0\" width=" + Config.BUTTON_W + " height=" + Config.BUTTON_H + " back=\"" + Config.BUTTON_DOWN + "\" fore=\"" + Config.BUTTON_UP + "\">";
 
 			}
 
@@ -287,7 +287,7 @@ public final class RankPvpSystemBBSHtm
 
 			if (page == 0)
 			{
-				return "<button value=\">>\" action=\"bypass _bbsrps:1\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\">";
+				return "<button value=\">>\" action=\"bypass _bbsrps:1\" width=" + Config.BUTTON_W + " height=" + Config.BUTTON_H + " back=\"" + Config.BUTTON_DOWN + "\" fore=\"" + Config.BUTTON_UP + "\">";
 			}
 
 			return "&nbsp;";
@@ -304,7 +304,7 @@ public final class RankPvpSystemBBSHtm
 
 			if (page == 1)
 			{
-				return "<button value=\"<<\" action=\"bypass _bbsrps:0\" width=" + ExternalConfig.BUTTON_W + " height=" + ExternalConfig.BUTTON_H + " back=\"" + ExternalConfig.BUTTON_DOWN + "\" fore=\"" + ExternalConfig.BUTTON_UP + "\">";
+				return "<button value=\"<<\" action=\"bypass _bbsrps:0\" width=" + Config.BUTTON_W + " height=" + Config.BUTTON_H + " back=\"" + Config.BUTTON_DOWN + "\" fore=\"" + Config.BUTTON_UP + "\">";
 			}
 
 			return "&nbsp;";
@@ -315,8 +315,7 @@ public final class RankPvpSystemBBSHtm
 
 	private static final String getRefreshTime()
 	{
-
-		long time = ExternalConfig.TOP_TABLE_UPDATE_INTERVAL;
+		long time = Config.TOP_TABLE_UPDATE_INTERVAL;
 
 		long timeHours = time / (60 * 60 * 1000);
 		long timeMinutes = (time % (60 * 60 * 1000)) / (60 * 1000);
@@ -326,21 +325,15 @@ public final class RankPvpSystemBBSHtm
 
 		if (timeHours > 0 && timeMinutes > 0)
 		{
-
 			return H + " " + (timeHours == 1 ? "hour" : "hours") + " and " + M + " " + (timeMinutes == 1 ? "minute" : "minutes");
-
 		}
 		else if (timeHours == 0 && timeMinutes > 0)
 		{
-
 			return M + " " + (timeMinutes == 1 ? "minute" : "minutes");
-
 		}
 		else if (timeHours > 0 && timeMinutes == 0)
 		{
-
 			return H + " " + (timeHours == 1 ? "hour" : "hours");
-
 		}
 
 		return "less than 1 minute";

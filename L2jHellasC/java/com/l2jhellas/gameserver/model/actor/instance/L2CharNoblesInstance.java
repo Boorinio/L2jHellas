@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -120,14 +120,14 @@ public class L2CharNoblesInstance extends L2NpcInstance
 			player.sendMessage("You are already nobless.");
 			return;
 		}
-		else if (type == 1 && player.getInventory().getItemByItemId(ExternalConfig.NPC_NOBLESS_ID) == null || player.getInventory().getItemByItemId(ExternalConfig.NPC_NOBLESS_ID).getCount() < ExternalConfig.NPC_NOBLESS_QUANTITY)
+		else if (type == 1 && player.getInventory().getItemByItemId(Config.NPC_NOBLESS_ID) == null || player.getInventory().getItemByItemId(Config.NPC_NOBLESS_ID).getCount() < Config.NPC_NOBLESS_QUANTITY)
 		{
 			player.sendMessage("Not enough items.");
 			return;
 		}
 		else
 		{
-			player.destroyItemByItemId("Consume", ExternalConfig.NPC_NOBLESS_ID, ExternalConfig.NPC_NOBLESS_QUANTITY, player, false);
+			player.destroyItemByItemId("Consume", Config.NPC_NOBLESS_ID, Config.NPC_NOBLESS_QUANTITY, player, false);
 			MagicSkillUse MSU = new MagicSkillUse(player, player, 2023, 1, 1, 0);
 			player.sendPacket(MSU);
 			player.broadcastPacket(MSU);
@@ -148,14 +148,14 @@ public class L2CharNoblesInstance extends L2NpcInstance
 			html.setHtml(NPC_MENU);
 			sendHtmlMessage(player, html);
 		}
-		else if (window == 1 && ExternalConfig.NPC_NOBLES_ENABLE)
+		else if (window == 1 && Config.NPC_NOBLES_ENABLE)
 		{
 			tb = new TextBuilder();
 			tb.append("<html><title>Becoming a Nobles</title><body><center><br><br>");
 			tb.append("Here you can get a nobleman's status.<br>");
 			tb.append("<a action=\"bypass -h npc_%objectId%_setstatus 1\">Get the status of a nobleman</a>");
 			tb.append("Price:<br><table>");
-			tb.append("<tr><td>" + ExternalConfig.NPC_NOBLESS_QUANTITY + " <font color=\"LEVEL\">" + ItemTable.getInstance().getTemplate(ExternalConfig.NPC_NOBLESS_ID).getName() + "</font></td></tr><br>");
+			tb.append("<tr><td>" + Config.NPC_NOBLESS_QUANTITY + " <font color=\"LEVEL\">" + ItemTable.getInstance().getTemplate(Config.NPC_NOBLESS_ID).getName() + "</font></td></tr><br>");
 			tb.append("</table><br>This items can be droped by <font color=\"LEVEL\">RB's</font><br>For More info click on <a action=\"bypass -h npc_%objectId%_info\">List</a><br><button value=\"Back\" action=\"bypass -h npc_%objectId%_showwindow 0\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br>");
 
 			tb.append("</center></body></html>");

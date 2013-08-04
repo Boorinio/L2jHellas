@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -545,7 +544,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		activeChar.sendPacket(new EnchantResult(item.getEnchantLevel())); // FIXME i'm really not sure about this...
 		activeChar.sendPacket(new ItemList(activeChar, false)); // TODO update only the enchanted item
 		activeChar.broadcastUserInfo();
-		if (Rnd.get(100) <= ExternalConfig.ENCHANT_BOT_CHANCE && ExternalConfig.ALLOW_PRIVATE_ANTI_BOT)
+		if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 			PrivateAntiBot.privateantibot(activeChar);
 	}
 

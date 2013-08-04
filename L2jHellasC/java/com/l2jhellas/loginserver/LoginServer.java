@@ -30,7 +30,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.Server;
 import com.l2jhellas.status.Status;
 import com.l2jhellas.util.Util;
@@ -123,8 +122,8 @@ public class LoginServer
 			}
 			System.exit(1);
 		}
+		
 		Util.printSection("Login Server Controller");
-
 		try
 		{
 			LoginController.load();
@@ -348,9 +347,9 @@ public class LoginServer
 		{
 			_log.log(Level.WARNING, getClass().getSimpleName() + " IP Bans file (" + bannedFile.getName() + ") is missing or is a directory, skipped.");
 		}
-		if (ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART)
+		if (Config.LOGIN_SERVER_SCHEDULE_RESTART)
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + " Scheduled restart after " + ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART_TIME + " hours.");
+			_log.log(Level.INFO, getClass().getSimpleName() + " Scheduled restart after " + Config.LOGIN_SERVER_SCHEDULE_RESTART_TIME + " hours.");
 			_restartLoginServer = new LoginServerRestart();
 			_restartLoginServer.setDaemon(true);
 			_restartLoginServer.start();
@@ -371,7 +370,7 @@ public class LoginServer
 			{
 				try
 				{
-					wait(ExternalConfig.LOGIN_SERVER_SCHEDULE_RESTART_TIME * 60 * 60 * 1000);
+					wait(Config.LOGIN_SERVER_SCHEDULE_RESTART_TIME * 60 * 60 * 1000);
 				}
 				catch (InterruptedException e)
 				{

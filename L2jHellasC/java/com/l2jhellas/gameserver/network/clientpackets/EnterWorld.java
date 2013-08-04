@@ -26,9 +26,7 @@ import javolution.text.TextBuilder;
 import Extensions.RankSystem.PvpStats;
 import Extensions.RankSystem.PvpTable;
 
-import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.TaskPriority;
@@ -90,6 +88,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.shield.antibot.AntiBot;
+import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -247,18 +246,6 @@ public class EnterWorld extends L2GameClientPacket
 			else
 			{
 				AdminTable.getInstance().addGm(activeChar, true);
-			}
-			
-			if (Config.GM_TITLE_COLOR_ENABLED)
-			{
-				if (activeChar.getAccessLevel().getLevel() >= 100)
-				{
-					activeChar.getAppearance().setTitleColor(Config.ADMIN_TITLE_COLOR);
-				}
-				else if (activeChar.getAccessLevel().getLevel() >= 75)
-				{
-					activeChar.getAppearance().setTitleColor(Config.GM_TITLE_COLOR);
-				}
 			}
 		}
 		if (Config.RAID_SYSTEM_ENABLED)
@@ -434,7 +421,7 @@ public class EnterWorld extends L2GameClientPacket
 		PetitionManager.getInstance().checkPetitionMessages(activeChar);
 		
 		// Account Manager
-		if (ExternalConfig.ALLOW_ACCOUNT_MANAGER)
+		if (Config.ALLOW_ACCOUNT_MANAGER)
 		{
 			if (!L2AccountManagerInstance.hasSubEmail(activeChar))
 			{
@@ -476,18 +463,18 @@ public class EnterWorld extends L2GameClientPacket
 		}
 		
 		// Rank PvP System by Masterio:
-		if (ExternalConfig.NICK_COLOR_ENABLED || ExternalConfig.TITLE_COLOR_ENABLED)
+		if (Config.NICK_COLOR_ENABLED || Config.TITLE_COLOR_ENABLED)
 		{
 			PvpStats activeCharPvpStats = PvpTable.getInstance().getPvpStats(activeChar.getObjectId());
 			
-			if (ExternalConfig.NICK_COLOR_ENABLED)
+			if (Config.NICK_COLOR_ENABLED)
 			{
 				activeChar.getAppearance().setNameColor(activeCharPvpStats.getRank().getNickColor());
 				activeChar.sendPacket(new UserInfo(activeChar));
 				activeChar.broadcastUserInfo();
 			}
 			
-			if (ExternalConfig.TITLE_COLOR_ENABLED)
+			if (Config.TITLE_COLOR_ENABLED)
 			{
 				activeChar.getAppearance().setTitleColor(activeCharPvpStats.getRank().getTitleColor());
 				activeChar.broadcastTitleInfo();
@@ -684,7 +671,7 @@ public class EnterWorld extends L2GameClientPacket
 			VIP.addDisconnectedPlayer(activeChar);
 		}
 		
-		if (ExternalConfig.ALLOW_REMOTE_CLASS_MASTER)
+		if (Config.ALLOW_REMOTE_CLASS_MASTER)
 		{
 			ClassLevel lvlnow = PlayerClass.values()[activeChar.getClassId().getId()].getLevel();
 			if (activeChar.getLevel() >= 20 && lvlnow == ClassLevel.First)

@@ -40,8 +40,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
 	public static final int LANES = 8;
 	public static final int WINDOW_START = 0;
 
-	@SuppressWarnings("unused")
-	private static List<Race> _history;
+	public static List<Race> _history;
 	private static List<L2RaceManagerInstance> _managers;
 	protected static int _raceNumber = 4;
 

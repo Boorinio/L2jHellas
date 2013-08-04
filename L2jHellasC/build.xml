@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="L2jHellasC" default="Build" basedir=".">
+<project name="L2JHellasC" default="Build" basedir=".">
     <description>
     	This program is free software: you can redistribute it and/or modify it under
     	the terms of the GNU General Public License as published by the Free Software
@@ -21,6 +21,7 @@
     <property name="build.classes" location="${build}/classes"/>
     <property name="build.dist" location="${build}/dist"/>
 	<property name="build.dist.doc" location="${build.dist}/doc"/>
+	<property name="build.dist.doc.3rdPartyLicenses" location="${build.dist}/doc/3rdPartyLicenses"/>
 	<property name="build.dist.login" location="${build.dist}/login"/>
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
 	<property name="build.dist.libs" location="${build.dist}/libs"/>
@@ -37,6 +38,7 @@
         <mkdir dir="${build.classes}"/>
         <mkdir dir="${build.dist}" />
     	<mkdir dir="${build.dist.doc}" />
+    	<mkdir dir="${build.dist.doc.3rdPartyLicenses}" />
     	<mkdir dir="${build.dist.login}" />
 		<mkdir dir="${build.dist.game}" />
     	<mkdir dir="${build.dist.libs}" />
@@ -107,7 +109,6 @@
 			<fileset dir="dist">
 				<include name="startAccountManager.*"/>
 				<include name="startSQLAccountManager.*"/>
-				<include name="classpath.*"/>
 				<include name="LoginServer_loop.sh"/>
 				<include name="startLoginServer.*"/>
 				<include name="RegisterGameServer.*"/>
@@ -117,30 +118,23 @@
 			<fileset dir="dist">
 				<include name="GameServer_loop.sh"/>
 				<include name="startGameServer.*"/>
-				<include name="classpath.*"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.doc}">
 			<fileset dir="doc">
-				<include name="Info.txt"/>
+				<include name="*.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dist.doc.3rdPartyLicenses}">
+			<fileset dir="doc/3rdPartyLicenses">
+				<include name="*.txt"/>
 			</fileset>
 		</copy>
     	
-		<fixcrlf srcdir="${build.dist.game}" eol="lf" eof="remove" includes="**/*.sh"></fixcrlf>
-		<fixcrlf srcdir="${build.dist.login}" eol="lf" eof="remove" includes="**/*.sh"></fixcrlf>
-		<fixcrlf srcdir="${build.dist.game}" eol="crlf" eof="remove" includes="**/*.bat"></fixcrlf>
-		<fixcrlf srcdir="${build.dist.login}" eol="crlf" eof="remove" includes="**/*.bat"></fixcrlf>
-		<mkdir dir="${build.dist.game}/config" />
-		<mkdir dir="${build.dist.game}/config/Others" />
-		<mkdir dir="${build.dist.login}/config" />
-		<mkdir dir="${build.dist.login}/config/Network" />
-		<mkdir dir="${build.dist.login}/config/Others" />
-		
+		<!-- Game Server -->
 		<copy todir="${build.dist.game}/config">
 			<fileset dir="config">
-				<include name="*.ini"/>
-				<include name="*.txt"/>
-				<exclude name="LoginServer.ini" />
+				<include name="Telnet.ini"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config">
@@ -151,36 +145,56 @@
 		<copy todir="${build.dist.game}/config/Admin">
 			<fileset dir="config/Admin">
 				<include name="*.ini"/>
-				<include name="*.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dist.game}/config/Events">
+			<fileset dir="config/Events">
+				<include name="*.ini"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Main">
 			<fileset dir="config/Main">
 				<include name="*.ini"/>
-				<include name="*.txt"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Mods">
 			<fileset dir="config/Mods">
 				<include name="*.ini"/>
-				<include name="*.txt"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Network">
 			<fileset dir="config/Network">
-				<include name="Gameserver.ini"/>
-				<include name="hexid.txt"/>
-				<include name="mmocore.ini"/>
-				<include name="ServerName.xml"/>
-				<include name="default-ipconfig.xml"/>
-				<include name="ipconfig.xsd"/>
+				<include name="*.ini"/>
+				<include name="*.xml"/>
+				<exclude name="LoginServer.ini" />
 			</fileset>
 		</copy>
+		<copy todir="${build.dist.game}/config/Network/HexId">
+			<fileset dir="config/Network/HexId">
+				<include name="hexid.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dist.game}/config/Network/IPConfig">
+			<fileset dir="config/Network/IPConfig">
+				<include name="IPGameServer.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dist.game}/config/Olympiad">
+			<fileset dir="config/Olympiad">
+				<include name="*.ini"/>
+			</fileset>
+		</copy>
+		<!-- Login server -->
 		<copy todir="${build.dist.login}/config/Network">
 			<fileset dir="config/Network">
-				<include name="ServerName.xml"/>
-				<include name="mmocore.ini"/>
-				<include name="LoginServer.ini"/>
+				<include name="*.ini"/>
+				<include name="*.xml"/>
+				<exclude name="GameServer.ini"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dist.login}/config/Network/IPConfig">
+			<fileset dir="config/Network/IPConfig">
+				<include name="IPLoginServer.ini"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}/config/Others">

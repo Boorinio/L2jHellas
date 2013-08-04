@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.ExternalConfig;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -42,10 +42,10 @@ public class TopTable
 
 	private TopTable()
 	{
-		if (ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+		if (Config.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 		{
 			load();
-			ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), ExternalConfig.TOP_TABLE_UPDATE_INTERVAL);
+			ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), Config.TOP_TABLE_UPDATE_INTERVAL);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class TopTable
 	public void updateTopTable()
 	{
 
-		if (ExternalConfig.COMMUNITY_BOARD_TOP_LIST_ENABLED)
+		if (Config.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 		{
 
 			// lock table:
@@ -85,7 +85,7 @@ public class TopTable
 			getTopGatherersTable().clear();
 
 			// get minimum allowed time:
-			long sysTime = Calendar.getInstance().getTimeInMillis() - ExternalConfig.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT;
+			long sysTime = Calendar.getInstance().getTimeInMillis() - Config.COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT;
 
 			// load Tables:
 			PreparedStatement statement = null;
@@ -166,7 +166,7 @@ public class TopTable
 			if (!TopTable.getInstance().isUpdating())
 			{
 				TopTable.getInstance().updateTopTable();
-				ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), ExternalConfig.TOP_TABLE_UPDATE_INTERVAL);
+				ThreadPoolManager.getInstance().scheduleGeneral(new TopTableSchedule(), Config.TOP_TABLE_UPDATE_INTERVAL);
 			}
 			else
 			{

@@ -29,7 +29,6 @@ import Extensions.Vote.Tasks.MonthlyResetTask;
 import Extensions.Vote.Tasks.TriesResetTask;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -63,7 +62,7 @@ public class VoteManager
 		BufferedReader in = null;
 		try
 		{
-			url = new URL(ExternalConfig.VOTE_LINK_HOPZONE);
+			url = new URL(Config.VOTE_LINK_HOPZONE);
 			con = url.openConnection();
 			con.addRequestProperty("User-Agent", "Mozilla/4.76");
 			is = con.getInputStream();
@@ -100,7 +99,7 @@ public class VoteManager
 		BufferedReader in = null;
 		try
 		{
-			url = new URL(ExternalConfig.VOTE_LINK_TOPZONE);
+			url = new URL(Config.VOTE_LINK_TOPZONE);
 			con = url.openConnection();
 			con.addRequestProperty("User-Agent", "Mozilla/4.76");
 			is = con.getInputStream();
@@ -280,8 +279,8 @@ public class VoteManager
 
 			player.setIsVoting(true);
 			player.sendMessage("Go fast on the site and vote on the hopzone banner!");
-			player.sendMessage("You have " + ExternalConfig.SECS_TO_VOTE + " seconds.Hurry!");
-			ThreadPoolManager.getInstance().scheduleGeneral(new hopvotetask(player), ExternalConfig.SECS_TO_VOTE * 1000);
+			player.sendMessage("You have " + Config.SECS_TO_VOTE + " seconds.Hurry!");
+			ThreadPoolManager.getInstance().scheduleGeneral(new hopvotetask(player), Config.SECS_TO_VOTE * 1000);
 		}
 		else if ((getTries(player) <= 0) && ((lastVoteHopzone + voteDelay) < System.currentTimeMillis()))
 		{
@@ -296,8 +295,8 @@ public class VoteManager
 
 			player.setIsVoting(true);
 			player.sendMessage("Go fast on the site and vote on the hopzone banner!");
-			player.sendMessage("You have " + ExternalConfig.SECS_TO_VOTE + " seconds.Hurry!");
-			ThreadPoolManager.getInstance().scheduleGeneral(new hopvotetask(player), ExternalConfig.SECS_TO_VOTE * 1000);
+			player.sendMessage("You have " + Config.SECS_TO_VOTE + " seconds.Hurry!");
+			ThreadPoolManager.getInstance().scheduleGeneral(new hopvotetask(player), Config.SECS_TO_VOTE * 1000);
 
 		}
 		else
@@ -383,8 +382,8 @@ public class VoteManager
 			}
 			player.setIsVoting(true);
 			player.sendMessage("Go fast on the site and vote on the topzone banner!");
-			player.sendMessage((new StringBuilder()).append("You have ").append(ExternalConfig.SECS_TO_VOTE).append(" seconds.Hurry!").toString());
-			ThreadPoolManager.getInstance().scheduleGeneral(new topvotetask(player), ExternalConfig.SECS_TO_VOTE * 1000);
+			player.sendMessage((new StringBuilder()).append("You have ").append(Config.SECS_TO_VOTE).append(" seconds.Hurry!").toString());
+			ThreadPoolManager.getInstance().scheduleGeneral(new topvotetask(player), Config.SECS_TO_VOTE * 1000);
 		}
 		else if (((lastVoteTopzone + voteDelay) < System.currentTimeMillis()) && (getTries(player) > 0))
 		{
@@ -398,8 +397,8 @@ public class VoteManager
 			}
 			player.setIsVoting(true);
 			player.sendMessage("Go fast on the site and vote on the topzone banner!");
-			player.sendMessage((new StringBuilder()).append("You have ").append(ExternalConfig.SECS_TO_VOTE).append(" seconds.Hurry!").toString());
-			ThreadPoolManager.getInstance().scheduleGeneral(new topvotetask(player), ExternalConfig.SECS_TO_VOTE * 1000);
+			player.sendMessage((new StringBuilder()).append("You have ").append(Config.SECS_TO_VOTE).append(" seconds.Hurry!").toString());
+			ThreadPoolManager.getInstance().scheduleGeneral(new topvotetask(player), Config.SECS_TO_VOTE * 1000);
 		}
 		else
 		{

@@ -62,8 +62,7 @@ public class SoulCrystals implements IItemHandler
 			activeChar.sendPacket(sm);
 
 			// Send a Server->Client packet ActionFailed to the L2PcInstance
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 
 			return;
 		}
@@ -78,8 +77,7 @@ public class SoulCrystals implements IItemHandler
 		// u can use soul crystal only when target hp goes below 50%
 		if (((L2MonsterInstance) target).getCurrentHp() > ((L2MonsterInstance) target).getMaxHp() / 2.0)
 		{
-			ActionFailed af = new ActionFailed();
-			activeChar.sendPacket(af);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 

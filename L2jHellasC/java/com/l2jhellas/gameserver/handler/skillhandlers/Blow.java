@@ -61,7 +61,7 @@ public class Blow implements ISkillHandler
 			// Check firstly if target dodges skill
 			final boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, skill);
 
-			byte _successChance = Config.SIDE_BLOW_SUCCESS;
+			int _successChance = Config.SIDE_BLOW_SUCCESS;
 
 			if (activeChar.isBehindTarget())
 				_successChance = Config.BACK_BLOW_SUCCESS;

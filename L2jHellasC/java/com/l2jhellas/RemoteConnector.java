@@ -31,7 +31,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class RemoteConnector
 {
-	String rconPassword = ExternalConfig.RCON_PASSWORD;
+	String rconPassword = Config.RCON_PASSWORD;
 	String adminUsername = "";
 	MiniServer mini;
 
@@ -40,7 +40,7 @@ public class RemoteConnector
 		try
 		{
 			@SuppressWarnings("resource")
-			final ServerSocket serverSocket = new ServerSocket(ExternalConfig.RCON_PORT);
+			final ServerSocket serverSocket = new ServerSocket(Config.RCON_PORT);
 
 			new Thread(new Runnable()
 			{

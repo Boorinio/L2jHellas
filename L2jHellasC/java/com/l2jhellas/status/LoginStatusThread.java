@@ -33,11 +33,11 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Base64;
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable;
 import com.l2jhellas.loginserver.LoginController;
 import com.l2jhellas.loginserver.LoginServer;
+import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class LoginStatusThread extends Thread

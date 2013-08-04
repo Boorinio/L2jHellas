@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.ExternalConfig;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class RaidList
@@ -41,18 +40,18 @@ public class RaidList
 		int stpoint = 0;
 		int pos = 0;
 		String sort = "";
-		if (ExternalConfig.RAID_LIST_SORT_ASC)
+		if (Config.RAID_LIST_SORT_ASC)
 			sort = "ASC";
 		else
 			sort = "DESC";
 		for (int count = 1; count != type; count++)
 		{
-			stpoint += ExternalConfig.RAID_LIST_RESULTS;
+			stpoint += Config.RAID_LIST_RESULTS;
 		}
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` " + sort + " Limit " + stpoint + ", " + ExternalConfig.RAID_LIST_RESULTS);
+			PreparedStatement statement = con.prepareStatement("SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` " + sort + " Limit " + stpoint + ", " + Config.RAID_LIST_RESULTS);
 			ResultSet result = statement.executeQuery();
 			pos = stpoint;
 
@@ -96,7 +95,7 @@ public class RaidList
 
 	private void addRaidToList(int pos, String npcname, int rlevel, int mindelay, int maxdelay, boolean rstatus)
 	{
-		_raidList.append("<table border=0 cellspacing=0 cellpadding=2 width=610 height=" + ExternalConfig.RAID_LIST_ROW_HEIGHT + ">");
+		_raidList.append("<table border=0 cellspacing=0 cellpadding=2 width=610 height=" + Config.RAID_LIST_ROW_HEIGHT + ">");
 		_raidList.append("<tr>");
 		_raidList.append("<td FIXWIDTH=5></td>");
 		_raidList.append("<td FIXWIDTH=25>" + pos + "</td>");
