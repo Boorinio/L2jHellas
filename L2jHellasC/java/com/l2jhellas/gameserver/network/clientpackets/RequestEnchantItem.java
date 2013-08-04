@@ -99,7 +99,32 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		activeChar.setActiveEnchantItem(null);
 		if ((item == null) || (scroll == null))
 			return;
-
+		if (Config.ENCHANT_MAX_WEAPON > 0)
+		{
+			if (item.getItem().getType2() == L2Item.TYPE2_WEAPON && item.getEnchantLevel() >= Config.ENCHANT_MAX_WEAPON)
+			{
+				activeChar.sendMessage("This server has a +" + Config.ENCHANT_MAX_WEAPON + " limit for enchanting weapons with scrolls.");
+				return;
+			}
+		}
+		
+		if (Config.ENCHANT_MAX_ARMOR > 0)
+		{
+			if (item.getItem().getType2() == L2Item.TYPE2_SHIELD_ARMOR && item.getEnchantLevel() >= Config.ENCHANT_MAX_ARMOR)
+			{
+				activeChar.sendMessage("This server has a +" + Config.ENCHANT_MAX_ARMOR + " limit for enchanting armors with scrolls.");
+				return;
+			}
+		}
+		
+		if (Config.ENCHANT_MAX_JEWELRY > 0)
+		{
+			if (item.getItem().getType2() == L2Item.TYPE2_ACCESSORY && item.getEnchantLevel() >= Config.ENCHANT_MAX_JEWELRY)
+			{
+				activeChar.sendMessage("This server has a +" + Config.ENCHANT_MAX_JEWELRY + " limit for enchanting jewelry with scrolls.");
+				return;
+			}
+		}
 		// can't enchant rods, hero weapons and shadow items
 		if (item.getItem().getItemType() == L2WeaponType.ROD || item.getItemId() >= 6611 && item.getItemId() <= 6621 || item.isShadowItem())
 		{
