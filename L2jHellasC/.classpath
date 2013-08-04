@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="java"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="libs/BoneCP-0.7.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/bsf-2.4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/bsh-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/bsh-engine.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/c3p0-0.9.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/ecj.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/java-engine.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/javolution.jar"/>

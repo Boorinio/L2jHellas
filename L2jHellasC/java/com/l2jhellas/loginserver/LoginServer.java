@@ -109,19 +109,7 @@ public class LoginServer
 
 		// Prepare Database
 		Util.printSection("DataBase");
-		try
-		{
-			L2DatabaseFactory.getInstance();
-		}
-		catch (SQLException e)
-		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed initializing database. Reason: " + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
-			System.exit(1);
-		}
+		L2DatabaseFactory.getInstance();
 		
 		Util.printSection("Login Server Controller");
 		try

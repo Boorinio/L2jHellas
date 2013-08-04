@@ -564,7 +564,6 @@ public class GameServer
 
 		Util.printSection("DataBase");
 		L2DatabaseFactory.getInstance();
-		_log.info("Database Loaded.");
 
 		Util.printSection("Team");
 		L2JHellasInfo.showInfo();
