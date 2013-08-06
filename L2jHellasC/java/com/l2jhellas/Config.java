@@ -1489,7 +1489,7 @@ public final class Config
 			final File version = new File(SERVER_VERSION_FILE);
 			try (InputStream is = new FileInputStream(version))
 			{
-				clanhallSettings.load(is);
+				versionSettings.load(is);
 			}
 			catch (Exception e)
 			{
