@@ -101,7 +101,7 @@ public class ArmorSetsTable
 		}
 		catch (SAXException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table SAX " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -109,7 +109,7 @@ public class ArmorSetsTable
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table IO " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -117,7 +117,7 @@ public class ArmorSetsTable
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table" + e);
+			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table Parser " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
