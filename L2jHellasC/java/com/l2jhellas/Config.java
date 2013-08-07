@@ -2254,7 +2254,7 @@ public final class Config
 			NPC_NOBLESS_ID = Integer.parseInt(CustomNpcSettings.getProperty("NobleID", "57"));
 			NPC_NOBLESS_QUANTITY = Integer.parseInt(CustomNpcSettings.getProperty("NobleQuantity", "10000"));
 			/* Boss Info Npc */
-			String[] notenchantable = CustomNpcSettings.getProperty("BossList", "29028,29019,29020,29045,29022,29001,29014,29006").split(",");
+			String[] notenchantable = CustomNpcSettings.getProperty("BossList", "29028,29019,29020,29022,29001,29014,29006").split(",");
 			BOSS_RESPAWN_INFO = new int[notenchantable.length];
 			for (int info = 0; info < notenchantable.length; info++)
 				BOSS_RESPAWN_INFO[info] = Integer.parseInt(notenchantable[info]);

@@ -15,9 +15,11 @@
 package com.l2jhellas.util;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
@@ -34,6 +36,8 @@ public final class Util
 {
 	private final static Logger _log = Logger.getLogger(Util.class.getName());
 
+	private static final NumberFormat ADENA_FORMATTER = NumberFormat.getIntegerInstance(Locale.ENGLISH);
+	
 	public static void handleIllegalPlayerAction(L2PcInstance actor, String message, int punishment)
 	{
 		ThreadPoolManager.getInstance().scheduleGeneral(new IllegalPlayerAction(actor, message, punishment), 5000);
@@ -265,31 +269,6 @@ public final class Util
 	}
 
 	/**
-	 * Return amount of adena formatted with "," delimiter
-	 * 
-	 * @param amount
-	 * @return String formatted adena amount
-	 */
-	public static String formatAdena(int amount)
-	{
-		String s = "";
-		int rem = amount % 1000;
-		s = Integer.toString(rem);
-		amount = (amount - rem) / 1000;
-		while (amount > 0)
-		{
-			if (rem < 99)
-				s = '0' + s;
-			if (rem < 9)
-				s = '0' + s;
-			rem = amount % 1000;
-			s = Integer.toString(rem) + "," + s;
-			amount = (amount - rem) / 1000;
-		}
-		return s;
-	}
-
-	/**
 	 * returns how many processors are installed on this system.
 	 */
 	private static void printCpuInfo()
@@ -483,5 +462,13 @@ public final class Util
 		}
 
 		return number;
+	}
+	
+	public static String formatAdena(long amount)
+	{
+		synchronized (ADENA_FORMATTER)
+		{
+			return ADENA_FORMATTER.format(amount);
+		}
 	}
 }

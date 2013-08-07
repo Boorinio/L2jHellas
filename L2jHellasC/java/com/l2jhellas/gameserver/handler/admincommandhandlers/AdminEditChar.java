@@ -30,6 +30,7 @@ import javolution.text.TextBuilder;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -344,6 +345,11 @@ public class AdminEditChar implements IAdminCommandHandler
 					oldName = player.getName();
 
 					L2World.removeFromAllPlayers(player);
+					if (CharNameTable.getInstance().getIdByName(val) > 0)
+					{
+						activeChar.sendMessage("Warning, player name " + val + " already exists.");
+						return false;
+					}
 					player.setName(val);
 					player.store();
 					L2World.addToAllPlayers(player);
@@ -366,7 +372,7 @@ public class AdminEditChar implements IAdminCommandHandler
 					{
 						player.getClan().updateClanMember(player);
 						player.getClan().broadcastToOnlineMembers(new PledgeShowMemberListUpdate(player));
-						player. sendPacket(new PledgeShowMemberListAll(player.getClan(), player));
+						player.sendPacket(new PledgeShowMemberListAll(player.getClan(), player));
 					}
 
 					RegionBBSManager.getInstance().changeCommunityBoard();

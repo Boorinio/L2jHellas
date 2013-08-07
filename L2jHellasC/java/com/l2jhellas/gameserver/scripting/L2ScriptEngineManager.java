@@ -39,9 +39,8 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
-import javolution.util.FastMap;
-
 import com.l2jhellas.Config;
+import com.l2jhellas.util.L2FastMap;
 import com.l2jserver.script.jython.JythonScriptEngine;
 
 /**
@@ -69,8 +68,8 @@ public final class L2ScriptEngineManager
 		return INSTANCE;
 	}
 
-	private final Map<String, ScriptEngine> _nameEngines = new FastMap<String, ScriptEngine>();
-	private final Map<String, ScriptEngine> _extEngines = new FastMap<String, ScriptEngine>();
+	private final Map<String, ScriptEngine> _nameEngines = new L2FastMap<String, ScriptEngine>();
+	private final Map<String, ScriptEngine> _extEngines = new L2FastMap<String, ScriptEngine>();
 	private final List<ScriptManager<?>> _scriptManagers = new LinkedList<ScriptManager<?>>();
 
 	private final CompiledScriptCache _cache;

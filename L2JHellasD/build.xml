@@ -86,7 +86,7 @@
 	</target>	
 	
 	<target name="Build" depends="export" description="Creates a ZIP file. Suitable for distribution but building takes longer. See dist-deflate for faster builds.">
-		<zip destfile="${build}/L2J Hellas DataPack.zip" basedir="${build.dist}" update="true" level="9" />
+		<zip destfile="${build}/L2J Hellas DataPack.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
 		<mkdir dir="C:/L2JHellas/Backup" />
 		<unzip src="${build}/L2J Hellas DataPack.zip" dest="C:/L2JHellas" />

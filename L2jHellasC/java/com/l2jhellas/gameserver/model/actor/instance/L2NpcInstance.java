@@ -1394,7 +1394,7 @@ public class L2NpcInstance extends L2Character
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Get the text of the quest state in the folder data/jscript/quests/questId/stateId.htm</li> <li>Send a Server->Client NpcHtmlMessage containing the text of the
+	 * <li>Get the text of the quest state in the folder data/scripts/quests/questId/stateId.htm</li> <li>Send a Server->Client NpcHtmlMessage containing the text of the
 	 * L2NpcInstance to the L2PcInstance</li> <li>Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet</li><BR>
 	 * <BR>
 	 * 
