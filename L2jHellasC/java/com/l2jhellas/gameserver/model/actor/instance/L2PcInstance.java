@@ -8409,7 +8409,15 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 
 		Collection<L2SkillLearn> skillTree = SkillTreeTable.getInstance().getAllowedSkills(getClassId());
-
+		if(Config.ALT_SUBCLASS_SKILLS)
+		{
+			
+			int i;
+			for(i=0; i<Config.MAX_SUBCLASS; i++)
+			{ 
+				skillTree.addAll(SkillTreeTable.getInstance().getAltAllowedSkills(getSubClasses().get(i).getClassId())); 	
+			}	
+		}
 		skill_loop: for (L2Skill skill : getAllSkills())
 		{
 			int skillid = skill.getId();
