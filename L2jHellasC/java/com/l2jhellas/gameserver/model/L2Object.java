@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList;
 import com.l2jhellas.gameserver.model.actor.poly.ObjectPoly;
 import com.l2jhellas.gameserver.model.actor.position.ObjectPosition;
+import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.GetItem;
@@ -198,7 +199,6 @@ public abstract class L2Object
 			_isVisible = false;
 			getPosition().setWorldRegion(null);
 		}
-
 		// if this item is a mercenary ticket, remove the spawns!
 		if (this instanceof L2ItemInstance)
 		{
@@ -207,6 +207,16 @@ public abstract class L2Object
 			{
 				MercTicketManager.getInstance().removeTicket((L2ItemInstance) this);
 				ItemsOnGroundManager.getInstance().removeObject(this);
+			}
+			if (itemId == 57 || itemId == 6353)
+			{
+				L2PcInstance actor = player.getActingPlayer();
+				if (actor != null)
+				{
+					QuestState qs = actor.getQuestState("255_Tutorial");
+					if (qs != null)
+						qs.getQuest().notifyEvent("CE" + itemId + "", null, actor);
+				}
 			}
 		}
 

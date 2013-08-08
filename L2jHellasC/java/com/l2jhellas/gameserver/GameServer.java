@@ -315,18 +315,6 @@ public class GameServer
 		SkillHandler.getInstance();
 		UserCommandHandler.getInstance();
 		VoicedCommandHandler.getInstance();
-
-		Util.printSection("Quests");
-		if (!Config.ALT_DEV_NO_QUESTS)
-		{
-			QuestManager.getInstance();
-			QuestManager.getInstance().report();
-		}
-		else
-		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Quests are disabled by Config.");
-		}
-
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{

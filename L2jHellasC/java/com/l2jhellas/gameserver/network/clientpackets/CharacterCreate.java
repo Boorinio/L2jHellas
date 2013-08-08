@@ -26,11 +26,13 @@ import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
+import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2ShortCut;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateOk;
@@ -244,6 +246,7 @@ public final class CharacterCreate extends L2GameClientPacket
 				_log.fine("adding starter skill:" + startSkills[i].getId() + " / " + startSkills[i].getLevel());
 			}
 		}
+		startTutorialQuest(newChar);
 		L2GameClient.saveCharToDisk(newChar);
 		newChar.deleteMe(); // release the world of this character and it's inventory
 		L2World.removeObject(newChar);
@@ -257,7 +260,12 @@ public final class CharacterCreate extends L2GameClientPacket
 			_log.fine("Character init end");
 		}
 	}
-
+	public void startTutorialQuest(L2PcInstance player)
+	{
+		Quest qest = QuestManager.getInstance().getQuest("255_Tutorial");
+		if (qest != null)
+			qest.newQuestState(player);
+	}
 	@Override
 	public String getType()
 	{

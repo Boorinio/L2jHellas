@@ -66,6 +66,7 @@ import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Die;
@@ -162,6 +163,7 @@ public class EnterWorld extends L2GameClientPacket
 		sendPacket(new UserInfo(activeChar));
 		
 		Quest.playerEnter(activeChar);
+		loadTutorial(activeChar);
 		activeChar.sendPacket(new QuestList());
 		
 		// Register in flood protector
@@ -947,7 +949,12 @@ public class EnterWorld extends L2GameClientPacket
 		html.setHtml(tb.toString());
 		player.sendPacket(html);
 	}
-	
+	private void loadTutorial(L2PcInstance player)
+	{
+		QuestState qs = player.getQuestState("255_Tutorial");
+		if (qs != null)
+			qs.getQuest().notifyEvent("UC", null, player);
+	}
 	/**
 	 * TODO remove from here
 	 */

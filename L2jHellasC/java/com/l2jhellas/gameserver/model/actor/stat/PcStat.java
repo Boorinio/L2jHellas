@@ -32,6 +32,7 @@ import com.l2jhellas.gameserver.model.base.PlayerClass;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
+import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
@@ -190,6 +191,9 @@ public class PcStat extends PlayableStat
 
 		if (levelIncreased)
 		{
+			QuestState qs = getActiveChar().getQuestState("255_Tutorial");
+			if (qs != null)
+				qs.getQuest().notifyEvent("CE40", null, getActiveChar());
 			/**
 			 * If there are no characters on the server, the bonuses will be applied to the first character that becomes level 6
 			 * and end if this character reaches level 25 or above.
