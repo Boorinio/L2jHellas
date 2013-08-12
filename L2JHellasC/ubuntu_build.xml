@@ -107,16 +107,17 @@
 		</copy>
 		<copy todir="${build.dist.login}">
 			<fileset dir="dist">
-				<include name="startAccountManager.bat"/>
-				<include name="startSQLAccountManager.bat"/>
-				<include name="LoginServer_loop.bat"/>
-				<include name="startLoginServer.bat"/>
-				<include name="RegisterGameServer.bat"/>
+				<include name="startAccountManager.sh"/>
+				<include name="startSQLAccountManager.sh"/>
+				<include name="LoginServer_loop.sh"/>
+				<include name="startLoginServer.sh"/>
+				<include name="RegisterGameServer.sh"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.game}">
 			<fileset dir="dist">
-				<include name="startGameServer.bat"/>
+				<include name="GameServer_loop.sh"/>
+				<include name="startGameServer.sh"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.doc}">
@@ -212,15 +213,14 @@
 		
 		<!-- Finalizing -->
         <zip destfile="${build}/L2J_Hellas_Core_${revision}.zip" basedir="${build.dist}" level="9" />
-		<mkdir dir="C:/L2JHellas" />
-		<mkdir dir="C:/L2JHellas/Backup" />
+        <mkdir dir="../../L2JHellas" />
+		<mkdir dir="../../L2JHellas/Backup" />
 		<echo>Store L2jhellas.</echo>
-		<unzip src="${build}/L2J_Hellas_Core_${revision}.zip" dest="C:/L2JHellas" />
+		<unzip src="${build}/L2J_Hellas_Core_${revision}.zip" dest="../../L2JHellas" />
 		<echo>Backup L2jhellas.</echo>
-		<copy file="${build}/L2J_Hellas_Core_${revision}.zip" todir="C:/L2JHellas/Backup"></copy>
-		<echo>L2J Hellas Server version:${revision} stored in C:/L2JHellas.</echo>
+		<copy file="${build}/L2J_Hellas_Core_${revision}.zip" todir="../../L2JHellas/Backup"></copy>
+		<echo>L2J Hellas Server version:${revision}.</echo>
 		<echo>Please visit our forum http://l2jhellas.eu/</echo>
-		<echo>Owner Boorinio.</echo>
     </target>   
     
 	<!-- Version -->

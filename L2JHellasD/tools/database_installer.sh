@@ -1,4 +1,8 @@
 #!/bin/bash
+# if any problems about bad intercepter a solution is
+# sudo apt-get install dos2unix
+# and in terminal convert all sh with: dos2unix *.sh
+
 ##########################################################################
 ## Copyright (C) 2004-2013 L2J DataPack                                 ##
 ##                                                                      ##
@@ -43,7 +47,7 @@ echo "#############################################"
 MYSQLDUMPPATH=`which -a mysqldump 2>/dev/null`
 MYSQLPATH=`which -a mysql 2>/dev/null`
 if [ $? -ne 0 ]; then
-echo "We were unable to find MySQL binaries on your path"
+echo "We were unable to find MySQL binaries on your path(for xampp /opt/lampp/bin)"
 while :
  do
   echo -ne "\nPlease enter MySQL binaries directory (no trailing slash): "
