@@ -416,7 +416,7 @@ public class EnterWorld extends L2GameClientPacket
 		
 		Quest.playerEnter(activeChar);
 		// check player skills
-		if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN)
+		if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN && !Config.ALT_SUBCLASS_SKILLS)
 		{
 			activeChar.checkAllowedSkills();
 		}

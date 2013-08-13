@@ -676,9 +676,4 @@ public class SkillTreeTable
 		}
 		return 0;
 	}
-
-	public Collection<L2SkillLearn> getAltAllowedSkills(int classId)
-	{
-		return getSkillTrees().get(classId).values();
-	}
 }

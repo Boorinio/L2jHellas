@@ -228,8 +228,9 @@ public class L2DatabaseFactory
 		{
 			try
 			{
-				if (!c.isClosed())
-					_log.log(Level.WARNING, "Unclosed connection! Trace: " + exp.getStackTrace()[1], exp);
+				//just remove this until the refactor
+				if (!c.isClosed() && c != null && Config.DEBUG)
+					_log.log(Level.WARNING, "Unclosed connection! Trace: " + exp.getStackTrace()[1], exp);					
 			}
 			catch (SQLException e)
 			{
