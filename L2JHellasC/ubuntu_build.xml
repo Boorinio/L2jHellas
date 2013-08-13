@@ -25,7 +25,12 @@
 	<property name="build.dist.login" location="${build.dist}/login"/>
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
 	<property name="build.dist.libs" location="${build.dist}/libs"/>
-    
+	
+	<property name="build.dist.login.log.java" location="${build.dist}/login/log/java"/>
+	<property name="build.dist.login.log.stdout" location="${build.dist}/login/log/stdout"/>
+	<property name="build.dist.game.log.java" location="${build.dist}/gameserver/log/java"/>
+	<property name="build.dist.game.log.stdout" location="${build.dist}/gameserver/log/stdout"/>
+	
     <path id="classpath">
         <fileset dir="${libs}">
 			<include name="*.jar"/>
@@ -42,6 +47,10 @@
     	<mkdir dir="${build.dist.login}" />
 		<mkdir dir="${build.dist.game}" />
     	<mkdir dir="${build.dist.libs}" />
+    	<mkdir dir="${build.dist.login.log.java}" />
+    	<mkdir dir="${build.dist.login.log.stdout}" />
+    	<mkdir dir="${build.dist.game.log.java}" />
+    	<mkdir dir="${build.dist.game.log.stdout}" />
     </target>
 	
     <target name="Compile" depends="Version" description="Compile the source.">
