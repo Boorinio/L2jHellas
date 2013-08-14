@@ -1233,12 +1233,12 @@ public class L2Attackable extends L2NpcInstance
 			getAggroList().remove(target);
 			return 0;
 		}
-		if (!ai._attacker.isVisible())
+		if (ai._attacker != null && !ai._attacker.isVisible())
 		{
 			getAggroList().remove(target);
 			return 0;
 		}
-		if (ai._attacker.isAlikeDead())
+		if (ai._attacker != null && ai._attacker.isAlikeDead())
 		{
 			ai._hate = 0;
 			return 0;
