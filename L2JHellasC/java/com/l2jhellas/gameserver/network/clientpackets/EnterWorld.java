@@ -224,6 +224,9 @@ public class EnterWorld extends L2GameClientPacket
 			}
 		}
 		
+		SystemMessage sm = new SystemMessage(SystemMessageId.WELCOME_TO_LINEAGE);
+		sendPacket(sm);
+		
 		if (activeChar.isGM())
 		{
 			if (Config.GM_STARTUP_INVULNERABLE && AdminTable.getInstance().hasAccess("admin_invul", activeChar.getAccessLevel()))
