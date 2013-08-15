@@ -19,7 +19,6 @@
 	<property name="build.dist" location="${build}/dist"/>
 	<property name="build.dist.game" location="${build.dist}/gameserver"/>
 	<property name="build.dist.tools" location="${build.dist}/tools"/>
-	<property name="build.dist.tools.RemoteConnector" location="${build.dist}/tools/RemoteConnector"/>
 	<property name="build.dist.languages.accountmanager" location="${build.dist}/languages/accountmanager"/>
 	<property name="build.dist.doc" location="${build.dist}/doc"/>
 	<property name="build.dist.sql.game" location="${build.dist}/sql/game"/>
@@ -70,11 +69,6 @@
 		</sync>
 		<sync todir="${build.dist.tools}">
 			<fileset dir="${basedir}/tools">
-				<include name="*.*"/>
-			</fileset>
-		</sync>
-		<sync todir="${build.dist.tools.RemoteConnector}">
-			<fileset dir="${basedir}/tools/RemoteConnector">
 				<include name="*.*"/>
 			</fileset>
 		</sync>

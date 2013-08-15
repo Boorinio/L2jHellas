@@ -201,7 +201,7 @@ clear
 echo ""
 echo "Upgrading structure of Game Server tables (this could take awhile, be patient)"
 echo ""
-for file in $(ls ../sql/game/updates/*.sql);do
+for file in $(ls ../sql/updates/*.sql);do
 	$MYG --force < $file 2>> gs_error.log
 done
 gs_install
@@ -218,7 +218,7 @@ echo ""
 echo "Upgrading Game Server content."
 echo ""
 fi
-for gs in $(ls ../sql/game/*.sql);do
+for gs in $(ls ../sql/*.sql);do
 	echo "Installing GameServer table : $gs"
 	$MYG < $gs
 done

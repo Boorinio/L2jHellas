@@ -16,6 +16,6 @@ CREATE TABLE `questions` (
 
 INSERT INTO `questions` VALUES 
   ('0','Whats the name of server admin?','Tom','Paul','John','Paul'),
-  ('0','What MaxCheaters is?','website','animal','','website'),
-  ('0','Is Pauler awesome?','Yes','No','Maybe','Yes'),
+  ('0','What MaxCheaters is?','forum','animal','','forum'),
+  ('0','Is l2jhellas awesome?','Yes','No','Maybe','Yes'),
   ('0','Is quiz event cooool?','Yes','No','Whatever','Whatever');

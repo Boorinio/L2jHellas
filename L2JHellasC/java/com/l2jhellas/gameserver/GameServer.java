@@ -33,7 +33,6 @@ import Extensions.RankSystem.Util.ServerSideImage;
 import Extensions.Vote.VoteManager;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.RemoteConnector;
 import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -96,7 +95,6 @@ import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
 import com.l2jhellas.gameserver.instancemanager.PetitionManager;
-import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
@@ -385,10 +383,6 @@ public class GameServer
 		if (Config.ZODIAC_ENABLE)
 		{
 			ZodiacMain.ZodiacIn();
-		}
-		if (Config.ENABLED_RCON)
-		{
-			RemoteConnector.getInstance();
 		}
 		if (Config.ENABLED_QUIZ_EVENT)
 		{

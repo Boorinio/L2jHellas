@@ -75,7 +75,7 @@ REM #######################################################
 REM MYSQL PATH.
 REM DEFAULT:
 REM mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.5\bin
-set mysqlBinPath=%ProgramFiles%\MySQL\MySQL Server 5.5\bin
+set mysqlBinPath=C:\xampp\mysql\bin
 
 REM GAME SERVER
 set gsuser=root
@@ -188,8 +188,6 @@ echo.
 pause
 goto loadconfig
 
-rem goto gs_backup
-
 :gs_backup
 cls
 call :colors 17
@@ -198,7 +196,7 @@ set stage=5
 title L2JHellas Datapack Installer - DataBase Backup
 echo.
 echo Trying to make a backup of your  Server's DataBase.
-set cmdline="%mysqldumpPath%" --add-drop-table -h %gshost% -u %gsuser% --password=%gspass% %gsdb% ^> "%backup%\gs_backup.sql" 2^> NUL
+set cmdline="%mysqldumpPath%" --add-drop-table -h %gshost% -u %gsuser% --password=%gspass% %gsdb% ^> "%backup%\L2jHellas Backup.sql" 2^> NUL
 %cmdline%
 if %ERRORLEVEL% == 0 goto gs_db_ok
 
@@ -213,7 +211,7 @@ echo happen, is that your DB doesn't exist yet. I could
 echo try to create %gsdb% for you, but maybe you prefer to
 echo continue with last part of the script.
 echo.
-echo ATTEMPT TO CREATE L2jhellas SERVER DATABASE?
+echo ATTEMPT TO CREATE %gsdb% SERVER DATABASE?
 echo.
 echo (y) Yes
 echo.
@@ -281,69 +279,61 @@ echo.
 echo (f) Full: WARNING! I'll destroy ALL of your existing character!
 echo     Data WIPE!
 echo.
-echo (u) Upgrade: I'll do my best to preserve all of your character
-echo     data.
+echo (u) Upgrade: use this function to update your database
+echo     from sql/updates data.
+echo     *you can put your custom scripts there!
 echo.
 echo (q) Quit
 echo.
 set /p installtype=Choose (default upgrade):
-if /i %installtype%==f goto gs_cleanup
-if /i %installtype%==u goto gs_upgrade
+if /i %installtype%==f goto gs_install
+if /i %installtype%==u goto gs_update
 if /i %installtype%==q goto end
 goto gs_db_ok
 
-:gs_cleanup
-call :colors 17
-set cmdline=
-title L2JHellas Datapack Installer - DataBase Full Install
-echo.
-echo Deleting all Server tables for new content.
-set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< gs_cleanup.sql 2^> NUL
-%cmdline%
-if not %ERRORLEVEL% == 0 goto omfg
-set full=1
-echo.
-echo Server tables has been deleted.
-goto gs_install
-
-:gs_upgrade
+:gs_update
 cls
 echo.
-echo Upgrading structure of Server tables (this could take awhile, be patient).
+echo Updating structure of Server tables.
 echo.
 echo @echo off> temp.bat
 if exist gs_errors.log del gs_errors.log
-for %%i in (..\sql\game\updates\*.sql) do echo "%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% --force ^< %%i 2^>^> gs_errors.log >> temp.bat
+for %%i in (..\sql\updates\*.sql) do echo "%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% --force ^< %%i 2^>^> gs_errors.log >> temp.bat
 call temp.bat> nul
 del temp.bat
+set full=1
 move gs_errors.log %workdir%
-goto gs_install
+goto end
+REM goto gs_install TODO na vgalw ta drop table apo ta sql
+REM na kanw ena arxeio me ola ta drop kai na ta valw sto installer meta to update tha pigenei sto install 
+REM kai tha ksanakanei install (etsi einai stin l2j)
 
 :gs_install
 cls
+
 set cmdline=
 if %full% == 1 (
+title L2JHellas Datapack Installer - Server DataBase Updating...
+echo.
+echo Updating Server content.
+echo.
+) else (
 title L2JHellas Datapack Installer - Server DataBase Installing...
 echo.
 echo Installing new Sql Server content.
 echo.
-) else (
-title L2JHellas Datapack Installer - Server DataBase Upgrading...
-echo.
-echo Upgrading Server content.
-echo.
 )
 if %logging% == 0 set output=NUL
 set dest=gs
-for %%i in (..\sql\game\*.sql) do call :dump %%i
-
-echo done...
+for %%i in (..\sql\*.sql) do call :dump %%i
+REM na to ftiaksw gia to installer pros to parwn vgazei error se kapoia table %mysqlPath% -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% < optimize.sql
+echo install and optimize done...
 echo.
 goto end
 
 :dump
 set cmdline=
-if /i %full% == 1 (set action=Installing) else (set action=Upgrading)
+if /i %full% == 1 (set action=Updating) else (set action=Installing)
 echo %action% %1>>"%output%"
 echo %action% %~nx1
 if "%dest%"=="gs" set cmdline="%mysqlPath%" -h %gshost% -u %gsuser% --password=%gspass% -D %gsdb% ^< %1 2^>^>"%output%"
@@ -389,9 +379,9 @@ call :colors 17
 title L2JHellas Datapack Installer - Server Logging Options turned on
 set logging=1
 if %full% == 1 (
-  set output=%logdir%\install-%~nx1.log
-) else (
   set output=%logdir%\upgrade-%~nx1.log
+) else (
+  set output=%logdir%\install-%~nx1.log
 )
 echo.
 echo Per your request, i'll create a log file for your reading pleasure.

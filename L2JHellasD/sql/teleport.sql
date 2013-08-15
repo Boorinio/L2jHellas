@@ -5,13 +5,13 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `teleport`;
 
 CREATE TABLE `teleport` (
-  Description varchar(75) default NULL,
-  id decimal(11,0) NOT NULL default '0',
-  loc_x decimal(9,0) default NULL,
-  loc_y decimal(9,0) default NULL,
-  loc_z decimal(9,0) default NULL,
-  price decimal(6,0) default NULL,
-  fornoble int(1) NOT NULL default '0',
+  `Description` varchar(75) DEFAULT NULL,
+  `id` decimal(11,0) NOT NULL DEFAULT '0',
+  `loc_x` decimal(9,0) DEFAULT NULL,
+  `loc_y` decimal(9,0) DEFAULT NULL,
+  `loc_z` decimal(9,0) DEFAULT NULL,
+  `price` decimal(6,0) DEFAULT NULL,
+  `fornoble` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 

@@ -59,7 +59,6 @@ public final class Config
 	 *******************************/
 	// Admin Folder
 	private static final String ADMIN_CONFIG_FILE = "./config/Admin/Admin.ini";
-	private static final String RCON_CONFIG_FILE = "./config/Admin/Rcon.ini";
 	// Main Folder
 	private static final String ALT_SETTINGS_FILE = "./config/Main/Altsettings.ini";
 	private static final String CLANHALL_CONFIG_FILE = "./config/Main/Clanhall.ini";
@@ -528,13 +527,6 @@ public final class Config
 	public static Map<Integer, Integer> CLAN_SKILLS;
 	public static byte CLAN_LEVEL;
 	public static int REPUTATION_QUANTITY;
-
-	/**
-	 * RCON Config File
-	 */
-	public static boolean ENABLED_RCON;
-	public static int RCON_PORT;
-	public static String RCON_PASSWORD;
 	
 	/**
 	 * Smart Community Board Config File
@@ -2260,23 +2252,6 @@ public final class Config
 			Arrays.sort(BOSS_RESPAWN_INFO);
 			RAID_INFO_SHOW_TIME = Boolean.parseBoolean(CustomNpcSettings.getProperty("InfoShowTime", "False"));
 
-			/**
-			 * Rcon
-			 */
-			Properties RconSettings = new Properties();
-			final File Rcon = new File(RCON_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(Rcon))
-			{
-				RconSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while " + RCON_CONFIG_FILE + " settings!", e);
-			}
-			ENABLED_RCON = Boolean.parseBoolean(RconSettings.getProperty("EnableRconTool", "False"));
-			RCON_PORT = Integer.parseInt(RconSettings.getProperty("RconPort", "7779"));
-			RCON_PASSWORD = RconSettings.getProperty("RconPassword", "123123");
-			
 			/**
 			 * Olympiad
 			 */
