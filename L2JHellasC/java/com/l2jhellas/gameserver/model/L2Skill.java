@@ -31,6 +31,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
@@ -327,7 +328,6 @@ public abstract class L2Skill
 		//_skillInterruptTime = set.getInteger("hitTime", _hitTime / 2);
 		_reuseDelay = set.getInteger("reuseDelay", 0);
 		_buffDuration = set.getInteger("buffDuration", 0);
-
 		_skillRadius = set.getInteger("skillRadius", 80);
 
 		_targetType = set.getEnum("target", L2SkillTargetType.class);
@@ -2188,7 +2188,11 @@ public abstract class L2Skill
 
 		if (_effectTemplates == null)
 			return _emptyEffectSet;
-
+		
+		// doors and siege flags cannot receive any effects
+		if (effected instanceof L2DoorInstance || effected instanceof L2SiegeFlagInstance)
+			return _emptyEffectSet;
+		
 		if ((effector != effected) && effected.isInvul())
 			return _emptyEffectSet;
 
@@ -2211,7 +2215,7 @@ public abstract class L2Skill
 				effects.add(e);
 		}
 
-		if (effects.size() == 0)
+		if (effects.isEmpty())
 			return _emptyEffectSet;
 
 		return effects.toArray(new L2Effect[effects.size()]);

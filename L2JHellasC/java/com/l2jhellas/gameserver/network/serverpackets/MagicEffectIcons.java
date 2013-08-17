@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -43,7 +44,7 @@ public class MagicEffectIcons extends L2GameServerPacket
 
 	public MagicEffectIcons()
 	{
-		_effects = new FastList<Effect>();
+		_effects = new ArrayList<>();
 	}
 
 	public void addEffect(int skillId, int level, int duration)

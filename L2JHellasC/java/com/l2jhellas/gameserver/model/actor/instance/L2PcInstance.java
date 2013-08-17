@@ -8092,6 +8092,15 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public L2Skill addSkill(L2Skill newSkill, boolean store)
 	{
+		if (newSkill.isToggle())
+		{
+			final L2Effect toggleEffect = getFirstEffect(newSkill.getId());
+			if (toggleEffect != null)
+			{
+				toggleEffect.exit();
+				newSkill.getEffects(this, this);
+			}
+		}
 		// Add a skill to the L2PcInstance _skills and its Func objects to the
 		// calculator set of the L2PcInstance
 		L2Skill oldSkill = super.addSkill(newSkill);

@@ -26,6 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastTable;
@@ -3386,15 +3387,16 @@ public abstract class L2Character extends L2Object
 					// handled by EtcStatusUpdate
 					continue;
 				}
-				
 				if (effect.getInUse())
 				{
-					if (mi != null)
-						effect.addIcon(mi);
+					if (mi != null)		
+						effect.addIcon(mi);					
 					if (ps != null)
 						effect.addPartySpelledIcon(ps);
 					if (os != null)
 						effect.addOlympiadSpelledIcon(os);
+					
+					sendPacket(mi);
 				}
 			}
 		}

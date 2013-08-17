@@ -196,7 +196,12 @@ public class Castle
 	 */
 	public boolean checkIfInZone(int x, int y, int z)
 	{
-		return _zone.isInsideZone(x, y, z);
+		boolean isInside = false;
+		
+		if(_zone!=null)
+			isInside = _zone.isInsideZone(x, y, z);
+		
+		return isInside;
 	}
 
 	/**

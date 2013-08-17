@@ -33,6 +33,7 @@ import com.l2jhellas.util.Rnd;
  */
 public class L2NpcBufferInstance extends L2NpcInstance
 {
+
 	private class BuffTask implements Runnable
 	{
 		private Boolean _buffing = false;
@@ -291,10 +292,27 @@ public class L2NpcBufferInstance extends L2NpcInstance
 						playerInstance.destroyItemByItemId("Npc Buffer", skillFeeId, 1, playerInstance.getTarget(), true);
 				}
 			}
+			
+			final L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);;					
+			final L2Effect[] effects = playerInstance.getAllEffects();
 
-			L2Skill skill;
-			skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
-			skill.getEffects(playerInstance, playerInstance);
+			if (effects != null)
+			{
+				for (L2Effect e : effects)
+				{
+					if (e != null && skill != null)
+					{
+						if (e.getSkill().getId() == skill.getId())
+						{
+						   e.exit();
+						   skill.getEffects(playerInstance, playerInstance);
+						}
+					}
+				}
+			}
+			
+			 skill.getEffects(playerInstance, playerInstance);
+			
 		}
 
 		showChatWindow(playerInstance, val);
@@ -306,9 +324,6 @@ public class L2NpcBufferInstance extends L2NpcInstance
 		{
 			player.stopAllEffects();
 			player.sendMessage("Your buffs were removed.");
-		}
-		else
-		{
 		}
 	}
 }

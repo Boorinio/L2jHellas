@@ -249,8 +249,11 @@ public abstract class L2ZoneType
 	{
 		for (L2ZoneForm zone : getZones())
 		{
+			if(zone!=null)
+			{
 			if (zone.isInsideZone(x, y, zone.getHighZ()))
 				return true;
+			}
 		}
 		return false;
 	}
