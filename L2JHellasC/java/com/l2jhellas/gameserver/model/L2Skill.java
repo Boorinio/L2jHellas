@@ -2195,7 +2195,22 @@ public abstract class L2Skill
 		
 		if ((effector != effected) && effected.isInvul())
 			return _emptyEffectSet;
+		
+		final L2Skill skill = SkillTable.getInstance().getInfo(this.getId(), this.getLevel());				
+		final L2Effect[] effectss = effected.getAllEffects();
 
+			for (L2Effect e : effectss)
+			{
+				if (e != null && skill != null)
+				{
+					if (e.getSkill().getId() == skill.getId())
+					{
+					   e.exit();		
+					   e.onStart();
+					}
+				}		
+		      }
+			
 		List<L2Effect> effects = new FastList<L2Effect>();
 
 		boolean skillMastery = false;

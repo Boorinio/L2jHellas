@@ -125,7 +125,9 @@ public final class Logout extends L2GameClientPacket
 		}
 
 		RegionBBSManager.getInstance().changeCommunityBoard();
-
+		
+		player.endDuel();
+		
 		player.deleteMe();
 		notifyFriends(player);
 

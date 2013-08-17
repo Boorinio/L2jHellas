@@ -81,7 +81,11 @@ public final class RequestRestart extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		if (player._inEventTvT)
+		{
+			player.sendMessage("You may not use an escape skill in a Event.");
+			return;
+		}
 		// Prevent player from restarting if they are a festival participant
 		// and it is in progress, otherwise notify party members that the player
 		// is not longer a participant.
@@ -104,7 +108,9 @@ public final class RequestRestart extends L2GameClientPacket
 		{
 			player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
 		}
-
+	
+		player.endDuel();
+		
 		L2GameClient client = getClient();
 
 		// Remove From Boss
@@ -113,11 +119,7 @@ public final class RequestRestart extends L2GameClientPacket
 		// detach the client from the char so that the connection isnt closed in the deleteMe
 		player.setClient(null);
 
-		if (player._inEventTvT)
-		{
-			player.sendMessage("You may not use an escape skill in a Event.");
-			return;
-		}
+
 
 		RegionBBSManager.getInstance().changeCommunityBoard();
 

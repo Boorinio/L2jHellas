@@ -36,6 +36,8 @@ import javolution.util.FastMap;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.RaidEvent.L2EventChecks;
 import Extensions.RaidEvent.L2RaidEvent;
+import Extensions.RankSystem.PvpStats;
+import Extensions.RankSystem.PvpTable;
 import Extensions.RankSystem.RankPvpSystem;
 import Extensions.RankSystem.RankPvpSystemComboKill;
 import Extensions.RankSystem.RankPvpSystemDeathMgr;
@@ -77,6 +79,7 @@ import com.l2jhellas.gameserver.handler.skillhandlers.StrSiegeAssault;
 import com.l2jhellas.gameserver.handler.skillhandlers.TakeCastle;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
+import com.l2jhellas.gameserver.instancemanager.CrownManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
@@ -188,6 +191,7 @@ import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SendTradeDone;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
+import com.l2jhellas.gameserver.network.serverpackets.SignsSky;
 import com.l2jhellas.gameserver.network.serverpackets.SkillCoolTime;
 import com.l2jhellas.gameserver.network.serverpackets.SkillList;
 import com.l2jhellas.gameserver.network.serverpackets.Snoop;
@@ -219,6 +223,7 @@ import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -13946,4 +13951,326 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		_isStored = a;
 	}
+	
+    public void endDuel()
+    { 
+    	if (isInDuel() && getDuelState() == Duel.DUELSTATE_DUELLING)
+            setDuelState(Duel.DUELSTATE_INTERRUPTED);
+    }
+    
+    public void checks()
+    {
+		standUp();
+		setRunning();
+		
+		// restore info about chat ban
+		checkBanChat(false);
+		
+		if (isDead())
+		{
+			doRevive();
+			doDie(this);
+		}
+		
+    	L2Clan clan = this.getClan();
+    	
+		if (Config.APELLA_ARMORS && (clan == null || getPledgeClass() < 5))
+		{
+			int i;
+			for (i = 7860; i < 7879; i++)
+			{
+				L2ItemInstance apella = getInventory().getItemByItemId(i);
+				if (apella != null)
+				{
+					if (apella.isEquipped())
+						getInventory().unEquipItemInSlot(apella.getEquipSlot());
+				}
+			}
+		}
+		if (Config.OATH_ARMORS && clan == null)
+		{
+			int i;
+			for (i = 7850; i < 7859; i++)
+			{
+				L2ItemInstance oath = getInventory().getItemByItemId(i);
+				if (oath != null)
+				{
+					if (oath.isEquipped())
+						getInventory().unEquipItemInSlot(oath.getEquipSlot());
+				}
+			}
+		}
+
+		
+		for (L2ItemInstance i : getInventory().getItems())
+		{
+			if (i.getItemType() != L2EtcItemType.PET_COLLAR)
+			{
+				if (!isGM())
+				{
+					if (i.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_WEAPON || i.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_ARMOR || i.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_JEWELRY)
+					{
+						// Delete Item Over enchanted
+						getInventory().destroyItem(null, i, this, null);
+						// Message to Player
+						sendMessage("[Server]:You have Items over enchanted you will be kikked!");
+						// If Audit is only a Kick, with this the player goes in
+						// Jail for 1.200 minutes
+						setPunishLevel(L2PcInstance.PunishLevel.JAIL, 1200);
+						// Punishment e log in audit
+						Util.handleIllegalPlayerAction(this, "Player " + this.getName() + " have item Overenchanted ", Config.DEFAULT_PUNISH);
+						// Log in console
+						_log.info("Overenchanted item {" + i + "} has been removed from " + this.getName() + ".");
+					}
+				}
+			}
+		}
+
+		// l2jhellas Faction Good vs Evil
+		// Welcome for evil
+		if (this.isevil() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
+			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
+		}
+		// If Enable Faction Base = true teleport evil to his village principal
+		if (this.isevil() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			this.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ, true);
+			this.sendMessage("You have been teleported Back to your Faction Base.");
+		}
+		// Welcome for good
+		if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
+			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
+		}
+		// If Enable Faction Base = true teleport good to his village principal
+		if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
+		{
+			this.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ, true);
+			this.sendMessage("You have been teleported Back to your Faction Base.");
+		}
+		// check for crowns
+		CrownManager.getInstance().checkCrowns(this);
+		
+		if (Config.PLAYER_SPAWN_PROTECTION > 0)
+		{
+			setProtection(true);
+		}
+		
+		if (L2Event.active && L2Event.connectionLossData.containsKey(this.getName()) && L2Event.isOnEvent(this))
+		{
+			L2Event.restoreChar(this);
+		}
+		else if (L2Event.connectionLossData.containsKey(this.getName()))
+		{
+			L2Event.restoreAndTeleChar(this);
+		}
+		if (TvT._savePlayers.contains(this.getName()))
+		{
+			TvT.addDisconnectedPlayer(this);
+		}
+		
+		if (CTF._savePlayers.contains(this.getName()))
+		{
+			CTF.addDisconnectedPlayer(this);
+		}
+		
+		if (DM._savePlayers.contains(this.getName()))
+		{
+			DM.addDisconnectedPlayer(this);
+		}
+		
+		if (VIP._savePlayers.contains(this.getName()))
+		{
+			VIP.addDisconnectedPlayer(this);
+		}
+		
+		if (SevenSigns.getInstance().isSealValidationPeriod())
+		{
+			sendPacket(new SignsSky());
+		}
+		
+		// buff and status icons
+		if (Config.STORE_SKILL_COOLTIME)
+		{
+			this.restoreEffects();
+		}
+		if ((this.getFirstEffect(426) != null) || (this.getFirstEffect(427) != null))
+		{
+			this.stopSkillEffects(426);
+			this.stopSkillEffects(427);
+			this.updateEffectIcons();
+		}
+		if (this.getAllEffects() != null)
+		{
+			for (L2Effect e : this.getAllEffects())
+			{
+				if (e.getEffectType() == L2Effect.EffectType.HEAL_OVER_TIME)
+				{
+					this.stopEffects(L2Effect.EffectType.HEAL_OVER_TIME);
+					this.removeEffect(e);
+				}
+				
+				if (e.getEffectType() == L2Effect.EffectType.COMBAT_POINT_HEAL_OVER_TIME)
+				{
+					this.stopEffects(L2Effect.EffectType.COMBAT_POINT_HEAL_OVER_TIME);
+					this.removeEffect(e);
+				}
+			}
+		}
+		if (Config.ALLOW_WATER)
+		{
+			this.checkWaterState();
+		}
+		if (Config.RAID_SYSTEM_ENABLED)
+		{
+			this.inClanEvent = false;
+			this.inPartyEvent = false;
+			this.inSoloEvent = false;
+		}
+		if (this.isDonator() && Config.DONATOR_NAME_COLOR_ENABLED)
+		{
+			this.getAppearance().setNameColor(Config.DONATOR_NAME_COLOR);
+		}
+		
+		if (this.isDonator() && Config.DONATOR_TITLE_COLOR_ENABLED)
+		{
+			this.getAppearance().setTitleColor(Config.DONATOR_TITLE_COLOR);
+		}
+		
+		if (this.isDonator() && Config.WELCOME_TEXT_FOR_DONATOR_ENABLED)
+		{
+			this.sendMessage(Config.WELCOME_TEXT_FOR_DONATOR_1 + " " + this.getName() + " " + Config.WELCOME_TEXT_FOR_DONATOR_2);
+		}
+		
+		// Apply color settings to clan leader when entering
+		if (this.getClan() != null && this.isClanLeader() && Config.CLAN_LEADER_COLOR_ENABLED && this.getClan().getLevel() >= Config.CLAN_LEADER_COLOR_CLAN_LEVEL)
+		{
+			this.getAppearance().setTitleColor(Config.CLAN_LEADER_COLOR);
+		}
+
+			
+		if (Config.PVP_COLOR_SYSTEM_ENABLED)
+		{
+			this.updatePvPColor(this.getPvpKills());
+		}
+		
+		if (Config.PK_COLOR_SYSTEM_ENABLED)
+		{
+			this.updatePkColor(this.getPkKills());
+		}
+		
+		if (Config.ANNOUNCE_HERO_LOGIN && this.isHero())
+		{
+			Announcements.getInstance().announceToAll("Hero: " + this.getName() + " has been logged in.");
+		}
+		
+		if (Config.ANNOUNCE_CASTLE_LORDS)
+		{
+			
+			if (clan != null)
+			{
+				if (clan.getHasCastle() > 0)
+				{
+					Castle castle = CastleManager.getInstance().getCastleById(clan.getHasCastle());
+					if ((castle != null) && (this.getObjectId() == clan.getLeaderId()))
+					{
+						Announcements.getInstance().announceToAll("Lord " + this.getName() + " Ruler Of " + castle.getName() + " Castle is Now Online!");
+					}
+				}
+			}
+		}
+		if (this.isGM())
+		{
+			if (Config.GM_STARTUP_INVULNERABLE && AdminTable.getInstance().hasAccess("admin_invul", this.getAccessLevel()))
+			{
+				this.setIsInvul(true);
+			}
+			
+			if (Config.GM_STARTUP_INVISIBLE && AdminTable.getInstance().hasAccess("admin_invisible", this.getAccessLevel()))
+			{
+				this.getAppearance().setInvisible();
+			}
+			
+			if (Config.GM_STARTUP_SILENCE && AdminTable.getInstance().hasAccess("admin_silence", this.getAccessLevel()))
+			{
+				this.setMessageRefusal(true);
+			}
+			
+			if (Config.GM_STARTUP_AUTO_LIST && AdminTable.getInstance().hasAccess("admin_gmliston", this.getAccessLevel()))
+			{
+				AdminTable.getInstance().addGm(this, false);
+			}
+			else
+			{
+				AdminTable.getInstance().addGm(this, true);
+			}
+		}
+		
+		// Rank PvP System by Masterio:
+		if (Config.NICK_COLOR_ENABLED || Config.TITLE_COLOR_ENABLED)
+		{
+			PvpStats activeCharPvpStats = PvpTable.getInstance().getPvpStats(this.getObjectId());
+			
+			if (Config.NICK_COLOR_ENABLED)
+			{
+				this.getAppearance().setNameColor(activeCharPvpStats.getRank().getNickColor());
+			}
+			
+			if (Config.TITLE_COLOR_ENABLED)
+			{
+				this.getAppearance().setTitleColor(activeCharPvpStats.getRank().getTitleColor());			
+			}
+		}
+		
+		// apply augmentation bonus for equipped items
+		for (L2ItemInstance temp : this.getInventory().getAugmentedItems())
+			if (temp != null && temp.isEquipped())
+			{
+				temp.getAugmentation().applyBoni(this);
+			}
+		if (Olympiad.getInstance().playerInStadia(this))
+		{
+			this.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			this.sendMessage("You have been teleported to the nearest town.");
+		}
+		
+		if (!Config.ALLOW_DUALBOX && this != null)
+		{
+			String thisip = this.getClient().getConnection().getInetAddress().getHostAddress();
+			Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
+			L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
+			for (L2PcInstance player : players)
+			{
+				if (player.getClient().getConnection().getInetAddress().getHostAddress() == null)
+					return;
+				String ip = player.getClient().getConnection().getInetAddress().getHostAddress();
+				if (thisip.equals(ip) && (this != player) && (player != null))
+				{
+					player.sendMessage("I'm sorry, but multibox is not allowed here.");
+					player.sendPacket(new LeaveWorld());
+					player.logout();
+					_log.log(Level.WARNING, getClass().getName() + ": Character " + this + " with IP " + ip + " kicked for multibox.");
+				}
+			}
+		}
+		
+
+		if (this.getPremiumService() == 1)
+		{
+			// activeChar.sendPacket(new
+			// ExBrPremiumState(activeChar.getObjectId(), 1));
+			this.setDonator(true);
+		}
+		else
+		{
+			// activeChar.sendPacket(new
+			// ExBrPremiumState(activeChar.getObjectId(), 0));
+			this.setDonator(false);
+		}
+		    this.onPlayerEnter();
+    }
+ 
 }
