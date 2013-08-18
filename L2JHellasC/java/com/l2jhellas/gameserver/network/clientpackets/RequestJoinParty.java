@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AskJoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -98,7 +97,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 			return;
 		}
 
-		if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE) || (VIP._started && !Config.VIP_ALLOW_INTERFERENCE)) && !requestor.isGM())
+		if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE) && !requestor.isGM()))
 		{
 			if ((target._inEventTvT && !requestor._inEventTvT) || (!target._inEventTvT && requestor._inEventTvT))
 			{

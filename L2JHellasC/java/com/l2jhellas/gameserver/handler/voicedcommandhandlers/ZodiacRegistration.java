@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CaptureThem;
 import com.l2jhellas.gameserver.model.entity.engines.CastleWars;
+import com.l2jhellas.gameserver.model.entity.engines.ChaosEvent;
 import com.l2jhellas.gameserver.model.entity.engines.PeloponnesianWar;
 import com.l2jhellas.gameserver.model.entity.engines.ProtectTheLdr;
 import com.l2jhellas.gameserver.model.entity.engines.TreasureChest;
@@ -110,12 +111,19 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 				html.setFile(Capture_Path);
 				activeChar.sendPacket(html);
 			}
+			else if(ChaosEvent._isChaosActive)
+			{
+				ChaosEvent.registerToChaos(activeChar);
+				return true;
+			}
 		}
 		if ((command.startsWith(VOICED_COMMANDS[1]) && activeChar.isinZodiac))
 		{
 			activeChar.isinZodiac = false;
 			activeChar.sendMessage("You are now unregistered!");
 			ZodiacMain.Ips.remove(Ip);
+			if(ChaosEvent._isChaosActive)
+				ChaosEvent.removeFromChaos(activeChar);
 		}
 		return true;
 	}

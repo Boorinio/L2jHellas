@@ -63,13 +63,9 @@ import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
-import com.l2jhellas.gameserver.model.entity.engines.CaptureThem;
-import com.l2jhellas.gameserver.model.entity.engines.CastleWars;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
-import com.l2jhellas.gameserver.model.entity.engines.ProtectTheLdr;
-import com.l2jhellas.gameserver.model.entity.engines.TreasureChest;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.VIP;
+import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.quest.State;
@@ -730,10 +726,6 @@ public class L2NpcInstance extends L2Character
 						CTF.showFlagHtml(player, String.valueOf(getObjectId()), _CTF_FlagTeamName);
 					else if (_isCTF_throneSpawn)
 						CTF.CheckRestoreFlags();
-					else if (_isEventVIPNPC)
-						VIP.showJoinHTML(player, String.valueOf(getObjectId()));
-					else if (_isEventVIPNPCEnd)
-						VIP.showEndHTML(player, String.valueOf(getObjectId()));
 					else
 					{
 						Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.ON_FIRST_TALK);
@@ -2340,28 +2332,7 @@ public class L2NpcInstance extends L2Character
 	{
 		if (!super.doDie(killer))
 			return false;
-		if (getNpcId() == 18286 && TreasureChest.TreasureRunning)
-		{
-			TreasureChest.LuckyOne((L2PcInstance) killer);
-		}
-		if (getNpcId() == 36006)
-		{
-			if (!CastleWars.isFinished && CastleWars.CastleWarsRunning)
-			{
-				CastleWars.flagskilled++;
-				CastleWars.attackersWin();
-			}
-			if (CaptureThem.CaptureThemRunning)
-				((L2PcInstance) killer).ZodiacPoints = ((L2PcInstance) killer).ZodiacPoints + 10;
-		}
-		if (getNpcId() == 36007 && ProtectTheLdr.ProtectisRunning)
-		{
-			ProtectTheLdr.team2wins();
-		}
-		if (getNpcId() == 36008 && ProtectTheLdr.ProtectisRunning)
-		{
-			ProtectTheLdr.team1wins();
-		}
+		ZodiacMain.OnKillNpc(this,killer);
 		// normally this wouldn't really be needed, but for those few exceptions,
 		// we do need to reset the weapons back to the initial templated weapon.
 		_currentLHandId = getTemplate().lhand;

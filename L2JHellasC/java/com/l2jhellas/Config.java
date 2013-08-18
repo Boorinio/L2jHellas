@@ -81,7 +81,6 @@ public final class Config
 	private static final String EVENT_DM_CONFIG_FILE = "./config/Events/DM.ini";
 	private static final String EVENT_CTF_CONFIG_FILE = "./config/Events/CTF.ini";
 	private static final String EVENT_RAID_CONFIG_FILE = "./config/Events/Raid.ini";
-	private static final String EVENT_CHAOS_CONFIG_FILE = "./config/Events/Chaos.ini";
 	private static final String EVENT_QUIZ_CONFIG_FILE = "./config/Events/Quiz.ini";
 	private static final String EVENT_WEDDING_CONFIG_FILE = "./config/Events/Wedding.ini";
 	// Mods Folder
@@ -871,6 +870,7 @@ public final class Config
 	public static int ZODIAC_REWARD_COUN;
 	public static int ZODIAC_VOTE_MINUTES;
 	public static boolean SAME_IP_ZODIAC;
+	public static int TIME_TO_REGISTER;
 	public static int INITIAL_START;
 	public static int BETWEEN_EVENTS;
 	// TvT Settings
@@ -931,21 +931,6 @@ public final class Config
 	public static boolean RAID_SYSTEM_GIVE_BUFFS;
 	public static boolean RAID_SYSTEM_RESURRECT_PLAYER;
 	public static int RAID_SYSTEM_FIGHT_TIME;
-	// Chaos Settings
-	public static boolean ENABLED_CHAOS_EVENT;
-	public static int CHAOS_FIRST_WINNER_REWARD_ID;
-	public static int CHAOS_FIRST_WINNER_REWARD_QUANTITY;
-	public static int CHAOS_SECOND_WINNER_REWARD_ID;
-	public static int CHAOS_SECOND_WINNER_REWARD_QUANTITY;
-	public static int CHAOS_THIRD_WINNER_REWARD_ID;
-	public static int CHAOS_THIRD_WINNER_REWARD_QUANTITY;
-	public static int CHAOS_FOURTH_WINNER_REWARD_ID;
-	public static int CHAOS_FOURTH_WINNER_REWARD_QUANTITY;
-	public static int CHAOS_FIFTH_WINNER_REWARD_ID;
-	public static int CHAOS_FIFTH_WINNER_REWARD_QUANTITY;
-	public static int CHAOS_COLOR;
-	public static int CHAOS_SKILL_ID;
-	public static int CHAOS_SKILL_LVL;
 	// Quiz Settings
 	public static boolean ENABLED_QUIZ_EVENT;
 	public static int QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN;
@@ -2513,6 +2498,7 @@ public final class Config
 			ZODIAC_VOTE_MINUTES = Integer.parseInt(EventZodiacSettings.getProperty("VotingMin", "5"));
 			SAME_IP_ZODIAC = Boolean.parseBoolean(EventZodiacSettings.getProperty("SameIpProtection", "true"));
 			INITIAL_START = Integer.parseInt(EventZodiacSettings.getProperty("MinutesInitial", "10"));
+			TIME_TO_REGISTER = Integer.parseInt(EventZodiacSettings.getProperty("RegisterTime", "10"));
 			BETWEEN_EVENTS = Integer.parseInt(EventZodiacSettings.getProperty("MinutesAfterEvent", "60"));
 
 			/**
@@ -2644,35 +2630,6 @@ public final class Config
 			RAID_SYSTEM_RESURRECT_PLAYER = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidResurrectPlayer", "true"));
 			RAID_SYSTEM_MAX_EVENTS = Integer.parseInt(EventRAIDSettings.getProperty("RaidMaxNumEvents", "3"));
 			RAID_SYSTEM_FIGHT_TIME = Integer.parseInt(EventRAIDSettings.getProperty("RaidSystemFightTime", "60"));
-
-			/**
-			 * Event CHAOS
-			 */
-			Properties EventCHAOSSettings = new Properties();
-			final File eventCHAOS = new File(EVENT_CHAOS_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventCHAOS))
-			{
-				EventCHAOSSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_CHAOS_CONFIG_FILE + " settings!", e);
-			}
-			ENABLED_CHAOS_EVENT = Boolean.parseBoolean(EventCHAOSSettings.getProperty("EnableChaosEvent", "False"));
-			CHAOS_FIRST_WINNER_REWARD_ID = Integer.parseInt(EventCHAOSSettings.getProperty("FirstWinnerRewardId", "57"));
-			CHAOS_FIRST_WINNER_REWARD_QUANTITY = Integer.parseInt(EventCHAOSSettings.getProperty("FirstWinnerRewardQuantity", "5000"));
-			CHAOS_SECOND_WINNER_REWARD_ID = Integer.parseInt(EventCHAOSSettings.getProperty("SecondWinnerRewardId", "57"));
-			CHAOS_SECOND_WINNER_REWARD_QUANTITY = Integer.parseInt(EventCHAOSSettings.getProperty("SecondWinnerRewardQuantity", "4000"));
-			CHAOS_THIRD_WINNER_REWARD_ID = Integer.parseInt(EventCHAOSSettings.getProperty("ThirdWinnerRewardId", "57"));
-			CHAOS_THIRD_WINNER_REWARD_QUANTITY = Integer.parseInt(EventCHAOSSettings.getProperty("ThirdWinnerRewardQuantity", "3000"));
-			CHAOS_FOURTH_WINNER_REWARD_ID = Integer.parseInt(EventCHAOSSettings.getProperty("FourthWinnerRewardId", "57"));
-			CHAOS_FOURTH_WINNER_REWARD_QUANTITY = Integer.parseInt(EventCHAOSSettings.getProperty("FourthWinnerRewardQuantity", "2000"));
-			CHAOS_FIFTH_WINNER_REWARD_ID = Integer.parseInt(EventCHAOSSettings.getProperty("FifthWinnerRewardId", "57"));
-			CHAOS_FIFTH_WINNER_REWARD_QUANTITY = Integer.parseInt(EventCHAOSSettings.getProperty("FifthWinnerRewardQuantity", "1000"));
-			CHAOS_COLOR = Integer.decode("0x" + EventCHAOSSettings.getProperty("ChaosColor", "000000"));
-			CHAOS_SKILL_ID = Integer.parseInt(EventCHAOSSettings.getProperty("ChaosSkillID", "7029"));
-			CHAOS_SKILL_LVL = Integer.parseInt(EventCHAOSSettings.getProperty("ChaosSkillLvL", "4"));
-
 			/**
 			 * Event QUIZ
 			 */

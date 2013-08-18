@@ -18,8 +18,9 @@ import com.l2jhellas.util.Rnd;
 public class TreasureChest
 {
 	public static boolean TreasureRunning;
+	private static int LuckyChest=0,Counter=0;
 	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
-	private static FastSet<L2NpcInstance> _Npcs = new FastSet<L2NpcInstance>();
+	public static FastSet<L2NpcInstance> _Npcs = new FastSet<L2NpcInstance>();
 	private static int x = 87377, y = 20459, z = -5270, i;
 
 	public static void registration()
@@ -27,14 +28,11 @@ public class TreasureChest
 		ZodiacMain.ZodiacRegisterActive = true;
 		Announcements.getInstance().announceToAll("TreasureChest Event has Started!");
 		Announcements.getInstance().announceToAll("Type .join to enter or .leave to leave!");
-		Announcements.getInstance().announceToAll("You have 10 minutes to register!");
-		waitSecs(300);
-		Announcements.getInstance().announceToAll("You have 5 minutes to register!");
-		waitSecs(180);
-		Announcements.getInstance().announceToAll("You have 2 minutes to register!");
-		waitSecs(60);
-		Announcements.getInstance().announceToAll("You have 1 minute to register!");
-		waitSecs(60);
+		int minutes = Config.TIME_TO_REGISTER;
+		Announcements.getInstance().announceToAll("You have " + minutes + " minutes to register!");
+		waitSecs(minutes / 2 * 60);
+		Announcements.getInstance().announceToAll("You have " + minutes / 2 + " minutes to register!");
+		waitSecs(minutes / 2 * 60);
 		for (L2PcInstance players : L2World.getAllPlayers())
 		{
 			if (players.isinZodiac)
@@ -57,6 +55,7 @@ public class TreasureChest
 			players.sendMessage("Kill as many chest as you can!");
 		}
 		L2NpcInstance npcs = null;
+		LuckyChest = Rnd.get(39);
 		for (i = 0; i < 40; i++)
 		{
 			npcs = addSpawn(18286, x + Rnd.get(-750, +750), y + Rnd.get(-750, +750), z);
@@ -66,7 +65,8 @@ public class TreasureChest
 
 	public static void LuckyOne(L2PcInstance killer)
 	{
-		if (Rnd.get(40) == 2)
+		Counter++;
+		if (Counter == LuckyChest)
 		{
 			Announcements.getInstance().announceToAll(killer + " killed the lucky chest!");
 			killer.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, killer, true);
@@ -84,6 +84,8 @@ public class TreasureChest
 		{
 			npc.deleteMe();
 		}
+		Counter=0;
+		LuckyChest=0;
 		TreasureRunning = false;
 		_players.clear();
 		_Npcs.clear();

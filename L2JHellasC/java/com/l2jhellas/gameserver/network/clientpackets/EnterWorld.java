@@ -31,7 +31,6 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
@@ -64,7 +63,6 @@ import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -614,19 +612,5 @@ public class EnterWorld extends L2GameClientPacket
 		QuestState qs = player.getQuestState("255_Tutorial");
 		if (qs != null)
 			qs.getQuest().notifyEvent("UC", null, player);
-	}
-	/**
-	 * TODO remove from here
-	 */
-	public static void warnAllPlayers()
-	{
-		for (L2PcInstance player : _onlineplayers)
-		{
-			String html = HtmCache.getInstance().getHtm("data/html/chaos/warning.htm");
-			NpcHtmlMessage warning = new NpcHtmlMessage(1);
-			warning.setHtml(html);
-
-			player.sendPacket(warning);
-		}
 	}
 }

@@ -140,15 +140,10 @@ import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
-import com.l2jhellas.gameserver.model.entity.engines.CaptureThem;
-import com.l2jhellas.gameserver.model.entity.engines.CastleWars;
-import com.l2jhellas.gameserver.model.entity.engines.ChaosEvent;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
-import com.l2jhellas.gameserver.model.entity.engines.PeloponnesianWar;
-import com.l2jhellas.gameserver.model.entity.engines.ProtectTheLdr;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.VIP;
+import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.quest.State;
@@ -414,9 +409,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public int tempAc = 0;
 	public boolean PassedProt;
 	public int botx, boty, botz;
-	// Chaos Event.
-	public int _chaosKills;
-	public boolean _inChaosEvent = false;
+	// Zodiac Engine
 	public boolean isinZodiac = false;
 	public int ZodiacPoints;
 	public int CountIps;
@@ -3024,7 +3017,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			sendMessage("A dark force beyond your mortal understanding makes your knees to shake when you try to stand up ...");
 		}
-		else if (TvT._sitForced && _inEventTvT || CTF._sitForced && _inEventCTF || DM._sitForced && _inEventDM || VIP._sitForced && _inEventVIP)
+		else if (TvT._sitForced && _inEventTvT || CTF._sitForced && _inEventCTF || DM._sitForced && _inEventDM)
 		{
 			sendMessage("The Admin/GM handle if you sit or stand in this match!");
 		}
@@ -4405,7 +4398,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 		}
 		
-		if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE) || (VIP._started && !Config.VIP_ALLOW_INTERFERENCE)) && !player.isGM())
+		if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE) && !player.isGM()))
 		{
 			if ((_inEventTvT && !player._inEventTvT) || (!_inEventTvT && player._inEventTvT))
 			{
@@ -4473,7 +4466,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			else
 			{
 				// Check if this L2PcInstance is autoAttackable
-				if (isAutoAttackable(player) || (player._inEventTvT && TvT._started) || (player._inEventCTF && CTF._started) || (player._inEventDM && DM._started) || (player._inEventVIP && VIP._started) && !isGM())
+				if (isAutoAttackable(player) || (player._inEventTvT && TvT._started) || (player._inEventCTF && CTF._started) || (player._inEventDM && DM._started)&& !isGM())
 				{
 					if (Config.ALLOW_CHAR_KILL_PROTECT)
 					{
@@ -5498,23 +5491,10 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				rps.doPvp();
 			}
-			if (CastleWars.CastleWarsRunning && (isinZodiac && pk.isinZodiac))
+			if (isinZodiac)
 			{
-				sendMessage("You will be revived in your spot");
+				ZodiacMain.OnDeath(this, pk);
 			}
-			if (CaptureThem.CaptureThemRunning && (isinZodiac && pk.isinZodiac))
-			{
-				pk.ZodiacPoints++;
-			}
-			if (PeloponnesianWar.PeloRunning && isinZodiac)
-			{
-				isinZodiac = false;
-				teleToLocation(82698, 148638, -3473);
-				getAppearance().setNameColor(0xFFFFFF);
-				setTitle("");
-				broadcastUserInfo();
-			}
-			
 			if (pk != null && pk._inEventTvT && _inEventTvT)
 			{
 				if (TvT._teleport || TvT._started)
@@ -5625,48 +5605,6 @@ public final class L2PcInstance extends L2PlayableInstance
 							doRevive();
 						}
 					}, Config.DM_REVIVE_DELAY);
-				}
-			}
-			else if (pk != null && _inEventVIP)
-			{
-				if (VIP._started)
-				{
-					if (_isTheVIP && pk._inEventVIP)
-					{
-						VIP.vipDied();
-					}
-					else if (_isTheVIP && !pk._inEventVIP)
-					{
-						Announcements.getInstance().announceToAll("VIP Killed by non-event character. VIP going back to initial spawn.");
-						doRevive();
-						teleToLocation(VIP._startX, VIP._startY, VIP._startZ);
-					}
-					else if (_isTheVIP && pk._isVIP)
-					{
-						Announcements.getInstance().announceToAll("VIP Killed by same team player. VIP going back to initial spawn.");
-						doRevive();
-						teleToLocation(VIP._startX, VIP._startY, VIP._startZ);
-					}
-					else
-					{
-						sendMessage("You will be revived and teleported to team spot in 20 seconds!");
-						ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								doRevive();
-								if (_isVIP)
-								{
-									teleToLocation(VIP._startX, VIP._startY, VIP._startZ);
-								}
-								else
-								{
-									teleToLocation(VIP._endX, VIP._endY, VIP._endZ);
-								}
-							}
-						}, 20000);
-					}
 				}
 			}
 			else if (pk != null)
@@ -5780,7 +5718,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	private void onDieDropItem(L2Character killer)
 	{
-		if (atEvent || (TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || (VIP._started && _inEventVIP) || killer == null)
+		if (atEvent || (TvT._started && _inEventTvT) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || killer == null)
 			return;
 		
 		if ((getKarma() <= 0) && (killer instanceof L2PcInstance) && (((L2PcInstance) killer).getClan() != null) && (getClan() != null) && (((L2PcInstance) killer).getClan().isAtWarWith(getClanId())
@@ -5910,7 +5848,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 		if (!(target instanceof L2PlayableInstance))
 			return;
-		if (_inEventCTF || _inEventTvT || _inEventVIP || _inEventDM || _inChaosEvent)
+		if (_inEventCTF || _inEventTvT || _inEventVIP || _inEventDM || isinZodiac)
 			return;
 		
 		L2PcInstance targetPlayer = null;
@@ -5966,11 +5904,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			increasePvpKills();
 			
-			if (_inChaosEvent && targetPlayer._inChaosEvent)
-			{
-				_chaosKills++;
-			}
-			
 			if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
 			{
 				Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
@@ -5988,10 +5921,6 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						// 'Both way war' -> 'PvP Kill'
 						increasePvpKills();
-						if (_inChaosEvent && targetPlayer._inChaosEvent)
-						{
-							_chaosKills++;
-						}
 						
 						if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
 						{
@@ -6008,10 +5937,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (Config.KARMA_AWARD_PK_KILL)
 				{
 					increasePvpKills();
-					if (_inChaosEvent && targetPlayer._inChaosEvent)
-					{
-						_chaosKills++;
-					}
 					if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
 					{
 						Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
@@ -6028,25 +5953,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					Announcements.getInstance().announceToAll("Player " + this.getName() + " has assassinated Player " + target.getName());
 				}
 			}
-			else if (targetPlayer.getPvpFlag() == 0 && !(_inChaosEvent && _inChaosEvent(target)))
-			{
-				increasePkKillsAndKarma(targetPlayer.getLevel());
-			}
-			
-			if (targetPlayer.getPvpFlag() == 0 && (_inChaosEvent && targetPlayer._inChaosEvent))
-			{
-				_chaosKills++;
-			}
 		}
-	}
-	
-	/**
-	 * Increase the pvp kills count in Chaos Event.
-	 */
-	public boolean _inChaosEvent(L2Character target)
-	{
-		L2PcInstance targetPlayer = target.getActingPlayer();
-		return targetPlayer._inChaosEvent;
 	}
 	
 	/**
@@ -6054,7 +5961,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void increasePvpKills()
 	{
-		if ((TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF))
+		if ((TvT._started && _inEventTvT) ||isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
 		
 		if (!Config.LEGAL_COUNTER_ALTT_ENABLED)
@@ -6093,7 +6000,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	@Override
 	public boolean isInFunEvent()
 	{
-		return (atEvent || (TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || (VIP._started && _inEventVIP) && !isGM());
+		return (atEvent || (TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) && !isGM());
 	}
 	
 	/**
@@ -6104,7 +6011,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void increasePkKillsAndKarma(int targLVL)
 	{
-		if ((TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (VIP._started && _inEventVIP) || (CTF._started && _inEventCTF))
+		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
 		
 		if (Config.MOD_GVE_ENABLE_FACTION)
@@ -6244,7 +6151,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void updatePvPStatus()
 	{
-		if ((TvT._started && _inEventTvT) || (_inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM) || (CTF._started && _inEventCTF) || (_inEventVIP && VIP._started))
+		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
 		
 		if (isgood() || isevil())
@@ -6276,7 +6183,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (player_target == null)
 			return;
 		
-		if ((TvT._started && _inEventTvT && player_target._inEventTvT) || (player_target._inChaosEvent && _inChaosEvent && ChaosEvent._isChaosActive) || (DM._started && _inEventDM && player_target._inEventDM) || (CTF._started && _inEventCTF && player_target._inEventCTF) || (_inEventVIP && VIP._started && player_target._inEventVIP))
+		if ((TvT._started && _inEventTvT && player_target._inEventTvT) ||isinZodiac || (DM._started && _inEventDM && player_target._inEventDM) || (CTF._started && _inEventCTF && player_target._inEventCTF))
 			return;
 		
 		if ((isInDuel() && player_target.getDuelId() == getDuelId()))
@@ -6349,7 +6256,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		// Calculate the Experience loss
 		long lostExp = 0;
-		if (!atEvent && !_inEventTvT && !_inEventDM && !_inEventCTF && (!_inEventVIP && !VIP._started))
+		if (!atEvent && !_inEventTvT && !_inEventDM && !_inEventCTF)
 		{
 			if (lvl < ExperienceData.getInstance().getMaxLevel())
 			{
@@ -9642,7 +9549,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				character = (L2PcInstance) target;
 			}
 			
-			if ((_inEventTvT && TvT._started) || (_inEventDM && DM._started) || (_inEventCTF && CTF._started) || (_inEventVIP && VIP._started) || (_inChaosEvent))
+			if ((_inEventTvT && TvT._started) || (_inEventDM && DM._started) || (_inEventCTF && CTF._started) || isinZodiac)
 				return true;
 			if (isgood() || isevil())
 				return true;
@@ -11444,20 +11351,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		sendPacket(new EtcStatusUpdate(this));
 		_reviveRequested = 0;
 		_revivePower = 0;
-		if (CastleWars.CastleWarsRunning)
-		{
-			if (CastleWars.isattacker(this))
-			{
-				
-				teleToLocation(CastleWars.attackersx, CastleWars.attackersy, CastleWars.attackersz);
-			}
-			if (CastleWars.isdefender(this))
-			{
-				
-				teleToLocation(CastleWars.defendersx, CastleWars.defendersy, CastleWars.defendersz);
-			}
-		}
-		
 		if (isInParty() && getParty().isInDimensionalRift())
 		{
 			if (!DimensionalRiftManager.getInstance().checkIfInPeaceZone(getX(), getY(), getZ()))
@@ -11465,38 +11358,10 @@ public final class L2PcInstance extends L2PlayableInstance
 				getParty().getDimensionalRift().memberRessurected(this);
 			}
 		}
-		if (isinZodiac && CaptureThem.CaptureThemRunning)
+		if(isinZodiac)
 		{
-			getStatus().setCurrentHp(getMaxHp());
-			getStatus().setCurrentMp(getMaxMp());
-			getStatus().setCurrentCp(getMaxCp());
-			teleToLocation(149722, 46700, -3413);
-			L2Skill skill;
-			skill = SkillTable.getInstance().getInfo(1323, 1);
-			skill.getEffects(this, this);
-		}
-		if (isinZodiac && ProtectTheLdr.ProtectisRunning)
-		{
-			getStatus().setCurrentHp(getMaxHp());
-			getStatus().setCurrentMp(getMaxMp());
-			getStatus().setCurrentCp(getMaxCp());
-			L2Skill skill;
-			skill = SkillTable.getInstance().getInfo(1323, 1);
-			skill.getEffects(this, this);
-			if (ProtectTheLdr._Team1.contains(this))
-			{
-				teleToLocation(ProtectTheLdr.team1x, ProtectTheLdr.team1y, ProtectTheLdr.team1z);
-			}
-			if (ProtectTheLdr._Team2.contains(this))
-			{
-				teleToLocation(ProtectTheLdr.team2x, ProtectTheLdr.team2y, ProtectTheLdr.team2z);
-			}
-		}
-		ChaosEvent chaos = new ChaosEvent();
-		if (_inChaosEvent)
-		{
-			chaos.addSuperHaste(this);
-		}
+			ZodiacMain.OnRevive(this);
+		}	
 		
 		if ((_inEventTvT && TvT._started && Config.TVT_REVIVE_RECOVERY) || (_inEventCTF && CTF._started && Config.CTF_REVIVE_RECOVERY))
 		{
@@ -14083,11 +13948,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (DM._savePlayers.contains(this.getName()))
 		{
 			DM.addDisconnectedPlayer(this);
-		}
-		
-		if (VIP._savePlayers.contains(this.getName()))
-		{
-			VIP.addDisconnectedPlayer(this);
 		}
 		
 		if (SevenSigns.getInstance().isSealValidationPeriod())

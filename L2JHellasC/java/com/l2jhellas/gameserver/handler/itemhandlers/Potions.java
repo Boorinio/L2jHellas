@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -105,7 +104,7 @@ public class Potions implements IItemHandler
 			return;
 		}
 
-		if ((activeChar._inEventTvT && TvT._started && !Config.TVT_ALLOW_POTIONS) || (activeChar._inEventCTF && CTF._started && !Config.CTF_ALLOW_POTIONS) || (activeChar._inEventDM && DM._started && !Config.DM_ALLOW_POTIONS) || (activeChar._inEventVIP && VIP._started && !Config.VIP_ALLOW_POTIONS))
+		if ((activeChar._inEventTvT && TvT._started && !Config.TVT_ALLOW_POTIONS) || (activeChar._inEventCTF && CTF._started && !Config.CTF_ALLOW_POTIONS) || (activeChar._inEventDM && DM._started && !Config.DM_ALLOW_POTIONS))
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;

@@ -31,7 +31,6 @@ import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminBanChat;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCTFEngine;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCache;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminChangeAccessLevel;
-import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminChaos;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminClanFull;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCreateItem;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminCursedWeapons;
@@ -89,7 +88,6 @@ import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTeleport;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTest;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTvTEngine;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminUnblockIp;
-import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminVIPEngine;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminWalker;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminWho;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminZone;
@@ -115,10 +113,6 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminBBS());
 		registerAdminCommandHandler(new AdminCache());
 		registerAdminCommandHandler(new AdminChangeAccessLevel());
-		if (Config.ENABLED_CHAOS_EVENT)
-		{
-			registerAdminCommandHandler(new AdminChaos());
-		}
 		registerAdminCommandHandler(new AdminClanFull());
 		registerAdminCommandHandler(new AdminCreateItem());
 		registerAdminCommandHandler(new AdminCursedWeapons());
@@ -174,7 +168,6 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminCTFEngine());
 		registerAdminCommandHandler(new AdminDMEngine());
 		registerAdminCommandHandler(new AdminTvTEngine());
-		registerAdminCommandHandler(new AdminVIPEngine());
 		registerAdminCommandHandler(new AdminHero());
 		registerAdminCommandHandler(new AdminNoble());
 		registerAdminCommandHandler(new Balancer());

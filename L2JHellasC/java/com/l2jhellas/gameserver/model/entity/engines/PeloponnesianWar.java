@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -59,22 +59,18 @@ public class PeloponnesianWar
 	{
 	-3773, -3773, -3773, -3773, -3646, -3646, -3646, -3646,
 	};
-
+	
 	public static void startevent()
 	{
 		PeloRunning = true;
 		ZodiacMain.ZodiacRegisterActive = true;
 		Announcements.getInstance().announceToAll("Peloponnesian War Event has Started!");
 		Announcements.getInstance().announceToAll("Type .join to enter or .leave to leave!");
-		Announcements.getInstance().announceToAll("You have 10 minutes to register!");
-		waitSecs(300);
-		Announcements.getInstance().announceToAll("You have 5 minutes to register!");
-		waitSecs(180);
-		Announcements.getInstance().announceToAll("You have 2 minutes to register!");
-		waitSecs(60);
-		Announcements.getInstance().announceToAll("You have 1 minute to register!");
-		waitSecs(60);
-		Announcements.getInstance().announceToAll("Registrations closed!");
+		int minutes = Config.TIME_TO_REGISTER;
+		Announcements.getInstance().announceToAll("You have " + minutes + " minutes to register!");
+		waitSecs(minutes / 2 * 60);
+		Announcements.getInstance().announceToAll("You have " + minutes / 2 + " minutes to register!");
+		waitSecs(minutes / 2 * 60);
 		ZodiacMain.ZodiacRegisterActive = false;
 		for (L2PcInstance player : L2World.getAllPlayers())
 		{
@@ -97,7 +93,7 @@ public class PeloponnesianWar
 					player.broadcastUserInfo();
 					alaksokolies = true;
 				}
-
+				
 			}
 		}
 		spawnProtectors();
@@ -134,7 +130,7 @@ public class PeloponnesianWar
 		}
 		cleanthemess();
 	}
-
+	
 	public static void cleanthemess()
 	{
 		for (L2PcInstance participant : _participants)
@@ -160,29 +156,29 @@ public class PeloponnesianWar
 		_athenians.clear();
 		_spartans.clear();
 	}
-
+	
 	private static void reward(boolean Athenians)
 	{
 		if (Athenians)
 		{
 			for (L2PcInstance athenians : _athenians)
 			{
-
+				
 				athenians.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, athenians, true);
-
+				
 			}
 		}
 		else
 		{
 			for (L2PcInstance spartans : _spartans)
 			{
-
+				
 				spartans.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, spartans, true);
-
+				
 			}
 		}
 	}
-
+	
 	public static void checkwhowon()
 	{
 		for (L2PcInstance winner : _participants)
@@ -205,7 +201,7 @@ public class PeloponnesianWar
 			}
 		}
 	}
-
+	
 	public static void finalround()
 	{
 		for (L2PcInstance athenian : _athenians)
@@ -237,7 +233,7 @@ public class PeloponnesianWar
 			}
 		}
 	}
-
+	
 	public static void teleportplayers()
 	{
 		for (L2PcInstance player : _participants)
@@ -248,7 +244,16 @@ public class PeloponnesianWar
 				player.teleToLocation(spartanx, spartany, spartanz);
 		}
 	}
-
+	
+	public static void onDeath(L2PcInstance player)
+	{
+		player.isinZodiac = false;
+		player.teleToLocation(82698, 148638, -3473);
+		player.getAppearance().setNameColor(0xFFFFFF);
+		player.setTitle("");
+		player.broadcastUserInfo();
+	}
+	
 	public static void spawnProtectors()
 	{
 		L2NpcInstance protector = null;
@@ -258,18 +263,18 @@ public class PeloponnesianWar
 			_protectors.add(protector);
 		}
 	}
-
+	
 	public static void RemoveAthenian(String name)
 	{
 		_athenians.remove(name);
-
+		
 	}
-
+	
 	public static void RemoveSpartan(String name)
 	{
 		_spartans.remove(name);
 	}
-
+	
 	public static void waitSecs(int i)
 	{
 		try
@@ -281,7 +286,7 @@ public class PeloponnesianWar
 			ie.printStackTrace();
 		}
 	}
-
+	
 	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
 	{
 		L2NpcInstance result = null;

@@ -39,7 +39,6 @@ import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.VIP;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -125,35 +124,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				playerHelp(activeChar, _command.substring(12));
 			}
-			else if (_command.startsWith("PeloponnesianWar") && ZodiacMain.voting)
+			if(ZodiacMain.voting)
 			{
-				activeChar.sendMessage("You have voted for PeloponnesianWar!");
-				ZodiacMain.count[0]++;
-				ZodiacMain.showFinalWindow(activeChar);
-			}
-			else if (_command.startsWith("CaptureThem") && ZodiacMain.voting)
-			{
-				activeChar.sendMessage("You have voted for CaptureThem!");
-				ZodiacMain.count[1]++;
-				ZodiacMain.showFinalWindow(activeChar);
-			}
-			else if (_command.startsWith("CastleWars") && ZodiacMain.voting)
-			{
-				activeChar.sendMessage("You have voted for CastleWars!");
-				ZodiacMain.count[2]++;
-				ZodiacMain.showFinalWindow(activeChar);
-			}
-			else if (_command.startsWith("ProtectTheLdr") && ZodiacMain.voting)
-			{
-				activeChar.sendMessage("You have voted for ProtectTheLeader!");
-				ZodiacMain.count[3]++;
-				ZodiacMain.showFinalWindow(activeChar);
-			}
-			else if (_command.startsWith("TreasureChest") && ZodiacMain.voting)
-			{
-				activeChar.sendMessage("You have voted for TreasureChest!");
-				ZodiacMain.count[4]++;
-				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.OnBypass(_command,activeChar);
 			}
 			else if (_command.startsWith("sendMsg"))
 			{ // Message System By Pauler
@@ -310,18 +283,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					if (_command.substring(endOfId + 1).startsWith("event_participate"))
 					{
 						L2Event.inscribePlayer(activeChar);
-					}
-					else if (_command.substring(endOfId + 1).startsWith("vip_joinVIPTeam"))
-					{
-						VIP.addPlayerVIP(activeChar);
-					}
-					else if (_command.substring(endOfId + 1).startsWith("vip_joinNotVIPTeam"))
-					{
-						VIP.addPlayerNotVIP(activeChar);
-					}
-					else if (_command.substring(endOfId + 1).startsWith("vip_finishVIP"))
-					{
-						VIP.vipWin(activeChar);
 					}
 					else if (_command.substring(endOfId + 1).startsWith("tvt_player_join "))
 					{

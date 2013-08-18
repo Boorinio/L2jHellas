@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,24 +54,21 @@ public class CaptureThem
 	47471, 46144, 46670, 46750, 46221, 46464, 46872, 47105, 47871,
 	};
 	private static int flagsz = -3413;
-
+	
 	public static void openRegistration()
 	{
 		CaptureThemRunning = true;
 		ZodiacMain.ZodiacRegisterActive = true;
 		Announcements.getInstance().announceToAll("CaptureThem Event has Started!");
 		Announcements.getInstance().announceToAll("Type .join to enter or .leave to leave!");
-		Announcements.getInstance().announceToAll("You have 10 minutes to register!");
-		waitSecs(300);
-		Announcements.getInstance().announceToAll("You have 5 minutes to register!");
-		waitSecs(180);
-		Announcements.getInstance().announceToAll("You have 2 minutes to register!");
-		waitSecs(60);
-		Announcements.getInstance().announceToAll("You have 1 minute to register!");
-		waitSecs(60);
+		int minutes = Config.TIME_TO_REGISTER;
+		Announcements.getInstance().announceToAll("You have " + minutes + " minutes to register!");
+		waitSecs(minutes / 2 * 60);
+		Announcements.getInstance().announceToAll("You have " + minutes / 2 + " minutes to register!");
+		waitSecs(minutes / 2 * 60);
 		stopRegistration();
 	}
-
+	
 	public static void stopRegistration()
 	{
 		Announcements.getInstance().announceToAll("CaptureThem Registration is Over!");
@@ -81,13 +78,13 @@ public class CaptureThem
 			if (players.isinZodiac)
 			{
 				String Capture_Path = "data/html/zodiac/CaptureThem.htm";
-				//TODO check this if work like that
+				// TODO check this if work like that
 				/* File mainText = */new File(Config.DATAPACK_ROOT, Capture_Path);
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);
 				players.sendPacket(html);
 				_players.add(players);
-
+				
 			}
 		}
 		waitSecs(20);
@@ -99,7 +96,7 @@ public class CaptureThem
 			CaptureThemRunning = false;
 		}
 	}
-
+	
 	public static void StartEvent()
 	{
 		DoorTable.getInstance().getDoor(24190001).closeMe();
@@ -123,7 +120,7 @@ public class CaptureThem
 			players.broadcastUserInfo();
 			players.teleToLocation(149527, 46684, -3413);
 			players.sendMessage("The Event has Started! And will finish in 10 minutes");
-
+			
 		}
 		Announcements.getInstance().announceToAll("You have 10 minutes until the event is over!");
 		waitSecs(300);
@@ -134,9 +131,9 @@ public class CaptureThem
 		Announcements.getInstance().announceToAll("You have 1 minute until the event is over!");
 		waitSecs(60);
 		StopClean();
-
+		
 	}
-
+	
 	public static void StopClean()
 	{
 		for (L2PcInstance players : _players)
@@ -165,7 +162,7 @@ public class CaptureThem
 		for (L2NpcInstance flags : _flags)
 		{
 			flags.deleteMe();
-
+			
 		}
 		DoorTable.getInstance().getDoor(24190001).openMe();
 		DoorTable.getInstance().getDoor(24190002).openMe();
@@ -174,9 +171,29 @@ public class CaptureThem
 		_players.clear();
 		_flags.clear();
 		CaptureThemRunning = false;
-
+		
 	}
-
+	
+	public static void onDeath(L2PcInstance player, L2PcInstance killer)
+	{
+		if (killer.isinZodiac)
+		{
+			killer.ZodiacPoints++;
+		}
+		
+	}
+	
+	public static void OnRevive(L2PcInstance player)
+	{
+		player.getStatus().setCurrentHp(player.getMaxHp());
+		player.getStatus().setCurrentMp(player.getMaxMp());
+		player.getStatus().setCurrentCp(player.getMaxCp());
+		player.teleToLocation(149722, 46700, -3413);
+		L2Skill skill;
+		skill = SkillTable.getInstance().getInfo(1323, 1);
+		skill.getEffects(player, player);
+	}
+	
 	public static void waitSecs(int i)
 	{
 		try
@@ -188,7 +205,7 @@ public class CaptureThem
 			ie.printStackTrace();
 		}
 	}
-
+	
 	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
 	{
 		L2NpcInstance result = null;
