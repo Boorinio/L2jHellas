@@ -2199,6 +2199,8 @@ public abstract class L2Skill
 		final L2Skill skill = SkillTable.getInstance().getInfo(this.getId(), this.getLevel());				
 		final L2Effect[] effectss = effected.getAllEffects();
 
+		if(effected instanceof L2PcInstance)
+		{
 			for (L2Effect e : effectss)
 			{
 				if (e != null && skill != null)
@@ -2210,6 +2212,7 @@ public abstract class L2Skill
 					}
 				}		
 		      }
+		}
 			
 		List<L2Effect> effects = new FastList<L2Effect>();
 

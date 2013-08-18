@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.SummonKnownList;
@@ -307,8 +308,14 @@ public abstract class L2Summon extends L2PlayableInstance
 				return;
 			}
 		}
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
+			if(Config.MOD_GVE_ENABLE_FACTION && (target instanceof L2PcInstance || target instanceof L2PetInstance || target instanceof L2Summon))
+			{
+				if (isInsidePeaceZone(this, target))
+				{
+					getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+					return;
+				}
+				
 			if (this.getOwner().isgood() && target.getActingPlayer().isgood())
 			{
 				this.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -319,9 +326,8 @@ public abstract class L2Summon extends L2PlayableInstance
 				this.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 				return;
 			}
-
-		}
-		
+			}
+				
 		super.doAttack(target);
 	}
 

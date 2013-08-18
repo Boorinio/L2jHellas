@@ -148,8 +148,10 @@ public class L2NpcBufferInstance extends L2NpcInstance {
 			}
 		}
 
-		protected void stopTask() {
-			if (_task != null) {
+		protected void stopTask() 
+		{
+			if (_task != null)
+			{
 				_task.cancel(true);
 				_task = null;
 			}
@@ -175,9 +177,13 @@ public class L2NpcBufferInstance extends L2NpcInstance {
 	}
 
 	@Override
-	public void deleteMe() {
+	public void deleteMe() 
+	{
+		if(_buffTaskInstance!=null)
+		{
 		_buffTaskInstance.stopTask();
 		_buffTaskInstance = null;
+		}
 		super.deleteMe();
 	}
 

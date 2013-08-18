@@ -51,13 +51,17 @@ public class L2JailZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_JAIL, false);
 			character.setInsideZone(L2Character.ZONE_PVP, false);
 			character.sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+			
+			final L2PcInstance player = ((L2PcInstance) character);
+			
+			if (player.isInJail() && !player.isInsideZone(L2Character.ZONE_JAIL))
+			{
+				player.teleToLocation(-114356, -249645, -2984, false); // Jail
+				player.sendMessage("You won't escape from jail!");
+			}
 		}
 
-		if (((L2PcInstance) character).isInJail())
-		{
-			character.teleToLocation(-114356, -249645, -2984, false); // Jail
-			((L2PcInstance) character).sendMessage("You won't escape from jail!");
-		}
+
 	}
 
 	@Override
