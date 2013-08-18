@@ -12,6 +12,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,6 +90,7 @@ import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
+import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.FishData;
 import com.l2jhellas.gameserver.model.ForceBuff;
@@ -136,6 +138,7 @@ import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.Duel;
+import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.Siege;
@@ -154,6 +157,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeWaitType;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ConfirmDlg;
+import com.l2jhellas.gameserver.network.serverpackets.Die;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
 import com.l2jhellas.gameserver.network.serverpackets.ExDuelUpdateUserInfo;
@@ -216,6 +220,7 @@ import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.logs.LogRecorder;
+import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.shield.antiflood.FloodProtectors;
 import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.FloodProtector;
@@ -335,13 +340,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					cubic.doAction(target);
 				}
-			// Like L2OFF if target is not auto attackable you give only one hit
-			if (!target.isAutoAttackable(L2PcInstance.this))
-			{
-				L2PcInstance.this.getAI().clientStopAutoAttack();
-				((L2Character) L2PcInstance.this).abortAttack();
-				L2PcInstance.this.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, L2PcInstance.this);
-			}
 		}
 		
 		@Override
@@ -14132,6 +14130,101 @@ public final class L2PcInstance extends L2PlayableInstance
 			// activeChar.sendPacket(new
 			// ExBrPremiumState(activeChar.getObjectId(), 0));
 			this.setDonator(false);
+		}
+		
+		if(ZodiacMain.voting)
+			   ZodiacMain.showHtmlWindow(this);
+		
+		if (Config.SHOW_HTML_GM_WELCOME && (this.getAccessLevel().getLevel() > 0 || this.isGM()))
+		{
+			String Welcome_Path = "data/html/welcomeGM.htm";
+			File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
+			if (mainText.exists())
+			{
+				NpcHtmlMessage html = new NpcHtmlMessage(1);
+				html.setFile(Welcome_Path);
+				html.replace("%name%", this.getName());
+				sendPacket(html);
+			}
+		}
+		if (Config.SHOW_HTML_WELCOME)
+		{
+			String Welcome_Path = "data/html/welcomeP.htm";
+			File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
+			if (mainText.exists())
+			{
+				NpcHtmlMessage html = new NpcHtmlMessage(1);
+				html.setFile(Welcome_Path);
+				html.replace("%name%", this.getName());
+				sendPacket(html);
+			}
+		}
+		if (Config.ENABLED_MESSAGE_SYSTEM)
+		{
+			int results = 0;
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			{
+				PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE to=?");
+				statement.setString(1, this.getName());
+				ResultSet result = statement.executeQuery();
+				while (result.next())
+				{
+					results++;
+				}
+				
+				if(con!=null)
+					con.close();
+				
+			}						
+			catch (Exception e)
+			{
+
+				e.printStackTrace();
+			}
+
+			this.sendMessage("You have " + results + " messages.");
+			
+
+		}
+		if (Config.ALLOW_REMOTE_CLASS_MASTER)
+		{
+			ClassLevel lvlnow = PlayerClass.values()[this.getClassId().getId()].getLevel();
+			if (this.getLevel() >= 20 && lvlnow == ClassLevel.First)
+			{
+				L2ClassMasterInstance.ClassMaster.onAction(this);
+			}
+			else if (this.getLevel() >= 40 && lvlnow == ClassLevel.Second)
+			{
+				L2ClassMasterInstance.ClassMaster.onAction(this);
+			}
+			else if (this.getLevel() >= 76 && lvlnow == ClassLevel.Third)
+			{
+				L2ClassMasterInstance.ClassMaster.onAction(this);
+			}
+		}
+		
+		if (SiegeReward.ACTIVATED_SYSTEM && !SiegeReward.REWARD_ACTIVE_MEMBERS_ONLY)
+		{
+			SiegeReward.getInstance().processWorldEnter(this);
+		}
+		
+		if (this.isAlikeDead())
+		{
+			// no broadcast needed since the player will already spawn dead to others
+			sendPacket(new Die(this));
+		}	
+		if (AntiBot.isvoting)
+		{
+			AntiBot.showHtmlWindow(this);
+		}
+		
+		if (Config.ENABLE_HITMAN_EVENT)
+		{
+			Hitman.getInstance().onEnterWorld(this);
+		}
+		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(this.getObjectId()))
+		{
+			this.setHero(true);
 		}
 		    this.onPlayerEnter();
     }

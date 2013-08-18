@@ -78,6 +78,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListAll;
+import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListDeleteAll;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeStatusChanged;
@@ -134,7 +135,7 @@ public class EnterWorld extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		
 		if (activeChar == null)
 		{
@@ -142,63 +143,54 @@ public class EnterWorld extends L2GameClientPacket
 			getClient().closeNow();
 			return;
 		}
-		L2Clan clan = activeChar.getClan();
+		
 		// Send Macro List
-		activeChar.getMacroses().sendUpdate();
-		
+		activeChar.getMacroses().sendUpdate();	
 		// Send Item List
-		sendPacket(new ItemList(activeChar, false));
-		
+		sendPacket(new ItemList(activeChar, false));	
 		// Send gg check (even if we are not going to check for reply)
-		activeChar.queryGameGuard();
-		
+		activeChar.queryGameGuard();		
 		// Register in flood protector
 		FloodProtector.getInstance().registerNewPlayer(activeChar.getObjectId());
 		
+		Quest.playerEnter(activeChar);
+		loadTutorial(activeChar);	
+		
         activeChar.checks();
-        
+		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+
 		sendPacket(new ShortCutInit(activeChar));
 		activeChar.sendSkillList();		
 		activeChar.sendPacket(new HennaInfo(activeChar));		
-		activeChar.sendPacket(new InventoryUpdate());			
-		activeChar.sendSkillList();			
+		activeChar.sendPacket(new InventoryUpdate());	
+		activeChar.sendPacket(new ItemList(activeChar, false));
 		sendPacket(new FriendList(activeChar));		
 		activeChar.sendPacket(new QuestList());   
         sendPacket(new UserInfo(activeChar));
 		activeChar.broadcastUserInfo();
 		activeChar.broadcastTitleInfo();
-		
-		Quest.playerEnter(activeChar);
-		loadTutorial(activeChar);	
-		
-		SystemMessage sm = new SystemMessage(SystemMessageId.WELCOME_TO_LINEAGE);
-		sendPacket(sm);
-				
-		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
-								
 		activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 		
+		SystemMessage sm = new SystemMessage(SystemMessageId.WELCOME_TO_LINEAGE);
+		sendPacket(sm);				
+								
 		// engage and notify Partner
 		if (Config.MOD_ALLOW_WEDDING)
 		{
 			engage(activeChar);
 			notifyPartner(activeChar, activeChar.getPartnerId());
-		}				
+		}	
+		
 		// Expand Skill
 		ExStorageMaxCount esmc = new ExStorageMaxCount(activeChar);
 		activeChar.sendPacket(esmc);
 		
-		
-		SevenSigns.getInstance().sendCurrentPeriodMsg(activeChar);
-		Announcements.getInstance().showAnnouncements(activeChar);
-			
 		Quest.playerEnter(activeChar);
 		// check player skills
 		if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN && !Config.ALT_SUBCLASS_SKILLS)
 		{
 			activeChar.checkAllowedSkills();
 		}
-		PetitionManager.getInstance().checkPetitionMessages(activeChar);
 		
 		// Account Manager
 		if (Config.ALLOW_ACCOUNT_MANAGER)
@@ -208,92 +200,15 @@ public class EnterWorld extends L2GameClientPacket
 				ThreadPoolManager.getInstance().scheduleGeneral(new entermail(activeChar), 20000);
 			}
 		}
-
-		if ((activeChar.getClanId() != 0) && (activeChar.getClan() != null))
-		{
-			sendPacket(new PledgeShowMemberListAll(activeChar.getClan(), activeChar));
-			sendPacket(new PledgeStatusChanged(activeChar.getClan()));
-		}
-		
-		if (SiegeReward.ACTIVATED_SYSTEM && !SiegeReward.REWARD_ACTIVE_MEMBERS_ONLY)
-		{
-			SiegeReward.getInstance().processWorldEnter(activeChar);
-		}
-		
-		if (activeChar.isAlikeDead())
-		{
-			// no broadcast needed since the player will already spawn dead to others
-			sendPacket(new Die(activeChar));
-		}	
-		if (Config.SHOW_HTML_WELCOME)
-		{
-			String Welcome_Path = "data/html/welcomeP.htm";
-			File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
-			if (mainText.exists())
-			{
-				NpcHtmlMessage html = new NpcHtmlMessage(1);
-				html.setFile(Welcome_Path);
-				html.replace("%name%", activeChar.getName());
-				sendPacket(html);
-			}
-		}
-		
-		if (Config.SHOW_HTML_GM_WELCOME && (activeChar.getAccessLevel().getLevel() > 0 || activeChar.isGM()))
-		{
-			String Welcome_Path = "data/html/welcomeGM.htm";
-			File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
-			if (mainText.exists())
-			{
-				NpcHtmlMessage html = new NpcHtmlMessage(1);
-				html.setFile(Welcome_Path);
-				html.replace("%name%", activeChar.getName());
-				sendPacket(html);
-			}
-		}
 		
 		_onlineplayers.add(activeChar);
-		
-		if (Config.ENABLED_MESSAGE_SYSTEM)
-		{
-			int results = 0;
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-			{
-				PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE to=?");
-				statement.setString(1, activeChar.getName());
-				ResultSet result = statement.executeQuery();
-				while (result.next())
-				{
-					results++;
-				}
-			}
-			catch (Exception e)
-			{// TODO
-				e.printStackTrace();
-			}
-			activeChar.sendMessage("You have " + results + " messages.");
-		}
-		if (AntiBot.isvoting)
-		{
-			AntiBot.showHtmlWindow(activeChar);
-		}
-		
-		if (Config.ENABLE_HITMAN_EVENT)
-		{
-			Hitman.getInstance().onEnterWorld(activeChar);
-		}
-		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(activeChar.getObjectId()))
-		{
-			activeChar.setHero(true);
-		}
-		
+				
 		setPledgeClass(activeChar);
 		
 		// add char to online characters
 		activeChar.setOnlineStatus(true);
 		
 		notifyFriends(activeChar);
-		notifyClanMembers(activeChar);
-		notifySponsorOrApprentice(activeChar);
 				
 		if (DimensionalRiftManager.getInstance().checkIfInRiftZone(activeChar.getX(), activeChar.getY(), activeChar.getZ(), false))
 		{
@@ -303,10 +218,11 @@ public class EnterWorld extends L2GameClientPacket
 		{
 			activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED));
 		}
-		
 		if (activeChar.getClan() != null)
 		{
 			activeChar.sendPacket(new PledgeSkillList(activeChar.getClan()));
+			notifyClanMembers(activeChar);
+			notifySponsorOrApprentice(activeChar);
 			
 			for (Siege siege : SiegeManager.getInstance().getSieges())
 			{
@@ -333,6 +249,8 @@ public class EnterWorld extends L2GameClientPacket
 					activeChar.sendPacket(new SystemMessage(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW));
 				}
 			}
+			activeChar.sendPacket(new PledgeShowMemberListAll(activeChar.getClan(), activeChar));
+			activeChar.sendPacket(new PledgeStatusChanged(activeChar.getClan()));
 		}
 		
 		if (!activeChar.isGM() && activeChar.getSiegeState() < 2 && activeChar.isInsideZone(L2Character.ZONE_SIEGE))
@@ -349,24 +267,7 @@ public class EnterWorld extends L2GameClientPacket
 		{
 			activeChar.sendPacket(new GameGuardQuery());
 		}
-		
-		if (Config.ALLOW_REMOTE_CLASS_MASTER)
-		{
-			ClassLevel lvlnow = PlayerClass.values()[activeChar.getClassId().getId()].getLevel();
-			if (activeChar.getLevel() >= 20 && lvlnow == ClassLevel.First)
-			{
-				L2ClassMasterInstance.ClassMaster.onAction(activeChar);
-			}
-			else if (activeChar.getLevel() >= 40 && lvlnow == ClassLevel.Second)
-			{
-				L2ClassMasterInstance.ClassMaster.onAction(activeChar);
-			}
-			else if (activeChar.getLevel() >= 76 && lvlnow == ClassLevel.Third)
-			{
-				L2ClassMasterInstance.ClassMaster.onAction(activeChar);
-			}
-		}
-		
+			
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET); //just to avoid target issues
 	}
 	
