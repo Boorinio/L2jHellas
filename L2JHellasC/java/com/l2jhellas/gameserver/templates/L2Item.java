@@ -16,14 +16,20 @@ package com.l2jhellas.gameserver.templates;
 
 import java.util.List;
 
+
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.skills.Env;
+import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
@@ -135,6 +141,7 @@ public abstract class L2Item
 	private final boolean _dropable;
 	private final boolean _destroyable;
 	private final boolean _tradeable;
+	private final boolean _heroItem;
 
 	protected final Enum<?> _type;
 
@@ -177,6 +184,8 @@ public abstract class L2Item
 		_dropable = set.getBool("dropable", true);
 		_destroyable = set.getBool("destroyable", true);
 		_tradeable = set.getBool("tradeable", true);
+		_heroItem = (_itemId >= 6611 && _itemId <= 6621) || _itemId == 6842;
+
 	}
 
 	/**
@@ -636,7 +645,25 @@ public abstract class L2Item
 			_skills = tmp;
 		}
 	}
-
+	public boolean isQuestItem()
+	{
+		return (getItemType() == L2EtcItemType.QUEST);
+	}
+	
+	public final boolean isHeroItem()
+	{
+		return _heroItem;
+	}
+	
+	public boolean isPetItem()
+	{
+		return (getItemType() == L2ArmorType.PET || getItemType() == L2WeaponType.PET);
+	}
+	
+	public boolean isPotion()
+	{
+		return (getItemType() == L2EtcItemType.POTION);
+	}
 	/**
 	 * Returns the name of the item
 	 * 

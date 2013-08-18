@@ -3,32 +3,33 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.Arrays;
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.GameTimeController;
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
+import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
 import com.l2jhellas.gameserver.network.serverpackets.ShowCalculator;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2ArmorType;
@@ -39,28 +40,48 @@ import com.l2jhellas.util.FloodProtector;
 
 public final class UseItem extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(UseItem.class.getName());
 	private static final String _C__14_USEITEM = "[C] 14 UseItem";
-
+	
 	private int _objectId;
-
+	private int _itemId;
+	
+	/** Weapon Equip Task */
+	public static class WeaponEquipTask implements Runnable
+	{
+		L2ItemInstance item;
+		L2PcInstance activeChar;
+		
+		public WeaponEquipTask(L2ItemInstance it, L2PcInstance character)
+		{
+			item = it;
+			activeChar = character;
+		}
+		
+		@Override
+		public void run()
+		{
+			// If character is still engaged in strike we should not change weapon
+			if (activeChar.isAttackingNow())
+				return;
+			
+			// Equip or unEquip
+			activeChar.useEquippableItem(item, false);
+		}
+	}
+	
 	@Override
 	protected void readImpl()
 	{
 		_objectId = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
-
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-			return;
-
-		if (!activeChar.getAntiFlood().getUseItem().tryPerformAction("use item"))
-			return;
-
+			return
+			;
 		// Flood protect UseItem
 		if (!FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_USEITEM))
 			return;
@@ -71,89 +92,73 @@ public final class UseItem extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
 		if (activeChar.getActiveTradeList() != null)
 		{
 			activeChar.cancelActiveTrade();
 		}
-
-		// cannot use items during Fear
-		if (activeChar.isAfraid())
+		if (activeChar.getPrivateStoreType() != 0)
 		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+			return;
+		}
+		
+		if (activeChar.getActiveTradeList() != null)
+		{
+			activeChar.sendPacket(SystemMessageId.CANNOT_USE_ITEM_WHILE_TRADING);
+			return;
+		}
+		
+		L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
+		if (item == null)
+			return;
+		
+		_itemId = item.getItemId();
+		
+		// The player can't use an item in those special conditions
+		if (activeChar.isAlikeDead() || activeChar.isStunned() || activeChar.isSleeping() || activeChar.isParalyzed() || activeChar.isAlikeDead() || activeChar.isAfraid() || (activeChar.isCastingNow() && !(item.isPotion())))
+		{
+			activeChar.sendMessage(item.getItemName() + " cannot be used right now!");
 			return;
 		}
 
-		// NOTE: disabled due to deadlocks
-		// synchronized (activeChar.getInventory())
-		// {
-		L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
-
-		if (item == null)
+		if (item.getItem().getType2() == L2Item.TYPE2_QUEST)
+		{
+			activeChar.sendMessage("You can't use quest items");
 			return;
-
-		if (item.isWear())
-			// No unequipping wear-items
+		}
+		
+		if (item.getItemId() == 57)
 			return;
-
-		int itemId = item.getItemId();
-		/*
-		 * Alt game - Karma punishment // SOE
-		 * 736 Scroll of Escape
-		 * 1538 Blessed Scroll of Escape
-		 * 1829 Scroll of Escape: Clan Hall
-		 * 1830 Scroll of Escape: Castle
-		 * 3958 L2Day - Blessed Scroll of Escape
-		 * 5858 Blessed Scroll of Escape: Clan Hall
-		 * 5859 Blessed Scroll of Escape: Castle
-		 * 6663 Scroll of Escape: Orc Village
-		 * 6664 Scroll of Escape: Silenos Village
-		 * 7117 Scroll of Escape to Talking Island
-		 * 7118 Scroll of Escape to Elven Village
-		 * 7119 Scroll of Escape to Dark Elf Village
-		 * 7120 Scroll of Escape to Orc Village
-		 * 7121 Scroll of Escape to Dwarven Village
-		 * 7122 Scroll of Escape to Gludin Village
-		 * 7123 Scroll of Escape to the Town of Gludio
-		 * 7124 Scroll of Escape to the Town of Dion
-		 * 7125 Scroll of Escape to Floran
-		 * 7126 Scroll of Escape to Giran Castle Town
-		 * 7127 Scroll of Escape to Hardin's Private Academy
-		 * 7128 Scroll of Escape to Heine
-		 * 7129 Scroll of Escape to the Town of Oren
-		 * 7130 Scroll of Escape to Ivory Tower
-		 * 7131 Scroll of Escape to Hunters Village
-		 * 7132 Scroll of Escape to Aden Castle Town
-		 * 7133 Scroll of Escape to the Town of Goddard
-		 * 7134 Scroll of Escape to the Rune Township
-		 * 7135 Scroll of Escape to the Town of Schuttgart.
-		 * 7554 Scroll of Escape to Talking Island
-		 * 7555 Scroll of Escape to Elven Village
-		 * 7556 Scroll of Escape to Dark Elf Village
-		 * 7557 Scroll of Escape to Orc Village
-		 * 7558 Scroll of Escape to Dwarven Village
-		 * 7559 Scroll of Escape to Giran Castle Town
-		 * 7618 Scroll of Escape - Ketra Orc Village
-		 * 7619 Scroll of Escape - Varka Silenos Village
-		 */
-		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT && activeChar.getKarma() > 0
-/** @formatter:off */
-				&& (itemId == 736
-				|| itemId == 1538
-				|| itemId == 1829
-				|| itemId == 1830
-				|| itemId == 3958
-				|| itemId == 5858
-				|| itemId == 5859
-				|| itemId == 6663
-				|| itemId == 6664
-				|| (itemId >= 7117 && itemId <= 7135)
-				|| (itemId >= 7554 && itemId <= 7559)
-				|| itemId == 7618 || itemId == 7619))
-				/** @formatter:on */
+		
+		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT && activeChar.getKarma() > 0)
+		{
+			switch (_itemId)
+			{
+				case 736:
+				case 1538:
+				case 1829:
+				case 1830:
+				case 3958:
+				case 5858:
+				case 5859:
+				case 6663:
+				case 6664:
+				case 7618:
+				case 7619:
+					return;
+			}
+			
+			if ((_itemId >= 7117 && _itemId <= 7135) || (_itemId >= 7554 && _itemId <= 7559))
+				return;
+		}	
+		
+		final int itemId = item.getItemId();
+		
+		if(itemId==0)
 			return;
 
 		L2Clan cl = activeChar.getClan();
+		
 		if (((cl == null) || cl.getHasCastle() == 0) && itemId == 7015 && Config.CASTLE_SHIELD)
 		{
 			// A shield that can only be used by the members of a clan that owns a castle.
@@ -163,14 +168,6 @@ public final class UseItem extends L2GameClientPacket
 			return;
 		}
 
-		if (((cl == null) || cl.getHasHideout() == 0) && itemId == 6902 && Config.CLANHALL_SHIELD)
-		{
-			// A shield that can only be used by the members of a clan that owns a clan hall.
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
-			activeChar.sendPacket(sm);
-			sm = null;
-			return;
-		}
 
 		if ((itemId >= 7860 && itemId <= 7879) && Config.APELLA_ARMORS && (cl == null || activeChar.getPledgeClass() < 5))
 		{
@@ -221,7 +218,7 @@ public final class UseItem extends L2GameClientPacket
 				}
 			}
 		}
-		L2Weapon curwep = activeChar.getActiveWeaponItem();
+		final L2Weapon curwep = activeChar.getActiveWeaponItem();
 		if (curwep != null)
 		{
 			if ((curwep.getItemType() == L2WeaponType.DUAL) && (item.getItemType() == L2WeaponType.NONE))
@@ -256,11 +253,22 @@ public final class UseItem extends L2GameClientPacket
 			}
 		}
 
-		// Items that cannot be used
-		if (itemId == 57)
+		if (activeChar.isFishing() && (_itemId < 6535 || _itemId > 6540))
+		{
+			// You cannot do anything else while fishing
+			activeChar.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
 			return;
-
-		if (activeChar.isFishing() && (itemId < 6535 || itemId > 6540))
+		}
+		// Char cannot use pet items
+		if (item.getItem().isForWolf() || item.getItem().isForHatchling() || item.getItem().isForStrider() || item.getItem().isForBabyPet())
+		{
+			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_PET_ITEM); // You cannot equip a pet item.
+			sm.addItemName(item.getItemId());
+			getClient().getActiveChar().sendPacket(sm);
+			sm = null;
+			return;
+		}
+		if (activeChar.isFishing() && (item.getItemId()< 6535 || item.getItemId() > 6540))
 		{
 			// You cannot do anything else while fishing
 			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
@@ -268,60 +276,80 @@ public final class UseItem extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-
-		// Char cannot use item when dead
-		if (activeChar.isDead())
+		/*
+		 * The player can't use pet items if no pet is currently summoned. If a pet is summoned and player uses the item directly, it will be used by the pet.
+		 */
+		if (item.isPetItem())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
-			sm.addItemName(itemId);
-			getClient().getActiveChar().sendPacket(sm);
-			sm = null;
+			L2Summon summon = activeChar.getPet();
+			
+			// If no summon, cancels the use
+			if (summon == null || !(summon instanceof L2PetInstance))
+			{
+				activeChar.sendPacket(SystemMessageId.CANNOT_EQUIP_PET_ITEM);
+				return;
+			}
+			
+			L2PetInstance pet = ((L2PetInstance) summon);
+			
+			if (!(pet.canWear(item.getItem())))
+			{
+				activeChar.sendPacket(SystemMessageId.PET_CANNOT_USE_ITEM);
+				return;
+			}
+			
+			// Transfer the item from owner to pet inventory.
+			if (pet.isDead())
+			{
+				activeChar.sendPacket(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET);
+				return;
+			}
+			
+			if (!pet.getInventory().validateCapacity(item))
+			{
+				activeChar.sendMessage("Pet can't carry any more items");
+				return;
+			}
+			
+			if (!pet.getInventory().validateWeight(item, 1))
+			{
+				activeChar.sendMessage("Unable to place item your pet is too encumbered!");
+				return;
+			}
+			
+			activeChar.transferItem("Transfer", _objectId, 1, pet.getInventory(), pet);
+			
+			// Equip it, removing first the previous item.
+			if (item.isEquipped())
+				pet.getInventory().unEquipItemInSlot(item.getLocationSlot());
+			else
+				pet.getInventory().equipItem(item);
+			
+			activeChar.sendPacket(new PetItemList(pet));
+			pet.updateAndBroadcastStatus(1);
 			return;
 		}
-
-		// Char cannot use pet items
-		if (item.getItem().isForWolf() || item.getItem().isForHatchling() || item.getItem().isForStrider() || item.getItem().isForBabyPet())
-		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_PET_ITEM); // You cannot equip a pet item.
-			sm.addItemName(itemId);
-			getClient().getActiveChar().sendPacket(sm);
-			sm = null;
-			return;
-		}
-
+		
 		if (Config.DEBUG)
+			_log.finest(activeChar.getName() + ": use item " + _objectId);
+		
+		if (!item.isEquipped())
 		{
-			_log.finest(activeChar.getObjectId() + ": use item " + _objectId);
+			if ((item.isHeroItem()) && ((activeChar instanceof L2PcInstance) && activeChar.getActingPlayer().isInOlympiadMode()))				
+				return;
 		}
-
+		
 		if (item.isEquipable())
 		{
 			if (!activeChar.isGM() && (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_WEAPON)
-/** @formatter:off */
-					|| (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_ARMOR)
-					|| (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_JEWELRY))
-					/** @formatter:on */
+             || (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_ARMOR)
+			|| (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_JEWELRY))
 			{
-				activeChar.sendMessage("You have been kicked for using an item overenchanted!");
-				activeChar.closeNetConnection();
-				return;
+					activeChar.sendMessage("You have been kicked for using an item overenchanted!");
+					activeChar.closeNetConnection();
+					return;
 			}
-
-			// No unequipping/equipping while the player is in special conditions
-			if (activeChar.isStunned() || activeChar.isSleeping() || activeChar.isParalyzed() || activeChar.isAlikeDead())
-			{
-				activeChar.sendMessage("Your status does not allow you to do that.");
-				return;
-			}
-
-			int bodyPart = item.getItem().getBodyPart();
-			// Prevent player to remove the weapon on special conditions
-			if ((activeChar.isAttackingNow() || activeChar.isCastingNow() || activeChar.isMounted())
-					/** @formatter:off */
-					&& (bodyPart == L2Item.SLOT_LR_HAND || bodyPart == L2Item.SLOT_L_HAND || bodyPart == L2Item.SLOT_R_HAND))
-				return;
-
-			switch (bodyPart)
+			switch (item.getItem().getBodyPart())
 			{
 				case L2Item.SLOT_LR_HAND:
 				case L2Item.SLOT_L_HAND:
@@ -334,6 +362,23 @@ public final class UseItem extends L2GameClientPacket
 						activeChar.closeNetConnection(); // kick
 						return;
 					}
+					
+					// Prevent player to remove the weapon on special conditions
+					if (activeChar.isCastingNow())
+					{
+						activeChar.sendPacket(SystemMessageId.CANNOT_USE_ITEM_WHILE_USING_MAGIC);
+						return;
+					}
+					
+					if (activeChar.isMounted())
+					{
+						activeChar.sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+						return;
+					}
+					// Don't allow weapon/shield equipment if a cursed weapon is equipped
+					if (activeChar.isCursedWeaponEquiped())
+						return;
+					
 					break;
 				}
 				case L2Item.SLOT_CHEST:
@@ -368,17 +413,8 @@ public final class UseItem extends L2GameClientPacket
 					}
 					break;
 				}
+
 			}
-
-			// Don't allow weapon/shield equipment if a cursed weapon is equipped
-			if (activeChar.isCursedWeaponEquiped()
-					/** @formatter:off */
-					&& ((bodyPart == L2Item.SLOT_LR_HAND
-					|| bodyPart == L2Item.SLOT_L_HAND
-					|| bodyPart == L2Item.SLOT_R_HAND)
-					|| (itemId == 6408)))
-				return;
-
 			if (!Config.ALLOW_DAGGERS_WEAR_HEAVY)
 				if ((activeChar.getClassId().getId() == 93) || (activeChar.getClassId().getId() == 108) || (activeChar.getClassId().getId() == 101) || (activeChar.getClassId().getId() == 8) || (activeChar.getClassId().getId() == 23) || (activeChar.getClassId().getId() == 36))
 				{
@@ -398,11 +434,7 @@ public final class UseItem extends L2GameClientPacket
 						return;
 					}
 				}
-			if (item.getItem().getType2() == L2Item.TYPE2_QUEST)
-			{
-				activeChar.sendMessage("You can't use quest items.");
-				return;
-			}
+			int bodyPart = item.getItem().getBodyPart();
 			// Don't allow weapon/shield hero equipment during Olympiads
 			if (activeChar.isInOlympiadMode() && (bodyPart == L2Item.SLOT_LR_HAND || bodyPart == L2Item.SLOT_L_HAND || bodyPart == L2Item.SLOT_R_HAND) && ((item.getItemId() >= 6611 && item.getItemId() <= 6621) || (item.getItemId() == 6842)))
 				return;
@@ -410,143 +442,45 @@ public final class UseItem extends L2GameClientPacket
 			// Don't allow weapon/shield hero equipment during Olympiads
 			if (activeChar.isInOlympiadMode() && (bodyPart == L2Item.SLOT_LR_HAND || bodyPart == L2Item.SLOT_L_HAND || bodyPart == L2Item.SLOT_R_HAND) && ((item.getItemId() >= 6611 && item.getItemId() <= 6621) || (item.getItemId() == 6842)))
 				return;
+			if (activeChar.isCursedWeaponEquiped() && _itemId == 6408) // Don't allow to put formal wear
+				return;
+			
+			if (activeChar.isAttackingNow())
+			{
+				ThreadPoolManager.getInstance().scheduleGeneral(new WeaponEquipTask(item, activeChar), (activeChar.getAttackEndTime() - GameTimeController.getGameTicks()) * GameTimeController.MILLIS_IN_TICK);
+				return;
+			}
+			
+
 
 			// Equip or unEquip
-			L2ItemInstance[] items = null;
-			boolean isEquiped = item.isEquipped();
-			SystemMessage sm = null;
-			L2ItemInstance old = activeChar.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LRHAND);
-			if (old == null)
-			{
-				old = activeChar.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND);
-			}
-
-			activeChar.checkSSMatch(item, old);
-
-			if (isEquiped)
-			{
-				if (item.getEnchantLevel() > 0)
-				{
-					sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
-					sm.addNumber(item.getEnchantLevel());
-					sm.addItemName(itemId);
-				}
-				else
-				{
-					sm = new SystemMessage(SystemMessageId.S1_DISARMED);
-					sm.addItemName(itemId);
-				}
-				activeChar.sendPacket(sm);
-
-				int slot = activeChar.getInventory().getSlotFromItem(item);
-				items = activeChar.getInventory().unEquipItemInBodySlotAndRecord(slot);
-			}
-			else
-			{
-				int tempBodyPart = item.getItem().getBodyPart();
-
-				L2ItemInstance tempItem = activeChar.getInventory().getPaperdollItemByL2ItemId(tempBodyPart);
-
-				// check if the item replaces a wear-item
-				if ((tempItem != null) && tempItem.isWear())
-					// Don't allow an item to replace a wear-item
-					return;
-				else if (tempBodyPart == 0x4000) // left+right hand equipment
-				{
-					// this may not remove left OR right hand equipment
-					tempItem = activeChar.getInventory().getPaperdollItem(7);
-					if ((tempItem != null) && tempItem.isWear())
-						return;
-
-					tempItem = activeChar.getInventory().getPaperdollItem(8);
-					if ((tempItem != null) && tempItem.isWear())
-						return;
-				}
-				else if (tempBodyPart == 0x8000) // fullbody armor
-				{
-					// this may not remove chest or leggings
-					tempItem = activeChar.getInventory().getPaperdollItem(10);
-					if ((tempItem != null) && tempItem.isWear())
-						return;
-
-					tempItem = activeChar.getInventory().getPaperdollItem(11);
-					if ((tempItem != null) && tempItem.isWear())
-						return;
-				}
-
-				if (item.getEnchantLevel() > 0)
-				{
-					sm = new SystemMessage(SystemMessageId.S1_S2_EQUIPPED);
-					sm.addNumber(item.getEnchantLevel());
-					sm.addItemName(itemId);
-				}
-				else
-				{
-					sm = new SystemMessage(SystemMessageId.S1_EQUIPPED);
-					sm.addItemName(itemId);
-				}
-				activeChar.sendPacket(sm);
-				items = activeChar.getInventory().equipItemAndRecord(item);
-
-				if(item.getItem() instanceof L2Weapon)
-                {
-                   //charge Soulshot/Spiritshot like L2OFF
-                   activeChar.rechargeAutoSoulShot(true, true, false);
-                   item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
-                   item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
-                }
-
-				// Consume mana - will start a task if required; returns if item is not a shadow item
-				item.decreaseMana(false);
-			}
-			sm = null;
-
+			activeChar.useEquippableItem(item, true);
 			activeChar.refreshExpertisePenalty();
-
-			if (item.getItem().getType2() == L2Item.TYPE2_WEAPON)
-			{
-				activeChar.CheckIfWeaponIsAllowed();
-			}
-
-			InventoryUpdate iu = new InventoryUpdate();
-			iu.addItems(Arrays.asList(items));
-			activeChar.sendPacket(iu);
-			activeChar.abortAttack();
-			activeChar.broadcastUserInfo();
 		}
 		else
 		{
 			L2Weapon weaponItem = activeChar.getActiveWeaponItem();
 			int itemid = item.getItemId();
-			// _log.finest("item not equippable id:"+ item.getItemId());
+			
 			if (itemid == 4393)
-			{
 				activeChar.sendPacket(new ShowCalculator(4393));
-			}
-			else if (((weaponItem != null) && weaponItem.getItemType() == L2WeaponType.ROD) && ((itemid >= 6519 && itemid <= 6527) || (itemid >= 7610 && itemid <= 7613) || (itemid >= 7807 && itemid <= 7809) || (itemid >= 8484 && itemid <= 8486) || (itemid >= 8505 && itemid <= 8513)))
+			else if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.ROD) && ((itemid >= 6519 && itemid <= 6527) || (itemid >= 7610 && itemid <= 7613) || (itemid >= 7807 && itemid <= 7809) || (itemid >= 8484 && itemid <= 8486) || (itemid >= 8505 && itemid <= 8513)))
 			{
 				activeChar.getInventory().setPaperdollItem(Inventory.PAPERDOLL_LHAND, item);
 				activeChar.broadcastUserInfo();
-				// Send a Server->Client packet ItemList to this L2PcINstance to update left hand equipment
-				ItemList il = new ItemList(activeChar, false);
-				sendPacket(il);
+				
+				sendPacket(new ItemList(activeChar, false));
 				return;
 			}
 			else
 			{
-				IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getItemId());
-
-				if ((handler == null) && Config.DEBUG)
-				{
-					_log.warning("No item handler registered for item ID " + item.getItemId() + ".");
-				}
-				else if (activeChar != null && item != null)
-				{
+				IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getItem().getItemId());
+				if (handler != null)
 					handler.useItem(activeChar, item);
-				}
 			}
 		}
 	}
+
 
 	@Override
 	public String getType()

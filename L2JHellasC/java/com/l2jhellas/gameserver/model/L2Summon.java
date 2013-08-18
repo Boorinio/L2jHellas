@@ -283,6 +283,9 @@ public abstract class L2Summon extends L2PlayableInstance
 	@Override
 	protected void doAttack(L2Character target)
 	{
+		if(this==null || target==null)
+			return;
+		
 		if (isInsidePeaceZone(this, target))
 		{
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -306,18 +309,19 @@ public abstract class L2Summon extends L2PlayableInstance
 		}
 		if (Config.MOD_GVE_ENABLE_FACTION)
 		{
-			if (this.getOwner().isgood() && ((L2PcInstance) target).isgood())
+			if (this.getOwner().isgood() && target.getActingPlayer().isgood())
 			{
-				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				this.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 				return;
 			}
-			if (this.getOwner().isevil() && ((L2PcInstance) target).isevil())
+			else if (this.getOwner().isevil()  && target.getActingPlayer().isgood())
 			{
-				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				this.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 				return;
 			}
 
 		}
+		
 		super.doAttack(target);
 	}
 

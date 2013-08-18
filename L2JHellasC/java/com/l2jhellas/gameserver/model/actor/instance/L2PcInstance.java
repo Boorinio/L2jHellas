@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
+
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -165,6 +167,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExFishingStart;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadMode;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ExSetCompassZoneCode;
+import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -14272,5 +14275,95 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		    this.onPlayerEnter();
     }
- 
+	
+	/**
+	 * Equip or unequip the item.
+	 * <UL>
+	 * <LI>If item is equipped, shots are applied if automation is on.</LI>
+	 * <LI>If item is unequipped, shots are discharged.</LI>
+	 * </UL>
+	 * @param item The item to charge/discharge.
+	 * @param abortAttack If true, the current attack will be aborted in order to equip the item.
+	 */
+	public void useEquippableItem(L2ItemInstance item, boolean abortAttack)
+	{
+		L2ItemInstance[] items = null;
+		final boolean isEquipped = item.isEquipped();
+		final int oldInvLimit = GetInventoryLimit();
+		SystemMessage sm = null;
+		
+		if (item.getItem() instanceof L2Weapon)
+		{
+            item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+            item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+		}
+		
+		if (isEquipped)
+		{
+			if (item.getEnchantLevel() > 0)
+			{
+				sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
+				sm.addNumber(item.getEnchantLevel());
+				sm.addItemName(item.getItemId());
+			}
+			else
+			{
+				sm = new SystemMessage(SystemMessageId.S1_DISARMED);
+				sm.addItemName(item.getItemId());
+			}
+			sendPacket(sm);
+			
+			int slot = getInventory().getSlotFromItem(item);
+			items = getInventory().unEquipItemInBodySlotAndRecord(slot);
+		}
+		else
+		{
+			items = getInventory().equipItemAndRecord(item);
+			
+			if (item.isEquipped())
+			{
+				if (item.getEnchantLevel() > 0)
+				{
+					sm = new SystemMessage(SystemMessageId.S1_S2_EQUIPPED);
+				sm.addNumber(item.getEnchantLevel());
+				sm.addItemName(item.getItemId());
+				}				
+				else
+				{
+					sm = new SystemMessage(SystemMessageId.S1_EQUIPPED);
+					sm.addItemName(item.getItemId());
+				}
+				sendPacket(sm);
+				
+				// Consume mana - will start a task if required; returns if item is not a shadow item
+				item.decreaseMana(false);
+				
+				if(item.getItem() instanceof L2Weapon)
+                {
+                   //charge Soulshot/Spiritshot like L2OFF
+                   this.rechargeAutoSoulShot(true, true, false);
+                   item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+                   item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+                }
+			}
+			if (item.getItem().getType2() == L2Item.TYPE2_WEAPON)
+			{
+				CheckIfWeaponIsAllowed();
+			}
+			else
+				sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+		}
+		refreshExpertisePenalty();
+		broadcastUserInfo();
+		
+		InventoryUpdate iu = new InventoryUpdate();
+		iu.addItems(Arrays.asList(items));
+		sendPacket(iu);
+		
+		if (abortAttack)
+			abortAttack();
+		
+		if (GetInventoryLimit() != oldInvLimit)
+			sendPacket(new ExStorageMaxCount(this));
+	}
 }

@@ -37,6 +37,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2EtcItem;
+import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -1336,5 +1337,30 @@ public final class L2ItemInstance extends L2Object
 	public int getTime()
 	{
 		return _time;
+	}
+	
+	public boolean isPetItem()
+	{
+		return getItem().isPetItem();
+	}
+	
+	public boolean isPotion()
+	{
+		return getItem().isPotion();
+	}
+	
+	public boolean isHerb()
+	{
+		return getItem().getItemType() == L2EtcItemType.HERB;
+	}
+	
+	public boolean isHeroItem()
+	{
+		return getItem().isHeroItem();
+	}
+	
+	public boolean isQuestItem()
+	{
+		return getItem().isQuestItem();
 	}
 }

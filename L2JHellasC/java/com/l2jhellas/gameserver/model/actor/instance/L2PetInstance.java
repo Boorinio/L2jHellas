@@ -1103,7 +1103,22 @@ public class L2PetInstance extends L2Summon
 		L2World.removePet(oldOwnerId);
 		L2World.addPet(oldOwnerId, this);
 	}
-
+	public boolean canWear(L2Item item)
+	{
+		if (PetDataTable.isHatchling(getNpcId()) && item.getBodyPart() == L2Item.SLOT_HATCHLING)
+			return true;
+		
+		if (PetDataTable.isWolf(getNpcId()) && item.getBodyPart() == L2Item.SLOT_WOLF)
+			return true;
+		
+		if (PetDataTable.isStrider(getNpcId()) && item.getBodyPart() == L2Item.SLOT_STRIDER)
+			return true;
+		
+		if (PetDataTable.isBaby(getNpcId()) && item.getBodyPart() == L2Item.SLOT_BABYPET)
+			return true;
+		
+		return false;
+	}
 	@Override
 	public final void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
 	{
@@ -1120,5 +1135,10 @@ public class L2PetInstance extends L2Summon
 			sm.addNumber(damage);
 			getOwner().sendPacket(sm);
 		}
+	}
+
+	public int getInventoryLimit() 
+	{
+		return 12;
 	}
 }
