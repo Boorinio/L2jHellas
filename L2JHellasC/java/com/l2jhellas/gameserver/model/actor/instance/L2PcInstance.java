@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
-
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import Extensions.AchievmentsEngine.AchievementsManager;
@@ -166,7 +165,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExFishingStart;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadMode;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ExSetCompassZoneCode;
-import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
@@ -207,7 +205,6 @@ import com.l2jhellas.gameserver.network.serverpackets.TitleUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.TradeStart;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
-import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;

@@ -234,9 +234,6 @@
 	<admin command="admin_event_control_prize" accessLevel="7" />
 	<admin command="admin_event_control_chatban" accessLevel="7" />
 	<admin command="admin_event_control_finish" accessLevel="7" />
-	<admin command="admin_startchaos" accessLevel="7" />
-	<admin command="admin_endchaos" accessLevel="7" />
-	<admin command="admin_warnchaos" accessLevel="7" />
 
 	<!-- ADMIN EX & SP -->
 	<admin command="admin_add_exp_sp_to_character" accessLevel="7" />

@@ -18,7 +18,6 @@ OPTIMIZE TABLE raid_event_spawnlist;
 OPTIMIZE TABLE reward_list;
 OPTIMIZE TABLE tvt_teams;
 OPTIMIZE TABLE tvt;
-OPTIMIZE TABLE vipinfo;
 -- CUSTOM TABLES
 OPTIMIZE TABLE custom_armor;
 OPTIMIZE TABLE custom_droplist;

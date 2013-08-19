@@ -17,8 +17,6 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
-
 /**
  * MagicEffectIcons
  * format h (dhd)
