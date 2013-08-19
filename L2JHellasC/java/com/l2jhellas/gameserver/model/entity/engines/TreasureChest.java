@@ -51,6 +51,9 @@ public class TreasureChest
 		TreasureRunning = true;
 		for (L2PcInstance players : _players)
 		{
+			if(players == null)
+				continue;
+			
 			players.teleToLocation(x, y, z, true);
 			players.sendMessage("Kill as many chest as you can!");
 		}

@@ -55,11 +55,12 @@ public class ZodiacMain
 		}, 60 * 1000 * Config.INITIAL_START);
 	}
 	
-	public static void startVoting()
+	public synchronized static void startVoting()
 	{
 		voting = true;
 		for (L2PcInstance players : L2World.getAllPlayers())
 		{
+			if(players!=null)
 			showHtmlWindow(players);
 		}
 		int minutes = Config.ZODIAC_VOTE_MINUTES;

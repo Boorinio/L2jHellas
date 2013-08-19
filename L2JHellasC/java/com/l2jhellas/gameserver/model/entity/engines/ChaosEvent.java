@@ -66,7 +66,7 @@ public class ChaosEvent
 	public static void cleanPlayers()
 	{
 		for (L2PcInstance player : _players)
-		{
+		{			
 			player.isinZodiac = false;
 			player.ZodiacPoints = 0;
 			_topkills = 0;
@@ -76,6 +76,8 @@ public class ChaosEvent
 	
 	public static void registerToChaos(L2PcInstance player)
 	{
+		if(player == null)
+			return;
 		if (!registerToChaosOk(player))
 		{
 			return;
@@ -91,6 +93,8 @@ public class ChaosEvent
 	
 	public static void addSuperHaste(L2PcInstance player)
 	{
+		if(player == null)
+			return;
 		L2Skill skill = SkillTable.getInstance().getInfo(7029, 4);
 		if (skill != null)
 		{

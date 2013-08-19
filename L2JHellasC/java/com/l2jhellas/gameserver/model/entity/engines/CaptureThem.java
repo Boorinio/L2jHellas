@@ -74,6 +74,8 @@ public class CaptureThem
 		Announcements.getInstance().announceToAll("CaptureThem Registration is Over!");
 		for (L2PcInstance players : L2World.getAllPlayers())
 		{
+			if(players == null)
+				return;
 			ZodiacMain.ZodiacRegisterActive = false;
 			if (players.isinZodiac)
 			{
@@ -185,6 +187,9 @@ public class CaptureThem
 	
 	public static void OnRevive(L2PcInstance player)
 	{
+		if(player == null)
+			return;
+		
 		player.getStatus().setCurrentHp(player.getMaxHp());
 		player.getStatus().setCurrentMp(player.getMaxMp());
 		player.getStatus().setCurrentCp(player.getMaxCp());

@@ -238,6 +238,9 @@ public class PeloponnesianWar
 	{
 		for (L2PcInstance player : _participants)
 		{
+			if(player == null)
+				return;
+			
 			if (_athenians.contains(player))
 				player.teleToLocation(athenianx, atheniany, athenianz);
 			else

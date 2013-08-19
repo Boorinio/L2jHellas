@@ -194,6 +194,8 @@ public class CastleWars
 	
 	public static void OnRevive(L2PcInstance player)
 	{
+		if(player == null)
+			return;
 		if (isattacker(player))
 		{
 			

@@ -157,8 +157,7 @@ public class EnterWorld extends L2GameClientPacket
 		loadTutorial(activeChar);	
 		
         activeChar.checks();
-		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
-
+	
 		sendPacket(new ShortCutInit(activeChar));
 		activeChar.sendSkillList();		
 		activeChar.sendPacket(new HennaInfo(activeChar));		
@@ -172,8 +171,10 @@ public class EnterWorld extends L2GameClientPacket
 		activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 		
 		SystemMessage sm = new SystemMessage(SystemMessageId.WELCOME_TO_LINEAGE);
-		sendPacket(sm);				
-								
+		sendPacket(sm);	
+		
+		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+				
 		// engage and notify Partner
 		if (Config.MOD_ALLOW_WEDDING)
 		{
@@ -370,6 +371,7 @@ public class EnterWorld extends L2GameClientPacket
 		L2Clan clan = activeChar.getClan();
 		if (clan != null)
 		{
+			clan.broadcastClanStatus();
 			clan.getClanMember(activeChar.getName()).setPlayerInstance(activeChar);
 			SystemMessage msg = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_LOGGED_IN);
 			msg.addString(activeChar.getName());

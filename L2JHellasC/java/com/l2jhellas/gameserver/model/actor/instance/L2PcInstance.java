@@ -166,6 +166,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExFishingStart;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadMode;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ExSetCompassZoneCode;
+import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
@@ -206,6 +207,7 @@ import com.l2jhellas.gameserver.network.serverpackets.TitleUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.TradeStart;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
+import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
@@ -13894,28 +13896,23 @@ public final class L2PcInstance extends L2PlayableInstance
 
 		// l2jhellas Faction Good vs Evil
 		// Welcome for evil
-		if (this.isevil() && Config.MOD_GVE_ENABLE_FACTION)
+		if(Config.MOD_GVE_ENABLE_FACTION)
+		{
+		if (this.isevil())
 		{
 			this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
-			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
-		}
-		// If Enable Faction Base = true teleport evil to his village principal
-		if (this.isevil() && Config.MOD_GVE_ENABLE_FACTION)
-		{
 			this.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ, true);
 			this.sendMessage("You have been teleported Back to your Faction Base.");
+			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
 		}
-		// Welcome for good
-		if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
+		else if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
-			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
-		}
-		// If Enable Faction Base = true teleport good to his village principal
-		if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
-		{
 			this.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ, true);
 			this.sendMessage("You have been teleported Back to your Faction Base.");
+			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
+		}
+		    this.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		// check for crowns
 		CrownManager.getInstance().checkCrowns(this);
