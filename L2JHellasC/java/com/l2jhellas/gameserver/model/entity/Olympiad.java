@@ -47,6 +47,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfoSpectator;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
@@ -1665,6 +1666,7 @@ public class Olympiad
 						player.sendPacket(iu);
 						player.abortAttack();
 						player.broadcastUserInfo();
+						
 
 						// this can be 0 if the user pressed the right
 						// mousebutton twice very fast
@@ -1691,6 +1693,7 @@ public class Olympiad
 					_sm = new SystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
 					_sm.addNumber(120);
 					broadcastMessage(_sm, false);
+					player.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				catch (Exception e)
 				{
@@ -1797,6 +1800,9 @@ public class Olympiad
 
 				_playerTwo.setIsInOlympiadMode(true);
 				_playerTwo.setIsOlympiadStart(false);
+				
+				_playerOne.sendPacket(ActionFailed.STATIC_PACKET);
+				_playerTwo.sendPacket(ActionFailed.STATIC_PACKET);
 			}
 			catch (Exception e)
 			{
@@ -1875,6 +1881,7 @@ public class Olympiad
 							player.addSkill(skill, false);
 					}
 					player.sendSkillList();
+					player.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				catch (Exception e)
 				{
@@ -2059,6 +2066,7 @@ public class Olympiad
 		{
 			for (L2PcInstance player : _players)
 			{
+				if(player!=null)
 				try
 				{
 					// Set HP/CP/MP to Max
@@ -2072,7 +2080,6 @@ public class Olympiad
 
 					skill = SkillTable.getInstance().getInfo(1204, 2);
 					skill.getEffects(player, player);
-					player.broadcastPacket(new MagicSkillUse(player, player, skill.getId(), 2, skill.getHitTime(), 0));
 					sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 					sm.addSkillName(1204);
 					player.sendPacket(sm);
@@ -2082,7 +2089,6 @@ public class Olympiad
 						// Haste Buff to Fighters
 						skill = SkillTable.getInstance().getInfo(1086, 1);
 						skill.getEffects(player, player);
-						player.broadcastPacket(new MagicSkillUse(player, player, skill.getId(), 1, skill.getHitTime(), 0));
 						sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(1086);
 						player.sendPacket(sm);
@@ -2093,11 +2099,11 @@ public class Olympiad
 						// Acumen Buff to Mages
 						skill = SkillTable.getInstance().getInfo(1085, 1);
 						skill.getEffects(player, player);
-						player.broadcastPacket(new MagicSkillUse(player, player, skill.getId(), 1, skill.getHitTime(), 0));
 						sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(1085);
 						player.sendPacket(sm);
 					}
+					player.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				catch (Exception e)
 				{

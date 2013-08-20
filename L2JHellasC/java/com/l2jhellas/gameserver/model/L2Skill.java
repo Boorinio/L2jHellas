@@ -2197,10 +2197,11 @@ public abstract class L2Skill
 			return _emptyEffectSet;
 		
 		final L2Skill skill = SkillTable.getInstance().getInfo(this.getId(), this.getLevel());				
-		final L2Effect[] effectss = effected.getAllEffects();
 
-		if(effected instanceof L2PcInstance)
+		if(skill.getSkillType() == L2SkillType.BUFF && effected instanceof L2PcInstance)
 		{
+			final L2Effect[] effectss = effected.getAllEffects();
+
 			for (L2Effect e : effectss)
 			{
 				if (e != null && skill != null)

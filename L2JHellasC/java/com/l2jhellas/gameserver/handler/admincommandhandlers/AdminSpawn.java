@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
+import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
@@ -174,6 +175,7 @@ public class AdminSpawn implements IAdminCommandHandler
 			NpcTable.getInstance().reload();
 			SpawnTable.getInstance().reloadAll();
 			RaidBossSpawnManager.getInstance().reloadBosses();
+			SevenSigns.getInstance().spawnSevenSignsNPC();
 			AdminTable.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
 		}
 		else if (command.startsWith("admin_teleport_reload"))

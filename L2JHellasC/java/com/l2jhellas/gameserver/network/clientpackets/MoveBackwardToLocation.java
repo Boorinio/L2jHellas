@@ -63,6 +63,8 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		_originX = readD();
 		_originY = readD();
 		_originZ = readD();
+		
+		if(_buf.hasRemaining())
 		try
 		{
 			_moveMovement = readD(); // is 0 if cursor keys are used 1 if mouse is used
@@ -73,6 +75,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			{
 				L2PcInstance activeChar = getClient().getActiveChar();
 				activeChar.sendPacket(SystemMessageId.HACKING_TOOL);
+				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				try
 				{
 					Thread.sleep(5000);
@@ -178,6 +181,8 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 
 			if (activeChar.getParty() != null)
 				activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar));
+			
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 
