@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
 import Extensions.RankSystem.CharacterRankRewardTable;
@@ -429,7 +430,7 @@ public class GameServer
 				ex.printStackTrace();
 			}
 		}
-
+		IpCatcher.ipsLoad();
 		// run garbage collector
 		System.gc();
 

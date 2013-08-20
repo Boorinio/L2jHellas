@@ -44,6 +44,8 @@
 	<admin command="admin_unban_char" accessLevel="7" />
 	<admin command="admin_jail" accessLevel="7" />
 	<admin command="admin_unjail" accessLevel="7" />
+	<admin command="admin_permaban" accessLevel="7" />
+	<admin command="admin_removeperma" accessLevel="7" />
 
 	<!-- ADMIN BANCHAT -->
 	<admin command="admin_banchat" accessLevel="7" />

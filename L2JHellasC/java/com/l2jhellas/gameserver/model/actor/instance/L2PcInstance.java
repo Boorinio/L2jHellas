@@ -35,6 +35,7 @@ import java.util.logging.Level;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
+import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.RaidEvent.L2EventChecks;
 import Extensions.RaidEvent.L2RaidEvent;
@@ -1272,7 +1273,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		return CharTemplateTable.getInstance().getTemplate(_baseClass);
 	}
 	
-	/** Return the L2PcTemplate link to the L2PcInstance.
+	/**
+	 * Return the L2PcTemplate link to the L2PcInstance.
 	 */
 	@Override
 	public final L2PcTemplate getTemplate()
@@ -1347,7 +1349,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 	}
 	
-	/** Return the Level of the L2PcInstance.
+	/**
+	 * Return the Level of the L2PcInstance.
 	 */
 	@Override
 	public final int getLevel()
@@ -1469,6 +1472,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * Tries to remove a L2RecipList from the table _DwarvenRecipeBook or from
 	 * table _CommonRecipeBook, those table contain all L2RecipeList of the
 	 * L2PcInstance
+	 * 
 	 * @param RecipeID
 	 *        The Identifier of the L2RecipeList to remove from the
 	 *        _recipebook
@@ -1514,6 +1518,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/**
 	 * Return the QuestState object corresponding to the quest name.
+	 * 
 	 * @param quest
 	 *        The name of the quest
 	 */
@@ -1524,6 +1529,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/**
 	 * Add a QuestState to the table _quest containing all quests began by the L2PcInstance.
+	 * 
 	 * @param qs
 	 *        The QuestState to add to _quest
 	 */
@@ -1534,6 +1540,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/**
 	 * Remove a QuestState from the table _quest containing all quests began by the L2PcInstance.
+	 * 
 	 * @param quest
 	 *        The name of the quest
 	 */
@@ -1582,6 +1589,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/**
 	 * Return a table containing all QuestState to modify after a L2Attackable killing.
+	 * 
 	 * @param npcId
 	 *        The Identifier of the L2Attackable attacked
 	 */
@@ -1617,6 +1625,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	/**
 	 * Return a table containing all QuestState to modify after a L2Attackable killing.
+	 * 
 	 * @param npcId
 	 *        The Identifier of the L2Attackable killed
 	 */
@@ -1653,6 +1662,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Return a table containing all QuestState from the table _quests in which
 	 * the L2PcInstance must talk to the NPC.
+	 * 
 	 * @param npcId
 	 *        The Identifier of the NPC
 	 */
@@ -2721,7 +2731,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		sendMessage("You have learned " + skillCounter + " new skills.");
 	}
 	
-	/** 
+	/**
 	 * Set the Experience value of the L2PcInstance.
 	 */
 	public void setExp(long exp)
@@ -2747,7 +2757,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 	
 	/**
-	 *  Return the SP amount of the L2PcInstance.
+	 * Return the SP amount of the L2PcInstance.
 	 */
 	public int getSp()
 	{
@@ -4463,7 +4473,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			else
 			{
 				// Check if this L2PcInstance is autoAttackable
-				if (isAutoAttackable(player) || (player._inEventTvT && TvT._started) || (player._inEventCTF && CTF._started) || (player._inEventDM && DM._started)&& !isGM())
+				if (isAutoAttackable(player) || (player._inEventTvT && TvT._started) || (player._inEventCTF && CTF._started) || (player._inEventDM && DM._started) && !isGM())
 				{
 					if (Config.ALLOW_CHAR_KILL_PROTECT)
 					{
@@ -4775,6 +4785,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 		}
 	}
+	
 	// PVP - PK Color System End
 	
 	/**
@@ -4965,10 +4976,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Send a System Message to the L2PcInstance : YOU_PICKED_UP_S1_ADENA or YOU_PICKED_UP_S1_S2</li>
-	 * <li>Add the Item to the L2PcInstance inventory</li>
-	 * <li>Send a Server->Client packet InventoryUpdate to this L2PcInstance with NewItem (use a new slot) or ModifiedItem (increase amount)</li>
-	 * <li>Send a Server->Client packet StatusUpdate to this L2PcInstance with current weight</li><BR>
+	 * <li>Send a System Message to the L2PcInstance : YOU_PICKED_UP_S1_ADENA or YOU_PICKED_UP_S1_S2</li> <li>Add the Item to the L2PcInstance inventory</li> <li>Send a
+	 * Server->Client packet InventoryUpdate to this L2PcInstance with NewItem (use a new slot) or ModifiedItem (increase amount)</li> <li>Send a Server->Client packet StatusUpdate
+	 * to this L2PcInstance with current weight</li><BR>
 	 * <BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : If a Party is in progress,
 	 * distribute Items between party members</B></FONT>
@@ -4997,11 +5007,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Send a Server->Client packet StopMove to this L2PcInstance</li>
-	 * <li>Remove the L2ItemInstance from the world and send server->client GetItem packets</li>
-	 * <li>Send a System Message to the L2PcInstance : YOU_PICKED_UP_S1_ADENA or YOU_PICKED_UP_S1_S2</li>
-	 * <li>Add the Item to the L2PcInstance inventory</li> <li>Send a Server->Client packet InventoryUpdate to this L2PcInstance with NewItem (use a new slot) or ModifiedItem (increase amount)</li>
-	 * <li>Send a Server->Client packet StatusUpdate to this L2PcInstance with current weight</li><BR>
+	 * <li>Send a Server->Client packet StopMove to this L2PcInstance</li> <li>Remove the L2ItemInstance from the world and send server->client GetItem packets</li> <li>Send a
+	 * System Message to the L2PcInstance : YOU_PICKED_UP_S1_ADENA or YOU_PICKED_UP_S1_S2</li> <li>Add the Item to the L2PcInstance inventory</li> <li>Send a Server->Client packet
+	 * InventoryUpdate to this L2PcInstance with NewItem (use a new slot) or ModifiedItem (increase amount)</li> <li>Send a Server->Client packet StatusUpdate to this L2PcInstance
+	 * with current weight</li><BR>
 	 * <BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : If a Party is in progress,
 	 * distribute Items between party members</B></FONT>
@@ -5177,9 +5186,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Remove the L2PcInstance from the _statusListener of the old target if it was a L2Character</li>
-	 * <li>Add the L2PcInstance to the _statusListener of the new target if it's a L2Character</li>
-	 * <li>Target the new L2Object (add the target to the L2PcInstance _target, _knownObject and L2PcInstance to _KnownObject of the L2Object)</li>
+	 * <li>Remove the L2PcInstance from the _statusListener of the old target if it was a L2Character</li> <li>Add the L2PcInstance to the _statusListener of the new target if it's
+	 * a L2Character</li> <li>Target the new L2Object (add the target to the L2PcInstance _target, _knownObject and L2PcInstance to _KnownObject of the L2Object)</li>
 	 * 
 	 * @param newTarget
 	 *        The L2Object to target
@@ -5452,11 +5460,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Reduce the Experience of the L2PcInstance in function of the calculated Death Penalty</li>
-	 * <li>If necessary, unsummon the Pet of the killed L2PcInstance</li>
-	 * <li>Manage Karma gain for attacker and Karam loss for the killed L2PcInstance</li>
-	 * <li>If the killed L2PcInstance has Karma, manage Drop Item</li>
-	 * <li>Kill the L2PcInstance</li>
+	 * <li>Reduce the Experience of the L2PcInstance in function of the calculated Death Penalty</li> <li>If necessary, unsummon the Pet of the killed L2PcInstance</li> <li>Manage
+	 * Karma gain for attacker and Karam loss for the killed L2PcInstance</li> <li>If the killed L2PcInstance has Karma, manage Drop Item</li> <li>Kill the L2PcInstance</li>
 	 * 
 	 * @param i
 	 *        The HP decrease value
@@ -5958,7 +5963,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public void increasePvpKills()
 	{
-		if ((TvT._started && _inEventTvT) ||isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
+		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
 		
 		if (!Config.LEGAL_COUNTER_ALTT_ENABLED)
@@ -6180,7 +6185,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (player_target == null)
 			return;
 		
-		if ((TvT._started && _inEventTvT && player_target._inEventTvT) ||isinZodiac || (DM._started && _inEventDM && player_target._inEventDM) || (CTF._started && _inEventCTF && player_target._inEventCTF))
+		if ((TvT._started && _inEventTvT && player_target._inEventTvT) || isinZodiac || (DM._started && _inEventDM && player_target._inEventDM) || (CTF._started && _inEventCTF && player_target._inEventCTF))
 			return;
 		
 		if ((isInDuel() && player_target.getDuelId() == getDuelId()))
@@ -6343,10 +6348,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Send a Server->Client System Message to the L2PcInstance : YOU_INCREASED_YOUR_LEVEL</li>
-	 * <li>Send a Server->Client packet StatusUpdate to the L2PcInstance with new LEVEL, MAX_HP and MAX_MP</li>
-	 * <li>Set the current HP and MP of the L2PcInstance, Launch/Stop a HP/MP/CP Regeneration Task and send StatusUpdate packet to all other L2PcInstance to inform (exclusive broadcast)</li> <li>Recalculate the party level</li> <li>Recalculate the number of Recommandation that the L2PcInstance can give</li>
-	 * <li>Give Expertise skill of this level and remove beginner Lucky skill</li>
+	 * <li>Send a Server->Client System Message to the L2PcInstance : YOU_INCREASED_YOUR_LEVEL</li> <li>Send a Server->Client packet StatusUpdate to the L2PcInstance with new
+	 * LEVEL, MAX_HP and MAX_MP</li> <li>Set the current HP and MP of the L2PcInstance, Launch/Stop a HP/MP/CP Regeneration Task and send StatusUpdate packet to all other
+	 * L2PcInstance to inform (exclusive broadcast)</li> <li>Recalculate the party level</li> <li>Recalculate the number of Recommandation that the L2PcInstance can give</li> <li>
+	 * Give Expertise skill of this level and remove beginner Lucky skill</li>
 	 */
 	public void increaseLevel()
 	{
@@ -6365,8 +6370,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Set the RegenActive flag to False</li>
-	 * <li>Stop the HP/MP/CP Regeneration task</li>
+	 * <li>Set the RegenActive flag to False</li> <li>Stop the HP/MP/CP Regeneration task</li>
 	 */
 	public void stopAllTimers()
 	{
@@ -6611,12 +6615,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Values </U> :</B><BR>
 	 * <BR>
-	 * <li>0 : STORE_PRIVATE_NONE</li>
-	 * <li>1 : STORE_PRIVATE_SELL</li>
-	 * <li>2 : sellmanage</li>
-	 * <li>3 : STORE_PRIVATE_BUY</li>
-	 * <li>4 : buymanage</li>
-	 * <li>5 : STORE_PRIVATE_MANUFACTURE</li>
+	 * <li>0 : STORE_PRIVATE_NONE</li> <li>1 : STORE_PRIVATE_SELL</li> <li>2 : sellmanage</li> <li>3 : STORE_PRIVATE_BUY</li> <li>4 : buymanage</li> <li>5 :
+	 * STORE_PRIVATE_MANUFACTURE</li>
 	 */
 	public void setPrivateStoreType(int type)
 	{
@@ -6628,12 +6628,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Values </U> :</B><BR>
 	 * <BR>
-	 * <li>0 : STORE_PRIVATE_NONE</li>
-	 * <li>1 : STORE_PRIVATE_SELL</li>
-	 * <li>2 : sellmanage</li>
-	 * <li>3 : STORE_PRIVATE_BUY</li>
-	 * <li>4 : buymanage</li>
-	 * <li>5 : STORE_PRIVATE_MANUFACTURE</li>
+	 * <li>0 : STORE_PRIVATE_NONE</li> <li>1 : STORE_PRIVATE_SELL</li> <li>2 : sellmanage</li> <li>3 : STORE_PRIVATE_BUY</li> <li>4 : buymanage</li> <li>5 :
+	 * STORE_PRIVATE_MANUFACTURE</li>
 	 */
 	public int getPrivateStoreType()
 	{
@@ -7025,9 +7021,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * Manage a cancel cast task for the L2PcInstance.<BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Set the Intention of the AI to AI_INTENTION_IDLE</li>
-	 * <li>Enable all skills (set _allSkillsDisabled to False)</li>
-	 * <li>Send a Server->Client Packet MagicSkillCanceld to the L2PcInstance and all L2PcInstance in the _KnownPlayers of the L2Character (broadcast)</li>
+	 * <li>Set the Intention of the AI to AI_INTENTION_IDLE</li> <li>Enable all skills (set _allSkillsDisabled to False)</li> <li>Send a Server->Client Packet MagicSkillCanceld to
+	 * the L2PcInstance and all L2PcInstance in the _KnownPlayers of the L2Character (broadcast)</li>
 	 */
 	public void cancelCastMagic()
 	{
@@ -7253,10 +7248,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Retrieve the L2PcInstance from the characters table of the database</li>
-	 * <li>Add the L2PcInstance object in _allObjects</li>
-	 * <li>Set the x,y,z position of the L2PcInstance and make it invisible</li>
-	 * <li>Update the overloaded status of the L2PcInstance</li>
+	 * <li>Retrieve the L2PcInstance from the characters table of the database</li> <li>Add the L2PcInstance object in _allObjects</li> <li>Set the x,y,z position of the
+	 * L2PcInstance and make it invisible</li> <li>Update the overloaded status of the L2PcInstance</li>
 	 * 
 	 * @param objectId
 	 *        Identifier of the object to initialized
@@ -7994,9 +7987,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Replace oldSkill by newSkill or Add the newSkill</li>
-	 * <li>If an old skill has been replaced, remove all its Func objects of L2Character calculator set</li>
-	 * <li>Add Func objects of newSkill to the calculator set of the L2Character</li>
+	 * <li>Replace oldSkill by newSkill or Add the newSkill</li> <li>If an old skill has been replaced, remove all its Func objects of L2Character calculator set</li> <li>Add Func
+	 * objects of newSkill to the calculator set of the L2Character</li>
 	 * 
 	 * @param newSkill
 	 *        The L2Skill to add to the L2Character
@@ -8044,8 +8036,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Remove the skill from the L2Character _skills</li>
-	 * <li>Remove all its Func objects from the L2Character calculator set</li><BR>
+	 * <li>Remove the skill from the L2Character _skills</li> <li>Remove all its Func objects from the L2Character calculator set</li><BR>
 	 * <BR>
 	 * <B><U> Overriden in </U> :</B><BR>
 	 * <BR>
@@ -8822,12 +8813,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Check if the attacker isn't the L2PcInstance Pet</li>
-	 * <li>Check if the attacker is L2MonsterInstance</li>
-	 * <li>If the attacker is a L2PcInstaknce, check if it is not in the same siege clan (Attacker, Defender)</li><BR>
+	 * <li>Check if the attacker isn't the L2PcInstance Pet</li> <li>Check if the attacker is L2MonsterInstance</li> <li>If the attacker is a L2PcInstaknce, check if it is not in
+	 * the same siege clan (Attacker, Defender)</li><BR>
 	 * <BR>
-	 * <li>Check if the L2PcInstance has Karma</li>
-	 * <li>If the attacker is a L2PcInstance, check if it is not in the same siege clan (Attacker, Defender)</li>
+	 * <li>Check if the L2PcInstance has Karma</li> <li>If the attacker is a L2PcInstance, check if it is not in the same siege clan (Attacker, Defender)</li>
 	 */
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
@@ -8921,15 +8910,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Check if the skill isn't toggle and is offensive</li> <li>Check if the target is in the skill cast range</li>
-	 * <li>Check if the skill is Spoil type and if the target isn't already spoiled</li>
-	 * <li>Check if the caster owns enought consummed Item, enough HP and MP to cast the skill</li>
-	 * <li>Check if the caster isn't sitting</li>
-	 * <li>Check if all skills are enabled and this skill is enabled</li>
-	 * <li>Check if the caster own the weapon needed</li>
-	 * <li>Check if the skill is active</li>
-	 * <li>Check if all casting conditions are completed</li>
-	 * <li>Notify the AI with AI_INTENTION_CAST and target</li>
+	 * <li>Check if the skill isn't toggle and is offensive</li> <li>Check if the target is in the skill cast range</li> <li>Check if the skill is Spoil type and if the target
+	 * isn't already spoiled</li> <li>Check if the caster owns enought consummed Item, enough HP and MP to cast the skill</li> <li>Check if the caster isn't sitting</li> <li>Check
+	 * if all skills are enabled and this skill is enabled</li> <li>Check if the caster own the weapon needed</li> <li>Check if the skill is active</li> <li>Check if all casting
+	 * conditions are completed</li> <li>Notify the AI with AI_INTENTION_CAST and target</li>
 	 * 
 	 * @param skill
 	 *        The L2Skill to use
@@ -9686,8 +9670,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Send a Server->Client packet UserInfo to this L2PcInstance (Public and Private Data)</li>
-	 * <li>Send a Server->Client packet CharInfo to all L2PcInstance in _KnownPlayers of the L2PcInstance (Public data only)</li><BR>
+	 * <li>Send a Server->Client packet UserInfo to this L2PcInstance (Public and Private Data)</li> <li>Send a Server->Client packet CharInfo to all L2PcInstance in _KnownPlayers
+	 * of the L2PcInstance (Public data only)</li><BR>
 	 * <BR>
 	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : DON'T SEND UserInfo packet to
 	 * other players instead of CharInfo packet. Indeed, UserInfo packet
@@ -9921,7 +9905,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					if (!summon)
 					{
 						if (itemId == 1463 || itemId == 1464 || itemId == 1465 || itemId == 1466 || itemId == 1467 || itemId == 1835 || itemId == 5789)
-							// || itemId == 6535 || itemId == 6536 || itemId == 6537 || itemId == 6538 || itemId == 6539 || itemId == 6540)
+						// || itemId == 6535 || itemId == 6536 || itemId == 6537 || itemId == 6538 || itemId == 6539 || itemId == 6540)
 						{
 							handler = ItemHandler.getInstance().getItemHandler(itemId);
 							
@@ -11355,10 +11339,10 @@ public final class L2PcInstance extends L2PlayableInstance
 				getParty().getDimensionalRift().memberRessurected(this);
 			}
 		}
-		if(isinZodiac)
+		if (isinZodiac)
 		{
 			ZodiacMain.OnRevive(this);
-		}	
+		}
 		
 		if ((_inEventTvT && TvT._started && Config.TVT_REVIVE_RECOVERY) || (_inEventCTF && CTF._started && Config.CTF_REVIVE_RECOVERY))
 		{
@@ -11849,15 +11833,10 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>If the L2PcInstance is in observer mode, set its position to its position before entering in observer mode</li>
-	 * <li>Set the online Flag to True or False and update the characters table of the database with online status and lastAccess</li>
-	 * <li>Stop the HP/MP/CP Regeneration task</li>
-	 * <li>Cancel Crafting, Attak or Cast</li>
-	 * <li>Remove the L2PcInstance from the world</li>
-	 * <li>Stop Party and Unsummon Pet</li>
-	 * <li>Update database with items in its inventory and remove them from the world</li>
-	 * <li>Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI</li>
-	 * <li>Close the connection with the client</li>
+	 * <li>If the L2PcInstance is in observer mode, set its position to its position before entering in observer mode</li> <li>Set the online Flag to True or False and update the
+	 * characters table of the database with online status and lastAccess</li> <li>Stop the HP/MP/CP Regeneration task</li> <li>Cancel Crafting, Attak or Cast</li> <li>Remove the
+	 * L2PcInstance from the world</li> <li>Stop Party and Unsummon Pet</li> <li>Update database with items in its inventory and remove them from the world</li> <li>Remove all
+	 * L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI</li> <li>Close the connection with the client</li>
 	 */
 	@SuppressWarnings("incomplete-switch")
 	public void deleteMe()
@@ -13817,14 +13796,17 @@ public final class L2PcInstance extends L2PlayableInstance
 		_isStored = a;
 	}
 	
-    public void endDuel()
-    { 
-    	if (isInDuel() && getDuelState() == Duel.DUELSTATE_DUELLING)
-            setDuelState(Duel.DUELSTATE_INTERRUPTED);
-    }
-    
-    public void checks()
-    {
+	public void endDuel()
+	{
+		if (isInDuel() && getDuelState() == Duel.DUELSTATE_DUELLING)
+			setDuelState(Duel.DUELSTATE_INTERRUPTED);
+	}
+	
+	public void checks()
+	{
+		final IpCatcher ipc = new IpCatcher();
+		if (ipc.isCatched(this))
+			this.logout();
 		standUp();
 		setRunning();
 		
@@ -13837,8 +13819,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			doDie(this);
 		}
 		
-    	L2Clan clan = this.getClan();
-    	
+		L2Clan clan = this.getClan();
+		
 		if (Config.APELLA_ARMORS && (clan == null || getPledgeClass() < 5))
 		{
 			int i;
@@ -13865,7 +13847,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 			}
 		}
-
 		
 		for (L2ItemInstance i : getInventory().getItems())
 		{
@@ -13890,26 +13871,26 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 			}
 		}
-
+		
 		// l2jhellas Faction Good vs Evil
 		// Welcome for evil
-		if(Config.MOD_GVE_ENABLE_FACTION)
+		if (Config.MOD_GVE_ENABLE_FACTION)
 		{
-		if (this.isevil())
-		{
-			this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
-			this.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ, true);
-			this.sendMessage("You have been teleported Back to your Faction Base.");
-			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
-		}
-		else if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
-			this.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ, true);
-			this.sendMessage("You have been teleported Back to your Faction Base.");
-			this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
-		}
-		    this.sendPacket(ActionFailed.STATIC_PACKET);
+			if (this.isevil())
+			{
+				this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
+				this.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ, true);
+				this.sendMessage("You have been teleported Back to your Faction Base.");
+				this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
+			}
+			else if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
+			{
+				this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
+				this.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ, true);
+				this.sendMessage("You have been teleported Back to your Faction Base.");
+				this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
+			}
+			this.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		// check for crowns
 		CrownManager.getInstance().checkCrowns(this);
@@ -14005,8 +13986,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			this.getAppearance().setTitleColor(Config.CLAN_LEADER_COLOR);
 		}
-
-			
+		
 		if (Config.PVP_COLOR_SYSTEM_ENABLED)
 		{
 			this.updatePvPColor(this.getPvpKills());
@@ -14076,7 +14056,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			if (Config.TITLE_COLOR_ENABLED)
 			{
-				this.getAppearance().setTitleColor(activeCharPvpStats.getRank().getTitleColor());			
+				this.getAppearance().setTitleColor(activeCharPvpStats.getRank().getTitleColor());
 			}
 		}
 		
@@ -14112,7 +14092,6 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 		}
 		
-
 		if (this.getPremiumService() == 1)
 		{
 			// activeChar.sendPacket(new
@@ -14126,8 +14105,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			this.setDonator(false);
 		}
 		
-		if(ZodiacMain.voting)
-			   ZodiacMain.showHtmlWindow(this);
+		if (ZodiacMain.voting)
+			ZodiacMain.showHtmlWindow(this);
 		
 		if (Config.SHOW_HTML_GM_WELCOME && (this.getAccessLevel().getLevel() > 0 || this.isGM()))
 		{
@@ -14166,19 +14145,18 @@ public final class L2PcInstance extends L2PlayableInstance
 					results++;
 				}
 				
-				if(con!=null)
+				if (con != null)
 					con.close();
 				
-			}						
+			}
 			catch (Exception e)
 			{
-
+				
 				e.printStackTrace();
 			}
-
+			
 			this.sendMessage("You have " + results + " messages.");
 			
-
 		}
 		if (Config.ALLOW_REMOTE_CLASS_MASTER)
 		{
@@ -14206,7 +14184,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			// no broadcast needed since the player will already spawn dead to others
 			sendPacket(new Die(this));
-		}	
+		}
 		if (AntiBot.isvoting)
 		{
 			AntiBot.showHtmlWindow(this);
@@ -14220,8 +14198,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			this.setHero(true);
 		}
-		    this.onPlayerEnter();
-    }
+		this.onPlayerEnter();
+	}
 	
 	/**
 	 * Equip or unequip the item.
@@ -14229,8 +14207,11 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * <LI>If item is equipped, shots are applied if automation is on.</LI>
 	 * <LI>If item is unequipped, shots are discharged.</LI>
 	 * </UL>
-	 * @param item The item to charge/discharge.
-	 * @param abortAttack If true, the current attack will be aborted in order to equip the item.
+	 * 
+	 * @param item
+	 *        The item to charge/discharge.
+	 * @param abortAttack
+	 *        If true, the current attack will be aborted in order to equip the item.
 	 */
 	public void useEquippableItem(L2ItemInstance item, boolean abortAttack)
 	{
@@ -14241,8 +14222,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (item.getItem() instanceof L2Weapon)
 		{
-            item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
-            item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+			item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+			item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
 		}
 		
 		if (isEquipped)
@@ -14272,9 +14253,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (item.getEnchantLevel() > 0)
 				{
 					sm = new SystemMessage(SystemMessageId.S1_S2_EQUIPPED);
-				sm.addNumber(item.getEnchantLevel());
-				sm.addItemName(item.getItemId());
-				}				
+					sm.addNumber(item.getEnchantLevel());
+					sm.addItemName(item.getItemId());
+				}
 				else
 				{
 					sm = new SystemMessage(SystemMessageId.S1_EQUIPPED);
@@ -14285,13 +14266,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				// Consume mana - will start a task if required; returns if item is not a shadow item
 				item.decreaseMana(false);
 				
-				if(item.getItem() instanceof L2Weapon)
-                {
-                   //charge Soulshot/Spiritshot like L2OFF
-                   this.rechargeAutoSoulShot(true, true, false);
-                   item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
-                   item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
-                }
+				if (item.getItem() instanceof L2Weapon)
+				{
+					// charge Soulshot/Spiritshot like L2OFF
+					this.rechargeAutoSoulShot(true, true, false);
+					item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
+					item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+				}
 			}
 			if (item.getItem().getType2() == L2Item.TYPE2_WEAPON)
 			{
@@ -14314,179 +14295,215 @@ public final class L2PcInstance extends L2PlayableInstance
 			sendPacket(new ExStorageMaxCount(this));
 	}
 	
-	public void giveItems(boolean dagger,boolean sagi,boolean mage,boolean duelist,boolean tit,boolean nixas,boolean paladin,boolean FSeeker,boolean dreadnought,boolean HellKnight,boolean swordMuse,boolean dancer)
+	public void giveItems(boolean dagger, boolean sagi, boolean mage, boolean duelist, boolean tit, boolean nixas, boolean paladin, boolean FSeeker, boolean dreadnought, boolean HellKnight, boolean swordMuse, boolean dancer)
 	{
-		final int[] armorIdDagger = {6590,6379,6380,6381,6382,920,858,858,889,889};
-		final int[] armorIdSagi = {7577,6379,6380,6381,6382,920,858,858,889,889};
-		final int[] armorIdMage = {6608,2407,5767,5779,512,920,858,858,889,889};	
-		final int[] armorIdDuelist = {6580,6373,6374,6375,6376,6378,920,858,858,889,889};
-		final int[] armorIdTit = {6605,6373,6374,6375,6376,6378,920,858,858,889,889};
-		final int[] armorIdNixas = {6604,6379,6380,6381,6382,920,858,858,889,889};
-		final int[] armorIdPaladin = {6581,6373,6374,6375,6376,6377,6378,920,858,858,889,889};
-		final int[] armorIdFSeeker = {6585,6373,6374,6375,6376,6377,6378,920,858,858,889,889};
-		final int[] armorIddreadnought = {6601,6373,6374,6375,6376,6378,920,858,858,889,889};	
-		final int[] armorIdhellKnight = {6581,6373,6374,6375,6376,6377,6378,920,858,858,889,889};	
-		final int[] armorIdswordMuse = {6581,6379,6380,6381,6382,920,858,858,889,889,6377};			
-		final int[] armorIdDancer = {6580,6379,6380,6381,6382,920,858,858,889,889};
-
-		if(dagger)
+		final int[] armorIdDagger =
 		{
-		if (armorIdDagger.length == 0)
-			return;	
-		L2ItemInstance items = null;
-		for (int id : armorIdDagger)
-		{		
-			getInventory().addItem("Armors", id, 1, this, null);		
-			items = getInventory().getItemByItemId(id);
-			items.updateDatabase();
-			getInventory().equipItemAndRecord(items);
+		6590, 6379, 6380, 6381, 6382, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdSagi =
+		{
+		7577, 6379, 6380, 6381, 6382, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdMage =
+		{
+		6608, 2407, 5767, 5779, 512, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdDuelist =
+		{
+		6580, 6373, 6374, 6375, 6376, 6378, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdTit =
+		{
+		6605, 6373, 6374, 6375, 6376, 6378, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdNixas =
+		{
+		6604, 6379, 6380, 6381, 6382, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdPaladin =
+		{
+		6581, 6373, 6374, 6375, 6376, 6377, 6378, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdFSeeker =
+		{
+		6585, 6373, 6374, 6375, 6376, 6377, 6378, 920, 858, 858, 889, 889
+		};
+		final int[] armorIddreadnought =
+		{
+		6601, 6373, 6374, 6375, 6376, 6378, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdhellKnight =
+		{
+		6581, 6373, 6374, 6375, 6376, 6377, 6378, 920, 858, 858, 889, 889
+		};
+		final int[] armorIdswordMuse =
+		{
+		6581, 6379, 6380, 6381, 6382, 920, 858, 858, 889, 889, 6377
+		};
+		final int[] armorIdDancer =
+		{
+		6580, 6379, 6380, 6381, 6382, 920, 858, 858, 889, 889
+		};
+		
+		if (dagger)
+		{
+			if (armorIdDagger.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdDagger)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
 		}
-		}
-		else if(sagi)
+		else if (sagi)
 		{
 			if (armorIdSagi.length == 0)
-				return;	
+				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdSagi)
 			{
-				getInventory().addItem("Armors", id, 1, this, null);		
+				getInventory().addItem("Armors", id, 1, this, null);
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
 			}
 		}
-		else if(mage)
+		else if (mage)
+		{
+			if (armorIdMage.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdMage)
 			{
-				if (armorIdMage.length == 0)
-					return;	
-				L2ItemInstance items = null;
-				for (int id : armorIdMage)
-				{
-					getInventory().addItem("Armors", id, 1, this, null);		
-					items = getInventory().getItemByItemId(id);
-					items.updateDatabase();
-					getInventory().equipItemAndRecord(items);					
-				}
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
 			}
-		else if(duelist)
-				{
-					if (armorIdDuelist.length == 0)
-						return;	
-					L2ItemInstance items = null;
-					for (int id : armorIdDuelist)
-					{
-						getInventory().addItem("Armors", id, 1, this, null);		
-						items = getInventory().getItemByItemId(id);
-						items.updateDatabase();
-						getInventory().equipItemAndRecord(items);	
-					}
-				}
-		else if(tit)
-					{
-						if (armorIdTit.length == 0)
-							return;	
-						L2ItemInstance items = null;
-						for (int id : armorIdTit)
-						{
-							getInventory().addItem("Armors", id, 1, this, null);		
-							items = getInventory().getItemByItemId(id);
-							items.updateDatabase();
-							getInventory().equipItemAndRecord(items);					
-						}
-					}
-		else if(nixas)
-						{
-							if (armorIdNixas.length == 0)
-								return;	
-							L2ItemInstance items = null;
-							for (int id : armorIdNixas)
-							{
-								getInventory().addItem("Armors", id, 1, this, null);		
-								items = getInventory().getItemByItemId(id);
-								items.updateDatabase();
-								getInventory().equipItemAndRecord(items);	
-							}
-						}
-		else if(paladin)
-							{
-								if (armorIdPaladin.length == 0)
-									return;	
-								L2ItemInstance items = null;
-								for (int id : armorIdPaladin)
-								{
-									getInventory().addItem("Armors", id, 1, this, null);		
-									items = getInventory().getItemByItemId(id);
-									items.updateDatabase();
-									getInventory().equipItemAndRecord(items);
-								}							
-						}
-		else if(FSeeker)
+		}
+		else if (duelist)
+		{
+			if (armorIdDuelist.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdDuelist)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		else if (tit)
+		{
+			if (armorIdTit.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdTit)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		else if (nixas)
+		{
+			if (armorIdNixas.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdNixas)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		else if (paladin)
+		{
+			if (armorIdPaladin.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdPaladin)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		else if (FSeeker)
 		{
 			if (armorIdFSeeker.length == 0)
-				return;	
+				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdFSeeker)
 			{
-				getInventory().addItem("Armors", id, 1, this, null);		
+				getInventory().addItem("Armors", id, 1, this, null);
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
-			}							
-	}
-		else if(dreadnought)
+			}
+		}
+		else if (dreadnought)
 		{
 			if (armorIddreadnought.length == 0)
-				return;	
+				return;
 			L2ItemInstance items = null;
 			for (int id : armorIddreadnought)
 			{
-				getInventory().addItem("Armors", id, 1, this, null);		
-				items = getInventory().getItemByItemId(id);
-				items.updateDatabase();
-				getInventory().equipItemAndRecord(items);	
-			}
-	}
-		else if(HellKnight)
-		{
-			if (armorIdhellKnight.length == 0)
-				return;	
-			L2ItemInstance items = null;
-			for (int id : armorIdhellKnight)
-			{
-				getInventory().addItem("Armors", id, 1, this, null);		
+				getInventory().addItem("Armors", id, 1, this, null);
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
 			}
+		}
+		else if (HellKnight)
+		{
+			if (armorIdhellKnight.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdhellKnight)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		else if (swordMuse)
+		{
+			if (armorIdswordMuse.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdswordMuse)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		else if (dancer)
+		{
+			if (armorIdDancer.length == 0)
+				return;
+			L2ItemInstance items = null;
+			for (int id : armorIdDancer)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		this.sendPacket(new InventoryUpdate());
+		this.sendPacket(new ItemList(this, false));
+		this.sendPacket(new StatusUpdate(this.getObjectId()));
 	}
-		else if(swordMuse)
-		{
-		if (armorIdswordMuse.length == 0)
-			return;	
-		L2ItemInstance items = null;
-		for (int id : armorIdswordMuse)
-		{		
-			getInventory().addItem("Armors", id, 1, this, null);		
-			items = getInventory().getItemByItemId(id);
-			items.updateDatabase();
-			getInventory().equipItemAndRecord(items);
-		}
-		}
-		else if(dancer)
-		{
-		if (armorIdDancer.length == 0)
-			return;	
-		L2ItemInstance items = null;
-		for (int id : armorIdDancer)
-		{		
-			getInventory().addItem("Armors", id, 1, this, null);		
-			items = getInventory().getItemByItemId(id);
-			items.updateDatabase();
-			getInventory().equipItemAndRecord(items);	
-		}
-		}
-        this.sendPacket(new InventoryUpdate());
-        this.sendPacket(new ItemList(this, false));
-        this.sendPacket(new StatusUpdate(this.getObjectId()));		
-}
 }

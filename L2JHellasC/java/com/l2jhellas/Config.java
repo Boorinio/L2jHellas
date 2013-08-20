@@ -1738,7 +1738,6 @@ public final class Config
 			CLAN_LEADER_COLOR = Integer.decode("0x" + L2JHellasSettings.getProperty("ClanLeaderColor", "00BFFF"));
 			CLAN_LEADER_COLOR_CLAN_LEVEL = Integer.parseInt(L2JHellasSettings.getProperty("ClanLeaderColorAtClanLevel", "1"));
 			ENABLED_MESSAGE_SYSTEM = Boolean.parseBoolean(L2JHellasSettings.getProperty("EnableMessageSystem", "False"));
-			CLASS_AUTO_EQUIP_AW = Boolean.parseBoolean(L2JHellasSettings.getProperty("AutoEquipArmorWeapons", "False"));
 
 			if (USE_SAY_FILTER)
 			{
@@ -2229,6 +2228,7 @@ public final class Config
 			NPCBUFFER_STATIC_BUFF_COST = Integer.parseInt(CustomNpcSettings.getProperty("NPCBufferStaticCostPerBuff", "-1"));
 			ALLOW_CLASS_MASTER = Boolean.valueOf(CustomNpcSettings.getProperty("AllowClassMaster", "False"));
 			ALLOW_REMOTE_CLASS_MASTER = Boolean.valueOf(CustomNpcSettings.getProperty("AllowRemoteClassMaster", "False"));
+			CLASS_AUTO_EQUIP_AW = Boolean.parseBoolean(CustomNpcSettings.getProperty("AutoEquipArmorWeapons", "False"));
 			NPC_NOBLES_ENABLE = Boolean.parseBoolean(CustomNpcSettings.getProperty("NobleManager", "false"));
 			NPC_NOBLESS_ID = Integer.parseInt(CustomNpcSettings.getProperty("NobleID", "57"));
 			NPC_NOBLESS_QUANTITY = Integer.parseInt(CustomNpcSettings.getProperty("NobleQuantity", "10000"));

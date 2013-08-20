@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import Extensions.OnEnter;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
@@ -140,7 +141,7 @@ public class EnterWorld extends L2GameClientPacket
 		activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 
 		activeChar.sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
-
+		Announcements.getInstance().showAnnouncements(activeChar);
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 
 		// engage and notify Partner
