@@ -510,6 +510,7 @@ public final class Config
 	public static int CLAN_LEADER_COLOR;
 	public static int CLAN_LEADER_COLOR_CLAN_LEVEL;
 	public static boolean ENABLED_MESSAGE_SYSTEM;
+	public static boolean CLASS_AUTO_EQUIP_AW;
 
 	public static enum ClanLeaderColored
 	{
@@ -1737,6 +1738,8 @@ public final class Config
 			CLAN_LEADER_COLOR = Integer.decode("0x" + L2JHellasSettings.getProperty("ClanLeaderColor", "00BFFF"));
 			CLAN_LEADER_COLOR_CLAN_LEVEL = Integer.parseInt(L2JHellasSettings.getProperty("ClanLeaderColorAtClanLevel", "1"));
 			ENABLED_MESSAGE_SYSTEM = Boolean.parseBoolean(L2JHellasSettings.getProperty("EnableMessageSystem", "False"));
+			CLASS_AUTO_EQUIP_AW = Boolean.parseBoolean(L2JHellasSettings.getProperty("AutoEquipArmorWeapons", "False"));
+
 			if (USE_SAY_FILTER)
 			{
 				try

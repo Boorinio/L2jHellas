@@ -14313,4 +14313,180 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (GetInventoryLimit() != oldInvLimit)
 			sendPacket(new ExStorageMaxCount(this));
 	}
+	
+	public void giveItems(boolean dagger,boolean sagi,boolean mage,boolean duelist,boolean tit,boolean nixas,boolean paladin,boolean FSeeker,boolean dreadnought,boolean HellKnight,boolean swordMuse,boolean dancer)
+	{
+		final int[] armorIdDagger = {6590,6379,6380,6381,6382,920,858,858,889,889};
+		final int[] armorIdSagi = {7577,6379,6380,6381,6382,920,858,858,889,889};
+		final int[] armorIdMage = {6608,2407,5767,5779,512,920,858,858,889,889};	
+		final int[] armorIdDuelist = {6580,6373,6374,6375,6376,6378,920,858,858,889,889};
+		final int[] armorIdTit = {6605,6373,6374,6375,6376,6378,920,858,858,889,889};
+		final int[] armorIdNixas = {6604,6379,6380,6381,6382,920,858,858,889,889};
+		final int[] armorIdPaladin = {6581,6373,6374,6375,6376,6377,6378,920,858,858,889,889};
+		final int[] armorIdFSeeker = {6585,6373,6374,6375,6376,6377,6378,920,858,858,889,889};
+		final int[] armorIddreadnought = {6601,6373,6374,6375,6376,6378,920,858,858,889,889};	
+		final int[] armorIdhellKnight = {6581,6373,6374,6375,6376,6377,6378,920,858,858,889,889};	
+		final int[] armorIdswordMuse = {6581,6379,6380,6381,6382,920,858,858,889,889,6377};			
+		final int[] armorIdDancer = {6580,6379,6380,6381,6382,920,858,858,889,889};
+
+		if(dagger)
+		{
+		if (armorIdDagger.length == 0)
+			return;	
+		L2ItemInstance items = null;
+		for (int id : armorIdDagger)
+		{		
+			getInventory().addItem("Armors", id, 1, this, null);		
+			items = getInventory().getItemByItemId(id);
+			items.updateDatabase();
+			getInventory().equipItemAndRecord(items);
+		}
+		}
+		else if(sagi)
+		{
+			if (armorIdSagi.length == 0)
+				return;	
+			L2ItemInstance items = null;
+			for (int id : armorIdSagi)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);		
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+		}
+		else if(mage)
+			{
+				if (armorIdMage.length == 0)
+					return;	
+				L2ItemInstance items = null;
+				for (int id : armorIdMage)
+				{
+					getInventory().addItem("Armors", id, 1, this, null);		
+					items = getInventory().getItemByItemId(id);
+					items.updateDatabase();
+					getInventory().equipItemAndRecord(items);					
+				}
+			}
+		else if(duelist)
+				{
+					if (armorIdDuelist.length == 0)
+						return;	
+					L2ItemInstance items = null;
+					for (int id : armorIdDuelist)
+					{
+						getInventory().addItem("Armors", id, 1, this, null);		
+						items = getInventory().getItemByItemId(id);
+						items.updateDatabase();
+						getInventory().equipItemAndRecord(items);	
+					}
+				}
+		else if(tit)
+					{
+						if (armorIdTit.length == 0)
+							return;	
+						L2ItemInstance items = null;
+						for (int id : armorIdTit)
+						{
+							getInventory().addItem("Armors", id, 1, this, null);		
+							items = getInventory().getItemByItemId(id);
+							items.updateDatabase();
+							getInventory().equipItemAndRecord(items);					
+						}
+					}
+		else if(nixas)
+						{
+							if (armorIdNixas.length == 0)
+								return;	
+							L2ItemInstance items = null;
+							for (int id : armorIdNixas)
+							{
+								getInventory().addItem("Armors", id, 1, this, null);		
+								items = getInventory().getItemByItemId(id);
+								items.updateDatabase();
+								getInventory().equipItemAndRecord(items);	
+							}
+						}
+		else if(paladin)
+							{
+								if (armorIdPaladin.length == 0)
+									return;	
+								L2ItemInstance items = null;
+								for (int id : armorIdPaladin)
+								{
+									getInventory().addItem("Armors", id, 1, this, null);		
+									items = getInventory().getItemByItemId(id);
+									items.updateDatabase();
+									getInventory().equipItemAndRecord(items);
+								}							
+						}
+		else if(FSeeker)
+		{
+			if (armorIdFSeeker.length == 0)
+				return;	
+			L2ItemInstance items = null;
+			for (int id : armorIdFSeeker)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);		
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}							
+	}
+		else if(dreadnought)
+		{
+			if (armorIddreadnought.length == 0)
+				return;	
+			L2ItemInstance items = null;
+			for (int id : armorIddreadnought)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);		
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);	
+			}
+	}
+		else if(HellKnight)
+		{
+			if (armorIdhellKnight.length == 0)
+				return;	
+			L2ItemInstance items = null;
+			for (int id : armorIdhellKnight)
+			{
+				getInventory().addItem("Armors", id, 1, this, null);		
+				items = getInventory().getItemByItemId(id);
+				items.updateDatabase();
+				getInventory().equipItemAndRecord(items);
+			}
+	}
+		else if(swordMuse)
+		{
+		if (armorIdswordMuse.length == 0)
+			return;	
+		L2ItemInstance items = null;
+		for (int id : armorIdswordMuse)
+		{		
+			getInventory().addItem("Armors", id, 1, this, null);		
+			items = getInventory().getItemByItemId(id);
+			items.updateDatabase();
+			getInventory().equipItemAndRecord(items);
+		}
+		}
+		else if(dancer)
+		{
+		if (armorIdDancer.length == 0)
+			return;	
+		L2ItemInstance items = null;
+		for (int id : armorIdDancer)
+		{		
+			getInventory().addItem("Armors", id, 1, this, null);		
+			items = getInventory().getItemByItemId(id);
+			items.updateDatabase();
+			getInventory().equipItemAndRecord(items);	
+		}
+		}
+        this.sendPacket(new InventoryUpdate());
+        this.sendPacket(new ItemList(this, false));
+        this.sendPacket(new StatusUpdate(this.getObjectId()));		
+}
 }

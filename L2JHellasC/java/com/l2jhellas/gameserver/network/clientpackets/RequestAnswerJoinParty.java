@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.JoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
@@ -36,7 +37,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 	{
 		_response = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -48,13 +49,10 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 				return;
 
 			// Faction Good vs Evil
-			if (player.isevil() && requestor.isgood())
+			if (player.isevil() && requestor.isgood() || player.isgood() && requestor.isevil())
 			{
-				return;
-			}
-
-			if (player.isgood() && requestor.isevil())
-			{
+				requestor.sendPacket(ActionFailed.STATIC_PACKET);
+				player.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 
@@ -63,6 +61,16 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 
 			if (_response == 1)
 			{
+				if (requestor.isInParty())
+				{
+					if (requestor.getParty().getMemberCount() >= 9)
+					{
+						SystemMessage sm = new SystemMessage(SystemMessageId.PARTY_FULL);
+						player.sendPacket(sm);
+						requestor.sendPacket(sm);
+						return;
+					}
+				}
 				player.joinParty(requestor.getParty());
 			}
 			else
@@ -80,6 +88,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 
 			player.setActiveRequester(null);
 			requestor.onTransactionResponse();
+			requestor.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 
