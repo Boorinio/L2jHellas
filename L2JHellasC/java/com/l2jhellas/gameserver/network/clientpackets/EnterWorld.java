@@ -140,7 +140,7 @@ public class EnterWorld extends L2GameClientPacket
 		activeChar.broadcastTitleInfo();
 		activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 
-		activeChar.sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
+		activeChar.sendPacket(new SystemMessage(SystemMessageId.WELCOME_TO_LINEAGE));
 		Announcements.getInstance().showAnnouncements(activeChar);
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 
