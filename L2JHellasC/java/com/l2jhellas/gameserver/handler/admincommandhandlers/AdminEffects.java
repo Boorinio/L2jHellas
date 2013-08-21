@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -67,11 +66,6 @@ public class AdminEffects implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
 	{/** @formatter:off */
-		"admin_invis",
-		"admin_invisible",
-		"admin_vis",
-		"admin_visible",
-		"admin_invis_menu",
 		"admin_earthquake",
 		"admin_earthquake_menu",
 		"admin_bighead",
@@ -116,38 +110,8 @@ public class AdminEffects implements IAdminCommandHandler
 		StringTokenizer st = new StringTokenizer(command);
 		st.nextToken();
 
-		if (command.equals("admin_invis_menu"))
-		{
-			if (!activeChar.getAppearance().getInvisible())
-			{
-				activeChar.getAppearance().setInvisible();
-				activeChar.broadcastUserInfo();
-				activeChar.decayMe();
-				activeChar.spawnMe();
-			}
-			else
-			{
-				activeChar.getAppearance().setVisible();
-				activeChar.broadcastUserInfo();
-			}
-			RegionBBSManager.getInstance().changeCommunityBoard();
-		}
-		else if (command.startsWith("admin_invis"))
-		{
-			activeChar.getAppearance().setInvisible();
-			activeChar.broadcastUserInfo();
-			activeChar.decayMe();
-			activeChar.spawnMe();
-			RegionBBSManager.getInstance().changeCommunityBoard();
-		}
-
-		else if (command.startsWith("admin_vis"))
-		{
-			activeChar.getAppearance().setVisible();
-			activeChar.broadcastUserInfo();
-			RegionBBSManager.getInstance().changeCommunityBoard();
-		}
-		else if (command.startsWith("admin_earthquake"))
+		
+		if (command.startsWith("admin_earthquake"))
 		{
 			try
 			{

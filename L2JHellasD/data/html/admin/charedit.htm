@@ -1,4 +1,4 @@
-<html><body>
+<html><title>Character Edit Menu</title><body>
 <table width="260">
 <tr>
 <td width="40"><button value="Main" action="bypass -h admin_admin" width="40" height="15" back="sek.cbui94" fore="sek.cbui92"></td>
@@ -8,9 +8,12 @@
 </table>
 <br>
 <table width="270">
-<tr><td fixwidth="90">HP:%currenthp%/%maxhp%</td><td fixwidth="90">MP:%currentmp%/%maxmp%</td><td fixwidth="90">CP:%currentcp%/%maxcp%</td></tr>
-<tr><td width="90">Karma:%karma%</td><td width="90">PvP:%pvpkills%</td><td width="90">PK:%pkkills%</td></tr>
-<tr><td width="90">Load:</td><td width="90">%currentload%/%maxload%</td><td width="90">(%percent%%)</td></tr>
+<tr>
+<td fixwidth="90"><font color=FF0000>HP</font>: <font color=FF0000>%currenthp%</font>/<font color=FF0000>%maxhp%</font></td>
+<td fixwidth="90"><font color=00CCCC>MP</font>: <font color=00CCCC>%currentmp%</font>/<font color=00CCCC>%maxmp%</font></td>
+<td fixwidth="90"><font color="LEVEL">CP</font>: <font color="LEVEL">%currentcp%</font>/<font color="LEVEL">%maxcp%</font></td></tr>
+<tr><td width="90"><font color=3344FF>PvP</font>: <font color=3344FF>%pvpkills%</font></td><td width="90"><font color=CC0000>Karma</font>:<font color=CC0000>%karma%</font></td><td width="90"><font color=CC0000>PK</font>:<font color=CC0000>%pkkills%</font></td></tr>
+<tr><td width="90"><font color=CCAA00>Load</font>: </td><td width="90"><font color=CCAA00>%currentload%</font>/<font color=CCAA00>%maxload%</font></td><td width="90">(%percent%%)</td></tr>
 <tr><td width="90">Class:</td><td>%class%</td><td width="90">AccLv:%access%</td></tr>
 </table>
 <br>
@@ -25,9 +28,9 @@
 </table>
 <br>
 <table width="270">
-<tr><td width="50">Current HP:</td><td><edit var="hp" width="50"></td><td width="50">PvP Flag:</td><td><edit var="pvpflag" width="50"></td></tr>
-<tr><td width="50">Current MP:</td><td><edit var="mp" width="50"></td><td width="50">PvP Kills:</td><td><edit var="pvpkills" width="50"></td></tr>
-<tr><td width="50">Current CP:</td><td><edit var="cp" width="50"></td><td width="50">PK Kills:</td><td><edit var="pkkills" width="50"></td></tr>
+<tr><td width="50"><font color=FF0000>Change HP:</font></td><td><edit var="hp" width="50"></td><td width="50"><font color=FF00EE>Change PvP Flag</font>:</td><td><edit var="pvpflag" width="50"></td></tr>
+<tr><td width="50"><font color=00CCCC>Change MP:</font></td><td><edit var="mp" width="50"></td><td width="50"><font color=3344FF>Change PvP Kills</font>:</td><td><edit var="pvpkills" width="50"></td></tr>
+<tr><td width="50"><font color="LEVEL">Change CP:</font></td><td><edit var="cp" width="50"></td><td width="50"><font color=CC0000>Change PK Kills</font>:</td><td><edit var="pkkills" width="50"></td></tr>
 </table>
 <br>
 <center>

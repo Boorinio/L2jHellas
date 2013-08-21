@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -52,6 +53,9 @@ public class AdminAdmin implements IAdminCommandHandler
 		"admin_admin5",
 		"admin_gmliston",
 		"admin_gmlistoff",
+		"admin_invis",
+		"admin_vis",
+		"admin_invis_menu",
 		"admin_silence",
 		"admin_diet",
 		"admin_tradeoff",
@@ -81,10 +85,39 @@ public class AdminAdmin implements IAdminCommandHandler
 			AdminTable.getInstance().hideGm(activeChar);
 			activeChar.sendMessage("Removed from gm list");
 		}
+		if (command.equals("admin_invis_menu"))
+		{
+			if (!activeChar.getAppearance().getInvisible())
+			{
+				activeChar.getAppearance().setInvisible();
+				activeChar.broadcastUserInfo();
+				activeChar.decayMe();
+				activeChar.spawnMe();
+			}
+			else
+			{
+				activeChar.getAppearance().setVisible();
+				activeChar.broadcastUserInfo();
+			}
+			RegionBBSManager.getInstance().changeCommunityBoard();
+		}
+		else if (command.startsWith("admin_invis"))
+		{
+			activeChar.getAppearance().setInvisible();
+			activeChar.broadcastUserInfo();
+			activeChar.decayMe();
+			activeChar.spawnMe();
+			RegionBBSManager.getInstance().changeCommunityBoard();
+		}
+		else if (command.startsWith("admin_vis"))
+		{
+			activeChar.getAppearance().setVisible();
+			activeChar.broadcastUserInfo();
+			RegionBBSManager.getInstance().changeCommunityBoard();
+		}
 		else if (command.startsWith("admin_silence"))
 		{
-			if (activeChar.getMessageRefusal()) // already in message refusal
-												// mode
+			if (activeChar.getMessageRefusal()) // already in message refusal mode
 			{
 				activeChar.setMessageRefusal(false);
 				activeChar.sendPacket(new SystemMessage(SystemMessageId.MESSAGE_ACCEPTANCE_MODE));

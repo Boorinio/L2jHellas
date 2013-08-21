@@ -1,15 +1,15 @@
-<html><body>
+<html><title>Character Managment Menu</title><body>
 <table width=260>
 <tr>
 <td width=40><button value="Main" action="bypass -h admin_admin" width=40 height=15 back="sek.cbui94" fore="sek.cbui92"></td>
-<td width=180><center>Character Management Menu</center></td>
+<td width=180></td>
 <td width=40><button value="Back" action="bypass -h admin_admin2" width=40 height=15 back="sek.cbui94" fore="sek.cbui92"></td>
 </tr>
-</table><br>
+</table><br1>
 <table width=240><tr>
 <td width=80>Character:</td><td><edit var="menu_command" width=120 height=15></td>
 <td><button value="Help" action="bypass -h admin_help help/charmanage.htm" width=45 height=15 back="sek.cbui94" fore="sek.cbui92"></td>
-</tr></table><br>
+</tr></table><br1>
 <center>
 <table width=260><tr>
 <td><button value="Go" action="bypass -h admin_goto_char_menu $menu_command" width=50 height=15 back="sek.cbui94" fore="sek.cbui92"></td>
@@ -28,15 +28,17 @@
 <td><button value="GetParty" action="bypass -h admin_recall_party_menu $menu_command" width=50 height=15 back="sek.cbui94" fore="sek.cbui92"></td>
 <td><button value="Get Clan" action="bypass -h admin_recall_clan_menu $menu_command" width=50 height=15 back="sek.cbui94" fore="sek.cbui92"></td>
 </tr>
-</table>
-</center><br>
-<center>
+</table><br1>
+<table width=280><tr>
+<td align=center><button value="Chr Perma Ban" action="bypass -h admin_permaban $menu_command" width=90 height=13 back="sek.cbui94" fore="sek.cbui92"></td>
+<td align=center><button value="Chr Perma Unban" action="bypass -h admin_removeperma $menu_command" width=90 height=13 back="sek.cbui94" fore="sek.cbui92"></td>
+</tr></table><br1>
 <table width=260><tr>
 <td width=15>X:</td><td><edit var="char_cord_x" width=50></td>
 <td width=15>Y:</td><td><edit var="char_cord_y" width=50></td>
 <td width=15>Z:</td><td><edit var="char_cord_z" width=50></td>
 <td><button value="Teleport" action="bypass -h admin_teleport_character_to_menu $menu_command $char_cord_x $char_cord_y $char_cord_z" width=60 height=15 back="sek.cbui94" fore="sek.cbui92"></td>
-</tr></table><br>
+</tr></table><br1>
 <table width=260>
 <tr><td width=101>Starter Towns:</td><td width="102">Mainland:</td></tr>
 <tr><td><a action="bypass -h admin_teleport_character_to_menu $menu_command 9745 15606 -4574"><font color="LEVEL">Dark Elven Village</font></a></td><td><a action="bypass -h admin_teleport_character_to_menu $menu_command 15670 142983 -2705"><font color="LEVEL">Town of Dion</font></a></td></tr>
