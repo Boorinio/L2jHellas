@@ -99,16 +99,16 @@ public class ProtectTheLdr
 	{
 		for (L2PcInstance member : _Team1)
 		{
-			member.getAppearance().setNameColor(0xFFFFFF);
-			member.setTitle("");
+			member.getAppearance().setNameColor(member.OriginalColor);
+			member.setTitle(member.OriginalTitle);
 			member.broadcastUserInfo();
 			member.isinZodiac = false;
 			member.teleToLocation(82743, 148219, -3470);	
 		}
 		for (L2PcInstance member : _Team2)
 		{
-			member.getAppearance().setNameColor(0xFFFFFF);
-			member.setTitle("");
+			member.getAppearance().setNameColor(member.OriginalColor);
+			member.setTitle(member.OriginalTitle);
 			member.broadcastUserInfo();
 			member.isinZodiac = false;
 			member.teleToLocation(82743, 148219, -3470);
@@ -142,7 +142,9 @@ public class ProtectTheLdr
 				if (alaksokolies)
 				{
 					_Team1.add(player);
+					player.OriginalColor = player.getAppearance().getNameColor();
 					player.getAppearance().setNameColor(0xFF0000);
+					player.OriginalTitle = player.getTitle();
 					player.setTitle("Team1");
 					player.broadcastUserInfo();
 					alaksokolies = false;
@@ -150,7 +152,9 @@ public class ProtectTheLdr
 				else
 				{
 					_Team2.add(player);
+					player.OriginalColor = player.getAppearance().getNameColor();
 					player.getAppearance().setNameColor(0x0000FF);
+					player.OriginalTitle = player.getTitle();
 					player.setTitle("Team2");
 					player.broadcastUserInfo();
 					alaksokolies = true;

@@ -36,7 +36,7 @@ public class ZodiacMain
 	public static List<String> Ips = new ArrayList<String>();
 	public static boolean ZodiacRegisterActive;
 	public static int i, max;
-	public static List<String> VotedPlayers = new ArrayList<String>();;
+	public static List<String> VotedPlayers = new ArrayList<String>();
 	
 	public static int[] count =
 	{

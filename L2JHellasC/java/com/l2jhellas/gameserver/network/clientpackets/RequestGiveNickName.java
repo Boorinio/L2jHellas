@@ -40,7 +40,11 @@ public class RequestGiveNickName extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-
+		if (activeChar.isinZodiac)
+		{
+			activeChar.sendMessage("Can't change your title while in a Zodiac Event");
+			return;
+		}
 		// Noblesse can bestow a title to themselves
 		if (activeChar.isNoble() && _target.matches(activeChar.getName()))
 		{

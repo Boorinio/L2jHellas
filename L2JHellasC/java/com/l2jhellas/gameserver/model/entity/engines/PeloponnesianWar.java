@@ -80,7 +80,9 @@ public class PeloponnesianWar
 				if (alaksokolies)
 				{
 					_spartans.add(player);
+					player.OriginalTitle = player.getTitle();
 					player.setTitle("Spartan");
+					player.OriginalColor = player.getAppearance().getNameColor();
 					player.getAppearance().setNameColor(0x0000FF);
 					player.broadcastUserInfo();
 					alaksokolies = false;
@@ -88,7 +90,9 @@ public class PeloponnesianWar
 				else
 				{
 					_athenians.add(player);
+					player.OriginalTitle = player.getTitle();
 					player.setTitle("Athenian");
+					player.OriginalColor = player.getAppearance().getNameColor();
 					player.getAppearance().setNameColor(0xFF0000);
 					player.broadcastUserInfo();
 					alaksokolies = true;
@@ -137,8 +141,8 @@ public class PeloponnesianWar
 		{
 			if (participant.isinZodiac)
 			{
-				participant.setTitle("");
-				participant.getAppearance().setNameColor(0xFFFFFF);
+				participant.setTitle(participant.OriginalTitle);
+				participant.getAppearance().setNameColor(participant.OriginalColor);
 				participant.broadcastUserInfo();
 				participant.teleToLocation(82698, 148638, -3473);
 			}

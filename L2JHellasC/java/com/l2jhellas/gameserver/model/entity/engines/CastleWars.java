@@ -124,16 +124,16 @@ public class CastleWars
 	{
 		for (L2PcInstance defender : _defenders)
 		{
-			defender.getAppearance().setNameColor(0xFFFFFF);
-			defender.setTitle("");
+			defender.getAppearance().setNameColor(defender.OriginalColor);
+			defender.setTitle(defender.OriginalTitle);
 			defender.broadcastUserInfo();
 			defender.teleToLocation(82724, 148307, -3469);
 			defender.isinZodiac = false;
 		}
 		for (L2PcInstance attacker : _attackers)
 		{
-			attacker.getAppearance().setNameColor(0xFFFFFF);
-			attacker.setTitle("");
+			attacker.getAppearance().setNameColor(attacker.OriginalColor);
+			attacker.setTitle(attacker.OriginalTitle);
 			attacker.broadcastUserInfo();
 			attacker.teleToLocation(82724, 148307, -3469);
 			attacker.isinZodiac = false;
@@ -264,7 +264,9 @@ public class CastleWars
 				if (alaksokolies)
 				{
 					_defenders.add(player);
+					player.OriginalColor = player.getAppearance().getNameColor();
 					player.getAppearance().setNameColor(0xFF0000);
+					player.OriginalTitle = player.getTitle();
 					player.setTitle("Defender");
 					player.broadcastUserInfo();
 					alaksokolies = false;
@@ -272,8 +274,10 @@ public class CastleWars
 				else
 				{
 					_attackers.add(player);
+					player.OriginalColor = player.getAppearance().getNameColor();
 					player.getAppearance().setNameColor(0x0000FF);
 					player.setTitle("Attacker");
+					player.OriginalTitle = player.getTitle();
 					player.broadcastUserInfo();
 					alaksokolies = true;
 				}

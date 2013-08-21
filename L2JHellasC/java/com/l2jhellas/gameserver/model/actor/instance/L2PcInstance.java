@@ -409,6 +409,8 @@ public final class L2PcInstance extends L2PlayableInstance
 	public int botx, boty, botz;
 	// Zodiac Engine
 	public boolean isinZodiac = false;
+	public int OriginalColor;
+	public String OriginalTitle;
 	public int ZodiacPoints;
 	public int CountIps;
 	

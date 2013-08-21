@@ -88,6 +88,7 @@ public class ChaosEvent
 			return;
 		}
 		_players.add(player);
+		player.OriginalColor = player.getAppearance().getNameColor();
 		player.isinZodiac = true;
 		player.ZodiacPoints = 0;
 		player.getAppearance().setNameColor(0x000000);
@@ -127,7 +128,7 @@ public class ChaosEvent
 		player.ZodiacPoints = 0;
 		player.isinZodiac = false;
 		player.sendMessage("You have left Chaos Event.");
-		player.getAppearance().setNameColor(0xFFFFFF);
+		player.getAppearance().setNameColor(player.OriginalColor);
 		player.broadcastUserInfo();
 		removeSuperHaste(player);
 	}
@@ -136,10 +137,10 @@ public class ChaosEvent
 	{
 		if (!chaosplayer.isinZodiac)
 		{
-			chaosplayer.sendMessage("You are not in Chaos Event.");
-			return false;
+			chaosplayer.sendMessage("You are not registered in Chaos Event.");
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public static void getTopKiller()

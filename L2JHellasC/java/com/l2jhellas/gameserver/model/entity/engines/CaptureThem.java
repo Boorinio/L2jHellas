@@ -114,7 +114,9 @@ public class CaptureThem
 		for (L2PcInstance players : _players)
 		{
 			players.ZodiacPoints = 0;
+			players.OriginalColor = players.getAppearance().getNameColor();
 			players.getAppearance().setNameColor(0xFF0000);
+			players.OriginalTitle = players.getTitle();
 			players.setTitle("CaptureThem");
 			L2Skill skill;
 			skill = SkillTable.getInstance().getInfo(1323, 1);
@@ -153,8 +155,8 @@ public class CaptureThem
 		}
 		for (L2PcInstance players : _players)
 		{
-			players.getAppearance().setNameColor(0xFFFFFF);
-			players.setTitle("");
+			players.getAppearance().setNameColor(players.OriginalColor);
+			players.setTitle(players.OriginalTitle);
 			players.broadcastUserInfo();
 			players.teleToLocation(82698, 148638, -3473);
 			players.broadcastUserInfo();
