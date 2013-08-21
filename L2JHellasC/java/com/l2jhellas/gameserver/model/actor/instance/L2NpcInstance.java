@@ -770,7 +770,7 @@ public class L2NpcInstance extends L2Character
 			return;
 
 		// Check if the L2PcInstance is a GM
-		if (player.getAccessLevel().isGm())
+		if (Config.ALT_GAME_VIEWNPC && player.getAccessLevel().isGm())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
@@ -836,7 +836,7 @@ public class L2NpcInstance extends L2Character
 			html.setHtml(html1.toString());
 			player.sendPacket(html);
 		}
-		else if (Config.ALT_GAME_VIEWNPC)
+		else
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
@@ -875,9 +875,15 @@ public class L2NpcInstance extends L2Character
 			html1.append("<tr><td>STR</td><td>" + getSTR() + "</td><td>DEX</td><td>" + getDEX() + "</td><td>CON</td><td>" + getCON() + "</td></tr>");
 			html1.append("<tr><td>INT</td><td>" + getINT() + "</td><td>WIT</td><td>" + getWIT() + "</td><td>MEN</td><td>" + getMEN() + "</td></tr>");
 			html1.append("</table>");
+			
+			html1.append("<br><center><table><tr><td><button value=\"Edit NPC\" action=\"bypass -h admin_edit_npc " + getTemplate().npcId + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"><br1></td>");
+			html1.append("<td><button value=\"Kill\" action=\"bypass -h admin_kill\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td><br1></tr>");
+			html1.append("<tr><td><button value=\"Show DropList\" action=\"bypass -h admin_show_droplist " + getTemplate().npcId + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
+			html1.append("<td><button value=\"Delete\" action=\"bypass -h admin_delete\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td></tr>");
+			html1.append("</table></center><br>");
 
-			html1.append("<br><center><font color=\"LEVEL\">[Drop Info]</font></center>");
-			html1.append("Rates legend: <font color=\"ff0000\">50%+</font> <font color=\"00ff00\">30%+</font> <font color=\"0000ff\">less than 30%</font>");
+			html1.append("<center><font color=\"LEVEL\">[Drop Info]</font></center>");
+			html1.append("<br1>Rates legend: <font color=\"33FF77\">50%+</font> <font color=\"33EEEE\">30%+</font> <font color=\"FF0000\">less than 30%</font>");
 			html1.append("<table border=0 width=\"100%\">");
 
 			for (L2DropCategory cat : getTemplate().getDropData())
@@ -886,11 +892,11 @@ public class L2NpcInstance extends L2Character
 					String name = ItemTable.getInstance().getTemplate(drop.getItemId()).getName();
 
 					if (drop.getChance() >= 600000)
-						html1.append("<tr><td><font color=\"ff0000\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
+						html1.append("<tr><td><font color=\"33FF77\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
 					else if (drop.getChance() >= 300000)
-						html1.append("<tr><td><font color=\"00ff00\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
+						html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
 					else
-						html1.append("<tr><td><font color=\"0000ff\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
+						html1.append("<tr><td><font color=\"FF0000\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
 				}
 
 			html1.append("</table>");
