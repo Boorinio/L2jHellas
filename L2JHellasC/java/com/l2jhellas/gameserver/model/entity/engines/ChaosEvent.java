@@ -73,7 +73,6 @@ public class ChaosEvent
 		for (L2PcInstance player : _players)
 		{			
 			player.isinZodiac = false;
-			player.hasVoted = false;
 			player.ZodiacPoints = 0;
 			_topkills = 0;
 			_topplayer = null;
@@ -127,7 +126,6 @@ public class ChaosEvent
 		_players.remove(player);
 		player.ZodiacPoints = 0;
 		player.isinZodiac = false;
-		player.hasVoted = false;
 		player.sendMessage("You have left Chaos Event.");
 		player.getAppearance().setNameColor(0xFFFFFF);
 		player.broadcastUserInfo();

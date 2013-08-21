@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
@@ -37,6 +36,7 @@ public class ZodiacMain
 	public static List<String> Ips = new ArrayList<String>();
 	public static boolean ZodiacRegisterActive;
 	public static int i, max;
+	public static List<String> VotedPlayers = new ArrayList<String>();;
 	
 	public static int[] count =
 	{
@@ -140,7 +140,7 @@ public class ZodiacMain
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-	
+
 	public static void showFinalWindow(L2PcInstance player)
 	{
 		
@@ -172,64 +172,29 @@ public class ZodiacMain
 		{
 			count[i] = 0;
 		}
+		ClearVotedPlayers();
 		waitSecs(Config.BETWEEN_EVENTS * 60);
 		startVoting();
 	}
 	
-	public static void OnBypass(String _command, L2PcInstance activeChar)
+	public static void AddVotedPlayer(L2PcInstance player)
 	{
-		if(activeChar==null)
-			return;
+		if(player != null)
+	         VotedPlayers.add(player.getName());
+	}
+	
+	public static boolean HasVoted(L2PcInstance player)
+	{
+		if(player!=null && VotedPlayers.contains(player.getName()))
+			return true;
 		
-		if(activeChar.hasVoted)
-		{
-			activeChar.sendMessage("You can't vote twice!!");
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		if (_command.startsWith("PeloponnesianWar"))
-		{
-			activeChar.sendMessage("You have voted for PeloponnesianWar!");
-			count[0]++;
-			showFinalWindow(activeChar);
-			activeChar.hasVoted = true;
-		}
-		if (_command.startsWith("CaptureThem"))
-		{
-			activeChar.sendMessage("You have voted for CaptureThem!");
-			count[1]++;
-			showFinalWindow(activeChar);
-			activeChar.hasVoted = true;
-		}
-		if (_command.startsWith("CastleWars"))
-		{
-			activeChar.sendMessage("You have voted for CastleWars!");
-			count[2]++;
-			showFinalWindow(activeChar);
-			activeChar.hasVoted = true;
-		}
-		if (_command.startsWith("ProtectTheLdr"))
-		{
-			activeChar.sendMessage("You have voted for ProtectTheLeader!");
-			count[3]++;
-			showFinalWindow(activeChar);
-			activeChar.hasVoted = true;
-		}
-		if (_command.startsWith("TreasureChest"))
-		{
-			activeChar.sendMessage("You have voted for TreasureChest!");
-			count[4]++;
-			showFinalWindow(activeChar);
-			activeChar.hasVoted = true;
-		}
-		if (_command.startsWith("ChaosEvent"))
-		{
-			activeChar.sendMessage("You have voted for Chaos Event!");
-			count[5]++;
-			showFinalWindow(activeChar);
-			activeChar.hasVoted = true;
-		}
-		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+	    return false;
+	}
+	
+	public static void ClearVotedPlayers()
+	{
+		if(VotedPlayers.size() > 0)
+		   VotedPlayers.clear();
 	}
 	
 	public static void OnDeath(L2PcInstance player, L2PcInstance killer)

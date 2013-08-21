@@ -408,7 +408,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	public boolean PassedProt;
 	public int botx, boty, botz;
 	// Zodiac Engine
-	public boolean hasVoted = false;
 	public boolean isinZodiac = false;
 	public int ZodiacPoints;
 	public int CountIps;
@@ -14108,8 +14107,8 @@ public final class L2PcInstance extends L2PlayableInstance
 			this.setDonator(false);
 		}
 		
-		if (ZodiacMain.voting && hasVoted == false)
-			ZodiacMain.showHtmlWindow(this);
+		if (ZodiacMain.voting && !ZodiacMain.HasVoted(this))
+ 			ZodiacMain.showHtmlWindow(this);
 		
 		if (Config.SHOW_HTML_GM_WELCOME && (this.getAccessLevel().getLevel() > 0 || this.isGM()))
 		{

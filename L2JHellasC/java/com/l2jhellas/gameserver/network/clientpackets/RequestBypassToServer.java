@@ -124,10 +124,48 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				playerHelp(activeChar, _command.substring(12));
 			}
-			if(ZodiacMain.voting)
+			else if (ZodiacMain.voting && _command.startsWith("PeloponnesianWar"))
 			{
-				ZodiacMain.OnBypass(_command,activeChar);
+				activeChar.sendMessage("You have voted for PeloponnesianWar!");
+				ZodiacMain.count[0]++;
+				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.AddVotedPlayer(activeChar);
 			}
+			else if (ZodiacMain.voting && _command.startsWith("CaptureThem"))
+			{
+				activeChar.sendMessage("You have voted for CaptureThem!");
+				ZodiacMain.count[1]++;
+				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.AddVotedPlayer(activeChar);
+			}
+			else if (ZodiacMain.voting && _command.startsWith("CastleWars"))
+			{
+				activeChar.sendMessage("You have voted for CastleWars!");
+				ZodiacMain.count[2]++;
+				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.AddVotedPlayer(activeChar);
+			}
+			else if(ZodiacMain.voting && _command.startsWith("ProtectTheLdr"))
+			{
+				activeChar.sendMessage("You have voted for ProtectTheLeader!");
+				ZodiacMain.count[3]++;
+				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.AddVotedPlayer(activeChar);
+			}
+			else if (ZodiacMain.voting && _command.startsWith("TreasureChest"))
+			{
+				activeChar.sendMessage("You have voted for TreasureChest!");
+				ZodiacMain.count[4]++;
+				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.AddVotedPlayer(activeChar);
+			}
+			else if (ZodiacMain.voting && _command.startsWith("ChaosEvent"))
+			{
+				activeChar.sendMessage("You have voted for Chaos Event!");
+				ZodiacMain.count[5]++;
+				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.AddVotedPlayer(activeChar);
+			}		
 			else if (_command.startsWith("sendMsg"))
 			{ // Message System By Pauler
 

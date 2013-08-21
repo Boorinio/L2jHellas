@@ -103,7 +103,6 @@ public class ProtectTheLdr
 			member.setTitle("");
 			member.broadcastUserInfo();
 			member.isinZodiac = false;
-			member.hasVoted = false;
 			member.teleToLocation(82743, 148219, -3470);	
 		}
 		for (L2PcInstance member : _Team2)
@@ -112,7 +111,6 @@ public class ProtectTheLdr
 			member.setTitle("");
 			member.broadcastUserInfo();
 			member.isinZodiac = false;
-			member.hasVoted = false;
 			member.teleToLocation(82743, 148219, -3470);
 		}
 		for (L2NpcInstance leader : _leaders)

@@ -94,13 +94,6 @@ public class CaptureThem
 			StartEvent();
 		else
 		{
-			for (L2PcInstance players : L2World.getAllPlayers())
-			{
-				if(players == null)
-					return;
-				
-				players.hasVoted = false;
-			}
 			Announcements.getInstance().announceToAll("The event was canceled due to lack of players!");
 			CaptureThemRunning = false;
 		}
@@ -167,7 +160,6 @@ public class CaptureThem
 			players.broadcastUserInfo();
 			players.isinZodiac = false;
 			players.sendMessage("The Event is officially finished!");
-			players.hasVoted = false;
 		}
 		for (L2NpcInstance flags : _flags)
 		{
