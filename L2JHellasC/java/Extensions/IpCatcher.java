@@ -96,17 +96,19 @@ public class IpCatcher
 	// make textfile if not exist
 	public static void MkTiNe()
 	{
-		if (file == null)
-			try
-			{
-				file.createNewFile();
-			}
-			catch (IOException e)
-			{
-				System.err.print("could not create new file:" + file);
-				if(Config.DEVELOPER)
-					e.printStackTrace();
-			}
+		try
+		{
+			File file = new File(Config.DATAPACK_ROOT, "data/ips.txt");
+			boolean exist = file.createNewFile();
+			if (!exist)
+				return;
+		}
+		catch (IOException e)
+		{
+			System.err.print("could not create new file:" + file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
+		}
 	}
 	
 	public void addIp(L2PcInstance p)
@@ -139,7 +141,9 @@ public class IpCatcher
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			System.err.print("could not add ip in:" + file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		ipsLoad();
 	}
@@ -173,17 +177,19 @@ public class IpCatcher
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			System.err.print("could not remove ip new file:" + file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		ipsLoad();
 	}
 	
 	public static void ipsLoad()
 	{
-		MkTiNe();
 		LineNumberReader l = null;
 		try
 		{
+			MkTiNe();
 			String line = null;
 			l = new LineNumberReader(new FileReader(file));
 			while ((line = l.readLine()) != null)
@@ -198,7 +204,9 @@ public class IpCatcher
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.err.print("could not load ips from file:" + file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		finally
 		{
