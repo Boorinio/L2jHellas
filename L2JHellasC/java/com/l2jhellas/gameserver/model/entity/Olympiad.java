@@ -374,7 +374,7 @@ public class Olympiad
 			@Override
 			public void run()
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.OLYMPIAD_PERIOD_S1_HAS_ENDED);
+				SystemMessage sm = new SystemMessage(SystemMessageId.OLYMPIAD_PERIOD_S1_HAS_ENDED);
 				sm.addNumber(_currentCycle);
 
 				Announcements.getInstance().announceToAll(sm);
@@ -444,7 +444,7 @@ public class Olympiad
 
 		if (!_inCompPeriod)
 		{
-			sm = SystemMessage.getSystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
+			sm = new SystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
 			noble.sendPacket(sm);
 			return false;
 		}
@@ -457,14 +457,14 @@ public class Olympiad
 
 		if (!noble.isNoble())
 		{
-			sm = SystemMessage.getSystemMessage(SystemMessageId.ONLY_NOBLESS_CAN_PARTICIPATE_IN_THE_OLYMPIAD);
+			sm = new SystemMessage(SystemMessageId.ONLY_NOBLESS_CAN_PARTICIPATE_IN_THE_OLYMPIAD);
 			noble.sendPacket(sm);
 			return false;
 		}
 
 		if (noble.getBaseClass() != noble.getClassId().getId())
 		{
-			sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CANT_JOIN_THE_OLYMPIAD_WITH_A_SUB_JOB_CHARACTER);
+			sm = new SystemMessage(SystemMessageId.YOU_CANT_JOIN_THE_OLYMPIAD_WITH_A_SUB_JOB_CHARACTER);
 			noble.sendPacket(sm);
 			return false;
 		}
@@ -488,7 +488,7 @@ public class Olympiad
 			{
 				if (partecipant.getObjectId() == noble.getObjectId())
 				{
-					sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_TO_PARTICIPATE_IN_THE_GAME_FOR_YOUR_CLASS);
+					sm = new SystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_TO_PARTICIPATE_IN_THE_GAME_FOR_YOUR_CLASS);
 					noble.sendPacket(sm);
 					return false;
 				}
@@ -499,7 +499,7 @@ public class Olympiad
 		{
 			if (partecipant.getObjectId() == noble.getObjectId())
 			{
-				sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_FOR_ALL_CLASSES_WAITING_TO_PARTICIPATE_IN_THE_GAME);
+				sm = new SystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_FOR_ALL_CLASSES_WAITING_TO_PARTICIPATE_IN_THE_GAME);
 				noble.sendPacket(sm);
 				return false;
 			}
@@ -521,7 +521,7 @@ public class Olympiad
 				_classBasedRegisters.remove(noble.getClassId().getId());
 				_classBasedRegisters.put(noble.getClassId().getId(), classed);
 
-				sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_CLASSIFIED_GAMES);
+				sm = new SystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_CLASSIFIED_GAMES);
 				noble.sendPacket(sm);
 			}
 			else
@@ -531,7 +531,7 @@ public class Olympiad
 
 				_classBasedRegisters.put(noble.getClassId().getId(), classed);
 
-				sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_CLASSIFIED_GAMES);
+				sm = new SystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_CLASSIFIED_GAMES);
 				noble.sendPacket(sm);
 
 			}
@@ -539,7 +539,7 @@ public class Olympiad
 		else
 		{
 			_nonClassBasedRegisters.add(noble);
-			sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_NO_CLASS_GAMES);
+			sm = new SystemMessage(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_NO_CLASS_GAMES);
 			noble.sendPacket(sm);
 		}
 
@@ -582,14 +582,14 @@ public class Olympiad
 
 		if (!_inCompPeriod)
 		{
-			sm = SystemMessage.getSystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
+			sm = new SystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
 			noble.sendPacket(sm);
 			return false;
 		}
 
 		if (!noble.isNoble())
 		{
-			sm = SystemMessage.getSystemMessage(SystemMessageId.ONLY_NOBLESS_CAN_PARTICIPATE_IN_THE_OLYMPIAD);
+			sm = new SystemMessage(SystemMessageId.ONLY_NOBLESS_CAN_PARTICIPATE_IN_THE_OLYMPIAD);
 			noble.sendPacket(sm);
 			return false;
 		}
@@ -602,7 +602,7 @@ public class Olympiad
 
 		if (!isRegistered(noble))
 		{
-			sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_NOT_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_A_GAME);
+			sm = new SystemMessage(SystemMessageId.YOU_HAVE_NOT_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_A_GAME);
 			noble.sendPacket(sm);
 			return false;
 		}
@@ -618,7 +618,7 @@ public class Olympiad
 			_classBasedRegisters.put(noble.getClassId().getId(), classed);
 		}
 
-		sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
+		sm = new SystemMessage(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
 		noble.sendPacket(sm);
 
 		return true;
@@ -655,7 +655,7 @@ public class Olympiad
 				_inCompPeriod = true;
 				OlympiadManager om = new OlympiadManager();
 
-				Announcements.getInstance().announceToAll(SystemMessage.getSystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_HAS_STARTED));
+				Announcements.getInstance().announceToAll(new SystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_HAS_STARTED));
 
 				_scheduledManagerTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(om, INITIAL_WAIT, BATTLE_WAIT);
 				_scheduledCompEnd = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
@@ -667,7 +667,7 @@ public class Olympiad
 							return;
 						_scheduledManagerTask.cancel(true);
 						_inCompPeriod = false;
-						Announcements.getInstance().announceToAll(SystemMessage.getSystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_HAS_ENDED));
+						Announcements.getInstance().announceToAll(new SystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_HAS_ENDED));
 						_log.info("Olympiad System: Olympiad Game Ended");
 
 						try
@@ -699,7 +699,7 @@ public class Olympiad
 
 	public void manualSelectHeroes()
 	{
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.OLYMPIAD_PERIOD_S1_HAS_ENDED);
+		SystemMessage sm = new SystemMessage(SystemMessageId.OLYMPIAD_PERIOD_S1_HAS_ENDED);
 		sm.addNumber(_currentCycle);
 
 		Announcements.getInstance().announceToAll(sm);
@@ -768,7 +768,7 @@ public class Olympiad
 
 	protected void setNewOlympiadEnd()
 	{
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.OLYMPIAD_PERIOD_S1_HAS_STARTED);
+		SystemMessage sm = new SystemMessage(SystemMessageId.OLYMPIAD_PERIOD_S1_HAS_STARTED);
 		sm.addNumber(_currentCycle);
 
 		Announcements.getInstance().announceToAll(sm);
@@ -883,7 +883,7 @@ public class Olympiad
 		}
 		if (_manager == null || (_manager.getOlympiadInstance(id) == null) || !_battleStarted)
 		{
-			spectator.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS));
+			spectator.sendPacket(new SystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS));
 			return;
 		}
 
@@ -1676,20 +1676,20 @@ public class Olympiad
 							SystemMessage sm = null;
 							if (unequiped[0].getEnchantLevel() > 0)
 							{
-								sm = SystemMessage.getSystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
+								sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
 								sm.addNumber(unequiped[0].getEnchantLevel());
 								sm.addItemName(unequiped[0].getItemId());
 							}
 							else
 							{
-								sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
+								sm = new SystemMessage(SystemMessageId.S1_DISARMED);
 								sm.addItemName(unequiped[0].getItemId());
 							}
 							player.sendPacket(sm);
 						}
 					}
 
-					_sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
+					_sm = new SystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
 					_sm.addNumber(120);
 					broadcastMessage(_sm, false);
 					player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -1813,9 +1813,9 @@ public class Olympiad
 		protected void sendMessageToPlayers(boolean toBattleBegin, int nsecond)
 		{
 			if (!toBattleBegin)
-				_sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_WILL_ENTER_THE_OLYMPIAD_STADIUM_IN_S1_SECOND_S);
+				_sm = new SystemMessage(SystemMessageId.YOU_WILL_ENTER_THE_OLYMPIAD_STADIUM_IN_S1_SECOND_S);
 			else
-				_sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
+				_sm = new SystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
 
 			_sm.addNumber(nsecond);
 			try
@@ -1940,9 +1940,9 @@ public class Olympiad
 				hpDiffTwo = 9999999;
 			}
 
-			_sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME);
-			_sm2 = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_GAINED_S2_OLYMPIAD_POINTS);
-			_sm3 = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_LOST_S2_OLYMPIAD_POINTS);
+			_sm = new SystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME);
+			_sm2 = new SystemMessage(SystemMessageId.S1_HAS_GAINED_S2_OLYMPIAD_POINTS);
+			_sm3 = new SystemMessage(SystemMessageId.S1_HAS_LOST_S2_OLYMPIAD_POINTS);
 
 			String result = "";
 
@@ -1961,7 +1961,7 @@ public class Olympiad
 				String gmBroadcastMsg = "";
 				gmBroadcastMsg = "Olympiad: Match from same IP! ( " + ip1 + " )";
 				result = " tie";
-				_sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
+				_sm = new SystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
 				broadcastMessage(_sm, true);
 				_playerOne.sendMessage("Match suspected of Illegal Violation: GM informed!");
 				_playerTwo.sendMessage("Match suspected of Illegal Violation: GM informed!");
@@ -1994,7 +1994,7 @@ public class Olympiad
 						iu.addModifiedItem(item);
 						_playerOne.sendPacket(iu);
 
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
+						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 						sm.addItemName(item.getItemId());
 						sm.addNumber(30);
 						_playerOne.sendPacket(sm);
@@ -2029,7 +2029,7 @@ public class Olympiad
 						iu.addModifiedItem(item);
 						_playerTwo.sendPacket(iu);
 
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
+						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
 						sm.addItemName(item.getItemId());
 						sm.addNumber(30);
 						_playerTwo.sendPacket(sm);
@@ -2041,7 +2041,7 @@ public class Olympiad
 				else
 				{
 					result = " tie";
-					_sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
+					_sm = new SystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
 					broadcastMessage(_sm, true);
 				}
 				_log.log(Level.INFO, " Result: " + _playerOneName + " vs " + _playerTwoName + " ... " + result);
@@ -2055,7 +2055,7 @@ public class Olympiad
 				_nobles.put(_playerOneID, playerOneStat);
 				_nobles.put(_playerTwoID, playerTwoStat);
 
-				_sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_WILL_BE_MOVED_TO_TOWN_IN_S1_SECONDS);
+				_sm = new SystemMessage(SystemMessageId.YOU_WILL_GO_BACK_TO_THE_VILLAGE_IN_S1_SECOND_S);
 				_sm.addNumber(20);
 				broadcastMessage(_sm, true);
 			}
@@ -2079,7 +2079,7 @@ public class Olympiad
 
 					skill = SkillTable.getInstance().getInfo(1204, 2);
 					skill.getEffects(player, player);
-					sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+					sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 					sm.addSkillName(1204);
 					player.sendPacket(sm);
 
@@ -2088,7 +2088,7 @@ public class Olympiad
 						// Haste Buff to Fighters
 						skill = SkillTable.getInstance().getInfo(1086, 1);
 						skill.getEffects(player, player);
-						sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(1086);
 						player.sendPacket(sm);
 
@@ -2098,7 +2098,7 @@ public class Olympiad
 						// Acumen Buff to Mages
 						skill = SkillTable.getInstance().getInfo(1085, 1);
 						skill.getEffects(player, player);
-						sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(1085);
 						player.sendPacket(sm);
 					}
@@ -2118,7 +2118,7 @@ public class Olympiad
 				return false;
 			}
 
-			_sm = SystemMessage.getSystemMessage(SystemMessageId.STARTS_THE_GAME);
+			_sm = new SystemMessage(SystemMessageId.STARTS_THE_GAME);
 
 			try
 			{
@@ -2242,7 +2242,7 @@ public class Olympiad
 		final int lostPoints = playerPoints / 3;
 		playerStat.set(POINTS, playerPoints - lostPoints);
 		updateNobleStats(charId, playerStat);
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.NO_OBSERVE_WITH_PET);
+		SystemMessage sm = new SystemMessage(SystemMessageId.C1_HAS_LOST_S2_OLYMPIAD_POINTS);
 		sm.addString(p.getName());
 		sm.addNumber(lostPoints);
 		_opponent.sendPacket(sm);
