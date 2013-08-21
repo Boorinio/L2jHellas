@@ -280,7 +280,7 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 
 			html.setHtml(sb.toString());
 			player.sendPacket(html);
-
+		
 			if (!Config.ALLOW_ARCHERS_WEAR_HEAVY)
 			{
 				/** @formatter:off */
@@ -331,9 +331,8 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 					}
 				}
 			}
-			
-			if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel == 3  && !player.isSubClassActive())
-	            autoEquip(player);
+			if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel == 4 && !player.isSubClassActive())
+	              autoEquip(player);
 		}
 		else
 		{
