@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -35,7 +36,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class IpCatcher
 {
 	public static FastList<String> ips = new FastList<>();
-	static File file = new File("data/ips.txt");
+	static File file = new File(Config.DATAPACK_ROOT, "data/ips.txt");
 	
 	public String getMacAddr(L2PcInstance p)
 	{
@@ -68,9 +69,7 @@ public class IpCatcher
 			}
 			catch (SocketException e)
 			{
-				
 				e.printStackTrace();
-				
 			}
 			catch (UnknownHostException e)
 			{
@@ -98,7 +97,16 @@ public class IpCatcher
 	public static void MkTiNe()
 	{
 		if (file == null)
-			file.mkdirs();
+			try
+			{
+				file.createNewFile();
+			}
+			catch (IOException e)
+			{
+				System.err.print("could not create new file:" + file);
+				if(Config.DEVELOPER)
+					e.printStackTrace();
+			}
 	}
 	
 	public void addIp(L2PcInstance p)
