@@ -15,15 +15,19 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.Vector;
+import java.util.concurrent.ScheduledFuture;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
@@ -37,6 +41,7 @@ public class ChaosEvent
 	public static L2PcInstance _topplayer, _topplayer2, _topplayer3, _topplayer4, _topplayer5;
 	public static int _topkills = 0, _topkills2 = 0, _topkills3 = 0, _topkills4 = 0, _topkills5 = 0;
 	public static boolean _isChaosActive;
+	private final static int seconds = 120;
 	
 	public static void stopChaos()
 	{
@@ -68,6 +73,7 @@ public class ChaosEvent
 		for (L2PcInstance player : _players)
 		{			
 			player.isinZodiac = false;
+			player.hasVoted = false;
 			player.ZodiacPoints = 0;
 			_topkills = 0;
 			_topplayer = null;
@@ -95,7 +101,7 @@ public class ChaosEvent
 	{
 		if(player == null)
 			return;
-		L2Skill skill = SkillTable.getInstance().getInfo(7029, 4);
+		final L2Skill skill = SkillTable.getInstance().getInfo(7029, 4);
 		if (skill != null)
 		{
 			skill.getEffects(player, player);
@@ -121,6 +127,7 @@ public class ChaosEvent
 		_players.remove(player);
 		player.ZodiacPoints = 0;
 		player.isinZodiac = false;
+		player.hasVoted = false;
 		player.sendMessage("You have left Chaos Event.");
 		player.getAppearance().setNameColor(0xFFFFFF);
 		player.broadcastUserInfo();
@@ -222,6 +229,7 @@ public class ChaosEvent
 		Announcements.getInstance().announceToAll("Type .join to join and .leave to leave!");
 		Announcements.getInstance().announceToAll("You have 5 minutes until the event is finished!");
 		_isChaosActive = true;
+		StartcheckBoss();
 		for (L2PcInstance player : L2World.getAllPlayers())
 		{
 			String html = HtmCache.getInstance().getHtm("data/html/zodiac/ChaosTuto.htm");
@@ -252,4 +260,64 @@ public class ChaosEvent
 		if (killer.isinZodiac)
 			killer.ZodiacPoints++;
 	}
+	
+    private static ScheduledFuture<?> _BossChecker;
+   	
+    static class checkBossZone implements Runnable
+     {
+
+		@Override
+		public void run()
+		{     
+			
+			if(_isChaosActive)
+			{
+			try
+			{
+			  for(L2PcInstance player: _players)
+			  {
+					
+				if(player==null)
+					continue;
+				
+				for (L2BossZone zone : GrandBossManager.getInstance().getZones())
+				{
+					if(player.isinZodiac && zone.isCharacterInZone(player));
+					{
+					   zone.removePlayer(player);
+					   player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+					}											
+				}
+			  }
+			  
+			}
+			catch (Exception e)
+			{
+				if (Config.DEVELOPER)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			StartcheckBoss();
+			
+			}
+			else
+				stopcheckBoss();
+		
+			
+     }
+     }
+     
+     static void stopcheckBoss()
+     {
+  	   if(_BossChecker!=null)
+  		 _BossChecker.cancel(true);
+  	 _BossChecker = null;
+     }
+     
+     static void StartcheckBoss()
+     {
+    	 _BossChecker = ThreadPoolManager.getInstance().scheduleGeneral(new checkBossZone(), seconds* 1000);	
+     }
 }

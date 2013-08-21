@@ -143,6 +143,7 @@ public class PeloponnesianWar
 				participant.teleToLocation(82698, 148638, -3473);
 			}
 			participant.isinZodiac = false;
+			participant.hasVoted = false;
 		}
 		for (L2NpcInstance protectors : _protectors)
 		{

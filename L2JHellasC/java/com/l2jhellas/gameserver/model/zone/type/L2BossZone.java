@@ -120,6 +120,11 @@ public class L2BossZone extends L2ZoneType
 					return;
 				}
 				
+				if(!player.isGM() && player.isinZodiac)
+				{
+					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+					return;
+				}
                 // Ignore the check for Van Halter zone id 12014 if player got marks
                 if (getId() == 12014)
                 {

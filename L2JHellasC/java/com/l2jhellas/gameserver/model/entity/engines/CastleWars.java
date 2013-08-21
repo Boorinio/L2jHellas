@@ -129,6 +129,7 @@ public class CastleWars
 			defender.broadcastUserInfo();
 			defender.teleToLocation(82724, 148307, -3469);
 			defender.isinZodiac = false;
+			defender.hasVoted = false;
 		}
 		for (L2PcInstance attacker : _attackers)
 		{
@@ -137,6 +138,7 @@ public class CastleWars
 			attacker.broadcastUserInfo();
 			attacker.teleToLocation(82724, 148307, -3469);
 			attacker.isinZodiac = false;
+			attacker.hasVoted = false;
 		}
 		for (L2NpcInstance flags : _flags)
 		{

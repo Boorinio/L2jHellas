@@ -848,7 +848,7 @@ public abstract class L2Character extends L2Object
 		// Check if hit isn't missed
 		if (!hitted)
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.MISSED_TARGET));
+			this.sendPacket(new SystemMessage(SystemMessageId.MISSED_TARGET));
 			// Abort the attack of the L2Character and send Server->Client ActionFailed packet
 			abortAttack();
 		}
