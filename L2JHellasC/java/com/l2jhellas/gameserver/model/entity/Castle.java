@@ -440,7 +440,10 @@ public class Castle
 
 				_taxPercent = rs.getInt("taxPercent");
 				_treasury = rs.getInt("treasury");
-				_showNpcCrest = rs.getBoolean("showNpcCrest");
+				int showNpcCrest = rs.getInt("showNpcCrest");
+				if (showNpcCrest == 1)
+					_showNpcCrest = true;
+				
 			}
 
 			statement.close();

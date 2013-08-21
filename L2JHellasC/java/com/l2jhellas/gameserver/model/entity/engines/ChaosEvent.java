@@ -217,6 +217,7 @@ public class ChaosEvent
 				if ((e != null) && (e.getSkill().getId() == 7029))
 				{
 					e.exit();
+					break;
 				}
 			}
 		}

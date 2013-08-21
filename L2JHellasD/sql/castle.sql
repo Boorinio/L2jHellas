@@ -12,7 +12,7 @@ CREATE TABLE `castle` (
   `siegeDate` decimal(20,0) NOT NULL DEFAULT '0',
   `siegeDayOfWeek` int(11) NOT NULL DEFAULT '7',
   `siegeHourOfDay` int(11) NOT NULL DEFAULT '20',
-  `showNpcCrest` enum('true','false') NOT NULL DEFAULT 'false',
+  `showNpcCrest` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`name`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

@@ -189,10 +189,9 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			newChar.setTitle(Config.ADD_CHAR_TITLE);
 		}
-
 		if (Config.PVP_PK_TITLE)
 		{
-			newChar.setTitle(Config.PVP_TITLE_PREFIX + "0" + Config.PK_TITLE_PREFIX + "0 ");
+			newChar.setTitle(Config.PVP_TITLE_PREFIX + "0" +" | "+ Config.PK_TITLE_PREFIX + "0 ");
 		}
 		L2ShortCut shortcut;
 		// add attack shortcut

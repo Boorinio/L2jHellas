@@ -13472,7 +13472,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void updateTitle()
 	{
-		this.setTitle(Config.PVP_TITLE_PREFIX + getPvpKills() + Config.PK_TITLE_PREFIX + getPkKills() + " ");
+		this.setTitle(Config.PVP_TITLE_PREFIX + getPvpKills() +" | "+ Config.PK_TITLE_PREFIX + getPkKills() + " ");
 	}
 	
 	private class PunishTask implements Runnable
