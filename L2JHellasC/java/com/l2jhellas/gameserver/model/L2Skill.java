@@ -70,6 +70,7 @@ public abstract class L2Skill
 	public static final int SKILL_FAKE_DEX = 9005;
 	public static final int SKILL_FAKE_STR = 9006;
 
+
 	public static enum SkillOpType
 	{
 		OP_PASSIVE, OP_ACTIVE, OP_TOGGLE, OP_CHANCE
@@ -2194,25 +2195,6 @@ public abstract class L2Skill
 		
 		if ((effector != effected) && effected.isInvul())
 			return _emptyEffectSet;
-		
-		final L2Skill skill = SkillTable.getInstance().getInfo(this.getId(), this.getLevel());				
-
-		if(skill.getSkillType() == L2SkillType.BUFF && effected instanceof L2PcInstance)
-		{
-			final L2Effect[] effectss = effected.getAllEffects();
-
-			for (L2Effect e : effectss)
-			{
-				if (e != null && skill != null)
-				{
-					if (e.getSkill().getId() == skill.getId())
-					{
-					   e.exit();		
-					   e.onStart();
-					}
-				}		
-		      }
-		}
 			
 		List<L2Effect> effects = new FastList<L2Effect>();
 
@@ -2230,7 +2212,10 @@ public abstract class L2Skill
 			env.skillMastery = skillMastery;
 			L2Effect e = et.getEffect(env);
 			if (e != null)
+			{
+				e.scheduleEffect();
 				effects.add(e);
+			}
 		}
 
 		if (effects.isEmpty())
@@ -2280,10 +2265,16 @@ public abstract class L2Skill
 						}
 					}
 					else
+					{
+						e.scheduleEffect();
 						effects.add(e);
+					}
 				}
 				else
+				{
+					e.scheduleEffect();
 					effects.add(e);
+				}
 			}
 		}
 		if (effects.isEmpty())

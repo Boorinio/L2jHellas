@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -25,6 +26,7 @@ import javolution.util.FastList;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadSpelledInfo;
 import com.l2jhellas.gameserver.network.serverpackets.MagicEffectIcons;
@@ -134,25 +136,14 @@ public abstract class L2Effect
 
 	public final class EffectTask implements Runnable
 	{
-		protected final int _delay;
-		protected final int _rate;
-
-		EffectTask(int pDelay, int pRate)
-		{
-			_delay = pDelay;
-			_rate = pRate;
-		}
-
 		@Override
 		public void run()
 		{
 			try
 			{
-				if (getPeriodfirsttime() == 0)
-					setPeriodStartTicks(GameTimeController.getGameTicks());
-				else
-					setPeriodfirsttime(0);
-				L2Effect.this.scheduleEffect();
+				setPeriodfirsttime(0);
+				setPeriodStartTicks(GameTimeController.getGameTicks());
+				scheduleEffect();
 			}
 			catch (Throwable e)
 			{
@@ -184,6 +175,11 @@ public abstract class L2Effect
 		_funcTemplates = template.funcTemplates;
 		_count = template.counter;
 		_totalCount = _count;
+		if ((_skill.getId() > 2277 && _skill.getId() < 2286) || (_skill.getId() >= 2512 && _skill.getId() <= 2514))
+		{
+			if (_effected instanceof L2SummonInstance || (_effected instanceof L2PcInstance && ((L2PcInstance) _effected).getPet() != null))
+				template.period /= 2;
+		}
 		if (env.skillMastery)
 			template.period *= 2;
 		_period = template.period;
@@ -192,7 +188,6 @@ public abstract class L2Effect
 		_stackOrder = template.stackOrder;
 		_periodStartTicks = GameTimeController.getGameTicks();
 		_periodfirsttime = 0;
-		scheduleEffect();
 	}
 
 	public int getCount()
@@ -207,23 +202,13 @@ public abstract class L2Effect
 
 	public void setCount(int newcount)
 	{
-		_count = newcount;
+		_count = Math.min(newcount, _totalCount);
 	}
 
 	public void setFirstTime(int newfirsttime)
 	{
-		if (_currentFuture != null)
-		{
-			_periodStartTicks = GameTimeController.getGameTicks() - newfirsttime * GameTimeController.TICKS_PER_SECOND;
-			_currentFuture.cancel(false);
-			_currentFuture = null;
-			_currentTask = null;
-			_periodfirsttime = newfirsttime;
-			int duration = _period - _periodfirsttime;
-			//_log.warning("Period: "+_period+"-"+_periodfirsttime+"="+duration);
-			_currentTask = new EffectTask(duration * 1000, -1);
-			_currentFuture = ThreadPoolManager.getInstance().scheduleEffect(_currentTask, duration * 1000);
-		}
+		_periodfirsttime = Math.min(newfirsttime, _period);
+		_periodStartTicks -= _periodfirsttime * GameTimeController.TICKS_PER_SECOND;
 	}
 
 	public int getPeriod()
@@ -253,13 +238,15 @@ public abstract class L2Effect
 		return _inUse;
 	}
 
-	public void setInUse(boolean inUse)
+	public boolean setInUse(boolean inUse)
 	{
 		_inUse = inUse;
 		if (_inUse)
 			_startConditionsCorrect = onStart();
 		else
 			onExit();
+		
+		return _startConditionsCorrect;
 	}
 
 	public String getStackType()
@@ -308,23 +295,25 @@ public abstract class L2Effect
 		env.skill = _skill;
 		return _lambda.calc(env);
 	}
-
-	private synchronized void startEffectTask(int duration)
+	
+	private final synchronized void startEffectTask()
 	{
-		stopEffectTask();
-		_currentTask = new EffectTask(duration, -1);
-		_currentFuture = ThreadPoolManager.getInstance().scheduleEffect(_currentTask, duration);
+		if (_period > 0)
+		{
+			stopEffectTask();
+			final int initialDelay = Math.max((_period - _periodfirsttime) * 1000, 5);
+			if (_count > 1)
+				_currentFuture = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new EffectTask(), initialDelay, _period * 1000);
+			else
+				_currentFuture = ThreadPoolManager.getInstance().scheduleEffect(new EffectTask(), initialDelay);
+		}
 		if (_state == EffectState.ACTING)
-			_effected.addEffect(this);
-	}
-
-	private synchronized void startEffectTaskAtFixedRate(int delay, int rate)
-	{
-		stopEffectTask();
-		_currentTask = new EffectTask(delay, rate);
-		_currentFuture = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(_currentTask, delay, rate);
-		if (_state == EffectState.ACTING)
-			_effected.addEffect(this);
+		{
+			if (isSelfEffect())
+				_effector.addEffect(this);
+			else
+				_effected.addEffect(this);
+		}
 	}
 
 	/**
@@ -360,17 +349,15 @@ public abstract class L2Effect
 		// Cancel the task
 		if (_currentFuture != null)
 		{
-			if (!_currentFuture.isCancelled())
-				_currentFuture.cancel(false);
-
+			_currentFuture.cancel(false);
 			_currentFuture = null;
 			_currentTask = null;
 
 			// To avoid possible NPE caused by player crash
-			if (_effected != null)
-				_effected.removeEffect(this);
-			else
-				_log.warning("Effected is null for skill " + _skill.getId() + " on effect " + getEffectType());
+			if (isSelfEffect() && getEffector() != null)
+				getEffector().removeEffect(this);
+			else if (getEffected() != null)
+				getEffected().removeEffect(this);
 		}
 	}
 
@@ -401,19 +388,12 @@ public abstract class L2Effect
 	public final void rescheduleEffect()
 	{
 		if (_state != EffectState.ACTING)
-		{
 			scheduleEffect();
-		}
 		else
 		{
-			if (_count > 1)
+			if (_period != 0)
 			{
-				startEffectTaskAtFixedRate(5, _period * 1000);
-				return;
-			}
-			if (_period > 0)
-			{
-				startEffectTask(_period * 1000);
+				startEffectTask();
 				return;
 			}
 		}
@@ -421,65 +401,65 @@ public abstract class L2Effect
 
 	public final void scheduleEffect()
 	{
-		if (_state == EffectState.CREATED)
+		switch (_state)
 		{
-			_state = EffectState.ACTING;
-
-			if (_skill.isPvpSkill() && getEffected() != null && getEffected() instanceof L2PcInstance)
+			case CREATED:
 			{
-				SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-				smsg.addString(_skill.getName());
-				getEffected().sendPacket(smsg);
-			}
-
-			if (_count > 1)
-			{
-				startEffectTaskAtFixedRate(5, _period * 1000);
-				return;
-			}
-			if (_period > 0 || _period == -1)
-			{
-				startEffectTask(_period * 1000);
-				return;
-			}
-			// effects not having count or period should start
-			_startConditionsCorrect = onStart();
-		}
-
-		if (_state == EffectState.ACTING)
-		{
-			if (_count-- > 0)
-			{
-				if (getInUse())
-				{ // effect has to be in use
-					if (onActionTime() && _startConditionsCorrect)
-						return; // false causes effect to finish right away
+				_state = EffectState.ACTING;
+				
+				if (_skill.isPvpSkill() && getEffected() instanceof L2PcInstance)
+				{
+					SystemMessage smsg = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+					smsg.addString(_skill.getName());
+					getEffected().sendPacket(smsg);
 				}
-				else if (_count > 0)
-				{ // do not finish it yet, in case reactivated
+				
+				if (_period != 0)
+				{
+					startEffectTask();
 					return;
 				}
+				// effects not having count or period should start
+				_startConditionsCorrect = onStart();
 			}
-			_state = EffectState.FINISHING;
-		}
-
-		if (_state == EffectState.FINISHING)
-		{
-			// Cancel the effect in the the abnormal effect map of the L2Character
-			if (getInUse() || !(_count > 1 || _period > 0))
-				if (_startConditionsCorrect)
-					onExit();
-
-			//If the time left is equal to zero, send the message
-			if (_count == 0 && getEffected() != null && getEffected() instanceof L2PcInstance)
+			case ACTING:
 			{
-				SystemMessage smsg3 = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WORN_OFF);
-				smsg3.addString(_skill.getName());
-				getEffected().sendPacket(smsg3);
+				if (_count > 0)
+				{
+					_count--;
+					if (getInUse())
+					{ // effect has to be in use
+						if (onActionTime() && _startConditionsCorrect && _count > 0)
+							return; // false causes effect to finish right away
+					}
+					else if (_count > 0)
+					{ // do not finish it yet, in case reactivated
+						return;
+					}
+				}
+				_state = EffectState.FINISHING;
 			}
-			// Stop the task of the L2Effect, remove it and update client magic icon
-			stopEffectTask();
-
+			case FINISHING:
+			{
+				// If the time left is equal to zero, send the message
+				if (_count == 0 && getEffected() instanceof L2PcInstance)
+				{
+					SystemMessage smsg3 = new SystemMessage(SystemMessageId.S1_HAS_WORN_OFF);
+				    smsg3.addString(_skill.getName());
+				    getEffected().sendPacket(smsg3);
+				}
+				// if task is null - stopEffectTask does not remove effect
+				if (_currentFuture == null && getEffected() != null)
+					getEffected().removeEffect(this);
+				
+				// Stop the task of the L2Effect, remove it and update client magic icon
+				stopEffectTask();
+				
+				// Cancel the effect in the the abnormal effect map of the L2Character
+				if (getInUse() || !(_count > 1 || _period > 0))
+					if (_startConditionsCorrect)
+						onExit();
+			}
 		}
 	}
 
@@ -487,64 +467,70 @@ public abstract class L2Effect
 	{
 		if (_funcTemplates == null)
 			return _emptyFunctionSet;
-		List<Func> funcs = new FastList<Func>();
+		ArrayList<Func> funcs = new ArrayList<>(_funcTemplates.length);
+		
+		Env env = new Env();
+		env.player = getEffector();
+		env.target = getEffected();
+		env.skill = getSkill();
+		Func f;
+		
 		for (FuncTemplate t : _funcTemplates)
 		{
-			Env env = new Env();
-			env.player = getEffector();
-			env.target = getEffected();
-			env.skill = getSkill();
-			Func f = t.getFunc(env, this); // effect is owner
+			f = t.getFunc(env, this); // effect is owner
 			if (f != null)
 				funcs.add(f);
 		}
-		if (funcs.size() == 0)
+		if (funcs.isEmpty())
 			return _emptyFunctionSet;
+		
 		return funcs.toArray(new Func[funcs.size()]);
 	}
 
 	public final void addIcon(MagicEffectIcons mi)
 	{
-		EffectTask task = _currentTask;
-		ScheduledFuture<?> future = _currentFuture;
-		if (task == null || future == null)
+		if (_state != EffectState.ACTING)
 			return;
-		if (_state == EffectState.FINISHING || _state == EffectState.CREATED)
-			return;
-		L2Skill sk = getSkill();
-		if (task._rate > 0)
+		
+		final ScheduledFuture<?> future = _currentFuture;
+		final L2Skill sk = getSkill();
+		if (_totalCount > 1)
 		{
 			if (sk.isPotion())
 				mi.addEffect(sk.getId(), getLevel(), sk.getBuffDuration() - (getTaskTime() * 1000));
 			else
 				mi.addEffect(sk.getId(), getLevel(), -1);
 		}
-		else
+		else if (future != null)
 			mi.addEffect(sk.getId(), getLevel(), (int) future.getDelay(TimeUnit.MILLISECONDS));
+		else if (_period == -1)
+			mi.addEffect(sk.getId(), getLevel(), _period);
 	}
 
 	public final void addPartySpelledIcon(PartySpelled ps)
 	{
-		EffectTask task = _currentTask;
-		ScheduledFuture<?> future = _currentFuture;
-		if (task == null || future == null)
+		if (_state != EffectState.ACTING)
 			return;
-		if (_state == EffectState.FINISHING || _state == EffectState.CREATED)
-			return;
-		L2Skill sk = getSkill();
-		ps.addPartySpelledEffect(sk.getId(), getLevel(), (int) future.getDelay(TimeUnit.MILLISECONDS));
+		
+		final ScheduledFuture<?> future = _currentFuture;
+		final L2Skill sk = getSkill();
+		if (future != null)
+			ps.addPartySpelledEffect(sk.getId(), getLevel(), (int) future.getDelay(TimeUnit.MILLISECONDS));
+		else if (_period == -1)
+			ps.addPartySpelledEffect(sk.getId(), getLevel(), _period);
 	}
 
 	public final void addOlympiadSpelledIcon(ExOlympiadSpelledInfo os)
 	{
-		EffectTask task = _currentTask;
-		ScheduledFuture<?> future = _currentFuture;
-		if (task == null || future == null)
+		if (_state != EffectState.ACTING)
 			return;
-		if (_state == EffectState.FINISHING || _state == EffectState.CREATED)
-			return;
-		L2Skill sk = getSkill();
-		os.addEffect(sk.getId(), getLevel(), (int) future.getDelay(TimeUnit.MILLISECONDS));
+		
+		final ScheduledFuture<?> future = _currentFuture;
+		final L2Skill sk = getSkill();
+		if (future != null)
+			os.addEffect(sk.getId(), getLevel(), (int) future.getDelay(TimeUnit.MILLISECONDS));
+		else if (_period == -1)
+			os.addEffect(sk.getId(), getLevel(), _period);
 	}
 
 	public int getLevel()
