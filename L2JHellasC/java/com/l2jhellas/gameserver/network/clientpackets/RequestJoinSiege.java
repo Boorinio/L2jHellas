@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * @author KenM
@@ -56,7 +55,7 @@ public final class RequestJoinSiege extends L2GameClientPacket
 		{
 			if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS));
+				activeChar.sendPacket(SystemMessageId.CANT_PARTICIPATE_IN_SIEGE_WHILE_DISSOLUTION_IN_PROGRESS);
 				return;
 			}
 			if (_isAttacker == 1)

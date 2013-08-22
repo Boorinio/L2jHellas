@@ -65,7 +65,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 				{
 					if (requestor.getParty().getMemberCount() >= 9)
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.PARTY_FULL);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.PARTY_FULL);
 						player.sendPacket(sm);
 						requestor.sendPacket(sm);
 						return;
@@ -75,7 +75,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 			}
 			else
 			{
-				SystemMessage msg = new SystemMessage(SystemMessageId.PLAYER_DECLINED);
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.PLAYER_DECLINED);
 				requestor.sendPacket(msg);
 				msg = null;
 

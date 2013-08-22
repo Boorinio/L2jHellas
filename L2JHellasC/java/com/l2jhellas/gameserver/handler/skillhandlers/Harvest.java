@@ -69,7 +69,7 @@ public class Harvest implements ISkillHandler
 
 			if (_activeChar != _target.getSeeder())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_HARVEST);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_HARVEST);
 				_activeChar.sendPacket(sm);
 				continue;
 			}
@@ -77,8 +77,7 @@ public class Harvest implements ISkillHandler
 			boolean send = false;
 			int total = 0;
 			int cropId = 0;
-
-			// TODO: check items and amount of items player harvest
+			
 			if (_target.isSeeded())
 			{
 				if (calcSuccess())
@@ -103,13 +102,13 @@ public class Harvest implements ISkillHandler
 						}
 						if (send)
 						{
-							SystemMessage smsg = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
+							SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
 							smsg.addNumber(total);
 							smsg.addItemName(cropId);
 							_activeChar.sendPacket(smsg);
 							if (_activeChar.getParty() != null)
 							{
-								smsg = new SystemMessage(SystemMessageId.S1_HARVESTED_S3_S2S);
+								smsg = SystemMessage.getSystemMessage(SystemMessageId.S1_HARVESTED_S3_S2S);
 								smsg.addString(_activeChar.getName());
 								smsg.addNumber(total);
 								smsg.addItemName(cropId);
@@ -125,12 +124,12 @@ public class Harvest implements ISkillHandler
 				}
 				else
 				{
-					_activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_HARVEST_HAS_FAILED));
+					_activeChar.sendPacket(SystemMessageId.THE_HARVEST_HAS_FAILED);
 				}
 			}
 			else
 			{
-				_activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_HARVEST_FAILED_BECAUSE_THE_SEED_WAS_NOT_SOWN));
+				_activeChar.sendPacket(SystemMessageId.THE_HARVEST_FAILED_BECAUSE_THE_SEED_WAS_NOT_SOWN);
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class EffectCharge extends L2Effect
 		if (env.target instanceof L2PcInstance)
 		{
 			env.target.sendPacket(new EtcStatusUpdate((L2PcInstance) env.target));
-			SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
 			sm.addNumber(numCharges);
 			getEffected().sendPacket(sm);
 		}

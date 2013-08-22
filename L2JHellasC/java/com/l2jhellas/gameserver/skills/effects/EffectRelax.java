@@ -73,7 +73,7 @@ public final class EffectRelax extends L2Effect
 		{
 			if (getSkill().isToggle())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Fully rested. Effect of " + getSkill().getName() + " has been removed.");
 				getEffected().sendPacket(sm);
 				retval = false;
@@ -86,7 +86,7 @@ public final class EffectRelax extends L2Effect
 		{
 			if (getSkill().isToggle())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP);
 				getEffected().sendPacket(sm);
 				// if (getEffected() instanceof L2PcInstance)
 				// ((L2PcInstance)getEffected()).standUp();

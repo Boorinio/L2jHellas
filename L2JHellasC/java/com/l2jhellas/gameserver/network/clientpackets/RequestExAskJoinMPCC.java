@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExAskJoinMPCC;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Format: (ch) S
@@ -136,7 +135,7 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 			requestor.sendMessage("You invited " + target.getName() + " to your Command Channel.");
 		}
 		else
-			requestor.sendPacket(new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER));
+			requestor.sendPacket(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 	}
 
 	@Override

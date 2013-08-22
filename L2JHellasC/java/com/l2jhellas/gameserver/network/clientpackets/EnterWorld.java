@@ -18,7 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import Extensions.OnEnter;
 
@@ -66,12 +65,9 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * Enter World Packet Handler
- * packet format rev656 cbdddd
  */
 public class EnterWorld extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(EnterWorld.class.getName());
-
 	public static Vector<L2PcInstance> _onlineplayers = new Vector<L2PcInstance>();
 	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
 
@@ -140,7 +136,7 @@ public class EnterWorld extends L2GameClientPacket
 		activeChar.broadcastTitleInfo();
 		activeChar.sendPacket(new EtcStatusUpdate(activeChar));
 
-		activeChar.sendPacket(new SystemMessage(SystemMessageId.WELCOME_TO_LINEAGE));
+		activeChar.sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
 		Announcements.getInstance().showAnnouncements(activeChar);
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 
@@ -186,7 +182,7 @@ public class EnterWorld extends L2GameClientPacket
 		}
 		if (activeChar.getClanJoinExpiryTime() > System.currentTimeMillis())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED));
+			activeChar.sendPacket(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED);
 		}
 		if (activeChar.getClan() != null)
 		{
@@ -216,7 +212,7 @@ public class EnterWorld extends L2GameClientPacket
 			{
 				if (!clanHall.getPaid())
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW));
+					activeChar.sendPacket(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
 				}
 			}
 			activeChar.sendPacket(new PledgeShowMemberListAll(activeChar.getClan(), activeChar));
@@ -306,7 +302,7 @@ public class EnterWorld extends L2GameClientPacket
 			L2PcInstance friend;
 			String friendName;
 
-			SystemMessage sm = new SystemMessage(SystemMessageId.FRIEND_S1_HAS_LOGGED_IN);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FRIEND_S1_HAS_LOGGED_IN);
 			sm.addString(cha.getName());
 
 			while (rset.next())
@@ -342,7 +338,7 @@ public class EnterWorld extends L2GameClientPacket
 		{
 			clan.broadcastClanStatus();
 			clan.getClanMember(activeChar.getName()).setPlayerInstance(activeChar);
-			SystemMessage msg = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_LOGGED_IN);
+			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_LOGGED_IN);
 			msg.addString(activeChar.getName());
 			clan.broadcastToOtherOnlineMembers(msg, activeChar);
 			msg = null;
@@ -374,7 +370,7 @@ public class EnterWorld extends L2GameClientPacket
 
 			if (sponsor != null)
 			{
-				SystemMessage msg = new SystemMessage(SystemMessageId.YOUR_APPRENTICE_S1_HAS_LOGGED_IN);
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOUR_APPRENTICE_S1_HAS_LOGGED_IN);
 				msg.addString(activeChar.getName());
 				sponsor.sendPacket(msg);
 			}
@@ -385,7 +381,7 @@ public class EnterWorld extends L2GameClientPacket
 
 			if (apprentice != null)
 			{
-				SystemMessage msg = new SystemMessage(SystemMessageId.YOUR_SPONSOR_S1_HAS_LOGGED_IN);
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOUR_SPONSOR_S1_HAS_LOGGED_IN);
 				msg.addString(activeChar.getName());
 				apprentice.sendPacket(msg);
 			}

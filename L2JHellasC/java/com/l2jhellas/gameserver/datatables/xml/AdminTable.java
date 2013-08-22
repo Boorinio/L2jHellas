@@ -293,12 +293,12 @@ public class AdminTable extends DocumentParser
 	{
 		if (isGmOnline(player.isGM()))
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.GM_LIST);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_LIST);
 			player.sendPacket(sm);
 
 			for (String name : getAllGmNames(player.isGM()))
 			{
-				sm = new SystemMessage(SystemMessageId.GM_S1);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);
 				sm.addString(name);
 				player.sendPacket(sm);
 			}

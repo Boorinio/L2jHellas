@@ -45,7 +45,6 @@ public class AdminDelete implements IAdminCommandHandler
 		return true;
 	}
 
-	// TODO: add possibility to delete any L2Object (except L2PcInstance)
 	private void handleDelete(L2PcInstance activeChar)
 	{
 		L2Object obj = activeChar.getTarget();
@@ -65,13 +64,13 @@ public class AdminDelete implements IAdminCommandHandler
 					SpawnTable.getInstance().deleteSpawn(spawn, true);
 			}
 
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Deleted " + target.getName() + " from " + target.getObjectId() + ".");
 			activeChar.sendPacket(sm);
 		}
 		else
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Incorrect target.");
 			activeChar.sendPacket(sm);
 		}

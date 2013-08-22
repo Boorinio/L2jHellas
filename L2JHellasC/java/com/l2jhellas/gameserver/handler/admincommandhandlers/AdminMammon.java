@@ -46,7 +46,6 @@ public class AdminMammon implements IAdminCommandHandler
 	private final boolean _isSealValidation = SevenSigns.getInstance().isSealValidationPeriod();
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		int npcId = 0;
@@ -150,18 +149,15 @@ public class AdminMammon implements IAdminCommandHandler
 		// Used for testing SystemMessage IDs - Use //msg <ID>
 		else if (command.startsWith("admin_msg"))
 		{
-			int msgId = -1;
-
 			try
 			{
-				msgId = Integer.parseInt(command.substring(10).trim());
+				activeChar.sendPacket(SystemMessage.getSystemMessage(Integer.parseInt(command.substring(10).trim())));
 			}
 			catch (Exception e)
 			{
 				activeChar.sendMessage("Command format: //msg <SYSTEM_MSG_ID>");
 				return true;
 			}
-			activeChar.sendPacket(new SystemMessage(msgId));
 		}
 
 		return true;

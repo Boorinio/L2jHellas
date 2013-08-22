@@ -176,7 +176,7 @@ public class L2SummonInstance extends L2Summon
 	public void reduceCurrentHp(int damage, L2Character attacker)
 	{
 		super.reduceCurrentHp(damage, attacker);
-		SystemMessage sm = new SystemMessage(SystemMessageId.SUMMON_RECEIVED_DAMAGE_S2_BY_S1);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SUMMON_RECEIVED_DAMAGE_S2_BY_S1);
 		if (attacker instanceof L2NpcInstance)
 		{
 			sm.addNpcName(((L2NpcInstance) attacker).getTemplate().npcId);
@@ -212,16 +212,16 @@ public class L2SummonInstance extends L2Summon
 	 * {
 	 * if (crit)
 	 * {
-	 * getOwner().sendPacket(new SystemMessage(SystemMessage.SUMMON_CRITICAL_HIT));
+	 * getOwner().sendPacket(SystemMessage.SUMMON_CRITICAL_HIT));
 	 * }
 	 * 
 	 * if (miss)
 	 * {
-	 * getOwner().sendPacket(new SystemMessage(SystemMessage.MISSED_TARGET));
+	 * getOwner().sendPacket(SystemMessage.MISSED_TARGET));
 	 * }
 	 * else
 	 * {
-	 * SystemMessage sm = new SystemMessage(SystemMessage.SUMMON_GAVE_DAMAGE_OF_S1);
+	 * SystemMessage sm = SystemMessage.getSystemMessage(SystemMessage.SUMMON_GAVE_DAMAGE_OF_S1);
 	 * sm.addNumber(damage);
 	 * getOwner().sendPacket(sm);
 	 * }
@@ -333,9 +333,9 @@ public class L2SummonInstance extends L2Summon
 		if (target.getObjectId() != getOwner().getObjectId())
 		{
 			if (pcrit || mcrit)
-				getOwner().sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT_BY_SUMMONED_MOB));
+				getOwner().sendPacket(SystemMessageId.CRITICAL_HIT_BY_SUMMONED_MOB);
 
-			SystemMessage sm = new SystemMessage(SystemMessageId.SUMMON_GAVE_DAMAGE_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SUMMON_GAVE_DAMAGE_S1);
 			sm.addNumber(damage);
 			getOwner().sendPacket(sm);
 		}

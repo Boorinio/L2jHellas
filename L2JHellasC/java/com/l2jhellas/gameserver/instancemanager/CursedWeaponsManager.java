@@ -235,8 +235,7 @@ public class CursedWeaponsManager
 			// Retrieve the L2PcInstance from the characters table of the database
 			PreparedStatement statement = null;
 			ResultSet rset = null;
-
-			// TODO: See comments below...
+			
 			// This entire for loop should NOT be necessary, since it is already handled by
 			// CursedWeapon.endOfLife(). However, if we indeed *need* to duplicate it for safety,
 			// then we'd better make sure that it FULLY cleans up inactive cursed weapons!
@@ -350,7 +349,6 @@ public class CursedWeaponsManager
 		{
 			CursedWeapon cw2 = _cursedWeapons.get(player.getCursedWeaponEquipedId());
 			/*
-			 * TODO: give the bonus level in a more appropriate manner.
 			 * The following code adds "_stageKills" levels. This will also show in the char status.
 			 * I do not have enough info to know if the bonus should be shown in the pk count, or if it
 			 * should be a full "_stageKills" bonus or just the remaining from the current count till the
@@ -400,7 +398,7 @@ public class CursedWeaponsManager
 			player.sendPacket(sm);
 		}
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, "MessageID: " + sm.getMessageID());
+			_log.log(Level.CONFIG, "MessageID: " + sm.getSystemMessageId());
 	}
 
 	public void checkPlayer(L2PcInstance player)
@@ -417,7 +415,7 @@ public class CursedWeaponsManager
 				cw.giveSkill();
 				player.setCursedWeaponEquipedId(cw.getItemId());
 
-				SystemMessage sm = new SystemMessage(SystemMessageId.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_MINUTE_OF_USAGE_TIME_ARE_LEFT_FOR_S1);
 				sm.addString(cw.getName());
 				// sm.addItemName(cw.getItemId());
 				sm.addNumber((int) ((cw.getEndTime() - System.currentTimeMillis()) / 60000));

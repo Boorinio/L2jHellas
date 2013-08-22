@@ -56,11 +56,6 @@ import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
- * Seven Signs Festival of Darkness Engine
- * TODO:
- * - Archer mobs should target healer characters over other party members.
- * - ADDED 29 Sep: Players that leave a party during the Seven Signs Festival will now take damage and cannot be healed.
- *
  * @author Tempy
  */
 public class SevenSignsFestival implements SpawnListener
@@ -1193,7 +1188,7 @@ public class SevenSignsFestival implements SpawnListener
 			{
 				player.getClan().setReputationScore(player.getClan().getReputationScore() + 100, true);
 				player.getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(player.getClan()));
-				SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_WAS_IN_HIGHEST_RANKED_PARTY_IN_FESTIVAL_OF_DARKNESS_AND_GAINED_S2_REPUTATION);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_WAS_IN_HIGHEST_RANKED_PARTY_IN_FESTIVAL_OF_DARKNESS_AND_GAINED_S2_REPUTATION);
 				sm.addString(partyMemberName);
 				sm.addNumber(100);
 				player.getClan().broadcastToOnlineMembers(sm);
@@ -1216,7 +1211,7 @@ public class SevenSignsFestival implements SpawnListener
 						{
 							clan.setReputationScore(clan.getReputationScore() + 100, true);
 							clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
-							SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_WAS_IN_HIGHEST_RANKED_PARTY_IN_FESTIVAL_OF_DARKNESS_AND_GAINED_S2_REPUTATION);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_WAS_IN_HIGHEST_RANKED_PARTY_IN_FESTIVAL_OF_DARKNESS_AND_GAINED_S2_REPUTATION);
 							sm.addString(partyMemberName);
 							sm.addNumber(100);
 							clan.broadcastToOnlineMembers(sm);

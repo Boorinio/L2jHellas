@@ -66,7 +66,7 @@ public final class RequestPetUseItem extends L2GameClientPacket
 
 		if (activeChar.isAlikeDead() || pet.isDead())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 			sm.addItemName(item.getItemId());
 			activeChar.sendPacket(sm);
 			sm = null;
@@ -105,7 +105,7 @@ public final class RequestPetUseItem extends L2GameClientPacket
 			}
 			else
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS));
+				activeChar.sendPacket(SystemMessageId.ITEM_NOT_FOR_PETS);
 				return;
 			}
 		}
@@ -150,7 +150,7 @@ public final class RequestPetUseItem extends L2GameClientPacket
 		}
 		else
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS);
 			activeChar.sendPacket(sm);
 		}
 

@@ -83,7 +83,7 @@ public class Blow implements ISkillHandler
 					{
 						activeChar.stopSkillEffects(skill.getId());
 						skill.getEffects(null, activeChar);
-						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(skill.getId());
 						activeChar.sendPacket(sm);
 					}
@@ -162,7 +162,7 @@ public class Blow implements ISkillHandler
 						else
 							player.setCurrentHp(player.getCurrentHp() - damage);
 					}
-					SystemMessage smsg = new SystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
+					SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
 					smsg.addString(activeChar.getName());
 					smsg.addNumber((int) damage);
 					player.sendPacket(smsg);
@@ -170,8 +170,8 @@ public class Blow implements ISkillHandler
 				else
 					target.reduceCurrentHp(damage, activeChar);
 				if (activeChar instanceof L2PcInstance)
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT));
-				SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DID_S1_DMG);
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CRITICAL_HIT));
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_DID_S1_DMG);
 				sm.addNumber((int) damage);
 				activeChar.sendPacket(sm);
 			}
@@ -194,7 +194,7 @@ public class Blow implements ISkillHandler
 							player.setCurrentCp(1);
 						}
 					}
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));
 				}
 				else if (skill.getLethalChance1() > 0 && chance < Formulas.getInstance().calcLethal(activeChar, target, skill.getLethalChance1()))
 				{
@@ -206,7 +206,7 @@ public class Blow implements ISkillHandler
 					}
 					else if (target instanceof L2NpcInstance) // If is a monster remove first damage and after 50% of current hp
 						target.reduceCurrentHp(target.getCurrentHp() / 2, activeChar);
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));
 				}
 			}
 			L2Effect effect = activeChar.getFirstEffect(skill.getId());

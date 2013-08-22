@@ -79,11 +79,11 @@ public class BlockList
 	{
 		listOwner.getBlockList().addToBlockList(character);
 
-		SystemMessage sm = new SystemMessage(SystemMessageId.S1_HAS_ADDED_YOU_TO_IGNORE_LIST);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_ADDED_YOU_TO_IGNORE_LIST);
 		sm.addString(listOwner.getName());
 		character.sendPacket(sm);
 
-		sm = new SystemMessage(SystemMessageId.S1_WAS_ADDED_TO_YOUR_IGNORE_LIST);
+		sm = SystemMessage.getSystemMessage(SystemMessageId.S1_WAS_ADDED_TO_YOUR_IGNORE_LIST);
 		sm.addString(character.getName());
 		listOwner.sendPacket(sm);
 	}
@@ -92,7 +92,7 @@ public class BlockList
 	{
 		listOwner.getBlockList().removeFromBlockList(character);
 
-		SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_REMOVED_FROM_YOUR_IGNORE_LIST);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_WAS_REMOVED_FROM_YOUR_IGNORE_LIST);
 		sm.addString(character.getName());
 		listOwner.sendPacket(sm);
 	}
@@ -116,7 +116,7 @@ public class BlockList
 	{
 		for (String playerName : listOwner.getBlockList().getBlockList())
 		{
-			listOwner.sendPacket(new SystemMessage(SystemMessageId.S1_S2).addString(playerName));
+			listOwner.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_S2).addString(playerName));
 		}
 	}
 }

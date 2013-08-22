@@ -84,7 +84,7 @@ public class Duel
 			// increase countdown so that start task can teleport players
 			_countdown++;
 			// inform players that they will be ported shortly
-			SystemMessage sm = new SystemMessage(SystemMessageId.IN_A_MOMENT_YOU_WILL_BE_TRANSPORTED_TO_THE_SITE_WHERE_THE_DUEL_WILL_TAKE_PLACE);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.IN_A_MOMENT_YOU_WILL_BE_TRANSPORTED_TO_THE_SITE_WHERE_THE_DUEL_WILL_TAKE_PLACE);
 			broadcastToTeam1(sm);
 			broadcastToTeam2(sm);
 		}
@@ -657,11 +657,11 @@ public class Duel
 		SystemMessage sm = null;
 		if (_countdown > 0)
 		{
-			sm = new SystemMessage(SystemMessageId.THE_DUEL_WILL_BEGIN_IN_S1_SECONDS);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.THE_DUEL_WILL_BEGIN_IN_S1_SECONDS);
 			sm.addNumber(_countdown);
 		}
 		else
-			sm = new SystemMessage(SystemMessageId.LET_THE_DUEL_BEGIN);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.LET_THE_DUEL_BEGIN);
 
 		broadcastToTeam1(sm);
 		broadcastToTeam2(sm);
@@ -695,9 +695,9 @@ public class Duel
 				restorePlayerConditions(false);
 				// send SystemMessage
 				if (_partyDuel)
-					sm = new SystemMessage(SystemMessageId.S1S_PARTY_HAS_WON_THE_DUEL);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_PARTY_HAS_WON_THE_DUEL);
 				else
-					sm = new SystemMessage(SystemMessageId.S1_HAS_WON_THE_DUEL);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_DUEL);
 				sm.addString(_playerA.getName());
 
 				broadcastToTeam1(sm);
@@ -707,9 +707,9 @@ public class Duel
 				restorePlayerConditions(false);
 				// send SystemMessage
 				if (_partyDuel)
-					sm = new SystemMessage(SystemMessageId.S1S_PARTY_HAS_WON_THE_DUEL);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_PARTY_HAS_WON_THE_DUEL);
 				else
-					sm = new SystemMessage(SystemMessageId.S1_HAS_WON_THE_DUEL);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_DUEL);
 				sm.addString(_playerB.getName());
 
 				broadcastToTeam1(sm);
@@ -719,9 +719,9 @@ public class Duel
 				restorePlayerConditions(false);
 				// send SystemMessage
 				if (_partyDuel)
-					sm = new SystemMessage(SystemMessageId.SINCE_S1S_PARTY_WITHDREW_FROM_THE_DUEL_S1S_PARTY_HAS_WON);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.SINCE_S1_PARTY_WITHDREW_FROM_THE_DUEL_S2_PARTY_HAS_WON);
 				else
-					sm = new SystemMessage(SystemMessageId.SINCE_S1_WITHDREW_FROM_THE_DUEL_S2_HAS_WON);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.SINCE_S1_WITHDREW_FROM_THE_DUEL_S2_HAS_WON);
 				sm.addString(_playerA.getName());
 				sm.addString(_playerB.getName());
 
@@ -732,9 +732,9 @@ public class Duel
 				restorePlayerConditions(false);
 				// send SystemMessage
 				if (_partyDuel)
-					sm = new SystemMessage(SystemMessageId.SINCE_S1S_PARTY_WITHDREW_FROM_THE_DUEL_S1S_PARTY_HAS_WON);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.SINCE_S1_PARTY_WITHDREW_FROM_THE_DUEL_S2_PARTY_HAS_WON);
 				else
-					sm = new SystemMessage(SystemMessageId.SINCE_S1_WITHDREW_FROM_THE_DUEL_S2_HAS_WON);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.SINCE_S1_WITHDREW_FROM_THE_DUEL_S2_HAS_WON);
 				sm.addString(_playerB.getName());
 				sm.addString(_playerA.getName());
 
@@ -747,7 +747,7 @@ public class Duel
 				restorePlayerConditions(true);
 				// TODO: is there no other message for a canceled duel?
 				// send SystemMessage
-				sm = new SystemMessage(SystemMessageId.THE_DUEL_HAS_ENDED_IN_A_TIE);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_DUEL_HAS_ENDED_IN_A_TIE);
 
 				broadcastToTeam1(sm);
 				broadcastToTeam2(sm);
@@ -757,7 +757,7 @@ public class Duel
 				// hp,mp,cp seem to be restored in a timeout too...
 				restorePlayerConditions(false);
 				// send SystemMessage
-				sm = new SystemMessage(SystemMessageId.THE_DUEL_HAS_ENDED_IN_A_TIE);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_DUEL_HAS_ENDED_IN_A_TIE);
 
 				broadcastToTeam1(sm);
 				broadcastToTeam2(sm);

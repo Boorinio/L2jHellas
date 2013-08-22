@@ -64,7 +64,7 @@ public class ClanWarsList implements IUserCommandHandler
 			if (id == 88)
 			{
 				// Attack List
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.CLANS_YOU_DECLARED_WAR_ON));
+				activeChar.sendPacket(SystemMessageId.CLANS_YOU_DECLARED_WAR_ON);
 				statement = con.prepareStatement("SELECT clan_name,clan_id,ally_id,ally_name FROM clan_data,clan_wars WHERE clan1=? AND clan_id=clan2 AND clan2 NOT IN (select clan1 FROM clan_wars WHERE clan2=?)");
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
@@ -72,7 +72,7 @@ public class ClanWarsList implements IUserCommandHandler
 			else if (id == 89)
 			{
 				// Under Attack List
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.CLANS_THAT_HAVE_DECLARED_WAR_ON_YOU));
+				activeChar.sendPacket(SystemMessageId.CLANS_THAT_HAVE_DECLARED_WAR_ON_YOU);
 				statement = con.prepareStatement("SELECT clan_name,clan_id,ally_id,ally_name FROM clan_data,clan_wars WHERE clan2=? AND clan_id=clan1 AND clan1 NOT IN (select clan2 FROM clan_wars WHERE clan1=?)");
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
@@ -81,7 +81,7 @@ public class ClanWarsList implements IUserCommandHandler
 			// ID = 90
 			{
 				// War List
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.WAR_LIST));
+				activeChar.sendPacket(SystemMessageId.WAR_LIST);
 				statement = con.prepareStatement("SELECT clan_name,clan_id,ally_id,ally_name FROM clan_data,clan_wars WHERE clan1=? AND clan_id=clan2 AND clan2 IN (select clan1 FROM clan_wars WHERE clan2=?)");
 				statement.setInt(1, clan.getClanId());
 				statement.setInt(2, clan.getClanId());
@@ -97,21 +97,21 @@ public class ClanWarsList implements IUserCommandHandler
 				if (ally_id > 0)
 				{
 					// Target With Ally
-					sm = new SystemMessage(SystemMessageId.S1_S2_ALLIANCE);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2_ALLIANCE);
 					sm.addString(clanName);
 					sm.addString(rset.getString("ally_name"));
 				}
 				else
 				{
 					// Target Without Ally
-					sm = new SystemMessage(SystemMessageId.S1_NO_ALLI_EXISTS);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_NO_ALLI_EXISTS);
 					sm.addString(clanName);
 				}
 
 				activeChar.sendPacket(sm);
 			}
 
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
+			activeChar.sendPacket(SystemMessageId.FRIEND_LIST_FOOTER);
 
 			rset.close();
 			statement.close();

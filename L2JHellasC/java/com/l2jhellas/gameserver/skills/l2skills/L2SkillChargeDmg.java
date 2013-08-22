@@ -48,7 +48,7 @@ public class L2SkillChargeDmg extends L2Skill
 			EffectCharge e = (EffectCharge) player.getFirstEffect(chargeSkillId);
 			if (e == null || e.numCharges < getNumCharges())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 				sm.addSkillName(getId());
 				activeChar.sendPacket(sm);
 				return false;
@@ -69,7 +69,7 @@ public class L2SkillChargeDmg extends L2Skill
 		EffectCharge effect = (EffectCharge) caster.getFirstEffect(chargeSkillId);
 		if (effect == null || effect.numCharges < getNumCharges())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 			sm.addSkillName(getId());
 			caster.sendPacket(sm);
 			return;
@@ -97,13 +97,13 @@ public class L2SkillChargeDmg extends L2Skill
 			{
 				if (caster instanceof L2PcInstance)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_DODGES_ATTACK);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DODGES_ATTACK);
 					sm.addString(target.getName());
 					((L2PcInstance) caster).sendPacket(sm);
 				}
 				if (target instanceof L2PcInstance)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.AVOIDED_S1_ATTACK2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AVOIDED_S1_ATTACK2);
 					sm.addString(caster.getName());
 					((L2PcInstance) target).sendPacket(sm);
 				}
@@ -111,8 +111,7 @@ public class L2SkillChargeDmg extends L2Skill
 				// no futher calculations needed.
 				continue;
 			}
-
-			// TODO: should we use dual or not?
+			
 			// because if so, damage are lowered but we don't do anything special with dual then
 			// like in doAttackHitByDual which in fact does the calcPhysDam call twice
 

@@ -34,7 +34,7 @@ public final class RequestDeleteMacro extends L2GameClientPacket
 		if (getClient().getActiveChar() == null)
 			return;
 		getClient().getActiveChar().deleteMacro(_id);
-		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 		sm.addString("Delete macro id=" + _id);
 		sendPacket(sm);
 		sm = null;

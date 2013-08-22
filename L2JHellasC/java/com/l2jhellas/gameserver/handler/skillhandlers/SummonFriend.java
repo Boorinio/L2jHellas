@@ -50,14 +50,14 @@ public class SummonFriend implements ISkillHandler
 
 		if (activePlayer.isInOlympiadMode())
 		{
-			activePlayer.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+			activePlayer.sendPacket(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
 			return;
 		}
 
 		// Checks summoner not in arenas, siege zones, jail
 		if (activePlayer.isInsideZone(L2Character.ZONE_PVP))
 		{
-			activePlayer.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
+			activePlayer.sendPacket(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT);
 			return;
 		}
 
@@ -70,7 +70,7 @@ public class SummonFriend implements ISkillHandler
 			{
 				if (object instanceof L2RaidBossInstance)
 				{
-					activePlayer.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_NOT_SUMMON_FROM_YOUR_CURRENT_LOCATION));
+					activePlayer.sendPacket(SystemMessageId.YOU_MAY_NOT_SUMMON_FROM_YOUR_CURRENT_LOCATION);
 					return;
 				}
 			}
@@ -111,7 +111,7 @@ public class SummonFriend implements ISkillHandler
 
 					if (targetChar.isAlikeDead())
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_DEAD_AT_THE_MOMENT_AND_CANNOT_BE_SUMMONED);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_DEAD_AT_THE_MOMENT_AND_CANNOT_BE_SUMMONED);
 						sm.addString(targetChar.getName());
 						activeChar.sendPacket(sm);
 						continue;
@@ -119,7 +119,7 @@ public class SummonFriend implements ISkillHandler
 
 					if (targetChar.isInStoreMode())
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.S1_CURRENTLY_TRADING_OR_OPERATING_PRIVATE_STORE_AND_CANNOT_BE_SUMMONED);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CURRENTLY_TRADING_OR_OPERATING_PRIVATE_STORE_AND_CANNOT_BE_SUMMONED);
 						sm.addString(targetChar.getName());
 						activeChar.sendPacket(sm);
 						continue;
@@ -129,7 +129,7 @@ public class SummonFriend implements ISkillHandler
 					// by TARGET_PARTY)
 					if (targetChar.isRooted() || targetChar.isInCombat())
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_ENGAGED_IN_COMBAT_AND_CANNOT_BE_SUMMONED);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_ENGAGED_IN_COMBAT_AND_CANNOT_BE_SUMMONED);
 						sm.addString(targetChar.getName());
 						activeChar.sendPacket(sm);
 						continue;
@@ -138,14 +138,14 @@ public class SummonFriend implements ISkillHandler
 					// Check for the the target's festival status
 					if (targetChar.isInOlympiadMode())
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_PLAYERS_WHO_ARE_IN_OLYMPIAD));
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_PLAYERS_WHO_ARE_IN_OLYMPIAD));
 						continue;
 					}
 
 					// Check for the the target's festival status
 					if (targetChar.isFestivalParticipant())
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
 						continue;
 					}
 
@@ -160,7 +160,7 @@ public class SummonFriend implements ISkillHandler
 					// zones
 					if (targetChar.isInsideZone(L2Character.ZONE_PVP))
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
 						continue;
 					}
 

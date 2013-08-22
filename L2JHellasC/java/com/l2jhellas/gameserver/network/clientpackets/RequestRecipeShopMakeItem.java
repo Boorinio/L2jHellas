@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.RecipeController;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
 
 /**
@@ -69,7 +68,7 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 		}
 		if (manufacturer.isInDuel() || activeChar.isInDuel())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_CRAFT_DURING_COMBAT));
+			activeChar.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
 			return;
 		}
 		if (Util.checkIfInRange(150, activeChar, manufacturer, true))

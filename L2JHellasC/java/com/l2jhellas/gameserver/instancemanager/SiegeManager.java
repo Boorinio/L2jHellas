@@ -96,7 +96,7 @@ public class SiegeManager
 		if ((activeChar == null) || !(activeChar instanceof L2PcInstance))
 			return false;
 
-		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 		L2PcInstance player = (L2PcInstance) activeChar;
 		Castle castle = CastleManager.getInstance().getCastle(player);
 

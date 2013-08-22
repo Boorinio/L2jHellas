@@ -46,7 +46,7 @@ public class RequestSocialAction extends L2GameClientPacket
 		// You cannot do anything else while fishing
 		if (activeChar.isFishing())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;

@@ -69,7 +69,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 							activeChar.sendPacket(atk);
 
 							// start the auto soulshot use
-							SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
 							sm.addString(item.getItemName());
 							activeChar.sendPacket(sm);
 							sm = null;
@@ -82,7 +82,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 							{
 								if (_itemId >= 3947 && _itemId <= 3952 && activeChar.isInOlympiadMode())
 								{
-									SystemMessage sm = new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
+									SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
 									sm.addString(item.getItemName());
 									activeChar.sendPacket(sm);
 									sm = null;
@@ -94,7 +94,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 									activeChar.sendPacket(atk);
 
 									// start the auto soulshot use
-									SystemMessage sm = new SystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
+									SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
 									sm.addString(item.getItemName());
 									activeChar.sendPacket(sm);
 									sm = null;
@@ -105,9 +105,9 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 							else
 							{
 								if ((_itemId >= 2509 && _itemId <= 2514) || (_itemId >= 3947 && _itemId <= 3952) || _itemId == 5790)
-									activeChar.sendPacket(new SystemMessage(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH));
+									activeChar.sendPacket(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH);
 								else
-									activeChar.sendPacket(new SystemMessage(SystemMessageId.SOULSHOTS_GRADE_MISMATCH));
+									activeChar.sendPacket(SystemMessageId.SOULSHOTS_GRADE_MISMATCH);
 							}
 						}
 					}
@@ -119,7 +119,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 					activeChar.sendPacket(atk);
 
 					// cancel the auto soulshot use
-					SystemMessage sm = new SystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
 					sm.addString(item.getItemName());
 					activeChar.sendPacket(sm);
 					sm = null;

@@ -33,7 +33,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
@@ -150,7 +149,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		{
 			for (L2PcInstance player : L2World.getAllPlayers())
 			{
-				player.sendPacket(new SystemMessage(SystemMessageId.NPC_SERVER_NOT_OPERATING));
+				player.sendPacket(SystemMessageId.NPC_SERVER_NOT_OPERATING);
 			}
 			RaidBossSpawnManager.getInstance().cleanUp();
 			DayNightSpawnManager.getInstance().cleanUp();
@@ -249,7 +248,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_CANT_FOUND));
+			activeChar.sendPacket(SystemMessageId.TARGET_CANT_FOUND);
 		}
 	}
 

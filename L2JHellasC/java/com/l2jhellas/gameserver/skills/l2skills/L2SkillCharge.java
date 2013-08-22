@@ -55,14 +55,14 @@ public class L2SkillCharge extends L2Skill
 				if (caster instanceof L2PcInstance)
 				{
 					caster.sendPacket(new EtcStatusUpdate((L2PcInstance) caster));
-					SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
 					sm.addNumber(effect.numCharges);
 					caster.sendPacket(sm);
 				}
 			}
 			else
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_MAXIMUM);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FORCE_MAXIMUM);
 				caster.sendPacket(sm);
 			}
 			return;
@@ -71,7 +71,6 @@ public class L2SkillCharge extends L2Skill
 
 		// effect self :]
 		// L2Effect seffect = caster.getEffect(getId());
-		// TODO ?? this is always null due to a return in the if block above!
 		// if (effect != null && seffect.isSelfEffect())
 		// {
 		// Replace old effect with new one.

@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.StringUtil;
 
 public class ClanBBSManager extends BaseBBSManager
@@ -115,7 +114,7 @@ public class ClanBBSManager extends BaseBBSManager
 		{
 			if (cl.getLevel() < 2)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.NO_CB_IN_MY_CLAN));
+				activeChar.sendPacket(SystemMessageId.NO_CB_IN_MY_CLAN);
 				parsecmd("_bbsclan_clanlist", activeChar);
 			}
 			else
@@ -253,7 +252,6 @@ public class ClanBBSManager extends BaseBBSManager
 		html.append("<tr><td width=610><img src=\"sek.cbui141\" width=\"610\" height=\"1\"></td></tr>");
 		html.append("</table>");
 		html.append("<table border=0><tr><td><combobox width=65 var=keyword list=\"Name;Ruler\"></td><td><edit var = \"Search\" width=130 height=11 length=\"16\"></td>");
-		// TODO: search (Write in BBS)
 		html.append("<td><button value=\"&$420;\" action=\"Write 5 -1 0 Search keyword keyword\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\"> </td> </tr></table>");
 		html.append("<br>");
 		html.append("<br>");
@@ -275,7 +273,7 @@ public class ClanBBSManager extends BaseBBSManager
 		{
 			if (cl.getLevel() < 2)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.NO_CB_IN_MY_CLAN));
+				activeChar.sendPacket(SystemMessageId.NO_CB_IN_MY_CLAN);
 				parsecmd("_bbsclan_clanlist", activeChar);
 			}
 			else
@@ -347,7 +345,6 @@ public class ClanBBSManager extends BaseBBSManager
 				html.append("</tr>");
 				html.append("<tr><td height=10></td></tr>");
 				html.append("</table>");
-				// TODO: the BB for clan :)
 				// html.append("<table border=0 cellspacing=0 cellpadding=0 width=610  bgcolor=333333>");
 				html.append("<img src=\"L2UI.squareblank\" width=\"1\" height=\"5\">");
 				html.append("<img src=\"L2UI.squaregray\" width=\"610\" height=\"1\">");

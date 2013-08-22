@@ -54,7 +54,7 @@ public final class TradeRequest extends L2GameClientPacket
 		L2Object target = L2World.findObject(_objectId);
 		if ((target == null) || !player.getKnownList().knowsObject(target) || !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+			player.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -136,7 +136,7 @@ public final class TradeRequest extends L2GameClientPacket
         }
         if (player.getDistanceSq(partner) > 22500) // 150
         {
-            player.sendPacket(new SystemMessage(SystemMessageId.TARGET_TOO_FAR));
+            player.sendPacket(SystemMessageId.TARGET_TOO_FAR);
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
         }
@@ -149,7 +149,7 @@ public final class TradeRequest extends L2GameClientPacket
         }
         if (player.getPrivateStoreType() != 0 || partner.getPrivateStoreType() != 0)
         {
-            player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+            player.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
         }
@@ -182,7 +182,7 @@ public final class TradeRequest extends L2GameClientPacket
                 _log.fine("Already trading with someone");
             }
 
-            player.sendPacket(new SystemMessage(SystemMessageId.ALREADY_TRADING));
+            player.sendPacket(SystemMessageId.ALREADY_TRADING);
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
         }
@@ -193,7 +193,7 @@ public final class TradeRequest extends L2GameClientPacket
                 _log.info("Transaction already in progress.");
             }
 
-            SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
+            SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
             sm.addString(partner.getName());
             player.sendPacket(sm);
             player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -202,7 +202,7 @@ public final class TradeRequest extends L2GameClientPacket
 		
 		if (Util.calculateDistance(player, partner, true) > 150)
         {
-            SystemMessage sm = new SystemMessage(SystemMessageId.TARGET_TOO_FAR);
+            SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.TARGET_TOO_FAR);
             player.sendPacket(sm);
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
@@ -230,7 +230,7 @@ public final class TradeRequest extends L2GameClientPacket
 		player.setAllowTrade(false);
 		player.onTransactionRequest(partner);
 		partner.sendPacket(new SendTradeRequest(player.getObjectId()));
-		SystemMessage sm = new SystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE);
 		sm.addString(partner.getName());
 		player.sendPacket(sm);
 	}

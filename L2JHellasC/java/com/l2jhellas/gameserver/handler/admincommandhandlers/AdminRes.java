@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 import com.l2jhellas.logs.GMAudit;
 
@@ -123,7 +122,7 @@ public class AdminRes implements IAdminCommandHandler
 
 		if (obj instanceof L2ControllableMobInstance)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
 
@@ -195,7 +194,7 @@ public class AdminRes implements IAdminCommandHandler
 
 		if (obj == null || obj instanceof L2PcInstance || obj instanceof L2ControllableMobInstance)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
 

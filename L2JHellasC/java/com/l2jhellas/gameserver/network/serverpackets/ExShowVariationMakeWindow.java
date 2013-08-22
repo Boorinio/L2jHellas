@@ -38,7 +38,7 @@ public class ExShowVariationMakeWindow extends L2GameServerPacket
 			_safety = false;
 
 		if (_safety)
-			player.sendPacket(new SystemMessage(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION));
+			player.sendPacket(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION);
 	}
 
 	@Override

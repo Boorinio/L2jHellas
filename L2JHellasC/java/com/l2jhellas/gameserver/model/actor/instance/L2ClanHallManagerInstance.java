@@ -34,7 +34,6 @@ import com.l2jhellas.gameserver.network.serverpackets.BuyList;
 import com.l2jhellas.gameserver.network.serverpackets.ClanHallDecoration;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseDepositList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
@@ -817,7 +816,7 @@ public class L2ClanHallManagerInstance extends L2FolkInstance
 			//you cannot teleport to village that is in siege Not sure about this one though
 			if (SiegeManager.getInstance().getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
 			{
-				player.sendPacket(new SystemMessage(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE));
+				player.sendPacket(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE);
 				return;
 			}
 			else if (player.reduceAdena("Teleport", list.getPrice(), this, true))

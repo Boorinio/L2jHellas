@@ -88,7 +88,7 @@ public final class UseItem extends L2GameClientPacket
 
 		if (activeChar.getPrivateStoreType() != 0)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -104,7 +104,7 @@ public final class UseItem extends L2GameClientPacket
 		
 		if (activeChar.getActiveTradeList() != null)
 		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_USE_ITEM_WHILE_TRADING);
+			activeChar.sendPacket(SystemMessageId.CANNOT_PICKUP_OR_USE_ITEM_WHILE_TRADING);
 			return;
 		}
 		
@@ -123,7 +123,7 @@ public final class UseItem extends L2GameClientPacket
 
 		if (item.getItem().getType2() == L2Item.TYPE2_QUEST)
 		{
-			activeChar.sendMessage("You can't use quest items");
+			activeChar.sendMessage("You can't use quest items.");
 			return;
 		}
 		
@@ -162,7 +162,7 @@ public final class UseItem extends L2GameClientPacket
 		if (((cl == null) || cl.getHasCastle() == 0) && itemId == 7015 && Config.CASTLE_SHIELD)
 		{
 			// A shield that can only be used by the members of a clan that owns a castle.
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -172,7 +172,7 @@ public final class UseItem extends L2GameClientPacket
 		if ((itemId >= 7860 && itemId <= 7879) && Config.APELLA_ARMORS && (cl == null || activeChar.getPledgeClass() < 5))
 		{
 			// Apella armor used by clan members may be worn by a Baron or a higher level Aristocrat.
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -181,7 +181,7 @@ public final class UseItem extends L2GameClientPacket
 		if ((itemId >= 7850 && itemId <= 7859) && Config.OATH_ARMORS && (cl == null))
 		{
 			// Clan Oath armor used by all clan members
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -190,7 +190,7 @@ public final class UseItem extends L2GameClientPacket
 		if (itemId == 6841 && Config.CASTLE_CROWN && (cl == null || (cl.getHasCastle() == 0 || !activeChar.isClanLeader())))
 		{
 			// The Lord's Crown used by castle lords only
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -201,7 +201,7 @@ public final class UseItem extends L2GameClientPacket
 		{
 			if (cl == null)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 				activeChar.sendPacket(sm);
 				sm = null;
 				return;
@@ -211,7 +211,7 @@ public final class UseItem extends L2GameClientPacket
 				int circletId = CastleManager.getInstance().getCircletByCastleId(cl.getHasCastle());
 				if (activeChar.getPledgeType() == -1 || circletId != itemId)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 					activeChar.sendPacket(sm);
 					sm = null;
 					return;
@@ -262,7 +262,7 @@ public final class UseItem extends L2GameClientPacket
 		// Char cannot use pet items
 		if (item.getItem().isForWolf() || item.getItem().isForHatchling() || item.getItem().isForStrider() || item.getItem().isForBabyPet())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_EQUIP_PET_ITEM); // You cannot equip a pet item.
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_PET_ITEM); // You cannot equip a pet item.
 			sm.addItemName(item.getItemId());
 			getClient().getActiveChar().sendPacket(sm);
 			sm = null;
@@ -271,7 +271,7 @@ public final class UseItem extends L2GameClientPacket
 		if (activeChar.isFishing() && (item.getItemId()< 6535 || item.getItemId() > 6540))
 		{
 			// You cannot do anything else while fishing
-			SystemMessage sm = new SystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
 			getClient().getActiveChar().sendPacket(sm);
 			sm = null;
 			return;
@@ -420,7 +420,7 @@ public final class UseItem extends L2GameClientPacket
 				{
 					if (item.getItemType() == L2ArmorType.HEAVY)
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+						activeChar.sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 						return;
 					}
 				}
@@ -430,7 +430,7 @@ public final class UseItem extends L2GameClientPacket
 				{
 					if (item.getItemType() == L2ArmorType.HEAVY)
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION));
+						activeChar.sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 						return;
 					}
 				}
@@ -451,8 +451,6 @@ public final class UseItem extends L2GameClientPacket
 				return;
 			}
 			
-
-
 			// Equip or unEquip
 			activeChar.useEquippableItem(item, true);
 			activeChar.refreshExpertisePenalty();

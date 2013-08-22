@@ -84,7 +84,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 			{
 				Hero.getInstance().setRBkilled(killer.getObjectId(), getNpcId());
 			}
-			SystemMessage msg = new SystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
+			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
 			broadcastPacket(msg);
 		}
 

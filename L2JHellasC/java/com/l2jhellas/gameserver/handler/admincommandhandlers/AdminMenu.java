@@ -97,7 +97,7 @@ public class AdminMenu implements IAdminCommandHandler
 				L2PcInstance player = L2World.getPlayer(targetName);
 				if (player == null)
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return true;
 				}
 				if (!player.isInParty())
@@ -122,7 +122,7 @@ public class AdminMenu implements IAdminCommandHandler
 				L2PcInstance player = L2World.getPlayer(targetName);
 				if (player == null)
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return true;
 				}
 				L2Clan clan = player.getClan();
@@ -164,7 +164,7 @@ public class AdminMenu implements IAdminCommandHandler
 				st.nextToken();
 				String player = st.nextToken();
 				L2PcInstance plyr = L2World.getPlayer(player);
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				if (plyr != null)
 				{
 					plyr.logout();
@@ -243,7 +243,7 @@ public class AdminMenu implements IAdminCommandHandler
 		}
 		else
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 		}
 		AdminHelpPage.showHelpPage(activeChar, filename);
 	}
@@ -265,11 +265,11 @@ public class AdminMenu implements IAdminCommandHandler
 			player = (L2PcInstance) target;
 		else
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
 		if (player.getObjectId() == activeChar.getObjectId())
-			player.sendPacket(new SystemMessage(SystemMessageId.CANNOT_USE_ON_YOURSELF));
+			player.sendPacket(SystemMessageId.CANNOT_USE_ON_YOURSELF);
 		else
 		{
 			activeChar.teleToLocation(player.getX(), player.getY(), player.getZ(), true);
@@ -297,7 +297,7 @@ public class AdminMenu implements IAdminCommandHandler
 			if (result.next())
 			{
 				String acc_name = result.getString(1);
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				if (acc_name.length() > 0)
 				{
 					LoginServerThread.getInstance().sendAccessLevel(acc_name, banLevel);

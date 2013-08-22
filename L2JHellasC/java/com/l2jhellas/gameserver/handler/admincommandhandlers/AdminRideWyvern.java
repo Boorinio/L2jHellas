@@ -39,7 +39,7 @@ public class AdminRideWyvern implements IAdminCommandHandler
 		{
 			if (activeChar.isMounted() || activeChar.getPet() != null)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Already Have a Pet or Mounted.");
 				activeChar.sendPacket(sm);
 				return false;
@@ -54,7 +54,7 @@ public class AdminRideWyvern implements IAdminCommandHandler
 			}
 			else
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Command '" + command + "' not recognized");
 				activeChar.sendPacket(sm);
 				return false;

@@ -24,8 +24,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.util.Rnd;
@@ -92,7 +90,6 @@ public final class EffectFear extends L2Effect
 					if (getEffected() instanceof L2NpcInstance)
 					{
 						getEffected().reduceCurrentHp(getEffected().getCurrentHp() - 1, getEffector());
-						getEffector().sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE));
 					}
 				}
 			}

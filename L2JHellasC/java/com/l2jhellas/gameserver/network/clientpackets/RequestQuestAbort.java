@@ -51,7 +51,7 @@ public final class RequestQuestAbort extends L2GameClientPacket
 			if (qs != null)
 			{
 				qs.exitQuest(true);
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Quest aborted.");
 				activeChar.sendPacket(sm);
 				sm = null;

@@ -122,7 +122,7 @@ public class L2SkillDrain extends L2Skill
 					{
 						activeChar.stopSkillEffects(getId());
 						getEffects(null, activeChar);
-						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(getId());
 						activeChar.sendPacket(sm);
 					}
@@ -135,7 +135,7 @@ public class L2SkillDrain extends L2Skill
 							getEffects(activeChar, target);
 						else
 						{
-							SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
 							sm.addString(target.getName());
 							sm.addSkillName(getDisplayId());
 							activeChar.sendPacket(sm);

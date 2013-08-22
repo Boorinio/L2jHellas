@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * sample<BR>
@@ -54,8 +53,8 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 
 		if (_response == 0)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_DID_NOT_RESPOND_TO_ALLY_INVITATION));
-			requestor.sendPacket(new SystemMessage(SystemMessageId.NO_RESPONSE_TO_ALLY_INVITATION));
+			activeChar.sendPacket(SystemMessageId.YOU_DID_NOT_RESPOND_TO_ALLY_INVITATION);
+			requestor.sendPacket(SystemMessageId.NO_RESPONSE_TO_ALLY_INVITATION);
 		}
 		else
 		{
@@ -68,10 +67,9 @@ public final class RequestAnswerJoinAlly extends L2GameClientPacket
 			// we must double check this cause of hack
 			if (clan.checkAllyJoinCondition(requestor, activeChar))
 			{
-				// TODO: Need correct message id
-				requestor.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND));
+				requestor.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
 
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ACCEPTED_ALLIANCE));
+				activeChar.sendPacket(SystemMessageId.YOU_ACCEPTED_ALLIANCE);
 
 				activeChar.getClan().setAllyId(clan.getAllyId());
 				activeChar.getClan().setAllyName(clan.getAllyName());

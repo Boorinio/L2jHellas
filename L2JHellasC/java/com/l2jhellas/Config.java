@@ -74,7 +74,6 @@ public final class Config
 	private static final String PVP_CONFIG_FILE = "./config/Main/PvP.ini";
 	private static final String GRANDBOSS_CONFIG_FILE = "./config/Main/GrandBoss.ini";
 	// Events Folder
-	private static final String EVENT_VIP_CONFIG_FILE = "./config/Events/VIP.ini";
 	private static final String EVENT_ZODIAC_CONFIG_FILE = "./config/Events/Zodiac.ini";
 	private static final String EVENT_TVT_CONFIG_FILE = "./config/Events/TVT.ini";
 	private static final String EVENT_HITMAN_CONFIG_FILE = "./config/Events/HitMan.ini";
@@ -858,13 +857,6 @@ public final class Config
 	/**
 	 * Event Config File
 	 */
-	// VIP Configs
-	public static boolean VIP_ALLOW_INTERFERENCE;
-	public static boolean VIP_ALLOW_POTIONS;
-	public static boolean VIP_ON_START_REMOVE_ALL_EFFECTS;
-	public static int VIP_MIN_LEVEL;
-	public static int VIP_MAX_LEVEL;
-	public static int VIP_MIN_PARTICIPANTS;
 	// Zodiac Settings
 	public static boolean ZODIAC_ENABLE;
 	public static int ZODIAC_REWARD;
@@ -2451,38 +2443,6 @@ public final class Config
 			MAX_ITEM_IN_PACKET = Math.max(INVENTORY_MAXIMUM_NO_DWARF, Math.max(INVENTORY_MAXIMUM_DWARF, INVENTORY_MAXIMUM_GM));
 
 			/**
-			 * Event VIP
-			 */
-			Properties EventVIPSettings = new Properties();
-			final File eventVIP = new File(EVENT_VIP_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventVIP))
-			{
-				EventVIPSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_VIP_CONFIG_FILE + " settings!", e);
-			}
-			VIP_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventVIPSettings.getProperty("VIPAllowInterference", "false"));
-			VIP_ALLOW_POTIONS = Boolean.parseBoolean(EventVIPSettings.getProperty("VIPAllowPotions", "false"));
-			VIP_ON_START_REMOVE_ALL_EFFECTS = Boolean.parseBoolean(EventVIPSettings.getProperty("VIPOnStartRemoveAllEffects", "true"));
-			VIP_MIN_LEVEL = Integer.parseInt(EventVIPSettings.getProperty("VIPMinLevel", "1"));
-			if (VIP_MIN_LEVEL < 1)
-			{
-				VIP_MIN_LEVEL = 1; // can't be set less then lvl 1
-			}
-			VIP_MAX_LEVEL = Integer.parseInt(EventVIPSettings.getProperty("VIPMaxLevel", "85"));
-			if (VIP_MAX_LEVEL < VIP_MIN_LEVEL)
-			{
-				VIP_MAX_LEVEL = VIP_MIN_LEVEL + 1; // can't be set less thenMin Level
-			}
-			VIP_MIN_PARTICIPANTS = Integer.parseInt(EventVIPSettings.getProperty("VIPMinParticipants", "10"));
-			if (VIP_MIN_PARTICIPANTS < 10)
-			{
-				VIP_MIN_PARTICIPANTS = 10; // can't be set less then lvl 10
-			}
-			
-			/**
 			 * Event ZODIAC
 			 */
 			Properties EventZodiacSettings = new Properties();
@@ -3929,24 +3889,6 @@ public final class Config
 			break;
 			case "DMOnStartUnsummonPet":
 				DM_ON_START_UNSUMMON_PET = Boolean.parseBoolean(pValue);
-			break;
-			case "VIPAllowInterference":
-				VIP_ALLOW_INTERFERENCE = Boolean.parseBoolean(pValue);
-			break;
-			case "VIPAllowPotions":
-				VIP_ALLOW_POTIONS = Boolean.parseBoolean(pValue);
-			break;
-			case "VIPOnStartRemoveAllEffects":
-				VIP_ON_START_REMOVE_ALL_EFFECTS = Boolean.parseBoolean(pValue);
-			break;
-			case "VIPMinLevel":
-				VIP_MIN_LEVEL = Integer.parseInt(pValue);
-			break;
-			case "VIPMaxLevel":
-				VIP_MAX_LEVEL = Integer.parseInt(pValue);
-			break;
-			case "VIPMinParticipants":
-				VIP_MIN_PARTICIPANTS = Integer.parseInt(pValue);
 			break;
 			case "EnchantChanceWeapon":
 				ENCHANT_CHANCE_WEAPON = Integer.parseInt(pValue);

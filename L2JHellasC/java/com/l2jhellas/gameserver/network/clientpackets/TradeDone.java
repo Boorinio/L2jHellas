@@ -58,7 +58,7 @@ public final class TradeDone extends L2GameClientPacket
 			{
 				// Trade partner not found, cancel trade
 				player.cancelActiveTrade();
-				SystemMessage msg = new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 				player.sendPacket(msg);
 				msg = null;
 				return;

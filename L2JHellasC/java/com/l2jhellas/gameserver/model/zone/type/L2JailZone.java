@@ -39,7 +39,7 @@ public class L2JailZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_JAIL, true);
 			character.setInsideZone(L2Character.ZONE_PVP, true);
-			character.sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
+			character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
 
@@ -50,7 +50,7 @@ public class L2JailZone extends L2ZoneType
 		{
 			character.setInsideZone(L2Character.ZONE_JAIL, false);
 			character.setInsideZone(L2Character.ZONE_PVP, false);
-			character.sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+			character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 			
 			final L2PcInstance player = ((L2PcInstance) character);
 			
@@ -60,8 +60,6 @@ public class L2JailZone extends L2ZoneType
 				player.sendMessage("You won't escape from jail!");
 			}
 		}
-
-
 	}
 
 	@Override

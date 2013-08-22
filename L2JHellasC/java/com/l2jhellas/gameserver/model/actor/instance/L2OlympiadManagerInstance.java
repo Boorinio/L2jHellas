@@ -138,7 +138,7 @@ public class L2OlympiadManagerInstance extends L2FolkInstance
 						iu.addModifiedItem(item);
 						player.sendPacket(iu);
 
-						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
 						sm.addNumber(passes);
 						sm.addItemName(item.getItemId());
 						player.sendPacket(sm);

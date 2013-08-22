@@ -43,7 +43,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SepulcherNpcInstance;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
@@ -923,7 +922,7 @@ public class FourSepulchersManager
 
 				if (player.getWeightPenalty() >= 3)
 				{
-					mem.sendPacket(new SystemMessage(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT));
+					mem.sendPacket(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT);
 					return;
 				}
 			}
@@ -951,7 +950,7 @@ public class FourSepulchersManager
 
 				if (player.getWeightPenalty() >= 3)
 				{
-					mem.sendPacket(new SystemMessage(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT));
+					mem.sendPacket(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT);
 					return;
 				}
 			}
@@ -972,7 +971,7 @@ public class FourSepulchersManager
 
 			if (player.getWeightPenalty() >= 3)
 			{
-				player.sendPacket(new SystemMessage(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT));
+				player.sendPacket(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT);
 				return;
 			}
 		}

@@ -100,11 +100,11 @@ public class Sow implements ISkillHandler
 			{
 				_activeChar.sendPacket(new PlaySound("Itemsound.quest_itemget"));
 				_target.setSeeded();
-				sm = new SystemMessage(SystemMessageId.THE_SEED_WAS_SUCCESSFULLY_SOWN);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SEED_WAS_SUCCESSFULLY_SOWN);
 			}
 			else
 			{
-				sm = new SystemMessage(SystemMessageId.THE_SEED_WAS_NOT_SOWN);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SEED_WAS_NOT_SOWN);
 			}
 			if (_activeChar.getParty() == null)
 			{
@@ -114,7 +114,6 @@ public class Sow implements ISkillHandler
 			{
 				_activeChar.getParty().broadcastToPartyMembers(sm);
 			}
-			// TODO: Mob should not agro on player, this way doesn't work really nice
 			_target.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}
 
@@ -122,7 +121,6 @@ public class Sow implements ISkillHandler
 
 	private boolean calcSuccess()
 	{
-		// TODO: check all the chances
 		int basicSuccess = (L2Manor.getInstance().isAlternative(_seedId) ? 20 : 90);
 		int minlevelSeed = 0;
 		int maxlevelSeed = 0;

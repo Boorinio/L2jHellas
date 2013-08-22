@@ -40,10 +40,6 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
- * Seven Signs Engine
- * TODO:
- * - Implementation of the Seal of Strife for sieges.
- *
  * @author Tempy
  */
 public class SevenSigns
@@ -1142,16 +1138,16 @@ public class SevenSigns
 		switch (getCurrentPeriod())
 		{
 			case PERIOD_COMP_RECRUITING:
-				sm = new SystemMessage(SystemMessageId.PREPARATIONS_PERIOD_BEGUN);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.PREPARATIONS_PERIOD_BEGUN);
 			break;
 			case PERIOD_COMPETITION:
-				sm = new SystemMessage(SystemMessageId.COMPETITION_PERIOD_BEGUN);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.COMPETITION_PERIOD_BEGUN);
 			break;
 			case PERIOD_COMP_RESULTS:
-				sm = new SystemMessage(SystemMessageId.RESULTS_PERIOD_BEGUN);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.RESULTS_PERIOD_BEGUN);
 			break;
 			case PERIOD_SEAL_VALIDATION:
-				sm = new SystemMessage(SystemMessageId.VALIDATION_PERIOD_BEGUN);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.VALIDATION_PERIOD_BEGUN);
 			break;
 		}
 		player.sendPacket(sm);
@@ -1164,7 +1160,7 @@ public class SevenSigns
 	 */
 	public void sendMessageToAll(SystemMessageId sysMsgId)
 	{
-		SystemMessage sm = new SystemMessage(sysMsgId);
+		SystemMessage sm = SystemMessage.getSystemMessage(sysMsgId);
 
 		for (L2PcInstance player : L2World.getAllPlayers())
 		{

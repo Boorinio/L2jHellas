@@ -151,7 +151,7 @@ public class Continuous implements ISkillHandler
 				boolean acted = Formulas.calcSkillSuccess(activeChar, target, skill, ss, sps, bss);
 				if (!acted)
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ATTACK_FAILED));
 					continue;
 				}
 

@@ -59,7 +59,7 @@ public class BlessedSpiritShot implements IItemHandler
 
 		if (activeChar.isInOlympiadMode())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
 			sm.addString(item.getItemName());
 			activeChar.sendPacket(sm);
 			sm = null;
@@ -70,7 +70,7 @@ public class BlessedSpiritShot implements IItemHandler
 		if (weaponInst == null || weaponItem.getSpiritShotCount() == 0)
 		{
 			if (!activeChar.getAutoSoulShot().containsKey(itemId))
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_USE_SPIRITSHOTS));
+				activeChar.sendPacket(SystemMessageId.CANNOT_USE_SPIRITSHOTS);
 			return;
 		}
 
@@ -83,7 +83,7 @@ public class BlessedSpiritShot implements IItemHandler
 		if ((weaponGrade == L2Item.CRYSTAL_NONE && itemId != 3947) || (weaponGrade == L2Item.CRYSTAL_D && itemId != 3948) || (weaponGrade == L2Item.CRYSTAL_C && itemId != 3949) || (weaponGrade == L2Item.CRYSTAL_B && itemId != 3950) || (weaponGrade == L2Item.CRYSTAL_A && itemId != 3951) || (weaponGrade == L2Item.CRYSTAL_S && itemId != 3952))
 		{
 			if (!activeChar.getAutoSoulShot().containsKey(itemId))
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH));
+				activeChar.sendPacket(SystemMessageId.SPIRITSHOTS_GRADE_MISMATCH);
 			return;
 		}
 
@@ -95,12 +95,12 @@ public class BlessedSpiritShot implements IItemHandler
 				activeChar.removeAutoSoulShot(itemId);
 				activeChar.sendPacket(new ExAutoSoulShot(itemId, 0));
 
-				SystemMessage sm = new SystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
 				sm.addString(item.getItem().getName());
 				activeChar.sendPacket(sm);
 			}
 			else
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_SPIRITSHOTS));
+				activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_SPIRITSHOTS);
 			return;
 		}
 
@@ -108,7 +108,7 @@ public class BlessedSpiritShot implements IItemHandler
 		weaponInst.setChargedSpiritshot(L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT);
 
 		// Send message to client
-		activeChar.sendPacket(new SystemMessage(SystemMessageId.ENABLED_SPIRITSHOT));
+		activeChar.sendPacket(SystemMessageId.ENABLED_SPIRITSHOT);
 		Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUse(activeChar, activeChar, SKILL_IDS[weaponGrade], 1, 0, 0), 360000/* 600 */);
 	}
 

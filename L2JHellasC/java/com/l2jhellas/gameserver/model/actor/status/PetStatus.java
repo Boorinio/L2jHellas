@@ -46,7 +46,7 @@ public class PetStatus extends SummonStatus
 
 		if (attacker != null)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.PET_RECEIVED_S2_DAMAGE_BY_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.PET_RECEIVED_S2_DAMAGE_BY_S1);
 			if (attacker instanceof L2NpcInstance)
 				sm.addNpcName(((L2NpcInstance) attacker).getTemplate().idTemplate);
 			else

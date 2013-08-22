@@ -121,7 +121,7 @@ public class MultiSellChoose extends L2GameClientPacket
 				{
 					if ((double) ex.getItemCount() + e.getItemCount() > Integer.MAX_VALUE)
 					{
-						player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
+						player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
 						_ingredientsList.clear();
 						_ingredientsList = null;
 						return;
@@ -153,7 +153,7 @@ public class MultiSellChoose extends L2GameClientPacket
 		{
 			if ((double) e.getItemCount() * _amount > Integer.MAX_VALUE)
 			{
-				player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
+				player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
 				_ingredientsList.clear();
 				_ingredientsList = null;
 				return;
@@ -164,7 +164,7 @@ public class MultiSellChoose extends L2GameClientPacket
 				// otherwise, check only the count of items with exactly the needed enchantment level
 				if (inv.getInventoryItemCount(e.getItemId(), maintainEnchantment ? e.getEnchantmentLevel() : -1) < ((Config.ALT_BLACKSMITH_USE_RECIPES || !e.getMantainIngredient()) ? (e.getItemCount() * _amount) : e.getItemCount()))
 				{
-					player.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+					player.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 					_ingredientsList.clear();
 					_ingredientsList = null;
 					return;
@@ -174,17 +174,17 @@ public class MultiSellChoose extends L2GameClientPacket
 			{
 				if (player.getClan() == null)
 				{
-					player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER));
+					player.sendPacket(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
 					return;
 				}
 				if (!player.isClanLeader())
 				{
-					player.sendPacket(new SystemMessage(SystemMessageId.ONLY_THE_CLAN_LEADER_IS_ENABLED));
+					player.sendPacket(SystemMessageId.ONLY_THE_CLAN_LEADER_IS_ENABLED);
 					return;
 				}
 				if (player.getClan().getReputationScore() < e.getItemCount())
 				{
-					player.sendPacket(new SystemMessage(SystemMessageId.THE_CLAN_REPUTATION_SCORE_IS_TOO_LOW));
+					player.sendPacket(SystemMessageId.THE_CLAN_REPUTATION_SCORE_IS_TOO_LOW);
 					return;
 				}
 			}
@@ -203,12 +203,12 @@ public class MultiSellChoose extends L2GameClientPacket
 				{
 					if (player.GetInventoryLimit() < inv.getSize() + _amount && !ItemTable.getInstance().createDummyItem(a.getItemId()).isStackable())
 					{
-						player.sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+						player.sendPacket(SystemMessageId.SLOTS_FULL);
 						return;
 					}
 					if (player.GetInventoryLimit() < inv.getSize() && ItemTable.getInstance().createDummyItem(a.getItemId()).isStackable())
 					{
-						player.sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+						player.sendPacket(SystemMessageId.SLOTS_FULL);
 						return;
 					}
 				}
@@ -317,7 +317,7 @@ public class MultiSellChoose extends L2GameClientPacket
 			{
 				int repCost = player.getClan().getReputationScore() - e.getItemCount();
 				player.getClan().setReputationScore(repCost, true);
-				SystemMessage smsg = new SystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP);
+				SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.S1_DEDUCTED_FROM_CLAN_REP);
 				smsg.addNumber(e.getItemCount());
 				player.sendPacket(smsg);
 				player.getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(player.getClan()));
@@ -351,7 +351,7 @@ public class MultiSellChoose extends L2GameClientPacket
 
 			if (e.getItemCount() * _amount > 1)
 			{
-				sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 				sm.addItemName(e.getItemId());
 				sm.addNumber(e.getItemCount() * _amount);
 				player.sendPacket(sm);
@@ -361,13 +361,13 @@ public class MultiSellChoose extends L2GameClientPacket
 			{
 				if (maintainEnchantment && e.getEnchantmentLevel() > 0)
 				{
-					sm = new SystemMessage(SystemMessageId.ACQUIRED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.ACQUIRED_S1_S2);
 					sm.addNumber(e.getEnchantmentLevel());
 					sm.addItemName(e.getItemId());
 				}
 				else
 				{
-					sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
 					sm.addItemName(e.getItemId());
 				}
 				player.sendPacket(sm);

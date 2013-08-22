@@ -35,7 +35,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class SummonItems implements IItemHandler
@@ -59,7 +58,7 @@ public class SummonItems implements IItemHandler
 
 		if (activeChar.isSitting())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
+			activeChar.sendPacket(SystemMessageId.CANT_MOVE_SITTING);
 			return;
 		}
 
@@ -68,7 +67,7 @@ public class SummonItems implements IItemHandler
 
 		if (activeChar.isInOlympiadMode())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+			activeChar.sendPacket(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
 			return;
 		}
 
@@ -76,14 +75,14 @@ public class SummonItems implements IItemHandler
 
 		if ((activeChar.getPet() != null || activeChar.isMounted()) && sitem.isPetSummon())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ALREADY_HAVE_A_PET));
+			activeChar.sendPacket(SystemMessageId.YOU_ALREADY_HAVE_A_PET);
 			return;
 		}
 		
 		// Like L2OFF you can't summon pet in combat
 		if (activeChar.isAttackingNow() || activeChar.isInCombat())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT));
+			activeChar.sendPacket(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT);
 			return;
 		}
 
@@ -96,7 +95,7 @@ public class SummonItems implements IItemHandler
 
 		if (activeChar.isCursedWeaponEquiped() && sitem.isPetSummon())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE));
+			activeChar.sendPacket(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
 			return;
 		}
 
@@ -158,7 +157,7 @@ public class SummonItems implements IItemHandler
 				activeChar.setPet(petSummon);
 
 				activeChar.sendPacket(new MagicSkillUse(activeChar, 2046, 1, 1000, 600000));
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.SUMMON_A_PET));
+				activeChar.sendPacket(SystemMessageId.SUMMON_A_PET);
 				L2World.storeObject(petSummon);
 				petSummon.spawnMe(activeChar.getX() + 50, activeChar.getY() + 100, activeChar.getZ());
 				petSummon.startFeed(false);

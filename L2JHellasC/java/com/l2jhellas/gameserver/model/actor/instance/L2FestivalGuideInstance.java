@@ -196,8 +196,6 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
 						return;
 					}
 
-					// TODO: Check if the player has delevelled by comparing their skill levels.
-
 					/*
 					 * Check to see if the player has already signed up,
 					 * if they are then update the participant list providing all the
@@ -297,7 +295,7 @@ public final class L2FestivalGuideInstance extends L2FolkInstance
 					player.destroyItem("SevenSigns", bloodOfferings, this, false);
 
 					// Send message that the contribution score has increased.
-					SystemMessage sm = new SystemMessage(SystemMessageId.CONTRIB_SCORE_INCREASED);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CONTRIB_SCORE_INCREASED_S1);
 					sm.addNumber(offeringScore);
 					player.sendPacket(sm);
 

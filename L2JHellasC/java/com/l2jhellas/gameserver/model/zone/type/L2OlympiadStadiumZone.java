@@ -49,7 +49,7 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 		character.setInsideZone(L2Character.ZONE_PVP, true);
 		if (character instanceof L2PcInstance)
 		{
-			character.sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
+			character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
 
@@ -59,7 +59,7 @@ public class L2OlympiadStadiumZone extends L2ZoneType
 		character.setInsideZone(L2Character.ZONE_PVP, false);
 		if (character instanceof L2PcInstance)
 		{
-			character.sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+			character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 		}
 	}
 

@@ -135,7 +135,7 @@ public class PcStat extends PlayableStat
 			return false;
 
 		// Send a Server->Client System Message to the L2PcInstance
-		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_EARNED_S1_EXP_AND_S2_SP);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_EARNED_S1_EXP_AND_S2_SP);
 		sm.addNumber((int) addToExp);
 		sm.addNumber(addToSp);
 		getActiveChar().sendPacket(sm);
@@ -151,10 +151,10 @@ public class PcStat extends PlayableStat
 			return false;
 
 		// Send a Server->Client System Message to the L2PcInstance
-		SystemMessage sm = new SystemMessage(SystemMessageId.EXP_DECREASED_BY_S1);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EXP_DECREASED_BY_S1);
 		sm.addNumber((int) addToExp);
 		getActiveChar().sendPacket(sm);
-		sm = new SystemMessage(SystemMessageId.SP_DECREASED_S1);
+		sm = SystemMessage.getSystemMessage(SystemMessageId.SP_DECREASED_S1);
 		sm.addNumber(addToSp);
 		getActiveChar().sendPacket(sm);
 		if (getLevel() < level)
@@ -254,7 +254,7 @@ public class PcStat extends PlayableStat
 
 			getActiveChar().setCurrentCp(getMaxCp());
 			getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15));
-			getActiveChar().sendPacket(new SystemMessage(SystemMessageId.YOU_INCREASED_YOUR_LEVEL));
+			getActiveChar().sendPacket(SystemMessageId.YOU_INCREASED_YOUR_LEVEL);
 
 			if (getActiveChar().isInFunEvent())
 			{

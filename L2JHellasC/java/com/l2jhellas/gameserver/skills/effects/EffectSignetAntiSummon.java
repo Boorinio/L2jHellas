@@ -64,7 +64,7 @@ final class EffectSignetAntiSummon extends EffectSignet
 				{
 					if (mpConsume > caster.getCurrentMp())
 					{
-						caster.sendPacket(new SystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP));
+						caster.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_MP));
 						return false;
 					}
 					else

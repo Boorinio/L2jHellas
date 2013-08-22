@@ -122,7 +122,7 @@ public class PcStatus extends PlayableStatus
 		if (attacker != null && attacker != getActiveChar() && fullValue > 0)
 		{
 			// Send a System Message to the L2PcInstance
-			SystemMessage smsg = new SystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
+			SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
 
 			if (Config.DEBUG)
 				_log.fine("Attacker:" + attacker.getName());

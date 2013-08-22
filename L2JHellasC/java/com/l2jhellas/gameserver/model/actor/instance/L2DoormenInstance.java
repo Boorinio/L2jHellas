@@ -108,14 +108,14 @@ public class L2DoormenInstance extends L2FolkInstance
 				{
 					if (player.isMounted())
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 						sm.addString("You Already Have a Pet or Are Mounted.");
 						player.sendPacket(sm);
 						return;
 					}
 					else
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 						sm.addString("Summon your Strider first.");
 						player.sendPacket(sm);
 						return;
@@ -127,7 +127,7 @@ public class L2DoormenInstance extends L2FolkInstance
 					{
 						if (player.getPet().getLevel() < 55)
 						{
-							SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 							sm.addString("Your Strider Has not reached the required level.");
 							player.sendPacket(sm);
 							return;
@@ -143,7 +143,7 @@ public class L2DoormenInstance extends L2FolkInstance
 							player.broadcastPacket(mount);
 							player.setMountType(mount.getMountType());
 							player.addSkill(SkillTable.getInstance().getInfo(4289, 1));
-							SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 							sm.addString("The Wyvern has been summoned successfully!");
 							player.sendPacket(sm);
 							return;
@@ -151,7 +151,7 @@ public class L2DoormenInstance extends L2FolkInstance
 					}
 					else
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 						sm.addString("You need 10 Crystals: B Grade.");
 						player.sendPacket(sm);
 						return;
@@ -159,7 +159,7 @@ public class L2DoormenInstance extends L2FolkInstance
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 					sm.addString("Unsummon your pet.");
 					player.sendPacket(sm);
 					return;

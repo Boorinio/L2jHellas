@@ -452,8 +452,8 @@ public class L2DoorInstance extends L2Character
 				else
 				{
 					//need find serverpacket which ask open/close gate. now auto
-					//if (getOpen() == 1) player.sendPacket(new SystemMessage(1140));
-					//else player.sendPacket(new SystemMessage(1141));
+					//if (getOpen() == 1) player.sendPacket(1140));
+					//else player.sendPacket(1141));
 					if (!getOpen())
 					{
 						openMe();

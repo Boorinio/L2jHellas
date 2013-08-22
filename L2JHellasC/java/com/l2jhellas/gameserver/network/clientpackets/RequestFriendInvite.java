@@ -57,7 +57,7 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		if (friend == null)
 		{
 			// Target is not found in the game.
-			sm = new SystemMessage(SystemMessageId.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -66,7 +66,7 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		else if (friend.isevil() && activeChar.isgood() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			// Target is wrong.
-			sm = new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -74,7 +74,7 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		else if (friend.isgood() && activeChar.isevil() && Config.MOD_GVE_ENABLE_FACTION)
 		{
 			// Target is wrong.
-			sm = new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -82,7 +82,7 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		else if (friend == activeChar)
 		{
 			// You cannot add yourself to your own friend list.
-			sm = new SystemMessage(SystemMessageId.YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -98,7 +98,7 @@ public final class RequestFriendInvite extends L2GameClientPacket
 			if (rset.next())
 			{
 				// Player already is in your friendlist
-				sm = new SystemMessage(SystemMessageId.S1_ALREADY_IN_FRIENDS_LIST);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_IN_FRIENDS_LIST);
 				sm.addString(_name);
 			}
 			else
@@ -107,14 +107,14 @@ public final class RequestFriendInvite extends L2GameClientPacket
 				{
 					// requets to become friend
 					activeChar.onTransactionRequest(friend);
-					sm = new SystemMessage(SystemMessageId.S1_REQUESTED_TO_BECOME_FRIENDS);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_REQUESTED_TO_BECOME_FRIENDS);
 					sm.addString(_name);
 					AskJoinFriend ajf = new AskJoinFriend(activeChar.getName());
 					friend.sendPacket(ajf);
 				}
 				else
 				{
-					sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 				}
 			}
 

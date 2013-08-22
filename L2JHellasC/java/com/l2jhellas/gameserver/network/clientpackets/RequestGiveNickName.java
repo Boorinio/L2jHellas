@@ -49,7 +49,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 		if (activeChar.isNoble() && _target.matches(activeChar.getName()))
 		{
 			activeChar.setTitle(_title);
-			SystemMessage sm = new SystemMessage(SystemMessageId.TITLE_CHANGED);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.TITLE_CHANGED);
 			activeChar.sendPacket(sm);
 			activeChar.broadcastTitleInfo();
 		}
@@ -58,7 +58,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 		{
 			if (activeChar.getClan().getLevel() < 3)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_LVL_3_NEEDED_TO_ENDOWE_TITLE);
 				activeChar.sendPacket(sm);
 				sm = null;
 				return;
@@ -72,14 +72,14 @@ public class RequestGiveNickName extends L2GameClientPacket
 				{
 					// is target from the same clan?
 					member.setTitle(_title);
-					SystemMessage sm = new SystemMessage(SystemMessageId.TITLE_CHANGED);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.TITLE_CHANGED);
 					member.sendPacket(sm);
 					member.broadcastTitleInfo();
 					sm = null;
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 					sm.addString("Target needs to be online to get a title.");
 					activeChar.sendPacket(sm);
 					sm = null;
@@ -87,7 +87,7 @@ public class RequestGiveNickName extends L2GameClientPacket
 			}
 			else
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Target does not belong to your clan.");
 				activeChar.sendPacket(sm);
 				sm = null;

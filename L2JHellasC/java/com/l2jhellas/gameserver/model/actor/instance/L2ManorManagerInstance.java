@@ -37,7 +37,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExShowSeedInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowSellCropList;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -143,7 +142,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance
 			if (CastleManorManager.getInstance().isUnderMaintenance())
 			{
 				player.sendPacket(ActionFailed.STATIC_PACKET);
-				player.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
+				player.sendPacket(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE);
 				return;
 			}
 
@@ -165,7 +164,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance
 				case 1: // Seed purchase
 					if (castleId != getCastle().getCastleId())
 					{
-						player.sendPacket(new SystemMessage(SystemMessageId.HERE_YOU_CAN_BUY_ONLY_SEEDS_OF_S1_MANOR));
+						player.sendPacket(SystemMessageId.HERE_YOU_CAN_BUY_ONLY_SEEDS_OF_S1_MANOR);
 					}
 					else
 					{

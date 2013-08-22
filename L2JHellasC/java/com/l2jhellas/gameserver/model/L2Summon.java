@@ -683,7 +683,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		{
 			if (getOwner() != null)
 			{
-				getOwner().sendPacket(new SystemMessage(SystemMessageId.TARGET_CANT_FOUND));
+				getOwner().sendPacket(SystemMessageId.TARGET_CANT_FOUND);
 			}
 			return;
 		}
@@ -707,7 +707,7 @@ public abstract class L2Summon extends L2PlayableInstance
 		// Check if this skill is enabled (ex : reuse time)
 		if (isSkillDisabled(skill.getId()) && getOwner() != null && (getOwner().getAccessLevel().allowPeaceAttack()))
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE);
 			sm.addString(skill.getName());
 			getOwner().sendPacket(sm);
 			return;
@@ -725,7 +725,7 @@ public abstract class L2Summon extends L2PlayableInstance
 			// Send a System Message to the caster
 			if (getOwner() != null)
 			{
-				getOwner().sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
+				getOwner().sendPacket(SystemMessageId.NOT_ENOUGH_MP);
 			}
 			return;
 		}
@@ -736,7 +736,7 @@ public abstract class L2Summon extends L2PlayableInstance
 			// Send a System Message to the caster
 			if (getOwner() != null)
 			{
-				getOwner().sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_HP));
+				getOwner().sendPacket(SystemMessageId.NOT_ENOUGH_HP);
 			}
 			return;
 		}
@@ -749,14 +749,14 @@ public abstract class L2Summon extends L2PlayableInstance
 			if (isInsidePeaceZone(this, target) && getOwner() != null && (getOwner().getAccessLevel().allowPeaceAttack()))
 			{
 				// If summon or target is in a peace zone, send a system message TARGET_IN_PEACEZONE
-				getOwner().sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
+				getOwner().sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
 				return;
 			}
 
 			if (this.isInFunEvent() || target.isInFunEvent())
 			{
 				// If summon or target is in a peace zone, send a system message TARGET_IN_PEACEZONE
-				getOwner().sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
+				getOwner().sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
 				return;
 			}
 

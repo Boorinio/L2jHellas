@@ -92,12 +92,12 @@ public class L2Request
 	{
 		if (partner == null)
 		{
-			_player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET));
+			_player.sendPacket(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET);
 			return false;
 		}
 		if (partner.getRequest().isProcessingRequest())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
 			sm.addString(partner.getName());
 			_player.sendPacket(sm);
 			sm = null;
@@ -105,7 +105,7 @@ public class L2Request
 		}
 		if (isProcessingRequest())
 		{
-			_player.sendPacket(new SystemMessage(SystemMessageId.WAITING_FOR_ANOTHER_REPLY));
+			_player.sendPacket(SystemMessageId.WAITING_FOR_ANOTHER_REPLY);
 			return false;
 		}
 

@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListSell;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
 
 public class SetPrivateStoreListSell extends L2GameClientPacket
@@ -106,7 +105,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		if (_count > player.GetPrivateSellStoreLimit())
 		{
 			player.sendPacket(new PrivateStoreManageListSell(player));
-			player.sendPacket(new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED));
+			player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
 			return;
 		}
 

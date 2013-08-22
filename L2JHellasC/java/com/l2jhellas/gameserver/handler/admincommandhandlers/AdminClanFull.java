@@ -61,13 +61,16 @@ public class AdminClanFull implements IAdminCommandHandler
 		}
 		else
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
 
 		if (!player.isClanLeader())
 		{
-			player.sendPacket((new SystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER)).addString(player.getName()));
+			player.sendPacket(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER);
+			sm.addString(player.getName());
+			player.sendPacket(sm);
 			return;
 		}
 		player.getClan().changeLevel(Config.CLAN_LEVEL);

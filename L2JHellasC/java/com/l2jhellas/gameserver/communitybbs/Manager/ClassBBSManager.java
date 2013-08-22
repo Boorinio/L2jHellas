@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Util;
 
@@ -127,11 +126,11 @@ public class ClassBBSManager extends BaseBBSManager
 			}
 			else if (Config.CLASS_MASTERS_PRICE_ITEMCB == 57)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+				activeChar.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 			}
 			else
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+				activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			}
 		}
 	}
@@ -145,11 +144,11 @@ public class ClassBBSManager extends BaseBBSManager
 		}
 		if (prof == 3)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER));
+			activeChar.sendPacket(SystemMessageId.THIRD_CLASS_TRANSFER);
 		}
 		else
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CLASS_TRANSFER));
+			activeChar.sendPacket(SystemMessageId.CLASS_TRANSFER);
 		}
 		activeChar.setClassId(val);
 

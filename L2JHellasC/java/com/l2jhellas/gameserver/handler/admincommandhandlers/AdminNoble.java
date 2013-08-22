@@ -45,7 +45,7 @@ public class AdminNoble implements IAdminCommandHandler
 		{
 			L2Object target = activeChar.getTarget();
 			L2PcInstance player = null;
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 			if (target instanceof L2PcInstance)
 			{
 				player = (L2PcInstance) target;

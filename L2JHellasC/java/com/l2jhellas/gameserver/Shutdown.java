@@ -413,7 +413,7 @@ public class Shutdown extends Thread
 					case 30:
 					{
 						_an.announceToAll("Server " + MODE_TEXT[_shutdownMode] + " will be shut down in 30 seconds, please log off!");
-						SystemMessage sm = new SystemMessage(SystemMessageId.EXIT_GAME_SECOND);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SERVER_WILL_BE_COMING_DOWN_IN_S1_SECONDS);
 						sm.addString("30");
 						Broadcast.toAllOnlinePlayers(sm);
 						break;

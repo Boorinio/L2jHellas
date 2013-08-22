@@ -42,7 +42,7 @@ public class CombatPointHeal implements ISkillHandler
 			double cp = skill.getPower();
 			// int cLev = activeChar.getLevel();
 			// hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/;
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CP_WILL_BE_RESTORED);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CP_WILL_BE_RESTORED);
 			sm.addNumber((int) cp);
 			target.sendPacket(sm);
 			target.setCurrentCp(cp + target.getCurrentCp());

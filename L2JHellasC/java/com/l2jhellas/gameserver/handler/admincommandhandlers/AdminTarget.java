@@ -59,14 +59,14 @@ public class AdminTarget implements IAdminCommandHandler
 			}
 			else
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Player " + targetName + " not found");
 				activeChar.sendPacket(sm);
 			}
 		}
 		catch (IndexOutOfBoundsException e)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Please specify correct name.");
 			activeChar.sendPacket(sm);
 		}

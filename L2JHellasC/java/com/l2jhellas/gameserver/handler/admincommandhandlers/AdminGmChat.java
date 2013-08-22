@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * This class handles following admin commands:
@@ -63,12 +62,12 @@ public class AdminGmChat implements IAdminCommandHandler
 		L2Object target = activeChar.getTarget();
 		if (target == null)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_MUST_SELECT_A_TARGET));
+			activeChar.sendPacket(SystemMessageId.SELECT_TARGET);
 			return;
 		}
 		if (!(target instanceof L2PcInstance))
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
 		L2PcInstance player = (L2PcInstance) target;

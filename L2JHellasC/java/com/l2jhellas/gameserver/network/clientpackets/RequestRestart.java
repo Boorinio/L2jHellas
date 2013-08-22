@@ -77,7 +77,7 @@ public final class RequestRestart extends L2GameClientPacket
 
 		if (AttackStanceTaskManager.getInstance().getAttackStanceTask(player))
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.CANT_RESTART_WHILE_FIGHTING));
+			player.sendPacket(SystemMessageId.CANT_RESTART_WHILE_FIGHTING);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

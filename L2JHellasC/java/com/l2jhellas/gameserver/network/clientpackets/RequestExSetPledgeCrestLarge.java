@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -132,7 +131,7 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 			clan.setCrestLargeId(newId);
 			clan.setHasCrestLarge(true);
 
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED));
+			activeChar.sendPacket(SystemMessageId.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED);
 
 			for (L2PcInstance member : clan.getOnlineMembers(""))
 				member.broadcastUserInfo();

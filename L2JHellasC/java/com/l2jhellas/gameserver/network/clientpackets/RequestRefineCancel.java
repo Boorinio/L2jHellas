@@ -56,7 +56,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		// cannot remove augmentation from a not augmented item
 		if (!targetItem.isAugmented())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM));
+			activeChar.sendPacket(SystemMessageId.AUGMENTATION_REMOVAL_CAN_ONLY_BE_DONE_ON_AN_AUGMENTED_ITEM);
 			activeChar.sendPacket(new ExVariationCancelResult(0));
 			return;
 		}
@@ -116,7 +116,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		activeChar.sendPacket(iu);
 
 		// send system message
-		SystemMessage sm = new SystemMessage(SystemMessageId.AUGMENTATION_HAS_BEEN_SUCCESSFULLY_REMOVED_FROM_YOUR_S1);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUGMENTATION_HAS_BEEN_SUCCESSFULLY_REMOVED_FROM_YOUR_S1);
 		sm.addString(targetItem.getItemName());
 		activeChar.sendPacket(sm);
 	}

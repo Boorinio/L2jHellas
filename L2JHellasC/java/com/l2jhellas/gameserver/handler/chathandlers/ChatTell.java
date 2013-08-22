@@ -72,7 +72,7 @@ public class ChatTell implements IChatHandler
 			{
 				receiver.sendPacket(new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text));
 				activeChar.sendPacket(new CreatureSay(activeChar.getObjectId(), type, "->" + receiver.getName(), text));
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString(target + " is Away try again later.");
 				activeChar.sendPacket(sm);
 			}
@@ -100,12 +100,12 @@ public class ChatTell implements IChatHandler
 			}
 			else
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_PERSON_IS_IN_MESSAGE_REFUSAL_MODE));
+				activeChar.sendPacket(SystemMessageId.THE_PERSON_IS_IN_MESSAGE_REFUSAL_MODE);
 			}
 		}
 		else
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_NOT_ONLINE);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_ONLINE);
 			sm.addString(target);
 			activeChar.sendPacket(sm);
 			sm = null;

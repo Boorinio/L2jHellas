@@ -48,7 +48,7 @@ public class L2MotherTreeZone extends L2ZoneType
 			}
 
 			player.setInsideZone(L2Character.ZONE_MOTHERTREE, true);
-			player.sendPacket(new SystemMessage(SystemMessageId.ENTER_SHADOW_MOTHER_TREE));
+			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENTER_SHADOW_MOTHER_TREE));
 		}
 	}
 
@@ -58,7 +58,7 @@ public class L2MotherTreeZone extends L2ZoneType
 		if (character instanceof L2PcInstance && character.isInsideZone(L2Character.ZONE_MOTHERTREE))
 		{
 			character.setInsideZone(L2Character.ZONE_MOTHERTREE, false);
-			character.sendPacket(new SystemMessage(SystemMessageId.EXIT_SHADOW_MOTHER_TREE));
+			character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.EXIT_SHADOW_MOTHER_TREE));
 		}
 	}
 

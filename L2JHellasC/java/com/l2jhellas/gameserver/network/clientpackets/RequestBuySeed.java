@@ -144,20 +144,20 @@ public class RequestBuySeed extends L2GameClientPacket
 
 		if (!player.getInventory().validateWeight(totalWeight))
 		{
-			sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
 			return;
 		}
 
 		if (!player.getInventory().validateCapacity(slots))
 		{
-			sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SLOTS_FULL));
 			return;
 		}
 
 		// Charge buyer
 		if ((totalPrice < 0) || !player.reduceAdena("Buy", (int) totalPrice, target, false))
 		{
-			sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 			return;
 		}
 
@@ -189,7 +189,7 @@ public class RequestBuySeed extends L2GameClientPacket
 
 			// Send Char Buy Messages
 			SystemMessage sm = null;
-			sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 			sm.addItemName(seedId);
 			sm.addNumber(count);
 			player.sendPacket(sm);

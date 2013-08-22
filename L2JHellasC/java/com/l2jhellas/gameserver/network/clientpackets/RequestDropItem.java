@@ -24,7 +24,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.logs.GMAudit;
@@ -67,7 +66,7 @@ public final class RequestDropItem extends L2GameClientPacket
 
 		if ((item == null) || (_count == 0) || !activeChar.validateItemManipulation(_objectId, "drop") || (!Config.ALLOW_DISCARDITEM && !activeChar.isGM()) || !item.isDropable())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
+			activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
 			return;
 		}
 		if (item.getItemType() == L2EtcItemType.QUEST)
@@ -80,7 +79,7 @@ public final class RequestDropItem extends L2GameClientPacket
 
 		if (_count > item.getCount())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
+			activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
 			return;
 		}
 
@@ -99,19 +98,19 @@ public final class RequestDropItem extends L2GameClientPacket
 		if (!activeChar.getAccessLevel().allowTransaction())
 		{
 			activeChar.sendMessage("Transactions are disabled for your Access Level.");
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
+			activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 			return;
 		}
 
 		if (activeChar.isProcessingTransaction() || (activeChar.getPrivateStoreType() != 0))
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE));
+			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
 			return;
 		}
 		if (activeChar.isFishing())
 		{
 			// You can't mount, dismount, break and drop items while fishing
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_2));
+			activeChar.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
 			return;
 		}
 
@@ -120,7 +119,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		{
 			if (activeChar.getCurrentSkill() != null && activeChar.getCurrentSkill().getSkill().getItemConsumeId() == item.getItemId())
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_THIS_ITEM));
+				activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
 				return;
 			}
 		}
@@ -131,7 +130,7 @@ public final class RequestDropItem extends L2GameClientPacket
 			{
 				_log.finest(activeChar.getObjectId() + ":player tried to drop quest item");
 			}
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_EXCHANGE_ITEM));
+			activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_EXCHANGE_ITEM);
 			return;
 		}
 
@@ -141,7 +140,7 @@ public final class RequestDropItem extends L2GameClientPacket
 			{
 				_log.finest(activeChar.getObjectId() + ": trying to drop too far away");
 			}
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_DISCARD_DISTANCE_TOO_FAR));
+			activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_DISTANCE_TOO_FAR);
 			return;
 		}
 

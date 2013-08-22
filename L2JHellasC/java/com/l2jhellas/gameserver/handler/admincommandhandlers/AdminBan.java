@@ -29,7 +29,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -99,7 +98,7 @@ public class AdminBan implements IAdminCommandHandler
 		
 		if (targetPlayer != null && targetPlayer.equals(activeChar))
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.CANNOT_USE_ON_YOURSELF));
+			activeChar.sendPacket(SystemMessageId.CANNOT_USE_ON_YOURSELF);
 			return false;
 		}
 		

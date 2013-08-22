@@ -75,7 +75,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 
 		if (!item.isDropable() || !item.isDestroyable() || !item.isTradeable())
 		{
-			sendPacket(new SystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS));
 			return;
 		}
 		if ((item.getItem().getItemType() == L2WeaponType.ROD) || ((item.getItemId() >= 6611) && (item.getItemId() <= 6621)) || ((item.getItemId() >= 7816) && (item.getItemId() <= 7831)) || item.isShadowItem())
@@ -92,7 +92,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		L2PetInstance pet = (L2PetInstance) player.getPet();
 		if (pet.isDead())
 		{
-			sendPacket(new SystemMessage(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET));
 			return;
 		}
 

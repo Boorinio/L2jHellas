@@ -68,16 +68,16 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 					statement.setString(6, requestor.getName());
 					statement.execute();
 					statement.close();
-					SystemMessage msg = new SystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
 					requestor.sendPacket(msg);
 
 					// Player added to your friendlist
-					msg = new SystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS);
+					msg = SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS);
 					msg.addString(player.getName());
 					requestor.sendPacket(msg);
 
 					// has joined as friend.
-					msg = new SystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND);
+					msg = SystemMessage.getSystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND);
 					msg.addString(requestor.getName());
 					player.sendPacket(msg);
 					msg = null;
@@ -94,7 +94,7 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 			}
 			else
 			{
-				SystemMessage msg = new SystemMessage(SystemMessageId.FAILED_TO_INVITE_A_FRIEND);
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_INVITE_A_FRIEND);
 				requestor.sendPacket(msg);
 				msg = null;
 			}

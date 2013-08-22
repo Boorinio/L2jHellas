@@ -112,7 +112,7 @@ public class Pdam implements ISkillHandler
 						{
 							activeChar.stopSkillEffects(skill.getId());
 							skill.getEffects(null, activeChar);
-							SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 							sm.addSkillName(skill.getId());
 							activeChar.sendPacket(sm);
 						}
@@ -123,13 +123,13 @@ public class Pdam implements ISkillHandler
 							if (Formulas.calcSkillSuccess(activeChar, target, skill, false, false, false))
 							{
 								skill.getEffects(activeChar, target);
-								SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+								SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 								sm.addSkillName(skill.getId());
 								target.sendPacket(sm);
 							}
 							else
 							{
-								SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
+								SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
 								sm.addString(target.getName());
 								sm.addSkillName(skill.getDisplayId());
 								activeChar.sendPacket(sm);
@@ -177,7 +177,7 @@ public class Pdam implements ISkillHandler
 							}
 						}
 						// Lethal Strike was succefful!
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE_SUCCESSFUL));
 					}
 					else
 					{
@@ -210,7 +210,7 @@ public class Pdam implements ISkillHandler
 										player.setCurrentHp(player.getCurrentHp() - damage);
 								}
 
-								SystemMessage smsg = new SystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
+								SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
 								smsg.addString(activeChar.getName());
 								smsg.addNumber(damage);
 								player.sendPacket(smsg);
@@ -228,7 +228,7 @@ public class Pdam implements ISkillHandler
 				else
 				// No - damage
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ATTACK_FAILED));
 				}
 
 				if (skill.getId() == 345 || skill.getId() == 346) // Sonic Rage or Raging Force
@@ -244,14 +244,14 @@ public class Pdam implements ISkillHandler
 							if (activeChar instanceof L2PcInstance)
 							{
 								activeChar.sendPacket(new EtcStatusUpdate((L2PcInstance) activeChar));
-								SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
+								SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
 								sm.addNumber(effectcharge);
 								activeChar.sendPacket(sm);
 							}
 						}
 						else
 						{
-							SystemMessage sm = new SystemMessage(SystemMessageId.FORCE_MAXLEVEL_REACHED);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FORCE_MAXLEVEL_REACHED);
 							activeChar.sendPacket(sm);
 						}
 					}

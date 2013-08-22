@@ -3,10 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -2365,7 +2367,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					sendPacket(new ExAutoSoulShot(_itemId, 0));
 					
-					SystemMessage sm = new SystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
 					sm.addString(ss.getItemName());
 					sendPacket(sm);
 				}
@@ -2433,12 +2435,12 @@ public final class L2PcInstance extends L2PlayableInstance
 			_clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(_clan));
 			setLvlJoinedAcademy(0);
 			// oust pledge member from the academy, cuz he has finished his 2nd class transfer
-			SystemMessage msg = new SystemMessage(SystemMessageId.CLAN_MEMBER_S1_EXPELLED);
+			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_EXPELLED);
 			msg.addString(getName());
 			_clan.broadcastToOnlineMembers(msg);
 			_clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(getName()));
 			_clan.removeClanMember(getName(), 0);
-			sendPacket(new SystemMessage(SystemMessageId.ACADEMY_MEMBERSHIP_TERMINATED));
+			sendPacket(SystemMessageId.ACADEMY_MEMBERSHIP_TERMINATED);
 			
 			// receive graduation gift
 			getInventory().addItem("Gift", 8181, 1, this, null); // give academy circlet
@@ -3145,7 +3147,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_ADENA);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S1_ADENA);
 			sm.addNumber(count);
 			sendPacket(sm);
 		}
@@ -3190,7 +3192,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+				sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 			}
 			return false;
 		}
@@ -3214,7 +3216,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			if (sendMessage)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ADENA);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED_ADENA);
 				sm.addNumber(count);
 				sendPacket(sm);
 			}
@@ -3242,7 +3244,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 			sm.addItemName(PcInventory.ANCIENT_ADENA_ID);
 			sm.addNumber(count);
 			sendPacket(sm);
@@ -3287,7 +3289,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+				sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 			}
 			
 			return false;
@@ -3311,7 +3313,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			if (sendMessage)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
 				sm.addNumber(count);
 				sm.addItemName(PcInventory.ANCIENT_ADENA_ID);
 				sendPacket(sm);
@@ -3348,7 +3350,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 						sm.addItemName(itemId);
 						sm.addNumber(count);
 						sendPacket(sm);
@@ -3356,7 +3358,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					}
 					else
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
 						sm.addItemName(itemId);
 						sm.addNumber(count);
 						sendPacket(sm);
@@ -3367,14 +3369,14 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
 						sm.addItemName(itemId);
 						sendPacket(sm);
 						sm = null;
 					}
 					else
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
 						sm.addItemName(itemId);
 						sendPacket(sm);
 						sm = null;
@@ -3476,21 +3478,21 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				if (item.getCount() > 1)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
 					sm.addItemName(item.getItemId());
 					sm.addNumber(item.getCount());
 					sendPacket(sm);
 				}
 				else if (item.getEnchantLevel() > 0)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_A_S1_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_A_S1_S2);
 					sm.addNumber(item.getEnchantLevel());
 					sm.addItemName(item.getItemId());
 					sendPacket(sm);
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
 					sm.addItemName(item.getItemId());
 					sendPacket(sm);
 				}
@@ -3556,14 +3558,14 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 						sm.addItemName(itemId);
 						sm.addNumber(count);
 						sendPacket(sm);
 					}
 					else
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
 						sm.addItemName(itemId);
 						sm.addNumber(count);
 						sendPacket(sm);
@@ -3573,13 +3575,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					if (process.equalsIgnoreCase("sweep") || process.equalsIgnoreCase("Quest"))
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
 						sm.addItemName(itemId);
 						sendPacket(sm);
 					}
 					else
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
 						sm.addItemName(itemId);
 						sendPacket(sm);
 					}
@@ -3671,7 +3673,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+				sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			}
 			
 			return false;
@@ -3697,7 +3699,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Sends message to client if requested
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
 			sm.addNumber(oldCount);
 			sm.addItemName(item.getItemId());
 			sendPacket(sm);
@@ -3733,7 +3735,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+				sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			}
 			
 			return false;
@@ -3759,7 +3761,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Sends message to client if requested
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
 			sm.addNumber(count);
 			sm.addItemName(item.getItemId());
 			sendPacket(sm);
@@ -3794,7 +3796,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+				sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			}
 			return false;
 		}
@@ -3841,7 +3843,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Sends message to client if requested
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
 			sm.addNumber(count);
 			sm.addItemName(item.getItemId());
 			sendPacket(sm);
@@ -3877,7 +3879,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+				sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			}
 			
 			return false;
@@ -3903,7 +3905,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Sends message to client if requested
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
 			sm.addNumber(count);
 			sm.addItemName(itemId);
 			sendPacket(sm);
@@ -3947,7 +3949,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				
 				// Send an Unequipped Message in system window of the player for each Item
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_DISARMED);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
 				sm.addItemName(item.getItemId());
 				sendPacket(sm);
 				
@@ -4098,7 +4100,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+				sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			}
 			
 			return false;
@@ -4149,7 +4151,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Sends message to client if requested
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DROPPED_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_DROPPED_S1);
 			sm.addItemName(item.getItemId());
 			sendPacket(sm);
 		}
@@ -4191,7 +4193,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (sendMessage)
 			{
-				sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+				sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			}
 			
 			return null;
@@ -4242,7 +4244,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Sends message to client if requested
 		if (sendMessage)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DROPPED_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_DROPPED_S1);
 			sm.addItemName(item.getItemId());
 			sendPacket(sm);
 		}
@@ -4924,11 +4926,15 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			_client.sendPacket(packet);
 		}
-		/*
-		 * if(_isConnected) { try { if (_connection != null)
-		 * _connection.sendPacket(packet); } catch (Exception e) {
-		 * _log.log(Level.INFO, "", e); } }
-		 */
+	}
+	
+	/**
+	 * Send SystemMessage packet.<BR><BR>
+	 * @param id
+	 */
+	public void sendPacket(SystemMessageId id)
+	{
+		sendPacket(SystemMessage.getSystemMessage(id));
 	}
 	
 	/**
@@ -5062,14 +5068,14 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (((isInParty() && getParty().getLootDistribution() == L2Party.ITEM_LOOTER) || !isInParty()) && !_inventory.validateCapacity(target))
 			{
 				sendPacket(ActionFailed.STATIC_PACKET);
-				sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+				sendPacket(SystemMessageId.SLOTS_FULL);
 				return;
 			}
 			
 			if (isInvul() && !isGM())
 			{
 				sendPacket(ActionFailed.STATIC_PACKET);
-				SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
+				SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
 				smsg.addItemName(target.getItemId());
 				sendPacket(smsg);
 				return;
@@ -5081,20 +5087,20 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 				if (target.getItemId() == 57)
 				{
-					SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1_ADENA);
+					SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1_ADENA);
 					smsg.addNumber(target.getCount());
 					sendPacket(smsg);
 				}
 				else if (target.getCount() > 1)
 				{
-					SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S2_S1_S);
+					SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_PICKUP_S2_S1_S);
 					smsg.addItemName(target.getItemId());
 					smsg.addNumber(target.getCount());
 					sendPacket(smsg);
 				}
 				else
 				{
-					SystemMessage smsg = new SystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
+					SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
 					smsg.addItemName(target.getItemId());
 					sendPacket(smsg);
 				}
@@ -5133,7 +5139,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			/*
 			 * Lineage2.com: When a player that controls Akamanah acquires Zariche,
-			 * the newly-acquired Zariche automatically disappeared,
+			 * the newly-ACQUIRED_S1_S2 Zariche automatically disappeared,
 			 * and the equipped Akamanah's level increases by 1.
 			 * The same rules also apply in the opposite instance.
 			 */
@@ -5146,7 +5152,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				if (target.getEnchantLevel() > 0)
 				{
-					SystemMessage msg = new SystemMessage(SystemMessageId.ATTENTION_S1_PICKED_UP_S2_S3);
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.ATTENTION_S1_PICKED_UP_S2_S3);
 					msg.addString(getName());
 					msg.addNumber(target.getEnchantLevel());
 					msg.addItemName(target.getItemId());
@@ -5154,7 +5160,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				else
 				{
-					SystemMessage msg = new SystemMessage(SystemMessageId.ATTENTION_S1_PICKED_UP_S2);
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.ATTENTION_S1_PICKED_UP_S2);
 					msg.addString(getName());
 					msg.addItemName(target.getItemId());
 					broadcastPacket(msg, 1400);
@@ -6511,7 +6517,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		_activeTradeList = new TradeList(this);
 		_activeTradeList.setPartner(partner);
 		
-		SystemMessage msg = new SystemMessage(SystemMessageId.BEGIN_TRADE_WITH_S1);
+		SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.BEGIN_TRADE_WITH_S1);
 		msg.addString(partner.getName());
 		sendPacket(msg);
 		sendPacket(new TradeStart(this));
@@ -6519,7 +6525,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void onTradeConfirm(L2PcInstance partner)
 	{
-		SystemMessage msg = new SystemMessage(SystemMessageId.S1_CONFIRMED_TRADE);
+		SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.S1_CONFIRMED_TRADE);
 		msg.addString(partner.getName());
 		sendPacket(msg);
 	}
@@ -6533,7 +6539,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		_activeTradeList = null;
 		
 		sendPacket(new SendTradeDone(0));
-		SystemMessage msg = new SystemMessage(SystemMessageId.S1_CANCELED_TRADE);
+		SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.S1_CANCELED_TRADE);
 		msg.addString(partner.getName());
 		sendPacket(msg);
 	}
@@ -6549,7 +6555,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		sendPacket(new SendTradeDone(1));
 		if (successfull)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.TRADE_SUCCESSFUL));
+			sendPacket(SystemMessageId.TRADE_SUCCESSFUL);
 		}
 	}
 	
@@ -6818,13 +6824,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				SystemMessage sm = null;
 				if (unequiped[0].getEnchantLevel() > 0)
 				{
-					sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
 					sm.addNumber(unequiped[0].getEnchantLevel());
 					sm.addItemName(unequiped[0].getItemId());
 				}
 				else
 				{
-					sm = new SystemMessage(SystemMessageId.S1_DISARMED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
 					sm.addItemName(unequiped[0].getItemId());
 				}
 				sendPacket(sm);
@@ -6855,13 +6861,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				SystemMessage sm = null;
 				if (unequiped[0].getEnchantLevel() > 0)
 				{
-					sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
 					sm.addNumber(unequiped[0].getEnchantLevel());
 					sm.addItemName(unequiped[0].getItemId());
 				}
 				else
 				{
-					sm = new SystemMessage(SystemMessageId.S1_DISARMED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
 					sm.addItemName(unequiped[0].getItemId());
 				}
 				sendPacket(sm);
@@ -8540,7 +8546,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Add the recovered dyes to the player's inventory and notify them.
 		getInventory().addItem("Henna", henna.getItemIdDye(), henna.getAmountDyeRequire() / 2, this, null);
 		
-		SystemMessage sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 		sm.addItemName(henna.getItemIdDye());
 		sm.addNumber(henna.getAmountDyeRequire() / 2);
 		sendPacket(sm);
@@ -8941,7 +8947,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (inObserverMode())
 		{
-			sendPacket(new SystemMessage(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE));
+			sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
 			abortCast();
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
@@ -8951,7 +8957,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (isSitting() && !skill.isPotion())
 		{
 			// Send a System Message to the caster
-			sendPacket(new SystemMessage(SystemMessageId.CANT_MOVE_SITTING));
+			sendPacket(SystemMessageId.CANT_MOVE_SITTING);
 			
 			// Send a Server->Client packet ActionFailed to the L2PcInstance
 			sendPacket(ActionFailed.STATIC_PACKET);
@@ -8989,7 +8995,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (_disabledSkills != null && _disabledSkills.contains(skill.getId()))
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE);
 			sm.addSkillName(skill.getId(), skill.getLevel());
 			sendPacket(sm);
 			return;
@@ -9067,7 +9073,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Check the validity of the target
 		if (target == null)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.TARGET_CANT_FOUND));
+			sendPacket(SystemMessageId.TARGET_CANT_FOUND);
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -9082,7 +9088,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				{
 					if ((getParty() == null || ((L2PcInstance) target).getParty() == null) || (!getParty().equals(((L2PcInstance) target).getParty())))
 					{
-						sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+						sendPacket(SystemMessageId.INCORRECT_TARGET);
 						sendPacket(ActionFailed.STATIC_PACKET);
 						return;
 					}
@@ -9136,7 +9142,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Check if this skill is enabled (ex : reuse time)
 		if (isSkillDisabled(skill.getId()))
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_PREPARED_FOR_REUSE);
 			sm.addString(skill.getName());
 			sendPacket(sm);
 			
@@ -9155,7 +9161,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (_inEventCTF && !Config.CTF_ALLOW_SUMMON && CTF._started && SkillType == L2SkillType.SUMMON)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.NOTHING_HAPPENED));
+			sendPacket(SystemMessageId.NOTHING_HAPPENED);
 		}
 		
 		// ************************************* Check Consumables *******************************************
@@ -9164,7 +9170,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getCurrentMp() < getStat().getMpConsume(skill) + getStat().getMpInitialConsume(skill))
 		{
 			// Send a System Message to the caster
-			sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
+			sendPacket(SystemMessageId.NOT_ENOUGH_MP);
 			
 			// Send a Server->Client packet ActionFailed to the L2PcInstance
 			sendPacket(ActionFailed.STATIC_PACKET);
@@ -9175,7 +9181,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (getCurrentHp() <= skill.getHpConsume())
 		{
 			// Send a System Message to the caster
-			sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_HP));
+			sendPacket(SystemMessageId.NOT_ENOUGH_HP);
 			
 			// Send a Server->Client packet ActionFailed to the L2PcInstance
 			sendPacket(ActionFailed.STATIC_PACKET);
@@ -9194,7 +9200,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				// Checked: when a summon skill failed, server show required consume item count
 				if (SkillType == L2SkillType.SUMMON)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.SUMMONING_SERVITOR_COSTS_S2_S1);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SUMMONING_SERVITOR_COSTS_S2_S1);
 					sm.addItemName(skill.getItemConsumeId());
 					sm.addNumber(skill.getItemConsume());
 					sendPacket(sm);
@@ -9203,7 +9209,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				else
 				{
 					// Send a System Message to the caster
-					sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_ITEMS));
+					sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 					return;
 				}
 			}
@@ -9242,7 +9248,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (isFishing() && (SkillType != L2SkillType.PUMPING && SkillType != L2SkillType.REELING && SkillType != L2SkillType.FISHING))
 		{
 			// Only fishing skills are available
-			sendPacket(new SystemMessage(SystemMessageId.ONLY_FISHING_SKILLS_NOW));
+			sendPacket(SystemMessageId.ONLY_FISHING_SKILLS_NOW);
 			return;
 		}
 		
@@ -9258,7 +9264,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					&& skill.getId() != 3262 && sklTargetType != L2SkillTargetType.TARGET_AURA)) // Like L2OFF people can use TARGET_AURE skills on peace zone)
 			{/** @formatter:on **/
 				// If L2Character or target is in a peace zone, send a system message TARGET_IN_PEACEZONE a Server->Client packet ActionFailed
-				sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
+				sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
 				sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
@@ -9311,7 +9317,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					if (!isInsideRadius(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), skill.getCastRange() + getTemplate().collisionRadius, false, false))
 					{
 						// Send a System Message to the caster
-						sendPacket(new SystemMessage(SystemMessageId.TARGET_TOO_FAR));
+						sendPacket(SystemMessageId.TARGET_TOO_FAR);
 						
 						// Send a Server->Client packet ActionFailed to the L2PcInstance
 						sendPacket(ActionFailed.STATIC_PACKET);
@@ -9321,7 +9327,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				else if (skill.getCastRange() > 0 && !isInsideRadius(target, skill.getCastRange() + getTemplate().collisionRadius, false, false))
 				{
 					// Send a System Message to the caster
-					sendPacket(new SystemMessage(SystemMessageId.TARGET_TOO_FAR));
+					sendPacket(SystemMessageId.TARGET_TOO_FAR);
 					
 					// Send a Server->Client packet ActionFailed to the L2PcInstance
 					sendPacket(ActionFailed.STATIC_PACKET);
@@ -9379,7 +9385,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (!(target instanceof L2MonsterInstance))
 			{
 				// Send a System Message to the L2PcInstance
-				sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+				sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 				
 				// Send a Server->Client packet ActionFailed to the L2PcInstance
 				sendPacket(ActionFailed.STATIC_PACKET);
@@ -9397,7 +9403,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (!((L2Attackable) target).isSpoil())
 				{
 					// Send a System Message to the L2PcInstance
-					sendPacket(new SystemMessage(SystemMessageId.SWEEPER_FAILED_TARGET_NOT_SPOILED));
+					sendPacket(SystemMessageId.SWEEPER_FAILED_TARGET_NOT_SPOILED);
 					
 					// Send a Server->Client packet ActionFailed to the L2PcInstance
 					sendPacket(ActionFailed.STATIC_PACKET);
@@ -9407,7 +9413,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (getObjectId() != spoilerId && !isInLooterParty(spoilerId))
 				{
 					// Send a System Message to the L2PcInstance
-					sendPacket(new SystemMessage(SystemMessageId.SWEEP_NOT_ALLOWED));
+					sendPacket(SystemMessageId.SWEEP_NOT_ALLOWED);
 					
 					// Send a Server->Client packet ActionFailed to the L2PcInstance
 					sendPacket(ActionFailed.STATIC_PACKET);
@@ -9422,7 +9428,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (!(target instanceof L2MonsterInstance))
 			{
 				// Send a System Message to the L2PcInstance
-				sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+				sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 				
 				// Send a Server->Client packet ActionFailed to the L2PcInstance
 				sendPacket(ActionFailed.STATIC_PACKET);
@@ -9447,7 +9453,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				if (!checkPvpSkill(target, skill))
 				{
 					// Send a System Message to the L2PcInstance
-					sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+					sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 					
 					// Send a Server->Client packet ActionFailed to the L2PcInstance
 					sendPacket(ActionFailed.STATIC_PACKET);
@@ -9478,7 +9484,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		// GeoData Los Check here
 		if (skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
 		{
-			sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
+			sendPacket(SystemMessageId.CANT_SEE_TARGET);
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -9947,7 +9953,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (L2PcInstance.this.isOnline() == 1)
 			{
-				SystemMessage msg = new SystemMessage(SystemMessageId.PLAYING_FOR_LONG_TIME);
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.PLAYING_FOR_LONG_TIME);
 				L2PcInstance.this.sendPacket(msg);
 			}
 			else
@@ -9982,7 +9988,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			
 			reduceCurrentHp(reduceHp, L2PcInstance.this, false);
 			// reduced hp, becouse not rest
-			SystemMessage sm = new SystemMessage(SystemMessageId.DROWN_DAMAGE_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.DROWN_DAMAGE_S1);
 			sm.addNumber((int) reduceHp);
 			sendPacket(sm);
 		}
@@ -10465,7 +10471,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 */
 	public SystemMessage getNoDuelReason()
 	{
-		SystemMessage sm = new SystemMessage(_noDuelReason);
+		SystemMessage sm = SystemMessage.getSystemMessage(_noDuelReason);
 		sm.addString(getName());
 		_noDuelReason = SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL;
 		return sm;
@@ -10486,7 +10492,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 		if (isDead() || isAlikeDead() || (getCurrentHp() < getMaxHp() / 2 || getCurrentMp() < getMaxMp() / 2))
 		{
-			_noDuelReason = SystemMessageId.S1_CANNOT_DUEL_BECAUSE_S1S_HP_OR_MP_IS_BELOW_50_PERCENT;
+			_noDuelReason = SystemMessageId.S1_CANNOT_DUEL_BECAUSE_S1_HP_OR_MP_IS_BELOW_50_PERCENT;
 			return false;
 		}
 		if (isInDuel())
@@ -11139,14 +11145,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		}
 	}
 	
-	/**
-	 * @param hacking_tool
-	 */
-	public void sendPacket(SystemMessageId hacking_tool)
-	{
-		sendMessage("Please try again after closing unnecessary programs!.");
-	}
-	
 	public void startRentPet(int seconds)
 	{
 		if (_taskRentPet == null)
@@ -11368,18 +11366,18 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (_revivePet == Pet)
 			{
-				Reviver.sendPacket(new SystemMessage(SystemMessageId.RES_HAS_ALREADY_BEEN_PROPOSED)); // Resurrection is already been proposed.
+				Reviver.sendPacket(SystemMessageId.RES_HAS_ALREADY_BEEN_PROPOSED); // Resurrection is already been proposed.
 			}
 			else
 			{
 				if (Pet)
 				{
-					Reviver.sendPacket(new SystemMessage(SystemMessageId.PET_CANNOT_RES));
+					Reviver.sendPacket(SystemMessageId.CANNOT_RES_PET2);
 					// A pet cannot be resurrected while it's owner is in the process of resurrecting.
 				}
 				else
 				{
-					Reviver.sendPacket(new SystemMessage(SystemMessageId.MASTER_CANNOT_RES));
+					Reviver.sendPacket(SystemMessageId.MASTER_CANNOT_RES);
 					// While a pet is attempting to resurrect, it cannot help in resurrecting its master.
 				}
 			}
@@ -11398,7 +11396,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			
 			_revivePet = Pet;
-			sendPacket(new ConfirmDlg(SystemMessageId.RESSURECTION_REQUEST.getId(), Reviver.getName()));
+			sendPacket(new ConfirmDlg(SystemMessageId.RESSURECTION_REQUEST_BY_S1.getId(), Reviver.getName()));
 		}
 	}
 	
@@ -12117,7 +12115,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		_fish = new FishData(fishs.get(check));
 		fishs.clear();
 		fishs = null;
-		sendPacket(new SystemMessage(SystemMessageId.CAST_LINE_AND_START_FISHING));
+		sendPacket(SystemMessageId.CAST_LINE_AND_START_FISHING);
 		ExFishingStart efs = null;
 		if (!GameTimeController.getInstance().isNowNight() && _lure.isNightLure())
 		{
@@ -12468,12 +12466,12 @@ public final class L2PcInstance extends L2PlayableInstance
 		broadcastUserInfo();
 		if (_fishCombat == null)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.BAIT_LOST_FISH_GOT_AWAY));
+			sendPacket(SystemMessageId.BAIT_LOST_FISH_GOT_AWAY);
 		}
 		_fishCombat = null;
 		_lure = null;
 		// Ends fishing
-		sendPacket(new SystemMessage(SystemMessageId.REEL_LINE_AND_STOP_FISHING));
+		sendPacket(SystemMessageId.REEL_LINE_AND_STOP_FISHING);
 		setIsImmobilized(false);
 		stopLookingForFishTask();
 	}
@@ -12893,7 +12891,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		addSkill(SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel()), false);
 		sendPacket(new EtcStatusUpdate(this));
-		SystemMessage sm = new SystemMessage(SystemMessageId.DEATH_PENALTY_LEVEL_S1_ADDED);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.DEATH_PENALTY_LEVEL_S1_ADDED);
 		sm.addNumber(getDeathPenaltyBuffLevel());
 		sendPacket(sm);
 	}
@@ -12916,14 +12914,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			addSkill(SkillTable.getInstance().getInfo(5076, getDeathPenaltyBuffLevel()), false);
 			sendPacket(new EtcStatusUpdate(this));
-			SystemMessage sm = new SystemMessage(SystemMessageId.DEATH_PENALTY_LEVEL_S1_ADDED);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.DEATH_PENALTY_LEVEL_S1_ADDED);
 			sm.addNumber(getDeathPenaltyBuffLevel());
 			sendPacket(sm);
 		}
 		else
 		{
 			sendPacket(new EtcStatusUpdate(this));
-			sendPacket(new SystemMessage(SystemMessageId.DEATH_PENALTY_LIFTED));
+			sendPacket(SystemMessageId.DEATH_PENALTY_LIFTED);
 		}
 	}
 	
@@ -13108,21 +13106,21 @@ public final class L2PcInstance extends L2PlayableInstance
 		// Check if hit is missed
 		if (miss)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.MISSED_TARGET));
+			sendPacket(SystemMessageId.MISSED_TARGET);
 			return;
 		}
 		
 		// Check if hit is critical
 		if (pcrit)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT));
+			sendPacket(SystemMessageId.CRITICAL_HIT);
 		}
 		if (mcrit)
 		{
-			sendPacket(new SystemMessage(SystemMessageId.CRITICAL_HIT_MAGIC));
+			sendPacket(SystemMessageId.CRITICAL_HIT_MAGIC);
 		}
 		
-		SystemMessage sm = new SystemMessage(SystemMessageId.YOU_DID_S1_DMG);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_DID_S1_DMG);
 		sm.addNumber(damage);
 		sendPacket(sm);
 	}
@@ -13262,7 +13260,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		return _punishLevel == PunishLevel.JAIL;
 	}
 	
-	// TODO clean up please...
 	/**
 	 * @return True if player is chat banned
 	 */
@@ -13432,7 +13429,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	@Deprecated
 	@SuppressWarnings("unused")
-	private void updatePunishState()// TODO Next clean up this shood be active
+	private void updatePunishState()
 	{
 		if (getPunishLevel() != PunishLevel.NONE)
 		{
@@ -13497,7 +13494,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void systemSendMessage(SystemMessageId id)
 	{
-		sendPacket(new SystemMessage(id));
+		sendPacket(id);
 	}
 	
 	public void removeCTFFlagOnDie()
@@ -13741,9 +13738,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				statement.executeUpdate("UPDATE achievements SET a" + achievementID + "=1 WHERE owner_id=" + getObjectId());
 			}
-			
+
 			statement.close();
-			
+
 			if (!_completedAchievements.contains(achievementID))
 			{
 				_completedAchievements.add(achievementID);
@@ -13754,7 +13751,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			_log.warning("[ACHIEVEMENTS SAVE GETDATA]" + e);
 		}
 	}
-	
+
 	/**
 	 * Get the current pet skill in use or return null.
 	 * 
@@ -13764,7 +13761,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		return _currentPetSkill;
 	}
-	
+
 	/**
 	 * Create a new SkillDat object and set the player _currentPetSkill.
 	 * 
@@ -13916,22 +13913,22 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			TvT.addDisconnectedPlayer(this);
 		}
-		
+
 		if (CTF._savePlayers.contains(this.getName()))
 		{
 			CTF.addDisconnectedPlayer(this);
 		}
-		
+
 		if (DM._savePlayers.contains(this.getName()))
 		{
 			DM.addDisconnectedPlayer(this);
 		}
-		
+
 		if (SevenSigns.getInstance().isSealValidationPeriod())
 		{
 			sendPacket(new SignsSky());
 		}
-		
+
 		// buff and status icons
 		if (Config.STORE_SKILL_COOLTIME)
 		{
@@ -13952,7 +13949,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					this.stopEffects(L2Effect.EffectType.HEAL_OVER_TIME);
 					this.removeEffect(e);
 				}
-				
+
 				if (e.getEffectType() == L2Effect.EffectType.COMBAT_POINT_HEAL_OVER_TIME)
 				{
 					this.stopEffects(L2Effect.EffectType.COMBAT_POINT_HEAL_OVER_TIME);
@@ -14027,17 +14024,17 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				this.setIsInvul(true);
 			}
-			
+
 			if (Config.GM_STARTUP_INVISIBLE && AdminTable.getInstance().hasAccess("admin_invisible", this.getAccessLevel()))
 			{
 				this.getAppearance().setInvisible();
 			}
-			
+
 			if (Config.GM_STARTUP_SILENCE && AdminTable.getInstance().hasAccess("admin_silence", this.getAccessLevel()))
 			{
 				this.setMessageRefusal(true);
 			}
-			
+
 			if (Config.GM_STARTUP_AUTO_LIST && AdminTable.getInstance().hasAccess("admin_gmliston", this.getAccessLevel()))
 			{
 				AdminTable.getInstance().addGm(this, false);
@@ -14075,7 +14072,7 @@ public final class L2PcInstance extends L2PlayableInstance
 			this.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 			this.sendMessage("You have been teleported to the nearest town.");
 		}
-		
+
 		if (!Config.ALLOW_DUALBOX && this != null)
 		{
 			String thisip = this.getClient().getConnection().getInetAddress().getHostAddress();
@@ -14234,13 +14231,13 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			if (item.getEnchantLevel() > 0)
 			{
-				sm = new SystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
 				sm.addNumber(item.getEnchantLevel());
 				sm.addItemName(item.getItemId());
 			}
 			else
 			{
-				sm = new SystemMessage(SystemMessageId.S1_DISARMED);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
 				sm.addItemName(item.getItemId());
 			}
 			sendPacket(sm);
@@ -14256,13 +14253,13 @@ public final class L2PcInstance extends L2PlayableInstance
 			{
 				if (item.getEnchantLevel() > 0)
 				{
-					sm = new SystemMessage(SystemMessageId.S1_S2_EQUIPPED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2_EQUIPPED);
 					sm.addNumber(item.getEnchantLevel());
 					sm.addItemName(item.getItemId());
 				}
 				else
 				{
-					sm = new SystemMessage(SystemMessageId.S1_EQUIPPED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_EQUIPPED);
 					sm.addItemName(item.getItemId());
 				}
 				sendPacket(sm);

@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.FriendRecvMsg;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Recieve Private (Friend) Message - 0xCC<BR>
@@ -56,19 +55,19 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
 		L2PcInstance targetPlayer = L2World.getPlayer(_reciever);
 		if (targetPlayer == null)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME));
+			activeChar.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			return;
 		}
 		// Faction Good vs Evil
 		if (targetPlayer.isevil() && activeChar.isgood())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return;
 		}
 
 		if (targetPlayer.isgood() && activeChar.isevil())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return;
 		}
 

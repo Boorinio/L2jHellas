@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 public class Scrolls implements IItemHandler
@@ -62,7 +61,7 @@ public class Scrolls implements IItemHandler
 
 		if (activeChar.isInOlympiadMode())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+			activeChar.sendPacket(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
 			return;
 		}
 
@@ -87,7 +86,7 @@ public class Scrolls implements IItemHandler
 				useScroll(activeChar, 2286, itemId - 8593);
 			}
 			else
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE));
+				activeChar.sendPacket(SystemMessageId.INCOMPATIBLE_ITEM_GRADE);
 			return;
 		}
 		else if (itemId == 5703 || itemId >= 5803 && itemId <= 5807)
@@ -106,7 +105,7 @@ public class Scrolls implements IItemHandler
 				activeChar.setCharmOfLuck(true);
 			}
 			else
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE));
+				activeChar.sendPacket(SystemMessageId.INCOMPATIBLE_ITEM_GRADE);
 			return;
 		}
 		else if (itemId >= 8515 && itemId <= 8520) // Charm of Courage XML: 5041
@@ -125,7 +124,7 @@ public class Scrolls implements IItemHandler
 				activeChar.setCharmOfCourage(true);
 			}
 			else
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCOMPATIBLE_ITEM_GRADE));
+				activeChar.sendPacket(SystemMessageId.INCOMPATIBLE_ITEM_GRADE);
 			return;
 		}
 		else if (itemId >= 8954 && itemId <= 8956)

@@ -43,7 +43,7 @@ public class L2SkillChargeEffect extends L2Skill
 			EffectCharge e = (EffectCharge) player.getFirstEffect(chargeSkillId);
 			if (e == null || e.numCharges < getNumCharges())
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 				sm.addSkillName(getId());
 				activeChar.sendPacket(sm);
 				return false;
@@ -62,7 +62,7 @@ public class L2SkillChargeEffect extends L2Skill
 		EffectCharge effect = (EffectCharge) activeChar.getFirstEffect(chargeSkillId);
 		if (effect == null || effect.numCharges < getNumCharges())
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
 			sm.addSkillName(this.getId());
 			activeChar.sendPacket(sm);
 			return;

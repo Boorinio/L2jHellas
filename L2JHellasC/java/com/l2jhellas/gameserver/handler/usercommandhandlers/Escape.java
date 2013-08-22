@@ -78,7 +78,7 @@ public class Escape implements IUserCommandHandler
 			return false;
 		}
 
-		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 		sm.addString("After " + unstuckTimer / 60000 + " min. you be returned to near village.");
 
 		activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);

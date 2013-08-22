@@ -98,7 +98,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				if (target != null)
 					showCharacterInfo(activeChar, target);
 				else
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.CHARACTER_DOES_NOT_EXIST));
+					activeChar.sendPacket(SystemMessageId.CHARACTER_DOES_NOT_EXIST);
 			}
 			catch (Exception e)
 			{
@@ -128,7 +128,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{ // Case of empty character name
-				SystemMessage sm = new SystemMessage(SystemMessageId.GM_S1);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);
 				sm.addString("You didnt enter a character name to find.");
 				activeChar.sendPacket(sm);
 
@@ -223,7 +223,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				return false;
 
 			player.setRecomHave(player.getRecomHave() + 1);
-			SystemMessage sm = new SystemMessage(SystemMessageId.GM_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);;
 			sm.addString("You have been recommended by a GM");
 			player.sendPacket(sm);
 			player.broadcastUserInfo();
@@ -245,7 +245,7 @@ public class AdminEditChar implements IAdminCommandHandler
 					return false;
 				}
 				player.setRecomHave(player.getRecomHave() + recVal);
-				SystemMessage sm = new SystemMessage(SystemMessageId.GM_S1);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);;
 				sm.addString("You have been recommended by a GM");
 				player.sendPacket(sm);
 				player.broadcastUserInfo();
@@ -385,7 +385,7 @@ public class AdminEditChar implements IAdminCommandHandler
 					npc.updateAbnormalEffect();
 				}
 				if (oldName == null)
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				else
 					activeChar.sendMessage("Name changed from " + oldName + " to " + val);
 			}
@@ -475,7 +475,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				targetPet.getOwner().sendPacket(new SetSummonRemainTime(targetPet.getMaxFed(), targetPet.getCurrentFed()));
 			}
 			else
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 		}
 		else if (command.equals("admin_remclanwait"))
 		{
@@ -771,7 +771,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			player.sendPacket(su);
 
 			// Common character information
-			SystemMessage sm = new SystemMessage(SystemMessageId.GM_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);
 			sm.addString("Admin has changed your karma from " + oldKarma + " to " + newKarma + ".");
 			player.sendPacket(sm);
 

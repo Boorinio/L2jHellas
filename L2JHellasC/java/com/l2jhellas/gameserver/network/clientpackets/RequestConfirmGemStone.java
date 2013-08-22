@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExConfirmVariationGemstone;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 
 /**
@@ -63,7 +62,7 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 		int gemstoneItemId = gemstoneItem.getItem().getItemId();
 		if (gemstoneItemId != 2130 && gemstoneItemId != 2131)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM));
+			activeChar.sendPacket(SystemMessageId.THIS_IS_NOT_A_SUITABLE_ITEM);
 			return;
 		}
 
@@ -74,35 +73,35 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 			case L2Item.CRYSTAL_C:
 				if ((_gemstoneCount != 20) || (gemstoneItemId != 2130))
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT);
 					return;
 				}
 			break;
 			case L2Item.CRYSTAL_B:
 				if ((_gemstoneCount != 30) || (gemstoneItemId != 2130))
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT);
 					return;
 				}
 			break;
 			case L2Item.CRYSTAL_A:
 				if ((_gemstoneCount != 20) || (gemstoneItemId != 2131))
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT);
 					return;
 				}
 			break;
 			case L2Item.CRYSTAL_S:
 				if ((_gemstoneCount != 25) || (gemstoneItemId != 2131))
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT));
+					activeChar.sendPacket(SystemMessageId.GEMSTONE_QUANTITY_IS_INCORRECT);
 					return;
 				}
 			break;
 		}
 
 		activeChar.sendPacket(new ExConfirmVariationGemstone(_gemstoneItemObjId, _gemstoneCount));
-		activeChar.sendPacket(new SystemMessage(SystemMessageId.PRESS_THE_AUGMENT_BUTTON_TO_BEGIN));
+		activeChar.sendPacket(SystemMessageId.PRESS_THE_AUGMENT_BUTTON_TO_BEGIN);
 	}
 
 	@Override

@@ -80,7 +80,7 @@ public class L2CastleZone extends L2ZoneType
 			character.setInsideZone(L2Character.ZONE_SIEGE, true);
 
 			if (character instanceof L2PcInstance)
-				character.sendPacket(new SystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
+				character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
 		}
 	}
 
@@ -94,7 +94,7 @@ public class L2CastleZone extends L2ZoneType
 
 			if (character instanceof L2PcInstance)
 			{
-				character.sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+				character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 
 				// Set pvp flag
 				if (((L2PcInstance) character).getPvpFlag() == 0)
@@ -142,7 +142,7 @@ public class L2CastleZone extends L2ZoneType
 					character.setInsideZone(L2Character.ZONE_SIEGE, false);
 
 					if (character instanceof L2PcInstance)
-						character.sendPacket(new SystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
+						character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 					if (character instanceof L2SiegeSummonInstance)
 					{
 						((L2SiegeSummonInstance) character).unSummon(((L2SiegeSummonInstance) character).getOwner());

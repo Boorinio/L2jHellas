@@ -21,22 +21,24 @@ import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jserver.mmocore.network.SendablePacket;
 
 /**
- * @author KenM
+ * kenrix
  */
 public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 {
-	private static final Logger _log = Logger.getLogger(L2GameServerPacket.class.getName());
+	protected static final Logger _log = Logger.getLogger(L2GameServerPacket.class.getName());
 
 	@Override
 	protected void write()
 	{
+		if (Config.DEBUG)
+			_log.info(getType());
 		try
 		{
 			writeImpl();
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: " + getClient().toString() + " - Failed writing: " + getType() + " - l2jhellas Server Version: " + Config.SERVER_VERSION);
+			_log.severe("Client: " + getClient().toString() + " - Failed writing: " + getType());
 			t.printStackTrace();
 		}
 	}
@@ -51,5 +53,8 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 	/**
 	 * @return A String with this packet name for debugging purposes
 	 */
-	public abstract String getType();
+	public String getType()
+	{
+		return "[S] " + getClass().getSimpleName();
+	}
 }

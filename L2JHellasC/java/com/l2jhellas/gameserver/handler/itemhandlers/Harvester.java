@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
@@ -52,7 +51,7 @@ public class Harvester implements IItemHandler
 
 		if (_activeChar.getTarget() == null || !(_activeChar.getTarget() instanceof L2MonsterInstance))
 		{
-			_activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
+			_activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			_activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

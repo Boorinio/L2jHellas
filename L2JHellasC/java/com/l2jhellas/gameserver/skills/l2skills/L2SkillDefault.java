@@ -31,7 +31,7 @@ public class L2SkillDefault extends L2Skill
 	public void useSkill(L2Character caster, L2Object[] targets)
 	{
 		caster.sendPacket(ActionFailed.STATIC_PACKET);
-		SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 		// TODO add a message
 		sm.addString("Skill not implemented.  Skill ID: " + getId() + " " + getSkillType());
 		caster.sendPacket(sm);

@@ -30,7 +30,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
@@ -112,14 +111,14 @@ public class Seed implements IItemHandler
 
 		if (!(target instanceof L2NpcInstance))
 		{
-			_activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			_activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			_activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
 		if (!(target instanceof L2MonsterInstance) || (target instanceof L2ChestInstance) || (target instanceof L2GrandBossInstance) || (target instanceof L2RaidBossInstance))
 		{
-			_activeChar.sendPacket(new SystemMessage(SystemMessageId.THE_TARGET_IS_UNAVAILABLE_FOR_SEEDING));
+			_activeChar.sendPacket(SystemMessageId.THE_TARGET_IS_UNAVAILABLE_FOR_SEEDING);
 			_activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -128,7 +127,7 @@ public class Seed implements IItemHandler
 
 		if (_target == null || _target.isDead())
 		{
-			_activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			_activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			_activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -143,14 +142,13 @@ public class Seed implements IItemHandler
 
 		if (areaValid(MapRegionTable.getInstance().getAreaCastle(_activeChar)))
 		{
-			// TODO: get right skill level
 			_target.setSeeded(_seedId, _activeChar);
 			L2Skill skill = SkillTable.getInstance().getInfo(2097, 3); // sowing skill
 			_activeChar.useMagic(skill, false, false);
 		}
 		else
 		{
-			_activeChar.sendPacket(new SystemMessage(SystemMessageId.THIS_SEED_MAY_NOT_BE_SOWN_HERE));
+			_activeChar.sendPacket(SystemMessageId.THIS_SEED_MAY_NOT_BE_SOWN_HERE);
 		}
 	}
 

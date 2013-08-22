@@ -455,13 +455,34 @@ public final class L2NpcTemplate extends L2CharTemplate
 
 		return race;
 	}
-
+	
+	public int getNpcId()
+	{
+		return npcId;
+	}
+	
 	/**
 	 * @return the name
 	 */
 	public String getName()
 	{
 		return name;
+	}
+	
+	/**
+	 * @return true if the NPC uses server side name, false otherwise.
+	 */
+	public boolean isServerSideName()
+	{
+		return serverSideName;
+	}
+	
+	/**
+	 * @return true if the NPC uses server side title, false otherwise.
+	 */
+	public boolean isServerSideTitle()
+	{
+		return serverSideTitle;
 	}
 
 	public boolean isQuestMonster()

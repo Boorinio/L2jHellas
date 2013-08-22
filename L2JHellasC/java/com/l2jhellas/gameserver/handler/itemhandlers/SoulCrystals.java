@@ -58,7 +58,7 @@ public class SoulCrystals implements IItemHandler
 		if (!(target instanceof L2MonsterInstance))
 		{
 			// Send a System Message to the caster
-			SystemMessage sm = new SystemMessage(SystemMessageId.INCORRECT_TARGET);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET);
 			activeChar.sendPacket(sm);
 
 			// Send a Server->Client packet ActionFailed to the L2PcInstance

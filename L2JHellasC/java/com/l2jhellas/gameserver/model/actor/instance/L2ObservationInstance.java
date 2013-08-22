@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
@@ -68,7 +67,7 @@ public final class L2ObservationInstance extends L2FolkInstance
 				doObserve(player, val);
 			}
 			else
-				player.sendPacket(new SystemMessage(SystemMessageId.ONLY_VIEW_SIEGE));
+				player.sendPacket(SystemMessageId.ONLY_VIEW_SIEGE);
 		}
 		else if (command.startsWith("observe"))
 		{

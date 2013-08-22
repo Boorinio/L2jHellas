@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.model.PcFreight;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.PackageToList;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseDepositList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -56,7 +55,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 
 		if (player.getActiveWarehouse().getSize() == 0)
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH));
+			player.sendPacket(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH);
 			return;
 		}
 
@@ -82,7 +81,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 		if (player.getClan() != null)
 		{
 			if (player.getClan().getLevel() == 0)
-				player.sendPacket(new SystemMessage(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
+				player.sendPacket(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE);
 			else
 			{
 				player.setActiveWarehouse(player.getClan().getWarehouse());
@@ -101,13 +100,13 @@ public final class L2WarehouseInstance extends L2FolkInstance
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE)
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE));
+			player.sendPacket(SystemMessageId.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE);
 			return;
 		}
 		else
 		{
 			if (player.getClan().getLevel() == 0)
-				player.sendPacket(new SystemMessage(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE));
+				player.sendPacket(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE);
 			else
 			{
 				player.setActiveWarehouse(player.getClan().getWarehouse());
@@ -139,7 +138,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 				player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.FREIGHT));
 			}
 			else
-				player.sendPacket(new SystemMessage(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH));
+				player.sendPacket(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH);
 
 	}
 
@@ -147,7 +146,7 @@ public final class L2WarehouseInstance extends L2FolkInstance
 	{
 		// No other chars in the account of this player
 		if (player.getAccountChars().size() == 0)
-			player.sendPacket(new SystemMessage(SystemMessageId.CHARACTER_DOES_NOT_EXIST));
+			player.sendPacket(SystemMessageId.CHARACTER_DOES_NOT_EXIST);
 		// One or more chars other than this player for this account
 		else
 		{

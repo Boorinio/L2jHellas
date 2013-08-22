@@ -92,20 +92,20 @@ public class ExtractableItems implements IItemHandler
 
 			if (createAmount > 1)
 			{
-				sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 				sm.addItemName(createItemID);
 				sm.addNumber(createAmount);
 			}
 			else
 			{
-				sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
 				sm.addItemName(createItemID);
 			}
 			activeChar.sendPacket(sm);
 		}
 		else
 		{
-			activeChar.sendMessage("Item failed to open."); // TODO: Put a more proper message here.
+			activeChar.sendMessage("Item failed to open.");
 		}
 
 		activeChar.destroyItemByItemId("Extract", itemID, 1, activeChar.getTarget(), true);

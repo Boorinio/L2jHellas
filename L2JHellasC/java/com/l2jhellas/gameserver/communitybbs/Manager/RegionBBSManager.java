@@ -241,14 +241,14 @@ public class RegionBBSManager extends BaseBBSManager
 					}
 					else
 					{
-						SystemMessage sm = new SystemMessage(SystemMessageId.THE_PERSON_IS_IN_MESSAGE_REFUSAL_MODE);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THE_PERSON_IS_IN_MESSAGE_REFUSAL_MODE);
 						activeChar.sendPacket(sm);
 						parsecmd("_bbsloc;playerinfo;" + receiver.getName(), activeChar);
 					}
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_IS_NOT_ONLINE);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_ONLINE);
 					sm.addString(receiver.getName());
 					activeChar.sendPacket(sm);
 					sm = null;

@@ -146,7 +146,7 @@ public final class RequestActionUse extends L2GameClientPacket
 
 					if (!activeChar.getAccessLevel().allowPeaceAttack() && activeChar.isInsidePeaceZone(pet, target))
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
+						activeChar.sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
 						return;
 					}
 
@@ -175,11 +175,11 @@ public final class RequestActionUse extends L2GameClientPacket
 					// returns pet to control item
 					if (pet.isDead())
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.DEAD_PET_CANNOT_BE_RETURNED));
+						activeChar.sendPacket(SystemMessageId.DEAD_PET_CANNOT_BE_RETURNED);
 					}
 					else if (pet.isAttackingNow() || pet.isRooted())
 					{
-						activeChar.sendPacket(new SystemMessage(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE));
+						activeChar.sendPacket(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE);
 					}
 					else
 					{
@@ -192,7 +192,7 @@ public final class RequestActionUse extends L2GameClientPacket
 							if (petInst.getCurrentFed() > (petInst.getMaxFed() * 0.40))
 								pet.unSummon(activeChar);
 							else
-								activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_CANNOT_RESTORE_HUNGRY_PETS));
+								activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RESTORE_HUNGRY_PETS);
 						}
 					}
 				}
@@ -204,49 +204,49 @@ public final class RequestActionUse extends L2GameClientPacket
 					if (activeChar.isDead())
 					{
 						// A strider cannot be ridden when dead
-						SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
+						SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
 						activeChar.sendPacket(msg);
 						msg = null;
 					}
 					else if (pet.isDead())
 					{
 						// A dead strider cannot be ridden.
-						SystemMessage msg = new SystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
+						SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
 						activeChar.sendPacket(msg);
 						msg = null;
 					}
 					else if (pet.isInCombat() || pet.isRooted())
 					{
 						// A strider in battle cannot be ridden
-						SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
+						SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
 						activeChar.sendPacket(msg);
 						msg = null;
 					}
 					else if (activeChar.isInCombat())
 					{
 						// A strider cannot be ridden while in battle
-						SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+						SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
 						activeChar.sendPacket(msg);
 						msg = null;
 					}
 					else if (activeChar.isSitting() || activeChar.isMoving())
 					{
 						// A strider can be ridden only when standing
-						SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
+						SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
 						activeChar.sendPacket(msg);
 						msg = null;
 					}
 					else if (activeChar.isFishing())
 					{
 						// You can't mount, dismount, break and drop items while fishing
-						SystemMessage msg = new SystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
+						SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
 						activeChar.sendPacket(msg);
 						msg = null;
 					}
 					else if (activeChar.isCursedWeaponEquiped())
 					{
 						// You can't mount, dismount, break and drop items while wielding a cursed weapon
-						SystemMessage msg = new SystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+						SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
 						activeChar.sendPacket(msg);
 					}
 					else if (!pet.isDead() && !activeChar.isMounted())
@@ -527,7 +527,7 @@ public final class RequestActionUse extends L2GameClientPacket
 
 			if (_skills.size() == 0)
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.SKILL_NOT_AVAILABLE));
+				activeChar.sendPacket(SystemMessageId.S1_PREPARED_FOR_REUSE);
 				return;
 			}
 

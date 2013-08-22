@@ -1403,15 +1403,15 @@ public final class Formulas
 				if (calcMagicSuccess(attacker, target, skill) && (target.getLevel() - attacker.getLevel()) <= 9)
 				{
 					if (skill.getSkillType() == L2SkillType.DRAIN)
-						attacker.sendPacket(new SystemMessage(SystemMessageId.DRAIN_HALF_SUCCESFUL));
+						attacker.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.DRAIN_HALF_SUCCESFUL));
 					else
-						attacker.sendPacket(new SystemMessage(SystemMessageId.ATTACK_FAILED));
+						attacker.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ATTACK_FAILED));
 
 					damage /= 2;
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
 					sm.addString(target.getName());
 					sm.addSkillName(skill.getId());
 					attacker.sendPacket(sm);
@@ -1424,13 +1424,13 @@ public final class Formulas
 			{
 				if (skill.getSkillType() == L2SkillType.DRAIN)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.RESISTED_S1_DRAIN);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.RESISTED_S1_DRAIN);
 					sm.addString(attacker.getName());
 					target.sendPacket(sm);
 				}
 				else
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.RESISTED_S1_MAGIC);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.RESISTED_S1_MAGIC);
 					sm.addString(attacker.getName());
 					target.sendPacket(sm);
 				}
@@ -1603,10 +1603,10 @@ public final class Formulas
 			switch (shldSuccess)
 			{
 				case 1:
-					enemy.sendPacket(new SystemMessage(SystemMessageId.SHIELD_DEFENCE_SUCCESSFULL));
+					enemy.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SHIELD_DEFENCE_SUCCESSFULL));
 				break;
 				case 2:
-					enemy.sendPacket(new SystemMessage(SystemMessageId.YOUR_EXCELLENT_SHIELD_DEFENSE_WAS_A_SUCCESS));
+					enemy.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_EXCELLENT_SHIELD_DEFENSE_WAS_A_SUCCESS));
 				break;
 			}
 		}

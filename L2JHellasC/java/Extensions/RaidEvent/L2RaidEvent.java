@@ -822,7 +822,7 @@ public class L2RaidEvent
 		{
 			player.setEventPoints(player.getEventPoints() + eventPoints);
 			SystemMessage smp;
-			smp = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+			smp = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 			smp.addString("Event Points ");
 			smp.addNumber(2);
 			player.sendPacket(smp);

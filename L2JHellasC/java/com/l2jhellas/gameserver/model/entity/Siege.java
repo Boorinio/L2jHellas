@@ -422,9 +422,9 @@ public class Siege
 			{
 				SystemMessage sm;
 				if (getCastle().getOwnerId() <= 0)
-					sm = new SystemMessage(SystemMessageId.SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.SIEGE_OF_S1_HAS_BEEN_CANCELED_DUE_TO_LACK_OF_INTEREST);
 				else
-					sm = new SystemMessage(SystemMessageId.S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED);
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_SIEGE_WAS_CANCELED_BECAUSE_NO_CLANS_PARTICIPATED);
 				sm.addString(getCastle().getName());
 				Announcements.getInstance().announceToAll(sm);
 				return;
@@ -967,7 +967,7 @@ public class Siege
 		else if (player.getClan().getHasCastle() > 0)
 			player.sendMessage("You cannot register because your clan already own a castle.");
 		else if (player.getClan().getClanId() == getCastle().getOwnerId())
-			player.sendPacket(new SystemMessage(SystemMessageId.CLAN_THAT_OWNS_CASTLE_IS_AUTOMATICALLY_REGISTERED_DEFENDING));
+			player.sendPacket(SystemMessageId.CLAN_THAT_OWNS_CASTLE_IS_AUTOMATICALLY_REGISTERED_DEFENDING);
 		else if (SiegeManager.getInstance().checkIsRegistered(player.getClan(), getCastle().getCastleId()))
 			player.sendMessage("You are already registered in a Siege.");
 		else

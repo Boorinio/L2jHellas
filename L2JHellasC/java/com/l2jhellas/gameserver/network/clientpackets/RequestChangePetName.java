@@ -49,17 +49,17 @@ public final class RequestChangePetName extends L2GameClientPacket
 
 		if (pet.getName() != null)
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.NAMING_YOU_CANNOT_SET_NAME_OF_THE_PET));
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.NAMING_YOU_CANNOT_SET_NAME_OF_THE_PET));
 			return;
 		}
 		else if (PetNameTable.getInstance().doesPetNameExist(_name, pet.getTemplate().npcId))
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.NAMING_ALREADY_IN_USE_BY_ANOTHER_PET));
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.NAMING_ALREADY_IN_USE_BY_ANOTHER_PET));
 			return;
 		}
 		else if ((_name.length() < 3) || (_name.length() > 16))
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Your pet's name can be up to 16 characters.");
 			activeChar.sendPacket(sm);
 			sm = null;
@@ -68,7 +68,7 @@ public final class RequestChangePetName extends L2GameClientPacket
 		}
 		else if (!PetNameTable.getInstance().isValidPetName(_name))
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.NAMING_PETNAME_CONTAINS_INVALID_CHARS));
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.NAMING_PETNAME_CONTAINS_INVALID_CHARS));
 			return;
 		}
 

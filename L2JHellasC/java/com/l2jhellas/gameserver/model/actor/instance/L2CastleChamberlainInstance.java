@@ -267,7 +267,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 						}
 						else
 						{
-							sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+							sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
 						}
 					}
 				}
@@ -422,7 +422,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 				if (CastleManorManager.getInstance().isUnderMaintenance())
 				{
 					player.sendPacket(ActionFailed.STATIC_PACKET);
-					player.sendPacket(new SystemMessage(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE));
+					player.sendPacket(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE);
 					return;
 				}
 
@@ -459,7 +459,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 					case 7: // Edit seed setup
 						if (getCastle().isNextPeriodApproved())
 						{
-							player.sendPacket(new SystemMessage(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_6_AM_AND_8_PM));
+							player.sendPacket(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_6_AM_AND_8_PM);
 						}
 						else
 						{
@@ -469,7 +469,7 @@ public class L2CastleChamberlainInstance extends L2FolkInstance
 					case 8: // Edit crop setup
 						if (getCastle().isNextPeriodApproved())
 						{
-							player.sendPacket(new SystemMessage(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_6_AM_AND_8_PM));
+							player.sendPacket(SystemMessageId.A_MANOR_CANNOT_BE_SET_UP_BETWEEN_6_AM_AND_8_PM);
 						}
 						else
 						{

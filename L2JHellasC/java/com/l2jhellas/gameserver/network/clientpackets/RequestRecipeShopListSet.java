@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopMsg;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestRecipeShopListSet extends L2GameClientPacket
 {
@@ -54,7 +53,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 
 		if (player.isInDuel())
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.CANT_CRAFT_DURING_COMBAT));
+			player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
 			return;
 		}
 

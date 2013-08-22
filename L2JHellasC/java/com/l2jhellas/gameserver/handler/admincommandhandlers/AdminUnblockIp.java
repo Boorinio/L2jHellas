@@ -47,7 +47,7 @@ public class AdminUnblockIp implements IAdminCommandHandler
 				String ipAddress = command.substring(16);
 				if (unblockIp(ipAddress, activeChar))
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 					sm.addString("Removed IP " + ipAddress + " from blocklist!");
 					activeChar.sendPacket(sm);
 				}
@@ -55,7 +55,7 @@ public class AdminUnblockIp implements IAdminCommandHandler
 			catch (StringIndexOutOfBoundsException e)
 			{
 				// Send syntax to the user
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Usage mode: //unblockip <ip>");
 				activeChar.sendPacket(sm);
 			}

@@ -60,14 +60,14 @@ public class ManaHeal implements ISkillHandler
 
 			if (actChar instanceof L2PcInstance && actChar != target)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S2_MP_RESTORED_BY_S1);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_MP_RESTORED_BY_S1);
 				sm.addString(actChar.getName());
 				sm.addNumber((int) mp);
 				target.sendPacket(sm);
 			}
 			else
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.S1_MP_RESTORED);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_MP_RESTORED);
 				sm.addNumber((int) mp);
 				target.sendPacket(sm);
 			}

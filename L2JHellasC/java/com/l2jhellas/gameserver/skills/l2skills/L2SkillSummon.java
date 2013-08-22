@@ -64,7 +64,7 @@ public class L2SkillSummon extends L2Skill
 				int count = player.getCubics().size();
 				if (count > mastery)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 					sm.addString("You already have " + count + " cubic(s).");
 					activeChar.sendPacket(sm);
 					return false;
@@ -76,7 +76,7 @@ public class L2SkillSummon extends L2Skill
 					return false;
 				if (player.getPet() != null)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 					sm.addString("You already have a pet.");
 					activeChar.sendPacket(sm);
 					return false;
@@ -100,7 +100,7 @@ public class L2SkillSummon extends L2Skill
 
 		if (_npcId == 0)
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 			sm.addString("Summon skill " + getId() + " not described yet");
 			activeChar.sendPacket(sm);
 			return;
@@ -163,7 +163,7 @@ public class L2SkillSummon extends L2Skill
 					{
 						_log.fine("player can't summon any more cubics. ignore summon skill");
 					}
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.CUBIC_SUMMONING_FAILED));
+					activeChar.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
 					return;
 				}
 				if (activeChar.getCubics().containsKey(_npcId))

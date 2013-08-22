@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.instancemanager.PetitionManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * @author KidZor
@@ -35,7 +34,7 @@ public class ChatPetition implements IChatHandler
 	{
 		if (!PetitionManager.getInstance().isPlayerInConsultation(activeChar))
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_IN_PETITION_CHAT));
+			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_IN_PETITION_CHAT);
 			return;
 		}
 

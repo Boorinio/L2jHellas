@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestBlock extends L2GameClientPacket
 {
@@ -64,14 +63,14 @@ public final class RequestBlock extends L2GameClientPacket
 				if (_target == null)
 				{
 					// Incorrect player name.
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.FAILED_TO_REGISTER_TO_IGNORE_LIST));
+					activeChar.sendPacket(SystemMessageId.FAILED_TO_REGISTER_TO_IGNORE_LIST);
 					return;
 				}
 
 				if (_target.isGM())
 				{
 					// Cannot block a GM character.
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_NOT_IMPOSE_A_BLOCK_AN_A_GM));
+					activeChar.sendPacket(SystemMessageId.YOU_MAY_NOT_IMPOSE_A_BLOCK_ON_GM);
 					return;
 				}
 

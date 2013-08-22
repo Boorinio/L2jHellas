@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestDismissAlly extends L2GameClientPacket
 {
@@ -38,7 +37,7 @@ public final class RequestDismissAlly extends L2GameClientPacket
 		}
 		if (!activeChar.isClanLeader())
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER));
+			activeChar.sendPacket(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER);
 			return;
 		}
 		activeChar.getClan().dissolveAlly(activeChar);

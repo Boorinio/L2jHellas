@@ -52,7 +52,7 @@ public class AdminPledge implements IAdminCommandHandler
 			player = (L2PcInstance) target;
 		else
 		{
-			activeChar.sendPacket(new SystemMessage(SystemMessageId.INCORRECT_TARGET));
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			showMainPage(activeChar);
 			return false;
 		}
@@ -87,7 +87,7 @@ public class AdminPledge implements IAdminCommandHandler
 			}
 			else if (!player.isClanLeader())
 			{
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER).addString(name));
+				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER).addString(name));
 				showMainPage(activeChar);
 				return false;
 			}

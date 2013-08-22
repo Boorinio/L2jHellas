@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.L2Macro;
 import com.l2jhellas.gameserver.model.L2Macro.L2MacroCmd;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestMakeMacro extends L2GameClientPacket
 {
@@ -84,25 +83,25 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		if (_commandsLenght > 255)
 		{
 			// Invalid macro. Refer to the Help file for instructions.
-			player.sendPacket(new SystemMessage(SystemMessageId.INVALID_MACRO));
+			player.sendPacket(SystemMessageId.INVALID_MACRO);
 			return;
 		}
 		if (player.getMacroses().getAllMacroses().length > 24)
 		{
 			// You may create up to 24 macros.
-			player.sendPacket(new SystemMessage(SystemMessageId.YOU_MAY_CREATE_UP_TO_24_MACROS));
+			player.sendPacket(SystemMessageId.YOU_MAY_CREATE_UP_TO_24_MACROS);
 			return;
 		}
 		if (_macro.name.length() == 0)
 		{
 			// Enter the name of the macro.
-			player.sendPacket(new SystemMessage(SystemMessageId.ENTER_THE_MACRO_NAME));
+			player.sendPacket(SystemMessageId.ENTER_THE_MACRO_NAME);
 			return;
 		}
 		if (_macro.descr.length() > 32)
 		{
 			// Macro descriptions may contain up to 32 characters.
-			player.sendPacket(new SystemMessage(SystemMessageId.MACRO_DESCRIPTION_MAX_32_CHARS));
+			player.sendPacket(SystemMessageId.MACRO_DESCRIPTION_MAX_32_CHARS);
 			return;
 		}
 		player.registerMacro(_macro);

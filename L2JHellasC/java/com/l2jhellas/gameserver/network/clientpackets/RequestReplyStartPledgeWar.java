@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestReplyStartPledgeWar extends L2GameClientPacket
 {
@@ -49,7 +48,7 @@ public final class RequestReplyStartPledgeWar extends L2GameClientPacket
 		}
 		else
 		{
-			requestor.sendPacket(new SystemMessage(SystemMessageId.WAR_PROCLAMATION_HAS_BEEN_REFUSED));
+			requestor.sendPacket(SystemMessageId.WAR_PROCLAMATION_HAS_BEEN_REFUSED);
 		}
 		activeChar.setActiveRequester(null);
 		requestor.onTransactionResponse();

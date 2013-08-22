@@ -32,7 +32,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -204,9 +203,9 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 				player.rewardSkills();
 
 				if (val >= 88)
-					player.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
+					player.sendPacket(SystemMessageId.THIRD_CLASS_TRANSFER); // system sound 3rd occupation
 				else
-					player.sendPacket(new SystemMessage(SystemMessageId.CLASS_TRANSFER));    // system sound for 1st and 2nd occupation
+					player.sendPacket(SystemMessageId.CLASS_TRANSFER);    // system sound for 1st and 2nd occupation
 
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				TextBuilder sb = new TextBuilder();
@@ -268,9 +267,9 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 			player.rewardSkills();
 
 			if (val >= 88)
-				player.sendPacket(new SystemMessage(SystemMessageId.THIRD_CLASS_TRANSFER)); // system sound 3rd occupation
+				player.sendPacket(SystemMessageId.THIRD_CLASS_TRANSFER); // system sound 3rd occupation
 			else
-				player.sendPacket(new SystemMessage(SystemMessageId.CLASS_TRANSFER)); // system sound for 1st and 2nd occupation
+				player.sendPacket(SystemMessageId.CLASS_TRANSFER); // system sound for 1st and 2nd occupation
 
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 			TextBuilder sb = new TextBuilder();

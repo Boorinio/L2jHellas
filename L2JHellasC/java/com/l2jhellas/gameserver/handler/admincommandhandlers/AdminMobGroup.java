@@ -24,7 +24,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.Broadcast;
@@ -575,7 +574,7 @@ public class AdminMobGroup implements IAdminCommandHandler
 		for (MobGroup mobGroup : mobGroupList)
 			activeChar.sendMessage(mobGroup.getGroupId() + ": " + mobGroup.getActiveMobCount() + " alive out of " + mobGroup.getMaxMobCount() + " of NPC ID " + mobGroup.getTemplate().npcId + " (" + mobGroup.getStatus() + ")");
 
-		activeChar.sendPacket(new SystemMessage(SystemMessageId.FRIEND_LIST_FOOT));
+		activeChar.sendPacket(SystemMessageId.FRIEND_LIST_FOOTER);
 	}
 
 	@Override

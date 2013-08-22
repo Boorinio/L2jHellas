@@ -119,7 +119,7 @@ public class RequestProcureCropList extends L2GameClientPacket
 			if (count > Integer.MAX_VALUE)
 			{
 				Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to purchase over " + Integer.MAX_VALUE + " items at the same time.", Config.DEFAULT_PUNISH);
-				SystemMessage sm = new SystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
 				sendPacket(sm);
 				return;
 			}
@@ -144,13 +144,13 @@ public class RequestProcureCropList extends L2GameClientPacket
 
 		if (!player.getInventory().validateWeight(weight))
 		{
-			sendPacket(new SystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
 			return;
 		}
 
 		if (!player.getInventory().validateCapacity(slots))
 		{
-			sendPacket(new SystemMessage(SystemMessageId.SLOTS_FULL));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SLOTS_FULL));
 			return;
 		}
 
@@ -199,7 +199,7 @@ public class RequestProcureCropList extends L2GameClientPacket
 			int rewardItemCount = sellPrice / rewardPrice;
 			if (rewardItemCount < 1)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.FAILED_IN_TRADING_S2_OF_CROP_S1);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FAILED_IN_TRADING_S2_OF_CROP_S1);
 				sm.addItemName(cropId);
 				sm.addNumber(count);
 				player.sendPacket(sm);
@@ -211,11 +211,11 @@ public class RequestProcureCropList extends L2GameClientPacket
 
 			if (player.getInventory().getAdena() < fee)
 			{
-				SystemMessage sm = new SystemMessage(SystemMessageId.FAILED_IN_TRADING_S2_OF_CROP_S1);
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FAILED_IN_TRADING_S2_OF_CROP_S1);
 				sm.addItemName(cropId);
 				sm.addNumber(count);
 				player.sendPacket(sm);
-				sm = new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 				player.sendPacket(sm);
 				continue;
 			}
@@ -255,31 +255,31 @@ public class RequestProcureCropList extends L2GameClientPacket
 				playerIU.addNewItem(itemAdd);
 
 			// Send System Messages
-			SystemMessage sm = new SystemMessage(SystemMessageId.TRADED_S2_OF_CROP_S1);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.TRADED_S2_OF_CROP_S1);
 			sm.addItemName(cropId);
 			sm.addNumber(count);
 			player.sendPacket(sm);
 
 			if (fee > 0)
 			{
-				sm = new SystemMessage(SystemMessageId.S1_ADENA_HAS_BEEN_WITHDRAWN_TO_PAY_FOR_PURCHASING_FEES);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ADENA_HAS_BEEN_WITHDRAWN_TO_PAY_FOR_PURCHASING_FEES);
 				sm.addNumber(fee);
 				player.sendPacket(sm);
 			}
 
-			sm = new SystemMessage(SystemMessageId.DISSAPEARED_ITEM);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED);
 			sm.addItemName(cropId);
 			sm.addNumber(count);
 			player.sendPacket(sm);
 
 			if (fee > 0)
 			{
-				sm = new SystemMessage(SystemMessageId.DISSAPEARED_ADENA);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED_ADENA);
 				sm.addNumber(fee);
 				player.sendPacket(sm);
 			}
 
-			sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 			sm.addItemName(rewardItem);
 			sm.addNumber(rewardItemCount);
 			player.sendPacket(sm);

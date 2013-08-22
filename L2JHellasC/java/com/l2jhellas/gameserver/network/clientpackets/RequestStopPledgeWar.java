@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestStopPledgeWar extends L2GameClientPacket
 {
@@ -63,7 +62,7 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
 		// Check if player who does the request has the correct rights to do it
 		if ((player.getClanPrivileges() & L2Clan.CP_CL_PLEDGE_WAR) != L2Clan.CP_CL_PLEDGE_WAR)
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT));
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
 		}
 
@@ -80,7 +79,7 @@ public final class RequestStopPledgeWar extends L2GameClientPacket
 
 		// if (leader.isProcessingRequest())
 		// {
-		// SystemMessage sm = new SystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
+		// SystemMessage sm = SystemMessage.getSystemMessage(SystemMessage.S1_IS_BUSY_TRY_LATER);
 		// sm.addString(leader.getName());
 		// player.sendPacket(sm);
 		// return;

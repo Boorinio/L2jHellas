@@ -83,8 +83,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
 		if (_notInitialized)
 		{
 			_notInitialized = false;
-			//*
-			_history = new FastList<Race>();
+			//_history = new FastList<Race>();
 			_managers = new FastList<L2RaceManagerInstance>();
 
 			ThreadPoolManager s = ThreadPoolManager.getInstance();
@@ -97,11 +96,11 @@ public class L2RaceManagerInstance extends L2NpcInstance
 			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_TICKETS_STOP_IN_S1_MINUTES), 4 * MINUTE, 10 * MINUTE);
 			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_TICKETS_STOP_IN_S1_MINUTES), 5 * MINUTE, 10 * MINUTE);
 			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_TICKETS_STOP_IN_S1_MINUTES), 6 * MINUTE, 10 * MINUTE);
-			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_TICKET_SALES_CLOSED), 7 * MINUTE, 10 * MINUTE);
-			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_BEGINS_IN_S1_MINUTES), 7 * MINUTE, 10 * MINUTE);
-			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_BEGINS_IN_S1_MINUTES), 8 * MINUTE, 10 * MINUTE);
-			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_BEGINS_IN_30_SECONDS), 8 * MINUTE + 30 * SECOND, 10 * MINUTE);
-			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_COUNTDOWN_IN_FIVE_SECONDS), 8 * MINUTE + 50 * SECOND, 10 * MINUTE);
+			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_S1_TICKET_SALES_CLOSED), 7 * MINUTE, 10 * MINUTE);
+			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_S2_BEGINS_IN_S1_MINUTES), 7 * MINUTE, 10 * MINUTE);
+			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_S2_BEGINS_IN_S1_MINUTES), 8 * MINUTE, 10 * MINUTE);
+			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_S1_BEGINS_IN_30_SECONDS), 8 * MINUTE + 30 * SECOND, 10 * MINUTE);
+			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_S1_COUNTDOWN_IN_FIVE_SECONDS), 8 * MINUTE + 50 * SECOND, 10 * MINUTE);
 			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_BEGINS_IN_S1_SECONDS), 8 * MINUTE + 55 * SECOND, 10 * MINUTE);
 			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_BEGINS_IN_S1_SECONDS), 8 * MINUTE + 56 * SECOND, 10 * MINUTE);
 			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_BEGINS_IN_S1_SECONDS), 8 * MINUTE + 57 * SECOND, 10 * MINUTE);
@@ -138,7 +137,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
 
 	public void makeAnnouncement(SystemMessageId type)
 	{
-		SystemMessage sm = new SystemMessage(type);
+		SystemMessage sm = SystemMessage.getSystemMessage(type);
 		switch (type.getId())
 		{
 			case 816: // SystemMessageId.MONSRACE_TICKETS_AVAILABLE_FOR_S1_RACE
@@ -154,7 +153,10 @@ public class L2RaceManagerInstance extends L2NpcInstance
 			case 820: // SystemMessageId.MONSRACE_BEGINS_IN_S1_MINUTES
 			case 823: // SystemMessageId.MONSRACE_BEGINS_IN_S1_SECONDS
 				sm.addNumber(_minutes);
-				sm.addNumber(_raceNumber);
+				if (type.getId() == 820)
+				{
+					sm.addNumber(_raceNumber);
+				}
 				_minutes--;
 			break;
 			case 819: // SystemMessageId.MONSRACE_TICKET_SALES_CLOSED
@@ -204,25 +206,25 @@ public class L2RaceManagerInstance extends L2NpcInstance
 		MonsterRace race = MonsterRace.getInstance();
 		if (_state == STARTING_RACE)
 		{
-			//state++;
+			// state++;
 			PlaySound SRace = new PlaySound(1, "S_Race", 0, 0, 0, 0, 0);
 			broadcast(SRace);
 			PlaySound SRace2 = new PlaySound(0, "ItemSound2.race_start", 1, 121209259, 12125, 182487, -3559);
 			broadcast(SRace2);
 			_packet = new MonRaceInfo(_codes[1][0], _codes[1][1], race.getMonsters(), race.getSpeeds());
 			sendMonsterInfo();
-
+			
 			ThreadPoolManager.getInstance().scheduleGeneral(new RunRace(), 5000);
 		}
 		else
 		{
-			//state++;
+			// state++;
 			race.newRace();
 			race.newSpeeds();
 			_packet = new MonRaceInfo(_codes[0][0], _codes[0][1], race.getMonsters(), race.getSpeeds());
 			sendMonsterInfo();
 		}
-
+		
 	}
 
 	@Override
@@ -230,12 +232,12 @@ public class L2RaceManagerInstance extends L2NpcInstance
 	{
 		if (command.startsWith("BuyTicket") && _state != ACCEPTING_BETS)
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.MONSRACE_TICKETS_NOT_AVAILABLE));
+			player.sendPacket(SystemMessageId.MONSRACE_TICKETS_NOT_AVAILABLE);
 			command = "Chat 0";
 		}
 		if (command.startsWith("ShowOdds") && _state == ACCEPTING_BETS)
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.MONSRACE_NO_PAYOUT_INFO));
+			player.sendPacket(SystemMessageId.MONSRACE_NO_PAYOUT_INFO);
 			command = "Chat 0";
 		}
 
@@ -385,7 +387,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
 				return;
 			player.setRace(0, 0);
 			player.setRace(1, 0);
-			sm = new SystemMessage(SystemMessageId.ACQUIRED);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.ACQUIRED_S1_S2);
 			sm.addNumber(_raceNumber);
 			sm.addItemName(4443);
 			player.sendPacket(sm);
@@ -477,7 +479,7 @@ public class L2RaceManagerInstance extends L2NpcInstance
 		public void run()
 		{
 			makeAnnouncement(SystemMessageId.MONSRACE_FIRST_PLACE_S1_SECOND_S2);
-			makeAnnouncement(SystemMessageId.MONSRACE_RACE_END);
+			makeAnnouncement(SystemMessageId.MONSRACE_S1_RACE_END);
 			_raceNumber++;
 
 			DeleteObject obj = null;

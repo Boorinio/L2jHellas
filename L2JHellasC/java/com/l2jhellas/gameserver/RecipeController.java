@@ -141,6 +141,7 @@ public class RecipeController
 
 	public synchronized void requestBookOpen(L2PcInstance player, boolean isDwarvenCraft)
 	{
+		SystemMessage sm;
 		RecipeItemMaker maker = null;
 		if (Config.ALT_GAME_CREATION)
 			maker = _activeMakers.get(player);
@@ -153,14 +154,14 @@ public class RecipeController
 			return;
 		}
 
-		SystemMessage sm = new SystemMessage(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
+		sm = SystemMessage.getSystemMessage(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
 		player.sendPacket(sm);
 		return;
 	}
 
 	public synchronized void requestMakeItemAbort(L2PcInstance player)
 	{
-		_activeMakers.remove(player);  // TODO: anything else here?
+		_activeMakers.remove(player);
 	}
 
 	public synchronized void requestManufactureItem(L2PcInstance manufacturer, int recipeListId, L2PcInstance player)
@@ -204,7 +205,7 @@ public class RecipeController
 	{
 		if (player.isInDuel())
 		{
-			player.sendPacket(new SystemMessage(SystemMessageId.CANT_CRAFT_DURING_COMBAT));
+			player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
 			return;
 		}
 
@@ -223,11 +224,12 @@ public class RecipeController
 		}
 
 		RecipeItemMaker maker;
+		SystemMessage sm;
 
 		// check if already busy (possible in alt mode only)
 		if (Config.ALT_GAME_CREATION && ((maker = _activeMakers.get(player)) != null))
 		{
-			SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 			sm.addString("You are busy creating ");
 			sm.addItemName(recipeList.getItemId());
 			player.sendPacket(sm);
@@ -246,8 +248,7 @@ public class RecipeController
 				maker.run();
 		}
 	}
-
-	// TODO XMLize the recipe list
+	
 	private void parseList(String line)
 	{
 		try
@@ -407,7 +408,7 @@ public class RecipeController
 						_price = temp.getCost();
 						if (_target.getAdena() < _price) // check price
 						{
-							_target.sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+							_target.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 							abort();
 							return;
 						}
@@ -431,7 +432,7 @@ public class RecipeController
 			// initial mana check requires MP as written on recipe
 			if (_player.getCurrentMp() < _manaRequired)
 			{
-				_target.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
+				_target.sendPacket(SystemMessageId.NOT_ENOUGH_MP);
 				abort();
 				return;
 			}
@@ -547,7 +548,7 @@ public class RecipeController
 
 				if (adenatransfer == null)
 				{
-					_target.sendPacket(new SystemMessage(SystemMessageId.YOU_NOT_ENOUGH_ADENA));
+					_target.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 					abort();
 					return;
 				}
@@ -621,10 +622,11 @@ public class RecipeController
 					_items.set(0, item);
 
 				numItems -= count;
-
+				
+				SystemMessage sm;
 				if (_target == _player)
 				{
-					SystemMessage sm = new SystemMessage(SystemMessageId.S1_S2_EQUIPPED); // you equipped ...
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2_EQUIPPED); // you equipped ...
 					sm.addNumber(count);
 					sm.addItemName(item.getItemId());
 					_player.sendPacket(sm);
@@ -647,7 +649,7 @@ public class RecipeController
 				// no rest - report no mana
 				else
 				{
-					_target.sendPacket(new SystemMessage(SystemMessageId.NOT_ENOUGH_MP));
+					_target.sendPacket(SystemMessageId.NOT_ENOUGH_MP);
 					abort();
 				}
 				return false;
@@ -784,10 +786,10 @@ public class RecipeController
 			L2ItemInstance createdItem = _target.getInventory().addItem("Manufacture", itemId, itemCount, _target, _player);
 
 			// inform customer of earned item
-			SystemMessage sm = null;
+			SystemMessage sm;
 			if (itemCount > 1)
 			{
-				sm = new SystemMessage(SystemMessageId.EARNED_S2_S1_S);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 				sm.addItemName(itemId);
 				sm.addNumber(itemCount);
 				_target.sendPacket(sm);
@@ -795,7 +797,7 @@ public class RecipeController
 
 			else
 			{
-				sm = new SystemMessage(SystemMessageId.EARNED_ITEM);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
 				sm.addItemName(itemId);
 				_target.sendPacket(sm);
 			}
@@ -803,7 +805,7 @@ public class RecipeController
 			if (_target != _player)
 			{
 				// inform manufacturer of earned profit
-				sm = new SystemMessage(SystemMessageId.EARNED_ADENA);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S1_ADENA);
 				sm.addNumber(_price);
 				_player.sendPacket(sm);
 			}

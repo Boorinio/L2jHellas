@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.handler.voicedcommandhandlers;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * @author Intrepid
@@ -37,12 +36,12 @@ public class pmoff implements IVoicedCommandHandler
 			if (activeChar.getMessageRefusal()) // already in message refusal mode
 			{
 				activeChar.setMessageRefusal(false);
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.MESSAGE_ACCEPTANCE_MODE));
+				activeChar.sendPacket(SystemMessageId.MESSAGE_ACCEPTANCE_MODE);
 			}
 			else
 			{
 				activeChar.setMessageRefusal(true);
-				activeChar.sendPacket(new SystemMessage(SystemMessageId.MESSAGE_REFUSAL_MODE));
+				activeChar.sendPacket(SystemMessageId.MESSAGE_REFUSAL_MODE);
 			}
 		}
 		return true;

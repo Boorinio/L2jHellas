@@ -42,7 +42,7 @@ public final class RequestEvaluate extends L2GameClientPacket
 
 		if (!(activeChar.getTarget() instanceof L2PcInstance))
 		{
-			sm = new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -50,7 +50,7 @@ public final class RequestEvaluate extends L2GameClientPacket
 
 		if (activeChar.getLevel() < 10)
 		{
-			sm = new SystemMessage(SystemMessageId.ONLY_LEVEL_SUP_10_CAN_RECOMMEND);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.ONLY_LEVEL_SUP_10_CAN_RECOMMEND);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -58,7 +58,7 @@ public final class RequestEvaluate extends L2GameClientPacket
 
 		if (activeChar.getTarget() == activeChar)
 		{
-			sm = new SystemMessage(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -66,7 +66,7 @@ public final class RequestEvaluate extends L2GameClientPacket
 
 		if (activeChar.getRecomLeft() <= 0)
 		{
-			sm = new SystemMessage(SystemMessageId.NO_MORE_RECOMMENDATIONS_TO_HAVE);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.NO_MORE_RECOMMENDATIONS_TO_HAVE);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -76,7 +76,7 @@ public final class RequestEvaluate extends L2GameClientPacket
 
 		if (target.getRecomHave() >= 255)
 		{
-			sm = new SystemMessage(SystemMessageId.YOU_NO_LONGER_RECIVE_A_RECOMMENDATION);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_NO_LONGER_RECEIVE_A_RECOMMENDATION);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -84,7 +84,7 @@ public final class RequestEvaluate extends L2GameClientPacket
 
 		if (!activeChar.canRecom(target))
 		{
-			sm = new SystemMessage(SystemMessageId.THAT_CHARACTER_IS_RECOMMENDED);
+			sm = SystemMessage.getSystemMessage(SystemMessageId.THAT_CHARACTER_IS_RECOMMENDED);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;
@@ -92,12 +92,12 @@ public final class RequestEvaluate extends L2GameClientPacket
 
 		activeChar.giveRecom(target);
 
-		sm = new SystemMessage(SystemMessageId.YOU_HAVE_RECOMMENDED);
+		sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_RECOMMENDED_S1_YOU_HAVE_S2_RECOMMENDATIONS_LEFT);
 		sm.addString(target.getName());
 		sm.addNumber(activeChar.getRecomLeft());
 		activeChar.sendPacket(sm);
 
-		sm = new SystemMessage(SystemMessageId.YOU_HAVE_BEEN_RECOMMENDED);
+		sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_BEEN_RECOMMENDED_BY_S1);
 		sm.addString(activeChar.getName());
 		target.sendPacket(sm);
 		sm = null;

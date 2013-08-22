@@ -53,7 +53,7 @@ public class Mdam implements ISkillHandler
 		 * {
 		 * if (weaponInst == null)
 		 * {
-		 * SystemMessage sm2 = new SystemMessage(SystemMessage.S1_S2);
+		 * SystemMessage sm2 = SystemMessage.getSystemMessage(SystemMessage.S1_S2);
 		 * sm2.addString("You must equip a weapon before casting a spell.");
 		 * activeChar.sendPacket(sm2);
 		 * return;
@@ -166,7 +166,7 @@ public class Mdam implements ISkillHandler
 					{
 						activeChar.stopSkillEffects(skill.getId());
 						skill.getEffects(null, activeChar);
-						SystemMessage sm = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 						sm.addSkillName(skill.getId());
 						activeChar.sendPacket(sm);
 					}
@@ -179,7 +179,7 @@ public class Mdam implements ISkillHandler
 							skill.getEffects(activeChar, target);
 						else
 						{
-							SystemMessage sm = new SystemMessage(SystemMessageId.S1_WAS_UNAFFECTED_BY_S2);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
 							sm.addString(target.getName());
 							sm.addSkillName(skill.getDisplayId());
 							activeChar.sendPacket(sm);

@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.logs.GMAudit;
 
 public class AdminLevel implements IAdminCommandHandler
@@ -70,7 +69,7 @@ public class AdminLevel implements IAdminCommandHandler
 			{
 				if (targetChar == null || !(targetChar instanceof L2PlayableInstance))
 				{
-					activeChar.sendPacket(new SystemMessage(SystemMessageId.TARGET_IS_INCORRECT)); // incorrect
+					activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 					return false;
 				}
 
