@@ -1056,7 +1056,6 @@ public final class Config
 	 */
 	public static boolean DEBUG;
 	public static boolean DEBUG_LOGGER;
-	public static boolean AUTO_IP;
 	public static File DATAPACK_ROOT;
 	public static boolean ALT_DEV_NO_SPAWNS;
 	public static boolean ALT_DEV_NO_SCRIPT;
@@ -3041,7 +3040,6 @@ public final class Config
 			// Dev's Config
 			DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
 			DEBUG_LOGGER = Boolean.parseBoolean(serverSettings.getProperty("DebugLogger", "False"));
-			AUTO_IP = Boolean.parseBoolean(serverSettings.getProperty("AutomaticIP", "True"));
 			try
 			{
 				DATAPACK_ROOT = new File(serverSettings.getProperty("DatapackRoot", ".").replaceAll("\\\\", "/")).getCanonicalFile();
@@ -3247,6 +3245,8 @@ public final class Config
 			MMO_MAX_SEND_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxSendPerPass", "12"));
 			MMO_MAX_READ_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxReadPerPass", "12"));
 			MMO_HELPER_BUFFER_COUNT = Integer.parseInt(mmoSettings.getProperty("HelperBufferCount", "20"));
+		
+			_log.log(Level.INFO, "Configuration Files Loaded.");
 		}
 		else
 		{

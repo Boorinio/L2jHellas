@@ -125,6 +125,7 @@ import com.l2jhellas.util.DynamicExtension;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
+import com.l2jhellas.util.ip.IPConfigData;
 import com.l2jserver.mmocore.network.SelectorConfig;
 import com.l2jserver.mmocore.network.SelectorThread;
 
@@ -531,7 +532,11 @@ public class GameServer
 		InputStream is = new FileInputStream(new File(LOG_NAME));
 		LogManager.getLogManager().readConfiguration(is);
 		is.close();
-
+		
+		// IP Config
+		Util.printSection("Network");
+		IPConfigData.load();
+		
 		Util.printSection("Configs");
 		Config.load();
 		_log.log(Level.INFO, "Configs Loaded.");

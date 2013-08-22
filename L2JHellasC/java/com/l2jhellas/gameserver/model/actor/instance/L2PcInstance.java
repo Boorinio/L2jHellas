@@ -14108,7 +14108,8 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (ZodiacMain.voting && !ZodiacMain.HasVoted(this))
  			ZodiacMain.showHtmlWindow(this);
-		
+		this.sendSkillList();
+		this.sendPacket(new SkillCoolTime(this));
 		if (Config.SHOW_HTML_GM_WELCOME && (this.getAccessLevel().getLevel() > 0 || this.isGM()))
 		{
 			String Welcome_Path = "data/html/welcomeGM.htm";

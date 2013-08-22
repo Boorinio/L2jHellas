@@ -34,6 +34,7 @@ import com.l2jhellas.Server;
 import com.l2jhellas.status.Status;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
+import com.l2jhellas.util.ip.IPConfigData;
 import com.l2jserver.mmocore.network.SelectorConfig;
 import com.l2jserver.mmocore.network.SelectorThread;
 
@@ -103,6 +104,10 @@ public class LoginServer
 			}
 		}
 
+		// IP Config
+		Util.printSection("Network");
+		IPConfigData.load();
+		
 		// Load Config
 		Util.printSection("Config");
 		Config.load();
