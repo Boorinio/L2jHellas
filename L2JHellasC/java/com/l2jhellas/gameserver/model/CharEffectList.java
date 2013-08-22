@@ -649,9 +649,9 @@ public class CharEffectList
 		{
 			SystemMessage sm;
 			if (effect.getSkill().isToggle())
-				sm = new SystemMessage(SystemMessageId.S1_HAS_WORN_OFF);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WORN_OFF);
 			else
-				sm = new SystemMessage(SystemMessageId.EFFECT_S1_DISAPPEARED);
+				sm = SystemMessage.getSystemMessage(SystemMessageId.EFFECT_S1_DISAPPEARED);
 			
 			sm.addSkillName(effect.getSkill().getId());
 			_owner.sendPacket(sm);

@@ -15,13 +15,10 @@
 package com.l2jhellas.gameserver.model;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -409,7 +406,7 @@ public abstract class L2Effect
 				
 				if (_skill.isPvpSkill() && getEffected() instanceof L2PcInstance)
 				{
-					SystemMessage smsg = new SystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
+					SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
 					smsg.addString(_skill.getName());
 					getEffected().sendPacket(smsg);
 				}
@@ -444,7 +441,7 @@ public abstract class L2Effect
 				// If the time left is equal to zero, send the message
 				if (_count == 0 && getEffected() instanceof L2PcInstance)
 				{
-					SystemMessage smsg3 = new SystemMessage(SystemMessageId.S1_HAS_WORN_OFF);
+					SystemMessage smsg3 = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WORN_OFF);
 				    smsg3.addString(_skill.getName());
 				    getEffected().sendPacket(smsg3);
 				}
