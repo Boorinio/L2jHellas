@@ -108,7 +108,7 @@ public final class UseItem extends L2GameClientPacket
 			return;
 		}
 		
-		L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
+		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
 		if (item == null)
 			return;
 		
@@ -157,7 +157,7 @@ public final class UseItem extends L2GameClientPacket
 		if(itemId==0)
 			return;
 
-		L2Clan cl = activeChar.getClan();
+		final L2Clan cl = activeChar.getClan();
 		
 		if (((cl == null) || cl.getHasCastle() == 0) && itemId == 7015 && Config.CASTLE_SHIELD)
 		{
@@ -290,7 +290,7 @@ public final class UseItem extends L2GameClientPacket
 				return;
 			}
 			
-			L2PetInstance pet = ((L2PetInstance) summon);
+			final L2PetInstance pet = ((L2PetInstance) summon);
 			
 			if (!(pet.canWear(item.getItem())))
 			{
@@ -434,7 +434,7 @@ public final class UseItem extends L2GameClientPacket
 						return;
 					}
 				}
-			int bodyPart = item.getItem().getBodyPart();
+			final int bodyPart = item.getItem().getBodyPart();
 			// Don't allow weapon/shield hero equipment during Olympiads
 			if (activeChar.isInOlympiadMode() && (bodyPart == L2Item.SLOT_LR_HAND || bodyPart == L2Item.SLOT_L_HAND || bodyPart == L2Item.SLOT_R_HAND) && ((item.getItemId() >= 6611 && item.getItemId() <= 6621) || (item.getItemId() == 6842)))
 				return;
@@ -457,7 +457,7 @@ public final class UseItem extends L2GameClientPacket
 		}
 		else
 		{
-			L2Weapon weaponItem = activeChar.getActiveWeaponItem();
+			final L2Weapon weaponItem = activeChar.getActiveWeaponItem();
 			int itemid = item.getItemId();
 			
 			if (itemid == 4393)

@@ -14267,18 +14267,15 @@ public final class L2PcInstance extends L2PlayableInstance
 				
 				// Consume mana - will start a task if required; returns if item is not a shadow item
 				item.decreaseMana(false);
-				
+
 				if (item.getItem() instanceof L2Weapon)
 				{
 					// charge Soulshot/Spiritshot like L2OFF
 					this.rechargeAutoSoulShot(true, true, false);
 					item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 					item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
+					CheckIfWeaponIsAllowed();
 				}
-			}
-			if (item.getItem().getType2() == L2Item.TYPE2_WEAPON)
-			{
-				CheckIfWeaponIsAllowed();
 			}
 			else
 				sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
@@ -14359,6 +14356,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (sagi)
@@ -14372,6 +14375,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (mage)
@@ -14385,6 +14394,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (duelist)
@@ -14398,6 +14413,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (tit)
@@ -14411,6 +14432,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (nixas)
@@ -14424,6 +14451,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (paladin)
@@ -14437,6 +14470,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (FSeeker)
@@ -14450,6 +14489,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (dreadnought)
@@ -14463,6 +14508,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (HellKnight)
@@ -14476,6 +14527,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (swordMuse)
@@ -14489,6 +14546,12 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
 		else if (dancer)
@@ -14502,10 +14565,13 @@ public final class L2PcInstance extends L2PlayableInstance
 				items = getInventory().getItemByItemId(id);
 				items.updateDatabase();
 				getInventory().equipItemAndRecord(items);
+				getInventory().reloadEquippedItems();				
+				final InventoryUpdate iu = new InventoryUpdate();			
+				iu.addModifiedItem(items);
+				this.sendPacket(new InventoryUpdate());
+				this.sendPacket(new ItemList(this, false));
+				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
-		this.sendPacket(new InventoryUpdate());
-		this.sendPacket(new ItemList(this, false));
-		this.sendPacket(new StatusUpdate(this.getObjectId()));
 	}
 }
