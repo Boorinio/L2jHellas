@@ -314,7 +314,7 @@ public class CastleManorManager
 						@Override
 						public void run()
 						{
-							_log.log(Level.INFO, getClass().getSimpleName() + ": Next period started.");
+							System.out.print("CastleManorManager: Next period started.");
 							setNextPeriod();
 							try
 							{
