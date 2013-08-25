@@ -26,7 +26,9 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 
 /**
  * @author Boorinio
@@ -223,7 +225,10 @@ public class ZodiacMain
 				CastleWars.IncreaseKilledFlags();
 			}
 			if (CaptureThem.CaptureThemRunning)
+			{
 				((L2PcInstance) killer).ZodiacPoints = ((L2PcInstance) killer).ZodiacPoints + 10;
+				killer.sendPacket(new ExShowScreenMessage("You have "+killer.getActingPlayer().ZodiacPoints+" Points.", 3000, SMPOS.BOTTOM_RIGHT, true));
+			}
 		}
 		if (npc.getNpcId() == 36007 && ProtectTheLdr.ProtectisRunning)
 		{
@@ -237,10 +242,10 @@ public class ZodiacMain
 	
 	public static void OnRevive(L2PcInstance player)
 	{
+		if(CaptureThem.CaptureThemRunning)
+			CaptureThem.OnRevive(player);
 		if (CastleWars.CastleWarsRunning)
 			CastleWars.OnRevive(player);
-		if (CaptureThem.CaptureThemRunning)
-			CaptureThem.OnRevive(player);
 		if (ProtectTheLdr.ProtectisRunning)
 			ProtectTheLdr.OnRevive(player);
 		if (ChaosEvent._isChaosActive)

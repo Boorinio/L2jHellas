@@ -29,7 +29,9 @@ import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -177,28 +179,27 @@ public class CaptureThem
 		CaptureThemRunning = false;
 		
 	}
-	
+	public static void OnRevive(L2PcInstance player)
+	{
+		player.setCurrentHp(player.getMaxHp());
+		player.setCurrentMp(player.getMaxMp());
+		player.setCurrentCp(player.getMaxCp());
+		L2Skill skill = SkillTable.getInstance().getInfo(1323, 1);
+		skill.getEffects(player, player);		
+	}
 	public static void onDeath(L2PcInstance player, L2PcInstance killer)
 	{
+		if (killer == null)
+			return;
 		if (killer.isinZodiac)
 		{
 			killer.ZodiacPoints++;
+			killer.sendPacket(new ExShowScreenMessage("You have "+killer.ZodiacPoints+" Points.", 3000, SMPOS.BOTTOM_RIGHT, true));
 		}
-		
-	}
-	
-	public static void OnRevive(L2PcInstance player)
-	{
-		if(player == null)
+		if (player == null)
 			return;
-		
-		player.getStatus().setCurrentHp(player.getMaxHp());
-		player.getStatus().setCurrentMp(player.getMaxMp());
-		player.getStatus().setCurrentCp(player.getMaxCp());
 		player.teleToLocation(149722, 46700, -3413);
-		L2Skill skill;
-		skill = SkillTable.getInstance().getInfo(1323, 1);
-		skill.getEffects(player, player);
+		player.doRevive();		
 	}
 	
 	public static void waitSecs(int i)
@@ -237,4 +238,5 @@ public class CaptureThem
 		}
 		return null;
 	}
+	
 }

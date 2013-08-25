@@ -142,7 +142,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 					break;
 
 					default:
-						if (Config.ALT_RESPAWN_POINT && !activeChar.isinZodiac)
+						if (Config.ALT_RESPAWN_POINT)
 							loc = new Location(Config.ALT_RESPAWN_POINT_X, Config.ALT_RESPAWN_POINT_Y, Config.ALT_RESPAWN_POINT_Z);
 						else
 							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Town);

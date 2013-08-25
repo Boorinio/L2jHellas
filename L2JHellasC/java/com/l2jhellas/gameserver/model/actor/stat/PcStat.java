@@ -204,44 +204,6 @@ public class PcStat extends PlayableStat
 			 */
 			if (!Config.ALT_GAME_NEW_CHAR_ALWAYS_IS_NEWBIE)
 			{
-				if ((getActiveChar().getLevel() >= 6) && (getActiveChar().getLevel() < 25) && !getActiveChar().isNewbie())
-				{
-					try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-					{
-						PreparedStatement statement;
-
-						statement = con.prepareStatement("SELECT value FROM account_data WHERE account_name=? AND var=newbie_char");
-						statement.setString(1, getActiveChar().getAccountName());
-						ResultSet rset = statement.executeQuery();
-
-						if (!rset.next())
-						{
-							PreparedStatement statement1;
-							statement1 = con.prepareStatement("INSERT INTO account_data (account_name, var, value) VALUES (?, newbie_char, ?)");
-							statement1.setString(1, getActiveChar().getAccountName());
-							statement1.setInt(2, getActiveChar().getObjectId());
-							statement1.executeUpdate();
-							statement1.close();
-
-							getActiveChar().setNewbie(true);
-							if (Config.DEBUG)
-							{
-								_log.info("New newbie character: " + getActiveChar().getCharId());
-							}
-						};
-						rset.close();
-						statement.close();
-					}
-					catch (SQLException e)
-					{
-						_log.log(Level.WARNING, getClass().getName() + " Could not check character for newbie: " + e);
-						if (Config.DEVELOPER)
-						{
-							e.printStackTrace();
-						}
-					}
-				};
-
 				if (getActiveChar().getLevel() >= 25 && getActiveChar().isNewbie())
 				{
 					getActiveChar().setNewbie(false);
@@ -249,9 +211,8 @@ public class PcStat extends PlayableStat
 					{
 						_log.log(Level.CONFIG, getClass().getName() + ": Newbie character ended: " + getActiveChar().getCharId());
 					}
-				};
-			};
-
+				}
+			}
 			getActiveChar().setCurrentCp(getMaxCp());
 			getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15));
 			getActiveChar().sendPacket(SystemMessageId.YOU_INCREASED_YOUR_LEVEL);

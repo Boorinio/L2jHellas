@@ -40,35 +40,59 @@ public class L2CasinoInstance extends L2NpcInstance
 	{
 		if (player == null)
 			return;
-
-		if (command.startsWith("play1") && player.getInventory().getInventoryItemCount(9142, 0) >= 2)
-			Casino1(player);
+		
+		if (command.startsWith("play1"))
+		{
+			if (player.getInventory().getInventoryItemCount(9142, 0) >= 2)
+				Casino1(player);
+			else
+				player.sendMessage("You don't have enough items.");
+		}
+		
+		else if (command.startsWith("play2"))
+		{
+			if (player.getInventory().getInventoryItemCount(9142, 0) >= 4)
+				Casino2(player);
+			else
+				player.sendMessage("You don't have enough items.");
+		}
+		else if (command.startsWith("play3"))
+		{
+			if (player.getInventory().getInventoryItemCount(9142, 0) >= 8)
+				Casino3(player);
+			else
+				player.sendMessage("You don't have enough items.");
+		}
+		else if (command.startsWith("play4"))
+		{
+			if (player.getInventory().getInventoryItemCount(9142, 0) >= 16)
+				Casino4(player);
+			else
+				player.sendMessage("You don't have enough items.");
+		}
+		else if (command.startsWith("play5"))
+		{
+			if (player.getInventory().getInventoryItemCount(57, 0) >= 500000)
+				Casino5(player);
+			else
+				player.sendMessage("You don't have enough items.");
+		}
+		else if (command.startsWith("play6"))
+		{
+			if (player.getInventory().getInventoryItemCount(57, 0) >= 1000000)
+				Casino6(player);
+			else
+				player.sendMessage("You don't have enough items.");
+		}
+		else if (command.startsWith("play7"))
+		{
+			if (player.getInventory().getInventoryItemCount(57, 0) >= 10000000)
+				Casino7(player);
+			else
+				player.sendMessage("You don't have enough items.");
+		}
 		else
-			player.sendMessage("You don't have enough items.");
-		if (command.startsWith("play2") && player.getInventory().getInventoryItemCount(9142, 0) >= 4)
-			Casino2(player);
-		else
-			player.sendMessage("You don't have enough items.");
-		if (command.startsWith("play3") && player.getInventory().getInventoryItemCount(9142, 0) >= 8)
-			Casino3(player);
-		else
-			player.sendMessage("You don't have enough items.");
-		if (command.startsWith("play4") && player.getInventory().getInventoryItemCount(9142, 0) >= 16)
-			Casino4(player);
-		else
-			player.sendMessage("You don't have enough items.");
-		if (command.startsWith("play5") && player.getInventory().getInventoryItemCount(57, 0) >= 500000)
-			Casino5(player);
-		else
-			player.sendMessage("You don't have enough items.");
-		if (command.startsWith("play6") && player.getInventory().getInventoryItemCount(57, 0) >= 1000000)
-			Casino6(player);
-		else
-			player.sendMessage("You don't have enough items.");
-		if (command.startsWith("play7") && player.getInventory().getInventoryItemCount(57, 0) >= 10000000)
-			Casino7(player);
-		else
-			player.sendMessage("You don't have enough items.");
+			player.sendMessage("Wrong bypass command.");
 	}
 
 	public static void displayCongrats(L2PcInstance player)

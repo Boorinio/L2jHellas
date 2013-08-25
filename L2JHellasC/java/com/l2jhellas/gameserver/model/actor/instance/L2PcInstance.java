@@ -5501,10 +5501,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				}
 				rps.doPvp();
 			}
-			if (isinZodiac)
-			{
-				ZodiacMain.OnDeath(this, pk);
-			}
 			if (pk != null && pk._inEventTvT && _inEventTvT)
 			{
 				if (TvT._teleport || TvT._started)
@@ -5625,6 +5621,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (Config.RAID_SYSTEM_RESURRECT_PLAYER && (inSoloEvent || inPartyEvent || inClanEvent))
 			{
 				L2RaidEvent.onPlayerDeath(this);
+			}
+			if (isinZodiac)
+			{
+				ZodiacMain.OnDeath(this, pk);
 			}
 			if (atEvent && pk != null)
 			{
@@ -6914,9 +6914,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	@Override
 	public boolean isInvul()
 	{
-		return _isInvul || _isTeleporting || _protectEndTime > GameTimeController.getGameTicks();
+		return (_isInvul || (_isTeleporting || _protectEndTime > GameTimeController.getGameTicks()));
 	}
-	
+
 	/**
 	 * Return True if the L2PcInstance has a Party in progress.
 	 */
@@ -11339,11 +11339,6 @@ public final class L2PcInstance extends L2PlayableInstance
 				getParty().getDimensionalRift().memberRessurected(this);
 			}
 		}
-		if (isinZodiac)
-		{
-			ZodiacMain.OnRevive(this);
-		}
-		
 		if ((_inEventTvT && TvT._started && Config.TVT_REVIVE_RECOVERY) || (_inEventCTF && CTF._started && Config.CTF_REVIVE_RECOVERY))
 		{
 			getStatus().setCurrentHp(getMaxHp());

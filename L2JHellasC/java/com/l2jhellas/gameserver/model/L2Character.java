@@ -61,6 +61,7 @@ import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -1718,11 +1719,11 @@ public abstract class L2Character extends L2Object
 					teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ);
 				}
 			}
+			
 			if (this instanceof L2PlayableInstance && ((L2PlayableInstance) this).isPhoenixBlessed())
 			{
 				((L2PlayableInstance) this).stopPhoenixBlessing(null);
 			}
-			
 			_status.setCurrentCp(getMaxCp() * Config.RESPAWN_RESTORE_CP);
 			_status.setCurrentHp(getMaxHp() * Config.RESPAWN_RESTORE_HP);
 			// _Status.setCurrentMp(getMaxMp() * Config.RESPAWN_RESTORE_MP);
@@ -1731,6 +1732,11 @@ public abstract class L2Character extends L2Object
 			broadcastPacket(new Revive(this));
 			if (getWorldRegion() != null)
 				getWorldRegion().onRevive(this);
+			L2PcInstance  player = getActingPlayer();
+			if (player.isinZodiac)
+			{
+				ZodiacMain.OnRevive(player);
+			}
 		}
 		else
 			setIsPendingRevive(true);
