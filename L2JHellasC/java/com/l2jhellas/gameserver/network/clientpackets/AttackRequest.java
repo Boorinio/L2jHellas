@@ -50,7 +50,8 @@ public final class AttackRequest extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-		
+		if (activeChar.isSpawnProtected())
+			activeChar.setProtection(false);
         // Like L2OFF
         if(activeChar.isAttackingNow() && activeChar.isMoving())
         {

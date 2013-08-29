@@ -133,6 +133,15 @@ public class L2Attackable extends L2NpcInstance
 		{
 			return _attacker.getObjectId();
 		}
+		public final L2Character getAttacker()
+		{
+			return _attacker;
+		}
+		
+		public void stopHate()
+		{
+			_hate = 0;
+		}
 	}
 	
 	/**
@@ -1214,33 +1223,36 @@ public class L2Attackable extends L2NpcInstance
 	 * @param target
 	 *        The L2Character whose hate level must be returned
 	 */
-	public int getHating(L2Character target)
+	public int getHating(final L2Character target)
 	{
-		if (getAggroListRP().isEmpty())
+		if (getAggroListRP().isEmpty() || (target == null))
 			return 0;
 		
-		AggroInfo ai;
-		if (target != null)
-		{
-			ai = getAggroListRP().get(target);
-		}
-		else
+		AggroInfo ai = getAggroList().get(target);
+		
+		if (ai == null)
 			return 0;
-		if (ai != null && ai._attacker instanceof L2PcInstance && (((L2PcInstance) ai._attacker).getAppearance().getInvisible() || ai._attacker.isInvul()))
+		
+		if (ai.getAttacker() instanceof L2PcInstance)
 		{
 			// Remove Object Should Use This Method and Can be Blocked While
 			// Interacting
-			getAggroList().remove(target);
-			return 0;
+			L2PcInstance act = (L2PcInstance) ai.getAttacker();
+			if (act.getAppearance().getInvisible() || ai.getAttacker().isInvul() || act.isSpawnProtected())
+			{
+				getAggroList().remove(target);
+				return 0;
+			}
 		}
-		if (ai._attacker != null && !ai._attacker.isVisible())
+		if (!ai._attacker.isVisible())
 		{
 			getAggroList().remove(target);
 			return 0;
 		}
-		if (ai._attacker != null && ai._attacker.isAlikeDead())
+		if (ai._attacker.isAlikeDead())
 		{
 			ai._hate = 0;
+			ai.stopHate();
 			return 0;
 		}
 		return ai._hate;
@@ -3068,7 +3080,6 @@ public class L2Attackable extends L2NpcInstance
 			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(getSpawn().getLocx(), getSpawn().getLocy(), getSpawn().getLocz(), 0));
 		}
 	}
-	
 	private class CommandChannelTimer implements Runnable
 	{
 		private final L2Attackable _monster;

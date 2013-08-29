@@ -72,7 +72,6 @@ public class Wedding implements IVoicedCommandHandler
 		if (activeChar.isMarried())
 		{
 			activeChar.sendMessage("You are now divorced.");
-			activeChar.removeSkill(3261);
 			AdenaAmount = (activeChar.getAdena() / 100) * Config.MOD_WEDDING_DIVORCE_COSTS;
 			activeChar.getInventory().reduceAdena("Wedding", AdenaAmount, activeChar, null);
 			activeChar.getInventory().destroyItemByItemId("Divorced", 9140, 1, activeChar, activeChar);
@@ -93,7 +92,6 @@ public class Wedding implements IVoicedCommandHandler
 				partner.getInventory().destroyItemByItemId("Divorced", 9140, 1, partner, partner);
 				ItemList il = new ItemList(partner.getClient().getActiveChar(), true);
 				partner.sendPacket(il);
-				partner.removeSkill(3261);
 			}
 			else
 				partner.sendMessage("Your fiance has decided to break the engagement with you.");

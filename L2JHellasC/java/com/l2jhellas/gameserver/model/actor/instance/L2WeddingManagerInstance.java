@@ -147,9 +147,7 @@ public class L2WeddingManagerInstance extends L2NpcInstance
 					if(Config.CUPID_TO_PLAYERS)
 					{
 						player.addItem("Cupids Bow", 9140, 1, player, true);
-						player.addSkill(SkillTable.getInstance().getInfo(3261, 1));
 						ptarget.addItem("Cupids Bow", 9140, 1, player, true);
-						ptarget.addSkill(SkillTable.getInstance().getInfo(3261, 1));
 						player.getInventory().updateDatabase();
 						ptarget.getInventory().updateDatabase();
 					}

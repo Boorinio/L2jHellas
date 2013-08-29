@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -139,8 +140,8 @@ public class Pdam implements ISkillHandler
 
 					// Success of lethal effect
 					int chance = Rnd.get(100);
-					if (!target.isRaid() && !target.isBoss() && chance < skill.getLethalChance1() && !(target instanceof L2DoorInstance) && !(target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 35062))
-					{
+					if (!target.isRaid() && !target.isBoss() && !(target instanceof L2GrandBossInstance) && chance < skill.getLethalChance1() && !(target instanceof L2DoorInstance) && !(target instanceof L2MonsterInstance && ((L2MonsterInstance) target).getNpcId() == 36006) && (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() != 35062))
+	 					{
 						// 1st lethal effect activate (cp to 1 or if target is
 						// npc then hp to 50%)
 						if (skill.getLethalChance2() > 0 && chance >= skill.getLethalChance2())

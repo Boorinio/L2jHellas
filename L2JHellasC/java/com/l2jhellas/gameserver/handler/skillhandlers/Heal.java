@@ -71,12 +71,17 @@ public class Heal implements ISkillHandler
 				continue;
 			
 			// We should not heal siege flags
-            if (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 35062)
-            {
-                activeChar.getActingPlayer().sendMessage("You cannot heal siege flags!");
-                continue;
-            }
-            
+			if (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 35062)
+			{
+				activeChar.getActingPlayer().sendMessage("You cannot heal siege flags!");
+				continue;
+			}
+			// Zodiac Flag
+			if (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 36006)
+			{
+				activeChar.getActingPlayer().sendMessage("You cannot heal event flags!");
+				continue;
+			}
 			// Player holding a cursed weapon can't be healed and can't heal
 			if (target != activeChar)
 			{

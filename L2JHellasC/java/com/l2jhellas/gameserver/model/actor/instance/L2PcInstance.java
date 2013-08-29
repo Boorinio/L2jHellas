@@ -5780,7 +5780,7 @@ public final class L2PcInstance extends L2PlayableInstance
 				for (L2ItemInstance itemDrop : getInventory().getItems())
 				{
 					// Don't drop
-					if (itemDrop.isAugmented() || // Dont drop augmented items
+					if (itemDrop == null || itemDrop.isAugmented() || // Dont drop augmented items
 					itemDrop.isShadowItem() || // Dont drop Shadow Items
 					itemDrop.getItemId() == 57 || // Adena
 					itemDrop.getItem().getType2() == L2Item.TYPE2_QUEST || // Quest Items
@@ -5796,7 +5796,7 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						// Set proper chance according to Item type of equipped Item
 						itemDropPercent = itemDrop.getItem().getType2() == L2Item.TYPE2_WEAPON ? dropEquipWeapon : dropEquip;
-						getInventory().unEquipItemInSlotAndRecord(itemDrop.getEquipSlot());
+						getInventory().unEquipItemInSlot(itemDrop.getEquipSlot());
 					}
 					else
 					{
@@ -14237,7 +14237,8 @@ public final class L2PcInstance extends L2PlayableInstance
 				sm.addItemName(item.getItemId());
 			}
 			sendPacket(sm);
-			
+			if (item.getItemId() == 9140)
+				this.removeSkill(SkillTable.getInstance().getInfo(3261, 1));
 			int slot = getInventory().getSlotFromItem(item);
 			items = getInventory().unEquipItemInBodySlotAndRecord(slot);
 		}
@@ -14271,6 +14272,8 @@ public final class L2PcInstance extends L2PlayableInstance
 					item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
 					CheckIfWeaponIsAllowed();
 				}
+				if (item.getItemId() == 9140)
+					this.addSkill(SkillTable.getInstance().getInfo(3261, 1));
 			}
 			else
 				sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
