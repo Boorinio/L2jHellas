@@ -4131,17 +4131,10 @@ public final class L2PcInstance extends L2PlayableInstance
 			item.setProtected(true);
 		}
 		
-		// Send inventory update packet
-		if (!Config.FORCE_INVENTORY_UPDATE)
-		{
-			InventoryUpdate playerIU = new InventoryUpdate();
-			playerIU.addItem(item);
-			sendPacket(playerIU);
-		}
-		else
-		{
-			sendPacket(new ItemList(this, false));
-		}
+		InventoryUpdate playerIU = new InventoryUpdate();
+		playerIU.addItem(item);
+		sendPacket(playerIU);
+		sendPacket(new ItemList(this, false));
 		
 		// Update current load as well
 		StatusUpdate su = new StatusUpdate(getObjectId());
@@ -5768,19 +5761,21 @@ public final class L2PcInstance extends L2PlayableInstance
 			}
 			
 			int dropCount = 0;
-			while (dropPercent > 0 && Rnd.get(100) < dropPercent && dropCount < dropLimit)
+			int itemDropPercent = 0;
+			List<Integer> nonDroppableList = new FastList<Integer>();
+			List<Integer> nonDroppableListPet = new FastList<Integer>();
+			nonDroppableList = Config.KARMA_LIST_NONDROPPABLE_ITEMS;
+			nonDroppableListPet = Config.KARMA_LIST_NONDROPPABLE_ITEMS;
+			if (dropPercent > 0 && Rnd.get(100) < dropPercent)
 			{
-				int itemDropPercent = 0;
-				List<Integer> nonDroppableList = new FastList<Integer>();
-				List<Integer> nonDroppableListPet = new FastList<Integer>();
-				
-				nonDroppableList = Config.KARMA_LIST_NONDROPPABLE_ITEMS;
-				nonDroppableListPet = Config.KARMA_LIST_NONDROPPABLE_ITEMS;
 				
 				for (L2ItemInstance itemDrop : getInventory().getItems())
 				{
+					if(itemDrop == null)
+						break;
+					
 					// Don't drop
-					if (itemDrop == null || itemDrop.isAugmented() || // Dont drop augmented items
+					if (!itemDrop.isDropable() || itemDrop.isAugmented() || // Dont drop augmented items
 					itemDrop.isShadowItem() || // Dont drop Shadow Items
 					itemDrop.getItemId() == 57 || // Adena
 					itemDrop.getItem().getType2() == L2Item.TYPE2_QUEST || // Quest Items
@@ -5791,20 +5786,16 @@ public final class L2PcInstance extends L2PlayableInstance
 					{
 						continue;
 					}
-					
 					if (itemDrop.isEquipped())
 					{
 						// Set proper chance according to Item type of equipped Item
 						itemDropPercent = itemDrop.getItem().getType2() == L2Item.TYPE2_WEAPON ? dropEquipWeapon : dropEquip;
-						getInventory().unEquipItemInSlot(itemDrop.getEquipSlot());
+						getInventory().unEquipItemInSlot(itemDrop.getLocationSlot());
 					}
 					else
-					{
 						itemDropPercent = dropItem; // Item in inventory
-					}
-					
-					// NOTE: Each time an item is dropped, the chance of another
-					// item being dropped gets lesser (dropCount * 2)
+						
+					// NOTE: Each time an item is dropped, the chance of another item being dropped gets lesser (dropCount * 2)
 					if (Rnd.get(100) < itemDropPercent)
 					{
 						dropItem("DieDrop", itemDrop, killer, true);
@@ -5819,15 +5810,17 @@ public final class L2PcInstance extends L2PlayableInstance
 							String text = getName() + " dropped id = " + itemDrop.getItemId() + ", count = " + itemDrop.getCount();
 							LogRecorder.add(text, "dieDrop");
 						}
+						if (++dropCount >= dropLimit)
+							break;
 						
-						dropCount++;
-						break;
 					}
+						
+					
 				}
 			}
 		}
 	}
-	
+
 	private void onDieUpdateKarma()
 	{
 		// Karma lose for server that does not allow delevel

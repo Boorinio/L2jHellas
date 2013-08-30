@@ -50,7 +50,7 @@ public final class L2ObservationInstance extends L2FolkInstance
 				return;
 			}
 
-			if (player._inEventTvT || player._inEventDM || player._inEventCTF)
+			if (player._inEventTvT || player._inEventDM || player._inEventCTF || player.isinZodiac)
 			{
 				player.sendMessage("You already participated in Event!");
 				return;

@@ -8,10 +8,12 @@ import javolution.util.FastSet;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
@@ -65,7 +67,20 @@ public class TreasureChest
 			_Npcs.add(npcs);
 		}
 	}
-
+	public static void onDeath(L2PcInstance player)
+	{
+		player.teleToLocation(x, y, z);
+		player.doRevive();
+		
+	}
+	public static void onRevive(L2PcInstance player)
+	{
+		player.setCurrentHp(player.getMaxHp());
+		player.setCurrentMp(player.getMaxMp());
+		player.setCurrentCp(player.getMaxCp());
+		L2Skill skill = SkillTable.getInstance().getInfo(1323, 1);
+		skill.getEffects(player, player);	
+	}
 	public static void LuckyOne(L2PcInstance killer)
 	{
 		Counter++;

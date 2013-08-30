@@ -209,6 +209,8 @@ public class ZodiacMain
 			CastleWars.OnDeath(player);
 		if (ChaosEvent._isChaosActive)
 			ChaosEvent.onDeath(player, killer);
+		if(TreasureChest.TreasureRunning)
+			TreasureChest.onDeath(player);
 		
 	}
 	
@@ -250,6 +252,8 @@ public class ZodiacMain
 			ProtectTheLdr.OnRevive(player);
 		if (ChaosEvent._isChaosActive)
 			ChaosEvent.onRevive(player);
+		if(TreasureChest.TreasureRunning)
+			TreasureChest.onRevive(player);
 	}
 	
 	public static boolean isEligible(L2PcInstance player, String ip)
