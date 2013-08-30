@@ -608,7 +608,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				final OlympiadGameTask nextArena = OlympiadGameManager.getInstance().getOlympiadTask(arenaId);
 				if (nextArena != null)
 				{
-					activeChar.enterOlympiadObserverMode(nextArena.getZone().getSpawns().get(0), arenaId);
+					activeChar.enterOlympiadObserverMode(STADIUMS[arenaId][0], STADIUMS[arenaId][1], STADIUMS[arenaId][2], arenaId);
 					return;
 				}
 			}
@@ -636,7 +636,32 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			// temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
 		}
 	}
-
+    protected static final int[][] STADIUMS =
+    {
+     {-20814, -21189, -3030},
+     {-120324, -225077, -3331},
+     {-102495, -209023, -3331},
+     {-120156, -207378, -3331},
+     {-87628, -225021, -3331},
+     {-81705, -213209, -3331},
+     {-87593, -207339, -3331},
+     {-93709, -218304, -3331},
+     {-77157, -218608, -3331},
+     {-69682, -209027, -3331},
+     {-76887, -201256, -3331},
+     {-109985, -218701, -3331},
+     {-126367, -218228, -3331},
+     {-109629, -201292, -3331},
+     {-87523, -240169, -3331},
+     {-81748, -245950, -3331},
+     {-77123, -251473, -3331},
+     {-69778, -241801, -3331},
+     {-76754, -234014, -3331},
+     {-93742, -251032, -3331},
+     {-87466, -257752, -3331},
+     {-114413, -213241, -3331}
+    };
+    
 	private void playerHelp(L2PcInstance activeChar, String path)
 	{
 		if (path.indexOf("..") != -1)

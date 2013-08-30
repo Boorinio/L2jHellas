@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
@@ -133,10 +132,9 @@ public class AdminTest implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_oly_obs_mode"))
 		{
-			final Location loc = new Location(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			if (!activeChar.inObserverMode())
 			{
-				activeChar.enterOlympiadObserverMode(loc, -1);
+				activeChar.enterOlympiadObserverMode(activeChar.getX(), activeChar.getY(), activeChar.getZ(), -1);
 			}
 			else
 			{

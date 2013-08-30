@@ -10086,9 +10086,6 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void enterObserverMode(int x, int y, int z)
 	{
-		stopAbnormalEffect(2097152);
-		setProtection(false);
-		
 		_obsX = getX();
 		_obsY = getY();
 		_obsZ = getZ();
@@ -10104,12 +10101,9 @@ public final class L2PcInstance extends L2PlayableInstance
 		_observerMode = true;
 		broadcastUserInfo();
 	}
-	
-	public void enterOlympiadObserverMode(Location loc, int id)
+
+	public void enterOlympiadObserverMode(int x, int y, int z, int id)
 	{
-		stopAbnormalEffect(2097152);
-		setProtection(false);
-		
 		if (getPet() != null)
 		{
 			getPet().unSummon(this);
@@ -10139,7 +10133,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		setTarget(null);
 		setIsInvul(true);
 		getAppearance().setInvisible();
-		teleToLocation(loc, true);
+		teleToLocation(x,y,z, true);
 		sendPacket(new ExOlympiadMode(3));
 		_observerMode = true;
 		broadcastUserInfo();
@@ -11453,6 +11447,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			sendMessage("You are no longer under teleport protection.");
 		}
+
 		stopAbnormalEffect(2097152);
 		setProtection(false);
 	}
@@ -11474,7 +11469,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		// Force a revalidation
 		revalidateZone(true);
-		if (Config.PLAYER_SPAWN_PROTECTION > 0 && !isInOlympiadMode())
+		if (Config.PLAYER_SPAWN_PROTECTION > 0 && !isInOlympiadMode() && !this.inObserverMode())
 		{
 			startAbnormalEffect(2097152);
 			setProtection(true);

@@ -98,12 +98,7 @@ public abstract class L2SpawnZone extends L2ZoneType
 	-114413, -213241, -3331
 	}
 	};
- 	
-    public static int[] getRandomStadium()
-    {
-            return STADIUMS[Rnd.get(STADIUMS.length)];
-    }
-    
+
 	public L2SpawnZone(int id)
 	{
 		super(id);
@@ -112,13 +107,9 @@ public abstract class L2SpawnZone extends L2ZoneType
 	public final static void addSpawn()
 	{
 	    if(_spawnLocs == null)
-	    	_spawnLocs = new FastList<>();
-	    	
-	    final int x = getRandomStadium()[0];
-	    final int y = getRandomStadium()[1];
-	    final int z = getRandomStadium()[2];	      
+	    	_spawnLocs = new FastList<>();     
     
-		_spawnLocs.add(new Location(x, y, z));
+		_spawnLocs.add(new Location(STADIUMS[0][0], STADIUMS[0][1], STADIUMS[0][2]));
 	}
 
 	public final List<Location> getSpawns()
