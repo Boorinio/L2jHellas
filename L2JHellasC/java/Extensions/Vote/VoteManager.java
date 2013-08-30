@@ -110,9 +110,9 @@ public class VoteManager
 			{
 				if (inputLine.contains("Votes"))
 				{
-					String votesLine = in.readLine();
-
-					votes = Integer.valueOf(votesLine.split(">")[5].replace("</font", ""));
+					String votesLine = inputLine;
+					
+					votes = Integer.valueOf(votesLine.split(">")[3].replace("</div", ""));
 					break;
 				}
 			}
