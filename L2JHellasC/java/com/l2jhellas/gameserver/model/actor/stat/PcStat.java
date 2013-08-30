@@ -14,10 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +35,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class PcStat extends PlayableStat
 {

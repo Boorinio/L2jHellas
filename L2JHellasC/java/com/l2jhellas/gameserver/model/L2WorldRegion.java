@@ -436,6 +436,6 @@ public final class L2WorldRegion
 				_log.finest("Removed NPC " + target.getObjectId());
 			}
 		}
-		_log.info("All visible NPC's deleted in Region: " + getName());
+		_log.finest("All visible NPC's deleted in Region: " + getName());
 	}
 }

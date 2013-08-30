@@ -24,6 +24,7 @@ import javax.script.ScriptException;
 import Extensions.Balancer.BalanceLoad;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -36,14 +37,19 @@ import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SkillSpellbookTable;
 import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
+import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.Manager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
+import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2Multisell;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
@@ -101,7 +107,24 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("npc") || type.equals("npcs"))
 				{
+					for (L2PcInstance player : L2World.getAllPlayers())
+					{
+						player.sendPacket(SystemMessageId.NPC_SERVER_NOT_OPERATING);
+					}
+					RaidBossSpawnManager.getInstance().cleanUp();
+					DayNightSpawnManager.getInstance().cleanUp();
+					L2World.deleteVisibleNpcSpawns();
+					AdminTable.getInstance().broadcastMessageToGMs("NPC Unspawn completed!");
+					// make sure all spawns are deleted
+					RaidBossSpawnManager.getInstance().cleanUp();
+					DayNightSpawnManager.getInstance().cleanUp();
+					L2World.deleteVisibleNpcSpawns();
+					// now respawn all
 					NpcTable.getInstance().reload();
+					SpawnTable.getInstance().reloadAll();
+					RaidBossSpawnManager.getInstance().reloadBosses();
+					SevenSigns.getInstance().spawnSevenSignsNPC();
+					AdminTable.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
 					activeChar.sendMessage("All NPCs have been reloaded");
 					sendReloadPage(activeChar);
 				}

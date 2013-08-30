@@ -19,17 +19,13 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Spawn;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -48,13 +44,9 @@ public class AdminSpawn implements IAdminCommandHandler
 		"admin_spawn",
 		"admin_spawn_monster",
 		"admin_spawn_index",
-		"admin_unspawnall",
-		"admin_respawnall",
-		"admin_spawn_reload",
 		"admin_npc_index",
 		"admin_spawn_once",
 		"admin_show_npcs",
-		"admin_teleport_reload",
 		"admin_spawnnight",
 		"admin_spawnday"
 	};/** @formatter:on */
@@ -145,17 +137,6 @@ public class AdminSpawn implements IAdminCommandHandler
 				AdminHelpPage.showHelpPage(activeChar, "spawns.htm");
 			}
 		}
-		else if (command.startsWith("admin_unspawnall"))
-		{
-			for (L2PcInstance player : L2World.getAllPlayers())
-			{
-				player.sendPacket(SystemMessageId.NPC_SERVER_NOT_OPERATING);
-			}
-			RaidBossSpawnManager.getInstance().cleanUp();
-			DayNightSpawnManager.getInstance().cleanUp();
-			L2World.deleteVisibleNpcSpawns();
-			AdminTable.getInstance().broadcastMessageToGMs("NPC Unspawn completed!");
-		}
 		else if (command.startsWith("admin_spawnday"))
 		{
 			DayNightSpawnManager.getInstance().spawnDayCreatures();
@@ -164,24 +145,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		{
 			DayNightSpawnManager.getInstance().spawnNightCreatures();
 		}
-		else if (command.startsWith("admin_respawnall") || command.startsWith("admin_spawn_reload"))
-		{
-			// make sure all spawns are deleted
-			RaidBossSpawnManager.getInstance().cleanUp();
-			DayNightSpawnManager.getInstance().cleanUp();
-			L2World.deleteVisibleNpcSpawns();
-			// now respawn all
-			NpcTable.getInstance().reload();
-			SpawnTable.getInstance().reloadAll();
-			RaidBossSpawnManager.getInstance().reloadBosses();
-			SevenSigns.getInstance().spawnSevenSignsNPC();
-			AdminTable.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
-		}
-		else if (command.startsWith("admin_teleport_reload"))
-		{
-			TeleportLocationTable.getInstance().reload();
-			AdminTable.getInstance().broadcastMessageToGMs("Teleport List Table reloaded.");
-		}
+
 		return true;
 	}
 
