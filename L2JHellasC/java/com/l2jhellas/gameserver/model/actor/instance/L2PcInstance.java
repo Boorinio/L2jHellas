@@ -10086,6 +10086,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void enterObserverMode(int x, int y, int z)
 	{
+		stopAbnormalEffect(2097152);
+		setProtection(false);
+		
 		_obsX = getX();
 		_obsY = getY();
 		_obsZ = getZ();
@@ -10104,6 +10107,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	
 	public void enterOlympiadObserverMode(Location loc, int id)
 	{
+		stopAbnormalEffect(2097152);
+		setProtection(false);
+		
 		if (getPet() != null)
 		{
 			getPet().unSummon(this);
@@ -10140,7 +10146,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	}
 	
 	public void leaveObserverMode()
-	{
+	{	
 		setTarget(null);
 		setXYZ(_obsX, _obsY, _obsZ);
 		setIsParalyzed(false);

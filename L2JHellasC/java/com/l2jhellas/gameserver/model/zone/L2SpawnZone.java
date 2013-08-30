@@ -16,6 +16,8 @@ package com.l2jhellas.gameserver.model.zone;
 
 import java.util.List;
 
+import javolution.util.FastList;
+
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.util.Rnd;
 
@@ -109,10 +111,13 @@ public abstract class L2SpawnZone extends L2ZoneType
 	
 	public final static void addSpawn()
 	{
+	    if(_spawnLocs == null)
+	    	_spawnLocs = new FastList<>();
+	    	
 	    final int x = getRandomStadium()[0];
 	    final int y = getRandomStadium()[1];
-	    final int z = getRandomStadium()[2];
-	        
+	    final int z = getRandomStadium()[2];	      
+    
 		_spawnLocs.add(new Location(x, y, z));
 	}
 
