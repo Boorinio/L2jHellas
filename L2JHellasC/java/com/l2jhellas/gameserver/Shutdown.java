@@ -28,8 +28,8 @@ import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.gameserverpackets.ServerStatus;
@@ -496,7 +496,7 @@ public class Shutdown extends Thread
 		System.out.println("All Items saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 		try
 		{
-			Olympiad.getInstance().save();
+			Olympiad.getInstance().saveOlympiadStatus();
 		}
 		catch (Exception e)
 		{

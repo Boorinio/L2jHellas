@@ -122,6 +122,7 @@ import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.MacroList;
 import com.l2jhellas.gameserver.model.PcFreight;
 import com.l2jhellas.gameserver.model.PcInventory;
@@ -142,13 +143,15 @@ import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.L2Event;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.quest.State;
@@ -4703,18 +4706,11 @@ public final class L2PcInstance extends L2PlayableInstance
 					}
 				}
 			}
-			if (Olympiad.getInstance().getSpectators(_olympiadGameId) != null && this.isOlympiadStart())
+			if (isInOlympiadMode() && isOlympiadStart() && (needCpUpdate || needHpUpdate))
 			{
-				olyInfo = new ExOlympiadUserInfo(this);
-				
-				for (L2PcInstance spectator : Olympiad.getInstance().getSpectators(_olympiadGameId))
-				{
-					if (spectator == null)
-					{
-						continue;
-					}
-					spectator.sendPacket(olyInfo);
-				}
+				final OlympiadGameTask game = OlympiadGameManager.getInstance().getOlympiadTask(getOlympiadGameId());
+				if (game != null && game.isBattleStarted())
+					game.getZone().broadcastStatusUpdate(this);
 			}
 		}
 		if (isInDuel())
@@ -10106,12 +10102,14 @@ public final class L2PcInstance extends L2PlayableInstance
 		broadcastUserInfo();
 	}
 	
-	public void enterOlympiadObserverMode(int x, int y, int z, int id)
+	public void enterOlympiadObserverMode(Location loc, int id)
 	{
 		if (getPet() != null)
 		{
 			getPet().unSummon(this);
 		}
+		if (getParty() != null)
+			getParty().removePartyMember(this);
 		
 		if (getCubics().size() > 0)
 		{
@@ -10135,7 +10133,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		setTarget(null);
 		setIsInvul(true);
 		getAppearance().setInvisible();
-		teleToLocation(x, y, z, true);
+		teleToLocation(loc, true);
 		sendPacket(new ExOlympiadMode(3));
 		_observerMode = true;
 		broadcastUserInfo();
@@ -10176,7 +10174,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}
-		Olympiad.getInstance().removeSpectator(_olympiadGameId, this);
 		_olympiadGameId = -1;
 		_observerMode = false;
 		broadcastUserInfo();
@@ -10312,7 +10309,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	public int getCount()
 	{
 		
-		String HERO_COUNT = "SELECT count FROM heroes WHERE char_name=?";
+		String HERO_COUNT = "SELECT count FROM heroes WHERE char_id=?";
 		int _count = 0;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -14230,10 +14227,9 @@ public final class L2PcInstance extends L2PlayableInstance
 				sm.addItemName(item.getItemId());
 			}
 			sendPacket(sm);
-			if (item.getItemId() == 9140)
-				this.removeSkill(SkillTable.getInstance().getInfo(3261, 1));
-			int slot = getInventory().getSlotFromItem(item);
-			items = getInventory().unEquipItemInBodySlotAndRecord(slot);
+			final int slot = getInventory().getSlotFromItem(item);
+			items = getInventory().unEquipItemInBodySlotAndRecord(slot);		
+			WeddingSKillCheck(item,false);
 		}
 		else
 		{
@@ -14265,12 +14261,12 @@ public final class L2PcInstance extends L2PlayableInstance
 					item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
 					CheckIfWeaponIsAllowed();
 				}
-				if (item.getItemId() == 9140)
-					this.addSkill(SkillTable.getInstance().getInfo(3261, 1));
+				WeddingSKillCheck(item,true);
 			}
 			else
 				sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
 		}
+		
 		refreshExpertisePenalty();
 		broadcastUserInfo();
 		
@@ -14283,6 +14279,21 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (GetInventoryLimit() != oldInvLimit)
 			sendPacket(new ExStorageMaxCount(this));
+	}
+	
+	void WeddingSKillCheck(L2ItemInstance item ,boolean equiped)
+	{
+	   if (equiped && item.getItemId() == 9140)
+	   {
+		   this.addSkill(SkillTable.getInstance().getInfo(3261, 1));
+	   }
+	   else 
+	   {
+		   if(item.getItemId() == 9140)
+		   {
+			  this.removeSkill(SkillTable.getInstance().getInfo(3261, 1));
+		   }
+	   }
 	}
 	
 	public void giveItems(boolean dagger, boolean sagi, boolean mage, boolean duelist, boolean tit, boolean nixas, boolean paladin, boolean FSeeker, boolean dreadnought, boolean HellKnight, boolean swordMuse, boolean dancer)
@@ -14564,5 +14575,48 @@ public final class L2PcInstance extends L2PlayableInstance
 				this.sendPacket(new StatusUpdate(this.getObjectId()));
 			}
 		}
+	}
+	
+	public void checkItemRestriction()
+	{
+
+			for(L2ItemInstance equippedItem: getInventory().getItems())
+			{
+			if (equippedItem != null && !equippedItem.getItem().checkCondition(this, this))
+			{
+				getInventory().unEquipItemInSlot(equippedItem.getItemId());
+				
+				InventoryUpdate iu = new InventoryUpdate();
+				iu.addModifiedItem(equippedItem);
+				sendPacket(iu);
+				
+				SystemMessage sm = null;
+				if (equippedItem.getEnchantLevel() > 0)
+				{
+					sm = SystemMessage.getSystemMessage(SystemMessageId.EQUIPMENT_S1_S2_REMOVED);
+					sm.addNumber(equippedItem.getEnchantLevel());
+					sm.addItemName(equippedItem);
+				}
+				else
+				{
+					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISARMED);
+					sm.addItemName(equippedItem);
+				}
+				sendPacket(sm);
+			}
+			}
+	}
+	
+	/**
+	 * Cancel all autoshots for player
+	 */
+	public void disableAutoShotsAll()
+	{
+		for (int itemId : _activeSoulShots.values())
+		{
+			sendPacket(new ExAutoSoulShot(itemId, 0));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED).addItemName(itemId));
+		}
+		_activeSoulShots.clear();
 	}
 }

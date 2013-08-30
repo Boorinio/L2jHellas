@@ -690,20 +690,39 @@ public final class Config
 	public static int[] BOSS_RESPAWN_INFO;
 	public static boolean RAID_INFO_SHOW_TIME;
 
-	/**
-	 * Olympiad Config File
-	 */
-	public static int OLY_START_TIME;
-	public static int OLY_MIN;
-	public static long OLY_CPERIOD;
-	public static long OLY_BATTLE;
-	public static long OLY_BWAIT;
-	public static long OLY_IWAIT;
-	public static long OLY_WPERIOD;
-	public static long OLY_VPERIOD;
-	public static boolean OLY_SAME_IP;
+
+	
+	/** new Olympiad */
+	public static int ALT_OLY_START_TIME;
+	public static int ALT_OLY_MIN;
+	public static long ALT_OLY_CPERIOD;
+	public static long ALT_OLY_BATTLE;
+	public static long ALT_OLY_WPERIOD;
+	public static long ALT_OLY_VPERIOD;
+	public static int ALT_OLY_WAIT_TIME;
+	public static int ALT_OLY_START_POINTS;
+	public static int ALT_OLY_WEEKLY_POINTS;
+	public static int ALT_OLY_MIN_MATCHES;
+	public static int ALT_OLY_CLASSED;
+	public static int ALT_OLY_NONCLASSED;
+	public static int[][] ALT_OLY_CLASSED_REWARD;
+	public static int[][] ALT_OLY_NONCLASSED_REWARD;
+	public static int ALT_OLY_COMP_RITEM;
+	public static int ALT_OLY_GP_PER_POINT;
+	public static int ALT_OLY_HERO_POINTS;
+	public static int ALT_OLY_RANK1_POINTS;
+	public static int ALT_OLY_RANK2_POINTS;
+	public static int ALT_OLY_RANK3_POINTS;
+	public static int ALT_OLY_RANK4_POINTS;
+	public static int ALT_OLY_RANK5_POINTS;
+	public static int ALT_OLY_MAX_POINTS;
+	public static int ALT_OLY_DIVIDER_CLASSED;
+	public static int ALT_OLY_DIVIDER_NON_CLASSED;
+	public static boolean ALT_OLY_ANNOUNCE_GAMES;
 	public static int OLY_ENCHANT_LIMIT;
+	public static boolean OLY_SAME_IP;
 	public static FastList<Integer> OLY_RESTRICTED_ITEMS_LIST = new FastList<Integer>();
+	/** new Olympiad  end*/
 
 	/**
 	 * Geodata Config File
@@ -2244,16 +2263,35 @@ public final class Config
 			{
 				_log.log(Level.SEVERE, "Error while " + OLYMPIAD_FILE + " settings!", e);
 			}
-			OLY_START_TIME = Integer.parseInt(OlySettings.getProperty("OlyStartTime", "18"));
-			OLY_MIN = Integer.parseInt(OlySettings.getProperty("OlyMin", "00"));
-			OLY_CPERIOD = Long.parseLong(OlySettings.getProperty("OlyCPeriod", "21600000"));
-			OLY_BATTLE = Long.parseLong(OlySettings.getProperty("OlyBattle", "360000"));
-			OLY_BWAIT = Long.parseLong(OlySettings.getProperty("OlyBWait", "600000"));
-			OLY_IWAIT = Long.parseLong(OlySettings.getProperty("OlyIWait", "300000"));
-			OLY_WPERIOD = Long.parseLong(OlySettings.getProperty("OlyWPeriod", "604800000"));
-			OLY_VPERIOD = Long.parseLong(OlySettings.getProperty("OlyVPeriod", "86400000"));
-			OLY_SAME_IP = Boolean.parseBoolean(OlySettings.getProperty("OlySameIp", "True"));
+			
+			ALT_OLY_START_TIME = Integer.parseInt(OlySettings.getProperty("AltOlyStartTime", "18"));
+			ALT_OLY_MIN = Integer.parseInt(OlySettings.getProperty("AltOlyMin", "00"));
+			ALT_OLY_CPERIOD = Long.parseLong(OlySettings.getProperty("AltOlyCPeriod", "21600000"));
+			ALT_OLY_BATTLE = Long.parseLong(OlySettings.getProperty("AltOlyBattle", "180000"));
+			ALT_OLY_WPERIOD = Long.parseLong(OlySettings.getProperty("AltOlyWPeriod", "604800000"));
+			ALT_OLY_VPERIOD = Long.parseLong(OlySettings.getProperty("AltOlyVPeriod", "86400000"));
+			ALT_OLY_WAIT_TIME = Integer.parseInt(OlySettings.getProperty("AltOlyWaitTime", "30"));
+			ALT_OLY_START_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyStartPoints", "18"));
+			ALT_OLY_WEEKLY_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyWeeklyPoints", "3"));
+			ALT_OLY_MIN_MATCHES = Integer.parseInt(OlySettings.getProperty("AltOlyMinMatchesToBeClassed", "5"));
+			ALT_OLY_CLASSED = Integer.parseInt(OlySettings.getProperty("AltOlyClassedParticipants", "5"));
+			ALT_OLY_NONCLASSED = Integer.parseInt(OlySettings.getProperty("AltOlyNonClassedParticipants", "9"));
+			ALT_OLY_CLASSED_REWARD = parseItemsList(OlySettings.getProperty("AltOlyClassedReward", "6651,50"));
+			ALT_OLY_NONCLASSED_REWARD = parseItemsList(OlySettings.getProperty("AltOlyNonClassedReward", "6651,30"));
+			ALT_OLY_COMP_RITEM = Integer.parseInt(OlySettings.getProperty("AltOlyCompRewItem", "6651"));
+			ALT_OLY_GP_PER_POINT = Integer.parseInt(OlySettings.getProperty("AltOlyGPPerPoint", "1000"));
+			ALT_OLY_HERO_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyHeroPoints", "300"));
+			ALT_OLY_RANK1_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyRank1Points", "100"));
+			ALT_OLY_RANK2_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyRank2Points", "75"));
+			ALT_OLY_RANK3_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyRank3Points", "55"));
+			ALT_OLY_RANK4_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyRank4Points", "40"));
+			ALT_OLY_RANK5_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyRank5Points", "30"));
+			ALT_OLY_MAX_POINTS = Integer.parseInt(OlySettings.getProperty("AltOlyMaxPoints", "10"));
+			ALT_OLY_DIVIDER_CLASSED = Integer.parseInt(OlySettings.getProperty("AltOlyDividerClassed", "3"));
+			ALT_OLY_DIVIDER_NON_CLASSED = Integer.parseInt(OlySettings.getProperty("AltOlyDividerNonClassed", "3"));
+			ALT_OLY_ANNOUNCE_GAMES = Boolean.parseBoolean(OlySettings.getProperty("AltOlyAnnounceGames", "True"));
 			OLY_ENCHANT_LIMIT = Integer.parseInt(OlySettings.getProperty("OlyMaxEnchant", "-1"));
+			OLY_SAME_IP = Boolean.parseBoolean(OlySettings.getProperty("OlySameIp", "True"));
 			OLY_RESTRICTED_ITEMS_LIST = new FastList<Integer>();
 			for (String olyId : OlySettings.getProperty("OlyRestrictedItems", "0").split(","))
 			{
@@ -4142,5 +4180,53 @@ public final class Config
 	{
 		_log.info("Cleaning Chat Filter..");
 		FILTER_LIST.clear();
+	}
+	
+	/**
+	 * itemId1,itemNumber1;itemId2,itemNumber2... to the int[n][2] = [itemId1][itemNumber1],[itemId2][itemNumber2]...
+	 * @param line
+	 * @return an array consisting of parsed items.
+	 */
+	private static int[][] parseItemsList(String line)
+	{
+		final String[] propertySplit = line.split(";");
+		if (propertySplit.length == 0)
+			return null;
+		
+		int i = 0;
+		String[] valueSplit;
+		final int[][] result = new int[propertySplit.length][];
+		for (String value : propertySplit)
+		{
+			valueSplit = value.split(",");
+			if (valueSplit.length != 2)
+			{
+				_log.warning(StringUtil.concat("parseItemsList[Config.load()]: invalid entry -> \"", valueSplit[0], "\", should be itemId,itemNumber"));
+				return null;
+			}
+			
+			result[i] = new int[2];
+			try
+			{
+				result[i][0] = Integer.parseInt(valueSplit[0]);
+			}
+			catch (NumberFormatException e)
+			{
+				_log.warning(StringUtil.concat("parseItemsList[Config.load()]: invalid itemId -> \"", valueSplit[0], "\""));
+				return null;
+			}
+			
+			try
+			{
+				result[i][1] = Integer.parseInt(valueSplit[1]);
+			}
+			catch (NumberFormatException e)
+			{
+				_log.warning(StringUtil.concat("parseItemsList[Config.load()]: invalid item number -> \"", valueSplit[1], "\""));
+				return null;
+			}
+			i++;
+		}
+		return result;
 	}
 }

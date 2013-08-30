@@ -106,10 +106,11 @@ import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2Multisell;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.Hero;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
 import com.l2jhellas.gameserver.scripting.CompiledScriptCache;
@@ -305,6 +306,7 @@ public class GameServer
 		SevenSigns.getInstance().spawnSevenSignsNPC();// Spawn the Orators/Preachers if in the Seal Validation period.
 
 		Util.printSection("Olympiad System");
+		OlympiadGameManager.getInstance();
 		Olympiad.getInstance();
 		Hero.getInstance();
 

@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.FriendList;
@@ -84,7 +83,7 @@ public final class Logout extends L2GameClientPacket
 			player.sendMessage("You can't restart in Away mode.");
 			return;
 		}
-		if (player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
+		if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 		{
 			player.sendMessage("You can't logout while you are in olympiad.");
 			return;

@@ -82,7 +82,7 @@ CREATE TABLE `characters` (
   `clan_join_expiry_time` decimal(20,0) NOT NULL DEFAULT '0',
   `clan_create_expiry_time` decimal(20,0) NOT NULL DEFAULT '0',
   `death_penalty_level` int(2) NOT NULL DEFAULT '0',
-  `hero` decimal(1,0) DEFAULT '0',
+  `hero` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   `donator` decimal(1,0) DEFAULT '0',
   `chatban_timer` decimal(20,0) DEFAULT '0',
   `chatban_reason` varchar(255) NOT NULL DEFAULT '',

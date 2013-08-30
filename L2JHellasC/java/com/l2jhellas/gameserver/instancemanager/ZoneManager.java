@@ -18,6 +18,9 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +67,7 @@ public class ZoneManager
 {
 	private static final Logger _log = Logger.getLogger(ZoneManager.class.getName());
 
-	private final FastList<L2ZoneType> _zones = new FastList<L2ZoneType>();
+	private final Map<Class<? extends L2ZoneType>, Map<Integer, ? extends L2ZoneType>> _zones = new HashMap<>();
 
 	public static final ZoneManager getInstance()
 	{
@@ -317,7 +320,7 @@ public class ZoneManager
 									temp.setParameter(name, val);
 								}
 							}
-							addZone(temp);
+							addZone(zoneId, temp);
 
 							// Register the zone into any world region it
 							// intersects with...
@@ -364,23 +367,50 @@ public class ZoneManager
 
 	/**
 	 * Add new zone
-	 * 
+	 * @param id
+	 * @param <T>
 	 * @param zone
 	 */
-	public void addZone(L2ZoneType zone)
+	@SuppressWarnings("unchecked")
+	public <T extends L2ZoneType> void addZone(Integer id, T zone)
 	{
-		_zones.add(zone);
+		// _zones.put(id, zone);
+		Map<Integer, T> map = (Map<Integer, T>) _zones.get(zone.getClass());
+		if (map == null)
+		{
+			map = new HashMap<>();
+			map.put(id, zone);
+			_zones.put(zone.getClass(), map);
+		}
+		else
+			map.put(id, zone);
 	}
-
 	/**
-	 * Returns all zones registered with the ZoneManager.
-	 * To minimise iteration processing retrieve zones from L2WorldRegion for a specific location instead.
-	 * 
-	 * @return zones
+	 * Return all zones by class type
+	 * @param <T>
+	 * @param zoneType Zone class
+	 * @return Collection of zones
 	 */
-	public FastList<L2ZoneType> getAllZones()
+	@SuppressWarnings("unchecked")
+	public <T extends L2ZoneType> Collection<T> getAllZones(Class<T> zoneType)
 	{
-		return _zones;
+		return (Collection<T>) _zones.get(zoneType).values();
+	}
+	
+	/**
+	 * Get zone by ID
+	 * @param id
+	 * @return
+	 * @see #getZoneById(int, Class)
+	 */
+	public L2ZoneType getZoneById(int id)
+	{
+		for (Map<Integer, ? extends L2ZoneType> map : _zones.values())
+		{
+			if (map.containsKey(id))
+				return map.get(id);
+		}
+		return null;
 	}
 
 	/**

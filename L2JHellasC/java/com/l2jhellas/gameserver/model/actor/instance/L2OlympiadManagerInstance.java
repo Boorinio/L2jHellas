@@ -3,261 +3,319 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.List;
-import java.util.logging.Logger;
-
-import javolution.text.TextBuilder;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Multisell;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.Hero;
+import com.l2jhellas.gameserver.model.entity.olympiad.CompetitionType;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExHeroList;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.StringUtil;
 
-/**
- * Olympiad Npc's Instance
- * 
- * @author godson
- */
-public class L2OlympiadManagerInstance extends L2FolkInstance
+public class L2OlympiadManagerInstance extends L2NpcInstance
 {
-	private static Logger _logOlymp = Logger.getLogger(L2OlympiadManagerInstance.class.getName());
-
 	private static final int GATE_PASS = 6651;
-
+	
 	public L2OlympiadManagerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
+	@Override
+	public String getHtmlPath(int npcId, int val)
+	{
+		// Only used by Olympiad managers. Monument of Heroes don't use "Chat" bypass.
+		String filename = "noble";
+		
+		if (val > 0)
+			filename = "noble_" + val;
+		
+		return filename + ".htm";
+	}
+	
+	@Override
+	public void showChatWindow(L2PcInstance player, int val)
+	{
+		int npcId = getTemplate().getNpcId();
+		String filename = getHtmlPath(npcId, val);
+		
+		switch (npcId)
+		{
+			case 31688: // Olympiad managers
+				if (player.isNoble() && val == 0)
+					filename = "noble_main.htm";
+				break;
+			
+			case 31690: // Monuments of Heroes
+			case 31769:
+			case 31770:
+			case 31771:
+			case 31772:
+				if (player.isHero() || Hero.getInstance().isInactiveHero(player.getObjectId()))
+					filename = "hero_main.htm";
+				else
+					filename = "hero_main2.htm";
+				break;
+		}
+		
+		// Send a Server->Client NpcHtmlMessage containing the text of the L2Npc to the L2PcInstance
+		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+		html.setFile("data/html/olympiad/" + filename);
+		
+		// Hidden option for players who are in inactive mode.
+		if (filename == "hero_main.htm")
+		{
+			String hiddenText = "";
+			if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+				hiddenText = "<a action=\"bypass -h npc_%objectId%_Olympiad 5\">\"I want to be a Hero.\"</a><br>";
+			
+			html.replace("%hero%", hiddenText);
+		}
+		
+		html.replace("%objectId%", String.valueOf(getObjectId()));
+		player.sendPacket(html);
+		
+		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
+		player.sendPacket(ActionFailed.STATIC_PACKET);
+	}
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
-		if (command.startsWith("OlympiadDesc"))
+		if (command.startsWith("OlympiadNoble"))
 		{
-			int val = Integer.parseInt(command.substring(13, 14));
-			String suffix = command.substring(14);
-			showChatWindow(player, val, suffix);
-		}
-		else if (command.startsWith("OlympiadNoble"))
-		{
-			if (!player.isNoble() || player.getClassId().getId() < 88)
+			final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+			if (player.isCursedWeaponEquiped())
+			{
+				html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_cant_cw.htm");
+				player.sendPacket(html);
 				return;
-
+			}
+			
+			if (player.getClassIndex() != 0)
+			{
+				html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_cant_sub.htm");
+				html.replace("%objectId%", String.valueOf(getObjectId()));
+				player.sendPacket(html);
+				return;
+			}
+			
+			if (!player.isNoble() || (player.getClassId().level() < 3))
+			{
+				html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_cant_thirdclass.htm");
+				html.replace("%objectId%", String.valueOf(getObjectId()));
+				player.sendPacket(html);
+				return;
+			}
+			
+			int passes;
 			int val = Integer.parseInt(command.substring(14));
-			NpcHtmlMessage reply;
-			TextBuilder replyMSG;
-
 			switch (val)
 			{
-				case 1:
-					Olympiad.getInstance().unRegisterNoble(player);
-				break;
-				case 2:
-					int classed = 0;
-					int nonClassed = 0;
-					int[] array = Olympiad.getInstance().getWaitingList();
-
-					if (array != null)
-					{
-						classed = array[0];
-						nonClassed = array[1];
-
-					}
-
-					reply = new NpcHtmlMessage(getObjectId());
-					replyMSG = new TextBuilder("<html><body>");
-					/** @formatter:off */
-                    replyMSG.append("The number of people on the waiting list for " +
-                            "Grand Olympiad" +
-                            "<center>" +
-                            "<img src=\"L2UI.SquareWhite\" width=270 height=1><img src=\"L2UI.SquareBlank\" width=1 height=3>" +
-                            "<table width=270 border=0 bgcolor=\"000000\">" +
-                            "<tr>" +
-                            "<td align=\"left\">General</td>" +
-                            "<td align=\"right\">"+ classed + "</td>" +
-                            "</tr>" +
-                            "<tr>" +
-                            "<td align=\"left\">Not class-defined</td>" +
-                            "<td align=\"right\">" + nonClassed + "</td>" +
-                            "</tr>" +
-                            "</table><br>" +
-                            "<img src=\"L2UI.SquareWhite\" width=270 height=1> <img src=\"L2UI.SquareBlank\" width=1 height=3>" +
-                            "<button value=\"Back\" action=\"bypass -h npc_"+getObjectId()+"_OlympiadDesc 2a\" " +
-                            "width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
-                    /** @formatter:on */
-					replyMSG.append("</body></html>");
-
-					reply.setHtml(replyMSG.toString());
-					player.sendPacket(reply);
-				break;
-				case 3:
+				case 1: // Unregister
+					OlympiadManager.getInstance().unRegisterNoble(player);
+					break;
+				
+				case 2: // Show waiting list
+					final int nonClassed = OlympiadManager.getInstance().getRegisteredNonClassBased().size();
+					final int classed = OlympiadManager.getInstance().getRegisteredClassBased().size();
+					
+					html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_registered.htm");
+					html.replace("%listClassed%", String.valueOf(classed));
+					html.replace("%listNonClassed%", String.valueOf(nonClassed));
+					html.replace("%objectId%", String.valueOf(getObjectId()));
+					player.sendPacket(html);
+					break;
+				
+				case 3: // There are %points% Grand Olympiad points granted for this event.
 					int points = Olympiad.getInstance().getNoblePoints(player.getObjectId());
-					if (points >= 0)
-					{
-						reply = new NpcHtmlMessage(getObjectId());
-						replyMSG = new TextBuilder("<html><body>");
-						/** @formatter:off */
-                        replyMSG.append("There are " + points + " Grand Olympiad " +
-                                "points granted for this event.<br><br>" +
-                                "<a action=\"bypass -h npc_"+getObjectId()+"_OlympiadDesc 2a\">Return</a>");
-                        replyMSG.append("</body></html>");
-                        /** @formatter:on */
-						reply.setHtml(replyMSG.toString());
-						player.sendPacket(reply);
-					}
-				break;
-				case 4:
-					Olympiad.getInstance().registerNoble(player, false);
-				break;
-				case 5:
-					Olympiad.getInstance().registerNoble(player, true);
-				break;
-				case 6:
-					int passes = Olympiad.getInstance().getNoblessePasses(player.getObjectId());
+					html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_points1.htm");
+					html.replace("%points%", String.valueOf(points));
+					html.replace("%objectId%", String.valueOf(getObjectId()));
+					player.sendPacket(html);
+					break;
+				
+				case 4: // register non classed based
+					OlympiadManager.getInstance().registerNoble(player, CompetitionType.NON_CLASSED);
+					break;
+				
+				case 5: // register classed based
+					OlympiadManager.getInstance().registerNoble(player, CompetitionType.CLASSED);
+					break;
+				
+				case 6: // request tokens reward
+					passes = Olympiad.getInstance().getNoblessePasses(player, false);
 					if (passes > 0)
 					{
-						L2ItemInstance item = player.getInventory().addItem("Olympiad", GATE_PASS, passes, player, this);
-
-						InventoryUpdate iu = new InventoryUpdate();
-						iu.addModifiedItem(item);
-						player.sendPacket(iu);
-
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_ITEM_S1);
-						sm.addNumber(passes);
-						sm.addItemName(item.getItemId());
-						player.sendPacket(sm);
+						html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_settle.htm");
+						html.replace("%objectId%", String.valueOf(getObjectId()));
+						player.sendPacket(html);
 					}
 					else
 					{
-						player.sendMessage("Not enough points, or not currently in Valdation Period");
-						//TODO Send HTML packet "Saying not enough olympiad points.
+						html.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_nopoints2.htm");
+						html.replace("%objectId%", String.valueOf(getObjectId()));
+						player.sendPacket(html);
 					}
-				break;
-				case 7:
+					break;
+				
+				case 7: // Rewards
 					L2Multisell.getInstance().SeparateAndSend(102, player, false, getCastle().getTaxRate());
-				break;
+					break;
+				
+				case 10: // Give tokens to player
+					passes = Olympiad.getInstance().getNoblessePasses(player, true);
+					if (passes > 0)
+					{
+						L2ItemInstance item = player.getInventory().addItem("Olympiad", GATE_PASS, passes, player, this);
+						InventoryUpdate iu = new InventoryUpdate();
+						iu.addModifiedItem(item);
+						player.sendPacket(iu);
+						
+						player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S).addItemName(item).addItemNumber(passes));
+					}
+					break;
+				
 				default:
-					_logOlymp.warning("Olympiad System: Couldnt send packet for request " + val);
-				break;
-
+					_log.warning("Olympiad System: Couldnt send packet for request: " + val);
+					break;
 			}
 		}
 		else if (command.startsWith("Olympiad"))
 		{
 			int val = Integer.parseInt(command.substring(9, 10));
-
+			
 			NpcHtmlMessage reply = new NpcHtmlMessage(getObjectId());
-			TextBuilder replyMSG = new TextBuilder("<html><body>");
-
 			switch (val)
 			{
-				case 1:
-					if (player.isInFunEvent())
-					{
-						player.sendMessage("You can't do that while in a event");
-						return;
-					}
-					String[] matches = Olympiad.getInstance().getMatchList();
-					/** @formatter:off */
-                    replyMSG.append("Grand Olympiad Games Overview<br><br>" +
-                            "* Caution: Please note, if you watch an Olympiad " +
-                            "game, the summoning of your Servitors or Pets will be " +
-                            "cancelled. Be careful.<br>");
-                    /** @formatter:on */
-					if (matches == null)
-						replyMSG.append("<br>There are no matches at the moment");
-					else
-					{
-						for (int i = 0; i < matches.length; i++)
-						{
-							replyMSG.append("<br><a action=\"bypass -h npc_" + getObjectId() + "_Olympiad 3_" + i + "\">" + matches[i] + "</a>");
-						}
-					}
-					replyMSG.append("</body></html>");
-
-					reply.setHtml(replyMSG.toString());
-					player.sendPacket(reply);
-				break;
-				case 2:
-					// for example >> Olympiad 1_88
+				case 2: // Show rank for a specific class, example >> Olympiad 1_88
 					int classId = Integer.parseInt(command.substring(11));
-					if (classId >= 88)
+					if (classId >= 88 && classId <= 118)
 					{
-						replyMSG.append("<center>Grand Olympiad Ranking");
-						replyMSG.append("<img src=\"L2UI.SquareWhite\" width=270 height=1><img src=\"L2UI.SquareBlank\" width=1 height=3>");
-
 						List<String> names = Olympiad.getInstance().getClassLeaderBoard(classId);
-						if (names.size() != 0)
+						reply.setFile(Olympiad.OLYMPIAD_HTML_PATH + "noble_ranking.htm");
+						
+						int index = 1;
+						for (String name : names)
 						{
-							replyMSG.append("<table width=270 border=0 bgcolor=\"000000\">");
-
-							int index = 1;
-
-							for (String name : names)
-							{
-								replyMSG.append("<tr>");
-								replyMSG.append("<td align=\"left\">" + index + "</td>");
-								replyMSG.append("<td align=\"right\">" + name + "</td>");
-								replyMSG.append("</tr>");
-								index++;
-							}
-
-							replyMSG.append("</table>");
+							reply.replace("%place" + index + "%", String.valueOf(index));
+							reply.replace("%rank" + index + "%", name);
+							
+							index++;
+							if (index > 10)
+								break;
 						}
-
-						replyMSG.append("<img src=\"L2UI.SquareWhite\" width=270 height=1> <img src=\"L2UI.SquareBlank\" width=1 height=3>");
-						replyMSG.append("</center>");
-						replyMSG.append("</body></html>");
-
-						reply.setHtml(replyMSG.toString());
+						
+						for (; index <= 10; index++)
+						{
+							reply.replace("%place" + index + "%", "");
+							reply.replace("%rank" + index + "%", "");
+						}
+						
+						reply.replace("%objectId%", String.valueOf(getObjectId()));
 						player.sendPacket(reply);
 					}
-				break;
-				case 3:
-					int id = Integer.parseInt(command.substring(11));
-					if (player.isInFunEvent())
-						player.sendMessage("You can't do that while in a event");
-					else
-						Olympiad.getInstance().addSpectator(id, player);
-				break;
-				case 4:
+					break;
+				
+				case 3: // Spectator overview
+					StringBuilder list = new StringBuilder(2000);
+					OlympiadGameTask task;
+					
+					reply.setFile(Olympiad.OLYMPIAD_HTML_PATH + "olympiad_observe_list.htm");
+					for (int i = 0; i <= 21; i++)
+					{
+						task = OlympiadGameManager.getInstance().getOlympiadTask(i);
+						if (task != null)
+						{
+							StringUtil.append(list, "<a action=\"bypass arenachange ", String.valueOf(i), "\">Arena ", String.valueOf(i + 1), "&nbsp;");
+							
+							if (task.isGameStarted())
+							{
+								if (task.isInTimerTime())
+									StringUtil.append(list, "(&$907;)"); // Counting In Progress
+								else if (task.isBattleStarted())
+									StringUtil.append(list, "(&$829;)"); // In Progress
+								else
+									StringUtil.append(list, "(&$908;)"); // Terminate
+									
+								StringUtil.append(list, "&nbsp;", task.getGame().getPlayerNames()[0], "&nbsp; : &nbsp;", task.getGame().getPlayerNames()[1]);
+							}
+							else
+								StringUtil.append(list, "(&$906;)", "</td><td>&nbsp;"); // Initial State
+								
+							StringUtil.append(list, "</a><br>");
+						}
+					}
+					reply.replace("%list%", list.toString());
+					reply.replace("%objectId%", String.valueOf(getObjectId()));
+					player.sendPacket(reply);
+					break;
+				
+				case 4: // Send heroes list.
 					player.sendPacket(new ExHeroList());
-				break;
+					break;
+				
+				case 5: // Hero pending state.
+					if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+					{
+						reply.setFile(Olympiad.OLYMPIAD_HTML_PATH + "hero_confirm.htm");
+						reply.replace("%objectId%", String.valueOf(getObjectId()));
+						player.sendPacket(reply);
+					}
+					break;
+				
+				case 6: // Hero confirm action.
+					if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+					{
+						if (player.isSubClassActive() || player.getLevel() < 76)
+						{
+							player.sendMessage("You may only become an hero on a main class whose level is 75 or more.");
+							return;
+						}
+						
+						Hero.getInstance().activateHero(player);
+					}
+					break;
+				
+				case 7: // Main panel
+					reply.setFile(Olympiad.OLYMPIAD_HTML_PATH + "hero_main.htm");
+					
+					String hiddenText = "";
+					if (Hero.getInstance().isInactiveHero(player.getObjectId()))
+						hiddenText = "<a action=\"bypass -h npc_%objectId%_Olympiad 5\">\"I want to be a Hero.\"</a><br>";
+					
+					reply.replace("%hero%", hiddenText);
+					reply.replace("%objectId%", String.valueOf(getObjectId()));
+					player.sendPacket(reply);
+					break;
+				
 				default:
-					_logOlymp.warning("Olympiad System: Couldnt send packet for request " + val);
-				break;
+					_log.warning("Olympiad System: Couldnt send packet for request: " + val);
+					break;
 			}
 		}
 		else
 			super.onBypassFeedback(player, command);
-	}
-
-	private void showChatWindow(L2PcInstance player, int val, String suffix)
-	{
-		String filename = Olympiad.OLYMPIAD_HTML_FILE;
-
-		filename += "noble_desc" + val;
-		filename += (suffix != null) ? suffix + ".htm" : ".htm";
-
-		if (filename.equals(Olympiad.OLYMPIAD_HTML_FILE + "noble_desc0.htm"))
-			filename = Olympiad.OLYMPIAD_HTML_FILE + "noble_main.htm";
-
-		showChatWindow(player, filename);
 	}
 }

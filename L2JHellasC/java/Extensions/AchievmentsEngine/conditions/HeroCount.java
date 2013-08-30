@@ -18,7 +18,7 @@ import Extensions.AchievmentsEngine.base.Condition;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Hero;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class HeroCount extends Condition

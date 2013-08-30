@@ -61,11 +61,11 @@ import com.l2jhellas.gameserver.model.actor.stat.NpcStat;
 import com.l2jhellas.gameserver.model.actor.status.NpcStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.L2Event;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.quest.State;
@@ -278,7 +278,6 @@ public class L2NpcInstance extends L2Character
 	 * @param template
 	 *        The L2NpcTemplate to apply to the NPC
 	 */
-	@SuppressWarnings("unused")
 	public L2NpcInstance(int objectId, L2NpcTemplate template)
 	{
 		// Call the L2Character constructor to set the _template of the L2Character, copy skills from template to object
@@ -2220,7 +2219,7 @@ public class L2NpcInstance extends L2Character
 			break;
 			case 31688:
 				if (player.isNoble())
-					filename = Olympiad.OLYMPIAD_HTML_FILE + "noble_main.htm";
+					filename = Olympiad.OLYMPIAD_HTML_PATH + "noble_main.htm";
 				else
 					filename = (getHtmlPath(npcId, val));
 			break;
@@ -2230,7 +2229,7 @@ public class L2NpcInstance extends L2Character
 			case 31771:
 			case 31772:
 				if (player.isHero())
-					filename = Olympiad.OLYMPIAD_HTML_FILE + "hero_main.htm";
+					filename = Olympiad.OLYMPIAD_HTML_PATH + "hero_main.htm";
 				else
 					filename = (getHtmlPath(npcId, val));
 			break;

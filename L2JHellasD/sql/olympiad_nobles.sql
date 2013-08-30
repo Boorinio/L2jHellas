@@ -1,14 +1,10 @@
-SET FOREIGN_KEY_CHECKS=0;
--- ----------------------------
--- Table structure for `olympiad_nobles`
--- ----------------------------
-DROP TABLE IF EXISTS `olympiad_nobles`;
-
-CREATE TABLE `olympiad_nobles` (
-  `char_id` decimal(11,0) NOT NULL DEFAULT '0',
-  `class_id` decimal(3,0) NOT NULL DEFAULT '0',
-  `char_name` varchar(45) NOT NULL DEFAULT '',
-  `olympiad_points` decimal(10,0) NOT NULL DEFAULT '0',
-  `competitions_done` decimal(3,0) NOT NULL DEFAULT '0',
+CREATE TABLE IF NOT EXISTS `olympiad_nobles` (
+  `char_id` INT UNSIGNED NOT NULL default 0,
+  `class_id` tinyint(3) unsigned NOT NULL default 0,
+  `olympiad_points` int(10) NOT NULL default 0,
+  `competitions_done` smallint(3) NOT NULL default 0,
+  `competitions_won` smallint(3) NOT NULL default 0,
+  `competitions_lost` smallint(3) NOT NULL default 0,
+  `competitions_drawn` smallint(3) NOT NULL default 0,
   PRIMARY KEY (`char_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
+);

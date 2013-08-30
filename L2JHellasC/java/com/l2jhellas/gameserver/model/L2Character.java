@@ -51,16 +51,15 @@ import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.SkillDat;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.SkillDat;
 import com.l2jhellas.gameserver.model.actor.knownlist.CharKnownList;
 import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Duel;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
@@ -71,14 +70,11 @@ import com.l2jhellas.gameserver.network.serverpackets.ChangeMoveType;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeWaitType;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.CharMoveToLocation;
-import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadSpelledInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
-import com.l2jhellas.gameserver.network.serverpackets.MagicEffectIcons;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
-import com.l2jhellas.gameserver.network.serverpackets.PartySpelled;
 import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.gameserver.network.serverpackets.Revive;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
@@ -3032,108 +3028,7 @@ public abstract class L2Character extends L2Object
 
 	public final void updateEffectIcons(boolean partyOnly)
 	{
-		// Create a L2PcInstance of this if needed
-		L2PcInstance player = null;
-		if (this instanceof L2PcInstance)
-			player = (L2PcInstance) this;
 		
-		// Create a L2Summon of this if needed
-		L2Summon summon = null;
-		if (this instanceof L2Summon)
-		{
-			summon = (L2Summon) this;
-			player = summon.getOwner();
-		}
-		
-		// Create the main packet if needed
-		MagicEffectIcons mi = null;
-		if (!partyOnly)
-			mi = new MagicEffectIcons();
-		
-		// Create the party packet if needed
-		PartySpelled ps = null;
-		if (summon != null)
-			ps = new PartySpelled(summon);
-		else if (player != null && player.isInParty())
-			ps = new PartySpelled(player);
-		
-		// Create the olympiad spectator packet if needed
-		ExOlympiadSpelledInfo os = null;
-		if (player != null && player.isInOlympiadMode())
-			os = new ExOlympiadSpelledInfo(player);
-		
-		if (mi == null && ps == null && os == null)
-			return; // nothing to do (should not happen)
-			
-		// Add special effects
-		// Note: Now handled by EtcStatusUpdate packet
-		// NOTE: CHECK IF THEY WERE EVEN VISIBLE TO OTHERS...
-		/*
-		 * if (player != null && mi != null)
-		 * {
-		 * if (player.getWeightPenalty() > 0)
-		 * mi.addEffect(4270, player.getWeightPenalty(), -1);
-		 * if (player.getExpertisePenalty() > 0)
-		 * mi.addEffect(4267, 1, -1);
-		 * if (player.getMessageRefusal())
-		 * mi.addEffect(4269, 1, -1);
-		 * }
-		 */
-		
-		// Go through all effects if any
-		L2Effect[] effects = getAllEffects();
-		if (effects != null && effects.length > 0)
-		{
-			for (int i = 0; i < effects.length; i++)
-			{
-				L2Effect effect = effects[i];
-				
-				if (effect == null)
-					continue;
-				
-				if (effect.getEffectType() == L2Effect.EffectType.CHARGE && player != null)
-				{
-					// handled by EtcStatusUpdate
-					continue;
-				}
-				if (effect.getInUse())
-				{
-					if (mi != null)		
-						effect.addIcon(mi);					
-					if (ps != null)
-						effect.addPartySpelledIcon(ps);
-					if (os != null)
-						effect.addOlympiadSpelledIcon(os);
-				}
-			}
-		}
-		
-		// Send the packets if needed
-		if (mi != null)
-			sendPacket(mi);
-		if (ps != null && player != null)
-		{
-			// summon info only needs to go to the owner, not to the whole party
-			// player info: if in party, send to all party members except one's
-			// self.
-			// if not in party, send to self.
-			if (player.isInParty() && summon == null)
-				player.getParty().broadcastToPartyMembers(player, ps);
-			else
-				player.sendPacket(ps);
-		}
-		if (os != null)
-		{
-			if (Olympiad.getInstance().getSpectators(player.getOlympiadGameId()) != null)
-			{
-				for (L2PcInstance spectator : Olympiad.getInstance().getSpectators(player.getOlympiadGameId()))
-				{
-					if (spectator == null)
-						continue;
-					spectator.sendPacket(os);
-				}
-			}
-		}
 	}
 	
 	/**

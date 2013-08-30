@@ -21,7 +21,7 @@ import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.logs.GMAudit;
 
@@ -131,7 +131,7 @@ public class AdminAdmin implements IAdminCommandHandler
 		{
 			try
 			{
-				Olympiad.getInstance().save();
+				Olympiad.getInstance().saveOlympiadStatus();
 			}
 			catch (Exception e)
 			{

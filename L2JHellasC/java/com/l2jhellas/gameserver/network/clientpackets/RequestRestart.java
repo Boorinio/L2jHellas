@@ -18,10 +18,9 @@ import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.network.L2GameClient;
-import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.RestartResponse;
@@ -45,7 +44,7 @@ public final class RequestRestart extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
-		if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode() || Olympiad.getInstance().isRegistered(player))
+		if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 		{
 			player.sendMessage("You can't logout in olympiad mode.");
 			return;

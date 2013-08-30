@@ -34,12 +34,18 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2AccountManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2OlympiadManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.logs.GMAudit;
@@ -303,17 +309,14 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				if (!activeChar.validateBypass(_command))
 					return;
-
+				
 				int endOfId = _command.indexOf('_', 5);
 				String id;
 				if (endOfId > 0)
-				{
 					id = _command.substring(4, endOfId);
-				}
 				else
-				{
 					id = _command.substring(4);
-				}
+				
 				try
 				{
 					L2Object object = L2World.findObject(Integer.parseInt(id));
@@ -393,7 +396,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 						}
 					}
 
-					else if (((Config.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)) || (object != null && object instanceof L2NpcInstance && endOfId > 0 && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false)))
+					if(object != null && object instanceof L2NpcInstance && endOfId > 0 && activeChar.isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false) || ((Config.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)))
 					{
 						((L2NpcInstance) object).onBypassFeedback(activeChar, _command.substring(endOfId + 1));
 					}
@@ -562,6 +565,51 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				catch (Exception e)
 				{
 					e.printStackTrace();
+				}
+			}
+			else if (_command.startsWith("_match"))
+			{
+				String params = _command.substring(_command.indexOf("?") + 1);
+				StringTokenizer st = new StringTokenizer(params, "&");
+				int heroclass = Integer.parseInt(st.nextToken().split("=")[1]);
+				int heropage = Integer.parseInt(st.nextToken().split("=")[1]);
+				int heroid = Hero.getInstance().getHeroByClass(heroclass);
+				if (heroid > 0)
+					Hero.getInstance().showHeroFights(activeChar, heroclass, heroid, heropage);
+			}
+			else if (_command.startsWith("_diary"))
+			{
+				String params = _command.substring(_command.indexOf("?") + 1);
+				StringTokenizer st = new StringTokenizer(params, "&");
+				int heroclass = Integer.parseInt(st.nextToken().split("=")[1]);
+				int heropage = Integer.parseInt(st.nextToken().split("=")[1]);
+				int heroid = Hero.getInstance().getHeroByClass(heroclass);
+				if (heroid > 0)
+					Hero.getInstance().showHeroDiary(activeChar, heroclass, heroid, heropage);
+			}
+			else if (_command.startsWith("arenachange")) // change
+			{
+				 
+				final boolean isManager = activeChar.getTarget() instanceof L2OlympiadManagerInstance;
+				if (!isManager)
+				{
+					// Without npc, command can be used only in observer mode on arena
+					if (!activeChar.inObserverMode() || activeChar.isInOlympiadMode() || activeChar.getOlympiadGameId() < 0)
+						return;
+				}
+				
+				if (OlympiadManager.getInstance().isRegisteredInComp(activeChar))
+				{
+					activeChar.sendPacket(SystemMessageId.WHILE_YOU_ARE_ON_THE_WAITING_LIST_YOU_ARE_NOT_ALLOWED_TO_WATCH_THE_GAME);
+					return;
+				}
+				
+				final int arenaId = Integer.parseInt(_command.substring(12).trim());
+				final OlympiadGameTask nextArena = OlympiadGameManager.getInstance().getOlympiadTask(arenaId);
+				if (nextArena != null)
+				{
+					activeChar.enterOlympiadObserverMode(nextArena.getZone().getSpawns().get(0), arenaId);
+					return;
 				}
 			}
 			// -------------------------------------------------------------------------------

@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.Map;
 
 import com.l2jhellas.gameserver.model.entity.Hero;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 /**

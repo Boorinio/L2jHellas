@@ -22,7 +22,10 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Func;
@@ -667,5 +670,22 @@ public abstract class L2Item
 	public String toString()
 	{
 		return _name;
+	}
+	
+	public boolean checkCondition(L2Character activeChar, L2Object target)
+	{
+		FastList<Integer> items = Config.OLY_RESTRICTED_ITEMS_LIST;
+
+		for(L2ItemInstance i: activeChar.getActingPlayer().getInventory().getItems())
+		{						
+		if(items.get(i.getItemId()) != null || isHeroItem() && ((activeChar instanceof L2PcInstance) && activeChar.getActingPlayer().isInOlympiadMode()))
+		{
+						
+		    activeChar.getActingPlayer().sendPacket(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);			
+			return false;
+		}
+
+	    }
+		return true;
 	}
 }

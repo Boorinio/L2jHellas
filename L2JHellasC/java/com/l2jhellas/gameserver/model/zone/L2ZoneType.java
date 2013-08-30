@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.zone;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -22,6 +23,7 @@ import javolution.util.FastMap;
 import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 
 /**
  * Abstract base class for any zone type
@@ -44,6 +46,7 @@ public abstract class L2ZoneType
 	private int[] _race;
 	private int[] _class;
 	private char _classType;
+	private String _name = null;
 
 	protected L2ZoneType(int id)
 	{
@@ -80,6 +83,11 @@ public abstract class L2ZoneType
 	{
 		_checkAffected = true;
 
+		// Zone name
+		if (name.equals("name"))
+		{
+			_name = value;
+		}
 		// Minimum level
 		if (name.equals("affectedLvlMin"))
 		{
@@ -362,5 +370,55 @@ public abstract class L2ZoneType
 	public FastMap<Integer, L2Character> getCharactersInside()
 	{
 		return _characterList;
+	}
+	
+	/**
+	 * @return all players within this zone.
+	 */
+	public List<L2PcInstance> getPlayersInside()
+	{
+		List<L2PcInstance> players = new ArrayList<>();
+		
+		for (L2Character temp : _characterList.values())
+		{
+			if (temp instanceof L2PcInstance)
+				players.add((L2PcInstance) temp);
+		}
+		
+		return players;
+	}
+	
+	/**
+	 * Broadcasts packet to all players inside the zone
+	 * @param packet The packet to use.
+	 */
+	public void broadcastPacket(L2GameServerPacket packet)
+	{
+		if (_characterList.isEmpty())
+			return;
+		
+		for (L2Character character : _characterList.values())
+		{
+			if (character != null && character instanceof L2PcInstance)
+				character.sendPacket(packet);
+		}
+	}
+	
+	/**
+	 * Set the zone name.
+	 * @param name
+	 */
+	public void setName(String name)
+	{
+		_name = name;
+	}
+	
+	/**
+	 * Returns zone name
+	 * @return
+	 */
+	public String getName()
+	{
+		return _name;
 	}
 }

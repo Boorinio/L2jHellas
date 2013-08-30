@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
@@ -44,7 +43,7 @@ public final class L2ObservationInstance extends L2FolkInstance
 			String val = command.substring(13);
 			StringTokenizer st = new StringTokenizer(val);
 			st.nextToken(); // Bypass cost
-			if (Olympiad.getInstance().isRegistered(player) || player.isInOlympiadMode())
+			if (player.getOlympiadGameId() > 0 || player.isInOlympiadMode())
 			{
 				player.sendMessage("You already participated in Olympiad!");
 				return;
@@ -71,7 +70,8 @@ public final class L2ObservationInstance extends L2FolkInstance
 		}
 		else if (command.startsWith("observe"))
 		{
-			if (Olympiad.getInstance().isRegistered(player) || player.isInOlympiadMode())
+			
+			if (player.getOlympiadGameId() > 0 || player.isInOlympiadMode())
 			{
 				player.sendMessage("You already participated in Olympiad!");
 				return;

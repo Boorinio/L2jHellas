@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadSpelledInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
@@ -971,7 +971,7 @@ public class CharEffectList
 		{
 			final Olympiad game = new Olympiad();
 			
-			if (game != null && game.playerInStadia((L2PcInstance) _owner));
+			if (game != null && game.playerInStadia((L2PcInstance) _owner) && ((L2PcInstance) _owner).getOlympiadGameId() > 0);
 				broadcastPacketToObservers(os,_owner.getActingPlayer());
 		}
 	}

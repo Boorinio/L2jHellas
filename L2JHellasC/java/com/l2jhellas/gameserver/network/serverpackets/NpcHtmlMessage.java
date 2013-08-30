@@ -128,6 +128,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
 	private final int _npcObjId;
 	private String _html;
+	private boolean _validate = true;
 
 	/**
 	 * @param _characters
@@ -178,11 +179,14 @@ public class NpcHtmlMessage extends L2GameServerPacket
 
 	public void replace(String pattern, String value)
 	{
-		_html = _html.replaceAll(pattern, value);
+		_html = _html.replaceAll(pattern, value.replaceAll("\\$", "\\\\\\$")); // FIXME: WTF is this shit?
 	}
 
 	private final void buildBypassCache(L2PcInstance activeChar)
 	{
+		if (!_validate)
+			return;
+		
 		if (activeChar == null)
 			return;
 
@@ -206,7 +210,10 @@ public class NpcHtmlMessage extends L2GameServerPacket
 			// System.err.println("["+_html.substring(start, finish)+"]");
 		}
 	}
-
+	public void disableValidation()
+	{
+		_validate = false;
+	}
 	@Override
 	protected final void writeImpl()
 	{

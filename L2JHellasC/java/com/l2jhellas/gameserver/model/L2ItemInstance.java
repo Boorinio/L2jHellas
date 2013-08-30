@@ -110,6 +110,11 @@ public final class L2ItemInstance extends L2Object
 
 	private long _dropTime;
 
+	public int setChargedNoNe()
+	{
+		return CHARGED_NONE;
+	}
+	
 	public static final int CHARGED_NONE = 0;
 	public static final int CHARGED_SOULSHOT = 1;
 	public static final int CHARGED_SPIRITSHOT = 1;

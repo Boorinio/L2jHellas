@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.handler.usercommandhandlers;
 
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**

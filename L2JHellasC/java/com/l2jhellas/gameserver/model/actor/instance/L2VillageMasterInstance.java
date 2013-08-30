@@ -26,16 +26,15 @@ import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
+import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.ClassType;
 import com.l2jhellas.gameserver.model.base.PlayerClass;
 import com.l2jhellas.gameserver.model.base.PlayerRace;
 import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
-import com.l2jhellas.gameserver.model.entity.Olympiad;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -254,7 +253,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 					content.append("Change Subclass:<br>Which of the following sub classes would you like to change?<br>");
 					int classIndex = 1;
 
-					if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
+					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 					else
 					{
@@ -298,8 +297,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 						return;
 					}
 
-					if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
-					{
+					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())					{
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 						return;
 					}
@@ -388,7 +386,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 					if (!ItemRestriction(player))
 						return;//Check the player for items during subclass..to avoid bugs
 
-					if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
+					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 					{
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 						return;
@@ -405,8 +403,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 
 					subsAvailable = getAvailableSubClasses(player);
 
-					if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
-					{
+					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())					{
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 					}
 					else if (subsAvailable != null && !subsAvailable.isEmpty())
@@ -436,7 +433,7 @@ public final class L2VillageMasterInstance extends L2FolkInstance
 					if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN)
 						player.checkAllowedSkills();
 
-					if (Olympiad.getInstance().isRegisteredInComp(player) || player.getOlympiadGameId() > 0)
+					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 
 					if (!ItemRestriction(player))

@@ -16,9 +16,9 @@ package Extensions.AchievmentsEngine.conditions;
 
 import Extensions.AchievmentsEngine.base.Condition;
 
+import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.Inventory;
 
 public class WeaponEnchant extends Condition
 {

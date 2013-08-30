@@ -21,17 +21,17 @@ import java.util.logging.Logger;
 import javax.crypto.Cipher;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.HackingException;
 import com.l2jhellas.loginserver.L2LoginClient;
-import com.l2jhellas.loginserver.L2LoginClient.LoginClientState;
 import com.l2jhellas.loginserver.LoginController;
+import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
+import com.l2jhellas.loginserver.L2LoginClient.LoginClientState;
 import com.l2jhellas.loginserver.LoginController.AuthLoginResult;
 import com.l2jhellas.loginserver.serverpackets.AccountKicked;
-import com.l2jhellas.loginserver.serverpackets.AccountKicked.AccountKickedReason;
-import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.loginserver.serverpackets.LoginOk;
 import com.l2jhellas.loginserver.serverpackets.ServerList;
+import com.l2jhellas.loginserver.serverpackets.AccountKicked.AccountKickedReason;
+import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 
 /**
  * Format: x

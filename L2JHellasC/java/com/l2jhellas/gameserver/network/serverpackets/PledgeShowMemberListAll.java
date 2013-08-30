@@ -15,8 +15,8 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.L2ClanMember;
+import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**

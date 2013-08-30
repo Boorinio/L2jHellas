@@ -14,12 +14,12 @@
  */
 package Extensions.AchievmentsEngine.conditions;
 
+import java.util.Map;
+
 import Extensions.AchievmentsEngine.base.Condition;
 
 import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.Map;
 
 public class RaidKill extends Condition
 {
