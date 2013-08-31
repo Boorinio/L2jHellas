@@ -37,7 +37,7 @@ public class OlympiadGameManager implements Runnable
 	}
 
 	protected OlympiadGameManager()
-	{		
+	{
 		L2SpawnZone.addSpawn();
 		
 		final Collection<L2OlympiadStadiumZone> zones = ZoneManager.getInstance().getAllZones(L2OlympiadStadiumZone.class);

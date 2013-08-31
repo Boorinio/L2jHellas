@@ -29,7 +29,7 @@ public final class OlympiadGameTask implements Runnable
 	protected static final long BATTLE_PERIOD = Config.ALT_OLY_BATTLE; // 6 mins
 	
 	public static final int[] TELEPORT_TO_ARENA =
-	{
+	{/**@formatter:off*/
 		120,
 		60,
 		30,
@@ -74,7 +74,7 @@ public final class OlympiadGameTask implements Runnable
 		2,
 		1,
 		0
-	};
+	};/**@formatter:on*/
 	
 	private final L2OlympiadStadiumZone _zone;
 	private AbstractOlympiadGame _game;

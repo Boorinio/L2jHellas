@@ -28,7 +28,7 @@ public final class Participant
 	public boolean disconnected = false;
 	public boolean defaulted = false;
 	public final StatsSet stats;
-	
+
 	public Participant(L2PcInstance plr, int olympiadSide)
 	{
 		objectId = plr.getObjectId();
@@ -38,7 +38,7 @@ public final class Participant
 		baseClass = plr.getBaseClass();
 		stats = Olympiad.getNobleStats(objectId);
 	}
-	
+
 	public Participant(int objId, int olympiadSide)
 	{
 		objectId = objId;
@@ -48,13 +48,13 @@ public final class Participant
 		baseClass = 0;
 		stats = null;
 	}
-	
+
 	public final void updatePlayer()
 	{
-		if (player == null || player.isOnline()==0)
+		if (player == null || player.isOnline() == 0)
 			player = L2World.getPlayer(player.getName());
 	}
-	
+
 	public final void updateStat(String statName, int increment)
 	{
 		stats.set(statName, Math.max(stats.getInteger(statName) + increment, 0));

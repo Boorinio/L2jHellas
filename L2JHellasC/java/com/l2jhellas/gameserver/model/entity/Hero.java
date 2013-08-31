@@ -39,7 +39,6 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
-import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
@@ -60,12 +59,15 @@ public class Hero
 {
 	private static Logger _log = Logger.getLogger(Hero.class.getName());
 	
-	private static final String GET_HEROES = "SELECT heroes.char_id, characters.char_name, heroes.class_id, heroes.count, heroes.played, heroes.active FROM heroes, characters WHERE characters.obj_Id = heroes.char_id AND heroes.played = 1";
+	private static final String SELECT_MESSAGE = "SELECT message FROM heroes WHERE char_id=?";
+	private static final String SELECT_OLYMPIAD_FIGHTS = "SELECT * FROM olympiad_fights WHERE (charOneId=? OR charTwoId=?) AND start<? ORDER BY start ASC";
+	private static final String GET_HEROES = "SELECT heroes.char_id, characters.char_name, heroes.class_id, heroes.count, heroes.played, heroes.active FROM heroes, characters WHERE characters.obj_Id = heroes.char_id AND heroes.played=1";
 	private static final String GET_ALL_HEROES = "SELECT heroes.char_id, characters.char_name, heroes.class_id, heroes.count, heroes.played, heroes.active FROM heroes, characters WHERE characters.obj_Id = heroes.char_id";
-	private static final String UPDATE_ALL = "UPDATE heroes SET played = 0";
+	private static final String UPDATE_ALL = "UPDATE heroes SET played=0";
 	private static final String INSERT_HERO = "INSERT INTO heroes (char_id, class_id, count, played, active) VALUES (?,?,?,?,?)";
-	private static final String UPDATE_HERO = "UPDATE heroes SET count = ?, played = ?, active = ? WHERE char_id = ?";
-	private static final String GET_CLAN_ALLY = "SELECT characters.clanid AS clanid, coalesce(clan_data.ally_Id, 0) AS allyId FROM characters LEFT JOIN clan_data ON clan_data.clan_id = characters.clanid WHERE characters.obj_Id = ?";
+	private static final String UPDATE_HERO = "UPDATE heroes SET count=?, played=?, active=? WHERE char_id=?";
+	private static final String GET_CLAN_ALLY = "SELECT characters.clanid AS clanid, coalesce(clan_data.ally_Id, 0) AS allyId FROM characters LEFT JOIN clan_data ON clan_data.clan_id = characters.clanid WHERE characters.obj_Id=?";
+	private static final String UPDATE_HEROES = "UPDATE heroes SET message=? WHERE char_id=?";
 	
 	private static final String DELETE_ITEMS = "DELETE FROM items WHERE item_id IN (6842, 6611, 6612, 6613, 6614, 6615, 6616, 6617, 6618, 6619, 6620, 6621) AND owner_id NOT IN (SELECT obj_Id FROM characters WHERE accesslevel > 0)";
 	
@@ -258,7 +260,7 @@ public class Hero
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			String message = null;
-			PreparedStatement statement = con.prepareStatement("SELECT message FROM heroes WHERE char_id=?");
+			PreparedStatement statement = con.prepareStatement(SELECT_MESSAGE);
 			statement.setInt(1, charId);
 			ResultSet rset = statement.executeQuery();
 			rset.next();
@@ -299,7 +301,7 @@ public class Hero
 				{
 					L2NpcTemplate template = NpcTable.getInstance().getTemplate(param);
 					if (template != null)
-						_diaryentry.set("action", template.getName() + " was defeated");
+						_diaryentry.set("action", template.getName() + " was defeated!");
 				}
 				else if (action == ACTION_HERO_GAINED)
 					_diaryentry.set("action", "Gained Hero status");
@@ -307,7 +309,7 @@ public class Hero
 				{
 					Castle castle = CastleManager.getInstance().getCastleById(param);
 					if (castle != null)
-						_diaryentry.set("action", castle.getName() + " Castle was successfuly taken");
+						_diaryentry.set("action", castle.getName() + " Castle was successfuly taken!");
 				}
 				_diary.add(_diaryentry);
 				diaryentries++;
@@ -345,7 +347,7 @@ public class Hero
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM olympiad_fights WHERE (charOneId=? OR charTwoId=?) AND start<? ORDER BY start ASC");
+			PreparedStatement statement = con.prepareStatement(SELECT_OLYMPIAD_FIGHTS);
 			statement.setInt(1, charId);
 			statement.setInt(2, charId);
 			statement.setLong(3, from);
@@ -900,7 +902,7 @@ public class Hero
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE heroes SET message=? WHERE char_id=?;");
+			PreparedStatement statement = con.prepareStatement(UPDATE_HEROES);
 			statement.setString(1, _heroMessage.get(charId));
 			statement.setInt(2, charId);
 			statement.execute();

@@ -35,6 +35,8 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 
 abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 {
+	protected static final String INSERT_OLYMPIAD_FIGHTS = "INSERT INTO olympiad_fights (charOneId, charTwoId, charOneClass, charTwoClass, winner, start, time, classed) values(?,?,?,?,?,?,?,?)";
+	
 	protected int _damageP1 = 0;
 	protected int _damageP2 = 0;
 	
@@ -535,7 +537,7 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("INSERT INTO olympiad_fights (charOneId, charTwoId, charOneClass, charTwoClass, winner, start, time, classed) values(?,?,?,?,?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement(INSERT_OLYMPIAD_FIGHTS);
 			statement.setInt(1, one.objectId);
 			statement.setInt(2, two.objectId);
 			statement.setInt(3, one.baseClass);

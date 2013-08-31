@@ -68,8 +68,10 @@ public class Olympiad
 	private static final String OLYMPIAD_MONTH_CLEAR = "TRUNCATE olympiad_nobles_eom";
 	private static final String OLYMPIAD_MONTH_CREATE = "INSERT INTO olympiad_nobles_eom SELECT char_id, class_id, olympiad_points, competitions_done, competitions_won, competitions_lost, competitions_drawn FROM olympiad_nobles";
 	
+	private static final String SELECT_OLYMPIAD_POINTS = "SELECT olympiad_points FROM olympiad_nobles_eom WHERE char_id=?";
+	
 	private static final int[] HERO_IDS =
-	{
+	{/**@formatter:off*/
 		88,
 		89,
 		90,
@@ -101,7 +103,7 @@ public class Olympiad
 		116,
 		117,
 		118
-	};
+	};/**@formatter:on*/
 	
 	private static final int COMP_START = Config.ALT_OLY_START_TIME; // 6PM
 	private static final int COMP_MIN = Config.ALT_OLY_MIN; // 00 mins
@@ -855,7 +857,7 @@ public class Olympiad
 		int result = 0;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			final PreparedStatement statement = con.prepareStatement("SELECT olympiad_points FROM olympiad_nobles_eom WHERE char_id = ?");
+			final PreparedStatement statement = con.prepareStatement(SELECT_OLYMPIAD_POINTS);
 			statement.setInt(1, objId);
 			final ResultSet rs = statement.executeQuery();
 			if (rs.first())
