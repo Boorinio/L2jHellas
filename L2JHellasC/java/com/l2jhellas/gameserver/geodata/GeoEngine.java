@@ -586,7 +586,7 @@ public final class GeoEngine extends GeoData
 	//GeoEngine
 	private void nInitGeodata()
 	{
-		_log.log(Level.INFO, getClass().getName() + ": Loading Geodata...");
+		_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Geodata...");
 		File Data = new File(Config.DATAPACK_ROOT, "data/geodata/geo_index.txt");
 		if (!Data.exists())
 			return;
