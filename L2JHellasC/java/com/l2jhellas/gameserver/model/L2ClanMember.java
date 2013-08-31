@@ -121,8 +121,6 @@ public class L2ClanMember
 			return false;
 		if (_player.getClient() == null)
 			return false;
-		if (_player.getClient().isDetached())
-			return false;
 		return true;
 	}
 
