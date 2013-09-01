@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
@@ -93,17 +94,38 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	}
 	
 	@Override
+	protected final boolean portPlayersToArena(int[] spawns)
+	{
+		boolean result = true;
+
+		Location loc1 = new Location(spawns[0] + 900, spawns[1], spawns[2]);
+		Location loc2 = new Location(spawns[0] - 900, spawns[1], spawns[2]);
+
+		try
+		{
+			result &= portPlayerToArena(_playerOne, loc1, _stadiumID);
+			result &= portPlayerToArena(_playerTwo, loc2, _stadiumID);
+			hpsShow();
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+		return result;
+	}
+	
+	@Override
 	public final void sendOlympiadInfo(L2Character player)
 	{
-		player.sendPacket(new ExOlympiadUserInfo(_playerOne.player));
-		player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player));
+		player.sendPacket(new ExOlympiadUserInfo(_playerOne.player,1));
+		player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player,1));
 	}
 	
 	@Override
 	public final void broadcastOlympiadInfo(L2OlympiadStadiumZone stadium)
 	{
-		stadium.broadcastPacket(new ExOlympiadUserInfo(_playerOne.player));
-		stadium.broadcastPacket(new ExOlympiadUserInfo(_playerTwo.player));
+		broadcastPacket(new ExOlympiadUserInfo(_playerOne.player,2));
+		broadcastPacket(new ExOlympiadUserInfo(_playerTwo.player,2));
 	}
 	
 	@Override
@@ -117,23 +139,16 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		if (_playerTwo.player != null)
 			_playerTwo.player.sendPacket(packet);
 	}
-	
+
 	@Override
-	protected final boolean portPlayersToArena(List<Location> spawns)
+	public void hpsShow()
 	{
-		boolean result = true;
-		try
+		if(_playerTwo.player != null && _playerOne.player != null)
 		{
-			result &= portPlayerToArena(_playerOne, spawns.get(0), _stadiumID);
-			result &= portPlayerToArena(_playerTwo, spawns.get(spawns.size() / 2), _stadiumID);
+		_playerTwo.player.sendPacket(new ExOlympiadUserInfo(_playerOne.player,1));
+		_playerOne.player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player,1));
 		}
-		catch (Exception e)
-		{
-			return false;
-		}
-		return result;
 	}
-	
 	@Override
 	protected final void removals()
 	{

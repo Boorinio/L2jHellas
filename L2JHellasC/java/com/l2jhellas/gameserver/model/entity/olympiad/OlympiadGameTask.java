@@ -213,7 +213,7 @@ public final class OlympiadGameTask implements Runnable
 					{
 						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
 						sm.addNumber(_countDown);
-						_zone.broadcastPacket(sm);
+						_game.broadcastPacket(sm);
 						
 						if (_countDown == 20)
 							_game.buffAndHealPlayers();
@@ -238,7 +238,7 @@ public final class OlympiadGameTask implements Runnable
 					{
 						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_WILL_START_IN_S1_SECOND_S);
 						sm.addNumber(_countDown);
-						_zone.broadcastPacket(sm);
+						_game.broadcastPacket(sm);
 					}
 					
 					delay = getDelay(BATTLE_START_TIME_SECOND);
@@ -354,10 +354,10 @@ public final class OlympiadGameTask implements Runnable
 			if (_game.checkDefaulted())
 				return false;
 			
-			if (!_game.portPlayersToArena(_zone.getSpawns()))
+			if (!_game.portPlayersToArena(_zone.getCoordinates()))
 				return false;
-			
-			_game.removals();
+
+			_game.removals();		
 			_needAnnounce = true;
 			OlympiadGameManager.getInstance().startBattle(); // inform manager
 			return true;
@@ -381,7 +381,7 @@ public final class OlympiadGameTask implements Runnable
 			{
 				// game successfully started
 				_game.broadcastOlympiadInfo(_zone);
-				_zone.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.STARTS_THE_GAME));
+				_game.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.STARTS_THE_GAME));
 				_zone.updateZoneStatusForCharactersInside();
 				return true;
 			}

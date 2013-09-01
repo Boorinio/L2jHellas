@@ -3023,12 +3023,12 @@ public abstract class L2Character extends L2Object
 	 */
 	public final void updateEffectIcons()
 	{
-		updateEffectIcons(false);
+		_effects.updateEffectIcons(false);
 	}
 
 	public final void updateEffectIcons(boolean partyOnly)
 	{
-		
+		_effects.updateEffectIcons(partyOnly);
 	}
 	
 	/**

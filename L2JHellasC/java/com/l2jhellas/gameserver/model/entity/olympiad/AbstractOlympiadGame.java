@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.entity.olympiad;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +28,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadMode;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
@@ -140,6 +140,15 @@ public abstract class AbstractOlympiadGame
 		try
 		{
 
+			if(player.isDead())
+				player.doRevive();
+			
+			if(player.isInvul())
+				player.setIsInvul(false);
+			
+			if(player.getAppearance().getInvisible())
+				player.getAppearance().setVisible();
+			
 			_playerLocation[0] = player.getX();
 			_playerLocation[1] = player.getY();
 			_playerLocation[2] = player.getZ();
@@ -155,6 +164,7 @@ public abstract class AbstractOlympiadGame
 			player.setOlympiadSide(par.side);
 			player.teleToLocation(loc, false);
 			player.sendPacket(new ExOlympiadMode(2));
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 		catch (Exception e)
 		{
@@ -405,11 +415,13 @@ public abstract class AbstractOlympiadGame
 	
 	protected abstract boolean checkDefaulted();
 	
+	protected abstract void hpsShow();
+	
 	protected abstract void removals();
 	
 	protected abstract void buffAndHealPlayers();
 	
-	protected abstract boolean portPlayersToArena(List<Location> spawns);
+	protected abstract boolean portPlayersToArena(int[] spawns);
 	
 	protected abstract void cleanEffects();
 	

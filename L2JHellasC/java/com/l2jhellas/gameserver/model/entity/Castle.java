@@ -227,7 +227,15 @@ public class Castle
 	 */
 	public double getDistance(L2Object obj)
 	{
-		return _zone.getDistanceToZone(obj);
+		
+		double dist = 0 ;
+		
+		if(_zone != null && obj != null)
+		{
+			dist = _zone.getDistanceToZone(obj);
+		}
+		
+		return dist;
 	}
 
 	public void closeDoor(L2PcInstance activeChar, int doorId)

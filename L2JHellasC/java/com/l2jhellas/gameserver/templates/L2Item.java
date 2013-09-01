@@ -677,8 +677,9 @@ public abstract class L2Item
 		FastList<Integer> items = Config.OLY_RESTRICTED_ITEMS_LIST;
 
 		for(L2ItemInstance i: activeChar.getActingPlayer().getInventory().getItems())
-		{						
-		if(items.get(i.getItemId()) != null || isHeroItem() && ((activeChar instanceof L2PcInstance) && activeChar.getActingPlayer().isInOlympiadMode()))
+		{			
+
+		if(items.get(0).equals(i.getItemId()) || isHeroItem() && ((activeChar instanceof L2PcInstance) && activeChar.getActingPlayer().isInOlympiadMode()))
 		{
 						
 		    activeChar.getActingPlayer().sendPacket(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);			

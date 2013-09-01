@@ -67,7 +67,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 				if (character instanceof L2PcInstance)
 				{
 					character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENTERED_COMBAT_ZONE));
-					_task.getGame().sendOlympiadInfo(character);
+					//_task.getGame().sendOlympiadInfo(character);
 				}
 			}
 		}
@@ -181,7 +181,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 	
 	public final void broadcastStatusUpdate(L2PcInstance player)
 	{
-		final ExOlympiadUserInfo packet = new ExOlympiadUserInfo(player);
+		final ExOlympiadUserInfo packet = new ExOlympiadUserInfo(player,2);
 		for (L2PcInstance plyr : getPlayersInside())
 		{
 			if (plyr.inObserverMode() || plyr.getOlympiadSide() != player.getOlympiadSide())

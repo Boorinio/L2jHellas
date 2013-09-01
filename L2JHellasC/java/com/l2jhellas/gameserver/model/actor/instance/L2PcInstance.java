@@ -4687,7 +4687,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		
 		if (isInOlympiadMode() && isOlympiadStart() && (needCpUpdate || needHpUpdate))
 		{
-			ExOlympiadUserInfo olyInfo = new ExOlympiadUserInfo(this);
+			ExOlympiadUserInfo olyInfo = new ExOlympiadUserInfo(this,1);
 			
 			// TODO: implement new OlympiadUserInfo
 			Collection<L2PcInstance> plrs = getKnownList().getKnownPlayers().values();
