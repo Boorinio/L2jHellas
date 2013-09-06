@@ -107,6 +107,12 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("npc") || type.equals("npcs"))
 				{
+					NpcTable.getInstance().reload();
+					activeChar.sendMessage("All NPCs have been reloaded");
+					sendReloadPage(activeChar);
+				}
+				else if (type.equals("respawn_npc") || type.equals("respawn_npcs"))
+				{
 					for (L2PcInstance player : L2World.getAllPlayers())
 					{
 						player.sendPacket(SystemMessageId.NPC_SERVER_NOT_OPERATING);
