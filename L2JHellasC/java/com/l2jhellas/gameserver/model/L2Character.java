@@ -1729,7 +1729,7 @@ public abstract class L2Character extends L2Object
 			if (getWorldRegion() != null)
 				getWorldRegion().onRevive(this);
 			L2PcInstance  player = getActingPlayer();
-			if (player.isinZodiac)
+			if (this instanceof L2PcInstance && player.isinZodiac)
 			{
 				ZodiacMain.OnRevive(player);
 			}

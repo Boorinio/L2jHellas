@@ -120,7 +120,7 @@ public class L2BossZone extends L2ZoneType
 					return;
 				}
 				
-				if(!player.isGM() && player.isinZodiac)
+				if(!player.isGM() && !player.isinZodiac)
 				{
 					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 					return;

@@ -97,21 +97,21 @@ public class ProtectTheLdr
 	
 	public static void cleanthemess()
 	{
-		for (L2PcInstance member : _Team1)
+		for (L2PcInstance member1 : _Team1)
 		{
-			member.getAppearance().setNameColor(member.OriginalColor);
-			member.setTitle(member.OriginalTitle);
-			member.broadcastUserInfo();
-			member.isinZodiac = false;
-			member.teleToLocation(82743, 148219, -3470);	
+			member1.getAppearance().setNameColor(member1.OriginalColor);
+			member1.setTitle(member1.OriginalTitle);
+			member1.broadcastUserInfo();
+			member1.isinZodiac = false;
+			member1.teleToLocation(82743, 148219, -3470);	
 		}
-		for (L2PcInstance member : _Team2)
+		for (L2PcInstance member2 : _Team2)
 		{
-			member.getAppearance().setNameColor(member.OriginalColor);
-			member.setTitle(member.OriginalTitle);
-			member.broadcastUserInfo();
-			member.isinZodiac = false;
-			member.teleToLocation(82743, 148219, -3470);
+			member2.getAppearance().setNameColor(member2.OriginalColor);
+			member2.setTitle(member2.OriginalTitle);
+			member2.broadcastUserInfo();
+			member2.isinZodiac = false;
+			member2.teleToLocation(82743, 148219, -3470);
 		}
 		for (L2NpcInstance leader : _leaders)
 		{
@@ -199,15 +199,8 @@ public class ProtectTheLdr
 		}
 		return null;
 	}
-	
-	public static void OnRevive(L2PcInstance player)
+	public static void onDeath(L2PcInstance player)
 	{
-		player.getStatus().setCurrentHp(player.getMaxHp());
-		player.getStatus().setCurrentMp(player.getMaxMp());
-		player.getStatus().setCurrentCp(player.getMaxCp());
-		L2Skill skill;
-		skill = SkillTable.getInstance().getInfo(1323, 1);
-		skill.getEffects(player, player);
 		if (ProtectTheLdr._Team1.contains(player))
 		{
 			player.teleToLocation(ProtectTheLdr.team1x, ProtectTheLdr.team1y, ProtectTheLdr.team1z);
@@ -216,5 +209,16 @@ public class ProtectTheLdr
 		{
 			player.teleToLocation(ProtectTheLdr.team2x, ProtectTheLdr.team2y, ProtectTheLdr.team2z);
 		}
+		player.doRevive();
+		
+	}
+	public static void OnRevive(L2PcInstance player)
+	{
+		player.getStatus().setCurrentHp(player.getMaxHp());
+		player.getStatus().setCurrentMp(player.getMaxMp());
+		player.getStatus().setCurrentCp(player.getMaxCp());
+		L2Skill skill;
+		skill = SkillTable.getInstance().getInfo(1323, 1);
+		skill.getEffects(player, player);
 	}
 }

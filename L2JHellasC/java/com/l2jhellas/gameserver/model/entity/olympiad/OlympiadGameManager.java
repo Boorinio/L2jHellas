@@ -87,35 +87,33 @@ public class OlympiadGameManager implements Runnable
 				for (int i = 0; i < _tasks.length; i++)
 				{
 					task = _tasks[i];
-					synchronized (task)
+					
+					if (!task.isRunning())
 					{
-						if (!task.isRunning())
+						// Fair arena distribution
+						// 0,2,4,6,8.. arenas checked for classed or teams first
+						if ((readyClassed != null) && (i % 2) == 0)
 						{
-							// Fair arena distribution
-							// 0,2,4,6,8.. arenas checked for classed or teams first
-							if ((readyClassed != null) && (i % 2) == 0)
+							// if no ready teams found check for classed
+							newGame = OlympiadGameClassed.createGame(i, readyClassed);
+							if (newGame != null)
 							{
-								// if no ready teams found check for classed
-								newGame = OlympiadGameClassed.createGame(i, readyClassed);
-								if (newGame != null)
-								{
-									task.attachGame(newGame);
-									continue;
-								}
-								readyClassed = null;
+								task.attachGame(newGame);
+								continue;
 							}
-							// 1,3,5,7,9.. arenas used for non-classed
-							// also other arenas will be used for non-classed if no classed or teams available
-							if (readyNonClassed)
+							readyClassed = null;
+						}
+						// 1,3,5,7,9.. arenas used for non-classed
+						// also other arenas will be used for non-classed if no classed or teams available
+						if (readyNonClassed)
+						{
+							newGame = OlympiadGameNonClassed.createGame(i, OlympiadManager.getInstance().getRegisteredNonClassBased());
+							if (newGame != null)
 							{
-								newGame = OlympiadGameNonClassed.createGame(i, OlympiadManager.getInstance().getRegisteredNonClassBased());
-								if (newGame != null)
-								{
-									task.attachGame(newGame);
-									continue;
-								}
-								readyNonClassed = false;
+								task.attachGame(newGame);
+								continue;
 							}
+							readyNonClassed = false;
 						}
 					}
 					

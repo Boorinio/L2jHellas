@@ -195,8 +195,13 @@ public class ZodiacMain
 	
 	public static void ClearVotedPlayers()
 	{
-		if(VotedPlayers.size() > 0)
-		   VotedPlayers.clear();
+		if (VotedPlayers.size() > 0)
+			VotedPlayers.clear();
+	}
+	
+	public static boolean EventRuning()
+	{
+		return (CaptureThem.CaptureThemRunning || PeloponnesianWar.PeloRunning || CastleWars.CastleWarsRunning || ChaosEvent._isChaosActive || TreasureChest.TreasureRunning || ProtectTheLdr.ProtectisRunning);
 	}
 	
 	public static void OnDeath(L2PcInstance player, L2PcInstance killer)
@@ -209,8 +214,10 @@ public class ZodiacMain
 			CastleWars.OnDeath(player);
 		if (ChaosEvent._isChaosActive)
 			ChaosEvent.onDeath(player, killer);
-		if(TreasureChest.TreasureRunning)
+		if (TreasureChest.TreasureRunning)
 			TreasureChest.onDeath(player);
+		if (ProtectTheLdr.ProtectisRunning)
+			ProtectTheLdr.onDeath(player);
 		
 	}
 	
@@ -229,7 +236,7 @@ public class ZodiacMain
 			if (CaptureThem.CaptureThemRunning)
 			{
 				((L2PcInstance) killer).ZodiacPoints = ((L2PcInstance) killer).ZodiacPoints + 10;
-				killer.sendPacket(new ExShowScreenMessage("You have "+killer.getActingPlayer().ZodiacPoints+" Points.", 3000, SMPOS.BOTTOM_RIGHT, true));
+				killer.sendPacket(new ExShowScreenMessage("You have " + killer.getActingPlayer().ZodiacPoints + " Points.", 3000, SMPOS.BOTTOM_RIGHT, true));
 			}
 		}
 		if (npc.getNpcId() == 36007 && ProtectTheLdr.ProtectisRunning)
@@ -244,7 +251,7 @@ public class ZodiacMain
 	
 	public static void OnRevive(L2PcInstance player)
 	{
-		if(CaptureThem.CaptureThemRunning)
+		if (CaptureThem.CaptureThemRunning)
 			CaptureThem.OnRevive(player);
 		if (CastleWars.CastleWarsRunning)
 			CastleWars.OnRevive(player);
@@ -252,7 +259,7 @@ public class ZodiacMain
 			ProtectTheLdr.OnRevive(player);
 		if (ChaosEvent._isChaosActive)
 			ChaosEvent.onRevive(player);
-		if(TreasureChest.TreasureRunning)
+		if (TreasureChest.TreasureRunning)
 			TreasureChest.onRevive(player);
 	}
 	

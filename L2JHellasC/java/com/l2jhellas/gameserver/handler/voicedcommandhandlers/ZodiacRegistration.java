@@ -119,6 +119,11 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 		}
 		if ((command.startsWith(VOICED_COMMANDS[1]) && activeChar.isinZodiac))
 		{
+			if(ZodiacMain.EventRuning())
+			{
+				activeChar.sendMessage("You can't unregister while an event is running");
+				return true;
+			}
 			activeChar.isinZodiac = false;
 			activeChar.sendMessage("You are now unregistered!");
 			ZodiacMain.Ips.remove(Ip);

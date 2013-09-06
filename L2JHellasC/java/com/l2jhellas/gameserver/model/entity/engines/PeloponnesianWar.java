@@ -219,7 +219,7 @@ public class PeloponnesianWar
 				athenian.setCurrentCp(athenian.getMaxCp());
 				athenian.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, athenian, true);
 				athenian.broadcastUserInfo();
-				athenian.teleToLocation(-21754, -20955, -3026);
+				athenian.teleToLocation(83522, 259003, -11676);
 			}
 		}
 		for (L2PcInstance spartan : _spartans)
@@ -233,7 +233,7 @@ public class PeloponnesianWar
 				spartan.setCurrentCp(spartan.getMaxCp());
 				spartan.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, spartan, true);
 				spartan.broadcastUserInfo();
-				spartan.teleToLocation(-19821, -20988, -3026);
+				spartan.teleToLocation(87522, 254940, -11676);
 			}
 		}
 	}
@@ -259,6 +259,7 @@ public class PeloponnesianWar
 		player.getAppearance().setNameColor(0xFFFFFF);
 		player.setTitle("");
 		player.broadcastUserInfo();
+		player.doRevive();
 	}
 	
 	public static void spawnProtectors()

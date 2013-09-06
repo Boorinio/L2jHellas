@@ -189,11 +189,6 @@ public class CastleWars
 	
 	public static void OnDeath(L2PcInstance player)
 	{
-		player.sendMessage("You will be revived in your spot");
-	}
-	
-	public static void OnRevive(L2PcInstance player)
-	{
 		if(player == null)
 			return;
 		if (isattacker(player))
@@ -206,6 +201,12 @@ public class CastleWars
 			
 			player.teleToLocation(defendersx, defendersy, defendersz);
 		}
+		player.doRevive();
+	}
+	
+	public static void OnRevive(L2PcInstance player)
+	{
+		player.sendMessage("You are revived in your spot");
 	}
 	
 	public static void IncreaseKilledFlags()
