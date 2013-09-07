@@ -22,7 +22,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.model.L2Multisell;
 import com.l2jhellas.gameserver.model.L2TradeList;
-import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.BuyList;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -249,9 +248,8 @@ public class L2MerchantInstance extends L2FolkInstance
 	}
 
 	@Override
-	public void onActionShift(L2GameClient client)
+	public void onActionShift(L2PcInstance player)
 	{
-		L2PcInstance player = client.getActiveChar();
 		if (player == null)
 			return;
 

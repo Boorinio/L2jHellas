@@ -1778,17 +1778,16 @@ public final class Formulas
 	}
 
 	public static double calcSkillStatModifier(L2SkillType type, L2Character target)
-	{
+	{		
 		double multiplier = 1;
-		if (type == null)
-			return multiplier;
+		
 		switch (type)
 		{
 			case STUN:
 			case BLEED:
-				multiplier = 2 - Math.sqrt(CONbonus[target.getCON()]);
-			break;
 			case POISON:
+				multiplier = 2 - Math.sqrt(CONbonus[target.getCON()]);
+				break;
 			case SLEEP:
 			case DEBUFF:
 			case WEAKNESS:
@@ -1801,13 +1800,10 @@ public final class Formulas
 			case AGGREDUCE_CHAR:
 			case PARALYZE:
 				multiplier = 2 - Math.sqrt(MENbonus[target.getMEN()]);
-			break;
-			default:
-				return multiplier;
+				break;
 		}
-		if (multiplier < 0)
-			multiplier = 0;
-		return multiplier;
+		
+		return Math.max(0, multiplier);
 	}
 
 	public static boolean calcSkillSuccess(L2Character attacker, L2Character target, L2Skill skill, boolean ss, boolean sps, boolean bss)

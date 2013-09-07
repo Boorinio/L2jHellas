@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
 public final class AttackRequest extends L2GameClientPacket
@@ -24,11 +25,7 @@ public final class AttackRequest extends L2GameClientPacket
 	// cddddc
 	private int _objectId;
 	@SuppressWarnings("unused")
-	private int _originX;
-	@SuppressWarnings("unused")
-	private int _originY;
-	@SuppressWarnings("unused")
-	private int _originZ;
+	private int _originX, _originY, _originZ;
 	@SuppressWarnings("unused")
 	private int _attackId;
 
@@ -47,34 +44,35 @@ public final class AttackRequest extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
+		
+		if (activeChar.inObserverMode())
+		{
+			activeChar.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		if (activeChar.isSpawnProtected())
 			activeChar.setProtection(false);
-        // Like L2OFF
-        if(activeChar.isAttackingNow() && activeChar.isMoving())
-        {
-            // If target is not attackable, send a Server->Client packet ActionFailed
-            activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-
+		
 		// avoid using expensive operations if not needed
-		L2Object target;
+		final L2Object target;
 		if (activeChar.getTargetId() == _objectId)
 			target = activeChar.getTarget();
 		else
 			target = L2World.findObject(_objectId);
+		
 		if (target == null)
 			return;
+		
 		if (activeChar.getTarget() != target)
-		{
 			target.onAction(activeChar);
-		}
 		else
 		{
-			if ((target.getObjectId() != activeChar.getObjectId()) && activeChar.getPrivateStoreType() == 0 && activeChar.getActiveRequester() == null)
+			if ((target.getObjectId() != activeChar.getObjectId()) && !activeChar.isInStoreMode() && activeChar.getActiveRequester() == null)
 				target.onForcedAttack(activeChar);
 			else
 				sendPacket(ActionFailed.STATIC_PACKET);

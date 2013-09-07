@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList;
 import com.l2jhellas.gameserver.model.actor.poly.ObjectPoly;
 import com.l2jhellas.gameserver.model.actor.position.ObjectPosition;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.GetItem;
 
@@ -57,12 +56,12 @@ public abstract class L2Object
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
-	public void onActionShift(L2GameClient client)
+	
+	public void onActionShift(L2PcInstance player)
 	{
-		client.getActiveChar().sendPacket(ActionFailed.STATIC_PACKET);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	public void onForcedAttack(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);

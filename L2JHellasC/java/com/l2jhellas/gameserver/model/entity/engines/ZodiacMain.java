@@ -26,6 +26,9 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
@@ -39,7 +42,7 @@ public class ZodiacMain
 	public static boolean ZodiacRegisterActive;
 	public static int i, max;
 	public static List<String> VotedPlayers = new ArrayList<String>();
-	
+	static OlympiadGameTask OlyTask;
 	public static int[] count =
 	{
 	0, 0, 0, 0, 0, 0
@@ -48,7 +51,7 @@ public class ZodiacMain
 	public static boolean voting;
 	
 	public static void ZodiacIn()
-	{
+	{			
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
@@ -61,6 +64,14 @@ public class ZodiacMain
 	
 	public static void startVoting()
 	{
+		if(Config.ENABLE_ZODIAC_WHEN_OLY && Olympiad.getInstance().inCompPeriod() || (OlyTask != null && OlyTask.isRunning()) || !OlympiadGameManager.getInstance().isAllTasksFinished())
+		{
+			Announcements.getInstance().announceToAll("Zodiac Event will start when olympiad finished!");
+			voting = false;
+			return;
+	    }
+		else
+		{
 		voting = true;
 		for (L2PcInstance players : L2World.getAllPlayers())
 		{
@@ -74,6 +85,7 @@ public class ZodiacMain
 		waitSecs(minutes / 2 * 60);
 		voting = false;
 		endit();
+		}
 	}
 	
 	private static void ExecuteEvent(int Id)
@@ -251,6 +263,8 @@ public class ZodiacMain
 	
 	public static void OnRevive(L2PcInstance player)
 	{
+		if(player!=null)
+		{
 		if (CaptureThem.CaptureThemRunning)
 			CaptureThem.OnRevive(player);
 		if (CastleWars.CastleWarsRunning)
@@ -261,6 +275,7 @@ public class ZodiacMain
 			ChaosEvent.onRevive(player);
 		if (TreasureChest.TreasureRunning)
 			TreasureChest.onRevive(player);
+		}
 	}
 	
 	public static boolean isEligible(L2PcInstance player, String ip)

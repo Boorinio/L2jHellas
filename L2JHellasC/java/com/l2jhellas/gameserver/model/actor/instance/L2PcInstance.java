@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
+
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import Extensions.IpCatcher;
@@ -178,6 +179,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
+import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ObservationMode;
@@ -2452,7 +2454,6 @@ public final class L2PcInstance extends L2PlayableInstance
 		{
 			getSubClasses().get(_classIndex).setClassId(Id);
 		}
-		doCast(SkillTable.getInstance().getInfo(5103, 1));
 		setClassTemplate(Id);
 	}
 	
@@ -2703,7 +2704,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	/**
 	 * Give all available skills to the player.
 	 */
-	private void giveAvailableSkills()
+	void giveAvailableSkills()
 	{
 		int unLearnable = 0;
 		int skillCounter = 0;

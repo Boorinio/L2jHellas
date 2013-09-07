@@ -70,7 +70,6 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.quest.State;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
-import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowVariationCancelWindow;
@@ -761,10 +760,8 @@ public class L2NpcInstance extends L2Character
 	 *        The thread that manage the player that pressed Shift and click on the L2NpcInstance
 	 */
 	@Override
-	public void onActionShift(L2GameClient client)
+	public void onActionShift(L2PcInstance player)
 	{
-		// Get the L2PcInstance corresponding to the thread
-		L2PcInstance player = client.getActiveChar();
 		if (player == null)
 			return;
 

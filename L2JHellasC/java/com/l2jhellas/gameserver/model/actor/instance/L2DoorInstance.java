@@ -38,7 +38,6 @@ import com.l2jhellas.gameserver.model.actor.stat.DoorStat;
 import com.l2jhellas.gameserver.model.actor.status.DoorStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
-import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.DoorStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -470,9 +469,8 @@ public class L2DoorInstance extends L2Character
 	}
 
 	@Override
-	public void onActionShift(L2GameClient client)
+	public void onActionShift(L2PcInstance player)
 	{
-		L2PcInstance player = client.getActiveChar();
 		if (player == null)
 			return;
 

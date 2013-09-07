@@ -15,7 +15,6 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -47,9 +46,8 @@ public class L2EffectPointInstance extends L2NpcInstance
 	}
 
 	@Override
-	public void onActionShift(L2GameClient client)
+	public void onActionShift(L2PcInstance player)
 	{
-		L2PcInstance player = client.getActiveChar();
 		if (player == null)
 			return;
 		player.sendPacket(ActionFailed.STATIC_PACKET);

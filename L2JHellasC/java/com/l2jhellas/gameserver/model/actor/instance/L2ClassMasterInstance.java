@@ -30,6 +30,7 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
@@ -271,67 +272,13 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 			else
 				player.sendPacket(SystemMessageId.CLASS_TRANSFER); // system sound for 1st and 2nd occupation
 
-			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder sb = new TextBuilder();
-			sb.append("<html><body>");
-			sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateTable.getClassNameById(player.getClassId().getId()) + "</font>.");
-			sb.append("</body></html>");
+			player.broadcastPacket(new MagicSkillUse(player, player, 5103, 1, 0, 0));
 
-			html.setHtml(sb.toString());
-			player.sendPacket(html);
-		
-			if (!Config.ALLOW_ARCHERS_WEAR_HEAVY)
-			{
-				/** @formatter:off */
-				if (player.getClassId().getId() == 9 ||
-						player.getClassId().getId() == 92 ||
-						player.getClassId().getId() == 24 ||
-						player.getClassId().getId() == 102 ||
-            			player.getClassId().getId() == 37 ||
-            			player.getClassId().getId() == 109)
-				{/** @formatter:on */
-					L2ItemInstance armor = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
-					if (armor != null)
-					{
-						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(armor.getItem().getBodyPart());
-						InventoryUpdate iu = new InventoryUpdate();
-						for (L2ItemInstance element : unequipped)
-							iu.addModifiedItem(element);
-						sendPacket(iu);
-					}
-				}
-			}
-			if (!Config.ALLOW_DAGGERS_WEAR_HEAVY)
-			{/** @formatter:off */
-				if (player.getClassId().getId() == 93 ||
-						player.getClassId().getId() == 108 ||
-						player.getClassId().getId() == 101 ||
-						player.getClassId().getId() == 8 ||
-						player.getClassId().getId() == 23 ||
-						player.getClassId().getId() == 36)
-				{/** @formatter:on */
-					L2ItemInstance chest = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
-					if (chest != null)
-					{
-						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(chest.getItem().getBodyPart());
-						InventoryUpdate iu = new InventoryUpdate();
-						for (L2ItemInstance element : unequipped)
-							iu.addModifiedItem(element);
-						sendPacket(iu);
-					}
-					L2ItemInstance legs = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS);
-					if (legs != null)
-					{
-						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(legs.getItem().getBodyPart());
-						InventoryUpdate iu = new InventoryUpdate();
-						for (L2ItemInstance element : unequipped)
-							iu.addModifiedItem(element);
-						sendPacket(iu);
-					}
-				}
-			}
-			if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel == 4 && !player.isSubClassActive())
-	              autoEquip(player);
+			HtmlShow(player);
+			
+			checks(player);
+			
+			checkAutoEq(player,newJobLevel);
 		}
 		else
 		{
@@ -624,5 +571,77 @@ public final class L2ClassMasterInstance extends L2FolkInstance
 		else if(player.getClassId().equals(ghostSentinel))
 			player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
 		
+	}
+	
+	private final void HtmlShow(L2PcInstance player)
+	{
+		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+		TextBuilder sb = new TextBuilder();
+		sb.append("<html><body>");
+		sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateTable.getClassNameById(player.getClassId().getId()) + "</font>.");
+		sb.append("</body></html>");
+
+		html.setHtml(sb.toString());
+		player.sendPacket(html);
+	}
+	
+	private final void checks(L2PcInstance player)
+	{
+		if (!Config.ALLOW_ARCHERS_WEAR_HEAVY)
+		{
+			/** @formatter:off */
+			if (player.getClassId().getId() == 9 ||
+					player.getClassId().getId() == 92 ||
+					player.getClassId().getId() == 24 ||
+					player.getClassId().getId() == 102 ||
+        			player.getClassId().getId() == 37 ||
+        			player.getClassId().getId() == 109)
+			{/** @formatter:on */
+				L2ItemInstance armor = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
+				if (armor != null)
+				{
+					L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(armor.getItem().getBodyPart());
+					InventoryUpdate iu = new InventoryUpdate();
+					for (L2ItemInstance element : unequipped)
+						iu.addModifiedItem(element);
+					sendPacket(iu);
+				}
+			}
+		}
+		if (!Config.ALLOW_DAGGERS_WEAR_HEAVY)
+		{/** @formatter:off */
+			if (player.getClassId().getId() == 93 ||
+					player.getClassId().getId() == 108 ||
+					player.getClassId().getId() == 101 ||
+					player.getClassId().getId() == 8 ||
+					player.getClassId().getId() == 23 ||
+					player.getClassId().getId() == 36)
+			{/** @formatter:on */
+				L2ItemInstance chest = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
+				if (chest != null)
+				{
+					L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(chest.getItem().getBodyPart());
+					InventoryUpdate iu = new InventoryUpdate();
+					for (L2ItemInstance element : unequipped)
+						iu.addModifiedItem(element);
+					sendPacket(iu);
+				}
+				L2ItemInstance legs = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS);
+				if (legs != null)
+				{
+					L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(legs.getItem().getBodyPart());
+					InventoryUpdate iu = new InventoryUpdate();
+					for (L2ItemInstance element : unequipped)
+						iu.addModifiedItem(element);
+					sendPacket(iu);
+				}
+			}
+		}
+	}
+	
+	private final void checkAutoEq(L2PcInstance player,int newJobLevel)
+	{	
+		if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel == 4 && !player.isSubClassActive())
+              autoEquip(player);
 	}
 }

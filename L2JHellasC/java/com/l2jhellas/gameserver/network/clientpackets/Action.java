@@ -17,10 +17,10 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
 public final class Action extends L2GameClientPacket
@@ -30,9 +30,8 @@ public final class Action extends L2GameClientPacket
 
 	// cddddc
 	private int _objectId;
-	private int _originX;
-	private int _originY;
-	private int _originZ;
+	@SuppressWarnings("unused")
+	private int _originX, _originY, _originZ;
 	private int _actionId;
 
 	@Override
@@ -49,59 +48,58 @@ public final class Action extends L2GameClientPacket
 	protected void runImpl()
 	{
 		if (Config.DEBUG)
-		{
-			_log.fine("Action:" + _actionId);
-			_log.fine("oid:" + _objectId);
-			_log.fine("x,y,z :" + _originX + ", " + _originY + ", " + _originZ);
-		}
-
+			_log.fine("Action: " + _actionId + ", objectId: " + _objectId);
+		
 		// Get the current L2PcInstance of the player
-		L2PcInstance activeChar = getClient().getActiveChar();
-
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-
-		L2Object obj;
-
-		if (activeChar.getTargetId() == _objectId)
-			obj = activeChar.getTarget();
-		else
-			obj = L2World.findObject(_objectId);
-
-		// If object requested does not exist, add warn msg into logs
-		if (obj == null)
+		
+		if (activeChar.inObserverMode())
 		{
-			// pressing e.g. pickup many times quickly would get you here
-			getClient().sendPacket(ActionFailed.STATIC_PACKET);
+			activeChar.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
-		// Check if the target is valid, if the player haven't a shop or isn't the requester of a transaction (ex : FriendInvite, JoinAlly, JoinParty...)
-		if ((activeChar.getPrivateStoreType() == 0) && (activeChar.getActiveRequester() == null))
+		
+		// If the player is the requester of a transaction
+		if (activeChar.getActiveRequester() != null)
 		{
-			switch (_actionId)
-			{
-				case 0:
-					obj.onAction(activeChar);
-				break;
-				case 1:
-					if (obj instanceof L2Character && ((L2Character) obj).isAlikeDead())
-						obj.onAction(activeChar);
-					else
-						obj.onActionShift(getClient());
-				break;
-				default:
-					// Invalid action detected (probably client cheating), log this
-					_log.warning("Character: " + activeChar.getName() + " requested invalid action: " + _actionId);
-					getClient().sendPacket(ActionFailed.STATIC_PACKET);
-				break;
-			}
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
 		}
-		else
-			// Actions prohibited when in trade
-			getClient().sendPacket(ActionFailed.STATIC_PACKET);
+		
+		// If requested object doesn't exist
+		final L2Object obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : L2World.findObject(_objectId);
+		if (obj == null)
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		if (!activeChar.isGM() && activeChar.isOutOfControl())
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		switch (_actionId)
+		{
+			case 0:
+				obj.onAction(activeChar);
+				break;
+			
+			case 1:
+				obj.onActionShift(activeChar);
+				break;
+			
+			default:
+				// Invalid action detected (probably client cheating), log this
+				_log.warning(activeChar.getName() + " requested invalid action: " + _actionId);
+				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+				break;
+		}
 	}
-
 	@Override
 	public String getType()
 	{

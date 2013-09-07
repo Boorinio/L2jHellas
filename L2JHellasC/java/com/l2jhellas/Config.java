@@ -877,6 +877,7 @@ public final class Config
 	 * Event Config File
 	 */
 	// Zodiac Settings
+	public static boolean ENABLE_ZODIAC_WHEN_OLY;
 	public static boolean ZODIAC_ENABLE;
 	public static int ZODIAC_REWARD;
 	public static int ZODIAC_REWARD_COUN;
@@ -2492,6 +2493,8 @@ public final class Config
 			{
 				_log.log(Level.SEVERE, "Error while " + EVENT_ZODIAC_CONFIG_FILE + " settings!", e);
 			}
+			
+			ENABLE_ZODIAC_WHEN_OLY = Boolean.parseBoolean(EventZodiacSettings.getProperty("EnableZodiacWhenOly", "true"));
 			ZODIAC_ENABLE = Boolean.parseBoolean(EventZodiacSettings.getProperty("Zodiace", "true"));
 			ZODIAC_REWARD = Integer.parseInt(EventZodiacSettings.getProperty("ZodiadReward", "3470"));
 			ZODIAC_REWARD_COUN = Integer.parseInt(EventZodiacSettings.getProperty("ZodiadRewardc", "1"));
