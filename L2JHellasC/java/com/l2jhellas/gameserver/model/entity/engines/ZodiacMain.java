@@ -26,8 +26,6 @@ import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
-import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -51,7 +49,7 @@ public class ZodiacMain
 	public static boolean voting;
 	
 	public static void ZodiacIn()
-	{			
+	{
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
@@ -64,19 +62,12 @@ public class ZodiacMain
 	
 	public static void startVoting()
 	{
-		if(Config.ENABLE_ZODIAC_WHEN_OLY && Olympiad.getInstance().inCompPeriod() || (OlyTask != null && OlyTask.isRunning()) || !OlympiadGameManager.getInstance().isAllTasksFinished())
-		{
-			Announcements.getInstance().announceToAll("Zodiac Event will start when olympiad finished!");
-			voting = false;
-			return;
-	    }
-		else
-		{
+		
 		voting = true;
 		for (L2PcInstance players : L2World.getAllPlayers())
 		{
-			if(players!=null)
-			showHtmlWindow(players);
+			if (players != null)
+				showHtmlWindow(players);
 		}
 		int minutes = Config.ZODIAC_VOTE_MINUTES;
 		Announcements.getInstance().announceToAll("You have " + minutes + " minutes to vote for the event you like!");
@@ -85,7 +76,7 @@ public class ZodiacMain
 		waitSecs(minutes / 2 * 60);
 		voting = false;
 		endit();
-		}
+		
 	}
 	
 	private static void ExecuteEvent(int Id)
@@ -187,7 +178,7 @@ public class ZodiacMain
 			count[i] = 0;
 		}
 		ClearVotedPlayers();
-		waitSecs(Config.BETWEEN_EVENTS * 60);
+		waitSecs((Config.BETWEEN_EVENTS * 60)+Config.TIME_TO_REGISTER+10);
 		startVoting();
 	}
 	

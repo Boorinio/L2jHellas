@@ -37,13 +37,13 @@ public class ProtectTheLdr
 {
 	public static List<L2PcInstance> _Team1 = new FastList<L2PcInstance>();
 	public static List<L2PcInstance> _Team2 = new FastList<L2PcInstance>();
-	public static int team1x = -19790;
-	public static int team1y = -21023;
-	public static int team1z = -3025;
+	public static int team1x = 86535;
+	public static int team1y = 257189;
+	public static int team1z = -11672;
 	private static int leader1 = 36007;
-	public static int team2x = -21780, team2y = -20976, team2z = -3027, leader2 = 36008;
-	private static int leader2x = -21717, leader2y = -20859, leader2z = -3027;
-	private static int leader1x = -19846, leader1y = -20859, leader1z = -3027;
+	public static int team2x = 86504, team2y = 258865, team2z = -11672, leader2 = 36008;
+	private static int leader2x = 86402, leader2y = 258733, leader2z = -11672;
+	private static int leader1x = 86417, leader1y = 257244, leader1z = -11672;
 	public static boolean ProtectisRunning, alaksokolies;
 	private static FastSet<L2NpcInstance> _leaders = new FastSet<L2NpcInstance>();
 	

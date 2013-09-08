@@ -217,7 +217,6 @@ public class PeloponnesianWar
 				athenian.setCurrentHp(athenian.getMaxHp());
 				athenian.setCurrentMp(athenian.getMaxMp());
 				athenian.setCurrentCp(athenian.getMaxCp());
-				athenian.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, athenian, true);
 				athenian.broadcastUserInfo();
 				athenian.teleToLocation(83522, 259003, -11676);
 			}
@@ -231,7 +230,6 @@ public class PeloponnesianWar
 				spartan.setCurrentHp(spartan.getMaxHp());
 				spartan.setCurrentMp(spartan.getMaxMp());
 				spartan.setCurrentCp(spartan.getMaxCp());
-				spartan.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, spartan, true);
 				spartan.broadcastUserInfo();
 				spartan.teleToLocation(87522, 254940, -11676);
 			}

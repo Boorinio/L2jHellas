@@ -71,14 +71,20 @@ abstract class AbstractAI implements Ctrl
 				if (_followTask == null)
 					return;
 
-				if (_followTarget == null)
+				if (_followTarget == null || _followTarget.isTeleporting())
 				{
 					stopFollow();
+					setIntention(AI_INTENTION_IDLE);
 					return;
 				}
-
 				if (!_actor.isInsideRadius(_followTarget, _range, true, false))
 				{
+					if (!_actor.isInsideRadius(_followTarget, 3000, true, false))
+					{
+						stopFollow();
+						setIntention(AI_INTENTION_IDLE);
+						return;
+					}
 					moveToPawn(_followTarget, _range);
 				}
 			}

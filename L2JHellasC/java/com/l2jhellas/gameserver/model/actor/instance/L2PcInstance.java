@@ -179,7 +179,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
-import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ObservationMode;
@@ -8820,6 +8819,9 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		// l2jhellas Faction Good vs Evil
 		if ((attacker instanceof L2PcInstance) && ((L2PcInstance) attacker).isgood())
+			return true;
+		
+		if ((attacker instanceof L2PcInstance && ((L2PcInstance) attacker).isinZodiac) && this.isinZodiac)
 			return true;
 		
 		if ((attacker instanceof L2PcInstance) && ((L2PcInstance) attacker).isevil())

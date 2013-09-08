@@ -143,6 +143,8 @@ public class CastleWars
 			flags.deleteMe();
 			
 		}
+		isFinished = false;
+		CastleWarsRunning =false;
 		flagskilled = 0;
 		_flags.clear();
 		_defenders.clear();
@@ -170,13 +172,14 @@ public class CastleWars
 			defender.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, defender, true);
 		}
 		isFinished = true;
+		CastleWarsRunning = false;
 		cleanevent();
 	}
 	
 	public static boolean isattacker(L2PcInstance player)
 	{
 		
-		return(_attackers.contains(player.getName()));
+		return (_attackers.contains(player.getName()));
 		
 	}
 	
@@ -189,7 +192,7 @@ public class CastleWars
 	
 	public static void OnDeath(L2PcInstance player)
 	{
-		if(player == null)
+		if (player == null)
 			return;
 		if (isattacker(player))
 		{
@@ -236,6 +239,7 @@ public class CastleWars
 			attacker.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, attacker, true);
 		}
 		isFinished = true;
+		CastleWarsRunning = false;
 		cleanevent();
 	}
 	
