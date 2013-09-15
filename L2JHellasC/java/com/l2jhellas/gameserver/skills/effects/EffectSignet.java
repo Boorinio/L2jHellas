@@ -18,12 +18,12 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.form.ZoneCylinder;
 import com.l2jhellas.gameserver.model.zone.type.L2SignetZone;

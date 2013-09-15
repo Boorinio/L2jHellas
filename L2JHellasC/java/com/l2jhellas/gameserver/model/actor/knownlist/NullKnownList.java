@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.knownlist;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 
 public class NullKnownList extends ObjectKnownList
 {

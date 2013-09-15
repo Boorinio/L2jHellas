@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.knownlist.NullKnownList;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;

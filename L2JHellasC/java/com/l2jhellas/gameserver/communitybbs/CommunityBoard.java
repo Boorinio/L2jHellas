@@ -26,7 +26,7 @@ import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.ShopBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.TopBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.TopicBBSManager;
-import com.l2jhellas.gameserver.model.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;

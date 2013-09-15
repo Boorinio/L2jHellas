@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 
 /**
@@ -39,7 +39,7 @@ public class RelationChanged extends L2GameServerPacket
 	private int _karma;
 	private int _pvpFlag;
 
-	public RelationChanged(L2PlayableInstance activeChar, int relation, boolean autoattackable)
+	public RelationChanged(L2Playable activeChar, int relation, boolean autoattackable)
 	{
 		_objId = activeChar.getObjectId();
 		_relation = relation;

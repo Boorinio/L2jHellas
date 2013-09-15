@@ -16,11 +16,11 @@ package com.l2jhellas.gameserver.handler.itemhandlers;
 
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2BabyPetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
@@ -42,7 +42,7 @@ public class BeastSpiritShot implements IItemHandler
 	};
 
 	@Override
-	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	public void useItem(L2Playable playable, L2ItemInstance item)
 	{
 		if (playable == null)
 			return;

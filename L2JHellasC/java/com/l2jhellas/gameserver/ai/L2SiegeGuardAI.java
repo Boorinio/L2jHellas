@@ -26,17 +26,17 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2FolkInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.util.Rnd;
@@ -120,7 +120,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	private boolean autoAttackCondition(L2Character target)
 	{
 		// Check if the target isn't another guard, folk or a door
-		if (target == null || target instanceof L2SiegeGuardInstance || target instanceof L2FolkInstance || target instanceof L2DoorInstance || target.isAlikeDead() || target.isInvul())
+		if (target == null || target instanceof L2SiegeGuardInstance || target instanceof L2NpcInstance || target instanceof L2DoorInstance || target.isAlikeDead() || target.isInvul())
 			return false;
 
 		// Get the owner if the target is a summon
@@ -555,13 +555,13 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	private final void factionNotify()
 	{
 		// Call all L2Object of its Faction inside the Faction Range
-		if (((L2NpcInstance) _actor).getFactionId() == null || _attackTarget == null || _actor == null)
+		if (((L2Npc) _actor).getFactionId() == null || _attackTarget == null || _actor == null)
 			return;
 
 		if (_attackTarget.isInvul())
 			return;
 
-		String faction_id = ((L2NpcInstance) _actor).getFactionId();
+		String faction_id = ((L2Npc) _actor).getFactionId();
 
 		// Go through all L2Object that belong to its faction
 		for (L2Character cha : _actor.getKnownList().getKnownCharactersInRadius(1000))
@@ -569,10 +569,10 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 			if (cha == null)
 				continue;
 
-			if (!(cha instanceof L2NpcInstance))
+			if (!(cha instanceof L2Npc))
 				continue;
 
-			L2NpcInstance npc = (L2NpcInstance) cha;
+			L2Npc npc = (L2Npc) cha;
 
 			if (faction_id != npc.getFactionId())
 				continue;

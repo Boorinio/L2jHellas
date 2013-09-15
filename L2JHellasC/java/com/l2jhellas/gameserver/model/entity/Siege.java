@@ -36,7 +36,6 @@ import com.l2jhellas.gameserver.instancemanager.SiegeGuardManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager.SiegeSpawn;
 import com.l2jhellas.gameserver.instancemanager.SiegeReward;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -44,9 +43,10 @@ import com.l2jhellas.gameserver.model.L2SiegeClan;
 import com.l2jhellas.gameserver.model.L2SiegeClan.SiegeClanType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControlTowerInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
@@ -717,13 +717,13 @@ public class Siege
 	}
 
 	/** Control Tower was skilled */
-	public void killedCT(L2NpcInstance ct)
+	public void killedCT(L2Npc ct)
 	{
 		_defenderRespawnDelayPenalty += SiegeManager.getInstance().getControlTowerLosePenalty(); // Add respawn penalty to defenders for each control tower lose
 	}
 
 	/** Remove the flag that was killed */
-	public void killedFlag(L2NpcInstance flag)
+	public void killedFlag(L2Npc flag)
 	{
 		if (flag == null)
 			return;
@@ -1401,7 +1401,7 @@ public class Siege
 		return getCastle().getSiegeDate();
 	}
 
-	public List<L2NpcInstance> getFlag(L2Clan clan)
+	public List<L2Npc> getFlag(L2Clan clan)
 	{
 		if (clan != null)
 		{

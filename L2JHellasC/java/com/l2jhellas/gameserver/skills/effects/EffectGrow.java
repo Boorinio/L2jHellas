@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.Env;
 
 public class EffectGrow extends L2Effect
@@ -35,9 +35,9 @@ public class EffectGrow extends L2Effect
 	@Override
 	public boolean onStart()
 	{
-		if (getEffected() instanceof L2NpcInstance)
+		if (getEffected() instanceof L2Npc)
 		{
-			L2NpcInstance npc = (L2NpcInstance) getEffected();
+			L2Npc npc = (L2Npc) getEffected();
 			npc.setCollisionHeight((int) (npc.getCollisionHeight() * 1.24));
 			npc.setCollisionRadius((int) (npc.getCollisionRadius() * 1.19));
 
@@ -50,9 +50,9 @@ public class EffectGrow extends L2Effect
 	@Override
 	public boolean onActionTime()
 	{
-		if (getEffected() instanceof L2NpcInstance)
+		if (getEffected() instanceof L2Npc)
 		{
-			L2NpcInstance npc = (L2NpcInstance) getEffected();
+			L2Npc npc = (L2Npc) getEffected();
 			npc.setCollisionHeight(npc.getTemplate().collisionHeight);
 			npc.setCollisionRadius(npc.getTemplate().collisionRadius);
 
@@ -64,9 +64,9 @@ public class EffectGrow extends L2Effect
 	@Override
 	public void onExit()
 	{
-		if (getEffected() instanceof L2NpcInstance)
+		if (getEffected() instanceof L2Npc)
 		{
-			L2NpcInstance npc = (L2NpcInstance) getEffected();
+			L2Npc npc = (L2Npc) getEffected();
 			npc.setCollisionHeight(npc.getTemplate().collisionHeight);
 			npc.setCollisionRadius(npc.getTemplate().collisionRadius);
 

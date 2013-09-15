@@ -17,8 +17,8 @@ package com.l2jhellas.gameserver.handler.itemhandlers;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -34,7 +34,7 @@ public class MysteryPotion implements IItemHandler
 	private static final int EFFECT_DURATION = 1200000; // 20 mins
 
 	@Override
-	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	public void useItem(L2Playable playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
@@ -59,9 +59,9 @@ public class MysteryPotion implements IItemHandler
 
 	public class MysteryPotionStop implements Runnable
 	{
-		private final L2PlayableInstance _playable;
+		private final L2Playable _playable;
 
-		public MysteryPotionStop(L2PlayableInstance playable)
+		public MysteryPotionStop(L2Playable playable)
 		{
 			_playable = playable;
 		}

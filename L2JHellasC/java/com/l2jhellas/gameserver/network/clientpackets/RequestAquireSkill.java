@@ -24,8 +24,8 @@ import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
 import com.l2jhellas.gameserver.model.L2ShortCut;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2FishermanInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2FolkInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2VillageMasterInstance;
@@ -63,13 +63,13 @@ public class RequestAquireSkill extends L2GameClientPacket
 		if (player == null)
 			return;
 
-		L2FolkInstance trainer = player.getLastFolkNPC();
+		L2NpcInstance trainer = player.getLastFolkNPC();
 		if (trainer == null)
 			return;
 
 		int npcid = trainer.getNpcId();
 
-		if (!player.isInsideRadius(trainer, L2NpcInstance.INTERACTION_DISTANCE, false, false) && !player.isGM())
+		if (!player.isInsideRadius(trainer, L2Npc.INTERACTION_DISTANCE, false, false) && !player.isGM())
 			return;
 
 		if (!Config.ALT_GAME_SKILL_LEARN)

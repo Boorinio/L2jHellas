@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model;
+package com.l2jhellas.gameserver.model.actor;
 
 import java.util.List;
 import java.util.Map;
@@ -34,14 +34,20 @@ import com.l2jhellas.gameserver.datatables.EventDroplist;
 import com.l2jhellas.gameserver.datatables.EventDroplist.DateDrop;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
+import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.L2CommandChannel;
+import com.l2jhellas.gameserver.model.L2DropCategory;
+import com.l2jhellas.gameserver.model.L2DropData;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2Manor;
+import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2FolkInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MinionInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.AttackableKnownList;
@@ -67,7 +73,7 @@ import com.l2jhellas.util.Util;
  * L2MonsterInstance
  * L2SiegeGuardInstance
  */
-public class L2Attackable extends L2NpcInstance
+public class L2Attackable extends L2Npc
 {
 	protected static Logger _log = Logger.getLogger(L2Attackable.class.getName());
 	
@@ -425,7 +431,7 @@ public class L2Attackable extends L2NpcInstance
 	@Deprecated
 	public boolean getCondition2(L2Character target)
 	{
-		if (target instanceof L2FolkInstance || target instanceof L2DoorInstance)
+		if (target instanceof L2NpcInstance || target instanceof L2DoorInstance)
 			return false;
 		
 		if (target.isAlikeDead() || !isInsideRadius(target, getAggroRange(), false, false) || Math.abs(getZ() - target.getZ()) > 100)
@@ -833,7 +839,7 @@ public class L2Attackable extends L2NpcInstance
 						partyLvl = 0;
 						
 						// Get all L2Character that can be rewarded in the party
-						List<L2PlayableInstance> rewardedMembers = new FastList<L2PlayableInstance>();
+						List<L2Playable> rewardedMembers = new FastList<L2Playable>();
 						
 						// Go through all L2PcInstance in the party
 						List<L2PcInstance> groupMembers;
@@ -906,7 +912,7 @@ public class L2Attackable extends L2NpcInstance
 									}
 								}
 							}
-							L2PlayableInstance summon = pl.getPet();
+							L2Playable summon = pl.getPet();
 							if (summon != null && summon instanceof L2PetInstance)
 							{
 								reward2 = rewards.get(summon);

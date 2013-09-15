@@ -20,10 +20,10 @@ import java.util.Map;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Util;
 
@@ -148,10 +148,10 @@ public class CharKnownList extends ObjectKnownList
 				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
 					result.add((L2MonsterInstance) obj);
 			}
-			else if (obj instanceof L2NpcInstance)
+			else if (obj instanceof L2Npc)
 			{
 				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
-					result.add((L2NpcInstance) obj);
+					result.add((L2Npc) obj);
 			}
 		}
 

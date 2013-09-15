@@ -35,10 +35,10 @@ import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.CursedWeapon;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;

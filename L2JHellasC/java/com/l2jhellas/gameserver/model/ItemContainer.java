@@ -27,6 +27,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.database.L2DatabaseFactory;

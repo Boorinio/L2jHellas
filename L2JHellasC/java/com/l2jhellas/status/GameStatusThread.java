@@ -44,18 +44,18 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
 import com.l2jhellas.gameserver.instancemanager.Manager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Multisell;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
@@ -322,7 +322,7 @@ public class GameStatusThread extends Thread
 							minionCount += ((L2MonsterInstance) obj).getTotalSpawnedMinionsInstances();
 							minionsGroupCount += ((L2MonsterInstance) obj).getTotalSpawnedMinionsGroups();
 						}
-						else if (obj instanceof L2NpcInstance)
+						else if (obj instanceof L2Npc)
 						{
 							npcCount++;
 						}

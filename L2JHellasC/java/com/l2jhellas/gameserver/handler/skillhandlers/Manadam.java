@@ -15,13 +15,13 @@
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -92,9 +92,9 @@ public class Manadam implements ISkillHandler
 				sump.addAttribute(StatusUpdate.CUR_MP, (int) target.getCurrentMp());
 				target.sendPacket(sump);
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S2_MP_HAS_BEEN_DRAINED_BY_S1);
-				if (activeChar instanceof L2NpcInstance)
+				if (activeChar instanceof L2Npc)
 				{
-					int mobId = ((L2NpcInstance) activeChar).getNpcId();
+					int mobId = ((L2Npc) activeChar).getNpcId();
 					sm.addNpcName(mobId);
 				}
 				else if (activeChar instanceof L2Summon)

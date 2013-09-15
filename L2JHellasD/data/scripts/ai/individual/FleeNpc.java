@@ -16,7 +16,7 @@ package ai.individual;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.util.Rnd;
@@ -37,7 +37,7 @@ public class FleeNpc extends L2AttackableAIScript
 		}
 	}
 
-	public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet) 
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet) 
 	{
 		if (npc.getNpcId() >= 18150 && npc.getNpcId() <= 18157)
 		{

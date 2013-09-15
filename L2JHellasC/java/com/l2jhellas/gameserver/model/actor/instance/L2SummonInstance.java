@@ -19,10 +19,11 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SetSummonRemainTime;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -177,9 +178,9 @@ public class L2SummonInstance extends L2Summon
 	{
 		super.reduceCurrentHp(damage, attacker);
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SUMMON_RECEIVED_DAMAGE_S2_BY_S1);
-		if (attacker instanceof L2NpcInstance)
+		if (attacker instanceof L2Npc)
 		{
-			sm.addNpcName(((L2NpcInstance) attacker).getTemplate().npcId);
+			sm.addNpcName(((L2Npc) attacker).getTemplate().npcId);
 		}
 		else
 		{

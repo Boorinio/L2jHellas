@@ -18,17 +18,17 @@ import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
@@ -190,7 +190,7 @@ public class Continuous implements ISkillHandler
 			{
 				if (target instanceof L2Attackable)
 					target.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, activeChar, (int) skill.getPower());
-				else if (target instanceof L2PlayableInstance)
+				else if (target instanceof L2Playable)
 				{
 					if (target.getTarget() == activeChar)
 						target.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, activeChar);

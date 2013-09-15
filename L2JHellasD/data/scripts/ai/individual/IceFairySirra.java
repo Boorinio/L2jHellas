@@ -28,7 +28,7 @@ import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Spawn;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -49,7 +49,7 @@ public class IceFairySirra extends L2AttackableAIScript
 	private static final int SILVER_HEMOCYTE = 8057;
 	private static L2BossZone _freyasZone;
 	private static L2PcInstance _player = null;
-	protected FastList<L2NpcInstance> _allMobs = new FastList<L2NpcInstance>();
+	protected FastList<L2Npc> _allMobs = new FastList<L2Npc>();
 	protected Future<?> _onDeadEventTask = null;
 
 	public IceFairySirra(int id, String name, String descr)
@@ -73,7 +73,7 @@ public class IceFairySirra extends L2AttackableAIScript
 			return;
 		}
 		_freyasZone.setZoneEnabled(false);
-		L2NpcInstance steward = findTemplate(STEWARD);
+		L2Npc steward = findTemplate(STEWARD);
 		if (steward != null)
 			steward.setBusy(false);
 		openGates();
@@ -86,7 +86,7 @@ public class IceFairySirra extends L2AttackableAIScript
 		cancelQuestTimer("20MinutesRemaining", null, _player);
 		cancelQuestTimer("10MinutesRemaining", null, _player);
 		cancelQuestTimer("End", null, _player);
-		for (L2NpcInstance mob : _allMobs)
+		for (L2Npc mob : _allMobs)
 		{
 			try
 			{
@@ -101,9 +101,9 @@ public class IceFairySirra extends L2AttackableAIScript
 		_allMobs.clear();
 	}
 
-	public L2NpcInstance findTemplate(int npcId)
+	public L2Npc findTemplate(int npcId)
 	{
-		L2NpcInstance npc = null;
+		L2Npc npc = null;
 		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable().values())
 		{
 			if (spawn != null && spawn.getNpcid() == npcId)
@@ -291,7 +291,7 @@ public class IceFairySirra extends L2AttackableAIScript
 		return "data/html/npcdefault.htm";
 	}
 
-	public void sendHtml(L2NpcInstance npc, L2PcInstance player, String filename)
+	public void sendHtml(L2Npc npc, L2PcInstance player, String filename)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
 		html.setFile(filename);
@@ -301,7 +301,7 @@ public class IceFairySirra extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onFirstTalk(L2NpcInstance npc, L2PcInstance player)
+	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
 		if (player.getQuestState("IceFairySirra") == null)
 			newQuestState(player);
@@ -316,7 +316,7 @@ public class IceFairySirra extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onAdvEvent(String event, L2NpcInstance npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		if (event.equalsIgnoreCase("check_condition"))
 		{

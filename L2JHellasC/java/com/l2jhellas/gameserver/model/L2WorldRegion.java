@@ -24,8 +24,10 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.type.L2DerbyTrackZone;
 import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
@@ -37,7 +39,7 @@ public final class L2WorldRegion
 	private static Logger _log = Logger.getLogger(L2WorldRegion.class.getName());
 
 	/** L2ObjectHashSet(L2PlayableInstance) containing L2PlayableInstance of all player & summon in game in this L2WorldRegion */
-	private final L2ObjectSet<L2PlayableInstance> _allPlayable;
+	private final L2ObjectSet<L2Playable> _allPlayable;
 
 	/** L2ObjectHashSet(L2Object) containing L2Object visible in this L2WorldRegion */
 	private final L2ObjectSet<L2Object> _visibleObjects;
@@ -236,11 +238,11 @@ public final class L2WorldRegion
 					// start the ai
 					//((L2AttackableAI) mob.getAI()).startAITask();
 				}
-				else if (o instanceof L2NpcInstance)
+				else if (o instanceof L2Npc)
 				{
 					// Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it
 					// L2Monsterinstance/L2Attackable socials are handled by AI (TODO: check the instances)
-					((L2NpcInstance) o).startRandomAnimationTimer();
+					((L2Npc) o).startRandomAnimationTimer();
 				}
 			}
 			_log.fine(c + " mobs were turned on");
@@ -350,9 +352,9 @@ public final class L2WorldRegion
 			return;
 		_visibleObjects.put(object);
 
-		if (object instanceof L2PlayableInstance)
+		if (object instanceof L2Playable)
 		{
-			_allPlayable.put((L2PlayableInstance) object);
+			_allPlayable.put((L2Playable) object);
 
 			// if this is the first player to enter the region, activate self & neighbors
 			if ((_allPlayable.size() == 1) && (!Config.GRIDS_ALWAYS_ON))
@@ -375,9 +377,9 @@ public final class L2WorldRegion
 			return;
 		_visibleObjects.remove(object);
 
-		if (object instanceof L2PlayableInstance)
+		if (object instanceof L2Playable)
 		{
-			_allPlayable.remove((L2PlayableInstance) object);
+			_allPlayable.remove((L2Playable) object);
 
 			if ((_allPlayable.size() == 0) && (!Config.GRIDS_ALWAYS_ON))
 				startDeactivation();
@@ -400,7 +402,7 @@ public final class L2WorldRegion
 		return _surroundingRegions;
 	}
 
-	public Iterator<L2PlayableInstance> iterateAllPlayers()
+	public Iterator<L2Playable> iterateAllPlayers()
 	{
 		return _allPlayable.iterator();
 	}
@@ -423,9 +425,9 @@ public final class L2WorldRegion
 		_log.fine("Deleting all visible NPC's in Region: " + getName());
 		for (L2Object obj : _visibleObjects)
 		{
-			if (obj instanceof L2NpcInstance)
+			if (obj instanceof L2Npc)
 			{
-				L2NpcInstance target = (L2NpcInstance) obj;
+				L2Npc target = (L2Npc) obj;
 				target.deleteMe();
 				L2Spawn spawn = target.getSpawn();
 				if (spawn != null)

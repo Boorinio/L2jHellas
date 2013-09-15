@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -26,7 +27,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 /**
  * @author -=DoctorNo=-
  */
-public class L2CastleManagerInstance extends L2NpcInstance
+public class L2CastleManagerInstance extends L2Npc
 {
 	public String filename;
 	

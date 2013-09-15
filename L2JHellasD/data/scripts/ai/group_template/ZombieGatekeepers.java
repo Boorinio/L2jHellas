@@ -20,9 +20,9 @@ import javolution.util.FastMap;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class ZombieGatekeepers extends L2AttackableAIScript
@@ -36,7 +36,7 @@ public class ZombieGatekeepers extends L2AttackableAIScript
 
 	private FastMap<Integer, FastList<L2Character>> _attackersList = new FastMap<Integer, FastList<L2Character>>();
 
-	public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		int npcObjId = npc.getObjectId();
 
@@ -54,7 +54,7 @@ public class ZombieGatekeepers extends L2AttackableAIScript
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
 
-	public String onAggroRangeEnter(L2NpcInstance npc, L2PcInstance player, boolean isPet)
+	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		int npcObjId = npc.getObjectId();
 
@@ -87,7 +87,7 @@ public class ZombieGatekeepers extends L2AttackableAIScript
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 
-	public String onKill(L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		int npcObjId = npc.getObjectId();
 		if (_attackersList.get(npcObjId) != null)

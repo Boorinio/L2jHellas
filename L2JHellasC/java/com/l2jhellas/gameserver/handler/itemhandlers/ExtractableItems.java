@@ -23,8 +23,8 @@ import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ExtractableItem;
 import com.l2jhellas.gameserver.model.L2ExtractableProductItem;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Rnd;
@@ -37,7 +37,7 @@ public class ExtractableItems implements IItemHandler
 	private static Logger _log = Logger.getLogger(ExtractableItems.class.getName());
 
 	@Override
-	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	public void useItem(L2Playable playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;

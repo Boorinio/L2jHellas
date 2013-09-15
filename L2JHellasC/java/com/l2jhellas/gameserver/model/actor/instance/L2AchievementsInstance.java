@@ -23,10 +23,11 @@ import Extensions.AchievmentsEngine.base.Condition;
 
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2AchievementsInstance extends L2NpcInstance
+public class L2AchievementsInstance extends L2Npc
 {
 	public L2AchievementsInstance(int objectId, L2NpcTemplate template)
 	{

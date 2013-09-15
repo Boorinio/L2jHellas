@@ -16,10 +16,10 @@ package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -72,7 +72,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 			}
 		}
 		
-		if (character instanceof L2PlayableInstance)
+		if (character instanceof L2Playable)
 		{
 			final L2PcInstance player = character.getActingPlayer();
 			if (player != null)

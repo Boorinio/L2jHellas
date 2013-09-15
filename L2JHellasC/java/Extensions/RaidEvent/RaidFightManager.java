@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 
 public class RaidFightManager
 {
@@ -35,7 +35,7 @@ public class RaidFightManager
 	{
 		// TODO: Add initial breaks. And check performance
 		waiter(Config.RAID_SYSTEM_FIGHT_TIME * 60); // in configuration given as minutes
-		for (L2NpcInstance eventMob : L2RaidEvent._eventMobList)
+		for (L2Npc eventMob : L2RaidEvent._eventMobList)
 		{
 			eventMob.decayMe();
 			eventMob.deleteMe();

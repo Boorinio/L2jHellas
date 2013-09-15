@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -31,7 +32,7 @@ import com.l2jhellas.util.Rnd;
  * 
  * @author FBIAgent
  */
-public class L2NpcBufferInstance extends L2NpcInstance
+public class L2NpcBufferInstance extends L2Npc
 {
 
 	private class BuffTask implements Runnable

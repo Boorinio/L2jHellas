@@ -20,8 +20,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.logs.GMAudit;
 
@@ -53,9 +53,9 @@ public class AdminLevel implements IAdminCommandHandler
 		{
 			try
 			{
-				if (targetChar instanceof L2PlayableInstance)
+				if (targetChar instanceof L2Playable)
 				{
-					((L2PlayableInstance) targetChar).getStat().addLevel(Byte.parseByte(val));
+					((L2Playable) targetChar).getStat().addLevel(Byte.parseByte(val));
 				}
 			}
 			catch (NumberFormatException e)
@@ -67,13 +67,13 @@ public class AdminLevel implements IAdminCommandHandler
 		{
 			try
 			{
-				if (targetChar == null || !(targetChar instanceof L2PlayableInstance))
+				if (targetChar == null || !(targetChar instanceof L2Playable))
 				{
 					activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 					return false;
 				}
 
-				final L2PlayableInstance targetPlayer = (L2PlayableInstance) targetChar;
+				final L2Playable targetPlayer = (L2Playable) targetChar;
 
 				final byte lvl = Byte.parseByte(val);
 				int max_level = ExperienceData.getInstance().getMaxLevel();

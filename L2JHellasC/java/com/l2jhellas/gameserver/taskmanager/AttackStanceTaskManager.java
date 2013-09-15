@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 
 /**

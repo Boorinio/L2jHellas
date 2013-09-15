@@ -25,7 +25,7 @@ import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
@@ -38,7 +38,7 @@ public class CastleWars
 {
 	private static List<L2PcInstance> _defenders = new FastList<L2PcInstance>();
 	private static List<L2PcInstance> _attackers = new FastList<L2PcInstance>();
-	private static FastSet<L2NpcInstance> _flags = new FastSet<L2NpcInstance>();
+	private static FastSet<L2Npc> _flags = new FastSet<L2Npc>();
 	public static boolean isFinished;
 	public static boolean CastleWarsRunning;
 	private static boolean alaksokolies = false;
@@ -112,7 +112,7 @@ public class CastleWars
 		DoorTable.getInstance().getDoor(22130008).openMe();
 		DoorTable.getInstance().getDoor(22130010).openMe();
 		DoorTable.getInstance().getDoor(22130006).openMe();
-		L2NpcInstance flags = null;
+		L2Npc flags = null;
 		for (i = 0; i < 3; i++)
 		{
 			flags = addSpawn(36006, flagslocx[i], flagslocy[i], flagslocz[i]);
@@ -138,7 +138,7 @@ public class CastleWars
 			attacker.teleToLocation(82724, 148307, -3469);
 			attacker.isinZodiac = false;
 		}
-		for (L2NpcInstance flags : _flags)
+		for (L2Npc flags : _flags)
 		{
 			flags.deleteMe();
 			
@@ -302,9 +302,9 @@ public class CastleWars
 		}
 	}
 	
-	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
+	private static L2Npc addSpawn(int npcId, int x, int y, int z)
 	{
-		L2NpcInstance result = null;
+		L2Npc result = null;
 		try
 		{
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);

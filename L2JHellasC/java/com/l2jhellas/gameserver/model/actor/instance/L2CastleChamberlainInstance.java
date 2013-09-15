@@ -53,7 +53,7 @@ import com.l2jhellas.util.Util;
  * - castle treasure control
  * - ...
  */
-public class L2CastleChamberlainInstance extends L2FolkInstance
+public class L2CastleChamberlainInstance extends L2NpcInstance
 {
 	protected static final int COND_ALL_FALSE = 0;
 	protected static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;

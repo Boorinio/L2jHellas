@@ -17,11 +17,11 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.TownManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 
@@ -48,7 +48,7 @@ public final class NpcInfo extends L2GameServerPacket
 	/**
 	 * @param _characters
 	 */
-	public NpcInfo(L2NpcInstance cha, L2Character attacker)
+	public NpcInfo(L2Npc cha, L2Character attacker)
 	{
 		if (cha.getMxcPoly() != null)
 		{
@@ -85,7 +85,7 @@ public final class NpcInfo extends L2GameServerPacket
 
 		if (Config.SHOW_NPC_CREST)
 		{
-			if (cha instanceof L2NpcInstance && cha.isInsideZone(L2Character.ZONE_PEACE) && cha.getCastle().getOwnerId() != 0)
+			if (cha instanceof L2Npc && cha.isInsideZone(L2Character.ZONE_PEACE) && cha.getCastle().getOwnerId() != 0)
 			{
 				int _x, _y, _z;
 				_x = cha.getX();

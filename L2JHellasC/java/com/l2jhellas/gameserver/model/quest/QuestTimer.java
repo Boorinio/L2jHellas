@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model.quest;
 import java.util.concurrent.ScheduledFuture;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class QuestTimer
@@ -45,12 +45,12 @@ public class QuestTimer
 	private boolean _isActive = true;
 	private final String _name;
 	private final Quest _quest;
-	private final L2NpcInstance _npc;
+	private final L2Npc _npc;
 	private final L2PcInstance _player;
 	private final boolean _isRepeating;
 	private ScheduledFuture<?> _schedular;
 
-	public QuestTimer(Quest quest, String name, long time, L2NpcInstance npc, L2PcInstance player, boolean repeating)
+	public QuestTimer(Quest quest, String name, long time, L2Npc npc, L2PcInstance player, boolean repeating)
 	{
 		_name = name;
 		_quest = quest;
@@ -63,7 +63,7 @@ public class QuestTimer
 			_schedular = ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleTimerTask(), time); // Prepare auto end task
 	}
 
-	public QuestTimer(Quest quest, String name, long time, L2NpcInstance npc, L2PcInstance player)
+	public QuestTimer(Quest quest, String name, long time, L2Npc npc, L2PcInstance player)
 	{
 		this(quest, name, time, npc, player, false);
 	}
@@ -95,7 +95,7 @@ public class QuestTimer
 	 * @param player
 	 *        : Player instance attached to the desired timer (null if no player attached)
 	 */
-	public boolean isMatch(Quest quest, String name, L2NpcInstance npc, L2PcInstance player)
+	public boolean isMatch(Quest quest, String name, L2Npc npc, L2PcInstance player)
 	{
 		if ((quest == null) || (name == null))
 			return false;
@@ -124,7 +124,7 @@ public class QuestTimer
 		return _name;
 	}
 
-	public final L2NpcInstance getNpc()
+	public final L2Npc getNpc()
 	{
 		return _npc;
 	}

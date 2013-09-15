@@ -17,8 +17,8 @@ package com.l2jhellas.gameserver.skills.effects;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2FolkInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeFlagInstance;
@@ -56,7 +56,7 @@ public final class EffectFear extends L2Effect
 			// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread, Curse: Fear, Fear and Horror are the exceptions.
 			if (getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376 && getSkill().getId() != 1169 && getSkill().getId() != 65 && getSkill().getId() != 1092)
 				return false;
-			if (getEffected() instanceof L2FolkInstance)
+			if (getEffected() instanceof L2NpcInstance)
 				return false;
 			if (getEffected() instanceof L2SiegeGuardInstance)
 				return false;
@@ -82,12 +82,12 @@ public final class EffectFear extends L2Effect
 			posX += signx * FEAR_RANGE;
 			posY += signy * FEAR_RANGE;
 
-			if (!getEffected().isRaid() && !(getEffected() instanceof L2DoorInstance) && !(getEffected() instanceof L2NpcInstance && ((L2NpcInstance) getEffected()).getNpcId() == 35062))
+			if (!getEffected().isRaid() && !(getEffected() instanceof L2DoorInstance) && !(getEffected() instanceof L2Npc && ((L2Npc) getEffected()).getNpcId() == 35062))
 			{
 				int chance = Rnd.get(100);
 				if (getSkill().getLethalChance2() > 0 && chance < Formulas.getInstance().calcLethal(getEffector(), getEffected(), getSkill().getLethalChance2()))
 				{
-					if (getEffected() instanceof L2NpcInstance)
+					if (getEffected() instanceof L2Npc)
 					{
 						getEffected().reduceCurrentHp(getEffected().getCurrentHp() - 1, getEffector());
 					}

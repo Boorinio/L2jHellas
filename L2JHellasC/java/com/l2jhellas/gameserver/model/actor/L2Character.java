@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model;
+package com.l2jhellas.gameserver.model.actor;
 
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
@@ -45,16 +45,29 @@ import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.TownManager;
+import com.l2jhellas.gameserver.model.ChanceSkillList;
+import com.l2jhellas.gameserver.model.CharEffectList;
+import com.l2jhellas.gameserver.model.ForceBuff;
+import com.l2jhellas.gameserver.model.Inventory;
+import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.L2Effect;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2SkillTargetType;
+import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.L2WorldRegion;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.SkillDat;
+import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.CharKnownList;
 import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
@@ -226,7 +239,7 @@ public abstract class L2Character extends L2Object
 		// Set its template to the new L2Character
 		_template = template;
 		
-		if (template != null && this instanceof L2NpcInstance)
+		if (template != null && this instanceof L2Npc)
 		{
 			// Copy the Standard Calculators of the L2NPCInstance in _calculators
 			_calculators = NPC_STD_CALCULATOR;
@@ -604,7 +617,7 @@ public abstract class L2Character extends L2Object
 		if (Config.DEBUG)
 			_log.fine(getName() + " doAttack: target=" + target);
 		
-		if (isAlikeDead() || target == null || (this instanceof L2NpcInstance && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || !getKnownList().knowsObject(target) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == Duel.DUELSTATE_DEAD))
+		if (isAlikeDead() || target == null || (this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || !getKnownList().knowsObject(target) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == Duel.DUELSTATE_DEAD))
 		{
 			// If L2PcInstance is dead or the target is dead, the action is stopped
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -761,7 +774,7 @@ public abstract class L2Character extends L2Object
 					return;
 				}
 			}
-			else if (this instanceof L2NpcInstance)
+			else if (this instanceof L2Npc)
 			{
 				if (_disableBowAttackEndTime > GameTimeController.getGameTicks())
 					return;
@@ -1649,17 +1662,17 @@ public abstract class L2Character extends L2Object
 		
 		// Stop all active skills effects in progress on the L2Character,
 		// if the Character isn't a Noblesse Blessed L2PlayableInstance
-		if (this instanceof L2PlayableInstance && ((L2PlayableInstance) this).isNoblesseBlessed())
+		if (this instanceof L2Playable && ((L2Playable) this).isNoblesseBlessed())
 		{
-			((L2PlayableInstance) this).stopNoblesseBlessing(null);
-			if (((L2PlayableInstance) this).getCharmOfLuck()) // remove Lucky Charm if player have Nobless blessing buff
-				((L2PlayableInstance) this).stopCharmOfLuck(null);
+			((L2Playable) this).stopNoblesseBlessing(null);
+			if (((L2Playable) this).getCharmOfLuck()) // remove Lucky Charm if player have Nobless blessing buff
+				((L2Playable) this).stopCharmOfLuck(null);
 		}
 		// Same thing if the Character is affected by Soul of The Phoenix or Salvation
-		else if (this instanceof L2PlayableInstance && ((L2PlayableInstance) this).isPhoenixBlessed())
+		else if (this instanceof L2Playable && ((L2Playable) this).isPhoenixBlessed())
 		{
-			if (((L2PlayableInstance) this).getCharmOfLuck()) // remove Lucky Charm if player has SoulOfThePhoenix/Salvation buff
-				((L2PlayableInstance) this).stopCharmOfLuck(null);
+			if (((L2Playable) this).getCharmOfLuck()) // remove Lucky Charm if player has SoulOfThePhoenix/Salvation buff
+				((L2Playable) this).stopCharmOfLuck(null);
 		}
 		else if (Config.REMOVE_BUFFS_ON_DIE)
 			stopAllEffects();
@@ -1685,7 +1698,7 @@ public abstract class L2Character extends L2Object
 		getAttackByList().clear();
 		
 		// If character is PhoenixBlessed a resurrection popup will show up
-		if (this instanceof L2PlayableInstance && ((L2PlayableInstance) this).isPhoenixBlessed())
+		if (this instanceof L2Playable && ((L2Playable) this).isPhoenixBlessed())
 		{
 			((L2PcInstance) this).reviveRequest(((L2PcInstance) this), null, false);
 		}
@@ -1716,9 +1729,9 @@ public abstract class L2Character extends L2Object
 				}
 			}
 			
-			if (this instanceof L2PlayableInstance && ((L2PlayableInstance) this).isPhoenixBlessed())
+			if (this instanceof L2Playable && ((L2Playable) this).isPhoenixBlessed())
 			{
-				((L2PlayableInstance) this).stopPhoenixBlessing(null);
+				((L2Playable) this).stopPhoenixBlessing(null);
 			}
 			_status.setCurrentCp(getMaxCp() * Config.RESPAWN_RESTORE_CP);
 			_status.setCurrentHp(getMaxHp() * Config.RESPAWN_RESTORE_HP);
@@ -3476,7 +3489,7 @@ public abstract class L2Character extends L2Object
 		
 		// If possible, free the memory and just create a link on
 		// NPC_STD_CALCULATOR
-		if (this instanceof L2NpcInstance)
+		if (this instanceof L2Npc)
 		{
 			int i = 0;
 			for (; i < Stats.NUM_STATS; i++)
@@ -3577,7 +3590,7 @@ public abstract class L2Character extends L2Object
 		
 		// If possible, free the memory and just create a link on
 		// NPC_STD_CALCULATOR
-		if (this instanceof L2NpcInstance)
+		if (this instanceof L2Npc)
 		{
 			int i = 0;
 			for (; i < Stats.NUM_STATS; i++)
@@ -3673,13 +3686,13 @@ public abstract class L2Character extends L2Object
 					broadcastPacket(su);
 			}
 		}
-		else if (this instanceof L2NpcInstance)
+		else if (this instanceof L2Npc)
 		{
 			if (broadcastFull)
 			{
 				for (L2PcInstance player : getKnownList().getKnownPlayers().values())
 					if (player != null)
-						player.sendPacket(new NpcInfo((L2NpcInstance) this, player));
+						player.sendPacket(new NpcInfo((L2Npc) this, player));
 			}
 			else if (su != null)
 				broadcastPacket(su);
@@ -4388,7 +4401,7 @@ public abstract class L2Character extends L2Object
 						// the mob will go
 						// after target anyway, is dz is small enough. Summons
 						// will follow their masters no matter what.
-						if (this instanceof L2PcInstance || (!(this instanceof L2PlayableInstance) && Math.abs(z - curZ) > 140) || (this instanceof L2Summon && !((L2Summon) this).getFollowStatus()))
+						if (this instanceof L2PcInstance || (!(this instanceof L2Playable) && Math.abs(z - curZ) > 140) || (this instanceof L2Summon && !((L2Summon) this).getFollowStatus()))
 						{
 							getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 							return;
@@ -4440,7 +4453,7 @@ public abstract class L2Character extends L2Object
 				}
 			}
 			// If no distance to go through, the movement is canceled
-			if (distance < 1 && (Config.GEODATA == 2 || this instanceof L2PlayableInstance || this instanceof L2RiftInvaderInstance))
+			if (distance < 1 && (Config.GEODATA == 2 || this instanceof L2Playable || this instanceof L2RiftInvaderInstance))
 			{
 				sin = 0;
 				cos = 1;
@@ -5016,13 +5029,13 @@ public abstract class L2Character extends L2Object
 		// EVT_CANCEL
 		// and send a Server->Client packet ActionFailed (if attacker is a
 		// L2PcInstance)
-		if (target == null || isAlikeDead() || (this instanceof L2NpcInstance && ((L2NpcInstance) this).isEventMob))
+		if (target == null || isAlikeDead() || (this instanceof L2Npc && ((L2Npc) this).isEventMob))
 		{
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
 			return;
 		}
 		
-		if ((this instanceof L2NpcInstance && target.isAlikeDead()) || target.isDead() || (!getKnownList().knowsObject(target) && !(this instanceof L2DoorInstance)))
+		if ((this instanceof L2Npc && target.isAlikeDead()) || target.isDead() || (!getKnownList().knowsObject(target) && !(this instanceof L2DoorInstance)))
 		{
 			// getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
@@ -5967,7 +5980,7 @@ public abstract class L2Character extends L2Object
 			// Go through targets table
 			for (L2Object tgt : targets)
 			{
-				if (tgt instanceof L2PlayableInstance)
+				if (tgt instanceof L2Playable)
 				{
 					L2Character target = (L2Character) tgt;
 					
@@ -6306,9 +6319,9 @@ public abstract class L2Character extends L2Object
 						L2PcInstance caster = (this instanceof L2PcInstance) ? (L2PcInstance) this : ((L2Summon) this).getOwner();
 						for (L2Object target : targets)
 						{
-							if (target instanceof L2NpcInstance)
+							if (target instanceof L2Npc)
 							{
-								L2NpcInstance npcMob = (L2NpcInstance) target;
+								L2Npc npcMob = (L2Npc) target;
 								
 								if ((npcMob.isInsideRadius(caster, 1000, true, true)) && (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null))
 									for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))
@@ -6350,9 +6363,9 @@ public abstract class L2Character extends L2Object
 				L2PcInstance caster = (this instanceof L2PcInstance) ? (L2PcInstance) this : ((L2Summon) this).getOwner();
 				for (L2Object target : targets)
 				{
-					if (target instanceof L2NpcInstance)
+					if (target instanceof L2Npc)
 					{
-						L2NpcInstance npcMob = (L2NpcInstance) target;
+						L2Npc npcMob = (L2Npc) target;
 						
 						if ((npcMob.isInsideRadius(caster, 1000, true, true)) && (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null))
 							for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))
@@ -6361,9 +6374,9 @@ public abstract class L2Character extends L2Object
 				}
 				if (skill.getAggroPoints() > 0)
 					for (L2Object spMob : caster.getKnownList().getKnownObjects().values())
-						if (spMob instanceof L2NpcInstance)
+						if (spMob instanceof L2Npc)
 						{
-							L2NpcInstance npcMob = (L2NpcInstance) spMob;
+							L2Npc npcMob = (L2Npc) spMob;
 							if (npcMob.isInsideRadius(caster, 1000, true, true) && npcMob.hasAI() && npcMob.getAI().getIntention() == AI_INTENTION_ATTACK)
 							{
 								L2Object npcTarget = npcMob.getTarget();

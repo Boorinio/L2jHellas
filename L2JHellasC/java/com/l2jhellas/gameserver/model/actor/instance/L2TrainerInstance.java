@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public final class L2TrainerInstance extends L2FolkInstance
+public final class L2TrainerInstance extends L2NpcInstance
 {
 	/**
 	 * @param template

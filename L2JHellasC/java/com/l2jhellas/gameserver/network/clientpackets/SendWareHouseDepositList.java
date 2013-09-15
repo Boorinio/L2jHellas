@@ -20,7 +20,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ClanWarehouse;
 import com.l2jhellas.gameserver.model.ItemContainer;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2FolkInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -84,8 +84,8 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 		ItemContainer warehouse = player.getActiveWarehouse();
 		if (warehouse == null)
 			return;
-		L2FolkInstance manager = player.getLastFolkNPC();
-		if (((manager == null) || !player.isInsideRadius(manager, L2NpcInstance.INTERACTION_DISTANCE, false, false)) && !player.isGM())
+		L2NpcInstance manager = player.getLastFolkNPC();
+		if (((manager == null) || !player.isInsideRadius(manager, L2Npc.INTERACTION_DISTANCE, false, false)) && !player.isGM())
 			return;
 
 		if ((warehouse instanceof ClanWarehouse) && !player.getAccessLevel().allowTransaction())

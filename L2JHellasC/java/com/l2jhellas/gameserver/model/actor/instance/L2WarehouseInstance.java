@@ -26,7 +26,7 @@ import com.l2jhellas.gameserver.network.serverpackets.WareHouseDepositList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public final class L2WarehouseInstance extends L2FolkInstance
+public final class L2WarehouseInstance extends L2NpcInstance
 {
 	/**
 	 * @param template

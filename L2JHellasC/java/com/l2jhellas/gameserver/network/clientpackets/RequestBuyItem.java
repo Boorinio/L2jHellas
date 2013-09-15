@@ -23,12 +23,12 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2TradeList;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2CastleChamberlainInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClanHallManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FishermanInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MercManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -95,7 +95,7 @@ public final class RequestBuyItem extends L2GameClientPacket
 				|| target instanceof L2ClanHallManagerInstance
 				|| target instanceof L2CastleChamberlainInstance)
 				// Target not a merchant, fisherman or mercmanager
-				|| !player.isInsideRadius(target, L2NpcInstance.INTERACTION_DISTANCE, false, false)))
+				|| !player.isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false)))
 				// Distance is too far
 				/** @formatter:on */
 			return;
@@ -121,10 +121,10 @@ public final class RequestBuyItem extends L2GameClientPacket
 		else
 			ok = false;
 
-		L2NpcInstance merchant = null;
+		L2Npc merchant = null;
 
 		if (ok)
-			merchant = (L2NpcInstance) target;
+			merchant = (L2Npc) target;
 		else if (!ok && !player.isGM())
 		{
 			player.sendMessage("Invalid Target: Seller must be targetted.");

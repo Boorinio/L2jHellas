@@ -14,11 +14,11 @@
  */
 package com.l2jhellas.gameserver.skills.l2skills;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.effects.EffectSeed;
 import com.l2jhellas.gameserver.templates.StatsSet;
 

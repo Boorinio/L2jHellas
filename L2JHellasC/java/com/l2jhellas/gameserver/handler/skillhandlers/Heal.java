@@ -14,14 +14,14 @@ package com.l2jhellas.gameserver.handler.skillhandlers;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -71,13 +71,13 @@ public class Heal implements ISkillHandler
 				continue;
 			
 			// We should not heal siege flags
-			if (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 35062)
+			if (target instanceof L2Npc && ((L2Npc) target).getNpcId() == 35062)
 			{
 				activeChar.getActingPlayer().sendMessage("You cannot heal siege flags!");
 				continue;
 			}
 			// Zodiac Flag
-			if (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() == 36006)
+			if (target instanceof L2Npc && ((L2Npc) target).getNpcId() == 36006)
 			{
 				activeChar.getActingPlayer().sendMessage("You cannot heal event flags!");
 				continue;

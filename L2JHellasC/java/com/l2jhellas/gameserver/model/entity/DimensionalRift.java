@@ -22,7 +22,7 @@ import javolution.util.FastList;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.model.L2Party;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Rnd;
 
@@ -170,7 +170,7 @@ public class DimensionalRift
 		}
 	}
 
-	public void manualTeleport(L2PcInstance player, L2NpcInstance npc)
+	public void manualTeleport(L2PcInstance player, L2Npc npc)
 	{
 		if (!player.isInParty() || !player.getParty().isInDimensionalRift())
 			return;
@@ -200,7 +200,7 @@ public class DimensionalRift
 		createTeleporterTimer(true);
 	}
 
-	public void manualExitRift(L2PcInstance player, L2NpcInstance npc)
+	public void manualExitRift(L2PcInstance player, L2Npc npc)
 	{
 		if (!player.isInParty() || !player.getParty().isInDimensionalRift())
 			return;

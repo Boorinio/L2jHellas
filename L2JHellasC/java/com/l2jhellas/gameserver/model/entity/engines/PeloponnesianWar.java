@@ -24,7 +24,7 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -39,7 +39,7 @@ public class PeloponnesianWar
 	private static List<L2PcInstance> _participants = new FastList<L2PcInstance>();
 	private static List<L2PcInstance> _athenians = new FastList<L2PcInstance>();
 	private static List<L2PcInstance> _spartans = new FastList<L2PcInstance>();
-	private static FastSet<L2NpcInstance> _protectors = new FastSet<L2NpcInstance>();
+	private static FastSet<L2Npc> _protectors = new FastSet<L2Npc>();
 	private static int athenianx = 72923;
 	private static int atheniany = 142764;
 	private static int athenianz = -3773;
@@ -148,7 +148,7 @@ public class PeloponnesianWar
 			}
 			participant.isinZodiac = false;
 			}
-		for (L2NpcInstance protectors : _protectors)
+		for (L2Npc protectors : _protectors)
 		{
 			protectors.deleteMe();
 		}
@@ -262,7 +262,7 @@ public class PeloponnesianWar
 	
 	public static void spawnProtectors()
 	{
-		L2NpcInstance protector = null;
+		L2Npc protector = null;
 		for (i = 0; i < 8; i++)
 		{
 			protector = addSpawn(protectors, protectorsx[i], protectorsy[i], protectorsz[i]);
@@ -293,9 +293,9 @@ public class PeloponnesianWar
 		}
 	}
 	
-	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
+	private static L2Npc addSpawn(int npcId, int x, int y, int z)
 	{
-		L2NpcInstance result = null;
+		L2Npc result = null;
 		try
 		{
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);

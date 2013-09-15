@@ -10,12 +10,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model.actor.instance;
+package com.l2jhellas.gameserver.model.actor;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.PlayableKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.PlayableStat;
 import com.l2jhellas.gameserver.model.actor.status.PlayableStatus;
@@ -28,7 +27,7 @@ import com.l2jhellas.gameserver.templates.L2CharTemplate;
  * <BR>
  * <li>L2PcInstance</li> <li>L2Summon</li>
  */
-public abstract class L2PlayableInstance extends L2Character
+public abstract class L2Playable extends L2Character
 {
 
 	private boolean _isNoblesseBlessed = false; // for Noblesse Blessing skill, restores buffs after death
@@ -51,7 +50,7 @@ public abstract class L2PlayableInstance extends L2Character
 	 * @param template
 	 *        The L2CharTemplate to apply to the L2PlayableInstance
 	 */
-	public L2PlayableInstance(int objectId, L2CharTemplate template)
+	public L2Playable(int objectId, L2CharTemplate template)
 	{
 		super(objectId, template);
 		getKnownList();	// init knownlist
@@ -109,7 +108,7 @@ public abstract class L2PlayableInstance extends L2Character
 			return false;
 		if (target == this)								// Target is self
 			return false;
-		if (!(target instanceof L2PlayableInstance))	// Target is not a
+		if (!(target instanceof L2Playable))	// Target is not a
 														// L2PlayableInstance
 			return false;
 

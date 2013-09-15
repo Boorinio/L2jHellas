@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
-import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;

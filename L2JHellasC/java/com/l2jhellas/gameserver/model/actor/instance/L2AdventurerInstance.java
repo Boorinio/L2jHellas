@@ -23,7 +23,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 /**
  * @author LBaldi
  */
-public class L2AdventurerInstance extends L2FolkInstance
+public class L2AdventurerInstance extends L2NpcInstance
 {
 	public L2AdventurerInstance(int objectId, L2NpcTemplate template)
 	{

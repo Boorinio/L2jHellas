@@ -18,6 +18,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList;
 import com.l2jhellas.gameserver.model.actor.poly.ObjectPoly;

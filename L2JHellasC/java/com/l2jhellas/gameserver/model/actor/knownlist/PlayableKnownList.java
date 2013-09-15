@@ -14,18 +14,18 @@
  */
 package com.l2jhellas.gameserver.model.actor.knownlist;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 
 public class PlayableKnownList extends CharKnownList
 {
-	public PlayableKnownList(L2PlayableInstance activeChar)
+	public PlayableKnownList(L2Playable activeChar)
 	{
 		super(activeChar);
 	}
 
 	@Override
-	public L2PlayableInstance getActiveChar()
+	public L2Playable getActiveChar()
 	{
-		return (L2PlayableInstance) super.getActiveChar();
+		return (L2Playable) super.getActiveChar();
 	}
 }

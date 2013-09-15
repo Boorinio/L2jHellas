@@ -36,7 +36,7 @@ import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-public class L2AccountManagerInstance extends L2FolkInstance
+public class L2AccountManagerInstance extends L2NpcInstance
 {
 	public L2AccountManagerInstance(int objectId, L2NpcTemplate template)
 	{

@@ -30,10 +30,10 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.Siege;

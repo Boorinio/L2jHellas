@@ -35,7 +35,7 @@ import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
@@ -562,12 +562,12 @@ public class AdminEventEngine implements IAdminCommandHandler
 
 	void destroyEventNpcs()
 	{
-		L2NpcInstance npc;
+		L2Npc npc;
 		while (L2Event.npcs.size() > 0)
 		{
 			try
 			{
-				npc = (L2NpcInstance) L2World.findObject(Integer.parseInt(L2Event.npcs.getFirst()));
+				npc = (L2Npc) L2World.findObject(Integer.parseInt(L2Event.npcs.getFirst()));
 				L2Spawn spawn = npc.getSpawn();
 
 				if (spawn != null)

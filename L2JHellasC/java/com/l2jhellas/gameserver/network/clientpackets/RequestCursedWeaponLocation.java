@@ -20,7 +20,7 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.CursedWeapon;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.ExCursedWeaponLocation;
 import com.l2jhellas.gameserver.network.serverpackets.ExCursedWeaponLocation.CursedWeaponInfo;
 import com.l2jhellas.util.Point3D;

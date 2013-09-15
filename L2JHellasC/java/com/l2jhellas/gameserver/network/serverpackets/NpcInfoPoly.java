@@ -15,9 +15,9 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class NpcInfoPoly extends L2GameServerPacket

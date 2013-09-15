@@ -27,7 +27,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 /**
  * @author NightMarez
  */
-public final class L2CastleTeleporterInstance extends L2FolkInstance
+public final class L2CastleTeleporterInstance extends L2NpcInstance
 {
 	private static final int COND_ALL_FALSE = 0;
 	private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;

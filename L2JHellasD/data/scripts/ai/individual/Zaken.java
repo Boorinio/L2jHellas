@@ -24,13 +24,13 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
@@ -180,7 +180,7 @@ public class Zaken extends L2AttackableAIScript
     }
 
 	@Override
-	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
+	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
 	{
 		int status = GrandBossManager.getInstance().getBossStatus(ZAKEN);
 		if (status == DEAD && !event.equalsIgnoreCase("zaken_unlock"))
@@ -518,7 +518,7 @@ public class Zaken extends L2AttackableAIScript
 	}
 
     @Override
-	public String onFactionCall (L2NpcInstance npc, L2NpcInstance caller, L2PcInstance attacker, boolean isPet)
+	public String onFactionCall (L2Npc npc, L2Npc caller, L2PcInstance attacker, boolean isPet)
     {
         if (caller == null || npc == null)
         	return super.onFactionCall(npc, caller, attacker, isPet);
@@ -541,7 +541,7 @@ public class Zaken extends L2AttackableAIScript
     }
 
     @Override
-	public String onSpellFinished(L2NpcInstance npc, L2PcInstance player, L2Skill skill)
+	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
     {
     	if (npc.getNpcId() == ZAKEN)
     	{
@@ -662,7 +662,7 @@ public class Zaken extends L2AttackableAIScript
     }
 
     @Override
-	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
     {
         int npcId = npc.getNpcId();
         if (npcId == ZAKEN)
@@ -753,7 +753,7 @@ public class Zaken extends L2AttackableAIScript
     }
 
     @Override
-	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
     {
         int npcId = npc.getNpcId();
         if (npcId == ZAKEN)
@@ -781,7 +781,7 @@ public class Zaken extends L2AttackableAIScript
     }
 
     @Override
-	public String onSkillSee (L2NpcInstance npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee (L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
     {
         int npcId = npc.getNpcId();
         if (npcId == ZAKEN)
@@ -840,7 +840,7 @@ public class Zaken extends L2AttackableAIScript
     }
 
     @Override
-	public String onAggroRangeEnter (L2NpcInstance npc, L2PcInstance player, boolean isPet)
+	public String onAggroRangeEnter (L2Npc npc, L2PcInstance player, boolean isPet)
     {
         int npcId = npc.getNpcId();
         if (npcId == ZAKEN)

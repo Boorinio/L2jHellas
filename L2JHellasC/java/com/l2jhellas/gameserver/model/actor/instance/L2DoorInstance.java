@@ -29,10 +29,11 @@ import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2DoorAI;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.knownlist.DoorKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.DoorStat;
 import com.l2jhellas.gameserver.model.actor.status.DoorStatus;
@@ -444,7 +445,7 @@ public class L2DoorInstance extends L2Character
 			}
 			else if (player.getClan() != null && getClanHall() != null && player.getClanId() == getClanHall().getOwnerId())
 			{
-				if (!isInsideRadius(player, L2NpcInstance.INTERACTION_DISTANCE, false, false))
+				if (!isInsideRadius(player, L2Npc.INTERACTION_DISTANCE, false, false))
 				{
 					player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 				}

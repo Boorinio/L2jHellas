@@ -40,7 +40,7 @@ import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2ClanHallManagerInstance extends L2FolkInstance
+public class L2ClanHallManagerInstance extends L2NpcInstance
 {
 	protected static final int COND_OWNER_FALSE = 0;
 	protected static final int COND_ALL_FALSE = 1;

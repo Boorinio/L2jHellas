@@ -20,8 +20,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
@@ -80,23 +80,23 @@ public class Sailren extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
+	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
 	{
 		long temp = 0;
 		if (event.equalsIgnoreCase("waiting"))
 		{
 			GrandBossManager.getInstance().setBossStatus(SAILREN,FIGHTING);
-			L2NpcInstance mob1 = addSpawn(VELOCIRAPTOR,27852,-5536,-1983,44732,false,0);
+			L2Npc mob1 = addSpawn(VELOCIRAPTOR,27852,-5536,-1983,44732,false,0);
 			this.startQuestTimer("start",0, mob1, null);
 		}
 		else if (event.equalsIgnoreCase("waiting2"))
 		{
-			L2NpcInstance mob2 = addSpawn(PTEROSAUR,27852,-5536,-1983,44732,false,0);
+			L2Npc mob2 = addSpawn(PTEROSAUR,27852,-5536,-1983,44732,false,0);
 			this.startQuestTimer("start",0, mob2, null);
 		}
 		else if (event.equalsIgnoreCase("waiting3"))
 		{
-			L2NpcInstance mob3 = addSpawn(TYRANNOSAURUS,27852,-5536,-1983,44732,false,0);
+			L2Npc mob3 = addSpawn(TYRANNOSAURUS,27852,-5536,-1983,44732,false,0);
 			this.startQuestTimer("start",0, mob3, null);
 		}
 		else if (event.equalsIgnoreCase("waiting_boss"))
@@ -211,7 +211,7 @@ public class Sailren extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onTalk(L2NpcInstance npc,L2PcInstance player)
+	public String onTalk(L2Npc npc,L2PcInstance player)
 	{
 	String htmltext = "";
 	if (GrandBossManager.getInstance().getBossStatus(SAILREN) == DORMANT || GrandBossManager.getInstance().getBossStatus(SAILREN) == WAITING)
@@ -242,7 +242,7 @@ public class Sailren extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		_LastAction = System.currentTimeMillis();
 		if (npc.isInvul() && npc.getNpcId() == SAILREN)
@@ -262,7 +262,7 @@ public class Sailren extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING && npc.getNpcId() == SAILREN)
 		{

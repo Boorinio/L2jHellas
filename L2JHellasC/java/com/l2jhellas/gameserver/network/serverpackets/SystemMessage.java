@@ -17,12 +17,12 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.Arrays;
 import java.util.logging.Level;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2Summon;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.L2Item;
@@ -164,11 +164,11 @@ public final class SystemMessage extends L2GameServerPacket
 	
 	public final SystemMessage addCharName(final L2Character cha)
 	{
-		if (cha instanceof L2NpcInstance)
+		if (cha instanceof L2Npc)
 		{
-			if (((L2NpcInstance) cha).getTemplate().isServerSideName())
-				return addString(((L2NpcInstance) cha).getTemplate().getName());
-			return addNpcName((L2NpcInstance) cha);
+			if (((L2Npc) cha).getTemplate().isServerSideName())
+				return addString(((L2Npc) cha).getTemplate().getName());
+			return addNpcName((L2Npc) cha);
 		}
 		else if (cha instanceof L2PcInstance)
 		{
@@ -189,7 +189,7 @@ public final class SystemMessage extends L2GameServerPacket
 		return this;
 	}
 	
-	public final SystemMessage addNpcName(final L2NpcInstance npc)
+	public final SystemMessage addNpcName(final L2Npc npc)
 	{
 		return addNpcName(npc.getTemplate());
 	}

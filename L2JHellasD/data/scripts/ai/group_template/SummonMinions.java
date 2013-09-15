@@ -18,8 +18,8 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 import javolution.util.FastSet;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
@@ -62,7 +62,7 @@ public class SummonMinions extends L2AttackableAIScript
 		this.registerMobs(temp);
 	}
 	
-	public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		int npcId = npc.getNpcId();
 		int npcObjId = npc.getObjectId();
@@ -186,7 +186,7 @@ public class SummonMinions extends L2AttackableAIScript
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
 	
-	public String onKill(L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		int npcId = npc.getNpcId();
 		int npcObjId = npc.getObjectId();

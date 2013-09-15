@@ -21,7 +21,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2SiegeNpcInstance extends L2FolkInstance
+public class L2SiegeNpcInstance extends L2NpcInstance
 {
 	public L2SiegeNpcInstance(int objectID, L2NpcTemplate template)
 	{

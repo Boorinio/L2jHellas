@@ -16,8 +16,9 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.List;
 
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Multisell;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.olympiad.CompetitionType;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
@@ -33,7 +34,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.StringUtil;
 
-public class L2OlympiadManagerInstance extends L2NpcInstance
+public class L2OlympiadManagerInstance extends L2Npc
 {
 	private static final int GATE_PASS = 6651;
 	

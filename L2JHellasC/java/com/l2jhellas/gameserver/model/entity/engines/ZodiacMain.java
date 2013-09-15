@@ -22,9 +22,9 @@ import javolution.text.TextBuilder;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
@@ -224,7 +224,7 @@ public class ZodiacMain
 		
 	}
 	
-	public static void OnKillNpc(L2NpcInstance npc, L2Character killer)
+	public static void OnKillNpc(L2Npc npc, L2Character killer)
 	{
 		if (npc.getNpcId() == 18286 && TreasureChest.TreasureRunning)
 		{

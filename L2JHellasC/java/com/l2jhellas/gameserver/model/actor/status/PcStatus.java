@@ -15,11 +15,11 @@
 package com.l2jhellas.gameserver.model.actor.status;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.model.L2Summon;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.entity.Duel;
@@ -96,7 +96,7 @@ public class PcStatus extends PlayableStatus
 				}
 			}
 
-			if (attacker instanceof L2PlayableInstance || attacker instanceof L2SiegeGuardInstance)
+			if (attacker instanceof L2Playable || attacker instanceof L2SiegeGuardInstance)
 			{
 				if (getCurrentCp() >= value)
 				{
@@ -127,9 +127,9 @@ public class PcStatus extends PlayableStatus
 			if (Config.DEBUG)
 				_log.fine("Attacker:" + attacker.getName());
 
-			if (attacker instanceof L2NpcInstance)
+			if (attacker instanceof L2Npc)
 			{
-				int mobId = ((L2NpcInstance) attacker).getTemplate().idTemplate;
+				int mobId = ((L2Npc) attacker).getTemplate().idTemplate;
 
 				if (Config.DEBUG)
 					_log.fine("mob id:" + mobId);

@@ -14,7 +14,7 @@
  */
 package ai.group_template;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
@@ -33,7 +33,7 @@ public class AncientEGG extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onAttack(L2NpcInstance npc, L2PcInstance player, int damage, boolean isPet)
+	public String onAttack(L2Npc npc, L2PcInstance player, int damage, boolean isPet)
 	{
 		player.setTarget(player);
 		player.doCast(SkillTable.getInstance().getInfo(5088,1));

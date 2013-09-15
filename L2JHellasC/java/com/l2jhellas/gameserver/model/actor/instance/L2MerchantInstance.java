@@ -20,7 +20,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TradeController;
-import com.l2jhellas.gameserver.model.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.BuyList;
@@ -32,7 +32,7 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.WearList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2MerchantInstance extends L2FolkInstance
+public class L2MerchantInstance extends L2NpcInstance
 {
 	/**
 	 * @param template

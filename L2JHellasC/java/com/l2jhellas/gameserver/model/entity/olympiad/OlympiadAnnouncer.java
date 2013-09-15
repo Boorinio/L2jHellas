@@ -19,7 +19,7 @@ import java.util.List;
 
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Spawn;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 
@@ -67,7 +67,7 @@ public final class OlympiadAnnouncer implements Runnable
 						continue;
 				}
 				
-				L2NpcInstance manager;
+				L2Npc manager;
 				for (L2Spawn spawn : _managers)
 				{
 					manager = spawn.getLastSpawn();

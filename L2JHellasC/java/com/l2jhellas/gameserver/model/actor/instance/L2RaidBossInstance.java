@@ -16,8 +16,9 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -71,7 +72,7 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 	{
 		if (!super.doDie(killer))
 			return false;
-		if (killer instanceof L2PlayableInstance)
+		if (killer instanceof L2Playable)
 		{
 			if (killer.isInParty())
 			{

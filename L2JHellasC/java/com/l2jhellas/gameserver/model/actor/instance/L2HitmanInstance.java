@@ -19,12 +19,13 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.entity.PlayerToAssasinate;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2HitmanInstance extends L2NpcInstance
+public class L2HitmanInstance extends L2Npc
 {
 	public L2HitmanInstance(int objectID, L2NpcTemplate template)
 	{

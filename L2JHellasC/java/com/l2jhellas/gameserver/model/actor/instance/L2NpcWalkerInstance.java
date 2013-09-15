@@ -19,7 +19,8 @@ import java.util.Map;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2NpcWalkerAI;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -29,7 +30,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * 
  * @author Rayan
  */
-public class L2NpcWalkerInstance extends L2NpcInstance
+public class L2NpcWalkerInstance extends L2Npc
 {
 	/**
 	 * Constructor of L2NpcWalkerInstance (use L2Character and L2NpcInstance constructor).<BR>

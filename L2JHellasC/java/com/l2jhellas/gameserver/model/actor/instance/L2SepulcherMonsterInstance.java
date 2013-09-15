@@ -18,8 +18,8 @@ import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.FourSepulchersManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.skills.SkillTable;

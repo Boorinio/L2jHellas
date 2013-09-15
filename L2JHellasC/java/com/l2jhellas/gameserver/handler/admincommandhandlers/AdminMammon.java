@@ -23,7 +23,7 @@ import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler.AutoSpawnInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
@@ -72,7 +72,7 @@ public class AdminMammon implements IAdminCommandHandler
 			}
 			if (blackSpawnInst != null)
 			{
-				L2NpcInstance[] blackInst = blackSpawnInst.getNPCInstanceList();
+				L2Npc[] blackInst = blackSpawnInst.getNPCInstanceList();
 				if (blackInst.length > 0)
 				{
 					int x1 = blackInst[0].getX(), y1 = blackInst[0].getY(), z1 = blackInst[0].getZ();
@@ -85,7 +85,7 @@ public class AdminMammon implements IAdminCommandHandler
 				activeChar.sendMessage("Blacksmith of Mammon isn't registered for spawn.");
 			if (merchSpawnInst != null)
 			{
-				L2NpcInstance[] merchInst = merchSpawnInst.getNPCInstanceList();
+				L2Npc[] merchInst = merchSpawnInst.getNPCInstanceList();
 				if (merchInst.length > 0)
 				{
 					int x2 = merchInst[0].getX(), y2 = merchInst[0].getY(), z2 = merchInst[0].getZ();

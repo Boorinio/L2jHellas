@@ -15,13 +15,13 @@
 package com.l2jhellas.gameserver.model.actor.knownlist;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
@@ -130,11 +130,11 @@ public class PcKnownList extends PlayableKnownList
 			{
 				getActiveChar().sendPacket(new StaticObject((L2StaticObjectInstance) object));
 			}
-			else if (object instanceof L2NpcInstance)
+			else if (object instanceof L2Npc)
 			{
 				if (Config.CHECK_KNOWN)
-					getActiveChar().sendMessage("Added NPC: " + ((L2NpcInstance) object).getName());
-				getActiveChar().sendPacket(new NpcInfo((L2NpcInstance) object, getActiveChar()));
+					getActiveChar().sendMessage("Added NPC: " + ((L2Npc) object).getName());
+				getActiveChar().sendPacket(new NpcInfo((L2Npc) object, getActiveChar()));
 			}
 			else if (object instanceof L2Summon)
 			{
@@ -244,8 +244,8 @@ public class PcKnownList extends PlayableKnownList
 			return false;
 		// Send Server-Client Packet DeleteObject to the L2PcInstance
 		getActiveChar().sendPacket(new DeleteObject(object));
-		if (Config.CHECK_KNOWN && object instanceof L2NpcInstance)
-			getActiveChar().sendMessage("Removed NPC: " + ((L2NpcInstance) object).getName());
+		if (Config.CHECK_KNOWN && object instanceof L2Npc)
+			getActiveChar().sendMessage("Removed NPC: " + ((L2Npc) object).getName());
 		return true;
 	}
 

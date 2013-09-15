@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model;
+package com.l2jhellas.gameserver.model.actor;
 
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -23,10 +23,15 @@ import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SummonAI;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2SkillTargetType;
+import com.l2jhellas.gameserver.model.PetInventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.SummonKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.SummonStat;
@@ -47,7 +52,7 @@ import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 
-public abstract class L2Summon extends L2PlayableInstance
+public abstract class L2Summon extends L2Playable
 {
 	protected static Logger _log = Logger.getLogger(L2Summon.class.getName());
 

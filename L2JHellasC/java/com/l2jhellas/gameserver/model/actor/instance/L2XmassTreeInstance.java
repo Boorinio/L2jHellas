@@ -17,9 +17,10 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.concurrent.ScheduledFuture;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -29,7 +30,7 @@ import com.l2jhellas.util.Rnd;
  * @author Drunkard Zabb0x
  *         Lets drink2code!
  */
-public class L2XmassTreeInstance extends L2NpcInstance
+public class L2XmassTreeInstance extends L2Npc
 {
 	private final ScheduledFuture<?> _aiTask;
 

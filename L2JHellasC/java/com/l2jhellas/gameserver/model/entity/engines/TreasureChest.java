@@ -11,7 +11,7 @@ import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -22,7 +22,7 @@ public class TreasureChest
 	public static boolean TreasureRunning;
 	private static int LuckyChest=0,Counter=0;
 	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
-	public static FastSet<L2NpcInstance> _Npcs = new FastSet<L2NpcInstance>();
+	public static FastSet<L2Npc> _Npcs = new FastSet<L2Npc>();
 	private static int x = 87377, y = 20459, z = -5270, i;
 
 	public static void registration()
@@ -59,7 +59,7 @@ public class TreasureChest
 			players.teleToLocation(x, y, z, true);
 			players.sendMessage("Kill as many chest as you can!");
 		}
-		L2NpcInstance npcs = null;
+		L2Npc npcs = null;
 		LuckyChest = Rnd.get(39);
 		for (i = 0; i < 40; i++)
 		{
@@ -98,7 +98,7 @@ public class TreasureChest
 		{
 			players.teleToLocation(83225, 148068, -3430, true);
 		}
-		for (L2NpcInstance npc : _Npcs)
+		for (L2Npc npc : _Npcs)
 		{
 			npc.deleteMe();
 		}
@@ -121,9 +121,9 @@ public class TreasureChest
 		}
 	}
 
-	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
+	private static L2Npc addSpawn(int npcId, int x, int y, int z)
 	{
-		L2NpcInstance result = null;
+		L2Npc result = null;
 		try
 		{
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);

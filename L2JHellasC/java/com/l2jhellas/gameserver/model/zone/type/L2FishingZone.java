@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.zone.type;
 
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 
 /**

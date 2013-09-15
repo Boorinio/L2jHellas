@@ -15,8 +15,8 @@ package com.l2jhellas.gameserver.model.actor.stat;
 import Extensions.Balancer.BalanceLoad;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Calculator;
 import com.l2jhellas.gameserver.skills.Env;

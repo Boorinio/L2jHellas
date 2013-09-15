@@ -18,7 +18,7 @@ import java.util.Iterator;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 
 public abstract class L2ObjectSet<T extends L2Object> implements Iterable<T>
 {
@@ -33,14 +33,14 @@ public abstract class L2ObjectSet<T extends L2Object> implements Iterable<T>
 		}
 	}
 
-	public static L2ObjectSet<L2PlayableInstance> createL2PlayerSet()
+	public static L2ObjectSet<L2Playable> createL2PlayerSet()
 	{
 		switch (Config.SET_TYPE)
 		{
 			case WorldObjectSet:
-				return new WorldObjectSet<L2PlayableInstance>();
+				return new WorldObjectSet<L2Playable>();
 			default:
-				return new L2ObjectHashSet<L2PlayableInstance>();
+				return new L2ObjectHashSet<L2Playable>();
 		}
 	}
 

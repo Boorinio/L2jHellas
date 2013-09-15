@@ -25,7 +25,7 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 
 public class GameTimeController
 {

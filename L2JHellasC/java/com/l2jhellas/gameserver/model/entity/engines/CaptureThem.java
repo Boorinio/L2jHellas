@@ -27,7 +27,7 @@ import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -43,7 +43,7 @@ public class CaptureThem
 	public static boolean CaptureThemRunning;
 	private static int i;
 	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
-	private static FastSet<L2NpcInstance> _flags = new FastSet<L2NpcInstance>();
+	private static FastSet<L2Npc> _flags = new FastSet<L2Npc>();
 	private static int flagId = 36006;
 	private static int MostPoints = 0;
 	public static L2PcInstance MostPointsPlayer;
@@ -107,7 +107,7 @@ public class CaptureThem
 		DoorTable.getInstance().getDoor(24190002).closeMe();
 		DoorTable.getInstance().getDoor(24190003).closeMe();
 		DoorTable.getInstance().getDoor(24190004).closeMe();
-		L2NpcInstance flags = null;
+		L2Npc flags = null;
 		for (i = 0; i < 9; i++)
 		{
 			flags = addSpawn(flagId, flagsx[i], flagsy[i], flagsz);
@@ -165,7 +165,7 @@ public class CaptureThem
 			players.isinZodiac = false;
 			players.sendMessage("The Event is officially finished!");
 		}
-		for (L2NpcInstance flags : _flags)
+		for (L2Npc flags : _flags)
 		{
 			flags.deleteMe();
 			
@@ -214,9 +214,9 @@ public class CaptureThem
 		}
 	}
 	
-	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
+	private static L2Npc addSpawn(int npcId, int x, int y, int z)
 	{
-		L2NpcInstance result = null;
+		L2Npc result = null;
 		try
 		{
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);

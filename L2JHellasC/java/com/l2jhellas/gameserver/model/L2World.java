@@ -26,9 +26,10 @@ import javolution.util.FastMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.object.L2ObjectMap;
 
@@ -751,7 +752,7 @@ public final class L2World
 	 * @param object
 	 *        L2object that determine the current L2WorldRegion
 	 */
-	public static FastList<L2PlayableInstance> getVisiblePlayable(L2Object object)
+	public static FastList<L2Playable> getVisiblePlayable(L2Object object)
 	{
 		L2WorldRegion reg = object.getWorldRegion();
 
@@ -759,7 +760,7 @@ public final class L2World
 			return null;
 
 		// Create an FastList in order to contain all visible L2Object
-		FastList<L2PlayableInstance> result = new FastList<L2PlayableInstance>();
+		FastList<L2Playable> result = new FastList<L2Playable>();
 
 		// Create a FastList containing all regions around the current region
 		FastList<L2WorldRegion> _regions = reg.getSurroundingRegions();
@@ -768,12 +769,12 @@ public final class L2World
 		for (int i = 0; i < _regions.size(); i++)
 		{
 			// Create an Iterator to go through the visible L2Object of the L2WorldRegion
-			Iterator<L2PlayableInstance> _playables = _regions.get(i).iterateAllPlayers();
+			Iterator<L2Playable> _playables = _regions.get(i).iterateAllPlayers();
 
 			// Go through visible object of the selected region
 			while (_playables.hasNext())
 			{
-				L2PlayableInstance _object = _playables.next();
+				L2Playable _object = _playables.next();
 
 				if (_object == null)
 				{

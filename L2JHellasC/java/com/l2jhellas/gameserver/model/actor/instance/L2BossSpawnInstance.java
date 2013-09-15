@@ -21,6 +21,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -32,7 +33,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
  * @author Unknown
  * @fixes Nightwolf
  */
-public class L2BossSpawnInstance extends L2NpcInstance
+public class L2BossSpawnInstance extends L2Npc
 {
 	private static final SimpleDateFormat Time = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 

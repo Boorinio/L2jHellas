@@ -20,9 +20,9 @@ import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
@@ -87,7 +87,7 @@ public class Potions implements IItemHandler
 	};/** @formatter:on */
 
 	@Override
-	public synchronized void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	public synchronized void useItem(L2Playable playable, L2ItemInstance item)
 	{
 		L2PcInstance activeChar;
 		boolean res = false;

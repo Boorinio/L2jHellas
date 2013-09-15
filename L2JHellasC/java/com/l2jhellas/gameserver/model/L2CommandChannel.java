@@ -18,6 +18,7 @@ import java.util.List;
 
 import javolution.util.FastList;
 
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;

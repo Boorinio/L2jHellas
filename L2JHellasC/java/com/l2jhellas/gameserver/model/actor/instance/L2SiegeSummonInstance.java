@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class L2SiegeSummonInstance extends L2SummonInstance

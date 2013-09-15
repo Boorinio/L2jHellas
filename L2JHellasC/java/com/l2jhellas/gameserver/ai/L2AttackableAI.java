@@ -27,23 +27,23 @@ import com.l2jhellas.gameserver.Territory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
-import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalMonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2FolkInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FriendlyMobInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MinionInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PenaltyMonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
@@ -141,7 +141,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		}
 
 		// Check if the target isn't a Folk or a Door
-		if (target instanceof L2FolkInstance || target instanceof L2DoorInstance)
+		if (target instanceof L2NpcInstance || target instanceof L2DoorInstance)
 			return false;
 
 		// Check if the target isn't dead, is in the Aggro range and is at the same height
@@ -204,7 +204,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		{ // the actor is a L2FriendlyMobInstance
 
 			// Check if the target isn't another L2NpcInstance
-			if (target instanceof L2NpcInstance)
+			if (target instanceof L2Npc)
 				return false;
 
 			// Check if the L2PcInstance target has karma (=PK)
@@ -218,7 +218,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		{ // The actor is a L2MonsterInstance
 
 			// Check if the target isn't another L2NpcInstance
-			if (target instanceof L2NpcInstance)
+			if (target instanceof L2Npc)
 				return false;
 
 			// depending on config, do not allow mobs to attack _new_ players in peacezones,
@@ -585,16 +585,16 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		else
 		{
 			// Call all L2Object of its Faction inside the Faction Range
-			if (((L2NpcInstance) _actor).getFactionId() != null)
+			if (((L2Npc) _actor).getFactionId() != null)
 			{
-				String faction_id = ((L2NpcInstance) _actor).getFactionId();
+				String faction_id = ((L2Npc) _actor).getFactionId();
 
 				// Go through all L2Object that belong to its faction
 				for (L2Object obj : _actor.getKnownList().getKnownObjects().values())
 				{
-					if (obj instanceof L2NpcInstance)
+					if (obj instanceof L2Npc)
 					{
-						L2NpcInstance npc = (L2NpcInstance) obj;
+						L2Npc npc = (L2Npc) obj;
 
 						if (npc == null || getAttackTarget() == null || faction_id != npc.getFactionId())
 							continue;
@@ -636,7 +636,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 								if (npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL) != null)
 								{
 									for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL))
-										quest.notifyFactionCall(npc, (L2NpcInstance) _actor, player, (getAttackTarget() instanceof L2Summon));
+										quest.notifyFactionCall(npc, (L2Npc) _actor, player, (getAttackTarget() instanceof L2Summon));
 								}
 							}
 						}

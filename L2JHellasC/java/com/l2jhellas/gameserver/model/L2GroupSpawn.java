@@ -19,7 +19,7 @@ import java.lang.reflect.Constructor;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Territory;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
@@ -41,9 +41,9 @@ public class L2GroupSpawn extends L2Spawn
 		setAmount(1);
 	}
 
-	public L2NpcInstance doGroupSpawn()
+	public L2Npc doGroupSpawn()
 	{
-		L2NpcInstance mob = null;
+		L2Npc mob = null;
 
 		try
 		{
@@ -56,10 +56,10 @@ public class L2GroupSpawn extends L2Spawn
 			};
 			Object tmp = _constructor.newInstance(parameters);
 
-			if (!(tmp instanceof L2NpcInstance))
+			if (!(tmp instanceof L2Npc))
 				return null;
 
-			mob = (L2NpcInstance) tmp;
+			mob = (L2Npc) tmp;
 
 			int newlocx, newlocy, newlocz;
 

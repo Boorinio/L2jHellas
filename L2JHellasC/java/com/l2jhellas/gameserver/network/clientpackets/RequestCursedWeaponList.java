@@ -19,7 +19,7 @@ import java.util.List;
 import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.ExCursedWeaponList;
 
 /**

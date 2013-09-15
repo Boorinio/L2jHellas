@@ -17,8 +17,8 @@ package com.l2jhellas.gameserver.handler.itemhandlers;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -31,7 +31,7 @@ public class Firework implements IItemHandler
 	};
 
 	@Override
-	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	public void useItem(L2Playable playable, L2ItemInstance item)
 	{
 		if (!(playable instanceof L2PcInstance))
 			return; // prevent Class cast exception

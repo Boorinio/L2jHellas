@@ -23,6 +23,7 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;

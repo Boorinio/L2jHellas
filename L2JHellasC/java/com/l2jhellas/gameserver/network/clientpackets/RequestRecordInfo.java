@@ -15,13 +15,13 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.TaskPriority;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
@@ -91,8 +91,8 @@ public class RequestRecordInfo extends L2GameClientPacket
 				}
 				else if (object instanceof L2StaticObjectInstance)
 					_activeChar.sendPacket(new StaticObject((L2StaticObjectInstance) object));
-				else if (object instanceof L2NpcInstance)
-					_activeChar.sendPacket(new NpcInfo((L2NpcInstance) object, _activeChar));
+				else if (object instanceof L2Npc)
+					_activeChar.sendPacket(new NpcInfo((L2Npc) object, _activeChar));
 				else if (object instanceof L2Summon)
 				{
 					L2Summon summon = (L2Summon) object;

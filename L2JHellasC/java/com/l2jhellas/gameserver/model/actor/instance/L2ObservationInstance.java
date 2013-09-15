@@ -25,7 +25,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 /**
  * @author NightMarez
  */
-public final class L2ObservationInstance extends L2FolkInstance
+public final class L2ObservationInstance extends L2NpcInstance
 {
 	/**
 	 * @param template

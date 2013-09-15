@@ -35,7 +35,7 @@ import com.l2jhellas.util.Rnd;
 /**
  * @author Autos! 1-0
  */
-public class L2DonateInstance extends L2FolkInstance
+public class L2DonateInstance extends L2NpcInstance
 {
 	public L2DonateInstance(int objectId, L2NpcTemplate template)
 	{

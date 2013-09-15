@@ -14,14 +14,14 @@
  */
 package com.l2jhellas.gameserver.skills.l2skills;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
-import com.l2jhellas.gameserver.model.L2Summon;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -147,9 +147,9 @@ public class L2SkillDrain extends L2Skill
 			}
 
 			// Check to see if we should do the decay right after the cast
-			if (target.isDead() && getTargetType() == L2SkillTargetType.TARGET_CORPSE_MOB && target instanceof L2NpcInstance)
+			if (target.isDead() && getTargetType() == L2SkillTargetType.TARGET_CORPSE_MOB && target instanceof L2Npc)
 			{
-				((L2NpcInstance) target).endDecayTask();
+				((L2Npc) target).endDecayTask();
 			}
 		}
 		// effect self :]

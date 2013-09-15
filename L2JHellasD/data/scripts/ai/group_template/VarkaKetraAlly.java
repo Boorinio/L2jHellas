@@ -16,7 +16,7 @@ package ai.group_template;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -46,7 +46,7 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 	protected static final int[] varkaAllyMark = { 7225, 7224, 7223, 7222, 7221 };
 
 	@Override
-	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		if ((attacker.getAllianceWithVarkaKetra() != 0) && (attacker.isAlliedWithKetra() && npc.getFactionId() == "ketra") || (attacker.isAlliedWithVarka() && npc.getFactionId() == "varka"))
 		{
@@ -62,7 +62,7 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		if (killer.getParty() != null)
 		{
@@ -75,7 +75,7 @@ public class VarkaKetraAlly extends L2AttackableAIScript
 		return super.onKill(npc, killer, isPet);
 	}
 
-	private void decreaseAlly (L2NpcInstance npc, L2PcInstance player)
+	private void decreaseAlly (L2Npc npc, L2PcInstance player)
 	{
 		if (player.getAllianceWithVarkaKetra() != 0)
 		{

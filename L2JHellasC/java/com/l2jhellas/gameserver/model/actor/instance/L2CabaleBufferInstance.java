@@ -19,9 +19,10 @@ import java.util.concurrent.ScheduledFuture;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
@@ -36,7 +37,7 @@ import com.l2jhellas.util.Rnd;
 /**
  * @author Layane
  */
-public class L2CabaleBufferInstance extends L2NpcInstance
+public class L2CabaleBufferInstance extends L2Npc
 {
 	@Override
 	public void onAction(L2PcInstance player)

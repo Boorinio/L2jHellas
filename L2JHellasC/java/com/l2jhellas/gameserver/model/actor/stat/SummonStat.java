@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 
 public class SummonStat extends PlayableStat
 {

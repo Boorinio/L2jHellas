@@ -14,14 +14,14 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.model.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
  * @author zabbix
  *         Lets drink to code!
  */
-public class L2BlacksmithInstance extends L2FolkInstance
+public class L2BlacksmithInstance extends L2NpcInstance
 {
 	public L2BlacksmithInstance(int objectId, L2NpcTemplate template)
 	{

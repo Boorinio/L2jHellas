@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.skills.effects;
 
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.skills.Env;
 
 /**
@@ -38,9 +38,9 @@ public final class EffectNoblesseBless extends L2Effect
 	@Override
 	public boolean onStart()
 	{
-		if (getEffected() instanceof L2PlayableInstance)
+		if (getEffected() instanceof L2Playable)
 		{
-			((L2PlayableInstance) getEffected()).startNoblesseBlessing();
+			((L2Playable) getEffected()).startNoblesseBlessing();
 			return true;
 		}
 		return false;
@@ -50,8 +50,8 @@ public final class EffectNoblesseBless extends L2Effect
 	@Override
 	public void onExit()
 	{
-		if (getEffected() instanceof L2PlayableInstance)
-			((L2PlayableInstance) getEffected()).stopNoblesseBlessing(this);
+		if (getEffected() instanceof L2Playable)
+			((L2Playable) getEffected()).stopNoblesseBlessing(this);
 	}
 
 	@Override

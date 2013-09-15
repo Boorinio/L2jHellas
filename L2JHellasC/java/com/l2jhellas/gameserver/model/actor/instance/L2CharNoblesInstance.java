@@ -22,6 +22,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -35,7 +36,7 @@ import com.l2jhellas.util.Rnd;
  * @author Unknown
  * @author rebuild Nightwolf
  */
-public class L2CharNoblesInstance extends L2NpcInstance
+public class L2CharNoblesInstance extends L2Npc
 {
 	/* Main Menu *//** @formatter:off */
 	private final String NPC_MENU = "<html><title>Nobles Manager</title><body>"

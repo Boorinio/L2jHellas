@@ -14,7 +14,7 @@
  */
 package ai.group_template;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Rnd;
@@ -29,7 +29,7 @@ public class HotSprings extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		int HSBUFF = Rnd.get(5);
 		if (npc.getNpcId() == 21316 ||

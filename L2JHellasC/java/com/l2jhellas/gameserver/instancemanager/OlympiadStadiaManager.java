@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.instancemanager;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 
 public class OlympiadStadiaManager

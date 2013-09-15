@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 
 /**
  * 0000: 01 7a 73 10 4c b2 0b 00 00 a3 fc 00 00 e8 f1 ff .zs.L...........<BR>

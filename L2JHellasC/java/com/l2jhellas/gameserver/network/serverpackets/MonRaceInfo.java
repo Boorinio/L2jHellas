@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 
 /**
  * sample
@@ -28,10 +28,10 @@ public class MonRaceInfo extends L2GameServerPacket
 	private static final String _S__DD_MonRaceInfo = "[S] dd MonRaceInfo";
 	private final int _unknown1;
 	private final int _unknown2;
-	private final L2NpcInstance[] _monsters;
+	private final L2Npc[] _monsters;
 	private final int[][] _speeds;
 
-	public MonRaceInfo(int unknown1, int unknown2, L2NpcInstance[] monsters, int[][] speeds)
+	public MonRaceInfo(int unknown1, int unknown2, L2Npc[] monsters, int[][] speeds)
 	{
 		/*
 		 * -1 0 to initial the race

@@ -20,8 +20,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.Earthquake;
@@ -110,7 +110,7 @@ public class Antharas extends L2AttackableAIScript
 		}
 	}
 	
-	public String onAdvEvent(String event, L2NpcInstance npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		if (npc != null)
 		{
@@ -210,7 +210,7 @@ public class Antharas extends L2AttackableAIScript
 		return super.onAdvEvent(event, npc, player);
 	}
 	
-	public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		if (GrandBossManager.getInstance().getBossStatus(ANTHARAS) != FIGHTING)
 		{
@@ -221,7 +221,7 @@ public class Antharas extends L2AttackableAIScript
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
 	
-	public String onKill(L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		if (npc.getNpcId() == ANTHARAS)
 		{

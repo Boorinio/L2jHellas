@@ -22,8 +22,8 @@ import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2ManorManagerInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -90,7 +90,7 @@ public class RequestProcureCropList extends L2GameClientPacket
 		if (!(target instanceof L2ManorManagerInstance))
 			target = player.getLastFolkNPC();
 
-		if (!player.isGM() && ((target == null) || !(target instanceof L2ManorManagerInstance) || !player.isInsideRadius(target, L2NpcInstance.INTERACTION_DISTANCE, false, false)))
+		if (!player.isGM() && ((target == null) || !(target instanceof L2ManorManagerInstance) || !player.isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false)))
 			return;
 
 		if (_size < 1)

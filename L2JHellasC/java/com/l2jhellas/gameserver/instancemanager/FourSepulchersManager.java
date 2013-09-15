@@ -35,8 +35,8 @@ import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SepulcherMonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SepulcherNpcInstance;
@@ -133,7 +133,7 @@ public class FourSepulchersManager
 	protected FastList<L2Spawn> _managers;
 	protected FastList<L2Spawn> _dukeFinalSpawns;
 	protected FastList<L2Spawn> _emperorsGraveSpawns;
-	protected FastList<L2NpcInstance> _allMobs = new FastList<L2NpcInstance>();
+	protected FastList<L2Npc> _allMobs = new FastList<L2Npc>();
 
 	protected long _attackTimeEnd = 0;
 	protected long _coolDownTimeEnd = 0;
@@ -865,7 +865,7 @@ public class FourSepulchersManager
 		return _inAttackTime;
 	}
 
-	public synchronized void tryEntry(L2NpcInstance npc, L2PcInstance player)
+	public synchronized void tryEntry(L2Npc npc, L2PcInstance player)
 	{
 		int npcId = npc.getNpcId();
 		switch (npcId)
@@ -1265,7 +1265,7 @@ public class FourSepulchersManager
 		return true;
 	}
 
-	public void spawnKeyBox(L2NpcInstance activeChar)
+	public void spawnKeyBox(L2Npc activeChar)
 	{
 		if (!isAttackTime())
 			return;
@@ -1286,7 +1286,7 @@ public class FourSepulchersManager
 		}
 	}
 
-	public void spawnExecutionerOfHalisha(L2NpcInstance activeChar)
+	public void spawnExecutionerOfHalisha(L2Npc activeChar)
 	{
 		if (!isAttackTime())
 			return;
@@ -1397,7 +1397,7 @@ public class FourSepulchersManager
 	{
 		_log.log(Level.INFO, getClass().getSimpleName() + ": DeleteAllMobs: Try to delete " + _allMobs.size() + " monsters.");
 
-		for (L2NpcInstance mob : _allMobs)
+		for (L2Npc mob : _allMobs)
 		{
 			try
 			{
@@ -1776,7 +1776,7 @@ public class FourSepulchersManager
 		return _hallGateKeepers;
 	}
 
-	public void showHtmlFile(L2PcInstance player, String file, L2NpcInstance npc, L2PcInstance member)
+	public void showHtmlFile(L2PcInstance player, String file, L2Npc npc, L2PcInstance member)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
 		html.setFile("data/html/SepulcherNpc/" + file);

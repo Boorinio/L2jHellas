@@ -16,17 +16,17 @@ package com.l2jhellas.gameserver.handler.skillhandlers;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -178,14 +178,14 @@ public class Blow implements ISkillHandler
 				activeChar.sendPacket(sm);
 			}
 			// Possibility of a lethal strike
-			if ((!target.isRaid() && !target.isBoss()) && !(target instanceof L2DoorInstance) && !(target instanceof L2GrandBossInstance) && !(target instanceof L2MonsterInstance && ((L2MonsterInstance) target).getNpcId() == 36006) && (target instanceof L2NpcInstance && ((L2NpcInstance) target).getNpcId() != 35062))
+			if ((!target.isRaid() && !target.isBoss()) && !(target instanceof L2DoorInstance) && !(target instanceof L2GrandBossInstance) && !(target instanceof L2MonsterInstance && ((L2MonsterInstance) target).getNpcId() == 36006) && (target instanceof L2Npc && ((L2Npc) target).getNpcId() != 35062))
  			{
 				int chance = Rnd.get(100);
 				// 2nd lethal effect activate (cp,hp to 1 or if target is npc
 				// then hp to 1)
 				if (skill.getLethalChance2() > 0 && chance < Formulas.getInstance().calcLethal(activeChar, target, skill.getLethalChance2()))
 				{
-					if (target instanceof L2NpcInstance)
+					if (target instanceof L2Npc)
 						target.reduceCurrentHp(target.getCurrentHp() - 1, activeChar);
 					else if (target instanceof L2PcInstance) // If is a active player set his HP and CP to 1
 					{
@@ -206,7 +206,7 @@ public class Blow implements ISkillHandler
 						if (!player.isInvul())
 							player.setCurrentCp(1); // Set CP to 1
 					}
-					else if (target instanceof L2NpcInstance) // If is a monster remove first damage and after 50% of current hp
+					else if (target instanceof L2Npc) // If is a monster remove first damage and after 50% of current hp
 						target.reduceCurrentHp(target.getCurrentHp() / 2, activeChar);
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));
 				}

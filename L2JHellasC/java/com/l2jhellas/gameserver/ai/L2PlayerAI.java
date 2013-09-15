@@ -28,10 +28,10 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
-import com.l2jhellas.gameserver.model.L2Character.AIAccessor;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;

@@ -34,7 +34,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2FishermanInstance extends L2FolkInstance
+public class L2FishermanInstance extends L2NpcInstance
 {
 	/**
 	 * @param objectId

@@ -17,8 +17,8 @@ package com.l2jhellas.util;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;

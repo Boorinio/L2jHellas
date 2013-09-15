@@ -18,13 +18,13 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2ChestInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
@@ -359,9 +359,9 @@ public class AdminEffects implements IAdminCommandHandler
 						UserInfo info2 = new UserInfo((L2PcInstance) player);
 						player.sendPacket(info2);
 					}
-					else if (player instanceof L2NpcInstance)
+					else if (player instanceof L2Npc)
 					{
-						NpcInfo info1 = new NpcInfo((L2NpcInstance) player, null);
+						NpcInfo info1 = new NpcInfo((L2Npc) player, null);
 						player.broadcastPacket(info1);
 					}
 					activeChar.sendMessage("Changed name from " + oldName + " to " + name + ".");
@@ -627,7 +627,7 @@ public class AdminEffects implements IAdminCommandHandler
 					activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 					return false;
 				}
-				if ((target instanceof L2NpcInstance) && (action < 1 || action > 3))
+				if ((target instanceof L2Npc) && (action < 1 || action > 3))
 				{
 					activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 					return false;

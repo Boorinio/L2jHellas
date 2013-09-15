@@ -18,10 +18,10 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
@@ -39,7 +39,7 @@ public class Monastery extends L2AttackableAIScript
 
 	private static boolean _isAttacked = false;
 
-	public String onAttack(L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet, L2Skill skill)
 	{
 		int npcObjId = npc.getObjectId();
 
@@ -62,7 +62,7 @@ public class Monastery extends L2AttackableAIScript
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
 
-	public String onAggroRangeEnter(L2NpcInstance npc, L2PcInstance player, boolean isPet)
+	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		int npcObjId = npc.getObjectId();
 
@@ -91,7 +91,7 @@ public class Monastery extends L2AttackableAIScript
 		return super.onAggroRangeEnter(npc, player, isPet);
 	}
 
-	public String onKill(L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		int npcObjId = npc.getObjectId();
 		_isAttacked = false;

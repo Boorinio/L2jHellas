@@ -46,7 +46,7 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
 
-public final class L2VillageMasterInstance extends L2FolkInstance
+public final class L2VillageMasterInstance extends L2NpcInstance
 {
 	/**
 	 * @param template

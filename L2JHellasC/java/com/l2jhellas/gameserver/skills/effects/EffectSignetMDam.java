@@ -17,13 +17,13 @@ package com.l2jhellas.gameserver.skills.effects;
 import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
@@ -99,7 +99,7 @@ final class EffectSignetMDam extends EffectSignet
 			if ((cha == null) || cha == getEffected())
 				continue;
 
-			if (cha instanceof L2Attackable || cha instanceof L2PlayableInstance)
+			if (cha instanceof L2Attackable || cha instanceof L2Playable)
 			{
 				if (cha.isAlikeDead())
 					continue;

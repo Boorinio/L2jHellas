@@ -30,9 +30,9 @@ import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventBufferInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
@@ -61,7 +61,7 @@ public class L2RaidEvent
 	/**
 	 * Definition of the Spawn as a L2NpcInstance
 	 */
-	private static L2NpcInstance _lastNpcSpawn = null;
+	private static L2Npc _lastNpcSpawn = null;
 	/**
 	 * Custom Management of Experience upon NPC death.
 	 */
@@ -130,7 +130,7 @@ public class L2RaidEvent
 	/**
 	 * Vector Created to track all the Event Mobs and Delete them if needed.
 	 */
-	public static Vector<L2NpcInstance> _eventMobList = new Vector<L2NpcInstance>();
+	public static Vector<L2Npc> _eventMobList = new Vector<L2Npc>();
 
 	/** The state of the Event<br> */
 	private static EventState _state = EventState.INACTIVE;
@@ -860,7 +860,7 @@ public class L2RaidEvent
 	 */
 	public static void hardFinish()
 	{
-		for (L2NpcInstance eventMob : _eventMobList)
+		for (L2Npc eventMob : _eventMobList)
 		{
 			eventMob.decayMe();
 			eventMob.deleteMe();

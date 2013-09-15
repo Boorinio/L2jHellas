@@ -15,11 +15,11 @@
 package ai.group_template;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2ChestInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Rnd;
 
@@ -57,7 +57,7 @@ public class Chests extends L2AttackableAIScript
         this.registerMobs(NPC_IDS);		
 	}
 
-	public String onSkillSee (L2NpcInstance npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet) 
+	public String onSkillSee (L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet) 
     { 
         if (npc instanceof L2ChestInstance)
         {
@@ -119,7 +119,7 @@ public class Chests extends L2AttackableAIScript
         return super.onSkillSee(npc,caster,skill,targets,isPet);
     }
 
-    public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+    public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
     {	
         if (npc instanceof L2ChestInstance)
         {

@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.handler;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 
 /**
  * Mother class of all itemHandlers.
@@ -30,7 +30,7 @@ public interface IItemHandler
 	 * @param item
 	 *        : L2ItemInstance designating the item to use
 	 */
-	public void useItem(L2PlayableInstance playable, L2ItemInstance item);
+	public void useItem(L2Playable playable, L2ItemInstance item);
 
 	/**
 	 * Returns the list of item IDs corresponding to the type of item.<BR>

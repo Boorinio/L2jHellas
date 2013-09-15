@@ -24,9 +24,9 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
@@ -168,7 +168,7 @@ public class CharStatus
 			getActiveChar().stopFear(null);
 
 		// Add attackers to npc's attacker list
-		if (getActiveChar() instanceof L2NpcInstance)
+		if (getActiveChar() instanceof L2Npc)
 			getActiveChar().addAttackerToAttackByList(attacker);
 
 		if (value > 0) // Reduce Hp if any

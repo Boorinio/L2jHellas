@@ -28,6 +28,7 @@ import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.instancemanager.FourSepulchersManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -44,7 +45,7 @@ import com.l2jhellas.util.Util;
 /**
  * @author sandman
  */
-public class L2SepulcherNpcInstance extends L2NpcInstance
+public class L2SepulcherNpcInstance extends L2Npc
 {
 	protected static Map<Integer, Integer> _hallGateKeepers = new FastMap<Integer, Integer>();
 

@@ -25,8 +25,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadSpelledInfo;
@@ -851,7 +853,7 @@ public class CharEffectList
 		if (_owner == null)
 			return;
 		
-		if (!(_owner instanceof L2PlayableInstance))
+		if (!(_owner instanceof L2Playable))
 		{
 			updateEffectFlags();
 			return;

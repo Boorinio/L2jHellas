@@ -22,13 +22,13 @@ import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
@@ -1153,9 +1153,9 @@ public final class Formulas
 		// damage *= (double)attacker.getLevel()/target.getLevel();
 
 		// get the natural vulnerability for the template
-		if (target instanceof L2NpcInstance)
+		if (target instanceof L2Npc)
 		{
-			damage *= ((L2NpcInstance) target).getTemplate().getVulnerability(Stats.DAGGER_WPN_VULN);
+			damage *= ((L2Npc) target).getTemplate().getVulnerability(Stats.DAGGER_WPN_VULN);
 		}
 		// get the vulnerability for the instance due to skills (buffs, passives, toggles, etc)
 		damage = target.calcStat(Stats.DAGGER_WPN_VULN, damage, target, null);
@@ -1303,10 +1303,10 @@ public final class Formulas
 		{
 			// get the vulnerability due to skills (buffs, passives, toggles, etc)
 			damage = target.calcStat(stat, damage, target, null);
-			if (target instanceof L2NpcInstance)
+			if (target instanceof L2Npc)
 			{
 				// get the natural vulnerability for the template
-				damage *= ((L2NpcInstance) target).getTemplate().getVulnerability(stat);
+				damage *= ((L2Npc) target).getTemplate().getVulnerability(stat);
 			}
 		}
 
@@ -1319,9 +1319,9 @@ public final class Formulas
 				damage = 0;
 		}
 
-		if (target instanceof L2NpcInstance)
+		if (target instanceof L2Npc)
 		{
-			switch (((L2NpcInstance) target).getTemplate().getRace())
+			switch (((L2Npc) target).getTemplate().getRace())
 			{
 				case UNDEAD:
 					damage *= attacker.getPAtkUndead(target);

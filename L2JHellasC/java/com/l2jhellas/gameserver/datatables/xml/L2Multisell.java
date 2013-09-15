@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model;
+package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
 import java.util.List;
@@ -28,6 +28,7 @@ import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MultiSellList;
 import com.l2jhellas.gameserver.templates.L2Armor;

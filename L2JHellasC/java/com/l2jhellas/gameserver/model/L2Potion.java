@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 
 public class L2Potion extends L2Object
 {

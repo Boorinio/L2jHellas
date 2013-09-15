@@ -36,7 +36,7 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 /**
  * Mod Faction Good vs Evil
  */
-public class L2FactionInstance extends L2FolkInstance
+public class L2FactionInstance extends L2NpcInstance
 {
 	private final static Logger _log = Logger.getLogger(L2FactionInstance.class.getName());
 

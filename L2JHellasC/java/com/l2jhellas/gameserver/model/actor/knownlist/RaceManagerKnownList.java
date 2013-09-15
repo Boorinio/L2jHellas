@@ -15,8 +15,8 @@
 package com.l2jhellas.gameserver.model.actor.knownlist;
 
 import com.l2jhellas.gameserver.MonsterRace;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaceManagerInstance;
 import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;

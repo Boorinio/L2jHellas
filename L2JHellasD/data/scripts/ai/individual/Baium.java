@@ -26,14 +26,14 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.QuestTimer;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
@@ -142,7 +142,7 @@ public class Baium extends L2AttackableAIScript
             final int mp = info.getInteger("currentMP");
             L2GrandBossInstance baium = (L2GrandBossInstance) addSpawn(LIVE_BAIUM,loc_x,loc_y,loc_z,heading,false,0);
             GrandBossManager.getInstance().addBoss(baium);
-            final L2NpcInstance _baium = baium;
+            final L2Npc _baium = baium;
             ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
 				@Override
 				public void run()
@@ -168,7 +168,7 @@ public class Baium extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
+	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
 	{
         if (event.equalsIgnoreCase("baium_unlock"))
         {
@@ -193,7 +193,7 @@ public class Baium extends L2AttackableAIScript
                 _LastAttackVsBaiumTime = System.currentTimeMillis();
                 startQuestTimer("baium_despawn", 60000, npc, null, true);
                 startQuestTimer("skill_range", 500, npc, null, true);
-                final L2NpcInstance baium = npc;
+                final L2Npc baium = npc;
                 ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
     				@Override
 					public void run()
@@ -245,7 +245,7 @@ public class Baium extends L2AttackableAIScript
 	}
 
     @Override
-	public String onTalk(L2NpcInstance npc,L2PcInstance player)
+	public String onTalk(L2Npc npc,L2PcInstance player)
     {
         int npcId = npc.getNpcId();
         String htmltext = "";
@@ -264,7 +264,7 @@ public class Baium extends L2AttackableAIScript
                 L2GrandBossInstance baium = (L2GrandBossInstance) addSpawn(LIVE_BAIUM,npc);
                 GrandBossManager.getInstance().addBoss(baium);
 				player.reduceCurrentHp(player.getCurrentHp(),player);
-                final L2NpcInstance _baium = baium;
+                final L2Npc _baium = baium;
                 ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
     				@Override
 					public void run()
@@ -312,7 +312,7 @@ public class Baium extends L2AttackableAIScript
     }
 
     @Override
-	public String onSpellFinished(L2NpcInstance npc, L2PcInstance player, L2Skill skill)
+	public String onSpellFinished(L2Npc npc, L2PcInstance player, L2Skill skill)
     {
 		if (npc.isInvul())
 		{
@@ -326,7 +326,7 @@ public class Baium extends L2AttackableAIScript
     	return super.onSpellFinished(npc, player, skill);
     }
     @Override
-	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
     {
     	if (!_Zone.isInsideZone(attacker))
     	{
@@ -366,7 +366,7 @@ public class Baium extends L2AttackableAIScript
     }
 
     @Override
-	public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
     {
         cancelQuestTimer("baium_despawn", npc, null);
         npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
@@ -391,7 +391,7 @@ public class Baium extends L2AttackableAIScript
         return super.onKill(npc,killer,isPet);
     }
 
-	public L2Character getRandomTarget(L2NpcInstance npc)
+	public L2Character getRandomTarget(L2Npc npc)
 	{
 		FastList<L2Character> result = new FastList<L2Character>();
 		Collection<L2Object> objs = npc.getKnownList().getKnownObjects().values();
@@ -428,7 +428,7 @@ public class Baium extends L2AttackableAIScript
 		return null;
 	}
 
-	public synchronized void callSkillAI(L2NpcInstance npc)
+	public synchronized void callSkillAI(L2Npc npc)
 	{
 		if (npc.isInvul() || npc.isCastingNow())
 		{
@@ -461,7 +461,7 @@ public class Baium extends L2AttackableAIScript
 		}
 	}
 
-	public L2Skill getRandomSkill(L2NpcInstance npc)
+	public L2Skill getRandomSkill(L2Npc npc)
 	{
 		L2Skill skill;
 		if( npc.getCurrentHp() > ( ( npc.getMaxHp() * 3 ) / 4 ) )
@@ -545,7 +545,7 @@ public class Baium extends L2AttackableAIScript
 	}
 
 	@Override
-	public String onSkillSee (L2NpcInstance npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	public String onSkillSee (L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
 	{
 		if (npc.isInvul())
 		{

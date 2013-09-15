@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import Extensions.RaidEvent.L2EventChecks;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ConfirmDlg;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -29,7 +30,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * 
  * @author polbat02
  */
-public class L2EventManagerInstance extends L2NpcInstance
+public class L2EventManagerInstance extends L2Npc
 {
 	/** Number of Current Events */
 	public static int _currentEvents = 0;

@@ -19,8 +19,8 @@ import java.util.StringTokenizer;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminZone implements IAdminCommandHandler

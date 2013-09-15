@@ -14,7 +14,7 @@
  */
 package ai.group_template;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
@@ -36,7 +36,7 @@ public class DeluLizardmanSpecialAgent extends L2AttackableAIScript
 		_FirstAttacked = false;
 	}
 
-	public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
         if (npc.getNpcId() == LIZARDMAN)
         {
@@ -54,7 +54,7 @@ public class DeluLizardmanSpecialAgent extends L2AttackableAIScript
         return super.onAttack(npc, attacker, damage, isPet);
     }
 
-	public String onKill(L2NpcInstance npc, L2PcInstance killer, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
         int npcId = npc.getNpcId();
         if (npcId == LIZARDMAN)

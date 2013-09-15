@@ -25,7 +25,7 @@ import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -45,7 +45,7 @@ public class ProtectTheLdr
 	private static int leader2x = 86402, leader2y = 258733, leader2z = -11672;
 	private static int leader1x = 86417, leader1y = 257244, leader1z = -11672;
 	public static boolean ProtectisRunning, alaksokolies;
-	private static FastSet<L2NpcInstance> _leaders = new FastSet<L2NpcInstance>();
+	private static FastSet<L2Npc> _leaders = new FastSet<L2Npc>();
 	
 	public static void startevent()
 	{
@@ -62,8 +62,8 @@ public class ProtectTheLdr
 		Announcements.getInstance().announceToAll("Registrations are now over!");
 		shufflePlayers();
 		teleportplayers();
-		L2NpcInstance spawn1 = null;
-		L2NpcInstance spawn2 = null;
+		L2Npc spawn1 = null;
+		L2Npc spawn2 = null;
 		spawn1 = addSpawn(leader1, leader1x, leader1y, leader1z);
 		spawn2 = addSpawn(leader2, leader2x, leader2y, leader2z);
 		_leaders.add(spawn1);
@@ -113,7 +113,7 @@ public class ProtectTheLdr
 			member2.isinZodiac = false;
 			member2.teleToLocation(82743, 148219, -3470);
 		}
-		for (L2NpcInstance leader : _leaders)
+		for (L2Npc leader : _leaders)
 		{
 			leader.deleteMe();
 			
@@ -175,9 +175,9 @@ public class ProtectTheLdr
 		}
 	}
 	
-	private static L2NpcInstance addSpawn(int npcId, int x, int y, int z)
+	private static L2Npc addSpawn(int npcId, int x, int y, int z)
 	{
-		L2NpcInstance result = null;
+		L2Npc result = null;
 		try
 		{
 			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);

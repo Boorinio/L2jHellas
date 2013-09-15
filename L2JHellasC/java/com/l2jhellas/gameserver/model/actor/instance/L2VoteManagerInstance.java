@@ -23,6 +23,7 @@ import Extensions.Vote.VoteManager;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -30,7 +31,7 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2VoteManagerInstance extends L2NpcInstance
+public class L2VoteManagerInstance extends L2Npc
 {
 	public L2VoteManagerInstance(int objectId, L2NpcTemplate template)
 	{

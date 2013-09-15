@@ -19,12 +19,12 @@ import java.util.Map;
 
 import javolution.util.FastMap;
 
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.util.Util;
 
 public class ObjectKnownList
@@ -103,7 +103,7 @@ public class ObjectKnownList
 
 	private final void findCloseObjects()
 	{
-		boolean isActiveObjectPlayable = (getActiveObject() instanceof L2PlayableInstance);
+		boolean isActiveObjectPlayable = (getActiveObject() instanceof L2Playable);
 
 		if (isActiveObjectPlayable)
 		{
@@ -129,7 +129,7 @@ public class ObjectKnownList
 		}
 		else
 		{
-			Collection<L2PlayableInstance> playables = L2World.getVisiblePlayable(getActiveObject());
+			Collection<L2Playable> playables = L2World.getVisiblePlayable(getActiveObject());
 			if (playables == null)
 				return;
 

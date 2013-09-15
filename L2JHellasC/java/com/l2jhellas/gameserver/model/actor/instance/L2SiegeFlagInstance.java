@@ -16,8 +16,9 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -25,7 +26,7 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2SiegeFlagInstance extends L2NpcInstance
+public class L2SiegeFlagInstance extends L2Npc
 {
 	private final L2PcInstance _player;
 	private final Siege _siege;

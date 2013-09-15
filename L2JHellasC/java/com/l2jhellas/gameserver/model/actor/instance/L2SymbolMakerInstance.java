@@ -17,12 +17,12 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2HennaInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2SymbolMakerInstance extends L2FolkInstance
+public class L2SymbolMakerInstance extends L2NpcInstance
 {
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)

@@ -26,9 +26,9 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2TradeList;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2MercManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -126,7 +126,7 @@ public final class RequestWearItem extends L2GameClientPacket
 		/** @formatter:off */
         if (!player.isGM() && ((target == null)															// No target (ie GM Shop)
         		|| !(target instanceof L2MerchantInstance || target instanceof L2MercManagerInstance)	// Target not a merchant and not mercmanager
-			    || !player.isInsideRadius(target, L2NpcInstance.INTERACTION_DISTANCE, false, false) 	// Distance is too far
+			    || !player.isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false) 	// Distance is too far
 			        )) return;
         /** @formatter:on */
 

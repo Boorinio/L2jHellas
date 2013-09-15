@@ -17,8 +17,8 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;

@@ -15,11 +15,11 @@
 package com.l2jhellas.gameserver.model.actor.stat;
 
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 
 public class PlayableStat extends CharStat
 {
-	public PlayableStat(L2PlayableInstance activeChar)
+	public PlayableStat(L2Playable activeChar)
 	{
 		super(activeChar);
 	}
@@ -180,8 +180,8 @@ public class PlayableStat extends CharStat
 	}
 
 	@Override
-	public L2PlayableInstance getActiveChar()
+	public L2Playable getActiveChar()
 	{
-		return (L2PlayableInstance) super.getActiveChar();
+		return (L2Playable) super.getActiveChar();
 	}
 }

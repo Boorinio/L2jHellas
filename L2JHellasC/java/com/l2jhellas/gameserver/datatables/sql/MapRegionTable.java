@@ -26,9 +26,9 @@ import com.l2jhellas.gameserver.instancemanager.ArenaManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.TownManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.Location;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
@@ -401,11 +401,11 @@ public class MapRegionTable
 					if (teleportWhere == TeleportWhereType.SiegeFlag && castle.getSiege().getIsInProgress())
 					{
 						// Check if player's clan is attacker
-						List<L2NpcInstance> flags = castle.getSiege().getFlag(player.getClan());
+						List<L2Npc> flags = castle.getSiege().getFlag(player.getClan());
 						if (flags != null && !flags.isEmpty())
 						{
 							// Spawn to flag - Need more work to get player to the nearest flag
-							L2NpcInstance flag = flags.get(0);
+							L2Npc flag = flags.get(0);
 							return new Location(flag.getX(), flag.getY(), flag.getZ());
 						}
 					}

@@ -16,9 +16,9 @@ package com.l2jhellas.gameserver.ai;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 

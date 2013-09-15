@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 
 public class PetInfo extends L2GameServerPacket

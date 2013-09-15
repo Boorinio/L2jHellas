@@ -18,11 +18,11 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.GameServer;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.util.L2FastList;
 
@@ -207,7 +207,7 @@ public class L2BossZone extends L2ZoneType
 					_playerAllowedReEntryTimes.remove(player.getObjectId());
 				}
 			}
-			if (character instanceof L2PlayableInstance)
+			if (character instanceof L2Playable)
 			{
 				if ((getCharactersInside() != null) && !getCharactersInside().isEmpty())
 				{
@@ -217,7 +217,7 @@ public class L2BossZone extends L2ZoneType
 					{
 						if (obj == null)
 							continue;
-						if (obj instanceof L2PlayableInstance)
+						if (obj instanceof L2Playable)
 							count++;
 						else if (obj instanceof L2Attackable && obj.isRaid())
 						{

@@ -22,8 +22,9 @@ import java.util.concurrent.ScheduledFuture;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -32,7 +33,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 /**
  * @author Ederik
  */
-public class L2ProtectorInstance extends L2NpcInstance
+public class L2ProtectorInstance extends L2Npc
 {
 	private ScheduledFuture<?> _aiTask;
 

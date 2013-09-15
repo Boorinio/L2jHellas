@@ -19,8 +19,8 @@ import java.util.List;
 import javolution.util.FastList;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
-import com.l2jhellas.gameserver.model.L2Attackable;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
@@ -108,7 +108,7 @@ public class Core extends L2AttackableAIScript
         GrandBossManager.getInstance().addBoss(npc);
         npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
         //Spawn minions
-        L2NpcInstance mob;
+        L2Npc mob;
         for (int i=0;i<5;i++)
         {
             int x = 16800 + i*360;
@@ -132,7 +132,7 @@ public class Core extends L2AttackableAIScript
         }
     }
 
-	public String onAdvEvent (String event, L2NpcInstance npc, L2PcInstance player)
+	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
 	{
         if (event.equalsIgnoreCase("core_unlock"))
         {
@@ -142,7 +142,7 @@ public class Core extends L2AttackableAIScript
         }
         else if (event.equalsIgnoreCase("spawn_minion"))
         {
-        	L2NpcInstance mob = addSpawn(npc.getNpcId(),npc.getX(),npc.getY(),npc.getZ(),npc.getHeading(),false,0);
+        	L2Npc mob = addSpawn(npc.getNpcId(),npc.getX(),npc.getY(),npc.getZ(),npc.getHeading(),false,0);
         	mob.setIsRaidMinion(true);
             Minions.add((L2Attackable)mob);
         }
@@ -159,7 +159,7 @@ public class Core extends L2AttackableAIScript
         return super.onAdvEvent(event, npc, player);
 	}
 
-    public String onAttack (L2NpcInstance npc, L2PcInstance attacker, int damage, boolean isPet)
+    public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
     {	
         if (npc.getNpcId() == CORE)
         {
@@ -178,7 +178,7 @@ public class Core extends L2AttackableAIScript
         return super.onAttack(npc, attacker, damage, isPet);
     }
 
-    public String onKill (L2NpcInstance npc, L2PcInstance killer, boolean isPet) 
+    public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet) 
     { 
         int npcId = npc.getNpcId();
         if (npcId == CORE)

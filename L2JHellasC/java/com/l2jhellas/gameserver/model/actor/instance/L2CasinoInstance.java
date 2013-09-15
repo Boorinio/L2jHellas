@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
@@ -26,7 +27,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Rnd;
 
-public class L2CasinoInstance extends L2NpcInstance
+public class L2CasinoInstance extends L2Npc
 {
 	public String filename;
 

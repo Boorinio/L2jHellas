@@ -14,12 +14,12 @@
  */
 package com.l2jhellas.gameserver.model.actor.status;
 
-import com.l2jhellas.gameserver.model.L2Character;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 
 public class PlayableStatus extends CharStatus
 {
-	public PlayableStatus(L2PlayableInstance activeChar)
+	public PlayableStatus(L2Playable activeChar)
 	{
 		super(activeChar);
 	}
@@ -52,8 +52,8 @@ public class PlayableStatus extends CharStatus
 	}
 
 	@Override
-	public L2PlayableInstance getActiveChar()
+	public L2Playable getActiveChar()
 	{
-		return (L2PlayableInstance) super.getActiveChar();
+		return (L2Playable) super.getActiveChar();
 	}
 }

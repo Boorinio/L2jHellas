@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;

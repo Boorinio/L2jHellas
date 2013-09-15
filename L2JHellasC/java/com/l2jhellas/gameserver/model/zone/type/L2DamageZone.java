@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 
 /**

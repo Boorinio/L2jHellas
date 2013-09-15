@@ -31,7 +31,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2DoormenInstance extends L2FolkInstance
+public class L2DoormenInstance extends L2NpcInstance
 {
 	private ClanHall _clanHall;
 	private static int COND_ALL_FALSE = 0;

@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.skills.conditions;
 
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Env;
 

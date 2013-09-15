@@ -14,11 +14,12 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-public class L2EffectPointInstance extends L2NpcInstance
+public class L2EffectPointInstance extends L2Npc
 {
 	private final L2Character _owner;
 

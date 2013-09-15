@@ -15,14 +15,14 @@
 package com.l2jhellas.gameserver.handler.skillhandlers;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -132,8 +132,8 @@ public class Mdam implements ISkillHandler
 				String name = "";
 				if (target instanceof L2RaidBossInstance)
 					name = "RaidBoss ";
-				if (target instanceof L2NpcInstance)
-					name += target.getName() + "(" + ((L2NpcInstance) target).getTemplate().npcId + ")";
+				if (target instanceof L2Npc)
+					name += target.getName() + "(" + ((L2Npc) target).getTemplate().npcId + ")";
 				if (target instanceof L2PcInstance)
 					name = target.getName() + "(" + target.getObjectId() + ") ";
 				name += target.getLevel() + " lvl";

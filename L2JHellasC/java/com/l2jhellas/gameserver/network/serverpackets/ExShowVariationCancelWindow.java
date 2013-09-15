@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -29,7 +29,7 @@ public class ExShowVariationCancelWindow extends L2GameServerPacket
 
 	boolean _safety = true;
 
-	public ExShowVariationCancelWindow(L2PcInstance player, L2NpcInstance npc)
+	public ExShowVariationCancelWindow(L2PcInstance player, L2Npc npc)
 	{
 		if (player == null)
 			_safety = false;

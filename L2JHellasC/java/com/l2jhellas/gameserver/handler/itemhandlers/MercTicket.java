@@ -18,8 +18,8 @@ import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 
 public class MercTicket implements IItemHandler
@@ -45,7 +45,7 @@ public class MercTicket implements IItemHandler
 	 * 3) Remove the item from the person's inventory
 	 */
 	@Override
-	public void useItem(L2PlayableInstance playable, L2ItemInstance item)
+	public void useItem(L2Playable playable, L2ItemInstance item)
 	{
 		int itemId = item.getItemId();
 		L2PcInstance activeChar = (L2PcInstance) playable;

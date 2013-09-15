@@ -23,8 +23,8 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.util.Point3D;

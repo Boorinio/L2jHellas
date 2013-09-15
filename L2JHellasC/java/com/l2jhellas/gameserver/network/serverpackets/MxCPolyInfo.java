@@ -14,14 +14,14 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 
 /**
  * @author Velvet
  */
 public class MxCPolyInfo extends L2GameServerPacket
 {
-	private final L2NpcInstance _activeChar;
+	private final L2Npc _activeChar;
 	private final int _x, _y, _z, _heading;
 	private final int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd;
 	private int _flRunSpd;
@@ -31,7 +31,7 @@ public class MxCPolyInfo extends L2GameServerPacket
 	private final float _moveMultiplier;
 	private final int _maxCp;
 
-	public MxCPolyInfo(L2NpcInstance cha)
+	public MxCPolyInfo(L2Npc cha)
 	{
 		_activeChar = cha;
 		_x = _activeChar.getX();

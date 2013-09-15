@@ -100,9 +100,7 @@ import com.l2jhellas.gameserver.model.ForceBuff;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.ItemContainer;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
-import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -121,7 +119,6 @@ import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2Summon;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.MacroList;
 import com.l2jhellas.gameserver.model.PcFreight;
@@ -130,6 +127,11 @@ import com.l2jhellas.gameserver.model.PcWarehouse;
 import com.l2jhellas.gameserver.model.PetInventory;
 import com.l2jhellas.gameserver.model.ShortCuts;
 import com.l2jhellas.gameserver.model.TradeList;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
 import com.l2jhellas.gameserver.model.actor.knownlist.PcKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.PcStat;
@@ -238,7 +240,7 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
  * This class represents all player characters in the world. There is always a
  * client-thread connected to this (except if a player-store is activated upon logout).
  */
-public final class L2PcInstance extends L2PlayableInstance
+public final class L2PcInstance extends L2Playable
 {
 	// private static Logger _log = Logger.getLogger(L2PcInstance.class.getName());
 	
@@ -721,7 +723,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * The L2FolkInstance corresponding to the last Folk wich one the player
 	 * talked.
 	 */
-	private L2FolkInstance _lastFolkNpc = null;
+	private L2NpcInstance _lastFolkNpc = null;
 	
 	/** Last NPC Id talked on a quest */
 	private int _questNpcObject = 0;
@@ -1600,7 +1602,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * @param npcId
 	 *        The Identifier of the L2Attackable attacked
 	 */
-	public QuestState[] getQuestsForAttacks(L2NpcInstance npc)
+	public QuestState[] getQuestsForAttacks(L2Npc npc)
 	{
 		// Create a QuestState table that will contain all QuestState to modify
 		QuestState[] states = null;
@@ -1636,7 +1638,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * @param npcId
 	 *        The Identifier of the L2Attackable killed
 	 */
-	public QuestState[] getQuestsForKills(L2NpcInstance npc)
+	public QuestState[] getQuestsForKills(L2Npc npc)
 	{
 		// Create a QuestState table that will contain all QuestState to modify
 		QuestState[] states = null;
@@ -1733,9 +1735,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			if (getLastQuestNpcObject() > 0)
 			{
 				L2Object object = L2World.findObject(getLastQuestNpcObject());
-				if (object instanceof L2NpcInstance && isInsideRadius(object, L2NpcInstance.INTERACTION_DISTANCE, false, false))
+				if (object instanceof L2Npc && isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false))
 				{
-					L2NpcInstance npc = (L2NpcInstance) object;
+					L2Npc npc = (L2Npc) object;
 					QuestState[] states = getQuestsForTalk(npc.getNpcId());
 					
 					if (states != null)
@@ -5728,7 +5730,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if (!isInsideZone(ZONE_PVP) && (!isGM() || Config.KARMA_DROP_GM))
 		{
 			boolean isKarmaDrop = false;
-			boolean isKillerNpc = (killer instanceof L2NpcInstance);
+			boolean isKillerNpc = (killer instanceof L2Npc);
 			int pkLimit = Config.KARMA_PK_LIMIT;;
 			
 			int dropEquip = 0;
@@ -5844,7 +5846,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	{
 		if (target == null)
 			return;
-		if (!(target instanceof L2PlayableInstance))
+		if (!(target instanceof L2Playable))
 			return;
 		if (_inEventCTF || _inEventTvT || _inEventVIP || _inEventDM || isinZodiac)
 			return;
@@ -8855,7 +8857,7 @@ public final class L2PcInstance extends L2PlayableInstance
 		if ((getClan() != null) && (attacker != null) && (getClan().isMember(attacker.getName())) && !(getDuelState() == Duel.DUELSTATE_DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId()))
 			return false;
 		
-		if (attacker instanceof L2PlayableInstance && isInsideZone(ZONE_PEACE))
+		if (attacker instanceof L2Playable && isInsideZone(ZONE_PEACE))
 			return false;
 		
 		// Check if the L2PcInstance has Karma
@@ -9804,7 +9806,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * Set the _lastFolkNpc of the L2PcInstance corresponding to the last Folk
 	 * wich one the player talked.
 	 */
-	public void setLastFolkNPC(L2FolkInstance folkNpc)
+	public void setLastFolkNPC(L2NpcInstance folkNpc)
 	{
 		_lastFolkNpc = folkNpc;
 	}
@@ -9813,7 +9815,7 @@ public final class L2PcInstance extends L2PlayableInstance
 	 * Return the _lastFolkNpc of the L2PcInstance corresponding to the last
 	 * Folk wich one the player talked.
 	 */
-	public L2FolkInstance getLastFolkNPC()
+	public L2NpcInstance getLastFolkNPC()
 	{
 		return _lastFolkNpc;
 	}
@@ -11393,9 +11395,9 @@ public final class L2PcInstance extends L2PlayableInstance
 			return;
 		
 		// If character refuse a PhoenixBlessed autoress, cancel all buffs he had
-		if (answer == 0 && ((L2PlayableInstance) this).isPhoenixBlessed())
+		if (answer == 0 && ((L2Playable) this).isPhoenixBlessed())
 		{
-			((L2PlayableInstance) this).stopPhoenixBlessing(null);
+			((L2Playable) this).stopPhoenixBlessing(null);
 			stopAllEffects();
 		}
 		if (answer == 1)

@@ -15,12 +15,12 @@
 package com.l2jhellas.gameserver.model.actor.stat;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.Stats;
 
 public class NpcStat extends CharStat
 {
-	public NpcStat(L2NpcInstance activeChar)
+	public NpcStat(L2Npc activeChar)
 	{
 		super(activeChar);
 
@@ -28,9 +28,9 @@ public class NpcStat extends CharStat
 	}
 
 	@Override
-	public L2NpcInstance getActiveChar()
+	public L2Npc getActiveChar()
 	{
-		return (L2NpcInstance) super.getActiveChar();
+		return (L2Npc) super.getActiveChar();
 	}
 
 	@Override

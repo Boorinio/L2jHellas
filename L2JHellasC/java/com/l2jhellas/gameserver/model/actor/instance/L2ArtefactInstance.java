@@ -15,7 +15,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
@@ -25,7 +26,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * This class manages all Castle Siege Artefacts.<BR>
  * <BR>
  */
-public final class L2ArtefactInstance extends L2NpcInstance
+public final class L2ArtefactInstance extends L2Npc
 {
 	/**
 	 * Constructor of L2ArtefactInstance (use L2Character and L2NpcInstance constructor).<BR>

@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.logging.Level;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;

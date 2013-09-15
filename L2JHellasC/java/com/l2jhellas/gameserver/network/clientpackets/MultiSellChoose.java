@@ -20,14 +20,14 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell.MultiSellEntry;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell.MultiSellIngredient;
+import com.l2jhellas.gameserver.datatables.xml.L2Multisell.MultiSellListContainer;
 import com.l2jhellas.gameserver.model.L2Augmentation;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Multisell;
 import com.l2jhellas.gameserver.model.PcInventory;
-import com.l2jhellas.gameserver.model.L2Multisell.MultiSellEntry;
-import com.l2jhellas.gameserver.model.L2Multisell.MultiSellIngredient;
-import com.l2jhellas.gameserver.model.L2Multisell.MultiSellListContainer;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
@@ -97,7 +97,7 @@ public class MultiSellChoose extends L2GameClientPacket
 		// given the template entry and information about maintaining enchantment and applying taxes
 		// re-create the instance of the entry that will be used for this exchange
 		// i.e. change the enchantment level of select ingredient/products and adena amount appropriately.
-		L2NpcInstance merchant = (player.getTarget() instanceof L2NpcInstance) ? (L2NpcInstance) player.getTarget() : null;
+		L2Npc merchant = (player.getTarget() instanceof L2Npc) ? (L2Npc) player.getTarget() : null;
 		if (merchant == null)
 			return;
 
@@ -395,7 +395,7 @@ public class MultiSellChoose extends L2GameClientPacket
 	// example: If the template has an item worth 120aa, and the tax is 10%,
 	// then from 120aa, take 5/6 so that is 100aa, apply the 10% tax in adena (10a)
 	// so the final price will be 120aa and 10a!
-	private MultiSellEntry prepareEntry(L2NpcInstance merchant, MultiSellEntry templateEntry, boolean applyTaxes, boolean maintainEnchantment, int enchantLevel)
+	private MultiSellEntry prepareEntry(L2Npc merchant, MultiSellEntry templateEntry, boolean applyTaxes, boolean maintainEnchantment, int enchantLevel)
 	{
 		MultiSellEntry newEntry = L2Multisell.getInstance().new MultiSellEntry();
 		newEntry.setEntryId(templateEntry.getEntryId());

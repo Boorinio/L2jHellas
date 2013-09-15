@@ -32,8 +32,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.conditions.ConditionElementSeed;

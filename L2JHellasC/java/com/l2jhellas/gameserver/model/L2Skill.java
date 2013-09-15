@@ -24,13 +24,16 @@ import javolution.util.FastList;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
 import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ChestInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
@@ -1270,7 +1273,7 @@ public abstract class L2Skill
 				// Go through the L2Character _knownList
 				for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
 				{
-					if (src instanceof L2PcInstance && obj != null && (obj instanceof L2Attackable || obj instanceof L2PlayableInstance))
+					if (src instanceof L2PcInstance && obj != null && (obj instanceof L2Attackable || obj instanceof L2Playable))
 					{
 						if (Config.MOD_GVE_ENABLE_FACTION)
 						{
@@ -1332,7 +1335,7 @@ public abstract class L2Skill
 			}
 			case TARGET_AREA:
 			{
-				if ((!(target instanceof L2Attackable || target instanceof L2PlayableInstance)) || (getCastRange() >= 0 && (target == null || target == activeChar || target.isAlikeDead()))) //target is null or self or dead/faking
+				if ((!(target instanceof L2Attackable || target instanceof L2Playable)) || (getCastRange() >= 0 && (target == null || target == activeChar || target.isAlikeDead()))) //target is null or self or dead/faking
 				{
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 					return null;
@@ -1355,7 +1358,7 @@ public abstract class L2Skill
 				else
 					cha = activeChar;
 
-				boolean effectOriginIsL2PlayableInstance = (cha instanceof L2PlayableInstance);
+				boolean effectOriginIsL2PlayableInstance = (cha instanceof L2Playable);
 
 				L2PcInstance src = null;
 				if (activeChar instanceof L2PcInstance)
@@ -1371,7 +1374,7 @@ public abstract class L2Skill
 				{
 					if (obj == null)
 						continue;
-					if (!(obj instanceof L2Attackable || obj instanceof L2PlayableInstance))
+					if (!(obj instanceof L2Attackable || obj instanceof L2Playable))
 						continue;
 					if (obj == cha)
 						continue;
@@ -1454,7 +1457,7 @@ public abstract class L2Skill
 						// Skill user is not L2PlayableInstance
 						{
 							if (effectOriginIsL2PlayableInstance && // If effect starts at L2PlayableInstance and
-							!(obj instanceof L2PlayableInstance)) // Object is not L2PlayableInstance
+							!(obj instanceof L2Playable)) // Object is not L2PlayableInstance
 								continue;
 						}
 
@@ -1886,7 +1889,7 @@ public abstract class L2Skill
 					{
 						if (obj == null)
 							continue;
-						if (!(obj instanceof L2Attackable || obj instanceof L2PlayableInstance) || ((L2Character) obj).isDead() || ((L2Character) obj) == activeChar)
+						if (!(obj instanceof L2Attackable || obj instanceof L2Playable) || ((L2Character) obj).isDead() || ((L2Character) obj) == activeChar)
 							continue;
 
 						if (!Util.checkIfInRange(radius, target, obj, true))
@@ -1982,7 +1985,7 @@ public abstract class L2Skill
 			}
 			case TARGET_UNDEAD:
 			{
-				if (target instanceof L2NpcInstance || target instanceof L2SummonInstance)
+				if (target instanceof L2Npc || target instanceof L2SummonInstance)
 				{
 					if (!target.isUndead() || target.isDead())
 					{
@@ -2009,7 +2012,7 @@ public abstract class L2Skill
 			{
 				L2Character cha;
 				int radius = getSkillRadius();
-				if (getCastRange() >= 0 && (target instanceof L2NpcInstance || target instanceof L2SummonInstance) && target.isUndead() && !target.isAlikeDead())
+				if (getCastRange() >= 0 && (target instanceof L2Npc || target instanceof L2SummonInstance) && target.isUndead() && !target.isAlikeDead())
 				{
 					cha = target;
 					if (onlyFirst == false)
@@ -2029,8 +2032,8 @@ public abstract class L2Skill
 					{
 						if (obj == null)
 							continue;
-						if (obj instanceof L2NpcInstance)
-							target = (L2NpcInstance) obj;
+						if (obj instanceof L2Npc)
+							target = (L2Npc) obj;
 						else if (obj instanceof L2SummonInstance)
 							target = (L2SummonInstance) obj;
 						else

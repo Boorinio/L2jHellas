@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.ai;
 
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 
 /**
  * Interface of AI and client state.

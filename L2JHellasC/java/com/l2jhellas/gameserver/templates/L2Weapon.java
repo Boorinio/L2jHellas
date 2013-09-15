@@ -22,13 +22,13 @@ import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.skills.Env;
@@ -413,9 +413,9 @@ public final class L2Weapon extends L2Item
 					{
 						for (L2Object spMob : objs)
 						{
-							if (spMob instanceof L2NpcInstance)
+							if (spMob instanceof L2Npc)
 							{
-								L2NpcInstance npcMob = (L2NpcInstance) spMob;
+								L2Npc npcMob = (L2Npc) spMob;
 
 								if (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null)
 									for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))

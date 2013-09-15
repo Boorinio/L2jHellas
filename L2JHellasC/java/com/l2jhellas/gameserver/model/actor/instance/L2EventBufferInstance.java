@@ -18,13 +18,14 @@ import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
 
 public class L2EventBufferInstance
 {
 	static L2PcInstance selfBuffer;
-	static L2NpcInstance npcBuffer;
+	static L2Npc npcBuffer;
 
 	/**
 	 * Apply Buffs onto a player.

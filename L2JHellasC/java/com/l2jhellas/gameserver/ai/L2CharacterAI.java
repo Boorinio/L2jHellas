@@ -28,16 +28,16 @@ import java.util.logging.Level;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Universe;
-import com.l2jhellas.gameserver.model.L2Attackable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.L2Character;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PlayableInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.util.Point3D;
@@ -118,7 +118,7 @@ public class L2CharacterAI extends AbstractAI
 		L2Character target = null;
 		if (target instanceof L2PcInstance && _actor instanceof L2PcInstance)
 		{
-			if (((L2PcInstance) _actor).getKarma() > 0 && (_actor.getLevel() - target.getLevel()) >= 10 && ((L2PlayableInstance) target).getProtectionBlessing() && !(target.isInsideZone(ZONE_PVP)))
+			if (((L2PcInstance) _actor).getKarma() > 0 && (_actor.getLevel() - target.getLevel()) >= 10 && ((L2Playable) target).getProtectionBlessing() && !(target.isInsideZone(ZONE_PVP)))
 			{
 				// If attacker have karma and have level >= 10 than his target and target have Newbie Protection Buff,
 				clientActionFailed();
@@ -145,7 +145,7 @@ public class L2CharacterAI extends AbstractAI
 			// Also enable random animations for this L2Character if allowed
 			// This is only for mobs - town npcs are handled in their constructor
 			if (_actor instanceof L2Attackable)
-				((L2NpcInstance) _actor).startRandomAnimationTimer();
+				((L2Npc) _actor).startRandomAnimationTimer();
 
 			// Launch the Think Event
 			onEvtThink();
@@ -272,7 +272,7 @@ public class L2CharacterAI extends AbstractAI
 		}
 		if (target instanceof L2PcInstance && _actor instanceof L2PcInstance)
 		{
-			if (((L2PcInstance) _actor).getKarma() > 0 && (_actor.getLevel() - ((L2PcInstance) target).getLevel()) >= 10 && ((L2PlayableInstance) target).getProtectionBlessing() && !(((L2Character) target).isInsideZone(ZONE_PVP)))
+			if (((L2PcInstance) _actor).getKarma() > 0 && (_actor.getLevel() - ((L2PcInstance) target).getLevel()) >= 10 && ((L2Playable) target).getProtectionBlessing() && !(((L2Character) target).isInsideZone(ZONE_PVP)))
 			{
 				// If attacker have karma and have level >= 10 than his target and target have Newbie Protection Buff,
 				clientActionFailed();
@@ -996,13 +996,13 @@ public class L2CharacterAI extends AbstractAI
 			if (getFollowTarget() != null)
 			{
 				// prevent attack-follow into peace zones
-				if (getAttackTarget() != null && _actor instanceof L2PlayableInstance && target instanceof L2PlayableInstance)
+				if (getAttackTarget() != null && _actor instanceof L2Playable && target instanceof L2Playable)
 				{
 					if (getAttackTarget() == getFollowTarget())
 					{
 						// allow GMs to keep following
 						boolean isGM = (_actor instanceof L2PcInstance ? ((L2PcInstance) _actor).isGM() : false);
-						if (((L2PlayableInstance) _actor).isInsidePeaceZone(_actor, target) && !isGM)
+						if (((L2Playable) _actor).isInsidePeaceZone(_actor, target) && !isGM)
 						{
 							stopFollow();
 							setIntention(AI_INTENTION_IDLE);

@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
-import com.l2jhellas.gameserver.model.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
