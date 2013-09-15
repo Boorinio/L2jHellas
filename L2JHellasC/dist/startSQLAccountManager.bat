@@ -1,7 +1,7 @@
 @color 17
 echo OFF
 CLS
-@java -Djava.util.logging.config.file=console.cfg -cp ./../libs/*;l2jhellas.jar com.l2jhellas.tools.accountmanager.SQLAccountManager 2> NUL
+@java -Djava.util.logging.config.file=console.cfg -cp ./../libs/*; com.l2jhellas.tools.accountmanager.SQLAccountManager 2> NUL
 @pause
 if %errorlevel% == 0 (
 echo.

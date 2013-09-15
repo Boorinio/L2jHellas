@@ -12,7 +12,7 @@ do
 	
 	# For developers mostly (1. line gc logrotate, 2. line parameters for gc logging):
 	#[ -f log/gc.log ] && mv log/gc.log "log/gc/`date +%Y-%m-%d_%H-%M-%S`_gc.log" -verbose:gc -Xloggc:log/gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -XX:+PrintTenuringDistribution
-	java -Dfile.encoding=UTF-8 -Xmx768m -Xmn256m -Xmn256m -XX:PermSize=32m -cp ./../libs/*:l2jhellas.jar com.l2jhellas.gameserver.GameServer > log/stdout.log 2>&1
+	java -Dfile.encoding=UTF-8 -Xmx768m -Xmn256m -Xmn256m -XX:PermSize=32m -cp ./../libs/*: com.l2jhellas.gameserver.GameServer > log/stdout.log 2>&1
 	err=$?
 	sleep 10;
 done

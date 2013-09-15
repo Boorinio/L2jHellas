@@ -4,4 +4,4 @@
 # sudo apt-get install dos2unix
 # and in terminal convert all sh with: dos2unix *.sh
 
-java -Djava.util.logging.config.file=console.cfg -cp ./../libs/*;l2jhellas.jar com.l2jhellas.tools.accountmanager.SQLAccountManager
+java -Djava.util.logging.config.file=console.cfg -cp ./../libs/*: com.l2jhellas.tools.accountmanager.SQLAccountManager

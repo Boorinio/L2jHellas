@@ -45,7 +45,6 @@ import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
-import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -57,7 +56,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
 	private static final String _C__21_REQUESTBYPASSTOSERVER = "[C] 21 RequestBypassToServer";
 
-	// S
 	private String _command;
 
 	/**
