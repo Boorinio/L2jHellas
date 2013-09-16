@@ -770,7 +770,7 @@ public class L2Npc extends L2Character
             return;
 
 		// Check if the L2PcInstance is a GM
-		if (Config.ALT_GAME_VIEWNPC && player.getAccessLevel().isGm())
+		if (!Config.ALT_GAME_VIEWNPC && player.getAccessLevel().isGm())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
@@ -836,7 +836,7 @@ public class L2Npc extends L2Character
 			html.setHtml(html1.toString());
 			player.sendPacket(html);
 		}
-		else
+		else if (Config.ALT_GAME_VIEWNPC && player.getAccessLevel().isGm())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
@@ -883,20 +883,14 @@ public class L2Npc extends L2Character
 			html1.append("</table></center><br>");
 
 			html1.append("<center><font color=\"LEVEL\">[Drop Info]</font></center>");
-			html1.append("<br1>Rates legend: <font color=\"33FF77\">50%+</font> <font color=\"33EEEE\">30%+</font> <font color=\"FF0000\">less than 30%</font>");
-			html1.append("<table border=0 width=\"100%\">");
+			html1.append("<table border=1 width=\"100%\">");
+			html1.append("<tr><td><center>Item Name</center></td><td><center>Category</center></td><td><center>Chance</center></td></tr>");
 
 			for (L2DropCategory cat : getTemplate().getDropData())
 				for (L2DropData drop : cat.getAllDrops())
 				{
 					String name = ItemTable.getInstance().getTemplate(drop.getItemId()).getName();
-
-					if (drop.getChance() >= 600000)
-						html1.append("<tr><td><font color=\"33FF77\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
-					else if (drop.getChance() >= 300000)
-						html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
-					else
-						html1.append("<tr><td><font color=\"FF0000\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "Quest" : (cat.isSweep() ? "Sweep" : "Drop")) + "</td></tr>");
+					html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td>" + (drop.getChance() >= 10000 ? (double)drop.getChance() / 10000 : drop.getChance() < 10000 ? (double)drop.getChance() / 10000 : "N/A") + "%</td></tr>");
 				}
 
 			html1.append("</table>");
@@ -906,6 +900,45 @@ public class L2Npc extends L2Character
 			player.sendPacket(html);
 		}
 
+		if (Config.PLAYER_ALT_GAME_VIEWNPC && !player.getAccessLevel().isGm())
+		{
+			// Set the target of the L2PcInstance player
+			player.setTarget(this);
+
+			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+			// The player.getLevel() - getLevel() permit to display the correct color in the select window
+			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
+			player.sendPacket(my);
+
+			// Check if the player is attackable (without a forced attack)
+			if (isAutoAttackable(player))
+			{
+				// Send a Server->Client packet StatusUpdate of the L2NpcInstance to the L2PcInstance to update its HP bar
+				StatusUpdate su = new StatusUpdate(getObjectId());
+				su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
+				su.addAttribute(StatusUpdate.MAX_HP, getMaxHp());
+				player.sendPacket(su);
+			}
+
+			NpcHtmlMessage html = new NpcHtmlMessage(0);
+			TextBuilder html1 = new TextBuilder("<html><body>");
+			html1.append("<center><font color=\"LEVEL\">[Drop Info]</font></center>");
+			html1.append("<table border=1 width=\"100%\">");
+			html1.append("<tr><td><center>Item Name</center></td><td><center>Category</center></td><td><center>Chance</center></td></tr>");
+
+			for (L2DropCategory cat : getTemplate().getDropData())
+				for (L2DropData drop : cat.getAllDrops())
+				{
+					String name = ItemTable.getInstance().getTemplate(drop.getItemId()).getName();
+					html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td>" + (drop.getChance() >= 10000 ? ((double)drop.getChance() / 10000) : (((drop.getChance() < 10000 && drop.getChance() >= 1000) ? ((double)drop.getChance() / 10000) : ((drop.getChance() < 1000 && drop.getChance() >= 100) ? ((double)drop.getChance() / 10000) : (((drop.getChance() < 100 && drop.getChance() >= 10) ? ((double)drop.getChance() / 10000) : ((drop.getChance() < 10 && drop.getChance() != 0) ? ((double)drop.getChance() / 10000) : "??0??"))))))) + "%</td></tr>");
+				}
+
+			html1.append("</table>");
+			html1.append("</body></html>");
+
+			html.setHtml(html1.toString());
+			player.sendPacket(html);
+		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
