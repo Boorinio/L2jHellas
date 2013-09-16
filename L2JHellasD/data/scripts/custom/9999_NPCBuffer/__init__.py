@@ -9,8 +9,8 @@ from com.l2jhellas.gameserver.model.quest.jython import QuestJython as JQuest
 
 qn = "9999_NPCBuffer"
 
-NPC=[40006]
-ADENA_ID=57
+NPC         = [50]
+ADENA_ID    = 57
 QuestId     = 9999
 QuestName   = "NPCBuffer"
 QuestDesc   = "custom"
@@ -594,7 +594,7 @@ class Quest (JQuest) :
 	   st.setState(State.STARTED)
 	   return InitialHtml
 
-QUEST       = Quest(QuestId,str(QuestId) + "_" + QuestName,QuestDesc)
+QUEST = Quest(QuestId,str(QuestId) + "_" + QuestName,QuestDesc)
 
 for npcId in NPC:
  QUEST.addStartNpc(npcId)

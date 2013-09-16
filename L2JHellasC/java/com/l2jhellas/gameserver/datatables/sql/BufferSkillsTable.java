@@ -165,7 +165,7 @@ public class BufferSkillsTable
 	/**
 	 * This will reload BufferSkillsTable info from DataBase
 	 */
-	public static void reload()
+	public void reload()
 	{
 		_instance = new BufferSkillsTable();
 	}

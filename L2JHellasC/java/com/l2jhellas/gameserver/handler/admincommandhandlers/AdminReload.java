@@ -31,6 +31,7 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.LevelUpData;
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.csv.SummonItemsData;
+import com.l2jhellas.gameserver.datatables.sql.BufferSkillsTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
@@ -102,13 +103,14 @@ public class AdminReload implements IAdminCommandHandler
 				else if (type.startsWith("skill"))
 				{
 					SkillTable.getInstance().reload();
+					BufferSkillsTable.getInstance().reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All skills has been reloaded.");
 				}
 				else if (type.equals("npc") || type.equals("npcs"))
 				{
 					NpcTable.getInstance().reload();
-					activeChar.sendMessage("All NPCs have been reloaded");
+					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);
 				}
 				else if (type.equals("respawn_npc") || type.equals("respawn_npcs"))
@@ -131,7 +133,7 @@ public class AdminReload implements IAdminCommandHandler
 					RaidBossSpawnManager.getInstance().reloadBosses();
 					SevenSigns.getInstance().spawnSevenSignsNPC();
 					AdminTable.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
-					activeChar.sendMessage("All NPCs have been reloaded");
+					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);
 				}
 				else if (type.startsWith("htm") || type.startsWith("html"))

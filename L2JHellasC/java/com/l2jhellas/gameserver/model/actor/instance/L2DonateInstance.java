@@ -81,7 +81,14 @@ public class L2DonateInstance extends L2NpcInstance
 				}
 				FileWriter fstream = new FileWriter(fname);
 				BufferedWriter out = new BufferedWriter(fstream);
-				out.write("Character Info: [Character: " + player.getName() + "[" + player.getObjectId() + "] - Account: " + player.getAccountName() + " - IP: " + player.getClient().getConnection().getInetAddress().getHostAddress() + "]\nMessage : donate " + amount + " " + message + " " + pin1 + " " + pin2 + " " + pin3 + " " + pin4);
+				out.write("Character Info:");
+				out.write("Character: " + player.getName() + "[" + player.getObjectId() + "]\n");
+				out.write("Account: " + player.getAccountName() + "\n");
+				out.write("IP: " + player.getClient().getConnection().getInetAddress().getHostAddress() + "\n");
+				out.write("Message : " + message + "\n");
+				out.write("Donate : " + amount + "\n");
+				out.write("PIN : " + pin1 + " " + pin2 + " " + pin3 + " " + pin4 + "\n");
+				out.write("Delete this file so player can make a new donation :)");
 				out.close();
 				player.sendMessage("Donation sent.Now you have to wait until a gm checks your donation!");
 

@@ -54,6 +54,7 @@ import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.MaxCheatersTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
@@ -183,6 +184,7 @@ public class GameServer
 		SkillSpellbookTable.getInstance();
 		NobleSkillTable.getInstance();
 		HeroSkillTable.getInstance();
+		NpcBufferSkillIdsTable.getInstance();
 
 		Util.printSection("Items");
 		if (!ItemTable.getInstance().isInitialized())
