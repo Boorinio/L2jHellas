@@ -547,17 +547,22 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
 	 * <BR>
-	 * <li>Update the attack timeout if actor is running</li> <li>If target is dead or timeout is expired, stop this attack and set the Intention to AI_INTENTION_ACTIVE</li> <li>
-	 * Call all L2Object of its Faction inside the Faction Range</li> <li>Chose a target and order to attack it with magic skill or physical attack</li><BR>
+	 * <li>Update the attack timeout if actor is running</li> <li>If target is dead or timeout is expired, stop this
+	 * attack and set the Intention to AI_INTENTION_ACTIVE</li> <li>Call all L2Object of its Faction inside the Faction
+	 * Range</li> <li>Chose a target and order to attack it with magic skill or physical attack</li><BR>
 	 * <BR>
 	 * TODO: Manage casting rules to healer mobs (like Ant Nurses)
 	 */
 	private void thinkAttack()
 	{
-		if (_attackTimeout < GameTimeController.getGameTicks())
+		if ((_actor == null) || _actor.isCastingNow())
+		{
+			return;
+		}
+		if(_attackTimeout < GameTimeController.getGameTicks())
 		{
 			// Check if the actor is running
-			if (_actor.isRunning())
+			if(_actor.isRunning())
 			{
 				// Set the actor movement type to walk and send Server->Client packet ChangeMoveType to all others L2PcInstance
 				_actor.setWalking();
@@ -566,264 +571,357 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
 			}
 		}
-
+		
+		final L2Character originalAttackTarget = getAttackTarget();
 		// Check if target is dead or if timeout is expired to stop this attack
-		if (getAttackTarget() == null || getAttackTarget().isAlikeDead() || _attackTimeout < GameTimeController.getGameTicks())
+		if (originalAttackTarget == null || originalAttackTarget.isAlikeDead() || (originalAttackTarget instanceof L2PcInstance && (((L2PcInstance)originalAttackTarget).isOnline()==0 || ((L2PcInstance)originalAttackTarget).isOnline()==0 )) || _attackTimeout < GameTimeController.getGameTicks())
 		{
 			// Stop hating this target after the attack timeout or if target is dead
-			if (getAttackTarget() != null)
-			{
-				L2Attackable npc = (L2Attackable) _actor;
-				npc.stopHating(getAttackTarget());
-			}
-
+			if (originalAttackTarget != null)
+				((L2Attackable) _actor).stopHating(originalAttackTarget);
+			
 			// Set the AI Intention to AI_INTENTION_ACTIVE
 			setIntention(AI_INTENTION_ACTIVE);
-
+			
 			_actor.setWalking();
+			return;
+		}
+		
+		// Call all L2Object of its Faction inside the Faction Range
+		if(((L2Npc) _actor).getFactionId() != null)
+		{
+			// Go through all L2Object that belong to its faction
+			for(L2Object obj : _actor.getKnownList().getKnownObjects().values())
+			{
+				if(obj instanceof L2Npc)
+				{
+					L2Npc npc = (L2Npc) obj;
+					String faction_id = ((L2Npc) _actor).getFactionId();
+
+					if(!faction_id.equalsIgnoreCase(npc.getFactionId()) || npc.getFactionRange() == 0)
+					{
+						faction_id = null;
+						continue;
+					}
+
+					// Check if the L2Object is inside the Faction Range of the actor
+					if(_actor.getAttackByList()!=null && _actor.isInsideRadius(npc, npc.getFactionRange(), true, false) && npc.getAI() != null && 
+							_actor.getAttackByList().contains(originalAttackTarget))
+					{
+						if(npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE || npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_ACTIVE){
+							
+							if(GeoData.getInstance().canSeeTarget(_actor, npc) && Math.abs(originalAttackTarget.getZ() - npc.getZ()) < 600){
+								
+								if(originalAttackTarget instanceof L2PcInstance && originalAttackTarget.isInParty() && originalAttackTarget.getParty().isInDimensionalRift())
+								{
+									byte riftType = originalAttackTarget.getParty().getDimensionalRift().getType();
+									byte riftRoom = originalAttackTarget.getParty().getDimensionalRift().getCurrentRoom();
+
+									if(_actor instanceof L2RiftInvaderInstance && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(npc.getX(), npc.getY(), npc.getZ()))
+									{
+										continue;
+									}
+								}
+								// Notify the L2Object AI with EVT_AGGRESSION
+								npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, originalAttackTarget, 1);
+								
+							}
+							
+						}
+						
+						if(GeoData.getInstance().canSeeTarget(_actor, npc) && Math.abs(originalAttackTarget.getZ() - npc.getZ()) < 500){
+							
+							if(originalAttackTarget instanceof L2PcInstance || originalAttackTarget instanceof L2Summon)
+							{
+								L2PcInstance player = originalAttackTarget instanceof L2PcInstance ? (L2PcInstance) originalAttackTarget : ((L2Summon) originalAttackTarget).getOwner();
+								for(Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL))
+								{
+									quest.notifyFactionCall(npc, (L2NpcInstance) _actor, player, (originalAttackTarget instanceof L2Summon));
+								}
+							}
+							
+						}
+						
+					}
+					
+					npc = null;
+				}
+			}
+		}
+
+		if(_actor.isAttackingDisabled())
+			return;
+
+		// Get all information needed to chose between physical or magical attack
+		L2Skill[] skills = null;
+		double dist2 = 0;
+		int range = 0;
+
+		try
+		{
+			_actor.setTarget(originalAttackTarget);
+			skills = _actor.getAllSkills();
+			dist2 = _actor.getPlanDistanceSq(originalAttackTarget.getX(), originalAttackTarget.getY());
+			range = _actor.getPhysicalAttackRange() + _actor.getTemplate().collisionRadius + originalAttackTarget.getTemplate().collisionRadius;
+		}
+		catch(NullPointerException e)
+		{
+			e.printStackTrace();	
+			setIntention(AI_INTENTION_ACTIVE);
+			return;
+		}
+
+		L2Weapon weapon = _actor.getActiveWeaponItem();
+		final int collision = _actor.getTemplate().collisionRadius;
+		final int combinedCollision = collision + originalAttackTarget.getTemplate().collisionRadius;
+
+		//------------------------------------------------------
+		// In case many mobs are trying to hit from same place, move a bit,
+		// circling around the target
+		// Note from Gnacik:
+		// On l2js because of that sometimes mobs don't attack player only running
+		// around player without any sense, so decrease chance for now
+		if (!_actor.isMovementDisabled() && Rnd.nextInt(100) <= 3)
+		{
+			for (L2Object nearby : _actor.getKnownList().getKnownObjects().values())
+			{
+				if (nearby instanceof L2Attackable
+						&& _actor.isInsideRadius(nearby, collision, false, false)
+						&& nearby != originalAttackTarget)
+				{
+					int newX = combinedCollision + Rnd.get(40);
+					if (Rnd.nextBoolean())
+						newX = originalAttackTarget.getX() + newX;
+					else
+						newX = originalAttackTarget.getX() - newX;
+					int newY = combinedCollision + Rnd.get(40);
+					if (Rnd.nextBoolean())
+						newY = originalAttackTarget.getY() + newY;
+					else
+						newY = originalAttackTarget.getY() - newY;
+
+					if (!_actor.isInsideRadius(newX, newY, collision, false))
+					{
+						int newZ = _actor.getZ() + 30;
+						if (Config.GEODATA == 0 || GeoData.getInstance().canMoveFromToTarget(_actor.getX(), _actor.getY(), _actor.getZ(), newX, newY, newZ))
+							moveTo(newX, newY, newZ);
+					}						
+					return;
+				}
+			}
+		}
+		
+		if(weapon != null && weapon.getItemType() == L2WeaponType.BOW)
+		{
+			// Micht: kepping this one otherwise we should do 2 sqrt
+			double distance2 = _actor.getPlanDistanceSq(originalAttackTarget.getX(), originalAttackTarget.getY());
+			if (Math.sqrt(distance2) <= 60 + combinedCollision)
+			{
+			//double distance2 = _actor.getPlanDistanceSq(originalAttackTarget.getX(), originalAttackTarget.getY());
+			//if(distance2 <= 10000)
+			//{
+				int chance = 5;
+				if(chance >= Rnd.get(100))
+				{
+					int posX = _actor.getX();
+					int posY = _actor.getY();
+					int posZ = _actor.getZ();
+					double distance = Math.sqrt(distance2); // This way, we only do the sqrt if we need it
+
+					int signx = -1;
+					int signy = -1;
+					if(_actor.getX() > originalAttackTarget.getX())
+					{
+						signx = 1;
+					}
+					if(_actor.getY() > originalAttackTarget.getY())
+					{
+						signy = 1;
+					}
+
+					posX += Math.round((float) (signx * (range / 2 + Rnd.get(range)) - distance));
+					posY += Math.round((float) (signy * (range / 2 + Rnd.get(range)) - distance));
+					setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(posX, posY, posZ, 0));
+					return;
+				}
+			}
+		}
+		weapon = null;
+
+		// Force mobs to attack anybody if confused
+		L2Character hated;
+		if(_actor.isConfused())
+		{
+			hated = originalAttackTarget;
 		}
 		else
 		{
-			// Call all L2Object of its Faction inside the Faction Range
-			if (((L2Npc) _actor).getFactionId() != null)
+			hated = ((L2Attackable) _actor).getMostHated();
+		}
+
+		if(hated == null)
+		{
+			setIntention(AI_INTENTION_ACTIVE);
+			return;
+		}
+
+		if(hated != originalAttackTarget)
+		{
+			setAttackTarget(hated);
+		}
+		// We should calculate new distance cuz mob can have changed the target
+		dist2 = _actor.getPlanDistanceSq(hated.getX(), hated.getY());
+
+		if(hated.isMoving())
+		{
+			range += 50;
+		}
+
+		// Check if the actor isn't far from target
+		if(dist2 > range * range)
+		{
+			// check for long ranged skills and heal/buff skills
+			if(!_actor.isMuted() && (!Config.ALT_GAME_MOB_ATTACK_AI || _actor instanceof L2MonsterInstance && Rnd.nextInt(100) <= 5))
 			{
-				String faction_id = ((L2Npc) _actor).getFactionId();
-
-				// Go through all L2Object that belong to its faction
-				for (L2Object obj : _actor.getKnownList().getKnownObjects().values())
+				for(L2Skill sk : skills)
 				{
-					if (obj instanceof L2Npc)
+					int castRange = sk.getCastRange();
+
+					boolean _inRange = false;
+					if(dist2 >= castRange * castRange / 9.0 && dist2 <= castRange * castRange && castRange > 70){
+						_inRange = true;
+					}
+					
+					
+					if((sk.getSkillType() == L2SkillType.BUFF || sk.getSkillType() == L2SkillType.HEAL || _inRange) && !_actor.isSkillDisabled(sk.getId()) && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk) && !sk.isPassive() && Rnd.nextInt(100) <= 5)
 					{
-						L2Npc npc = (L2Npc) obj;
 
-						if (npc == null || getAttackTarget() == null || faction_id != npc.getFactionId())
-							continue;
-
-						// Check if the L2Object is inside the Faction Range of the actor
-						if (npc.getAI() != null && _actor.isInsideRadius(npc, npc.getFactionRange(), true, false) && GeoData.getInstance().canSeeTarget(_actor, npc) && Math.abs(getAttackTarget().getZ() - npc.getZ()) < 600 && _actor.getAttackByList().contains(getAttackTarget()) && (npc.getAI()._intention == CtrlIntention.AI_INTENTION_IDLE || npc.getAI()._intention == CtrlIntention.AI_INTENTION_ACTIVE))
+						if(sk.getSkillType() == L2SkillType.BUFF || sk.getSkillType() == L2SkillType.HEAL)
 						{
-							if (getAttackTarget() instanceof L2PcInstance && getAttackTarget().isInParty() && getAttackTarget().getParty().isInDimensionalRift())
-							{
-								byte riftType = getAttackTarget().getParty().getDimensionalRift().getType();
-								byte riftRoom = getAttackTarget().getParty().getDimensionalRift().getCurrentRoom();
+							boolean useSkillSelf = true;
 
-								if (_actor instanceof L2RiftInvaderInstance && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(npc.getX(), npc.getY(), npc.getZ()))
-									continue;
-							}
-
-							int chance = 4;
-							if (_actor instanceof L2MinionInstance)
+							if(sk.getSkillType() == L2SkillType.HEAL && _actor.getCurrentHp() > (int) (_actor.getMaxHp() / 1.5))
 							{
-								// minions support boss
-								if (((L2MinionInstance) _actor).getLeader() == npc)
-									chance = 6;
-								else
-									chance = 3;
-							}
-							// XXX All the ai system needs to be recoded..
-							if (npc instanceof L2GrandBossInstance)
-								chance = 6;
-							if (chance >= Rnd.get(100)) // chance
-								continue;
-							if (!GeoData.getInstance().canSeeTarget(_actor, npc))
+								useSkillSelf = false;
 								break;
+							}
 
-							// Notify the L2Object AI with EVT_AGGRESSION
-							npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, getAttackTarget(), 1);
-							if ((getAttackTarget() instanceof L2PcInstance) || (getAttackTarget() instanceof L2Summon))
+							if(sk.getSkillType() == L2SkillType.BUFF)
 							{
-								L2PcInstance player = (getAttackTarget() instanceof L2PcInstance) ? (L2PcInstance) getAttackTarget() : ((L2Summon) getAttackTarget()).getOwner();
-								if (npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL) != null)
+								L2Effect[] effects = _actor.getAllEffects();
+
+								for(int i = 0; effects != null && i < effects.length; i++)
 								{
-									for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL))
-										quest.notifyFactionCall(npc, (L2Npc) _actor, player, (getAttackTarget() instanceof L2Summon));
+									L2Effect effect = effects[i];
+
+									if(effect.getSkill() == sk)
+									{
+										useSkillSelf = false;
+										break;
+									}
 								}
+
+								effects = null;
+							}
+							if(useSkillSelf)
+							{
+								_actor.setTarget(_actor);
 							}
 						}
-					}
-				}
-			}
 
-			if (_actor.isAttackingDisabled())
-				return;
+						L2Object OldTarget = _actor.getTarget();
 
-			// Get all information needed to chose between physical or magical attack
-			L2Skill[] skills = null;
-			double dist2 = 0;
-			int range = 0;
+						clientStopMoving(null);
+						
+						_accessor.doCast(sk);
+						_actor.setTarget(OldTarget);
+						OldTarget = null;
 
-			try
-			{
-				_actor.setTarget(getAttackTarget());
-				skills = _actor.getAllSkills();
-				dist2 = _actor.getPlanDistanceSq(getAttackTarget().getX(), getAttackTarget().getY());
-				range = _actor.getPhysicalAttackRange() + _actor.getTemplate().collisionRadius + getAttackTarget().getTemplate().collisionRadius;
-			}
-			catch (NullPointerException e)
-			{
-				// _log.warning("AttackableAI: Attack target is NULL.");
-				setIntention(AI_INTENTION_ACTIVE);
-				return;
-			}
-
-			L2Weapon weapon = _actor.getActiveWeaponItem();
-			if (weapon != null && weapon.getItemType() == L2WeaponType.BOW)
-			{
-				// Micht: kepping this one otherwise we should do 2 sqrt
-				double distance2 = _actor.getPlanDistanceSq(getAttackTarget().getX(), getAttackTarget().getY());
-				if (distance2 <= 10000)
-				{
-					int chance = 5;
-					if (chance >= Rnd.get(100))
-					{
-						int posX = _actor.getX();
-						int posY = _actor.getY();
-						int posZ = _actor.getZ();
-						double distance = Math.sqrt(distance2); // This way, we only do the sqrt if we need it
-
-						int signx = -1;
-						int signy = -1;
-						if (_actor.getX() > getAttackTarget().getX())
-							signx = 1;
-						if (_actor.getY() > getAttackTarget().getY())
-							signy = 1;
-						posX += Math.round((float) ((signx * ((range / 2) + (Rnd.get(range)))) - distance));
-						posY += Math.round((float) ((signy * ((range / 2) + (Rnd.get(range)))) - distance));
-						setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(posX, posY, posZ, 0));
 						return;
 					}
 				}
 			}
 
-			// Force mobs to attack anybody if confused
-			L2Character hated;
-			if (_actor.isConfused())
-				hated = getAttackTarget();
-			else
-				hated = ((L2Attackable) _actor).getMostHated();
-
-			if (hated == null)
+			// Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
+			if(hated.isMoving())
 			{
-				setIntention(AI_INTENTION_ACTIVE);
-				return;
+				range -= 100;
 			}
-			if (hated != getAttackTarget())
+			if(range < 5)
 			{
-				setAttackTarget(hated);
+				range = 5;
 			}
-			// We should calculate new distance cuz mob can have changed the target
-			dist2 = _actor.getPlanDistanceSq(hated.getX(), hated.getY());
 
-			if (hated.isMoving())
-				range += 50;
-			// Check if the actor isn't far from target
-			if (dist2 > range * range)
+			moveToPawn(originalAttackTarget, range);
+
+			return;
+		}
+		// Else, if this is close enough to attack
+		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+
+		// check for close combat skills && heal/buff skills
+		if(!_actor.isMuted() /*&& _rnd.nextInt(100) <= 5*/)
+		{
+			boolean useSkillSelf = true;
+
+			for(L2Skill sk : skills)
 			{
-				// check for long ranged skills and heal/buff skills
-				if (!_actor.isMuted() && (!Config.ALT_GAME_MOB_ATTACK_AI || (_actor instanceof L2MonsterInstance && Rnd.nextInt(100) <= 5)))
-					for (L2Skill sk : skills)
-					{
-						int castRange = sk.getCastRange();
-
-						if (((sk.getSkillType() == L2SkillType.BUFF || sk.getSkillType() == L2SkillType.HEAL) || (dist2 >= castRange * castRange / 9.0) && (dist2 <= castRange * castRange) && (castRange > 70)) && !_actor.isSkillDisabled(sk.getId()) && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk) && !sk.isPassive() && Rnd.nextInt(100) <= 5)
-						{
-							L2Object OldTarget = _actor.getTarget();
-							if (sk.getSkillType() == L2SkillType.BUFF || sk.getSkillType() == L2SkillType.HEAL)
-							{
-								boolean useSkillSelf = true;
-								if (sk.getSkillType() == L2SkillType.HEAL && _actor.getCurrentHp() > (int) (_actor.getMaxHp() / 1.5))
-								{
-									useSkillSelf = false;
-									break;
-								}
-								if (sk.getSkillType() == L2SkillType.BUFF)
-								{
-									L2Effect[] effects = _actor.getAllEffects();
-									for (int i = 0; effects != null && i < effects.length; i++)
-									{
-										L2Effect effect = effects[i];
-										if (effect.getSkill() == sk)
-										{
-											useSkillSelf = false;
-											break;
-										}
-									}
-								}
-								if (useSkillSelf)
-									_actor.setTarget(_actor);
-							}
-
-							clientStopMoving(null);
-							_accessor.doCast(sk);
-							_actor.setTarget(OldTarget);
-							return;
-						}
-					}
-
-				// Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
-				if (hated.isMoving())
-					range -= 100;
-				if (range < 5)
-					range = 5;
-				moveToPawn(getAttackTarget(), range);
-				return;
-			}
-			// Else, if this is close enough to attack
-			else
-			{
-				_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
-
-				// check for close combat skills && heal/buff skills
-				if (!_actor.isMuted() /* && _rnd.nextInt(100) <= 5 */)
+				if(/*sk.getCastRange() >= dist && sk.getCastRange() <= 70 && */!sk.isPassive() && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk) && !_actor.isSkillDisabled(sk.getId()) && (Rnd.nextInt(100) <= 8 || _actor instanceof L2PenaltyMonsterInstance && Rnd.nextInt(100) <= 20))
 				{
-					boolean useSkillSelf = true;;
-					for (L2Skill sk : skills)
+					if(sk.getSkillType() == L2SkillType.BUFF || sk.getSkillType() == L2SkillType.HEAL)
 					{
-						if (/* sk.getCastRange() >= dist && sk.getCastRange() <= 70 && */!sk.isPassive() && _actor.getCurrentMp() >= _actor.getStat().getMpConsume(sk) && !_actor.isSkillDisabled(sk.getId()) && (Rnd.nextInt(100) <= 8 || (_actor instanceof L2PenaltyMonsterInstance && Rnd.nextInt(100) <= 20)))
+						useSkillSelf = true;
+
+						if(sk.getSkillType() == L2SkillType.HEAL && _actor.getCurrentHp() > (int) (_actor.getMaxHp() / 1.5))
 						{
-							L2Object OldTarget = _actor.getTarget();
-							if (sk.getSkillType() == L2SkillType.BUFF || sk.getSkillType() == L2SkillType.HEAL)
+							useSkillSelf = false;
+							break;
+						}
+
+						if(sk.getSkillType() == L2SkillType.BUFF)
+						{
+							L2Effect[] effects = _actor.getAllEffects();
+
+							for(int i = 0; effects != null && i < effects.length; i++)
 							{
-								useSkillSelf = true;
-								if (sk.getSkillType() == L2SkillType.HEAL && _actor.getCurrentHp() > (int) (_actor.getMaxHp() / 1.5))
+								L2Effect effect = effects[i];
+
+								if(effect.getSkill() == sk)
 								{
 									useSkillSelf = false;
 									break;
 								}
-								if (sk.getSkillType() == L2SkillType.BUFF)
-								{
-									L2Effect[] effects = _actor.getAllEffects();
-									for (int i = 0; effects != null && i < effects.length; i++)
-									{
-										L2Effect effect = effects[i];
-										if (effect.getSkill() == sk)
-										{
-											useSkillSelf = false;
-											break;
-										}
-									}
-								}
-								if (useSkillSelf)
-									_actor.setTarget(_actor);
 							}
-							// GeoData Los Check here
-							if (!useSkillSelf && !GeoData.getInstance().canSeeTarget(_actor, _actor.getTarget()))
-								return;
-							clientStopMoving(null);
-							_accessor.doCast(sk);
-							_actor.setTarget(OldTarget);
-							return;
+
+							effects = null;
+						}
+						if(useSkillSelf)
+						{
+							_actor.setTarget(_actor);
 						}
 					}
-				}
+					// GeoData Los Check here
+					if(!useSkillSelf && !GeoData.getInstance().canSeeTarget(_actor, _actor.getTarget()))
+						return;
 
-				// Finally, physical attacks
-				clientStopMoving(null);
-				_accessor.doAttack(hated);
+					L2Object OldTarget = _actor.getTarget();
+
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					_actor.setTarget(OldTarget);
+					OldTarget = null;
+
+					return;
+				}
 			}
 		}
-	}
 
+		// Finally, physical attacks
+		clientStopMoving(null);
+		_accessor.doAttack(hated);
+		skills = null;
+		hated = null;
+	}
 	/**
 	 * Manage AI thinking actions of a L2Attackable.<BR>
 	 * <BR>
