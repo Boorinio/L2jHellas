@@ -68,6 +68,14 @@ public final class AttackRequest extends L2GameClientPacket
 		if (target == null)
 			return;
 		
+		// Like L2OFF
+		if (activeChar.isAttackingNow() && activeChar.isMoving())
+		{
+			// If target is not attackable, send a Server->Client packet ActionFailed
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		if (activeChar.getTarget() != target)
 			target.onAction(activeChar);
 		else

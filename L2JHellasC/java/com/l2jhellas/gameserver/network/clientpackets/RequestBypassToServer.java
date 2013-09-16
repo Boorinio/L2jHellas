@@ -72,7 +72,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 
-		if (activeChar == null)
+		if (activeChar == null || _command==null)
 			return;
 
 		if (!activeChar.getAntiFlood().getServerBypass().tryPerformAction(_command) && !activeChar.isGM())
@@ -645,7 +645,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		html.setFile(filename);
 		activeChar.sendPacket(html);
 	}
-
+	
 	@Override
 	public String getType()
 	{

@@ -67,19 +67,13 @@ public final class RequestActionUse extends L2GameClientPacket
 		if (Config.DEBUG)
 			_log.finest(activeChar.getName() + " request Action use: id " + _actionId + " 2:" + _ctrlPressed + " 3:" + _shiftPressed);
 
-		// Don't do anything if player is dead
-		if (activeChar.isAlikeDead())
+		// Don't do anything if player is dead or confused
+		if ((activeChar.isFakeDeath() && (_actionId != 0)) || activeChar.isDead() || activeChar.isOutOfControl())
 		{
-			getClient().sendPacket(ActionFailed.STATIC_PACKET);
+			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
-		// don't do anything if player is confused
-		if (activeChar.isOutOfControl())
-		{
-			getClient().sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
+		
 		L2Summon pet = activeChar.getPet();
 		L2Object target = activeChar.getTarget();
 

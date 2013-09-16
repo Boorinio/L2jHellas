@@ -14624,4 +14624,22 @@ public final class L2PcInstance extends L2Playable
 		}
 		_activeSoulShots.clear();
 	}
+	
+	/**
+	 * Cancel autoshot use for shot itemId
+	 * @param itemId int id to disable
+	 * @return true if canceled.
+	 */
+	public boolean disableAutoShot(int itemId)
+	{
+		if (_activeSoulShots.containsKey(itemId))
+		{
+			removeAutoSoulShot(itemId);
+			sendPacket(new ExAutoSoulShot(itemId, 0));
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED).addItemName(itemId));
+			return true;
+		}
+		
+		return false;
+	}
 }

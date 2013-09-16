@@ -96,7 +96,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		if (activeChar == null || activeChar.isDead() || activeChar.isFakeDeath())
 			return;
 
 		// Like L2OFF movements prohibited when char is sitting
