@@ -154,11 +154,11 @@ public class AdminHeal implements IAdminCommandHandler
 				}
 				else if (((L2MonsterInstance) target).isMob())
 				{
-					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed monster " + target.getName() + "(" + target.getObjectId() + ")");
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " healed monster " + target.getName() + "(" + target.getObjectId() + ")");
 				}
 				else
 				{
-					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed etc " + target.getName() + "(" + target.getObjectId() + ")");
+					_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " healed etc " + target.getName() + "(" + target.getObjectId() + ")");
 				}
 			}
 		}
