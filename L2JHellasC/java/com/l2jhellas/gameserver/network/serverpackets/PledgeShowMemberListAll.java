@@ -15,8 +15,8 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
+import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -110,7 +110,7 @@ public class PledgeShowMemberListAll extends L2GameServerPacket
 		writeD(_clan.getAllyId());
 		writeS(_clan.getAllyName());
 		writeD(_clan.getAllyCrestId());
-		writeD(_clan.isAtWar());// new c3
+		writeD(_clan.isAtWar() ? 1 : 0);// new c3
 		writeD(_clan.getSubPledgeMembersCount(_pledgeType));
 
 		for (L2ClanMember m : _members)

@@ -26,9 +26,9 @@ import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
-import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.ClassType;
 import com.l2jhellas.gameserver.model.base.PlayerClass;
@@ -524,7 +524,7 @@ public final class L2VillageMasterInstance extends L2NpcInstance
 			player.sendPacket(SystemMessageId.CANNOT_DISPERSE_THE_CLANS_IN_ALLY);
 			return;
 		}
-		if (clan.isAtWar() != 0)
+		if (clan.isAtWar() != false)
 		{
 			player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_WAR);
 			return;

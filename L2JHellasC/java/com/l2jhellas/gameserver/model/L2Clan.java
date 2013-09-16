@@ -1292,11 +1292,11 @@ public class L2Clan
 		_hiredGuards++;
 	}
 
-	public int isAtWar()
+	public boolean isAtWar()
 	{
 		if ((_atWarWith != null) && (_atWarWith.size() > 0))
-			return 1;
-		return 0;
+			return true;
+		return false;
 	}
 
 	public List<Integer> getWarList()
