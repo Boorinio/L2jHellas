@@ -930,7 +930,7 @@ public class L2Npc extends L2Character
 				for (L2DropData drop : cat.getAllDrops())
 				{
 					String name = ItemTable.getInstance().getTemplate(drop.getItemId()).getName();
-					html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td>" + (drop.getChance() >= 10000 ? ((double)drop.getChance() / 10000) : (((drop.getChance() < 10000 && drop.getChance() >= 1000) ? ((double)drop.getChance() / 10000) : ((drop.getChance() < 1000 && drop.getChance() >= 100) ? ((double)drop.getChance() / 10000) : (((drop.getChance() < 100 && drop.getChance() >= 10) ? ((double)drop.getChance() / 10000) : ((drop.getChance() < 10 && drop.getChance() != 0) ? ((double)drop.getChance() / 10000) : "??0??"))))))) + "%</td></tr>");
+					html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td>" + (drop.getChance() >= 10000 ? (double)drop.getChance() / 10000 : drop.getChance() < 10000 ? (double)drop.getChance() / 10000 : "N/A") + "%</td></tr>");
 				}
 
 			html1.append("</table>");
