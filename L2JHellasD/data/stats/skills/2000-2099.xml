@@ -52,6 +52,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="buffDuration" val="15000" />
 		<set name="isPotion" val="true" />
+		<set name="isMagic" val="true" />
 		<for>
 		</for>
 	</skill>
@@ -337,6 +338,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<set name="isPotion" val="true" />
+		<set name="isMagic" val="true" />
 		<for>
 			<effect count="7" name="HealOverTime" time="2" val="48"
 				stackOrder="24" stackType="HpRecover" />
@@ -400,6 +402,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="isPotion" val="true" />
 		<set name="buffDuration" val="15000" />
+		<set name="isMagic" val="true" />
 		<for>
 			<effect count="7" name="HealOverTime" time="2" val="100"
 				stackOrder="50" stackType="HpRecover" />
@@ -413,6 +416,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<set name="isPotion" val="true" />
+		<set name="isMagic" val="true" />
 		<for>
 		</for>
 	</skill>

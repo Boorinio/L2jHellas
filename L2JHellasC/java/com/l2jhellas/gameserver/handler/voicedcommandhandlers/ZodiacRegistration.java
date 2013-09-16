@@ -28,6 +28,7 @@ import com.l2jhellas.gameserver.model.entity.engines.PeloponnesianWar;
 import com.l2jhellas.gameserver.model.entity.engines.ProtectTheLdr;
 import com.l2jhellas.gameserver.model.entity.engines.TreasureChest;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
@@ -46,7 +47,12 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 	{
 		String Ip = activeChar.getClient().getConnection().getInetAddress().getHostAddress();
 
-		if (command.startsWith(VOICED_COMMANDS[0]) && ZodiacMain.isEligible(activeChar, Ip))
+		if(OlympiadManager.getInstance().isRegisteredInComp(activeChar) || activeChar.isInOlympiadMode() || activeChar.getOlympiadGameId() >0)
+		{
+			activeChar.sendMessage("You can't register while you are in olympiad!");
+			return false;
+		}
+		else if (command.startsWith(VOICED_COMMANDS[0]) && ZodiacMain.isEligible(activeChar, Ip))
 		{
 			activeChar.isinZodiac = true;
 			activeChar.sendMessage("You are now registered!");
