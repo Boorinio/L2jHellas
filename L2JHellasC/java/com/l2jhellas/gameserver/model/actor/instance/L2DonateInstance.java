@@ -55,19 +55,19 @@ public class L2DonateInstance extends L2NpcInstance
 			StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
 			String amount = null;
-			int pin1 = 0;
-			int pin2 = 0;
-			int pin3 = 0;
-			int pin4 = 0;
+			String pin1 = null;
+			String pin2 = null;
+			String pin3 = null;
+			String pin4 = null;
 			String message = "";
 
 			try
 			{
 				amount = st.nextToken();
-				pin1 = Integer.parseInt(st.nextToken());
-				pin2 = Integer.parseInt(st.nextToken());
-				pin3 = Integer.parseInt(st.nextToken());
-				pin4 = Integer.parseInt(st.nextToken());
+				pin1 = st.nextToken();
+				pin2 = st.nextToken();
+				pin3 = st.nextToken();
+				pin4 = st.nextToken();
 				while (st.hasMoreTokens())
 					message = message + st.nextToken() + " ";
 
