@@ -67,8 +67,8 @@ public final class RequestEnchantItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
-		Collection<L2Character> knowns = activeChar.getKnownList().getKnownCharactersInRadius(400);
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		final Collection<L2Character> knowns = activeChar.getKnownList().getKnownCharactersInRadius(400);
 		if (activeChar == null || _objectId == 0)
 			return;
 
@@ -94,7 +94,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 			return;
 		}
 
-		L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
+		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
 		L2ItemInstance scroll = activeChar.getActiveEnchantItem();
 		activeChar.setActiveEnchantItem(null);
 		if ((item == null) || (scroll == null))

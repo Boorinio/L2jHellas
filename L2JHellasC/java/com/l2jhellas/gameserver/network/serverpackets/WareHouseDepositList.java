@@ -14,17 +14,14 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.logging.Logger;
-
 import javolution.util.FastList;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.templates.L2Item;
 
 public class WareHouseDepositList extends L2GameServerPacket
 {
-	private static Logger _log = Logger.getLogger(WareHouseDepositList.class.getName());
 	public static final int PRIVATE = 1;
 	public static final int CLAN = 2;
 	public static final int CASTLE = 3; //not sure
@@ -59,41 +56,38 @@ public class WareHouseDepositList extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		writeC(0x41);
-		/*
-		 * 0x01-Private Warehouse
-		 * 0x02-Clan Warehouse
-		 * 0x03-Castle Warehouse
-		 * 0x04-Warehouse
-		 */
-		writeH(_whType);
-		writeD(_playerAdena);
-		int count = _items.size();
-		if (Config.DEBUG)
-			_log.fine("count:" + count);
-		writeH(count);
-
-		for (L2ItemInstance item : _items)
+	writeC(0x41);
+	writeH(_whType);
+	writeD(_playerAdena);
+	writeH(_items.size());
+	
+	for (L2ItemInstance temp : _items)
+	{
+		if (temp == null || temp.getItem() == null)
+			continue;
+		
+		final L2Item item = temp.getItem();
+		
+		writeH(item.getType1());
+		writeD(temp.getObjectId());
+		writeD(temp.getItemId());
+		writeD(temp.getCount());
+		writeH(item.getType2());
+		writeH(temp.getCustomType1());
+		writeD(item.getBodyPart());
+		writeH(temp.getEnchantLevel());
+		writeH(temp.getCustomType2());
+		writeH(0x00);
+		writeD(temp.getObjectId());
+		if (temp.isAugmented())
 		{
-			writeH(item.getItem().getType1());// item type1 //unconfirmed, works
-			writeD(item.getObjectId());// unconfirmed, works
-			writeD(item.getItemId());// unconfirmed, works
-			writeD(item.getCount());// unconfirmed, works
-			writeH(item.getItem().getType2());// item type2 //unconfirmed, works
-			writeH(0x00);// ? 100
-			writeD(item.getItem().getBodyPart());// ?
-			writeH(item.getEnchantLevel());// enchant level -confirmed
-			writeH(0x00);// ? 300
-			writeH(0x00);// ? 200
-			writeD(item.getObjectId());// item id - confimed
-			if (item.isAugmented())
-			{
-				writeD(0x0000FFFF & item.getAugmentation().getAugmentationId());
-				writeD(item.getAugmentation().getAugmentationId() >> 16);
-			}
-			else
-				writeQ(0x00);
+			writeD(0x0000FFFF & temp.getAugmentation().getAugmentationId());
+			writeD(temp.getAugmentation().getAugmentationId() >> 16);
 		}
+		else
+			writeQ(0x00);
+	}
+	_items.clear();
 	}
 
 	@Override

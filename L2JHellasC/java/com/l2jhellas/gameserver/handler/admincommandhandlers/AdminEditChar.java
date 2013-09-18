@@ -365,7 +365,7 @@ public class AdminEditChar implements IAdminCommandHandler
 						{
 							// And re-add
 							if (member != player)
-								member.sendPacket(new PartySmallWindowAll(member, player.getParty().getPartyMembers()));
+								member.sendPacket(new PartySmallWindowAll(member, player.getParty()));
 						}
 					}
 					if (player.getClan() != null)

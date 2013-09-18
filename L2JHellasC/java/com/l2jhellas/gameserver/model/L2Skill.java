@@ -2351,7 +2351,10 @@ public abstract class L2Skill
 		else
 			_preCondition = c;
 	}
-
+	public EffectTemplate[] getEffectTemplates()
+	{
+		return _effectTemplates;
+	}
 	@Override
 	public String toString()
 	{

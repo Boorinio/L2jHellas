@@ -24,6 +24,7 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -93,14 +94,30 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 			player.sendMessage("Transactions are disabled for your Access Level.");
 			return;
 		}
-
-		if (player.getActiveEnchantItem() != null)
+		if(player.getActiveTradeList() != null)
 		{
-			player.setAccessLevel(-100);
-			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " Tried To Use Enchant Exploit , And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
+			player.sendMessage("You can't deposit items when you are trading.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		if(player.isDead() || player.isFakeDeath())
+		{
+			player.sendMessage("You can't deposit items while you are dead or fakedeath.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		if(player.isCastingNow())
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		if(player.getPrivateStoreType() != 0)
+		{
+			player.sendMessage("You can't deposit items when you are trading.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		// Alt game - Karma punishment
 		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && (player.getKarma() > 0))
 			return;

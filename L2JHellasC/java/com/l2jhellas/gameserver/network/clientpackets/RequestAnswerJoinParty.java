@@ -84,7 +84,7 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 					requestor.setParty(null);
 			}
 			if (requestor.getParty() != null)
-				requestor.getParty().decreasePendingInvitationNumber(); // if party is null, there is no need of decreasing
+				requestor.getParty().setPendingInvitation(false); // if party is null, there is no need of decreasing
 
 			player.setActiveRequester(null);
 			requestor.onTransactionResponse();

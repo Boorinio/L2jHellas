@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
-
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import Extensions.IpCatcher;
@@ -213,11 +212,13 @@ import com.l2jhellas.gameserver.network.serverpackets.TitleUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.TradeStart;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
+import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
+import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
@@ -8280,106 +8281,66 @@ public final class L2PcInstance extends L2Playable
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			long delaytime = System.currentTimeMillis() - getLastAccess();
-			
-			PreparedStatement statement;
-			ResultSet rset;
-			
-			/**
-			 * Restore Type 0 These skill were still in effect on the character
-			 * upon logout. Some of which were self casted and might still have
-			 * had a long reuse delay which also is restored.
-			 */
-			statement = con.prepareStatement(RESTORE_SKILL_SAVE);
+			PreparedStatement statement = con.prepareStatement(RESTORE_SKILL_SAVE);
 			statement.setInt(1, getObjectId());
 			statement.setInt(2, getClassIndex());
 			statement.setInt(3, 0);
-			rset = statement.executeQuery();
+			ResultSet rset = statement.executeQuery();
 			
 			while (rset.next())
 			{
-				int skillId = rset.getInt("skill_id");
-				int skillLvl = rset.getInt("skill_level");
 				int effectCount = rset.getInt("effect_count");
 				int effectCurTime = rset.getInt("effect_cur_time");
 				long reuseDelay = rset.getLong("reuse_delay");
 				long systime = rset.getLong("systime");
-				
-				// Just incase the admin minipulated this table incorrectly :x
-				if (skillId == -1 || effectCount == -1 || effectCurTime == -1 || reuseDelay < 0)
-				{
+
+				final L2Skill skill = SkillTable.getInstance().getInfo(rset.getInt("skill_id"), rset.getInt("skill_level"));
+				if (skill == null)
 					continue;
-				}
 				
-				L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLvl);
-				
-				skill.getEffects(this, this);
-				
-				if (reuseDelay > 10)
+				final long remainingTime = systime - System.currentTimeMillis();
+				if (remainingTime > 10)
 				{
-					disableSkill(skillId, reuseDelay);
-					addTimeStamp(new TimeStamp(skillId, reuseDelay, systime));
+					disableSkill(skill.getId(), remainingTime);
+					addTimeStamp(skill, reuseDelay, systime);
 				}
-				
-				for (L2Effect effect : getAllEffects())
+
+				/**
+				 * Restore Type 0 These skills were still in effect on the character upon logout. Some of which were self casted and might still have a long reuse delay which also is restored.
+				 */
+				if (skill.hasEffects())
 				{
-					if (effect.getSkill().getId() == skillId)
+					Env env = new Env();
+					env.player = this;
+					env.target = this;
+					env.skill = skill;
+					L2Effect ef;
+					for (EffectTemplate et : skill.getEffectTemplates())
 					{
-						effect.setCount(effectCount);
-						effect.setFirstTime(effectCurTime);
+						ef = et.getEffect(env);
+						if (ef != null)
+						{
+							ef.setCount(effectCount);
+							ef.setFirstTime(effectCurTime);
+							ef.scheduleEffect();
+						}
 					}
 				}
 			}
+			
 			rset.close();
 			statement.close();
 			
-			/**
-			 * Restore Type 1 The remaning skills lost effect upon logout but
-			 * were still under a high reuse delay.
-			 */
-			statement = con.prepareStatement(RESTORE_SKILL_SAVE);
+			statement = con.prepareStatement(DELETE_SKILL_SAVE);
 			statement.setInt(1, getObjectId());
 			statement.setInt(2, getClassIndex());
-			statement.setInt(3, 1);
-			rset = statement.executeQuery();
-			
-			while (rset.next())
-			{
-				int skillId = rset.getInt("skill_id");
-				long reuseDelay = rset.getLong("reuse_delay");
-				long systime = rset.getLong("systime");
-				
-				reuseDelay = reuseDelay - delaytime;
-				
-				if (reuseDelay <= 0)
-				{
-					continue;
-				}
-				
-				disableSkill(skillId, (long) reuseDelay);
-				addTimeStamp(new TimeStamp(skillId, (long) reuseDelay, (long) systime));
-			}
-			rset.close();
+			statement.executeUpdate();
 			statement.close();
-			
-			// Remove previously restored skills
-			try (PreparedStatement del = con.prepareStatement(DELETE_SKILL_SAVE))
-			{
-				del.setInt(1, getObjectId());
-				del.setInt(2, getClassIndex());
-				del.executeUpdate();
-			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not restore active effect data: " + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			_log.log(Level.WARNING, "Could not restore " + this + " active effect data: " + e.getMessage(), e);
 		}
-		
-		updateEffectIcons();
 	}
 	
 	/**
@@ -13042,6 +13003,27 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	/**
+	 * Index according to skill id the current timestamp of use.
+	 * @param skill
+	 * @param reuse delay
+	 */
+
+	public void addTimeStamp(L2Skill skill, long reuse)
+	{
+		ReuseTimeStamps.put(skill.getId(), new TimeStamp(skill.getId(), reuse));
+	}
+	
+	/**
+	 * Index according to skill this TimeStamp instance for restoration purposes only.
+	 * @param skill
+	 * @param reuse
+	 * @param systime
+	 */
+	public void addTimeStamp(L2Skill skill, long reuse, long systime)
+	{
+		ReuseTimeStamps.put(skill.getId(), new TimeStamp(skill.getId(), reuse, systime));
+	}
+	/**
 	 * Index according to skill this TimeStamp instance for restoration purposes only.
 	 * 
 	 * @param T
@@ -13790,14 +13772,47 @@ public final class L2PcInstance extends L2Playable
 		if (isInDuel() && getDuelState() == Duel.DUELSTATE_DUELLING)
 			setDuelState(Duel.DUELSTATE_INTERRUPTED);
 	}
-	
+    private final int[][] RandomSpawnE =
+    {
+            {Config.EVILX+2, Config.EVILY+1, Config.EVILZ},
+            {Config.EVILX+1, Config.EVILY+2, Config.EVILZ},
+            {Config.EVILX+3, Config.EVILY+1, Config.EVILZ},
+            {Config.EVILX+2, Config.EVILY+2, Config.EVILZ},
+            {Config.EVILX+4, Config.EVILY+3, Config.EVILZ},
+            {Config.EVILX+3, Config.EVILY+2, Config.EVILZ},
+    };
+   
+    private final int[][] RandomSpawnG =
+    {
+            {Config.GOODX+2, Config.GOODY+1, Config.GOODZ},
+            {Config.GOODX+1, Config.GOODY+2, Config.GOODZ},
+            {Config.GOODX+3, Config.GOODY+1, Config.GOODZ},
+            {Config.GOODX+2, Config.GOODY+2, Config.GOODZ},
+            {Config.GOODX+4, Config.GOODY+3, Config.GOODZ},
+            {Config.GOODX+3, Config.GOODY+2, Config.GOODZ},
+    };
+   
+    public final int[] getRandomSpawn()
+    {
+    	    int[] pos={};
+            final int[] getPosE = RandomSpawnE[Rnd.get(RandomSpawnE.length)];
+            final int[] getPosG = RandomSpawnG[Rnd.get(RandomSpawnG.length)];
+           
+            if(this.isevil())
+                return pos=getPosE;
+            else if(this.isgood())
+                    return pos=getPosG;
+            
+            return pos;
+
+    }
 	public void checks()
 	{
 		final IpCatcher ipc = new IpCatcher();
 		
 		if (ipc.isCatched(this))
 			this.logout();
-		
+
 		standUp();
 		setRunning();
 		
@@ -13808,6 +13823,26 @@ public final class L2PcInstance extends L2Playable
 		{
 			doRevive();
 			doDie(this);
+		}
+		
+		// l2jhellas Faction Good vs Evil
+		// Welcome for evil
+		if (Config.MOD_GVE_ENABLE_FACTION)
+		{
+			if (isevil())
+			{
+				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
+                teleToLocation(getRandomSpawn()[0], getRandomSpawn()[1], getRandomSpawn()[2]);
+				sendMessage("You have been teleported Back to your Faction Base.");
+				sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
+			}
+			if (isgood())
+			{
+				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
+                teleToLocation(getRandomSpawn()[0], getRandomSpawn()[1], getRandomSpawn()[2]);
+				sendMessage("You have been teleported Back to your Faction Base.");
+				sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
+			}
 		}
 		
 		L2Clan clan = this.getClan();
@@ -13863,26 +13898,12 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 		
-		// l2jhellas Faction Good vs Evil
-		// Welcome for evil
-		if (Config.MOD_GVE_ENABLE_FACTION)
+		// buff and status icons
+		if (Config.STORE_SKILL_COOLTIME)
 		{
-			if (this.isevil())
-			{
-				this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
-				this.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ, true);
-				this.sendMessage("You have been teleported Back to your Faction Base.");
-				this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
-			}
-			else if (this.isgood() && Config.MOD_GVE_ENABLE_FACTION)
-			{
-				this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
-				this.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ, true);
-				this.sendMessage("You have been teleported Back to your Faction Base.");
-				this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
-			}
-			this.sendPacket(ActionFailed.STATIC_PACKET);
+			restoreEffects();
 		}
+	
 		// check for crowns
 		CrownManager.getInstance().checkCrowns(this);
 		
@@ -13919,11 +13940,6 @@ public final class L2PcInstance extends L2Playable
 			sendPacket(new SignsSky());
 		}
 
-		// buff and status icons
-		if (Config.STORE_SKILL_COOLTIME)
-		{
-			this.restoreEffects();
-		}
 		if ((this.getFirstEffect(426) != null) || (this.getFirstEffect(427) != null))
 		{
 			this.stopSkillEffects(426);

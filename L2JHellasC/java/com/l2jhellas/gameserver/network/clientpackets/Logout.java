@@ -50,11 +50,6 @@ public final class Logout extends L2GameClientPacket
 		// Don't allow leaving if player is fighting
 		L2PcInstance player = getClient().getActiveChar();
 
-		if (EnterWorld._onlineplayers.contains(player) && player != null)
-		{
-			EnterWorld._onlineplayers.remove(player);
-		}
-
 		if (player == null)
 			return;
 
@@ -126,6 +121,15 @@ public final class Logout extends L2GameClientPacket
 		RegionBBSManager.getInstance().changeCommunityBoard();
 		
 		player.endDuel();
+		
+		player.store();
+		
+		player.sendPacket(ActionFailed.STATIC_PACKET);
+		
+		if (EnterWorld._onlineplayers.contains(player))
+		{
+			EnterWorld._onlineplayers.remove(player);
+		}
 		
 		player.deleteMe();
 		notifyFriends(player);

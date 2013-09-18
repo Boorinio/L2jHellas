@@ -638,7 +638,6 @@ public class L2Attackable extends L2Npc
 	 * @param lastAttacker
 	 *        The L2Character that has killed the L2Attackable
 	 */
-	@SuppressWarnings("unused")
 	@Override
 	protected void calculateRewards(L2Character lastAttacker)
 	{
@@ -1004,9 +1003,8 @@ public class L2Attackable extends L2Npc
 						// Party members in the known area of the last attacker
 						if (partyDmg > 0)
 						{
-							attackerParty.distributeXpAndSp(exp_premium, sp_premium, exp, sp, rewardedMembers, partyLvl, isChampion());
-						}
-					}
+							attackerParty.distributeXpAndSp(exp, sp, rewardedMembers, partyLvl);						}
+					    }
 				}
 			}
 			

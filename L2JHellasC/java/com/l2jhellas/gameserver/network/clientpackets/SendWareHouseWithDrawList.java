@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -67,7 +68,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("withdraw"))
@@ -75,10 +76,16 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			player.sendMessage("You withdrawing items too fast.");
 			return;
 		}
-		ItemContainer warehouse = player.getActiveWarehouse();
+		if(player.getActiveTradeList() != null)
+		{
+			player.sendMessage("You can't withdraw items when you are trading.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		final ItemContainer warehouse = player.getActiveWarehouse();
 		if (warehouse == null)
 			return;
-		L2NpcInstance manager = player.getLastFolkNPC();
+		final L2NpcInstance manager = player.getLastFolkNPC();
 		if (((manager == null) || !player.isInsideRadius(manager, L2Npc.INTERACTION_DISTANCE, false, false)) && !player.isGM())
 			return;
 
@@ -149,10 +156,10 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			int objectId = _items[i * 2 + 0];
 			int count = _items[i * 2 + 1];
 
-			L2ItemInstance oldItem = warehouse.getItemByObjectId(objectId);
+			final L2ItemInstance oldItem = warehouse.getItemByObjectId(objectId);
 			if ((oldItem == null) || (oldItem.getCount() < count))
 				player.sendMessage("Can't withdraw requested item" + (count > 1 ? "s" : ""));
-			L2ItemInstance newItem = warehouse.transferItem("Warehouse", objectId, count, player.getInventory(), player, player.getLastFolkNPC());
+			final L2ItemInstance newItem = warehouse.transferItem("Warehouse", objectId, count, player.getInventory(), player, player.getLastFolkNPC());
 			if (newItem == null)
 			{
 				_log.warning("Error withdrawing a warehouse object for char " + player.getName());
@@ -175,7 +182,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			player.sendPacket(new ItemList(player, false));
 
 		// Update current load status on player
-		StatusUpdate su = new StatusUpdate(player.getObjectId());
+		final StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
 	}

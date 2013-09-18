@@ -14,47 +14,42 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.List;
-
-import javolution.util.FastList;
-
+import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class PartySmallWindowAll extends L2GameServerPacket
 {
 	private static final String _S__63_PARTYSMALLWINDOWALL = "[S] 4e PartySmallWindowAll";
-	private List<L2PcInstance> _partyMembers = new FastList<L2PcInstance>();
+	private final L2Party _party;
 	private final L2PcInstance _exclude;
+	private final int _dist, _LeaderOID;
 
-	public void setPartyList(List<L2PcInstance> party)
-	{
-		_partyMembers = party;
-	}
-
-	public PartySmallWindowAll(L2PcInstance exclude, List<L2PcInstance> party)
+	public PartySmallWindowAll(L2PcInstance exclude, L2Party party)
 	{
 		_exclude = exclude;
-		_partyMembers = party;
+		_party = party;
+		_LeaderOID = _party.getPartyLeaderOID();
+		_dist = _party.getLootDistribution();
 	}
 
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x4e);
-		writeD(_partyMembers.get(0).getObjectId()); // c3 party leader id
-		writeD(_partyMembers.get(0).getParty().getLootDistribution());// c3 party loot type (0,1,2,....)
-		writeD(_partyMembers.size() - 1);
-
-		for (L2PcInstance member : _partyMembers)
+		writeD(_LeaderOID);
+		writeD(_dist);
+		writeD(_party.getMemberCount() - 1);
+		
+		for (L2PcInstance member : _party.getPartyMembers())
 		{
-			if (member != _exclude)
+			if (member != null && member != _exclude)
 			{
 				writeD(member.getObjectId());
 				writeS(member.getName());
-
+				
 				writeD((int) member.getCurrentCp()); // c4
 				writeD(member.getMaxCp()); // c4
-
+				
 				writeD((int) member.getCurrentHp());
 				writeD(member.getMaxHp());
 				writeD((int) member.getCurrentMp());
@@ -62,7 +57,7 @@ public class PartySmallWindowAll extends L2GameServerPacket
 				writeD(member.getLevel());
 				writeD(member.getClassId().getId());
 				writeD(0);// writeD(0x01); ??
-				writeD(0);
+				writeD(member.getRace().ordinal());
 			}
 		}
 	}

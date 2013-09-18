@@ -288,6 +288,7 @@ public class Olympiad
 	
 	public void loadNoblesRank()
 	{
+		if(_noblesRank!=null)
 		_noblesRank.clear();
 
 		Map<Integer, Integer> tmpPlace;

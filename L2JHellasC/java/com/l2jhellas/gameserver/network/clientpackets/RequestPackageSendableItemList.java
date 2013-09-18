@@ -15,6 +15,8 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.PackageSendableList;
 
 /**
@@ -37,11 +39,24 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 	@Override
 	public void runImpl()
 	{
-		/*
-		 * L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_objectID);
-		 * if(target == null)
-		 * return;
-		 */
+		final L2PcInstance player = getClient().getActiveChar();
+
+		if(player == null)
+			return;
+
+		if (!player.getAntiFlood().getTransaction().tryPerformAction("deposit"))
+		{
+			player.sendMessage("You depositing items too fast.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		if(player.getObjectId() == _objectID)
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+	
 		L2ItemInstance[] items = getClient().getActiveChar().getInventory().getAvailableItems(true);
 		// build list...
 		sendPacket(new PackageSendableList(items, _objectID));

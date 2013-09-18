@@ -109,7 +109,7 @@ public class EnterWorld extends L2GameClientPacket
 			getClient().closeNow();
 			return;
 		}
-
+		
 		// Send Macro List
 		activeChar.getMacroses().sendUpdate();
 		// Send Item List
@@ -233,7 +233,7 @@ public class EnterWorld extends L2GameClientPacket
 		{
 			activeChar.sendPacket(new GameGuardQuery());
 		}
-
+      
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET); //just to avoid target issues
 	}
 

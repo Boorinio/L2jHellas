@@ -171,7 +171,7 @@ public class ValidatePosition extends L2GameClientPacket
 			}
 		}
 		if (activeChar.getParty() != null)
-			activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar));
+			activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar.getParty()));
 
 		if (Config.ALLOW_WATER)
 			activeChar.checkWaterState();

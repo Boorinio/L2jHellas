@@ -24,9 +24,9 @@ public class PartyMemberPosition extends L2GameServerPacket
 {
 	private final L2Party _party;
 
-	public PartyMemberPosition(L2PcInstance actor)
+	public PartyMemberPosition(L2Party l2Party)
 	{
-		_party = actor.getParty();
+		_party = l2Party;
 	}
 
 	@Override
