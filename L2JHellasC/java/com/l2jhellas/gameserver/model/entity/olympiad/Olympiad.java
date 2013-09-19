@@ -35,6 +35,7 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
+import com.l2jhellas.gameserver.GameServer;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -156,13 +157,16 @@ public class Olympiad
     {
        return SingletonHolder._instance;
     }
-   
+	
 	public Olympiad()
 	{
-		load();
-		
-		if (_period == 0)
-			init();
+		if (!GameServer.Loaded)
+		{
+			load();
+			if (_period == 0)
+				init();
+			GameServer.Loaded = true;
+		}
 	}
 	
 	private void load()

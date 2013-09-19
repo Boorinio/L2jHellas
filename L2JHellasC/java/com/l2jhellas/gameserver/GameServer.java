@@ -134,7 +134,7 @@ import com.l2jserver.mmocore.network.SelectorThread;
 public class GameServer
 {
 	private static final Logger _log = Logger.getLogger(GameServer.class.getName());
-
+	public static boolean Loaded = false;
 	private final SelectorThread<L2GameClient> _selectorThread;
 	public static boolean _instanceOk = false;
 	public static GameServer gameServer;
