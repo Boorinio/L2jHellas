@@ -180,10 +180,12 @@ public class EnterWorld extends L2GameClientPacket
 		{
 			DimensionalRiftManager.getInstance().teleportToWaitingRoom(activeChar);
 		}
+		
 		if (activeChar.getClanJoinExpiryTime() > System.currentTimeMillis())
 		{
 			activeChar.sendPacket(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED);
 		}
+		
 		if (activeChar.getClan() != null)
 		{
 			activeChar.sendPacket(new PledgeSkillList(activeChar.getClan()));
