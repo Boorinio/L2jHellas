@@ -1003,7 +1003,7 @@ public class L2Attackable extends L2Npc
 						// Party members in the known area of the last attacker
 						if (partyDmg > 0)
 						{
-							attackerParty.distributeXpAndSp(exp, sp, rewardedMembers, partyLvl);						}
+							attackerParty.distributeXpAndSp(exp_premium, sp_premium, exp, sp, rewardedMembers, partyLvl);						}
 					    }
 				}
 			}
