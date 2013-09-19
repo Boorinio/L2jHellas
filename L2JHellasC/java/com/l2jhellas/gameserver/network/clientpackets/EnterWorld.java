@@ -140,6 +140,27 @@ public class EnterWorld extends L2GameClientPacket
 		Announcements.getInstance().showAnnouncements(activeChar);
 		activeChar.spawnMe(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 
+		
+		// l2jhellas Faction Good vs Evil
+		// Welcome for evil
+		if (Config.MOD_GVE_ENABLE_FACTION)
+		{
+			if (activeChar.isevil())
+			{
+				activeChar.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
+				activeChar. teleToLocation(activeChar.getRandomSpawn()[0], activeChar.getRandomSpawn()[1], activeChar.getRandomSpawn()[2]);
+                activeChar.sendMessage("You have been teleported Back to your Faction Base.");
+                activeChar.sendMessage("Welcome " + activeChar.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
+			}
+			if (activeChar.isgood())
+			{
+				activeChar.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
+				activeChar.teleToLocation(activeChar.getRandomSpawn()[0], activeChar.getRandomSpawn()[1], activeChar.getRandomSpawn()[2]);
+				activeChar.sendMessage("You have been teleported Back to your Faction Base.");
+				activeChar.sendMessage("Welcome " + activeChar.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
+			}
+			activeChar.broadcastUserInfo();
+		}
 		// engage and notify Partner
 		if (Config.MOD_ALLOW_WEDDING)
 		{

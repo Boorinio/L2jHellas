@@ -13774,37 +13774,35 @@ public final class L2PcInstance extends L2Playable
 	}
     private final int[][] RandomSpawnE =
     {
-            {Config.EVILX+2, Config.EVILY+1, Config.EVILZ},
-            {Config.EVILX+1, Config.EVILY+2, Config.EVILZ},
-            {Config.EVILX+3, Config.EVILY+1, Config.EVILZ},
-            {Config.EVILX+2, Config.EVILY+2, Config.EVILZ},
-            {Config.EVILX+4, Config.EVILY+3, Config.EVILZ},
-            {Config.EVILX+3, Config.EVILY+2, Config.EVILZ},
+            {Config.EVILX+20, Config.EVILY+23, Config.EVILZ+1},
+            {Config.EVILX+15, Config.EVILY+25, Config.EVILZ+2},
+            {Config.EVILX+18, Config.EVILY+18, Config.EVILZ+3},
+            {Config.EVILX+10, Config.EVILY+15, Config.EVILZ+4},
+            {Config.EVILX+25, Config.EVILY+26, Config.EVILZ+5},
+            {Config.EVILX+24, Config.EVILY+14, Config.EVILZ+6},
     };
    
     private final int[][] RandomSpawnG =
     {
-            {Config.GOODX+2, Config.GOODY+1, Config.GOODZ},
-            {Config.GOODX+1, Config.GOODY+2, Config.GOODZ},
-            {Config.GOODX+3, Config.GOODY+1, Config.GOODZ},
-            {Config.GOODX+2, Config.GOODY+2, Config.GOODZ},
-            {Config.GOODX+4, Config.GOODY+3, Config.GOODZ},
-            {Config.GOODX+3, Config.GOODY+2, Config.GOODZ},
+            {Config.GOODX+20, Config.GOODY+22, Config.GOODZ+1},
+            {Config.GOODX+15, Config.GOODY+26, Config.GOODZ+2},
+            {Config.GOODX+23, Config.GOODY+18, Config.GOODZ+3},
+            {Config.GOODX+16, Config.GOODY+16, Config.GOODZ+4},
+            {Config.GOODX+22, Config.GOODY+14, Config.GOODZ+5},
+            {Config.GOODX+24, Config.GOODY+19, Config.GOODZ+6},
     };
    
     public final int[] getRandomSpawn()
     {
-    	    int[] pos={};
             final int[] getPosE = RandomSpawnE[Rnd.get(RandomSpawnE.length)];
             final int[] getPosG = RandomSpawnG[Rnd.get(RandomSpawnG.length)];
            
             if(this.isevil())
-                return pos=getPosE;
+                return getPosE;
             else if(this.isgood())
-                    return pos=getPosG;
+                    return getPosG;     
             
-            return pos;
-
+            return null;
     }
 	public void checks()
 	{
@@ -13823,26 +13821,6 @@ public final class L2PcInstance extends L2Playable
 		{
 			doRevive();
 			doDie(this);
-		}
-		
-		// l2jhellas Faction Good vs Evil
-		// Welcome for evil
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
-			if (isevil())
-			{
-				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
-                teleToLocation(getRandomSpawn()[0], getRandomSpawn()[1], getRandomSpawn()[2]);
-				sendMessage("You have been teleported Back to your Faction Base.");
-				sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
-			}
-			if (isgood())
-			{
-				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
-                teleToLocation(getRandomSpawn()[0], getRandomSpawn()[1], getRandomSpawn()[2]);
-				sendMessage("You have been teleported Back to your Faction Base.");
-				sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
-			}
 		}
 		
 		L2Clan clan = this.getClan();
