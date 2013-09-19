@@ -28,6 +28,6 @@ public class RestartTheServer
 		RestartVoteVariable e = new RestartVoteVariable();
 
 		if (e.getVoteCount("restart") > Config.VOTES_NEEDED_FOR_RESTART)
-			Shutdown.getInstance().startShutdown(activeChar, 60, restart);
+			Shutdown.getInstance().startShutdown(activeChar, null, 60, restart);
 	}
 }

@@ -1524,9 +1524,9 @@ public final class Formulas
 		// measured Oct 2006 by Tank6585, formula by Sami
 		// attack speed 312 equals 1500 ms delay... (or 300 + 40 ms delay?)
 		if (rate < 2)
-			return 2700;
+			return (int)Math.max(0,2700);
 		else
-			return (int) (470000 / rate);
+			return (int)Math.max(0, (470000 / rate));
 	}
 
 	/** Calculate delay (in milliseconds) for skills cast */

@@ -5494,13 +5494,13 @@ public abstract class L2Character extends L2Object
 			{
 				case BOW:
 					atkSpd = getStat().getPAtkSpd();
-					return (int) (1500 * 345 / atkSpd);
+					return (int)Math.max (0,((1500 * 345) / atkSpd));
 				case DAGGER:
-					atkSpd = getStat().getPAtkSpd();
+					atkSpd = Math.max(0,getStat().getPAtkSpd());
 				// atkSpd /= 1.15;
 				break;
 				default:
-					atkSpd = getStat().getPAtkSpd();
+					atkSpd = Math.max(0,getStat().getPAtkSpd());
 			}
 		}
 		else

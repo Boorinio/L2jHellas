@@ -45,7 +45,7 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
-		String Ip = activeChar.getClient().getConnection().getInetAddress().getHostAddress();
+		final String Ip = activeChar.getClient().getConnection().getInetAddress().getHostAddress();
 
 		if(OlympiadManager.getInstance().isRegisteredInComp(activeChar) || activeChar.isInOlympiadMode() || activeChar.getOlympiadGameId() >0)
 		{

@@ -609,7 +609,10 @@ public class LoginServerThread extends Thread
 			return "PlayOk: " + playOkID1 + " " + playOkID2 + " LoginOk:" + loginOkID1 + " " + loginOkID2;
 		}
 	}
-
+	public int getServerStatus()
+	{
+		return _status;
+	}
 	private class WaitingClient
 	{
 		public int timestamp;

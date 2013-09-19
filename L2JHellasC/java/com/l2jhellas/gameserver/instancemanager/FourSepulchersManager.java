@@ -1775,7 +1775,32 @@ public class FourSepulchersManager
 	{
 		return _hallGateKeepers;
 	}
-
+	public void stop()
+	{
+		if (_changeCoolDownTimeTask != null)
+		{
+			_changeCoolDownTimeTask.cancel(true);
+			_changeCoolDownTimeTask = null;
+		}
+		
+		if (_changeEntryTimeTask != null)
+		{
+			_changeEntryTimeTask.cancel(true);
+			_changeEntryTimeTask = null;
+		}
+		
+		if (_changeWarmUpTimeTask != null)
+		{
+			_changeWarmUpTimeTask.cancel(true);
+			_changeWarmUpTimeTask = null;
+		}
+		
+		if (_changeAttackTimeTask != null)
+		{
+			_changeAttackTimeTask.cancel(true);
+			_changeAttackTimeTask = null;
+		}
+	}
 	public void showHtmlFile(L2PcInstance player, String file, L2Npc npc, L2PcInstance member)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
