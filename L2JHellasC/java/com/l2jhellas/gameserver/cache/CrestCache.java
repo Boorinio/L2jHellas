@@ -39,17 +39,14 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class CrestCache
 {
 	private static Logger _log = Logger.getLogger(CrestCache.class.getName());
-
 	private static CrestCache _instance;
 
+	private static final String UPDATE_CLAN_DATA = "UPDATE clan_data SET crest_id=? WHERE clan_id=?";
 	private final FastMRUCache<Integer, byte[]> _cachePledge = new FastMRUCache<Integer, byte[]>();
-
 	private final FastMRUCache<Integer, byte[]> _cachePledgeLarge = new FastMRUCache<Integer, byte[]>();
-
 	private final FastMRUCache<Integer, byte[]> _cacheAlly = new FastMRUCache<Integer, byte[]>();
 
 	private int _loadedFiles;
-
 	private long _bytesBuffLen;
 
 	public static CrestCache getInstance()
@@ -165,7 +162,7 @@ public class CrestCache
 
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET crest_id = ? WHERE clan_id = ?");
+					PreparedStatement statement = con.prepareStatement(UPDATE_CLAN_DATA);
 					statement.setInt(1, newId);
 					statement.setInt(2, clan.getClanId());
 					statement.executeUpdate();

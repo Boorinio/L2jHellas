@@ -27,6 +27,10 @@ public class ClanList
 {
 	protected static final Logger _log = Logger.getLogger(ClanList.class.getName());
 
+	private static final String SELECT_CLAN_DATA = "SELECT * FROM clan_data ORDER BY clan_level DESC LIMIT ";
+	private static final String SELECT_CASTLE = "SELECT name FROM castle WHERE id=";
+	private static final String SELECT_CHARNAME = "SELECT char_name FROM characters WHERE obj_Id=";
+	
 	private final TextBuilder _clanList = new TextBuilder();
 
 	public ClanList(int type)
@@ -48,7 +52,7 @@ public class ClanList
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT clan_id, clan_name, ally_name, leader_id, clan_level, reputation_score, hasCastle, ally_id FROM clan_data ORDER BY `clan_level` desc Limit " + stpoint + ", " + results);
+			PreparedStatement statement = con.prepareStatement(SELECT_CLAN_DATA + stpoint + ", " + results);
 			ResultSet result = statement.executeQuery();
 			int pos = 0;
 
@@ -75,7 +79,7 @@ public class ClanList
 				}
 				if (hascastle != 0)
 				{
-					PreparedStatement statement2 = con.prepareStatement("SELECT name FROM castle WHERE id=" + hascastle);
+					PreparedStatement statement2 = con.prepareStatement(SELECT_CASTLE + hascastle);
 					ResultSet result2 = statement2.executeQuery();
 					if (result2.next())
 						castlename = result2.getString("name");
@@ -84,7 +88,7 @@ public class ClanList
 				}
 				else
 					castlename = "[none]";
-				PreparedStatement statement3 = con.prepareStatement("SELECT char_name FROM characters WHERE obj_Id=" + clanleader);
+				PreparedStatement statement3 = con.prepareStatement(SELECT_CHARNAME + clanleader);
 				ResultSet result3 = statement3.executeQuery();
 
 				if (result3.next())

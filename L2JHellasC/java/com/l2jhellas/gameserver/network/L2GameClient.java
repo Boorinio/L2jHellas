@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.sql.Connection;
@@ -39,10 +40,10 @@ import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.mmocore.network.MMOClient;
+import com.l2jhellas.mmocore.network.MMOConnection;
 import com.l2jhellas.util.EventData;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-import com.l2jserver.mmocore.network.MMOClient;
-import com.l2jserver.mmocore.network.MMOConnection;
 
 /**
  * Represents a client connected on Game Server
@@ -448,7 +449,14 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 
 	public void closeNow()
 	{
-		super.getConnection().close(null);
+		try
+		{
+			super.getConnection().close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		cleanMe(true);
 	}
 

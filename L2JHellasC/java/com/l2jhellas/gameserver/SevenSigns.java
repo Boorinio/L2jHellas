@@ -47,6 +47,14 @@ public class SevenSigns
 	protected static final Logger _log = Logger.getLogger(SevenSigns.class.getName());
 	private static SevenSigns _instance;
 
+	private static final String SELECT_SS = "SELECT * FROM seven_signs";
+	private static final String SELECT_SS_STATUS = "SELECT * FROM seven_signs_status WHERE id=0";
+	private static final String UPDATE_SS = "UPDATE seven_signs_status SET date=? WHERE id=0";
+	private static final String UPDATE_SS_DATA = "UPDATE seven_signs SET cabal=?, seal=?, red_stones=?, green_stones=?, blue_stones=?, ancient_adena_amount=?, contribution_score=? WHERE char_obj_id=?";
+	// half part
+	private static final String UPDATE_SS_SETTINGS = "UPDATE seven_signs_status SET current_cycle=?, active_period=?, previous_winner=?, dawn_stone_score=?, dawn_festival_score=?, dusk_stone_score=?, dusk_festival_score=?, avarice_owner=?, gnosis_owner=?, strife_owner=?, avarice_dawn_score=?, gnosis_dawn_score=?, strife_dawn_score=?, avarice_dusk_score=?, gnosis_dusk_score=?, strife_dusk_score=?, festival_cycle=?, ";
+	private static final String INSERT_SS = "INSERT INTO seven_signs (char_obj_id, cabal, seal) VALUES (?,?,?)";
+	
 	// Basic Seven Signs Constants \\
 	public static final String SEVEN_SIGNS_DATA_FILE = "config/Main/Sevensigns.ini";
 	public static final String SEVEN_SIGNS_HTML_PATH = "data/html/seven_signs/";
@@ -712,10 +720,9 @@ public class SevenSigns
 	{
 		PreparedStatement statement = null;
 		ResultSet rset = null;
-
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("SELECT char_obj_id, cabal, seal, red_stones, green_stones, blue_stones, ancient_adena_amount, contribution_score FROM seven_signs");
+			statement = con.prepareStatement(SELECT_SS);
 			rset = statement.executeQuery();
 
 			while (rset.next())
@@ -743,7 +750,7 @@ public class SevenSigns
 			rset.close();
 			statement.close();
 
-			statement = con.prepareStatement("SELECT * FROM seven_signs_status WHERE id=0");
+			statement = con.prepareStatement(SELECT_SS_STATUS);
 			rset = statement.executeQuery();
 
 			while (rset.next())
@@ -772,7 +779,7 @@ public class SevenSigns
 			rset.close();
 			statement.close();
 
-			statement = con.prepareStatement("UPDATE seven_signs_status SET date=? WHERE id=0");
+			statement = con.prepareStatement(UPDATE_SS);
 			statement.setInt(1, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 			statement.execute();
 
@@ -819,7 +826,7 @@ public class SevenSigns
 						continue;
 					}
 
-				statement = con.prepareStatement("UPDATE seven_signs SET cabal=?, seal=?, red_stones=?, green_stones=?, blue_stones=?, ancient_adena_amount=?, contribution_score=? WHERE char_obj_id=?");
+				statement = con.prepareStatement(UPDATE_SS_DATA);
 				statement.setString(1, sevenDat.getString("cabal"));
 				statement.setInt(2, sevenDat.getInteger("seal"));
 				statement.setInt(3, sevenDat.getInteger("red_stones"));
@@ -840,7 +847,7 @@ public class SevenSigns
 
 			if (updateSettings)
 			{
-				String sqlQuery = "UPDATE seven_signs_status SET current_cycle=?, active_period=?, previous_winner=?, " + "dawn_stone_score=?, dawn_festival_score=?, dusk_stone_score=?, dusk_festival_score=?, " + "avarice_owner=?, gnosis_owner=?, strife_owner=?, avarice_dawn_score=?, gnosis_dawn_score=?, " + "strife_dawn_score=?, avarice_dusk_score=?, gnosis_dusk_score=?, strife_dusk_score=?, " + "festival_cycle=?, ";
+				String sqlQuery = UPDATE_SS_SETTINGS;
 
 				for (int i = 0; i < (SevenSignsFestival.FESTIVAL_COUNT); i++)
 				{
@@ -883,7 +890,6 @@ public class SevenSigns
 				{
 					_log.log(Level.CONFIG, getClass().getName() + ": Updated data in database.");
 				}
-
 			}
 		}
 		catch (SQLException e)
@@ -975,7 +981,7 @@ public class SevenSigns
 			// Update data in database, as we have a new player signing up.
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				statement = con.prepareStatement("INSERT INTO seven_signs (char_obj_id, cabal, seal) VALUES (?,?,?)");
+				statement = con.prepareStatement(INSERT_SS);
 				statement.setInt(1, charObjId);
 				statement.setString(2, getCabalShortName(chosenCabal));
 				statement.setInt(3, chosenSeal);

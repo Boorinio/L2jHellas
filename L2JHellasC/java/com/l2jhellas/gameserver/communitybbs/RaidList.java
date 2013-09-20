@@ -27,6 +27,9 @@ public class RaidList
 {
 	protected static final Logger _log = Logger.getLogger(RaidList.class.getName());
 
+	private static final String SELECT_RAID_DATA = "SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` ";
+	private static final String SELECT_SPAWN = "SELECT respawn_time, respawn_min_delay, respawn_max_delay FROM raidboss_spawnlist WHERE boss_id=";
+	
 	private final TextBuilder _raidList = new TextBuilder();
 
 	public RaidList(String rfid)
@@ -51,7 +54,7 @@ public class RaidList
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` " + sort + " Limit " + stpoint + ", " + Config.RAID_LIST_RESULTS);
+			PreparedStatement statement = con.prepareStatement(SELECT_RAID_DATA + sort + " Limit " + stpoint + ", " + Config.RAID_LIST_RESULTS);
 			ResultSet result = statement.executeQuery();
 			pos = stpoint;
 
@@ -60,7 +63,7 @@ public class RaidList
 				int npcid = result.getInt("id");
 				String npcname = result.getString("name");
 				int rlevel = result.getInt("level");
-				PreparedStatement statement2 = con.prepareStatement("SELECT respawn_time, respawn_min_delay, respawn_max_delay FROM raidboss_spawnlist WHERE boss_id=" + npcid);
+				PreparedStatement statement2 = con.prepareStatement(SELECT_SPAWN + npcid);
 				ResultSet result2 = statement2.executeQuery();
 
 				while (result2.next())

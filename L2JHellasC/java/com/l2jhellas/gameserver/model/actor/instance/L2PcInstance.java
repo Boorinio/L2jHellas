@@ -53,7 +53,6 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.LoginServerThread;
-import com.l2jhellas.gameserver.RecipeController;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -62,9 +61,10 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2PlayerAI;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.cache.WarehouseCacheManager;
+import com.l2jhellas.gameserver.cache.WarehouseCache;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.FishTable;
@@ -3076,7 +3076,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		if (Config.WAREHOUSE_CACHE)
 		{
-			WarehouseCacheManager.getInstance().addCacheTask(this);
+			WarehouseCache.getInstance().addCacheTask(this);
 		}
 		return _warehouse;
 	}
@@ -7678,7 +7678,7 @@ public final class L2PcInstance extends L2Playable
 			L2RecipeList recipe;
 			while (rset.next())
 			{
-				recipe = RecipeController.getInstance().getRecipeList(rset.getInt("id") - 1);
+				recipe = RecipeData.getInstance().getRecipeList(rset.getInt("id") - 1);
 				
 				if (rset.getInt("type") == 1)
 				{
@@ -11823,7 +11823,7 @@ public final class L2PcInstance extends L2Playable
 		// Stop crafting, if in progress
 		try
 		{
-			RecipeController.getInstance().requestMakeItemAbort(this);
+			RecipeData.getInstance().requestMakeItemAbort(this);
 		}
 		catch (Throwable t)
 		{
@@ -11978,7 +11978,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		if (Config.WAREHOUSE_CACHE)
 		{
-			WarehouseCacheManager.getInstance().remCacheTask(this);
+			WarehouseCache.getInstance().remCacheTask(this);
 		}
 		
 		// Update database with items in its freight and remove them from the world

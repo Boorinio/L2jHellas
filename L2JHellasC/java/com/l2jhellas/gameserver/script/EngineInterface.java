@@ -16,8 +16,8 @@ package com.l2jhellas.gameserver.script;
 
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameTimeController;
-import com.l2jhellas.gameserver.RecipeController;
 import com.l2jhellas.gameserver.datatables.LevelUpData;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -43,7 +43,7 @@ public interface EngineInterface
 
 	public SkillTable skillTable = SkillTable.getInstance();
 
-	public RecipeController recipeController = RecipeController.getInstance();
+	public RecipeData recipeController = RecipeData.getInstance();
 
 	public SkillTreeTable skillTreeTable = SkillTreeTable.getInstance();
 	public CharTemplateTable charTemplates = CharTemplateTable.getInstance();

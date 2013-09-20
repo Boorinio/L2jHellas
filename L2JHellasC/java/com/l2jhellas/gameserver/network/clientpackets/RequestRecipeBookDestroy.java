@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.RecipeController;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeBookItemList;
@@ -41,7 +41,7 @@ public final class RequestRecipeBookDestroy extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar != null)
 		{
-			L2RecipeList rp = RecipeController.getInstance().getRecipeList(_recipeID - 1);
+			L2RecipeList rp = RecipeData.getInstance().getRecipeList(_recipeID - 1);
 			if (rp == null)
 				return;
 			activeChar.unregisterRecipeList(_recipeID);

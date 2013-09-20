@@ -29,7 +29,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.L2GameClient;
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import com.l2jhellas.mmocore.network.ReceivablePacket;
 
 /**
  * <p>

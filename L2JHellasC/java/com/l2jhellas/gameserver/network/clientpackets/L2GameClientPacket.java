@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import com.l2jhellas.mmocore.network.ReceivablePacket;
 
 /**
  * Packets received by the game server from clients

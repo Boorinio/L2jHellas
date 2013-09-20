@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.itemhandlers;
 
-import com.l2jhellas.gameserver.RecipeController;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2RecipeList;
@@ -29,7 +29,7 @@ public class Recipes implements IItemHandler
 
 	public Recipes()
 	{
-		RecipeController rc = RecipeController.getInstance();
+		RecipeData rc = RecipeData.getInstance();
 		ITEM_IDS = new int[rc.getRecipesCount()];
 		for (int i = 0; i < rc.getRecipesCount(); i++)
 		{
@@ -43,7 +43,7 @@ public class Recipes implements IItemHandler
 		if (!(playable instanceof L2PcInstance))
 			return;
 		L2PcInstance activeChar = (L2PcInstance) playable;
-		L2RecipeList rp = RecipeController.getInstance().getRecipeByItemId(item.getItemId());
+		L2RecipeList rp = RecipeData.getInstance().getRecipeByItemId(item.getItemId());
 		if (activeChar.hasRecipeList(rp.getId()))
 		{
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.RECIPE_ALREADY_REGISTERED);

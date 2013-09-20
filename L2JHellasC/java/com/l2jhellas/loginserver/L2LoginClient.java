@@ -21,16 +21,16 @@ import java.security.interfaces.RSAPrivateKey;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.loginserver.crypt.LoginCrypt;
-import com.l2jhellas.loginserver.crypt.ScrambledKeyPair;
 import com.l2jhellas.loginserver.serverpackets.L2LoginServerPacket;
 import com.l2jhellas.loginserver.serverpackets.LoginFail;
-import com.l2jhellas.loginserver.serverpackets.PlayFail;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
+import com.l2jhellas.loginserver.serverpackets.PlayFail;
 import com.l2jhellas.loginserver.serverpackets.PlayFail.PlayFailReason;
+import com.l2jhellas.mmocore.network.MMOClient;
+import com.l2jhellas.mmocore.network.MMOConnection;
 import com.l2jhellas.util.Rnd;
-import com.l2jserver.mmocore.network.MMOClient;
-import com.l2jserver.mmocore.network.MMOConnection;
+import com.l2jhellas.util.crypt.LoginCrypt;
+import com.l2jhellas.util.crypt.ScrambledKeyPair;
 
 /**
  * Represents a client connected into the LoginServer
@@ -102,7 +102,14 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			super.getConnection().close(null);
+			try
+			{
+				super.getConnection().close();
+			}
+			catch (IOException e1)
+			{
+				e1.printStackTrace();
+			}
 			return false;
 		}
 
@@ -111,7 +118,14 @@ public final class L2LoginClient extends MMOClient<MMOConnection<L2LoginClient>>
 			byte[] dump = new byte[size];
 			System.arraycopy(buf.array(), buf.position(), dump, 0, size);
 			_log.warning("Wrong checksum from client: " + toString());
-			super.getConnection().close(null);
+			try
+			{
+				super.getConnection().close();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		return ret;

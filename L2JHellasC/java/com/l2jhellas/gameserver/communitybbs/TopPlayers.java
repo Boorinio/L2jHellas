@@ -31,6 +31,8 @@ public class TopPlayers
 {
 	protected static final Logger _log = Logger.getLogger(TopPlayers.class.getName());
 
+	private static final String SELECT_CHARS = "SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY ";
+	
 	private int pos;
 	private final TextBuilder _topList = new TextBuilder();
 	String sort = "";
@@ -67,7 +69,7 @@ public class TopPlayers
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			pos = 0;
-			PreparedStatement statement = con.prepareStatement("SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY " + sort + " DESC LIMIT " + Config.TOP_PLAYER_RESULTS);
+			PreparedStatement statement = con.prepareStatement(SELECT_CHARS + sort + " DESC LIMIT " + Config.TOP_PLAYER_RESULTS);
 
 			ResultSet result = statement.executeQuery();
 
@@ -117,7 +119,6 @@ public class TopPlayers
 		_topList.append("<td FIXWIDTH=150>" + online + "</td>");
 		_topList.append("<td FIXWIDTH=65>" + ((isOnline) ? "<font color=99FF00>Online</font>" : "<font color=CC0000>Offline</font>") + "</td>");
 		_topList.append("</tr></table><img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
-
 	}
 
 	public final static String className(int classid)

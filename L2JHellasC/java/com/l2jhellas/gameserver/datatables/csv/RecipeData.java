@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver;
+package com.l2jhellas.gameserver.datatables.csv;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +31,8 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.GameTimeController;
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2ManufactureItem;
@@ -53,20 +55,20 @@ import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
-public class RecipeController
+public class RecipeData
 {
-	protected static final Logger _log = Logger.getLogger(RecipeController.class.getName());
+	protected static final Logger _log = Logger.getLogger(RecipeData.class.getName());
 
-	private static RecipeController _instance;
+	private static RecipeData _instance;
 	private final Map<Integer, L2RecipeList> _lists;
 	protected static final Map<L2PcInstance, RecipeItemMaker> _activeMakers = Collections.synchronizedMap(new WeakHashMap<L2PcInstance, RecipeItemMaker>());
 
-	public static RecipeController getInstance()
+	public static RecipeData getInstance()
 	{
-		return _instance == null ? _instance = new RecipeController() : _instance;
+		return _instance == null ? _instance = new RecipeData() : _instance;
 	}
 
-	public RecipeController()
+	public RecipeData()
 	{
 		_lists = new FastMap<Integer, L2RecipeList>();
 		String line = null;

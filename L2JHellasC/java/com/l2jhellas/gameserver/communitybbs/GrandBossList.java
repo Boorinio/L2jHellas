@@ -28,6 +28,8 @@ public class GrandBossList
 {
 	protected static final Logger _log = Logger.getLogger(Lottery.class.getName());
 
+	private static final String SELECT_BOSS = "SELECT boss_id, status FROM grandboss_data";
+	private static final String SELECT_NAME = "SELECT name FROM npc WHERE id=";
 	private final TextBuilder _GrandBossList = new TextBuilder();
 
 	public GrandBossList()
@@ -41,7 +43,7 @@ public class GrandBossList
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT boss_id, status FROM grandboss_data");
+			PreparedStatement statement = con.prepareStatement(SELECT_BOSS);
 			ResultSet result = statement.executeQuery();
 
 			nextnpc: while (result.next())
@@ -51,7 +53,7 @@ public class GrandBossList
 				if (npcid == 29066 || npcid == 29067 || npcid == 29068 || npcid == 29118)
 					continue nextnpc;
 
-				PreparedStatement statement2 = con.prepareStatement("SELECT name FROM npc WHERE id=" + npcid);
+				PreparedStatement statement2 = con.prepareStatement(SELECT_NAME + npcid);
 				ResultSet result2 = statement2.executeQuery();
 
 				while (result2.next())

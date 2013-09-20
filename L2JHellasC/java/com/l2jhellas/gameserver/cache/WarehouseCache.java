@@ -23,20 +23,20 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 /**
  * @author -Nemesiss-
  */
-public class WarehouseCacheManager
+public class WarehouseCache
 {
-	private static WarehouseCacheManager _instance;
+	private static WarehouseCache _instance;
 	protected final FastMap<L2PcInstance, Long> _cachedWh;
 	protected final long _cacheTime;
 
-	public static WarehouseCacheManager getInstance()
+	public static WarehouseCache getInstance()
 	{
 		if (_instance == null)
-			_instance = new WarehouseCacheManager();
+			_instance = new WarehouseCache();
 		return _instance;
 	}
 
-	private WarehouseCacheManager()
+	private WarehouseCache()
 	{
 		_cacheTime = Config.WAREHOUSE_CACHE_TIME * 60000L; // 60*1000 = 60000
 		_cachedWh = new FastMap<L2PcInstance, Long>().setShared(true);

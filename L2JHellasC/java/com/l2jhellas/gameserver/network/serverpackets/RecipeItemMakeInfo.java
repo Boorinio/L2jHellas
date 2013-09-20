@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.RecipeController;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -50,7 +50,7 @@ public class RecipeItemMakeInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		L2RecipeList recipe = RecipeController.getInstance().getRecipeById(_id);
+		L2RecipeList recipe = RecipeData.getInstance().getRecipeById(_id);
 
 		if (recipe != null)
 		{

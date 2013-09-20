@@ -41,6 +41,12 @@ public class TradeController
 	private static Logger _log = Logger.getLogger(TradeController.class.getName());
 	private static TradeController _instance;
 
+	private static final String SELECT_MERCHANT_DATA = "SELECT * FROM merchant_shopids";
+	private static final String SELECT_MERCHANT_ORDER = "SELECT * FROM merchant_buylists WHERE shop_id=? ORDER BY `order` ASC";
+	private static final String SELECT_MERCHANT_TIME = "SELECT DISTINCT time, savetimer FROM merchant_buylists WHERE time <> 0 ORDER BY time";
+	private static final String UPDATE_MERCHANT_TIMER = "UPDATE merchant_buylists SET savetimer =? WHERE time =?";
+	private static final String UPDATE_MERCHANT_CURCOUNT = "UPDATE merchant_buylists SET currentCount=? WHERE item_id=? AND shop_id=?";
+	
 	private int _nextListId;
 	private final Map<Integer, L2TradeList> _lists;
 	private final Map<Integer, L2TradeList> _listsTaskItem;
@@ -128,20 +134,11 @@ public class TradeController
 			boolean LimitedItem = false;
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				PreparedStatement statement1 = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
-				{
-				"shop_id", "npc_id"
-				}) + " FROM merchant_shopids");
+				PreparedStatement statement1 = con.prepareStatement(SELECT_MERCHANT_DATA);
 				ResultSet rset1 = statement1.executeQuery();
 				while (rset1.next())
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
-					{
-					"item_id", "price", "shop_id", "order", "count", "time", "currentCount"
-					}) + " FROM merchant_buylists WHERE shop_id=? ORDER BY " + L2DatabaseFactory.getInstance().safetyString(new String[]
-					{
-						"order"
-					}) + " ASC");
+					PreparedStatement statement = con.prepareStatement(SELECT_MERCHANT_ORDER);
 					statement.setString(1, String.valueOf(rset1.getInt("shop_id")));
 					ResultSet rset = statement.executeQuery();
 					if (rset.next())
@@ -230,14 +227,14 @@ public class TradeController
 				_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _lists.size() + " Buylists.");
 				_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _listsTaskItem.size() + " Limited Buylists.");
 				/*
-				 * Restore Task for reinitialyze count of buy item
+				 * Restore Task for reinitialize count of buy item
 				 */
 				try
 				{
 					int time = 0;
 					long savetimer = 0;
 					long currentMillis = System.currentTimeMillis();
-					PreparedStatement statement2 = con.prepareStatement("SELECT DISTINCT time, savetimer FROM merchant_buylists WHERE time <> 0 ORDER BY time");
+					PreparedStatement statement2 = con.prepareStatement(SELECT_MERCHANT_TIME);
 					ResultSet rset2 = statement2.executeQuery();
 					while (rset2.next())
 					{
@@ -334,7 +331,7 @@ public class TradeController
 		long timerSave = System.currentTimeMillis() + (long) time * 60 * 60 * 1000;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE merchant_buylists SET savetimer =? WHERE time =?");
+			PreparedStatement statement = con.prepareStatement(UPDATE_MERCHANT_TIMER);
 			statement.setLong(1, timerSave);
 			statement.setInt(2, time);
 			statement.executeUpdate();
@@ -371,7 +368,7 @@ public class TradeController
 				{
 					if (Item.getCount() < Item.getInitCount()) // needed?
 					{
-						statement = con.prepareStatement("UPDATE merchant_buylists SET currentCount=? WHERE item_id=? AND shop_id=?");
+						statement = con.prepareStatement(UPDATE_MERCHANT_CURCOUNT);
 						statement.setInt(1, Item.getCount());
 						statement.setInt(2, Item.getItemId());
 						statement.setInt(3, listId);

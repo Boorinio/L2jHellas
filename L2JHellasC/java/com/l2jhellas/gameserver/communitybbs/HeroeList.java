@@ -29,6 +29,7 @@ public class HeroeList
 {
 	protected static final Logger _log = Logger.getLogger(HeroeList.class.getName());
 
+	private static final String SELECT_DATA = "SELECT h.count, h.played, ch.char_name, ch.base_class, ch.online, cl.clan_name, cl.ally_name FROM heroes h LEFT JOIN characters ch ON ch.obj_Id=h.char_id LEFT OUTER JOIN clan_data cl ON cl.clan_id=ch.clanid ORDER BY h.count DESC, ch.char_name ASC LIMIT 20";
 	private int _posId;
 	private final TextBuilder _heroeList = new TextBuilder();
 
@@ -42,7 +43,7 @@ public class HeroeList
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			_posId = 0;
-			PreparedStatement statement = con.prepareStatement("SELECT h.count, h.played, ch.char_name, ch.base_class, ch.online, cl.clan_name, cl.ally_name FROM heroes h LEFT JOIN characters ch ON ch.obj_Id=h.char_id LEFT OUTER JOIN clan_data cl ON cl.clan_id=ch.clanid ORDER BY h.count DESC, ch.char_name ASC LIMIT 20");
+			PreparedStatement statement = con.prepareStatement(SELECT_DATA);
 			ResultSet result = statement.executeQuery();
 
 			while (result.next())

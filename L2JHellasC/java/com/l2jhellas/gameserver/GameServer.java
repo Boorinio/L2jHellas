@@ -33,6 +33,7 @@ import Extensions.RankSystem.TopTable;
 import Extensions.RankSystem.Util.ServerSideImage;
 import Extensions.Vote.VoteManager;
 
+import com.L2JHellasInfo;
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.cache.CrestCache;
@@ -42,6 +43,7 @@ import com.l2jhellas.gameserver.datatables.EventDroplist;
 import com.l2jhellas.gameserver.datatables.LevelUpData;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.datatables.csv.StaticObjects;
 import com.l2jhellas.gameserver.datatables.csv.SummonItemsData;
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
@@ -120,6 +122,8 @@ import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
+import com.l2jhellas.mmocore.network.SelectorConfig;
+import com.l2jhellas.mmocore.network.SelectorThread;
 import com.l2jhellas.shield.antibot.AntiAfk;
 import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.status.Status;
@@ -128,8 +132,6 @@ import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 import com.l2jhellas.util.ip.IPConfigData;
-import com.l2jserver.mmocore.network.SelectorConfig;
-import com.l2jserver.mmocore.network.SelectorThread;
 
 public class GameServer
 {
@@ -272,7 +274,7 @@ public class GameServer
 		DimensionalRiftManager.getInstance();
 
 		Util.printSection("Misc");
-		RecipeController.getInstance();
+		RecipeData.getInstance();
 		EventDroplist.getInstance();
 		AugmentationData.getInstance();
 		MonsterRace.getInstance();

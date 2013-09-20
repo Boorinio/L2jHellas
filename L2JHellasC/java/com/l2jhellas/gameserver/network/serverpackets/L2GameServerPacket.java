@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.L2GameClient;
-import com.l2jserver.mmocore.network.SendablePacket;
+import com.l2jhellas.mmocore.network.SendablePacket;
 
 /**
  * kenrix

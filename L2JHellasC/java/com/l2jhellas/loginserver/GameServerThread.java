@@ -33,7 +33,6 @@ import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
-import com.l2jhellas.loginserver.crypt.NewCrypt;
 import com.l2jhellas.loginserver.gameserverpackets.BlowFishKey;
 import com.l2jhellas.loginserver.gameserverpackets.ChangeAccessLevel;
 import com.l2jhellas.loginserver.gameserverpackets.GameServerAuth;
@@ -48,6 +47,7 @@ import com.l2jhellas.loginserver.loginserverpackets.LoginServerFail;
 import com.l2jhellas.loginserver.loginserverpackets.PlayerAuthResponse;
 import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.crypt.NewCrypt;
 
 /**
  * @author -Wooden-

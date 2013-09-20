@@ -1112,32 +1112,32 @@ public class L2AccountManagerInstance extends L2NpcInstance
 
 	public static boolean resetPass(String acc, String ans, String cha, L2PcInstance activeChar)
 	{
+		String account = null;
 		String answer = null;
+		String character = null;
 		String email = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT answer FROM characters WHERE account_name=?,char_name=?");
-			statement.setString(1, acc);
-			statement.setString(2, cha);
-
+			PreparedStatement statement = con.prepareStatement("SELECT account_name,char_name,answer FROM characters WHERE obj_Id=?");
+			statement.setInt(1, activeChar.getObjectId());
 			ResultSet rset = statement.executeQuery();
 
 			while (rset.next())
 			{
+				account = rset.getString("account_name");
+				character = rset.getString("char_name");
 				answer = rset.getString("answer");
 			}
-
+			if (!acc.equalsIgnoreCase(account) || !ans.equalsIgnoreCase(answer) || !cha.equalsIgnoreCase(character))
+			{
+				return false;
+			}
 		}
 		catch (Exception e)
 		{
+			activeChar.sendMessage("Some of your data you submitted does not fit. Please try again");
 		}
-
-		if (!ans.equalsIgnoreCase(answer))
-		{
-			activeChar.sendMessage("The answer we have in our database with the one you submitted does not fit. Please try again");
-			return false;
-		}
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT email FROM characters WHERE account_name=?");
@@ -1149,12 +1149,13 @@ public class L2AccountManagerInstance extends L2NpcInstance
 			{
 				email = rset.getString("email");
 			}
-
+			
 		}
 		catch (Exception e)
 		{
 		}
-
+		
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			String newPass = Integer.toString(Rnd.get(1000000, 9999999));
@@ -1257,7 +1258,6 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		{
 			statement = con.prepareStatement("SELECT email FROM characters WHERE obj_Id=?");
 			statement.setInt(1, player.getObjectId());
-
 			ResultSet rset = statement.executeQuery();
 
 			while (rset.next())
@@ -1268,6 +1268,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
+			
 		}
 		return email;
 	}

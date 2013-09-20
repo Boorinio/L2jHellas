@@ -37,18 +37,26 @@ import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
-import com.l2jhellas.loginserver.crypt.ScrambledKeyPair;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.crypt.ScrambledKeyPair;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class LoginController
 {
 	protected static final Logger _log = Logger.getLogger(LoginController.class.getName());
 
+	private static final String UPDATE_ACC_LS = "UPDATE accounts SET lastServer=? WHERE login=?";
+	private static final String UPDATE_ACC_AL = "UPDATE accounts SET access_level=? WHERE login=?";
+	private static final String SELECT_ACC_AL = "SELECT access_level FROM accounts WHERE login=?";
+	private static final String SELECT_ACCOUNT = "SELECT password, access_level, lastServer FROM accounts WHERE login=?";
+	private static final String INSERT_ACCOUNT = "INSERT INTO accounts (login,password,lastactive,access_level,lastIP) values(?,?,?,?,?)";
+	private static final String UPDATE_ACTIVITY = "UPDATE accounts SET lastactive=?, lastIP=? WHERE login=?";
+	private static final String SELECT_ACCESS = "SELECT access_level FROM accounts WHERE login=?";
+	
 	private static LoginController _instance;
 
 	/** Time before kicking the client if he didnt logged yet */
@@ -140,7 +148,7 @@ public class LoginController
 				_blowfishKeys[i][j] = (byte) (Rnd.nextInt(255) + 1);
 			}
 		}
-		_log.info("Stored " + _blowfishKeys.length + " keys for Blowfish communication");
+		_log.info("Stored " + _blowfishKeys.length + " keys for Blowfish communication.");
 	}
 
 	/**
@@ -401,11 +409,9 @@ public class LoginController
 
 			if (loginOk && client.getLastServer() != serverId)
 			{
-				PreparedStatement statement = null;
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
-					String stmt = "UPDATE accounts SET lastServer = ? WHERE login = ?";
-					statement = con.prepareStatement(stmt);
+					PreparedStatement statement = con.prepareStatement(UPDATE_ACC_LS);
 					statement.setInt(1, serverId);
 					statement.setString(2, client.getAccount());
 					statement.executeUpdate();
@@ -423,11 +429,9 @@ public class LoginController
 
 	public void setAccountAccessLevel(String account, int banLevel)
 	{
-		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			String stmt = "UPDATE accounts SET access_level=? WHERE login=?";
-			statement = con.prepareStatement(stmt);
+			PreparedStatement statement = con.prepareStatement(UPDATE_ACC_AL);
 			statement.setInt(1, banLevel);
 			statement.setString(2, account);
 			statement.executeUpdate();
@@ -442,10 +446,9 @@ public class LoginController
 	public boolean isGM(String user)
 	{
 		boolean ok = false;
-		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("SELECT access_level FROM accounts WHERE login=?");
+			PreparedStatement statement = con.prepareStatement(SELECT_ACC_AL);
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())
@@ -487,7 +490,6 @@ public class LoginController
 	 * @param address
 	 * @return
 	 */
-	@SuppressWarnings("resource")
 	public boolean loginValid(String user, String password, L2LoginClient client)// throws HackingException
 	{
 		boolean ok = false;
@@ -511,7 +513,7 @@ public class LoginController
 			int access = 0;
 			int lastServer = 1;
 
-			PreparedStatement statement = con.prepareStatement("SELECT password, access_level, lastServer FROM accounts WHERE login=?");
+			PreparedStatement statement = con.prepareStatement(SELECT_ACCOUNT);
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())
@@ -534,7 +536,7 @@ public class LoginController
 				{
 					if ((user.length() >= 2) && (user.length() <= 14))
 					{
-						statement = con.prepareStatement("INSERT INTO accounts (login,password,lastactive,access_level,lastIP) values(?,?,?,?,?)");
+						statement = con.prepareStatement(INSERT_ACCOUNT);
 						statement.setString(1, user);
 						statement.setString(2, Base64.encodeBytes(hash));
 						statement.setLong(3, System.currentTimeMillis());
@@ -578,7 +580,7 @@ public class LoginController
 			{
 				client.setAccessLevel(access);
 				client.setLastServer(lastServer);
-				statement = con.prepareStatement("UPDATE accounts SET lastactive=?, lastIP=? WHERE login=?");
+				statement = con.prepareStatement(UPDATE_ACTIVITY);
 				statement.setLong(1, System.currentTimeMillis());
 				statement.setString(2, address.getHostAddress());
 				statement.setString(3, user);
@@ -630,7 +632,7 @@ public class LoginController
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT access_level FROM accounts WHERE login=?");
+			PreparedStatement statement = con.prepareStatement(SELECT_ACCESS);
 			statement.setString(1, user);
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())
@@ -644,8 +646,6 @@ public class LoginController
 		}
 		catch (Exception e)
 		{
-			// digest algo not found ??
-			// out of bounds should not be possible
 			_log.warning("WARNING: Could not check ban state: " + e);
 			ok = false;
 		}

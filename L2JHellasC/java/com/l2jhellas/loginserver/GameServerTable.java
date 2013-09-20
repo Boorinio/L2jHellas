@@ -50,6 +50,10 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class GameServerTable
 {
 	private static Logger _log = Logger.getLogger(GameServerTable.class.getName());
+	
+	private static final String SELECT_GS = "SELECT * FROM gameservers";
+	private static final String INSERT_GS = "INSERT INTO gameservers (hexid,server_id,host) VALUES (?,?,?)";
+	
 	private static GameServerTable _instance;
 
 	// Server Names Config
@@ -112,10 +116,9 @@ public class GameServerTable
 		XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
 		UTF8StreamReader reader = new UTF8StreamReader();
 
-		InputStream in = null;
 		try
 		{
-			in = new FileInputStream("./config/Network/ServerName.xml");
+			InputStream in = new FileInputStream("./config/Network/ServerName.xml");
 			xpp.setInput(reader.setInput(in));
 			for (int e = xpp.getEventType(); e != XMLStreamConstants.END_DOCUMENT; e = xpp.next())
 			{
@@ -145,26 +148,15 @@ public class GameServerTable
 		{
 			xppe.printStackTrace();
 		}
-		finally
-		{
-			try
-			{
-				in.close();
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
 	private void loadRegisteredGameServers() throws SQLException
 	{
-		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			int id;
 
-			statement = con.prepareStatement("SELECT * FROM gameservers");
+			PreparedStatement statement = con.prepareStatement(SELECT_GS);
 			ResultSet rset = statement.executeQuery();
 			GameServerInfo gsi;
 			while (rset.next())
@@ -176,14 +168,10 @@ public class GameServerTable
 			rset.close();
 			statement.close();
 			con.close();
-
-			rset = null;
-			statement = null;
-			gsi = null;
 		}
 		catch (Exception e)
 		{
-
+			_log.log(Level.WARNING, getClass().getName() + " cant select any game server(s) from database. " + e.getMessage());
 		}
 	}
 
@@ -242,10 +230,9 @@ public class GameServerTable
 
 	public void registerServerOnDB(byte[] hexId, int id, String externalHost)
 	{
-		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("INSERT INTO gameservers (hexid,server_id,host) VALUES (?,?,?)");
+			PreparedStatement statement = con.prepareStatement(INSERT_GS);
 			statement.setString(1, hexToString(hexId));
 			statement.setInt(2, id);
 			statement.setString(3, externalHost);

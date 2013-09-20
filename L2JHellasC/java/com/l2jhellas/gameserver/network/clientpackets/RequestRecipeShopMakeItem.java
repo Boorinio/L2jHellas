@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.RecipeController;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -72,7 +72,7 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 			return;
 		}
 		if (Util.checkIfInRange(150, activeChar, manufacturer, true))
-			RecipeController.getInstance().requestManufactureItem(manufacturer, _recipeId, activeChar);
+			RecipeData.getInstance().requestManufactureItem(manufacturer, _recipeId, activeChar);
 	}
 
 	@Override

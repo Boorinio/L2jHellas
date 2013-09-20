@@ -54,9 +54,9 @@ import com.l2jhellas.gameserver.network.loginserverpackets.LoginServerFail;
 import com.l2jhellas.gameserver.network.loginserverpackets.PlayerAuthResponse;
 import com.l2jhellas.gameserver.network.serverpackets.AuthLoginFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
-import com.l2jhellas.loginserver.crypt.NewCrypt;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
+import com.l2jhellas.util.crypt.NewCrypt;
 
 public class LoginServerThread extends Thread
 {

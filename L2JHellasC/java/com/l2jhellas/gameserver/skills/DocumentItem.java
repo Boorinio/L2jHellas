@@ -25,7 +25,7 @@ import javolution.util.FastMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.gameserver.Item;
+import com.l2jhellas.gameserver.engines.Item;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2EtcItem;

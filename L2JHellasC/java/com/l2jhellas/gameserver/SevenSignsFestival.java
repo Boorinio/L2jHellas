@@ -64,7 +64,14 @@ public class SevenSignsFestival implements SpawnListener
 	private static SevenSignsFestival _instance;
 
 	private static final String GET_CLAN_NAME = "SELECT clan_name FROM clan_data WHERE clan_id = (SELECT clanid FROM characters WHERE char_name = ?)";
-
+	private static final String SELECT_FEST = "SELECT festivalId, cabal, cycle, date, score, members FROM seven_signs_festival";
+	private static final String UPDATE_FEST = "UPDATE seven_signs_festival SET date=?, score=?, members=? WHERE cycle=? AND cabal=? AND festivalId=?";
+	private static final String INSERT_FEST = "INSERT INTO seven_signs_festival (festivalId, cabal, cycle, date, score, members) VALUES (?,?,?,?,?,?)";
+	
+	
+	
+	
+	
 	/**
 	 * These length settings are important! :)
 	 * All times are relative to the ELAPSED time (in ms) since a festival begins.
@@ -956,7 +963,7 @@ public class SevenSignsFestival implements SpawnListener
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("SELECT festivalId, cabal, cycle, date, score, members FROM seven_signs_festival");
+			statement = con.prepareStatement(SELECT_FEST);
 			rset = statement.executeQuery();
 
 			while (rset.next())
@@ -1066,7 +1073,7 @@ public class SevenSignsFestival implements SpawnListener
 					String cabal = festivalDat.getString("cabal");
 
 					// Try to update an existing record.
-					statement = con.prepareStatement("UPDATE seven_signs_festival SET date=?, score=?, members=? WHERE cycle=? AND cabal=? AND festivalId=?");
+					statement = con.prepareStatement(UPDATE_FEST);
 					statement.setLong(1, Long.valueOf(festivalDat.getString("date")));
 					statement.setInt(2, festivalDat.getInteger("score"));
 					statement.setString(3, festivalDat.getString("members"));
@@ -1088,7 +1095,7 @@ public class SevenSignsFestival implements SpawnListener
 					}
 
 					statement.close();
-					statement = con.prepareStatement("INSERT INTO seven_signs_festival (festivalId, cabal, cycle, date, score, members) VALUES (?,?,?,?,?,?)");
+					statement = con.prepareStatement(INSERT_FEST);
 					statement.setInt(1, festivalId);
 					statement.setString(2, cabal);
 					statement.setInt(3, festivalCycle);

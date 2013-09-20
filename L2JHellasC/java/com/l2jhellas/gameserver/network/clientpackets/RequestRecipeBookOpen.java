@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.RecipeController;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 
 public final class RequestRecipeBookOpen extends L2GameClientPacket
 {
@@ -48,7 +48,7 @@ public final class RequestRecipeBookOpen extends L2GameClientPacket
 			return;
 		}
 
-		RecipeController.getInstance().requestBookOpen(getClient().getActiveChar(), _isDwarvenCraft);
+		RecipeData.getInstance().requestBookOpen(getClient().getActiveChar(), _isDwarvenCraft);
 	}
 
 	@Override

@@ -20,11 +20,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.l2jhellas.loginserver.serverpackets.Init;
-import com.l2jserver.mmocore.network.IAcceptFilter;
-import com.l2jserver.mmocore.network.IClientFactory;
-import com.l2jserver.mmocore.network.IMMOExecutor;
-import com.l2jserver.mmocore.network.MMOConnection;
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import com.l2jhellas.mmocore.network.IAcceptFilter;
+import com.l2jhellas.mmocore.network.IClientFactory;
+import com.l2jhellas.mmocore.network.IMMOExecutor;
+import com.l2jhellas.mmocore.network.MMOConnection;
+import com.l2jhellas.mmocore.network.ReceivablePacket;
 
 /**
  * @author KenM

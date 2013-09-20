@@ -17,7 +17,7 @@ package com.l2jhellas.loginserver.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.loginserver.L2LoginClient;
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import com.l2jhellas.mmocore.network.ReceivablePacket;
 
 /**
  * @author KenM

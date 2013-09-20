@@ -29,6 +29,9 @@ public class CastleStatus
 {
 	protected static final Logger _log = Logger.getLogger(CastleStatus.class.getName());
 
+	private static final String SELECT_CLAN_DATA = "SELECT clan_name,clan_level FROM clan_data WHERE hasCastle=";
+	private static final String SELECT_CASTLE_DATA = "SELECT name,siegeDate,taxPercent FROM castle WHERE id=";
+	
 	private final TextBuilder _playerList = new TextBuilder();
 
 	public CastleStatus()
@@ -42,10 +45,10 @@ public class CastleStatus
 		{
 			for (int i = 1; i < 9; i++)
 			{
-				PreparedStatement statement = con.prepareStatement("SELECT clan_name, clan_level FROM clan_data WHERE hasCastle=" + i + ";");
+				PreparedStatement statement = con.prepareStatement(SELECT_CLAN_DATA + i);
 				ResultSet result = statement.executeQuery();
 
-				PreparedStatement statement2 = con.prepareStatement("SELECT name, siegeDate, taxPercent FROM castle WHERE id=" + i + ";");
+				PreparedStatement statement2 = con.prepareStatement(SELECT_CASTLE_DATA + i);
 				ResultSet result2 = statement2.executeQuery();
 
 				while (result.next())

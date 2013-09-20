@@ -21,8 +21,8 @@ import com.l2jhellas.loginserver.clientpackets.AuthGameGuard;
 import com.l2jhellas.loginserver.clientpackets.RequestAuthLogin;
 import com.l2jhellas.loginserver.clientpackets.RequestServerList;
 import com.l2jhellas.loginserver.clientpackets.RequestServerLogin;
-import com.l2jserver.mmocore.network.IPacketHandler;
-import com.l2jserver.mmocore.network.ReceivablePacket;
+import com.l2jhellas.mmocore.network.IPacketHandler;
+import com.l2jhellas.mmocore.network.ReceivablePacket;
 
 /**
  * Handler for packets received by Login Server

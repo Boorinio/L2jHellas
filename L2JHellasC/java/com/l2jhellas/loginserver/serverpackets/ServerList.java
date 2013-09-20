@@ -21,8 +21,8 @@ import java.util.List;
 import javolution.util.FastList;
 
 import com.l2jhellas.loginserver.GameServerTable;
-import com.l2jhellas.loginserver.L2LoginClient;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
+import com.l2jhellas.loginserver.L2LoginClient;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 
 /**

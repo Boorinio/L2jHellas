@@ -20,8 +20,8 @@ import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.taskmanager.Task;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
-import com.l2jhellas.gameserver.taskmanager.TaskTypes;
 import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
+import com.l2jhellas.gameserver.taskmanager.TaskTypes;
 
 /**
  * Updates all data for the Seven Signs and Festival of Darkness engines,

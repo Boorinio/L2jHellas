@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.RecipeController;
+import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 
 public class L2ManufactureItem
 {
@@ -27,7 +27,7 @@ public class L2ManufactureItem
 		_recipeId = recipeId;
 		_cost = cost;
 
-		_isDwarven = RecipeController.getInstance().getRecipeById(_recipeId).isDwarvenRecipe();
+		_isDwarven = RecipeData.getInstance().getRecipeById(_recipeId).isDwarvenRecipe();
 	}
 
 	public int getRecipeId()

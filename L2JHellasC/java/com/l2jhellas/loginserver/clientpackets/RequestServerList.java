@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.loginserver.clientpackets;
 
-import com.l2jhellas.loginserver.serverpackets.ServerList;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
+import com.l2jhellas.loginserver.serverpackets.ServerList;
 
 /**
  * Format: ddc
