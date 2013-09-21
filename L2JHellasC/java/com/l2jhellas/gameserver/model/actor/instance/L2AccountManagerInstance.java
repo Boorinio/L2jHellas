@@ -38,6 +38,8 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class L2AccountManagerInstance extends L2NpcInstance
 {
+	private static String ans = "";
+
 	public L2AccountManagerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
@@ -133,10 +135,8 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	@Override
 	public void onBypassFeedback(final L2PcInstance player, String command)
 	{
-		if (player == null)
-		{
+		if (player == null || command == null)
 			return;
-		}
 
 		if (command.startsWith("changeEmail"))
 		{
@@ -221,26 +221,25 @@ public class L2AccountManagerInstance extends L2NpcInstance
 
 		if (command.startsWith("resetPass"))
 		{
+			// if we allow here players to type acc/name we might have issues
 			StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
-			String acc = null;
-			String ans = null;
-			String cha = null;
+			
+			String acc = player.getAccountName();
+			String cha = player.getName();
 			try
 			{
 				if (st.hasMoreTokens())
 				{
-					acc = st.nextToken();
-					cha = st.nextToken();
 					ans = st.nextToken();
-
+					_log.warning("2 "+ans +" "+ acc+ " " + cha);
 				}
 				else
 				{
-					player.sendMessage("Please fill in all the blanks before requesting for a password reset.");
+					player.sendMessage("Please type your secret answer to use password reset.");
 					return;
 				}
-				resetPass(acc, ans, cha, player);
+				resetPass(acc, cha, player);
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
@@ -1014,10 +1013,10 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		tb.append("<br1><font color=\"00FF00\">" + player.getName() + "</font>, you can reset your pass here.<br1></td>");
 		tb.append("</tr>");
 		tb.append("</table>");
-		tb.append("Account Name: <edit var=\"acc\" width=100 height=15><br>");
-		tb.append("Character's Name: <edit var=\"cha\" width=100 height=15><br>");
-		tb.append("Char's Security Answer: <edit var=\"ans\" width=100 height=15><br><br>");
-		tb.append("<button value=\"Reset Password\" action=\"bypass -h npc_" + getObjectId() + "_resetPass $acc $cha $ans\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\">");
+		//tb.append("Account Name: <edit var=\"acc\" width=100 height=15><br>");
+		//tb.append("Character's Name: <edit var=\"cha\" width=100 height=15><br>");
+		tb.append("Char's Security Answer: <edit var=\"ans\" width=100 height=15><br><br>");              //$acc $cha
+		tb.append("<button value=\"Reset Password\" action=\"bypass -h npc_" + getObjectId() + "_resetPass $ans\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\">");
 		tb.append("</center></body></html>");
 
 		nhm.setHtml(tb.toString());
@@ -1110,32 +1109,29 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		return true;
 	}
 
-	public static boolean resetPass(String acc, String ans, String cha, L2PcInstance activeChar)
+	public static boolean resetPass(String acc, String cha, L2PcInstance activeChar)
 	{
-		String account = null;
 		String answer = null;
-		String character = null;
 		String email = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT account_name,char_name,answer FROM characters WHERE obj_Id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT answer FROM characters WHERE obj_Id=?");
 			statement.setInt(1, activeChar.getObjectId());
 			ResultSet rset = statement.executeQuery();
-
+			
 			while (rset.next())
 			{
-				account = rset.getString("account_name");
-				character = rset.getString("char_name");
 				answer = rset.getString("answer");
-			}
-			if (!acc.equalsIgnoreCase(account) || !ans.equalsIgnoreCase(answer) || !cha.equalsIgnoreCase(character))
-			{
-				return false;
+				if (!ans.equalsIgnoreCase(answer))
+				{
+					activeChar.sendMessage("Some of your data you submitted does not fit. Please try again.");
+					return false;
+				}
 			}
 		}
 		catch (Exception e)
 		{
-			activeChar.sendMessage("Some of your data you submitted does not fit. Please try again");
+			_log.warning("could not select answer fields from characters to reset pass for " + activeChar.getAccountName());
 		}
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())

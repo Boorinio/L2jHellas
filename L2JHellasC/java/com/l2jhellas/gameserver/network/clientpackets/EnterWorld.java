@@ -180,7 +180,7 @@ public class EnterWorld extends L2GameClientPacket
 		}
 
 		// Account Manager
-		//if (Config.ALLOW_ACCOUNT_MANAGER)
+		if (Config.ALLOW_ACCOUNT_MANAGER)
 		{
 			if (!L2AccountManagerInstance.hasSubEmail(activeChar))
 			{
