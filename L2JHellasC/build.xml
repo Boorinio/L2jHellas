@@ -77,15 +77,13 @@
 			</fileset>
 		</copy>
 	</target>
-    
-    <target name="compile.gcj" depends="Jar" description="Build machine executable binary">
-		<exec dir="." executable="gcj" failifexecutionfails="false" os="linux:Linux:freebsd:FreeBSD" >
-			<arg line="-O3 ${build.dist}/l2jhellas.jar  -o ${build.dist}/l2jhellas --main=com.l2jhellas.Server"/>
-		</exec>
+	
+	<target name="dist" depends="Jar">
+		<concat destfile="${build.dist}/L2JHellas_CHANGELOG.txt">${l2jhellas.changelog}</concat>
 	</target>
 	
 	<!-- Basic Build -->
-	<target name="Build" depends="Jar">
+	<target name="Build" depends="dist">
 		<echo>Creating L2J Hellas Server:</echo>
 		<copy todir="${build.dist.login}">
 			<fileset dir="config">
@@ -224,7 +222,11 @@
     </target>   
     
 	<!-- Version -->
-	<target name="Version" depends="Building Dirs" description="Create L2J Hellas version file">
+	<target name="Version" depends="Building Dirs" description="Get Changelog, Date, Version">
+		<exec dir="${basedir}" executable="svn" outputproperty="l2jhellas.changelog">
+			<arg value="log" />
+			<arg value="--stop-on-copy" />
+		</exec>
 		<tstamp>
 			<format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
 		</tstamp>
