@@ -21,6 +21,7 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.IllegalPlayerAction;
@@ -47,18 +48,30 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if ((player == null) || (player.getPet() == null) || !(player.getPet() instanceof L2PetInstance))
 			return;
-
+		
+		if (_amount <= 0)
+		{
+			return;
+		}
+		
 		// Alt game - Karma punishment
 		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && player.getKarma() > 0)
 			return;
 
+		
 		if (player.getActiveEnchantItem() != null)
 		{
 			player.setAccessLevel(-100);
 			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " Tried To Use Enchant Exploit And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
 			return;
 		}
-
+		
+		if(player.getActiveWarehouse()!=null || player.getActiveTradeList() != null)
+		{
+			player.sendMessage("You can't give items if: you got active warehouse,active trade");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		if (player.getPrivateStoreType() != 0)
 		{
 			player.sendMessage("Cannot exchange items while trading.");
@@ -66,8 +79,12 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		}
 
 		// Exploit Fix for Hero weapons Uses pet Inventory to buy New One.
-		L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
-		if (item.isAugmented() && item != null)
+		final L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
+		
+		if(item==null)
+			return;
+		
+		if (item.isAugmented())
 		{
 			player.sendMessage("You cannot give augmented items to pet.");
 			return;
@@ -93,11 +110,6 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		if (pet.isDead())
 		{
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET));
-			return;
-		}
-
-		if (_amount < 0)
-		{
 			return;
 		}
 

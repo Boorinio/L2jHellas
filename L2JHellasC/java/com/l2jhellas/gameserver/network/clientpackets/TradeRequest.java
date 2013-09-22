@@ -66,7 +66,14 @@ public final class TradeRequest extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		
+		if(player.getActiveEnchantItem() !=null || player.getActiveWarehouse()!=null || partner.getActiveEnchantItem() !=null || partner.getActiveWarehouse()!=null )
+		{
+			player.sendMessage("You can't trade item if you or your partner:  enchanting,got active warehouse");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		// Faction Good vs Evil
 		L2PcInstance player2 = (L2PcInstance) target;
 		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)

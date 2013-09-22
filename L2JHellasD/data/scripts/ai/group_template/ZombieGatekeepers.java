@@ -76,7 +76,7 @@ public class ZombieGatekeepers extends L2AttackableAIScript
 		else
 		{
 			if (_attackersList.get(npcObjId) == null || !_attackersList.get(npcObjId).contains(target))
-				((L2Attackable) npc).getAggroListRP().remove(target);
+				((L2Attackable) npc).getAggroList().remove(target);
 			else
 			{
 				((L2Attackable) npc).addDamageHate(target, 0, 999);

@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -46,21 +47,26 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if ((player == null) || (player.getPet() == null) || !(player.getPet() instanceof L2PetInstance))
 			return;
-		L2PetInstance pet = (L2PetInstance) player.getPet();
+		final L2PetInstance pet = (L2PetInstance) player.getPet();
 
 		if (player.getActiveEnchantItem() != null)
 		{
 			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " Tried To Use Enchant Exploit , And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
 			return;
 		}
+		
+		if(player.getActiveWarehouse()!=null || player.getActiveTradeList() != null)
+		{
+			player.sendMessage("You can't get items if: you got active warehouse,active trade");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 
-		if (_amount < 0)
+		if (_amount <= 0)
 		{
 			Util.handleIllegalPlayerAction(player, "[RequestGetItemFromPet] count < 0! ban! oid: " + _objectId + " owner: " + player.getName(), Config.DEFAULT_PUNISH);
 			return;
 		}
-		else if (_amount == 0)
-			return;
 
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("getfrompet"))
 		{

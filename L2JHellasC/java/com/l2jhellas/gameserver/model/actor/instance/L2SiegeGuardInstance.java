@@ -124,7 +124,7 @@ public final class L2SiegeGuardInstance extends L2Attackable
 		{
 			if (Config.DEBUG)
 				_log.fine(getObjectId() + ": moving home");
-			setisReturningToSpawnPoint(true);
+			setIsReturningToSpawnPoint(true);
 			clearAggroList();
 
 			if (hasAI())

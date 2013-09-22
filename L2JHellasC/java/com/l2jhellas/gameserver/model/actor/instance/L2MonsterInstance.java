@@ -188,9 +188,9 @@ public class L2MonsterInstance extends L2Attackable
 					if (minion != null && !minion.isDead())
 					{
 						if (this instanceof L2RaidBossInstance)
-							minion.addDamage(attacker, 100);
+							minion.addDamageHate(attacker, 100,100);
 						else
-							minion.addDamage(attacker, 1);
+							minion.addDamageHate(attacker, 1,1);
 					}
 				}
 			}
@@ -240,15 +240,6 @@ public class L2MonsterInstance extends L2Attackable
 	public boolean hasMinions()
 	{
 		return _minionList.hasMinions();
-	}
-
-	@Override
-	public void addDamageHate(L2Character attacker, int damage, int aggro)
-	{
-		if (!(attacker instanceof L2MonsterInstance))
-		{
-			super.addDamageHate(attacker, damage, aggro);
-		}
 	}
 
 	@Override

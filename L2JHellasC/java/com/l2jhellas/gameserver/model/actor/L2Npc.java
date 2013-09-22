@@ -47,8 +47,10 @@ import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2MaxPolyModel;
+import com.l2jhellas.gameserver.model.L2NpcAIData;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
@@ -289,6 +291,7 @@ public class L2Npc extends L2Character
 		// Call the L2Character constructor to set the _template of the L2Character, copy skills from template to object
 		// and link _calculators to NPC_STD_CALCULATOR
 		super(objectId, template);
+
 		getKnownList(); // init knownlist
 		getStat(); // init stats
 		getStatus(); // init status
@@ -313,12 +316,6 @@ public class L2Npc extends L2Character
 				_mxcModel.setWeaponIdRH(template.rhand);
 				_mxcModel.setWeaponIdLH(template.lhand);
 			}
-		}
-
-		if (template == null)
-		{
-			_log.severe("No template for Npc. Please check your datapack is setup correctly.");
-			return;
 		}
 
 		// Set the name of the L2Character
@@ -357,21 +354,18 @@ public class L2Npc extends L2Character
 	}
 
 	/**
-	 * Return the generic Identifier of this L2NpcInstance contained in the L2NpcTemplate.<BR>
-	 * <BR>
+	 * Return the generic Identifier of this L2Npc contained in the L2NpcTemplate.<BR><BR>
 	 */
 	public int getNpcId()
 	{
 		return getTemplate().npcId;
 	}
-
 	/**
-	 * Return the faction Identifier of this L2NpcInstance contained in the L2NpcTemplate.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * <BR>
-	 * If a NPC bellows to a Faction, other NPC of the faction inside the Faction range will help it if it's attacked<BR>
-	 * <BR>
+	 * Return the faction Identifier of this L2Npc contained in the L2NpcTemplate.<BR><BR>
+	 *
+	 * <B><U> Concept</U> :</B><BR><BR>
+	 * If a NPC belows to a Faction, other NPC of the faction inside the Faction range will help it if it's attacked<BR><BR>
+	 *
 	 */
 	public final String getFactionId()
 	{
@@ -2324,6 +2318,24 @@ public class L2Npc extends L2Character
 	}
 
 	/**
+	 * Return the Exp Reward of this L2Npc contained in the L2NpcTemplate (modified by RATE_XP).<BR><BR>
+	 */
+	public int getExpReward()
+	{
+		double rateXp = getStat().calcStat(Stats.MAX_HP, 1, this, null);
+		return (int) (getTemplate().rewardExp * rateXp * Config.RATE_XP);
+	}
+	
+	/**
+	 * Return the SP Reward of this L2Npc contained in the L2NpcTemplate (modified by RATE_SP).<BR><BR>
+	 */
+	public int getSpReward()
+	{
+		double rateSp = getStat().calcStat(Stats.MAX_HP, 1, this, null);
+		return (int) (getTemplate().rewardSp * rateSp * Config.RATE_SP);
+	}
+	
+	/**
 	 * Return the Exp Reward of this L2NpcInstance contained in the L2NpcTemplate (modified by RATE_XP).<BR>
 	 * <BR>
 	 */
@@ -2553,7 +2565,231 @@ public class L2Npc extends L2Character
 		ThreadPoolManager.getInstance().scheduleGeneral(this.new DespawnTask(this), delay);
 		return this;
 	}
-
+	
+	public String getClan()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getClan();
+	}
+	public int getEnemyRange()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getEnemyRange();
+	}
+	
+	public String getEnemyClan()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getEnemyClan();
+	}
+	
+	public int getClanRange()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getClanRange();
+	}
+	
+	// GET THE PRIMARY ATTACK
+	public int getPrimaryAttack()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getPrimaryAttack();
+		
+	}
+	
+	public int getSkillChance()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getSkillChance();
+		
+	}
+	
+	public int getCanMove()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getCanMove();
+	}
+	
+	public int getIsChaos()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getIsChaos();
+		
+	}
+	
+	public int getCanDodge()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getDodge();
+		
+	}
+	
+	public int getSSkillChance()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getShortRangeChance();
+		
+	}
+	
+	public int getLSkillChance()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getLongRangeChance();
+		
+	}
+	
+	public int getSwitchRangeChance()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		return AI.getSwitchRangeChance();
+		
+	}
+	
+	public boolean hasLSkill()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		
+		if (AI.getLongRangeSkill() == 0)
+			return false;
+		else
+			return true;
+		
+	}
+	
+	public boolean hasSSkill()
+	{
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		
+		if (AI.getShortRangeSkill() == 0)
+			return false;
+		else
+			return true;
+		
+	}
+	
+	public FastList<L2Skill> getLrangeSkill()
+	{
+		FastList<L2Skill> skilldata = new FastList<L2Skill>();
+		boolean hasLrange = false;
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		
+		if (AI == null || AI.getLongRangeSkill() == 0)
+			return null;
+		
+		switch (AI.getLongRangeSkill())
+		{
+			case -1:
+			{
+				L2Skill[] skills = null;
+				skills = getAllSkills();
+				if (skills != null)
+				{
+					for (L2Skill sk : skills)
+					{
+						if (sk == null || sk.isPassive() || sk.getTargetType() == L2SkillTargetType.TARGET_SELF)
+							continue;
+						
+						if (sk.getCastRange() >= 200)
+						{
+							skilldata.add(sk);
+							hasLrange = true;
+						}
+					}
+				}
+				break;
+			}
+			case 1:
+			{
+				if (getTemplate()._universalskills != null)
+				{
+					for (L2Skill sk : getTemplate()._universalskills)
+					{
+						if (sk.getCastRange() >= 200)
+						{
+							skilldata.add(sk);
+							hasLrange = true;
+						}
+					}
+				}
+				break;
+			}
+			default:
+			{
+				for (L2Skill sk : getAllSkills())
+				{
+					if (sk.getId() == AI.getLongRangeSkill())
+					{
+						skilldata.add(sk);
+						hasLrange = true;
+					}
+				}
+			}
+		}
+		
+		return (hasLrange ? skilldata : null);
+	}
+	
+	public FastList<L2Skill> getSrangeSkill()
+	{
+		FastList<L2Skill> skilldata = new FastList<L2Skill>();
+		boolean hasSrange = false;
+		L2NpcAIData AI = getTemplate().getAIDataStatic();
+		
+		if (AI == null || AI.getShortRangeSkill() == 0)
+			return null;
+		
+		switch (AI.getShortRangeSkill())
+		{
+			case -1:
+			{
+				L2Skill[] skills = null;
+				skills = getAllSkills();
+				if (skills != null)
+				{
+					for (L2Skill sk : skills)
+					{
+						if (sk == null || sk.isPassive() || sk.getTargetType() == L2SkillTargetType.TARGET_SELF)
+							continue;
+						
+						if (sk.getCastRange() <= 200)
+						{
+							skilldata.add(sk);
+							hasSrange = true;
+						}
+					}
+				}
+				break;
+			}
+			case 1:
+			{
+				if (getTemplate()._universalskills != null)
+				{
+					for (L2Skill sk : getTemplate()._universalskills)
+					{
+						if (sk.getCastRange() <= 200)
+						{
+							skilldata.add(sk);
+							hasSrange = true;
+						}
+					}
+				}
+				break;
+			}
+			default:
+			{
+				for (L2Skill sk : getAllSkills())
+				{
+					if (sk.getId() == AI.getShortRangeSkill())
+					{
+						skilldata.add(sk);
+						hasSrange = true;
+					}
+				}
+			}
+		}
+		
+		return (hasSrange ? skilldata : null);
+	}
 	public class DespawnTask implements Runnable
 	{
 		L2Npc _npc;

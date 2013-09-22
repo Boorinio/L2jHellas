@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
@@ -83,6 +84,13 @@ public final class RequestDropItem extends L2GameClientPacket
 			return;
 		}
 
+		if(activeChar.getActiveEnchantItem() !=null || activeChar.getActiveWarehouse()!=null || activeChar.getActiveTradeList()!=null)
+		{
+			activeChar.sendMessage("You can't drop item if: you are enchanting,got active warehouse,active trade");
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		if (_count <= 0)
 		{
 			Util.handleIllegalPlayerAction(activeChar, "[RequestDropItem] count <= 0! ban! oid: " + _objectId + " owner: " + activeChar.getName(), IllegalPlayerAction.PUNISH_KICK);

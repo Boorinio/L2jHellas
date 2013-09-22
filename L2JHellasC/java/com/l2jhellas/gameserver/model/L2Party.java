@@ -822,4 +822,35 @@ public class L2Party
 			broadcastToPartyMembers(_positionPacket);
 		}
 	}
+	
+	double _mobdmg = 0;
+	
+	public void setMobDamage(double d)
+	{
+		_mobdmg = d;
+	}
+	
+	/**
+	 * @return
+	 */
+	public double getMobDamage()
+	{
+		return _mobdmg;
+	}
+	
+	/**
+	 * @return
+	 */
+	L2Attackable _mob;
+	public L2PcInstance rewarded = null;
+	
+	public L2Attackable getLastMob()
+	{
+		return _mob;
+	}
+	
+	public void setLastMob(L2Attackable m)
+	{
+		_mob = m;
+	}
 }

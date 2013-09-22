@@ -78,7 +78,7 @@ public class Sow implements ISkillHandler
 				continue;
 			}
 
-			if (_target.getSeeder() != _activeChar)
+			if (_target.getSeederId() != _activeChar.getObjectId())
 			{
 				_activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				continue;
@@ -99,7 +99,7 @@ public class Sow implements ISkillHandler
 			if (calcSuccess())
 			{
 				_activeChar.sendPacket(new PlaySound("Itemsound.quest_itemget"));
-				_target.setSeeded();
+				_target.setSeeded(_activeChar);
 				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SEED_WAS_SUCCESSFULLY_SOWN);
 			}
 			else

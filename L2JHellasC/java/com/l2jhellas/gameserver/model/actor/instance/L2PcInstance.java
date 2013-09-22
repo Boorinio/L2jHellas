@@ -38,6 +38,7 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import Extensions.IpCatcher;
+import Extensions.OnEnter;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.RaidEvent.L2EventChecks;
 import Extensions.RaidEvent.L2RaidEvent;
@@ -64,6 +65,7 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.cache.WarehouseCache;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
+import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.csv.RecipeData;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -83,6 +85,7 @@ import com.l2jhellas.gameserver.handler.skillhandlers.SiegeFlag;
 import com.l2jhellas.gameserver.handler.skillhandlers.StrSiegeAssault;
 import com.l2jhellas.gameserver.handler.skillhandlers.TakeCastle;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
+import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
 import com.l2jhellas.gameserver.instancemanager.CrownManager;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
@@ -141,6 +144,8 @@ import com.l2jhellas.gameserver.model.base.PlayerClass;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
+import com.l2jhellas.gameserver.model.entity.ClanHall;
+import com.l2jhellas.gameserver.model.entity.Couple;
 import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.L2Event;
@@ -159,6 +164,7 @@ import com.l2jhellas.gameserver.model.quest.State;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.clientpackets.EnterWorld;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeWaitType;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
@@ -173,6 +179,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadMode;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ExSetCompassZoneCode;
 import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
+import com.l2jhellas.gameserver.network.serverpackets.FriendList;
 import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -188,8 +195,11 @@ import com.l2jhellas.gameserver.network.serverpackets.PartySmallWindowUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.PetInventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowInfoUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListAll;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListDelete;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
+import com.l2jhellas.gameserver.network.serverpackets.PledgeStatusChanged;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreListBuy;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreListSell;
 import com.l2jhellas.gameserver.network.serverpackets.QuestList;
@@ -12969,9 +12979,9 @@ public final class L2PcInstance extends L2Playable
 			return System.currentTimeMillis() < stamp;
 		}
 		
-		private int skill;
-		private long reuse;
-		private long stamp;
+		private final int skill;
+		private final long reuse;
+		private final long stamp;
 		
 		protected TimeStamp(int _skill, long _reuse)
 		{
@@ -13022,16 +13032,6 @@ public final class L2PcInstance extends L2Playable
 	public void addTimeStamp(L2Skill skill, long reuse, long systime)
 	{
 		ReuseTimeStamps.put(skill.getId(), new TimeStamp(skill.getId(), reuse, systime));
-	}
-	/**
-	 * Index according to skill this TimeStamp instance for restoration purposes only.
-	 * 
-	 * @param T
-	 *        the t
-	 */
-	private void addTimeStamp(TimeStamp T)
-	{
-		ReuseTimeStamps.put(T.getSkill(), T);
 	}
 	
 	/**
@@ -13210,7 +13210,7 @@ public final class L2PcInstance extends L2Playable
 	
 	public void dropItem(L2MonsterInstance npc, L2PcInstance player, int itemId, int count)
 	{
-		npc.DropItem(player, itemId, count);
+		npc.dropItem(player, itemId, count);
 	}
 	
 	/**
@@ -14079,14 +14079,14 @@ public final class L2PcInstance extends L2Playable
 		
 		if (this.getPremiumService() == 1)
 		{
-			// activeChar.sendPacket(new
-			// ExBrPremiumState(activeChar.getObjectId(), 1));
+			// this.sendPacket(new
+			// ExBrPremiumState(this.getObjectId(), 1));
 			this.setDonator(true);
 		}
 		else
 		{
-			// activeChar.sendPacket(new
-			// ExBrPremiumState(activeChar.getObjectId(), 0));
+			// this.sendPacket(new
+			// ExBrPremiumState(this.getObjectId(), 0));
 			this.setDonator(false);
 		}
 		
@@ -14184,7 +14184,154 @@ public final class L2PcInstance extends L2Playable
 		{
 			this.setHero(true);
 		}
+		
 		this.onPlayerEnter();
+		
+		// Send Macro List
+		this.getMacroses().sendUpdate();
+		// Send Item List
+		sendPacket(new ItemList(this, false));
+		// Send gg check (even if we are not going to check for reply)
+		this.queryGameGuard();
+		// Register in flood protector
+		FloodProtector.getInstance().registerNewPlayer(this.getObjectId());
+
+		Quest.playerEnter(this);
+		loadTutorial();
+
+		sendPacket(new ShortCutInit(this));
+		this.sendSkillList();
+		this.sendPacket(new HennaInfo(this));
+		this.sendPacket(new InventoryUpdate());
+		this.sendPacket(new ItemList(this, false));
+		sendPacket(new FriendList(this));
+		this.sendPacket(new QuestList());
+		sendPacket(new UserInfo(this));
+		this.broadcastUserInfo();
+		this.broadcastTitleInfo();
+		this.sendPacket(new EtcStatusUpdate(this));
+
+		this.sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
+		Announcements.getInstance().showAnnouncements(this);
+		this.spawnMe(this.getX(), this.getY(), this.getZ());
+
+		// l2jhellas Faction Good vs Evil
+		// Welcome for evil
+		if (Config.MOD_GVE_ENABLE_FACTION)
+		{
+			if (this.isevil())
+			{
+				this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
+				this. teleToLocation(this.getRandomSpawn()[0], this.getRandomSpawn()[1], this.getRandomSpawn()[2]);
+                this.sendMessage("You have been teleported Back to your Faction Base.");
+                this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
+			}
+			if (this.isgood())
+			{
+				this.getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
+				this.teleToLocation(this.getRandomSpawn()[0], this.getRandomSpawn()[1], this.getRandomSpawn()[2]);
+				this.sendMessage("You have been teleported Back to your Faction Base.");
+				this.sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
+			}
+			this.broadcastUserInfo();
+		}
+		// engage and notify Partner
+		if (Config.MOD_ALLOW_WEDDING)
+		{
+			engage();
+			notifyPartner(this.getPartnerId());
+		}
+
+		// Expand Skill
+		ExStorageMaxCount esmc = new ExStorageMaxCount(this);
+		this.sendPacket(esmc);
+
+		Quest.playerEnter(this);
+		// check player skills
+		if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN && !Config.ALT_SUBCLASS_SKILLS)
+		{
+			this.checkAllowedSkills();
+		}
+
+		// Account Manager
+		if (Config.ALLOW_ACCOUNT_MANAGER)
+		{
+			if (!L2AccountManagerInstance.hasSubEmail(this))
+			{
+				ThreadPoolManager.getInstance().scheduleGeneral(new entermail(this), 20000);
+			}
+		}
+
+		EnterWorld._onlineplayers.add(this);
+
+		setPledgeClass();
+
+		// add char to online characters
+		this.setOnlineStatus(true);
+
+		notifyFriends();
+
+		if (DimensionalRiftManager.getInstance().checkIfInRiftZone(this.getX(), this.getY(), this.getZ(), false))
+		{
+			DimensionalRiftManager.getInstance().teleportToWaitingRoom(this);
+		}
+		
+		if (this.getClanJoinExpiryTime() > System.currentTimeMillis())
+		{
+			this.sendPacket(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED);
+		}
+		
+		if (this.getClan() != null)
+		{
+			this.sendPacket(new PledgeSkillList(this.getClan()));
+			notifyClanMembers();
+			notifySponsorOrApprentice();
+
+			for (Siege siege : SiegeManager.getInstance().getSieges())
+			{
+				if (!siege.getIsInProgress())
+				{
+					continue;
+				}
+				if (siege.checkIsAttacker(this.getClan()))
+				{
+					this.setSiegeState((byte) 1);
+				}
+				else if (siege.checkIsDefender(this.getClan()))
+				{
+					this.setSiegeState((byte) 2);
+				}
+			}
+			// Add message at connection if clanHall not paid.
+			// Possibly this is custom...
+			ClanHall clanHall = ClanHallManager.getInstance().getClanHallByOwner(this.getClan());
+			if (clanHall != null)
+			{
+				if (!clanHall.getPaid())
+				{
+					this.sendPacket(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
+				}
+			}
+			this.sendPacket(new PledgeShowMemberListAll(this.getClan(),this));
+			this.sendPacket(new PledgeStatusChanged(this.getClan()));
+		}
+
+		if (!this.isGM() && this.getSiegeState() < 2 && this.isInsideZone(L2Character.ZONE_SIEGE))
+		{
+			// Attacker or spectator logging in to a siege zone. Actually should
+			// be checked for inside castle only?
+			this.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			this.sendMessage("You have been teleported to the nearest town due to you being in siege zone.");
+		}
+
+		RegionBBSManager.getInstance().changeCommunityBoard();
+
+		if (Config.GAMEGUARD_ENFORCE)
+		{
+			this.sendPacket(new GameGuardQuery());
+		}
+      
+		this.sendPacket(ActionFailed.STATIC_PACKET); //just to avoid target issues
 	}
 	
 	/**
@@ -14636,4 +14783,205 @@ public final class L2PcInstance extends L2Playable
 		
 		return false;
 	}
+	
+	public L2Summon getOwner()
+	{
+		return getOwner();
+	}
+	
+	/**
+	 * @param activeChar
+	 */
+	private void engage()
+	{
+		int _chaid = this.getObjectId();
+
+		for (Couple cl : CoupleManager.getInstance().getCouples())
+		{
+			if (cl.getPlayer1Id() == _chaid || cl.getPlayer2Id() == _chaid)
+			{
+				if (cl.getMaried())
+				{
+					this.setMarried(true);
+				}
+
+				this.setCoupleId(cl.getId());
+
+				if (cl.getPlayer1Id() == _chaid)
+				{
+					this.setPartnerId(cl.getPlayer2Id());
+				}
+				else
+				{
+					this.setPartnerId(cl.getPlayer1Id());
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param activeChar
+	 *        partnerid
+	 */
+	private void notifyPartner(int partnerId)
+	{
+		if (this.getPartnerId() != 0)
+		{
+			L2PcInstance partner;
+			partner = (L2PcInstance) L2World.findObject(this.getPartnerId());
+
+			if (partner != null)
+			{
+				partner.sendMessage("Your Partner has logged in.");
+			}
+
+			partner = null;
+		}
+	}
+
+	/**
+	 * @param activeChar
+	 */
+	private void notifyFriends()
+	{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement;
+			statement = con.prepareStatement("SELECT friend_name FROM character_friends WHERE char_id=?");
+			statement.setInt(1, this.getObjectId());
+			ResultSet rset = statement.executeQuery();
+
+			L2PcInstance friend;
+			String friendName;
+
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FRIEND_S1_HAS_LOGGED_IN);
+			sm.addString(this.getName());
+
+			while (rset.next())
+			{
+				friendName = rset.getString("friend_name");
+
+				friend = L2World.getPlayer(friendName);
+
+				if (friend != null) // friend logged in.
+				{
+					friend.sendPacket(new FriendList(friend));
+					friend.sendPacket(sm);
+				}
+			}
+			sm = null;
+
+			rset.close();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, getClass().getName() + ": Could not restore friend data: ", e);
+		}
+	}
+
+	/**
+	 * @param activeChar
+	 */
+	private void notifyClanMembers()
+	{
+		L2Clan clan = this.getClan();
+		if (clan != null)
+		{
+			clan.broadcastClanStatus();
+			clan.getClanMember(this.getName()).setPlayerInstance(this);
+			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_LOGGED_IN);
+			msg.addString(this.getName());
+			clan.broadcastToOtherOnlineMembers(msg, this);
+			msg = null;
+			clan.broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
+			if (clan.isNoticeEnabled())
+			{
+				sendPacket(new NpcHtmlMessage(1,
+						/** @formatter:off */
+						"<html><title>Clan Announcements</title><body>" +
+						"<br><center>" +
+						"<font color=\"CCAA00\">" + this.getClan().getName() +
+						"</font> <font color=\"6655FF\">Clan Alert Message</font></center><br>" +
+						"<img src=\"L2UI.SquareWhite\" width=270 height=1><br>" +
+						this.getClan().getNotice().replaceAll("\r\n", "<br>") +
+						"</body></html>"));
+						/** @formatter:on */
+			}
+		}
+	}
+
+	/**
+	 * @param activeChar
+	 */
+	private void notifySponsorOrApprentice()
+	{
+		if (this.getSponsor() != 0)
+		{
+			L2PcInstance sponsor = (L2PcInstance) L2World.findObject(this.getSponsor());
+
+			if (sponsor != null)
+			{
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOUR_APPRENTICE_S1_HAS_LOGGED_IN);
+				msg.addString(this.getName());
+				sponsor.sendPacket(msg);
+			}
+		}
+		else if (this.getApprentice() != 0)
+		{
+			L2PcInstance apprentice = (L2PcInstance) L2World.findObject(this.getApprentice());
+
+			if (apprentice != null)
+			{
+				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOUR_SPONSOR_S1_HAS_LOGGED_IN);
+				msg.addString(this.getName());
+				apprentice.sendPacket(msg);
+			}
+		}
+	}
+
+	private void setPledgeClass()
+	{
+		int pledgeClass = 0;
+		if (this.getClan() != null)
+		{
+			pledgeClass = this.getClan().getClanMember(this.getObjectId()).calculatePledgeClass(this);
+		}
+
+		if (this.isNoble() && pledgeClass < 5)
+		{
+			pledgeClass = 5;
+		}
+
+		if (this.isHero())
+		{
+			pledgeClass = 8;
+		}
+
+		this.setPledgeClass(pledgeClass);
+	}
+	
+	private void loadTutorial()
+	{
+		QuestState qs = this.getQuestState("255_Tutorial");
+		if (qs != null)
+			qs.getQuest().notifyEvent("UC", null, this);
+	}
+	
+	class entermail implements Runnable
+	{
+		private final L2PcInstance p;
+
+		public entermail(L2PcInstance player)
+		{
+			p = player;
+		}
+
+		@Override
+		public void run()
+		{
+			OnEnter.subhtml(p);
+		}
+	}
+
 }

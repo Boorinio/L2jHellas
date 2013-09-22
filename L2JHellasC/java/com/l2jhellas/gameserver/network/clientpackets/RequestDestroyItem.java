@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -68,7 +69,12 @@ public final class RequestDestroyItem extends L2GameClientPacket
 			activeChar.sendMessage("You destroying items too fast.");
 			return;
 		}
-
+		if(activeChar.getActiveEnchantItem() !=null || activeChar.getActiveWarehouse()!=null || activeChar.getActiveTradeList()!=null)
+		{
+			activeChar.sendMessage("You can't destroy items if: you are enchanting,got active warehouse,active trade");
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		if (activeChar.getPrivateStoreType() != 0)
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);

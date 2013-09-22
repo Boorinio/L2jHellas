@@ -120,6 +120,10 @@ abstract class AbstractAI implements Ctrl
 	private L2Character _castTarget;
 	protected L2Character _attackTarget;
 	protected L2Character _followTarget;
+	
+	public static int AI_INITIAL_TASK = 500;
+	public static int AI_PERIOD_TASK = 300;
+	
 
 	/** The skill we are currently casting by INTENTION_CAST */
 	L2Skill _skill;
@@ -547,6 +551,7 @@ abstract class AbstractAI implements Ctrl
 
 			// Calculate movement data for a move to location action and add the actor to movingObjects of GameTimeController
 			_accessor.moveTo(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
+			
 
 			if (!_actor.isMoving())
 			{

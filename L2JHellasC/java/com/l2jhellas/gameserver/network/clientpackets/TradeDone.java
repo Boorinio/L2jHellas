@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class TradeDone extends L2GameClientPacket
@@ -49,6 +50,12 @@ public final class TradeDone extends L2GameClientPacket
 			return;
 		}
 
+		if(player.getActiveEnchantItem() !=null || player.getActiveWarehouse()!=null  || trade.getPartner().getActiveEnchantItem() != null || trade.getPartner().getActiveWarehouse() != null)
+		{
+			player.sendMessage("You can't trade item if: you are enchanting,got active warehouse,active trade");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		if (trade.isLocked())
 			return;
 

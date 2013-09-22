@@ -27,6 +27,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2WarehouseInstance;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
@@ -93,7 +94,14 @@ public final class RequestEnchantItem extends L2GameClientPacket
 			activeChar.setActiveEnchantItem(null);
 			return;
 		}
-
+		
+		if(activeChar.getActiveWarehouse()!=null || activeChar.getActiveTradeList()!=null)
+		{
+			activeChar.sendMessage("You can't enchant item if: you got active warehouse,active trade");
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
 		L2ItemInstance scroll = activeChar.getActiveEnchantItem();
 		activeChar.setActiveEnchantItem(null);

@@ -67,7 +67,7 @@ public class Harvest implements ISkillHandler
 
 			_target = (L2MonsterInstance) targetList[index];
 
-			if (_activeChar != _target.getSeeder())
+			if (_activeChar.getObjectId() != _target.getSeederId())
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_HARVEST);
 				_activeChar.sendPacket(sm);

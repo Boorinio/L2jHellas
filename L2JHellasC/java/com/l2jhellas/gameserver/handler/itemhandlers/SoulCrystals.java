@@ -115,7 +115,7 @@ public class SoulCrystals implements IItemHandler
 			_activeChar.enableAllSkills();
 			try
 			{
-				_target.addAbsorber(_activeChar, _crystalId);
+				_target.addAbsorber(_activeChar);
 				_activeChar.setTarget(_target);
 			}
 			catch (Throwable e)

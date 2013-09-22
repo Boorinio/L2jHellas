@@ -7061,4 +7061,34 @@ public abstract class L2Character extends L2Object
 	{
 		return Config.BUFFS_MAX_AMOUNT + Math.max(0, getSkillLevel(1405));
 	}
+	
+	double _mobdmg = 0;
+	
+	public void setMobDamage(double d)
+	{
+		_mobdmg = d;
+	}
+	
+	/**
+	 * @return
+	 */
+	public double getMobDamage()
+	{
+		return _mobdmg;
+	}
+	
+	/**
+	 * @return
+	 */
+	L2Attackable _mob;
+	
+	public L2Attackable getLastMob()
+	{
+		return _mob;
+	}
+	
+	public void setLastMob(L2Attackable m)
+	{
+		_mob = m;
+	}
 }

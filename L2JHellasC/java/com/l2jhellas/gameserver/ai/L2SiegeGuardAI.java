@@ -161,7 +161,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	{
 		if (Config.DEBUG)
 			_log.log(Level.CONFIG, getClass().getName() + ".changeIntention(" + intention + ", " + arg0 + ", " + arg1 + ")");
-		((L2Attackable) _actor).setisReturningToSpawnPoint(false);
+		((L2Attackable) _actor).setIsReturningToSpawnPoint(false);
 
 		if (intention == AI_INTENTION_IDLE /* || intention == AI_INTENTION_ACTIVE */) // active becomes idle if only a summon is present
 		{
@@ -736,7 +736,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 				return;
 			}
 			else
-				for (L2Character aggroed : me.getAggroListRP().keySet())
+				for (L2Character aggroed : me.getAggroList().keySet())
 					me.addDamageHate(aggroed, 0, aggro);
 
 			aggro = me.getHating(mostHated);
@@ -756,6 +756,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 		super.onEvtDead();
 	}
 
+	@Override
 	public void stopAITask()
 	{
 		if (_aiTask != null)

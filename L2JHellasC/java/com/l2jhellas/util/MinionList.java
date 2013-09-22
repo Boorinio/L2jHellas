@@ -26,6 +26,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2MinionData;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2MinionInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -188,7 +189,60 @@ public class MinionList
 			}
 		}
 	}
-
+	
+	
+	/**
+	 * Called from onTeleported() of the master Alive and able to move minions teleported to master.
+	 */
+	public void onMasterTeleported()
+	{
+		final int offset = 200;
+		final int minRadius = master.getCollisionRadius() + 30;
+		
+		for (L2MonsterInstance minion : minionReferences)
+		{
+			if (minion != null && !minion.isDead() && !minion.isMovementDisabled())
+			{
+				int newX = Rnd.get(minRadius * 2, offset * 2); // x
+				int newY = Rnd.get(newX, offset * 2); // distance
+				newY = (int) Math.sqrt(newY * newY - newX * newX); // y
+				if (newX > offset + minRadius)
+					newX = master.getX() + newX - offset;
+				else
+					newX = master.getX() - newX + minRadius;
+				if (newY > offset + minRadius)
+					newY = master.getY() + newY - offset;
+				else
+					newY = master.getY() - newY + minRadius;
+				
+				minion.teleToLocation(newX, newY, master.getZ(), false);
+			}
+		}
+	}
+	/**
+	 * Called if master/minion was attacked. Master and all free minions receive aggro against attacker.
+	 * @param caller That instance will call for help versus attacker.
+	 * @param attacker That instance will receive all aggro.
+	 */
+	public void onAssist(L2Character caller, L2Character attacker)
+	{
+		if (attacker == null)
+			return;
+		
+		if (!master.isAlikeDead() && !master.isInCombat())
+			master.addDamageHate(attacker, 0, 1);
+		
+		final boolean callerIsMaster = caller == master;
+		int aggro = callerIsMaster ? 10 : 1;
+		if (master.isRaid())
+			aggro *= 10;
+		
+		for (L2MonsterInstance minion : minionReferences)
+		{
+			if (minion != null && !minion.isDead() && (callerIsMaster || !minion.isInCombat()))
+				minion.addDamageHate(attacker, 0, aggro);
+		}
+	}
 	/**
 	 * Init a Minion and add it in the world as a visible object.<BR>
 	 * <BR>

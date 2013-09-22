@@ -76,12 +76,14 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			player.sendMessage("You withdrawing items too fast.");
 			return;
 		}
-		if(player.getActiveTradeList() != null)
+		
+		if(player.getActiveTradeList() != null || player.getActiveEnchantItem() !=null)
 		{
-			player.sendMessage("You can't withdraw items when you are trading.");
+			player.sendMessage("You can't withdraw item if: you are enchanting,active trade");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
+
 		final ItemContainer warehouse = player.getActiveWarehouse();
 		if (warehouse == null)
 			return;
