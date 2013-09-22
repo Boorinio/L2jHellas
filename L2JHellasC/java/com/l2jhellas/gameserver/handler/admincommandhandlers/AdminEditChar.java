@@ -649,24 +649,21 @@ public class AdminEditChar implements IAdminCommandHandler
 
 	private void listCharacters(L2PcInstance activeChar, int page)
 	{
-		List<L2PcInstance> Onlineplayers  = new ArrayList<L2PcInstance>();
-		for (L2PcInstance player : L2World.getAllPlayers())
-		{
-			if(player != null && player.isOnline() == 1)
-				Onlineplayers.add(player);
-		}
+		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
+		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
+
 		int MaxCharactersPerPage = 20;
-		int MaxPages = Onlineplayers.size() / MaxCharactersPerPage;
-		
-		if (Onlineplayers.size() > MaxCharactersPerPage * MaxPages)
+		int MaxPages = players.length / MaxCharactersPerPage;
+
+		if (players.length > MaxCharactersPerPage * MaxPages)
 			MaxPages++;
-		
+
 		// Check if number of users changed
 		if (page > MaxPages)
 			page = MaxPages;
-		
+
 		int CharactersStart = MaxCharactersPerPage * page;
-		int CharactersEnd = Onlineplayers.size();
+		int CharactersEnd = players.length;
 		if (CharactersEnd - CharactersStart > MaxCharactersPerPage)
 			CharactersEnd = CharactersStart + MaxCharactersPerPage;
 
@@ -682,7 +679,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		replyMSG.clear();
 		for (int i = CharactersStart; i < CharactersEnd; i++)
 		{	// Add player info into new Table row
-			replyMSG.append("<tr><td width=80><a action=\"bypass -h admin_character_info " + Onlineplayers.get(i).getName() + "\">" + Onlineplayers.get(i).getName() + "</a></td><td width=110>" + Onlineplayers.get(i).getTemplate().className + "</td><td width=40>" + Onlineplayers.get(i).getLevel() + "</td></tr>");
+			replyMSG.append("<tr><td width=80><a action=\"bypass -h admin_character_info " + players[i].getName() + "\">" + players[i].getName() + "</a></td><td width=110>" + players[i].getTemplate().className + "</td><td width=40>" + players[i].getLevel() + "</td></tr>");
 		}
 		adminReply.replace("%players%", replyMSG.toString());
 		activeChar.sendPacket(adminReply);
