@@ -24,7 +24,6 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminTable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
@@ -61,7 +60,7 @@ public final class L2World
 	//private FastMap<String, L2PcInstance> _allGms;
 
 	/** HashMap(String Player name, L2PcInstance) containing all the players in game */
-	private static Map<Integer, L2PcInstance> _allPlayers;
+	private static Map<String, L2PcInstance> _allPlayers;
 
 	private static Map<String, L2PcInstance> _allgoodPlayers;
 	private static Map<String, L2PcInstance> _allevilPlayers;
@@ -86,7 +85,7 @@ public final class L2World
 	public static void init()
 	{
 		//_allGms     = new FastMap<String, L2PcInstance>();
-		_allPlayers = new FastMap<Integer, L2PcInstance>().setShared(true);
+		_allPlayers = new FastMap<String, L2PcInstance>().setShared(true);
 		_allgoodPlayers = new FastMap<String, L2PcInstance>().setShared(true);
 		_allevilPlayers = new FastMap<String, L2PcInstance>().setShared(true);
 		_petsInstance = new FastMap<Integer, L2PetInstance>().setShared(true);
@@ -274,7 +273,7 @@ public final class L2World
 	 */
 	public static L2PcInstance getPlayer(String name)
 	{
-		return getPlayer(CharNameTable.getInstance().getIdByName(name));
+		return _allPlayers.get(name.toLowerCase());
 	}
 	
 	/**
@@ -395,7 +394,8 @@ public final class L2World
 					tmp.closeNetConnection();
 					return;
 				}
-				_allPlayers.put(player.getObjectId(), player);			}
+				_allPlayers.put(player.getName().toLowerCase(), player);
+			}
 			// l2jhellas Faction Good vs Evil
 			// If selected L2Object is a good or evil Faction Added as Known Object
 			if (Config.MOD_GVE_ENABLE_FACTION)
@@ -410,7 +410,8 @@ public final class L2World
 					_allevilPlayers.put(player.getName().toLowerCase(), player);
 				}
 			}
-			_allPlayers.put(player.getObjectId(), player);		}
+			_allPlayers.put(player.getName().toLowerCase(), player);
+		}
 
 		// Get all visible objects contained in the _visibleObjects of L2WorldRegions
 		// in a circular area of 2000 units
@@ -443,7 +444,7 @@ public final class L2World
 	 */
 	public static void addToAllPlayers(L2PcInstance cha)
 	{
-		_allPlayers.put(cha.getObjectId(), cha);
+		_allPlayers.put(cha.getName().toLowerCase(), cha);
 	}
 
 	/**
