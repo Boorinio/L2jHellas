@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 
 /**
@@ -43,20 +44,25 @@ public final class DlgAnswer extends L2GameClientPacket
 	@Override
 	public void runImpl()
 	{
+		L2PcInstance player = getClient().getActiveChar();
 		if (Config.DEBUG)
 			_log.fine(getType() + ": Answer acepted. Message ID " + _messageId + ", asnwer " + _answer + ", unknown field " + _unk);
 
 		if (_messageId == SystemMessageId.RESSURECTION_REQUEST_BY_S1.getId())
-			getClient().getActiveChar().reviveAnswer(_answer);
+			player.reviveAnswer(_answer);
+		else if (_messageId == SystemMessageId.WOULD_YOU_LIKE_TO_OPEN_THE_GATE.getId())
+			player.gatesAnswer(_answer, 1);
+		else if (_messageId == SystemMessageId.WOULD_YOU_LIKE_TO_CLOSE_THE_GATE.getId())
+			player.gatesAnswer(_answer, 0);
 		else if (_messageId == 614 && getClient().getActiveChar().awaitingAnswer && Config.MOD_ALLOW_WEDDING)
 		{
-			getClient().getActiveChar().EngageAnswer(_answer);
-			getClient().getActiveChar().awaitingAnswer = false;
+			player.EngageAnswer(_answer);
+			player.awaitingAnswer = false;
 		}
 		else if (_messageId == 614 && L2EventManagerInstance._awaitingplayers.contains(getClient().getActiveChar()))
 		{
-			getClient().getActiveChar().setRaidAnswear(_answer);
-			L2EventManagerInstance._awaitingplayers.remove(getClient().getActiveChar());
+			player.setRaidAnswear(_answer);
+			L2EventManagerInstance._awaitingplayers.remove(player);
 		}
 	}
 

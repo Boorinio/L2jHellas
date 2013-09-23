@@ -12926,6 +12926,42 @@ public final class L2PcInstance extends L2Playable
 		// sendPacket(new EtcStatusUpdate(this));
 	}
 	
+	// open/close gates
+	private GatesRequest _gatesRequest = new GatesRequest();
+
+	private static class GatesRequest
+	{
+		private L2DoorInstance _target = null;
+
+		public void setTarget(L2DoorInstance door)
+		{
+			_target = door;
+		}
+
+		public L2DoorInstance getDoor()
+		{
+			return _target;
+		}
+	}
+
+	public void gatesRequest(L2DoorInstance door)
+	{
+		_gatesRequest.setTarget(door);
+	}
+
+	public void gatesAnswer(int answer, int type)
+	{
+		if (_gatesRequest.getDoor() == null)
+			return;
+
+		if (answer == 1 && getTarget() == _gatesRequest.getDoor() && type == 1)
+			_gatesRequest.getDoor().openMe();
+		else if (answer == 1 && getTarget() == _gatesRequest.getDoor() && type == 0)
+			_gatesRequest.getDoor().closeMe();
+
+		_gatesRequest.setTarget(null);
+	}
+	
 	private final FastMap<Integer, TimeStamp> ReuseTimeStamps = new FastMap<Integer, TimeStamp>().setShared(true);
 	
 	/**

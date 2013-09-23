@@ -40,6 +40,7 @@ import com.l2jhellas.gameserver.model.actor.status.DoorStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.ConfirmDlg;
 import com.l2jhellas.gameserver.network.serverpackets.DoorStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -448,19 +449,19 @@ public class L2DoorInstance extends L2Character
 				if (!isInsideRadius(player, L2Npc.INTERACTION_DISTANCE, false, false))
 				{
 					player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+					player.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				else
 				{
-					//need find serverpacket which ask open/close gate. now auto
-					//if (getOpen() == 1) player.sendPacket(1140));
-					//else player.sendPacket(1141));
+					// Like L2OFF Clanhall's doors get request to be closed/opened
+					player.gatesRequest(this);
 					if (!getOpen())
 					{
-						openMe();
+						player.sendPacket(new ConfirmDlg(1140, _name));
 					}
 					else
 					{
-						closeMe();
+						player.sendPacket(new ConfirmDlg(1141, _name));
 					}
 				}
 			}
@@ -488,25 +489,32 @@ public class L2DoorInstance extends L2Character
 			}
 
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder html1 = new TextBuilder("<html><body><table border=0>");
-			html1.append("<tr><td>S.Y.L. Says:</td></tr>");
-			html1.append("<tr><td>Current HP  " + getCurrentHp() + "</td></tr>");
-			html1.append("<tr><td>Max HP      " + getMaxHp() + "</td></tr>");
+			TextBuilder html1 = new TextBuilder("<html><title>Door Edit</title><body><table border=0>");
+			html1.append("<tr><td>Door Stats:</td></tr>");
+			html1.append("<tr><td>HP: " + (int) getCurrentHp() + "/" + getMaxHp() +"</td></tr>");
 
 			html1.append("<tr><td>Object ID: " + getObjectId() + "</td></tr>");
-			html1.append("<tr><td>Door ID:<br>" + getDoorId() + "</td></tr>");
-			html1.append("<tr><td><br></td></tr>");
+			html1.append("<tr><td>Door ID:" + getDoorId() + "</td></tr>");
+			html1.append("<tr><td></td></tr>");
 
-			html1.append("<tr><td>Class: " + getClass().getName() + "</td></tr>");
-			html1.append("<tr><td><br></td></tr>");
+			html1.append("<tr><td>Max X " + getXMax() + "</td></tr>");
+			html1.append("<tr><td>Max Y " + getYMax() + "</td></tr>");
+			html1.append("<tr><td>Max Z " + getZMax() + "</td></tr>");
+			html1.append("<tr><td>Min X " + getXMin() + "</td></tr>");
+			html1.append("<tr><td>Min Y " + getYMin() + "</td></tr>");
+			html1.append("<tr><td>Min Z " + getZMin() + "</td></tr>");
+			html1.append("<tr><td></td></tr>");
+			
+			html1.append("<tr><td>Class: " + getClass().getSimpleName() + "</td></tr>");
+			html1.append("<tr><td></td></tr>");
 			html1.append("</table>");
 
-			html1.append("<table><tr>");
+			html1.append("<br><center><table><tr>");
 			html1.append("<td><button value=\"Open\" action=\"bypass -h admin_open " + getDoorId() + "\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 			html1.append("<td><button value=\"Close\" action=\"bypass -h admin_close " + getDoorId() + "\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 			html1.append("<td><button value=\"Kill\" action=\"bypass -h admin_kill\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 			html1.append("<td><button value=\"Delete\" action=\"bypass -h admin_delete\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
-			html1.append("</tr></table></body></html>");
+			html1.append("</tr></table></center></body></html>");
 
 			html.setHtml(html1.toString());
 			player.sendPacket(html);
