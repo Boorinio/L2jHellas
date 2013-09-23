@@ -131,7 +131,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	
 	public static enum Race
 	{
-		UNDEAD, MAGICCREATURE, BEAST, ANIMAL, PLANT, HUMANOID, SPIRIT, ANGEL, DEMON, DRAGON, GIANT, BUG, FAIRIE, HUMAN, ELVE, DARKELVE, ORC, DWARVE, OTHER, NONLIVING, SIEGEWEAPON, DEFENDINGARMY, MERCENARIE, UNKNOWN, KAMAEL, NONE
+		UNDEAD, MAGICCREATURE, BEAST, ANIMAL, PLANT, HUMANOID, SPIRIT, ANGEL, DEMON, DRAGON, GIANT, BUG, FAIRIE, HUMAN, ELVE, DARKELVE, ORC, DWARVE, OTHER, NONLIVING, SIEGEWEAPON, DEFENDINGARMY, MERCENARIE, NONE
 	}
 	
 	//private final StatsSet _npcStatsSet;
@@ -610,12 +610,6 @@ public final class L2NpcTemplate extends L2CharTemplate
 				break;
 			case 23:
 				race = L2NpcTemplate.Race.MERCENARIE;
-				break;
-			case 24:
-				race = L2NpcTemplate.Race.UNKNOWN;
-				break;
-			case 25:
-				race = L2NpcTemplate.Race.KAMAEL;
 				break;
 			default:
 				race = L2NpcTemplate.Race.NONE;

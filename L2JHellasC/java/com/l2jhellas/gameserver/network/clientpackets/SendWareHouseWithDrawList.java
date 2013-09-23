@@ -77,9 +77,9 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			return;
 		}
 		
-		if(player.getActiveTradeList() != null || player.getActiveEnchantItem() !=null)
+		if (player.getActiveTradeList() != null || player.getActiveEnchantItem() != null)
 		{
-			player.sendMessage("You can't withdraw item if: you are enchanting,active trade");
+			player.sendMessage("You can't withdraw items when you are enchanting or trading.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

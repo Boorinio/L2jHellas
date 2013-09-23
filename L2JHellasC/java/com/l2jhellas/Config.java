@@ -970,11 +970,22 @@ public final class Config
 	public static boolean USE_PREMIUMSERVICE;
 	public static float PREMIUM_RATE_XP;
 	public static float PREMIUM_RATE_SP;
-	public static Map<Integer, Integer> PR_RATE_DROP_ITEMS_ID;
+	public static float PREMIUM_RATE_DROP_ADENA;
 	public static float PREMIUM_RATE_DROP_SPOIL;
 	public static float PREMIUM_RATE_DROP_ITEMS;
 	public static float PREMIUM_RATE_DROP_QUEST;
 	public static float PREMIUM_RATE_DROP_ITEMS_BY_RAID;
+	public static int PREMIUM_PLAYER_DROP_LIMIT;
+	public static int PREMIUM_PLAYER_RATE_DROP;
+	public static int PREMIUM_PLAYER_RATE_DROP_ITEM;
+	public static int PREMIUM_PLAYER_RATE_DROP_EQUIP;
+	public static int PREMIUM_PLAYER_RATE_DROP_EQUIP_WEAPON;
+	public static int PREMIUM_KARMA_DROP_LIMIT;
+	public static int PREMIUM_KARMA_RATE_DROP;
+	public static int PREMIUM_KARMA_RATE_DROP_ITEM;
+	public static int PREMIUM_KARMA_RATE_DROP_EQUIP;
+	public static int PREMIUM_KARMA_RATE_DROP_EQUIP_WEAPON;
+	
 	// Normal Settings
 	public static float RATE_XP;
 	public static float RATE_SP;
@@ -2693,40 +2704,22 @@ public final class Config
 			USE_PREMIUMSERVICE = Boolean.parseBoolean(ratesSettings.getProperty("UsePremiumServices", "False"));
 			PREMIUM_RATE_XP = Float.parseFloat(ratesSettings.getProperty("PremiumRateXp", "2"));
 			PREMIUM_RATE_SP = Float.parseFloat(ratesSettings.getProperty("PremiumRateSp", "2"));
+			PREMIUM_RATE_DROP_ADENA = Float.parseFloat(ratesSettings.getProperty("PremiumRateDropAdena", "2"));
 			PREMIUM_RATE_DROP_SPOIL = Float.parseFloat(ratesSettings.getProperty("PremiumRateDropSpoil", "2"));
 			PREMIUM_RATE_DROP_ITEMS = Float.parseFloat(ratesSettings.getProperty("PremiumRateDropItems", "2"));
 			PREMIUM_RATE_DROP_QUEST = Float.parseFloat(ratesSettings.getProperty("PremiumRateDropQuest", "2"));
 			PREMIUM_RATE_DROP_ITEMS_BY_RAID = Float.parseFloat(ratesSettings.getProperty("PremiumRateRaidDropItems", "2"));
-			String[] propertySplitPRRateDropItemsID = ratesSettings.getProperty("PremiumRateRaidDropItemsIDs", "").split(";");
-			PR_RATE_DROP_ITEMS_ID = new FastMap<Integer, Integer>(propertySplitPRRateDropItemsID.length);
-
-			// For Premium Service
-			if (propertySplitPRRateDropItemsID.length > 1)
-			{
-				for (String PremiumIDs : propertySplitPRRateDropItemsID)
-				{
-					String[] PremSplit = PremiumIDs.split(",");
-					if (PremSplit.length != 2)
-					{
-						_log.warning(StringUtil.concat("[PremiumRate]: invalid config property -> EnchantList \"", PremiumIDs, "\""));
-					}
-					else
-					{
-						try
-						{
-							PR_RATE_DROP_ITEMS_ID.put(Integer.valueOf(PremSplit[0]), Integer.valueOf(PremSplit[1]));
-						}
-						catch (NumberFormatException nfe)
-						{
-							if (!PremiumIDs.isEmpty())
-							{
-								_log.warning(StringUtil.concat("[PremiumRate]: invalid config property -> EnchantList \"", PremSplit[0], "\"", PremSplit[1]));
-							}
-						}
-					}
-				}
-			}
-
+			PREMIUM_PLAYER_DROP_LIMIT = Integer.parseInt(ratesSettings.getProperty("PremiumPlayerDropLimit", "0"));
+			PREMIUM_PLAYER_RATE_DROP = Integer.parseInt(ratesSettings.getProperty("PremiumPlayerRateDrop", "0"));
+			PREMIUM_PLAYER_RATE_DROP_ITEM = Integer.parseInt(ratesSettings.getProperty("PremiumPlayerRateDropItem", "0"));
+			PREMIUM_PLAYER_RATE_DROP_EQUIP = Integer.parseInt(ratesSettings.getProperty("PremiumPlayerRateDropEquip", "0"));
+			PREMIUM_PLAYER_RATE_DROP_EQUIP_WEAPON = Integer.parseInt(ratesSettings.getProperty("PremiumPlayerRateDropEquipWeapon", "0"));
+			PREMIUM_KARMA_DROP_LIMIT = Integer.parseInt(ratesSettings.getProperty("PremiumKarmaDropLimit", "5"));
+			PREMIUM_KARMA_RATE_DROP = Integer.parseInt(ratesSettings.getProperty("PremiumKarmaRateDrop", "35"));
+			PREMIUM_KARMA_RATE_DROP_ITEM = Integer.parseInt(ratesSettings.getProperty("PremiumKarmaRateDropItem", "25"));
+			PREMIUM_KARMA_RATE_DROP_EQUIP = Integer.parseInt(ratesSettings.getProperty("PremiumKarmaRateDropEquip", "20"));
+			PREMIUM_KARMA_RATE_DROP_EQUIP_WEAPON = Integer.parseInt(ratesSettings.getProperty("PremiumKarmaRateDropEquipWeapon", "5"));
+			
 			RATE_XP = Float.parseFloat(ratesSettings.getProperty("RateXp", "1"));
 			RATE_SP = Float.parseFloat(ratesSettings.getProperty("RateSp", "1"));
 			RATE_PARTY_XP = Float.parseFloat(ratesSettings.getProperty("RatePartyXp", "1"));

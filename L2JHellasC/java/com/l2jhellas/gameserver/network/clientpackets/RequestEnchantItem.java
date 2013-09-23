@@ -95,9 +95,9 @@ public final class RequestEnchantItem extends L2GameClientPacket
 			return;
 		}
 		
-		if(activeChar.getActiveWarehouse()!=null || activeChar.getActiveTradeList()!=null)
+		if (activeChar.getActiveWarehouse() != null || activeChar.getActiveTradeList() != null)
 		{
-			activeChar.sendMessage("You can't enchant item if: you got active warehouse,active trade");
+			activeChar.sendMessage("You can't enchant items when you got active warehouse or active trade.");
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

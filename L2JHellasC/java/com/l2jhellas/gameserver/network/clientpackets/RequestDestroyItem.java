@@ -69,9 +69,9 @@ public final class RequestDestroyItem extends L2GameClientPacket
 			activeChar.sendMessage("You destroying items too fast.");
 			return;
 		}
-		if(activeChar.getActiveEnchantItem() !=null || activeChar.getActiveWarehouse()!=null || activeChar.getActiveTradeList()!=null)
+		if (activeChar.getActiveEnchantItem() != null || activeChar.getActiveWarehouse() != null || activeChar.getActiveTradeList()!= null)
 		{
-			activeChar.sendMessage("You can't destroy items if: you are enchanting,got active warehouse,active trade");
+			activeChar.sendMessage("You can't destroy items when you are enchanting, got active warehouse or active trade.");
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

@@ -46,7 +46,7 @@ public final class TradeRequest extends L2GameClientPacket
 
 		if (!player.getAccessLevel().allowTransaction())
         {
-            player.sendMessage("Transactions are disable for your Access Level");
+            player.sendMessage("Transactions are disable for your Access Level.");
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
         }
@@ -67,9 +67,9 @@ public final class TradeRequest extends L2GameClientPacket
 			return;
 		}
 		
-		if(player.getActiveEnchantItem() !=null || player.getActiveWarehouse()!=null || partner.getActiveEnchantItem() !=null || partner.getActiveWarehouse()!=null )
+		if (player.getActiveEnchantItem() != null || player.getActiveWarehouse() != null || partner.getActiveEnchantItem() != null || partner.getActiveWarehouse() !=null)
 		{
-			player.sendMessage("You can't trade item if you or your partner:  enchanting,got active warehouse");
+			player.sendMessage("You can't trade items if you or your partner enchanting or got active warehouse.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

@@ -1120,7 +1120,7 @@ public class L2Attackable extends L2Npc
 	}
 	
 	/**
-	 * @see net.sf.l2j.gameserver.model.actor.L2Character#addAttackerToAttackByList(net.sf.l2j.gameserver.model.actor.L2Character)
+	 * @see com.l2jhellas.gameserver.model.actor.L2Character#addAttackerToAttackByList(net.sf.l2j.gameserver.model.actor.L2Character)
 	 */
 	@Override
 	public void addAttackerToAttackByList(L2Character player)
@@ -1132,7 +1132,7 @@ public class L2Attackable extends L2Npc
 	}
 
 	/**
-	 * Calculates quantity of items for specific drop acording to current situation.
+	 * Calculates quantity of items for specific drop according to current situation.
 	 * @param drop The L2DropData count is being calculated for
 	 * @param lastAttacker The L2PcInstance that has killed the L2Attackable
 	 * @param levelModifier level modifier in %'s (will be subtracted from drop chance)
@@ -1166,11 +1166,14 @@ public class L2Attackable extends L2Npc
 		
 		// Applies Drop rates
 		if (drop.getItemId() == 57)
-			dropChance *= Config.RATE_DROP_ADENA;
+			dropChance *= (lastAttacker.getPremiumService() == 1 ? Config.PREMIUM_RATE_DROP_ADENA : Config.RATE_DROP_ADENA);
 		else if (isSweep)
-			dropChance *= Config.RATE_DROP_SPOIL;
+			dropChance *= (lastAttacker.getPremiumService() == 1 ? Config.PREMIUM_RATE_DROP_SPOIL : Config.RATE_DROP_SPOIL);
 		else
-			dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
+			if (lastAttacker.getPremiumService() == 1)
+				dropChance *= isRaid() && !isRaidMinion() ? Config.PREMIUM_RATE_DROP_ITEMS_BY_RAID : Config.PREMIUM_RATE_DROP_ITEMS;
+			else	
+				dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
 		
 		if (isChampion())
 			dropChance *= Config.CHAMPION_REWARDS;
@@ -1269,10 +1272,14 @@ public class L2Attackable extends L2Npc
 			// if smaller.
 			
 			double dropChance = drop.getChance();
+			
 			if (drop.getItemId() == 57)
-				dropChance *= Config.RATE_DROP_ADENA;
+				dropChance *= (lastAttacker.getPremiumService() == 1 ? Config.PREMIUM_RATE_DROP_ADENA : Config.RATE_DROP_ADENA);
 			else
-				dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
+				if (lastAttacker.getPremiumService() == 1)
+					dropChance *= isRaid() && !isRaidMinion() ? Config.PREMIUM_RATE_DROP_ITEMS_BY_RAID : Config.PREMIUM_RATE_DROP_ITEMS;
+				else	
+					dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
 			
 			if (isChampion())
 				dropChance *= Config.CHAMPION_REWARDS;
@@ -1501,8 +1508,7 @@ public class L2Attackable extends L2Npc
 						// Broadcast message if RaidBoss was defeated
 						if (isRaid() && !isRaidMinion())
 						{
-							SystemMessage sm;
-							sm = new SystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
 							sm.addCharName(this);
 							sm.addItemName(item.getItemId());
 							sm.addNumber(item.getCount());

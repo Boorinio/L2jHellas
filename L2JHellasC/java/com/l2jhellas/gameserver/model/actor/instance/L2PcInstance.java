@@ -5753,19 +5753,41 @@ public final class L2PcInstance extends L2Playable
 			if (getKarma() > 0 && getPkKills() >= pkLimit)
 			{
 				isKarmaDrop = true;
-				dropPercent = Config.KARMA_RATE_DROP;
-				dropEquip = Config.KARMA_RATE_DROP_EQUIP;
-				dropEquipWeapon = Config.KARMA_RATE_DROP_EQUIP_WEAPON;
-				dropItem = Config.KARMA_RATE_DROP_ITEM;
-				dropLimit = Config.KARMA_DROP_LIMIT;
+				if (getPremiumService() == 1)
+				{
+					dropPercent = Config.PREMIUM_KARMA_RATE_DROP;
+					dropEquip = Config.PREMIUM_KARMA_RATE_DROP_EQUIP;
+					dropEquipWeapon = Config.PREMIUM_KARMA_RATE_DROP_EQUIP_WEAPON;
+					dropItem = Config.PREMIUM_KARMA_RATE_DROP_ITEM;
+					dropLimit = Config.PREMIUM_KARMA_DROP_LIMIT;
+				}
+				else
+				{
+					dropPercent = Config.KARMA_RATE_DROP;
+					dropEquip = Config.KARMA_RATE_DROP_EQUIP;
+					dropEquipWeapon = Config.KARMA_RATE_DROP_EQUIP_WEAPON;
+					dropItem = Config.KARMA_RATE_DROP_ITEM;
+					dropLimit = Config.KARMA_DROP_LIMIT;
+				}
 			}
 			else if (isKillerNpc && getLevel() > 4 && !isFestivalParticipant())
 			{
-				dropPercent = Config.PLAYER_RATE_DROP;
-				dropEquip = Config.PLAYER_RATE_DROP_EQUIP;
-				dropEquipWeapon = Config.PLAYER_RATE_DROP_EQUIP_WEAPON;
-				dropItem = Config.PLAYER_RATE_DROP_ITEM;
-				dropLimit = Config.PLAYER_DROP_LIMIT;
+				if (getPremiumService() == 1)
+				{
+					dropPercent = Config.PREMIUM_PLAYER_RATE_DROP;
+					dropEquip = Config.PREMIUM_PLAYER_RATE_DROP_EQUIP;
+					dropEquipWeapon = Config.PREMIUM_PLAYER_RATE_DROP_EQUIP_WEAPON;
+					dropItem = Config.PREMIUM_PLAYER_RATE_DROP_ITEM;
+					dropLimit = Config.PREMIUM_PLAYER_DROP_LIMIT;
+				}
+				else
+				{
+					dropPercent = Config.PLAYER_RATE_DROP;
+					dropEquip = Config.PLAYER_RATE_DROP_EQUIP;
+					dropEquipWeapon = Config.PLAYER_RATE_DROP_EQUIP_WEAPON;
+					dropItem = Config.PLAYER_RATE_DROP_ITEM;
+					dropLimit = Config.PLAYER_DROP_LIMIT;
+				}
 			}
 			
 			int dropCount = 0;
@@ -5822,8 +5844,6 @@ public final class L2PcInstance extends L2Playable
 							break;
 						
 					}
-						
-					
 				}
 			}
 		}

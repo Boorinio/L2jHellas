@@ -110,7 +110,7 @@ public final class SystemMessage extends L2GameServerPacket
 	private SMParam[] _params;
 	private int _paramIndex;
 	
-	public SystemMessage(final SystemMessageId smId)
+	private SystemMessage(final SystemMessageId smId)
 	{
 		final int paramCount = smId.getParamCount();
 		_smId = smId;

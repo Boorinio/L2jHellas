@@ -50,9 +50,9 @@ public final class TradeDone extends L2GameClientPacket
 			return;
 		}
 
-		if(player.getActiveEnchantItem() !=null || player.getActiveWarehouse()!=null  || trade.getPartner().getActiveEnchantItem() != null || trade.getPartner().getActiveWarehouse() != null)
+		if (player.getActiveEnchantItem() != null || player.getActiveWarehouse() != null || trade.getPartner().getActiveEnchantItem() != null || trade.getPartner().getActiveWarehouse() != null)
 		{
-			player.sendMessage("You can't trade item if: you are enchanting,got active warehouse,active trade");
+			player.sendMessage("You can't trade items if you or your partner enchanting or got active warehouse.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

@@ -66,9 +66,9 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 			return;
 		}
 		
-		if(player.getActiveWarehouse()!=null || player.getActiveTradeList() != null)
+		if (player.getActiveWarehouse() != null || player.getActiveTradeList() != null)
 		{
-			player.sendMessage("You can't give items if: you got active warehouse,active trade");
+			player.sendMessage("You can't give items when you got active warehouse or active trade.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -81,7 +81,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		// Exploit Fix for Hero weapons Uses pet Inventory to buy New One.
 		final L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
 		
-		if(item==null)
+		if (item == null)
 			return;
 		
 		if (item.isAugmented())

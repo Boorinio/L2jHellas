@@ -55,9 +55,9 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 			return;
 		}
 		
-		if(player.getActiveWarehouse()!=null || player.getActiveTradeList() != null)
+		if (player.getActiveWarehouse() != null || player.getActiveTradeList() != null)
 		{
-			player.sendMessage("You can't get items if: you got active warehouse,active trade");
+			player.sendMessage("You can't get items when you got active warehouse or active trade.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
