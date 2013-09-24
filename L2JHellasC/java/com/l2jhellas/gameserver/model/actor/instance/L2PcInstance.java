@@ -12927,7 +12927,7 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	// open/close gates
-	private GatesRequest _gatesRequest = new GatesRequest();
+	private final GatesRequest _gatesRequest = new GatesRequest();
 
 	private static class GatesRequest
 	{
@@ -15039,5 +15039,4 @@ public final class L2PcInstance extends L2Playable
 			OnEnter.subhtml(p);
 		}
 	}
-
 }

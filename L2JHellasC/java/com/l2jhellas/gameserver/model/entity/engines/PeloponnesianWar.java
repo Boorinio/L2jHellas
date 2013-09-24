@@ -168,6 +168,7 @@ public class PeloponnesianWar
 			for (L2PcInstance athenians : _athenians)
 			{
 				
+				if(athenians!=null)
 				athenians.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, athenians, true);
 				
 			}
@@ -176,7 +177,7 @@ public class PeloponnesianWar
 		{
 			for (L2PcInstance spartans : _spartans)
 			{
-				
+				if(spartans!=null)
 				spartans.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, spartans, true);
 				
 			}

@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -40,7 +39,6 @@ public class ZodiacMain
 	public static boolean ZodiacRegisterActive;
 	public static int i, max;
 	public static List<String> VotedPlayers = new ArrayList<String>();
-	static OlympiadGameTask OlyTask;
 	public static int[] count =
 	{
 	0, 0, 0, 0, 0, 0
@@ -63,19 +61,28 @@ public class ZodiacMain
 	public static void startVoting()
 	{
 		
+		if(EventsZodiacAreRunning())
+		{
+			Announcements.getInstance().announceToAll("An other event of zodiac engine is running. The zodiac engine will start when the event complete.");
+			voting = false;
+			return;
+		}
+		else
+		{
 		voting = true;
 		for (L2PcInstance players : L2World.getAllPlayers())
 		{
 			if (players != null)
 				showHtmlWindow(players);
 		}
-		int minutes = Config.ZODIAC_VOTE_MINUTES;
+		final int minutes = Config.ZODIAC_VOTE_MINUTES;
 		Announcements.getInstance().announceToAll("You have " + minutes + " minutes to vote for the event you like!");
 		waitSecs(minutes / 2 * 60);
 		Announcements.getInstance().announceToAll("You have " + minutes / 2 + " minutes to vote for the event you like!");
 		waitSecs(minutes / 2 * 60);
 		voting = false;
 		endit();
+		}
 		
 	}
 	
@@ -323,5 +330,17 @@ public class ZodiacMain
 			return true;
 		else
 			return false;
+	}
+	
+	//full events
+	public boolean AllEventsAreRunning()
+	{			
+		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || !CastleWars.isFinished || ChaosEvent._isChaosActive || CTF._started || CTF._joining || DM._joining || DM._started || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning || TvT._joining || TvT._started;
+	}
+	
+	//Only zodiac events
+	public static boolean EventsZodiacAreRunning()
+	{	
+		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || !CastleWars.isFinished || ChaosEvent._isChaosActive || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning;
 	}
 }

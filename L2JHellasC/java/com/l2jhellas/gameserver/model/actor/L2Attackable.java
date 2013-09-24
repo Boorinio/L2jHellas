@@ -15,7 +15,6 @@
 package com.l2jhellas.gameserver.model.actor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,6 +55,7 @@ import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.shield.antibot.PrivateAntiBot;
@@ -1382,266 +1382,221 @@ public class L2Attackable extends L2Npc
 	 */
 	public void doItemDrop(L2NpcTemplate npcTemplate, L2Character lastAttacker)
 	{
-		if (lastAttacker == null)
-			return;
+		L2PcInstance player = null;
+		if (lastAttacker instanceof L2PcInstance)
+		{
+			player = (L2PcInstance) lastAttacker;
+		}
+		else if (lastAttacker instanceof L2Summon)
+		{
+			player = ((L2Summon) lastAttacker).getOwner();
+		}
 		
-		L2PcInstance player = lastAttacker.getActingPlayer();
-		
-		// Don't drop anything if the last attacker or owner isn't L2PcInstance
 		if (player == null)
-			return;
-		
-		// level modifier in %'s (will be subtracted from drop chance)
-		int levelModifier = calculateLevelModifierForDrop(player);
-		
-		CursedWeaponsManager.getInstance().checkDrop(this, player);
+			return; // Don't drop anything if the last attacker or ownere isn't
+					// L2PcInstance
+			
+		final int levelModifier = calculateLevelModifierForDrop(player);          // level
+
+		// Check the drop of a cursed weapon
+		if (levelModifier == 0 && player.getLevel() > 20)
+		{
+			CursedWeaponsManager.getInstance().checkDrop(this, player);
+		}
 		
 		// now throw all categorized drops and handle spoil.
-		if (npcTemplate.getDropData() != null)
+		if (npcTemplate.getDropData() != null)		
+		// now throw all categorized drops and handle spoil.
+		for (L2DropCategory cat : npcTemplate.getDropData())
 		{
-			for (L2DropCategory cat : npcTemplate.getDropData())
+			RewardItem item = null;
+			if (cat.isSweep())
 			{
-				RewardItem item = null;
-				if (cat.isSweep())
+				// according to sh1ny, seeded mobs CAN be spoiled and swept.
+				if (isSpoil()/* && !isSeeded() */)
 				{
-					// according to sh1ny, seeded mobs CAN be spoiled and swept.
-					if (isSpoil()/* && !isSeeded() */)
-					{
-						FastList<RewardItem> sweepList = new FastList<RewardItem>();
-						
-						for (L2DropData drop : cat.getAllDrops())
-						{
-							item = calculateRewardItem(player, drop, levelModifier, true);
-							if (item == null)
-								continue;
-							
-							if (Config.DEBUG)
-								_log.info("Item id to spoil: " + item.getItemId() + " amount: " + item.getCount());
-							sweepList.add(item);
-						}
-						// Set the table _sweepItems of this L2Attackable
-						if (!sweepList.isEmpty())
-							_sweepItems = sweepList.toArray(new RewardItem[sweepList.size()]);
-					}
-				}
-				else
-				{
-					if (isSeeded())
-					{
-						L2DropData drop = cat.dropSeedAllowedDropsOnly();
-						
-						if (drop == null)
-							continue;
-						
-						item = calculateRewardItem(player, drop, levelModifier, false);
-					}
-					else
-						item = calculateCategorizedRewardItem(player, cat, levelModifier);
+					FastList<RewardItem> sweepList = new FastList<RewardItem>();
 					
-					if (item != null)
+					for (L2DropData drop : cat.getAllDrops())
 					{
+						item = calculateRewardItem(player, drop, levelModifier, true);
+						if (item == null)
+						{
+							continue;
+						}
+						
 						if (Config.DEBUG)
-							_log.info("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
-						
-						Collection<L2PcInstance> pls = getKnownList().getKnownPlayers().values();
-						
-						double d1 = 0;
-						double d2 = 0;
-						for (L2PcInstance pl : pls)
 						{
-							if (!pl.isDead())
-							{
-								if (pl.getParty() == null)
-								{
-									if (pl.getLastMob() == this)
-										d1 = pl.getMobDamage();
-								}
-								else
-								{
-									if (pl.getParty().getLastMob() == this)
-										d1 = pl.getParty().getMobDamage();
-								}
-								if (d1 > d2)
-								{
-									d2 = d1;
-									d1 = 0;
-								}
-							}
+							_log.log(Level.FINE, getClass().getName() + ": item id to spoil: " + item.getItemId() + " amount: " + item.getCount());
 						}
+						sweepList.add(item);
+					}
+					
+					// Set the table _sweepItems of this L2Attackable
+					if (!sweepList.isEmpty())
+					{
+						_sweepItems = sweepList.toArray(new RewardItem[sweepList.size()]);
+					}
+				}
+			}
+			else
+			{
+				if (isSeeded())
+				{
+					L2DropData drop = cat.dropSeedAllowedDropsOnly();
+					if (drop == null)
+					{
+						continue;
+					}
+					
+					item = calculateRewardItem(player, drop, levelModifier, false);
+				}
+				else
+				{
+					item = calculateCategorizedRewardItem(player, cat, levelModifier);
+				}
+				
+				if (item != null)
+				{
+					if (Config.DEBUG)
+					{
+						_log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
+					}
+					
+					// Check if the autoLoot mode is active
+					if (Config.AUTO_LOOT && !isRaid())
+					{
+						player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
+					}
+					else if ((isRaid() || isBoss())&& Config.AUTO_LOOT_RAID)
+						player.doAutoLoot(this, item);
+					else
+						dropItem(player, item); // drop the item on the ground
 						
-						for (L2PcInstance pl : pls)
-						{
-							if (!pl.isDead())
-							{
-								if (pl.getParty() == null)
-								{
-									if (pl.getMobDamage() == d2)
-										
-										if (Config.AUTO_LOOT && !isRaid())
-											pl.doAutoLoot(this, item);										
-										else if ((isRaid() || isBoss())&& Config.AUTO_LOOT_RAID)
-											player.doAutoLoot(this, item);
-										else
-											dropItem(pl, item); 
-											
-									if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
-									{
-										PrivateAntiBot.privateantibot(pl);//Anti bot security question
-									}
-								}
-								else
-								{
-									if (pl.getParty().getMobDamage() == d2 && (pl.getParty().rewarded == pl || pl.getParty().rewarded == null))
-									{
-										pl.doAutoLoot(this, item);
-										pl.getParty().rewarded = pl;
-										
-										if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
-										{
-											PrivateAntiBot.privateantibot(pl);//Anti bot security question
-										}
-									}
-								}
-							}
-						}
-						
-						// Broadcast message if RaidBoss was defeated
-						if (isRaid() && !isRaidMinion())
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
-							sm.addCharName(this);
-							sm.addItemName(item.getItemId());
-							sm.addNumber(item.getCount());
-							broadcastPacket(sm);
-						}
+					// Broadcast message if RaidBoss was defeated
+					// if(this instanceof L2RaidBossInstance)
+					if (isRaid() && !isRaidMinion())
+					{
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
+						sm.addString(getName());
+						sm.addItemName(item.getItemId());
+						sm.addNumber(item.getCount());
+						broadcastPacket(sm);
 					}
 				}
 			}
 		}
 		
-		// Apply Special Item drop with random(rnd) quantity(qty) for champions.
-		if (Config.CHAMPION_ENABLE && isChampion())
+		// Apply Special Item drop with rnd qty for champions
+		if (isChampion() && Math.abs(getLevel() - player.getLevel()) <= Config.CHAMPION_SPCL_LVL_DIFF && !getTemplate().isQuestMonster() && Config.CHAMPION_SPCL_CHANCE > 0 && Rnd.get(100) < Config.CHAMPION_SPCL_CHANCE)
 		{
-			int champqty = Rnd.get(Config.CHAMPION_SPCL_QTY);
-			RewardItem item = new RewardItem(Config.CHAMPION_REWARDS, ++champqty);
-			
-			if (player.getLevel() <= getLevel() && (Rnd.get(100)) > 50)
+			int champqty = Rnd.get(Config.CHAMPION_SPCL_QTY) + 1;
+			// quantity should actually vary between 1 and whatever admin specified as max, inclusive.
+			// Give this or these Item(s) to the L2PcInstance that has killed
+			// the L2Attackable
+			RewardItem item = new RewardItem(Config.CHAMPION_SPCL_ITEM, champqty);
+			if (Config.AUTO_LOOT)
 			{
-				if (Config.AUTO_LOOT || isFlying())
-					player.addItem("ChampionLoot", item.getItemId(), item.getCount(), this, true); // Give the item(s) to the L2PcInstance that has killed the L2Attackable
-				else
-					dropItem(player, item);
-				
-				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
-				{
-					PrivateAntiBot.privateantibot(player);//Anti bot security question
-				}
+				player.doAutoLoot(this, item);
 			}
-			else if (player.getLevel() > getLevel() && (Rnd.get(100) < 50))
+			else
 			{
-				if (Config.AUTO_LOOT || isFlying())
-					player.addItem("ChampionLoot", item.getItemId(), item.getCount(), this, true); // Give the item(s) to the L2PcInstance that has killed the L2Attackable
-				else
-					dropItem(player, item);
-				
-				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
-				{
-					PrivateAntiBot.privateantibot(player);//Anti bot security question
-				}
+				dropItem(player, item);
 			}
 		}
 		
-		//Instant Item Drop :>
-		// TODO (April 11, 2009): Try to change herb drop to switch/case. Very ugly code right now.
-		if (getTemplate().dropherb)
+		// Instant Item Drop :>
+		double rateHp = getStat().calcStat(Stats.MAX_HP, 1, this, null);
+		if (rateHp <= 1 && String.valueOf(npcTemplate.type).contentEquals("L2Monster")) // only L2Monster with <= 1x HP can drop herbs
 		{
 			boolean _hp = false;
 			boolean _mp = false;
 			boolean _spec = false;
-			// Herb of Warrior
-			int random = Rnd.get(1000);
 			
-			if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec)
+			// ptk - patk type enhance
+			int random = Rnd.get(1000); // note *10
+			if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec) // && !_spec useless yet
 			{
-				RewardItem item = new RewardItem(8612, 1);
-				
-				if (isFlying() || Config.AUTO_LOOT_HERBS)
+				RewardItem item = new RewardItem(8612, 1); // Herb of Warrior
+				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 				}
 				else
-					dropItem(player, item);
-				_spec = true;
-				
-				
-				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 				{
-					PrivateAntiBot.privateantibot(player);
+					dropItem(player, item);
 				}
+				_spec = true;
 			}
 			else
+			{
 				for (int i = 0; i < 3; i++)
 				{
 					random = Rnd.get(100);
-					
 					if (random < Config.RATE_DROP_COMMON_HERBS)
 					{
 						RewardItem item = null;
 						if (i == 0)
+						{
 							item = new RewardItem(8606, 1); // Herb of Power
-						else if (i == 1)
+						}
+						if (i == 1)
+						{
 							item = new RewardItem(8608, 1); // Herb of Atk. Spd.
-						else if (i == 2)
-							item = new RewardItem(8610, 1); // Herb of Critical Attack - Rate
+						}
+						if (i == 2)
+						{
+							item = new RewardItem(8610, 1); // Herb of Critical
+															// Attack
+						}
 						
-						if (isFlying() || Config.AUTO_LOOT_HERBS)
+						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 						}
 						else
-							dropItem(player, item);
-				
-						
-						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 						{
-							PrivateAntiBot.privateantibot(player);
+							dropItem(player, item);
 						}
 						break;
 					}
 				}
-			// Herb of Mystic
-			random = Rnd.get(1000);
+			}
 			
+			// mtk - matk type enhance
+			random = Rnd.get(1000); // note *10
 			if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec)
 			{
-				RewardItem item = new RewardItem(8613, 1);
-				
-				if (isFlying() || Config.AUTO_LOOT_HERBS)
-					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-				else
-					dropItem(player, item);
-				
-				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
+				RewardItem item = new RewardItem(8613, 1); // Herb of Mystic
+				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
-					PrivateAntiBot.privateantibot(player);
+					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+				}
+				else
+				{
+					dropItem(player, item);
 				}
 				_spec = true;
 			}
 			else
+			{
 				for (int i = 0; i < 2; i++)
 				{
 					random = Rnd.get(100);
-					
 					if (random < Config.RATE_DROP_COMMON_HERBS)
 					{
 						RewardItem item = null;
-						
 						if (i == 0)
+						{
 							item = new RewardItem(8607, 1); // Herb of Magic
+						}
 						if (i == 1)
-							item = new RewardItem(8609, 1); // Herb of Casting Speed
+						{
+							item = new RewardItem(8609, 1); // Herb of Casting
+															// Speed
+						}
 						
-						if (isFlying() || Config.AUTO_LOOT_HERBS)
+						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 						{
 							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 						}
@@ -1649,192 +1604,156 @@ public class L2Attackable extends L2Npc
 						{
 							dropItem(player, item);
 						}
-						if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
-						{
-							PrivateAntiBot.privateantibot(player);
-						}
 						break;
 					}
 				}
-			// Herb of Recovery
-			random = Rnd.get(1000);
+			}
 			
+			// hp+mp type
+			random = Rnd.get(1000); // note *10
 			if ((random < Config.RATE_DROP_SPECIAL_HERBS) && !_spec)
 			{
-				RewardItem item = new RewardItem(8614, 1);
-				
-				if (isFlying() || Config.AUTO_LOOT_HERBS)
+				RewardItem item = new RewardItem(8614, 1); // Herb of Recovery
+				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 				}
 				else
+				{
 					dropItem(player, item);
+				}
 				_mp = true;
 				_hp = true;
 				_spec = true;
-				
-				
-				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
-				{
-					PrivateAntiBot.privateantibot(player);
-				}
 			}
-			// Herb of Life
+			// hp - restore hp type
 			if (!_hp)
 			{
 				random = Rnd.get(100);
-				
 				if (random < Config.RATE_DROP_MP_HP_HERBS)
 				{
-					RewardItem item = new RewardItem(8600, 1);
-					
-					if (isFlying() || Config.AUTO_LOOT_HERBS)
+					RewardItem item = new RewardItem(8600, 1); // Herb of Life
+					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					}
 					else
-						dropItem(player, item);
-					_hp = true;
-					
-					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 					{
-						PrivateAntiBot.privateantibot(player);
+						dropItem(player, item);
 					}
+					_hp = true;
 				}
 			}
-			// Greater Herb of Life
 			if (!_hp)
 			{
 				random = Rnd.get(100);
-				
 				if (random < Config.RATE_DROP_GREATER_HERBS)
 				{
-					RewardItem item = new RewardItem(8601, 1);
-					
-					if (isFlying() || Config.AUTO_LOOT_HERBS)
+					RewardItem item = new RewardItem(8601, 1); // Greater Herb
+																// of Life
+					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					}
 					else
-						dropItem(player, item);
-					_hp = true;
-					
-					
-					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 					{
-						PrivateAntiBot.privateantibot(player);
+						dropItem(player, item);
 					}
+					_hp = true;
 				}
 			}
-			// Superior Herb of Life
 			if (!_hp)
 			{
-				random = Rnd.get(1000);
-				
+				random = Rnd.get(1000); // note *10
 				if (random < Config.RATE_DROP_SUPERIOR_HERBS)
 				{
-					RewardItem item = new RewardItem(8602, 1);
-					
-					if (isFlying() || Config.AUTO_LOOT_HERBS)
+					RewardItem item = new RewardItem(8602, 1); // Superior Herb
+																// of Life
+					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					}
 					else
-						dropItem(player, item);
-					
-					
-					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 					{
-						PrivateAntiBot.privateantibot(player);
+						dropItem(player, item);
 					}
 				}
 			}
-			// Herb of Mana
+			// mp - restore mp type
 			if (!_mp)
 			{
 				random = Rnd.get(100);
-				
 				if (random < Config.RATE_DROP_MP_HP_HERBS)
 				{
-					RewardItem item = new RewardItem(8603, 1);
-					
-					if (isFlying() || Config.AUTO_LOOT_HERBS)
+					RewardItem item = new RewardItem(8603, 1); // Herb of Manna
+					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					}
 					else
-						dropItem(player, item);
-					_mp = true;
-									
-					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 					{
-						PrivateAntiBot.privateantibot(player);
+						dropItem(player, item);
 					}
+					_mp = true;
 				}
 			}
-			// Greater Herb of Mana
 			if (!_mp)
 			{
 				random = Rnd.get(100);
-				
 				if (random < Config.RATE_DROP_GREATER_HERBS)
 				{
-					RewardItem item = new RewardItem(8604, 1);
-					
-					if (isFlying() || Config.AUTO_LOOT_HERBS)
+					RewardItem item = new RewardItem(8604, 1); // Greater Herb
+																// of Mana
+					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
 					}
 					else
-						dropItem(player, item);
-					_mp = true;
-					
-					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 					{
-						PrivateAntiBot.privateantibot(player);
+						dropItem(player, item);
 					}
+					_mp = true;
 				}
 			}
-			// Superior Herb of Mana
 			if (!_mp)
 			{
-				random = Rnd.get(1000);
-				
+				random = Rnd.get(1000); // note *10
 				if (random < Config.RATE_DROP_SUPERIOR_HERBS)
 				{
-					RewardItem item = new RewardItem(8605, 1);
-					
-					if (isFlying() || Config.AUTO_LOOT_HERBS)
-						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-					else
-						dropItem(player, item);
-					
-					if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
+					RewardItem item = new RewardItem(8605, 1); // Superior Herb
+																// of Mana
+					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
-						PrivateAntiBot.privateantibot(player);
+						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+					}
+					else
+					{
+						dropItem(player, item);
 					}
 				}
 			}
 			// speed enhance type
 			random = Rnd.get(100);
-			
 			if (random < Config.RATE_DROP_COMMON_HERBS)
 			{
-				RewardItem item = new RewardItem(8611, 1); // Herb of Speed
-				
-				if (isFlying() || Config.AUTO_LOOT_HERBS)
-					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
-				else
-					dropItem(player, item);
-				
-				if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
+				RewardItem item = new RewardItem(8611, 1);  // Herb of Speed
+				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
-					PrivateAntiBot.privateantibot(player);
+					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+				}
+				else
+				{
+					dropItem(player, item);
 				}
 			}
 		}
+		
+		if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
+		{
+			PrivateAntiBot.privateantibot(player);//Anti bot security question
+		}
+		
 	}
-	
 	/**
 	 * Drop reward item.
 	 * @param mainDamageDealer The player who made highest damage.

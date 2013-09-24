@@ -168,8 +168,11 @@ public class CastleWars
 		Announcements.getInstance().announceToAll("Defenders Won the event they protected the flags!");
 		for (L2PcInstance defender : _defenders)
 		{
+			if(defender!=null)
+			{
 			defender.sendMessage("Congratulations! Here is a reward for your effort!");
 			defender.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, defender, true);
+			}
 		}
 		isFinished = true;
 		CastleWarsRunning = false;
@@ -179,21 +182,21 @@ public class CastleWars
 	public static boolean isattacker(L2PcInstance player)
 	{
 		
-		return (_attackers.contains(player.getName()));
+		return (_attackers.contains(player));
 		
 	}
 	
 	public static boolean isdefender(L2PcInstance player)
 	{
 		
-		return (_defenders.contains(player.getName()));
+		return (_defenders.contains(player));
 		
 	}
 	
 	public static void OnDeath(L2PcInstance player)
 	{
-		if (player == null)
-			return;
+		if (player != null)
+		{
 		if (isattacker(player))
 		{
 			
@@ -203,8 +206,11 @@ public class CastleWars
 		{
 			
 			player.teleToLocation(defendersx, defendersy, defendersz);
-		}
+
+		}	
+		
 		player.doRevive();
+		}
 	}
 	
 	public static void OnRevive(L2PcInstance player)
