@@ -264,7 +264,6 @@ public class GameServer
 			RaidBossSpawnManager.getInstance();
 			GrandBossManager.getInstance();
 			RaidBossPointsManager.init();
-			RaidBossSpawnManager.getInstance().reload();
 		}
 		else
 		{
@@ -423,14 +422,6 @@ public class GameServer
 		{
 			CoupleManager.getInstance();
 		}
-		
-		Util.printSection("Npc's optimization");
-		DayNightSpawnManager.getInstance().cleanUp();
-		L2World.deleteVisibleNpcSpawns();
-		
-		// now respawn all
-		NpcTable.getInstance().reload();
-		SpawnTable.getInstance().reloadAll();
 		
 		Util.printSection("Dynamic Extensions");
 		// initialize the dynamic extension loader
