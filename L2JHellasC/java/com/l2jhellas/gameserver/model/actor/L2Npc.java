@@ -878,14 +878,14 @@ public class L2Npc extends L2Character
 
 			html1.append("<center><font color=\"LEVEL\">[Drop Info]</font></center>");
 			html1.append("<table border=1 width=\"100%\">");
-			html1.append("<tr><td><center>Item Name</center></td><td><center>Category</center></td><td><center>Chance</center></td></tr>");
+			html1.append("<tr><td><center>Item Name</center></td><td width=\"55\" valign=middle align=center><center>Category</center></td><td width=\"50\" valign=middle align=center><center>Chance</center></td></tr>");
 
 			if (getTemplate().getDropData() != null)
 				for (L2DropCategory cat : getTemplate().getDropData())
 					for (L2DropData drop : cat.getAllDrops())
 					{
 						String name = ItemTable.getInstance().getTemplate(drop.getItemId()).getName();
-						html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td>" + (drop.getChance() >= 10000 ? (double)drop.getChance() / 10000 : drop.getChance() < 10000 ? (double)drop.getChance() / 10000 : "N/A") + "%</td></tr>");
+						html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td width=\"55\" valign=middle align=center>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td width=\"50\" valign=middle align=center>" + (drop.getChance() >= 10000 ? (double)drop.getChance() / 10000 : drop.getChance() < 10000 ? (double)drop.getChance() / 10000 : "N/A") + "%</td></tr>");
 					}
 
 			html1.append("</table>");
@@ -919,14 +919,15 @@ public class L2Npc extends L2Character
 			TextBuilder html1 = new TextBuilder("<html><body>");
 			html1.append("<center><font color=\"LEVEL\">[Drop Info]</font></center>");
 			html1.append("<table border=1 width=\"100%\">");
-			html1.append("<tr><td><center>Item Name</center></td><td><center>Category</center></td><td><center>Chance</center></td></tr>");
+			html1.append("<tr><td><center>Item Name</center></td><td width=\"55\" valign=middle align=center><center>Category</center></td><td width=\"50\" valign=middle align=center><center>Chance</center></td></tr>");
 
-			for (L2DropCategory cat : getTemplate().getDropData())
-				for (L2DropData drop : cat.getAllDrops())
-				{
-					String name = ItemTable.getInstance().getTemplate(drop.getItemId()).getName();
-					html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td>" + (drop.getChance() >= 10000 ? (double)drop.getChance() / 10000 : drop.getChance() < 10000 ? (double)drop.getChance() / 10000 : "N/A") + "%</td></tr>");
-				}
+			if (getTemplate().getDropData() != null)
+				for (L2DropCategory cat : getTemplate().getDropData())
+					for (L2DropData drop : cat.getAllDrops())
+					{
+						String name = ItemTable.getInstance().getTemplate(drop.getItemId()).getName();
+						html1.append("<tr><td><font color=\"33EEEE\">" + name + "</font></td><td width=\"55\" valign=middle align=center>" + (drop.isQuestDrop() ? "<font color=\"FF6600\">Quest</font>" : (cat.isSweep() ? "<font color=\"LEVEL\">Sweep</font>" : "<font color=\"33FF77\">Drop</font>")) + "</td><td width=\"50\" valign=middle align=center>" + (drop.getChance() >= 10000 ? (double)drop.getChance() / 10000 : drop.getChance() < 10000 ? (double)drop.getChance() / 10000 : "N/A") + "%</td></tr>");
+					}
 
 			html1.append("</table>");
 			html1.append("</body></html>");
