@@ -72,7 +72,6 @@ OPTIMIZE TABLE dimensional_rift;
 OPTIMIZE TABLE droplist;
 OPTIMIZE TABLE enchant_skill_trees;
 OPTIMIZE TABLE etcitem;
-OPTIMIZE TABLE fish;
 OPTIMIZE TABLE fishing_skill_trees;
 OPTIMIZE TABLE four_sepulchers_spawnlist;
 OPTIMIZE TABLE games;
