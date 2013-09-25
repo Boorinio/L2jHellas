@@ -26,7 +26,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.HennaTable;
+import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.templates.L2Henna;
@@ -68,7 +68,7 @@ public class HennaTreeTable
 				{
 					int id = hennatree.getInt("symbol_id");
 					// String name = hennatree.getString("name");
-					L2Henna template = HennaTable.getInstance().getTemplate(id);
+					L2Henna template = HennaData.getInstance().getTemplate(id);
 					if (template == null)
 					{
 						hennatree.close();

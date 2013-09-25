@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -193,7 +193,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		{
 			String msg = "Character (" + activeChar.getName() + ") has dropped (" + dropedItem.getCount() + ")adena at (" + _x + "," + _y + "," + _z + ")";
 			_log.warning(msg);
-			AdminTable.getInstance().broadcastMessageToGMs(msg);
+			AdminData.getInstance().broadcastMessageToGMs(msg);
 		}
 	}
 

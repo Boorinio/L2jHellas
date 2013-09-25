@@ -43,8 +43,8 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.instancemanager.Manager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -428,7 +428,7 @@ public class GameStatusThread extends Thread
 					{
 						_usrCommand = _usrCommand.substring(7);
 						CreatureSay cs = new CreatureSay(0, 9, "Telnet GM Broadcast from " + _cSocket.getInetAddress().getHostAddress(), _usrCommand);
-						AdminTable.getInstance().broadcastToGMs(cs);
+						AdminData.getInstance().broadcastToGMs(cs);
 						_print.println("Your Message Has Been Sent To " + getOnlineGMS() + " GM(s).");
 					}
 					catch (StringIndexOutOfBoundsException e)
@@ -441,7 +441,7 @@ public class GameStatusThread extends Thread
 					int igm = 0;
 					String gmList = "";
 
-					for (String player : AdminTable.getInstance().getAllGmNames(true))
+					for (String player : AdminData.getInstance().getAllGmNames(true))
 					{
 						gmList = gmList + ", " + player;
 						igm++;
@@ -732,7 +732,7 @@ public class GameStatusThread extends Thread
 						if (type.equals("multisell"))
 						{
 							_print.print("Reloading multisell... ");
-							L2Multisell.getInstance().reload();
+							MultisellData.getInstance().reload();
 							_print.print("done\n");
 						}
 						else if (type.equals("skill"))
@@ -1017,7 +1017,7 @@ public class GameStatusThread extends Thread
 
 	private int getOnlineGMS()
 	{
-		return AdminTable.getInstance().getAllGms(true).size();
+		return AdminData.getInstance().getAllGms(true).size();
 	}
 
 	private String getUptime(int time)

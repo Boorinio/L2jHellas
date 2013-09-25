@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -186,7 +186,7 @@ public class AdminSkill implements IAdminCommandHandler
 		boolean countUnlearnable = true;
 		int unLearnable = 0;
 		int skillCounter = 0;
-		L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(player, player.getClassId());
+		L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player, player.getClassId());
 		while (skills.length > unLearnable)
 		{
 			for (L2SkillLearn s : skills)
@@ -203,7 +203,7 @@ public class AdminSkill implements IAdminCommandHandler
 				player.addSkill(sk, true);
 			}
 			countUnlearnable = false;
-			skills = SkillTreeTable.getInstance().getAvailableSkills(player, player.getClassId());
+			skills = SkillTreeData.getInstance().getAvailableSkills(player, player.getClassId());
 		}
 		// Notify player and admin
 		player.sendMessage("A GM gave you " + skillCounter + " skills.");

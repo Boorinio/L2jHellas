@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
@@ -76,12 +76,12 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_gmliston"))
 		{
-			AdminTable.getInstance().showGm(activeChar);
+			AdminData.getInstance().showGm(activeChar);
 			activeChar.sendMessage("Registerd into gm list");
 		}
 		else if (command.startsWith("admin_gmlistoff"))
 		{
-			AdminTable.getInstance().hideGm(activeChar);
+			AdminData.getInstance().hideGm(activeChar);
 			activeChar.sendMessage("Removed from gm list");
 		}
 		if (command.equals("admin_invis_menu"))

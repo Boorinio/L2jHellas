@@ -43,11 +43,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-public class SkillTreeTable
+public class SkillTreeData
 {
-	protected static final Logger _log = Logger.getLogger(SkillTreeTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(SkillTreeData.class.getName());
 
-	private static SkillTreeTable _instance;
+	private static SkillTreeData _instance;
 
 	private Map<ClassId, Map<Integer, L2SkillLearn>> _skillTrees;
 	private List<L2SkillLearn> _fishingSkillTrees; //all common skills (teached by Fisherman)
@@ -55,11 +55,11 @@ public class SkillTreeTable
 	private List<L2PledgeSkillLearn> _pledgeSkillTrees; //pledge skill list
 	private List<L2EnchantSkillLearn> _enchantSkillTrees; //enchant skill list
 
-	public static SkillTreeTable getInstance()
+	public static SkillTreeData getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new SkillTreeTable();
+			_instance = new SkillTreeData();
 		}
 
 		return _instance;
@@ -113,7 +113,7 @@ public class SkillTreeTable
 		return 0;
 	}
 
-	private SkillTreeTable()
+	private SkillTreeData()
 	{
 		int classId = 0;
 		int count = 0;

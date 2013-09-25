@@ -24,7 +24,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -223,7 +223,7 @@ public final class L2World
 	 */
 	public List<L2PcInstance> getAllGMs()
 	{
-		return AdminTable.getInstance().getAllGms(true);
+		return AdminData.getInstance().getAllGms(true);
 	}
 
 	/**

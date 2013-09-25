@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -63,7 +63,7 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 			_log.warning("No handler registered for admin command '" + command + "'");
 			return;
 		}
-		if (!AdminTable.getInstance().hasAccess(command, activeChar.getAccessLevel()))
+		if (!AdminData.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 		{
 			activeChar.sendMessage("You don't have the access right to use this command.");
 			_log.warning(activeChar.getName() + " tried to use admin command " + command + ", but have no access to use it.");

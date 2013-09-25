@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.List;
 
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.entity.Hero;
@@ -182,7 +182,7 @@ public class L2OlympiadManagerInstance extends L2Npc
 					break;
 				
 				case 7: // Rewards
-					L2Multisell.getInstance().SeparateAndSend(102, player, false, getCastle().getTaxRate());
+					MultisellData.getInstance().SeparateAndSend(102, player, false, getCastle().getTaxRate());
 					break;
 				
 				case 10: // Give tokens to player

@@ -59,18 +59,18 @@ import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
-import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
+import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
-import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.FishTable;
-import com.l2jhellas.gameserver.datatables.xml.HelperBuffTable;
-import com.l2jhellas.gameserver.datatables.xml.HennaTable;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
-import com.l2jhellas.gameserver.datatables.xml.PetDataTable;
-import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookTable;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
+import com.l2jhellas.gameserver.datatables.xml.HennaData;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
+import com.l2jhellas.gameserver.datatables.xml.PetData;
+import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.datatables.xml.ZoneData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
@@ -182,8 +182,8 @@ public class GameServer
 		{
 			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
-		SkillTreeTable.getInstance();
-		SkillSpellbookTable.getInstance();
+		SkillTreeData.getInstance();
+		SkillSpellbookData.getInstance();
 		NobleSkillTable.getInstance();
 		HeroSkillTable.getInstance();
 		NpcBufferSkillIdsTable.getInstance();
@@ -193,7 +193,7 @@ public class GameServer
 		{
 			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
-		ArmorSetsTable.getInstance();
+		ArmorSetsData.getInstance();
 		ExtractableItemsData.getInstance();
 		SummonItemsData.getInstance();
 		if (Config.ALLOWFISHING)
@@ -218,13 +218,13 @@ public class GameServer
 		}
 		ExperienceData.getInstance();
 		ClanTable.getInstance();
-		CharTemplateTable.getInstance();
+		CharTemplateData.getInstance();
 		LevelUpData.getInstance();
 		CrownManager.getInstance();
-		AdminTable.getInstance();
-		HennaTable.getInstance();
+		AdminData.getInstance();
+		HennaData.getInstance();
 		HennaTreeTable.getInstance();
-		HelperBuffTable.getInstance();
+		HelperBuffData.getInstance();
 		BuffTemplateTable.getInstance();
 
 		Util.printSection("Geodata");
@@ -236,7 +236,7 @@ public class GameServer
 
 		Util.printSection("Economy");
 		TradeController.getInstance();
-		L2Multisell.getInstance();
+		MultisellData.getInstance();
 
 		Util.printSection("Clan Halls");
 		ClanHallManager.getInstance();
@@ -282,7 +282,7 @@ public class GameServer
 		PetitionManager.getInstance();
 		CursedWeaponsManager.getInstance();
 		FourSepulchersManager.getInstance();
-		PetDataTable.getInstance().loadPetsData();
+		PetData.getInstance().loadPetsData();
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 		{
 			GeoEditorListener.getInstance();

@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.PetDataTable;
+import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class PetNameTable
@@ -52,7 +52,7 @@ public class PetNameTable
 			statement.setString(1, name);
 
 			String cond = "";
-			for (int it : PetDataTable.getPetItemsAsNpc(petNpcId))
+			for (int it : PetData.getPetItemsAsNpc(petNpcId))
 			{
 				if (cond != "")
 					cond += ", ";

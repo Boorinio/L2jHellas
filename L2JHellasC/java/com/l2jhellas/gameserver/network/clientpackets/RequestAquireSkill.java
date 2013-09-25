@@ -17,8 +17,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookTable;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
 import com.l2jhellas.gameserver.model.L2ShortCut;
@@ -88,7 +88,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 
 		if (_skillType == 0)
 		{
-			L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(player, player.getSkillLearningClassId());
+			L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player, player.getSkillLearningClassId());
 
 			for (L2SkillLearn s : skills)
 			{
@@ -96,7 +96,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 				if (sk == null || sk != skill || !sk.getCanLearn(player.getSkillLearningClassId()) || !sk.canTeachBy(npcid))
 					continue;
 				counts++;
-				_requiredSp = SkillTreeTable.getInstance().getSkillCost(player, skill);
+				_requiredSp = SkillTreeData.getInstance().getSkillCost(player, skill);
 			}
 
 			if (counts == 0 && !Config.ALT_GAME_SKILL_LEARN)
@@ -110,7 +110,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 			{
 				if (Config.SP_BOOK_NEEDED)
 				{
-					int spbId = SkillSpellbookTable.getInstance().getBookForSkill(skill);
+					int spbId = SkillSpellbookData.getInstance().getBookForSkill(skill);
 
 					if (skill.getLevel() == 1 && spbId > -1)
 					{
@@ -141,7 +141,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 			int costid = 0;
 			int costcount = 0;
 			// Skill Learn bug Fix
-			L2SkillLearn[] skillsc = SkillTreeTable.getInstance().getAvailableSkills(player);
+			L2SkillLearn[] skillsc = SkillTreeData.getInstance().getAvailableSkills(player);
 
 			for (L2SkillLearn s : skillsc)
 			{
@@ -198,7 +198,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 			int itemId = 0;
 			int repCost = 100000000;
 			// Skill Learn bug Fix
-			L2PledgeSkillLearn[] skills = SkillTreeTable.getInstance().getAvailablePledgeSkills(player);
+			L2PledgeSkillLearn[] skills = SkillTreeData.getInstance().getAvailablePledgeSkills(player);
 
 			for (L2PledgeSkillLearn s : skills)
 			{

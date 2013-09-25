@@ -20,7 +20,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TradeController;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.BuyList;
@@ -164,7 +164,7 @@ public class L2MerchantInstance extends L2NpcInstance
 				return;
 
 			int val = Integer.parseInt(st.nextToken());
-			L2Multisell.getInstance().SeparateAndSend(val, player, false, getCastle().getTaxRate());
+			MultisellData.getInstance().SeparateAndSend(val, player, false, getCastle().getTaxRate());
 		}
 		else if (actualCommand.equalsIgnoreCase("Exc_Multisell"))
 		{
@@ -172,7 +172,7 @@ public class L2MerchantInstance extends L2NpcInstance
 				return;
 
 			int val = Integer.parseInt(st.nextToken());
-			L2Multisell.getInstance().SeparateAndSend(val, player, true, getCastle().getTaxRate());
+			MultisellData.getInstance().SeparateAndSend(val, player, true, getCastle().getTaxRate());
 		}
 		else
 		{

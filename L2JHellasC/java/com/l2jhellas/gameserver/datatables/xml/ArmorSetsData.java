@@ -35,22 +35,22 @@ import com.l2jhellas.gameserver.model.L2ArmorSet;
 /**
  * @author Luno
  */
-public class ArmorSetsTable
+public class ArmorSetsData
 {
-	private static Logger _log = Logger.getLogger(ArmorSetsTable.class.getName());
-	private static ArmorSetsTable _instance;
+	private static Logger _log = Logger.getLogger(ArmorSetsData.class.getName());
+	private static ArmorSetsData _instance;
 
 	private final FastMap<Integer, L2ArmorSet> _armorSets;
 	private final FastMap<Integer, ArmorDummy> _cusArmorSets;
 
-	public static ArmorSetsTable getInstance()
+	public static ArmorSetsData getInstance()
 	{
 		if (_instance == null)
-			_instance = new ArmorSetsTable();
+			_instance = new ArmorSetsData();
 		return _instance;
 	}
 
-	private ArmorSetsTable()
+	private ArmorSetsData()
 	{
 		_armorSets = new FastMap<Integer, L2ArmorSet>();
 		_cusArmorSets = new FastMap<Integer, ArmorDummy>();

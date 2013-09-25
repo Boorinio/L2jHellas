@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.model.actor.stat;
 
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
-import com.l2jhellas.gameserver.datatables.xml.PetDataTable;
+import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
@@ -103,7 +103,7 @@ public class PetStat extends SummonStat
 	@Override
 	public final long getExpForLevel(int level)
 	{
-		return PetDataTable.getInstance().getPetData(getActiveChar().getNpcId(), level).getPetMaxExp();
+		return PetData.getInstance().getPetData(getActiveChar().getNpcId(), level).getPetMaxExp();
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class PetStat extends SummonStat
 		getActiveChar().stopFeed();
 		super.setLevel(value);
 
-		getActiveChar().setPetData(PetDataTable.getInstance().getPetData(getActiveChar().getTemplate().npcId, getLevel()));
+		getActiveChar().setPetData(PetData.getInstance().getPetData(getActiveChar().getTemplate().npcId, getLevel()));
 		getActiveChar().startFeed(false);
 
 		if (getActiveChar().getControlItem() != null)

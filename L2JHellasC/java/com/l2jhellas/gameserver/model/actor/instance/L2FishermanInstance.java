@@ -20,7 +20,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TradeController;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.L2TradeList;
@@ -126,7 +126,7 @@ public class L2FishermanInstance extends L2NpcInstance
 
 	public void showSkillList(L2PcInstance player)
 	{
-		L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(player);
+		L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player);
 		AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Fishing);
 
 		int counts = 0;
@@ -145,7 +145,7 @@ public class L2FishermanInstance extends L2NpcInstance
 		if (counts == 0)
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			int minlevel = SkillTreeTable.getInstance().getMinLevelForNewSkill(player);
+			int minlevel = SkillTreeData.getInstance().getMinLevelForNewSkill(player);
 
 			if (minlevel > 0)
 			{

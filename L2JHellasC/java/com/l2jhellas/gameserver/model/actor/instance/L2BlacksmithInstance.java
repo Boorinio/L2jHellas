@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
@@ -34,7 +34,7 @@ public class L2BlacksmithInstance extends L2NpcInstance
 		if (command.startsWith("multisell"))
 		{
 			int listId = Integer.parseInt(command.substring(9).trim());
-			L2Multisell.getInstance().SeparateAndSend(listId, player, false, getCastle().getTaxRate());
+			MultisellData.getInstance().SeparateAndSend(listId, player, false, getCastle().getTaxRate());
 		}
 		super.onBypassFeedback(player, command);
 	}

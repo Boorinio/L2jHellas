@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -81,7 +81,7 @@ public class AdminZone implements IAdminCommandHandler
 		else if (actualCommand.equalsIgnoreCase("admin_zone_reload"))
 		{
 			// TODO: ZONETODO ZoneManager.getInstance().reload();
-			AdminTable.getInstance().broadcastMessageToGMs("Zones can not be reloaded in this version.");
+			AdminData.getInstance().broadcastMessageToGMs("Zones can not be reloaded in this version.");
 		}
 		return true;
 	}

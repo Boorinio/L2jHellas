@@ -41,9 +41,9 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 /**
  * @author UnAfraid
  */
-public class AdminTable extends DocumentParser
+public class AdminData extends DocumentParser
 {
-	private static final Logger _log = Logger.getLogger(AdminTable.class.getName());
+	private static final Logger _log = Logger.getLogger(AdminData.class.getName());
 
 	private final Map<Integer, L2AccessLevel> _accessLevels;
 	private final Map<String, L2AdminCommandAccessRight> _adminCommandAccessRights;
@@ -54,7 +54,7 @@ public class AdminTable extends DocumentParser
 	/** 
 	 * Instantiates a new admin table. 
 	 */ 
-	protected AdminTable()
+	protected AdminData()
 	{
 		_accessLevels = new HashMap<>();
 		_adminCommandAccessRights = new HashMap<>();
@@ -127,7 +127,7 @@ public class AdminTable extends DocumentParser
 	/**
 	 * @return AccessLevels: the one and only instance of this class<br>
 	 */
-	public static AdminTable getInstance()
+	public static AdminData getInstance()
 	{
 		return SingletonHolder._instance;
 	}
@@ -328,6 +328,6 @@ public class AdminTable extends DocumentParser
 	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
-		protected static final AdminTable _instance = new AdminTable();
+		protected static final AdminData _instance = new AdminData();
 	}
 }

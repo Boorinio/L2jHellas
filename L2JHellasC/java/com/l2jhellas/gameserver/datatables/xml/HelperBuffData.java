@@ -35,9 +35,9 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.L2HelperBuff;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-public class HelperBuffTable
+public class HelperBuffData
 {
-	protected static final Logger _log = Logger.getLogger(HelperBuffTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(HelperBuffData.class.getName());
 
 	private List<L2HelperBuff> _helperBuff;
 
@@ -47,12 +47,12 @@ public class HelperBuffTable
 	private int _magicClassHighestLevel = 1;
 	private int _physicClassHighestLevel = 1;
 
-	public static HelperBuffTable getInstance()
+	public static HelperBuffData getInstance()
 	{
 		return SingletonHolder._instance;
 	}
 
-	private HelperBuffTable()
+	private HelperBuffData()
 	{
 		_helperBuff = new FastList<L2HelperBuff>();
 
@@ -171,6 +171,6 @@ public class HelperBuffTable
 	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
-		protected static final HelperBuffTable _instance = new HelperBuffTable();
+		protected static final HelperBuffData _instance = new HelperBuffData();
 	}
 }

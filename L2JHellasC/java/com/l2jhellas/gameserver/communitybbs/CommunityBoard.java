@@ -26,7 +26,7 @@ import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.ShopBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.TopBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.TopicBBSManager;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -175,7 +175,7 @@ public class CommunityBoard
 				StringTokenizer st = new StringTokenizer(command, ";");
 				st.nextToken();
 				ShopBBSManager.getInstance().parsecmd("_bbsshop;" + st.nextToken(), activeChar);
-				L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(st.nextToken()), activeChar, false, 0);
+				MultisellData.getInstance().SeparateAndSend(Integer.parseInt(st.nextToken()), activeChar, false, 0);
 			}
 			else if (command.startsWith("_bbsrps") && Config.RANK_PVP_SYSTEM_ENABLED && Config.COMMUNITY_BOARD_TOP_LIST_ENABLED)
 			{ //to Custom PvP System BBS Manager

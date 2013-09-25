@@ -35,11 +35,11 @@ import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-public class CharTemplateTable
+public class CharTemplateData
 {
-	protected static final Logger _log = Logger.getLogger(CharTemplateTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(CharTemplateData.class.getName());
 
-	private static CharTemplateTable _instance;
+	private static CharTemplateData _instance;
 
 	private static final String[] CHAR_CLASSES =
 	{
@@ -48,17 +48,17 @@ public class CharTemplateTable
 
 	private Map<Integer, L2PcTemplate> _templates;
 
-	public static CharTemplateTable getInstance()
+	public static CharTemplateData getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new CharTemplateTable();
+			_instance = new CharTemplateData();
 		}
 
 		return _instance;
 	}
 
-	private CharTemplateTable()
+	private CharTemplateData()
 	{
 		_templates = new FastMap<Integer, L2PcTemplate>();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

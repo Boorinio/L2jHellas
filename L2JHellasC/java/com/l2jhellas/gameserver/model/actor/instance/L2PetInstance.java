@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.xml.PetDataTable;
+import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
@@ -83,7 +83,7 @@ public class L2PetInstance extends L2Summon
 	public final L2PetData getPetData()
 	{
 		if (_data == null)
-			_data = PetDataTable.getInstance().getPetData(getTemplate().npcId, getStat().getLevel());
+			_data = PetData.getInstance().getPetData(getTemplate().npcId, getStat().getLevel());
 
 		return _data;
 	}
@@ -133,7 +133,7 @@ public class L2PetInstance extends L2Summon
 					getOwner().sendMessage("Your pet is too hungry to stay summoned.");
 				}
 
-				int foodId = PetDataTable.getFoodItemId(getTemplate().npcId);
+				int foodId = PetData.getFoodItemId(getTemplate().npcId);
 				if (foodId == 0)
 					return;
 
@@ -206,7 +206,7 @@ public class L2PetInstance extends L2Summon
 		_inventory = new PetInventory(this);
 
 		int npcId = template.npcId;
-		_mountable = PetDataTable.isMountable(npcId);
+		_mountable = PetData.isMountable(npcId);
 	}
 
 	@Override
@@ -1105,16 +1105,16 @@ public class L2PetInstance extends L2Summon
 	}
 	public boolean canWear(L2Item item)
 	{
-		if (PetDataTable.isHatchling(getNpcId()) && item.getBodyPart() == L2Item.SLOT_HATCHLING)
+		if (PetData.isHatchling(getNpcId()) && item.getBodyPart() == L2Item.SLOT_HATCHLING)
 			return true;
 		
-		if (PetDataTable.isWolf(getNpcId()) && item.getBodyPart() == L2Item.SLOT_WOLF)
+		if (PetData.isWolf(getNpcId()) && item.getBodyPart() == L2Item.SLOT_WOLF)
 			return true;
 		
-		if (PetDataTable.isStrider(getNpcId()) && item.getBodyPart() == L2Item.SLOT_STRIDER)
+		if (PetData.isStrider(getNpcId()) && item.getBodyPart() == L2Item.SLOT_STRIDER)
 			return true;
 		
-		if (PetDataTable.isBaby(getNpcId()) && item.getBodyPart() == L2Item.SLOT_BABYPET)
+		if (PetData.isBaby(getNpcId()) && item.getBodyPart() == L2Item.SLOT_BABYPET)
 			return true;
 		
 		return false;

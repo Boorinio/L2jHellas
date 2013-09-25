@@ -25,7 +25,7 @@ import Extensions.RankSystem.RankPvpSystemPlayerInfo;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.CommunityBoard;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2CharPosition;
@@ -97,7 +97,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					return;
 				}
 
-				if (!AdminTable.getInstance().hasAccess(command, activeChar.getAccessLevel()))
+				if (!AdminData.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access rights to use this command.");
 					_log.warning(activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");

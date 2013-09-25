@@ -38,10 +38,10 @@ import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
-import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookTable;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
+import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
@@ -90,7 +90,7 @@ public class AdminReload implements IAdminCommandHandler
 			{
 				if (type.equals("multisell"))
 				{
-					L2Multisell.getInstance().reload();
+					MultisellData.getInstance().reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Multisells has been reloaded.");
 				}
@@ -122,7 +122,7 @@ public class AdminReload implements IAdminCommandHandler
 					RaidBossSpawnManager.getInstance().cleanUp();
 					DayNightSpawnManager.getInstance().cleanUp();
 					L2World.deleteVisibleNpcSpawns();
-					AdminTable.getInstance().broadcastMessageToGMs("NPC Unspawn completed!");
+					AdminData.getInstance().broadcastMessageToGMs("NPC Unspawn completed!");
 					// make sure all spawns are deleted
 					RaidBossSpawnManager.getInstance().cleanUp();
 					DayNightSpawnManager.getInstance().cleanUp();
@@ -132,7 +132,7 @@ public class AdminReload implements IAdminCommandHandler
 					SpawnTable.getInstance().reloadAll();
 					RaidBossSpawnManager.getInstance().reloadBosses();
 					SevenSigns.getInstance().spawnSevenSignsNPC();
-					AdminTable.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
+					AdminData.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
 					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);
 				}
@@ -150,7 +150,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.startsWith("access"))
 				{
-					AdminTable.getInstance().load();
+					AdminData.getInstance().load();
 					activeChar.sendMessage("Access Rights have been reloaded.");
 				}
 				else if (type.startsWith("instancemanager"))
@@ -234,13 +234,13 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("skilltrees"))
 				{
-					SkillTreeTable.getInstance();
+					SkillTreeData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Skill Tree table has been reloaded.");
 				}
 				else if (type.equals("spellbooks"))
 				{
-					SkillSpellbookTable.getInstance();
+					SkillSpellbookData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Spellbooks Table has been reloaded.");
 				}

@@ -25,8 +25,8 @@ import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
-import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
@@ -45,8 +45,8 @@ public interface EngineInterface
 
 	public RecipeData recipeController = RecipeData.getInstance();
 
-	public SkillTreeTable skillTreeTable = SkillTreeTable.getInstance();
-	public CharTemplateTable charTemplates = CharTemplateTable.getInstance();
+	public SkillTreeData skillTreeTable = SkillTreeData.getInstance();
+	public CharTemplateData charTemplates = CharTemplateData.getInstance();
 	public ClanTable clanTable = ClanTable.getInstance();
 
 	public NpcTable npcTable = NpcTable.getInstance();

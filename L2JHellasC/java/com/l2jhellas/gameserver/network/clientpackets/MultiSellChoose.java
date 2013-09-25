@@ -20,10 +20,10 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell.MultiSellEntry;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell.MultiSellIngredient;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell.MultiSellListContainer;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData.MultiSellEntry;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData.MultiSellIngredient;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData.MultiSellListContainer;
 import com.l2jhellas.gameserver.model.L2Augmentation;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.PcInventory;
@@ -66,7 +66,7 @@ public class MultiSellChoose extends L2GameClientPacket
 		if (_amount < 1 || _amount > 5000)
 			return;
 
-		MultiSellListContainer list = L2Multisell.getInstance().getList(_listId);
+		MultiSellListContainer list = MultisellData.getInstance().getList(_listId);
 		if (list == null)
 			return;
 
@@ -138,7 +138,7 @@ public class MultiSellChoose extends L2GameClientPacket
 					maintainItemFound = true;
 
 				// if it's a new ingredient, just store its info directly (item id, count, enchantment)
-				_ingredientsList.add(L2Multisell.getInstance().new MultiSellIngredient(e));
+				_ingredientsList.add(MultisellData.getInstance().new MultiSellIngredient(e));
 			}
 		}
 
@@ -397,7 +397,7 @@ public class MultiSellChoose extends L2GameClientPacket
 	// so the final price will be 120aa and 10a!
 	private MultiSellEntry prepareEntry(L2Npc merchant, MultiSellEntry templateEntry, boolean applyTaxes, boolean maintainEnchantment, int enchantLevel)
 	{
-		MultiSellEntry newEntry = L2Multisell.getInstance().new MultiSellEntry();
+		MultiSellEntry newEntry = MultisellData.getInstance().new MultiSellEntry();
 		newEntry.setEntryId(templateEntry.getEntryId());
 		int totalAdenaCount = 0;
 		boolean hasIngredient = false;
@@ -405,7 +405,7 @@ public class MultiSellChoose extends L2GameClientPacket
 		for (MultiSellIngredient ing : templateEntry.getIngredients())
 		{
 			// load the ingredient from the template
-			MultiSellIngredient newIngredient = L2Multisell.getInstance().new MultiSellIngredient(ing);
+			MultiSellIngredient newIngredient = MultisellData.getInstance().new MultiSellIngredient(ing);
 
 			if (newIngredient.getItemId() == 57 && newIngredient.isTaxIngredient())
 			{
@@ -441,13 +441,13 @@ public class MultiSellChoose extends L2GameClientPacket
 		}
 		// Next add the adena amount, if any
 		if (totalAdenaCount > 0)
-			newEntry.addIngredient(L2Multisell.getInstance().new MultiSellIngredient(57, totalAdenaCount, false, false));
+			newEntry.addIngredient(MultisellData.getInstance().new MultiSellIngredient(57, totalAdenaCount, false, false));
 
 		// Now modify the enchantment level of products, if necessary
 		for (MultiSellIngredient ing : templateEntry.getProducts())
 		{
 			// load the ingredient from the template
-			MultiSellIngredient newIngredient = L2Multisell.getInstance().new MultiSellIngredient(ing);
+			MultiSellIngredient newIngredient = MultisellData.getInstance().new MultiSellIngredient(ing);
 
 			if (maintainEnchantment && hasIngredient)
 			{

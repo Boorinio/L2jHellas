@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -101,7 +101,7 @@ public class AdminGmChat implements IAdminCommandHandler
 			}
 			text = command.substring(offset);
 			CreatureSay cs = new CreatureSay(0, 9, activeChar.getName(), text);
-			AdminTable.getInstance().broadcastToGMs(cs);
+			AdminData.getInstance().broadcastToGMs(cs);
 		}
 		catch (StringIndexOutOfBoundsException e)
 		{

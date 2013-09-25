@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 /**
@@ -62,7 +62,7 @@ public class L2AdminCommandAccessRight
 	 */
 	public boolean hasAccess(L2AccessLevel characterAccessLevel)
 	{
-		L2AccessLevel accessLevel = AdminTable.getInstance().getAccessLevel(_accessLevel);
+		L2AccessLevel accessLevel = AdminData.getInstance().getAccessLevel(_accessLevel);
 		return (accessLevel.getLevel() == characterAccessLevel.getLevel() || characterAccessLevel.hasChildAccess(accessLevel));
 	}
 

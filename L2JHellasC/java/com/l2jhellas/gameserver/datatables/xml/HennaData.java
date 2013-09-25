@@ -32,39 +32,42 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.templates.L2Henna;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
-public class SkillSpellbookTable
+public class HennaData
 {
-	protected static final Logger _log = Logger.getLogger(FishTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(HennaData.class.getName());
 
-	private static SkillSpellbookTable _instance;
+	private static HennaData _instance;
 
-	private static Map<Integer, Integer> _skillSpellbooks;
+	private Map<Integer, L2Henna> _henna;
 
-	public static SkillSpellbookTable getInstance()
+	public static HennaData getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new SkillSpellbookTable();
+			_instance = new HennaData();
 		}
 
 		return _instance;
 	}
 
-	private SkillSpellbookTable()
+	private HennaData()
 	{
-		if (!Config.SP_BOOK_NEEDED)
-			return;
+		_henna = new FastMap<Integer, L2Henna>();
+		restoreHennaData();
+	}
 
-		_skillSpellbooks = new FastMap<Integer, Integer>();
+	private void restoreHennaData()
+	{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/skill_spellbooks.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/henna.xml");
 		if (!f.exists())
 		{
-			_log.warning("skill_spellbooks.xml could not be loaded: file not found");
+			_log.warning("henna.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -78,9 +81,23 @@ public class SkillSpellbookTable
 				{
 					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 					{
-						if (d.getNodeName().equalsIgnoreCase("skill_spellbook"))
+						if (d.getNodeName().equalsIgnoreCase("henna"))
 						{
-							_skillSpellbooks.put(Integer.valueOf(d.getAttributes().getNamedItem("skill_id").getNodeValue()), Integer.valueOf(d.getAttributes().getNamedItem("item_id").getNodeValue()));
+							StatsSet hennaDat = new StatsSet();
+							int id = Integer.valueOf(d.getAttributes().getNamedItem("symbol_id").getNodeValue());
+							hennaDat.set("symbol_id", id);
+							hennaDat.set("dye", Integer.valueOf(d.getAttributes().getNamedItem("dye_id").getNodeValue()));
+							hennaDat.set("amount", Integer.valueOf(d.getAttributes().getNamedItem("dye_amount").getNodeValue()));
+							hennaDat.set("price", Integer.valueOf(d.getAttributes().getNamedItem("price").getNodeValue()));
+							hennaDat.set("stat_INT", Integer.valueOf(d.getAttributes().getNamedItem("stat_INT").getNodeValue()));
+							hennaDat.set("stat_STR", Integer.valueOf(d.getAttributes().getNamedItem("stat_STR").getNodeValue()));
+							hennaDat.set("stat_CON", Integer.valueOf(d.getAttributes().getNamedItem("stat_CON").getNodeValue()));
+							hennaDat.set("stat_MEM", Integer.valueOf(d.getAttributes().getNamedItem("stat_MEM").getNodeValue()));
+							hennaDat.set("stat_DEX", Integer.valueOf(d.getAttributes().getNamedItem("stat_DEX").getNodeValue()));
+							hennaDat.set("stat_WIT", Integer.valueOf(d.getAttributes().getNamedItem("stat_WIT").getNodeValue()));
+
+							L2Henna template = new L2Henna(hennaDat);
+							_henna.put(id, template);
 						}
 					}
 				}
@@ -99,41 +116,11 @@ public class SkillSpellbookTable
 			_log.warning("Error while creating table");
 		}
 
-		_log.info("SkillSpellbookTable: Loaded " + _skillSpellbooks.size() + " spellbooks.");
+		_log.info("HennaTable: Loaded " + _henna.size() + " templates.");
 	}
 
-	public int getBookForSkill(int skillId, int level)
+	public L2Henna getTemplate(int id)
 	{
-		if (skillId == L2Skill.SKILL_DIVINE_INSPIRATION && level != -1)
-		{
-			switch (level)
-			{
-				case 1:
-					return 8618; // Ancient Book - Divine Inspiration (Modern Language Version)
-				case 2:
-					return 8619; // Ancient Book - Divine Inspiration (Original Language Version)
-				case 3:
-					return 8620; // Ancient Book - Divine Inspiration (Manuscript)
-				case 4:
-					return 8621; // Ancient Book - Divine Inspiration (Original Version)
-				default:
-					return -1;
-			}
-		}
-
-		if (!_skillSpellbooks.containsKey(skillId))
-			return -1;
-
-		return _skillSpellbooks.get(skillId);
-	}
-
-	public int getBookForSkill(L2Skill skill)
-	{
-		return getBookForSkill(skill.getId(), -1);
-	}
-
-	public int getBookForSkill(L2Skill skill, int level)
-	{
-		return getBookForSkill(skill.getId(), level);
+		return _henna.get(id);
 	}
 }

@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -59,7 +59,7 @@ public class AdminHero implements IAdminCommandHandler
 			{
 				player.setHero(false);
 				sm.addString("You are no longer a server hero.");
-				AdminTable.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " removed hero stat of player" + target.getName());
+				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " removed hero stat of player" + target.getName());
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
 					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
@@ -98,7 +98,7 @@ public class AdminHero implements IAdminCommandHandler
 			{
 				player.setHero(true);
 				sm.addString("You are now a server Hero, congratulations!");
-				AdminTable.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " has given Hero stat for player " + target.getName() + ".");
+				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " has given Hero stat for player " + target.getName() + ".");
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
 					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");

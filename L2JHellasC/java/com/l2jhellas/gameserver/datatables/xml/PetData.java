@@ -34,25 +34,25 @@ import org.xml.sax.SAXException;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2PetData;
 
-public class PetDataTable
+public class PetData
 {
-	protected static final Logger _log = Logger.getLogger(PetDataTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(PetData.class.getName());
 
-	private static PetDataTable _instance;
+	private static PetData _instance;
 
 	private static Map<Integer, Map<Integer, L2PetData>> _petTable;
 
-	public static PetDataTable getInstance()
+	public static PetData getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new PetDataTable();
+			_instance = new PetData();
 		}
 
 		return _instance;
 	}
 
-	private PetDataTable()
+	private PetData()
 	{
 		_petTable = new FastMap<Integer, Map<Integer, L2PetData>>();
 	}

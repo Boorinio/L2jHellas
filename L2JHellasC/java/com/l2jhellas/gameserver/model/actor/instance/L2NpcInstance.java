@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
@@ -87,7 +87,7 @@ public class L2NpcInstance extends L2Npc
 			return;
 		}
 
-		L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(player, classId);
+		L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player, classId);
 		AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Usual);
 		int counts = 0;
 
@@ -98,7 +98,7 @@ public class L2NpcInstance extends L2Npc
 			if (sk == null || !sk.getCanLearn(player.getClassId()) || !sk.canTeachBy(npcId))
 				continue;
 
-			int cost = SkillTreeTable.getInstance().getSkillCost(player, sk);
+			int cost = SkillTreeData.getInstance().getSkillCost(player, sk);
 			counts++;
 
 			asl.addSkill(s.getId(), s.getLevel(), s.getLevel(), cost, 0);
@@ -106,7 +106,7 @@ public class L2NpcInstance extends L2Npc
 
 		if (counts == 0)
 		{
-			int minlevel = SkillTreeTable.getInstance().getMinLevelForNewSkill(player, classId);
+			int minlevel = SkillTreeData.getInstance().getMinLevelForNewSkill(player, classId);
 
 			if (minlevel > 0)
 			{
@@ -177,7 +177,7 @@ public class L2NpcInstance extends L2Npc
 			return;
 		}
 
-		L2EnchantSkillLearn[] skills = SkillTreeTable.getInstance().getAvailableEnchantSkills(player);
+		L2EnchantSkillLearn[] skills = SkillTreeData.getInstance().getAvailableEnchantSkills(player);
 		ExEnchantSkillList esl = new ExEnchantSkillList();
 		int counts = 0;
 
@@ -276,7 +276,7 @@ public class L2NpcInstance extends L2Npc
 								if (cid.level() != classCheck.level())
 									continue;
 
-								if (SkillTreeTable.getInstance().getAvailableSkills(player, cid).length == 0)
+								if (SkillTreeData.getInstance().getAvailableSkills(player, cid).length == 0)
 									continue;
 
 								text += "<a action=\"bypass -h npc_%objectId%_SkillList " + cid.getId() + "\">Learn " + cid + "'s class Skills</a><br>\n";

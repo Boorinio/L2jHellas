@@ -38,11 +38,11 @@ import com.l2jhellas.gameserver.templates.L2Weapon;
 /**
  * Multisell list manager
  */
-public class L2Multisell
+public class MultisellData
 {
-	private static Logger _log = Logger.getLogger(L2Multisell.class.getName());
+	private static Logger _log = Logger.getLogger(MultisellData.class.getName());
 	private final List<MultiSellListContainer> _entries = new FastList<MultiSellListContainer>();
-	private static L2Multisell _instance = new L2Multisell();
+	private static MultisellData _instance = new MultisellData();
 
 	public MultiSellListContainer getList(int id)
 	{
@@ -59,7 +59,7 @@ public class L2Multisell
 		return null;
 	}
 
-	public L2Multisell()
+	public MultisellData()
 	{
 		parseData();
 	}
@@ -69,7 +69,7 @@ public class L2Multisell
 		parseData();
 	}
 
-	public static L2Multisell getInstance()
+	public static MultisellData getInstance()
 	{
 		return _instance;
 	}
@@ -103,11 +103,11 @@ public class L2Multisell
 	 */
 	private MultiSellListContainer generateMultiSell(int listId, boolean inventoryOnly, L2PcInstance player, double taxRate)
 	{
-		MultiSellListContainer listTemplate = L2Multisell.getInstance().getList(listId);
+		MultiSellListContainer listTemplate = MultisellData.getInstance().getList(listId);
 		MultiSellListContainer list = new MultiSellListContainer();
 		if (listTemplate == null)
 			return list;
-		list = L2Multisell.getInstance().new MultiSellListContainer();
+		list = MultisellData.getInstance().new MultiSellListContainer();
 		list.setListId(listId);
 
 		if (inventoryOnly)
@@ -171,14 +171,14 @@ public class L2Multisell
 	//	  the count for the existing adena ingredient
 	private MultiSellEntry prepareEntry(MultiSellEntry templateEntry, boolean applyTaxes, boolean maintainEnchantment, int enchantLevel, double taxRate)
 	{
-		MultiSellEntry newEntry = L2Multisell.getInstance().new MultiSellEntry();
+		MultiSellEntry newEntry = MultisellData.getInstance().new MultiSellEntry();
 		newEntry.setEntryId(templateEntry.getEntryId() * 100000 + enchantLevel);
 		int adenaAmount = 0;
 
 		for (MultiSellIngredient ing : templateEntry.getIngredients())
 		{
 			// load the ingredient from the template
-			MultiSellIngredient newIngredient = L2Multisell.getInstance().new MultiSellIngredient(ing);
+			MultiSellIngredient newIngredient = MultisellData.getInstance().new MultiSellIngredient(ing);
 
 			// if taxes are to be applied, modify/add the adena count based on the template adena/ancient adena count
 			if (ing.getItemId() == 57 && ing.isTaxIngredient())
@@ -206,13 +206,13 @@ public class L2Multisell
 		// now add the adena, if any.
 		if (adenaAmount > 0)
 		{
-			newEntry.addIngredient(L2Multisell.getInstance().new MultiSellIngredient(57, adenaAmount, 0, false, false));
+			newEntry.addIngredient(MultisellData.getInstance().new MultiSellIngredient(57, adenaAmount, 0, false, false));
 		}
 		// Now modify the enchantment level of products, if necessary
 		for (MultiSellIngredient ing : templateEntry.getProducts())
 		{
 			// load the ingredient from the template
-			MultiSellIngredient newIngredient = L2Multisell.getInstance().new MultiSellIngredient(ing);
+			MultiSellIngredient newIngredient = MultisellData.getInstance().new MultiSellIngredient(ing);
 
 			if (maintainEnchantment)
 			{

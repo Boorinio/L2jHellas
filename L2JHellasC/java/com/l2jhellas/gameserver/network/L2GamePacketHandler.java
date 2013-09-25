@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.clientpackets.*;
 import com.l2jhellas.mmocore.network.IClientFactory;
@@ -854,14 +854,14 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 			case (1):
 				if (client.getActiveChar() != null)
 				{
-					AdminTable.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets.");
+					AdminData.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets.");
 				}
 			break;
 			case (2):
 				_log.warning("PacketProtection: " + client.toString() + " got kicked due flooding of unknown packets.");
 				if (client.getActiveChar() != null)
 				{
-					AdminTable.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got kicked.");
+					AdminData.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got kicked.");
 					client.getActiveChar().sendMessage("You are will be kicked for unknown packet flooding, GM informed.");
 					client.getActiveChar().closeNetConnection();
 				}
@@ -871,7 +871,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				LoginServerThread.getInstance().sendAccessLevel(client.getAccountName(), -99);
 				if (client.getActiveChar() != null)
 				{
-					AdminTable.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got banned.");
+					AdminData.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got banned.");
 					client.getActiveChar().sendMessage("You are banned for unknown packet flooding, GM informed.");
 					client.getActiveChar().closeNetConnection();
 				}

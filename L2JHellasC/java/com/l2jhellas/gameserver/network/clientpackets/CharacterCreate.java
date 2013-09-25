@@ -22,9 +22,9 @@ import java.util.regex.PatternSyntaxException;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -122,7 +122,7 @@ public final class CharacterCreate extends L2GameClientPacket
 			_log.fine("charname: " + _name + " classId: " + _classId);
 		}
 
-		L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(_classId);
+		L2PcTemplate template = CharTemplateData.getInstance().getTemplate(_classId);
 		if (template == null || template.classBaseLevel > 1)
 		{
 			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED);
@@ -228,7 +228,7 @@ public final class CharacterCreate extends L2GameClientPacket
 			}
 		}
 
-		L2SkillLearn[] startSkills = SkillTreeTable.getInstance().getAvailableSkills(newChar, newChar.getClassId());
+		L2SkillLearn[] startSkills = SkillTreeData.getInstance().getAvailableSkills(newChar, newChar.getClassId());
 		for (int i = 0; i < startSkills.length; i++)
 		{
 			newChar.addSkill(SkillTable.getInstance().getInfo(startSkills[i].getId(), startSkills[i].getLevel()), true);

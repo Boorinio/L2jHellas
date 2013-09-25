@@ -72,12 +72,12 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcTable;
-import com.l2jhellas.gameserver.datatables.xml.AdminTable;
-import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.FishTable;
-import com.l2jhellas.gameserver.datatables.xml.HennaTable;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.HennaData;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
@@ -311,12 +311,12 @@ public final class L2PcInstance extends L2Playable
 	 */
 	private static final int[] EXPERTISE_LEVELS =
 	{
-	SkillTreeTable.getInstance().getExpertiseLevel(0), // NONE
-	SkillTreeTable.getInstance().getExpertiseLevel(1), // D
-	SkillTreeTable.getInstance().getExpertiseLevel(2), // C
-	SkillTreeTable.getInstance().getExpertiseLevel(3), // B
-	SkillTreeTable.getInstance().getExpertiseLevel(4), // A
-	SkillTreeTable.getInstance().getExpertiseLevel(5), // S
+	SkillTreeData.getInstance().getExpertiseLevel(0), // NONE
+	SkillTreeData.getInstance().getExpertiseLevel(1), // D
+	SkillTreeData.getInstance().getExpertiseLevel(2), // C
+	SkillTreeData.getInstance().getExpertiseLevel(3), // B
+	SkillTreeData.getInstance().getExpertiseLevel(4), // A
+	SkillTreeData.getInstance().getExpertiseLevel(5), // S
 	};
 	
 	private static final int[] COMMON_CRAFT_LEVELS =
@@ -1290,7 +1290,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public final L2PcTemplate getBaseTemplate()
 	{
-		return CharTemplateTable.getInstance().getTemplate(_baseClass);
+		return CharTemplateData.getInstance().getTemplate(_baseClass);
 	}
 	
 	/**
@@ -1304,7 +1304,7 @@ public final class L2PcInstance extends L2Playable
 	
 	public void setTemplate(ClassId newclass)
 	{
-		super.setTemplate(CharTemplateTable.getInstance().getTemplate(newclass));
+		super.setTemplate(CharTemplateData.getInstance().getTemplate(newclass));
 	}
 	
 	/**
@@ -2722,7 +2722,7 @@ public final class L2PcInstance extends L2Playable
 		int skillCounter = 0;
 		
 		// Get available skills
-		L2SkillLearn[] skills = SkillTreeTable.getInstance().getAvailableSkills(this, getClassId());
+		L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(this, getClassId());
 		while (skills.length > unLearnable)
 		{
 			for (int i = 0; i < skills.length; i++)
@@ -2744,7 +2744,7 @@ public final class L2PcInstance extends L2Playable
 			}
 			
 			// Get new available skills
-			skills = SkillTreeTable.getInstance().getAvailableSkills(this, getClassId());
+			skills = SkillTreeData.getInstance().getAvailableSkills(this, getClassId());
 		}
 		
 		sendMessage("You have learned " + skillCounter + " new skills.");
@@ -2766,7 +2766,7 @@ public final class L2PcInstance extends L2Playable
 		if (!isSubClassActive())
 			return getTemplate().race;
 		
-		L2PcTemplate charTemp = CharTemplateTable.getInstance().getTemplate(_baseClass);
+		L2PcTemplate charTemp = CharTemplateData.getInstance().getTemplate(_baseClass);
 		return charTemp.race;
 	}
 	
@@ -4910,7 +4910,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			if (_client != null && !L2PcInstance.this.getClient().isAuthedGG() && L2PcInstance.this.isOnline() == 1)
 			{
-				AdminTable.getInstance().broadcastMessageToGMs("Client " + L2PcInstance.this.getClient() + " failed to reply GameGuard query and is being kicked!");
+				AdminData.getInstance().broadcastMessageToGMs("Client " + L2PcInstance.this.getClient() + " failed to reply GameGuard query and is being kicked!");
 				_log.info("Client " + L2PcInstance.this.getClient() + " failed to reply GameGuard query and is being kicked!");
 				L2PcInstance.this.getClient().close(new LeaveWorld());
 			}
@@ -7003,14 +7003,14 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void setAccessLevel(int level)
 	{
-		_accessLevel = AdminTable.getInstance().getAccessLevel(level);
+		_accessLevel = AdminData.getInstance().getAccessLevel(level);
 		getAppearance().setNameColor(_accessLevel.getNameColor());
 		getAppearance().setTitleColor(_accessLevel.getTitleColor());
 		broadcastUserInfo();
 		
 		CharNameTable.getInstance().addName(this);
 		
-		if (!AdminTable.getInstance().hasAccessLevel(level))
+		if (!AdminData.getInstance().hasAccessLevel(level))
 		{
 			_log.warning("Tryed to set unregistered access level " + level + " for " + toString() + ". Setting access level without privileges!");
 		}
@@ -7031,7 +7031,7 @@ public final class L2PcInstance extends L2Playable
 	public L2AccessLevel getAccessLevel()
 	{
 		if (Config.EVERYBODY_HAS_ADMIN_RIGHTS)
-			return AdminTable.getInstance().getMasterAccessLevel();
+			return AdminData.getInstance().getMasterAccessLevel();
 		else if (_accessLevel == null)
 		{
 			setAccessLevel(0);
@@ -7302,7 +7302,7 @@ public final class L2PcInstance extends L2Playable
 			{
 				final int activeClassId = rset.getInt("classid");
 				final boolean female = rset.getInt("sex") != 0;
-				final L2PcTemplate template = CharTemplateTable.getInstance().getTemplate(activeClassId);
+				final L2PcTemplate template = CharTemplateData.getInstance().getTemplate(activeClassId);
 				PcAppearance app = new PcAppearance(rset.getByte("face"), rset.getByte("hairColor"), rset.getByte("hairStyle"), female);
 				
 				player = new L2PcInstance(objectId, template, rset.getString("account_name"), app);
@@ -8181,7 +8181,7 @@ public final class L2PcInstance extends L2Playable
 		if (isGM())
 			return;
 		
-		Collection<L2SkillLearn> skillTree = SkillTreeTable.getInstance().getAllowedSkills(getClassId());
+		Collection<L2SkillLearn> skillTree = SkillTreeData.getInstance().getAllowedSkills(getClassId());
 		skill_loop: for (L2Skill skill : getAllSkills())
 		{
 			int skillid = skill.getId();
@@ -8406,7 +8406,7 @@ public final class L2PcInstance extends L2Playable
 				
 				if (symbol_id != 0)
 				{
-					L2Henna tpl = HennaTable.getInstance().getTemplate(symbol_id);
+					L2Henna tpl = HennaData.getInstance().getTemplate(symbol_id);
 					
 					if (tpl != null)
 					{
@@ -10736,7 +10736,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		
 		ClassId subTemplate = ClassId.values()[classId];
-		Collection<L2SkillLearn> skillTree = SkillTreeTable.getInstance().getAllowedSkills(subTemplate);
+		Collection<L2SkillLearn> skillTree = SkillTreeData.getInstance().getAllowedSkills(subTemplate);
 		
 		if (skillTree == null)
 			return true;
@@ -10880,7 +10880,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		_activeClass = classId;
 		
-		L2PcTemplate t = CharTemplateTable.getInstance().getTemplate(classId);
+		L2PcTemplate t = CharTemplateData.getInstance().getTemplate(classId);
 		
 		if (t == null)
 		{
@@ -11979,7 +11979,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			try
 			{
-				AdminTable.getInstance().deleteGm(this);
+				AdminData.getInstance().deleteGm(this);
 			}
 			catch (Throwable t)
 			{
@@ -14060,28 +14060,28 @@ public final class L2PcInstance extends L2Playable
 		}
 		if (this.isGM())
 		{
-			if (Config.GM_STARTUP_INVULNERABLE && AdminTable.getInstance().hasAccess("admin_invul", this.getAccessLevel()))
+			if (Config.GM_STARTUP_INVULNERABLE && AdminData.getInstance().hasAccess("admin_invul", this.getAccessLevel()))
 			{
 				this.setIsInvul(true);
 			}
 
-			if (Config.GM_STARTUP_INVISIBLE && AdminTable.getInstance().hasAccess("admin_invisible", this.getAccessLevel()))
+			if (Config.GM_STARTUP_INVISIBLE && AdminData.getInstance().hasAccess("admin_invisible", this.getAccessLevel()))
 			{
 				this.getAppearance().setInvisible();
 			}
 
-			if (Config.GM_STARTUP_SILENCE && AdminTable.getInstance().hasAccess("admin_silence", this.getAccessLevel()))
+			if (Config.GM_STARTUP_SILENCE && AdminData.getInstance().hasAccess("admin_silence", this.getAccessLevel()))
 			{
 				this.setMessageRefusal(true);
 			}
 
-			if (Config.GM_STARTUP_AUTO_LIST && AdminTable.getInstance().hasAccess("admin_gmliston", this.getAccessLevel()))
+			if (Config.GM_STARTUP_AUTO_LIST && AdminData.getInstance().hasAccess("admin_gmliston", this.getAccessLevel()))
 			{
-				AdminTable.getInstance().addGm(this, false);
+				AdminData.getInstance().addGm(this, false);
 			}
 			else
 			{
-				AdminTable.getInstance().addGm(this, true);
+				AdminData.getInstance().addGm(this, true);
 			}
 		}
 		

@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2ShortCut;
@@ -91,7 +91,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 		byte _rate = 0;
 		int _baseLvl = 1;
 
-		L2EnchantSkillLearn[] skills = SkillTreeTable.getInstance().getAvailableEnchantSkills(player);
+		L2EnchantSkillLearn[] skills = SkillTreeData.getInstance().getAvailableEnchantSkills(player);
 
 		for (L2EnchantSkillLearn s : skills)
 		{

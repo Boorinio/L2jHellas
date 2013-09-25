@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -343,7 +343,7 @@ public abstract class L2Skill
 		_negateStats = set.getString("negateStats", "").split(" ");
 		_negatePower = set.getFloat("negatePower", 0.f);
 		_negateId = set.getInteger("negateId", 0);
-		_magicLevel = set.getInteger("magicLvl", SkillTreeTable.getInstance().getMinSkillLevel(_id, _level));
+		_magicLevel = set.getInteger("magicLvl", SkillTreeData.getInstance().getMinSkillLevel(_id, _level));
 		_levelDepend = set.getInteger("lvlDepend", 0);
 		_stat = set.getEnum("stat", Stats.class, null);
 

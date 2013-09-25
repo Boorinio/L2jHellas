@@ -33,9 +33,9 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MaxCheatersTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
-import com.l2jhellas.gameserver.datatables.xml.HelperBuffTable;
-import com.l2jhellas.gameserver.datatables.xml.L2Multisell;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
+import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
+import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -308,8 +308,8 @@ public class L2Npc extends L2Character
 
 		if (_mxcModel != null) // Lil Config xD
 		{
-			_currentCollisionHeight = CharTemplateTable.getInstance().getTemplate(_mxcModel.getClassId()).collisionHeight;
-			_currentCollisionRadius = CharTemplateTable.getInstance().getTemplate(_mxcModel.getClassId()).collisionRadius;
+			_currentCollisionHeight = CharTemplateData.getInstance().getTemplate(_mxcModel.getClassId()).collisionHeight;
+			_currentCollisionRadius = CharTemplateData.getInstance().getTemplate(_mxcModel.getClassId()).collisionRadius;
 
 			if (_mxcModel.getWeaponIdRH() <= 0 && _mxcModel.getWeaponIdLH() <= 0)
 			{
@@ -1130,11 +1130,11 @@ public class L2Npc extends L2Character
 			}
 			else if (command.startsWith("multisell"))
 			{
-				L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(command.substring(9).trim()), player, false, getCastle().getTaxRate());
+				MultisellData.getInstance().SeparateAndSend(Integer.parseInt(command.substring(9).trim()), player, false, getCastle().getTaxRate());
 			}
 			else if (command.startsWith("exc_multisell"))
 			{
-				L2Multisell.getInstance().SeparateAndSend(Integer.parseInt(command.substring(13).trim()), player, true, getCastle().getTaxRate());
+				MultisellData.getInstance().SeparateAndSend(Integer.parseInt(command.substring(13).trim()), player, true, getCastle().getTaxRate());
 			}
 			else if (command.startsWith("Augment"))
 			{
@@ -1866,13 +1866,13 @@ public class L2Npc extends L2Character
 		// Calculate the min and max level between witch the player must be to obtain buff
 		if (player.isMageClass())
 		{
-			lowestLevel = HelperBuffTable.getInstance().getMagicClassLowestLevel();
-			highestLevel = HelperBuffTable.getInstance().getMagicClassHighestLevel();
+			lowestLevel = HelperBuffData.getInstance().getMagicClassLowestLevel();
+			highestLevel = HelperBuffData.getInstance().getMagicClassHighestLevel();
 		}
 		else
 		{
-			lowestLevel = HelperBuffTable.getInstance().getPhysicClassLowestLevel();
-			highestLevel = HelperBuffTable.getInstance().getPhysicClassHighestLevel();
+			lowestLevel = HelperBuffData.getInstance().getPhysicClassLowestLevel();
+			highestLevel = HelperBuffData.getInstance().getPhysicClassHighestLevel();
 		}
 
 		// If the player is too high level, display a message and return
@@ -1894,7 +1894,7 @@ public class L2Npc extends L2Character
 		L2Skill skill = null;
 		// Go through the Helper Buff list define in sql table helper_buff_list and cast skill
 
-		for (L2HelperBuff helperBuffItem : HelperBuffTable.getInstance().getHelperBuffTable())
+		for (L2HelperBuff helperBuffItem : HelperBuffData.getInstance().getHelperBuffTable())
 		{
 			if (helperBuffItem.isMagicClassBuff() == player.isMageClass())
 			{

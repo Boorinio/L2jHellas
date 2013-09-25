@@ -15,9 +15,9 @@
 package com.l2jhellas.gameserver.model;
 
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable;
-import com.l2jhellas.gameserver.datatables.xml.ArmorSetsTable.ArmorDummy;
-import com.l2jhellas.gameserver.datatables.xml.CharTemplateTable;
+import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
+import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData.ArmorDummy;
+import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -95,9 +95,9 @@ public class L2MaxPolyModel
 		if (data.getInteger("titleColor") > 0)
 			_titleColor = data.getInteger("titleColor");
 
-		_race = CharTemplateTable.getInstance().getTemplate(_classId).race;
+		_race = CharTemplateData.getInstance().getTemplate(_classId).race;
 
-		ArmorDummy armor = ArmorSetsTable.getInstance().getCusArmorSets(_armorId);
+		ArmorDummy armor = ArmorSetsData.getInstance().getCusArmorSets(_armorId);
 
 		if (armor != null)
 		{
