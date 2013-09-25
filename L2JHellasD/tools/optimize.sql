@@ -99,7 +99,6 @@ OPTIMIZE TABLE npc;
 OPTIMIZE TABLE npcskills;
 OPTIMIZE TABLE olympiad_nobles;
 OPTIMIZE TABLE pets;
-OPTIMIZE TABLE pets_stats;
 OPTIMIZE TABLE pledge_skill_trees;
 OPTIMIZE TABLE quest_global_data;
 OPTIMIZE TABLE raidboss_spawnlist;

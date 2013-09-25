@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.PetDataTable;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class PetNameTable

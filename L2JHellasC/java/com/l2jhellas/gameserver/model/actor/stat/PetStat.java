@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import com.l2jhellas.gameserver.datatables.sql.PetDataTable;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
+import com.l2jhellas.gameserver.datatables.xml.PetDataTable;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;

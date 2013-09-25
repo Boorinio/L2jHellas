@@ -12,33 +12,42 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.datatables.sql;
+package com.l2jhellas.gameserver.datatables.xml;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import javolution.util.FastMap;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2PetData;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class PetDataTable
 {
-	private static Logger _log = Logger.getLogger(PetDataTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(PetDataTable.class.getName());
+
 	private static PetDataTable _instance;
 
-	// private static final int[] PET_LIST = { 12077, 12312, 12313, 12311, 12527, 12528, 12526 };
 	private static Map<Integer, Map<Integer, L2PetData>> _petTable;
 
 	public static PetDataTable getInstance()
 	{
 		if (_instance == null)
+		{
 			_instance = new PetDataTable();
+		}
 
 		return _instance;
 	}
@@ -50,61 +59,89 @@ public class PetDataTable
 
 	public void loadPetsData()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setValidating(false);
+		factory.setIgnoringComments(true);
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/pet_stats.xml");
+		if (!f.exists())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT typeID, level, expMax, hpMax, mpMax, patk, pdef, matk, mdef, acc, evasion, crit, speed, atk_speed, cast_speed, feedMax, feedbattle, feednormal, loadMax, hpregen, mpregen, owner_exp_taken FROM pets_stats");
-			ResultSet rset = statement.executeQuery();
-
-			int petId, petLevel;
-
-			while (rset.next())
-			{
-				petId = rset.getInt("typeID");
-				petLevel = rset.getInt("level");
-
-				// build the petdata for this level
-				L2PetData petData = new L2PetData();
-				petData.setPetID(petId);
-				petData.setPetLevel(petLevel);
-				petData.setPetMaxExp(rset.getInt("expMax"));
-				petData.setPetMaxHP(rset.getInt("hpMax"));
-				petData.setPetMaxMP(rset.getInt("mpMax"));
-				petData.setPetPAtk(rset.getInt("patk"));
-				petData.setPetPDef(rset.getInt("pdef"));
-				petData.setPetMAtk(rset.getInt("matk"));
-				petData.setPetMDef(rset.getInt("mdef"));
-				petData.setPetAccuracy(rset.getInt("acc"));
-				petData.setPetEvasion(rset.getInt("evasion"));
-				petData.setPetCritical(rset.getInt("crit"));
-				petData.setPetSpeed(rset.getInt("speed"));
-				petData.setPetAtkSpeed(rset.getInt("atk_speed"));
-				petData.setPetCastSpeed(rset.getInt("cast_speed"));
-				petData.setPetMaxFeed(rset.getInt("feedMax"));
-				petData.setPetFeedNormal(rset.getInt("feednormal"));
-				petData.setPetFeedBattle(rset.getInt("feedbattle"));
-				petData.setPetMaxLoad(rset.getInt("loadMax"));
-				petData.setPetRegenHP(rset.getInt("hpregen"));
-				petData.setPetRegenMP(rset.getInt("mpregen"));
-				petData.setOwnerExpTaken(rset.getFloat("owner_exp_taken"));
-
-				// if its the first data for this petid, we initialize its level FastMap
-				if (!_petTable.containsKey(petId))
-					_petTable.put(petId, new FastMap<Integer, L2PetData>());
-
-				_petTable.get(petId).put(petLevel, petData);
-			}
-
-			rset.close();
-			statement.close();
+			_log.warning("pet_stats.xml could not be loaded: file not found");
+			return;
 		}
-		catch (Exception e)
+		int k = 0;
+		try
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not load pets stats: " + e);
-			if (Config.DEVELOPER)
+			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+			in.setEncoding("UTF-8");
+			Document doc = factory.newDocumentBuilder().parse(in);
+			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
-				e.printStackTrace();
+				if (n.getNodeName().equalsIgnoreCase("list"))
+				{
+					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					{
+						if (d.getNodeName().equalsIgnoreCase("pet"))
+						{
+							int petId, petLevel;
+							k++;
+
+							petId = Integer.valueOf(d.getAttributes().getNamedItem("typeID").getNodeValue());;
+							petLevel = Integer.valueOf(d.getAttributes().getNamedItem("level").getNodeValue());
+
+							//build the petdata for this level
+							L2PetData petData = new L2PetData();
+
+							petData.setPetID(petId);
+							petData.setPetLevel(petLevel);
+							petData.setPetMaxExp(Integer.valueOf(d.getAttributes().getNamedItem("expMax").getNodeValue()));
+							petData.setPetMaxHP(Integer.valueOf(d.getAttributes().getNamedItem("hpMax").getNodeValue()));
+							petData.setPetMaxMP(Integer.valueOf(d.getAttributes().getNamedItem("mpMax").getNodeValue()));
+							petData.setPetPAtk(Integer.valueOf(d.getAttributes().getNamedItem("patk").getNodeValue()));
+							petData.setPetPDef(Integer.valueOf(d.getAttributes().getNamedItem("pdef").getNodeValue()));
+							petData.setPetMAtk(Integer.valueOf(d.getAttributes().getNamedItem("matk").getNodeValue()));
+							petData.setPetMDef(Integer.valueOf(d.getAttributes().getNamedItem("mdef").getNodeValue()));
+							petData.setPetAccuracy(Integer.valueOf(d.getAttributes().getNamedItem("acc").getNodeValue()));
+							petData.setPetEvasion(Integer.valueOf(d.getAttributes().getNamedItem("evasion").getNodeValue()));
+							petData.setPetCritical(Integer.valueOf(d.getAttributes().getNamedItem("crit").getNodeValue()));
+							petData.setPetSpeed(Integer.valueOf(d.getAttributes().getNamedItem("speed").getNodeValue()));
+							petData.setPetAtkSpeed(Integer.valueOf(d.getAttributes().getNamedItem("atk_speed").getNodeValue()));
+							petData.setPetCastSpeed(Integer.valueOf(d.getAttributes().getNamedItem("cast_speed").getNodeValue()));
+							petData.setPetMaxFeed(Integer.valueOf(d.getAttributes().getNamedItem("feedMax").getNodeValue()));
+							petData.setPetFeedNormal(Integer.valueOf(d.getAttributes().getNamedItem("feednormal").getNodeValue()));
+							petData.setPetFeedBattle(Integer.valueOf(d.getAttributes().getNamedItem("feedbattle").getNodeValue()));
+							petData.setPetMaxLoad(Integer.valueOf(d.getAttributes().getNamedItem("loadMax").getNodeValue()));
+							petData.setPetRegenHP(Integer.valueOf(d.getAttributes().getNamedItem("hpregen").getNodeValue()));
+							petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
+							petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
+							petData.setOwnerExpTaken(Float.valueOf(d.getAttributes().getNamedItem("owner_exp_taken").getNodeValue()));
+
+							// if its the first data for this petid, we initialize its level FastMap
+							if (!_petTable.containsKey(petId))
+							{
+								_petTable.put(petId, new FastMap<Integer, L2PetData>());
+							}
+
+							_petTable.get(petId).put(petLevel, petData);
+							petData = null;
+						}
+					}
+				}
 			}
 		}
+		catch (SAXException e)
+		{
+			_log.warning("Error while creating table");
+		}
+		catch (IOException e)
+		{
+			_log.warning("Error while creating table");
+		}
+		catch (ParserConfigurationException e)
+		{
+			_log.warning("Error while creating table");
+		}
+
+		_log.info("PetStatsTable: Loaded " + _petTable.size() + " pets with " + k + " stats.");
 	}
 
 	public void addPetData(L2PetData petData)
@@ -116,27 +153,28 @@ public class PetDataTable
 			Map<Integer, L2PetData> statTable = new FastMap<Integer, L2PetData>();
 			statTable.put(petData.getPetLevel(), petData);
 			_petTable.put(petData.getPetID(), statTable);
+			statTable = null;
 			return;
 		}
 
 		h.put(petData.getPetLevel(), petData);
+
+		h = null;
 	}
 
 	public void addPetData(L2PetData[] petLevelsList)
 	{
-		for (int i = 0; i < petLevelsList.length; i++)
-			addPetData(petLevelsList[i]);
+		for (L2PetData element : petLevelsList)
+		{
+			addPetData(element);
+		}
 	}
 
 	public L2PetData getPetData(int petID, int petLevel)
 	{
-		//System.out.println("Getting id "+petID+" level "+ petLevel);
 		return _petTable.get(petID).get(petLevel);
 	}
 
-	/**
-	 * Pets stuffs
-	 */
 	public static boolean isWolf(int npcId)
 	{
 		return npcId == 12077;
@@ -169,7 +207,7 @@ public class PetDataTable
 
 	public static boolean isPetFood(int itemId)
 	{
-		return (itemId == 2515) || (itemId == 4038) || (itemId == 5168) || (itemId == 6316) || (itemId == 7582);
+		return itemId == 2515 || itemId == 4038 || itemId == 5168 || itemId == 6316 || itemId == 7582;
 	}
 
 	public static boolean isWolfFood(int itemId)
@@ -237,10 +275,10 @@ public class PetDataTable
 				// hatchling of twilight
 			case 3502:
 				return 12313;
-				// wind strider
+				//  wind strider
 			case 4422:
 				return 12526;
-				// Star strider
+				//	Star strider
 			case 4423:
 				return 12527;
 				// Twilight strider
@@ -321,12 +359,12 @@ public class PetDataTable
 
 	public static boolean isPetItem(int itemId)
 	{
-		return (itemId == 2375 // wolf
+		return itemId == 2375 // wolf
 				|| itemId == 4425 //Sin Eater
 				|| itemId == 3500 || itemId == 3501 || itemId == 3502 // hatchlings
 				|| itemId == 4422 || itemId == 4423 || itemId == 4424 // striders
 				|| itemId == 8663 // Wyvern
-				|| itemId == 6648 || itemId == 6649 || itemId == 6650); // Babies
+				|| itemId == 6648 || itemId == 6649 || itemId == 6650; // Babies
 	}
 
 	public static int[] getPetItemsAsNpc(int npcId)
@@ -385,9 +423,9 @@ public class PetDataTable
 
 	public static boolean isMountable(int npcId)
 	{
-		return npcId == 12526		// wind strider
-				|| npcId == 12527	// star strider
-				|| npcId == 12528	// twilight strider
-				|| npcId == 12621;	// wyvern
+		return npcId == 12526 // wind strider
+				|| npcId == 12527 // star strider
+				|| npcId == 12528 // twilight strider
+				|| npcId == 12621; // wyvern
 	}
 }
