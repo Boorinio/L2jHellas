@@ -67,8 +67,7 @@ public class ZodiacMain
 			voting = false;
 			return;
 		}
-		else
-		{
+		
 		voting = true;
 		for (L2PcInstance players : L2World.getAllPlayers())
 		{
@@ -82,8 +81,7 @@ public class ZodiacMain
 		waitSecs(minutes / 2 * 60);
 		voting = false;
 		endit();
-		}
-		
+			
 	}
 	
 	private static void ExecuteEvent(int Id)
@@ -335,12 +333,12 @@ public class ZodiacMain
 	//full events
 	public boolean AllEventsAreRunning()
 	{			
-		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || !CastleWars.isFinished || ChaosEvent._isChaosActive || CTF._started || CTF._joining || DM._joining || DM._started || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning || TvT._joining || TvT._started;
+		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || CastleWars.CastleWarsRunning || ChaosEvent._isChaosActive || CTF._started || CTF._joining || DM._joining || DM._started || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning || TvT._joining || TvT._started;
 	}
 	
 	//Only zodiac events
 	public static boolean EventsZodiacAreRunning()
 	{	
-		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || !CastleWars.isFinished || ChaosEvent._isChaosActive || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning;
+		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || CastleWars.CastleWarsRunning|| ChaosEvent._isChaosActive || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning;
 	}
 }

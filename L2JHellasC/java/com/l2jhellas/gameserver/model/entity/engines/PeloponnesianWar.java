@@ -34,7 +34,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 public class PeloponnesianWar
 {
 	private static boolean alaksokolies = true;
-	public static boolean PeloRunning, continuez, continuez2;
+	public static boolean PeloRunning = false, continuez, continuez2;
 	private static int i, countA, countS;
 	private static List<L2PcInstance> _participants = new FastList<L2PcInstance>();
 	private static List<L2PcInstance> _athenians = new FastList<L2PcInstance>();

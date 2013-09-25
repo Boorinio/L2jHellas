@@ -14174,6 +14174,23 @@ public final class L2PcInstance extends L2Playable
 				sendPacket(html);
 			}
 		}
+
+		if (Config.SERVER_NEWS)
+		{
+			if(this.isGM())
+			{
+			final String serverNewsGm = HtmCache.getInstance().getHtm("data/html/servnewsgm.htm");
+			if (serverNewsGm != null)
+				this.sendPacket(new NpcHtmlMessage(1, serverNewsGm));
+			}
+			else
+			{
+				final String serverNews = HtmCache.getInstance().getHtm("data/html/servnews.htm");
+				if (serverNews != null)
+					this.sendPacket(new NpcHtmlMessage(1, serverNews));
+			}
+		}
+		
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 		{
 			int results = 0;

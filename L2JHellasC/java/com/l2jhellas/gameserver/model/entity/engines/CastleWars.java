@@ -40,7 +40,7 @@ public class CastleWars
 	private static List<L2PcInstance> _attackers = new FastList<L2PcInstance>();
 	private static FastSet<L2Npc> _flags = new FastSet<L2Npc>();
 	public static boolean isFinished;
-	public static boolean CastleWarsRunning;
+	public static boolean CastleWarsRunning = false;
 	private static boolean alaksokolies = false;
 	private static int i;
 	public static int flagskilled = 0;

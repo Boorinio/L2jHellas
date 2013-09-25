@@ -19,7 +19,7 @@ import com.l2jhellas.util.Rnd;
 
 public class TreasureChest
 {
-	public static boolean TreasureRunning;
+	public static boolean TreasureRunning = false;
 	private static int LuckyChest=0,Counter=0;
 	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
 	public static FastSet<L2Npc> _Npcs = new FastSet<L2Npc>();

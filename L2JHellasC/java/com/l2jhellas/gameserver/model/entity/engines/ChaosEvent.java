@@ -40,7 +40,7 @@ public class ChaosEvent
 	public static Vector<L2PcInstance> _players = new Vector<L2PcInstance>();
 	public static L2PcInstance _topplayer, _topplayer2, _topplayer3, _topplayer4, _topplayer5;
 	public static int _topkills = 0, _topkills2 = 0, _topkills3 = 0, _topkills4 = 0, _topkills5 = 0;
-	public static boolean _isChaosActive;
+	public static boolean _isChaosActive = false;
 	private final static int seconds = 120;
 	
 	public static void stopChaos()

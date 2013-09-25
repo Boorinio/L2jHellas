@@ -40,7 +40,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public class CaptureThem
 {
-	public static boolean CaptureThemRunning;
+	public static boolean CaptureThemRunning = false;
 	private static int i;
 	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
 	private static FastSet<L2Npc> _flags = new FastSet<L2Npc>();

@@ -44,7 +44,7 @@ public class ProtectTheLdr
 	public static int team2x = 86504, team2y = 258865, team2z = -11672, leader2 = 36008;
 	private static int leader2x = 86402, leader2y = 258733, leader2z = -11672;
 	private static int leader1x = 86417, leader1y = 257244, leader1z = -11672;
-	public static boolean ProtectisRunning, alaksokolies;
+	public static boolean ProtectisRunning = false, alaksokolies;
 	private static FastSet<L2Npc> _leaders = new FastSet<L2Npc>();
 	
 	public static void startevent()
