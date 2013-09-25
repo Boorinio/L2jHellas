@@ -24,8 +24,8 @@ import javolution.text.TextBuilder;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -427,7 +427,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			L2Npc target = (L2Npc) obj;
 
 			int monsterTemplate = target.getTemplate().npcId;
-			L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(monsterTemplate);
+			L2NpcTemplate template1 = NpcData.getInstance().getTemplate(monsterTemplate);
 			if (template1 == null)
 			{
 				activeChar.sendMessage("Incorrect monster template.");

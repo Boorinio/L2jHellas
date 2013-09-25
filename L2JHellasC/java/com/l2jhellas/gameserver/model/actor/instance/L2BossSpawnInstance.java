@@ -19,7 +19,7 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -85,7 +85,7 @@ public class L2BossSpawnInstance extends L2Npc
 
 		for (final int boss : Config.BOSS_RESPAWN_INFO)
 		{
-			final String name = NpcTable.getInstance().getTemplate(boss).getName();
+			final String name = NpcData.getInstance().getTemplate(boss).getName();
 			final StatsSet stats = GrandBossManager.getInstance().getStatsSet(boss);
 			if (stats == null)
 			{

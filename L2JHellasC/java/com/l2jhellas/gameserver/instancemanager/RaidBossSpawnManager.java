@@ -28,9 +28,9 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -448,7 +448,7 @@ public class RaidBossSpawnManager
 
 	public L2NpcTemplate getValidTemplate(int bossId)
 	{
-		L2NpcTemplate template = NpcTable.getInstance().getTemplate(bossId);
+		L2NpcTemplate template = NpcData.getInstance().getTemplate(bossId);
 		if (template == null)
 			return null;
 		if (!template.type.equalsIgnoreCase("L2RaidBoss"))

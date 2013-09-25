@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -70,7 +71,7 @@ public class SpawnTable
 
 			while (rset.next())
 			{
-				template1 = NpcTable.getInstance().getTemplate(rset.getInt("npc_templateid"));
+				template1 = NpcData.getInstance().getTemplate(rset.getInt("npc_templateid"));
 				if (template1 != null)
 				{
 					if (template1.type.equalsIgnoreCase("L2SiegeGuard"))

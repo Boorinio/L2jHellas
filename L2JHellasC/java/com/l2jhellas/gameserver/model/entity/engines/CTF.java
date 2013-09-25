@@ -28,8 +28,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -335,8 +335,8 @@ public class CTF
 		for (String team : _teams)
 		{
 			int index = _teams.indexOf(team);
-			L2NpcTemplate tmpl = NpcTable.getInstance().getTemplate(_flagIds.get(index));
-			L2NpcTemplate throne = NpcTable.getInstance().getTemplate(32027);
+			L2NpcTemplate tmpl = NpcData.getInstance().getTemplate(_flagIds.get(index));
+			L2NpcTemplate throne = NpcData.getInstance().getTemplate(32027);
 			try
 			{
 				// spawn throne
@@ -454,7 +454,7 @@ public class CTF
 	public static void spawnFlag(String teamName)
 	{
 		int index = _teams.indexOf(teamName);
-		L2NpcTemplate tmpl = NpcTable.getInstance().getTemplate(_flagIds.get(index));
+		L2NpcTemplate tmpl = NpcData.getInstance().getTemplate(_flagIds.get(index));
 
 		try
 		{
@@ -870,7 +870,7 @@ public class CTF
 
 	private static void spawnEventNpc(L2PcInstance activeChar)
 	{
-		L2NpcTemplate tmpl = NpcTable.getInstance().getTemplate(_npcId);
+		L2NpcTemplate tmpl = NpcData.getInstance().getTemplate(_npcId);
 
 		try
 		{
@@ -903,7 +903,7 @@ public class CTF
 
 	private static void spawnEventNpc()
 	{
-		L2NpcTemplate tmpl = NpcTable.getInstance().getTemplate(_npcId);
+		L2NpcTemplate tmpl = NpcData.getInstance().getTemplate(_npcId);
 
 		try
 		{

@@ -31,8 +31,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -509,7 +509,7 @@ public class AutoSpawnHandler
 				final int heading = locationList[locationIndex].getHeading();
 
 				// Fetch the template for this NPC ID and create a new spawn.
-				L2NpcTemplate npcTemp = NpcTable.getInstance().getTemplate(spawnInst.getNpcId());
+				L2NpcTemplate npcTemp = NpcData.getInstance().getTemplate(spawnInst.getNpcId());
 				if (npcTemp == null)
 				{
 					_log.log(Level.WARNING, getClass().getName() + ": Couldnt find NPC id" + spawnInst.getNpcId() + " Try to update your DP.");

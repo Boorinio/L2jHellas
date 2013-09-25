@@ -36,8 +36,8 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -299,7 +299,7 @@ public class Hero
 				
 				if (action == ACTION_RAID_KILLED)
 				{
-					L2NpcTemplate template = NpcTable.getInstance().getTemplate(param);
+					L2NpcTemplate template = NpcData.getInstance().getTemplate(param);
 					if (template != null)
 						_diaryentry.set("action", template.getName() + " was defeated!");
 				}
@@ -808,7 +808,7 @@ public class Hero
 	{
 		setDiaryData(charId, ACTION_RAID_KILLED, npcId);
 		
-		L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+		L2NpcTemplate template = NpcData.getInstance().getTemplate(npcId);
 		
 		if (_herodiary.containsKey(charId) && (template != null))
 		{

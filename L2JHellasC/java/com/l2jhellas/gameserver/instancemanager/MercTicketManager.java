@@ -25,7 +25,7 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -327,7 +327,7 @@ public class MercTicketManager
 
 	private void spawnMercenary(int npcId, int x, int y, int z, int despawnDelay, String[] messages, int chatDelay)
 	{
-		L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+		L2NpcTemplate template = NpcData.getInstance().getTemplate(npcId);
 		if (template != null)
 		{
 			final L2SiegeGuardInstance npc = new L2SiegeGuardInstance(IdFactory.getInstance().getNextId(), template);

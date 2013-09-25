@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver;
 
 import java.lang.reflect.Constructor;
 
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -68,7 +68,7 @@ public class MonsterRace
 			}
 			try
 			{
-				L2NpcTemplate template = NpcTable.getInstance().getTemplate(id + random);
+				L2NpcTemplate template = NpcData.getInstance().getTemplate(id + random);
 				_constructor = Class.forName("com.l2jhellas.gameserver.model.actor.instance." + template.type + "Instance").getConstructors()[0];
 				int objectId = IdFactory.getInstance().getNextId();
 				_monsters[i] = (L2Npc) _constructor.newInstance(objectId, template);

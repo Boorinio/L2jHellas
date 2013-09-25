@@ -31,8 +31,8 @@ import javolution.util.FastMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -277,7 +277,7 @@ public class FourSepulchersManager
 		{
 			if (i < 31921 || i > 31924)
 				continue;
-			L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(i);
+			L2NpcTemplate template1 = NpcData.getInstance().getTemplate(i);
 			if (template1 == null)
 				continue;
 			try
@@ -432,7 +432,7 @@ public class FourSepulchersManager
 
 			while (rset.next())
 			{
-				template1 = NpcTable.getInstance().getTemplate(rset.getInt("npc_templateid"));
+				template1 = NpcData.getInstance().getTemplate(rset.getInt("npc_templateid"));
 				if (template1 != null)
 				{
 					spawnDat = new L2Spawn(template1);
@@ -476,7 +476,7 @@ public class FourSepulchersManager
 		{
 			try
 			{
-				template = NpcTable.getInstance().getTemplate(_keyBoxNpc.get(keyNpcId));
+				template = NpcData.getInstance().getTemplate(_keyBoxNpc.get(keyNpcId));
 				if (template != null)
 				{
 					spawnDat = new L2Spawn(template);
@@ -531,7 +531,7 @@ public class FourSepulchersManager
 
 				while (rset2.next())
 				{
-					template1 = NpcTable.getInstance().getTemplate(rset2.getInt("npc_templateid"));
+					template1 = NpcData.getInstance().getTemplate(rset2.getInt("npc_templateid"));
 					if (template1 != null)
 					{
 						spawnDat = new L2Spawn(template1);
@@ -597,7 +597,7 @@ public class FourSepulchersManager
 
 				while (rset2.next())
 				{
-					template1 = NpcTable.getInstance().getTemplate(rset2.getInt("npc_templateid"));
+					template1 = NpcData.getInstance().getTemplate(rset2.getInt("npc_templateid"));
 					if (template1 != null)
 					{
 						spawnDat = new L2Spawn(template1);
@@ -664,7 +664,7 @@ public class FourSepulchersManager
 
 				while (rset2.next())
 				{
-					template1 = NpcTable.getInstance().getTemplate(rset2.getInt("npc_templateid"));
+					template1 = NpcData.getInstance().getTemplate(rset2.getInt("npc_templateid"));
 					if (template1 != null)
 					{
 						spawnDat = new L2Spawn(template1);
@@ -731,7 +731,7 @@ public class FourSepulchersManager
 
 				while (rset2.next())
 				{
-					template1 = NpcTable.getInstance().getTemplate(rset2.getInt("npc_templateid"));
+					template1 = NpcData.getInstance().getTemplate(rset2.getInt("npc_templateid"));
 					if (template1 != null)
 					{
 						spawnDat = new L2Spawn(template1);
@@ -786,7 +786,7 @@ public class FourSepulchersManager
 
 		for (int i = 0; i <= 3; i++)
 		{
-			template = NpcTable.getInstance().getTemplate(_shadowSpawnLoc[locNo][i][0]);
+			template = NpcData.getInstance().getTemplate(_shadowSpawnLoc[locNo][i][0]);
 			if (template != null)
 			{
 				try
@@ -826,7 +826,7 @@ public class FourSepulchersManager
 		{
 			try
 			{
-				template = NpcTable.getInstance().getTemplate(_victim.get(keyNpcId));
+				template = NpcData.getInstance().getTemplate(_victim.get(keyNpcId));
 				if (template != null)
 				{
 					spawnDat = new L2Spawn(template);
@@ -1159,7 +1159,7 @@ public class FourSepulchersManager
 				{
 					try
 					{
-						L2NpcTemplate template = NpcTable.getInstance().getTemplate(18149);
+						L2NpcTemplate template = NpcData.getInstance().getTemplate(18149);
 						if (template != null)
 						{
 							keyBoxMobSpawn = new L2Spawn(template);

@@ -42,9 +42,9 @@ import com.l2jhellas.gameserver.Shutdown;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.Manager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -744,7 +744,7 @@ public class GameStatusThread extends Thread
 						else if (type.equals("npc"))
 						{
 							_print.print("Reloading npc templates... ");
-							NpcTable.getInstance().reloadAllNpc();
+							NpcData.getInstance().reloadAllNpc();
 							_print.print("done\n");
 						}
 						else if (type.equals("html"))

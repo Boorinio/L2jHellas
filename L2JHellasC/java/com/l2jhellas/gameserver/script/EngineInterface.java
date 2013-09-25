@@ -22,10 +22,10 @@ import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -49,7 +49,7 @@ public interface EngineInterface
 	public CharTemplateData charTemplates = CharTemplateData.getInstance();
 	public ClanTable clanTable = ClanTable.getInstance();
 
-	public NpcTable npcTable = NpcTable.getInstance();
+	public NpcData npcTable = NpcData.getInstance();
 
 	public TeleportLocationTable teleTable = TeleportLocationTable.getInstance();
 	public LevelUpData levelUpData = LevelUpData.getInstance();

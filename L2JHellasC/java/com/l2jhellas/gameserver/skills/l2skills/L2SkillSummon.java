@@ -15,8 +15,8 @@
 package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -187,7 +187,7 @@ public class L2SkillSummon extends L2Skill
 		}
 
 		L2SummonInstance summon;
-		L2NpcTemplate summonTemplate = NpcTable.getInstance().getTemplate(_npcId);
+		L2NpcTemplate summonTemplate = NpcData.getInstance().getTemplate(_npcId);
 		if (summonTemplate.type.equalsIgnoreCase("L2SiegeSummon"))
 		{
 			summon = new L2SiegeSummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);

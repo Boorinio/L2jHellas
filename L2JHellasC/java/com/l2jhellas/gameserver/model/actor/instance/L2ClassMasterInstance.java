@@ -18,8 +18,8 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
@@ -42,7 +42,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	{
 	2, 3, 5, 6, 9, 8, 12, 13, 14, 16, 17, 20, 21, 23, 24, 27, 28, 30, 33, 34, 36, 37, 40, 41, 43, 46, 48, 51, 52, 55, 57
 	};
-	public static L2ClassMasterInstance ClassMaster = new L2ClassMasterInstance(31228, NpcTable.getInstance().getTemplate(31228));
+	public static L2ClassMasterInstance ClassMaster = new L2ClassMasterInstance(31228, NpcData.getInstance().getTemplate(31228));
 	static
 	{
 		L2World.storeObject(ClassMaster);

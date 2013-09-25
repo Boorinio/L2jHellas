@@ -32,8 +32,8 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -337,7 +337,7 @@ public class TvT
 
 	private static void spawnEventNpc(L2PcInstance activeChar)
 	{
-		L2NpcTemplate tmpl = NpcTable.getInstance().getTemplate(_npcId);
+		L2NpcTemplate tmpl = NpcData.getInstance().getTemplate(_npcId);
 
 		try
 		{
@@ -370,7 +370,7 @@ public class TvT
 
 	private static void spawnEventNpc()
 	{
-		L2NpcTemplate tmpl = NpcTable.getInstance().getTemplate(_npcId);
+		L2NpcTemplate tmpl = NpcData.getInstance().getTemplate(_npcId);
 
 		try
 		{
@@ -661,7 +661,7 @@ public class TvT
 		long startWaiterTime = System.currentTimeMillis();
 		int seconds = (int) (interval / 1000);
 
-		String npcManager = NpcTable.getInstance().getTemplate(_npcId).getName();
+		String npcManager = NpcData.getInstance().getTemplate(_npcId).getName();
 
 		while (startWaiterTime + interval > System.currentTimeMillis())
 		{

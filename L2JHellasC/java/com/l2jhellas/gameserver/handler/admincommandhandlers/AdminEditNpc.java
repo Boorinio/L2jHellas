@@ -30,7 +30,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
@@ -88,7 +88,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			{
 				String[] commandSplit = command.split(" ");
 				int npcId = Integer.valueOf(commandSplit[1]);
-				L2NpcTemplate npc = NpcTable.getInstance().getTemplate(npcId);
+				L2NpcTemplate npc = NpcData.getInstance().getTemplate(npcId);
 				Show_Npc_Property(activeChar, npc);
 			}
 			catch (Exception e)
@@ -210,7 +210,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 					if (npcId > 0)
 					{
-						L2NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
+						L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 						showAddDropData(activeChar, npcData);
 					}
 				}
@@ -771,17 +771,17 @@ public class AdminEditNpc implements IAdminCommandHandler
 			}
 		}
 
-		NpcTable.getInstance().saveNpc(newNpcData);
+		NpcData.getInstance().saveNpc(newNpcData);
 
 		int npcId = newNpcData.getInteger("npcId");
 
-		NpcTable.getInstance().reloadNpc(npcId);
-		Show_Npc_Property(activeChar, NpcTable.getInstance().getTemplate(npcId));
+		NpcData.getInstance().reloadNpc(npcId);
+		Show_Npc_Property(activeChar, NpcData.getInstance().getTemplate(npcId));
 	}
 
 	private void showNpcDropList(L2PcInstance activeChar, int npcId)
 	{
-		L2NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
+		L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
 		{
 			activeChar.sendMessage("unknown npc template id" + npcId);
@@ -827,7 +827,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			if (dropData.next())
 			{
 				replyMSG.append("<table>");
-				replyMSG.append("<tr><td>Appertain of NPC</td><td>" + NpcTable.getInstance().getTemplate(dropData.getInt("mobId")).name + "</td></tr>");
+				replyMSG.append("<tr><td>Appertain of NPC</td><td>" + NpcData.getInstance().getTemplate(dropData.getInt("mobId")).name + "</td></tr>");
 				replyMSG.append("<tr><td>ItemName</td><td>" + ItemTable.getInstance().getTemplate(dropData.getInt("itemId")).getName() + "(" + dropData.getInt("itemId") + ")</td></tr>");
 				replyMSG.append("<tr><td>Category</td><td>" + ((category == -1) ? "sweep" : Integer.toString(category)) + "</td></tr>");
 				replyMSG.append("<tr><td>MIN(" + dropData.getInt("min") + ")</td><td><edit var=\"min\" width=80></td></tr>");
@@ -1004,7 +1004,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 	private void reLoadNpcDropList(int npcId)
 	{
-		L2NpcTemplate npcData = NpcTable.getInstance().getTemplate(npcId);
+		L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
 			return;
 

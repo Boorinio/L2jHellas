@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -233,7 +233,7 @@ public class UserInfo extends L2GameServerPacket
 		}
 		if (_activeChar.getPoly().isMorphed())
 		{
-			L2NpcTemplate polyObj = NpcTable.getInstance().getTemplate(_activeChar.getPoly().getPolyId());
+			L2NpcTemplate polyObj = NpcData.getInstance().getTemplate(_activeChar.getPoly().getPolyId());
 			if (polyObj != null)
 			{
 				title += " - " + polyObj.name;

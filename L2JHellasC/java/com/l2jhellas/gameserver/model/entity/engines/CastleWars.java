@@ -22,7 +22,7 @@ import javolution.util.FastSet;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -313,7 +313,7 @@ public class CastleWars
 		L2Npc result = null;
 		try
 		{
-			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+			L2NpcTemplate template = NpcData.getInstance().getTemplate(npcId);
 			if (template != null)
 			{
 				L2Spawn spawn = new L2Spawn(template);

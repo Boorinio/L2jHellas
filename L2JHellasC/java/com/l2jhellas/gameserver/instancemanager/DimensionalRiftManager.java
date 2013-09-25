@@ -34,8 +34,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -175,7 +175,7 @@ public class DimensionalRiftManager
 											delay = Integer.parseInt(attrs.getNamedItem("delay").getNodeValue());
 											count = Integer.parseInt(attrs.getNamedItem("count").getNodeValue());
 
-											template = NpcTable.getInstance().getTemplate(mobId);
+											template = NpcData.getInstance().getTemplate(mobId);
 											if (template == null)
 												_log.log(Level.WARNING, getClass().getName() + ": Template " + mobId + " not found!");
 											if (!_rooms.containsKey(type))

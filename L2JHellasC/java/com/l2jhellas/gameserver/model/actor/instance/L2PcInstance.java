@@ -71,12 +71,12 @@ import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.FishTable;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
@@ -1692,7 +1692,7 @@ public final class L2PcInstance extends L2Playable
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		Quest[] quests = NpcTable.getInstance().getTemplate(npcId).getEventQuests(Quest.QuestEventType.ON_TALK);
+		Quest[] quests = NpcData.getInstance().getTemplate(npcId).getEventQuests(Quest.QuestEventType.ON_TALK);
 		if (quests != null)
 		{
 			for (Quest quest : quests)

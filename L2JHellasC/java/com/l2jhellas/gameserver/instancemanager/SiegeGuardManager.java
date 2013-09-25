@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
@@ -176,7 +176,7 @@ public class SiegeGuardManager
 
 			while (rs.next())
 			{
-				template1 = NpcTable.getInstance().getTemplate(rs.getInt("npcId"));
+				template1 = NpcData.getInstance().getTemplate(rs.getInt("npcId"));
 				if (template1 != null)
 				{
 					spawn1 = new L2Spawn(template1);

@@ -19,8 +19,8 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
@@ -170,13 +170,13 @@ public class AdminSpawn implements IAdminCommandHandler
 		{
 			// First parameter was an ID number
 			int monsterTemplate = Integer.parseInt(monsterId);
-			template1 = NpcTable.getInstance().getTemplate(monsterTemplate);
+			template1 = NpcData.getInstance().getTemplate(monsterTemplate);
 		}
 		else
 		{
 			// First parameter wasn't just numbers so go by name not ID
 			monsterId = monsterId.replace('_', ' ');
-			template1 = NpcTable.getInstance().getTemplateByName(monsterId);
+			template1 = NpcData.getInstance().getTemplateByName(monsterId);
 		}
 
 		try
@@ -220,7 +220,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	{
 		TextBuilder tb = new TextBuilder();
 
-		L2NpcTemplate[] mobs = NpcTable.getInstance().getAllMonstersOfLevel(level);
+		L2NpcTemplate[] mobs = NpcData.getInstance().getAllMonstersOfLevel(level);
 
 		// Start
 		tb.append("<html><title>Spawn Monster:</title><body><p> Level " + level + ":<br>Total Npc's : " + mobs.length + "<br>");
@@ -259,7 +259,7 @@ public class AdminSpawn implements IAdminCommandHandler
 	private void showNpcs(L2PcInstance activeChar, String starting, int from)
 	{
 		TextBuilder tb = new TextBuilder();
-		L2NpcTemplate[] mobs = NpcTable.getInstance().getAllNpcStartingWith(starting);
+		L2NpcTemplate[] mobs = NpcData.getInstance().getAllNpcStartingWith(starting);
 		// Start
 		tb.append("<html><title>Spawn Monster:</title><body><p> There are " + mobs.length + " Npcs whose name starts with " + starting + ":<br>");
 		String end1 = "<br><center><button value=\"Next\" action=\"bypass -h admin_npc_index " + starting + " $from$\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";

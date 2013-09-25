@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.handler.itemhandlers;
 
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -53,7 +53,7 @@ public class ChristmasTree implements IItemHandler
 		{
 			if (ITEM_IDS[i] == itemId)
 			{
-				template1 = NpcTable.getInstance().getTemplate(NPC_IDS[i]);
+				template1 = NpcData.getInstance().getTemplate(NPC_IDS[i]);
 				break;
 			}
 		}

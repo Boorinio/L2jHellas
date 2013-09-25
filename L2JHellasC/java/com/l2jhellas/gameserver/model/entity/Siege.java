@@ -29,7 +29,7 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeGuardManager;
@@ -1224,7 +1224,7 @@ public class Siege
 		{
 			L2ArtefactInstance art;
 
-			art = new L2ArtefactInstance(IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(_sp.getNpcId()));
+			art = new L2ArtefactInstance(IdFactory.getInstance().getNextId(), NpcData.getInstance().getTemplate(_sp.getNpcId()));
 			art.setCurrentHpMp(art.getMaxHp(), art.getMaxMp());
 			art.setHeading(_sp.getLocation().getHeading());
 			art.spawnMe(_sp.getLocation().getX(), _sp.getLocation().getY(), _sp.getLocation().getZ() + 50);
@@ -1244,7 +1244,7 @@ public class Siege
 		{
 			L2ControlTowerInstance ct;
 
-			L2NpcTemplate template = NpcTable.getInstance().getTemplate(_sp.getNpcId());
+			L2NpcTemplate template = NpcData.getInstance().getTemplate(_sp.getNpcId());
 
 			template.getStatsSet().set("baseHpMax", _sp.getHp());
 			// TODO: Check/confirm if control towers have any special weapon resistances/vulnerabilities

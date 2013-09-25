@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -63,7 +63,7 @@ public class SiegeFlag implements ISkillHandler
 		try
 		{
 			// Spawn a new flag
-			L2SiegeFlagInstance flag = new L2SiegeFlagInstance(player, IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(35062));
+			L2SiegeFlagInstance flag = new L2SiegeFlagInstance(player, IdFactory.getInstance().getNextId(), NpcData.getInstance().getTemplate(35062));
 			flag.setTitle(player.getClan().getName());
 			flag.setCurrentHpMp(flag.getMaxHp(), flag.getMaxMp());
 			flag.setHeading(player.getHeading());

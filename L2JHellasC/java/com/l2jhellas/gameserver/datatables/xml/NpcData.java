@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.datatables.sql;
+package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,9 +51,9 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.L2HashMap;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-public class NpcTable
+public class NpcData
 {
-	protected static Logger _log = Logger.getLogger(NpcTable.class.getName());
+	protected static Logger _log = Logger.getLogger(NpcData.class.getName());
 
 	// SQL Queries
 	private static final String RESTORE_SELECT_NPC = "SELECT * FROM npc";
@@ -64,21 +64,21 @@ public class NpcTable
 	private static final String RELOAD_NPC = "SELECT * FROM npc WHERE id=?";
 	private static final String RELOAD_CUSTOM_NPC = "SELECT * FROM custom_npc WHERE id=?";
 	
-	private static NpcTable _instance;
+	private static NpcData _instance;
 
 	private final ConcurrentMap<Integer, L2NpcTemplate> _npcs;
 
-	public static NpcTable getInstance()
+	public static NpcData getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new NpcTable();
+			_instance = new NpcData();
 		}
 
 		return _instance;
 	}
 
-	private NpcTable()
+	private NpcData()
 	{
 		_npcs = new L2HashMap<Integer, L2NpcTemplate>();
 

@@ -25,8 +25,8 @@ import javolution.text.TextBuilder;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -499,7 +499,7 @@ public class L2RaidEvent
 	{
 		L2NpcTemplate template;
 		int monsterTemplate = monsterId;
-		template = NpcTable.getInstance().getTemplate(monsterTemplate);
+		template = NpcData.getInstance().getTemplate(monsterTemplate);
 		if (template == null)
 			return;
 		_eventMobs = mobCount;

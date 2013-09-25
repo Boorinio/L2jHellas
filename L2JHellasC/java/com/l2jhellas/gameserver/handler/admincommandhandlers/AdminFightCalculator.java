@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -101,10 +101,10 @@ public class AdminFightCalculator implements IAdminCommandHandler
 
 		L2NpcTemplate npc1 = null;
 		if (mid1 != 0)
-			npc1 = NpcTable.getInstance().getTemplate(mid1);
+			npc1 = NpcData.getInstance().getTemplate(mid1);
 		L2NpcTemplate npc2 = null;
 		if (mid2 != 0)
-			npc2 = NpcTable.getInstance().getTemplate(mid2);
+			npc2 = NpcData.getInstance().getTemplate(mid2);
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
@@ -128,7 +128,7 @@ public class AdminFightCalculator implements IAdminCommandHandler
 		{
 			replyMSG.append("<html><title>Select first mob to fight</title>");
 			replyMSG.append("<body><table>");
-			L2NpcTemplate[] npcs = NpcTable.getInstance().getAllOfLevel(lvl1);
+			L2NpcTemplate[] npcs = NpcData.getInstance().getAllOfLevel(lvl1);
 			for (L2NpcTemplate n : npcs)
 			{
 				replyMSG.append("<tr><td><a action=\"bypass -h admin_fight_calculator lvl1 " + lvl1 + " lvl2 " + lvl2 + " mid1 " + n.npcId + " mid2 " + mid2 + "\">" + n.name + "</a></td></tr>");
@@ -139,7 +139,7 @@ public class AdminFightCalculator implements IAdminCommandHandler
 		{
 			replyMSG.append("<html><title>Select second mob to fight</title>");
 			replyMSG.append("<body><table>");
-			L2NpcTemplate[] npcs = NpcTable.getInstance().getAllOfLevel(lvl2);
+			L2NpcTemplate[] npcs = NpcData.getInstance().getAllOfLevel(lvl2);
 			for (L2NpcTemplate n : npcs)
 			{
 				replyMSG.append("<tr><td><a action=\"bypass -h admin_fight_calculator lvl1 " + lvl1 + " lvl2 " + lvl2 + " mid1 " + mid1 + " mid2 " + n.npcId + "\">" + n.name + "</a></td></tr>");
@@ -189,8 +189,8 @@ public class AdminFightCalculator implements IAdminCommandHandler
 			mid1 = Integer.parseInt(st.nextToken());
 			mid2 = Integer.parseInt(st.nextToken());
 
-			npc1 = new L2MonsterInstance(IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(mid1));
-			npc2 = new L2MonsterInstance(IdFactory.getInstance().getNextId(), NpcTable.getInstance().getTemplate(mid2));
+			npc1 = new L2MonsterInstance(IdFactory.getInstance().getNextId(), NpcData.getInstance().getTemplate(mid1));
+			npc2 = new L2MonsterInstance(IdFactory.getInstance().getNextId(), NpcData.getInstance().getTemplate(mid2));
 		}
 
 		int miss1 = 0;

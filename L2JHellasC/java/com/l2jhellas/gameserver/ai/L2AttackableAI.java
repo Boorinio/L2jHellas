@@ -25,7 +25,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.Territory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
@@ -91,7 +91,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	public L2AttackableAI(L2Character.AIAccessor accessor)
 	{
 		super(accessor);
-		_skillrender = NpcTable.getInstance().getTemplate(((L2Npc) _actor).getTemplate().npcId);
+		_skillrender = NpcData.getInstance().getTemplate(((L2Npc) _actor).getTemplate().npcId);
 		//_selfAnalysis.init();
 		_attackTimeout = Integer.MAX_VALUE;
 		_globalAggro = -10; // 10 seconds timeout of ATTACK after respawn

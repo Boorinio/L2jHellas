@@ -25,8 +25,8 @@ import java.util.LinkedList;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -155,7 +155,7 @@ public class L2Event
 
 	public static void spawn(L2PcInstance target, int npcid)
 	{
-		L2NpcTemplate template1 = NpcTable.getInstance().getTemplate(npcid);
+		L2NpcTemplate template1 = NpcData.getInstance().getTemplate(npcid);
 
 		try
 		{

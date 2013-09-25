@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
@@ -90,7 +90,7 @@ public final class L2ChestInstance extends L2MonsterInstance
 				id = 21786;
 		}
 
-		super.doItemDrop(NpcTable.getInstance().getTemplate(id), lastAttacker);
+		super.doItemDrop(NpcData.getInstance().getTemplate(id), lastAttacker);
 	}
 
 	//cast - trap chest

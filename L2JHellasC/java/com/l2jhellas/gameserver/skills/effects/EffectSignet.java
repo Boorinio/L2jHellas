@@ -16,8 +16,8 @@ package com.l2jhellas.gameserver.skills.effects;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
@@ -68,7 +68,7 @@ class EffectSignet extends L2Effect
 			}
 		}
 
-		L2NpcTemplate template = NpcTable.getInstance().getTemplate(((L2SkillMagicOnGround) getSkill()).effectNpcId);
+		L2NpcTemplate template = NpcData.getInstance().getTemplate(((L2SkillMagicOnGround) getSkill()).effectNpcId);
 		if (template != null)
 		{
 			try

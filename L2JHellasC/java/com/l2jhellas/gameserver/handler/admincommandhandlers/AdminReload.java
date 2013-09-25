@@ -33,13 +33,13 @@ import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.csv.SummonItemsData;
 import com.l2jhellas.gameserver.datatables.sql.BufferSkillsTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -109,7 +109,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("npc") || type.equals("npcs"))
 				{
-					NpcTable.getInstance().reloadAllNpc();
+					NpcData.getInstance().reloadAllNpc();
 					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);
 				}
@@ -128,7 +128,7 @@ public class AdminReload implements IAdminCommandHandler
 					DayNightSpawnManager.getInstance().cleanUp();
 					L2World.deleteVisibleNpcSpawns();
 					// now respawn all
-					NpcTable.getInstance().reloadAllNpc();
+					NpcData.getInstance().reloadAllNpc();
 					SpawnTable.getInstance().reloadAll();
 					RaidBossSpawnManager.getInstance().reloadBosses();
 					SevenSigns.getInstance().spawnSevenSignsNPC();

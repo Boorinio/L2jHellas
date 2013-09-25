@@ -23,7 +23,7 @@ import javolution.util.FastMap;
 import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2MinionData;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -258,7 +258,7 @@ public class MinionList
 	public void spawnSingleMinion(int minionid)
 	{
 		// Get the template of the Minion to spawn
-		L2NpcTemplate minionTemplate = NpcTable.getInstance().getTemplate(minionid);
+		L2NpcTemplate minionTemplate = NpcData.getInstance().getTemplate(minionid);
 
 		// Create and Init the Minion and generate its Identifier
 		L2MinionInstance monster = new L2MinionInstance(IdFactory.getInstance().getNextId(), minionTemplate);

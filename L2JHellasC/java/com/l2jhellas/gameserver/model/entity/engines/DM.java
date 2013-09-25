@@ -26,8 +26,8 @@ import javolution.text.TextBuilder;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -118,7 +118,7 @@ public class DM
 
 	private static void spawnEventNpc(L2PcInstance activeChar)
 	{
-		L2NpcTemplate tmpl = NpcTable.getInstance().getTemplate(_npcId);
+		L2NpcTemplate tmpl = NpcData.getInstance().getTemplate(_npcId);
 
 		try
 		{

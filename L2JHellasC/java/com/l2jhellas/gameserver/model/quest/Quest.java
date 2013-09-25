@@ -31,7 +31,7 @@ import javolution.util.FastMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Party;
@@ -872,7 +872,7 @@ public class Quest extends ManagedScript
 	{
 		try
 		{
-			L2NpcTemplate t = NpcTable.getInstance().getTemplate(npcId);
+			L2NpcTemplate t = NpcData.getInstance().getTemplate(npcId);
 			if (t != null)
 			{
 				t.addQuestEvent(eventType, this);
@@ -1218,7 +1218,7 @@ public class Quest extends ManagedScript
 		L2Npc result = null;
 		try
 		{
-			L2NpcTemplate template = NpcTable.getInstance().getTemplate(npcId);
+			L2NpcTemplate template = NpcData.getInstance().getTemplate(npcId);
 			if (template != null)
 			{
 				// Sometimes, even if the quest script specifies some xyz (for example npc.getX() etc) by the time the code

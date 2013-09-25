@@ -31,9 +31,9 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -2190,7 +2190,7 @@ public class SevenSignsFestival implements SpawnListener
 				}
 			}
 
-			L2NpcTemplate witchTemplate = NpcTable.getInstance().getTemplate(_witchSpawn._npcId);
+			L2NpcTemplate witchTemplate = NpcData.getInstance().getTemplate(_witchSpawn._npcId);
 
 			// Spawn the festival witch for this arena
 			try
@@ -2350,7 +2350,7 @@ public class SevenSignsFestival implements SpawnListener
 					continue;
 				}
 
-				L2NpcTemplate npcTemplate = NpcTable.getInstance().getTemplate(currSpawn._npcId);
+				L2NpcTemplate npcTemplate = NpcData.getInstance().getTemplate(currSpawn._npcId);
 
 				try
 				{
