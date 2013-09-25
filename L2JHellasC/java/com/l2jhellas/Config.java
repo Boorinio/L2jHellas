@@ -649,6 +649,8 @@ public final class Config
 	public static final String BUTTON_W = "65";
 	public static final String BUTTON_H = "20";
 
+	
+
 	/**
 	 * VoteManager Config File
 	 */
@@ -668,6 +670,7 @@ public final class Config
 	/**
 	 * NPC Config File
 	 */
+	public static boolean ENABLE_CACHE_INFO;
 	public static boolean SHOW_NPC_CREST;
 	public static boolean ALLOW_CLASS_MASTER;
 	public static boolean ALLOW_REMOTE_CLASS_MASTER;
@@ -2234,7 +2237,7 @@ public final class Config
 			{
 				_log.log(Level.SEVERE, "Error while " + MOD_CUSTOM_NPC_CONFIG_FILE + " settings!", e);
 			}
-			/* Noblesse Manager */
+			ENABLE_CACHE_INFO = Boolean.parseBoolean(CustomNpcSettings.getProperty("EnableCacheInfo", "False"));
 			SHOW_NPC_CREST = Boolean.parseBoolean(CustomNpcSettings.getProperty("ShowNpcCrest", "False"));
 			ALLOW_ACCOUNT_MANAGER = Boolean.parseBoolean(CustomNpcSettings.getProperty("AllowAccManager", "False"));
 			EMAIL_USER = CustomNpcSettings.getProperty("EmailUsername", "null");

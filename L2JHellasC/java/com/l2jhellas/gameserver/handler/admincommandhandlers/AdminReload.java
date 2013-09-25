@@ -109,7 +109,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("npc") || type.equals("npcs"))
 				{
-					NpcTable.getInstance().reload();
+					NpcTable.getInstance().reloadAllNpc();
 					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);
 				}
@@ -128,7 +128,7 @@ public class AdminReload implements IAdminCommandHandler
 					DayNightSpawnManager.getInstance().cleanUp();
 					L2World.deleteVisibleNpcSpawns();
 					// now respawn all
-					NpcTable.getInstance().reload();
+					NpcTable.getInstance().reloadAllNpc();
 					SpawnTable.getInstance().reloadAll();
 					RaidBossSpawnManager.getInstance().reloadBosses();
 					SevenSigns.getInstance().spawnSevenSignsNPC();

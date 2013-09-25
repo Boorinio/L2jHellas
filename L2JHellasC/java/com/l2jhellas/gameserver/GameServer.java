@@ -206,10 +206,7 @@ public class GameServer
 		{
 			NpcWalkerRoutesTable.getInstance().load();
 		}
-		if (!NpcTable.getInstance().isInitialized())
-		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
-		}
+		NpcTable.getInstance();
 
 		Util.printSection("Characters");
 		if (Config.COMMUNITY_TYPE.equals("Full"))
