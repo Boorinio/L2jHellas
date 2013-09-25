@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.datatables.sql.HennaTable;
+import com.l2jhellas.gameserver.datatables.xml.HennaTable;
 import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.HennaItemInfo;

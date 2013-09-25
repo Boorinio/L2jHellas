@@ -80,7 +80,6 @@ OPTIMIZE TABLE global_tasks;
 OPTIMIZE TABLE grandboss_data;
 OPTIMIZE TABLE grandboss_list;
 OPTIMIZE TABLE henna_trees;
-OPTIMIZE TABLE henna;
 OPTIMIZE TABLE heroes_diary;
 OPTIMIZE TABLE heroes;
 OPTIMIZE TABLE items;

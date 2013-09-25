@@ -26,6 +26,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.HennaTable;
 import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.templates.L2Henna;
