@@ -79,7 +79,6 @@ OPTIMIZE TABLE gameservers;
 OPTIMIZE TABLE global_tasks;
 OPTIMIZE TABLE grandboss_data;
 OPTIMIZE TABLE grandboss_list;
-OPTIMIZE TABLE helper_buff_list;
 OPTIMIZE TABLE henna_trees;
 OPTIMIZE TABLE henna;
 OPTIMIZE TABLE heroes_diary;

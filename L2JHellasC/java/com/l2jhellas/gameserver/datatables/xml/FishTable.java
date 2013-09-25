@@ -36,7 +36,7 @@ import com.l2jhellas.gameserver.model.FishData;
 
 public class FishTable
 {
-	protected static final Logger _log = Logger.getLogger(CharTemplateTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(FishTable.class.getName());
 
 	static class instance
 	{
