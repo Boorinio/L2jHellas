@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import javolution.text.TextBuilder;
 
-import com.l2jhellas.gameserver.datatables.sql.SkillTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.SkillTreeTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
