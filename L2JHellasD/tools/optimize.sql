@@ -109,7 +109,6 @@ OPTIMIZE TABLE seven_signs_festival;
 OPTIMIZE TABLE seven_signs_status;
 OPTIMIZE TABLE siege_clans;
 OPTIMIZE TABLE skill_learn;
-OPTIMIZE TABLE skill_spellbooks;
 OPTIMIZE TABLE skill_trees;
 OPTIMIZE TABLE spawnlist;
 OPTIMIZE TABLE teleport;
