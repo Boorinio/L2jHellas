@@ -19,7 +19,7 @@ import java.util.Map;
 import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -397,7 +397,7 @@ public class FeedableBeasts extends L2AttackableAIScript
                 oldTrained.doDespawn();
             }
 
-            L2NpcTemplate template = NpcTable.getInstance().getTemplate(nextNpcId);
+            L2NpcTemplate template = NpcData.getInstance().getTemplate(nextNpcId);
             L2TamedBeastInstance nextNpc = new L2TamedBeastInstance(IdFactory.getInstance().getNextId(), template, player, FOODSKILL.get(food), npc.getX(), npc.getY(), npc.getZ());
             nextNpc.setRunning();
 

@@ -23,14 +23,14 @@ import ai.group_template.L2AttackableAIScript;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.csv.DoorTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -241,7 +241,7 @@ public class IceFairySirra extends L2AttackableAIScript
 		{
 			for (int i = 0; i < 5; i++)
 			{
-				template = NpcTable.getInstance().getTemplate(mobs[i][0]);
+				template = NpcData.getInstance().getTemplate(mobs[i][0]);
 				if (template != null)
 				{
 					spawnDat = new L2Spawn(template);

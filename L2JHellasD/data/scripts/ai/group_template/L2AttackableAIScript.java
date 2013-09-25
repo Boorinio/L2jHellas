@@ -17,7 +17,7 @@ package ai.group_template;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
-import com.l2jhellas.gameserver.datatables.sql.NpcTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -204,7 +204,7 @@ public class L2AttackableAIScript extends QuestJython
 		// register all mobs here...
 		for (int level =1; level<100; level++)
 		{
-			L2NpcTemplate[] templates = NpcTable.getInstance().getAllOfLevel(level);
+			L2NpcTemplate[] templates = NpcData.getInstance().getAllOfLevel(level);
 			if ((templates != null) && (templates.length > 0))
 			{
 				for (L2NpcTemplate t: templates)
