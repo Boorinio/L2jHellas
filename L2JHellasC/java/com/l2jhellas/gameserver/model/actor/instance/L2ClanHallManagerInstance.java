@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TradeController;
-import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -810,7 +810,7 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 	{
 		if (Config.DEBUG)
 			player.sendMessage("doTeleport(L2PcInstance player, int val) is called");
-		L2TeleportLocation list = TeleportLocationTable.getInstance().getTemplate(val);
+		L2TeleportLocation list = TeleportLocationData.getInstance().getTemplate(val);
 		if (list != null)
 		{
 			//you cannot teleport to village that is in siege Not sure about this one though
@@ -819,7 +819,7 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 				player.sendPacket(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE);
 				return;
 			}
-			else if (player.reduceAdena("Teleport", list.getPrice(), this, true))
+			else if (player.destroyItemsByList("Teleport", list.getItemsList(), this, true, 0))
 			{
 				if (Config.DEBUG)
 					_log.warning("Teleporting player " + player.getName() + " for CH to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());

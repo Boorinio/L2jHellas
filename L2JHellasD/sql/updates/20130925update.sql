@@ -9,3 +9,5 @@ DROP TABLE IF EXISTS pledge_skill_trees;
 DROP TABLE IF EXISTS skill_trees;
 DROP TABLE IF EXISTS minions;
 DROP TABLE IF EXISTS skill_learn;
+DROP TABLE IF EXISTS custom_teleport;
+DROP TABLE IF EXISTS teleport;

@@ -3868,6 +3868,40 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	/**
+	 * Destroy item from inventory by using its <B>itemId</B> and send a Server->Client InventoryUpdate packet to the L2PcInstance.
+	 * @param process : String Identifier of process triggering this action
+	 * @param list : int[] identifier of the items to be destroyed
+	 * @param reference : L2Object Object referencing current action like NPC selling item or previous item in transformation
+	 * @param sendMessage : boolean Specifies whether to send message to Client about this action
+	 * @param payType : int Specifies type of payment 0 = normal, 1 = free, 2 = price / 2
+	 * @return boolean informing if the action was successfull
+	 */
+	public boolean destroyItemsByList(String process, List<int[]> list, L2Object reference, boolean sendMessage, int payType)
+	{
+		for (int[] l : list)
+		{
+			switch (payType)
+			{
+				case 0:
+				{
+					if (!destroyItemByItemId(process, l[0], l[1], reference, sendMessage))
+						return false;
+				}
+				case 1:
+				{
+					break;
+				}
+				case 2:
+				{
+					if (!destroyItemByItemId(process, l[0], l[1] / 2, reference, sendMessage))
+						return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Destroy item from inventory by using its <B>itemId</B> and send a
 	 * Server->Client InventoryUpdate packet to the L2PcInstance.
 	 * 
@@ -14150,44 +14184,33 @@ public final class L2PcInstance extends L2Playable
  			ZodiacMain.showHtmlWindow(this);
 		this.sendSkillList();
 		this.sendPacket(new SkillCoolTime(this));
-		if (Config.SHOW_HTML_GM_WELCOME && (this.getAccessLevel().getLevel() > 0 || this.isGM()))
-		{
-			String Welcome_Path = "data/html/welcomeGM.htm";
-			File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
-			if (mainText.exists())
-			{
-				NpcHtmlMessage html = new NpcHtmlMessage(1);
-				html.setFile(Welcome_Path);
-				html.replace("%name%", this.getName());
-				sendPacket(html);
-			}
-		}
-		if (Config.SHOW_HTML_WELCOME)
-		{
-			String Welcome_Path = "data/html/welcomeP.htm";
-			File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
-			if (mainText.exists())
-			{
-				NpcHtmlMessage html = new NpcHtmlMessage(1);
-				html.setFile(Welcome_Path);
-				html.replace("%name%", this.getName());
-				sendPacket(html);
-			}
-		}
-
+		
 		if (Config.SERVER_NEWS)
 		{
-			if(this.isGM())
+			if (isGM())
 			{
-			final String serverNewsGm = HtmCache.getInstance().getHtm("data/html/servnewsgm.htm");
-			if (serverNewsGm != null)
-				this.sendPacket(new NpcHtmlMessage(1, serverNewsGm));
+				final String Welcome_Path = "data/html/welcomeGM.htm";
+				File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
+				if (mainText.exists())
+				{
+					NpcHtmlMessage html = new NpcHtmlMessage(1);
+					html.setFile(Welcome_Path);
+					html.replace("%name%", this.getName());
+					sendPacket(html);
+				}
+
 			}
 			else
 			{
-				final String serverNews = HtmCache.getInstance().getHtm("data/html/servnews.htm");
-				if (serverNews != null)
-					this.sendPacket(new NpcHtmlMessage(1, serverNews));
+				final String Welcome_Path = "data/html/welcomeP.htm";
+				File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
+				if (mainText.exists())
+				{
+					NpcHtmlMessage html = new NpcHtmlMessage(1);
+					html.setFile(Welcome_Path);
+					html.replace("%name%", this.getName());
+					sendPacket(html);
+				}
 			}
 		}
 		

@@ -26,7 +26,6 @@ OPTIMIZE TABLE custom_npc;
 OPTIMIZE TABLE rank_pvp_system;
 OPTIMIZE TABLE rank_pvp_system_character_rank_rewards;
 OPTIMIZE TABLE rank_pvp_system_rank_rewards;
-OPTIMIZE TABLE custom_teleport;
 OPTIMIZE TABLE custom_weapon;
 -- GAME SERVER TABLES
 OPTIMIZE TABLE account_data;
@@ -105,7 +104,6 @@ OPTIMIZE TABLE seven_signs_festival;
 OPTIMIZE TABLE seven_signs_status;
 OPTIMIZE TABLE siege_clans;
 OPTIMIZE TABLE spawnlist;
-OPTIMIZE TABLE teleport;
 OPTIMIZE TABLE walker_routes;
 OPTIMIZE TABLE weapon;
 OPTIMIZE TABLE zone;

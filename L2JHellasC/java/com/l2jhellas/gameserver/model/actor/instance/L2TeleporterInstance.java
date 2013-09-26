@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.TownManager;
@@ -170,15 +170,21 @@ public final class L2TeleporterInstance extends L2NpcInstance
 
 	private void doTeleport(L2PcInstance player, int val)
 	{
-		L2TeleportLocation list = TeleportLocationTable.getInstance().getTemplate(val);
+		L2TeleportLocation list = TeleportLocationData.getInstance().getTemplate(val);
 		if (list != null)
 		{
-			//you cannot teleport to village that is in siege
+			int payType = 0;
+			if (player.getLevel() < 41)
+				payType = 1;
+			
 			if (player.isinZodiac)
 			{
 				player.sendMessage("You cannot teleport while in Zodiac Event.");
 				return;
 			}
+			else if (player.isAlikeDead() || player.isDead())
+				return;
+			//you cannot teleport to village that is in siege
 			if (SiegeManager.getInstance().getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
 			{
 				player.sendPacket(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE);
@@ -189,13 +195,11 @@ public final class L2TeleporterInstance extends L2NpcInstance
 				player.sendPacket(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE);
 				return;
 			}
-
 			else if (!Config.ALT_GAME_FLAGGED_PLAYER_CAN_USE_GK && player.getPvpFlag() > 0)
 			{
 				player.sendMessage("You Are Not Able To Run Away From PvP!");
 				return;
 			}
-
 			else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK && player.getKarma() > 0) //karma
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
@@ -213,30 +217,47 @@ public final class L2TeleporterInstance extends L2NpcInstance
 				player.sendPacket(html);
 				return;
 			}
-			else if (player.isAlikeDead())
+			else if (player.getLevel() < list.getMinLevel())
 			{
+				String filename = "data/html/teleporter/" + getNpcId() + "-min-level.htm";
+				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile(filename);
+				html.replace("%objectId%", String.valueOf(getObjectId()));
+				html.replace("%npcname%", getName());
+				html.replace("%playername%", player.getName());
+				html.replace("%minLevel%", String.valueOf(list.getMinLevel()));
+				player.sendPacket(html);
 				return;
 			}
-			else if (!list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.reduceAdena("Teleport", list.getPrice(), this, true)))
+			else if (player.getLevel() > list.getMaxLevel())
+			{
+				String filename = "data/html/teleporter/" + getNpcId() + "-max-level.htm";
+				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile(filename);
+				html.replace("%objectId%", String.valueOf(getObjectId()));
+				html.replace("%npcname%", getName());
+				html.replace("%playername%", player.getName());
+				html.replace("%maxLevel%", String.valueOf(list.getMaxLevel()));
+				player.sendPacket(html);
+				return;
+			}
+			else if (!player.isGM() && list.getIsForGM())
+			{
+				String filename = "data/html/teleporter/" + getNpcId() + "-gmonly.htm";
+				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile(filename);
+				html.replace("%objectId%", String.valueOf(getObjectId()));
+				html.replace("%npcname%", getName());
+				html.replace("%playername%", player.getName());
+				player.sendPacket(html);
+			}
+			else if (!list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.destroyItemsByList("Teleport "+(list.getIsForNoble() ? " nobless" : ""), list.getItemsList(), this, true, payType)))
 			{
 				if (Config.DEBUG)
 					_log.fine("Teleporting player " + player.getName() + " to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());
 				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
 			}
-			else if ((list.getTeleId() == 9983 || list.getTeleId() == 9984) && getNpcId() == 30483 && player.getLevel() > Config.CRUMA_TOWER_LEVEL_RESTRICT)
-			{
-				// Chars level XX can't enter in Cruma Tower. Retail: level 56 and above
-				int maxlvl = Config.CRUMA_TOWER_LEVEL_RESTRICT;
-
-				String filename = "data/html/teleporter/30483-biglvl.htm";
-				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-				html.setFile(filename);
-				html.replace("%allowedmaxlvl%", "" + maxlvl + "");
-				player.sendPacket(html);
-				return;
-			}
-
-			else if (list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.destroyItemByItemId("Noble Teleport", 6651, list.getPrice(), this, true)))
+			else if (list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.destroyItemsByList("Teleport "+(list.getIsForNoble() ? " nobless" : ""), list.getItemsList(), this, true, payType)))
 			{
 				if (Config.DEBUG)
 					_log.fine("Teleporting player " + player.getName() + " to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());

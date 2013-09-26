@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.TeleportLocationTable;
+import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2TeleportLocation;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -126,10 +126,10 @@ public final class L2CastleTeleporterInstance extends L2NpcInstance
 
 	private void doTeleport(L2PcInstance player, int val)
 	{
-		L2TeleportLocation list = TeleportLocationTable.getInstance().getTemplate(val);
+		L2TeleportLocation list = TeleportLocationData.getInstance().getTemplate(val);
 		if (list != null)
 		{
-			if (player.reduceAdena("Teleport", list.getPrice(), player.getLastFolkNPC(), true))
+			if (player.destroyItemsByList("Teleport", list.getItemsList(), this, true, 0))
 			{
 				if (Config.DEBUG)
 					_log.fine("Teleporting player " + player.getName() + " to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());
