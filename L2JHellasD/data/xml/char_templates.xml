@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE char_templates>
 <list>
 	<class Id="0" name="Human Fighter" RaceId="0">
 		<stats str="40" con="43" dex="30" _int="21" wit="11" men="25" p_atk="4" p_def="80" m_atk="6" m_def="41" p_spd="300" m_spd="333" acc="33" critical="44" evasion="33" move_spd="115" _load="81900" x="-71338" y="258271" z="-3104" canCraft="0" m_unk1="1.1" m_unk2="1.188" m_col_r="9" m_col_h="23" f_unk1="1.1" f_unk2="1.188" f_col_r="8" f_col_h="23.5">

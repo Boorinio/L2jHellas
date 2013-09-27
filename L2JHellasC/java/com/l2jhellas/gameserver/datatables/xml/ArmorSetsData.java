@@ -62,7 +62,7 @@ public class ArmorSetsData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/armorsets.xml");
+		File f = new File(Config.DATAPACK_ROOT, "data/xml/armor_sets.xml");
 		if (!f.exists())
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": armorsets.xml could not be loaded: file not found");

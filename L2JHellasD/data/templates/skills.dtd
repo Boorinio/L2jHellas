@@ -45,14 +45,13 @@
 <!ELEMENT div (using|and)*>
 <!ELEMENT sub (using|and)*>
 <!ELEMENT mul (using|and|player)*>
+<!ELEMENT basemul (using|and|player)*>
 <!ELEMENT set (using)*>
 <!ELEMENT cond (using|player|game|target|not)*>
 
 <!ELEMENT and (using|not|player)*>
 <!ELEMENT not (using|player|target)*>
 
-
-<!ELEMENT set EMPTY>
 <!ELEMENT player EMPTY>
 <!ELEMENT target EMPTY>
 <!ELEMENT game EMPTY>
@@ -154,9 +153,28 @@ pAtk-magicCreatures|pDef-animals|pDef-dragons|pDef-insects|pDef-monsters|
 pDef-plants|pAtk-magic|bowReuse|sleepProf|poisonProf|paralyzeProf|stunProf|
 dualFistWpnVuln|bleedProf|rootProf|derangementProf|swordWpnVuln|dualWpnVuln|
 bigSwordWpnVuln|pAtk-dragon|pAtk-animal|pAtk-beast|pAtk-insect|pAtk-plant
-)
- #IMPLIED>
+) #IMPLIED>
 
+<!ATTLIST basemul val CDATA #REQUIRED>
+<!ATTLIST basemul order CDATA #IMPLIED>
+<!ATTLIST basemul stat (
+stunRes|earthRes|sleepRes|fireRes|rootRes|windRes|waterRes|bowWpnRes|
+maxMp|maxLoad|maxCp|maxHp|regMp|regHp|regCp|gainHp|reflectDam|
+atkReuse|mReuse|pAtkRange|breath|rExp|rEvas|rShld|rCrit|MpConsumeRate|
+mpConsumeRate|mCritRate|mAtk|mAtkSpd|runSpd|mDef|pAtk|cAtk|pDef|sDef|
+accCombat|pAtk-dragons|pAtk-plants|pAtkSpd|pAtk-animals|pAtk-insects|
+pAtk-undead|pAtk-monsters|pDef-valakas|pAtk-valakas|cancelVuln|waterVuln|
+windVuln|fireVuln|absorbDam|bleedVuln|blowRate|bluntWpnVuln|bowWpnVuln|
+cancel|confusionVuln|critVuln|crossbowWpnVuln|daggerWpnVuln|derangementVuln|
+DanceMpConsumeRate|darkVuln|debuffVuln|earthVuln|fallVuln|gainMp|giveHp|
+holyVuln|lethalRate|lostExp|lostExpPvp|MagicalMpConsumeRate|paralyzeVuln|
+pAtk-giants|pvpPhysDmg|pvpMagicalDmg|pvpPhysSkillsDmg|pReuse|sleepVuln|
+stunVuln|rootVuln|PhysicalMpConsumeRate|poisonVuln|MpConsume|poleWpnVuln|
+pAtk-magicCreatures|pDef-animals|pDef-dragons|pDef-insects|pDef-monsters|
+pDef-plants|pAtk-magic|bowReuse|sleepProf|poisonProf|paralyzeProf|stunProf|
+dualFistWpnVuln|bleedProf|rootProf|derangementProf|swordWpnVuln|dualWpnVuln|
+bigSwordWpnVuln|pAtk-dragon|pAtk-animal|pAtk-beast|pAtk-insect|pAtk-plant
+) #IMPLIED>
 <!--
  the use of an item could be specified for a kind of item or a dependency with another item
 -->
