@@ -129,7 +129,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_cw_reload"))
 		{
-			cwm.reload();
+			CursedWeaponsManager.reload();
 		}
 		else
 		{

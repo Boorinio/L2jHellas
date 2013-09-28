@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="4700" levels="13" name="Gift of Queen">
 		<table name="#mpConsume"> 122 157 194 202 207 212 215 220 224 229 233 237 242 </table>
 		<table name="#Tab-pAtk"> 1.06 1.08 1.10 1.10 1.10 1.10 1.10 1.10 1.10 1.10
@@ -22,8 +21,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="#power" />
 		<for>
-			<effect count="1" name="Buff" time="#time" val="0" stackOrder="1"
-				stackType="QueenBuff">
+			<effect count="1" name="Buff" time="#time" val="0" stackOrder="1" stackType="QueenBuff">
 				<mul order="0x30" stat="pAtk" val="#Tab-pAtk" />
 				<add order="0x40" stat="accCombat" val="#Tab-accCombat" />
 			</effect>
@@ -70,8 +68,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="#power" />
 		<for>
-			<effect name="Buff" time="#time" count="1" val="0" stackOrder="1"
-				stackType="SeraphimBuff">
+			<effect name="Buff" time="#time" count="1" val="0" stackOrder="1" stackType="SeraphimBuff">
 				<mul order="0x30" stat="regMp" val="#Tab-regMp" />
 			</effect>
 		</for>
@@ -96,8 +93,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="#power" />
 		<for>
-			<effect name="Buff" time="#time" count="1" val="0" stackOrder="1"
-				stackType="SeraphimBuff">
+			<effect name="Buff" time="#time" count="1" val="0" stackOrder="1" stackType="SeraphimBuff">
 				<mul order="0x30" stat="mReuse" val="#Tab-mReuse" />
 			</effect>
 		</for>
@@ -141,8 +137,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="30" val="0" stackOrder="100"
-				stackType="CurseShade">
+			<effect count="1" name="Buff" time="30" val="0" stackOrder="100" stackType="CurseShade">
 				<mul order="0x30" stat="mDef" val="#Tab-mDef" />
 				<mul order="0x30" stat="pDef" val="#Tab-pDef" />
 			</effect>
@@ -169,8 +164,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Buff" time="30" val="0" stackOrder="100"
-				stackType="CurseShade">
+			<effect count="1" name="Buff" time="30" val="0" stackOrder="100" stackType="CurseShade">
 				<mul order="0x30" stat="mDef" val="#Tab-mDef" />
 				<mul order="0x30" stat="pDef" val="#Tab-pDef" />
 			</effect>
@@ -211,8 +205,7 @@
 		<set name="castRange" val="40" />
 		<set name="effectRange" val="200" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="4709" levels="10" name="Cursed Blow">
@@ -253,8 +246,7 @@
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="15" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="4711" levels="12" name="Wild Defense">
@@ -1496,8 +1488,7 @@
 		<set name="effectRange" val="1200" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="15" name="HealOverTime" time="1" val="#hot"
-				stackOrder="#hot" stackType="HpRecover" />
+			<effect count="15" name="HealOverTime" time="1" val="#hot" stackOrder="#hot" stackType="HpRecover" />
 		</for>
 	</skill>
 	<skill id="4785" levels="12" name="BOSS Chant of Life">
@@ -1514,8 +1505,7 @@
 		<set name="effectRange" val="1200" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="15" name="HealOverTime" time="1" val="#hot"
-				stackOrder="#hot" stackType="HpRecover" />
+			<effect count="15" name="HealOverTime" time="1" val="#hot" stackOrder="#hot" stackType="HpRecover" />
 		</for>
 	</skill>
 	<skill id="4786" levels="12" name="BOSS Chant of Life">
@@ -1532,8 +1522,7 @@
 		<set name="effectRange" val="1200" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="15" name="HealOverTime" time="1" val="#hot"
-				stackOrder="#hot" stackType="HpRecover" />
+			<effect count="15" name="HealOverTime" time="1" val="#hot" stackOrder="#hot" stackType="HpRecover" />
 		</for>
 	</skill>
 	<skill id="4787" levels="12" name="BOSS Chant of Life">
@@ -1550,8 +1539,7 @@
 		<set name="effectRange" val="1200" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="15" name="HealOverTime" time="1" val="#hot"
-				stackOrder="#hot" stackType="HpRecover" />
+			<effect count="15" name="HealOverTime" time="1" val="#hot" stackOrder="#hot" stackType="HpRecover" />
 		</for>
 	</skill>
 	<skill id="4788" levels="12" name="BOSS Chant of Life">
@@ -1568,8 +1556,7 @@
 		<set name="effectRange" val="1200" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="15" name="HealOverTime" time="1" val="#hot"
-				stackOrder="#hot" stackType="HpRecover" />
+			<effect count="15" name="HealOverTime" time="1" val="#hot" stackOrder="#hot" stackType="HpRecover" />
 		</for>
 	</skill>
 	<skill id="4789" levels="10" name="NPC High Level">

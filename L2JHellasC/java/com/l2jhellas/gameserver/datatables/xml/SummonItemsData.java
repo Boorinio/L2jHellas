@@ -51,6 +51,12 @@ public class SummonItemsData
 		return _instance;
 	}
 
+	public static void reload()
+	{
+		_instance = null;
+		getInstance();
+	}
+	
 	public SummonItemsData()
 	{
 		_summonitems = new FastMap<Integer, L2SummonItem>();

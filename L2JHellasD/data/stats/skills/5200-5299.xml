@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="5200" levels="3" name="Pet Recharge">
 		<table name="#mpConsume"> 120 124 128 </table>
 		<table name="#power"> 120.0 124.0 128.0 </table>
@@ -33,8 +32,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#effect"
-				stackType="Concentration">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#effect" stackType="Concentration">
 				<sub order="0x40" stat="cancel" val="#cancel" />
 			</effect>
 		</for>
@@ -55,8 +53,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="5204" levels="1"
-		name="Production-First Gigantic Pig Combination">
+	<skill id="5204" levels="1" name="Production-First Gigantic Pig Combination">
 		<set name="target" val="TARGET_SELF" />
 		<set name="skillType" val="BUFF" />
 		<set name="hitTime" val="5800" />
@@ -82,8 +79,7 @@
 		<set name="effectType" val="DEBUFF" />
 		<set name="effectPower" val="70" />
 		<for>
-			<effect name="Buff" time="30" count="1" val="0" stackOrder="0.5"
-				stackType="RunSpeedDown">
+			<effect name="Buff" time="30" count="1" val="0" stackOrder="0.5" stackType="RunSpeedDown">
 				<mul order="0x30" stat="runSpd" val="0.5" />
 			</effect>
 		</for>
@@ -98,8 +94,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect name="Buff" time="120" count="1" val="0" stackOrder="0.77"
-				stackType="pAtkSpdDown">
+			<effect name="Buff" time="120" count="1" val="0" stackOrder="0.77" stackType="pAtkSpdDown">
 				<mul order="0x30" stat="pAtkSpd" val="0.77" />
 			</effect>
 		</for>
@@ -114,8 +109,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="33"
-				stackType="SpeedUp">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="33" stackType="SpeedUp">
 				<add order="0x40" stat="runSpd" val="33" />
 			</effect>
 		</for>
@@ -130,8 +124,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="4"
-				stackType="pDef">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="4" stackType="pDef">
 				<mul order="0x30" stat="pDef" val="1.15" />
 			</effect>
 		</for>
@@ -146,8 +139,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.35"
-				stackType="MaxHPUp">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.35" stackType="MaxHPUp">
 				<mul order="0x30" stat="maxHp" val="1.35" />
 			</effect>
 		</for>
@@ -161,8 +153,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="7"
-				stackType="vampRage">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="7" stackType="vampRage">
 				<add order="0x40" stat="absorbDam" val="9" />
 			</effect>
 		</for>
@@ -177,8 +168,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.20"
-				stackType="HPregen">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.20" stackType="HPregen">
 				<mul order="0x30" stat="regHp" val="1.20" />
 			</effect>
 		</for>
@@ -193,8 +183,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.15"
-				stackType="pAtkSpeedUp">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.15" stackType="pAtkSpeedUp">
 				<mul order="0x30" stat="pAtkSpd" val="1.15" />
 			</effect>
 		</for>
@@ -209,8 +198,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.35"
-				stackType="MPregen">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.35" stackType="MPregen">
 				<mul order="0x30" stat="maxMp" val="1.35" />
 			</effect>
 		</for>
@@ -225,8 +213,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="4"
-				stackType="mAtkSpeedUp">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="4" stackType="mAtkSpeedUp">
 				<mul order="0x30" stat="mAtkSpd" val="1.30" />
 			</effect>
 		</for>
@@ -241,8 +228,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="18"
-				stackType="Concentration">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="18" stackType="Concentration">
 				<sub order="0x40" stat="cancel" val="18" />
 			</effect>
 		</for>
@@ -257,8 +243,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.55"
-				stackType="mAtk">
+			<effect count="1" name="Buff" time="3600" val="0" stackOrder="1.55" stackType="mAtk">
 				<mul order="0x30" stat="mAtk" val="1.55" />
 			</effect>
 		</for>
@@ -287,8 +272,7 @@
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="80" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="5220" levels="1" name="Huge Pig Fear">

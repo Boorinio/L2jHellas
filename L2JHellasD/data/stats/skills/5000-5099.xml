@@ -1,9 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="5000" levels="1" name="Alfred - Super Strike">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -12,8 +10,7 @@
 		</for>
 	</skill>
 	<skill id="5001" levels="1" name="Alfred - Life Drain">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -22,8 +19,7 @@
 		</for>
 	</skill>
 	<skill id="5002" levels="1" name="Giselle - Vampiric Rage">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -32,8 +28,7 @@
 		</for>
 	</skill>
 	<skill id="5003" levels="1" name="Giselle - Tempest">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -42,8 +37,7 @@
 		</for>
 	</skill>
 	<skill id="5004" levels="1" name="Dimensional Shock">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Shocks and instantly immobilizes. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Shocks and instantly immobilizes. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -150,8 +144,7 @@
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="900000" />
 		<for>
-			<effect count="1" name="Stun" time="10" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="10" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="5010" levels="1" name="Frintezza's Ghostly Mage">
@@ -212,8 +205,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="Paralyze" time="30" val="0"
-				stackOrder="1" stackType="Paralyze" />
+			<effect count="1" name="Paralyze" time="30" val="0" stackOrder="1" stackType="Paralyze" />
 		</for>
 	</skill>
 	<skill id="5013" levels="1" name="Frintezza Ghost Drain">
@@ -275,8 +267,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="Paralyze" time="30" val="0"
-				stackOrder="1" stackType="Paralyze" />
+			<effect count="1" name="Paralyze" time="30" val="0" stackOrder="1" stackType="Paralyze" />
 		</for>
 	</skill>
 	<skill id="5017" levels="1" name="Frintezza's Daemon Morph">
@@ -332,9 +323,7 @@
 		<set name="absorbPart" val="0.8" />
 	</skill>
 	<skill id="5020" levels="1" name="Forced Action">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Crumples to the ground because 
-			of unknown power. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Crumples to the ground because of unknown power. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -343,13 +332,9 @@
 		</for>
 	</skill>
 	<skill id="5021" levels="12" name="Inspiration of Einhasad">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Makes sacred attacks. Lvl 
-			2 - Makes sacred attacks. Lvl 3 - Makes sacred attacks. Lvl 4 - Makes sacred 
-			attacks. Lvl 5 - Makes sacred attacks. Lvl 6 - Makes sacred attacks. Lvl 
-			7 - Makes sacred attacks. Lvl 8 - Makes sacred attacks. Lvl 9 - Makes sacred 
-			attacks. Lvl 10 - Makes sacred attacks. Lvl 11 - Makes sacred attacks. Lvl 
-			12 - Makes sacred attacks. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Makes sacred attacks. Lvl 2 - Makes sacred attacks. Lvl 3 - Makes sacred 
+			attacks. Lvl 4 - Makes sacred attacks. Lvl 5 - Makes sacred attacks. Lvl 6 - Makes sacred attacks. Lvl 7 - Makes sacred attacks. Lvl 8 - Makes sacred attacks. Lvl 9 - Makes sacred attacks. Lvl 10 - Makes 
+			sacred attacks. Lvl 11 - Makes sacred attacks. Lvl 12 - Makes sacred attacks. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -358,14 +343,9 @@
 		</for>
 	</skill>
 	<skill id="5022" levels="12" name="Decrease Speed">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces Speed. 
-			Effect 1. Lvl 2 - Instantly reduces Speed. Effect 2. Lvl 3 - Instantly reduces 
-			Speed. Effect 2. Lvl 4 - Instantly reduces Speed. Effect 3. Lvl 5 - Instantly 
-			reduces Speed. Effect 3. Lvl 6 - Instantly reduces Speed. Effect 3. Lvl 7 
-			- Instantly reduces Speed. Effect 3. Lvl 8 - Instantly reduces Speed. Effect 
-			3. Lvl 9 - Instantly reduces Speed. Effect 3. Lvl 10 - Instantly reduces 
-			Speed. Effect 3. Lvl 11 - Instantly reduces Speed. Effect 3. Lvl 12 - Instantly 
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces Speed. Effect 1. Lvl 2 - Instantly reduces Speed. Effect 
+			2. Lvl 3 - Instantly reduces Speed. Effect 2. Lvl 4 - Instantly reduces Speed. Effect 3. Lvl 5 - Instantly reduces Speed. Effect 3. Lvl 6 - Instantly reduces Speed. Effect 3. Lvl 7 - Instantly reduces 
+			Speed. Effect 3. Lvl 8 - Instantly reduces Speed. Effect 3. Lvl 9 - Instantly reduces Speed. Effect 3. Lvl 10 - Instantly reduces Speed. Effect 3. Lvl 11 - Instantly reduces Speed. Effect 3. Lvl 12 - Instantly 
 			reduces Speed. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
@@ -375,16 +355,10 @@
 		</for>
 	</skill>
 	<skill id="5023" levels="12" name="Hold">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Temporarily holds and immobilizes 
-			target. Lvl 2 - Temporarily holds and immobilizes target. Lvl 3 - Temporarily 
-			holds and immobilizes target. Lvl 4 - Temporarily holds and immobilizes target. 
-			Lvl 5 - Temporarily holds and immobilizes target. Lvl 6 - Temporarily holds 
-			and immobilizes target. Lvl 7 - Temporarily holds and immobilizes target. 
-			Lvl 8 - Temporarily holds and immobilizes target. Lvl 9 - Temporarily holds 
-			and immobilizes target. Lvl 10 - Temporarily holds and immobilizes target. 
-			Lvl 11 - Temporarily holds and immobilizes target. Lvl 12 - Temporarily holds 
-			and immobilizes target. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Temporarily holds and immobilizes target. Lvl 2 - Temporarily holds and 
+			immobilizes target. Lvl 3 - Temporarily holds and immobilizes target. Lvl 4 - Temporarily holds and immobilizes target. Lvl 5 - Temporarily holds and immobilizes target. Lvl 6 - Temporarily holds and immobilizes 
+			target. Lvl 7 - Temporarily holds and immobilizes target. Lvl 8 - Temporarily holds and immobilizes target. Lvl 9 - Temporarily holds and immobilizes target. Lvl 10 - Temporarily holds and immobilizes 
+			target. Lvl 11 - Temporarily holds and immobilizes target. Lvl 12 - Temporarily holds and immobilizes target. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -393,14 +367,9 @@
 		</for>
 	</skill>
 	<skill id="5024" levels="12" name="Decrease Atk.Speed">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces Atk. 
-			Spd. Effect 1. Lvl 2 - Instantly reduces Atk. Spd. Effect 2. Lvl 3 - Instantly 
-			reduces Atk. Spd. Effect 2. Lvl 4 - Instantly reduces Atk. Spd. Effect 3. 
-			Lvl 5 - Instantly reduces Atk. Spd. Effect 3. Lvl 6 - Instantly reduces Atk. 
-			Spd. Effect 3. Lvl 7 - Instantly reduces Atk. Spd. Effect 3. Lvl 8 - Instantly 
-			reduces Atk. Spd. Effect 3. Lvl 9 - Instantly reduces Atk. Spd. Effect 3. 
-			Lvl 10 - Instantly reduces Atk. Spd. Effect 3. Lvl 11 - Instantly reduces 
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces Atk. Spd. Effect 1. Lvl 2 - Instantly reduces Atk. Spd. 
+			Effect 2. Lvl 3 - Instantly reduces Atk. Spd. Effect 2. Lvl 4 - Instantly reduces Atk. Spd. Effect 3. Lvl 5 - Instantly reduces Atk. Spd. Effect 3. Lvl 6 - Instantly reduces Atk. Spd. Effect 3. Lvl 7 - 
+			Instantly reduces Atk. Spd. Effect 3. Lvl 8 - Instantly reduces Atk. Spd. Effect 3. Lvl 9 - Instantly reduces Atk. Spd. Effect 3. Lvl 10 - Instantly reduces Atk. Spd. Effect 3. Lvl 11 - Instantly reduces 
 			Atk. Spd. Effect 3. Lvl 12 - Instantly reduces Atk. Spd. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
@@ -518,10 +487,8 @@
 		</for>
 	</skill>
 	<skill id="5037" levels="3" name="Decrease Casting Speed">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces Casting 
-			Speed. Effect 1. Lvl 2 - Instantly reduces Casting Speed. Effect 2. Lvl 3 
-			- Instantly reduces Casting Speed. Effect 3. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces Casting Speed. Effect 1. Lvl 2 - Instantly reduces Casting 
+			Speed. Effect 2. Lvl 3 - Instantly reduces Casting Speed. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -530,8 +497,7 @@
 		</for>
 	</skill>
 	<skill id="5038" levels="16" name="Summon PVP Penalty">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -540,8 +506,7 @@
 		</for>
 	</skill>
 	<skill id="5039" levels="1" name="NPC - Ultra Bomb">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -550,8 +515,7 @@
 		</for>
 	</skill>
 	<skill id="5040" levels="12" name="NPC - Healing Potion">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -569,8 +533,7 @@
 		</for>
 	</skill>
 	<skill id="5042" levels="12" name="NPC Dispel Bomb">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -579,8 +542,7 @@
 		</for>
 	</skill>
 	<skill id="5043" levels="12" name="NPC Super Sonic Blaster">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -589,8 +551,7 @@
 		</for>
 	</skill>
 	<skill id="5044" levels="2" name="NPC Ultimate Defense">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -599,8 +560,7 @@
 		</for>
 	</skill>
 	<skill id="5045" levels="12" name="Castle Power Strike">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -609,8 +569,7 @@
 		</for>
 	</skill>
 	<skill id="5046" levels="12" name="Castle Power Shot">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -619,8 +578,7 @@
 		</for>
 	</skill>
 	<skill id="5047" levels="12" name="Castle Spinning Slash">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -629,8 +587,7 @@
 		</for>
 	</skill>
 	<skill id="5048" levels="12" name="Castle Burst Shot">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -639,8 +596,7 @@
 		</for>
 	</skill>
 	<skill id="5049" levels="12" name="Castle Blow">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -649,8 +605,7 @@
 		</for>
 	</skill>
 	<skill id="5050" levels="12" name="Castle DD Fire">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -659,8 +614,7 @@
 		</for>
 	</skill>
 	<skill id="5051" levels="12" name="Castle Self AE Fire">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -669,8 +623,7 @@
 		</for>
 	</skill>
 	<skill id="5052" levels="12" name="Castle Long AE Fire">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -679,8 +632,7 @@
 		</for>
 	</skill>
 	<skill id="5053" levels="12" name="Castle DD Water">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -689,8 +641,7 @@
 		</for>
 	</skill>
 	<skill id="5054" levels="12" name="Castle Self AE Water">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -699,8 +650,7 @@
 		</for>
 	</skill>
 	<skill id="5055" levels="12" name="Castle Long AE Water">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -709,8 +659,7 @@
 		</for>
 	</skill>
 	<skill id="5056" levels="12" name="Castle DD Wind">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -719,8 +668,7 @@
 		</for>
 	</skill>
 	<skill id="5057" levels="12" name="Castle Self AE Wind">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -729,8 +677,7 @@
 		</for>
 	</skill>
 	<skill id="5058" levels="12" name="Castle Long AE Wind">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -739,8 +686,7 @@
 		</for>
 	</skill>
 	<skill id="5059" levels="12" name="Castle DD Earth">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -749,8 +695,7 @@
 		</for>
 	</skill>
 	<skill id="5060" levels="12" name="Castle Self AE Earth">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -759,8 +704,7 @@
 		</for>
 	</skill>
 	<skill id="5061" levels="12" name="Castle Long AE Earth">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -769,8 +713,7 @@
 		</for>
 	</skill>
 	<skill id="5062" levels="12" name="Castle DD Holy">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -779,8 +722,7 @@
 		</for>
 	</skill>
 	<skill id="5063" levels="12" name="Castle Self AE Holy">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -789,8 +731,7 @@
 		</for>
 	</skill>
 	<skill id="5064" levels="12" name="Castle Long AE Holy">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -799,8 +740,7 @@
 		</for>
 	</skill>
 	<skill id="5065" levels="12" name="Castle DD Unholy">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -809,8 +749,7 @@
 		</for>
 	</skill>
 	<skill id="5066" levels="12" name="Castle Self AE Unholy">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -819,8 +758,7 @@
 		</for>
 	</skill>
 	<skill id="5067" levels="12" name="Castle Long AE Unholy">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -829,14 +767,9 @@
 		</for>
 	</skill>
 	<skill id="5068" levels="12" name="Decrease Speed">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces Speed. 
-			Effect 3. Lvl 2 - Instantly reduces Speed. Effect 3. Lvl 3 - Instantly reduces 
-			Speed. Effect 3. Lvl 4 - Instantly reduces Speed. Effect 3. Lvl 5 - Instantly 
-			reduces Speed. Effect 3. Lvl 6 - Instantly reduces Speed. Effect 3. Lvl 7 
-			- Instantly reduces Speed. Effect 3. Lvl 8 - Instantly reduces Speed. Effect 
-			3. Lvl 9 - Instantly reduces Speed. Effect 3. Lvl 10 - Instantly reduces 
-			Speed. Effect 3. Lvl 11 - Instantly reduces Speed. Effect 3. Lvl 12 - Instantly 
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces Speed. Effect 3. Lvl 2 - Instantly reduces Speed. Effect 
+			3. Lvl 3 - Instantly reduces Speed. Effect 3. Lvl 4 - Instantly reduces Speed. Effect 3. Lvl 5 - Instantly reduces Speed. Effect 3. Lvl 6 - Instantly reduces Speed. Effect 3. Lvl 7 - Instantly reduces 
+			Speed. Effect 3. Lvl 8 - Instantly reduces Speed. Effect 3. Lvl 9 - Instantly reduces Speed. Effect 3. Lvl 10 - Instantly reduces Speed. Effect 3. Lvl 11 - Instantly reduces Speed. Effect 3. Lvl 12 - Instantly 
 			reduces Speed. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
@@ -846,14 +779,9 @@
 		</for>
 	</skill>
 	<skill id="5069" levels="12" name="Decrease Atk.Spd.">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces Atk. 
-			Spd. Effect 3. Lvl 2 - Instantly reduces Atk. Spd. Effect 3. Lvl 3 - Instantly 
-			reduces Atk. Spd. Effect 3. Lvl 4 - Instantly reduces Atk. Spd. Effect 3. 
-			Lvl 5 - Instantly reduces Atk. Spd. Effect 3. Lvl 6 - Instantly reduces Atk. 
-			Spd. Effect 3. Lvl 7 - Instantly reduces Atk. Spd. Effect 3. Lvl 8 - Instantly 
-			reduces Atk. Spd. Effect 3. Lvl 9 - Instantly reduces Atk. Spd. Effect 3. 
-			Lvl 10 - Instantly reduces Atk. Spd. Effect 3. Lvl 11 - Instantly reduces 
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces Atk. Spd. Effect 3. Lvl 2 - Instantly reduces Atk. Spd. 
+			Effect 3. Lvl 3 - Instantly reduces Atk. Spd. Effect 3. Lvl 4 - Instantly reduces Atk. Spd. Effect 3. Lvl 5 - Instantly reduces Atk. Spd. Effect 3. Lvl 6 - Instantly reduces Atk. Spd. Effect 3. Lvl 7 - 
+			Instantly reduces Atk. Spd. Effect 3. Lvl 8 - Instantly reduces Atk. Spd. Effect 3. Lvl 9 - Instantly reduces Atk. Spd. Effect 3. Lvl 10 - Instantly reduces Atk. Spd. Effect 3. Lvl 11 - Instantly reduces 
 			Atk. Spd. Effect 3. Lvl 12 - Instantly reduces Atk. Spd. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
@@ -863,16 +791,10 @@
 		</for>
 	</skill>
 	<skill id="5070" levels="12" name="Decrease Casting Spd">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces Casting 
-			Spd. Effect 3. Lvl 2 - Instantly reduces Casting Spd. Effect 3. Lvl 3 - Instantly 
-			reduces Casting Spd. Effect 3. Lvl 4 - Instantly reduces Casting Spd. Effect 
-			3. Lvl 5 - Instantly reduces Casting Spd. Effect 3. Lvl 6 - Instantly reduces 
-			Casting Spd. Effect 3. Lvl 7 - Instantly reduces Casting Spd. Effect 3. Lvl 
-			8 - Instantly reduces Casting Spd. Effect 3. Lvl 9 - Instantly reduces Casting 
-			Spd. Effect 3. Lvl 10 - Instantly reduces Casting Spd. Effect 3. Lvl 11 - 
-			Instantly reduces Casting Spd. Effect 3. Lvl 12 - Instantly reduces Casting 
-			Spd. Effect 3. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces Casting Spd. Effect 3. Lvl 2 - Instantly reduces Casting 
+			Spd. Effect 3. Lvl 3 - Instantly reduces Casting Spd. Effect 3. Lvl 4 - Instantly reduces Casting Spd. Effect 3. Lvl 5 - Instantly reduces Casting Spd. Effect 3. Lvl 6 - Instantly reduces Casting Spd. 
+			Effect 3. Lvl 7 - Instantly reduces Casting Spd. Effect 3. Lvl 8 - Instantly reduces Casting Spd. Effect 3. Lvl 9 - Instantly reduces Casting Spd. Effect 3. Lvl 10 - Instantly reduces Casting Spd. Effect 
+			3. Lvl 11 - Instantly reduces Casting Spd. Effect 3. Lvl 12 - Instantly reduces Casting Spd. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -881,15 +803,10 @@
 		</for>
 	</skill>
 	<skill id="5071" levels="12" name="Decrease P.Atk">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces P. Atk. 
-			Effect 3. Lvl 2 - Instantly reduces P. Atk. Effect 3. Lvl 3 - Instantly reduces 
-			P. Atk. Effect 3. Lvl 4 - Instantly reduces P. Atk. Effect 3. Lvl 5 - Instantly 
-			reduces P. Atk. Effect 3. Lvl 6 - Instantly reduces P. Atk. Effect 3. Lvl 
-			7 - Instantly reduces P. Atk. Effect 3. Lvl 8 - Instantly reduces P. Atk. 
-			Effect 3. Lvl 9 - Instantly reduces P. Atk. Effect 3. Lvl 10 - Instantly 
-			reduces P. Atk. Effect 3. Lvl 11 - Instantly reduces P. Atk. Effect 3. Lvl 
-			12 - Instantly reduces P. Atk. Effect 3. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces P. Atk. Effect 3. Lvl 2 - Instantly reduces P. Atk. Effect 
+			3. Lvl 3 - Instantly reduces P. Atk. Effect 3. Lvl 4 - Instantly reduces P. Atk. Effect 3. Lvl 5 - Instantly reduces P. Atk. Effect 3. Lvl 6 - Instantly reduces P. Atk. Effect 3. Lvl 7 - Instantly reduces 
+			P. Atk. Effect 3. Lvl 8 - Instantly reduces P. Atk. Effect 3. Lvl 9 - Instantly reduces P. Atk. Effect 3. Lvl 10 - Instantly reduces P. Atk. Effect 3. Lvl 11 - Instantly reduces P. Atk. Effect 3. Lvl 12 
+			- Instantly reduces P. Atk. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -898,15 +815,10 @@
 		</for>
 	</skill>
 	<skill id="5072" levels="12" name="Decrease M. Atk.">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Instantly reduces M. Atk. 
-			Effect 3. Lvl 2 - Instantly reduces M. Atk. Effect 3. Lvl 3 - Instantly reduces 
-			M. Atk. Effect 3. Lvl 4 - Instantly reduces M. Atk. Effect 3. Lvl 5 - Instantly 
-			reduces M. Atk. Effect 3. Lvl 6 - Instantly reduces M. Atk. Effect 3. Lvl 
-			7 - Instantly reduces M. Atk. Effect 3. Lvl 8 - Instantly reduces M. Atk. 
-			Effect 3. Lvl 9 - Instantly reduces M. Atk. Effect 3. Lvl 10 - Instantly 
-			reduces M. Atk. Effect 3. Lvl 11 - Instantly reduces M. Atk. Effect 3. Lvl 
-			12 - Instantly reduces M. Atk. Effect 3. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Instantly reduces M. Atk. Effect 3. Lvl 2 - Instantly reduces M. Atk. Effect 
+			3. Lvl 3 - Instantly reduces M. Atk. Effect 3. Lvl 4 - Instantly reduces M. Atk. Effect 3. Lvl 5 - Instantly reduces M. Atk. Effect 3. Lvl 6 - Instantly reduces M. Atk. Effect 3. Lvl 7 - Instantly reduces 
+			M. Atk. Effect 3. Lvl 8 - Instantly reduces M. Atk. Effect 3. Lvl 9 - Instantly reduces M. Atk. Effect 3. Lvl 10 - Instantly reduces M. Atk. Effect 3. Lvl 11 - Instantly reduces M. Atk. Effect 3. Lvl 12 
+			- Instantly reduces M. Atk. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -915,8 +827,7 @@
 		</for>
 	</skill>
 	<skill id="5073" levels="12" name="Quest Trap -  Power Shot">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -925,8 +836,7 @@
 		</for>
 	</skill>
 	<skill id="5074" levels="1" name="The Victor of War">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Maximum CP is increased. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Maximum CP is increased. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -935,8 +845,7 @@
 		</for>
 	</skill>
 	<skill id="5075" levels="1" name="The Vanquished of War">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Maximum CP is decreased. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Maximum CP is decreased. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -945,8 +854,7 @@
 		</for>
 	</skill>
 	<skill id="5076" levels="15" name="Death Penalty">
-		<!-- Description(s): Lvl [1-15] - Combat ability is decreased due to death. 
-			Effect [1-15]. -->
+		<!-- Description(s): Lvl [1-15] - Combat ability is decreased due to death. Effect [1-15]. -->
 		<table name="#power"> 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 </table>
 		<table name="#pAtk"> 1 0.958 0.907 0.856 0.805 0.754 0.703 0.652 0.601
 			0.550 0.499 0.448 0.397 0.356 0.305 0.254
@@ -997,8 +905,7 @@
 		</for>
 	</skill>
 	<skill id="5077" levels="1" name="NPC Remove Death Penalty">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1007,8 +914,7 @@
 		</for>
 	</skill>
 	<skill id="5078" levels="1" name="Frintezza Critical Power">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1017,8 +923,7 @@
 		</for>
 	</skill>
 	<skill id="5079" levels="1" name="NPC Focused Haste">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1027,8 +932,7 @@
 		</for>
 	</skill>
 	<skill id="5080" levels="1" name="NPC Mighty Haste">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1037,9 +941,7 @@
 		</for>
 	</skill>
 	<skill id="5081" levels="4" name="Silence">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1-4 - Blocks the ability to 
-			use physical skills. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1-4 - Blocks the ability to use physical skills. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1048,8 +950,7 @@
 		</for>
 	</skill>
 	<skill id="5082" levels="4" name="NPC Spinning, Slashing Trick">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1-4 - none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1-4 - none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1058,9 +959,7 @@
 		</for>
 	</skill>
 	<skill id="5083" levels="4" name="Shock">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1-4 - Temporarily gets thrown 
-			into a state of shock and immobilized. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1-4 - Temporarily gets thrown into a state of shock and immobilized. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1069,8 +968,7 @@
 		</for>
 	</skill>
 	<skill id="5084" levels="4" name="NPC Blinding Blow">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1-4 - none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1-4 - none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1079,8 +977,7 @@
 		</for>
 	</skill>
 	<skill id="5085" levels="1" name="Anesthesia">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Temporarily stunned and immobilized. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Temporarily stunned and immobilized. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1089,9 +986,7 @@
 		</for>
 	</skill>
 	<skill id="5086" levels="1" name="Deadly Poison">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Infected with poison and gradually 
-			losing HP. If HP falls to 0, death will ensue. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Infected with poison and gradually losing HP. If HP falls to 0, death will ensue. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1100,8 +995,7 @@
 		</for>
 	</skill>
 	<skill id="5087" levels="2" name="Berserk">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1-2 - none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1-2 - none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1121,10 +1015,8 @@
 			<effect count="1" name="TargetMe" time="1" val="0" />
 		</for>
 	</skill>
-	<skill id="5089" levels="1"
-		name="Representation - Enter the Sailren Nest Quest">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+	<skill id="5089" levels="1" name="Representation - Enter the Sailren Nest Quest">
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1133,8 +1025,7 @@
 		</for>
 	</skill>
 	<skill id="5090" levels="1" name="Sailren Production">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1143,8 +1034,7 @@
 		</for>
 	</skill>
 	<skill id="5091" levels="1" name="Sailren Production 2">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1183,8 +1073,7 @@
 		</for>
 	</skill>
 	<skill id="5094" levels="1" name="Antharas Subordinate Suicide ">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1193,8 +1082,7 @@
 		</for>
 	</skill>
 	<skill id="5095" levels="1" name="Antharas Subordinate Melee Attack">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1203,8 +1091,7 @@
 		</for>
 	</skill>
 	<skill id="5096" levels="1" name="Antharas Subordinate Remote Attack">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1212,10 +1099,8 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="5097" levels="1"
-		name="Antharas Subordinate Suicide (Narrow Range)">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+	<skill id="5097" levels="1" name="Antharas Subordinate Suicide (Narrow Range)">
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1224,8 +1109,7 @@
 		</for>
 	</skill>
 	<skill id="5098" levels="2" name="Capture Penalty">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1-2 - none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1-2 - none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1234,8 +1118,7 @@
 		</for>
 	</skill>
 	<skill id="5099" levels="1" name="Cancel Capture A">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />

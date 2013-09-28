@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="4500" levels="1" name="Treasure Chest - Level 27">
 		<!-- TODO 1: A locked chest that could contain treasure or a nasty surprise. -->
 		<set name="target" val="TARGET_NONE" />
@@ -137,10 +136,8 @@
 		</for>
 	</skill>
 	<skill id="4515" levels="99" name="Petrification">
-		<!-- TODO Curse of the guardian spirit of a Raid Boss. It's a state in 
-			which one's body is temporarily petrified like a stone. One can receive this 
-			curse when trying to kill a raid monster whose level is lower than one's 
-			level by 9 or more. This curse cannot be undone. -->
+		<!-- TODO Curse of the guardian spirit of a Raid Boss. It's a state in which one's body is temporarily petrified like a stone. One can receive this curse when trying to kill a raid monster whose level 
+			is lower than one's level by 9 or more. This curse cannot be undone. -->
 		<set name="target" val="TARGET_ONE" />
 		<set name="skillType" val="PARALYZE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -210,8 +207,7 @@
 		</for>
 	</skill>
 	<skill id="4522" levels="1" name="Eye of Assassin">
-		<!-- TODO Extreme assassin sensation. Greatly increases critical chances 
-			and the success rate of dagger skills. -->
+		<!-- TODO Extreme assassin sensation. Greatly increases critical chances and the success rate of dagger skills. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -324,8 +320,7 @@
 		</for>
 	</skill>
 	<skill id="4533" levels="1" name="Dance of Resistance">
-		<!-- TODO Temporarily decreases Speed and Accuracy significantly. Dance 
-			of Inspiration can remove the curse. -->
+		<!-- TODO Temporarily decreases Speed and Accuracy significantly. Dance of Inspiration can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="1500" />
@@ -335,8 +330,7 @@
 		</for>
 	</skill>
 	<skill id="4534" levels="1" name="Dance of Nihil">
-		<!-- TODO Temporarily decreases Atk.Speed and Evasion significantly. Dance 
-			of Fury can remove the curse. -->
+		<!-- TODO Temporarily decreases Atk.Speed and Evasion significantly. Dance of Fury can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="1500" />
@@ -346,8 +340,7 @@
 		</for>
 	</skill>
 	<skill id="4535" levels="1" name="Dance of Weakness">
-		<!-- TODO Temporarily decreases P.Def and P.Atk significantly. Dance of 
-			Vampire can remove the curse. -->
+		<!-- TODO Temporarily decreases P.Def and P.Atk significantly. Dance of Vampire can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="1500" />
@@ -357,8 +350,7 @@
 		</for>
 	</skill>
 	<skill id="4536" levels="1" name="Song of Seduce">
-		<!-- TODO Temporarily decreases Speed and Accuracy significantly. Song 
-			of Wind can remove the curse. -->
+		<!-- TODO Temporarily decreases Speed and Accuracy significantly. Song of Wind can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="1500" />
@@ -368,8 +360,7 @@
 		</for>
 	</skill>
 	<skill id="4537" levels="1" name="Song of Sweet Whisper">
-		<!-- TODO Temporarily decreases Atk.Speed and Evasion significantly. Song 
-			of Water can remove the curse. -->
+		<!-- TODO Temporarily decreases Atk.Speed and Evasion significantly. Song of Water can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="1500" />
@@ -379,8 +370,7 @@
 		</for>
 	</skill>
 	<skill id="4538" levels="1" name="Song of Temptation">
-		<!-- TODO Temporarily decreases P.Def and P.Atk significantly. Song of 
-			Vengeance can remove the curse. -->
+		<!-- TODO Temporarily decreases P.Def and P.Atk significantly. Song of Vengeance can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="1500" />
@@ -390,8 +380,7 @@
 		</for>
 	</skill>
 	<skill id="4539" levels="1" name="Curse of Vague">
-		<!-- TODO Temporarily decreases Speed and Accuracy significantly. Guidance 
-			spell can remove the curse. -->
+		<!-- TODO Temporarily decreases Speed and Accuracy significantly. Guidance spell can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -402,8 +391,7 @@
 		</for>
 	</skill>
 	<skill id="4540" levels="1" name="Curse of Weakness">
-		<!-- TODO Temporarily decreases P.Def and Speed significantly. Shield spell 
-			can remove the curse. -->
+		<!-- TODO Temporarily decreases P.Def and Speed significantly. Shield spell can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="4000" />
@@ -414,8 +402,7 @@
 		</for>
 	</skill>
 	<skill id="4541" levels="1" name="Curse of Nihil">
-		<!-- TODO Temporarily decreases P.Atk, M.Atk and Atk.Speed significantly. 
-			Might spell can remove the curse. -->
+		<!-- TODO Temporarily decreases P.Atk, M.Atk and Atk.Speed significantly. Might spell can remove the curse. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="hitTime" val="4000" />
@@ -425,8 +412,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="4542" levels="1"
-		name="Quest - Henchman 90% Sleep Shock Weakness">
+	<skill id="4542" levels="1" name="Quest - Henchman 90% Sleep Shock Weakness">
 		<!-- TODO -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
@@ -659,15 +645,15 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="BigHead" time="600" val="0" abnormal="bighead"
-				stackOrder="600" stackType="big_head" />
+			<effect count="1" name="BigHead" time="600" val="0" abnormal="bighead" stackOrder="600" stackType="big_head" />
 		</for>
 	</skill>
 	<skill id="4560" levels="12" name="NPC Fire Burn">
 		<!-- TODO -->
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 13.0 15.0 18.0 20.0 23.0 26.0 29.0 32.0 35.0 38.0
-			42.0 44.0 </table>
+			42.0 44.0
+		</table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
 		<set name="target" val="TARGET_ONE" />
@@ -685,7 +671,8 @@
 	<skill id="4561" levels="12" name="NPC Fire Burn - Magic">
 		<table name="#mpConsume"> 4 5 8 9 12 14 17 18 19 19 20 20 </table>
 		<table name="#power"> 13.0 15.0 18.0 20.0 23.0 26.0 29.0 32.0 35.0 38.0
-			42.0 44.0 </table>
+			42.0 44.0
+		</table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
 		<set name="target" val="TARGET_ONE" />
@@ -742,7 +729,8 @@
 	<skill id="4565" levels="12" name="NPC Eruption">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 37.0 39.0 41.0 43.0 45.0 46.0 48.0 50.0 51.0 53.0
-			54.0 56.0 </table>
+			54.0 56.0
+		</table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
 		<set name="target" val="TARGET_AREA" />
@@ -761,7 +749,8 @@
 	<skill id="4566" levels="12" name="NPC Eruption - Magic">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 37.0 39.0 41.0 43.0 45.0 46.0 48.0 50.0 51.0 53.0
-			54.0 56.0 </table>
+			54.0 56.0
+		</table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
 		<set name="target" val="TARGET_AREA" />
@@ -780,7 +769,8 @@
 	<skill id="4567" levels="12" name="NPC Eruption - Slow">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 37.0 39.0 41.0 43.0 45.0 46.0 48.0 50.0 51.0 53.0
-			54.0 56.0 </table>
+			54.0 56.0
+		</table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
 		<set name="target" val="TARGET_AREA" />
@@ -838,7 +828,8 @@
 	<skill id="4571" levels="12" name="NPC Blazing Circle">
 		<table name="#mpConsume"> 18 29 40 53 68 83 98 104 109 113 115 117 </table>
 		<table name="#power"> 42.0 44.0 46.0 48.0 50.0 52.0 55.0 57.0 58.0 60.0
-			62.0 64.0 </table>
+			62.0 64.0
+		</table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
 		<set name="target" val="TARGET_AURA" />
@@ -1005,8 +996,7 @@
 		</for>
 	</skill>
 	<skill id="4584" levels="12" name="Reducing P. Def Shock">
-		<!-- TODO Instantly decreases P. Def. and gets shocked so that one's target 
-			cannot move temporarily. Effect 3. -->
+		<!-- TODO Instantly decreases P. Def. and gets shocked so that one's target cannot move temporarily. Effect 3. -->
 		<table name="#mpConsume"> 25 41 57 77 100 123 143 153 161 166 170 172 </table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="target" val="TARGET_NONE" />

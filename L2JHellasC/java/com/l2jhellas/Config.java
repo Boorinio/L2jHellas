@@ -647,8 +647,6 @@ public final class Config
 	public static final String BUTTON_W = "65";
 	public static final String BUTTON_H = "20";
 
-	
-
 	/**
 	 * VoteManager Config File
 	 */
@@ -835,6 +833,20 @@ public final class Config
 	public static boolean ENABLE_DWARF_ENCHANT_BONUS;
 	public static int DWARF_ENCHANT_MIN_LEVEL;
 	public static int DWARF_ENCHANT_BONUS;
+	// Augment chance
+	public static int AUGMENTATION_NG_SKILL_CHANCE;
+	public static int AUGMENTATION_MID_SKILL_CHANCE;
+	public static int AUGMENTATION_HIGH_SKILL_CHANCE;
+	public static int AUGMENTATION_TOP_SKILL_CHANCE;
+	public static int AUGMENTATION_BASESTAT_CHANCE;
+	// Augment glow
+	public static int AUGMENTATION_NG_GLOW_CHANCE;
+	public static int AUGMENTATION_MID_GLOW_CHANCE;
+	public static int AUGMENTATION_HIGH_GLOW_CHANCE;
+	public static int AUGMENTATION_TOP_GLOW_CHANCE;
+
+	public static boolean DELETE_AUGM_PASSIVE_ON_CHANGE;
+	public static boolean DELETE_AUGM_ACTIVE_ON_CHANGE;
 	public static double HP_REGEN_MULTIPLIER;
 	public static double MP_REGEN_MULTIPLIER;
 	public static double CP_REGEN_MULTIPLIER;
@@ -2447,6 +2459,20 @@ public final class Config
 			ENABLE_DWARF_ENCHANT_BONUS = Boolean.parseBoolean(otherSettings.getProperty("EnableDwarfEnchantBonus", "False"));
 			DWARF_ENCHANT_MIN_LEVEL = Integer.parseInt(otherSettings.getProperty("DwarfEnchantMinLevel", "80"));
 			DWARF_ENCHANT_BONUS = Integer.parseInt(otherSettings.getProperty("DwarfEncahntBonus", "15"));
+			/** augmentation chance **/
+			AUGMENTATION_NG_SKILL_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationNGSkillChance", "15"));
+			AUGMENTATION_MID_SKILL_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationMidSkillChance", "30"));
+			AUGMENTATION_HIGH_SKILL_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationHighSkillChance", "45"));
+			AUGMENTATION_TOP_SKILL_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationTopSkillChance", "60"));
+			AUGMENTATION_BASESTAT_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationBaseStatChance", "1"));
+			/** augmentation glow **/
+			AUGMENTATION_NG_GLOW_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationNGGlowChance", "0"));
+			AUGMENTATION_MID_GLOW_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationMidGlowChance", "40"));
+			AUGMENTATION_HIGH_GLOW_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationHighGlowChance", "70"));
+			AUGMENTATION_TOP_GLOW_CHANCE = Integer.parseInt(otherSettings.getProperty("AugmentationTopGlowChance", "100"));
+			/** augmentation configs **/
+			DELETE_AUGM_PASSIVE_ON_CHANGE = Boolean.parseBoolean(otherSettings.getProperty("DeleteAgmentPassiveEffectOnChangeWep", "true"));
+			DELETE_AUGM_ACTIVE_ON_CHANGE = Boolean.parseBoolean(otherSettings.getProperty("DeleteAgmentActiveEffectOnChangeWep", "true"));
 			HP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("HpRegenMultiplier", "100")) / 100;
 			MP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("MpRegenMultiplier", "100")) / 100;
 			CP_REGEN_MULTIPLIER = Double.parseDouble(otherSettings.getProperty("CpRegenMultiplier", "100")) / 100;

@@ -16,7 +16,7 @@
 
 <!-- Example Teleport: -->
 <!-- <teleport id="10000" X="-12787" Y="122779" Z="-3112" isNoble="true" isGM="true" isCastleTp="true" minMaxLevel="1-55" price="57,10000;" /> -->
-<list>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/teleports.xsd">
 	<!-- Dark Elven Town -> Town of Gludio -->
 	<teleport id="1" X="-12672" Y="122776" Z="-3116" price="57,10000;" />
 	<!-- Elven Town  -> Town of Gludio -->

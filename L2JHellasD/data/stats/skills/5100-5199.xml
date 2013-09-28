@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="5100" levels="1" name="Cancel Capture B">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
@@ -30,8 +29,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="-1" />
 		<for>
-			<effect count="1" name="Buff" time="60" val="0" stackOrder="99"
-				stackType="pAtkSpeedUp">
+			<effect count="1" name="Buff" time="60" val="0" stackOrder="99" stackType="pAtkSpeedUp">
 				<mul order="0x30" stat="pAtkSpd" val="1.5" />
 			</effect>
 		</for>
@@ -52,8 +50,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="1000" />
 		<for>
-			<effect count="0x7fffffff" name="Force" time="600" val="15"
-				stackOrder="0" stackType="BattleForce">
+			<effect count="0x7fffffff" name="Force" time="600" val="15" stackOrder="0" stackType="BattleForce">
 				<mul order="0x30" stat="pAtk" val="1.10" />
 			</effect>
 		</for>
@@ -64,8 +61,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="1000" />
 		<for>
-			<effect count="0x7fffffff" name="Force" time="600" val="15"
-				stackOrder="0" stackType="SpellForce">
+			<effect count="0x7fffffff" name="Force" time="600" val="15" stackOrder="0" stackType="SpellForce">
 				<mul order="0x30" stat="mAtk" val="1.10" />
 			</effect>
 		</for>
@@ -169,8 +165,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Root" time="30" val="0" stackOrder="1"
-				stackType="Root" />
+			<effect count="1" name="Root" time="30" val="0" stackOrder="1" stackType="Root" />
 		</for>
 	</skill>
 	<skill id="5115" levels="4" name="Cubic Hate">
@@ -199,8 +194,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Root" time="30" val="0" stackOrder="1"
-				stackType="Root" />
+			<effect count="1" name="Root" time="30" val="0" stackOrder="1" stackType="Root" />
 		</for>
 	</skill>
 	<skill id="5117" levels="12" name="Stun">
@@ -261,8 +255,7 @@
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="40" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="5121" levels="1" name="Production - Corpse Revival">
@@ -453,8 +446,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="500" />
 		<for>
-			<effect count="1" name="Root" time="30" val="0" stackOrder="1"
-				stackType="Root" />
+			<effect count="1" name="Root" time="30" val="0" stackOrder="1" stackType="Root" />
 		</for>
 	</skill>
 	<skill id="5138" levels="1" name="Whiplash">
@@ -471,8 +463,7 @@
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="60" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="5139" levels="1" name="Tidal Wave">
@@ -870,8 +861,7 @@
 		<set name="isMagic" val="true" />
 		<set name="isDebuff" val="true" />
 		<for>
-			<effect name="Sleep" time="5" val="0" stackOrder="1"
-				stackType="sleep" />
+			<effect name="Sleep" time="5" val="0" stackOrder="1" stackType="sleep" />
 		</for>
 	</skill>
 	<skill id="5171" levels="10" name="Paralyze">
@@ -897,8 +887,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="isDebuff" val="true" />
 		<for>
-			<effect name="Petrification" time="5" val="0" stackOrder="30"
-				stackType="turn_stone" />
+			<effect name="Petrification" time="5" val="0" stackOrder="30" stackType="turn_stone" />
 		</for>
 	</skill>
 	<skill id="5173" levels="10" name="Fear">
@@ -925,8 +914,7 @@
 		<set name="isDebuff" val="true" />
 		<set name="isMagic" val="true" />
 		<for>
-			<effect count="10" name="DamOverTime" time="3" val="#dmg"
-				abnormal="poison" />
+			<effect count="10" name="DamOverTime" time="3" val="#dmg" abnormal="poison" />
 		</for>
 	</skill>
 	<skill id="5175" levels="10" name="Bleed">
@@ -940,8 +928,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="isDebuff" val="true" />
 		<for>
-			<effect count="7" name="DamOverTime" time="3" val="#dmg"
-				abnormal="bleed">
+			<effect count="7" name="DamOverTime" time="3" val="#dmg" abnormal="bleed">
 				<mul order="0x30" stat="runSpd" val="0.8" />
 			</effect>
 		</for>
@@ -969,8 +956,7 @@
 		<set name="isDebuff" val="true" />
 		<set name="isMagic" val="true" />
 		<for>
-			<effect name="SilenceMagicPhysical" time="5" val="0"
-				stackOrder="30" stackType="silence_all" />
+			<effect name="SilenceMagicPhysical" time="5" val="0" stackOrder="30" stackType="silence_all" />
 		</for>
 	</skill>
 	<skill id="5178" levels="1" name="NPC Burn">
@@ -1026,8 +1012,7 @@
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<for>
-			<effect name="StunSelf" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect name="StunSelf" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="5184" levels="1" name="Production: Valakas Dragon Breath">
@@ -1060,8 +1045,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pAtkSpd"
-				stackType="pAtkSpeedUp">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pAtkSpd" stackType="pAtkSpeedUp">
 				<mul order="0x30" stat="pAtkSpd" val="#Tab-pAtkSpd" />
 			</effect>
 		</for>
@@ -1080,8 +1064,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect name="Buff" count="1" time="1200" val="0" stackOrder="#Tab-absorbDam"
-				stackType="vampRage">
+			<effect name="Buff" count="1" time="1200" val="0" stackOrder="#Tab-absorbDam" stackType="vampRage">
 				<add order="0x40" stat="absorbDam" val="#Tab-absorbDam" />
 			</effect>
 		</for>
@@ -1101,8 +1084,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#rate"
-				stackType="HPregen">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#rate" stackType="HPregen">
 				<mul order="0x30" stat="regHp" val="#rate" />
 			</effect>
 		</for>
@@ -1122,8 +1104,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-maxHp"
-				stackType="MaxHPUp">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-maxHp" stackType="MaxHPUp">
 				<mul order="0x30" stat="maxHp" val="#Tab-maxHp" />
 			</effect>
 		</for>
@@ -1143,8 +1124,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-maxMp"
-				stackType="MPregen">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-maxMp" stackType="MPregen">
 				<mul order="0x30" stat="maxMp" val="#Tab-maxMp" />
 			</effect>
 		</for>
@@ -1162,8 +1142,7 @@
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
 		<for>
-			<effect name="Buff" count="1" time="1200" val="0" stackOrder="#Tab-accCombat"
-				stackType="accuracyUp">
+			<effect name="Buff" count="1" time="1200" val="0" stackOrder="#Tab-accCombat" stackType="accuracyUp">
 				<add order="0x40" stat="accCombat" val="#Tab-accCombat" />
 			</effect>
 		</for>
@@ -1183,8 +1162,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-runSpd"
-				stackType="SpeedUp">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-runSpd" stackType="SpeedUp">
 				<add order="0x40" stat="runSpd" val="#Tab-runSpd" />
 			</effect>
 		</for>
@@ -1204,8 +1182,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-mAtkSpd"
-				stackType="mAtkSpeedUp">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-mAtkSpd" stackType="mAtkSpeedUp">
 				<mul order="0x30" stat="mAtkSpd" val="#Tab-mAtkSpd" />
 			</effect>
 		</for>
@@ -1225,8 +1202,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="#aggro" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-mAtk"
-				stackType="mAtk">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-mAtk" stackType="mAtk">
 				<mul order="0x30" stat="mAtk" val="#Tab-mAtk" />
 			</effect>
 		</for>

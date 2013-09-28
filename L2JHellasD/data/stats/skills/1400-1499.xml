@@ -1,11 +1,11 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<!-- Checked By L2JHellas -->
 	<skill id="1400" levels="10" name="Turn Undead">
 		<table name="#mpConsume"> 52 54 55 58 60 62 64 65 67 69 </table>
 		<table name="#power"> 230.0 250.0 270.0 290.0 310.0 330.0 350.0 370.0
-			390.0 411.0 </table>
+			390.0 411.0
+		</table>
 		<table name="#itemConsumeCount"> 3 3 4 4 4 4 5 5 5 5 </table>
 		<set name="power" val="#power" />
 		<set name="mpConsume" val="#mpConsume" />
@@ -27,13 +27,14 @@
 			<effect count="5" name="Fear" time="6" val="0" />
 		</for>
 	</skill>
-	<skill id="1401" levels="11" name="Major Heal" enchantLevels1="30"
-		enchantLevels2="30">
+	<skill id="1401" levels="11" name="Major Heal" enchantLevels1="30" enchantLevels2="30">
 		<table name="#ench1Power"> 947 949 951 954 956 958 960 963 965 967 969 972 974
 			976 979 981 983 985 988 990 992 994 997 999 1001 1003 1006 1008 1010
-			1013 </table>
+			1013
+		</table>
 		<table name="#ench2MpConsume"> 78 77 76 75 73 72 72 71 70 68 67 66 65 65 63 62 61
-			60 58 57 57 56 55 53 52 51 50 50 48 47  </table>
+			60 58 57 57 56 55 53 52 51 50 50 48 47
+		</table>
 		<table name="#mpConsume"> 60 64 65 67 69 72 74 77 78 80 80 </table>
 		<table name="#power"> 690 722 753 783 812 840 867 892 915 936 946 </table>
 		<set name="mpConsume" val="#mpConsume" />
@@ -52,13 +53,14 @@
 		<enchant1 name="power" val="#ench1Power" />
 		<enchant2 name="mpConsume" val="#ench2MpConsume" />
 	</skill>
-	<skill id="1402" levels="5" name="Major Group Heal"
-		enchantLevels1="30" enchantLevels2="30">
+	<skill id="1402" levels="5" name="Major Group Heal" enchantLevels1="30" enchantLevels2="30">
 		<table name="#ench1Power"> 1173 1176 1179 1182 1186 1189 1192 1195 1199 1202
 			1205 1208 1212 1215 1218 1221 1224 1228 1231 123 1237 1241 1244 1247
-			1250 1254 1257 1260 1263 1267 </table>
+			1250 1254 1257 1260 1263 1267
+		</table>
 		<table name="#ench2MpConsume"> 233 231 227 225 221 218 215 212 208 206 202 198 196
-			192 190 186 183 180 177 173 171 167 165 161 157 155 151 148 145 142 </table>
+			192 190 186 183 180 177 173 171 167 165 161 157 155 151 148 145 142
+		</table>
 		<table name="#mpConsume"> 189 199 214 228 239 </table>
 		<table name="#power"> 902 979 1050 1115 1170 </table>
 		<set name="mpConsume" val="#mpConsume" />
@@ -223,8 +225,7 @@
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
-		<set name="negateStats"
-			val="BLEED CONFUSION DEBUFF FEAR MUTE PARALYZE ROOT SLEEP STUN POISON WEAKNESS" />
+		<set name="negateStats" val="BLEED CONFUSION DEBUFF FEAR MUTE PARALYZE ROOT SLEEP STUN POISON WEAKNESS" />
 		<set name="negatePower" val="9.0" /> <!-- Guessing -->
 		<for>
 		</for>
@@ -298,8 +299,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Buff" time="300" val="0" stackOrder="1"
-				stackType="CoV"> <!-- Does it stacks with CoV ? -->
+			<effect count="1" name="Buff" time="300" val="0" stackOrder="1" stackType="CoV"> <!-- Does it stacks with CoV ? -->
 				<mul order="0x30" stat="regMp" val="1.5" />
 				<mul order="0x30" stat="mAtkSpd" val="1.20" />
 				<mul order="0x30" stat="mDef" val="1.20" />
@@ -326,8 +326,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Buff" time="300" val="0" stackOrder="1"
-				stackType="CoV">
+			<effect count="1" name="Buff" time="300" val="0" stackOrder="1" stackType="CoV">
 				<!-- This skills seems to be exacly same as CoV but it applies on ally -->
 				<mul order="0x30" stat="pAtk" val="1.1" />
 				<mul order="0x30" stat="pDef" val="1.2" />
@@ -345,8 +344,7 @@
 		</for>
 	</skill>
 	<skill id="1415" levels="1" name="Pa'agrio's Emblem">
-		<!-- All the values here are guessed (taken from Chant of Spirit and other 
-			clan buffs) -->
+		<!-- All the values here are guessed (taken from Chant of Spirit and other clan buffs) -->
 		<set name="mpInitialConsume" val="56" />
 		<set name="mpConsume" val="172" />
 		<set name="target" val="TARGET_CLAN" />
@@ -360,8 +358,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="666" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="1"
-				stackType="resist_debuff_dispel">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="1" stackType="resist_debuff_dispel">
 				<mul order="0x30" stat="cancelVuln" val="0.7" />
 				<mul order="0x30" stat="debuffVuln" val="0.8" />
 			</effect>
@@ -422,8 +419,7 @@
 		<set name="castRange" val="400" />
 		<set name="isMagic" val="true" />
 		<for>
-			<effect count="1" name="Invincible" time="10" val="0"
-				stackOrder="1" stackType="Instant_Shield" />
+			<effect count="1" name="Invincible" time="10" val="0" stackOrder="1" stackType="Instant_Shield" />
 		</for>
 	</skill>
 	<skill id="1419" levels="1" name="Volcano">
@@ -451,8 +447,7 @@
 			<player spell_force="3" />
 		</cond>
 		<for>
-			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1"
-				val="0">
+			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1" val="0">
 			</effect>
 		</for>
 	</skill>
@@ -481,8 +476,7 @@
 			<player spell_force="3" />
 		</cond>
 		<for>
-			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1"
-				val="0">
+			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1" val="0">
 			</effect>
 		</for>
 	</skill>
@@ -511,8 +505,7 @@
 			<player spell_force="3" />
 		</cond>
 		<for>
-			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1"
-				val="0">
+			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1" val="0">
 			</effect>
 		</for>
 	</skill>
@@ -566,8 +559,7 @@
 			<player spell_force="3" />
 		</cond>
 		<for>
-			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1"
-				val="0">
+			<effect self="1" count="0x7fffffff" name="SignetMDam" time="1" val="0">
 			</effect>
 		</for>
 	</skill>
@@ -595,8 +587,7 @@
 			<player spell_force="2" />
 		</cond>
 		<for>
-			<effect self="1" count="0x7fffffff" name="SignetAntiSummon"
-				time="1" val="0">
+			<effect self="1" count="0x7fffffff" name="SignetAntiSummon" time="1" val="0">
 			</effect>
 		</for>
 	</skill>
@@ -613,8 +604,7 @@
 		<set name="isMagic" val="false" />
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
-		<set name="negateStats"
-			val="ROOT PARALYZE POISON BLEED STUN DEBUFF CONFUSION FEAR MUTE SLEEP WEAKNESS" />
+		<set name="negateStats" val="ROOT PARALYZE POISON BLEED STUN DEBUFF CONFUSION FEAR MUTE SLEEP WEAKNESS" />
 		<set name="negatePower" val="80.0" />
 		<cond msg="Proper force required.">
 			<player spell_force="2" />
@@ -661,8 +651,7 @@
 			<player spell_force="2" />
 		</cond>
 		<for>
-			<effect count="1" name="Invincible" time="30" val="0"
-				stackOrder="1" stackType="Instant_Shield" />
+			<effect count="1" name="Invincible" time="30" val="0" stackOrder="1" stackType="Instant_Shield" />
 		</for>
 	</skill>
 	<skill id="1428" levels="1" name="Mass Recharge">

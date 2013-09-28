@@ -28,7 +28,7 @@ public class SkillTable
 	private static Logger _log = Logger.getLogger(SkillTable.class.getName());
 	private static SkillTable _instance;
 
-	private final Map<Integer, L2Skill> _skills;
+	private static Map<Integer, L2Skill> _skills;
 	private final boolean _initialized = true;
 
 	public static SkillTable getInstance()
@@ -45,9 +45,11 @@ public class SkillTable
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _skills.size() + " skills.");
 	}
 
-	public void reload()
+	public static void reload()
 	{
-		_instance = new SkillTable();
+		_instance = null;
+		_skills.clear();
+		getInstance();
 	}
 
 	public boolean isInitialized()

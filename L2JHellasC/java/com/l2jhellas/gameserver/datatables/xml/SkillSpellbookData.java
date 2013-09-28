@@ -51,7 +51,13 @@ public class SkillSpellbookData
 
 		return _instance;
 	}
-
+	
+	public static void reload()
+	{
+		_instance = null;
+		getInstance();
+	}
+	
 	private SkillSpellbookData()
 	{
 		if (!Config.SP_BOOK_NEEDED)

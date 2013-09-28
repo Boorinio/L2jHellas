@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="2100" levels="1" name="Escape: 1 second">
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -36,8 +35,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2104" levels="1"
-		name="Greater Compressed Package of Soulshots: No-grade">
+	<skill id="2104" levels="1" name="Greater Compressed Package of Soulshots: No-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -45,8 +43,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2105" levels="1"
-		name="Greater Compressed Package of Soulshots:  D-grade">
+	<skill id="2105" levels="1" name="Greater Compressed Package of Soulshots:  D-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -54,8 +51,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2106" levels="1"
-		name="Greater Compressed Package of Soulshots:  C-grade">
+	<skill id="2106" levels="1" name="Greater Compressed Package of Soulshots:  C-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -63,8 +59,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2107" levels="1"
-		name="Greater Compressed Package of Soulshots:  B-grade">
+	<skill id="2107" levels="1" name="Greater Compressed Package of Soulshots:  B-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -72,8 +67,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2108" levels="1"
-		name="Greater Compressed Package of Soulshots:  A-grade">
+	<skill id="2108" levels="1" name="Greater Compressed Package of Soulshots:  A-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -81,8 +75,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2109" levels="1"
-		name="Greater Compressed Package of Soulshots: S-grade">
+	<skill id="2109" levels="1" name="Greater Compressed Package of Soulshots: S-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -90,8 +83,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2110" levels="1"
-		name="Greater Compressed Package of Spiritshots:  No-grade">
+	<skill id="2110" levels="1" name="Greater Compressed Package of Spiritshots:  No-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -99,8 +91,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2111" levels="1"
-		name="Greater Compressed Package of Spiritshots:  D-grade">
+	<skill id="2111" levels="1" name="Greater Compressed Package of Spiritshots:  D-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -108,8 +99,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2112" levels="1"
-		name="Greater Compressed Package of Spiritshots:  C-grade">
+	<skill id="2112" levels="1" name="Greater Compressed Package of Spiritshots:  C-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -117,8 +107,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2113" levels="1"
-		name="Greater Compressed Package of Spiritshots:  B-grade">
+	<skill id="2113" levels="1" name="Greater Compressed Package of Spiritshots:  B-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -126,8 +115,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2114" levels="1"
-		name="Greater Compressed Package of Spiritshots: A-grade">
+	<skill id="2114" levels="1" name="Greater Compressed Package of Spiritshots: A-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -135,8 +123,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2115" levels="1"
-		name="Greater Compressed Package of Spiritshots: S-grade">
+	<skill id="2115" levels="1" name="Greater Compressed Package of Spiritshots: S-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -144,8 +131,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2116" levels="1"
-		name="Greater Compressed Package of Blessed Spiritshots:  No-grade">
+	<skill id="2116" levels="1" name="Greater Compressed Package of Blessed Spiritshots:  No-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -153,8 +139,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2117" levels="1"
-		name="Greater Compressed Package of Blessed Spiritshots:  D-grade">
+	<skill id="2117" levels="1" name="Greater Compressed Package of Blessed Spiritshots:  D-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -162,8 +147,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2118" levels="1"
-		name="Greater Compressed Package of Blessed Spiritshots:  C-grade">
+	<skill id="2118" levels="1" name="Greater Compressed Package of Blessed Spiritshots:  C-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -171,8 +155,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2119" levels="1"
-		name="Greater Compressed Package of Blessed Spiritshots:  B-grade">
+	<skill id="2119" levels="1" name="Greater Compressed Package of Blessed Spiritshots:  B-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -180,8 +163,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2120" levels="1"
-		name="Greater Compressed Package of Blessed Spiritshots: A-grade">
+	<skill id="2120" levels="1" name="Greater Compressed Package of Blessed Spiritshots: A-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -189,8 +171,7 @@
 		<for>
 		</for>
 	</skill>
-	<skill id="2121" levels="1"
-		name="Greater Compressed Package of Blessed Spiritshots: S-grade">
+	<skill id="2121" levels="1" name="Greater Compressed Package of Blessed Spiritshots: S-grade">
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -633,8 +614,7 @@
 		</for>
 	</skill>
 	<skill id="2168" levels="6" name="Raid Blessing">
-		<!-- Description(s): Blessing which grants an exemption from the death 
-			penalty if you are killed by Boss/Raid Monsters. -->
+		<!-- Description(s): Blessing which grants an exemption from the death penalty if you are killed by Boss/Raid Monsters. -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
 		<set name="hitTime" val="2000" />
@@ -643,8 +623,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect name="CharmOfLuck" time="3600" count="1" val="0"
-				stackOrder="1" stackType="LuckyCharm" />
+			<effect name="CharmOfLuck" time="3600" count="1" val="0" stackOrder="1" stackType="LuckyCharm" />
 		</for>
 	</skill>
 	<skill id="2169" levels="2" name="Magic Haste Potion">
@@ -658,8 +637,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="isPotion" val="true" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-mAtkSpd"
-				stackType="mAtkSpeedUp">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-mAtkSpd" stackType="mAtkSpeedUp">
 				<mul order="0x30" stat="mAtkSpd" val="#Tab-mAtkSpd" />
 			</effect>
 		</for>

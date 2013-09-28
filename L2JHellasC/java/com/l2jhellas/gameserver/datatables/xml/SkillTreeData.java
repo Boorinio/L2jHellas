@@ -49,11 +49,11 @@ public class SkillTreeData
 
 	private static SkillTreeData _instance;
 
-	private Map<ClassId, Map<Integer, L2SkillLearn>> _skillTrees;
-	private List<L2SkillLearn> _fishingSkillTrees; //all common skills (teached by Fisherman)
-	private List<L2SkillLearn> _expandDwarfCraftSkillTrees; //list of special skill for dwarf (expand dwarf craft) learned by class teacher
-	private List<L2PledgeSkillLearn> _pledgeSkillTrees; //pledge skill list
-	private List<L2EnchantSkillLearn> _enchantSkillTrees; //enchant skill list
+	private static Map<ClassId, Map<Integer, L2SkillLearn>> _skillTrees;
+	private static List<L2SkillLearn> _fishingSkillTrees; //all common skills (teached by Fisherman)
+	private static List<L2SkillLearn> _expandDwarfCraftSkillTrees; //list of special skill for dwarf (expand dwarf craft) learned by class teacher
+	private static List<L2PledgeSkillLearn> _pledgeSkillTrees; //pledge skill list
+	private static List<L2EnchantSkillLearn> _enchantSkillTrees; //enchant skill list
 
 	public static SkillTreeData getInstance()
 	{
@@ -65,6 +65,18 @@ public class SkillTreeData
 		return _instance;
 	}
 
+	public static void reload()
+	{
+		_skillTrees.clear();
+		_fishingSkillTrees.clear();
+		_expandDwarfCraftSkillTrees.clear();
+		_pledgeSkillTrees.clear();
+		_enchantSkillTrees.clear();
+		_instance = null;
+		
+		getInstance();
+	}
+	
 	public int getExpertiseLevel(int grade)
 	{
 		if (grade <= 0)

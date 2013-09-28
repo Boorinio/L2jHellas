@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE list SYSTEM "../../templates/weapons.dtd">
-<list>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/weapons.xsd">
 	<item id="8800" name="Naga Storm - Focus">
 		<for>
 			<set val="220" order="0x08" stat="pAtk" />
@@ -45,7 +44,7 @@
 			<!-- SA: Back Blow -->
 			<add order="0x40" stat="rCrit" val="37">
 				<and>
-					<player behind="True" />
+					<player behind="true" />
 				</and>
 			</add>
 			<!-- Enhances damage to target during PvP -->

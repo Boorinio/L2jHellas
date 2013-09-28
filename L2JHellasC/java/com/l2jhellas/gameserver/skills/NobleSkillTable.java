@@ -44,6 +44,12 @@ public class NobleSkillTable
 		return _instance;
 	}
 
+	public static void reload()
+	{
+		_instance = null;
+		getInstance();
+	}
+	
 	public L2Skill[] GetNobleSkills()
 	{
 		return _nobleSkills;

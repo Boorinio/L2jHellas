@@ -62,10 +62,16 @@ public class CrestCache
 	public CrestCache()
 	{
 		convertOldPedgeFiles();
-		reload();
+		load();
 	}
-
-	public void reload()
+	
+	public static void reload()
+	{
+		_instance = null;
+		getInstance();
+	}
+	
+	public void load()
 	{
 		FileFilter filter = new BmpFilter();
 

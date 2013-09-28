@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<list>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/teleports.xsd">
 	<!-- Gludin Arena - 1 Noble Gate Pass -->
 	<teleport id="9900" X="-87328" Y="142266" Z="-3640" price="57,1;" isNoble="true" />
 	<!-- Coliseum - 1 Noble Gate Pass -->

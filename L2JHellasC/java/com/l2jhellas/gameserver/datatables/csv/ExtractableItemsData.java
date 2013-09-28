@@ -42,7 +42,13 @@ public class ExtractableItemsData
 
 		return _instance;
 	}
-
+	
+	public static void reload()
+	{
+		_instance = null;
+		getInstance();
+	}
+	
 	@SuppressWarnings("resource")
 	public ExtractableItemsData()
 	{

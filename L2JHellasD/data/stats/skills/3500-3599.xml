@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="3500" levels="1" name="Wooden Set">
 		<!-- Description(s): Increases P. Def. and MaxHP. -->
 		<!-- Done by DJ MELERIX -->
@@ -135,8 +134,7 @@
 		<for>
 			<!-- which way is most accurate? --> <!-- P. Def. against daggers +5.24% -->
 			<mul order="0x30" stat="daggerWpnVuln" val="0.9476" />
-			<!-- <mul val='1.0524' order='0x30' stat='pDef'> <and> <target using="Dagger"/> 
-				</and> </mul> -->
+			<!-- <mul val='1.0524' order='0x30' stat='pDef'> <and> <target using="Dagger"/> </and> </mul> -->
 		</for>
 	</skill>
 	<skill id="3510" levels="1" name="Karmian Set">
@@ -305,9 +303,7 @@
 		</for>
 	</skill>
 	<skill id="3522" levels="1" name="Tunic of Zubei Robe Set">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Decreases MP regeneration and increases 
-			M. Atk. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Decreases MP regeneration and increases M. Atk. -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -335,8 +331,7 @@
 		</for>
 	</skill>
 	<skill id="3524" levels="1" name="Blue Wolf Heavy Armor Set">
-		<!-- Description(s): Increases Speed and HP recovery rate. STR+3, CON-1, 
-			DEX-2 -->
+		<!-- Description(s): Increases Speed and HP recovery rate. STR+3, CON-1, DEX-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -403,8 +398,7 @@
 		</for>
 	</skill>
 	<skill id="3528" levels="1" name="Blue Wolf Robe Set">
-		<!-- Description(s): Increases MaxMP and MP recovery rate. INT-2, MEN-1, 
-			WIT+3 -->
+		<!-- Description(s): Increases MaxMP and MP recovery rate. INT-2, MEN-1, WIT+3 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -437,10 +431,8 @@
 			<sub order="0x40" stat="WIT" val="3" /> <!-- WIT -3 -->
 		</for>
 	</skill>
-	<skill id="3530" levels="1"
-		name="Dark Crystal Breastplate Heavy Armor Set">
-		<!-- Description(s): Increases resistance to paralysis attacks and improves 
-			effectiveness of HP recovery magic. STR-2, CON+2 -->
+	<skill id="3530" levels="1" name="Dark Crystal Breastplate Heavy Armor Set">
+		<!-- Description(s): Increases resistance to paralysis attacks and improves effectiveness of HP recovery magic. STR-2, CON+2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -456,8 +448,7 @@
 		</for>
 	</skill>
 	<skill id="3531" levels="1" name="Tallum Heavy Armor Set">
-		<!-- Description(s): Increases resistance to poison/bleeding attacks. Atk. 
-			Spd. and maximum weight limit are also increased. STR+2, CON-2 -->
+		<!-- Description(s): Increases resistance to poison/bleeding attacks. Atk. Spd. and maximum weight limit are also increased. STR+2, CON-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -467,8 +458,7 @@
 		<set name="effectRange" val="-1" />
 		<for>
 			<mul order="0x30" stat="pAtkSpd" val="1.08" /> <!-- Atk. Spd. +8% -->
-			<add order="0x40" stat="maxLoad" val="5759" /> <!-- Weight increased plus the point at which a weight penalty is applied 
-				+5759 -->
+			<add order="0x40" stat="maxLoad" val="5759" /> <!-- Weight increased plus the point at which a weight penalty is applied +5759 -->
 			<mul order="0x30" stat="poisonVuln" val="0.2" /> <!-- Poison Resistance +80% -->
 			<mul order="0x30" stat="bleedVuln" val="0.2" /> <!-- Bleed Resistance +80% -->
 			<add order="0x40" stat="STR" val="2" /> <!-- STR +2 -->
@@ -476,8 +466,7 @@
 		</for>
 	</skill>
 	<skill id="3532" levels="1" name="Dark Crystal Light Armor Set">
-		<!-- Description(s): Increases resistance to paralysis attacks. Atk. Spd. 
-			and P. Atk. are also increased. STR+1, CON-1 -->
+		<!-- Description(s): Increases resistance to paralysis attacks. Atk. Spd. and P. Atk. are also increased. STR+1, CON-1 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -494,8 +483,7 @@
 		</for>
 	</skill>
 	<skill id="3533" levels="1" name="Tallum Light Armor Set">
-		<!-- Description(s): Increases resistance to poison/bleeding attacks. MP 
-			recovery rate and MaxMP are also increased. MEN+2, WIT-2 -->
+		<!-- Description(s): Increases resistance to poison/bleeding attacks. MP recovery rate and MaxMP are also increased. MEN+2, WIT-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -513,8 +501,7 @@
 		</for>
 	</skill>
 	<skill id="3534" levels="1" name="Tallum Robe Set">
-		<!-- Description(s): Increases resistance to poison/bleeding attacks. Casting 
-			Spd. and M. Def. are also increased. INT-2, WIT+2 -->
+		<!-- Description(s): Increases resistance to poison/bleeding attacks. Casting Spd. and M. Def. are also increased. INT-2, WIT+2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -532,9 +519,7 @@
 		</for>
 	</skill>
 	<skill id="3535" levels="1" name="Dark Crystal Robe Set">
-		<!-- Description(s): Decreases magic cancel rate and increases resistance 
-			to paralysis attacks. P. Def., Casting Spd. and Speed are also increased. 
-			WIT+2, MEN-2 -->
+		<!-- Description(s): Decreases magic cancel rate and increases resistance to paralysis attacks. P. Def., Casting Spd. and Speed are also increased. WIT+2, MEN-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -553,8 +538,7 @@
 		</for>
 	</skill>
 	<skill id="3536" levels="1" name="Nightmare Heavy Armor Set">
-		<!-- Description(s): Increases P. Atk. and resistance to Sleep/Hold attack.. 
-			CON+2, DEX-2 -->
+		<!-- Description(s): Increases P. Atk. and resistance to Sleep/Hold attack.. CON+2, DEX-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -571,8 +555,7 @@
 		</for>
 	</skill>
 	<skill id="3537" levels="1" name="Majestic Heavy Armor Set">
-		<!-- Description(s): Increases resistance to shock attacks. P. Atk. and 
-			Accuracy are also increased. STR+2. CON-2 -->
+		<!-- Description(s): Increases resistance to shock attacks. P. Atk. and Accuracy are also increased. STR+2. CON-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -589,9 +572,8 @@
 		</for>
 	</skill>
 	<skill id="3538" levels="1" name="Nightmarish Leather Light Armor Set">
-		<!-- Description(s): Increases resistance to Sleep/Hold attack and M. Def. 
-			Restores HP by using part of the damage inflicted upon the enemy, excluding 
-			damage caused by skill or remote attack. DEX+1, CON-1 -->
+		<!-- Description(s): Increases resistance to Sleep/Hold attack and M. Def. Restores HP by using part of the damage inflicted upon the enemy, excluding damage caused by skill or remote attack. DEX+1, 
+			CON-1 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -609,8 +591,7 @@
 		</for>
 	</skill>
 	<skill id="3539" levels="1" name="Majestic Light Armor Set">
-		<!-- Description(s): Increases resistance to shock attacks. P. Atk., MaxMP 
-			and maximum weight limit are also increased. DEX+1, CON-1 -->
+		<!-- Description(s): Increases resistance to shock attacks. P. Atk., MaxMP and maximum weight limit are also increased. DEX+1, CON-1 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -625,16 +606,14 @@
 				</and>
 			</mul>
 			<add order="0x40" stat="maxMp" val="240" /> <!-- MP +240 -->
-			<add order="0x40" stat="maxLoad" val="5759" /> <!-- Weight increased plus the point at which a weight penalty is applied 
-				+5759 -->
+			<add order="0x40" stat="maxLoad" val="5759" /> <!-- Weight increased plus the point at which a weight penalty is applied +5759 -->
 			<mul order="0x30" stat="stunVuln" val="0.5" /> <!-- Stun Resistance +50% -->
 			<add order="0x40" stat="DEX" val="1" /> <!-- DEX +1 -->
 			<sub order="0x40" stat="CON" val="1" /> <!-- CON -1 -->
 		</for>
 	</skill>
 	<skill id="3540" levels="1" name="Nightmare Robe Set">
-		<!-- Description(s): Increases MP regeneration, M. Atk. and resistance 
-			to sleep/hold attacks. INT+2, WIT-2 -->
+		<!-- Description(s): Increases MP regeneration, M. Atk. and resistance to sleep/hold attacks. INT+2, WIT-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -652,8 +631,7 @@
 		</for>
 	</skill>
 	<skill id="3541" levels="1" name="Majestic Robe Set">
-		<!-- Description(s): Increases resistance to shock attacks. MaxMP, Casting 
-			Spd. and MP recovery rate are also increased. MEN+1, INT-1 -->
+		<!-- Description(s): Increases resistance to shock attacks. MaxMP, Casting Spd. and MP recovery rate are also increased. MEN+1, INT-1 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -671,13 +649,9 @@
 		</for>
 	</skill>
 	<skill id="3542" levels="6" name="Special Ability: Critical Damage">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Inflicts additional damage 
-			during critical attacks. Lvl 2 - Inflicts additional damage during critical 
-			attacks. Lvl 3 - Inflicts additional damage during critical attacks. Lvl 
-			4 - Inflicts additional damage during critical attacks. Lvl 5 - Inflicts 
-			additional damage during critical attacks. Lvl 6 - Inflicts additional damage 
-			during critical attacks. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Inflicts additional damage during critical attacks. Lvl 2 - Inflicts additional 
+			damage during critical attacks. Lvl 3 - Inflicts additional damage during critical attacks. Lvl 4 - Inflicts additional damage during critical attacks. Lvl 5 - Inflicts additional damage during critical 
+			attacks. Lvl 6 - Inflicts additional damage during critical attacks. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -782,8 +756,7 @@
 		</for>
 	</skill>
 	<skill id="3551" levels="1" name="Equipped with Shield">
-		<!-- Description(s): Returns damage inflicted by enemy back upon him. Not 
-			applied to damage inflicted by a skill or remote attack. -->
+		<!-- Description(s): Returns damage inflicted by enemy back upon him. Not applied to damage inflicted by a skill or remote attack. -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
 		<set name="skillType" val="BUFF" />
@@ -795,10 +768,8 @@
 		</for>
 	</skill>
 	<skill id="3552" levels="2" name="Special Ability: PvP Damage">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Lvl 1 - Increases damage inflicted 
-			during PvP. Lv1 2 - Launches an attack that strikes multiple opponents, and 
-			inflicts additional damage during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Lvl 1 - Increases damage inflicted during PvP. Lv1 2 - Launches an attack that 
+			strikes multiple opponents, and inflicts additional damage during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -807,8 +778,7 @@
 		</for>
 	</skill>
 	<skill id="3553" levels="1" name="Imperial Crusader Heavy Armor Set">
-		<!-- Description(s): Increases MaxHP, P. Def and resistance to sleep/hold 
-			attacks. STR+2, DEX-2 -->
+		<!-- Description(s): Increases MaxHP, P. Def and resistance to sleep/hold attacks. STR+2, DEX-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -839,8 +809,7 @@
 		</for>
 	</skill>
 	<skill id="3555" levels="1" name="Draconic Light Armor Set">
-		<!-- Description(s): Increases MaxHP, Atk. Spd, P. Atk, and maximum weight 
-			limit. DEX+1, STR+1, CON-2 -->
+		<!-- Description(s): Increases MaxHP, Atk. Spd, P. Atk, and maximum weight limit. DEX+1, STR+1, CON-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -859,9 +828,7 @@
 		</for>
 	</skill>
 	<skill id="3556" levels="1" name="Major Arcana Robe Set">
-		<!-- Description(s): Decreases chance of magic casting being canceled. 
-			Increases resistance to shock attacks, M. Atk., Speed and maximum weight 
-			limit. WIT+1, INT+1, MEN-2 -->
+		<!-- Description(s): Decreases chance of magic casting being canceled. Increases resistance to shock attacks, M. Atk., Speed and maximum weight limit. WIT+1, INT+1, MEN-2 -->
 		<!-- Done by DJ MELERIX -->
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
@@ -986,9 +953,7 @@
 		</for>
 	</skill>
 	<skill id="3564" levels="1" name="Special Ability: Haste">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases Atk.Speed and enhances 
-			damage to target during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases Atk.Speed and enhances damage to target during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -997,9 +962,7 @@
 		</for>
 	</skill>
 	<skill id="3565" levels="1" name="Special Ability: Focus">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases critical attack success 
-			rate and damage inflicted during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases critical attack success rate and damage inflicted during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1008,9 +971,7 @@
 		</for>
 	</skill>
 	<skill id="3566" levels="1" name="Special Ability: Focus">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases critical attack success 
-			rate and damage inflicted during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases critical attack success rate and damage inflicted during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1019,9 +980,7 @@
 		</for>
 	</skill>
 	<skill id="3567" levels="2" name="Special Ability: Focus">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases critical attack success 
-			rate and damage inflicted during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases critical attack success rate and damage inflicted during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1030,10 +989,8 @@
 		</for>
 	</skill>
 	<skill id="3568" levels="1" name="Special Ability: HP Drain">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Partially restores HP using damage 
-			inflicted upon the enemy. Excludes damage from skill or range attack. Enhances 
-			damage to target during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Partially restores HP using damage inflicted upon the enemy. Excludes damage from 
+			skill or range attack. Enhances damage to target during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1042,9 +999,7 @@
 		</for>
 	</skill>
 	<skill id="3569" levels="1" name="Special Ability: HP Regeneration">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases HP regeneration rate 
-			and enhances damage to target during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases HP regeneration rate and enhances damage to target during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1053,9 +1008,7 @@
 		</for>
 	</skill>
 	<skill id="3570" levels="1" name="Special Ability: Robust Health">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases MaxHP, MaxMP, MaxCP and 
-			enhances damage to target during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases MaxHP, MaxMP, MaxCP and enhances damage to target during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1064,9 +1017,7 @@
 		</for>
 	</skill>
 	<skill id="3571" levels="1" name="Special Ability: Crt. Stun">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Temporarily stuns and paralyzes 
-			target. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Temporarily stuns and paralyzes target. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1075,9 +1026,7 @@
 		</for>
 	</skill>
 	<skill id="3572" levels="1" name="Special Ability: Crt. Damage">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases critical attack success 
-			rate and damage inflicted during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases critical attack success rate and damage inflicted during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1086,9 +1035,7 @@
 		</for>
 	</skill>
 	<skill id="3573" levels="1" name="Special Ability: Guidance">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases Accuracy and enhances 
-			damage to target during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases Accuracy and enhances damage to target during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1097,9 +1044,7 @@
 		</for>
 	</skill>
 	<skill id="3574" levels="1" name="Special Ability: Crt. Slow">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Temporarily decreases Speed. Effect 
-			3. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Temporarily decreases Speed. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1108,9 +1053,7 @@
 		</for>
 	</skill>
 	<skill id="3575" levels="1" name="Special Ability: Empower Option">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases M. Atk. Enhances damage 
-			to target during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases M. Atk. Enhances damage to target during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1119,9 +1062,7 @@
 		</for>
 	</skill>
 	<skill id="3576" levels="1" name="Special Ability: MP Regeneration">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Increases MP regeneration rate 
-			and enhances damage to target during PvP. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Increases MP regeneration rate and enhances damage to target during PvP. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1130,8 +1071,7 @@
 		</for>
 	</skill>
 	<skill id="3577" levels="1" name="Special Ability: Magic Hold">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Magically immobilizes target. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Magically immobilizes target. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1159,9 +1099,7 @@
 		</for>
 	</skill>
 	<skill id="3579" levels="1" name="Decrease P. Def.">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Temporarily decreases P. Def. Effect 
-			3 -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Temporarily decreases P. Def. Effect 3 -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="WEAPON_SA" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -1192,8 +1130,7 @@
 		</for>
 	</skill>
 	<skill id="3581" levels="1" name="Discord">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="WEAPON_SA" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -1243,9 +1180,7 @@
 		</for>
 	</skill>
 	<skill id="3584" levels="1" name="Shock">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Instantly throws enemy into a state 
-			of shock, immobilizing them. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Instantly throws enemy into a state of shock, immobilizing them. -->
 		<set name="castRange" val="-1" />
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="WEAPON_SA" />
@@ -1253,8 +1188,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="2"
-				stackType="Stun">
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="2" stackType="Stun">
 			</effect>
 		</for>
 	</skill>
@@ -1279,17 +1213,14 @@
 		</for>
 	</skill>
 	<skill id="3586" levels="1" name="Physical Skill Restraint">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Temporarily blocks opponent's ability 
-			to use physical skills. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Temporarily blocks opponent's ability to use physical skills. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="WEAPON_SA" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="PsychicalMute" time="60" val="0"
-				stackOrder="1" stackType="silence" />
+			<effect count="1" name="PsychicalMute" time="60" val="0" stackOrder="1" stackType="silence" />
 		</for>
 	</skill>
 	<skill id="3587" levels="1" name="Special Ability: Infinity Fang">
@@ -1313,9 +1244,7 @@
 		</for>
 	</skill>
 	<skill id="3588" levels="1" name="Shock">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Instantly throws enemy into a state 
-			of shock, immobilizing them. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Instantly throws enemy into a state of shock, immobilizing them. -->
 		<set name="castRange" val="-1" />
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="WEAPON_SA" />
@@ -1323,8 +1252,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="2"
-				stackType="Stun">
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="2" stackType="Stun">
 			</effect>
 		</for>
 	</skill>
@@ -1353,17 +1281,14 @@
 		</for>
 	</skill>
 	<skill id="3590" levels="1" name="Silence">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Temporarily blocks the use of magic 
-			skills. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Temporarily blocks the use of magic skills. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="WEAPON_SA" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Mute" time="120" val="0" stackOrder="1"
-				stackType="silence" />
+			<effect count="1" name="Mute" time="120" val="0" stackOrder="1" stackType="silence" />
 		</for>
 	</skill>
 	<skill id="3591" levels="1" name="Special Ability: Infinity Spear">
@@ -1384,14 +1309,11 @@
 			<mul order="0x30" stat="pvpPhysSkillsDmg" val="1.05" /> <!-- PVP Damage Bonus +5% -->
 			<add order="0x40" stat="reflectSkillPhysic" val="10" /> <!-- Reflect Skills 10% of the time -->
 			<add order="0x40" stat="reflectSkillMagic" val="10" /> <!-- Reflect Skills 10% of the time -->
-			<!-- Missing 10% chance to cancel each buff from target on a critical 
-				hit (for comparison, Cancel is 25% but Cancel also relies on M.Atk. vs. M.Def. 
-				while this weapon does not) -->
+			<!-- Missing 10% chance to cancel each buff from target on a critical hit (for comparison, Cancel is 25% but Cancel also relies on M.Atk. vs. M.Def. while this weapon does not) -->
 		</for>
 	</skill>
 	<skill id="3592" levels="1" name="Dispell">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1416,9 +1338,7 @@
 		</for>
 	</skill>
 	<skill id="3594" levels="1" name="Slow">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Temporarily reduces target's Speed. 
-			Effect 3. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Temporarily reduces target's Speed. Effect 3. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="WEAPON_SA" />
 		<set name="operateType" val="OP_ACTIVE" />
@@ -1452,8 +1372,7 @@
 		</for>
 	</skill>
 	<skill id="3596" levels="1" name="Full Recover">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1482,8 +1401,7 @@
 		</for>
 	</skill>
 	<skill id="3598" levels="1" name="Full Recover">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): none -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): none -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />
@@ -1493,9 +1411,7 @@
 		</for>
 	</skill>
 	<skill id="3599" levels="1" name="Polearm Multi-attack">
-		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE 
-			for server compatability. Description(s): Enables the character to attack 
-			multiple opponents. -->
+		<!-- Needs to be finished. Target is set to TARGET_NONE, skillType to NOTDONE for server compatability. Description(s): Enables the character to attack multiple opponents. -->
 		<set name="target" val="TARGET_NONE" />
 		<set name="skillType" val="NOTDONE" />
 		<set name="operateType" val="OP_PASSIVE" />

@@ -81,7 +81,7 @@ public class CursedWeaponsManager
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _cursedWeapons.size() + " cursed weapons.");
 	}
 
-	public final void reload()
+	public final static void reload()
 	{
 		_instance = new CursedWeaponsManager();
 	}

@@ -1,12 +1,13 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE list SYSTEM "../../templates/skills.dtd">
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/skills.xsd">
 	<skill id="4001" levels="12" name="NPC Wind Strike">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 18.0 26.0 38.0 52.0 68.0 85.0 102.0 110.0 116.0
-			122.0 126.0 129.0 </table>
+			122.0 126.0 129.0
+		</table>
 		<table name="#hitTime"> 4000 4000 4000 4000 4000 4000 4000 1000 1000 1000
-			1000 1000 </table>
+			1000 1000
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -27,7 +28,8 @@
 	<skill id="4002" levels="12" name="NPC HP Drain">
 		<table name="#mpConsume"> 18 29 40 53 68 83 98 104 109 112 115 117 </table>
 		<table name="#power"> 18.0 26.0 38.0 52.0 68.0 85.0 102.0 110.0 116.0
-			122.0 126.0 129.0 </table>
+			122.0 126.0 129.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -246,8 +248,7 @@
 		<set name="effectType" val="DEBUFF" />
 		<set name="effectPower" val="70" />
 		<for>
-			<effect name="Buff" time="30" count="1" val="0" stackOrder="0.5"
-				stackType="RunSpeedDown">
+			<effect name="Buff" time="30" count="1" val="0" stackOrder="0.5" stackType="RunSpeedDown">
 				<mul order="0x30" stat="runSpd" val="0.5" />
 			</effect>
 		</for>
@@ -266,8 +267,7 @@
 		<set name="castRange" val="800" />
 		<set name="effectRange" val="1300" />
 		<for>
-			<effect name="Buff" time="30" count="1" val="0" stackOrder="0.5"
-				stackType="RunSpeedDown">
+			<effect name="Buff" time="30" count="1" val="0" stackOrder="0.5" stackType="RunSpeedDown">
 				<mul order="0x30" stat="runSpd" val="0.5" />
 			</effect>
 		</for>
@@ -338,7 +338,8 @@
 	<skill id="4025" levels="12" name="Master Recharge">
 		<table name="#mpConsume"> 24 39 53 70 90 110 130 128 145 150 153 155 </table>
 		<table name="#power"> 23.0 38.0 52.0 70.0 90.0 110.0 129.0 138.0 144.0
-			149.0 153.0 155.0 </table>
+			149.0 153.0 155.0
+		</table>
 		<table name="#aggro"> 138 204 285 379 477 566 635 659 676 689 700 709 </table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
@@ -391,8 +392,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect name="Buff" time="1200" count="1" val="0" stackOrder="#Tab-pAtk"
-				stackType="pAtk">
+			<effect name="Buff" time="1200" count="1" val="0" stackOrder="#Tab-pAtk" stackType="pAtk">
 				<mul order="0x30" stat="pAtk" val="#Tab-pAtk" />
 			</effect>
 		</for>
@@ -411,8 +411,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect name="Buff" time="1200" count="1" val="0" stackOrder="#Tab-pDef"
-				stackType="pDef">
+			<effect name="Buff" time="1200" count="1" val="0" stackOrder="#Tab-pDef" stackType="pDef">
 				<mul order="0x30" stat="pDef" val="#Tab-pDef" />
 			</effect>
 		</for>
@@ -433,8 +432,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pAtk"
-				stackType="pAtk">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pAtk" stackType="pAtk">
 				<mul order="0x30" stat="pAtk" val="#Tab-pAtk" />
 			</effect>
 		</for>
@@ -455,8 +453,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pDef"
-				stackType="pDef">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pDef" stackType="pDef">
 				<mul order="0x30" stat="pDef" val="#Tab-pDef" />
 			</effect>
 		</for>
@@ -464,7 +461,8 @@
 	<skill id="4032" levels="12" name="NPC Strike">
 		<table name="#mpConsume"> 14 22 31 43 55 68 79 84 89 92 94 95 </table>
 		<table name="#power"> 46.0 105.0 219.0 417.0 722.0 1136.0 1626.0 1876.0
-			2112.0 2320.0 2487.0 2617.0 </table>
+			2112.0 2320.0 2487.0 2617.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -483,7 +481,8 @@
 	<skill id="4033" levels="12" name="NPC Burn">
 		<table name="#mpConsume"> 18 29 40 53 68 83 98 104 109 113 115 117 </table>
 		<table name="#power"> 18.0 26.0 38.0 52.0 68.0 85.0 102.0 110.0 116.0
-			122.0 126.0 129.0 </table>
+			122.0 126.0 129.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -504,7 +503,8 @@
 	<skill id="4034" levels="12" name="Decrease Speed">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 11.0 16.0 23.0 31.0 41.0 51.0 61.0 66.0 70.0 73.0
-			76.0 78.0 </table>
+			76.0 78.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -523,8 +523,7 @@
 		<set name="effectType" val="DEBUFF" />
 		<set name="effectPower" val="60" />
 		<for>
-			<effect count="1" name="Buff" time="30" val="0" stackOrder="0.7"
-				stackType="RunSpeedDown">
+			<effect count="1" name="Buff" time="30" val="0" stackOrder="0.7" stackType="RunSpeedDown">
 				<mul order="0x30" stat="runSpd" val="0.7" />
 			</effect>
 		</for>
@@ -548,8 +547,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="10" name="DamOverTime" time="3" val="#dmg"
-				abnormal="poison" />
+			<effect count="10" name="DamOverTime" time="3" val="#dmg" abnormal="poison" />
 		</for>
 	</skill>
 	<skill id="4036" levels="12" name="Poison">
@@ -572,8 +570,7 @@
 		<set name="castRange" val="500" />
 		<set name="effectRange" val="1000" />
 		<for>
-			<effect count="10" name="DamOverTime" time="3" val="#dmg"
-				abnormal="poison" />
+			<effect count="10" name="DamOverTime" time="3" val="#dmg" abnormal="poison" />
 		</for>
 	</skill>
 	<skill id="4037" levels="2" name="Decrease P.Atk">
@@ -594,8 +591,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="Buff" time="15" val="0" stackOrder="#Tab-pAtk"
-				stackType="pAtkDown">
+			<effect count="1" name="Buff" time="15" val="0" stackOrder="#Tab-pAtk" stackType="pAtkDown">
 				<mul order="0x30" stat="pAtk" val="#Tab-pAtk" />
 			</effect>
 		</for>
@@ -618,8 +614,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="Buff" time="15" val="0" stackOrder="#Tab-pAtkSpd"
-				stackType="pAtkSpdDown">
+			<effect count="1" name="Buff" time="15" val="0" stackOrder="#Tab-pAtkSpd" stackType="pAtkSpdDown">
 				<mul order="0x30" stat="pAtkSpd" val="#Tab-pAtkSpd" />
 			</effect>
 		</for>
@@ -627,7 +622,8 @@
 	<skill id="4039" levels="12" name="NPC MP Drain">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 34.0 57.0 78.0 105.0 134.0 165.0 194.0 206.0 216.0
-			224.0 229.0 232.0 </table>
+			224.0 229.0 232.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -647,7 +643,8 @@
 	<skill id="4040" levels="12" name="NPC Bow Attack">
 		<table name="#mpConsume"> 27 44 62 85 109 135 157 168 177 183 187 189 </table>
 		<table name="#power"> 122.0 279.0 584.0 1110.0 1920.0 3030.0 4336.0
-			5002.0 5632.0 6187.0 6632.0 6978.0 </table>
+			5002.0 5632.0 6187.0 6632.0 6978.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -763,8 +760,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="Root" time="30" val="0" stackOrder="1"
-				stackType="Root" />
+			<effect count="1" name="Root" time="30" val="0" stackOrder="1" stackType="Root" />
 		</for>
 	</skill>
 	<skill id="4048" levels="3" name="NPC Dash">
@@ -845,10 +841,8 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<!-- retail value: 31 38 44 44 44 48/sec; stat update every 5 units (3 
-				1/3 sec) -->
-			<effect count="10" name="DamOverTime" time="3" val="#dmg"
-				abnormal="poison" />
+			<!-- retail value: 31 38 44 44 44 48/sec; stat update every 5 units (3 1/3 sec) -->
+			<effect count="10" name="DamOverTime" time="3" val="#dmg" abnormal="poison" />
 		</for>
 	</skill>
 	<skill id="4053" levels="8" name="Decrease P.Atk">
@@ -864,8 +858,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Buff" time="120" val="0" stackOrder="0.77"
-				stackType="pAtkDown">
+			<effect count="1" name="Buff" time="120" val="0" stackOrder="0.77" stackType="pAtkDown">
 				<mul order="0x30" stat="pAtk" val="0.77" />
 			</effect>
 		</for>
@@ -883,8 +876,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Buff" time="120" val="0" stackOrder="0.77"
-				stackType="pDefDown">
+			<effect count="1" name="Buff" time="120" val="0" stackOrder="0.77" stackType="pDefDown">
 				<mul order="0x30" stat="pDef" val="0.77" />
 			</effect>
 		</for>
@@ -902,8 +894,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect count="1" name="Buff" time="120" val="0" stackOrder="0.77"
-				stackType="pAtkSpdDown">
+			<effect count="1" name="Buff" time="120" val="0" stackOrder="0.77" stackType="pAtkSpdDown">
 				<mul order="0x30" stat="pAtkSpd" val="0.77" />
 			</effect>
 		</for>
@@ -1020,7 +1011,8 @@
 	<skill id="4065" levels="12" name="NPC Heal">
 		<table name="#mpConsume"> 17 30 44 62 80 98 114 122 127 130 132 132 </table>
 		<table name="#power"> 83.0 151.0 245.0 362.0 494.0 627.0 743.0 789.0
-			823.0 845.0 853.0 853.0 </table>
+			823.0 845.0 853.0 853.0
+		</table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="power" val="#power" />
 		<set name="target" val="TARGET_SELF" />
@@ -1038,7 +1030,8 @@
 	<skill id="4066" levels="12" name="NPC Twister">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 18.0 26.0 38.0 52.0 68.0 85.0 102.0 110.0 116.0
-			122.0 126.0 129.0 </table>
+			122.0 126.0 129.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1059,7 +1052,8 @@
 	<skill id="4067" levels="12" name="NPC Mortal Blow">
 		<table name="#mpConsume"> 14 22 31 43 55 68 79 84 89 92 94 95 </table>
 		<table name="#power"> 137.0 314.0 656.0 1249.0 2164.0 3408.0 4878.0
-			5627.0 6335.0 6960.0 7461.0 7850.0 </table>
+			5627.0 6335.0 6960.0 7461.0 7850.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1079,7 +1073,8 @@
 	<skill id="4068" levels="12" name="Mechanical Cannon">
 		<table name="#mpConsume"> 14 22 31 43 55 68 79 84 89 92 94 95 </table>
 		<table name="#power"> 46.0 105.0 219.0 417.0 722.0 1136.0 1626.0 1876.0
-			2112.0 2320.0 2487.0 2617.0 </table>
+			2112.0 2320.0 2487.0 2617.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1096,7 +1091,8 @@
 	<skill id="4069" levels="12" name="NPC Curve Beam Cannon">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 18.0 26.0 38.0 52.0 68.0 85.0 102.0 110.0 116.0
-			122.0 126.0 129.0 </table>
+			122.0 126.0 129.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1124,8 +1120,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<for>
-			<effect name="Buff" time="120" count="1" val="0" stackOrder="0.77"
-				stackType="pAtkSpdDown">
+			<effect name="Buff" time="120" count="1" val="0" stackOrder="0.77" stackType="pAtkSpdDown">
 				<mul order="0x30" stat="pAtkSpd" val="0.77" />
 			</effect>
 		</for>
@@ -1145,7 +1140,8 @@
 	<skill id="4072" levels="12" name="Shock">
 		<table name="#mpConsume"> 14 22 31 43 55 68 79 84 89 92 94 95 </table>
 		<table name="#power"> 16.0 35.0 73.0 139.0 241.0 379.0 542.0 626.0 704.0
-			774.0 829.0 873.0 </table>
+			774.0 829.0 873.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1164,14 +1160,14 @@
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="30" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="4073" levels="12" name="Shock">
 		<table name="#mpConsume"> 14 22 31 43 55 68 79 84 89 92 94 95 </table>
 		<table name="#power"> 16.0 35.0 73.0 139.0 241.0 379.0 542.0 626.0 704.0
-			774.0 829.0 873.0 </table>
+			774.0 829.0 873.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1189,8 +1185,7 @@
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="50" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="4074" levels="2" name="NPC Haste">
@@ -1209,8 +1204,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pAtkSpd"
-				stackType="pAtkSpeedUp">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="#Tab-pAtkSpd" stackType="pAtkSpeedUp">
 				<mul order="0x30" stat="pAtkSpd" val="#Tab-pAtkSpd" />
 			</effect>
 		</for>
@@ -1231,8 +1225,7 @@
 		<set name="castRange" val="40" />
 		<set name="effectRange" val="200" />
 		<for>
-			<effect count="1" name="Stun" time="9" val="0" stackOrder="1"
-				stackType="Stun" />
+			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
 	</skill>
 	<skill id="4076" levels="3" name="Reduction in movement speed">
@@ -1254,8 +1247,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="Buff" time="30" val="0" stackOrder="#Tab-runSpd"
-				stackType="RunSpeedDown">
+			<effect count="1" name="Buff" time="30" val="0" stackOrder="#Tab-runSpd" stackType="RunSpeedDown">
 				<mul order="0x30" stat="runSpd" val="#Tab-runSpd" />
 			</effect>
 		</for>
@@ -1263,7 +1255,8 @@
 	<skill id="4077" levels="12" name="NPC Aura Burn">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 14.0 21.0 30.0 42.0 55.0 68.0 82.0 88.0 93.0 98.0
-			101.0 104.0 </table>
+			101.0 104.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1283,7 +1276,8 @@
 	<skill id="4078" levels="12" name="NPC Flamestrike">
 		<table name="#mpConsume"> 18 29 40 53 68 83 98 104 109 113 115 117 </table>
 		<table name="#power"> 9.0 13.0 19.0 26.0 34.0 43.0 51.0 55.0 58.0 61.0
-			63.0 65.0 </table>
+			63.0 65.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1361,8 +1355,7 @@
 		<for>
 			<effect count="1" name="ImmobileBuff" time="4200" val="0" />
 			<effect count="1" name="Root" time="4200" val="0" />
-			<effect count="4200" name="DamOverTime" time="3" val="60"
-				abnormal="poison" />
+			<effect count="4200" name="DamOverTime" time="3" val="60" abnormal="poison" />
 		</for>
 	</skill>
 	<skill id="4083" levels="1" name="Die! You fool!">
@@ -1417,7 +1410,8 @@
 	<skill id="4087" levels="12" name="NPC Blaze">
 		<table name="#mpConsume"> 13 20 27 35 45 55 65 69 73 75 77 78 </table>
 		<table name="#power"> 18.0 26.0 38.0 52.0 68.0 85.0 102.0 110.0 116.0
-			122.0 126.0 129.0 </table>
+			122.0 126.0 129.0
+		</table>
 		<table name="#magicLvl"> 10 20 30 40 50 60 70 75 80 85 90 95 </table>
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="lvlDepend" val="1" />
@@ -1588,8 +1582,7 @@
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect name="Buff" time="300" count="1" val="0" stackOrder="#Tab-accCombat"
-				stackType="HawkEye">
+			<effect name="Buff" time="300" count="1" val="0" stackOrder="#Tab-accCombat" stackType="HawkEye">
 				<add order="0x40" stat="accCombat" val="#Tab-accCombat" />
 				<mul order="0x30" stat="pDef" val="#Tab-pDef" />
 			</effect>
@@ -1611,8 +1604,7 @@
 		<set name="effectRange" val="1100" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="5" name="HealOverTime" time="3" val="#hot"
-				stackOrder="#hot" stackType="LifeForce" />
+			<effect count="5" name="HealOverTime" time="3" val="#hot" stackOrder="#hot" stackType="LifeForce" />
 		</for>
 	</skill>
 	<skill id="4098" levels="12" name="Magic Skill Block">
@@ -1632,8 +1624,7 @@
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
 		<for>
-			<effect count="1" name="Mute" time="30" val="0" stackOrder="1"
-				stackType="silence" />
+			<effect count="1" name="Mute" time="30" val="0" stackOrder="1" stackType="silence" />
 		</for>
 	</skill>
 	<skill id="4099" levels="2" name="NPC Berserk">
@@ -1655,8 +1646,7 @@
 		<set name="effectRange" val="900" />
 		<set name="aggroPoints" val="100" />
 		<for>
-			<effect count="1" name="Buff" time="1200" val="0" stackOrder="1"
-				stackType="berserk">
+			<effect count="1" name="Buff" time="1200" val="0" stackOrder="1" stackType="berserk">
 				<mul order="0x30" stat="pAtk" val="#Tab-pAtk" />
 				<mul order="0x30" stat="mAtk" val="#Tab-mAtk" />
 				<div order="0x30" stat="pDef" val="#Tab-pDef" />

@@ -41,6 +41,12 @@ public class HeroSkillTable
 		return _instance;
 	}
 
+	public static void reload()
+	{
+		_instance = null;
+		getInstance();
+	}
+	
 	public static L2Skill[] GetHeroSkills()
 	{
 		return _heroSkills;

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE list SYSTEM "../../templates/weapons.dtd">
-<list>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../templates/weapons.xsd">
 	<item id="4700" name="sword_of_delusion_health">
 		<for>
 			<set val="139" order="0x08" stat="pAtk" />
@@ -221,7 +220,7 @@
 			<!-- SA: Back Blow -->
 			<add order="0x40" stat="rCrit" val="56">
 				<and>
-					<player behind="True" />
+					<player behind="true" />
 				</and>
 			</add>
 		</for>
@@ -883,7 +882,7 @@
 			<!-- SA: Back Blow -->
 			<add order="0x40" stat="rCrit" val="109">
 				<and>
-					<player behind="True" />
+					<player behind="true" />
 				</and>
 			</add>
 		</for>
@@ -974,7 +973,7 @@
 			<!-- SA: Back Blow -->
 			<add order="0x40" stat="rCrit" val="97">
 				<and>
-					<player behind="True" />
+					<player behind="true" />
 				</and>
 			</add>
 		</for>
@@ -1093,7 +1092,7 @@
 			<!-- SA: Back Blow -->
 			<add order="0x40" stat="rCrit" val="86">
 				<and>
-					<player behind="True" />
+					<player behind="true" />
 				</and>
 			</add>
 		</for>

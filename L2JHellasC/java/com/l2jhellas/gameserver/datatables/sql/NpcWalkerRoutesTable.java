@@ -35,7 +35,7 @@ public class NpcWalkerRoutesTable
 
 	private static NpcWalkerRoutesTable _instance;
 
-	private final FastList<L2NpcWalkerNode> _routes = new FastList<L2NpcWalkerNode>();
+	private final static FastList<L2NpcWalkerNode> _routes = new FastList<L2NpcWalkerNode>();
 
 	public static NpcWalkerRoutesTable getInstance()
 	{
@@ -46,7 +46,14 @@ public class NpcWalkerRoutesTable
 
 		return _instance;
 	}
-
+	
+	public static void reload()
+	{
+		_routes.clear();
+		_instance = null;
+		getInstance();
+	}
+	
 	private NpcWalkerRoutesTable()
 	{
 	}

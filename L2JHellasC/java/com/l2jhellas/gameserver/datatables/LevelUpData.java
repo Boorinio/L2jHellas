@@ -58,6 +58,12 @@ public class LevelUpData
 		return _instance;
 	}
 
+	public static void reload()
+	{
+		_instance = null;
+		getInstance();
+	}
+	
 	private LevelUpData()
 	{
 		_lvlTable = new FastMap<Integer, L2LvlupData>();
