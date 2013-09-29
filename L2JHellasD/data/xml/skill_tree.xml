@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 	GLOSSARY FOR CLASS ID'S (thx Mr_Pleb_Mgoo) - Updated by DJ MELERIX
 
@@ -45,7 +45,7 @@
 	DWARVES 3rd Professions
 	117=Fortune Seeker   | 118=Maestro
 -->
-<list>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/skill_tree.xsd">
 	<skill class_id="0" parent_id="-1">
 		<data skill_id="3" level="1" name="Power Strike" sp="50" min_level="5"/>
 		<data skill_id="3" level="2" name="Power Strike" sp="50" min_level="5"/>

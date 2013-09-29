@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<list>
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/henna.xsd">
 	<!-- symbol_id;symbol_name;dye_id;dye_amount;price;stat_INT;stat_STR;stat_CON;stat_MEM;stat_DEX;stat_WIT; -->
 	<henna symbol_id="1" symbol_name="symbol_s+1c-3_d" dye_id="4445" dye_amount="10" price="5100" stat_INT="0" stat_STR="1" stat_CON="-3" stat_MEM="0" stat_DEX="0" stat_WIT="0"/>
 	<henna symbol_id="2" symbol_name="symbol_s+1d-3_d" dye_id="4446" dye_amount="10" price="5100" stat_INT="0" stat_STR="1" stat_CON="0" stat_MEM="0" stat_DEX="-3" stat_WIT="0"/>

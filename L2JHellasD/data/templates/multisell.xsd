@@ -3,20 +3,6 @@
 	<xs:element name="list">
 		<xs:complexType>
 			<xs:sequence minOccurs="1" maxOccurs="1">
-				<xs:element name="npcs" minOccurs="0" maxOccurs="1">
-					<xs:complexType>
-						<xs:sequence minOccurs="1" maxOccurs="1">
-							<xs:element name="npc" minOccurs="1" maxOccurs="unbounded">
-								<xs:simpleType>
-									<xs:restriction base="xs:positiveInteger">
-										<xs:minInclusive value="1" />
-										<xs:maxInclusive value="65535" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
 				<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence minOccurs="1" maxOccurs="1">
@@ -24,16 +10,20 @@
 								<xs:complexType>
 									<xs:attribute name="count" type="xs:positiveInteger" use="required" />
 									<xs:attribute name="id" type="xs:integer" use="required" />
+									<xs:attribute name="enchant" type="xs:integer" />
 									<xs:attribute name="maintainIngredient" type="xs:boolean" />
+									<xs:attribute name="isTaxIngredient" type="xs:boolean" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="production" minOccurs="1" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:attribute name="count" type="xs:positiveInteger" use="required" />
 									<xs:attribute name="id" type="xs:integer" use="required" />
+									<xs:attribute name="enchant" type="xs:integer" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
+						<xs:attribute name="id" type="xs:integer" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

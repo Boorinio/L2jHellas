@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Noblesse Gate Pass ==> items -->
-<list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
-
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 	<!--Blessed Scroll: Enchant Weapon (Grade S ) -->
 	<item id="1">
 		<ingredient id="6651" count="300000" />

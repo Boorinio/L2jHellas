@@ -1,9 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- Gold Bank Multisell -->
-<list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
-
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
   <!-- Gold Bar To Adena-->
   <item id="1">
     <ingredient id="3470" count="1"/>

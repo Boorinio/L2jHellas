@@ -8,7 +8,6 @@
 						<xs:sequence minOccurs="0" maxOccurs="unbounded">
 							<xs:element name="room" maxOccurs="unbounded" minOccurs="0">
 								<xs:complexType>
-
 									<xs:sequence minOccurs="1" maxOccurs="1">
 										<xs:element name="spawn" maxOccurs="unbounded" minOccurs="1">
 											<xs:complexType>

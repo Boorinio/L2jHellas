@@ -1,9 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- SA -->
 <!-- This list is best used in exc_multisel -->
-<list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true"
-	applyTaxes="true">
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/multisell.xsd" maintainEnchantment="true" applyTaxes="true">
 	<item id="1">
 		<production id="4681" count="1" />
 		<ingredient id="72" count="1" />

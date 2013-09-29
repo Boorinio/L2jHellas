@@ -1,8 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Reseal B-Grade -->
 <!-- This list is best used in exc_multisel -->
-<list xmlns="http://l2jhellas.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../templates/multisell.xsd" maintainEnchantment="true">
 	<item id="1">
 		<production id="612" count="1" />
 		<ingredient id="5710" count="1" />
