@@ -26,19 +26,19 @@
 												</xs:sequence>
 												<xs:attribute name="order" use="required">
 													<xs:simpleType>
-														<xs:restriction base="xs:token">
-															<xs:enumeration value="0x10" />
-															<xs:enumeration value="0x20" />
-															<xs:enumeration value="0x30" />
-															<xs:enumeration value="0x40" />
-															<xs:enumeration value="0x50" />
-															<xs:enumeration value="0x60" />
-														</xs:restriction>
+														<xs:restriction base="xs:token" />
 													</xs:simpleType>
 												</xs:attribute>
 												<xs:attribute name="stat" use="required">
 													<xs:simpleType>
 														<xs:restriction base="xs:token">
+															<xs:enumeration value="CON" />
+															<xs:enumeration value="DEX" />
+															<xs:enumeration value="STR" />
+															<xs:enumeration value="WIT" />
+															<xs:enumeration value="MEN" />
+															<xs:enumeration value="INT" />
+															<xs:enumeration value="maxLoad" />
 															<xs:enumeration value="pAtkSpd" />
 															<xs:enumeration value="mAtkSpd" />
 															<xs:enumeration value="sleepVuln" />
@@ -63,6 +63,16 @@
 															<xs:enumeration value="pDef" />
 															<xs:enumeration value="waterRes" />
 															<xs:enumeration value="windRes" />
+															<xs:enumeration value="mCritRate" />
+															<xs:enumeration value="rEvas" />
+															<xs:enumeration value="cAtk" />
+															<xs:enumeration value="maxCp" />
+															<xs:enumeration value="waterVuln" />
+															<xs:enumeration value="fireVuln" />
+															<xs:enumeration value="windVuln" />
+															<xs:enumeration value="earthVuln" />
+															<xs:enumeration value="darkVuln" />
+															<xs:enumeration value="cancel" />
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:attribute>
@@ -71,10 +81,17 @@
 										</xs:element>
 										<xs:element name="enchant" maxOccurs="2" minOccurs="0">
 											<xs:complexType>
-												<xs:attribute name="order" type="xs:token" use="required" fixed="0x0C" />
+												<xs:attribute name="order" type="xs:token" use="required" />
 												<xs:attribute name="stat" use="required">
 													<xs:simpleType>
 														<xs:restriction base="xs:token">
+															<xs:enumeration value="CON" />
+															<xs:enumeration value="DEX" />
+															<xs:enumeration value="STR" />
+															<xs:enumeration value="WIT" />
+															<xs:enumeration value="MEN" />
+															<xs:enumeration value="INT" />
+															<xs:enumeration value="maxLoad" />
 															<xs:enumeration value="pAtkSpd" />
 															<xs:enumeration value="mAtkSpd" />
 															<xs:enumeration value="sleepVuln" />
@@ -99,25 +116,52 @@
 															<xs:enumeration value="pDef" />
 															<xs:enumeration value="waterRes" />
 															<xs:enumeration value="windRes" />
+															<xs:enumeration value="mCritRate" />
+															<xs:enumeration value="rEvas" />
+															<xs:enumeration value="cAtk" />
+															<xs:enumeration value="maxCp" />
+															<xs:enumeration value="waterVuln" />
+															<xs:enumeration value="fireVuln" />
+															<xs:enumeration value="windVuln" />
+															<xs:enumeration value="earthVuln" />
+															<xs:enumeration value="darkVuln" />
+															<xs:enumeration value="cancel" />
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:attribute>
-												<xs:attribute name="val" type="xs:integer" fixed="0" use="required" />
+												<xs:attribute name="val" type="xs:integer" use="required" />
 											</xs:complexType>
 										</xs:element>
 										<xs:element name="mul" maxOccurs="unbounded" minOccurs="0">
 											<xs:complexType>
+												<xs:sequence minOccurs="0" maxOccurs="1">
+													<xs:element name="and" maxOccurs="unbounded" minOccurs="1">
+														<xs:complexType>
+															<xs:sequence minOccurs="1" maxOccurs="1">
+																<xs:element name="using" maxOccurs="unbounded" minOccurs="1">
+																	<xs:complexType>
+																		<xs:attribute name="slotitem" type="xs:token"  use="required"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
 												<xs:attribute name="order">
 													<xs:simpleType>
-														<xs:restriction base="xs:token">
-															<xs:enumeration value="0x08" />
-															<xs:enumeration value="0x40" />
-														</xs:restriction>
+														<xs:restriction base="xs:token" />
 													</xs:simpleType>
 												</xs:attribute>
 												<xs:attribute name="stat">
 													<xs:simpleType>
 														<xs:restriction base="xs:token">
+															<xs:enumeration value="CON" />
+															<xs:enumeration value="DEX" />
+															<xs:enumeration value="STR" />
+															<xs:enumeration value="WIT" />
+															<xs:enumeration value="MEN" />
+															<xs:enumeration value="INT" />
+															<xs:enumeration value="maxLoad" />
 															<xs:enumeration value="pAtkSpd" />
 															<xs:enumeration value="mAtkSpd" />
 															<xs:enumeration value="sleepVuln" />
@@ -142,6 +186,16 @@
 															<xs:enumeration value="pDef" />
 															<xs:enumeration value="waterRes" />
 															<xs:enumeration value="windRes" />
+															<xs:enumeration value="mCritRate" />
+															<xs:enumeration value="rEvas" />
+															<xs:enumeration value="cAtk" />
+															<xs:enumeration value="maxCp" />
+															<xs:enumeration value="waterVuln" />
+															<xs:enumeration value="fireVuln" />
+															<xs:enumeration value="windVuln" />
+															<xs:enumeration value="earthVuln" />
+															<xs:enumeration value="darkVuln" />
+															<xs:enumeration value="cancel" />
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:attribute>
@@ -150,18 +204,64 @@
 										</xs:element>
 										<xs:element name="set" maxOccurs="unbounded" minOccurs="0">
 											<xs:complexType>
-												<xs:attribute name="order" type="xs:token" fixed="0x08"/>
+												<xs:sequence minOccurs="0" maxOccurs="1">
+													<xs:element name="and" maxOccurs="unbounded" minOccurs="1">
+														<xs:complexType>
+															<xs:sequence minOccurs="1" maxOccurs="1">
+																<xs:element name="using" maxOccurs="unbounded" minOccurs="1">
+																	<xs:complexType>
+																		<xs:attribute name="slotitem" type="xs:token"  use="required"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="order" type="xs:token" />
 												<xs:attribute name="stat" use="required">
 													<xs:simpleType>
 														<xs:restriction base="xs:token">
-															<xs:enumeration value="mAtk" />
-															<xs:enumeration value="pAtk" />
-															<xs:enumeration value="pAtkAngle" />
-															<xs:enumeration value="pAtkRange" />
+															<xs:enumeration value="CON" />
+															<xs:enumeration value="DEX" />
+															<xs:enumeration value="STR" />
+															<xs:enumeration value="WIT" />
+															<xs:enumeration value="MEN" />
+															<xs:enumeration value="INT" />
+															<xs:enumeration value="maxLoad" />
 															<xs:enumeration value="pAtkSpd" />
+															<xs:enumeration value="mAtkSpd" />
+															<xs:enumeration value="sleepVuln" />
+															<xs:enumeration value="rootVuln" />
+															<xs:enumeration value="stunVuln" />
+															<xs:enumeration value="bleedVuln" />
 															<xs:enumeration value="rCrit" />
-															<xs:enumeration value="rShld" />
-															<xs:enumeration value="sDef" />
+															<xs:enumeration value="magicSuccRes" />
+															<xs:enumeration value="reflectDam" />
+															<xs:enumeration value="runSpd" />
+															<xs:enumeration value="accCombat" />
+															<xs:enumeration value="darkRes" />
+															<xs:enumeration value="earthRes" />
+															<xs:enumeration value="fireRes" />
+															<xs:enumeration value="holyPower" />
+															<xs:enumeration value="holyRes" />
+															<xs:enumeration value="mAtk" />
+															<xs:enumeration value="maxMp" />
+															<xs:enumeration value="maxHp" />
+															<xs:enumeration value="mDef" />
+															<xs:enumeration value="pAtk" />
+															<xs:enumeration value="pDef" />
+															<xs:enumeration value="waterRes" />
+															<xs:enumeration value="windRes" />
+															<xs:enumeration value="mCritRate" />
+															<xs:enumeration value="rEvas" />
+															<xs:enumeration value="cAtk" />
+															<xs:enumeration value="maxCp" />
+															<xs:enumeration value="waterVuln" />
+															<xs:enumeration value="fireVuln" />
+															<xs:enumeration value="windVuln" />
+															<xs:enumeration value="earthVuln" />
+															<xs:enumeration value="darkVuln" />
+															<xs:enumeration value="cancel" />
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:attribute>
@@ -170,11 +270,64 @@
 										</xs:element>
 										<xs:element name="sub" maxOccurs="unbounded" minOccurs="0">
 											<xs:complexType>
-												<xs:attribute name="order" type="xs:token" use="required" fixed="0x10" />
+												<xs:sequence minOccurs="0" maxOccurs="1">
+													<xs:element name="and" maxOccurs="unbounded" minOccurs="1">
+														<xs:complexType>
+															<xs:sequence minOccurs="1" maxOccurs="1">
+																<xs:element name="using" maxOccurs="unbounded" minOccurs="1">
+																	<xs:complexType>
+																		<xs:attribute name="slotitem" type="xs:token" use="required"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="order" type="xs:token" use="required" />
 												<xs:attribute name="stat" use="required">
 													<xs:simpleType>
 														<xs:restriction base="xs:token">
+															<xs:enumeration value="CON" />
+															<xs:enumeration value="DEX" />
+															<xs:enumeration value="STR" />
+															<xs:enumeration value="WIT" />
+															<xs:enumeration value="MEN" />
+															<xs:enumeration value="INT" />
+															<xs:enumeration value="maxLoad" />
+															<xs:enumeration value="pAtkSpd" />
+															<xs:enumeration value="mAtkSpd" />
+															<xs:enumeration value="sleepVuln" />
+															<xs:enumeration value="rootVuln" />
+															<xs:enumeration value="stunVuln" />
+															<xs:enumeration value="bleedVuln" />
+															<xs:enumeration value="rCrit" />
+															<xs:enumeration value="magicSuccRes" />
+															<xs:enumeration value="reflectDam" />
+															<xs:enumeration value="runSpd" />
+															<xs:enumeration value="accCombat" />
+															<xs:enumeration value="darkRes" />
+															<xs:enumeration value="earthRes" />
+															<xs:enumeration value="fireRes" />
+															<xs:enumeration value="holyPower" />
+															<xs:enumeration value="holyRes" />
+															<xs:enumeration value="mAtk" />
+															<xs:enumeration value="maxMp" />
+															<xs:enumeration value="maxHp" />
+															<xs:enumeration value="mDef" />
+															<xs:enumeration value="pAtk" />
+															<xs:enumeration value="pDef" />
+															<xs:enumeration value="waterRes" />
+															<xs:enumeration value="windRes" />
+															<xs:enumeration value="mCritRate" />
 															<xs:enumeration value="rEvas" />
+															<xs:enumeration value="cAtk" />
+															<xs:enumeration value="maxCp" />
+															<xs:enumeration value="waterVuln" />
+															<xs:enumeration value="fireVuln" />
+															<xs:enumeration value="windVuln" />
+															<xs:enumeration value="earthVuln" />
+															<xs:enumeration value="darkVuln" />
+															<xs:enumeration value="cancel" />
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:attribute>
