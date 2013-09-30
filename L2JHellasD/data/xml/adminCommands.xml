@@ -149,10 +149,11 @@
 	<admin command="admin_delShopItem" accessLevel="7" />
 	<admin command="admin_editShopItem" accessLevel="7" />
 	<admin command="admin_close_window" accessLevel="7" />
-	<admin command="admin_show_skilllist_npc" accessLevel="7" /> 
-	<admin command="admin_add_skill_npc" accessLevel="7" /> 
-	<admin command="admin_edit_skill_npc" accessLevel="7" /> 
-	<admin command="admin_del_skill_npc" accessLevel="7" /> 
+	<admin command="admin_show_skilllist_npc" accessLevel="7" />
+	<admin command="admin_add_skill_npc" accessLevel="7" />
+	<admin command="admin_edit_skill_npc" accessLevel="7" />
+	<admin command="admin_del_skill_npc" accessLevel="7" />
+	<admin command="admin_del_skill_npc" accessLevel="7" />
 
 	<!-- ADMIN EFFECTS -->
 	<admin command="admin_invis" accessLevel="7" />
