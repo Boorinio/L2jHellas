@@ -36,6 +36,7 @@ import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
@@ -95,11 +96,17 @@ public class AdminReload implements IAdminCommandHandler
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Multisells has been reloaded.");
 				}
+				else if (type.startsWith("doors"))
+				{
+					DoorData.getInstance().reloadAll();
+					sendReloadPage(activeChar);
+					activeChar.sendMessage("Door data reloaded.");
+				}
 				else if (type.startsWith("teleport"))
 				{
 					TeleportLocationData.getInstance().reload();
 					sendReloadPage(activeChar);
-					activeChar.sendMessage("Teleport location table reloaded.");
+					activeChar.sendMessage("Teleport locations has been reloaded.");
 				}
 				else if (type.equals("npc") || type.equals("npcs"))
 				{
