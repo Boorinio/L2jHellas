@@ -21,7 +21,7 @@ import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
@@ -100,18 +100,18 @@ public class CastleWars
 	
 	public static void preparecastle()
 	{
-		DoorTable.getInstance().getDoor(22130001).openMe();
-		DoorTable.getInstance().getDoor(22130002).openMe();
-		DoorTable.getInstance().getDoor(22130003).openMe();
-		DoorTable.getInstance().getDoor(22130004).openMe();
-		DoorTable.getInstance().getDoor(22130005).openMe();
-		DoorTable.getInstance().getDoor(22130010).openMe();
-		DoorTable.getInstance().getDoor(22130007).openMe();
-		DoorTable.getInstance().getDoor(22130011).openMe();
-		DoorTable.getInstance().getDoor(22130009).openMe();
-		DoorTable.getInstance().getDoor(22130008).openMe();
-		DoorTable.getInstance().getDoor(22130010).openMe();
-		DoorTable.getInstance().getDoor(22130006).openMe();
+		DoorData.getInstance().getDoor(22130001).openMe();
+		DoorData.getInstance().getDoor(22130002).openMe();
+		DoorData.getInstance().getDoor(22130003).openMe();
+		DoorData.getInstance().getDoor(22130004).openMe();
+		DoorData.getInstance().getDoor(22130005).openMe();
+		DoorData.getInstance().getDoor(22130010).openMe();
+		DoorData.getInstance().getDoor(22130007).openMe();
+		DoorData.getInstance().getDoor(22130011).openMe();
+		DoorData.getInstance().getDoor(22130009).openMe();
+		DoorData.getInstance().getDoor(22130008).openMe();
+		DoorData.getInstance().getDoor(22130010).openMe();
+		DoorData.getInstance().getDoor(22130006).openMe();
 		L2Npc flags = null;
 		for (i = 0; i < 3; i++)
 		{
@@ -149,18 +149,18 @@ public class CastleWars
 		_flags.clear();
 		_defenders.clear();
 		_attackers.clear();
-		DoorTable.getInstance().getDoor(22130001).closeMe();
-		DoorTable.getInstance().getDoor(22130002).closeMe();
-		DoorTable.getInstance().getDoor(22130003).closeMe();
-		DoorTable.getInstance().getDoor(22130004).closeMe();
-		DoorTable.getInstance().getDoor(22130005).closeMe();
-		DoorTable.getInstance().getDoor(22130010).closeMe();
-		DoorTable.getInstance().getDoor(22130007).closeMe();
-		DoorTable.getInstance().getDoor(22130011).closeMe();
-		DoorTable.getInstance().getDoor(22130009).closeMe();
-		DoorTable.getInstance().getDoor(22130008).closeMe();
-		DoorTable.getInstance().getDoor(22130010).closeMe();
-		DoorTable.getInstance().getDoor(22130006).closeMe();
+		DoorData.getInstance().getDoor(22130001).closeMe();
+		DoorData.getInstance().getDoor(22130002).closeMe();
+		DoorData.getInstance().getDoor(22130003).closeMe();
+		DoorData.getInstance().getDoor(22130004).closeMe();
+		DoorData.getInstance().getDoor(22130005).closeMe();
+		DoorData.getInstance().getDoor(22130010).closeMe();
+		DoorData.getInstance().getDoor(22130007).closeMe();
+		DoorData.getInstance().getDoor(22130011).closeMe();
+		DoorData.getInstance().getDoor(22130009).closeMe();
+		DoorData.getInstance().getDoor(22130008).closeMe();
+		DoorData.getInstance().getDoor(22130010).closeMe();
+		DoorData.getInstance().getDoor(22130006).closeMe();
 	}
 	
 	public static void defendersWin()

@@ -27,8 +27,8 @@ import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -408,7 +408,7 @@ public class ClanHall
 			if (door.getCurrentHp() <= 0)
 			{
 				door.decayMe();	// Kill current if not killed already
-				door = DoorTable.parseList(_doorDefault.get(i));
+				door = DoorData.parseList(_doorDefault.get(i));
 				if (isDoorWeak)
 				{
 					door.setCurrentHp(door.getMaxHp() / 2);

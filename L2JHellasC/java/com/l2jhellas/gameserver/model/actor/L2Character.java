@@ -35,11 +35,11 @@ import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable.TeleportWhereType;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
@@ -3266,7 +3266,7 @@ public abstract class L2Character extends L2Object
 		public float _xSpeedTicks;
 		public float _ySpeedTicks;
 		public int onGeodataPathIndex;
-		public Node[] geoPath;
+		public PathNode[] geoPath;
 		public int geoPathAccurateTx;
 		public int geoPathAccurateTy;
 		public int geoPathGtx;
@@ -4427,7 +4427,7 @@ public abstract class L2Character extends L2Object
 						z = m.geoPath[m.onGeodataPathIndex].getZ();
 						
 						// check for doors in the route
-						if (DoorTable.getInstance().checkIfDoorsBetween(curX, curY, curZ, x, y, z))
+						if (DoorData.getInstance().checkIfDoorsBetween(curX, curY, curZ, x, y, z))
 						{
 							m.geoPath = null;
 							getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
@@ -4436,7 +4436,7 @@ public abstract class L2Character extends L2Object
 						
 						for (int i = 0; i < m.geoPath.length - 1; i++)
 						{
-							if (DoorTable.getInstance().checkIfDoorsBetween(m.geoPath[i], m.geoPath[i + 1]))
+							if (DoorData.getInstance().checkIfDoorsBetween(m.geoPath[i], m.geoPath[i + 1]))
 							{
 								m.geoPath = null;
 								getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);

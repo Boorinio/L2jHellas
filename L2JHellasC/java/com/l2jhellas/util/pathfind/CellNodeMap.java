@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.util.pathfind;
 
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.util.geodata.L2FastSet;
 import com.l2jhellas.util.geodata.ObjectPool;
 
@@ -23,19 +23,19 @@ import com.l2jhellas.util.geodata.ObjectPool;
  */
 public final class CellNodeMap
 {
-	protected final L2FastSet<Node> _cellIndex = new L2FastSet<Node>(4096);
+	protected final L2FastSet<PathNode> _cellIndex = new L2FastSet<PathNode>(4096);
 
 	protected CellNodeMap()
 	{
 
 	}
 
-	public void add(Node n)
+	public void add(PathNode n)
 	{
 		_cellIndex.add(n);
 	}
 
-	public boolean contains(Node n)
+	public boolean contains(PathNode n)
 	{
 		return _cellIndex.contains(n);
 	}

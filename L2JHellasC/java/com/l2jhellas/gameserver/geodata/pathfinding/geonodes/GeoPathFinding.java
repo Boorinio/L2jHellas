@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
@@ -59,7 +59,7 @@ public final class GeoPathFinding extends PathFinding
 	}
 
 	@Override
-	public Node[] findPath(int x, int y, int z, int tx, int ty, int tz)
+	public PathNode[] findPath(int x, int y, int z, int tx, int ty, int tz)
 	{
 		int gx = x - L2World.MAP_MIN_X >> 4;
 		int gy = y - L2World.MAP_MIN_Y >> 4;
@@ -68,8 +68,8 @@ public final class GeoPathFinding extends PathFinding
 		int gty = ty - L2World.MAP_MIN_Y >> 4;
 		short gtz = (short) tz;
 
-		Node start = readNode(gx, gy, gz);
-		Node end = readNode(gtx, gty, gtz);
+		PathNode start = readNode(gx, gy, gz);
+		PathNode end = readNode(gtx, gty, gtz);
 		if (start == null || end == null)
 			return null;
 		if (Math.abs(start.getZ() - z) > 55)
@@ -93,7 +93,7 @@ public final class GeoPathFinding extends PathFinding
 	}
 
 	@Override
-	public Node[] readNeighbors(Node n, int idx)
+	public PathNode[] readNeighbors(PathNode n, int idx)
 	{
 		int node_x = n.getNodeX();
 		int node_y = n.getNodeY();
@@ -102,9 +102,9 @@ public final class GeoPathFinding extends PathFinding
 		short regoffset = getRegionOffset(getRegionX(node_x), getRegionY(node_y));
 		ByteBuffer pn = _pathNodes.get(regoffset);
 
-		Node[] Neighbors = new Node[8];
+		PathNode[] Neighbors = new PathNode[8];
 		int index = 0;
-		Node newNode;
+		PathNode newNode;
 		short new_node_x, new_node_y;
 
 		//Region for sure will change, we must read from correct file
@@ -207,7 +207,7 @@ public final class GeoPathFinding extends PathFinding
 		return L2Arrays.compact(Neighbors);
 	}
 
-	private Node readNode(short node_x, short node_y, byte layer)
+	private PathNode readNode(short node_x, short node_y, byte layer)
 	{
 		short regoffset = getRegionOffset(getRegionX(node_x), getRegionY(node_y));
 		if (!pathNodesExist(regoffset))
@@ -228,7 +228,7 @@ public final class GeoPathFinding extends PathFinding
 		return new GeoNode(node_x, node_y, node_z, idx);
 	}
 
-	private Node readNode(int gx, int gy, short z)
+	private PathNode readNode(int gx, int gy, short z)
 	{
 		short node_x = getNodePos(gx);
 		short node_y = getNodePos(gy);

@@ -31,8 +31,8 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.CastleUpdater;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
@@ -390,7 +390,7 @@ public class Castle
 			if (door.getCurrentHp() <= 0)
 			{
 				door.decayMe();	// Kill current if not killed already
-				door = DoorTable.parseList(_doorDefault.get(i));
+				door = DoorData.parseList(_doorDefault.get(i));
 				if (isDoorWeak)
 					door.setCurrentHp(door.getMaxHp() / 2);
 				door.spawnMe(door.getX(), door.getY(), door.getZ());
@@ -499,10 +499,10 @@ public class Castle
 				// Create list of the door default for use when respawning dead doors
 				_doorDefault.add(rs.getString("name") + ";" + rs.getInt("id") + ";" + rs.getInt("x") + ";" + rs.getInt("y") + ";" + rs.getInt("z") + ";" + rs.getInt("range_xmin") + ";" + rs.getInt("range_ymin") + ";" + rs.getInt("range_zmin") + ";" + rs.getInt("range_xmax") + ";" + rs.getInt("range_ymax") + ";" + rs.getInt("range_zmax") + ";" + rs.getInt("hp") + ";" + rs.getInt("pDef") + ";" + rs.getInt("mDef"));
 
-				L2DoorInstance door = DoorTable.parseList(_doorDefault.get(_doorDefault.size() - 1));
+				L2DoorInstance door = DoorData.parseList(_doorDefault.get(_doorDefault.size() - 1));
 				door.spawnMe(door.getX(), door.getY(), door.getZ());
 				_doors.add(door);
-				DoorTable.getInstance().putDoor(door);
+				DoorData.getInstance().putDoor(door);
 			}
 
 			statement.close();

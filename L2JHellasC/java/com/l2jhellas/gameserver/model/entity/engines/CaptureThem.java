@@ -22,7 +22,7 @@ import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -103,10 +103,10 @@ public class CaptureThem
 	
 	public static void StartEvent()
 	{
-		DoorTable.getInstance().getDoor(24190001).closeMe();
-		DoorTable.getInstance().getDoor(24190002).closeMe();
-		DoorTable.getInstance().getDoor(24190003).closeMe();
-		DoorTable.getInstance().getDoor(24190004).closeMe();
+		DoorData.getInstance().getDoor(24190001).closeMe();
+		DoorData.getInstance().getDoor(24190002).closeMe();
+		DoorData.getInstance().getDoor(24190003).closeMe();
+		DoorData.getInstance().getDoor(24190004).closeMe();
 		L2Npc flags = null;
 		for (i = 0; i < 9; i++)
 		{
@@ -170,10 +170,10 @@ public class CaptureThem
 			flags.deleteMe();
 			
 		}
-		DoorTable.getInstance().getDoor(24190001).openMe();
-		DoorTable.getInstance().getDoor(24190002).openMe();
-		DoorTable.getInstance().getDoor(24190003).openMe();
-		DoorTable.getInstance().getDoor(24190004).openMe();
+		DoorData.getInstance().getDoor(24190001).openMe();
+		DoorData.getInstance().getDoor(24190002).openMe();
+		DoorData.getInstance().getDoor(24190003).openMe();
+		DoorData.getInstance().getDoor(24190004).openMe();
 		_players.clear();
 		_flags.clear();
 		CaptureThemRunning = false;

@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -43,7 +43,7 @@ import com.l2jhellas.logs.GMAudit;
  */
 public class AdminDoorControl implements IAdminCommandHandler
 {
-	private static DoorTable _doorTable;
+	private static DoorData _doorTable;
 	private static final String[] ADMIN_COMMANDS =
 	{/** @formatter:off */
 		"admin_open",
@@ -58,7 +58,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		_doorTable = DoorTable.getInstance();
+		_doorTable = DoorData.getInstance();
 
 		try
 		{

@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.geodata.pathfinding.cellnodes;
 
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.model.L2World;
 
@@ -32,7 +32,7 @@ public final class CellPathFinding extends PathFinding
 	}
 
 	@Override
-	public Node[] findPath(int x, int y, int z, int tx, int ty, int tz)
+	public PathNode[] findPath(int x, int y, int z, int tx, int ty, int tz)
 	{
 		int gx = x - L2World.MAP_MIN_X >> 4;
 		int gy = y - L2World.MAP_MIN_Y >> 4;
@@ -44,20 +44,20 @@ public final class CellPathFinding extends PathFinding
 		if (!GeoData.getInstance().hasGeo(tx, ty))
 			return null;
 		short gtz = GeoData.getInstance().getHeight(tx, ty, tz);
-		Node start = readNode(gx, gy, gz);
-		Node end = readNode(gtx, gty, gtz);
+		PathNode start = readNode(gx, gy, gz);
+		PathNode end = readNode(gtx, gty, gtz);
 		return searchByClosest(start, end);
 	}
 
 	@Override
-	public Node[] readNeighbors(Node n, int idx)
+	public PathNode[] readNeighbors(PathNode n, int idx)
 	{
 		return GeoData.getInstance().getNeighbors(n);
 	}
 
 	// Private
 
-	public Node readNode(int gx, int gy, short z)
+	public PathNode readNode(int gx, int gy, short z)
 	{
 		return new CellNode(gx, gy, z, 0);
 	}

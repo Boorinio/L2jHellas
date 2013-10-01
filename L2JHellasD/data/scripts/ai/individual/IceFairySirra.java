@@ -22,8 +22,8 @@ import ai.group_template.L2AttackableAIScript;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -121,7 +121,7 @@ public class IceFairySirra extends L2AttackableAIScript
 		{
 			try
 			{
-				L2DoorInstance door = DoorTable.getInstance().getDoor(i);
+				L2DoorInstance door = DoorData.getInstance().getDoor(i);
 				if (door != null)
 				{
 					door.openMe();
@@ -144,7 +144,7 @@ public class IceFairySirra extends L2AttackableAIScript
 		{
 			try
 			{
-				L2DoorInstance door = DoorTable.getInstance().getDoor(i);
+				L2DoorInstance door = DoorData.getInstance().getDoor(i);
 				if (door != null)
 				{
 					door.closeMe();

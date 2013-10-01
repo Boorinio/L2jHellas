@@ -40,21 +40,21 @@ public abstract class PathFinding
 		return CellPathFinding.getInstance(); // Cell pathfinding, calculated directly from geodata files
 	}
 
-	public abstract Node[] findPath(int x, int y, int z, int tx, int ty, int tz);
+	public abstract PathNode[] findPath(int x, int y, int z, int tx, int ty, int tz);
 
-	public abstract Node[] readNeighbors(Node n, int idx);
+	public abstract PathNode[] readNeighbors(PathNode n, int idx);
 
-	public final Node[] search(Node start, Node end)
+	public final PathNode[] search(PathNode start, PathNode end)
 	{
 		// The simplest grid-based pathfinding.
 		// Drawback is not having higher cost for diagonal movement (means funny routes)
 		// Could be optimized e.g. not to calculate backwards as far as forwards.
 
 		// List of Visited Nodes
-		L2FastSet<Node> visited = L2Collections.newL2FastSet();
+		L2FastSet<PathNode> visited = L2Collections.newL2FastSet();
 
 		// List of Nodes to Visit
-		L2FastSet<Node> to_visit = L2Collections.newL2FastSet();
+		L2FastSet<PathNode> to_visit = L2Collections.newL2FastSet();
 		to_visit.add(start);
 		try
 		{
@@ -67,17 +67,17 @@ public abstract class PathFinding
 					return null;
 				}
 
-				Node node = to_visit.removeFirst();
+				PathNode node = to_visit.removeFirst();
 
 				if (node.equals(end)) //path found!
 					return constructPath(node);
 				i++;
 				visited.add(node);
 				node.attachNeighbors();
-				Node[] neighbors = node.getNeighbors();
+				PathNode[] neighbors = node.getNeighbors();
 				if (neighbors == null)
 					continue;
-				for (Node n : neighbors)
+				for (PathNode n : neighbors)
 				{
 					if (!visited.contains(n) && !to_visit.contains(n))
 					{
@@ -96,7 +96,7 @@ public abstract class PathFinding
 		}
 	}
 
-	public final Node[] searchByClosest(Node start, Node end)
+	public final PathNode[] searchByClosest(PathNode start, PathNode end)
 	{
 		// Note: This is the version for cell-based calculation, harder
 		// on cpu than from block-based pathnode files. However produces better routes.
@@ -113,7 +113,7 @@ public abstract class PathFinding
 		// List of Visited Nodes
 		CellNodeMap known = CellNodeMap.newInstance();
 		// List of Nodes to Visit
-		ArrayList<Node> to_visit = L2Collections.newArrayList();
+		ArrayList<PathNode> to_visit = L2Collections.newArrayList();
 		to_visit.add(start);
 		known.add(start);
 		try
@@ -132,7 +132,7 @@ public abstract class PathFinding
 					return null;
 				}
 
-				Node node = to_visit.remove(0);
+				PathNode node = to_visit.remove(0);
 
 				i++;
 
@@ -145,10 +145,10 @@ public abstract class PathFinding
 					return constructPath(node);
 				}
 
-				Node[] neighbors = node.getNeighbors();
+				PathNode[] neighbors = node.getNeighbors();
 				if (neighbors == null)
 					continue;
-				for (Node n : neighbors)
+				for (PathNode n : neighbors)
 				{
 					if (!known.contains(n))
 					{
@@ -185,7 +185,7 @@ public abstract class PathFinding
 		}
 	}
 
-	public final Node[] searchByClosest2(Node start, Node end)
+	public final PathNode[] searchByClosest2(PathNode start, PathNode end)
 	{
 		// Always continues checking from the closest to target non-blocked
 		// node from to_visit list. There's extra length in path if needed
@@ -197,9 +197,9 @@ public abstract class PathFinding
 		// load) level of intelligence though.
 
 		// List of Visited Nodes
-		L2FastSet<Node> visited = L2Collections.newL2FastSet();
+		L2FastSet<PathNode> visited = L2Collections.newL2FastSet();
 		// List of Nodes to Visit
-		ArrayList<Node> to_visit = L2Collections.newArrayList();
+		ArrayList<PathNode> to_visit = L2Collections.newArrayList();
 		to_visit.add(start);
 		try
 		{
@@ -216,7 +216,7 @@ public abstract class PathFinding
 					return null;
 				}
 
-				Node node = to_visit.remove(0);
+				PathNode node = to_visit.remove(0);
 
 				if (node.equals(end)) //path found!
 				{
@@ -225,10 +225,10 @@ public abstract class PathFinding
 				i++;
 				visited.add(node);
 				node.attachNeighbors();
-				Node[] neighbors = node.getNeighbors();
+				PathNode[] neighbors = node.getNeighbors();
 				if (neighbors == null)
 					continue;
-				for (Node n : neighbors)
+				for (PathNode n : neighbors)
 				{
 					if (!visited.contains(n) && !to_visit.contains(n))
 					{
@@ -262,7 +262,7 @@ public abstract class PathFinding
 		}
 	}
 
-	public final Node[] searchAStar(Node start, Node end)
+	public final PathNode[] searchAStar(PathNode start, PathNode end)
 	{
 		// Not operational yet?
 		int start_x = start.getX();
@@ -270,7 +270,7 @@ public abstract class PathFinding
 		int end_x = end.getX();
 		int end_y = end.getY();
 		//List of Visited Nodes
-		L2FastSet<Node> visited = L2Collections.newL2FastSet();//TODO! Add limit to cfg
+		L2FastSet<PathNode> visited = L2Collections.newL2FastSet();//TODO! Add limit to cfg
 
 		// List of Nodes to Visit
 		BinaryNodeHeap to_visit = BinaryNodeHeap.newInstance();
@@ -286,7 +286,7 @@ public abstract class PathFinding
 					return null;
 				}
 
-				Node node;
+				PathNode node;
 				try
 				{
 					node = to_visit.removeFirst();
@@ -303,7 +303,7 @@ public abstract class PathFinding
 					return constructPath(node);
 				visited.add(node);
 				node.attachNeighbors();
-				for (Node n : node.getNeighbors())
+				for (PathNode n : node.getNeighbors())
 				{
 					if (!visited.contains(n) && !to_visit.contains(n))
 					{
@@ -324,9 +324,9 @@ public abstract class PathFinding
 		}
 	}
 
-	public final Node[] constructPath(Node node)
+	public final PathNode[] constructPath(PathNode node)
 	{
-		ArrayList<Node> tmp = L2Collections.newArrayList();
+		ArrayList<PathNode> tmp = L2Collections.newArrayList();
 
 		while (node.getParent() != null)
 		{
@@ -335,7 +335,7 @@ public abstract class PathFinding
 			node = node.getParent();
 		}
 
-		Node[] path = tmp.toArray(new Node[tmp.size()]);
+		PathNode[] path = tmp.toArray(new PathNode[tmp.size()]);
 
 		L2Collections.recycle(tmp);
 
@@ -343,7 +343,7 @@ public abstract class PathFinding
 
 		for (int lastValid = 0; lastValid < path.length - 1;)
 		{
-			final Node lastValidNode = path[lastValid];
+			final PathNode lastValidNode = path[lastValid];
 
 			int low = lastValid;
 			int high = path.length - 1;
@@ -351,7 +351,7 @@ public abstract class PathFinding
 			while (low < high)
 			{
 				final int mid = ((low + high) >> 1) + 1;
-				final Node midNode = path[mid];
+				final PathNode midNode = path[mid];
 				final int delta = mid - lastValid;
 				final int deltaNodeX = Math.abs(midNode.getNodeX() - lastValidNode.getNodeX());
 				final int deltaNodeY = Math.abs(midNode.getNodeY() - lastValidNode.getNodeY());
@@ -389,9 +389,9 @@ public abstract class PathFinding
 		return L2Arrays.compact(path);
 	}
 
-	public final Node[] constructPath2(Node node)
+	public final PathNode[] constructPath2(PathNode node)
 	{
-		ArrayList<Node> tmp = L2Collections.newArrayList();
+		ArrayList<PathNode> tmp = L2Collections.newArrayList();
 		int previousdirectionx = -1000;
 		int previousdirectiony = -1000;
 		int directionx;
@@ -410,7 +410,7 @@ public abstract class PathFinding
 			node = node.getParent();
 		}
 
-		Node[] path = tmp.toArray(new Node[tmp.size()]);
+		PathNode[] path = tmp.toArray(new PathNode[tmp.size()]);
 
 		L2Collections.recycle(tmp);
 

@@ -16,21 +16,21 @@ package com.l2jhellas.util.pathfind;
 
 import java.util.Arrays;
 
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.util.geodata.L2FastSet;
 import com.l2jhellas.util.geodata.ObjectPool;
 
 public final class BinaryNodeHeap
 {
-	protected final Node[] _list = new Node[800 + 1];
-	protected final L2FastSet<Node> _set = new L2FastSet<Node>();
+	protected final PathNode[] _list = new PathNode[800 + 1];
+	protected final L2FastSet<PathNode> _set = new L2FastSet<PathNode>();
 	protected int _size = 0;
 
 	protected BinaryNodeHeap()
 	{
 	}
 
-	public void add(Node n)
+	public void add(PathNode n)
 	{
 		_size++;
 		int pos = _size;
@@ -41,7 +41,7 @@ public final class BinaryNodeHeap
 			int p2 = pos / 2;
 			if (_list[pos].getCost() <= _list[p2].getCost())
 			{
-				Node temp = _list[p2];
+				PathNode temp = _list[p2];
 				_list[p2] = _list[pos];
 				_list[pos] = temp;
 				pos = p2;
@@ -51,16 +51,16 @@ public final class BinaryNodeHeap
 		}
 	}
 
-	public Node removeFirst()
+	public PathNode removeFirst()
 	{
-		Node first = _list[1];
+		PathNode first = _list[1];
 		_list[1] = _list[_size];
 		_list[_size] = null;
 		_size--;
 		int pos = 1;
 		int cpos;
 		int dblcpos;
-		Node temp;
+		PathNode temp;
 		while (true)
 		{
 			cpos = pos;
@@ -91,7 +91,7 @@ public final class BinaryNodeHeap
 		return first;
 	}
 
-	public boolean contains(Node n)
+	public boolean contains(PathNode n)
 	{
 		if (_size == 0)
 			return false;

@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.geodata;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -182,7 +182,7 @@ public class GeoData
 		return false;
 	}
 
-	public Node[] getNeighbors(Node n)
+	public PathNode[] getNeighbors(PathNode n)
 	{
 		return null;
 	}

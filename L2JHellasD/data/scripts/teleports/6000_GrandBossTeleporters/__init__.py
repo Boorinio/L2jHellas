@@ -1,6 +1,6 @@
 #Made by Emperorc
 import sys
-from com.l2jhellas.gameserver.datatables.csv import DoorTable
+from com.l2jhellas.gameserver.datatables.xml import DoorData
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState
 from com.l2jhellas.gameserver.model.quest.jython import QuestJython as JQuest

@@ -29,8 +29,8 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.geodata.pathfinding.cellnodes.CellPathFinding;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -97,7 +97,7 @@ public final class GeoEngine extends GeoData
 	@Override
 	public boolean canSeeTarget(L2Object cha, Point3D target)
 	{
-		if (DoorTable.getInstance().checkIfDoorsBetween(cha.getX(), cha.getY(), cha.getZ(), target.getX(), target.getY(), target.getZ()))
+		if (DoorData.getInstance().checkIfDoorsBetween(cha.getX(), cha.getY(), cha.getZ(), target.getX(), target.getY(), target.getZ()))
 			return false;
 		if (cha.getZ() >= target.getZ())
 			return canSeeTarget(cha.getX(), cha.getY(), cha.getZ(), target.getX(), target.getY(), target.getZ());
@@ -122,7 +122,7 @@ public final class GeoEngine extends GeoData
 		int z2 = target.getZ() + 45;
 		if (target instanceof L2DoorInstance)
 			return true; // door coordinates are hinge coords..
-		if (DoorTable.getInstance().checkIfDoorsBetween(cha.getX(), cha.getY(), z, target.getX(), target.getY(), z2))
+		if (DoorData.getInstance().checkIfDoorsBetween(cha.getX(), cha.getY(), z, target.getX(), target.getY(), z2))
 			return false;
 		if (target instanceof L2SiegeGuardInstance)
 			z2 += 30; // well they don't move closer to balcony fence at the moment :(
@@ -165,7 +165,7 @@ public final class GeoEngine extends GeoData
 	public Location moveCheck(int x, int y, int z, int tx, int ty, int tz)
 	{
 		Location startpoint = new Location(x, y, z);
-		if (DoorTable.getInstance().checkIfDoorsBetween(x, y, z, tx, ty, tz))
+		if (DoorData.getInstance().checkIfDoorsBetween(x, y, z, tx, ty, tz))
 			return startpoint;
 
 		Location destiny = new Location(tx, ty, tz);
@@ -1395,9 +1395,9 @@ public final class GeoEngine extends GeoData
 	 * @return NSWE: 0-15
 	 */
 	@Override
-	public Node[] getNeighbors(Node n)
+	public PathNode[] getNeighbors(PathNode n)
 	{
-		Node newNode;
+		PathNode newNode;
 		int x = n.getNodeX();
 		int y = n.getNodeY();
 		int parentdirection = 0;
@@ -1434,7 +1434,7 @@ public final class GeoEngine extends GeoData
 			return null;
 		}
 
-		final Node[] Neighbors = new Node[4];
+		final PathNode[] Neighbors = new PathNode[4];
 		int arrayIndex = 0;
 
 		//Read current block type: 0-flat,1-complex,2-multilevel

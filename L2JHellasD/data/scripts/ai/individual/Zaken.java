@@ -22,7 +22,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -88,14 +88,14 @@ public class Zaken extends L2AttackableAIScript
                 {
     				if (GetTimeHour() == 0)
     				{
-    					DoorTable.getInstance().getDoor(21240006).openMe();
+    					DoorData.getInstance().getDoor(21240006).openMe();
     					ThreadPoolManager.getInstance().scheduleGeneral(new Runnable() {
     						@Override
 							public void run()
     						{
     							try
     				            {
-    								DoorTable.getInstance().getDoor(21240006).closeMe();
+    								DoorData.getInstance().getDoor(21240006).closeMe();
     				            }
     				            catch (Throwable e)
     				            {

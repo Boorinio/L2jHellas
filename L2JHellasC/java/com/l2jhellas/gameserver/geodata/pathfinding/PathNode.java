@@ -14,19 +14,19 @@
  */
 package com.l2jhellas.gameserver.geodata.pathfinding;
 
-public abstract class Node
+public abstract class PathNode
 {
 	private final int _neighborsIdx;
-	private Node[] _neighbors;
-	private Node _parent;
+	private PathNode[] _neighbors;
+	private PathNode _parent;
 	private short _cost;
 
-	protected Node(int neighborsIdx)
+	protected PathNode(int neighborsIdx)
 	{
 		_neighborsIdx = neighborsIdx;
 	}
 
-	public final void setParent(Node p)
+	public final void setParent(PathNode p)
 	{
 		_parent = p;
 	}
@@ -41,12 +41,12 @@ public abstract class Node
 		_neighbors = PathFinding.getInstance().readNeighbors(this, _neighborsIdx);
 	}
 
-	public final Node[] getNeighbors()
+	public final PathNode[] getNeighbors()
 	{
 		return _neighbors;
 	}
 
-	public final Node getParent()
+	public final PathNode getParent()
 	{
 		return _parent;
 	}
@@ -77,10 +77,10 @@ public abstract class Node
 	@Override
 	public final boolean equals(Object obj)
 	{
-		if (!(obj instanceof Node))
+		if (!(obj instanceof PathNode))
 			return false;
 
-		Node n = (Node) obj;
+		PathNode n = (PathNode) obj;
 
 		return getNodeX() == n.getNodeX() && getNodeY() == n.getNodeY() && getZ() == n.getZ();
 	}

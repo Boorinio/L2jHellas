@@ -1,6 +1,6 @@
 import sys
 from com.l2jhellas.gameserver.ai import CtrlIntention
-from com.l2jhellas.gameserver.datatables.csv import DoorTable
+from com.l2jhellas.gameserver.datatables.xml import DoorData
 from com.l2jhellas.gameserver.instancemanager import CastleManager
 from com.l2jhellas.gameserver.instancemanager import GrandBossManager
 from com.l2jhellas.gameserver.model import L2CharPosition

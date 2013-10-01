@@ -1,35 +1,39 @@
 /*
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Foundation, either version 3 of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.datatables.csv;
+package com.l2jhellas.gameserver.datatables.xml;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.LineNumberReader;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import javolution.util.FastMap;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
@@ -37,25 +41,25 @@ import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-public class DoorTable
+public class DoorData
 {
-	private static Logger _log = Logger.getLogger(DoorTable.class.getName());
+	protected static final Logger _log = Logger.getLogger(DoorData.class.getName());
 
 	private Map<Integer, L2DoorInstance> _staticItems;
 
-	private static DoorTable _instance;
+	private static DoorData _instance;
 
-	public static DoorTable getInstance()
+	public static DoorData getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new DoorTable();
+			_instance = new DoorData();
 		}
 
 		return _instance;
 	}
 
-	public DoorTable()
+	public DoorData()
 	{
 		_staticItems = new FastMap<Integer, L2DoorInstance>();
 		parseData();
@@ -69,69 +73,145 @@ public class DoorTable
 
 	public void respawn()
 	{
-		// L2DoorInstance[] currentDoors = getDoors();
 		_staticItems = null;
 		_instance = null;
-		_instance = new DoorTable();
+		_instance = new DoorData();
 	}
 
-	public void parseData()
+	private void parseData()
 	{
-		LineNumberReader lnr = null;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setValidating(false);
+		factory.setIgnoringComments(true);
+		File file = new File(Config.DATAPACK_ROOT, "data/xml/doors.xml");
+		if (!file.exists())
+		{
+			_log.warning("doors.xml is missing in data folder.");
+			return;
+		}
 		try
 		{
-			File doorData = new File(Config.DATAPACK_ROOT, "data/csv/door.csv");
-			lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
-
-			String line = null;
-
-			while ((line = lnr.readLine()) != null)
+			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			in.setEncoding("UTF-8");
+			Document doc = factory.newDocumentBuilder().parse(file);
+			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
-				if (line.trim().length() == 0 || line.startsWith("#"))
+				if ("list".equalsIgnoreCase(n.getNodeName()))
 				{
-					continue;
-				}
-
-				L2DoorInstance door = parseList(line);
-				_staticItems.put(door.getDoorId(), door);
-				door.spawnMe(door.getX(), door.getY(), door.getZ());
-				ClanHall clanhall = ClanHallManager.getInstance().getNearbyClanHall(door.getX(), door.getY(), 500);
-				if (clanhall != null)
-				{
-					clanhall.getDoors().add(door);
-					door.setClanHall(clanhall);
-					if (Config.DEBUG)
+					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 					{
-						_log.log(Level.CONFIG, getClass().getName() + ": door " + door.getDoorName() + " attached to ch " + clanhall.getName());
+						if (d.getNodeName().equalsIgnoreCase("door"))
+						{
+							String name = String.valueOf(d.getAttributes().getNamedItem("name").getNodeValue());
+							int id = Integer.valueOf(d.getAttributes().getNamedItem("id").getNodeValue());
+							int x = Integer.valueOf(d.getAttributes().getNamedItem("x").getNodeValue());
+							int y = Integer.valueOf(d.getAttributes().getNamedItem("y").getNodeValue());
+							int z = Integer.valueOf(d.getAttributes().getNamedItem("z").getNodeValue());
+							int rangeXMin = Integer.valueOf(d.getAttributes().getNamedItem("XMin").getNodeValue());
+							int rangeYMin = Integer.valueOf(d.getAttributes().getNamedItem("YMin").getNodeValue());
+							int rangeZMin = Integer.valueOf(d.getAttributes().getNamedItem("ZMin").getNodeValue());
+							int rangeXMax = Integer.valueOf(d.getAttributes().getNamedItem("XMax").getNodeValue());
+							int rangeYMax = Integer.valueOf(d.getAttributes().getNamedItem("YMax").getNodeValue());
+							int rangeZMax = Integer.valueOf(d.getAttributes().getNamedItem("ZMax").getNodeValue());
+							int hp = Integer.valueOf(d.getAttributes().getNamedItem("hp").getNodeValue());
+							int pdef = Integer.valueOf(d.getAttributes().getNamedItem("pdef").getNodeValue());
+							int mdef = Integer.valueOf(d.getAttributes().getNamedItem("mdef").getNodeValue());
+							boolean unlockable = Boolean.valueOf(d.getAttributes().getNamedItem("unlockable").getNodeValue());
+							boolean autoOpen = Boolean.valueOf(d.getAttributes().getNamedItem("autoOpen").getNodeValue());
+							if (rangeXMin > rangeXMax)
+								_log.warning("DoorTable: Error on rangeX min/max, ID:" + id);
+							if (rangeYMin > rangeYMax)
+								_log.warning("DoorTable: Error on rangeY min/max, ID:" + id);
+							if (rangeZMin > rangeZMax)
+								_log.warning("DoorTable: Error on rangeZ min/max, ID:" + id);
+
+							int collisionRadius; // (max) radius for movement checks
+							if ((rangeXMax - rangeXMin) > (rangeYMax - rangeYMin))
+								collisionRadius = rangeYMax - rangeYMin;
+							else
+								collisionRadius = rangeXMax - rangeXMin;
+							StatsSet npcDat = new StatsSet();
+							npcDat.set("npcId", id);
+							npcDat.set("level", 0);
+							npcDat.set("jClass", "door");
+							npcDat.set("baseSTR", 0);
+							npcDat.set("baseCON", 0);
+							npcDat.set("baseDEX", 0);
+							npcDat.set("baseINT", 0);
+							npcDat.set("baseWIT", 0);
+							npcDat.set("baseMEN", 0);
+							npcDat.set("baseShldDef", 0);
+							npcDat.set("baseShldRate", 0);
+							npcDat.set("baseAccCombat", 38);
+							npcDat.set("baseEvasRate", 38);
+							npcDat.set("baseCritRate", 38);
+							npcDat.set("collision_radius", collisionRadius);
+							npcDat.set("collision_height", rangeZMax - rangeZMin);
+							npcDat.set("sex", "male");
+							npcDat.set("type", "");
+							npcDat.set("baseAtkRange", 0);
+							npcDat.set("baseMpMax", 0);
+							npcDat.set("baseCpMax", 0);
+							npcDat.set("rewardExp", 0);
+							npcDat.set("rewardSp", 0);
+							npcDat.set("basePAtk", 0);
+							npcDat.set("baseMAtk", 0);
+							npcDat.set("basePAtkSpd", 0);
+							npcDat.set("aggroRange", 0);
+							npcDat.set("baseMAtkSpd", 0);
+							npcDat.set("rhand", 0);
+							npcDat.set("lhand", 0);
+							npcDat.set("armor", 0);
+							npcDat.set("baseWalkSpd", 0);
+							npcDat.set("baseRunSpd", 0);
+							npcDat.set("name", name);
+							npcDat.set("baseHpMax", hp);
+							npcDat.set("baseHpReg", 3.e-3f);
+							npcDat.set("baseMpReg", 3.e-3f);
+							npcDat.set("basePDef", pdef);
+							npcDat.set("baseMDef", mdef);
+
+							L2CharTemplate template = new L2CharTemplate(npcDat);
+							L2DoorInstance door = new L2DoorInstance(IdFactory.getInstance().getNextId(), template, id, name, unlockable);
+							door.setRange(rangeXMin, rangeYMin, rangeZMin, rangeXMax, rangeYMax, rangeZMax);
+							try
+							{
+								door.setMapRegion(MapRegionTable.getInstance().getMapRegion(x, y));
+							}
+							catch (Exception e)
+							{
+								_log.warning("Error in door data, ID:" + id);
+							}
+							door.setCurrentHpMp(door.getMaxHp(), door.getMaxMp());
+							door.setOpen(autoOpen);
+							door.setXYZInvisible(x, y, z);
+
+							putDoor(door);
+							door.spawnMe(door.getX(), door.getY(), door.getZ());
+							ClanHall clanhall = ClanHallManager.getInstance().getNearbyClanHall(door.getX(), door.getY(), 500);
+							if (clanhall != null)
+							{
+								clanhall.getDoors().add(door);
+								door.setClanHall(clanhall);
+							}
+						}
 					}
 				}
 			}
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _staticItems.size() + " Door Templates.");
+			_log.info("DoorTable: Loaded " + _staticItems.size() + " door templates.");
 		}
-		catch (FileNotFoundException e)
+		catch (SAXException e)
 		{
-			_initialized = false;
-			_log.log(Level.WARNING, getClass().getName() + ": door.csv is missing in data folder.");
+			_log.warning("DoorTable: Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_initialized = false;
-			_log.log(Level.WARNING, getClass().getName() + ": Error while creating door table " + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			_log.warning("DoorTable: Error while creating table");
 		}
-		finally
+		catch (ParserConfigurationException e)
 		{
-			try
-			{
-				lnr.close();
-			}
-			catch (Exception e1)
-			{ /* ignore problems */
-			}
+			_log.warning("DoorTable: Error while creating table");
 		}
 	}
 
@@ -153,6 +233,7 @@ public class DoorTable
 		int hp = Integer.parseInt(st.nextToken());
 		int pdef = Integer.parseInt(st.nextToken());
 		int mdef = Integer.parseInt(st.nextToken());
+
 		boolean unlockable = false;
 
 		if (st.hasMoreTokens())
@@ -160,25 +241,32 @@ public class DoorTable
 			unlockable = Boolean.parseBoolean(st.nextToken());
 		}
 		boolean autoOpen = false;
+
 		if (st.hasMoreTokens())
 		{
 			autoOpen = Boolean.parseBoolean(st.nextToken());
 		}
 
+		st = null;
+
 		if (rangeXMin > rangeXMax)
 		{
-			_log.severe("Error in door data, ID:" + id);
+			_log.warning("Error in door data, ID:" + id);
 		}
+
 		if (rangeYMin > rangeYMax)
 		{
-			_log.severe("Error in door data, ID:" + id);
+			_log.warning("Error in door data, ID:" + id);
 		}
+
 		if (rangeZMin > rangeZMax)
 		{
-			_log.severe("Error in door data, ID:" + id);
+			_log.warning("Error in door data, ID:" + id);
 		}
-		int collisionRadius; // (max) radius for movement checks
-		if ((rangeXMax - rangeXMin) > (rangeYMax - rangeYMin))
+
+		int collisionRadius;
+
+		if (rangeXMax - rangeXMin > rangeYMax - rangeYMin)
 		{
 			collisionRadius = rangeYMax - rangeYMin;
 		}
@@ -191,21 +279,17 @@ public class DoorTable
 		npcDat.set("npcId", id);
 		npcDat.set("level", 0);
 		npcDat.set("jClass", "door");
-
 		npcDat.set("baseSTR", 0);
 		npcDat.set("baseCON", 0);
 		npcDat.set("baseDEX", 0);
 		npcDat.set("baseINT", 0);
 		npcDat.set("baseWIT", 0);
 		npcDat.set("baseMEN", 0);
-
 		npcDat.set("baseShldDef", 0);
 		npcDat.set("baseShldRate", 0);
 		npcDat.set("baseAccCombat", 38);
 		npcDat.set("baseEvasRate", 38);
 		npcDat.set("baseCritRate", 38);
-
-		//npcDat.set("name", "");
 		npcDat.set("collision_radius", collisionRadius);
 		npcDat.set("collision_height", rangeZMax - rangeZMin);
 		npcDat.set("sex", "male");
@@ -235,17 +319,16 @@ public class DoorTable
 		L2CharTemplate template = new L2CharTemplate(npcDat);
 		L2DoorInstance door = new L2DoorInstance(IdFactory.getInstance().getNextId(), template, id, name, unlockable);
 		door.setRange(rangeXMin, rangeYMin, rangeZMin, rangeXMax, rangeYMax, rangeZMax);
+		name = null;
+		npcDat = null;
+		template = null;
 		try
 		{
 			door.setMapRegion(MapRegionTable.getInstance().getMapRegion(x, y));
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "DoorTable: Error in door data, ID:" + id, e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			_log.warning("Error in door data, ID:" + id);
 		}
 		door.setCurrentHpMp(door.getMaxHp(), door.getMaxMp());
 		door.setOpen(autoOpen);
@@ -277,14 +360,10 @@ public class DoorTable
 		return _allTemplates;
 	}
 
-	/**
-	 * Performs a check and sets up a scheduled task for
-	 * those doors that require auto opening/closing.
-	 */
 	public void checkAutoOpen()
 	{
 		for (L2DoorInstance doorInst : getDoors())
-			// Garden of Eva (every 7 minutes)
+		{
 			if (doorInst.getDoorName().startsWith("goe"))
 			{
 				doorInst.setAutoActionDelay(420000);
@@ -293,9 +372,14 @@ public class DoorTable
 			{
 				doorInst.setAutoActionDelay(300000);
 			}
+			else if (doorInst.getDoorName().startsWith("cruma"))
+			{
+				doorInst.setAutoActionDelay(1200000);
+			}
+		}
 	}
 
-	public boolean checkIfDoorsBetween(Node start, Node end)
+	public boolean checkIfDoorsBetween(PathNode start, PathNode end)
 	{
 		return checkIfDoorsBetween(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
 	}
@@ -353,7 +437,7 @@ public class DoorTable
 						int dk;
 
 						if ((dk = (doorInst.getA() * l + doorInst.getB() * m + doorInst.getC() * n)) == 0)
-						 {
+						{
 							continue; // Parallel
 						}
 
@@ -395,7 +479,7 @@ public class DoorTable
 		}
 		catch (NullPointerException e)
 		{
-			_log.log(Level.WARNING, "There are errors in your Door.csv file. Update door.csv", e);
+			_log.log(Level.WARNING, "There are errors in your Doors.xml file.", e);
 		}
 	}
 }

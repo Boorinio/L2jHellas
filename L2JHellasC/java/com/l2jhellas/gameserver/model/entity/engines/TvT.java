@@ -30,9 +30,9 @@ import javolution.text.TextBuilder;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.csv.DoorTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Party;
@@ -1704,10 +1704,10 @@ public class TvT
 	private static void closeColiseumDoors()
 	{
 		Announcements.getInstance().gameAnnounceToAll("Closing Coliseum Doors, TvT event has just started !");
-		DoorTable.getInstance().getDoor(24190001).closeMe();// west gate out
-		DoorTable.getInstance().getDoor(24190002).closeMe();// west gate in
-		DoorTable.getInstance().getDoor(24190003).closeMe();// east gate out
-		DoorTable.getInstance().getDoor(24190004).closeMe();// east gate in
+		DoorData.getInstance().getDoor(24190001).closeMe();// west gate out
+		DoorData.getInstance().getDoor(24190002).closeMe();// west gate in
+		DoorData.getInstance().getDoor(24190003).closeMe();// east gate out
+		DoorData.getInstance().getDoor(24190004).closeMe();// east gate in
 
 		try
 		{
@@ -1730,10 +1730,10 @@ public class TvT
 	private static void openColiseumDoors()
 	{
 		Announcements.getInstance().gameAnnounceToAll("Opening Coliseum Doors, TvT event has finished!");
-		DoorTable.getInstance().getDoor(24190001).openMe();
-		DoorTable.getInstance().getDoor(24190002).openMe();
-		DoorTable.getInstance().getDoor(24190003).openMe();
-		DoorTable.getInstance().getDoor(24190004).openMe();
+		DoorData.getInstance().getDoor(24190001).openMe();
+		DoorData.getInstance().getDoor(24190002).openMe();
+		DoorData.getInstance().getDoor(24190003).openMe();
+		DoorData.getInstance().getDoor(24190004).openMe();
 
 	}
 

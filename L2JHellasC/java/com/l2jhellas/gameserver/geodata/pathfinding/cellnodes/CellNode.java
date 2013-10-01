@@ -14,10 +14,10 @@
  */
 package com.l2jhellas.gameserver.geodata.pathfinding.cellnodes;
 
-import com.l2jhellas.gameserver.geodata.pathfinding.Node;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.model.L2World;
 
-public final class CellNode extends Node
+public final class CellNode extends PathNode
 {
 	private final int _x;
 	private final int _y;
