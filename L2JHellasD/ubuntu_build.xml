@@ -21,7 +21,7 @@
 	<property name="build.dist.tools" location="${build.dist}/tools"/>
 	<property name="build.dist.languages.accountmanager" location="${build.dist}/languages/accountmanager"/>
 	<property name="build.dist.doc" location="${build.dist}/doc"/>
-	<property name="build.dist.sql.game" location="${build.dist}/sql/game"/>
+	<property name="build.dist.sql" location="${build.dist}/sql"/>
 	<property name="build.dist.sql.maintenance" location="${build.dist}/sql/maintenance"/>
 	
 	<target name="init" description="Create the output directories. Do nothing if dirs were already created">
@@ -29,8 +29,8 @@
 		<mkdir dir="${build.dist}"/>
 		<mkdir dir="${build.dist.game}"/>
 		<mkdir dir="${build.dist.doc}" />
-		<mkdir dir="${build.dist.sql.game}" />
-		<mkdir dir="${build.dist.sql.game.updates}" />
+		<mkdir dir="${build.dist.sql}" />
+		<mkdir dir="${build.dist.sql.updates}" />
 		<mkdir dir="${build.dist.sql.maintenance}" />
 	</target>
 	<echo>Creating L2J Hellas DataPack please wait..</echo>
@@ -56,8 +56,8 @@
 				<include name="**/*.*"/>
 			</fileset>
 		</sync>
-		<sync todir="${build.dist.sql.game}">
-			<fileset dir="${basedir}/sql/game">
+		<sync todir="${build.dist.sql}">
+			<fileset dir="${basedir}/sql">
 				<include name="*.*"/>
 				<include name="updates/*.*"/>
 			</fileset>
