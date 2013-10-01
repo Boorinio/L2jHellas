@@ -494,7 +494,8 @@
 		<set name="castRange" val="900" />
 		<for>
 			<effect count="10" name="DamOverTime" time="3" val="65" abnormal="poison">
-				<mul order="0x30" stat="atkSpd" val="0.5" />
+				<mul order="0x30" stat="pAtkSpd" val="0.5" />
+				<mul order="0x30" stat="mAtkSpd" val="0.5" />
 			</effect>
 		</for>
 	</skill>
