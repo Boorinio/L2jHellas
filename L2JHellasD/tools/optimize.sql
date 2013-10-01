@@ -104,7 +104,6 @@ OPTIMIZE TABLE seven_signs_festival;
 OPTIMIZE TABLE seven_signs_status;
 OPTIMIZE TABLE siege_clans;
 OPTIMIZE TABLE spawnlist;
-OPTIMIZE TABLE walker_routes;
 OPTIMIZE TABLE weapon;
 OPTIMIZE TABLE zone;
 OPTIMIZE TABLE zone_vertices;

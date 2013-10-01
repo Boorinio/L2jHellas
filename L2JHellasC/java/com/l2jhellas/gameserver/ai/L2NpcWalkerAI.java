@@ -20,7 +20,7 @@ import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
+import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -63,7 +63,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		if (!Config.ALLOW_NPC_WALKERS)
 			return;
 
-		_route = NpcWalkerRoutesTable.getInstance().getRouteForNpc(getActor().getNpcId());
+		_route = NpcWalkerRoutesData.getInstance().getRouteForNpc(getActor().getNpcId());
 
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 0, 1000);
 	}

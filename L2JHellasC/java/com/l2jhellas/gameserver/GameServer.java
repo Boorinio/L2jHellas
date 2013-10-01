@@ -52,7 +52,6 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.MaxCheatersTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
@@ -65,6 +64,7 @@ import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
 import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
@@ -202,11 +202,11 @@ public class GameServer
 		}
 
 		Util.printSection("Npc");
+		NpcData.getInstance();
 		if (Config.ALLOW_NPC_WALKERS)
 		{
-			NpcWalkerRoutesTable.getInstance().load();
+			NpcWalkerRoutesData.load();
 		}
-		NpcData.getInstance();
 
 		Util.printSection("Characters");
 		if (Config.COMMUNITY_TYPE.equals("Full"))

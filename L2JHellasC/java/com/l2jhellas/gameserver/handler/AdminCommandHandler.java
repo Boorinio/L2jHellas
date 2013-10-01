@@ -88,7 +88,6 @@ import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTeleport;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTest;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminTvTEngine;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminUnblockIp;
-import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminWalker;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminWho;
 import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminZone;
 
@@ -174,7 +173,7 @@ public class AdminCommandHandler
 		registerAdminCommandHandler(new AdminPremium());
 		registerAdminCommandHandler(new AdminReload());
 		registerAdminCommandHandler(new AdminWho());
-		registerAdminCommandHandler(new AdminWalker());
+		//registerAdminCommandHandler(new AdminWalker());
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}

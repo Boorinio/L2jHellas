@@ -32,13 +32,13 @@ import com.l2jhellas.gameserver.datatables.LevelUpData;
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.sql.BufferSkillsTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.NpcWalkerRoutesTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
 import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.datatables.xml.SummonItemsData;
@@ -155,7 +155,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.startsWith("npcwalkers"))
 				{
-					NpcWalkerRoutesTable.reload();
+					NpcWalkerRoutesData.reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All NPC walker routes have been reloaded.");
 				}
