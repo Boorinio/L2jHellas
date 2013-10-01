@@ -169,8 +169,8 @@
 	<walker_route route_id="12" npc_id="32070" move_point="11" chatText="" move_x="89343" move_y="-140746" move_z="-1536" delay="1" running="true"/>
 	<walker_route route_id="12" npc_id="32070" move_point="12" chatText="" move_x="90605" move_y="-143167" move_z="-1536" delay="1" running="true"/>
 	
-	<walker_route route_id="13" npc_id="70016" move_point="1" chatText="Remember to Vote for us every 12 hours!" move_x="83556" move_y="148061" move_z="-3405" delay="10" running="true"/>
-	<walker_route route_id="13" npc_id="70016" move_point="2" chatText="Remember to Vote for us every 12 hours!" move_x="81003" move_y="147993" move_z="-3469" delay="10" running="true"/>
-	<walker_route route_id="13" npc_id="70016" move_point="3" chatText="Remember to Vote for us every 12 hours!" move_x="81024" move_y="149190" move_z="-3469" delay="10" running="true"/>
-	<walker_route route_id="13" npc_id="70016" move_point="4" chatText="Remember to Vote for us every 12 hours!" move_x="83540" move_y="149190" move_z="-3405" delay="10" running="true"/>
+	<walker_route route_id="13" npc_id="70016" move_point="1" chatText="Remember to Vote for us every 12 hours!" move_x="82725" move_y="147884" move_z="-3464" delay="10" running="true"/>
+	<walker_route route_id="13" npc_id="70016" move_point="2" chatText="Remember to Vote for us every 12 hours!" move_x="81131" move_y="147884" move_z="-3464" delay="10" running="true"/>
+	<walker_route route_id="13" npc_id="70016" move_point="3" chatText="Remember to Vote for us every 12 hours!" move_x="81137" move_y="149332" move_z="-3464" delay="10" running="true"/>
+	<walker_route route_id="13" npc_id="70016" move_point="4" chatText="Remember to Vote for us every 12 hours!" move_x="82732" move_y="149329" move_z="-3464" delay="10" running="true"/>
 </list>
