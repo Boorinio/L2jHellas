@@ -36,11 +36,11 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.Shutdown;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;

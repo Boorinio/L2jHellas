@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.skills.conditions;
 
-import com.l2jhellas.gameserver.GameTimeController;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.skills.Env;
 
 /**

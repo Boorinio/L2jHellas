@@ -14,7 +14,8 @@
  */
 package com.l2jhellas.gameserver.handler.itemhandlers;
 
-import com.l2jhellas.gameserver.datatables.csv.RecipeData;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2RecipeList;
@@ -72,9 +73,8 @@ public class Recipes implements IItemHandler
 					{
 						activeChar.registerDwarvenRecipeList(rp);
 						activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-						sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Dwarven RecipeBook");
-						activeChar.sendPacket(sm);
+						String itemName = ItemTable.getInstance().getTemplate(rp.getItemId()).getName();
+						activeChar.sendMessage("Added recipe " + itemName + " to Dwarven RecipeBook.");
 					}
 				}
 				else
@@ -104,9 +104,8 @@ public class Recipes implements IItemHandler
 					{
 						activeChar.registerCommonRecipeList(rp);
 						activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-						sm.addString("Added recipe \"" + rp.getRecipeName() + "\" to Common RecipeBook");
-						activeChar.sendPacket(sm);
+						String itemName = ItemTable.getInstance().getTemplate(rp.getItemId()).getName();
+						activeChar.sendMessage("Added recipe " + itemName + " to Common RecipeBook.");
 					}
 				}
 				else

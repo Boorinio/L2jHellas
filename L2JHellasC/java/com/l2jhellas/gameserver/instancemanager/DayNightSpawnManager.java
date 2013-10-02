@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;

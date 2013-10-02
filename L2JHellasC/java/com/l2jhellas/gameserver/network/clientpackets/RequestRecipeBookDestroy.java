@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.datatables.csv.RecipeData;
+import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeBookItemList;

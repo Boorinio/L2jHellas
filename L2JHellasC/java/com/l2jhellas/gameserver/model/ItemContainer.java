@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.L2Character;

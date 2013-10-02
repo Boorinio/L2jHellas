@@ -30,8 +30,8 @@ import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;

@@ -51,7 +51,6 @@ import Extensions.RankSystem.RankPvpSystemRankPointsReward;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.SevenSigns;
@@ -66,7 +65,8 @@ import com.l2jhellas.gameserver.cache.WarehouseCache;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
-import com.l2jhellas.gameserver.datatables.csv.RecipeData;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
+import com.l2jhellas.gameserver.controllers.RecipeController;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -77,6 +77,7 @@ import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.FishTable;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
@@ -11887,7 +11888,7 @@ public final class L2PcInstance extends L2Playable
 		// Stop crafting, if in progress
 		try
 		{
-			RecipeData.getInstance().requestMakeItemAbort(this);
+			RecipeController.getInstance().requestMakeItemAbort(this);
 		}
 		catch (Throwable t)
 		{

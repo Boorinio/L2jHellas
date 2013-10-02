@@ -18,7 +18,6 @@ import java.io.File;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.CastleStatus;
 import com.l2jhellas.gameserver.communitybbs.ClanList;
@@ -26,6 +25,7 @@ import com.l2jhellas.gameserver.communitybbs.GrandBossList;
 import com.l2jhellas.gameserver.communitybbs.HeroeList;
 import com.l2jhellas.gameserver.communitybbs.RaidList;
 import com.l2jhellas.gameserver.communitybbs.TopPlayers;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;

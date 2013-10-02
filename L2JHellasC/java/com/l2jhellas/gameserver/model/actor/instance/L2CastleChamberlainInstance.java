@@ -21,8 +21,8 @@ import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
-import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;

@@ -19,9 +19,9 @@ import java.util.logging.Logger;
 import ai.group_template.L2AttackableAIScript;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Effect;

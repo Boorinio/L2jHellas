@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.knownlist.BoatKnownList;

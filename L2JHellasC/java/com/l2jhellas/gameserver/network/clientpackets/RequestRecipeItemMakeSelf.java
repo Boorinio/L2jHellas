@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.datatables.csv.RecipeData;
+import com.l2jhellas.gameserver.controllers.RecipeController;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
@@ -48,7 +48,7 @@ public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 			return;
 		}
 
-		RecipeData.getInstance().requestMakeItem(activeChar, _id);
+		RecipeController.getInstance().requestMakeItem(activeChar, _id);
 	}
 
 	@Override

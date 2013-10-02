@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.TradeController;
+import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;

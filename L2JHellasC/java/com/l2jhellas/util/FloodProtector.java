@@ -18,7 +18,7 @@ import javolution.util.FastMap;
 import javolution.util.FastMap.Entry;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 
 /**
  * Flood protector

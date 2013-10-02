@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver;
+package com.l2jhellas.gameserver.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +31,7 @@ import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2TradeList;

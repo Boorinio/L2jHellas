@@ -17,8 +17,8 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;

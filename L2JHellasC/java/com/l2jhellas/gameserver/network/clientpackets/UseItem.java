@@ -15,8 +15,8 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;

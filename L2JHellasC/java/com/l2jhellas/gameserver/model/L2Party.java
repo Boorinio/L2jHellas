@@ -20,9 +20,9 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;

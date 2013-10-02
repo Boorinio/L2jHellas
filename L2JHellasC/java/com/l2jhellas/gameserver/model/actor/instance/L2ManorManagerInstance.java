@@ -18,8 +18,8 @@ import java.util.StringTokenizer;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.gameserver.TradeController;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;

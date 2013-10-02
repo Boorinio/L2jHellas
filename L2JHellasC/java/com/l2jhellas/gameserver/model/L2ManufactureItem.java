@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.datatables.csv.RecipeData;
+import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 
 public class L2ManufactureItem
 {

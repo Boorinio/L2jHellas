@@ -1,6 +1,6 @@
 #  Created by Kerberos
 import sys
-from com.l2jhellas.gameserver import GameTimeController
+from com.l2jhellas.gameserver.controllers import GameTimeController
 from com.l2jhellas.gameserver.model.quest import State
 from com.l2jhellas.gameserver.model.quest import QuestState
 from com.l2jhellas.gameserver.model.quest.jython import QuestJython as JQuest

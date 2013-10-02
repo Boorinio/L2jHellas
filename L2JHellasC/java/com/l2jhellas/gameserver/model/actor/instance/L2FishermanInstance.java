@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.TradeController;
+import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;

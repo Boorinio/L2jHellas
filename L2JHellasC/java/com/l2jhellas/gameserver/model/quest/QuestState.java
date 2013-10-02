@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.GameTimeController;
 import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
