@@ -42,7 +42,10 @@ public class AdminInvul implements IAdminCommandHandler
 		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
 
 		if (command.equals("admin_invul"))
+		{
 			handleInvul(activeChar);
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
+		}
 		if (command.equals("admin_setinvul"))
 		{
 			L2Object target = activeChar.getTarget();

@@ -39,8 +39,7 @@ public class AdminMammon implements IAdminCommandHandler
 	{/** @formatter:off */
 		"admin_mammon_find",
 		"admin_mammon_respawn",
-		"admin_list_spawns",
-		"admin_msg"
+		"admin_list_spawns"
 	};/** @formatter:on */
 
 	private final boolean _isSealValidation = SevenSigns.getInstance().isSealValidationPeriod();
@@ -145,21 +144,6 @@ public class AdminMammon implements IAdminCommandHandler
 
 			SpawnTable.getInstance().findNPCInstances(activeChar, npcId, teleportIndex);
 		}
-
-		// Used for testing SystemMessage IDs - Use //msg <ID>
-		else if (command.startsWith("admin_msg"))
-		{
-			try
-			{
-				activeChar.sendPacket(SystemMessage.getSystemMessage(Integer.parseInt(command.substring(10).trim())));
-			}
-			catch (Exception e)
-			{
-				activeChar.sendMessage("Command format: //msg <SYSTEM_MSG_ID>");
-				return true;
-			}
-		}
-
 		return true;
 	}
 

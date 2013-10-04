@@ -50,6 +50,7 @@ import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.Manager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -137,11 +138,63 @@ public class AdminReload implements IAdminCommandHandler
 					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);
 				}
-				else if (type.startsWith("htm") || type.startsWith("html"))
+				else if (type.equals("zone"))
 				{
-					HtmCache.getInstance().reload();
+					ZoneManager.getInstance().reload();
 					sendReloadPage(activeChar);
-					activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " megabytes on " + HtmCache.getInstance().getLoadedFiles() + " files loaded.");
+					AdminData.getInstance().broadcastMessageToGMs("Zones can not be reloaded in this version.");
+				}
+				else if (type.equals("html") || type.equals("htm"))
+				{
+					HtmCache.getInstance().reload(Config.DATAPACK_ROOT);
+					activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB on " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
+					sendReloadPage(activeChar);
+				}
+				else if (type.equals("path"))
+				{
+					try
+					{
+						String path = command.split(" ")[1];
+						HtmCache.getInstance().reloadPath(new File(Config.DATAPACK_ROOT, path));
+						activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB in " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
+					}
+					catch (Exception e)
+					{
+						activeChar.sendMessage("Usage: //reload path <path>");
+					}
+					sendReloadPage(activeChar);
+				}
+				else if (type.equals("file"))
+				{
+					try
+					{
+						String path = command.split(" ")[1];
+						if (HtmCache.getInstance().loadFile(new File(Config.DATAPACK_ROOT, path)) != null)
+						{
+							activeChar.sendMessage("Cache[HTML]: file was loaded.");
+						}
+						else
+						{
+							activeChar.sendMessage("Cache[HTML]: file can't be loaded.");
+						}
+					}
+					catch (Exception e)
+					{
+						activeChar.sendMessage("Usage: //reload file <relative_path/file>");
+					}
+					sendReloadPage(activeChar);
+				}
+				else if (command.startsWith("crest_cache"))
+				{
+					CrestCache.reload();
+					activeChar.sendMessage("Cache[Crest]: " + String.format("%.3f", CrestCache.getInstance().getMemoryUsage()) + " megabytes on " + CrestCache.getInstance().getLoadedFiles() + " files loaded.");
+					sendReloadPage(activeChar);
+				}
+				else if (command.startsWith("fix_crest"))
+				{
+					CrestCache.getInstance().convertOldPedgeFiles();
+					activeChar.sendMessage("Cache[Crest]: crests fixed.");
+					sendReloadPage(activeChar);
 				}
 				else if (type.startsWith("item") || type.startsWith("items"))
 				{
@@ -190,12 +243,6 @@ public class AdminReload implements IAdminCommandHandler
 					PcColorTable.process(activeChar);
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("PcColor Table has been reloaded.");
-				}
-				else if (type.startsWith("crest"))
-				{
-					CrestCache.reload();
-					sendReloadPage(activeChar);
-					activeChar.sendMessage("Crest Table has been reloaded.");
 				}
 				else if (type.equals("cw") || type.equals("cursed"))
 				{

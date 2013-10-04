@@ -38,8 +38,6 @@ import com.l2jhellas.logs.GMAudit;
  * - closeall = close all coloseum door
  * - open = open selected door
  * - close = close selected door
- * 
- * @version $Revision: 1.2.4.5 $ $Date: 2005/04/11 10:06:06 $
  */
 public class AdminDoorControl implements IAdminCommandHandler
 {
@@ -52,8 +50,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 		"admin_closeall"
 	};/** @formatter:on */
 
-	// private static final Map<String, Integer> doorMap = new FastMap<String,
-	// Integer>(); //FIXME: should we jute remove this?
+	// private static final Map<String, Integer> doorMap = new FastMap<String, Integer>(); //FIXME: should we jute remove this?
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -97,6 +94,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 				for (Castle castle : CastleManager.getInstance().getCastles())
 					for (L2DoorInstance door : castle.getDoors())
 						door.closeMe();
+				AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 			}
 			if (command.equals("admin_openall"))
 			{
@@ -105,6 +103,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 				for (Castle castle : CastleManager.getInstance().getCastles())
 					for (L2DoorInstance door : castle.getDoors())
 						door.openMe();
+				AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 			}
 			if (command.equals("admin_open"))
 			{

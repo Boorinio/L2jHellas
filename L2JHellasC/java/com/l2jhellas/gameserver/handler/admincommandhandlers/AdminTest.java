@@ -24,6 +24,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 public class AdminTest implements IAdminCommandHandler
@@ -33,11 +34,11 @@ public class AdminTest implements IAdminCommandHandler
 		"admin_test",
 		"admin_stats",
 		"admin_skill_test",
-		"admin_st",
 		"admin_mp",
 		"admin_known",
 		"admin_oly_obs_mode",
-		"admin_obs_mode"
+		"admin_obs_mode",
+		"admin_msg"
 	};/** @formatter:on */
 
 	@Override
@@ -50,7 +51,7 @@ public class AdminTest implements IAdminCommandHandler
 				activeChar.sendMessage(line);
 			}
 		}
-		else if (command.startsWith("admin_skill_test") || command.startsWith("admin_st"))
+		else if (command.startsWith("admin_skill_test"))
 		{
 			try
 			{
@@ -151,6 +152,20 @@ public class AdminTest implements IAdminCommandHandler
 			{
 				activeChar.leaveObserverMode();
 			}
+		}
+		// Used for testing SystemMessage IDs - Use //msg <ID>
+		else if (command.startsWith("admin_msg"))
+		{
+			try
+			{
+				activeChar.sendPacket(SystemMessage.getSystemMessage(Integer.parseInt(command.substring(10).trim())));
+			}
+			catch (Exception e)
+			{
+				activeChar.sendMessage("Command format: //msg <SYSTEM_MSG_ID>");
+				return true;
+			}
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		return true;
 	}

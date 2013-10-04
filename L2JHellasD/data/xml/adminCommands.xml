@@ -21,7 +21,10 @@
 	<admin command="admin_setnoble" accessLevel="7" />
 	<admin command="admin_setdonator" accessLevel="7" />
 	<admin command="admin_endolympiad" accessLevel="7" />
-
+	
+	<!-- ADMIN CHANGE ACCESS LEVEL -->
+	<admin command="admin_changelvl" accessLevel="7" />
+	
 	<!-- ADMIN ANNOUNCEMENTS -->
 	<admin command="admin_list_autoannouncements" accessLevel="7" />
 	<admin command="admin_add_autoannouncement" accessLevel="7" />
@@ -60,14 +63,6 @@
 	<admin command="admin_stopallbuffs" accessLevel="7" />
 	<admin command="admin_areacancel" accessLevel="7" />
 	<admin command="admin_removereuse" accessLevel="7" />
-
-	<!-- ADMIN CACHE -->
-	<admin command="admin_reload_cache_path" accessLevel="7" />
-	<admin command="admin_reload_cache_file" accessLevel="7" />
-	<admin command="admin_fix_cache_crest" accessLevel="7" />
-
-	<!-- ADMIN CHANGE ACCESS LEVEL -->
-	<admin command="admin_changelvl" accessLevel="7" />
 
 	<!-- ADMIN CREATE ITEM -->
 	<admin command="admin_itemcreate" accessLevel="7" />
@@ -244,7 +239,7 @@
 
 	<!-- ADMIN FIGHT CALCULATOR -->
 	<admin command="admin_fight_calculator" accessLevel="7" />
-	<admin command="admin_fight_calculator_fight" accessLevel="7" />
+	<admin command="admin_fight_calculator_show" accessLevel="7" />
 	<admin command="admin_fcs" accessLevel="7" />
 
 	<!-- ADMIN GEODATA -->
@@ -499,7 +494,6 @@
 	<admin command="admin_test" accessLevel="7" />
 	<admin command="admin_stats" accessLevel="7" />
 	<admin command="admin_skill_test" accessLevel="7" />
-	<admin command="admin_st" accessLevel="7" />
 	<admin command="admin_mp" accessLevel="7" />
 	<admin command="admin_known" accessLevel="7" />
 	<admin command="admin_oly_obs_mode" accessLevel="7" />

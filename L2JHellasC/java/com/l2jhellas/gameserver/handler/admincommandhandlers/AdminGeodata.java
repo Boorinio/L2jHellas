@@ -47,17 +47,22 @@ public class AdminGeodata implements IAdminCommandHandler
 		if (Config.GEODATA < 1)
 		{
 			activeChar.sendMessage("Geo Engine is Turned Off!");
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 			return true;
 		}
 
 		if (command.equals("admin_geo_z"))
+		{
 			activeChar.sendMessage("GeoEngine: Geo_Z = " + GeoData.getInstance().getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ()) + " Loc_Z = " + activeChar.getZ());
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
+		}
 		else if (command.equals("admin_geo_type"))
 		{
 			short type = GeoData.getInstance().getType(activeChar.getX(), activeChar.getY());
 			activeChar.sendMessage("GeoEngine: Geo_Type = " + type);
 			short height = GeoData.getInstance().getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			activeChar.sendMessage("GeoEngine: height = " + height);
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.equals("admin_geo_nswe"))
 		{
@@ -72,6 +77,7 @@ public class AdminGeodata implements IAdminCommandHandler
 			if ((nswe & 1) == 0)
 				result += " E";
 			activeChar.sendMessage("GeoEngine: Geo_NSWE -> " + nswe + "->" + result);
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.equals("admin_geo_los"))
 		{
@@ -85,12 +91,14 @@ public class AdminGeodata implements IAdminCommandHandler
 			}
 			else
 				activeChar.sendMessage("None Target!");
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.equals("admin_geo_position"))
 		{
 			activeChar.sendMessage("GeoEngine: Your current position: ");
 			activeChar.sendMessage(".... world coords: x: " + activeChar.getX() + " y: " + activeChar.getY() + " z: " + activeChar.getZ());
 			activeChar.sendMessage(".... geo position: " + GeoData.getInstance().geoPosition(activeChar.getX(), activeChar.getY()));
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.startsWith("admin_geo_load"))
 		{
@@ -116,6 +124,7 @@ public class AdminGeodata implements IAdminCommandHandler
 					activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");
 				}
 			}
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.startsWith("admin_geo_unload"))
 		{
@@ -137,6 +146,7 @@ public class AdminGeodata implements IAdminCommandHandler
 					activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");
 				}
 			}
+			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.startsWith("admin_geo_bug"))
 		{
@@ -148,6 +158,7 @@ public class AdminGeodata implements IAdminCommandHandler
 			catch (StringIndexOutOfBoundsException e)
 			{
 				activeChar.sendMessage("Usage: //admin_geo_bug you coments here");
+				AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 			}
 		}
 		return true;

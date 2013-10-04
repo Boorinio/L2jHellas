@@ -54,7 +54,7 @@ public class AdminAdmin implements IAdminCommandHandler
 		"admin_gmlistoff",
 		"admin_invis",
 		"admin_vis",
-		"admin_invis_menu",
+		"admin_inv_menu",
 		"admin_silence",
 		"admin_diet",
 		"admin_tradeoff",
@@ -78,13 +78,15 @@ public class AdminAdmin implements IAdminCommandHandler
 		{
 			AdminData.getInstance().showGm(activeChar);
 			activeChar.sendMessage("Registerd into gm list");
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_gmlistoff"))
 		{
 			AdminData.getInstance().hideGm(activeChar);
 			activeChar.sendMessage("Removed from gm list");
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
-		if (command.equals("admin_invis_menu"))
+		else if (command.equals("admin_inv_menu"))
 		{
 			if (!activeChar.getAppearance().getInvisible())
 			{
@@ -99,6 +101,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				activeChar.broadcastUserInfo();
 			}
 			RegionBBSManager.getInstance().changeCommunityBoard();
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_invis"))
 		{
@@ -107,12 +110,14 @@ public class AdminAdmin implements IAdminCommandHandler
 			activeChar.decayMe();
 			activeChar.spawnMe();
 			RegionBBSManager.getInstance().changeCommunityBoard();
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_vis"))
 		{
 			activeChar.getAppearance().setVisible();
 			activeChar.broadcastUserInfo();
 			RegionBBSManager.getInstance().changeCommunityBoard();
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_silence"))
 		{
@@ -126,6 +131,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				activeChar.setMessageRefusal(true);
 				activeChar.sendPacket(SystemMessageId.MESSAGE_REFUSAL_MODE);
 			}
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_saveolymp"))
 		{
@@ -138,6 +144,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				activeChar.sendMessage("Typed wrong command!");
 			}
 			activeChar.sendMessage("Olympiad data is saved!");
+			AdminHelpPage.showHelpPage(activeChar, "game_menu.htm");
 		}
 		else if (command.startsWith("admin_manualhero"))
 		{
@@ -150,6 +157,7 @@ public class AdminAdmin implements IAdminCommandHandler
 				activeChar.sendMessage("Typed wrong command!");
 			}
 			activeChar.sendMessage("Heroes are formed");
+			AdminHelpPage.showHelpPage(activeChar, "game_menu.htm");
 		}
 		else if (command.startsWith("admin_diet"))
 		{
@@ -185,6 +193,7 @@ public class AdminAdmin implements IAdminCommandHandler
 			{
 				activeChar.refreshOverloaded();
 			}
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_tradeoff"))
 		{
@@ -215,6 +224,7 @@ public class AdminAdmin implements IAdminCommandHandler
 					activeChar.sendMessage("Trade refusal is enabled");
 				}
 			}
+			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_set"))
 		{

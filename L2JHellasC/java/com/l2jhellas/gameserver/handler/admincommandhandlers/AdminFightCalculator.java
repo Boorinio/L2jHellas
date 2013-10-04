@@ -113,6 +113,14 @@ public class AdminFightCalculator implements IAdminCommandHandler
 		{
 			replyMSG.append("<html><title>Selected mobs to fight</title>");
 			replyMSG.append("<body>");
+			replyMSG.append("<table width=260><tr>");
+			replyMSG.append("<td><button value=\"Main\" action=\"bypass -h admin_admin\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Game\" action=\"bypass -h admin_admin2\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Effects\" action=\"bypass -h admin_admin3\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Server\" action=\"bypass -h admin_admin4\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Mods\" action=\"bypass -h admin_admin5\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("</tr>");
+			replyMSG.append("</table><br1>");
 			replyMSG.append("<table>");
 			replyMSG.append("<tr><td>First</td><td>Second</td></tr>");
 			replyMSG.append("<tr><td>level " + lvl1 + "</td><td>level " + lvl2 + "</td></tr>");
@@ -138,7 +146,16 @@ public class AdminFightCalculator implements IAdminCommandHandler
 		else if (lvl2 != 0 && npc2 == null)
 		{
 			replyMSG.append("<html><title>Select second mob to fight</title>");
-			replyMSG.append("<body><table>");
+			replyMSG.append("<body>");
+			replyMSG.append("<table width=260><tr>");
+			replyMSG.append("<td><button value=\"Main\" action=\"bypass -h admin_admin\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Game\" action=\"bypass -h admin_admin2\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Effects\" action=\"bypass -h admin_admin3\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Server\" action=\"bypass -h admin_admin4\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Mods\" action=\"bypass -h admin_admin5\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("</tr>");
+			replyMSG.append("</table><br1>");
+			replyMSG.append("<table>");
 			L2NpcTemplate[] npcs = NpcData.getInstance().getAllOfLevel(lvl2);
 			for (L2NpcTemplate n : npcs)
 			{
@@ -150,6 +167,14 @@ public class AdminFightCalculator implements IAdminCommandHandler
 		{
 			replyMSG.append("<html><title>Select mobs to fight</title>");
 			replyMSG.append("<body>");
+			replyMSG.append("<table width=260><tr>");
+			replyMSG.append("<td><button value=\"Main\" action=\"bypass -h admin_admin\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Game\" action=\"bypass -h admin_admin2\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Effects\" action=\"bypass -h admin_admin3\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Server\" action=\"bypass -h admin_admin4\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("<td><button value=\"Mods\" action=\"bypass -h admin_admin5\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+			replyMSG.append("</tr>");
+			replyMSG.append("</table><br1>");
 			replyMSG.append("<table>");
 			replyMSG.append("<tr><td>First</td><td>Second</td></tr>");
 			replyMSG.append("<tr><td><edit var=\"lvl1\" width=80></td><td><edit var=\"lvl2\" width=80></td></tr>");
@@ -297,25 +322,33 @@ public class AdminFightCalculator implements IAdminCommandHandler
 		TextBuilder replyMSG = new TextBuilder();
 		replyMSG.append("<html><title>Selected mobs to fight</title>");
 		replyMSG.append("<body>");
+		replyMSG.append("<table width=260><tr>");
+		replyMSG.append("<td><button value=\"Main\" action=\"bypass -h admin_admin\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+		replyMSG.append("<td><button value=\"Game\" action=\"bypass -h admin_admin2\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+		replyMSG.append("<td><button value=\"Effects\" action=\"bypass -h admin_admin3\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+		replyMSG.append("<td><button value=\"Server\" action=\"bypass -h admin_admin4\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+		replyMSG.append("<td><button value=\"Mods\" action=\"bypass -h admin_admin5\" width=50 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
+		replyMSG.append("</tr>");
+		replyMSG.append("</table><br1>");
 		replyMSG.append("<table>");
 		if (params.length() == 0)
 		{
-			replyMSG.append("<tr><td width=140>Parameter</td><td width=70>me</td><td width=70>target</td></tr>");
+			replyMSG.append("<tr><td width=140>Parameter</td><td width=70>Me</td><td width=70>Target</td></tr>");
 		}
 		else
 		{
 			replyMSG.append("<tr><td width=140>Parameter</td><td width=70>" + ((L2NpcTemplate) npc1.getTemplate()).name + "</td><td width=70>" + ((L2NpcTemplate) npc2.getTemplate()).name + "</td></tr>");
 		}
-		replyMSG.append("<tr><td>miss</td><td>" + miss1 + "%</td><td>" + miss2 + "%</td></tr>");
-		replyMSG.append("<tr><td>shld</td><td>" + shld2 + "%</td><td>" + shld1 + "%</td></tr>");
-		replyMSG.append("<tr><td>crit</td><td>" + crit1 + "%</td><td>" + crit2 + "%</td></tr>");
+		replyMSG.append("<tr><td>Miss</td><td>" + miss1 + "%</td><td>" + miss2 + "%</td></tr>");
+		replyMSG.append("<tr><td>Shield</td><td>" + shld2 + "%</td><td>" + shld1 + "%</td></tr>");
+		replyMSG.append("<tr><td>Crit</td><td>" + crit1 + "%</td><td>" + crit2 + "%</td></tr>");
 		replyMSG.append("<tr><td>pAtk / pDef</td><td>" + ((int) patk1) + " / " + ((int) pdef1) + "</td><td>" + ((int) patk2) + " / " + ((int) pdef2) + "</td></tr>");
-		replyMSG.append("<tr><td>made hits</td><td>" + sAtk1 + "</td><td>" + sAtk2 + "</td></tr>");
-		replyMSG.append("<tr><td>dmg per hit</td><td>" + ((int) dmg1) + "</td><td>" + ((int) dmg2) + "</td></tr>");
-		replyMSG.append("<tr><td>got dmg</td><td>" + tdmg2 + "</td><td>" + tdmg1 + "</td></tr>");
-		replyMSG.append("<tr><td>got regen</td><td>" + hp1 + "</td><td>" + hp2 + "</td></tr>");
-		replyMSG.append("<tr><td>had HP</td><td>" + (int) maxHp1 + "</td><td>" + (int) maxHp2 + "</td></tr>");
-		replyMSG.append("<tr><td>die</td>");
+		replyMSG.append("<tr><td>Landing hits</td><td>" + sAtk1 + "</td><td>" + sAtk2 + "</td></tr>");
+		replyMSG.append("<tr><td>Dmg per hit</td><td>" + ((int) dmg1) + "</td><td>" + ((int) dmg2) + "</td></tr>");
+		replyMSG.append("<tr><td>Dmg get</td><td>" + tdmg2 + "</td><td>" + tdmg1 + "</td></tr>");
+		replyMSG.append("<tr><td>Regenerate</td><td>" + hp1 + "</td><td>" + hp2 + "</td></tr>");
+		replyMSG.append("<tr><td>HP Left</td><td>" + (int) maxHp1 + "</td><td>" + (int) maxHp2 + "</td></tr>");
+		replyMSG.append("<tr><td>Die</td>");
 		if (tdmg2 - hp1 > 1)
 			replyMSG.append("<td>" + (int) (100 * maxHp1 / (tdmg2 - hp1)) + " sec</td>");
 		else
