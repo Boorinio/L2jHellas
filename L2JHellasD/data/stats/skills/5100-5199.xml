@@ -536,11 +536,15 @@
 	<skill id="5144" levels="1" name="Mirage">
 		<set name="castRange" val="900" />
 		<set name="effectRange" val="1400" />
-		<set name="operateType" val="OP_ACTIVE" />
+		<set name="operateType" val="OP_CHANCE" />
+		<set name="chanceType" val="ON_ATTACKED"/>
+		<set name="activationChance" val="60"/>
 		<set name="skillType" val="AGGDAMAGE" />
 		<set name="target" val="TARGET_ONE" />
+		<set name="bestowed" val="true"/>
 		<for>
-			<effect name="RemoveTarget" val="0" />
+			<!-- check after the auto target issue its useless now -->
+			<effect count="1" name="RemoveTarget" time="1" val="0" noicon="1" effectPower="80" effectType="DEBUFF" />
 		</for>
 	</skill>
 	<skill id="5145" levels="1" name="Day of Doom">

@@ -957,7 +957,6 @@
 		<set name="triggeredLevel" val="1" />
 		<for>
 			<effect count="1" name="BestowSkill" time="60" val="0" />
-			<effect count="1" name="RemoveTarget" time="1" val="0" noicon="1" effectPower="80" effectType="DEBUFF"/>
 		</for>
 	</skill>
 	<skill id="446" levels="1" name="Dodge">
