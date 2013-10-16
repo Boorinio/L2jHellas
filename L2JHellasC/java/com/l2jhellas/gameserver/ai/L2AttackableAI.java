@@ -138,7 +138,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	 */
 	private boolean autoAttackCondition(L2Character target)
 	{
-		if (target == null || _actor == null)
+		if (target == null || _actor == null || target instanceof L2DoorInstance || target.isAlikeDead())
 			return false;
 		
 		L2Attackable me = (L2Attackable) _actor;
@@ -153,12 +153,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				return false;
 		}
 		
-		// Check if the target isn't a Folk or a Door
-		if (target instanceof L2DoorInstance)
-			return false;
-		
 		// Check if the target isn't dead, is in the Aggro range and is at the same height
-		if (target.isAlikeDead() || (target instanceof L2Playable && !me.isInsideRadius(target, me.getAggroRange(), true, false)))
+		if (target instanceof L2Playable && !me.isInsideRadius(target, me.getAggroRange(), true, false))
 			return false;
 		
 		// Check if the target is a L2PlayableInstance
@@ -381,19 +377,18 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	{
 		// Calculate the attack timeout
 		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
-		
-		// self and buffs
-		
-		if (lastBuffTick + 30 < GameTimeController.getGameTicks())
+		// Buffs
+		if (Rnd.get(RANDOM_WALK_RATE) == 0)
 		{
-			if (_skillrender.hasBuffSkill())
-				for (L2Skill sk : _skillrender._buffskills)
-					if (Cast(sk))
-						break;
-			
-			lastBuffTick = GameTimeController.getGameTicks();
+			for (L2Skill sk : _skillrender._buffskills)
+			{
+				if (getActor().getFirstEffect(sk) != null)
+					continue;
+				
+				clientStopMoving(null);
+				_accessor.doCast(sk);
+			}
 		}
-		
 		// Manage the Attack Intention : Stop current Attack (if necessary), Start a new Attack and Launch Think Event
 		super.onIntentionAttack(target);
 	}

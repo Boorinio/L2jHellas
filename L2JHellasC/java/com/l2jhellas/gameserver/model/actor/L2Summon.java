@@ -286,56 +286,6 @@ public abstract class L2Summon extends L2Playable
 		_pvpFlag = pvpFlag;
 	}
 
-	@Override
-	protected void doAttack(L2Character target)
-	{
-		if(this==null || target==null)
-			return;
-		
-		if (isInsidePeaceZone(this, target))
-		{
-			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			return;
-		}
-		if (!target.isAttackable())
-		{
-			if (!(this instanceof L2SiegeSummonInstance))
-			{
-				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				return;
-			}
-		}
-		if (!Config.ALLOW_HIT_OWNER)
-		{
-			if (target.getObjectId() == this.getOwner().getObjectId())
-			{
-				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				return;
-			}
-		}
-			if(Config.MOD_GVE_ENABLE_FACTION && (target instanceof L2PcInstance || target instanceof L2PetInstance || target instanceof L2Summon))
-			{
-				if (isInsidePeaceZone(this, target))
-				{
-					getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-					return;
-				}
-				
-			if (this.getOwner().isgood() && target.getActingPlayer().isgood())
-			{
-				this.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				return;
-			}
-			else if (this.getOwner().isevil()  && target.getActingPlayer().isgood())
-			{
-				this.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				return;
-			}
-			}
-				
-		super.doAttack(target);
-	}
-
 	public byte getPvpFlag()
 	{
 		return _pvpFlag;

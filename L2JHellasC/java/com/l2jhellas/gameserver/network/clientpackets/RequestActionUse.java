@@ -171,7 +171,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					{
 						activeChar.sendPacket(SystemMessageId.DEAD_PET_CANNOT_BE_RETURNED);
 					}
-					else if (pet.isAttackingNow() || pet.isRooted())
+					else if (pet.isAttackingNow() || pet.isRooted() || pet.getOwner().isAttackingNow())
 					{
 						activeChar.sendPacket(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE);
 					}

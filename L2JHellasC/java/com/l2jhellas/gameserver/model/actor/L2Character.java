@@ -625,10 +625,36 @@ public abstract class L2Character extends L2Object
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
+		if (this instanceof L2Summon)
+		{
+			if (!Config.ALLOW_HIT_OWNER)
+			{
+				if (target.getObjectId() == ((L2Summon) this).getOwner().getObjectId())
+				{
+					((L2Summon) this).getOwner().sendPacket(SystemMessageId.INCORRECT_TARGET);
+					return;
+				}
+				if (Config.MOD_GVE_ENABLE_FACTION && (target instanceof L2PcInstance || target instanceof L2PetInstance || target instanceof L2Summon))
+				{
+					if (isInsidePeaceZone(this, target))
+					{
+						return;
+					}
+					
+					if (((L2Summon) this).getOwner().isgood() && target.getActingPlayer().isgood())
+					{
+						return;
+					}
+					else if (((L2Summon) this).getOwner().isevil() && target.getActingPlayer().isgood())
+					{
+						return;
+					}
+				}
+			}
+		}
 		if (isAttackingDisabled())
 			return;
-		if(target instanceof L2DoorInstance && !((L2DoorInstance) target).isAttackable(this))
+		if (target instanceof L2DoorInstance && !((L2DoorInstance) target).isAttackable(this))
 			return;
 		
 		if (this instanceof L2PcInstance)

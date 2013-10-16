@@ -52,19 +52,23 @@ public class AdminCreateItem implements IAdminCommandHandler
 			{
 				String val = command.substring(17);
 				StringTokenizer st = new StringTokenizer(val);
+				L2PcInstance target = (L2PcInstance) activeChar.getTarget();
+				if(target == null)
+					target = activeChar;
+					
 				if (st.countTokens() == 2)
 				{
 					String id = st.nextToken();
 					int idval = Integer.parseInt(id);
 					String num = st.nextToken();
 					int numval = Integer.parseInt(num);
-					createItem(activeChar, idval, numval);
+					createItem(target, idval, numval);
 				}
 				else if (st.countTokens() == 1)
 				{
 					String id = st.nextToken();
 					int idval = Integer.parseInt(id);
-					createItem(activeChar, idval, 1);
+					createItem(target, idval, 1);
 				}
 			}
 			catch (StringIndexOutOfBoundsException e)

@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.entity.engines.ChaosEvent;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.util.L2FastList;
 
@@ -120,7 +121,7 @@ public class L2BossZone extends L2ZoneType
 					return;
 				}
 				
-				if(!player.isGM() && !player.isinZodiac)
+				if (!player.isGM() && (player.isinZodiac && ChaosEvent._isChaosActive))
 				{
 					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 					return;
