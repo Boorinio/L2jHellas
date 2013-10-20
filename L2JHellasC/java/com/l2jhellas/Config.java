@@ -67,7 +67,7 @@ public final class Config
 	private static final String OPTIONS_FILE = "./config/Main/Options.ini";
 	private static final String ID_CONFIG_FILE = "./config/Main/IDfactory.ini";
 	private static final String SEVENSIGNS_FILE = "./config/Main/Sevensigns.ini";
-	private static final String CHAT_FILTER_FILE = "./config/Main/ChatFilter.txt";
+	
 	private static final String RATES_CONFIG_FILE = "./config/Main/Rates.ini";
 	private static final String OTHER_CONFIG_FILE = "./config/Main/Other.ini";
 	private static final String FLOOD_PROTECTORS_FILE = "./config/Main/AntiFlood.ini";
@@ -92,6 +92,8 @@ public final class Config
 	private static final String MOD_CUSTOM_NPC_CONFIG_FILE = "./config/Mods/Custom Npcs.ini";
 	// Olympiad Folder
 	private static final String OLYMPIAD_FILE = "./config/Olympiad/OlySettings.ini";
+	// Others
+	private static final String CHAT_FILTER_FILE = "./config/Others/ChatFilter.txt";
 	// Version Folder
 	private static final String SERVER_VERSION_FILE = "./config/Version/L2J Hellas Version.ini";
 	// Network Folder
