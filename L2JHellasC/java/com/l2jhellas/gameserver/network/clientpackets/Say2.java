@@ -158,7 +158,7 @@ public final class Say2 extends L2GameClientPacket
 			return;
 		}
 		
-		if(_type == PETITION_PLAYER && activeChar.isGM())
+		if (_type == PETITION_PLAYER && activeChar.isGM())
 		{
 			_type = PETITION_GM;
 		}
@@ -314,7 +314,7 @@ public final class Say2 extends L2GameClientPacket
 				}
 			}
 			activeChar.setPunishLevel(PunishLevel.JAIL, punishmentLength);
-			activeChar.sendMessage("System: Muted for " + Config.CHAT_FILTER_PUNISHMENT_PARAM1 + " minutes.");
+			activeChar.sendMessage("System: Jailed for " + Config.CHAT_FILTER_PUNISHMENT_PARAM1 + " minutes.");
 		}
 		else if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("karma"))
 		{
@@ -324,7 +324,7 @@ public final class Say2 extends L2GameClientPacket
 		else if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("chat"))
 		{
 			activeChar.setPunishLevel(PunishLevel.CHAT, Config.CHAT_FILTER_PUNISHMENT_PARAM1);
-			activeChar.sendMessage("System: Chat banned for " + Config.CHAT_FILTER_PUNISHMENT_PARAM1 + " minutes.");
+			activeChar.sendMessage("System: Muted for " + Config.CHAT_FILTER_PUNISHMENT_PARAM1 + " minutes.");
 		}
 		activeChar.sendMessage("The word " + _text + " is not allowed!");
 		_text = filteredText;
