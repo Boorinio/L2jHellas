@@ -306,6 +306,8 @@ public class CharEffectList
 					case HEAL_PERCENT:
 					case MANAHEAL_PERCENT:
 						buffCount++;
+					default:
+						break;
 				}
 			}
 		}
@@ -738,6 +740,8 @@ public class CharEffectList
 								if (effectsToRemove < 0)
 									break; // break for()
 							}
+						default:
+							break;
 					}
 				}
 			}
@@ -896,6 +900,8 @@ public class CharEffectList
 				{
 					case SIGNET_GROUND:
 						continue;
+					default:
+						break;
 				}
 				
 				if (e.getInUse())
@@ -930,6 +936,8 @@ public class CharEffectList
 				{
 					case SIGNET_GROUND:
 						continue;
+					default:
+						break;
 				}
 				
 				if (e.getInUse())

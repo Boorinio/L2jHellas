@@ -31,8 +31,6 @@ import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.PetInventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.SummonKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.SummonStat;
 import com.l2jhellas.gameserver.model.actor.status.SummonStatus;

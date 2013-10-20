@@ -1003,6 +1003,56 @@ public final class L2PcInstance extends L2Playable
 	private boolean _marryrequest = false;
 	private boolean _marryaccepted = false;
 	
+	// summon friend
+	/** The _summon request. */
+	private SummonRequest _summonRequest = new SummonRequest();
+
+	/**
+	 * The Class SummonRequest.
+	 */
+	protected static class SummonRequest
+	{
+		/** The _target. */
+		private L2PcInstance _target = null;
+
+		/** The _skill. */
+		private L2Skill _skill = null;
+
+		/**
+		 * Sets the target.
+		 * 
+		 * @param destination
+		 *            the destination
+		 * @param skill
+		 *            the skill
+		 */
+		public void setTarget(L2PcInstance destination, L2Skill skill)
+		{
+			_target = destination;
+			_skill = skill;
+		}
+
+		/**
+		 * Gets the target.
+		 * 
+		 * @return the target
+		 */
+		public L2PcInstance getTarget()
+		{
+			return _target;
+		}
+
+		/**
+		 * Gets the skill.
+		 * 
+		 * @return the skill
+		 */
+		public L2Skill getSkill()
+		{
+			return _skill;
+		}
+	}
+	
 	// Current force buff this caster is casting to a target
 	protected ForceBuff _forceBuff;
 	
@@ -11411,7 +11461,10 @@ public final class L2PcInstance extends L2Playable
 			}
 			
 			_revivePet = Pet;
-			sendPacket(new ConfirmDlg(SystemMessageId.RESSURECTION_REQUEST_BY_S1.getId(), Reviver.getName()));
+			ConfirmDlg dlg = new ConfirmDlg(SystemMessageId.RESSURECTION_REQUEST_BY_S1.getId());
+			dlg.addString(Reviver.getName());
+			sendPacket(dlg);
+			dlg = null;
 		}
 	}
 	
@@ -11679,6 +11732,125 @@ public final class L2PcInstance extends L2Playable
 		}
 	}
 	
+	/**
+     * Action teleport *.
+     *
+     * @param answer the answer
+     * @param requesterId the requester id
+     */
+    public void teleportAnswer(int answer, int requesterId)
+    {
+        if (_summonRequest.getTarget() == null)
+            return;
+        if (answer == 1 && _summonRequest.getTarget().getObjectId() == requesterId)
+        {
+            teleToTarget(this, _summonRequest.getTarget(), _summonRequest.getSkill());
+        }
+        _summonRequest.setTarget(null, null);
+    }
+
+	/**
+	 * Tele to target.
+	 * 
+	 * @param targetChar
+	 *            the target char
+	 * @param summonerChar
+	 *            the summoner char
+	 * @param summonSkill
+	 *            the summon skill
+	 */
+	public static void teleToTarget(L2PcInstance targetChar, L2PcInstance summonerChar, L2Skill summonSkill)
+	{
+		if (targetChar == null || summonerChar == null || summonSkill == null)
+			return;
+
+		if (!checkSummonerStatus(summonerChar))
+			return;
+		if (!checkSummonTargetStatus(targetChar, summonerChar))
+			return;
+
+		int itemConsumeId = summonSkill.getTargetConsumeId();
+		int itemConsumeCount = summonSkill.getTargetConsume();
+		if (itemConsumeId != 0 && itemConsumeCount != 0)
+		{
+			// Delete by rocknow
+			if (targetChar.getInventory().getInventoryItemCount(itemConsumeId, 0) < itemConsumeCount)
+			{
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_REQUIRED_FOR_SUMMONING);
+				sm.addItemName(summonSkill.getTargetConsumeId());
+				targetChar.sendPacket(sm);
+				return;
+			}
+			targetChar.getInventory().destroyItemByItemId("Consume", itemConsumeId, itemConsumeCount, summonerChar, targetChar);
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED);
+			sm.addItemName(summonSkill.getTargetConsumeId());
+			targetChar.sendPacket(sm);
+		}
+		targetChar.teleToLocation(summonerChar.getX(), summonerChar.getY(), summonerChar.getZ(), true);
+	}
+	
+    /**
+     * Check summon target status.
+     *
+     * @param target the target
+     * @param summonerChar the summoner char
+     * @return true, if successful
+     */
+    public static boolean checkSummonTargetStatus(L2Object target, L2PcInstance summonerChar)
+    {
+        if (target == null || !(target instanceof L2PcInstance))
+            return false;
+
+        L2PcInstance targetChar = (L2PcInstance) target;
+
+        if (targetChar.isAlikeDead() || targetChar.inObserverMode() || targetChar.isInStoreMode() || targetChar.isRooted() || targetChar.isInCombat())
+            return false;
+
+        if (targetChar.isInOlympiadMode())
+        {
+            summonerChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_CANNOT_SUMMON_PLAYERS_WHO_ARE_IN_OLYMPIAD));
+            return false;
+        }
+
+        if (targetChar.isFestivalParticipant() || targetChar.isFlying() || targetChar.isInCombat() || targetChar.isInsideZone(L2Character.ZONE_NOSUMMONFRIEND))
+        {
+            summonerChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
+            return false;
+        }
+        return true;
+    }
+    
+	/**
+	 * Check summoner status.
+	 * 
+	 * @param summonerChar
+	 *            the summoner char
+	 * @return true, if successful
+	 */
+	public static boolean checkSummonerStatus(L2PcInstance summonerChar)
+	{
+		if (summonerChar == null)
+			return false;
+
+		if (summonerChar.isInOlympiadMode())
+		{
+			summonerChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT));
+			return false;
+		}
+
+		if (summonerChar.inObserverMode())
+		{
+			return false;
+		}
+
+		if (summonerChar.isInsideZone(L2Character.ZONE_NOSUMMONFRIEND) || summonerChar.isFlying() || summonerChar.isMounted())
+		{
+			summonerChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
+			return false;
+		}
+		return true;
+	}
+    
 	public void addSnooper(L2PcInstance pci)
 	{
 		if (!_snoopListener.contains(pci))

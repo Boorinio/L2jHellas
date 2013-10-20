@@ -29,10 +29,10 @@ dick
 @$$
 @ss
 @sshole
-*damn
-*dyke
-*fuck*
-*shit*
+damn
+dyke
+fuck
+shit
 $#!+
 $1ut
 $h1t
@@ -64,7 +64,7 @@ arian
 arschloch
 arschloch
 arse
-arse*
+arse
 arsehole
 aryan
 ash0le
@@ -107,7 +107,7 @@ azzhole
 b!+ch
 b!tch
 B@lls
-b00b*
+b00b
 b00bs
 b17ch
 b1tch
@@ -147,7 +147,7 @@ bimbo
 bitch
 bitch
 bitch
-bitch*
+bitch
 bitched
 bitches
 bitches
@@ -170,7 +170,7 @@ boink
 boiolas
 bollix
 bollock
-bollock*
+bollock
 bollocks
 bollok
 Bone
@@ -277,7 +277,7 @@ cock
 cock
 cock-head
 cock-sucker
-Cock*
+Cock
 cockblock
 cockhead
 cockholster
@@ -317,7 +317,7 @@ cunny
 cunt
 cunt
 cunt
-cunt*
+cunt
 cuntface
 cunthunter
 cuntlick
@@ -344,7 +344,7 @@ dego
 dick
 dick
 dick-ish
-dick*
+dick
 dickbag
 dickdipper
 dickflipper
@@ -358,7 +358,7 @@ dickwhipper
 dickzipper
 diddle
 dike
-dike*
+dike
 dild0
 dild0s
 dildo
@@ -403,7 +403,7 @@ dziwka
 ejackulate
 Ejaculate
 ejakulate
-Ekrem*
+Ekrem
 Ekto
 enculer
 enema
@@ -422,14 +422,14 @@ f.u.c.k
 f@g
 f@gg0t
 f@ggot
-F*ck
+Fck
 fack
 faen
 faerie
 faery
 fag
 fag
-fag*
+fag
 fag1t
 faget
 fagg
@@ -473,7 +473,7 @@ ficken
 fisted
 fisting
 Fisty
-fitt*
+fitt
 Flikker
 flipping the bird
 floozy
@@ -487,8 +487,8 @@ frack
 freex
 frigg
 frigga
-Fu(*
-fu*ck
+Fu(
+fuck
 fubar
 fuck
 fuck
@@ -521,7 +521,7 @@ fudger
 fuk
 fuk
 fuk
-fuk*
+fuk
 Fukah
 Fuken
 fuker
@@ -598,7 +598,7 @@ Hiv
 hoar
 hobag
 hoer
-hoer*
+hoer
 hom0
 Homey
 homo
@@ -658,7 +658,7 @@ jizz bag
 jizzed
 junkie
 junky
-kanker*
+kanker
 kawk
 kike
 kike
@@ -688,9 +688,9 @@ kunts
 kuntz
 Kurac
 kurwa
-kusi*
+kusi
 kyke
-kyrpa*
+kyrpa
 l3i+ch
 l3itch
 labia
@@ -731,14 +731,14 @@ massterbait
 masstrbait
 masstrbate
 masterbaiter
-masterbat*
+masterbat
 masterbat3
 masterbate
 masterbate
 masterbates
 masterbating
 Masterbation
-masturbat*
+masturbat
 masturbate
 masturbate
 masturbating
@@ -749,7 +749,7 @@ Menses
 Menstruate
 Menstruation
 Merd
-merd*
+merd
 meth
 mibun
 mofo
@@ -771,14 +771,14 @@ Mother Fukkah
 Mother Fukker
 mother humper
 mother-fucker
-motherf*cker
+motherfcker
 Motherfucka
 motherfucker
 Motherfucker
 motherfucking
 mouliewop
 mtherfucker
-mthrf*cker
+mthrfcker
 mthrfucker
 mthrfucking
 muff
@@ -817,7 +817,7 @@ niggaz
 nigger
 nigger
 nigger;
-nigger*
+nigger
 niggers
 niggle
 nigur;
@@ -853,7 +853,7 @@ ovary
 ovum
 ovums
 p.u.s.s.y.
-p*ssy
+pssy
 p0rn
 packi
 packie
@@ -865,7 +865,7 @@ paky
 pantie
 panties
 panty
-paska*
+paska
 Pastie
 pasty
 PCP
@@ -905,16 +905,16 @@ Phuk
 Phuker
 Phukker
 picka
-pierdol*
+pierdol
 Pillowbiter
-pillu*
+pillu
 pimmel
 pimp
 pimpis
 pinko
 piss
 piss-off
-piss*
+piss
 pissed
 pissoff
 pizda
@@ -968,7 +968,7 @@ puuker
 qahbeh
 queaf
 Queef
-queef*
+queef
 queer
 queer
 queero
@@ -1018,7 +1018,7 @@ s-o-b
 s.h.i.t.
 s.o.b.
 s.o.b.
-s*o*b
+sob
 s0b
 sadism
 sadist
@@ -1030,7 +1030,7 @@ scag
 scank
 scantily
 schaffer
-scheiss*
+scheiss
 schizo
 schlampe
 schlong
@@ -1061,8 +1061,8 @@ sh!+
 sh!t
 Sh!t
 sh!t
-sh!t*
-sh*t
+sh!t
+sht
 sh1t
 sh1t
 sh1ter
@@ -1174,7 +1174,7 @@ testee
 testes
 testical
 testicle
-testicle*
+testicle
 Testis
 thrust
 thug
@@ -1186,7 +1186,7 @@ titi
 tits
 tits
 titt
-titt*
+titt
 tittiefucker
 titties
 titty
@@ -1240,7 +1240,7 @@ wad
 wang
 wank
 wank
-wank*
+wank
 wanker
 wazoo
 wedgie
@@ -1252,7 +1252,7 @@ weirdo
 wench
 wet back
 wetback
-wetback*
+wetback
 wh00r
 wh0r3f@ce
 wh0re
@@ -1281,7 +1281,7 @@ wigger
 womb
 woody
 wop
-wop*
+wop
 wtf
 x-rated
 xrated

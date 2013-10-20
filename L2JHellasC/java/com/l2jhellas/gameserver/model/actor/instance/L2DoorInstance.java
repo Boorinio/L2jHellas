@@ -457,11 +457,11 @@ public class L2DoorInstance extends L2Character
 					player.gatesRequest(this);
 					if (!getOpen())
 					{
-						player.sendPacket(new ConfirmDlg(1140, _name));
+						player.sendPacket(new ConfirmDlg(1140));
 					}
 					else
 					{
-						player.sendPacket(new ConfirmDlg(1141, _name));
+						player.sendPacket(new ConfirmDlg(1141));
 					}
 				}
 			}

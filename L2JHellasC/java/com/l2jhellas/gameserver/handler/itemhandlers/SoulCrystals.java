@@ -98,6 +98,7 @@ public class SoulCrystals implements IItemHandler
 	{
 		private final L2PcInstance _activeChar;
 		private final L2Attackable _target;
+		@SuppressWarnings("unused")
 		private final int _crystalId;
 
 		CrystalFinalizer(L2PcInstance activeChar, L2Object target, int crystalId)

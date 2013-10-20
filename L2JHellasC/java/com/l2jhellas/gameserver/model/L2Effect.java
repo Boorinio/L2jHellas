@@ -151,6 +151,7 @@ public abstract class L2Effect
 	}
 
 	private ScheduledFuture<?> _currentFuture;
+	@SuppressWarnings("unused")
 	private EffectTask _currentTask;
 
 	/** The Identifier of the stack group */

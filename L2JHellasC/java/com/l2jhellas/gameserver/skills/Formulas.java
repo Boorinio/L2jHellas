@@ -1801,6 +1801,8 @@ public final class Formulas
 			case PARALYZE:
 				multiplier = 2 - Math.sqrt(MENbonus[target.getMEN()]);
 				break;
+			default:
+				break;
 		}
 		
 		return Math.max(0, multiplier);

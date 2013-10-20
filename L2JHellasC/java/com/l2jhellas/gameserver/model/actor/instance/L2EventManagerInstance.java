@@ -110,7 +110,10 @@ public class L2EventManagerInstance extends L2Npc
 						{
 							player.setRaidParameters(player, type, eventPoints, npcId, npcAm, minPeople, bufflist, prizeLevel, this, _finalPlayers);
 							_awaitingplayers.add(player);
-							player.sendPacket(new ConfirmDlg(614, " A total of " + (_finalPlayers.size()) + " members of your " + " clan are Eligible for the event. Do you want to continue?"));
+							ConfirmDlg dlg = new ConfirmDlg(614);
+					        dlg.addString("A total of " + (_finalPlayers.size()) + " members of your clan are Eligible for the event. Do you want to continue?");
+					        player.sendPacket(dlg);
+					        dlg = null;
 						}
 						else
 						{
@@ -148,7 +151,10 @@ public class L2EventManagerInstance extends L2Npc
 						{
 							player.setRaidParameters(player, type, eventPoints, npcId, npcAm, minPeople, bufflist, prizeLevel, this, _finalPlayers);
 							_awaitingplayers.add(player);
-							player.sendPacket(new ConfirmDlg(614, " A total of " + (_finalPlayers.size()) + " members of your " + "party are Eligible for the event. Do you want to continue?"));
+							ConfirmDlg dlg = new ConfirmDlg(614);
+					        dlg.addString("A total of " + (_finalPlayers.size()) + " members of your party are Eligible for the event. Do you want to continue?");
+					        player.sendPacket(dlg);
+					        dlg = null;
 						}
 						else
 						{

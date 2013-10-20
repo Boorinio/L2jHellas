@@ -299,6 +299,8 @@ public final class OlympiadGameTask implements Runnable
 					_game = null;
 					return;
 				}
+				default:
+					break;
 			}
 			ThreadPoolManager.getInstance().scheduleGeneral(this, delay * 1000);
 		}
@@ -316,6 +318,8 @@ public final class OlympiadGameTask implements Runnable
 					_game = null;
 					return;
 				}
+				default:
+					break;
 			}
 			
 			_log.log(Level.WARNING, "Exception in " + _state + ", trying to port players back: " + e.getMessage(), e);
