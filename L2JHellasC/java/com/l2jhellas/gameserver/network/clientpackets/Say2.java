@@ -30,7 +30,9 @@ import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.PunishLevel;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
+import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class Say2 extends L2GameClientPacket
@@ -111,7 +113,6 @@ public final class Say2 extends L2GameClientPacket
 
 		if (_text.length() >= 100)
 		{
-			_log.warning("Max input limit exceeded.");
 			return;
 		}
 
@@ -119,12 +120,7 @@ public final class Say2 extends L2GameClientPacket
 
 		if (activeChar == null)
 		{
-			_log.warning("[Say2.java] Active Character is null.");
 			return;
-		}
-
-		if ((activeChar != null) && activeChar instanceof L2PcInstance)
-		{
 		}
 
 		if (_text.length() > Config.MAX_CHAT_LENGTH)
@@ -156,6 +152,17 @@ public final class Say2 extends L2GameClientPacket
 			}
 		}
 
+		if (activeChar.isCursedWeaponEquiped() && (_type == TRADE || _type == SHOUT))
+		{
+			activeChar.sendMessage("Shout and trade chatting cannot be used while possessing a cursed weapon.");
+			return;
+		}
+		
+		if(_type == PETITION_PLAYER && activeChar.isGM())
+		{
+			_type = PETITION_GM;
+		}
+		
 		if (_type == PETITION_PLAYER && activeChar.isGM())
 			_type = PETITION_GM;
 
@@ -178,6 +185,49 @@ public final class Say2 extends L2GameClientPacket
 			_logChat.log(record);
 		}
 
+		if (Config.ENABLE_SAY_SOCIAL_ACTIONS)
+		{/** @formatter:off */
+			if (!activeChar.isAlikeDead()
+					|| !activeChar.isDead()
+					|| !activeChar.isFakeDeath()
+					|| !activeChar.isInCraftMode()
+					|| !activeChar.isMoving()
+					|| !activeChar.isRunning()
+					|| !activeChar.isAttackingNow()
+					|| !activeChar.isCastingNow())
+			{
+				if (_text.contains("hello")
+						|| _text.contains("hey")
+			    		|| _text.contains("aloha")
+			    		|| _text.contains("alo")
+			    		|| _text.contains("ciao")
+			    		|| _text.contains("geia")
+			            || _text.contains("hi"))
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 2));
+				
+				if (_text.equalsIgnoreCase("lol")
+						|| _text.contains("haha")
+			            || _text.contains("xaxa")
+			            || _text.contains("ghgh")
+			            || _text.contains("jaja"))
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 10));
+
+				if (_text.equalsIgnoreCase("yes")
+			            || _text.contains("si")
+			            || _text.contains("nai")
+			            || _text.contains("entaksei")
+			            || _text.contains("ok")
+			            || _text.contains("yep"))
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 6));
+
+				if (_text.contains("no")
+			            || _text.contains("nop")
+			            || _text.contains("oxi")
+			            || _text.contains("nope"))
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 5));
+			}
+		}/** @formatter:on */
+		
 		// CreatureSay cs = new CreatureSay(activeChar.getObjectId(),_type, activeChar.getName(), _text);
 
 		L2Object saymode = activeChar.getSayMode();
@@ -207,68 +257,77 @@ public final class Say2 extends L2GameClientPacket
 
 	private void checkText(L2PcInstance activeChar)
 	{
-		if (Config.USE_SAY_FILTER)
+		String filteredText = _text.toLowerCase();
+
+		for (String pattern : Config.FILTER_LIST)
 		{
-			String filteredText = _text;
-
-			for (String pattern : Config.FILTER_LIST)
-			{
-				filteredText = filteredText.replaceAll("(?i)" + pattern, Config.CHAT_FILTER_CHARS);
-			}
-
-			if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("jail") && _text != filteredText)
-			{
-				int punishmentLength = 0;
-				if (Config.CHAT_FILTER_PUNISHMENT_PARAM2 == 0)
-				{
-					punishmentLength = Config.CHAT_FILTER_PUNISHMENT_PARAM1;
-				}
-				else
-				{
-					try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-					{
-						PreparedStatement statement;
-
-						statement = con.prepareStatement("SELECT value FROM account_data WHERE (account_name=?) AND (var='jail_time')");
-						statement.setString(1, activeChar.getAccountName());
-						ResultSet rset = statement.executeQuery();
-
-						if (!rset.next())
-						{
-							punishmentLength = Config.CHAT_FILTER_PUNISHMENT_PARAM1;
-							PreparedStatement statement1;
-							statement1 = con.prepareStatement("INSERT INTO account_data (account_name, var, value) VALUES (?, 'jail_time', ?)");
-							statement1.setString(1, activeChar.getAccountName());
-							statement1.setInt(2, punishmentLength);
-							statement1.executeUpdate();
-							statement1.close();
-						}
-						else
-						{
-							punishmentLength = rset.getInt("value") + Config.CHAT_FILTER_PUNISHMENT_PARAM2;
-							PreparedStatement statement1;
-							statement1 = con.prepareStatement("UPDATE account_data SET value=? WHERE (account_name=?) AND (var='jail_time')");
-							statement1.setInt(1, punishmentLength);
-							statement1.setString(2, activeChar.getAccountName());
-							statement1.executeUpdate();
-							statement1.close();
-						}
-						rset.close();
-						statement.close();
-					}
-					catch (SQLException e)
-					{
-						_log.log(Level.WARNING, getClass().getName() + " Could not check character for chat filter punishment data: " + e);
-						if (Config.DEVELOPER)
-						{
-							e.printStackTrace();
-						}
-					}
-				}
-				activeChar.setPunishLevel(L2PcInstance.PunishLevel.JAIL, punishmentLength);
-			}
-			_text = filteredText;
+			filteredText = filteredText.replaceAll("(?i)" + pattern, Config.CHAT_FILTER_CHARS);
 		}
+
+		if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("jail") && _text != filteredText)
+		{
+			int punishmentLength = 0;
+			if (Config.CHAT_FILTER_PUNISHMENT_PARAM2 == 0)
+			{
+				punishmentLength = Config.CHAT_FILTER_PUNISHMENT_PARAM1;
+			}
+			else
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement statement;
+					
+					statement = con.prepareStatement("SELECT value FROM account_data WHERE (account_name=?) AND (var='jail_time')");
+					statement.setString(1, activeChar.getAccountName());
+					ResultSet rset = statement.executeQuery();
+					
+					if (!rset.next())
+					{
+						punishmentLength = Config.CHAT_FILTER_PUNISHMENT_PARAM1;
+						PreparedStatement statement1;
+						statement1 = con.prepareStatement("INSERT INTO account_data (account_name, var, value) VALUES (?, 'jail_time', ?)");
+						statement1.setString(1, activeChar.getAccountName());
+						statement1.setInt(2, punishmentLength);
+						statement1.executeUpdate();
+						statement1.close();
+					}
+					else
+					{
+						punishmentLength = rset.getInt("value") + Config.CHAT_FILTER_PUNISHMENT_PARAM2;
+						PreparedStatement statement1;
+						statement1 = con.prepareStatement("UPDATE account_data SET value=? WHERE (account_name=?) AND (var='jail_time')");
+						statement1.setInt(1, punishmentLength);
+						statement1.setString(2, activeChar.getAccountName());
+						statement1.executeUpdate();
+						statement1.close();
+					}
+					rset.close();
+					statement.close();
+				}
+				catch (SQLException e)
+				{
+					_log.log(Level.WARNING, getClass().getName() + " Could not check character for chat filter punishment data: " + e);
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+			activeChar.setPunishLevel(PunishLevel.JAIL, punishmentLength);
+			activeChar.sendMessage("System: Muted for " + Config.CHAT_FILTER_PUNISHMENT_PARAM1 + " minutes.");
+		}
+		else if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("karma"))
+		{
+			activeChar.setKarma(Config.CHAT_FILTER_PUNISHMENT_PARAM2);
+			activeChar.sendMessage("System: Gained " + Config.CHAT_FILTER_PUNISHMENT_PARAM2 + " karma for bad words.");
+		}
+		else if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("chat"))
+		{
+			activeChar.setPunishLevel(PunishLevel.CHAT, Config.CHAT_FILTER_PUNISHMENT_PARAM1);
+			activeChar.sendMessage("System: Chat banned for " + Config.CHAT_FILTER_PUNISHMENT_PARAM1 + " minutes.");
+		}
+		activeChar.sendMessage("The word " + _text + " is not allowed!");
+		_text = filteredText;
 	}
 
 	@Override

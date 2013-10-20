@@ -475,6 +475,7 @@ public final class Config
 	public static boolean USE_SAY_FILTER;
 	public static String CHAT_FILTER_CHARS;
 	public static String CHAT_FILTER_PUNISHMENT;
+	public static boolean ENABLE_SAY_SOCIAL_ACTIONS;
 	public static ArrayList<String> FILTER_LIST = new ArrayList<String>();
 	public static boolean MOD_GVE_ENABLE_FACTION;
 	public static int PRIMAR_X;
@@ -1740,6 +1741,7 @@ public final class Config
 			CHAT_FILTER_PUNISHMENT = L2JHellasSettings.getProperty("ChatFilterPunishment", "off");
 			CHAT_FILTER_PUNISHMENT_PARAM1 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam1", "1"));
 			CHAT_FILTER_PUNISHMENT_PARAM2 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam2", "1"));
+			ENABLE_SAY_SOCIAL_ACTIONS = Boolean.valueOf(L2JHellasSettings.getProperty("SocialActions", "False"));
 			MOD_GVE_ENABLE_FACTION = Boolean.valueOf(L2JHellasSettings.getProperty("EnableFaction", "False"));
 			PRIMAR_X = Integer.parseInt(L2JHellasSettings.getProperty("PrimarBaseX", "139990"));
 			PRIMAR_Y = Integer.parseInt(L2JHellasSettings.getProperty("PrimarBaseY", "-124423"));
