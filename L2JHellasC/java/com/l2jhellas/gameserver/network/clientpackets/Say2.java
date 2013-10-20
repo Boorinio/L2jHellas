@@ -326,7 +326,6 @@ public final class Say2 extends L2GameClientPacket
 			activeChar.setPunishLevel(PunishLevel.CHAT, Config.CHAT_FILTER_PUNISHMENT_PARAM1);
 			activeChar.sendMessage("System: Muted for " + Config.CHAT_FILTER_PUNISHMENT_PARAM1 + " minutes.");
 		}
-		activeChar.sendMessage("The word " + _text + " is not allowed!");
 		_text = filteredText;
 	}
 
