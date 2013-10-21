@@ -927,6 +927,7 @@ public final class Config
 	// HitMan Settings
 	public static boolean ENABLE_HITMAN_EVENT;
 	public static boolean HITMAN_TAKE_KARMA;
+	public static int HIT_MAN_ITEM_ID;
 	// DM Settings
 	public static boolean DM_ALLOW_INTERFERENCE;
 	public static boolean DM_ALLOW_POTIONS;
@@ -2600,6 +2601,7 @@ public final class Config
 			}
 			ENABLE_HITMAN_EVENT = Boolean.parseBoolean(EventHITMANSettings.getProperty("EnableHitmanEvent", "False"));
 			HITMAN_TAKE_KARMA = Boolean.parseBoolean(EventHITMANSettings.getProperty("HitmansTakekarma", "True"));
+			HIT_MAN_ITEM_ID = Integer.parseInt(EventHITMANSettings.getProperty("HitMansRewardId", "57"));
 			
 			/**
 			 * Event DM

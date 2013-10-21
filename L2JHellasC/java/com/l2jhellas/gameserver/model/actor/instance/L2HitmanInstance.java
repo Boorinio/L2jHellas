@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -149,7 +150,7 @@ public class L2HitmanInstance extends L2Npc
 			content.append("<center><table border=1>");
 			content.append("<tr><td width=250 align=left>");
 			content.append("Name: " + pta.getName() + " <br1>");
-			content.append("Bounty: " + pta.getBounty() + " Adena<br1>");
+			content.append("Bounty: " + pta.getBounty() + " " + ItemTable.getInstance().getTemplate(Hitman.ITEM_ID).getName() + "<br1>");
 			content.append("Last Town: " + target.getLastTownName() + "<br1>");
 			content.append("Current Known Location: " + map.getClosestTownName(target) + " Teritory");
 			content.append("</td>");

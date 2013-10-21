@@ -25,6 +25,7 @@ import javolution.util.FastMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.PlayerToAssasinate;
@@ -47,7 +48,10 @@ public class Hitman
 
 	// Clean every 15 mins ^^
 	private final int MIN_MAX_CLEAN_RATE = 15 * 60000;
-
+	
+	// Item ID
+	public static final int ITEM_ID = Config.HIT_MAN_ITEM_ID;//Adena
+	
 	// Fancy lookin
 	public static boolean start()
 	{
@@ -131,8 +135,8 @@ public class Hitman
 				client.setHitmanTarget(0);
 			}
 
-			assassin.sendMessage("You assassinated " + target.getName() + ", his bounty will be converted in Adena!");
-			assassin.addAdena("Hitman", pta.getBounty(), target, true);
+			assassin.sendMessage("You assassinated " + target.getName() + ", his bounty will be converted in " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "!");
+			assassin.addItem("Hitman", ITEM_ID, pta.getBounty(), target, true);
 			removeTarget(pta.getObjectId(), true);
 		}
 	}
@@ -142,7 +146,7 @@ public class Hitman
 		if (_targets.containsKey(activeChar.getObjectId()))
 		{
 			PlayerToAssasinate pta = _targets.get(activeChar.getObjectId());
-			activeChar.sendMessage("There is a hit on you. Worth " + pta.getBounty() + " Adena(s).");
+			activeChar.sendMessage("There is a hit on you. Worth " + pta.getBounty() + " " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "(s).");
 		}
 
 		if (activeChar.getHitmanTarget() > 0)
@@ -192,9 +196,9 @@ public class Hitman
 			client.sendMessage("You are already a client here, you can place a request only for a single player.");
 			return;
 		}
-		else if (client.getAdena() < bounty)
+		else if (client.getInventory().getItemByItemId(ITEM_ID) == null || client.getInventory().getItemByItemId(ITEM_ID).getCount() < bounty)
 		{
-			client.sendMessage("Not enough adena.");
+			client.sendMessage("Not enough " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "(s).");
 			return;
 		}
 		else if (player == null && CharNameTable.getInstance().doesCharNameExist(playerName))
@@ -207,7 +211,7 @@ public class Hitman
 				return;
 			}
 			_targets.put(targetId, new PlayerToAssasinate(targetId, client.getObjectId(), bounty, playerName));
-			client.reduceAdena("Hitman", bounty, client, true);
+			client.destroyItemByItemId("Hitman", ITEM_ID, bounty, client, false);
 			client.setHitmanTarget(targetId);
 		}
 		else if (player != null && CharNameTable.getInstance().doesCharNameExist(playerName))
@@ -217,9 +221,9 @@ public class Hitman
 				client.sendMessage("There is already a hit on that player.");
 				return;
 			}
-			player.sendMessage("There is a hit on you. Worth " + bounty + " Adena(s).");
+			player.sendMessage("There is a hit on you. Worth " + bounty + " " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "(s).");
 			_targets.put(player.getObjectId(), new PlayerToAssasinate(player, client.getObjectId(), bounty));
-			client.reduceAdena("Hitman", bounty, client, true);
+			client.destroyItemByItemId("Hitman", ITEM_ID, bounty, client, false);
 			client.setHitmanTarget(player.getObjectId());
 		}
 		else
