@@ -18,10 +18,10 @@ package com.l2jhellas.gameserver.model.base;
  * This class defines all classes (ex : human fighter, darkFighter...) that a player can chose.<BR>
  * <BR>
  * Data :<BR>
- * <BR>
- * <li>id : The Identifier of the class</li> <li>isMage : True if the class is a mage class</li> <li>race : The race of this class</li> <li>parent : The parent ClassId or null if
- * this class is the root</li><BR>
- * <BR>
+ * <li>id : The Identifier of the class</li>
+ * <li>isMage : True if the class is a mage class</li>
+ * <li>race : The race of this class</li>
+ * <li>parent : The parent ClassId or null if this class is the root</li>
  */
 public enum ClassId
 {
@@ -514,17 +514,15 @@ public enum ClassId
         return _parent;
     }
 
-    public static ClassId getClassIdByOrdinal(int id){
-
-        for(ClassId current:values()){
-
-            if(current._id == id){
+    public static ClassId getClassIdByOrdinal(int id)
+    {
+        for(ClassId current:values())
+        {
+            if(current._id == id)
+            {
                 return current;
             }
-
         }
-
         return null;
-
     }
 }
