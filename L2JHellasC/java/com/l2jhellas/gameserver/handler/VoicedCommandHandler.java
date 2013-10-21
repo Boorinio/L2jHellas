@@ -89,7 +89,8 @@ public class VoicedCommandHandler
 		if (Config.ZODIAC_ENABLE)
 			registerVoicedCommandHandler(new ZodiacRegistration());
 		registerVoicedCommandHandler(new Premium());
-		registerVoicedCommandHandler(new QuizCmd());
+		if (Config.ENABLED_QUIZ_EVENT)
+			registerVoicedCommandHandler(new QuizCmd());
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 	}

@@ -34,9 +34,9 @@ public class QuizCmd implements IVoicedCommandHandler
 	{
 		if (command.equalsIgnoreCase(VOICED_COMMANDS[0])) // quiz
 		{
-			if (QuizEvent.isRunning() && !target.equalsIgnoreCase("") && target != null)
+			if (QuizEvent.isRunning() && !command.equalsIgnoreCase("") && (command != null))
 			{
-				QuizEvent.checkAnswer(target, activeChar);
+				QuizEvent.checkAnswer(command, activeChar);
 				activeChar.sendMessage("Your answer has been submitted.");
 			}
 			else

@@ -167,7 +167,7 @@ public class QuizEvent
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM questions WHERE `id`=? ORDER BY id DESC");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM questions WHERE id=? ORDER BY id DESC");
 			_lastQuestionId++;
 			statement.setInt(1, _lastQuestionId);
 			ResultSet result = statement.executeQuery();
