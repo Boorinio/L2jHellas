@@ -94,6 +94,7 @@ class Quest (JQuest) :
             htmltext = "30166-10.htm"     # here's what you do...
             st.takeItems(MIMIRS_ELIXIR,-1)  #remove this line for compatibility with L2JServer revisions prior to 376
             st.giveItems(SCROLL_ENCHANT_WEAPON_A,1)
+            st.getPlayer().useMagic(SkillTable.getInstance().getInfo(4339,1),False,False)
             st.exitQuest(False)
             st.unset("cond")
     elif npcId == JOAN and id == State.STARTED:

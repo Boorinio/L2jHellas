@@ -556,13 +556,10 @@
 		<set name="isCubic" val="true" />
 	</skill>
 	<skill id="4339" levels="1" name="Mimir's Elixir">
-		<!-- TODO -->
 		<set name="target" val="TARGET_SELF" />
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="-1" />
-		<for>
-		</for>
 	</skill>
 	<skill id="4340" levels="1" name="Ultimate Buff, 2nd">
 		<set name="magicLvl" val="60" />
