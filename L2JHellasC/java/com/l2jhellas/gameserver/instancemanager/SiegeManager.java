@@ -72,7 +72,7 @@ public class SiegeManager
 	private int _siegeClanMinLevel = 4; // Changeable in siege.config
 	private int _siegeLength = 120; // Time in minute. Changeable in siege.config
 	public static int _daytosiege;
-	private static List<Siege> _sieges;
+	private List<Siege> _sieges;
 
 	private SiegeManager()
 	{
