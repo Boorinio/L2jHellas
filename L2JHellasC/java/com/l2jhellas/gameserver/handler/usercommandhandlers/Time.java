@@ -14,6 +14,9 @@
  */
 package com.l2jhellas.gameserver.handler.usercommandhandlers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -26,21 +29,29 @@ public class Time implements IUserCommandHandler
 	{
 		77
 	};
-
+	
+	private static final SimpleDateFormat fmt = new SimpleDateFormat("H:mm.");
+	
 	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
 		if (COMMAND_IDS[0] != id)
+		{
 			return false;
-
+		}
+		
 		int t = GameTimeController.getInstance().getGameTime();
-		String h = "" + (t / 60) % 24;
+		String h = "" + ((t / 60) % 24);
 		String m;
-		if (t % 60 < 10)
-			m = "0" + t % 60;
+		if ((t % 60) < 10)
+		{
+			m = "0" + (t % 60);
+		}
 		else
-			m = "" + t % 60;
-
+		{
+			m = "" + (t % 60);
+		}
+		
 		SystemMessage sm;
 		if (GameTimeController.getInstance().isNowNight())
 		{
@@ -55,9 +66,10 @@ public class Time implements IUserCommandHandler
 			sm.addString(m);
 		}
 		activeChar.sendPacket(sm);
+		activeChar.sendMessage("Server time is " + fmt.format(new Date(System.currentTimeMillis())));
 		return true;
 	}
-
+	
 	@Override
 	public int[] getUserCommandList()
 	{
