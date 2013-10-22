@@ -5994,7 +5994,19 @@ public final class L2PcInstance extends L2Playable
 		
 		// If in Arena, do nothing
 		if (isInsideZone(ZONE_PVP) || targetPlayer.isInsideZone(ZONE_PVP))
+		{
+			if ((getSiegeState() > 0) && (targetPlayer.getSiegeState() > 0) && (getSiegeState() != targetPlayer.getSiegeState()))
+			{
+				final L2Clan killerClan = getClan();
+				final L2Clan targetClan = targetPlayer.getClan();
+				if ((killerClan != null) && (targetClan != null))
+				{
+					killerClan.addSiegeKill();
+					targetClan.addSiegeDeath();
+				}
+			}
 			return;
+		}
 		
 		// l2jhellas Faction GvE - adena reward
 		if (Config.MOD_GVE_GET_ADENA_BY_PVP && Config.MOD_GVE_ENABLE_FACTION)

@@ -261,6 +261,30 @@ public class Siege
 				announceToPlayer("The siege of " + getCastle().getName() + " has ended in a draw.", false);
 				_log.info("[SIEGE] The siege of " + getCastle().getName() + " has ended in a draw. " + fmt.format(new Date(System.currentTimeMillis())));
 			}
+			// Cleanup clans kills/deaths counters.
+			for (L2SiegeClan attackerClan : getAttackerClans())
+			{
+				final L2Clan clan = ClanTable.getInstance().getClan(attackerClan.getClanId());
+				if (clan == null)
+				{
+					continue;
+				}
+				
+				clan.clearSiegeKills();
+				clan.clearSiegeDeaths();
+			}
+			
+			for (L2SiegeClan defenderClan : getDefenderClans())
+			{
+				final L2Clan clan = ClanTable.getInstance().getClan(defenderClan.getClanId());
+				if (clan == null)
+				{
+					continue;
+				}
+				
+				clan.clearSiegeKills();
+				clan.clearSiegeDeaths();
+			}
 			removeFlags(); // Removes all flags. Note: Remove flag before teleporting players
 			teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
 			teleportPlayer(Siege.TeleportWhoType.DefenderNotOwner, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town

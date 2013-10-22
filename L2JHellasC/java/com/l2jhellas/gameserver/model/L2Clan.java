@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -155,6 +156,9 @@ public class L2Clan
 
 	private String _notice;
 	private boolean _noticeEnabled = false;
+	
+	private AtomicInteger _siegeKills; 
+	private AtomicInteger _siegeDeaths; 
 
 	/**
 	 * Called if a clan is referenced only by id.
@@ -492,6 +496,23 @@ public class L2Clan
 		return limit;
 	}
 
+	/**
+	 * @param exclude the object Id to exclude from list.
+	 * @return all online members excluding the one with object id {code exclude}.
+	 */
+	public FastList<L2PcInstance> getOnlineMembers(int exclude)
+	{
+		final FastList<L2PcInstance> onlineMembers = new FastList<>();
+		for (L2ClanMember temp : _members.values())
+		{
+			if ((temp != null) && temp.isOnline() && (temp.getObjectId() != exclude))
+			{
+				onlineMembers.add(temp.getPlayerInstance());
+			}
+		}
+		return onlineMembers;
+	}
+	
 	public L2PcInstance[] getOnlineMembers(String exclude)
 	{
 		List<L2PcInstance> result = new FastList<L2PcInstance>();
@@ -2415,5 +2436,61 @@ public class L2Clan
 		 */
 		// clan.broadcastToOnlineMembers(new PledgeStatusChanged(clan));
 		// clan.broadcastClanStatus();
+	}
+	
+	public int getSiegeKills()
+	{
+		return _siegeKills != null ? _siegeKills.get() : 0;
+	}
+	
+	public int getSiegeDeaths()
+	{
+		return _siegeDeaths != null ? _siegeDeaths.get() : 0;
+	}
+	
+	public int addSiegeKill()
+	{
+		if (_siegeKills == null)
+		{
+			synchronized (this)
+			{
+				if (_siegeKills == null)
+				{
+					_siegeKills = new AtomicInteger();
+				}
+			}
+		}
+		return _siegeKills.incrementAndGet();
+	}
+	
+	public int addSiegeDeath()
+	{
+		if (_siegeDeaths == null)
+		{
+			synchronized (this)
+			{
+				if (_siegeDeaths == null)
+				{
+					_siegeDeaths = new AtomicInteger();
+				}
+			}
+		}
+		return _siegeDeaths.incrementAndGet();
+	}
+	
+	public void clearSiegeKills()
+	{
+		if (_siegeKills != null)
+		{
+			_siegeKills.set(0);
+		}
+	}
+	
+	public void clearSiegeDeaths()
+	{
+		if (_siegeDeaths != null)
+		{
+			_siegeDeaths.set(0);
+		}
 	}
 }
