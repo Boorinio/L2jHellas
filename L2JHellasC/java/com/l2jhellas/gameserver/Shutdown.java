@@ -540,11 +540,6 @@ public class Shutdown extends Thread
 				final L2GameClient client = player.getClient();
 				if (client != null && !client.isDetached())
 				{
-					player.deleteMe();
-					L2GameClient.saveCharToDisk(player);
-					player.sendPacket(new LeaveWorld());
-				
-					
 					client.close(ServerClose.STATIC_PACKET);
 					client.setActiveChar(null);
 					player.setClient(null);

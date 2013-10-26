@@ -93,7 +93,7 @@ public class CrestCache
 		FastMap<Integer, byte[]> _mapPledge = _cachePledge.getContentMap();
 		FastMap<Integer, byte[]> _mapPledgeLarge = _cachePledgeLarge.getContentMap();
 		FastMap<Integer, byte[]> _mapAlly = _cacheAlly.getContentMap();
-		if (files != null)
+
 		for (File file : files)
 		{
 			RandomAccessFile f = null;
@@ -149,7 +149,7 @@ public class CrestCache
 		File dir = new File(PackRoot.DATAPACK_ROOT, "data/crests/");
 
 		File[] files = dir.listFiles(new OldPledgeFilter());
-		if (files != null)
+
 		for (File file : files)
 		{
 			int clanId = Integer.parseInt(file.getName().substring(7, file.getName().length() - 4));
