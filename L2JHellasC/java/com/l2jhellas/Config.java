@@ -3268,6 +3268,22 @@ public final class Config
 			EXTERNAL_HOSTNAME = lsIpSettings.getProperty("ExternalHostname", "localhost");
 
 			/**
+			 * Server Version
+			 */
+			Properties versionSettings = new Properties();
+			final File version = new File(SERVER_VERSION_FILE);
+			try (InputStream is = new FileInputStream(version))
+			{
+				versionSettings.load(is);
+			}
+			catch (Exception e)
+			{
+				_log.log(Level.SEVERE, "Error while " + SERVER_VERSION_FILE + " settings!", e);
+			}
+			SERVER_VERSION = versionSettings.getProperty("version", "Unsupported Custom Version.");
+			SERVER_BUILD_DATE = versionSettings.getProperty("builddate", "Undefined Date.");
+			
+			/**
 			 * Telnet
 			 */
 			Properties telnetSettings = new Properties();

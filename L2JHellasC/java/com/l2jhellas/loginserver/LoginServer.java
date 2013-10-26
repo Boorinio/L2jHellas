@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import com.L2JHellasInfo;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
@@ -122,6 +123,9 @@ public class LoginServer
 		Util.printSection("DataBase");
 		L2DatabaseFactory.getInstance();
 		
+		Util.printSection("Team");
+		L2JHellasInfo.showInfo();
+
 		Util.printSection("Login Server Controller");
 		try
 		{

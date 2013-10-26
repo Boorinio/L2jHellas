@@ -251,6 +251,19 @@ L2jHellas Project details:
 			${line.separator}
 			Timeline = https://www.assembla.com/code/l2hellas/subversion/changesets
 		</concat>
+		<concat destfile="${build.dist.login}/config/Version/L2J Hellas Version.ini">
+L2jHellas Project details:
+			${line.separator}
+			version = ${revision}
+			${line.separator}
+			builddate = ${build.tstamp}
+			${line.separator}
+			Forum = http://l2jhellas.eu/
+			${line.separator}
+			Svn = https://subversion.assembla.com/svn/l2hellas/trunk/
+			${line.separator}
+			Timeline = https://www.assembla.com/code/l2hellas/subversion/changesets
+		</concat>
 		<echo>version = ${revision}</echo>
 	</target>
 	
