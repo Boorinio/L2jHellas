@@ -38,7 +38,6 @@ import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.gameserverpackets.ServerStatus;
-import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Broadcast;
@@ -148,7 +147,7 @@ public class Shutdown extends Thread
 	}
 	
 	/**
-	 * Default constucter is only used internal to create the shutdown-hook instance
+	 * Default constructor is only used internal to create the shutdown-hook instance
 	 */
 	protected Shutdown()
 	{
@@ -192,6 +191,9 @@ public class Shutdown extends Thread
 	{
 		if (this == SingletonHolder._instance)
 		{
+			TimeCounter tc = new TimeCounter();
+			TimeCounter tc1 = new TimeCounter();
+			
 			Util.printSection("Under " + MODE_TEXT[_shutdownMode] + " process");
 			
 			if (Config.ACTIVATE_POSITION_RECORDER)
@@ -202,7 +204,7 @@ public class Shutdown extends Thread
 			try
 			{
 				disconnectAllCharacters();
-				_log.info("All players have been disconnected.");
+				System.out.println("All players have been disconnected.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 			catch (Throwable t)
 			{
@@ -212,6 +214,7 @@ public class Shutdown extends Thread
 			try
 			{
 				GameTimeController.getInstance().stopTimer();
+				System.out.println("Services have been stopped.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 			catch (Throwable t)
 			{
@@ -221,6 +224,7 @@ public class Shutdown extends Thread
 			try
 			{
 				ThreadPoolManager.getInstance().shutdown();
+				System.out.println("Threads have been shutdown.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 			catch (Throwable t)
 			{
@@ -229,6 +233,7 @@ public class Shutdown extends Thread
 			try
 			{
 				LoginServerThread.getInstance().interrupt();
+				System.out.println("Disconnect from login.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 			catch (Throwable t)
 			{
@@ -243,57 +248,57 @@ public class Shutdown extends Thread
 			// Save Seven Signs data before closing. :)
 			SevenSigns.getInstance().saveSevenSignsData(null, true);
 
-			_log.info("Seven Signs Festival, general data && status have been saved.");
+			System.out.println("Seven Signs Festival, general data && status have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Four Sepulchers, stop any working task.
 			FourSepulchersManager.getInstance().stop();
 			
 			// Save raidbosses status
 			RaidBossSpawnManager.getInstance().cleanUp();
-			_log.info("Raid Bosses data has been saved.");
+			System.out.println("Raid Bosses data have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Save grandbosses status
 			GrandBossManager.getInstance().cleanUp();
-			_log.info("World Bosses data has been saved.");
+			System.out.println("World Bosses data have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Save TradeController
-			_log.info("TradeController is saving data. This action may take some minutes.");
+			System.out.println("TradeController is save data in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			TradeController.getInstance().dataCountStore();
-			_log.info("All items have been saved.");
+			System.out.println("All items have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Save olympiads
 			Olympiad.getInstance().saveOlympiadStatus();
-			_log.info("Olympiad data has been saved.");
+			System.out.println("Olympiad data has been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Save Hero data
 			Hero.getInstance().shutdown();
-			_log.info("Hero data has been saved.");
+			System.out.println("Hero data has been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Save all manor data
 			CastleManorManager.getInstance().save();
-			_log.info("Manors data has been saved.");
+			System.out.println("Manor Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			
 			CursedWeaponsManager.getInstance().saveData();
-			System.out.println("All Cursed weapons Data saved");
+			System.out.println("Cursed weapons Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 
 			// Save all global (non-player specific) Quest data that needs to
 			// persist after reboot
 			QuestManager.getInstance().save();
-			System.out.println("Quest Manager: Quest data that needs to be saved has been saved");
+			System.out.println("Quest data that needs to be saved has been saved (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 
 			// Start Hitman Event.
 			if (Hitman.start())
 			{
 				Hitman.getInstance().save();
-				System.out.println("All Hitman Lists saved");
+				System.out.println("Hitman Lists saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 
 			// Rank PvP System by Masterio:
 			if (Config.RANK_PVP_SYSTEM_ENABLED)
 			{
 				PvpTable.getInstance().updateDB();
-				System.out.println("All Rank System Data saved in");
+				System.out.println("Rank System Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 
 			// Save items on ground before closing
@@ -301,8 +306,10 @@ public class Shutdown extends Thread
 			{
 				ItemsOnGroundManager.getInstance().saveInDb();
 				ItemsOnGroundManager.getInstance().cleanUp();
-				_log.info("ItemsOnGroundManager: Items on ground have been saved.");
+				System.out.println("All items on ground saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
+			System.out.println("Data saved.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			
 			
 			try
 			{
@@ -323,10 +330,13 @@ public class Shutdown extends Thread
 			try
 			{
 				L2DatabaseFactory.getInstance().shutdown();
+				System.out.println("Database connection shutdown successfull.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 			catch (Throwable t)
 			{
+				
 			}
+			System.out.println("The server has been successfully shut down in " + tc1.getEstimatedTime() + " ms.");
 			
 			// server will quit, when this function ends.
 			if (SingletonHolder._instance._shutdownMode == GM_RESTART)
@@ -523,6 +533,40 @@ public class Shutdown extends Thread
 		}
 	}
 	
+		/**
+	 * A simple class used to track down the estimated time of method
+	 * executions.
+	 * Once this class is created, it saves the start time, and when you want to
+	 * get
+	 * the estimated time, use the getEstimatedTime() method.
+	 */
+	private static final class TimeCounter
+	{
+		private long _startTime;
+
+		private TimeCounter()
+		{
+			restartCounter();
+		}
+
+		private void restartCounter()
+		{
+			_startTime = System.currentTimeMillis();
+		}
+
+		private long getEstimatedTimeAndRestartCounter()
+		{
+			final long toReturn = System.currentTimeMillis() - _startTime;
+			restartCounter();
+			return toReturn;
+		}
+
+		private long getEstimatedTime()
+		{
+			return System.currentTimeMillis() - _startTime;
+		}
+	}
+	
 	/**
 	 * Disconnects all clients from the server
 	 */
@@ -538,11 +582,12 @@ public class Shutdown extends Thread
 			try
 			{
 				final L2GameClient client = player.getClient();
-				if (client != null && !client.isDetached())
+				if (client != null)
 				{
 					client.close(ServerClose.STATIC_PACKET);
 					client.setActiveChar(null);
 					player.setClient(null);
+					player.closeNetConnection();
 				}
 				player.deleteMe();
 			}
