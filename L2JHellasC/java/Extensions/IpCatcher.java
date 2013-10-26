@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 
 import javolution.util.FastList;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -36,7 +37,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class IpCatcher
 {
 	public static FastList<String> ips = new FastList<>();
-	static File file = new File(Config.DATAPACK_ROOT, "data/ips.txt");
+	static File file = new File(PackRoot.DATAPACK_ROOT, "data/ips.txt");
 	
 	public String getMacAddr(L2PcInstance p)
 	{
@@ -46,9 +47,8 @@ public class IpCatcher
 		if (p != null)
 			try
 			{
-				
-				@SuppressWarnings("static-access")
-				final InetAddress ip = p.getClient().getConnection().getInetAddress().getLocalHost();
+				p.getClient().getConnection().getInetAddress();
+				final InetAddress ip = InetAddress.getLocalHost();
 				NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 				
 				if (network != null)
@@ -65,7 +65,6 @@ public class IpCatcher
 				}
 				else
 					sb.append("No mac found");
-				
 			}
 			catch (SocketException e)
 			{
@@ -98,7 +97,7 @@ public class IpCatcher
 	{
 		try
 		{
-			File file = new File(Config.DATAPACK_ROOT, "data/ips.txt");
+			File file = new File(PackRoot.DATAPACK_ROOT, "data/ips.txt");
 			boolean exist = file.createNewFile();
 			if (!exist)
 				return;

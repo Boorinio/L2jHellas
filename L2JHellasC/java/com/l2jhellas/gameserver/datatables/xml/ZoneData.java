@@ -29,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.ArenaManager;
 import com.l2jhellas.gameserver.instancemanager.FishingZoneManager;
@@ -87,7 +88,7 @@ public class ZoneData
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 
-			final File file = new File(Config.DATAPACK_ROOT + "/data/xml/zone.xml");
+			final File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/zone.xml");
 			if (!file.exists())
 			{
 				_log.log(Level.WARNING, getClass().getName() + ": zone.xml file is missing.");

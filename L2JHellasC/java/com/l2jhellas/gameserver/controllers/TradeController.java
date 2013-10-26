@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -90,7 +91,7 @@ public class TradeController
 	{
 		_lists = new FastMap<Integer, L2TradeList>();
 		_listsTaskItem = new FastMap<Integer, L2TradeList>();
-		File buylistData = new File(Config.DATAPACK_ROOT, "data/buylists.csv");
+		File buylistData = new File(PackRoot.DATAPACK_ROOT, "data/buylists.csv");
 		if (buylistData.exists())
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": Do, please, remove buylists from data folder and use SQL buylist instead.");

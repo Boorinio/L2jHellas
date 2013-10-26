@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 
@@ -61,7 +61,7 @@ public class StaticObjData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/static_objects.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/static_objects.xml");
 		if (!f.exists())
 		{
 			_log.warning("static_objects.xml could not be loaded: file not found");

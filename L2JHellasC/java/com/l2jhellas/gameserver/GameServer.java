@@ -34,6 +34,7 @@ import Extensions.RankSystem.Util.ServerSideImage;
 import Extensions.Vote.VoteManager;
 
 import com.L2JHellasInfo;
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
 import com.l2jhellas.gameserver.cache.CrestCache;
@@ -134,6 +135,7 @@ import com.l2jhellas.util.DynamicExtension;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
+import com.l2jhellas.util.ip.GameServerIP;
 import com.l2jhellas.util.ip.IPConfigData;
 
 public class GameServer
@@ -328,7 +330,7 @@ public class GameServer
 			try
 			{
 				_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Scripts.");
-				File scripts = new File(Config.DATAPACK_ROOT, "data/scripts.cfg");
+				File scripts = new File(PackRoot.DATAPACK_ROOT, "data/scripts.cfg");
 				L2ScriptEngineManager.getInstance().executeScriptList(scripts);
 			}
 			catch (IOException ioe)
@@ -511,28 +513,31 @@ public class GameServer
 	public static void main(String[] args) throws Exception
 	{
 		Server.serverMode = Server.MODE_GAMESERVER;
+		// Pack Root
+		PackRoot.load();
+		
 		// Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
 
 		if (Config.USE_SAY_FILTER)
 		{
-			new File(Config.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
+			new File(PackRoot.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 		}
 		;
 		/*** Main ***/
 		// Create directories
-		File logFolder = new File(Config.DATAPACK_ROOT, LOG_FOLDER);
+		File logFolder = new File(PackRoot.DATAPACK_ROOT, LOG_FOLDER);
 		logFolder.mkdir();
-		File clans = new File(Config.DATAPACK_ROOT, "data/clans");
+		File clans = new File(PackRoot.DATAPACK_ROOT, "data/clans");
 		clans.mkdir();
-		File crests = new File(Config.DATAPACK_ROOT, "data/crests");
+		File crests = new File(PackRoot.DATAPACK_ROOT, "data/crests");
 		crests.mkdir();
-		File pathnode = new File(Config.DATAPACK_ROOT, "data/pathnode");
+		File pathnode = new File(PackRoot.DATAPACK_ROOT, "data/pathnode");
 		pathnode.mkdir();
-		File geodata = new File(Config.DATAPACK_ROOT, "data/geodata");
+		File geodata = new File(PackRoot.DATAPACK_ROOT, "data/geodata");
 		geodata.mkdir();
-		File donates = new File(Config.DATAPACK_ROOT, "data/donates");
+		File donates = new File(PackRoot.DATAPACK_ROOT, "data/donates");
 		donates.mkdir();
 
 		// Create input stream for log file -- or store file data into memory
@@ -543,10 +548,10 @@ public class GameServer
 		// IP Config
 		Util.printSection("Network");
 		IPConfigData.load();
-		
+		GameServerIP.load();
+
 		Util.printSection("Configs");
 		Config.load();
-		_log.log(Level.INFO, "Configs Loaded.");
 
 		Util.printSection("Script Engine");
 		if (!Config.ALT_DEV_NO_SCRIPT)

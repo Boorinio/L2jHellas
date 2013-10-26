@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastList;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.engines.Item;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.templates.L2Armor;
@@ -60,7 +60,7 @@ public class SkillsEngine
 
 	private void hashFiles(String dirname, List<File> hash)
 	{
-		File dir = new File(Config.DATAPACK_ROOT, dirname);
+		File dir = new File(PackRoot.DATAPACK_ROOT, dirname);
 		if (!dir.exists())
 		{
 			_log.config("Dir " + dir.getAbsolutePath() + " not exists");
@@ -73,7 +73,7 @@ public class SkillsEngine
 				if (!f.getName().startsWith("custom"))
 					hash.add(f);
 		}
-		File customfile = new File(Config.DATAPACK_ROOT, dirname + "/custom.xml");
+		File customfile = new File(PackRoot.DATAPACK_ROOT, dirname + "/custom.xml");
 		if (customfile.exists())
 			hash.add(customfile);
 	}

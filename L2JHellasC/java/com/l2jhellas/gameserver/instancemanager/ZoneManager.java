@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -115,7 +116,7 @@ public class ZoneManager
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 
-			File file = new File(Config.DATAPACK_ROOT + "/data/xml/zone.xml");
+			File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/zone.xml");
 			if (!file.exists())
 			{
 				_log.log(Level.WARNING, getClass().getName() + ": The zone.xml file is missing.");

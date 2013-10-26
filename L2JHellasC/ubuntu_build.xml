@@ -208,15 +208,13 @@
 		</copy>
 		<copy todir="${build.dist.game}/config/Others">
 			<fileset dir="config/Others">
-				<include name="BannedIPs.cfg"/>
-				<include name="ChatFilter.txt"/>
-				<include name="log.cfg"/>
+				<include name="*.*"/>
 			</fileset>
 		</copy>
 		<copy todir="${build.dist.login}/config/Others">
 			<fileset dir="config/Others">
-				<include name="BannedIPs.cfg"/>
-				<include name="log.cfg"/>
+				<include name="*.cfg"/>
+				<include name="*.ini"/>
 			</fileset>
 		</copy>
 		

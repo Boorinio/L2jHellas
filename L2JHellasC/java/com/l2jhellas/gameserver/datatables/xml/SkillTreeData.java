@@ -34,6 +34,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
@@ -137,7 +138,7 @@ public class SkillTreeData
 		DocumentBuilderFactory factory0 = DocumentBuilderFactory.newInstance();
 		factory0.setValidating(false);
 		factory0.setIgnoringComments(true);
-		File file = new File(Config.DATAPACK_ROOT, "data/xml/skill_tree.xml");
+		File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/skill_tree.xml");
 		if (!file.exists())
 		{
 			_log.warning("skill_tree.xml could not be loaded: file not found");
@@ -219,7 +220,7 @@ public class SkillTreeData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/fishing_skill_tree.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/fishing_skill_tree.xml");
 		if (!f.exists())
 		{
 			_log.warning("fishing_skill_tree.xml could not be loaded: file not found");
@@ -290,7 +291,7 @@ public class SkillTreeData
 		DocumentBuilderFactory factory2 = DocumentBuilderFactory.newInstance();
 		factory2.setValidating(false);
 		factory2.setIgnoringComments(true);
-		File f2 = new File(Config.DATAPACK_ROOT, "data/xml/enchant_skill_tree.xml");
+		File f2 = new File(PackRoot.DATAPACK_ROOT, "data/xml/enchant_skill_tree.xml");
 		if (!f2.exists())
 		{
 			_log.warning("enchant_skill_tree.xml could not be loaded: file not found");
@@ -367,7 +368,7 @@ public class SkillTreeData
 		DocumentBuilderFactory factory1 = DocumentBuilderFactory.newInstance();
 		factory1.setValidating(false);
 		factory1.setIgnoringComments(true);
-		File f1 = new File(Config.DATAPACK_ROOT, "data/xml/pledge_skill_tree.xml");
+		File f1 = new File(PackRoot.DATAPACK_ROOT, "data/xml/pledge_skill_tree.xml");
 		if (!f1.exists())
 		{
 			_log.warning("pledge_skill_tree.xml could not be loaded: file not found");

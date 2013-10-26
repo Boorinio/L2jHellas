@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.CursedWeapon;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -96,11 +97,10 @@ public class CursedWeaponsManager
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 
-			File file = new File(Config.DATAPACK_ROOT + "/data/xml/cursedWeapons.xml");
+			File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/cursedWeapons.xml");
 			if (!file.exists())
 			{
-				if (Config.DEBUG)
-					_log.log(Level.CONFIG, getClass().getName() + ": NO FILE cursedWeapons.xml");
+				_log.log(Level.CONFIG, getClass().getName() + ": NO FILE cursedWeapons.xml");
 				return;
 			}
 

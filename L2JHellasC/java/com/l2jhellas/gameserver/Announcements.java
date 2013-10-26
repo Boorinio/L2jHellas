@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -65,7 +65,7 @@ public class Announcements
 	public void loadAnnouncements()
 	{
 		_announcements.clear();
-		File file = new File(Config.DATAPACK_ROOT, "data/announcements.txt");
+		File file = new File(PackRoot.DATAPACK_ROOT, "data/announcements.txt");
 		if (file.exists())
 			readFromDisk(file);
 

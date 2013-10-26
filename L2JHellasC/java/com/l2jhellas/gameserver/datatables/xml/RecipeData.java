@@ -31,7 +31,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.controllers.RecipeController;
 import com.l2jhellas.gameserver.model.L2RecipeInstance;
 import com.l2jhellas.gameserver.model.L2RecipeList;
@@ -74,7 +74,7 @@ public class RecipeData extends RecipeController
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File file = new File(Config.DATAPACK_ROOT, "data/xml/recipes.xml");
+		File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/recipes.xml");
 		if (file.exists())
 		{
 			Document doc = factory.newDocumentBuilder().parse(file);

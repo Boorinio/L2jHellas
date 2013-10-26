@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.templates.L2HelperBuff;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -59,7 +59,7 @@ public class HelperBuffData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/helper_buff_list.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/helper_buff_list.xml");
 		if (!f.exists())
 		{
 			_log.warning("HelperBuffTable: helper_buff_list.xml could not be loaded: file not found");

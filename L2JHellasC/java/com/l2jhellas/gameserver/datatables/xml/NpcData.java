@@ -38,6 +38,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.InfoCache;
 import com.l2jhellas.gameserver.model.L2DropData;
@@ -352,7 +353,7 @@ public class NpcData
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 			int th = 0;
-			File f = new File(Config.DATAPACK_ROOT, "data/xml/skill_learn.xml");
+			File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/skill_learn.xml");
 			if (!f.exists())
 			{
 				_log.warning("skill_learn.xml could not be loaded: file not found");
@@ -406,7 +407,7 @@ public class NpcData
 			factory1.setValidating(false);
 			factory1.setIgnoringComments(true);
 			int cnt = 0;
-			File f1 = new File(Config.DATAPACK_ROOT, "data/xml/minion.xml");
+			File f1 = new File(PackRoot.DATAPACK_ROOT, "data/xml/minion.xml");
 			if (!f1.exists())
 			{
 				_log.warning("minion.xml could not be loaded: file not found");

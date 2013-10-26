@@ -29,6 +29,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ArmorSet;
 
@@ -62,7 +63,7 @@ public class ArmorSetsData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/armor_sets.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/armor_sets.xml");
 		if (!f.exists())
 		{
 			_log.log(Level.WARNING, getClass().getName() + ": armorsets.xml could not be loaded: file not found");

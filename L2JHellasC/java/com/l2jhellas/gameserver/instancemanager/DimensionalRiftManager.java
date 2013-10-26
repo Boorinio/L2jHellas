@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
@@ -137,9 +137,12 @@ public class DimensionalRiftManager
 			factory.setValidating(false);
 			factory.setIgnoringComments(true);
 
-			File file = new File(Config.DATAPACK_ROOT, "data/xml/dimensionalRift.xml");
+			File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/dimensionalRift.xml");
 			if (!file.exists())
-				throw new IOException();
+			{
+				_log.log(Level.CONFIG, getClass().getName() + ": NO FILE dimensionalRift.xml");
+				return;
+			}
 
 			Document doc = factory.newDocumentBuilder().parse(file);
 			NamedNodeMap attrs;

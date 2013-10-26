@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.templates.L2Henna;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -64,7 +64,7 @@ public class HennaData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/henna.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/henna.xml");
 		if (!f.exists())
 		{
 			_log.warning("henna.xml could not be loaded: file not found");

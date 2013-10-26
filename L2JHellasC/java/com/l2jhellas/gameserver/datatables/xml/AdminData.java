@@ -28,6 +28,7 @@ import javolution.util.FastMap;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
@@ -111,9 +112,9 @@ public class AdminData extends DocumentParser
 
 	public void load()
 	{
-		parseFile(new File(Config.DATAPACK_ROOT, "data/xml/accessLevels.xml"));
+		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/accessLevels.xml"));
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _accessLevels.size() + " Access Levels.");
-		parseFile(new File(Config.DATAPACK_ROOT, "data/xml/adminCommands.xml"));
+		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/adminCommands.xml"));
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _adminCommandAccessRights.size() + " Access Commands.");
 	}
 

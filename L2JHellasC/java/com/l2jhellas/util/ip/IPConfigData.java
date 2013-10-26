@@ -17,10 +17,8 @@ package com.l2jhellas.util.ip;
 import info.tak11.subnet.Subnet;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,8 +42,8 @@ public class IPConfigData
 	private static final List<String> _subnets = new ArrayList<>(5);
 	private static final List<String> _hosts = new ArrayList<>(5);
 	
-	private static String externalIp = "127.0.0.1";
-	private static Subnet sub = new Subnet();
+	public static String externalIp = "127.0.0.1";
+	public static Subnet sub = new Subnet();
 
 	public static void load()
 	{
@@ -130,91 +128,10 @@ public class IPConfigData
 			_hosts.add(externalIp);
 			_subnets.add("0.0.0.0/0");
 			System.out.println("Network Config: Adding new subnet: 0.0.0.0/0 address: " + externalIp);
-
-			// game server
-			try
-			{
-				String fname = "../gameserver/config/Network/IPConfig/IPGameServer.ini";
-				File file = new File(fname);
-				file.createNewFile();
-
-				FileWriter fstream = new FileWriter(fname);
-				BufferedWriter out = new BufferedWriter(fstream);
-				/** @formatter:off */
-							out.write(
-							"##########################################################################################\r\n"+
-							"# This is the server configuration file. Here you can set up your server.                #\r\n"+
-							"# * you can use the NO-IP system for dynamic DNS > http://www.no-ip.com/                 #\r\n"+
-							"# * if you want to restore default settings delete this file. and run the server         #\r\n"+
-							"##########################################################################################\r\n"+
-							"\r\n"+
-							"# Bind IP of the gameserver, use * to bind on all available IPs\r\n"+
-							"GameserverHostname = *\r\n"+
-							"GameserverPort = 7777\r\n"+
-							"\r\n"+
-							"# This is transmitted to the clients connecting from an external network, so it has to be a public IP or resolvable hostname\r\n"+
-							"# If this IP is resolvable by Login just leave *\r\n"+
-							"# Default: *\r\n"+
-							"ExternalHostname = " + externalIp + "\r\n" +
-							"\r\n"+
-							"# This is transmitted to the client from the same network, so it has to be a local IP or resolvable hostname\r\n"+
-							"# If this IP is resolvable by Login just leave *\r\n"+
-							"# Default: *\r\n"+
-							"InternalHostname = " + sub.getIPAddress() + "\r\n"+
-							"\r\n"+
-							"# The Loginserver host and port\r\n"+
-							"LoginPort = 9014\r\n"+
-							"LoginHost = " + sub.getIPAddress()+ "\r\n");
-							/** @formatter:on */
-				out.close();
-			}
-			catch (Exception e)
-			{
-				System.err.println("Network Config: could not create gameserver/config/Network/IPConfig/IPGameServer.ini");
-			}
-			// login server
-			try
-			{
-				String fname = "../login/config/Network/IPConfig/IPLoginServer.ini";
-				File file = new File(fname);
-				file.createNewFile();
-
-				FileWriter fstream = new FileWriter(fname);
-				BufferedWriter out = new BufferedWriter(fstream);
-				/** @formatter:off */
-							out.write(
-							"##########################################################################################\r\n"+
-							"# Server configuration file. Here you can set up the connection for your server.         #\r\n"+
-							"# = you can use the NO-IP system for dynamic DNS > http://www.no-ip.com/                 #\r\n"+
-							"# * if you want to restore default settings delete this file. and run the server         #\r\n"+
-							"##########################################################################################\r\n"+
-							"# This is transmitted to the clients connecting from an external network,\r\n"+
-							"# so it has to be a public IP or resolvable hostname\r\n"+
-							"ExternalHostname = " + externalIp + "\r\n" +
-							"\r\n"+
-							"# This is transmitted to the client from the same network, so it has to be a local IP or resolvable hostname\r\n"+
-							"InternalHostname = " + sub.getIPAddress() + "\r\n"+
-							"\r\n"+
-							"# Bind ip of the LoginServer, use * to bind on all available IPs\r\n"+
-							"LoginserverHostname = *\r\n"+
-							"LoginserverPort = 2106\r\n"+
-							"\r\n"+
-							"# The address on which login will listen for GameServers, use * to bind on all available IPs\r\n"+
-							"LoginHostname = *\r\n"+
-							"\r\n"+
-							"# The port on which login will listen for GameServers\r\n"+
-							"LoginPort = 9014");
-							/** @formatter:on */
-				out.close();
-			}
-			catch (Exception e)
-			{
-				System.err.println("Network Config: could not create gameserver/config/Network/IPConfig/IPGameServer.ini");
-			}
 		}
 		catch (SocketException e)
 		{
-			System.err.println("Network Config: Configuration failed please configure manually using ipconfig.xml");
+			System.err.println("Network Config: Configuration failed please configure manually using IPGameServer.ini and IPLoginServer.ini");
 			e.printStackTrace();
 			System.exit(0);
 		}

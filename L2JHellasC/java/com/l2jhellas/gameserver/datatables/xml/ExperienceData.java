@@ -23,7 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 
 /**
  * Based on mrTJO's implementation.
@@ -46,7 +46,7 @@ public class ExperienceData
 
 	private void loadData()
 	{
-		final File xml = new File(Config.DATAPACK_ROOT, "data/xml/experience.xml");
+		final File xml = new File(PackRoot.DATAPACK_ROOT, "data/xml/experience.xml");
 		if (!xml.exists())
 		{
 			_log.warning(getClass().getSimpleName() + ": experience.xml not found!");

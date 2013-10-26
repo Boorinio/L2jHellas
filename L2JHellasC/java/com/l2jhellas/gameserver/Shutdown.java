@@ -38,6 +38,7 @@ import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.gameserverpackets.ServerStatus;
+import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Broadcast;
@@ -539,6 +540,11 @@ public class Shutdown extends Thread
 				final L2GameClient client = player.getClient();
 				if (client != null && !client.isDetached())
 				{
+					player.deleteMe();
+					L2GameClient.saveCharToDisk(player);
+					player.sendPacket(new LeaveWorld());
+				
+					
 					client.close(ServerClose.STATIC_PACKET);
 					client.setActiveChar(null);
 					player.setClient(null);

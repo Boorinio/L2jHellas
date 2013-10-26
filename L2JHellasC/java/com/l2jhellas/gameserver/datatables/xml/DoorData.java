@@ -33,7 +33,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -85,7 +85,7 @@ public class DoorData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File file = new File(Config.DATAPACK_ROOT, "data/xml/doors.xml");
+		File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/doors.xml");
 		if (!file.exists())
 		{
 			_log.warning("doors.xml is missing in data folder.");

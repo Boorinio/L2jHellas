@@ -64,6 +64,7 @@ import Extensions.AchievmentsEngine.conditions.eventKills;
 import Extensions.AchievmentsEngine.conditions.eventWins;
 import Extensions.AchievmentsEngine.conditions.events;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -87,7 +88,7 @@ public class AchievementsManager
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
 
-		File file = new File(Config.DATAPACK_ROOT, "data/xml/achievements.xml");
+		File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/achievements.xml");
 
 		if (!file.exists())
 		{

@@ -22,6 +22,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ExtractableItem;
 import com.l2jhellas.gameserver.model.L2ExtractableProductItem;
@@ -58,7 +59,7 @@ public class ExtractableItemsData
 
 		try
 		{
-			s = new Scanner(new File(Config.DATAPACK_ROOT, "data/csv/extractable_items.csv"));
+			s = new Scanner(new File(PackRoot.DATAPACK_ROOT, "data/csv/extractable_items.csv"));
 		}
 		catch (Exception e)
 		{

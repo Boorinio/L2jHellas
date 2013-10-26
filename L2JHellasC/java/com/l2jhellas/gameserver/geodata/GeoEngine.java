@@ -28,6 +28,7 @@ import java.nio.channels.FileChannel;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
@@ -587,7 +588,7 @@ public final class GeoEngine extends GeoData
 	private void nInitGeodata()
 	{
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Geodata...");
-		File Data = new File(Config.DATAPACK_ROOT, "data/geodata/geo_index.txt");
+		File Data = new File(PackRoot.DATAPACK_ROOT, "data/geodata/geo_index.txt");
 		if (!Data.exists())
 			return;
 
@@ -644,7 +645,7 @@ public final class GeoEngine extends GeoData
 				}
 		}
 
-		File geo_bugs = new File(Config.DATAPACK_ROOT, "data/geodata/geo_bugs.txt");
+		File geo_bugs = new File(PackRoot.DATAPACK_ROOT, "data/geodata/geo_bugs.txt");
 		FileOutputStream out = null;
 		try
 		{
@@ -674,7 +675,7 @@ public final class GeoEngine extends GeoData
 		String fname = "data/geodata/" + rx + "_" + ry + ".l2j";
 		short regionoffset = (short) ((rx << 5) + ry);
 		_log.info("Geo Engine: - Loading: " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
-		File Geo = new File(Config.DATAPACK_ROOT, fname);
+		File Geo = new File(PackRoot.DATAPACK_ROOT, fname);
 		int size, index = 0, block = 0, flor = 0;
 		FileChannel roChannel = null;
 		RandomAccessFile raf = null;

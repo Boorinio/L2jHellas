@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -75,7 +76,7 @@ public class CrestCache
 	{
 		FileFilter filter = new BmpFilter();
 
-		File dir = new File(Config.DATAPACK_ROOT, "data/crests/");
+		File dir = new File(PackRoot.DATAPACK_ROOT, "data/crests/");
 
 		File[] files = dir.listFiles(filter);
 		byte[] content;
@@ -92,7 +93,7 @@ public class CrestCache
 		FastMap<Integer, byte[]> _mapPledge = _cachePledge.getContentMap();
 		FastMap<Integer, byte[]> _mapPledgeLarge = _cachePledgeLarge.getContentMap();
 		FastMap<Integer, byte[]> _mapAlly = _cacheAlly.getContentMap();
-
+		if (files != null)
 		for (File file : files)
 		{
 			RandomAccessFile f = null;
@@ -145,10 +146,10 @@ public class CrestCache
 
 	public void convertOldPedgeFiles()
 	{
-		File dir = new File(Config.DATAPACK_ROOT, "data/crests/");
+		File dir = new File(PackRoot.DATAPACK_ROOT, "data/crests/");
 
 		File[] files = dir.listFiles(new OldPledgeFilter());
-
+		if (files != null)
 		for (File file : files)
 		{
 			int clanId = Integer.parseInt(file.getName().substring(7, file.getName().length() - 4));
@@ -163,7 +164,7 @@ public class CrestCache
 			{
 				removeOldPledgeCrest(clan.getCrestId());
 
-				file.renameTo(new File(Config.DATAPACK_ROOT, "data/crests/Crest_" + newId + ".bmp"));
+				file.renameTo(new File(PackRoot.DATAPACK_ROOT, "data/crests/Crest_" + newId + ".bmp"));
 				_log.log(Level.INFO, getClass().getSimpleName() + ": Renamed Clan crest to new format: Crest_" + newId + ".bmp");
 
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -221,7 +222,7 @@ public class CrestCache
 
 	public void removePledgeCrest(int id)
 	{
-		File crestFile = new File(Config.DATAPACK_ROOT, "data/crests/Crest_" + id + ".bmp");
+		File crestFile = new File(PackRoot.DATAPACK_ROOT, "data/crests/Crest_" + id + ".bmp");
 		_cachePledge.remove(id);
 		try
 		{
@@ -239,7 +240,7 @@ public class CrestCache
 
 	public void removePledgeCrestLarge(int id)
 	{
-		File crestFile = new File(Config.DATAPACK_ROOT, "data/crests/Crest_Large_" + id + ".bmp");
+		File crestFile = new File(PackRoot.DATAPACK_ROOT, "data/crests/Crest_Large_" + id + ".bmp");
 		_cachePledgeLarge.remove(id);
 		try
 		{
@@ -257,7 +258,7 @@ public class CrestCache
 
 	public void removeOldPledgeCrest(int id)
 	{
-		File crestFile = new File(Config.DATAPACK_ROOT, "data/crests/Pledge_" + id + ".bmp");
+		File crestFile = new File(PackRoot.DATAPACK_ROOT, "data/crests/Pledge_" + id + ".bmp");
 		try
 		{
 			crestFile.delete();
@@ -274,7 +275,7 @@ public class CrestCache
 
 	public void removeAllyCrest(int id)
 	{
-		File crestFile = new File(Config.DATAPACK_ROOT, "data/crests/AllyCrest_" + id + ".bmp");
+		File crestFile = new File(PackRoot.DATAPACK_ROOT, "data/crests/AllyCrest_" + id + ".bmp");
 		_cacheAlly.remove(id);
 		try
 		{
@@ -292,7 +293,7 @@ public class CrestCache
 
 	public boolean savePledgeCrest(int newId, byte[] data)
 	{
-		File crestFile = new File(Config.DATAPACK_ROOT, "data/crests/Crest_" + newId + ".bmp");
+		File crestFile = new File(PackRoot.DATAPACK_ROOT, "data/crests/Crest_" + newId + ".bmp");
 		try
 		{
 			FileOutputStream out = new FileOutputStream(crestFile);
@@ -314,7 +315,7 @@ public class CrestCache
 
 	public boolean savePledgeCrestLarge(int newId, byte[] data)
 	{
-		File crestFile = new File(Config.DATAPACK_ROOT, "data/crests/Crest_Large_" + newId + ".bmp");
+		File crestFile = new File(PackRoot.DATAPACK_ROOT, "data/crests/Crest_Large_" + newId + ".bmp");
 		try
 		{
 			FileOutputStream out = new FileOutputStream(crestFile);
@@ -336,7 +337,7 @@ public class CrestCache
 
 	public boolean saveAllyCrest(int newId, byte[] data)
 	{
-		File crestFile = new File(Config.DATAPACK_ROOT, "data/crests/AllyCrest_" + newId + ".bmp");
+		File crestFile = new File(PackRoot.DATAPACK_ROOT, "data/crests/AllyCrest_" + newId + ".bmp");
 		try
 		{
 			FileOutputStream out = new FileOutputStream(crestFile);

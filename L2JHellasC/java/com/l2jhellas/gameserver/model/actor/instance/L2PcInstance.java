@@ -49,6 +49,7 @@ import Extensions.RankSystem.RankPvpSystemComboKill;
 import Extensions.RankSystem.RankPvpSystemDeathMgr;
 import Extensions.RankSystem.RankPvpSystemRankPointsReward;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
@@ -14375,7 +14376,7 @@ public final class L2PcInstance extends L2Playable
 			if (isGM())
 			{
 				final String Welcome_Path = "data/html/welcomeGM.htm";
-				File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
+				File mainText = new File(PackRoot.DATAPACK_ROOT, Welcome_Path);
 				if (mainText.exists())
 				{
 					NpcHtmlMessage html = new NpcHtmlMessage(1);
@@ -14388,7 +14389,7 @@ public final class L2PcInstance extends L2Playable
 			else
 			{
 				final String Welcome_Path = "data/html/welcomeP.htm";
-				File mainText = new File(Config.DATAPACK_ROOT, Welcome_Path);
+				File mainText = new File(PackRoot.DATAPACK_ROOT, Welcome_Path);
 				if (mainText.exists())
 				{
 					NpcHtmlMessage html = new NpcHtmlMessage(1);

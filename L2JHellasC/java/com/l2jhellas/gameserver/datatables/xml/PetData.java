@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.model.L2PetData;
 
 public class PetData
@@ -62,7 +62,7 @@ public class PetData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/pet_stats.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/pet_stats.xml");
 		if (!f.exists())
 		{
 			_log.warning("pet_stats.xml could not be loaded: file not found");

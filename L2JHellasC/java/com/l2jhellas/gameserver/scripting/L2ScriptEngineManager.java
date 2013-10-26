@@ -39,6 +39,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.util.L2FastMap;
 import com.l2jserver.script.jython.JythonScriptEngine;
@@ -59,7 +60,7 @@ public final class L2ScriptEngineManager
 	static
 	{
 		_log = Logger.getLogger(L2ScriptEngineManager.class.getName());
-		SCRIPT_FOLDER = new File(Config.DATAPACK_ROOT, "data/scripts");
+		SCRIPT_FOLDER = new File(PackRoot.DATAPACK_ROOT, "data/scripts");
 		INSTANCE = new L2ScriptEngineManager();
 	}
 

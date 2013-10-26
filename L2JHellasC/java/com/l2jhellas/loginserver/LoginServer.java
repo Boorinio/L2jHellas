@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
 import com.l2jhellas.mmocore.network.SelectorConfig;
@@ -37,6 +38,7 @@ import com.l2jhellas.status.Status;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 import com.l2jhellas.util.ip.IPConfigData;
+import com.l2jhellas.util.ip.LoginServerIP;
 
 /**
  * @author KenM
@@ -67,6 +69,9 @@ public class LoginServer
 	public LoginServer()
 	{
 		Server.serverMode = Server.MODE_LOGINSERVER;
+		// Pack Root
+		PackRoot.load();
+		
 		// Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
@@ -107,7 +112,8 @@ public class LoginServer
 		// IP Config
 		Util.printSection("Network");
 		IPConfigData.load();
-		
+		LoginServerIP.load();
+
 		// Load Config
 		Util.printSection("Config");
 		Config.load();

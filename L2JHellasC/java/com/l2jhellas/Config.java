@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.OutputStream;
@@ -1104,7 +1103,6 @@ public final class Config
 	 */
 	public static boolean DEBUG;
 	public static boolean DEBUG_LOGGER;
-	public static File DATAPACK_ROOT;
 	public static boolean ALT_DEV_NO_SPAWNS;
 	public static boolean ALT_DEV_NO_SCRIPT;
 	public static boolean ALT_DEV_NO_RB;
@@ -3104,15 +3102,6 @@ public final class Config
 			// Dev's Config
 			DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
 			DEBUG_LOGGER = Boolean.parseBoolean(serverSettings.getProperty("DebugLogger", "False"));
-			try
-			{
-				DATAPACK_ROOT = new File(serverSettings.getProperty("DatapackRoot", ".").replaceAll("\\\\", "/")).getCanonicalFile();
-			}
-			catch (IOException e)
-			{
-				_log.log(Level.WARNING, "Error setting datapack root!", e);
-				DATAPACK_ROOT = new File(".");
-			}
 			ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoSpawns", "False"));
 			ALT_DEV_NO_SCRIPT = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoScripts", "False"));
 			ALT_DEV_NO_RB = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoRaidbosses", "False"));
@@ -3219,6 +3208,8 @@ public final class Config
 			MMO_MAX_SEND_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxSendPerPass", "12"));
 			MMO_MAX_READ_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxReadPerPass", "12"));
 			MMO_HELPER_BUFFER_COUNT = Integer.parseInt(mmoSettings.getProperty("HelperBufferCount", "20"));
+
+			_log.log(Level.INFO, "Configuration Files Loaded.");
 		}
 		else if (Server.serverMode == Server.MODE_LOGINSERVER)
 		{
@@ -3309,7 +3300,7 @@ public final class Config
 			MMO_MAX_SEND_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxSendPerPass", "12"));
 			MMO_MAX_READ_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxReadPerPass", "12"));
 			MMO_HELPER_BUFFER_COUNT = Integer.parseInt(mmoSettings.getProperty("HelperBufferCount", "20"));
-		
+
 			_log.log(Level.INFO, "Configuration Files Loaded.");
 		}
 		else

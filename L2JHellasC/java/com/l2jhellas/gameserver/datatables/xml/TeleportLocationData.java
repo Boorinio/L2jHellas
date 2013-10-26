@@ -28,7 +28,7 @@ import javolution.util.FastMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.model.L2TeleportLocation;
 import com.l2jhellas.util.filters.file.XMLFilter;
 
@@ -206,7 +206,7 @@ public class TeleportLocationData
 
 	private final void hashFiles(String dirname, List<File> hash)
 	{
-		File dir = new File(Config.DATAPACK_ROOT, dirname);
+		File dir = new File(PackRoot.DATAPACK_ROOT, dirname);
 		if (!dir.exists())
 		{
 			_log.log(Level.WARNING, "Dir " + dir.getAbsolutePath() + " not exists");

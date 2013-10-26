@@ -31,6 +31,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Skill;
 
@@ -67,7 +68,7 @@ public class SkillSpellbookData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/skill_spellbooks.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/skill_spellbooks.xml");
 		if (!f.exists())
 		{
 			_log.warning("skill_spellbooks.xml could not be loaded: file not found");

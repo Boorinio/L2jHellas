@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
@@ -137,7 +138,7 @@ public class L2BoatInstance extends L2Character
 			LineNumberReader lnr = null;
 			try
 			{
-				File doorData = new File(Config.DATAPACK_ROOT, "data/csv/boatpath.csv");
+				File doorData = new File(PackRoot.DATAPACK_ROOT, "data/csv/boatpath.csv");
 				lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
 
 				String line = null;

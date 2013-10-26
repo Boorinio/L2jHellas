@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
 
 public class NpcWalkerRoutesData
@@ -63,7 +63,7 @@ public class NpcWalkerRoutesData
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/walker_routes.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/walker_routes.xml");
 		if (!f.exists())
 		{
 			_log.warning("walker_routes.xml could not be loaded: file not found");

@@ -17,6 +17,7 @@
 <booleanAttribute key="org.eclipse.jdt.debug.ui.INCLUDE_EXTERNAL_JARS" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.l2jhellas.loginserver.LoginServer"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="L2JHellasC"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="C:\L2JHellas\login\"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx64m"/>
 <booleanAttribute key="yk-capture-cpu-on-exit" value="false"/>
 <booleanAttribute key="yk-capture-memory-on-exit" value="false"/>

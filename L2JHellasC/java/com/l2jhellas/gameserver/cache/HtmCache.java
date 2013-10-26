@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.util.L2FastMap;
 import com.l2jhellas.util.Util;
@@ -47,7 +48,7 @@ public class HtmCache
 	
 	public void reload()
 	{
-		reload(Config.DATAPACK_ROOT);
+		reload(PackRoot.DATAPACK_ROOT);
 	}
 	
 	public void reload(File f)
@@ -106,7 +107,7 @@ public class HtmCache
 			return null;
 		}
 		
-		final String relpath = Util.getRelativePath(Config.DATAPACK_ROOT, file);
+		final String relpath = Util.getRelativePath(PackRoot.DATAPACK_ROOT, file);
 		String content = null;
 		try (FileInputStream fis = new FileInputStream(file);
 			BufferedInputStream bis = new BufferedInputStream(fis))
@@ -180,7 +181,7 @@ public class HtmCache
 		String content = _cache.get(path);
 		if (Config.LAZY_CACHE && (content == null))
 		{
-			content = loadFile(new File(Config.DATAPACK_ROOT, path));
+			content = loadFile(new File(PackRoot.DATAPACK_ROOT, path));
 		}
 		return content;
 	}

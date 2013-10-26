@@ -23,6 +23,7 @@ import javax.script.ScriptException;
 
 import Extensions.Balancer.BalanceLoad;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.cache.CrestCache;
@@ -146,7 +147,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("html") || type.equals("htm"))
 				{
-					HtmCache.getInstance().reload(Config.DATAPACK_ROOT);
+					HtmCache.getInstance().reload(PackRoot.DATAPACK_ROOT);
 					activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB on " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
 					sendReloadPage(activeChar);
 				}
@@ -155,7 +156,7 @@ public class AdminReload implements IAdminCommandHandler
 					try
 					{
 						String path = command.split(" ")[1];
-						HtmCache.getInstance().reloadPath(new File(Config.DATAPACK_ROOT, path));
+						HtmCache.getInstance().reloadPath(new File(PackRoot.DATAPACK_ROOT, path));
 						activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB in " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
 					}
 					catch (Exception e)
@@ -169,7 +170,7 @@ public class AdminReload implements IAdminCommandHandler
 					try
 					{
 						String path = command.split(" ")[1];
-						if (HtmCache.getInstance().loadFile(new File(Config.DATAPACK_ROOT, path)) != null)
+						if (HtmCache.getInstance().loadFile(new File(PackRoot.DATAPACK_ROOT, path)) != null)
 						{
 							activeChar.sendMessage("Cache[HTML]: file was loaded.");
 						}

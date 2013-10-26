@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
 import java.io.File;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -50,7 +50,7 @@ public class AdminCache implements IAdminCommandHandler
 	{
 		if (command.startsWith("admin_cache_htm_rebuild") || command.equals("admin_cache_htm_reload"))
 		{
-			HtmCache.getInstance().reload(Config.DATAPACK_ROOT);
+			HtmCache.getInstance().reload(PackRoot.DATAPACK_ROOT);
 			activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB on " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
 		}
 		else if (command.startsWith("admin_cache_reload_path "))
@@ -58,7 +58,7 @@ public class AdminCache implements IAdminCommandHandler
 			try
 			{
 				String path = command.split(" ")[1];
-				HtmCache.getInstance().reloadPath(new File(Config.DATAPACK_ROOT, path));
+				HtmCache.getInstance().reloadPath(new File(PackRoot.DATAPACK_ROOT, path));
 				activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB in " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
 			}
 			catch (Exception e)
@@ -71,7 +71,7 @@ public class AdminCache implements IAdminCommandHandler
 			try
 			{
 				String path = command.split(" ")[1];
-				if (HtmCache.getInstance().loadFile(new File(Config.DATAPACK_ROOT, path)) != null)
+				if (HtmCache.getInstance().loadFile(new File(PackRoot.DATAPACK_ROOT, path)) != null)
 				{
 					activeChar.sendMessage("Cache[HTML]: file was loaded");
 				}

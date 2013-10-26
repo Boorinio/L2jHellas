@@ -26,7 +26,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.util.filters.file.XMLFilter;
 
 /**
@@ -59,7 +59,7 @@ public abstract class DocumentParser
 	 */
 	protected void parseDatapackFile(String path)
 	{
-		parseFile(new File(Config.DATAPACK_ROOT, path));
+		parseFile(new File(PackRoot.DATAPACK_ROOT, path));
 	}
 	
 	/**

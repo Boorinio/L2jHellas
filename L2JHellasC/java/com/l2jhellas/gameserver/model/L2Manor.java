@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.templates.L2Item;
@@ -377,7 +378,7 @@ public class L2Manor
 		LineNumberReader lnr = null;
 		try
 		{
-			File seedData = new File(Config.DATAPACK_ROOT, "data/csv/seeds.csv");
+			File seedData = new File(PackRoot.DATAPACK_ROOT, "data/csv/seeds.csv");
 			lnr = new LineNumberReader(new BufferedReader(new FileReader(seedData)));
 
 			String line = null;

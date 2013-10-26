@@ -20,6 +20,7 @@ import java.util.List;
 import javolution.util.FastList;
 import javolution.util.FastSet;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
@@ -83,7 +84,7 @@ public class CaptureThem
 			{
 				String Capture_Path = "data/html/zodiac/CaptureThem.htm";
 				// TODO check this if work like that
-				/* File mainText = */new File(Config.DATAPACK_ROOT, Capture_Path);
+				/* File mainText = */new File(PackRoot.DATAPACK_ROOT, Capture_Path);
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);
 				players.sendPacket(html);

@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Augmentation;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -205,7 +206,7 @@ public class AugmentationData
 
 			int badAugmantData = 0;
 
-			File file = new File(Config.DATAPACK_ROOT, "data/stats/augmentation/augmentation_skillmap.xml");
+			File file = new File(PackRoot.DATAPACK_ROOT, "data/stats/augmentation/augmentation_skillmap.xml");
 			if (!file.exists())
 			{
 				System.out.println("The augmentation skillmap file is missing.");
@@ -315,7 +316,7 @@ public class AugmentationData
 				factory.setValidating(false);
 				factory.setIgnoringComments(true);
 
-				File file = new File(Config.DATAPACK_ROOT, "data/stats/augmentation/augmentation_stats" + i + ".xml");
+				File file = new File(PackRoot.DATAPACK_ROOT, "data/stats/augmentation/augmentation_stats" + i + ".xml");
 
 				if (!file.exists())
 				{

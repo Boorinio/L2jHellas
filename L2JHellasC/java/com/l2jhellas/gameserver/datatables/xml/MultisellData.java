@@ -26,7 +26,7 @@ import javolution.util.FastList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -471,7 +471,7 @@ public class MultisellData
 
 	private void hashFiles(String dirname, List<File> hash)
 	{
-		File dir = new File(Config.DATAPACK_ROOT, "data/" + dirname);
+		File dir = new File(PackRoot.DATAPACK_ROOT, "data/" + dirname);
 		if (!dir.exists())
 		{
 			_log.config("Dir " + dir.getAbsolutePath() + " not exists");

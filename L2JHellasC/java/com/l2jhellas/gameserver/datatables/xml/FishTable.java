@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.model.FishData;
 
 public class FishTable
@@ -56,7 +56,7 @@ public class FishTable
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
 		int count = 0;
-		File f = new File(Config.DATAPACK_ROOT, "data/xml/fish.xml");
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/fish.xml");
 		if (!f.exists())
 		{
 			_log.warning("fish.xml could not be loaded: file not found");

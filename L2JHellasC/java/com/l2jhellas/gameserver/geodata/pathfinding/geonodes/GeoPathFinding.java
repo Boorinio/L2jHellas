@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
@@ -266,7 +267,7 @@ public final class GeoPathFinding extends PathFinding
 		try
 		{
 			_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Path Nodes...");
-			File Data = new File(Config.DATAPACK_ROOT + "/data/pathnode/pn_index.txt");
+			File Data = new File(PackRoot.DATAPACK_ROOT, "/data/pathnode/pn_index.txt");
 			if (!Data.exists())
 				return;
 
@@ -338,7 +339,7 @@ public final class GeoPathFinding extends PathFinding
 
 	private void LoadPathNodeFile(byte rx, byte ry)
 	{
-		String fname = Config.DATAPACK_ROOT + "/data/pathnode/" + rx + "_" + ry + ".pn";
+		String fname = PackRoot.DATAPACK_ROOT + "/data/pathnode/" + rx + "_" + ry + ".pn";
 		short regionoffset = getRegionOffset(rx, ry);
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loading " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
 		File Pn = new File(fname);

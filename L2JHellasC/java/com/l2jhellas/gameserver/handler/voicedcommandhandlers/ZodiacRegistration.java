@@ -18,7 +18,7 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
+import com.PackRoot;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CaptureThem;
@@ -60,10 +60,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			if (CastleWars.CastleWarsRunning)
 			{
 				String Castle_Path = "data/html/zodiac/CastleTutorial.htm";
-				File mainText = new File(Config.DATAPACK_ROOT, Castle_Path);
+				File mainText = new File(PackRoot.DATAPACK_ROOT, Castle_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Castle_Path + " check your files.");
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Castle_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Castle_Path);
@@ -72,10 +72,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			else if (CaptureThem.CaptureThemRunning)
 			{
 				String Capture_Path = "data/html/zodiac/Tutorial.htm";
-				File mainText = new File(Config.DATAPACK_ROOT, Capture_Path);
+				File mainText = new File(PackRoot.DATAPACK_ROOT, Capture_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Capture_Path + " check your files.");
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Capture_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);
@@ -84,10 +84,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			else if (PeloponnesianWar.PeloRunning)
 			{
 				String Pelo_Path = "data/html/zodiac/TutorialPelo.htm";
-				File mainText = new File(Config.DATAPACK_ROOT, Pelo_Path);
+				File mainText = new File(PackRoot.DATAPACK_ROOT, Pelo_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Pelo_Path + " check your files.");
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Pelo_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Pelo_Path);
@@ -96,10 +96,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			else if (ProtectTheLdr.ProtectisRunning)
 			{
 				String Protect_Path = "data/html/zodiac/ProtectTuto.htm";
-				File mainText = new File(Config.DATAPACK_ROOT, Protect_Path);
+				File mainText = new File(PackRoot.DATAPACK_ROOT, Protect_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Protect_Path + " check your files.");
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Protect_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Protect_Path);
@@ -108,10 +108,10 @@ public class ZodiacRegistration implements IVoicedCommandHandler
 			else if (TreasureChest.TreasureRunning)
 			{
 				String Capture_Path = "data/html/zodiac/Treasure.htm";
-				File mainText = new File(Config.DATAPACK_ROOT, Capture_Path);
+				File mainText = new File(PackRoot.DATAPACK_ROOT, Capture_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + Config.DATAPACK_ROOT, Capture_Path + " check your files.");
+					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Capture_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);
