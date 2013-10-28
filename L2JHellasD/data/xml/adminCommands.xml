@@ -114,7 +114,7 @@
 	<admin command="admin_save_modifications" accessLevel="7" />
 	<admin command="admin_rec" accessLevel="7" />
 	<admin command="admin_settitle" accessLevel="7" />
-	<admin command="admin_changename" accessLevel="7" />
+	<admin command="admin_setname" accessLevel="7" />
 	<admin command="admin_setsex" accessLevel="7" />
 	<admin command="admin_setcolor" accessLevel="7" />
 	<admin command="admin_settcolor" accessLevel="7" />

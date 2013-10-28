@@ -32,7 +32,6 @@ import com.l2jhellas.gameserver.network.serverpackets.Earthquake;
 import com.l2jhellas.gameserver.network.serverpackets.ExRedSky;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SignsSky;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
@@ -45,21 +44,18 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.logs.GMAudit;
 
 /**
- * This class handles following admin commands:
- * invis/invisible/vis/visible = makes yourself invisible or visible
- * earthquake = causes an earthquake of a given intensity and duration around
- * you
- * bighead/shrinkhead = changes head size
- * gmspeed = temporary Super Haste effect.
- * para/unpara = paralyze/remove paralysis from target
- * para_all/unpara_all = same as para/unpara, affects the whole world.
- * polyself/unpolyself = makes you look as a specified mob.
- * changename = temporary change name
- * clearteams/setteam_close/setteam = team related commands
- * social = forces an L2Character instance to broadcast social action packets.
- * effect = forces an L2Character instance to broadcast MSU packets.
- * abnormal = force changes over an L2Character instance's abnormal state.
- * play_sound/play_sounds = Music broadcasting related commands
+ * This class handles following admin commands:<br>
+ * earthquake = causes an earthquake of a given intensity and duration around you<br>
+ * bighead/shrinkhead = changes head size<br>
+ * gmspeed = temporary Super Haste effect.<br>
+ * para/unpara = paralyze/remove paralysis from target<br>
+ * para_all/unpara_all = same as para/unpara, affects the whole world.<br>
+ * polyself/unpolyself = makes you look as a specified mob.<br>
+ * clearteams/setteam_close/setteam = team related commands<br>
+ * social = forces an L2Character instance to broadcast social action packets.<br>
+ * effect = forces an L2Character instance to broadcast MSU packets.<br>
+ * abnormal = force changes over an L2Character instance's abnormal state.<br>
+ * play_sound/play_sounds = Music broadcasting related commands<br>
  * atmosphere = sky change related commands.
  */
 public class AdminEffects implements IAdminCommandHandler
@@ -84,8 +80,6 @@ public class AdminEffects implements IAdminCommandHandler
 		"admin_unpolyself",
 		"admin_polyself_menu",
 		"admin_unpolyself_menu",
-		"admin_changename",
-		"admin_changename_menu",
 		"admin_clearteams",
 		"admin_setteam_close",
 		"admin_setteam",
@@ -326,53 +320,6 @@ public class AdminEffects implements IAdminCommandHandler
 			activeChar.broadcastPacket(info1);
 			UserInfo info2 = new UserInfo(activeChar);
 			activeChar.sendPacket(info2);
-		}
-		else if (command.startsWith("admin_changename"))
-		{
-			try
-			{
-				String name = st.nextToken();
-				String oldName = "null";
-				try
-				{
-					L2Object target = activeChar.getTarget();
-					L2Character player = null;
-					if (target instanceof L2Character)
-					{
-						player = (L2Character) target;
-						oldName = player.getName();
-					}
-					else if (target == null)
-					{
-						player = activeChar;
-						oldName = activeChar.getName();
-					}
-					if (player instanceof L2PcInstance)
-						L2World.removeFromAllPlayers((L2PcInstance) player);
-					player.setName(name);
-					if (player instanceof L2PcInstance)
-						L2World.addVisibleObject(player, null, null);
-					if (player instanceof L2PcInstance)
-					{
-						CharInfo info1 = new CharInfo((L2PcInstance) player);
-						player.broadcastPacket(info1);
-						UserInfo info2 = new UserInfo((L2PcInstance) player);
-						player.sendPacket(info2);
-					}
-					else if (player instanceof L2Npc)
-					{
-						NpcInfo info1 = new NpcInfo((L2Npc) player, null);
-						player.broadcastPacket(info1);
-					}
-					activeChar.sendMessage("Changed name from " + oldName + " to " + name + ".");
-				}
-				catch (Exception e)
-				{
-				}
-			}
-			catch (StringIndexOutOfBoundsException e)
-			{
-			}
 		}
 		else if (command.equals("admin_clear_teams"))
 		{

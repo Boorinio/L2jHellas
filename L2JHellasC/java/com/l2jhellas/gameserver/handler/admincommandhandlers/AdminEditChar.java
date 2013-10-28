@@ -59,8 +59,8 @@ public class AdminEditChar implements IAdminCommandHandler
 
 	private static String[] ADMIN_COMMANDS =
 	{/** @formatter:off */
-		"admin_changename", // changes char name
-		"admin_changename_menu", "admin_edit_character", "admin_current_player", "admin_nokarma", "admin_setkarma", "admin_character_list", // same as character_info, kept for compatibility purposes
+		"admin_setname", // changes char name
+		"admin_edit_character", "admin_current_player", "admin_nokarma", "admin_setkarma", "admin_character_list", // same as character_info, kept for compatibility purposes
 		"admin_character_info", // given a player name, displays an information window
 		"admin_show_characters", "admin_find_character", "admin_find_ip", // find all the player connections from a given IPv4 number
 		"admin_find_account", // list all the characters from an account (useful for GMs w/o DB access)
@@ -327,7 +327,7 @@ public class AdminEditChar implements IAdminCommandHandler
 				npc.updateAbnormalEffect();
 			}
 		}
-		else if (command.startsWith("admin_changename"))
+		else if (command.startsWith("admin_setname"))
 		{
 			try
 			{
