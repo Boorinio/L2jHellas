@@ -27,15 +27,17 @@ public class GameServerIP
 	public static void load()
 	{
 		// game server
-		try
+		if(IPConfigData.AUTO_IP)
 		{
-			File file = new File(dirGame);
-			file.createNewFile();
+			try
+			{
+				File file = new File(dirGame);
+				file.createNewFile();
 
-			FileWriter fstream = new FileWriter(dirGame);
-			BufferedWriter out = new BufferedWriter(fstream);
-			/** @formatter:off */
-			out.write(
+				FileWriter fstream = new FileWriter(dirGame);
+				BufferedWriter out = new BufferedWriter(fstream);
+				/** @formatter:off */
+				out.write(
 					"##########################################################################################\r\n" +
 					"# This is the server configuration file. Here you can set up your server.                #\r\n" +
 					"# * you can use the NO-IP system for dynamic DNS > http://www.no-ip.com/                 #\r\n" +
@@ -56,12 +58,13 @@ public class GameServerIP
 					"# The Loginserver host and port\r\n" +
 					"LoginPort = 9014\r\n" +
 					"LoginHost = " + IPConfigData.sub.getIPAddress() + "\r\n");
-			/** @formatter:on */
-			out.close();
-		}
-		catch (Exception e)
-		{
-			System.err.println("Network Config: could not create " + dirGame);
+				/** @formatter:on */
+				out.close();
+			}
+			catch (Exception e)
+			{
+				System.err.println("Network Config: could not create " + dirGame);
+			}
 		}
 	}
 }

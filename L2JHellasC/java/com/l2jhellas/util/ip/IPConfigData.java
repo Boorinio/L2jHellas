@@ -35,6 +35,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.PackRoot;
+
 public class IPConfigData
 {
 	protected static final Logger _log = Logger.getLogger(IPConfigData.class.getName());
@@ -44,12 +46,13 @@ public class IPConfigData
 	
 	public static String externalIp = "127.0.0.1";
 	public static Subnet sub = new Subnet();
-
-	public static void load()
+	public static boolean AUTO_IP;
+	
+	private static void config()
 	{
 		Properties IPSettings = new Properties();
-		final File server = new File("./config/Network/AutomaticIP.ini");
-		boolean AUTO_IP;
+		final File server = new File(PackRoot.DATAPACK_ROOT, "config/Network/AutomaticIP.ini");
+		
 		try (InputStream is = new FileInputStream(server))
 		{
 			IPSettings.load(is);
@@ -59,7 +62,11 @@ public class IPConfigData
 			_log.log(Level.SEVERE, "Error while " + server + " settings!", e);
 		}
 		AUTO_IP = Boolean.parseBoolean(IPSettings.getProperty("AutomaticIP", "True"));
-
+	}
+	
+	public static void load()
+	{
+		config();
 		if (AUTO_IP == false)
 		{
 			System.out.println("Network Config: Manual Configuration.");
