@@ -18,10 +18,10 @@ class Quest (JQuest):
 
   def onAdvEvent (self,event,npc,pc) :
     if event == "Close_Door1" :
-       DoorTable.getInstance().getDoor(19160001).closeMe()
+       DoorData.getInstance().getDoor(19160001).closeMe()
     elif event == "Close_Door2" :
-       DoorTable.getInstance().getDoor(19160010).closeMe()
-       DoorTable.getInstance().getDoor(19160011).closeMe()
+       DoorData.getInstance().getDoor(19160010).closeMe()
+       DoorData.getInstance().getDoor(19160011).closeMe()
     return
 
   def onFirstTalk (self,npc,player):
@@ -43,10 +43,10 @@ class Quest (JQuest):
          st.takeItems(8064,1) # TODO: this part must happen when u walk through doors >.<
          st.giveItems(8065,1)
       htmltext = "FadedMark.htm"
-      DoorTable.getInstance().getDoor(19160001).openMe()
+      DoorData.getInstance().getDoor(19160001).openMe()
       self.startQuestTimer("Close_Door1",10000,None,None)
     elif npcId == 32035:
-      DoorTable.getInstance().getDoor(19160001).openMe()
+      DoorData.getInstance().getDoor(19160001).openMe()
       self.startQuestTimer("Close_Door1",10000,None,None)
       htmltext = "FadedMark.htm"
     elif npcId == 32036:
@@ -55,11 +55,11 @@ class Quest (JQuest):
       else:
         htmltext = "<html><body>The Temple Gatekeeper:<br>On seeing the Pagan's Mark, the statue's probing eyes go blank.<br>With the quiet whir of an engine, the gate swings open...</body></html>"
         self.startQuestTimer("Close_Door2",10000,None,None)
-        DoorTable.getInstance().getDoor(19160010).openMe()
-        DoorTable.getInstance().getDoor(19160011).openMe()
+        DoorData.getInstance().getDoor(19160010).openMe()
+        DoorData.getInstance().getDoor(19160011).openMe()
     elif npcId == 32037:
-      DoorTable.getInstance().getDoor(19160010).openMe()
-      DoorTable.getInstance().getDoor(19160011).openMe()
+      DoorData.getInstance().getDoor(19160010).openMe()
+      DoorData.getInstance().getDoor(19160011).openMe()
       self.startQuestTimer("Close_Door2",10000,None,None)
       htmltext = "FadedMark.htm"
     st.exitQuest(1)

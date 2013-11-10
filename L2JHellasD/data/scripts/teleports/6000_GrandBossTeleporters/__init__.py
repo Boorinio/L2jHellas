@@ -98,13 +98,13 @@ class Quest (JQuest) :
         else :
             htmltext = "31385-01.htm"
     elif npcId == 31384 : #Gatekeeper of Fire Dragon
-        DoorTable.getInstance().getDoor(24210004).openMe()
+        DoorData.getInstance().getDoor(24210004).openMe()
         return
     elif npcId == 31686 : #Gatekeeper of Fire Dragon
-        DoorTable.getInstance().getDoor(24210006).openMe()
+        DoorData.getInstance().getDoor(24210006).openMe()
         return
     elif npcId == 31687 : #Gatekeeper of Fire Dragon
-        DoorTable.getInstance().getDoor(24210005).openMe()
+        DoorData.getInstance().getDoor(24210005).openMe()
         return
     elif npcId == 31540 : #Watcher of Valakas Klein
         st = player.getQuestState(qn)
