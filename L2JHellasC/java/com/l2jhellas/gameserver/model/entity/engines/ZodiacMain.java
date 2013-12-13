@@ -41,7 +41,7 @@ public class ZodiacMain
 	public static List<String> VotedPlayers = new ArrayList<String>();
 	public static int[] count =
 	{
-	0, 0, 0, 0, 0, 0
+	0, 0, 0, 0, 0, 0, 0
 	};
 	
 	public static boolean voting;
@@ -61,9 +61,9 @@ public class ZodiacMain
 	public static void startVoting()
 	{
 		
-		if(EventsZodiacAreRunning())
+		if (EventsZodiacAreRunning())
 		{
-			Announcements.getInstance().announceToAll("An other event of zodiac engine is running. The zodiac engine will start when the event complete.");
+			Announcements.getInstance().announceToAll("An other event of zodiac engine is running. The zodiac engine will start when the event is completed.");
 			voting = false;
 			return;
 		}
@@ -81,7 +81,7 @@ public class ZodiacMain
 		waitSecs(minutes / 2 * 60);
 		voting = false;
 		endit();
-			
+		
 	}
 	
 	private static void ExecuteEvent(int Id)
@@ -105,6 +105,9 @@ public class ZodiacMain
 			break;
 			case 5:
 				ChaosEvent.registration();
+			break;
+			case 6:
+				DaChallenge.StartEvent();
 			break;
 			default:
 				Announcements.getInstance().announceToAll("No votes event canceled.Next vote in " + Config.BETWEEN_EVENTS + " Minutes!");
@@ -143,6 +146,9 @@ public class ZodiacMain
 		tb.append("<tr>");
 		tb.append("<td><center><button value=\"Chaos Event\" action=\"bypass -h ChaosEvent\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"></center></td>");
 		tb.append("</tr>");
+		tb.append("<tr>");
+		tb.append("<td><center><button value=\"BossChallenge\" action=\"bypass -h Challenge\" width=75 height=21 back=\"L2UI_ch3.Btn1_normalOn\" fore=\"L2UI_ch3.Btn1_normal\"></center></td>");
+		tb.append("</tr>");
 		tb.append("</table>");
 		tb.append("<font color=\"FF6600\">By Boorinio!</font>");
 		tb.append("</center>");
@@ -150,7 +156,7 @@ public class ZodiacMain
 		nhm.setHtml(tb.toString());
 		activeChar.sendPacket(nhm);
 	}
-
+	
 	public static void showFinalWindow(L2PcInstance player)
 	{
 		
@@ -163,7 +169,8 @@ public class ZodiacMain
 		tb.append("Castle Wars: " + count[2] + "<br>");
 		tb.append("Treasure Chests: " + count[4] + "<br>");
 		tb.append("Protect The Leader: " + count[3] + "<br>");
-		tb.append("Chaos Event: " + count[5] + "<br><br>");
+		tb.append("Chaos Event: " + count[5] + "<br>");
+		tb.append("Boss Challenge: " + count[6] + "<br><br>");
 		tb.append("</body></html>");
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
@@ -172,44 +179,39 @@ public class ZodiacMain
 	public static void endit()
 	{
 		max = -1;
-		for (i = 0; i < 6; i++)
+		for (i = 0; i < 7; i++)
 		{
 			if (count[i] > max && !(count[i] == 0))
 				max = i;
 		}
 		ExecuteEvent(max);
-		for (i = 0; i < 6; i++)
+		for (i = 0; i < 7; i++)
 		{
 			count[i] = 0;
 		}
 		ClearVotedPlayers();
-		waitSecs((Config.BETWEEN_EVENTS * 60)+Config.TIME_TO_REGISTER+10);
+		waitSecs((Config.BETWEEN_EVENTS * 60) + Config.TIME_TO_REGISTER + 10);
 		startVoting();
 	}
 	
 	public static void AddVotedPlayer(L2PcInstance player)
 	{
-		if(player != null)
-	         VotedPlayers.add(player.getName());
+		if (player != null)
+			VotedPlayers.add(player.getName());
 	}
 	
 	public static boolean HasVoted(L2PcInstance player)
 	{
-		if(player!=null && VotedPlayers.contains(player.getName()))
+		if (player != null && VotedPlayers.contains(player.getName()))
 			return true;
 		
-	    return false;
+		return false;
 	}
 	
 	public static void ClearVotedPlayers()
 	{
 		if (VotedPlayers.size() > 0)
 			VotedPlayers.clear();
-	}
-	
-	public static boolean EventRuning()
-	{
-		return (CaptureThem.CaptureThemRunning || PeloponnesianWar.PeloRunning || CastleWars.CastleWarsRunning || ChaosEvent._isChaosActive || TreasureChest.TreasureRunning || ProtectTheLdr.ProtectisRunning);
 	}
 	
 	public static void OnDeath(L2PcInstance player, L2PcInstance killer)
@@ -226,6 +228,8 @@ public class ZodiacMain
 			TreasureChest.onDeath(player);
 		if (ProtectTheLdr.ProtectisRunning)
 			ProtectTheLdr.onDeath(player);
+		if(DaChallenge.ChallengeRunning)
+			DaChallenge.onDeath(player);
 		
 	}
 	
@@ -247,30 +251,77 @@ public class ZodiacMain
 				killer.sendPacket(new ExShowScreenMessage("You have " + killer.getActingPlayer().ZodiacPoints + " Points.", 3000, SMPOS.BOTTOM_RIGHT, true));
 			}
 		}
-		if (npc.getNpcId() == 36007 && ProtectTheLdr.ProtectisRunning)
+		if (ProtectTheLdr.ProtectisRunning)
 		{
-			ProtectTheLdr.team2wins();
+			if (npc.getNpcId() == 36007)
+			{
+				ProtectTheLdr.team2wins();
+			}
+			if (npc.getNpcId() == 36008)
+			{
+				ProtectTheLdr.team1wins();
+			}
 		}
-		if (npc.getNpcId() == 36008 && ProtectTheLdr.ProtectisRunning)
+		if (DaChallenge.ChallengeRunning)
 		{
-			ProtectTheLdr.team1wins();
+			if (npc.getNpcId() == 36009)
+			{
+				DaChallenge.RoomCount++;
+				if (DaChallenge.RoomCount == 40)
+				{
+					DaChallenge.Room1Cleared();
+				}
+			}
+			if (npc.getNpcId() == 36010)
+			{
+				DaChallenge.PrepareRoom2();
+			}
+			if (npc.getNpcId() == 36011)
+			{
+				DaChallenge.RoomCount++;
+				if (DaChallenge.RoomCount == 10)
+				{
+					DaChallenge.SpawnExtraMobs();					
+				}
+				if (DaChallenge.RoomCount == 60)
+				{
+					DaChallenge.SpawnFinalGuard();
+					
+					DaChallenge.RoomCount = 0;
+				}
+				
+			}
+			if (npc.getNpcId() == 36012)
+			{
+				DaChallenge.Daboss();
+			}
+			if (npc.getNpcId() == 36013)
+			{
+			  DaChallenge.LastOne();
+			}
+			if (npc.getNpcId() == 36014)
+			{
+				DaChallenge.ClearDaMess(true);
+			}
 		}
 	}
 	
 	public static void OnRevive(L2PcInstance player)
 	{
-		if(player!=null)
+		if (player != null)
 		{
-		if (CaptureThem.CaptureThemRunning)
-			CaptureThem.OnRevive(player);
-		if (CastleWars.CastleWarsRunning)
-			CastleWars.OnRevive(player);
-		if (ProtectTheLdr.ProtectisRunning)
-			ProtectTheLdr.OnRevive(player);
-		if (ChaosEvent._isChaosActive)
-			ChaosEvent.onRevive(player);
-		if (TreasureChest.TreasureRunning)
-			TreasureChest.onRevive(player);
+			if (CaptureThem.CaptureThemRunning)
+				CaptureThem.OnRevive(player);
+			if (CastleWars.CastleWarsRunning)
+				CastleWars.OnRevive(player);
+			if (ProtectTheLdr.ProtectisRunning)
+				ProtectTheLdr.OnRevive(player);
+			if (ChaosEvent._isChaosActive)
+				ChaosEvent.onRevive(player);
+			if (TreasureChest.TreasureRunning)
+				TreasureChest.onRevive(player);
+			if (DaChallenge.ChallengeRunning)
+				DaChallenge.onRevive(player);
 		}
 	}
 	
@@ -330,15 +381,15 @@ public class ZodiacMain
 			return false;
 	}
 	
-	//full events
+	// full events
 	public boolean AllEventsAreRunning()
-	{			
-		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || CastleWars.CastleWarsRunning || ChaosEvent._isChaosActive || CTF._started || CTF._joining || DM._joining || DM._started || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning || TvT._joining || TvT._started;
+	{
+		return DaChallenge.ChallengeRunning || PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || CastleWars.CastleWarsRunning || ChaosEvent._isChaosActive || CTF._started || CTF._joining || DM._joining || DM._started || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning || TvT._joining || TvT._started;
 	}
 	
-	//Only zodiac events
+	// Only zodiac events
 	public static boolean EventsZodiacAreRunning()
-	{	
-		return PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || CastleWars.CastleWarsRunning|| ChaosEvent._isChaosActive || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning;
+	{
+		return DaChallenge.ChallengeRunning || PeloponnesianWar.PeloRunning || CaptureThem.CaptureThemRunning || CastleWars.CastleWarsRunning || ChaosEvent._isChaosActive || ProtectTheLdr.ProtectisRunning || TreasureChest.TreasureRunning;
 	}
 }

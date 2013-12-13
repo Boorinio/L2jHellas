@@ -170,7 +170,14 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				ZodiacMain.count[5]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
-			}		
+			}
+			else if (ZodiacMain.voting && _command.startsWith("Challenge"))
+			{
+				activeChar.sendMessage("You have voted for Challenge Event!");
+				ZodiacMain.count[6]++;
+				ZodiacMain.showFinalWindow(activeChar);
+				ZodiacMain.AddVotedPlayer(activeChar);
+			}	
 			else if (_command.startsWith("sendMsg"))
 			{ // Message System By Pauler
 
