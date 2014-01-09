@@ -380,14 +380,15 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		// Buffs
 		if (Rnd.get(RANDOM_WALK_RATE) == 0)
 		{
-			for (L2Skill sk : _skillrender._buffskills)
-			{
-				if (getActor().getFirstEffect(sk) != null)
-					continue;
-				
-				clientStopMoving(null);
-				_accessor.doCast(sk);
-			}
+			if (_skillrender._buffskills != null)
+				for (L2Skill sk : _skillrender._buffskills)
+				{
+					if (getActor().getFirstEffect(sk) != null)
+						continue;
+					
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+				}
 		}
 		// Manage the Attack Intention : Stop current Attack (if necessary), Start a new Attack and Launch Think Event
 		super.onIntentionAttack(target);
