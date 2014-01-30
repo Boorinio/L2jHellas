@@ -55,28 +55,29 @@ public class VoteManager
 	protected static int getHopZoneVotes()
 	{
 		int votes = -1;
-		URL url = null;
-		URLConnection con = null;
-		InputStream is = null;
+		String Hopzonelink = Config.VOTE_LINK_HOPZONE;
 		InputStreamReader isr = null;
-		BufferedReader in = null;
+		BufferedReader br = null;
+		
 		try
 		{
-			url = new URL(Config.VOTE_LINK_HOPZONE);
-			con = url.openConnection();
+			URLConnection con = new URL(Hopzonelink).openConnection();
 			con.addRequestProperty("User-Agent", "Mozilla/4.76");
-			is = con.getInputStream();
-			isr = new InputStreamReader(is);
-			in = new BufferedReader(isr);
-			String inputLine;
-			while ((inputLine = in.readLine()) != null)
+			isr = new InputStreamReader(con.getInputStream());
+			br = new BufferedReader(isr);
+			
+			String line;
+			while ((line = br.readLine()) != null)
 			{
-				if (inputLine.contains("no steal make love") || inputLine.contains("no votes here") || inputLine.contains("bang, you don't have votes") || inputLine.contains("la vita e bella"))
+				if (line.contains("rank anonymous tooltip"))
 				{
-					votes = Integer.valueOf(inputLine.split(">")[2].replace("</span", ""));
+					votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
 					break;
 				}
 			}
+			
+			br.close();
+			isr.close();
 		}
 		catch (Exception e)
 		{

@@ -321,7 +321,9 @@ public class L2ClanMember
 	public int calculatePledgeClass(L2PcInstance player)
 	{
 		int pledgeClass = 0;
-		L2Clan clan = player.getClan();
+		L2Clan clan = null;
+		if (player != null)
+			clan = player.getClan();
 		if (clan != null)
 		{
 			switch (player.getClan().getLevel())

@@ -38,9 +38,9 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null)
+		L2PcInstance player2 = player.getActiveRequester();
+		if (player == null || player2 == null)
 			return;
-
 		if (!player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");
@@ -48,8 +48,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 			return;
 		}
 		// MODS Faction Good vs Evil
-		L2PcInstance player2 = player.getActiveRequester();
-		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
+		if (Config.MOD_GVE_ENABLE_FACTION && player2.isevil() && player.isgood())
 		{
 			player.sendMessage("You can't trade with different Faction.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);

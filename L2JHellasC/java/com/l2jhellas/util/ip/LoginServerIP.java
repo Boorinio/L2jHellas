@@ -51,11 +51,11 @@ public class LoginServerIP
 					"InternalHostname = " + IPConfigData.sub.getIPAddress() + "\r\n" +
 					"\r\n" +
 					"# Bind ip of the LoginServer, use * to bind on all available IPs\r\n" +
-					"LoginserverHostname = " + IPConfigData.sub.getIPAddress() + "\r\n" +
+					"LoginserverHostname = *\r\n" +
 					"LoginserverPort = 2106\r\n" +
 					"\r\n" +
 					"# The address on which login will listen for GameServers, use * to bind on all available IPs\r\n" +
-					"LoginHostname = " + IPConfigData.sub.getIPAddress() + "\r\n" +
+					"LoginHostname = 127.0.0.1\r\n" +
 					"\r\n" +
 					"# The port on which login will listen for GameServers\r\n" +
 					"LoginPort = 9014");

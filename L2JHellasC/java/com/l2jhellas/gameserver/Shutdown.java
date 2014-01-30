@@ -584,6 +584,7 @@ public class Shutdown extends Thread
 				final L2GameClient client = player.getClient();
 				if (client != null)
 				{
+					player.store();
 					client.close(ServerClose.STATIC_PACKET);
 					client.setActiveChar(null);
 					player.setClient(null);

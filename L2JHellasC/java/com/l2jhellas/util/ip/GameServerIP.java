@@ -52,12 +52,12 @@ public class GameServerIP
 					"InternalHostname = " + IPConfigData.sub.getIPAddress() + "\r\n" +
 					"\r\n"+
 					"# Bind IP of the gameserver, use * to bind on all available IPs\r\n" +
-					"GameserverHostname = " + IPConfigData.sub.getIPAddress() + "\r\n" +
+					"GameserverHostname =  *\r\n" +
 					"GameserverPort = 7777\r\n" +
 					"\r\n" +
 					"# The Loginserver host and port\r\n" +
 					"LoginPort = 9014\r\n" +
-					"LoginHost = " + IPConfigData.sub.getIPAddress() + "\r\n");
+					"LoginHost = 127.0.0.1\r\n");
 				/** @formatter:on */
 				out.close();
 			}

@@ -14096,6 +14096,8 @@ public final class L2PcInstance extends L2Playable
 		if (isDead())
 		{
 			doRevive();
+			L2Skill skill = SkillTable.getInstance().getInfo(1323, 1);
+			skill.getEffects(this, this);	
 			doDie(this);
 		}
 		
@@ -14481,7 +14483,7 @@ public final class L2PcInstance extends L2Playable
 		Quest.playerEnter(this);
 		loadTutorial();
 
-		sendPacket(new ShortCutInit(this));
+		
 		sendSkillList();
 		sendPacket(new HennaInfo(this));
 		sendPacket(new FriendList(this));
@@ -14491,6 +14493,7 @@ public final class L2PcInstance extends L2Playable
 		broadcastTitleInfo();
 		sendPacket(new EtcStatusUpdate(this));
 		sendPacket(new ItemList(this, false));
+		sendPacket(new ShortCutInit(this));
 		sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
 		Announcements.getInstance().showAnnouncements(this);
 		spawnMe(getX(), getY(), getZ());

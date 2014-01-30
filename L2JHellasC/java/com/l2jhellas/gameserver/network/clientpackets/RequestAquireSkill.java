@@ -264,6 +264,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 			{
 				member.sendSkillList();
 			}
+			if(trainer != null && player != null)
 			((L2VillageMasterInstance) trainer).showPledgeSkillList(player); // Maybe we shoud add a check here...
 
 			return;
