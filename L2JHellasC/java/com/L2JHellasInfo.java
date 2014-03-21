@@ -44,7 +44,7 @@ public class L2JHellasInfo
 				"             ====  ====  ====   =====  ===  ====    ====      =====             " +
 				"             ======================================================             " +
 				"                           Contact: tzou_08@yahoo.gr                            " +
-				"                          Forum: http://l2jhellas.eu/                           " +
+				"                          Forum: http://l2jhellas.info/                           " +
 				" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" +
 				"             Server Version: " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE);
 		_log.info("");

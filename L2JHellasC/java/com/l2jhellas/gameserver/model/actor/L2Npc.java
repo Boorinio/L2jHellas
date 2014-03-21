@@ -31,7 +31,7 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.MaxCheatersTable;
+import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
@@ -304,7 +304,7 @@ public class L2Npc extends L2Character
 		_currentCollisionHeight = getTemplate().collisionHeight;
 		_currentCollisionRadius = getTemplate().collisionRadius;
 		// Velvet - MxC
-		_mxcModel = MaxCheatersTable.getInstance().getModelForID(template.npcId);
+		_mxcModel = PolymporphTable.getInstance().getModelForID(template.npcId);
 
 		if (_mxcModel != null) // Lil Config xD
 		{

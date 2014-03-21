@@ -54,7 +54,7 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.MaxCheatersTable;
+import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
@@ -383,7 +383,7 @@ public class GameServer
 		// we could add general custom config?
 		AchievementsManager.getInstance();
 		PcColorTable.getInstance();
-		MaxCheatersTable.getInstance();
+		PolymporphTable.getInstance();
 		Hitman.start();
 		VoteManager.load();
 		// Rank System.

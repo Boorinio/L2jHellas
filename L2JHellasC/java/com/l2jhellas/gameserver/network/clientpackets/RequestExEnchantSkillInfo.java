@@ -68,7 +68,7 @@ public final class RequestExEnchantSkillInfo extends L2GameClientPacket
 
 		if ((skill == null) || (skill.getId() != _skillId))
 		{
-			_log.warning("enchant skill id " + _skillId + " level " + _skillLvl + " is undefined. aquireEnchantSkillInfo failed. report this to http://l2jhellas.eu/ forum.");
+			_log.warning("enchant skill id " + _skillId + " level " + _skillLvl + " is undefined. aquireEnchantSkillInfo failed. report this to http://l2jhellas.info/ forum.");
 			activeChar.sendMessage("This skill doesn't yet have enchant info in Datapack");
 			return;
 		}

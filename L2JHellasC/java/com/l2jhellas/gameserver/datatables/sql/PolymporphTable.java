@@ -31,25 +31,25 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 /**
  * @author Velvet
  */
-public class MaxCheatersTable
+public class PolymporphTable
 {
-	private final Logger _log = Logger.getLogger(MaxCheatersTable.class.getName());
+	private final Logger _log = Logger.getLogger(PolymporphTable.class.getName());
 
 	private final FastMap<Integer, L2MaxPolyModel> _map;
-	private static MaxCheatersTable _instance;
+	private static PolymporphTable _instance;
 
 	private final String SQL_SELECT = "SELECT * FROM max_poly";
 
-	public MaxCheatersTable()
+	public PolymporphTable()
 	{
 		_map = new FastMap<Integer, L2MaxPolyModel>();
 	}
 
-	public static MaxCheatersTable getInstance()
+	public static PolymporphTable getInstance()
 	{
 		if (_instance == null)
 		{
-			_instance = new MaxCheatersTable();
+			_instance = new PolymporphTable();
 			_instance.load();
 		}
 		return _instance;

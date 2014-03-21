@@ -35,7 +35,7 @@ public class version implements IVoicedCommandHandler
 	{
 		if (command.equalsIgnoreCase(VOICED_COMMANDS[0]))
 		{
-			activeChar.sendMessage("L2JHellas Rev " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE + " Forum: http://l2jhellas.eu/");
+			activeChar.sendMessage("L2JHellas Rev " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE + " Forum: http://l2jhellas.info/");
 		}
 		return true;
 	}

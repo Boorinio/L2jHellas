@@ -102,7 +102,7 @@ public class VoteManager
 		{
 			url = new URL(Config.VOTE_LINK_TOPZONE);
 			con = url.openConnection();
-			con.addRequestProperty("User-Agent", "Mozilla/4.76");
+			con.addRequestProperty("User-Agent", "L2TopZone");
 			is = con.getInputStream();
 			isr = new InputStreamReader(is);
 			in = new BufferedReader(isr);
