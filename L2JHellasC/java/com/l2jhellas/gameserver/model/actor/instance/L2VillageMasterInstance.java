@@ -39,6 +39,8 @@ import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;
+import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
@@ -55,7 +57,12 @@ public final class L2VillageMasterInstance extends L2NpcInstance
 	{
 		super(objectId, template);
 	}
-
+	
+	final int[] slots =
+	{
+	L2Item.SLOT_LR_HAND, L2Item.SLOT_R_HAND, L2Item.SLOT_L_HAND, L2Item.SLOT_GLOVES, L2Item.SLOT_HEAD, L2Item.SLOT_FEET, L2Item.SLOT_LEGS, L2Item.SLOT_FULL_ARMOR, L2Item.SLOT_R_EAR, L2Item.SLOT_L_EAR, L2Item.SLOT_NECK, L2Item.SLOT_R_FINGER, L2Item.SLOT_L_FINGER
+	};
+	
 	@SuppressWarnings("static-access")
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
@@ -937,43 +944,17 @@ public final class L2VillageMasterInstance extends L2NpcInstance
 
 	private boolean ItemRestriction(L2PcInstance player)
 	{
-		if (player.getActiveWeaponInstance() != null)
+		if (player.getActiveWeaponInstance() != null || player.getActiveChestArmorItem() != null)
 		{
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LR_HAND);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_HAND);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_L_HAND);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_GLOVES);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_HEAD);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_FEET);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LEGS);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_FULL_ARMOR);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_EAR);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_L_EAR);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_NECK);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_FINGER);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_L_FINGER);
+			for (int slot : slots)
+			{
+				player.getInventory().unEquipItemInBodySlotAndRecord(slot);
+			}
+			player.getInventory().reloadEquippedItems();
+			player.sendPacket(new InventoryUpdate());
+			player.sendPacket(new ItemList(player, false));
 			player.store();
 			player.sendMessage("Your items have been removed!");
-			return true;
-		}
-		if (player.getActiveChestArmorItem() != null)
-		{
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LR_HAND);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_HAND);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_L_HAND);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_GLOVES);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_HEAD);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_FEET);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LEGS);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_FULL_ARMOR);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_EAR);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_L_EAR);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_NECK);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_R_FINGER);
-			player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_L_FINGER);
-			player.store();
-			player.sendMessage("Your items have been removed!");
-			return true;
 		}
 		return true;
 	}

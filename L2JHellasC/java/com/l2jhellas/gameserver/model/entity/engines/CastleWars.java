@@ -143,7 +143,6 @@ public class CastleWars
 			flags.deleteMe();
 			
 		}
-		isFinished = false;
 		CastleWarsRunning =false;
 		flagskilled = 0;
 		_flags.clear();

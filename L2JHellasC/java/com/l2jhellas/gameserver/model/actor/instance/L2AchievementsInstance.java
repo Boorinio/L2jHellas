@@ -24,6 +24,7 @@ import Extensions.AchievmentsEngine.base.Condition;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -101,16 +102,22 @@ public class L2AchievementsInstance extends L2Npc
 			}
 			else if (id == 6 || id == 18)
 			{
-				int clid = player.getClan().getClanId();
-
-				if (!AchievementsManager.getInstance().isBinded(clid, id))
-				{
-					AchievementsManager.getInstance().getBinded().add(clid + "@" + id);
-					player.saveAchievementData(id, clid);
-					AchievementsManager.getInstance().rewardForAchievement(id, player);
-				}
+				int clid;
+				if (player != null && player.getClan() != null)
+					clid = player.getClan().getClanId();
 				else
-					player.sendMessage("Current clan was already rewarded for this achievement.");
+					clid = -5;
+				if (clid != -5)
+				{
+					if (!AchievementsManager.getInstance().isBinded(clid, id))
+					{
+						AchievementsManager.getInstance().getBinded().add(clid + "@" + id);
+						player.saveAchievementData(id, clid);
+						AchievementsManager.getInstance().rewardForAchievement(id, player);
+					}
+					else
+						player.sendMessage("Current clan was already rewarded for this achievement.");
+				}
 			}
 			else
 			{
@@ -127,6 +134,7 @@ public class L2AchievementsInstance extends L2Npc
 		{
 			showHelpWindow(player);
 		}
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	@Override
