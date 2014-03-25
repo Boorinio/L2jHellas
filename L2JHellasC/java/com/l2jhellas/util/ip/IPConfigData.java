@@ -82,7 +82,7 @@ public class IPConfigData
 	{
 		try
 		{
-			URL autoIp = new URL("http://api.externalip.net/ip/");
+			URL autoIp = new URL("http://ip1.dynupdate.no-ip.com:8245/");
 			try (BufferedReader in = new BufferedReader(new InputStreamReader(autoIp.openStream())))
 			{
 				externalIp = in.readLine();
