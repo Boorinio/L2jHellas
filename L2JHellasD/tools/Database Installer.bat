@@ -1,4 +1,10 @@
 @echo off
+REM /!\ WARNING /!\
+REM IN CASE that this file wont run on some machines
+REM delete the line -> path|find "MySQL">NUL <- then go in vars.txt
+REM and replace mysqlPath=C:\your_my_sql_paths\ mysqlBinPath=C:\your_my_sql_paths\ and mysqldumpPath=C:\your_my_sql_paths\
+REM now run again this file.
+
 REM VARS
 set config_file=vars.txt
 set config_version=0

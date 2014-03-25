@@ -75,6 +75,7 @@
 		<sync todir="${build.dist.tools}">
 			<fileset dir="${basedir}/tools">
 				<include name="*.*"/>
+				<exclude name="*.sh" />
 			</fileset>
 		</sync>
 		<sync todir="${build.dist.languages.accountmanager}">
