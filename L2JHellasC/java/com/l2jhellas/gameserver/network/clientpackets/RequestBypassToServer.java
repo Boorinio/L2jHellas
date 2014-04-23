@@ -228,7 +228,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
 					PreparedStatement statement = con.prepareStatement("INSERT INTO mails VALUES ('0',?,?,?,?)");
-					statement.setString(1, activeChar.getName());
+					statement.setString(1, activeChar.getName().toLowerCase());
 					statement.setString(2, to);
 					statement.setString(3, title);
 					statement.setString(4, message);

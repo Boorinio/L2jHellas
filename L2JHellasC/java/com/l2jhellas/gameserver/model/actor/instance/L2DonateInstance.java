@@ -63,6 +63,11 @@ public class L2DonateInstance extends L2NpcInstance
 
 			try
 			{
+				if(st.countTokens() < 5 )
+				{
+					player.sendMessage("Complete all the fields before pressing donate");
+					return;
+				}
 				amount = st.nextToken();
 				pin1 = st.nextToken();
 				pin2 = st.nextToken();

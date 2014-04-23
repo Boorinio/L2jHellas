@@ -425,9 +425,11 @@ public class AdminEditChar implements IAdminCommandHandler
 				activeChar.sendMessage("Your target is not a player!");
 				return false;
 			}
-			if (activeChar.isGM())
+			if (!activeChar.isGM())
+			{
+				activeChar.sendMessage("Your can't perform that action without access!");
 				return false;
-
+			}
 			String[] params = command.split(" ");
 			if (params.length != 3)
 			{
@@ -460,8 +462,11 @@ public class AdminEditChar implements IAdminCommandHandler
 				activeChar.sendMessage("Your target is not a player!");
 				return false;
 			}
-			if (activeChar.isGM())
+			if (!activeChar.isGM())
+			{
+				activeChar.sendMessage("Your can't perform that action without access!");
 				return false;
+			}
 			String charName = command.substring(19);
 			PcColorTable.delete(charName);
 		}

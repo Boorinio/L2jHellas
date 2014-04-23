@@ -14407,16 +14407,13 @@ public final class L2PcInstance extends L2Playable
 			int results = 0;
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
-				PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE to=?");
-				statement.setString(1, this.getName());
+				PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE rece=?");
+				statement.setString(1, getName().toLowerCase());
 				ResultSet result = statement.executeQuery();
 				while (result.next())
 				{
 					results++;
 				}
-				
-				if (con != null)
-					con.close();
 				
 			}
 			catch (Exception e)

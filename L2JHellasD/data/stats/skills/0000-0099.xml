@@ -331,11 +331,11 @@
 		<table name="#magicLvl"> 49 52 55 58 60 62 64 66 68 70 72 74 </table>
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="magicLvl" val="#magicLvl" />
-		<set name="power" val="185" />
+		<set name="power" val="70" />
 		<set name="target" val="TARGET_ONE" />
 		<set name="reuseDelay" val="20000" />
 		<set name="hitTime" val="1200" />
-		<set name="skillType" val="AGGREDUCE_CHAR" />
+		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="400" />
 		<set name="effectRange" val="900" />
@@ -352,11 +352,11 @@
 		<set name="weaponsAllowed" val="16" />
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="magicLvl" val="#magicLvl" />
-		<set name="power" val="185" />
+		<set name="power" val="80" />
 		<set name="target" val="TARGET_ONE" />
 		<set name="reuseDelay" val="12000" />
 		<set name="hitTime" val="1200" />
-		<set name="skillType" val="CONFUSION" />
+		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="600" />
 		<set name="effectRange" val="1100" />
@@ -364,7 +364,7 @@
 			<using kind="Dagger" />
 		</cond>
 		<for>
-			<effect count="1" name="Confusion" time="1" noicon="1" val="0" />
+			<effect count="1" name="RemoveTarget" time="1" noicon="1" val="0" />
 		</for>
 	</skill>
 	<skill id="13" levels="1" name="Summon Siege Golem">

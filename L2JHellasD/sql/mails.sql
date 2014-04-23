@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS `mails`;
 
 CREATE TABLE `mails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `from` text,
-  `to` text,
+  `sender` varchar(35) NOT NULL,
+  `rece` varchar(35) NOT NULL,
   `title` text,
   `message` text,
   PRIMARY KEY (`id`)
