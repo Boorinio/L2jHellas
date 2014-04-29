@@ -29,6 +29,7 @@ public class HexId
 {
 	private static final String HEXID_FILE = PackRoot.DATAPACK_ROOT + "/config/Network/HexId/hexid.txt";
 	private static final String INSERT_GS = "INSERT INTO gameservers (server_id,hexid,host) VALUES (?,?,?)";
+	private static final String CLEAR_GS = "DELETE FROM gameservers WHERE server_id=1";
 	
 	public static void load()
 	{
@@ -60,6 +61,20 @@ public class HexId
 	
 	public static void storeDB()
 	{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement(CLEAR_GS);
+			statement.executeUpdate();
+			statement.close();
+		}
+		catch (SQLException e)
+		{
+			System.err.println("SQL error while deleting gameserver: " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
+		}
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(INSERT_GS);

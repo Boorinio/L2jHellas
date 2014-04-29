@@ -128,10 +128,9 @@ public class GameServerRegister
 
 	public static void cleanRegisteredGameServersFromDB()
 	{
-		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("DELETE FROM gameservers");
+			PreparedStatement statement = con.prepareStatement("DELETE * FROM gameservers");
 			statement.executeUpdate();
 			statement.close();
 		}
