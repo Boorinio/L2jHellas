@@ -42,9 +42,12 @@ import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2MinionInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.AttackableKnownList;
 import com.l2jhellas.gameserver.model.base.SoulCrystal;
@@ -1455,37 +1458,39 @@ public class L2Attackable extends L2Npc
 				{
 					item = calculateCategorizedRewardItem(player, cat, levelModifier);
 				}
-				
-				if (item != null)
-				{
-					if (Config.DEBUG)
-					{
-						_log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
-					}
 					
-					// Check if the autoLoot mode is active
-					if (Config.AUTO_LOOT && !isRaid())
+					if (item != null)
 					{
-						player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
-					}
-					else if ((isRaid() || isBoss())&& Config.AUTO_LOOT_RAID)
-						player.doAutoLoot(this, item);
-					else
-						dropItem(player, item); // drop the item on the ground
+						if (Config.DEBUG)
+						{
+							_log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
+						}
 						
-					// Broadcast message if RaidBoss was defeated
-					// if(this instanceof L2RaidBossInstance)
-					if (isRaid() && !isRaidMinion())
-					{
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
-						sm.addString(getName());
-						sm.addItemName(item.getItemId());
-						sm.addNumber(item.getCount());
-						broadcastPacket(sm);
+						// Check if the autoLoot mode is active
+						if (Config.AUTO_LOOT && !(this instanceof L2RaidBossInstance) || !(this instanceof L2MinionInstance) || !(this instanceof L2GrandBossInstance))
+						{
+							player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
+						}
+						else if (this instanceof L2RaidBossInstance || this instanceof L2MinionInstance && Config.AUTO_LOOT_RAID)
+							player.doAutoLoot(this, item);
+						else if (this instanceof L2GrandBossInstance && Config.AUTO_LOOT_GRAND)
+							player.doAutoLoot(this, item);
+						else
+							dropItem(player, item); // drop the item on the ground
+							
+						// Broadcast message if RaidBoss was defeated
+						// if(this instanceof L2RaidBossInstance)
+						if (isRaid() && !isRaidMinion())
+						{
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
+							sm.addString(getName());
+							sm.addItemName(item.getItemId());
+							sm.addNumber(item.getCount());
+							broadcastPacket(sm);
+						}
 					}
 				}
 			}
-		}
 		
 		// Apply Special Item drop with rnd qty for champions
 		if (isChampion() && Math.abs(getLevel() - player.getLevel()) <= Config.CHAMPION_SPCL_LVL_DIFF && !getTemplate().isQuestMonster() && Config.CHAMPION_SPCL_CHANCE > 0 && Rnd.get(100) < Config.CHAMPION_SPCL_CHANCE)

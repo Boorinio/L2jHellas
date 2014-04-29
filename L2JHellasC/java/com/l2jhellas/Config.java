@@ -118,6 +118,7 @@ public final class Config
 	 */
 	public static boolean AUTO_LOOT;
 	public static boolean AUTO_LOOT_RAID;
+	public static boolean AUTO_LOOT_GRAND;
 	public static boolean AUTO_LOOT_HERBS;
 	public static boolean AUTO_LEARN_SKILLS;
 	public static boolean CHECK_SKILLS_ON_ENTER;
@@ -1257,6 +1258,7 @@ public final class Config
 			//auto loot
 			AUTO_LOOT = Boolean.parseBoolean(altSettings.getProperty("AutoLoot", "False"));
 			AUTO_LOOT_RAID = Boolean.parseBoolean(altSettings.getProperty("AutoLootRaid", "False"));
+			AUTO_LOOT_GRAND = Boolean.parseBoolean(altSettings.getProperty("AutoLootGrand", "False"));
 			AUTO_LOOT_HERBS = Boolean.parseBoolean(altSettings.getProperty("AutoLootHerbs", "False"));
 			//skills
 			AUTO_LEARN_SKILLS = Boolean.parseBoolean(altSettings.getProperty("AutoLearnSkills", "False"));
@@ -3864,6 +3866,9 @@ public final class Config
 			break;
 			case "AutoLootRaid":
 				AUTO_LOOT_RAID = Boolean.parseBoolean(pValue);
+			break;
+			case "AutoLootGrand":
+				AUTO_LOOT_GRAND = Boolean.parseBoolean(pValue);
 			break;
 			case "WeddingPunishInfidelity":
 				MOD_WEDDING_PUNISH_INFIDELITY = Boolean.parseBoolean(pValue);

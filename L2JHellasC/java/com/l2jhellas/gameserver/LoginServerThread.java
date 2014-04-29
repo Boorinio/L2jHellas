@@ -460,7 +460,7 @@ public class LoginServerThread extends Thread
 		byte[] array = new byte[size];
 		Rnd.nextBytes(array);
 		if (Config.DEBUG)
-			_log.log(Level.FINE, "Generated random String:  \"" + array + "\"");
+			_log.log(Level.CONFIG, "Generated random String: " + array);
 		return array;
 	}
 

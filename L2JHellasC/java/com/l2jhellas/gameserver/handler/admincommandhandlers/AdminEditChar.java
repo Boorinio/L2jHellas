@@ -34,6 +34,7 @@ import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
+import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -343,20 +344,27 @@ public class AdminEditChar implements IAdminCommandHandler
 				{
 					player = (L2PcInstance) target;
 					oldName = player.getName();
-
+					L2Clan temp= player.getClan();
+					boolean wasLeader=false;
 					L2World.removeFromAllPlayers(player);
 					if (CharNameTable.getInstance().getIdByName(val) > 0)
 					{
 						activeChar.sendMessage("Warning, player name " + val + " already exists.");
 						return false;
 					}
+					if(temp != null)
+					{
+						
+						if(player.getClan().getLeader().getObjectId() == target.getObjectId())
+							wasLeader=true;						
+						temp.removeClanMember(player.getName(), 0);
+					}
 					player.setName(val);
 					player.store();
 					L2World.addToAllPlayers(player);
-
+					
 					player.sendMessage("Your name has been changed by a GM.");
 					player.broadcastUserInfo();
-
 					if (player.isInParty())
 					{
 						// Delete party window for other party members
@@ -368,14 +376,21 @@ public class AdminEditChar implements IAdminCommandHandler
 								member.sendPacket(new PartySmallWindowAll(member, player.getParty()));
 						}
 					}
-					if (player.getClan() != null)
+					if (temp != null)
 					{
+						temp.addClanMember(player);
+						if(wasLeader)
+							temp.setNewLeader(temp.getClanMember(player.getObjectId()), player, true);
+						temp.updateClanInDB();
 						player.getClan().updateClanMember(player);
 						player.getClan().broadcastToOnlineMembers(new PledgeShowMemberListUpdate(player));
 						player.sendPacket(new PledgeShowMemberListAll(player.getClan(), player));
 					}
 
 					RegionBBSManager.getInstance().changeCommunityBoard();
+					temp=null;
+					wasLeader=false;
+					
 				}
 				else if (target instanceof L2Npc)
 				{

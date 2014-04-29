@@ -233,18 +233,18 @@ public class L2Clan
 		_members.put(leader.getName(), leader);
 	}
 
-	public void setNewLeader(L2ClanMember member, L2PcInstance activeChar)
+	public void setNewLeader(L2ClanMember member, L2PcInstance activeChar, boolean changeName)
 	{
 		if (activeChar.isRiding() || activeChar.isFlying())
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if (!getLeader().isOnline())
+		if (!getLeader().isOnline() && !changeName)
 			return;
 		if (member == null)
 			return;
-		if (!member.isOnline())
+		if (!member.isOnline() && !changeName)
 			return;
 
 		L2PcInstance exLeader = getLeader().getPlayerInstance();

@@ -52,7 +52,7 @@ public class GameServerTable
 	private static Logger _log = Logger.getLogger(GameServerTable.class.getName());
 	
 	private static final String SELECT_GS = "SELECT * FROM gameservers";
-	private static final String INSERT_GS = "INSERT INTO gameservers (hexid,server_id,host) VALUES (?,?,?)";
+	private static final String INSERT_GS = "INSERT INTO gameservers (server_id,hexid,host) VALUES (?,?,?)";
 	
 	private static GameServerTable _instance;
 
@@ -225,16 +225,16 @@ public class GameServerTable
 
 	public void registerServerOnDB(GameServerInfo gsi)
 	{
-		this.registerServerOnDB(gsi.getHexId(), gsi.getId(), gsi.getExternalHost());
+		registerServerOnDB(gsi.getId(), gsi.getHexId(), gsi.getExternalHost());
 	}
 
-	public void registerServerOnDB(byte[] hexId, int id, String externalHost)
+	public void registerServerOnDB(int id, byte[] hexId, String externalHost)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(INSERT_GS);
-			statement.setString(1, hexToString(hexId));
-			statement.setInt(2, id);
+			statement.setInt(1, id);
+			statement.setString(2, hexToString(hexId));
 			statement.setString(3, externalHost);
 			statement.executeUpdate();
 			statement.close();

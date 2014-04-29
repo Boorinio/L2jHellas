@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
+import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class L2SymbolMakerInstance extends L2NpcInstance
@@ -32,6 +33,7 @@ public class L2SymbolMakerInstance extends L2NpcInstance
 			L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(player.getClassId());
 			HennaEquipList hel = new HennaEquipList(player, henna);
 			player.sendPacket(hel);
+			player.sendPacket(new ItemList(player, false));
 		}
 		else if (command.equals("RemoveList"))
 		{

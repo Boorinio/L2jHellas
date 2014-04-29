@@ -616,7 +616,7 @@ public final class L2VillageMasterInstance extends L2NpcInstance
 			return;
 		}
 
-		clan.setNewLeader(member, player);
+		clan.setNewLeader(member, player , false);
 	}
 
 	public void createSubPledge(L2PcInstance player, String clanName, String leaderName, int pledgeType, int minClanLvl)

@@ -54,9 +54,9 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
+import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
@@ -137,6 +137,7 @@ import com.l2jhellas.util.DynamicExtension;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
+import com.l2jhellas.util.hexid.HexId;
 import com.l2jhellas.util.ip.GameServerIP;
 import com.l2jhellas.util.ip.IPConfigData;
 
@@ -547,6 +548,9 @@ public class GameServer
 		LogManager.getLogManager().readConfiguration(is);
 		is.close();
 		
+		// HexID part 1 (file)
+		HexId.load();
+		
 		// IP Config
 		Util.printSection("Network");
 		IPConfigData.load();
@@ -566,6 +570,9 @@ public class GameServer
 
 		Util.printSection("DataBase");
 		L2DatabaseFactory.getInstance();
+		
+		// HexID part 2 (database must be load after driver) 
+		HexId.storeDB();
 
 		Util.printSection("Team");
 		L2JHellasInfo.showInfo();

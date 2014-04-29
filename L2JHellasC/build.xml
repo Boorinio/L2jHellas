@@ -166,11 +166,6 @@
 				<exclude name="LoginServer.ini" />
 			</fileset>
 		</copy>
-		<copy todir="${build.dist.game}/config/Network/HexId">
-			<fileset dir="config/Network/HexId">
-				<include name="hexid.txt"/>
-			</fileset>
-		</copy>
 		<copy todir="${build.dist.game}/config/Network/IPConfig">
 			<fileset dir="config/Network/IPConfig">
 				<include name="IPGameServer.ini"/>

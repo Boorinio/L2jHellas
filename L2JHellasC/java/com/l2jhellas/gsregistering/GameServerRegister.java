@@ -110,7 +110,7 @@ public class GameServerRegister
 						else
 						{
 							byte[] hexId = LoginServerThread.generateHex(16);
-							gameServerTable.registerServerOnDB(hexId, id, "");
+							gameServerTable.registerServerOnDB(id,hexId,"");
 							Config.saveHexid(id, new BigInteger(hexId).toString(16), "hexid(server " + id + ").txt");
 							System.out.println("Server Registered hexid saved to 'hexid(server " + id + ").txt'");
 							System.out.println("Put this file in the /config folder of your gameserver and rename it to 'hexid.txt'");
