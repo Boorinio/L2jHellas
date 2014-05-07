@@ -1467,13 +1467,13 @@ public class L2Attackable extends L2Npc
 						}
 						
 						// Check if the autoLoot mode is active
-						if (Config.AUTO_LOOT && !(this instanceof L2RaidBossInstance) || !(this instanceof L2MinionInstance) || !(this instanceof L2GrandBossInstance))
+						if (Config.AUTO_LOOT && !(this instanceof L2RaidBossInstance) && !(this instanceof L2MinionInstance) && !(this instanceof L2GrandBossInstance))
 						{
 							player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
 						}
-						else if (this instanceof L2RaidBossInstance || this instanceof L2MinionInstance && Config.AUTO_LOOT_RAID)
+						else if (Config.AUTO_LOOT_RAID && this instanceof L2RaidBossInstance && !(this instanceof L2MinionInstance))
 							player.doAutoLoot(this, item);
-						else if (this instanceof L2GrandBossInstance && Config.AUTO_LOOT_GRAND)
+						else if (Config.AUTO_LOOT_GRAND && this instanceof L2GrandBossInstance)
 							player.doAutoLoot(this, item);
 						else
 							dropItem(player, item); // drop the item on the ground

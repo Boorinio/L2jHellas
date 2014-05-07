@@ -903,6 +903,8 @@ public final class Config
 	public static int INITIAL_START;
 	public static int BETWEEN_EVENTS;
 	// TvT Settings
+	public static boolean TVT_ALLOW_AUTOEVENT;
+	public static String TVT_EVENT_TIMES;
 	public static boolean TVT_AUTO_STARTUP_ON_BOOT;
 	public static boolean TVT_ALLOW_INTERFERENCE;
 	public static boolean TVT_ALLOW_POTIONS;
@@ -944,6 +946,8 @@ public final class Config
 	public static int FISHERMAN_REWARD_COUNT;
 	public static long DM_REVIVE_DELAY;
 	// CTF Settings
+	public static boolean ALLOW_CTF_AUTOEVENT;
+	public static String CTF_EVENT_TIMES;
 	public static String CTF_EVEN_TEAMS;
 	public static boolean CTF_ALLOW_INTERFERENCE;
 	public static boolean CTF_ALLOW_POTIONS;
@@ -2557,6 +2561,8 @@ public final class Config
 			{
 				_log.log(Level.SEVERE, "Error while " + EVENT_TVT_CONFIG_FILE + " settings!", e);
 			}
+			TVT_ALLOW_AUTOEVENT = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAutomatedEvent", "true"));
+			TVT_EVENT_TIMES= EventTVTSettings.getProperty("TvTStartUpTimes", "17:00,18:00,19:00");
 			FIRST_TVT_DELAY = Integer.parseInt(EventTVTSettings.getProperty("FirstEventDelay", "10"));
 			TVT_AURA = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAura", "true"));
 			TVT_JOIN_CURSED = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTJoinWithCursedWeapon", "true"));
@@ -2640,6 +2646,8 @@ public final class Config
 			{
 				_log.log(Level.SEVERE, "Error while " + EVENT_CTF_CONFIG_FILE + " settings!", e);
 			}
+			ALLOW_CTF_AUTOEVENT = Boolean.parseBoolean(EventCTFSettings.getProperty("CTFAutomatedEvent", "true"));
+			CTF_EVENT_TIMES= EventCTFSettings.getProperty("CTFStartUpTimes", "17:00,18:00,19:00");
 			CTF_EVEN_TEAMS = EventCTFSettings.getProperty("CTFEvenTeams", "BALANCE");
 			CTF_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventCTFSettings.getProperty("CTFAllowInterference", "false"));
 			CTF_ALLOW_POTIONS = Boolean.parseBoolean(EventCTFSettings.getProperty("CTFAllowPotions", "false"));

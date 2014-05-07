@@ -341,13 +341,16 @@ public final class UseItem extends L2GameClientPacket
 		
 		if (item.isEquipable())
 		{
-			if (!activeChar.isGM() && (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_WEAPON)
-             || (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_ARMOR)
-			|| (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_JEWELRY))
+			if (activeChar._haveFlagCTF)
 			{
-					activeChar.sendMessage("You have been kicked for using an item overenchanted!");
-					activeChar.closeNetConnection();
-					return;
+				activeChar.sendMessage("You can't equip an item while holding the flag");
+				return;
+			}
+			if (!activeChar.isGM() && (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_WEAPON) || (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_ARMOR) || (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_JEWELRY))
+			{
+				activeChar.sendMessage("You have been kicked for using an item overenchanted!");
+				activeChar.closeNetConnection();
+				return;
 			}
 			switch (item.getItem().getBodyPart())
 			{

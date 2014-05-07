@@ -115,6 +115,8 @@ import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.Hero;
+import com.l2jhellas.gameserver.model.entity.engines.EventHandlerCtf;
+import com.l2jhellas.gameserver.model.entity.engines.EventHandlerTvT;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
@@ -397,6 +399,14 @@ public class GameServer
 		if (Config.ZODIAC_ENABLE)
 		{
 			ZodiacMain.ZodiacIn();
+		}
+		if(Config.ALLOW_CTF_AUTOEVENT)
+		{
+			new EventHandlerCtf().startHandler();
+		}
+		if(Config.TVT_ALLOW_AUTOEVENT)
+		{
+			new EventHandlerTvT().startHandler();
 		}
 		if (Config.ENABLED_QUIZ_EVENT)
 		{

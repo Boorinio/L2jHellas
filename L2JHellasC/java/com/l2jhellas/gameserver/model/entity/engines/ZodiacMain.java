@@ -54,6 +54,7 @@ public class ZodiacMain
 			public void run()
 			{
 				startVoting();
+				System.out.println("Zodiac Engine Started.");
 			}
 		}, 60 * 1000 * Config.INITIAL_START);
 	}
