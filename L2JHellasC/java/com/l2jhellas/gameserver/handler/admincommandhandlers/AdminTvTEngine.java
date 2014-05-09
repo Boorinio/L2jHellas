@@ -63,7 +63,6 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		"admin_tvt_minplayers",
 		"admin_tvt_maxplayers",
 		"admin_tvtkick",
-		"admin_tvt_interval"
 	};/** @formatter:on */
 
 	@Override
@@ -71,14 +70,6 @@ public class AdminTvTEngine implements IAdminCommandHandler
 	{
 		if (command.equals("admin_tvt"))
 			showMainPage(activeChar);
-
-		else if (command.startsWith("admin_tvt_interval "))
-		{
-			int value = Integer.valueOf(command.substring(19));
-
-			TvT._intervalBetweenMatchs = Util.convertMinutesToMiliseconds(value);
-			showMainPage(activeChar);
-		}
 		else if (command.startsWith("admin_tvt_name "))
 		{
 			TvT._eventName = command.substring(15);
@@ -310,9 +301,6 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		replyMSG.append("<td width=\"100\"><button value=\"Abort\" action=\"bypass -h admin_tvt_abort\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		replyMSG.append("<td width=\"100\"><button value=\"Finish\" action=\"bypass -h admin_tvt_finish\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		// L2EMU_ADD
-		replyMSG.append("</tr></table><table><tr>");
-		replyMSG.append("<td width=\"100\"><button value=\"Set Interval\" action=\"bypass -h admin_tvt_interval $input1\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
-		// L2EMU_ADD
 		replyMSG.append("</tr></table><br><table><tr>");
 		replyMSG.append("<td width=\"100\"><button value=\"Sit Force\" action=\"bypass -h admin_tvt_sit\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		replyMSG.append("<td width=\"100\"><button value=\"Dump\" action=\"bypass -h admin_tvt_dump\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
@@ -324,7 +312,6 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		replyMSG.append("Current event...<br1>");
 		// L2EMU_ADD
 		replyMSG.append("    ... Event Type:&nbsp;<font color=\"00FF00\">" + TvT.getEventTypeByName(TvT._eventType) + "</font><br1>");
-		replyMSG.append("    ... Events Starts Every:&nbsp;<font color=\"00FF00\">" + TvT.getIntervalBetweenMatchs() + " minutes.</font><br><br>");
 		// L2EMU_ADD
 		replyMSG.append("    ... name:&nbsp;<font color=\"00FF00\">" + TvT._eventName + "</font><br1>");
 		replyMSG.append("    ... description:&nbsp;<font color=\"00FF00\">" + TvT._eventDesc + "</font><br1>");

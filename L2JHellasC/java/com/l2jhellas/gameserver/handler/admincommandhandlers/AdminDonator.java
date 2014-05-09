@@ -137,9 +137,6 @@ public class AdminDonator implements IAdminCommandHandler
 			}
 			player.sendPacket(sm);
 			player.broadcastUserInfo();
-			if (player.isDonator() == true)
-			{
-			}
 		}
 		return false;
 	}

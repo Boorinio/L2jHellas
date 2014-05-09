@@ -50,11 +50,9 @@ public class AdminBan implements IAdminCommandHandler
 		"admin_ban", // returns ban commands
 		"admin_ban_acc",
 		"admin_ban_char",
-		"admin_banchat",
 		"admin_unban", // returns unban commands
 		"admin_unban_acc",
 		"admin_unban_char",
-		"admin_unbanchat",
 		"admin_jail",
 		"admin_unjail",
 		"admin_permaban",
@@ -138,60 +136,6 @@ public class AdminBan implements IAdminCommandHandler
 			}
 			auditAction(command, activeChar, (targetPlayer == null ? player : targetPlayer.getName()));
 			return changeCharAccessLevel(targetPlayer, player, activeChar, -1);
-		}
-		else if (command.startsWith("admin_banchat"))
-		{
-			if (targetPlayer == null && player.equals(""))
-			{
-				activeChar.sendMessage("Usage: //banchat <char_name> [penalty_minutes]");
-				return false;
-			}
-			if (targetPlayer != null)
-			{
-				if (targetPlayer.getPunishLevel().value() > 0)
-				{
-					activeChar.sendMessage(targetPlayer.getName() + " is already jailed or banned.");
-					return false;
-				}
-				String banLengthStr = "";
-				
-				targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.CHAT, duration);
-				if (duration > 0)
-					banLengthStr = " for " + duration + " minutes";
-				activeChar.sendMessage(targetPlayer.getName() + " is now chat banned" + banLengthStr + ".");
-				auditAction(command, activeChar, targetPlayer.getName());
-			}
-			else
-			{
-				banChatOfflinePlayer(activeChar, player, duration, true);
-				auditAction(command, activeChar, player);
-			}
-		}
-		else if (command.startsWith("admin_unbanchat"))
-		{
-			if (targetPlayer == null && player.equals(""))
-			{
-				activeChar.sendMessage("Usage: //unbanchat <char_name>");
-				return false;
-			}
-			if (targetPlayer != null)
-			{
-				if (targetPlayer.isChatBanned())
-				{
-					targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.NONE, 0);
-					activeChar.sendMessage(targetPlayer.getName() + "'s chat ban has now been lifted.");
-					auditAction(command, activeChar, targetPlayer.getName());
-				}
-				else
-				{
-					activeChar.sendMessage(targetPlayer.getName() + " is not currently chat banned.");
-				}
-			}
-			else
-			{
-				banChatOfflinePlayer(activeChar, player, 0, false);
-				auditAction(command, activeChar, player);
-			}
 		}
 		else if (command.startsWith("admin_unban ") || command.equalsIgnoreCase("admin_unban"))
 		{
@@ -323,47 +267,6 @@ public class AdminBan implements IAdminCommandHandler
 		GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", command[0], (target.equals("") ? "no-target" : target), (command.length > 2 ? command[2] : ""));
 	}
 	
-	private void banChatOfflinePlayer(L2PcInstance activeChar, String name, int delay, boolean ban)
-	{
-		int level = 0;
-		long value = 0;
-		if (ban)
-		{
-			level = L2PcInstance.PunishLevel.CHAT.value();
-			value = (delay > 0 ? delay * 60000L : 60000);
-		}
-		else
-		{
-			level = L2PcInstance.PunishLevel.NONE.value();
-			value = 0;
-		}
-		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET in_jail=?, jail_timer=? WHERE char_name=?");
-			statement.setInt(1, level);
-			statement.setLong(2, value);
-			statement.setString(3, name);
-			
-			statement.execute();
-			int count = statement.getUpdateCount();
-			statement.close();
-			
-			if (count == 0)
-				activeChar.sendMessage("Character not found!");
-			else if (ban)
-				activeChar.sendMessage("Character " + name + " chat-banned for " + (delay > 0 ? delay + " minutes." : "ever!"));
-			else
-				activeChar.sendMessage("Character " + name + "'s chat-banned lifted.");
-		}
-		catch (SQLException se)
-		{
-			activeChar.sendMessage("SQLException while chat-banning player.");
-			if (Config.DEBUG)
-				se.printStackTrace();
-		}
-	}
-	
 	private void jailOfflinePlayer(L2PcInstance activeChar, String name, int delay)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -385,11 +288,11 @@ public class AdminBan implements IAdminCommandHandler
 			else
 				activeChar.sendMessage("Character " + name + " jailed for " + (delay > 0 ? delay + " minutes." : "ever!"));
 		}
-		catch (SQLException se)
+		catch (SQLException e)
 		{
 			activeChar.sendMessage("SQLException while jailing player");
 			if (Config.DEBUG)
-				se.printStackTrace();
+				e.printStackTrace();
 		}
 	}
 	

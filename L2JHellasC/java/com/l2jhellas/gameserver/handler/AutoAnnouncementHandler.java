@@ -34,8 +34,8 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
- * Auto Announcment Handler
- * Automatically send announcment
+ * Auto Announcement Handler
+ * Automatically send announcement
  * at a set time interval.
  */
 public class AutoAnnouncementHandler

@@ -606,7 +606,6 @@ public class TvT
 	public static synchronized void autoEvent()
 	{
 		_log.info("Starting TvT!");
-		_log.info("Matchs Are Restarted At Every: " + getIntervalBetweenMatchs() + " Minutes.");
 		if (startAutoJoin())
 		{
 			_eventType = 2;
@@ -632,26 +631,11 @@ public class TvT
 					_log.info("TvT: waiting... delay for final messages ");
 					waiter(60000);// just a give a delay delay for final messages
 					sendFinalMessages();
-
-					if (_finished && _eventType == 2)
-						_log.info("TVT: waiting.....delay for restart event  " + TvT.getIntervalBetweenMatchs() + " minutes.");
-					waiter(60000);// just a give a delay to next restart
-
-					try
-					{
-						restartEvent();
-					}
-					catch (Exception e)
-					{
-						_log.log(Level.WARNING, " Error while tying to Restart Event", e);
-						e.printStackTrace();
-					}
 				}
 			}
 			else if (!teleportAutoStart())
 			{
 				abortEvent();
-				restartEvent();
 			}
 		}
 	}
@@ -1073,7 +1057,6 @@ public class TvT
 		_eventTime = 0;
 		_minPlayers = 0;
 		_maxPlayers = 0;
-		_intervalBetweenMatchs = 0;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement;
@@ -1102,7 +1085,6 @@ public class TvT
 				_eventTime = rs.getInt("eventTime");
 				_minPlayers = rs.getInt("minPlayers");
 				_maxPlayers = rs.getInt("maxPlayers");
-				_intervalBetweenMatchs = rs.getLong("delayForNextEvent");
 			}
 			statement.close();
 
@@ -1148,7 +1130,7 @@ public class TvT
 			statement.execute();
 			statement.close();
 
-			statement = con.prepareStatement("INSERT INTO tvt (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, npcHeading, rewardId, rewardAmount, teamsCount, joinTime, eventTime, minPlayers, maxPlayers, delayForNextEvent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			statement = con.prepareStatement("INSERT INTO tvt (eventName, eventDesc, joiningLocation, minlvl, maxlvl, npcId, npcX, npcY, npcZ, npcHeading, rewardId, rewardAmount, teamsCount, joinTime, eventTime, minPlayers, maxPlayers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			statement.setString(1, _eventName);
 			statement.setString(2, _eventDesc);
 			statement.setString(3, _joiningLocationName);
@@ -1166,7 +1148,6 @@ public class TvT
 			statement.setInt(15, _eventTime);
 			statement.setInt(16, _minPlayers);
 			statement.setInt(17, _maxPlayers);
-			statement.setLong(18, _intervalBetweenMatchs);
 			statement.execute();
 			statement.close();
 
@@ -1736,43 +1717,6 @@ public class TvT
 		DoorData.getInstance().getDoor(24190004).openMe();
 
 	}
-
-	/**
-	 * Restarts Event
-	 * checks if event was aborted. and if true cancels restart task
-	 */
-	public synchronized static void restartEvent()
-	{
-		if (_aborted)
-		{
-			_log.log(Level.FINER, "TvT: restart skipped, event was aborted.");
-			return;
-		}
-		_log.info("TvT: Event has been restarted...");
-		_joining = false;
-		_started = false;
-		_finished = false;
-		_inProgress = false;
-		long delay = _intervalBetweenMatchs;
-
-		Announcements.getInstance().gameAnnounceToAll("TvT: joining period will be avaible again in " + getIntervalBetweenMatchs() + " minute(s)!");
-
-		waiter(delay);
-
-		try
-		{
-			autoEvent(); // start a new event
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, "TvT: Error While Trying to restart Event...", e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
 	/**
 	 * Returns the event type by name.
 	 * 
@@ -1799,7 +1743,6 @@ public class TvT
 		}
 		return type;
 	}
-
 	/**
 	 * just an announcer to send termination messages
 	 */
@@ -1807,20 +1750,5 @@ public class TvT
 	{
 		if (_finished && !_aborted)
 			Announcements.getInstance().gameAnnounceToAll("TvT: Thank you For Participating At, " + "TVT Event.");
-	}
-
-	/**
-	 * returns the interval between each event
-	 * 
-	 * @return
-	 */
-	public static int getIntervalBetweenMatchs()
-	{
-		long actualTime = System.currentTimeMillis();
-		long totalTime = actualTime + _intervalBetweenMatchs;
-		long interval = totalTime - actualTime;
-		int seconds = (int) (interval / 1000);
-
-		return Math.round(seconds / 60);
 	}
 }

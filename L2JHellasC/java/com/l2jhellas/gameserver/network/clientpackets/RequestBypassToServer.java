@@ -573,6 +573,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					e.printStackTrace();
 				}
 			}
+			// ------------------------------------------------------------------------
 			else if (_command.startsWith("_match"))
 			{
 				String params = _command.substring(_command.indexOf("?") + 1);

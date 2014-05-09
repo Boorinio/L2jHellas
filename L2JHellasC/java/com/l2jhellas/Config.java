@@ -905,7 +905,6 @@ public final class Config
 	// TvT Settings
 	public static boolean TVT_ALLOW_AUTOEVENT;
 	public static String TVT_EVENT_TIMES;
-	public static boolean TVT_AUTO_STARTUP_ON_BOOT;
 	public static boolean TVT_ALLOW_INTERFERENCE;
 	public static boolean TVT_ALLOW_POTIONS;
 	public static boolean TVT_ALLOW_SUMMON;
@@ -2571,7 +2570,6 @@ public final class Config
 			TVT_ALLOW_TEAM_CASTING = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAllowTeamCasting", "false"));
 			TVT_ALLOW_TEAM_ATTACKING = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAllowTeamAttacking", "false"));
 			TVT_CLOSE_COLISEUM_DOORS = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTCloseColiseumDoors", "false"));
-			TVT_AUTO_STARTUP_ON_BOOT = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAutoStartUpOnBoot", "false"));
 			TVT_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAllowInterference", "false"));
 			TVT_ALLOW_POTIONS = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAllowPotions", "false"));
 			TVT_ALLOW_SUMMON = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAllowSummon", "false"));

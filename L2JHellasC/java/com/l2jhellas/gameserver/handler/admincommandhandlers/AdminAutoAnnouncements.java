@@ -22,12 +22,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * This class handles following admin commands:
- * - announce text = announces text to all players
- * - list_announcements = show menu
- * - reload_announcements = reloads announcements from txt file
- * - announce_announcements = announce all stored announcements to all players
- * - add_announcement text = adds text to startup announcements
- * - del_announcement id = deletes announcement with respective id
+ * - admin_list_autoannouncements = lists all announcments
+ * - admin_add_autoannouncement = adds text to startup announcements
+ * - admin_del_autoannouncement = deletes announcement with respective id
+ * - admin_autoannounce = announce all stored announcements to all players
  */
 public class AdminAutoAnnouncements implements IAdminCommandHandler
 {

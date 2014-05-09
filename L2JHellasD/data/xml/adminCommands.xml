@@ -7,29 +7,31 @@
 	<admin command="admin_admin3" accessLevel="7" />
 	<admin command="admin_admin4" accessLevel="7" />
 	<admin command="admin_admin5" accessLevel="7" />
-	<admin command="admin_balance" accessLevel="7" />
 	<admin command="admin_gmliston" accessLevel="7" />
 	<admin command="admin_gmlistoff" accessLevel="7" />
 	<admin command="admin_silence" accessLevel="7" />
+	<admin command="admin_invis" accessLevel="7" />
+	<admin command="admin_invisible" accessLevel="7" />
+	<admin command="admin_vis" accessLevel="7" />
+	<admin command="admin_visible" accessLevel="7" />
+	<admin command="admin_invis_menu" accessLevel="7" />
 	<admin command="admin_tradeoff" accessLevel="7" />
 	<admin command="admin_reload" accessLevel="7" />
 	<admin command="admin_set" accessLevel="7" />
 	<admin command="admin_set_mod" accessLevel="7" />
 	<admin command="admin_saveolymp" accessLevel="7" />
 	<admin command="admin_manualhero" accessLevel="7" />
+	
 	<admin command="admin_sethero" accessLevel="7" />
 	<admin command="admin_setnoble" accessLevel="7" />
-	<admin command="admin_setdonator" accessLevel="7" />
 	<admin command="admin_endolympiad" accessLevel="7" />
+	<admin command="admin_balance" accessLevel="7" />
 	
 	<!-- ADMIN CHANGE ACCESS LEVEL -->
 	<admin command="admin_changelvl" accessLevel="7" />
 	
+	
 	<!-- ADMIN ANNOUNCEMENTS -->
-	<admin command="admin_list_autoannouncements" accessLevel="7" />
-	<admin command="admin_add_autoannouncement" accessLevel="7" />
-	<admin command="admin_del_autoannouncement" accessLevel="7" />
-	<admin command="admin_autoannounce" accessLevel="7" />
 	<admin command="admin_list_announcements" accessLevel="7" />
 	<admin command="admin_reload_announcements" accessLevel="7" />
 	<admin command="admin_announce_announcements" accessLevel="7" />
@@ -37,6 +39,11 @@
 	<admin command="admin_del_announcement" accessLevel="7" />
 	<admin command="admin_announce" accessLevel="7" />
 	<admin command="admin_announce_menu" accessLevel="7" />
+	<!-- ADMIN AUTO-ANNOUNCEMENTS -->
+	<admin command="admin_list_autoannouncements" accessLevel="7" />
+	<admin command="admin_add_autoannouncement" accessLevel="7" />
+	<admin command="admin_del_autoannouncement" accessLevel="7" />
+	<admin command="admin_autoannounce" accessLevel="7" />
 
 	<!-- ADMIN BAN -->
 	<admin command="admin_ban" accessLevel="7" />
@@ -57,19 +64,12 @@
 	<!-- ADMIN BBS -->
 	<admin command="admin_bbs" accessLevel="7" />
 
-	<!-- ADMIN BUFF -->
-	<admin command="admin_getbuffs" accessLevel="7" />
-	<admin command="admin_stopbuff" accessLevel="7" />
-	<admin command="admin_stopallbuffs" accessLevel="7" />
-	<admin command="admin_areacancel" accessLevel="7" />
-	<admin command="admin_removereuse" accessLevel="7" />
-
+	<!-- ADMIN CLAN FULL -->
+	<admin command="admin_clanfull" accessLevel="7" />
+	
 	<!-- ADMIN CREATE ITEM -->
 	<admin command="admin_itemcreate" accessLevel="7" />
 	<admin command="admin_create_item" accessLevel="7" />
-	<admin command="admin_create_coin" accessLevel="7" />
-	<admin command="admin_give_item_target" accessLevel="7" />
-	<admin command="admin_give_item_to_all" accessLevel="7" />
 
 	<!-- ADMIN CURSED WEAPONS -->
 	<admin command="admin_cw_info" accessLevel="7" />
@@ -87,6 +87,9 @@
 
 	<!-- ADMIN DISCONNECT -->
 	<admin command="admin_character_disconnect" accessLevel="7" />
+	
+	<!-- ADMIN DONATOR -->
+	<admin command="admin_setdonator" accessLevel="7" />
 
 	<!-- ADMIN DOOR CONTROL -->
 	<admin command="admin_open" accessLevel="7" />
@@ -95,41 +98,40 @@
 	<admin command="admin_closeall" accessLevel="7" />
 
 	<!-- ADMIN EDIT CHAR -->
+	<admin command="admin_setname" accessLevel="7" />
 	<admin command="admin_edit_character" accessLevel="7" />
+	<admin command="admin_current_player" accessLevel="7" />
+	<admin command="admin_nokarma" accessLevel="7" />
 	<admin command="admin_setkarma" accessLevel="7" />
-	<admin command="admin_setfame" accessLevel="7" />
-	<admin command="admin_charquestmenu" accessLevel="7" />
-	<admin command="admin_setcharquest" accessLevel="7" />
 	<admin command="admin_character_list" accessLevel="7" />
 	<admin command="admin_character_info" accessLevel="7" />
-	<admin command="admin_debug" accessLevel="7" />
 	<admin command="admin_show_characters" accessLevel="7" />
 	<admin command="admin_find_character" accessLevel="7" />
-	<admin command="admin_current_player" accessLevel="7" />
 	<admin command="admin_find_ip" accessLevel="7" />
 	<admin command="admin_find_account" accessLevel="7" />
 	<admin command="admin_find_dualbox" accessLevel="7" />
-	<admin command="admin_strict_find_dualbox" accessLevel="7" />
-	<admin command="admin_tracert" accessLevel="7" />
 	<admin command="admin_save_modifications" accessLevel="7" />
 	<admin command="admin_rec" accessLevel="7" />
+	<admin command="admin_setclass" accessLevel="7" />
 	<admin command="admin_settitle" accessLevel="7" />
-	<admin command="admin_setname" accessLevel="7" />
 	<admin command="admin_setsex" accessLevel="7" />
 	<admin command="admin_setcolor" accessLevel="7" />
-	<admin command="admin_settcolor" accessLevel="7" />
-	<admin command="admin_setclass" accessLevel="7" />
+	<admin command="admin_fullfood" accessLevel="7" />
+	
+	<admin command="admin_setfame" accessLevel="7" />
+	<admin command="admin_charquestmenu" accessLevel="7" />
+	<admin command="admin_setcharquest" accessLevel="7" />
+	<admin command="admin_debug" accessLevel="7" />
+	<admin command="admin_strict_find_dualbox" accessLevel="7" />
+	<admin command="admin_tracert" accessLevel="7" />
 	<admin command="admin_setpvp" accessLevel="7" />
 	<admin command="admin_setpk" accessLevel="7" />
-	<admin command="admin_fullfood" accessLevel="7" />
 	<admin command="admin_remove_clan_penalty" accessLevel="7" />
-	<admin command="admin_nokarma" accessLevel="7" />
 	<admin command="admin_summon_info" accessLevel="7" />
 	<admin command="admin_summon_setlvl" accessLevel="7" />
 	<admin command="admin_unsummon" accessLevel="7" />
 	<admin command="admin_show_pet_inv" accessLevel="7" />
 	<admin command="admin_partyinfo" accessLevel="7" />
-	<admin command="admin_clanfull" accessLevel="7" />
 
 	<!-- ADMIN EDIT NPC -->
 	<admin command="admin_edit_npc" accessLevel="7" />
@@ -150,11 +152,6 @@
 	<admin command="admin_del_skill_npc" accessLevel="7" />
 
 	<!-- ADMIN EFFECTS -->
-	<admin command="admin_invis" accessLevel="7" />
-	<admin command="admin_invisible" accessLevel="7" />
-	<admin command="admin_vis" accessLevel="7" />
-	<admin command="admin_visible" accessLevel="7" />
-	<admin command="admin_invis_menu" accessLevel="7" />
 	<admin command="admin_earthquake" accessLevel="7" />
 	<admin command="admin_earthquake_menu" accessLevel="7" />
 	<admin command="admin_bighead" accessLevel="7" />
@@ -525,4 +522,95 @@
 	<admin command="admin_premium_add3" accessLevel="7" />
 	<admin command="admin_premium_add4" accessLevel="7" />
 	<admin command="admin_premium_add5" accessLevel="7" />
+	
+	<!-- ADMIN TvT Event -->
+	<admin command="admin_tvt" accessLevel="7" />
+	<admin command="admin_tvt_name" accessLevel="7" />
+	<admin command="admin_tvt_desc" accessLevel="7" />
+	<admin command="admin_tvt_join_loc" accessLevel="7" />
+	<admin command="admin_tvt_minlvl" accessLevel="7" />
+	<admin command="admin_tvt_maxlvl" accessLevel="7" />
+	<admin command="admin_tvt_npc" accessLevel="7" />
+	<admin command="admin_tvt_npc_pos" accessLevel="7" />
+	<admin command="admin_tvt_reward" accessLevel="7" />
+	<admin command="admin_tvt_reward_amount" accessLevel="7" />
+	<admin command="admin_tvt_team_add" accessLevel="7" />
+	<admin command="admin_tvt_team_remove" accessLevel="7" />
+	<admin command="admin_tvt_team_pos" accessLevel="7" />
+	<admin command="admin_tvt_team_color" accessLevel="7" />
+	<admin command="admin_tvt_join" accessLevel="7" />
+	<admin command="admin_tvt_teleport" accessLevel="7" />
+	<admin command="admin_tvt_start" accessLevel="7" />
+	<admin command="admin_tvt_abort" accessLevel="7" />
+	<admin command="admin_tvt_finish" accessLevel="7" />
+	<admin command="admin_tvt_sit" accessLevel="7" />
+	<admin command="admin_tvt_dump" accessLevel="7" />
+	<admin command="admin_tvt_save" accessLevel="7" />
+	<admin command="admin_tvt_load" accessLevel="7" />
+	<admin command="admin_tvt_jointime" accessLevel="7" />
+	<admin command="admin_tvt_eventtime" accessLevel="7" />
+	<admin command="admin_tvt_autoevent" accessLevel="7" />
+	<admin command="admin_tvt_minplayers" accessLevel="7" />
+	<admin command="admin_tvt_maxplayers" accessLevel="7" />
+	<admin command="admin_tvtkick" accessLevel="7" />
+	<admin command="admin_tvt_interval" accessLevel="7" />
+	
+	<!-- ADMIN CTF Event -->
+	<admin command="admin_ctf" accessLevel="7" />
+	<admin command="admin_ctf_name" accessLevel="7" />
+	<admin command="admin_ctf_desc" accessLevel="7" />
+	<admin command="admin_ctf_join_loc" accessLevel="7" />
+	<admin command="admin_ctf_edit" accessLevel="7" />
+	<admin command="admin_ctf_control" accessLevel="7" />
+	<admin command="admin_ctf_minlvl" accessLevel="7" />
+	<admin command="admin_ctf_maxlvl" accessLevel="7" />
+	<admin command="admin_ctf_tele_npc" accessLevel="7" />
+	<admin command="admin_ctf_tele_team" accessLevel="7" />
+	<admin command="admin_ctf_tele_flag" accessLevel="7" />
+	<admin command="admin_ctf_npc" accessLevel="7" />
+	<admin command="admin_ctf_npc_pos" accessLevel="7" />
+	<admin command="admin_ctf_reward" accessLevel="7" />
+	<admin command="admin_ctf_reward_amount" accessLevel="7" />
+	<admin command="admin_ctf_team_add" accessLevel="7" />
+	<admin command="admin_ctf_team_remove" accessLevel="7" />
+	<admin command="admin_ctf_team_pos" accessLevel="7" />
+	<admin command="admin_ctf_team_color" accessLevel="7" />
+	<admin command="admin_ctf_team_flag" accessLevel="7" />
+	<admin command="admin_ctf_join" accessLevel="7" />
+	<admin command="admin_ctf_teleport" accessLevel="7" />
+	<admin command="admin_ctf_start" accessLevel="7" />
+	<admin command="admin_ctf_abort" accessLevel="7" />
+	<admin command="admin_ctf_finish" accessLevel="7" />
+	<admin command="admin_ctf_sit" accessLevel="7" />
+	<admin command="admin_ctf_dump" accessLevel="7" />
+	<admin command="admin_ctf_save" accessLevel="7" />
+	<admin command="admin_ctf_load" accessLevel="7" />
+	<admin command="admin_ctf_jointime" accessLevel="7" />
+	<admin command="admin_ctf_eventtime" accessLevel="7" />
+	<admin command="admin_ctf_autoevent" accessLevel="7" />
+	<admin command="admin_ctf_minplayers" accessLevel="7" />
+	<admin command="admin_ctf_maxplayers" accessLevel="7" />
+	
+	<!-- ADMIN DM Event -->
+	<admin command="admin_dmevent" accessLevel="7" />
+	<admin command="admin_dmevent_name" accessLevel="7" />
+	<admin command="admin_dmevent_desc" accessLevel="7" />
+	<admin command="admin_dmevent_join_loc" accessLevel="7" />
+	<admin command="admin_dmevent_minlvl" accessLevel="7" />
+	<admin command="admin_dmevent_maxlvl" accessLevel="7" />
+	<admin command="admin_dmevent_npc" accessLevel="7" />
+	<admin command="admin_dmevent_npc_pos" accessLevel="7" />
+	<admin command="admin_dmevent_reward" accessLevel="7" />
+	<admin command="admin_dmevent_reward_amount" accessLevel="7" />
+	<admin command="admin_dmevent_spawnpos" accessLevel="7" />
+	<admin command="admin_dmevent_color" accessLevel="7" />
+	<admin command="admin_dmevent_join" accessLevel="7" />
+	<admin command="admin_dmevent_teleport" accessLevel="7" />
+	<admin command="admin_dmevent_start" accessLevel="7" />
+	<admin command="admin_dmevent_abort" accessLevel="7" />
+	<admin command="admin_dmevent_finish" accessLevel="7" />
+	<admin command="admin_dmevent_sit" accessLevel="7" />
+	<admin command="admin_dmevent_dump" accessLevel="7" />
+	<admin command="admin_dmevent_save" accessLevel="7" />
+	<admin command="admin_dmevent_load" accessLevel="7" />
 </list>
