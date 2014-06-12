@@ -231,7 +231,7 @@ clear
 echo "L2JDP Database Installer"
 echo ""
 echo "Thanks for using our software."
-echo "visit http://www.l2jhellas.eu for more info about"
+echo "visit http://www.l2jhellas.info for more info about"
 echo "the DataPack Project."
 
 }

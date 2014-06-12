@@ -44,26 +44,26 @@ public class OlympiadGameClassed extends OlympiadGameNormal
 		return Config.ALT_OLY_CLASSED_REWARD;
 	}
 	
-	protected static final OlympiadGameClassed createGame(int id, List<List<Integer>> classList)
+	protected static final OlympiadGameClassed createGame(int id, List<List<String>> readyClassed)
 	{
-		if (classList == null || classList.isEmpty())
+		if (readyClassed == null || readyClassed.isEmpty())
 			return null;
 		
-		List<Integer> list;
+		List<String> list;
 		Participant[] opponents;
-		while (!classList.isEmpty())
+		while (!readyClassed.isEmpty())
 		{
-			list = classList.get(Rnd.get(classList.size()));
+			list = readyClassed.get(Rnd.get(readyClassed.size()));
 			if (list == null || list.size() < 2)
 			{
-				classList.remove(list);
+				readyClassed.remove(list);
 				continue;
 			}
 			
 			opponents = OlympiadGameNormal.createListOfParticipants(list);
 			if (opponents == null)
 			{
-				classList.remove(list);
+				readyClassed.remove(list);
 				continue;
 			}
 			

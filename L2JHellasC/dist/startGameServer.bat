@@ -1,6 +1,6 @@
 @echo off
 color 9f
-title L2J Hellas Game Server Console http://l2jhellas.eu/
+title L2J Hellas Game Server Console http://l2jhellas.info/
 :start
 
 REM -------------------------------------

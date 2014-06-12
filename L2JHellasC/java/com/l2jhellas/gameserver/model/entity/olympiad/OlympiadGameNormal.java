@@ -54,29 +54,26 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		_playerTwo.player.setOlympiadGameId(id);
 	}
 	
-	protected static final Participant[] createListOfParticipants(List<Integer> list)
+	protected static final Participant[] createListOfParticipants(List<String> list)
 	{
 		if (list == null || list.isEmpty() || list.size() < 2)
 			return null;
-		
-		int playerOneObjectId = 0;
+		String playerOneName;
 		L2PcInstance playerOne = null;
 		L2PcInstance playerTwo = null;
 		
 		while (list.size() > 1)
 		{
-			playerOneObjectId = list.remove(Rnd.get(list.size()));
-			playerOne = L2World.getPlayer(playerOneObjectId);
+			playerOneName = list.remove(Rnd.get(list.size()));
+			playerOne = L2World.getPlayer(playerOneName);
 			if (playerOne == null || playerOne.isOnline()==0)
 				continue;
-			
 			playerTwo = L2World.getPlayer(list.remove(Rnd.get(list.size())));
 			if (playerTwo == null || playerTwo.isOnline()==0)
 			{
-				list.add(playerOneObjectId);
+				list.add(playerOneName);
 				continue;
 			}
-			
 			Participant[] result = new Participant[2];
 			result[0] = new Participant(playerOne, 1);
 			result[1] = new Participant(playerTwo, 2);

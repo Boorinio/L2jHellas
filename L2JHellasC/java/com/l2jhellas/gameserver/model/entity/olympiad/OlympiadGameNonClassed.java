@@ -43,12 +43,11 @@ public class OlympiadGameNonClassed extends OlympiadGameNormal
 		return Config.ALT_OLY_NONCLASSED_REWARD;
 	}
 	
-	protected static final OlympiadGameNonClassed createGame(int id, List<Integer> list)
+	protected static final OlympiadGameNonClassed createGame(int id, List<String> list)
 	{
 		final Participant[] opponents = OlympiadGameNormal.createListOfParticipants(list);
 		if (opponents == null)
 			return null;
-		
 		return new OlympiadGameNonClassed(id, opponents);
 	}
 }

@@ -86,7 +86,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 			return;
 		}
 		
-		if(L2World.getPlayer(_objectID) != null)
+		if(L2World.getPlayer(player.getName().toLowerCase()) != null)
 		return;
 		
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("freight"))

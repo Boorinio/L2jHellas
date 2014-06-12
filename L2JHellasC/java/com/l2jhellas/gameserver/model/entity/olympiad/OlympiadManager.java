@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.entity.olympiad;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,8 +30,8 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class OlympiadManager
 {
-	private final List<Integer> _nonClassBasedRegisters;
-	private final Map<Integer, List<Integer>> _classBasedRegisters;
+	private final List<String> _nonClassBasedRegisters;
+	private final Map<Integer, List<String>> _classBasedRegisters;
 	
 	protected OlympiadManager()
 	{
@@ -43,20 +44,20 @@ public class OlympiadManager
 		return SingletonHolder._instance;
 	}
 	
-	public final List<Integer> getRegisteredNonClassBased()
+	public final List<String> getRegisteredNonClassBased()
 	{
 		return _nonClassBasedRegisters;
 	}
 	
-	public final Map<Integer, List<Integer>> getRegisteredClassBased()
+	public final Map<Integer, List<String>> getRegisteredClassBased()
 	{
 		return _classBasedRegisters;
 	}
 	
-	protected final List<List<Integer>> hasEnoughRegisteredClassed()
+	protected final List<List<String>> hasEnoughRegisteredClassed()
 	{
-		List<List<Integer>> result = null;
-		for (Map.Entry<Integer, List<Integer>> classList : _classBasedRegisters.entrySet())
+		List<List<String>> result = null;
+		for (Entry<Integer, List<String>> classList : _classBasedRegisters.entrySet())
 		{
 			if (classList.getValue() != null && classList.getValue().size() >= Config.ALT_OLY_CLASSED)
 			{
@@ -97,7 +98,7 @@ public class OlympiadManager
 			return true;
 		}
 		
-		final List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
+		final List<String> classed = _classBasedRegisters.get(player.getBaseClass());
 		if (classed != null && classed.contains(objId))
 		{
 			if (showMessage)
@@ -159,13 +160,13 @@ public class OlympiadManager
 				if (!checkNoble(player))
 					return false;
 				
-				List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
+				List<String> classed = _classBasedRegisters.get(player.getBaseClass());
 				if (classed != null)
-					classed.add(player.getObjectId());
+					classed.add(player.getName().toLowerCase());
 				else
 				{
 					classed = new CopyOnWriteArrayList<>();
-					classed.add(player.getObjectId());
+					classed.add(player.getName().toLowerCase());
 					_classBasedRegisters.put(player.getBaseClass(), classed);
 				}
 				
@@ -178,7 +179,7 @@ public class OlympiadManager
 				if (!checkNoble(player))
 					return false;
 				
-				_nonClassBasedRegisters.add(player.getObjectId());
+				_nonClassBasedRegisters.add(player.getName().toLowerCase());
 				player.sendPacket(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_NO_CLASS_GAMES);
 				break;
 			}
@@ -209,15 +210,15 @@ public class OlympiadManager
 		if (isInCompetition(noble, false))
 			return false;
 		
-		Integer objId = Integer.valueOf(noble.getObjectId());
-		if (_nonClassBasedRegisters.remove(objId))
+		String player = noble.getName().toLowerCase();
+		if (_nonClassBasedRegisters.remove(player))
 		{
 			noble.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
 			return true;
 		}
 		
-		final List<Integer> classed = _classBasedRegisters.get(noble.getBaseClass());
-		if (classed != null && classed.remove(objId))
+		final List<String> classed = _classBasedRegisters.get(noble.getBaseClass());
+		if (classed != null && classed.remove(player))
 		{
 			_classBasedRegisters.remove(noble.getBaseClass());
 			_classBasedRegisters.put(noble.getBaseClass(), classed);
@@ -239,7 +240,7 @@ public class OlympiadManager
 		if (_nonClassBasedRegisters.remove(objId))
 			return;
 		
-		final List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
+		final List<String> classed = _classBasedRegisters.get(player.getBaseClass());
 		if (classed != null && classed.remove(objId))
 			return;
 	}

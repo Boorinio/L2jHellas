@@ -257,7 +257,8 @@ public final class Say2 extends L2GameClientPacket
 
 	private void checkText(L2PcInstance activeChar)
 	{
-		String filteredText = _text.toLowerCase();
+		String filteredText = _text;
+		filteredText.toLowerCase();
 
 		for (String pattern : Config.FILTER_LIST)
 		{

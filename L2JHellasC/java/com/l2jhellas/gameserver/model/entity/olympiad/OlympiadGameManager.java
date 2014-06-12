@@ -78,9 +78,8 @@ public class OlympiadGameManager implements Runnable
 			OlympiadGameTask task;
 			AbstractOlympiadGame newGame;
 			
-			List<List<Integer>> readyClassed = OlympiadManager.getInstance().hasEnoughRegisteredClassed();
+			List<List<String>> readyClassed = OlympiadManager.getInstance().hasEnoughRegisteredClassed();
 			boolean readyNonClassed = OlympiadManager.getInstance().hasEnoughRegisteredNonClassed();
-			
 			if (readyClassed != null || readyNonClassed)
 			{
 				// set up the games queue

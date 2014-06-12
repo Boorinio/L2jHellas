@@ -135,9 +135,6 @@ public class AdminNoble implements IAdminCommandHandler
 			}
 			player.sendPacket(sm);
 			player.broadcastUserInfo();
-			if (player.isNoble() == true)
-			{
-			}
 		}
 		return false;
 	}

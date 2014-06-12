@@ -1,6 +1,6 @@
 @echo off
 color 9f
-title L2J Hellas Login Server Console http://l2jhellas.eu/
+title L2J Hellas Login Server Console http://l2jhellas.info/
 :start
 REM -------------------------------------
 REM Default parameters for a basic server.

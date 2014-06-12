@@ -275,15 +275,6 @@ public final class L2World
 	{
 		return _allPlayers.get(name.toLowerCase());
 	}
-	
-	/**
-	 * @param playerObjId Object ID of the player to get Instance
-	 * @return the player instance corresponding to the given object ID.
-	 */
-	public static L2PcInstance getPlayer(int playerObjId)
-	{
-		return _allPlayers.get(Integer.valueOf(playerObjId));
-	}
 	/**
 	 * Return a collection containing all pets in game.<BR>
 	 * <BR>
