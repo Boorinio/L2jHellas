@@ -560,6 +560,18 @@ public final class Config
 	public static int ENCHANT_BOT_CHANCE;
 	public static int MINUTES_AFK_PLAYERS;
 	public static int SECURITY_QUE_TIME;
+	public static boolean ALLOW_HOPZONE_VOTE_REWARD;
+	public static String HOPZONE_SERVER_LINK;
+	public static int HOPZONE_VOTES_DIFFERENCE;
+	public static int HOPZONE_REWARD_CHECK_TIME;
+	public static int[][] HOPZONE_REWARD;
+	public static int HOPZONE_BOXES_ALLOWED;
+	public static boolean ALLOW_TOPZONE_VOTE_REWARD;
+	public static String TOPZONE_SERVER_LINK;
+	public static int TOPZONE_VOTES_DIFFERENCE;
+	public static int TOPZONE_REWARD_CHECK_TIME;
+	public static int[][] TOPZONE_REWARD;
+	public static int TOPZONE_BOXES_ALLOWED;
 
 	/**
 	 * CUSTOM PVP/RANK/REWARD Config File
@@ -2174,6 +2186,18 @@ public final class Config
 			LOGIN_SERVER_SCHEDULE_RESTART_TIME = Long.parseLong(autoSettings.getProperty("LoginRestartTime", "24"));
 			ALLOW_SEQURITY_QUE = Boolean.valueOf(autoSettings.getProperty("AllowSecurityQuestion", "True"));
 			SECURITY_QUE_TIME = Integer.parseInt(autoSettings.getProperty("SecurityTime", "20"));
+			ALLOW_HOPZONE_VOTE_REWARD = Boolean.valueOf(autoSettings.getProperty("AllowHopzoneVoteReward", "false"));
+			HOPZONE_SERVER_LINK = autoSettings.getProperty("HopzoneServerLink", "null");
+			HOPZONE_VOTES_DIFFERENCE = Integer.parseInt(autoSettings.getProperty("HopzoneVotesDifference", "5"));
+			HOPZONE_REWARD_CHECK_TIME = Integer.parseInt(autoSettings.getProperty("HopzoneRewardCheckTime", "5"));
+			HOPZONE_REWARD = parseItemsList(autoSettings.getProperty("HopzoneReward", "57,100000000"));
+			HOPZONE_BOXES_ALLOWED = Integer.parseInt(autoSettings.getProperty("HopzoneDualboxesAllowed", "1"));
+			ALLOW_TOPZONE_VOTE_REWARD = Boolean.valueOf(autoSettings.getProperty("AllowTopzoneVoteReward", "false"));
+			TOPZONE_SERVER_LINK = autoSettings.getProperty("TopzoneServerLink", "null");
+			TOPZONE_VOTES_DIFFERENCE = Integer.parseInt(autoSettings.getProperty("TopzoneVotesDifference", "5"));
+			TOPZONE_REWARD_CHECK_TIME = Integer.parseInt(autoSettings.getProperty("TopzoneRewardCheckTime", "5"));
+			TOPZONE_REWARD = parseItemsList(autoSettings.getProperty("TopzoneReward", "57,100000000"));
+			TOPZONE_BOXES_ALLOWED = Integer.parseInt(autoSettings.getProperty("TopzoneDualboxesAllowed", "1"));
 			ALLOW_ANTI_AFK = Boolean.valueOf(autoSettings.getProperty("AllowAntiAfk", "True"));
 			MINUTES_AFK_PLAYERS = Integer.parseInt(autoSettings.getProperty("AntiAfkMinutes", "20"));
 			ALLOW_PRIVATE_ANTI_BOT = Boolean.valueOf(autoSettings.getProperty("AllowPrivateAntiBot", "False"));

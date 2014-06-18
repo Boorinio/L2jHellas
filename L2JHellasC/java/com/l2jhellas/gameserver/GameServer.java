@@ -34,6 +34,8 @@ import Extensions.RankSystem.RankRewardTable;
 import Extensions.RankSystem.TopTable;
 import Extensions.RankSystem.Util.ServerSideImage;
 import Extensions.Vote.VoteManager;
+import Extensions.Vote.VoteRewardHopzone;
+import Extensions.Vote.VoteRewardTopzone;
 
 import com.L2JHellasInfo;
 import com.PackRoot;
@@ -389,6 +391,10 @@ public class GameServer
 		PolymporphTable.getInstance();
 		Hitman.start();
 		VoteManager.load();
+		if(Config.ALLOW_TOPZONE_VOTE_REWARD)
+			VoteRewardTopzone.LoadTopZone();
+		if(Config.ALLOW_HOPZONE_VOTE_REWARD)
+			VoteRewardHopzone.LoadHopZone();
 		// Rank System.
 		PvpTable.getInstance();
 		CharacterRankRewardTable.getInstance();
