@@ -55,6 +55,7 @@ public class Balancer implements IAdminCommandHandler
 		htm.replace("%Hp%", BalanceLoad.loadHP(classId) + "");
 		htm.replace("%Mp%", BalanceLoad.loadMP(classId) + "");
 		htm.replace("%Speed%", BalanceLoad.loadSpeed(classId) + "");
+		htm.replace("%Critical%", BalanceLoad.loadCritical(classId) + "");
 		
 		p.sendPacket(htm);
 	}

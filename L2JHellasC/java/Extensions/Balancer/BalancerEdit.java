@@ -522,6 +522,47 @@ public class BalancerEdit
 				}
 				break;
 			}
+			case "critical":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET critical=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT critical FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("critical") + value);
+							BalanceLoad.Critical[classId - 88] = BalanceLoad.Critical[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("Critical") - value);
+							BalanceLoad.Critical[classId - 88] = BalanceLoad.Critical[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
 		}
 	}
 

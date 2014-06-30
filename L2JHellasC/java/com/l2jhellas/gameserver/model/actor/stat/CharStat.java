@@ -149,12 +149,14 @@ public class CharStat
 
 		int criticalHit = (int) (calcStat(Stats.CRITICAL_RATE, _activeChar.getTemplate().baseCritRate, target, skill) * 10.0 + 0.5);
 		criticalHit /= 10;
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
+		{
+			criticalHit += BalanceLoad.Critical[((L2PcInstance) _activeChar).getClassId().getId() - 88];
+		}
 		// Set a cap of Critical Hit at 500
 		if (criticalHit > Config.MAX_PCRIT_RATE)
-		{
 			criticalHit = Config.MAX_PCRIT_RATE;
-		}
-
+		
 		return criticalHit;
 	}
 

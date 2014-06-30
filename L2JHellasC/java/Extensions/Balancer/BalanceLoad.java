@@ -28,7 +28,7 @@ public class BalanceLoad
 {
 	public static int[] Evasion = new int[31], Accuracy = new int[31], Speed = new int[31], PAtk = new int[31],
 			MAtk = new int[31], PDef = new int[31], MDef = new int[31], HP = new int[31], CP = new int[31],
-			MP = new int[31], MAtkSpd = new int[31], PAtkSpd = new int[31];
+			MP = new int[31], MAtkSpd = new int[31], PAtkSpd = new int[31], Critical = new int[31];
 
 	public static void LoadEm()
 	{
@@ -47,6 +47,7 @@ public class BalanceLoad
 			MP[z] = loadMP(z + 88);
 			MAtkSpd[z] = loadMAtkSpd(z + 88);
 			PAtkSpd[z] = loadPAtkSpd(z + 88);
+			Critical[z] = loadCritical(z + 88);
 		}
 
 	}
@@ -332,6 +333,31 @@ public class BalanceLoad
 			if (rset.next())
 			{
 				i = rset.getInt("patksp");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadCritical(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT critical FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("critical");
 			}
 
 			stm.close();
