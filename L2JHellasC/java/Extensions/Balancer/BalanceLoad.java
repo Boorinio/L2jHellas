@@ -28,7 +28,9 @@ public class BalanceLoad
 {
 	public static int[] Evasion = new int[31], Accuracy = new int[31], Speed = new int[31], PAtk = new int[31],
 			MAtk = new int[31], PDef = new int[31], MDef = new int[31], HP = new int[31], CP = new int[31],
-			MP = new int[31], MAtkSpd = new int[31], PAtkSpd = new int[31], Critical = new int[31];
+			MP = new int[31], MAtkSpd = new int[31], PAtkSpd = new int[31], Critical = new int[31],
+			MagicCritical = new int[31], WalkSpeed = new int[31], MAtkRange = new int[31], MReuseRate = new int[31], PReuseRate = new int[31],
+			INT = new int[31], WIT = new int[31], MEN=new int[31], CON = new int[31], STR = new int[31], DEX= new int[31];
 
 	public static void LoadEm()
 	{
@@ -48,6 +50,17 @@ public class BalanceLoad
 			MAtkSpd[z] = loadMAtkSpd(z + 88);
 			PAtkSpd[z] = loadPAtkSpd(z + 88);
 			Critical[z] = loadCritical(z + 88);
+			MagicCritical[z] = loadMagicCritical(z + 88);
+			WalkSpeed[z] = loadWalkSpeed(z + 88);
+			MAtkRange[z] = loadMAtkRange(z + 88);
+			MReuseRate[z] = loadMReuseRate(z + 88);
+			PReuseRate[z] = loadPReuseRate(z + 88);
+			INT[z] = loadINT(z + 88);
+			WIT[z] = loadWIT(z + 88);
+			MEN[z] = loadMEN(z + 88);
+			CON[z] = loadCON(z + 88);
+			STR[z] = loadSTR(z + 88);
+			DEX[z] = loadDEX(z + 88);
 		}
 
 	}
@@ -358,6 +371,282 @@ public class BalanceLoad
 			if (rset.next())
 			{
 				i = rset.getInt("critical");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadMagicCritical(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT mcritical FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("mcritical");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadWalkSpeed(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT wspeed FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("wspeed");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadMAtkRange(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT matkrange FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("matkrange");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadMReuseRate(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT mreuserate FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("mreuserate");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadPReuseRate(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT preuserate FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("preuserate");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadINT(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT INT_ FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("INT_");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadMEN(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT MEN FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("MEN");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadWIT(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT WIT FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("WIT");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	
+	public static int loadCON(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT CON FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("CON");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadSTR(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT STR FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("STR");
+			}
+
+			stm.close();
+		}
+		catch (Exception e)
+		{
+			System.err.println("Error while loading balance stats from database.");
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+	
+	public static int loadDEX(int classId)
+	{
+		int i = 0;
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("SELECT DEX FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+			{
+				i = rset.getInt("DEX");
 			}
 
 			stm.close();

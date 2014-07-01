@@ -563,6 +563,457 @@ public class BalancerEdit
 				}
 				break;
 			}
+			case "magiccritical":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET magiccritical=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT magiccritical FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("magiccritical") + value);
+							BalanceLoad.MagicCritical[classId - 88] = BalanceLoad.MagicCritical[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("magiccritical") - value);
+							BalanceLoad.MagicCritical[classId - 88] = BalanceLoad.MagicCritical[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "walkspeed":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET walkspeed=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT walkspeed FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("wspeed") + value);
+							BalanceLoad.WalkSpeed[classId - 88] = BalanceLoad.WalkSpeed[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("wspeed") - value);
+							BalanceLoad.WalkSpeed[classId - 88] = BalanceLoad.WalkSpeed[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "matkrange":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET matkrange=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT matkrange FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("matkrange") + value);
+							BalanceLoad.MAtkRange[classId - 88] = BalanceLoad.MAtkRange[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("matkrange") - value);
+							BalanceLoad.MAtkRange[classId - 88] = BalanceLoad.MAtkRange[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "mreuserate":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET mreuserate=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT mreuserate FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("mreuserate") + value);
+							BalanceLoad.MReuseRate[classId - 88] = BalanceLoad.MReuseRate[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("mreuserate") - value);
+							BalanceLoad.MReuseRate[classId - 88] = BalanceLoad.MReuseRate[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "preuserate":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET preuserate=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT preuserate FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("preuserate") + value);
+							BalanceLoad.PReuseRate[classId - 88] = BalanceLoad.PReuseRate[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("preuserate") - value);
+							BalanceLoad.PReuseRate[classId - 88] = BalanceLoad.PReuseRate[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "INT":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET INT_=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT INT_ FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("INT_") + value);
+							BalanceLoad.INT[classId - 88] = BalanceLoad.INT[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("INT_") - value);
+							BalanceLoad.INT[classId - 88] = BalanceLoad.INT[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "MEN":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET MEN=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT MEN FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("MEN") + value);
+							BalanceLoad.MEN[classId - 88] = BalanceLoad.MEN[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("MEN") - value);
+							BalanceLoad.MEN[classId - 88] = BalanceLoad.MEN[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "WIT":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET WIT=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT WIT FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("WIT") + value);
+							BalanceLoad.WIT[classId - 88] = BalanceLoad.WIT[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("WIT") - value);
+							BalanceLoad.WIT[classId - 88] = BalanceLoad.WIT[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "CON":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET CON=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT CON FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("CON") + value);
+							BalanceLoad.CON[classId - 88] = BalanceLoad.CON[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("CON") - value);
+							BalanceLoad.CON[classId - 88] = BalanceLoad.CON[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "STR":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET STR=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT STR FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("STR") + value);
+							BalanceLoad.STR[classId - 88] = BalanceLoad.STR[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("STR") - value);
+							BalanceLoad.STR[classId - 88] = BalanceLoad.STR[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
+			case "DEX":
+			{
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				{
+					PreparedStatement stm = con.prepareStatement("UPDATE balance SET DEX=? WHERE class_id=?");
+					PreparedStatement stm2 = con.prepareStatement("SELECT DEX FROM balance WHERE class_id=" + classId);
+					ResultSet rset = stm2.executeQuery();
+
+					if (rset.next())
+					{
+						if (add)
+						{
+							stm.setInt(1, rset.getInt("DEX") + value);
+							BalanceLoad.DEX[classId - 88] = BalanceLoad.DEX[classId - 88] + value;
+						}
+						else
+						{
+							stm.setInt(1, rset.getInt("DEX") - value);
+							BalanceLoad.DEX[classId - 88] = BalanceLoad.DEX[classId - 88] - value;
+						}
+						stm.setInt(2, classId);
+					}
+
+					stm.execute();
+					stm.close();
+					stm2.close();
+				}
+				catch (Exception e)
+				{
+					System.err.println("Error while saving balance stats to database.");
+					e.printStackTrace();
+				}
+				for (L2PcInstance p : L2World.getAllPlayers())
+				{
+					if (p.getClassId().getId() == classId)
+					{
+						p.sendPacket(new UserInfo(p));
+					}
+				}
+				break;
+			}
 		}
 	}
 
