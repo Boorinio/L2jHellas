@@ -3,7 +3,7 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
@@ -14,15 +14,15 @@
  */
 package com.l2jhellas.gameserver.network.gameserverpackets;
 
-import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author -Wooden-
  */
 public class ServerStatus extends GameServerBasePacket
 {
-	private final Vector<Attribute> _attributes;
+	private final List<Attribute> _attributes;
 
 	public static final String[] STATUS_STRING =
 	{/** @formatter:off */
@@ -64,7 +64,7 @@ public class ServerStatus extends GameServerBasePacket
 
 	public ServerStatus()
 	{
-		_attributes = new Vector<Attribute>();
+		_attributes = new ArrayList<>();
 	}
 
 	public void addAttribute(int id, int value)
@@ -73,7 +73,7 @@ public class ServerStatus extends GameServerBasePacket
 	}
 
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent()
 	{
 		writeC(0x06);
 		writeD(_attributes.size());

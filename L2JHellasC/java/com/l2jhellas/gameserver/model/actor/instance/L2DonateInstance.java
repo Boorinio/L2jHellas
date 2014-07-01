@@ -17,7 +17,9 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import javolution.text.TextBuilder;
@@ -37,6 +39,10 @@ import com.l2jhellas.util.Rnd;
  */
 public class L2DonateInstance extends L2NpcInstance
 {
+	Date dateInfo = new Date();
+	SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh");
+	String dayInfo = df.format(dateInfo);
+	
 	public L2DonateInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
@@ -75,8 +81,12 @@ public class L2DonateInstance extends L2NpcInstance
 				pin4 = st.nextToken();
 				while (st.hasMoreTokens())
 					message = message + st.nextToken() + " ";
-
-				String fname = "data/donates/" + player.getName() + ".txt";
+				if (pin1.length() != 4 || pin2.length() != 4 || pin3.length() != 4 || pin4.length() !=4)
+				{
+					player.sendMessage("Invalid Pin code.Please check your pin code and try again.");
+					return;
+				}
+				String fname = "data/donates/" + dayInfo + " " + player.getName() + ".txt";
 				File file = new File(fname);
 				boolean exist = file.createNewFile();
 				if (!exist)
@@ -95,7 +105,7 @@ public class L2DonateInstance extends L2NpcInstance
 				out.write("PIN : " + pin1 + " " + pin2 + " " + pin3 + " " + pin4 + "\n");
 				out.write("Delete this file so player can make a new donation :)");
 				out.close();
-				player.sendMessage("Donation sent.Now you have to wait until a gm checks your donation!");
+				player.sendMessage("Donation sent, you can donate again after 1 hour!");
 
 				Collection<L2PcInstance> pls = L2World.getAllPlayers();
 				for (L2PcInstance gms : pls)
