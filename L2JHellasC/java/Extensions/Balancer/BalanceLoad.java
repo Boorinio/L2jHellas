@@ -390,12 +390,12 @@ public class BalanceLoad
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement stm = con.prepareStatement("SELECT mcritical FROM balance WHERE class_id=" + classId);
+			PreparedStatement stm = con.prepareStatement("SELECT magiccritical FROM balance WHERE class_id=" + classId);
 			ResultSet rset = stm.executeQuery();
 
 			if (rset.next())
 			{
-				i = rset.getInt("mcritical");
+				i = rset.getInt("magiccritical");
 			}
 
 			stm.close();
