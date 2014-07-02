@@ -616,12 +616,12 @@ public class BalancerEdit
 					{
 						if (add)
 						{
-							stm.setInt(1, rset.getInt("wspeed") + value);
+							stm.setInt(1, rset.getInt("walkspeed") + value);
 							BalanceLoad.WalkSpeed[classId - 88] = BalanceLoad.WalkSpeed[classId - 88] + value;
 						}
 						else
 						{
-							stm.setInt(1, rset.getInt("wspeed") - value);
+							stm.setInt(1, rset.getInt("walkspeed") - value);
 							BalanceLoad.WalkSpeed[classId - 88] = BalanceLoad.WalkSpeed[classId - 88] - value;
 						}
 						stm.setInt(2, classId);

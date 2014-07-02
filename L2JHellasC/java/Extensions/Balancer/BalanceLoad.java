@@ -415,12 +415,12 @@ public class BalanceLoad
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement stm = con.prepareStatement("SELECT wspeed FROM balance WHERE class_id=" + classId);
+			PreparedStatement stm = con.prepareStatement("SELECT walkspeed FROM balance WHERE class_id=" + classId);
 			ResultSet rset = stm.executeQuery();
 
 			if (rset.next())
 			{
-				i = rset.getInt("wspeed");
+				i = rset.getInt("walkspeed");
 			}
 
 			stm.close();
