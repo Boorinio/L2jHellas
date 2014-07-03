@@ -209,6 +209,7 @@
 		<unzip src="${build}/L2J_Hellas_Core_${revision}.zip" dest="C:/L2JHellas" />
 		<echo>Backup L2jhellas.</echo>
 		<copy file="${build}/L2J_Hellas_Core_${revision}.zip" todir="C:/L2JHellas/Backup"></copy>
+		<delete dir="${build}" />
 		<echo>L2J Hellas Server version:${revision} stored in C:/L2JHellas.</echo>
 		<echo>Please visit our forum http://l2jhellas.info/</echo>
 		<echo>Owner Boorinio.</echo>

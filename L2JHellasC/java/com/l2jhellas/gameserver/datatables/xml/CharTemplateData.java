@@ -155,7 +155,7 @@ public class CharTemplateData
 													set.set("baseShldDef", 0);
 													set.set("baseShldRate", 0);
 													set.set("baseAtkRange", 40);
-													if (Config.SPAWN_CHAR)
+													if (Config.SPAWN_CHAR && !Config.MOD_GVE_ENABLE_FACTION)
 													{
 														set.set("spawnX", Config.SPAWN_X);
 														set.set("spawnY", Config.SPAWN_Y);
