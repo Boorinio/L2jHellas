@@ -500,7 +500,7 @@ public class CharStat
 	public int getRunSpeed()
 	{
 		// err we should be adding TO the persons run speed not making it a constant
-		int val = (int) (calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null) + Config.RUN_SPD_BOOST);
+		int val = (int) (calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null));
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			val += BalanceLoad.Speed[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		

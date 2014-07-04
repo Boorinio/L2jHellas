@@ -433,7 +433,6 @@ public final class Config
 	public static int HERO_COUNT;
 	public static int GM_OVER_ENCHANT;
 	public static boolean ALLOW_LOW_LEVEL_TRADE;
-	public static int RUN_SPD_BOOST;
 	public static int MAX_RUN_SPEED;
 	public static int MAX_PCRIT_RATE;
 	public static int MAX_MCRIT_RATE;
@@ -1712,7 +1711,6 @@ public final class Config
 			HERO_COUNT = Integer.parseInt(L2JHellasSettings.getProperty("HeroCount", "1"));
 			GM_OVER_ENCHANT = Integer.parseInt(L2JHellasSettings.getProperty("GMOverEnchant", "0"));
 			ALLOW_LOW_LEVEL_TRADE = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowLowLevelTrade", "True"));
-			RUN_SPD_BOOST = Integer.parseInt(L2JHellasSettings.getProperty("RunSpeedBoost", "0"));
 			MAX_RUN_SPEED = Integer.parseInt(L2JHellasSettings.getProperty("MaxRunSpeed", "500"));
 			MAX_PCRIT_RATE = Integer.parseInt(L2JHellasSettings.getProperty("MaxPCritRate", "500"));
 			MAX_MCRIT_RATE = Integer.parseInt(L2JHellasSettings.getProperty("MaxMCritRate", "300"));
