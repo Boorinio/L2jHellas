@@ -21,6 +21,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -35,6 +37,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
  */
 public class VoteRewardHopzone
 {
+	private static Logger _log = Logger.getLogger(VoteRewardHopzone.class.getName());
 	public static int HLastVotes = 0, HCurrentVotes = 0, HGoalVotes = 0, HAllowedRewards = Config.HOPZONE_BOXES_ALLOWED;
 	public static List<String> HBoxes = new ArrayList<>();
 	
@@ -49,15 +52,12 @@ public class VoteRewardHopzone
 		if (HCurrentVotes == -1)
 		{
 			if (HCurrentVotes == -1)
-			{
-				System.out.println("There was a problem on getting Hopzone server votes.");
-			}
-			
+				_log.log(Level.WARNING, "There was a problem on getting Hopzone server votes.");
 			return;
 		}
 		HLastVotes = HCurrentVotes;
 		HGoalVotes = HCurrentVotes + Config.HOPZONE_VOTES_DIFFERENCE;
-		System.out.println("Hopzone - Vote reward system initialized.");
+		_log.log(Level.INFO, "Hopzone - Vote reward system initialized.");
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
 		{
 			@Override
@@ -74,42 +74,31 @@ public class VoteRewardHopzone
 		if (HCurrentVotes == -1)
 		{
 			if (HCurrentVotes == -1)
-			{
-				System.out.println("There was a problem on getting Hopzone server votes.");
-			}
-			
+				_log.log(Level.WARNING, "There was a problem on getting Hopzone server votes.");
 			return;
 		}
 		if ((HCurrentVotes >= HLastVotes && HCurrentVotes < HGoalVotes) || HCurrentVotes == HLastVotes)
 		{
 			for (L2PcInstance player : L2World.getAllPlayers())
-			{
 				player.sendPacket(new ExShowScreenMessage("HopZone Votes: " + HCurrentVotes, 4000, SMPOS.BOTTOM_RIGHT, true));
-			}
 			Announcements.getInstance().announceToAll("HopZone Votes: " + HCurrentVotes);
 			Announcements.getInstance().announceToAll("Next Reward in: " + HGoalVotes + " Votes.");
 			waitSecs(5);
 			for (L2PcInstance player : L2World.getAllPlayers())
-			{
 				player.sendPacket(new ExShowScreenMessage("Next Reward in: " + HGoalVotes + " Votes.", 4000, SMPOS.BOTTOM_RIGHT, true));
-			}
 		}
 		if (HCurrentVotes >= HGoalVotes)
 		{
 			RewardPlayers();
 			for (L2PcInstance player : L2World.getAllPlayers())
-			{
 				player.sendPacket(new ExShowScreenMessage("HopZone Rewarded!", 4000, SMPOS.BOTTOM_RIGHT, true));
-			}
 			Announcements.getInstance().announceToAll("All players Rewarded!");
 			HGoalVotes = HCurrentVotes + Config.HOPZONE_VOTES_DIFFERENCE;
 			Announcements.getInstance().announceToAll("HopZone Votes: " + HCurrentVotes);
 			Announcements.getInstance().announceToAll("Next Reward in : " + HGoalVotes + " Votes.");
 			waitSecs(5);
 			for (L2PcInstance player : L2World.getAllPlayers())
-			{
 				player.sendPacket(new ExShowScreenMessage("Next Reward in: " + HGoalVotes + " Votes.", 4000, SMPOS.BOTTOM_RIGHT, true));
-			}
 		}
 		HLastVotes = HCurrentVotes;
 		
@@ -119,12 +108,8 @@ public class VoteRewardHopzone
 	{
 		int count = 0;
 		for (String i : HBoxes)
-		{
 			if (i.equals(itemToCheck))
-			{
 				count++;
-			}
-		}
 		return count;
 	}
 	
@@ -179,36 +164,31 @@ public class VoteRewardHopzone
 	
 	private static int getVotes()
 	{
-		String Hopzonelink = Config.HOPZONE_SERVER_LINK;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
+		int votes = 0;
+		String line = null;
 		
 		try
 		{
-			URLConnection con = new URL(Hopzonelink).openConnection();
+			URLConnection con = new URL(Config.HOPZONE_SERVER_LINK).openConnection();
 			con.addRequestProperty("User-Agent", "Mozilla/4.76");
-			isr = new InputStreamReader(con.getInputStream());
-			br = new BufferedReader(isr);
-			
-			String line;
+			InputStreamReader isr = new InputStreamReader(con.getInputStream());
+			BufferedReader br = new BufferedReader(isr);
 			while ((line = br.readLine()) != null)
-			{
 				if (line.contains("rank anonymous tooltip"))
 				{
-					int votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
+					votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
 					return votes;
 				}
-			}
 			
 			br.close();
 			isr.close();
 		}
 		catch (Exception e)
 		{
-			System.out.println(e);
-			System.out.println("Error while getting server vote count.");
-			System.out.println("Your URL is:" + Hopzonelink);
-			System.out.println("Test in a browser to see if it correct!");
+			_log.log(Level.WARNING, " " + e);
+			_log.log(Level.WARNING, "Error while getting server vote count, votes:" + votes + " link:" + line);
+			_log.log(Level.WARNING, "Your URL is:" + Config.HOPZONE_SERVER_LINK);
+			_log.log(Level.WARNING, "Test in a browser to see if it correct!");
 		}
 		
 		return -1;
