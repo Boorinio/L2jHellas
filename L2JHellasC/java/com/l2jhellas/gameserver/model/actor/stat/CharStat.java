@@ -120,7 +120,7 @@ public class CharStat
 	 */
 	public final int getDEX()
 	{
-		int DEX = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseWIT, null, null);
+		int DEX = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseDEX, null, null);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			DEX += BalanceLoad.DEX[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		return DEX;
@@ -131,7 +131,7 @@ public class CharStat
 	 */
 	public final int getCON()
 	{
-		int CON = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseWIT, null, null);
+		int CON = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseCON, null, null);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			CON += BalanceLoad.CON[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		return CON;
@@ -142,7 +142,7 @@ public class CharStat
 	 */
 	public int getINT()
 	{
-		int INT = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseWIT, null, null);
+		int INT = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseINT, null, null);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			INT += BalanceLoad.INT[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		return INT;
@@ -178,9 +178,7 @@ public class CharStat
 		int criticalHit = (int) (calcStat(Stats.CRITICAL_RATE, _activeChar.getTemplate().baseCritRate, target, skill) * 10.0 + 0.5);
 		criticalHit /= 10;
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
-		{
 			criticalHit += BalanceLoad.Critical[((L2PcInstance) _activeChar).getClassId().getId() - 88];
-		}
 		// Set a cap of Critical Hit at 500
 		if (criticalHit > Config.MAX_PCRIT_RATE)
 			criticalHit = Config.MAX_PCRIT_RATE;
@@ -198,7 +196,7 @@ public class CharStat
 			mrate += BalanceLoad.MagicCritical[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		if (mrate > Config.MAX_MCRIT_RATE)
 			mrate = Config.MAX_MCRIT_RATE;
-		return (int) mrate;
+		return mrate;
 	}
 	
 	/**
