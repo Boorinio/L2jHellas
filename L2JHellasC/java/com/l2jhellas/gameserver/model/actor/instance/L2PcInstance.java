@@ -13040,7 +13040,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		if (!(Config.DEATH_PENALTY_CHANCE == 0))
 		{
-			if (Rnd.get(100) <= Config.DEATH_PENALTY_CHANCE && !(killer instanceof L2PcInstance) && !(this.isGM()) && !(this.getCharmOfLuck() && (killer instanceof L2GrandBossInstance || killer instanceof L2RaidBossInstance)))
+			if (Rnd.get(100) <= Config.DEATH_PENALTY_CHANCE && !(killer instanceof L2PcInstance) && !(isGM()) && !(getCharmOfLuck() && (killer instanceof L2GrandBossInstance || killer instanceof L2RaidBossInstance)))
 			{
 				increaseDeathPenaltyBuffLevel();
 			}
@@ -13654,7 +13654,7 @@ public final class L2PcInstance extends L2Playable
 	
 	public void updateTitle()
 	{
-		this.setTitle(Config.PVP_TITLE_PREFIX + getPvpKills() +" | "+ Config.PK_TITLE_PREFIX + getPkKills() + " ");
+		setTitle(Config.PVP_TITLE_PREFIX + getPvpKills() +" | "+ Config.PK_TITLE_PREFIX + getPkKills() + " ");
 	}
 	
 	private class PunishTask implements Runnable
@@ -14009,9 +14009,9 @@ public final class L2PcInstance extends L2Playable
             final int[] getPosE = RandomSpawnE[Rnd.get(RandomSpawnE.length)];
             final int[] getPosG = RandomSpawnG[Rnd.get(RandomSpawnG.length)];
            
-            if(this.isevil())
+            if(isevil())
                 return getPosE;
-            else if(this.isgood())
+            else if(isgood())
                     return getPosG;     
             
             return null;
@@ -14138,7 +14138,7 @@ public final class L2PcInstance extends L2Playable
 			stopSkillEffects(427);
 			updateEffectIcons();
 		}
-		if (this.getAllEffects() != null)
+		if (getAllEffects() != null)
 		{
 			for (L2Effect e : getAllEffects())
 			{
@@ -14209,7 +14209,7 @@ public final class L2PcInstance extends L2Playable
 				if (clan.getHasCastle() > 0)
 				{
 					Castle castle = CastleManager.getInstance().getCastleById(clan.getHasCastle());
-					if ((castle != null) && (this.getObjectId() == clan.getLeaderId()))
+					if ((castle != null) && (getObjectId() == clan.getLeaderId()))
 					{
 						Announcements.getInstance().announceToAll("Lord " + getName() + " ruler of " + castle.getName() + " castle is now online!");
 					}
@@ -14334,7 +14334,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		if (Config.ALLOW_REMOTE_CLASS_MASTER)
 		{
-			ClassLevel lvlnow = PlayerClass.values()[this.getClassId().getId()].getLevel();
+			ClassLevel lvlnow = PlayerClass.values()[getClassId().getId()].getLevel();
 			if (getLevel() >= 20 && lvlnow == ClassLevel.First)
 				L2ClassMasterInstance.ClassMaster.onAction(this);
 			else if (getLevel() >= 40 && lvlnow == ClassLevel.Second)
@@ -14393,14 +14393,14 @@ public final class L2PcInstance extends L2Playable
 				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
 				teleToLocation(this.getRandomSpawn()[0], this.getRandomSpawn()[1], this.getRandomSpawn()[2]);
                 sendMessage("You have been teleported Back to your Faction Base.");
-                sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
+                sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
 			}
 			if (isgood())
 			{
 				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
-				teleToLocation(this.getRandomSpawn()[0], this.getRandomSpawn()[1], this.getRandomSpawn()[2]);
+				teleToLocation(getRandomSpawn()[0], getRandomSpawn()[1], getRandomSpawn()[2]);
 				sendMessage("You have been teleported Back to your Faction Base.");
-				sendMessage("Welcome " + this.getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
+				sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
 			}
 			broadcastUserInfo();
 		}
@@ -14408,7 +14408,7 @@ public final class L2PcInstance extends L2Playable
 		if (Config.MOD_ALLOW_WEDDING)
 		{
 			engage();
-			notifyPartner(this.getPartnerId());
+			notifyPartner(getPartnerId());
 		}
 
 		// Expand Skill
@@ -14457,7 +14457,7 @@ public final class L2PcInstance extends L2Playable
 			}
 			// Add message at connection if clanHall not paid.
 			// Possibly this is custom...
-			ClanHall clanHall = ClanHallManager.getInstance().getClanHallByOwner(this.getClan());
+			ClanHall clanHall = ClanHallManager.getInstance().getClanHallByOwner(getClan());
 			if (clanHall != null)
 				if (!clanHall.getPaid())
 					sendPacket(SystemMessageId.PAYMENT_FOR_YOUR_CLAN_HALL_HAS_NOT_BEEN_MADE_PLEASE_MAKE_PAYMENT_TO_YOUR_CLAN_WAREHOUSE_BY_S1_TOMORROW);
@@ -14465,7 +14465,7 @@ public final class L2PcInstance extends L2Playable
 			sendPacket(new PledgeStatusChanged(getClan()));
 		}
 
-		if (!this.isGM() && this.getSiegeState() < 2 && this.isInsideZone(L2Character.ZONE_SIEGE))
+		if (!isGM() && getSiegeState() < 2 && isInsideZone(L2Character.ZONE_SIEGE))
 		{
 			// Attacker or spectator logging in to a siege zone. Actually should
 			// be checked for inside castle only?
@@ -14549,7 +14549,7 @@ public final class L2PcInstance extends L2Playable
 				if (item.getItem() instanceof L2Weapon)
 				{
 					// charge Soulshot/Spiritshot like L2OFF
-					this.rechargeAutoSoulShot(true, true, false);
+					rechargeAutoSoulShot(true, true, false);
 					item.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 					item.setChargedSpiritshot(L2ItemInstance.CHARGED_NONE);
 					CheckIfWeaponIsAllowed();
@@ -14957,10 +14957,10 @@ public final class L2PcInstance extends L2Playable
 	 */
 	private void notifyPartner(int partnerId)
 	{
-		if (this.getPartnerId() != 0)
+		if (getPartnerId() != 0)
 		{
 			L2PcInstance partner;
-			partner = (L2PcInstance) L2World.findObject(this.getPartnerId());
+			partner = (L2PcInstance) L2World.findObject(getPartnerId());
 
 			if (partner != null)
 				partner.sendMessage("Your Partner has logged in.");
@@ -15087,7 +15087,7 @@ public final class L2PcInstance extends L2Playable
 	
 	private void loadTutorial()
 	{
-		QuestState qs = this.getQuestState("255_Tutorial");
+		QuestState qs = getQuestState("255_Tutorial");
 		if (qs != null)
 			qs.getQuest().notifyEvent("UC", null, this);
 	}

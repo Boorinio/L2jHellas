@@ -597,8 +597,7 @@ public class CharStat
 	
 	public float getMovementSpeedMultiplier()
 	{
-		return getRunSpeed() * 1f / _activeChar.getTemplate().baseRunSpd;
-		//return getRunSpeed() / (float) _activeChar.getTemplate().baseRunSpd;
+		return getRunSpeed() / (float) _activeChar.getTemplate().baseRunSpd;
 	}
 	
 	/**
@@ -679,10 +678,10 @@ public class CharStat
 	/** Return the MReuse rate (base+modifier) of the L2Character. */
 	public final double getMReuseRate(L2Skill skill)
 	{
-		int MReuseRate = (int) calcStat(Stats.MAGIC_REUSE_RATE, _activeChar.getTemplate().baseMReuseRate, null, skill);
+		double MReuseRate = calcStat(Stats.MAGIC_REUSE_RATE, _activeChar.getTemplate().baseMReuseRate, null, skill);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			MReuseRate += BalanceLoad.MReuseRate[((L2PcInstance) _activeChar).getClassId().getId() - 88];
-		return MReuseRate;
+		return (double) MReuseRate;
 	}
 
 	/**
@@ -690,9 +689,9 @@ public class CharStat
 	 */
 	public final double getPReuseRate(L2Skill skill)
 	{
-		int PReuseRate = (int) calcStat(Stats.P_REUSE, _activeChar.getTemplate().baseMReuseRate, null, skill);
+		double PReuseRate = calcStat(Stats.P_REUSE, _activeChar.getTemplate().baseMReuseRate, null, skill);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			PReuseRate += BalanceLoad.PReuseRate[((L2PcInstance) _activeChar).getClassId().getId() - 88];
-		return PReuseRate;
+		return (double) PReuseRate;
 	}
 }

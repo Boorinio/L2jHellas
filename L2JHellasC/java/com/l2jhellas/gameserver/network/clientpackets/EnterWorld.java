@@ -12,12 +12,10 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Vector;
 
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.util.Base64;
 
 /**
  * Enter World Packet Handler
@@ -53,26 +51,6 @@ public class EnterWorld extends L2GameClientPacket
 		
 		activeChar.checks();
 		
-	}
-
-	/**
-	 * @param string
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	@SuppressWarnings("unused")
-	private String getText(String string)
-	{
-		try
-		{
-			String result = new String(Base64.decode(string), "UTF-8");
-			return result;
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			// huh, UTF-8 is not supported? :)
-			return null;
-		}
 	}
 
 	@Override
