@@ -18,6 +18,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.PlayableKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.PlayableStat;
 import com.l2jhellas.gameserver.model.actor.status.PlayableStatus;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 
 /**
@@ -66,6 +67,17 @@ public abstract class L2Playable extends L2Character
 		return (PlayableKnownList) super.getKnownList();
 	}
 
+	@Override
+	public void onActionShift(L2PcInstance player)
+	{
+		if (player.getTarget() != this)
+		{
+			player.setTarget(this);
+		}
+		else
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+	}
+	
 	@Override
 	public PlayableStat getStat()
 	{
@@ -269,7 +281,6 @@ public abstract class L2Playable extends L2Character
 	{
 		_donator = value;
 	}
-
 	/**
 	 * Return True if the L2PlayableInstance is a Donator.<BR>
 	 * <BR>

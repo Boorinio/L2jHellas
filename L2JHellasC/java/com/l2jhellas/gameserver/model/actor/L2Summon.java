@@ -36,7 +36,6 @@ import com.l2jhellas.gameserver.model.actor.stat.SummonStat;
 import com.l2jhellas.gameserver.model.actor.status.SummonStatus;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.ExPartyPetWindowUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.PetDelete;
@@ -376,7 +375,7 @@ public abstract class L2Summon extends L2Playable
 		L2Party party = this.getOwner().getParty();
 		if (party != null)
 		{
-			party.broadcastToPartyMembers(this.getOwner(), new ExPartyPetWindowUpdate(this));
+			party.broadcastToPartyMembers(this.getOwner(),new PetStatusUpdate(this));
 		}
 		updateEffectIcons(true);
 	}
