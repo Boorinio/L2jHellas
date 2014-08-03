@@ -250,6 +250,7 @@ public class LoginServerThread extends Thread
 							_serverName = aresp.getServerName();
 							Config.saveHexid(_serverID, hexToString(_hexID));
 							_log.log(Level.INFO, getClass().getSimpleName() + ": Connected on login as Server " + _serverID + " : " + _serverName);
+							Gui.serverStatus.setText("Server Status: On");
 							ServerStatus st = new ServerStatus();
 							if (Config.SERVER_LIST_BRACKET)
 								st.addAttribute(ServerStatus.SERVER_LIST_SQUARE_BRACKET, ServerStatus.ON);

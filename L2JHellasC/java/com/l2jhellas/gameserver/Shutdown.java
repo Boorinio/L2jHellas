@@ -61,10 +61,7 @@ public class Shutdown extends Thread
 	public static final int ABORT = 3;
 	private static final String[] MODE_TEXT =
 	{
-		"SIGTERM",
-		"shutting down",
-		"restarting",
-		"aborting"
+	"SIGTERM", "shutting down", "restarting", "aborting"
 	};
 	
 	public void autoRestart(int time)
@@ -75,7 +72,7 @@ public class Shutdown extends Thread
 		_instance.setMode(GM_RESTART);
 		System.exit(2);
 	}
-
+	
 	/**
 	 * This function starts a shutdown countdown from Telnet
 	 * (Copied from function startShutdown())
@@ -92,7 +89,7 @@ public class Shutdown extends Thread
 		Announcements _an = Announcements.getInstance();
 		_log.log(Level.WARNING, getClass().getSimpleName() + ": IP: " + IP + " issued shutdown command. " + MODE_TEXT[_shutdownMode] + " in " + seconds + " seconds!");
 		// _an.announceToAll("Server is " + _modeText[shutdownMode] + " in "+seconds+ " seconds!");
-
+		
 		if (restart)
 		{
 			_shutdownMode = GM_RESTART;
@@ -101,7 +98,7 @@ public class Shutdown extends Thread
 		{
 			_shutdownMode = GM_SHUTDOWN;
 		}
-
+		
 		if (_shutdownMode > 0)
 		{
 			_an.announceToAll("Attention players!");
@@ -112,7 +109,7 @@ public class Shutdown extends Thread
 				_an.announceToAll("during server " + MODE_TEXT[_shutdownMode] + " procedure.");
 			}
 		}
-
+		
 		if (_counterInstance != null)
 		{
 			_counterInstance._abort();
@@ -120,10 +117,10 @@ public class Shutdown extends Thread
 		_counterInstance = new Shutdown(seconds, restart);
 		_counterInstance.start();
 	}
-
+	
 	/**
 	 * This function aborts a running countdown
-	 *
+	 * 
 	 * @param IP
 	 *        IP Which Issued shutdown command
 	 */
@@ -132,7 +129,7 @@ public class Shutdown extends Thread
 		Announcements _an = Announcements.getInstance();
 		_log.log(Level.WARNING, getClass().getSimpleName() + ": IP: " + IP + " issued shutdown ABORT. " + MODE_TEXT[_shutdownMode] + " has been stopped!");
 		_an.announceToAll("Server " + Config.ABORT_RR + " aborts " + MODE_TEXT[_shutdownMode] + " and continues normal operation!");
-
+		
 		if (_counterInstance != null)
 		{
 			_counterInstance._abort();
@@ -157,8 +154,11 @@ public class Shutdown extends Thread
 	
 	/**
 	 * This creates a countdown instance of Shutdown.
-	 * @param seconds how many seconds until shutdown
-	 * @param restart true is the server shall restart after shutdown
+	 * 
+	 * @param seconds
+	 *        how many seconds until shutdown
+	 * @param restart
+	 *        true is the server shall restart after shutdown
 	 */
 	public Shutdown(int seconds, boolean restart)
 	{
@@ -175,6 +175,7 @@ public class Shutdown extends Thread
 	
 	/**
 	 * get the shutdown-hook instance the shutdown-hook instance is created by the first call of this function, but it has to be registrered externaly.
+	 * 
 	 * @return instance of Shutdown, to be used as shutdown hook
 	 */
 	public static Shutdown getInstance()
@@ -183,8 +184,10 @@ public class Shutdown extends Thread
 	}
 	
 	/**
-	 * this function is called, when a new thread starts if this thread is the thread of getInstance, then this is the shutdown hook and we save all data and disconnect all clients. after this thread ends, the server will completely exit if this is not the thread of getInstance, then this is a
-	 * countdown thread. we start the countdown, and when we finished it, and it was not aborted, we tell the shutdown-hook why we call exit, and then call exit when the exit status of the server is 1, startServer.sh / startServer.bat will restart the server.
+	 * this function is called, when a new thread starts if this thread is the thread of getInstance, then this is the shutdown hook and we save all data and disconnect all
+	 * clients. after this thread ends, the server will completely exit if this is not the thread of getInstance, then this is a
+	 * countdown thread. we start the countdown, and when we finished it, and it was not aborted, we tell the shutdown-hook why we call exit, and then call exit when the exit
+	 * status of the server is 1, startServer.sh / startServer.bat will restart the server.
 	 */
 	@Override
 	public void run()
@@ -244,10 +247,10 @@ public class Shutdown extends Thread
 				SevenSignsFestival.getInstance().saveFestivalData(false);
 			
 			// Save Seven Signs data && status.
-
+			
 			// Save Seven Signs data before closing. :)
 			SevenSigns.getInstance().saveSevenSignsData(null, true);
-
+			
 			System.out.println("Seven Signs Festival, general data && status have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Four Sepulchers, stop any working task.
@@ -278,29 +281,28 @@ public class Shutdown extends Thread
 			CastleManorManager.getInstance().save();
 			System.out.println("Manor Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
-			
 			CursedWeaponsManager.getInstance().saveData();
 			System.out.println("Cursed weapons Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-
+			
 			// Save all global (non-player specific) Quest data that needs to
 			// persist after reboot
 			QuestManager.getInstance().save();
 			System.out.println("Quest data that needs to be saved has been saved (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-
+			
 			// Start Hitman Event.
 			if (Hitman.start())
 			{
 				Hitman.getInstance().save();
 				System.out.println("Hitman Lists saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
-
+			
 			// Rank PvP System by Masterio:
 			if (Config.RANK_PVP_SYSTEM_ENABLED)
 			{
 				PvpTable.getInstance().updateDB();
 				System.out.println("Rank System Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
-
+			
 			// Save items on ground before closing
 			if (Config.SAVE_DROPPED_ITEM)
 			{
@@ -309,7 +311,6 @@ public class Shutdown extends Thread
 				System.out.println("All items on ground saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			}
 			System.out.println("Data saved.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-			
 			
 			try
 			{
@@ -355,12 +356,12 @@ public class Shutdown extends Thread
 					SingletonHolder._instance.setMode(GM_SHUTDOWN);
 					SingletonHolder._instance.run();
 					System.exit(0);
-					break;
+				break;
 				case GM_RESTART:
 					SingletonHolder._instance.setMode(GM_RESTART);
 					SingletonHolder._instance.run();
 					System.exit(2);
-					break;
+				break;
 			}
 		}
 	}
@@ -368,10 +369,15 @@ public class Shutdown extends Thread
 	/**
 	 * This functions starts a shutdown countdown.<br>
 	 * A choice must be made between activeChar or ghostEntity.
-	 * @param activeChar GM who issued the shutdown command
-	 * @param ghostEntity the entity who issued the shutdown command
-	 * @param seconds seconds until shutdown
-	 * @param restart true if the server will restart after shutdown
+	 * 
+	 * @param activeChar
+	 *        GM who issued the shutdown command
+	 * @param ghostEntity
+	 *        the entity who issued the shutdown command
+	 * @param seconds
+	 *        seconds until shutdown
+	 * @param restart
+	 *        true if the server will restart after shutdown
 	 */
 	public void startShutdown(L2PcInstance activeChar, String ghostEntity, int seconds, boolean restart)
 	{
@@ -405,7 +411,7 @@ public class Shutdown extends Thread
 				case 3:
 				case 2:
 				case 1:
-					break;
+				break;
 				default:
 					SendServerQuit(seconds);
 			}
@@ -421,13 +427,18 @@ public class Shutdown extends Thread
 	
 	/**
 	 * This function aborts a running countdown
-	 * @param activeChar GM who issued the abort command
+	 * 
+	 * @param activeChar
+	 *        GM who issued the abort command
 	 */
 	public void abort(L2PcInstance activeChar)
 	{
 		if (_counterInstance != null)
 		{
-			_log.warning("GM: " + activeChar.getName() + " (" + activeChar.getObjectId() + ") issued shutdown abort, " + MODE_TEXT[_shutdownMode] + " has been stopped.");
+			if (activeChar != null)
+				_log.warning("GM: " + activeChar.getName() + " (" + activeChar.getObjectId() + ") issued shutdown abort, " + MODE_TEXT[_shutdownMode] + " has been stopped.");
+			else
+				_log.warning("ControlPanel issued shutdown abort, " + MODE_TEXT[_shutdownMode] + " has been stopped.");
 			_counterInstance._abort();
 			
 			Announcements.getInstance().announceToAll("Server aborts " + MODE_TEXT[_shutdownMode] + " and continues normal operation.");
@@ -436,7 +447,9 @@ public class Shutdown extends Thread
 	
 	/**
 	 * set the shutdown mode
-	 * @param mode what mode shall be set
+	 * 
+	 * @param mode
+	 *        what mode shall be set
 	 */
 	private void setMode(int mode)
 	{
@@ -464,54 +477,54 @@ public class Shutdown extends Thread
 				{
 					case 540:
 						SendServerQuit(540);
-						break;
+					break;
 					case 480:
 						SendServerQuit(480);
-						break;
+					break;
 					case 420:
 						SendServerQuit(420);
-						break;
+					break;
 					case 360:
 						SendServerQuit(360);
-						break;
+					break;
 					case 300:
 						SendServerQuit(300);
-						break;
+					break;
 					case 240:
 						SendServerQuit(240);
-						break;
+					break;
 					case 180:
 						SendServerQuit(180);
-						break;
+					break;
 					case 120:
 						SendServerQuit(120);
-						break;
+					break;
 					case 60:
 						// avoids new players from logging in
 						LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_DOWN);
 						SendServerQuit(60);
-						break;
+					break;
 					case 30:
 						SendServerQuit(30);
-						break;
+					break;
 					case 10:
 						SendServerQuit(10);
-						break;
+					break;
 					case 5:
 						SendServerQuit(5);
-						break;
+					break;
 					case 4:
 						SendServerQuit(4);
-						break;
+					break;
 					case 3:
 						SendServerQuit(3);
-						break;
+					break;
 					case 2:
 						SendServerQuit(2);
-						break;
+					break;
 					case 1:
 						SendServerQuit(1);
-						break;
+					break;
 				}
 				
 				_secondsShut--;
@@ -543,24 +556,24 @@ public class Shutdown extends Thread
 	private static final class TimeCounter
 	{
 		private long _startTime;
-
+		
 		private TimeCounter()
 		{
 			restartCounter();
 		}
-
+		
 		private void restartCounter()
 		{
 			_startTime = System.currentTimeMillis();
 		}
-
+		
 		private long getEstimatedTimeAndRestartCounter()
 		{
 			final long toReturn = System.currentTimeMillis() - _startTime;
 			restartCounter();
 			return toReturn;
 		}
-
+		
 		private long getEstimatedTime()
 		{
 			return System.currentTimeMillis() - _startTime;

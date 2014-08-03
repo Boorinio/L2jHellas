@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
+import com.l2jhellas.gameserver.Gui;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -160,7 +161,7 @@ public class VoteRewardTopzone
 		}
 	}
 	
-	private static int getVotes()
+	public static int getVotes()
 	{
 		int votes = 0;
 		String line = null;
@@ -175,6 +176,7 @@ public class VoteRewardTopzone
 				if(line.contains("Votes:"))
 				{
 					votes = Integer.valueOf(line.split(">")[3].replace("</div", " "));
+					Gui.topzone.setText("TopZone Votes: " + votes);
 					return votes;
 				}
 		}

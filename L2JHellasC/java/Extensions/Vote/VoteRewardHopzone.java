@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
+import com.l2jhellas.gameserver.Gui;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -177,9 +178,9 @@ public class VoteRewardHopzone
 				if (line.contains("rank anonymous tooltip"))
 				{
 					votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
+					Gui.hopzone.setText("HopZone Votes: "+votes);
 					return votes;
 				}
-			
 			br.close();
 			isr.close();
 		}

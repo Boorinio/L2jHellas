@@ -464,6 +464,7 @@ public class GameServer
 		System.gc();
 
 		Util.printSection("Game Server Info");
+		Gui gui = new Gui();
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
 		_log.log(Level.INFO, getClass().getSimpleName() + ": IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
 		if (!IdFactory.getInstance().isInitialized())
