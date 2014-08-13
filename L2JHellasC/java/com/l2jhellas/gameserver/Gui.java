@@ -25,12 +25,12 @@ public class Gui extends JFrame
 	static JPanel panel2 = new JPanel();
 	static JPanel panel3 = new JPanel();
 	static JPanel panel4 = new JPanel();
-	static JTextField announceTa = new JTextField("Write a Text To Announce");
-	static JTextField pmPlayerName = new JTextField("PlayerName");
-	static JTextField pmPlayerMessage = new JTextField("Your Message");
-	static JTextField rewardName = new JTextField("PlayerName");
-	static JTextField id = new JTextField("RewardId");
-	static JTextField count = new JTextField("Count");
+	static JTextField announceTa = new JTextField("Write a Text To Announce",15);
+	static JTextField pmPlayerName = new JTextField("PlayerName",7);
+	static JTextField pmPlayerMessage = new JTextField("Your Message",8);
+	static JTextField rewardName = new JTextField("PlayerName",7);
+	static JTextField id = new JTextField("RewardId",5);
+	static JTextField count = new JTextField("Count",3);
 	static JLabel onlinePlayers = new JLabel("Online Players: ");
 	public static JLabel hopzone = new JLabel("HopZone Votes: ");
 	public static JLabel topzone = new JLabel("TopZone Votes: ");
@@ -44,7 +44,6 @@ public class Gui extends JFrame
 	static JButton abort = new JButton("Abort");
 	static JButton instaDown = new JButton("Instant Shutdown");
 	static JButton reward = new JButton("Reward");
-	
 	public static void main(String[] args)
 	{
 		new Gui();

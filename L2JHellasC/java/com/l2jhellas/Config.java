@@ -551,6 +551,7 @@ public final class Config
 	public static boolean RESTART_BY_TIME_OF_DAY;
 	public static int RESTART_SECONDS;
 	public static String[] RESTART_INTERVAL_BY_TIME_OF_DAY;
+	public static boolean ENABLE_GUI;
 	public static boolean LOGIN_SERVER_SCHEDULE_RESTART;
 	public static long LOGIN_SERVER_SCHEDULE_RESTART_TIME;
 	public static boolean ALLOW_PRIVATE_ANTI_BOT;
@@ -2180,6 +2181,7 @@ public final class Config
 			RESTART_BY_TIME_OF_DAY = Boolean.parseBoolean(autoSettings.getProperty("EnableRestartSystem", "false"));
 			RESTART_SECONDS = Integer.parseInt(autoSettings.getProperty("RestartSeconds", "360"));
 			RESTART_INTERVAL_BY_TIME_OF_DAY = (autoSettings.getProperty("RestartByTimeOfDay", "23:59").split(","));
+			ENABLE_GUI = Boolean.parseBoolean(autoSettings.getProperty("EnableGui", "True"));
 			LOGIN_SERVER_SCHEDULE_RESTART = Boolean.parseBoolean(autoSettings.getProperty("LoginRestartSchedule", "False"));
 			LOGIN_SERVER_SCHEDULE_RESTART_TIME = Long.parseLong(autoSettings.getProperty("LoginRestartTime", "24"));
 			ALLOW_SEQURITY_QUE = Boolean.valueOf(autoSettings.getProperty("AllowSecurityQuestion", "True"));

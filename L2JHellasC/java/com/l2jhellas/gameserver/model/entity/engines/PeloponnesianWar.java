@@ -100,6 +100,12 @@ public class PeloponnesianWar
 				
 			}
 		}
+		if(_participants.size()<2)
+		{
+			Announcements.getInstance().announceToAll("Event canceled due to low player count.");
+			cleanthemess();
+			return;
+		}
 		spawnProtectors();
 		teleportplayers();
 		Announcements.getInstance().announceToAll("Civil War round started!");
