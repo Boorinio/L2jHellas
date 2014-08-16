@@ -31,7 +31,12 @@ public class TradeStart extends L2GameServerPacket
 
 	@Override
 	protected final void writeImpl()
-	{// 0x2e TradeStart d h (h dddhh dhhh)
+	{
+		
+		if (_activeChar.getActiveEnchantItem() != null || _activeChar.getActiveWarehouse()!=null || _activeChar.getActiveTradeList().getPartner().getActiveEnchantItem() != null || _activeChar.getActiveTradeList().getPartner().getActiveWarehouse()!=null)
+			return;
+		
+		// 0x2e TradeStart d h (h dddhh dhhh)
 		if (_activeChar.getActiveTradeList() == null || _activeChar.getActiveTradeList().getPartner() == null)
 			return;
 
