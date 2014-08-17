@@ -44,6 +44,10 @@ public final class DlgAnswer extends L2GameClientPacket
 	public void runImpl()
 	{
 		final L2PcInstance player = getClient().getActiveChar();
+		
+		if(player==null)
+			return;
+		
 		if (Config.DEBUG)
 			_log.fine(getType() + ": Answer acepted. Message ID " + _messageId + ", asnwer " + _answer + ", unknown field " + _unk);
 

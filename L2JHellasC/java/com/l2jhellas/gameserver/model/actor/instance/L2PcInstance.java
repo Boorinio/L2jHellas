@@ -13804,8 +13804,6 @@ public final class L2PcInstance extends L2Playable
 	
 	public void setRaidAnswear(int answer)
 	{
-		if (this == null)
-			return;
 		if (answer == 1)
 		{
 			if (L2EventChecks.checkPlayer(this, eventType, eventPointsRequired, eventMinPlayers, eventParticipatingPlayers))

@@ -155,6 +155,7 @@ public class GameServer
 	private final LoginServerThread _loginThread;
 	private static Status _statusServer;
 	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
+	public Gui gui;
 
 
 	public SelectorThread<L2GameClient> getSelectorThread()
@@ -464,7 +465,6 @@ public class GameServer
 		System.gc();
 
 		Util.printSection("Game Server Info");
-		Gui gui;
 		if (Config.ENABLE_GUI)
 			gui = new Gui();
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
