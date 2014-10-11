@@ -421,7 +421,7 @@ public abstract class AbstractOlympiadGame
 	
 	protected abstract void buffAndHealPlayers();
 	
-	protected abstract boolean portPlayersToArena(int[] spawns);
+	protected abstract boolean portPlayersToArena(Location location);
 	
 	protected abstract void cleanEffects();
 	

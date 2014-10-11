@@ -4579,46 +4579,12 @@ public final class L2PcInstance extends L2Playable
 						Siege siege = SiegeManager.getInstance().getSiege(player);
 						if ((siege != null && siege.getIsInProgress()))
 						{
-							if (player.getLevel() > 20 && ((L2Character) player.getTarget()).getLevel() < 20)
+							if (player.getLevel() - ((L2Character) player.getTarget()).getLevel() > 20 || ((L2Character) player.getTarget()).getLevel() - player.getLevel() > 20)
 							{
 								player.sendMessage("You can only hit players within your grade.");
 								player.sendPacket(ActionFailed.STATIC_PACKET);
 							}
-							if (player.getLevel() > 40 && ((L2Character) player.getTarget()).getLevel() < 40)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							if (player.getLevel() > 61 && ((L2Character) player.getTarget()).getLevel() < 61)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							if (player.getLevel() > 76 && ((L2Character) player.getTarget()).getLevel() < 76)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							if (player.getLevel() < 20 && ((L2Character) player.getTarget()).getLevel() > 20)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							if (player.getLevel() < 40 && ((L2Character) player.getTarget()).getLevel() > 40)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							if (player.getLevel() < 61 && ((L2Character) player.getTarget()).getLevel() > 61)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							if (player.getLevel() < 76 && ((L2Character) player.getTarget()).getLevel() > 76)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
+							
 						}
 					}
 					if (Config.ALT_PLAYER_PROTECTION)
@@ -8911,8 +8877,6 @@ public final class L2PcInstance extends L2Playable
 			if (isInOlympiadMode() && isOlympiadStart() && ((L2PcInstance) attacker).getOlympiadGameId() == getOlympiadGameId())
 				return true;
 			if (isFakeDeath())
-				return false;
-			else
 				return false;
 		}
 		

@@ -358,7 +358,7 @@ public final class OlympiadGameTask implements Runnable
 			if (_game.checkDefaulted())
 				return false;
 			
-			if (!_game.portPlayersToArena(_zone.getCoordinates()))
+			if (!_game.portPlayersToArena(_zone.getCoordinates(_game._stadiumID)))
 				return false;
 
 			_game.removals();		

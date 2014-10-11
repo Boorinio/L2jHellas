@@ -14,48 +14,42 @@
  */
 package com.l2jhellas.gameserver.model.zone;
 
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public abstract class L2SpawnZone extends L2ZoneType
 {
-	private static int[] _coords = new int[3];
+	private static Location[] _coords = new Location [22];
 	
 	public static final void STADIUMSADD() 
 	{
-		addStadiums(-20814, -21189, -3030);
-		addStadiums(-120324, -225077, -3331);
-		addStadiums(-102495, -209023, -3331);
-		addStadiums(-120156, -207378, -3331);
-		addStadiums(-87628, -225021, -3331);
-		addStadiums(-81705, -213209, -3331);
-		addStadiums(-87593, -207339, -3331);
-		addStadiums(-93709, -218304, -3331);
-		addStadiums(-77157, -218608, -3331);
-		addStadiums(-69682, -209027, -3331);
-		addStadiums(-76887, -201256, -3331);
-		addStadiums(-109985, -218701, -3331);
-		addStadiums(-126367, -218228, -3331);
-		addStadiums(-109629, -201292, -3331);
-		addStadiums(-87523, -240169, -3331);
-		addStadiums(-81748, -245950, -3331);
-		addStadiums(-77123, -251473, -3331);
-		addStadiums(-69778, -241801, -3331);
-		addStadiums(-76754, -234014, -3331);
-		addStadiums(-93742, -251032, -3331);
-		addStadiums(-87466, -257752, -3331);
-		addStadiums(-114413, -213241, -3331);
-	}
-		
-	public static void addStadiums(int x, int y, int z)
-	{
-		_coords[0] = x;
-		_coords[1] = y;
-		_coords[2] = z;
+		_coords[0] = new Location(-20814, -21189, -3030);
+		_coords[1] = new Location(-120324, -225077, -3331);
+		_coords[2] = new Location(-102495, -209023, -3331);
+		_coords[3] = new Location(-120156, -207378, -3331);
+		_coords[4] = new Location(-87628, -225021, -3331);
+		_coords[5] = new Location(-81705, -213209, -3331);
+		_coords[6] = new Location(-87593, -207339, -3331);
+		_coords[7] = new Location(-93709, -218304, -3331);
+		_coords[8] = new Location(-77157, -218608, -3331);
+		_coords[9] = new Location(-69682, -209027, -3331);
+		_coords[10] = new Location(-76887, -201256, -3331);
+		_coords[11] = new Location(-109985, -218701, -3331);
+		_coords[12] = new Location(-126367, -218228, -3331);
+		_coords[13] = new Location(-109629, -201292, -3331);
+		_coords[14] = new Location(-87523, -240169, -3331);
+		_coords[15] = new Location(-81748, -245950, -3331);
+		_coords[16] = new Location(-77123, -251473, -3331);
+		_coords[17] = new Location(-69778, -241801, -3331);
+		_coords[18] = new Location(-76754, -234014, -3331);
+		_coords[19] = new Location(-93742, -251032, -3331);
+		_coords[20] = new Location(-87466, -257752, -3331);
+		_coords[21] = new Location(-114413, -213241, -3331);
 	}
 	
-	public int[] getCoordinates()
+	public Location getCoordinates(int id)
 	{
-		return _coords;
+		return _coords[id];
 	}
 	
 	public L2SpawnZone(int id)
@@ -66,6 +60,6 @@ public abstract class L2SpawnZone extends L2ZoneType
 	public void addSpectator(int id, L2PcInstance spec)
 	{
 		if(spec!=null)
-		spec.enterOlympiadObserverMode(getCoordinates()[0], getCoordinates()[1], getCoordinates()[2], id);
+		spec.enterOlympiadObserverMode(getCoordinates(id).getX(), getCoordinates(id).getY(), getCoordinates(id).getZ(), id);
 	}
 }

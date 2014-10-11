@@ -471,7 +471,7 @@ public class Siege
 			getCastle().getZone().updateZoneStatusForCharactersInside();
 
 			// Siege Reward Manager
-			if (getCastle().getOwnerId() > 0)
+			if (getCastle().getOwnerId() > 0 && SiegeReward.ACTIVATED_SYSTEM)
 				SiegeReward.getInstance().notifySiegeEnded(ClanTable.getInstance().getClan(getCastle().getOwnerId()), getCastle().getName());
 
 			// Schedule a task to prepare auto siege end

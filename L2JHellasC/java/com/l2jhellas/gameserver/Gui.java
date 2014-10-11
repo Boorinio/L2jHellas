@@ -222,6 +222,7 @@ public class Gui extends JFrame
 		setSize(400, 200);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	
 		panel.add(onlinePlayers);
 		panel.add(hopzone);
 		panel.add(topzone);

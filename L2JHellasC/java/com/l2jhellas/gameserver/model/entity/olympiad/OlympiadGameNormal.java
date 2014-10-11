@@ -90,12 +90,12 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	}
 	
 	@Override
-	protected final boolean portPlayersToArena(int[] spawns)
+	protected final boolean portPlayersToArena(Location location)
 	{
 		boolean result = true;
 
-		Location loc1 = new Location(spawns[0] + 900, spawns[1], spawns[2]);
-		Location loc2 = new Location(spawns[0] - 900, spawns[1], spawns[2]);
+		Location loc1 = new Location(location.getX() + 900, location.getY(), location.getZ());
+		Location loc2 = new Location(location.getX() - 900, location.getY(), location.getZ());
 
 		try
 		{

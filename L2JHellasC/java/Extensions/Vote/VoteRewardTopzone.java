@@ -175,7 +175,7 @@ public class VoteRewardTopzone
 			while ((line = br.readLine()) != null)
 				if(line.contains("Votes:"))
 				{
-					votes = Integer.valueOf(line.split(">")[3].replace("</div", " "));
+					votes = Integer.valueOf(line.split(">")[3].replace("</div", " ").trim());
 					Gui.topzone.setText("TopZone Votes: " + votes);
 					return votes;
 				}

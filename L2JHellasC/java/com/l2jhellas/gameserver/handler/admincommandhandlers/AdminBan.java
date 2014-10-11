@@ -191,7 +191,9 @@ public class AdminBan implements IAdminCommandHandler
 			if (targetPlayer != null)
 			{
 				targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.JAIL, duration);
+				
 				activeChar.sendMessage("Character " + targetPlayer.getName() + " jailed for " + (duration > 0 ? duration + " minutes." : "ever!"));
+				targetPlayer.setInJail(true, duration);
 				auditAction(command, activeChar, targetPlayer.getName());
 				
 				if (targetPlayer.getParty() != null)
@@ -213,6 +215,7 @@ public class AdminBan implements IAdminCommandHandler
 			else if (targetPlayer != null)
 			{
 				targetPlayer.setPunishLevel(L2PcInstance.PunishLevel.NONE, 0);
+				targetPlayer.setInJail(false);
 				activeChar.sendMessage("Character " + targetPlayer.getName() + " removed from jail");
 				auditAction(command, activeChar, targetPlayer.getName());
 			}
