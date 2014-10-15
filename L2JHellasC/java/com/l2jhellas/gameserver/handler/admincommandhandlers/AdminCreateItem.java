@@ -52,10 +52,14 @@ public class AdminCreateItem implements IAdminCommandHandler
 			{
 				String val = command.substring(17);
 				StringTokenizer st = new StringTokenizer(val);
-				L2PcInstance target = (L2PcInstance) activeChar.getTarget();
-				if(target == null)
+				L2PcInstance target;
+				if ((L2PcInstance) activeChar.getTarget() instanceof L2PcInstance && (L2PcInstance) activeChar.getTarget() != null)
+				{
+					target = (L2PcInstance) activeChar.getTarget();
+				}
+				else
 					target = activeChar;
-					
+				
 				if (st.countTokens() == 2)
 				{
 					String id = st.nextToken();

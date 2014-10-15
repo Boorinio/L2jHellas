@@ -301,15 +301,16 @@ public class Siege
 			getCastle().spawnDoor(); // Respawn door to castle
 			getCastle().getZone().updateZoneStatusForCharactersInside();
 			L2Clan clan = ClanTable.getInstance().getClan(getCastle().getOwnerId());
-			for (L2ClanMember member : clan.getMembers())
-			{
-				if (member != null)
+			if (clan != null)
+				for (L2ClanMember member : clan.getMembers())
 				{
-					L2PcInstance player = member.getPlayerInstance();
-					if (player != null && player.isNoble())
-						Hero.getInstance().setCastleTaken(player.getObjectId(), getCastle().getCastleId());
+					if (member != null)
+					{
+						L2PcInstance player = member.getPlayerInstance();
+						if (player != null && player.isNoble())
+							Hero.getInstance().setCastleTaken(player.getObjectId(), getCastle().getCastleId());
+					}
 				}
-			}
 		}
 	}
 

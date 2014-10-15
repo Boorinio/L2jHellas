@@ -446,6 +446,8 @@ public final class L2PcInstance extends L2Playable
 	private long _lastAccess;
 	private long _uptime;
 	
+	private boolean hasVotedTop,hasVotedHop;
+	
 	protected int _baseClass;
 	protected int _activeClass;
 	protected int _classIndex = 0;
@@ -14241,7 +14243,7 @@ public final class L2PcInstance extends L2Playable
  			ZodiacMain.showHtmlWindow(this);
 		sendSkillList();
 		sendPacket(new SkillCoolTime(this));
-		
+		loadVotes();
 		if (Config.SERVER_NEWS)
 		{
 			if (isGM())
@@ -15002,7 +15004,67 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 	}
+	private void loadVotes()
+	{
+		int flag=0;
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement("SELECT hasVotedTop FROM characters WHERE obj_Id=?");
+			statement.setInt(1, getObjectId());
+			ResultSet rset = statement.executeQuery();
 
+			while (rset.next())
+			{
+				flag = rset.getInt("hasVotedTop");
+			}
+			if (flag == 1)
+			{
+				setTop(true);
+			}
+			else
+			{
+				setTop(false);
+			}
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "VoteManager: could not select hasVotedHop from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
+		}
+		flag=0;
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement("SELECT hasVotedHop FROM characters WHERE obj_Id=?");
+			statement.setInt(1, getObjectId());
+
+			ResultSet rset = statement.executeQuery();
+
+			while (rset.next())
+			{
+				flag = rset.getInt("hasVotedHop");
+			}
+
+			if (flag == 1)
+			{
+				setHop(true);
+			}
+			else
+			{
+				setHop(false);
+			}
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "VoteManager: could not select hasVotedHop from characters " + e);
+			if (Config.DEVELOPER)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 	/**
 	 * @param activeChar
 	 */
@@ -15031,7 +15093,18 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 	}
-
+	public boolean hasVotedBoth()
+	{
+		return hasVotedHop && hasVotedTop;
+	}
+	public void setHop(boolean target)
+	{
+		hasVotedHop=target;
+	}
+	public void setTop(boolean target)
+	{
+		hasVotedTop=target;
+	}
 	private void setPledgeClass()
 	{
 		int pledgeClass = 0;

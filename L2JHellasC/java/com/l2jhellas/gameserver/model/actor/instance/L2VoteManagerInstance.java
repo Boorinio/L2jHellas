@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
@@ -50,39 +51,47 @@ public class L2VoteManagerInstance extends L2Npc
 		if (command.startsWith("votetopzone"))
 			VoteManager.topvote(player);
 
-		if (command.startsWith("rewards"))
+		if (command.startsWith("rewards") && player.hasVotedBoth())
 			showRewardsHtml(player);
 
-		if (command.startsWith("reward1"))
+		if (command.startsWith("reward1") && player.hasVotedBoth())
 		{
+			
+			player.sendMessage("Wise choise!");
+			VoteManager.setHasNotVotedHop(player);
+			VoteManager.setHasNotVotedTop(player);
 			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID1, Config.VOTE_REWARD_AMOUNT1, player, null);
+			player.sendPacket(new ItemList(player, true));
+			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
+		}
+		if (command.startsWith("reward2") && player.hasVotedBoth())
+		{
+			
 			player.sendMessage("Wise choise!");
 			VoteManager.setHasNotVotedHop(player);
 			VoteManager.setHasNotVotedTop(player);
-			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
-		}
-		if (command.startsWith("reward2"))
-		{
 			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID2, Config.VOTE_REWARD_AMOUNT2, player, null);
+			player.sendPacket(new ItemList(player, true));
+			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
+		}
+		if (command.startsWith("reward3") && player.hasVotedBoth())
+		{
+			
 			player.sendMessage("Wise choise!");
 			VoteManager.setHasNotVotedHop(player);
 			VoteManager.setHasNotVotedTop(player);
-			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
-		}
-		if (command.startsWith("reward3"))
-		{
 			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID3, Config.VOTE_REWARD_AMOUNT3, player, null);
-			player.sendMessage("Wise choise!");
-			VoteManager.setHasNotVotedHop(player);
-			VoteManager.setHasNotVotedTop(player);
+			player.sendPacket(new ItemList(player, true));
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
-		if (command.startsWith("reward4"))
+		if (command.startsWith("reward4") && player.hasVotedBoth())
 		{
-			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID4, Config.VOTE_REWARD_AMOUNT4, player, null);
+			
 			player.sendMessage("Wise choise!");
 			VoteManager.setHasNotVotedHop(player);
 			VoteManager.setHasNotVotedTop(player);
+			player.getInventory().addItem("reward", Config.VOTE_REWARD_ID4, Config.VOTE_REWARD_AMOUNT4, player, null);
+			player.sendPacket(new ItemList(player, true));
 			VoteManager.setTries(player, VoteManager.getTries(player) + 1);
 		}
 	}

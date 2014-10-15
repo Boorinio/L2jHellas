@@ -500,6 +500,7 @@ public class VoteManager
 
 	public static void setHasVotedHop(L2PcInstance activeChar)
 	{
+		activeChar.setHop(true);
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE obj_Id=?");
@@ -521,6 +522,7 @@ public class VoteManager
 
 	public static void setHasVotedTop(L2PcInstance activeChar)
 	{
+		activeChar.setTop(true);
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE obj_Id=?");
@@ -542,6 +544,7 @@ public class VoteManager
 
 	public static void setHasNotVotedHop(L2PcInstance activeChar)
 	{
+		activeChar.setHop(false);
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedHop=? WHERE obj_Id=?");
@@ -563,6 +566,7 @@ public class VoteManager
 
 	public static void setHasNotVotedTop(L2PcInstance activeChar)
 	{
+		activeChar.setTop(false);
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE characters SET hasVotedTop=? WHERE obj_Id=?");
