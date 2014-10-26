@@ -120,7 +120,7 @@ public class CharStat
 	 */
 	public final int getDEX()
 	{
-		int DEX = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseDEX, null, null);
+		int DEX = (int) calcStat(Stats.STAT_DEX, _activeChar.getTemplate().baseDEX, null, null);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			DEX += BalanceLoad.DEX[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		return DEX;
@@ -131,7 +131,7 @@ public class CharStat
 	 */
 	public final int getCON()
 	{
-		int CON = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseCON, null, null);
+		int CON = (int) calcStat(Stats.STAT_CON, _activeChar.getTemplate().baseCON, null, null);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			CON += BalanceLoad.CON[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		return CON;
@@ -142,7 +142,7 @@ public class CharStat
 	 */
 	public int getINT()
 	{
-		int INT = (int) calcStat(Stats.STAT_WIT, _activeChar.getTemplate().baseINT, null, null);
+		int INT = (int) calcStat(Stats.STAT_INT, _activeChar.getTemplate().baseINT, null, null);
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			INT += BalanceLoad.INT[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		return INT;

@@ -607,13 +607,22 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					break;
 					case 0xba:
 						msg = new RequestHennaList();
-					break;
+						break;
 					case 0xbb:
 						msg = new RequestHennaItemInfo();
-					break;
+						break;
 					case 0xbc:
 						msg = new RequestHennaEquip();
-					break;
+						break;
+					case 0xbd:
+						msg = new RequestHennaRemoveList();
+						break;
+					case 0xbe:
+						msg = new RequestHennaItemRemoveInfo();
+						break;
+					case 0xbf:
+						msg = new RequestHennaRemove();
+						break;
 					case 0xc0:
 						// Clan Privileges
 						msg = new RequestPledgePower();

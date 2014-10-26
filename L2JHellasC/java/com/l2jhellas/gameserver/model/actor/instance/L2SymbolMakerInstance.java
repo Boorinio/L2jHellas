@@ -14,13 +14,11 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
-import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
-import com.l2jhellas.gameserver.network.serverpackets.ItemList;
+import com.l2jhellas.gameserver.network.serverpackets.HennaRemoveList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class L2SymbolMakerInstance extends L2NpcInstance
@@ -29,47 +27,23 @@ public class L2SymbolMakerInstance extends L2NpcInstance
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if (command.equals("Draw"))
-		{
-			L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(player.getClassId());
-			HennaEquipList hel = new HennaEquipList(player, henna);
-			player.sendPacket(hel);
-			player.sendPacket(new ItemList(player, false));
-		}
+			player.sendPacket(new HennaEquipList(player, HennaTreeTable.getInstance().getAvailableHenna(player.getClassId())));
 		else if (command.equals("RemoveList"))
 		{
-			showRemoveChat(player);
-		}
-		else if (command.startsWith("Remove "))
-		{
-			int slot = Integer.parseInt(command.substring(7));
-			player.removeHenna(slot);
+			boolean hasHennas = false;
+			for (int i = 1; i <= 3; i++)
+			{
+				if (player.getHenna(i) != null)
+					hasHennas = true;
+			}
+			
+			if (hasHennas)
+				player.sendPacket(new HennaRemoveList(player));
+			else
+				player.sendPacket(SystemMessageId.SYMBOL_NOT_FOUND);
 		}
 		else
-		{
 			super.onBypassFeedback(player, command);
-		}
-	}
-
-	private void showRemoveChat(L2PcInstance player)
-	{
-		TextBuilder html1 = new TextBuilder("<html><body>");
-		html1.append("Select symbol you would like to remove:<br><br>");
-		boolean hasHennas = false;
-
-		for (int i = 1; i <= 3; i++)
-		{
-			L2HennaInstance henna = player.getHenna(i);
-
-			if (henna != null)
-			{
-				hasHennas = true;
-				html1.append("<a action=\"bypass -h npc_%objectId%_Remove " + i + "\">" + henna.getName() + "</a><br>");
-			}
-		}
-		if (!hasHennas)
-			html1.append("You don't have any symbol to remove!");
-		html1.append("</body></html>");
-		insertObjectIdAndShowChatWindow(player, html1.toString());
 	}
 
 	public L2SymbolMakerInstance(int objectID, L2NpcTemplate template)

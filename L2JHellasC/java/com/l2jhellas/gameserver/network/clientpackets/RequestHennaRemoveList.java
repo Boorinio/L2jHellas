@@ -3,59 +3,48 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
-import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
+import com.l2jhellas.gameserver.network.serverpackets.HennaRemoveList;
 
-/**
- * RequestHennaList - 0xba
- * 
- * @author Tempy
- */
-public final class RequestHennaList extends L2GameClientPacket
+
+public final class RequestHennaRemoveList extends L2GameClientPacket
 {
-	private static final String _C__BA_RequestHennaList = "[C] ba RequestHennaList";
+	private static final String _C__0XBD_RequestHennaRemoveList = "[C] 0xbd RequestHennaRemoveList";
 
-	// This is just a trigger packet...
+	
 	@SuppressWarnings("unused")
 	private int _unknown;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_unknown = readD(); // ??
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
-		
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
-		final L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(activeChar.getClassId());
-		if (henna == null)
-			return;
-		
-		activeChar.sendPacket(new HennaEquipList(activeChar, henna));
+		activeChar.sendPacket(new HennaRemoveList(activeChar));
 	}
 
 	@Override
-	public String getType()
+	public String getType() 
 	{
-		return _C__BA_RequestHennaList;
+		return _C__0XBD_RequestHennaRemoveList;
 	}
 }
