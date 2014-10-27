@@ -4549,6 +4549,12 @@ public final class L2PcInstance extends L2Playable
 			// Send a Server->Client packet MyTargetSelected to the player
 			// The color to display in the select window is White
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
+			
+			StatusUpdate su = new StatusUpdate(this.getObjectId());
+			su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
+			su.addAttribute(StatusUpdate.MAX_HP, getMaxHp());
+			player.sendPacket(su);
+			
 			if (player != this)
 			{
 				player.sendPacket(new ValidateLocation(this));
@@ -9502,7 +9508,16 @@ public final class L2PcInstance extends L2Playable
 			abortCast();
 			return;
 		}
-		
+		if ((target instanceof L2GrandBossInstance) && ((L2GrandBossInstance) target).getNpcId() == 29022) 
+		{
+			if (Math.abs(this.getClientZ() - target.getZ()) > 200) 
+			{
+				sendPacket(SystemMessageId.CANT_SEE_TARGET);
+				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+				sendPacket(ActionFailed.STATIC_PACKET);
+				return;
+			}
+	    }
 		// GeoData Los Check here
 		if (skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
 		{
@@ -14487,6 +14502,15 @@ public final class L2PcInstance extends L2Playable
 			final int slot = getInventory().getSlotFromItem(item);
 			items = getInventory().unEquipItemInBodySlotAndRecord(slot);		
 			WeddingSKillCheck(item,false);
+			
+			if(item.getItemType().equals(L2WeaponType.BOW))
+			{
+				for(L2Skill skill : getAllSkills())
+				{
+					if(skill.getId()==313)
+						stopSkillEffects(skill.getId());	
+				}				
+			}
 		}
 		else
 		{
@@ -14509,7 +14533,6 @@ public final class L2PcInstance extends L2Playable
 				
 				// Consume mana - will start a task if required; returns if item is not a shadow item
 				item.decreaseMana(false);
-
 				if (item.getItem() instanceof L2Weapon)
 				{
 					// charge Soulshot/Spiritshot like L2OFF

@@ -94,17 +94,21 @@ public final class UseItem extends L2GameClientPacket
 		}
 		if (activeChar.getActiveTradeList() != null)
 		{
-			activeChar.cancelActiveTrade();
-		}
-		if (activeChar.getPrivateStoreType() != 0)
-		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+			activeChar.sendPacket(SystemMessageId.CANNOT_PICKUP_OR_USE_ITEM_WHILE_TRADING);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		if (activeChar.getActiveTradeList() != null)
+		if (activeChar.isInStoreMode())
 		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_PICKUP_OR_USE_ITEM_WHILE_TRADING);
+			activeChar.sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		if (activeChar.getPrivateStoreType() != 0)
+		{
+			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
 			return;
 		}
 		

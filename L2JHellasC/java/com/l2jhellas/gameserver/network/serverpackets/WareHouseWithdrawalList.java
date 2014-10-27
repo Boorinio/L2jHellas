@@ -48,6 +48,12 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 			_log.warning("error while sending withdraw request to: " + _activeChar.getName());
 			return;
 		}
+		if(_activeChar.getActiveTradeList()!=null || _activeChar.getActiveEnchantItem() != null)
+		{
+			_activeChar.sendMessage("You can't use wh while active trade or enchant.");
+			_activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		_items = _activeChar.getActiveWarehouse().getItems();
 		
 		if (Config.DEBUG)

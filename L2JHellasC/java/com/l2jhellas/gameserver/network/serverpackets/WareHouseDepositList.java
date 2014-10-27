@@ -39,6 +39,13 @@ public class WareHouseDepositList extends L2GameServerPacket
 		_playerAdena = _activeChar.getAdena();
 		_items = new FastList<L2ItemInstance>();
 
+		if(_activeChar.getActiveTradeList()!=null || _activeChar.getActiveEnchantItem() != null)
+		{
+			_activeChar.sendMessage("You can't use wh while active trade or enchant.");
+			_activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		for (L2ItemInstance temp : _activeChar.getInventory().getAvailableItems(true))
 			_items.add(temp);
 

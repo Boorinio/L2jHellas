@@ -77,6 +77,12 @@ public final class RequestPackageSend extends L2GameClientPacket
 		if(player.getObjectId() == _objectID)
 			return;
 		
+		if(player.getActiveTradeList()!=null || player.getActiveEnchantItem() != null)
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		if(player.getAccountChars().size() < 1)
 		{
 			return;

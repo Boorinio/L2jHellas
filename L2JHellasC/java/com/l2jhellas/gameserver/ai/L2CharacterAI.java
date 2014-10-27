@@ -697,8 +697,8 @@ public class L2CharacterAI extends AbstractAI
 		// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
 		clientStopMoving(blocked_at_pos);
 		
-		// If the Intention was AI_INTENTION_MOVE_TO, tet the Intention to AI_INTENTION_ACTIVE
-		if (getIntention() == AI_INTENTION_MOVE_TO)
+		// If the Intention was AI_INTENTION_MOVE_TO, let the Intention to AI_INTENTION_ACTIVE
+		if ((getIntention() == AI_INTENTION_MOVE_TO) || (getIntention() == AI_INTENTION_CAST))
 			setIntention(AI_INTENTION_ACTIVE);
 		
 		// Launch actions corresponding to the Event Think

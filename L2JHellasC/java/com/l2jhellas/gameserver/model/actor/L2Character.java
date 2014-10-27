@@ -63,6 +63,7 @@ import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.SkillDat;
@@ -729,6 +730,17 @@ public abstract class L2Character extends L2Object
 			
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
+		
+		if ((target instanceof L2GrandBossInstance)  && ((L2GrandBossInstance) target).getNpcId() == 29022) 
+		{
+			 if (Math.abs(this.getClientZ() - target.getZ()) > 200)
+			 {
+				  sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANT_SEE_TARGET));
+				  getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+				  sendPacket(ActionFailed.STATIC_PACKET);
+				  return;
+			 }
 		}
 		
 		// GeoData Los Check here (or dz > 1000)
