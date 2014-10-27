@@ -12,13 +12,13 @@ REM you could experiment for example with:
 REM
 REM
 REM FOR LOW COMPUTERS
-REM java -Dfile.encoding=UTF-8 -Xms768m -Xmx768m -Xmn256m -Xmn256m -XX:PermSize=32m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
+REM java -Dfile.encoding=UTF-8 -Xms768m -Xmx768m -Xmn256m -Xmn256m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
 REM
 REM FOR MEDIUM COMPUTERS
-REM java -Dfile.encoding=UTF-8 -Xmx1536m -Xmn512m -Xmn512m -XX:PermSize=64m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
+REM java -Dfile.encoding=UTF-8 -Xmx1536m -Xmn512m -Xmn512m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
 REM
 REM FOR GOOD COMPUTERS
-REM java -Dfile.encoding=UTF-8 -Xmx2g -Xmn512m -Xmn512m -XX:PermSize=128m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
+REM java -Dfile.encoding=UTF-8 -Xmx2g -Xmn512m -Xmn512m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
 REM
 REM FOR SUPER COMPUTERS
 REM 1: java -server -Dfile.encoding=UTF-8 -Xmx2g -Xmn512m -Xmn512m -XX:PermSize=128m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
@@ -50,32 +50,23 @@ if ERRORLEVEL 2 goto restart
 if ERRORLEVEL 1 goto error
 goto end
 :tellrestart
-echo.
 echo Telnet server Restart ...
-echo.
 goto start
 :taskrestart
-echo.
 echo Auto Task Restart ...
-echo.
 goto start
 :restart
-echo.
 echo Admin Restart ...
-echo.
 goto start
 :taskdown
-echo .
 echo Game Server terminated (Auto task)
-echo .
+goto end
 :telldown
-echo .
 echo Game Server terminated (Telnet)
-echo .
+goto end
 :error
-echo.
 echo Game Server terminated abnormally
-echo.
+goto end
 :end
 echo.
 echo Game Server terminated

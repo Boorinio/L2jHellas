@@ -28,13 +28,7 @@ public class L2DatabaseFactory
 {
 	private static final Logger _log = Logger.getLogger(L2DatabaseFactory.class.getName());
 
-	public static enum ProviderType
-	{
-		MySql, MsSql
-	}
-
 	private static L2DatabaseFactory _instance;
-	private ProviderType _providerType;
 	private BoneCPDataSource _source;
 	private int database_partition_count = 3;
 	private int database_timeout = 0;
@@ -61,9 +55,8 @@ public class L2DatabaseFactory
 				Config.DATABASE_MAX_CONNECTIONS = 50;
 				database_partition_count = 4;
 			}
-
 			_source = new BoneCPDataSource();
-
+			
 			_source.getConfig().setDefaultAutoCommit(true);
 			_source.getConfig().setPoolAvailabilityThreshold(10);
 			_source.getConfig().setMinConnectionsPerPartition(10);
@@ -87,36 +80,13 @@ public class L2DatabaseFactory
 			_source.setPassword(Config.DATABASE_PASSWORD);
 
 			_source.getConnection().close();
-
-			if (Config.DATABASE_DRIVER.toLowerCase().contains("microsoft"))
-				_providerType = ProviderType.MsSql;
-			else
-				_providerType = ProviderType.MySql;
+			
 			_log.log(Level.INFO, "Database loaded.");
 		}
 		catch (Exception e)
 		{
 			throw new Error("L2DatabaseFactory: Failed to init database connections: " + e, e);
 		}
-	}
-
-	public final String prepQuerySelect(String[] fields, String tableName, String whereClause, boolean returnOnlyTopRecord)
-	{
-		String msSqlTop1 = "";
-		String mySqlTop1 = "";
-		if (returnOnlyTopRecord)
-		{
-			if (getProviderType() == ProviderType.MsSql)
-			{
-				msSqlTop1 = " Top 1 ";
-			}
-			if (getProviderType() == ProviderType.MySql)
-			{
-				mySqlTop1 = " Limit 1 ";
-			}
-		}
-		String query = "SELECT " + msSqlTop1 + safetyString(fields) + " FROM " + tableName + " WHERE " + whereClause + mySqlTop1;
-		return query;
 	}
 
 	public void shutdown()
@@ -137,47 +107,6 @@ public class L2DatabaseFactory
 		{
 			_log.log(Level.INFO, "", e);
 		}
-	}
-
-	public final String safetyString(String... whatToCheck)
-	{
-		// NOTE: Use brace as a safety precaution just in case name is a reserved word
-		final char braceLeft;
-		final char braceRight;
-
-		if (getProviderType() == ProviderType.MsSql)
-		{
-			braceLeft = '[';
-			braceRight = ']';
-		}
-		else
-		{
-			braceLeft = '`';
-			braceRight = '`';
-		}
-
-		int length = 0;
-
-		for (String word : whatToCheck)
-		{
-			length += word.length() + 4;
-		}
-
-		final StringBuilder sbResult = new StringBuilder(length);
-
-		for (String word : whatToCheck)
-		{
-			if (sbResult.length() > 0)
-			{
-				sbResult.append(", ");
-			}
-
-			sbResult.append(braceLeft);
-			sbResult.append(word);
-			sbResult.append(braceRight);
-		}
-
-		return sbResult.toString();
 	}
 
 	public static L2DatabaseFactory getInstance()
@@ -243,9 +172,18 @@ public class L2DatabaseFactory
 	{
 		return _source.getTotalLeased();
 	}
-
-	public final ProviderType getProviderType()
+	
+	/**
+	 * mono gia to territory na ginei delete
+	 * @param fields
+	 * @param tableName
+	 * @param whereClause
+	 * @return
+	 */
+	public final String prepQuerySelect(String[] fields, String tableName, String whereClause)
 	{
-		return _providerType;
+		String mySqlTop1 = " Limit 1 ";
+		String query = "SELECT " + fields + " FROM " + tableName + " WHERE " + whereClause + mySqlTop1;
+		return query;
 	}
 }

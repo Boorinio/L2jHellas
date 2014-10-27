@@ -14,14 +14,18 @@
  */
 package com.l2jhellas.gameserver;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Territory;
-import com.l2jhellas.util.database.SqlUtils;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Territory
 {
@@ -53,7 +57,7 @@ public class Territory
 	{
 		_territory = new FastMap<Integer, L2Territory>();
 
-		Integer[][] point = SqlUtils.get2DIntArray(new String[]
+		Integer[][] point = get2DIntArray(new String[]
 		{
 		"loc_id", "loc_x", "loc_y", "loc_zmin", "loc_zmax", "proc"
 		}, "locations", "loc_id > 0");
@@ -74,5 +78,47 @@ public class Territory
 			}
 			_territory.get(terr).add(row[1], row[2], row[3], row[4], row[5]);
 		}
+	}
+	
+	private static Integer[][] get2DIntArray(String[] resultFields, String usedTables, String whereClause)
+	{
+		long start = System.currentTimeMillis();
+		String query = "";
+		Integer res[][] = null;
+		try
+		{
+			query = L2DatabaseFactory.getInstance().prepQuerySelect(resultFields, usedTables, whereClause);
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement ps = con.prepareStatement(query);
+					ResultSet rs = ps.executeQuery())
+			{
+				int rows = 0;
+				while (rs.next())
+				{
+					rows++;
+				}
+
+				res = new Integer[rows - 1][resultFields.length];
+
+				rs.first();
+
+				int row = 0;
+				while (rs.next())
+				{
+					for (int i = 0; i < resultFields.length; i++)
+					{
+						res[row][i] = rs.getInt(i + 1);
+					}
+					row++;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "Error in query '" + query + "':", e);
+		}
+		if (Config.DEBUG)
+			_log.fine("Get all rows in query '" + query + "' in " + (System.currentTimeMillis() - start) + "ms");
+		return res;
 	}
 }

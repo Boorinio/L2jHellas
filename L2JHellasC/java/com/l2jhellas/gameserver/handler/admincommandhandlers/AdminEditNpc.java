@@ -1164,10 +1164,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 			npcData.getDropData().clear();
 
-			PreparedStatement statement = con.prepareStatement("SELECT " + L2DatabaseFactory.getInstance().safetyString(new String[]
-			{
-			"mobId", "itemId", "min", "max", "category", "chance"
-			}) + " FROM droplist WHERE mobId=?");
+			PreparedStatement statement = con.prepareStatement("SELECT mobId,itemId,min,max,category,chance FROM droplist WHERE mobId=?");
 			statement.setInt(1, npcId);
 			ResultSet dropDataList = statement.executeQuery();
 
