@@ -5,4 +5,6 @@ USER_PREFERENCE=overrideGlobalPreferencestruedisableAllValidationfalseversion1.2
 eclipse.preferences.version=1
 override=true
 suspend=false
+vals/org.eclipse.php.ui.HTMLValidatorForPHP/global=FF01
+vals/org.eclipse.wst.html.core.HTMLValidator/global=FF01
 vf.version=3
