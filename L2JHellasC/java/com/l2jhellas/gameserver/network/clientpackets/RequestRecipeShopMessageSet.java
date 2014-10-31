@@ -14,7 +14,10 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.Util;
 
 public class RequestRecipeShopMessageSet extends L2GameClientPacket
 {
@@ -32,14 +35,16 @@ public class RequestRecipeShopMessageSet extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
+		
 		if (player == null)
 			return;
-		/*
-		 * if (player.getCreateList() == null)
-		 * {
-		 * player.setCreateList(new L2ManufactureList());
-		 * }
-		 */
+
+		if (_name != null && _name.length() > 29)
+		{
+			Util.handleIllegalPlayerAction(player, player.getName() + " tried to overflow recipe shop message", Config.DEFAULT_PUNISH);
+			return;
+		}
+		
 		if (player.getCreateList() != null)
 		{
 			player.getCreateList().setStoreName(_name);

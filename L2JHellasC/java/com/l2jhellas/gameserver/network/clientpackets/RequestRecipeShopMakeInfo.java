@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopItemInfo;
 
@@ -37,7 +38,13 @@ public final class RequestRecipeShopMakeInfo extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
-		player.sendPacket(new RecipeShopItemInfo(_playerObjectId, _recipeId));
+		
+		final L2PcInstance shop = L2World.getPlayer(player.getName());
+		
+		if (shop == null || _playerObjectId != shop.getObjectId() ||  shop.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_MANUFACTURE)
+			return;
+		
+		player.sendPacket(new RecipeShopItemInfo(shop.getObjectId(), _recipeId));
 	}
 
 	@Override
