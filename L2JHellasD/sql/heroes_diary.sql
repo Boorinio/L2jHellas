@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `heroes_diary`
 -- ----------------------------
-DROP TABLE IF EXISTS `heroes_diary`;
 
 CREATE TABLE IF NOT EXISTS `heroes_diary` (
   `char_id` int(10) unsigned NOT NULL,

@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `character_colors`
 -- ----------------------------
-DROP TABLE IF EXISTS `character_colors`;
 
 CREATE TABLE `character_colors` (
   `char_name` varchar(35) NOT NULL,

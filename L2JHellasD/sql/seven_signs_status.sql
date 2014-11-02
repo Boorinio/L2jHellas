@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `seven_signs_status`
 -- ----------------------------
-DROP TABLE IF EXISTS `seven_signs_status`;
 
 CREATE TABLE `seven_signs_status` (
   `id` int(3) NOT NULL DEFAULT '0',

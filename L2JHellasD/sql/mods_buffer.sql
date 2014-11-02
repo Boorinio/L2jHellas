@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `mods_buffer_skills`
 -- ----------------------------
-DROP TABLE IF EXISTS `mods_buffer_skills`;
 
 CREATE TABLE `mods_buffer_skills` (
   `id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -15,7 +14,6 @@ CREATE TABLE `mods_buffer_skills` (
 -- ----------------------------
 -- Table structure for `mods_buffer_schemes`
 -- ----------------------------
-DROP TABLE IF EXISTS `mods_buffer_schemes`;
 
 CREATE TABLE `mods_buffer_schemes` (
   `ownerId` int(10) unsigned NOT NULL DEFAULT '0',

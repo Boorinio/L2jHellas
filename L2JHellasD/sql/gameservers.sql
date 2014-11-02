@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `gameservers`
 -- ----------------------------
-DROP TABLE IF EXISTS `gameservers`;
 
 CREATE TABLE `gameservers` (
   `server_id` int(11) NOT NULL DEFAULT '0',

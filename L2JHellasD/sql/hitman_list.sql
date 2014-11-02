@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `hitman_list`
 -- ----------------------------
-DROP TABLE IF EXISTS `hitman_list`;
 
 CREATE TABLE `hitman_list` (
   `targetId` int(16) NOT NULL DEFAULT '0',

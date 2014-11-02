@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `seven_signs`
 -- ----------------------------
-DROP TABLE IF EXISTS `seven_signs`;
 
 CREATE TABLE `seven_signs` (
   `char_obj_id` int(11) NOT NULL DEFAULT '0',

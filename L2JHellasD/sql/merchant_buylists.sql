@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `merchant_buylists`
 -- ----------------------------
-DROP TABLE IF EXISTS `merchant_buylists`;
 
 CREATE TABLE `merchant_buylists` (
   `item_id` decimal(9,0) NOT NULL DEFAULT '0',

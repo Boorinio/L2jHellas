@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `four_sepulchers_spawnlist`
 -- ----------------------------
-DROP TABLE IF EXISTS `four_sepulchers_spawnlist`;
 
 CREATE TABLE `four_sepulchers_spawnlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

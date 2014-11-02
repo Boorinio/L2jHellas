@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `custom_npc`
 -- ----------------------------
-DROP TABLE IF EXISTS `custom_npc`;
 
 CREATE TABLE `custom_npc` (
   `id` decimal(11,0) NOT NULL DEFAULT '0',

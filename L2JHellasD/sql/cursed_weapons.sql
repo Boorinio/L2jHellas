@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `cursed_weapons`
 -- ---------------------------
-DROP TABLE IF EXISTS `cursed_weapons`;
 
 CREATE TABLE `cursed_weapons` (
   `itemId` int(11) NOT NULL DEFAULT '0',

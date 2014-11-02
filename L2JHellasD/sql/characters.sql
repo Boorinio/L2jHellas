@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `characters`
 -- ----------------------------
-DROP TABLE IF EXISTS `characters`;
 
 CREATE TABLE `characters` (
   `account_name` varchar(45) DEFAULT NULL,

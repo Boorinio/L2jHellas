@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `accounts`
 -- ----------------------------
-DROP TABLE IF EXISTS `accounts`;
 
 CREATE TABLE `accounts` (
   `login` varchar(45) NOT NULL DEFAULT '',

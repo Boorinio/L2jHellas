@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `raid_prizes`
 -- ----------------------------
-DROP TABLE IF EXISTS `raid_prizes`;
 
 CREATE TABLE `raid_prizes` (
   `prize_package_id` int(11) NOT NULL,

@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `clan_wars`
 -- ---------------------------
-DROP TABLE IF EXISTS `clan_wars`;
 
 CREATE TABLE `clan_wars` (
   `clan1` varchar(35) NOT NULL DEFAULT '',

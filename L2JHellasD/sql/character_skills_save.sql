@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `character_skills_save`
 -- ---------------------------
-DROP TABLE IF EXISTS `character_skills_save`;
 
 CREATE TABLE `character_skills_save` (
   `char_obj_id` int(11) NOT NULL DEFAULT '0',

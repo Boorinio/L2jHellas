@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `merchant_areas_list`
 -- ----------------------------
-DROP TABLE IF EXISTS `merchant_areas_list`;
 
 CREATE TABLE `merchant_areas_list` (
   `merchant_area_id` int(10) unsigned NOT NULL DEFAULT '0',

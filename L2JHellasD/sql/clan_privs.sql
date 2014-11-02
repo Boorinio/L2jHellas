@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `clan_privs`
 -- ---------------------------
-DROP TABLE IF EXISTS `clan_privs`;
 
 CREATE TABLE `clan_privs` (
   `clan_id` int(11) NOT NULL DEFAULT '0',

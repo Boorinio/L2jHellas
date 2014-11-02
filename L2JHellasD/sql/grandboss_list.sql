@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `grandboss_list`
 -- ----------------------------
-DROP TABLE IF EXISTS `grandboss_list`;
 
 CREATE TABLE `grandboss_list` (
   `player_id` decimal(11,0) NOT NULL,

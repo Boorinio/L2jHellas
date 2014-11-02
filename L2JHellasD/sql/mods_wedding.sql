@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `mods_couples`
 -- ----------------------------
-DROP TABLE IF EXISTS `mods_wedding`;
 
 CREATE TABLE `mods_wedding` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

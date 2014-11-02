@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `merchant_shopids`
 -- ----------------------------
-DROP TABLE IF EXISTS `merchant_shopids`;
 
 CREATE TABLE `merchant_shopids` (
   `shop_id` decimal(9,0) NOT NULL DEFAULT '0',

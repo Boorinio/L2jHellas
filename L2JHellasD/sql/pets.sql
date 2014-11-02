@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `pets`
 -- ----------------------------
-DROP TABLE IF EXISTS `pets`;
 
 CREATE TABLE `pets` (
   `item_obj_id` decimal(11,0) NOT NULL DEFAULT '0',

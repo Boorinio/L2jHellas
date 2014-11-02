@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `grandboss_data`
 -- ----------------------------
-DROP TABLE IF EXISTS `grandboss_data`;
 
 CREATE TABLE `grandboss_data` (
   `boss_id` int(11) NOT NULL DEFAULT '0',

@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `npcskills`
 -- ----------------------------
-DROP TABLE IF EXISTS `npcskills`;
 
 CREATE TABLE `npcskills` (
   `npcid` int(11) NOT NULL DEFAULT '0',

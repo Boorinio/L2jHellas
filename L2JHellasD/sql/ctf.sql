@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `ctf`
 -- ----------------------------
-DROP TABLE IF EXISTS `ctf`;
 
 CREATE TABLE `ctf` (
   `eventName` varchar(255) NOT NULL DEFAULT '',

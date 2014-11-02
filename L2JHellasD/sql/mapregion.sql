@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `mapregion`
 -- ----------------------------
-DROP TABLE IF EXISTS `mapregion`;
 
 CREATE TABLE `mapregion` (
   `region` int(11) NOT NULL DEFAULT '0',

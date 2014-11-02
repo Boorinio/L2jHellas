@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `zone_vertices`
 -- ----------------------------
-DROP TABLE IF EXISTS `zone_vertices`;
 
 CREATE TABLE `zone_vertices` (
   `id` int(11) NOT NULL,

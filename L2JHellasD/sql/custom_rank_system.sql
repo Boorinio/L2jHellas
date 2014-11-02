@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `rank_pvp_system`
 -- ----------------------------
-DROP TABLE IF EXISTS `rank_pvp_system`;
 
 CREATE TABLE `rank_pvp_system` (
  `killer_id` int(10) NOT NULL,
@@ -22,7 +21,6 @@ CREATE TABLE `rank_pvp_system` (
 -- ----------------------------
 -- Table structure for `rank_pvp_system_character_rank_rewards`
 -- ----------------------------
-DROP TABLE IF EXISTS `rank_pvp_system_character_rank_rewards`;
 
 CREATE TABLE `rank_pvp_system_character_rank_rewards` (
  `charId` int(10) NOT NULL,
@@ -32,7 +30,6 @@ CREATE TABLE `rank_pvp_system_character_rank_rewards` (
 -- ----------------------------
 -- Table structure for `rank_pvp_system_rank_rewards`
 -- ----------------------------
-DROP TABLE IF EXISTS `rank_pvp_system_rank_rewards`;
 
 CREATE TABLE `rank_pvp_system_rank_rewards` (
  `reward_id` int(10) NOT NULL AUTO_INCREMENT,

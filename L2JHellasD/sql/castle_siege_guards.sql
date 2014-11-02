@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `castle_siege_guards`
 -- ---------------------------
-DROP TABLE IF EXISTS `castle_siege_guards`;
 
 CREATE TABLE `castle_siege_guards` (
   `castleId` int(11) NOT NULL DEFAULT '0',

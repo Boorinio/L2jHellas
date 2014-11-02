@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `clanhall_functions`
 -- ---------------------------
-DROP TABLE IF EXISTS `clanhall_functions`;
 
 CREATE TABLE `clanhall_functions` (
   `hall_id` int(2) NOT NULL DEFAULT '0',

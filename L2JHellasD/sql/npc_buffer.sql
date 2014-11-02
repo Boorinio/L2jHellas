@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `npc_buffer`
 -- ----------------------------
-DROP TABLE IF EXISTS `npc_buffer`;
 
 CREATE TABLE `npc_buffer` (
   `npc_id` int(5) NOT NULL,

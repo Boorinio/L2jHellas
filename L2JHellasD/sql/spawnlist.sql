@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `spawnlist`
 -- ----------------------------
-DROP TABLE IF EXISTS `spawnlist`;
 
 CREATE TABLE `spawnlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

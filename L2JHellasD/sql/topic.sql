@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `topic`
 -- ----------------------------
-DROP TABLE IF EXISTS `topic`;
 
 CREATE TABLE IF NOT EXISTS `topic` (
   `topic_id` int(8) NOT NULL DEFAULT '0',

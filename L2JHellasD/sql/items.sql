@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `items`
 -- ----------------------------
-DROP TABLE IF EXISTS `items`;
 
 CREATE TABLE `items` (
   `owner_id` int(11) DEFAULT NULL,

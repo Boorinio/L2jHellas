@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `olympiad_data`
 -- ----------------------------
-DROP TABLE IF EXISTS `olympiad_data`;
 
 CREATE TABLE IF NOT EXISTS `olympiad_data` (
   `id` TINYINT UNSIGNED NOT NULL DEFAULT 0,

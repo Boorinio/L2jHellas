@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `augmentations`
 -- ---------------------------
-DROP TABLE IF EXISTS `augmentations`;
 
 CREATE TABLE `augmentations` (
   `item_id` int(11) NOT NULL DEFAULT '0',

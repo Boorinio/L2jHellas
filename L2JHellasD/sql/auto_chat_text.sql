@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `auto_chat_text`
 -- ----------------------------
-DROP TABLE IF EXISTS `auto_chat_text`;
 
 CREATE TABLE `auto_chat_text` (
   `groupId` int(11) NOT NULL DEFAULT '0',

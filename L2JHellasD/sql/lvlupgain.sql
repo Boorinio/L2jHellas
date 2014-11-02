@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `lvlupgain`
 -- ----------------------------
-DROP TABLE IF EXISTS `lvlupgain`;
 
 CREATE TABLE `lvlupgain` (
   `classid` int(3) NOT NULL DEFAULT '0',

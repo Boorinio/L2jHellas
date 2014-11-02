@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `itemsonground`
 -- ----------------------------
-DROP TABLE IF EXISTS `itemsonground`;
 
 CREATE TABLE `itemsonground` (
   `object_id` int(11) NOT NULL DEFAULT '0',

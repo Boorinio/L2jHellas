@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `ctf_teams`
 -- ----------------------------
-DROP TABLE IF EXISTS `ctf_teams`;
 
 CREATE TABLE `ctf_teams` (
   `teamId` int(4) NOT NULL DEFAULT '0',

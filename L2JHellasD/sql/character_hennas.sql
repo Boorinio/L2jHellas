@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `character_hennas`
 -- ---------------------------
-DROP TABLE IF EXISTS `character_hennas`;
 
 CREATE TABLE `character_hennas` (
   `char_obj_id` int(11) NOT NULL DEFAULT '0',

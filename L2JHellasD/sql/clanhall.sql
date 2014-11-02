@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `clanhall`
 -- ---------------------------
-DROP TABLE IF EXISTS `clanhall`;
 
 CREATE TABLE `clanhall` (
   `id` int(11) NOT NULL DEFAULT '0',

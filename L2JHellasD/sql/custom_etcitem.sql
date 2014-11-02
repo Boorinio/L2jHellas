@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `custom_etcitem`
 -- ----------------------------
-DROP TABLE IF EXISTS `custom_etcitem`;
 
 CREATE TABLE `custom_etcitem` (
   `item_id` decimal(11,0) NOT NULL DEFAULT '0',

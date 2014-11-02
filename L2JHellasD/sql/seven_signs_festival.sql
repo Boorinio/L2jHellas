@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `seven_signs_festival`
 -- ----------------------------
-DROP TABLE IF EXISTS `seven_signs_festival`;
 
 CREATE TABLE `seven_signs_festival` (
   `festivalId` int(1) NOT NULL DEFAULT '0',

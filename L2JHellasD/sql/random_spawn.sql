@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `random_spawn`
 -- ---------------------------
-DROP TABLE IF EXISTS random_spawn;
 
 CREATE TABLE `random_spawn` (
   `groupId` int(11) NOT NULL DEFAULT '0',

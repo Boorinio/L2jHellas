@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `dm`
 -- ----------------------------
-DROP TABLE IF EXISTS `dm`;
 
 CREATE TABLE `dm` (
   `eventName` varchar(255) NOT NULL DEFAULT '',

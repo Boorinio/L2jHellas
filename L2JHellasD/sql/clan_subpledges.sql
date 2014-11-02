@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `clan_subpledges`
 -- ---------------------------
-DROP TABLE IF EXISTS `clan_subpledges`;
 
 CREATE TABLE `clan_subpledges` (
   `clan_id` int(11) NOT NULL DEFAULT '0',

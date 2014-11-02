@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `raid_events_spawnlist`
 -- ----------------------------
-DROP TABLE IF EXISTS `raid_event_spawnlist`;
 
 CREATE TABLE `raid_event_spawnlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

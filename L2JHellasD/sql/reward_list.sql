@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `reward_list`
 -- ----------------------------
-DROP TABLE IF EXISTS `reward_list`;
 
 CREATE TABLE `reward_list` (
   `charId` int(11) NOT NULL DEFAULT '0',

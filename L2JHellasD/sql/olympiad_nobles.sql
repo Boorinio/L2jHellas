@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `olympiad_nobles`
 -- ----------------------------
-DROP TABLE IF EXISTS `olympiad_nobles`;
 
 CREATE TABLE IF NOT EXISTS `olympiad_nobles` (
   `char_id` INT UNSIGNED NOT NULL DEFAULT 0,

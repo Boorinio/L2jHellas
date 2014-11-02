@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `merchant_lease`
 -- ----------------------------
-DROP TABLE IF EXISTS `merchant_lease`;
 
 CREATE TABLE `merchant_lease` (
   `merchant_id` int(11) NOT NULL DEFAULT '0',

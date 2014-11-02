@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `locations`
 -- ----------------------------
-DROP TABLE IF EXISTS `locations`;
 
 CREATE TABLE `locations` (
   `loc_id` int(9) NOT NULL DEFAULT '0',

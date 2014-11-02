@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `auto_announcements`
 -- ----------------------------
-DROP TABLE IF EXISTS `auto_announcements`;
 
 CREATE TABLE `auto_announcements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

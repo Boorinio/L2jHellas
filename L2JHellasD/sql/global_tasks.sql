@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `global_tasks`
 -- ----------------------------
-DROP TABLE IF EXISTS `global_tasks`;
 
 CREATE TABLE `global_tasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

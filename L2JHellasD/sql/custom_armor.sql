@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `custom_armor`
 -- ----------------------------
-DROP TABLE IF EXISTS `custom_armor`;
 
 CREATE TABLE `custom_armor` (
   `item_id` int(11) NOT NULL DEFAULT '0',

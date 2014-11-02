@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `tvt_teams`
 -- -----------------------------
-DROP TABLE IF EXISTS `tvt_teams`;
 
 CREATE TABLE `tvt_teams` (
   `teamId` int(4) NOT NULL DEFAULT '0',

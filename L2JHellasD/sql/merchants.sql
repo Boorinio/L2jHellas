@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `merchants`
 -- ----------------------------
-DROP TABLE IF EXISTS `merchants`;
 
 CREATE TABLE `merchants` (
   `npc_id` int(11) NOT NULL DEFAULT '0',

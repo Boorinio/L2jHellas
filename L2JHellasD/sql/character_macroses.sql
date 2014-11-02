@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `character_macroses`
 -- ---------------------------
-DROP TABLE IF EXISTS `character_macroses`;
 
 CREATE TABLE `character_macroses` (
   `char_obj_id` int(11) NOT NULL DEFAULT '0',

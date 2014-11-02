@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `posts`
 -- ----------------------------
-DROP TABLE IF EXISTS `posts`;
 
 CREATE TABLE `posts` (
   `post_id` int(8) NOT NULL DEFAULT '0',

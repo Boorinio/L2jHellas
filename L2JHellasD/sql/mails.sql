@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `mails`
 -- ----------------------------
-DROP TABLE IF EXISTS `mails`;
 
 CREATE TABLE `mails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

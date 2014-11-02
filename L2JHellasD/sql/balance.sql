@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `balance`
 -- ---------------------------
-DROP TABLE IF EXISTS `balance`;
 
 CREATE TABLE `balance` (
   `class_id` SMALLINT NOT NULL DEFAULT '0',

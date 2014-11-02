@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `clan_notices`
 -- ---------------------------
-DROP TABLE IF EXISTS `clan_notices`;
 
 CREATE TABLE `clan_notices` (
   `clan_id` int(32) NOT NULL,

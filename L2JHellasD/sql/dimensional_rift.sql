@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `dimensional_rift`
 -- ---------------------------
-DROP TABLE IF EXISTS `dimensional_rift`;
 
 CREATE TABLE `dimensional_rift` (
   `type` tinyint(1) NOT NULL,

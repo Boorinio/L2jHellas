@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `castle_doorupgrade`
 -- ---------------------------
-DROP TABLE IF EXISTS `castle_doorupgrade`;
 
 CREATE TABLE `castle_doorupgrade` (
   `doorId` int(11) NOT NULL DEFAULT '0',

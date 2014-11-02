@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `character_recommends`
 -- ---------------------------
-DROP TABLE IF EXISTS `character_recommends`;
 
 CREATE TABLE `character_recommends` (
   `char_id` int(11) NOT NULL DEFAULT '0',

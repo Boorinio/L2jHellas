@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `heroes`
 -- ----------------------------
-DROP TABLE IF EXISTS `heroes`;
 
 CREATE TABLE IF NOT EXISTS `heroes` (
   `char_id` decimal(11,0) NOT NULL DEFAULT '0',

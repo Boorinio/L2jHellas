@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `achievements`
 -- ----------------------------
-DROP TABLE IF EXISTS `achievements`;
 
 CREATE TABLE `achievements` (
   `owner_id` int(11) NOT NULL DEFAULT '0',

@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `character_shortcuts`
 -- ---------------------------
-DROP TABLE IF EXISTS `character_shortcuts`;
 
 CREATE TABLE `character_shortcuts` (
   `char_obj_id` decimal(11,0) NOT NULL DEFAULT '0',

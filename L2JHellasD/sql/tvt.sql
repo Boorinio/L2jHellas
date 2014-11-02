@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `tvt`
 -- ----------------------------
-DROP TABLE IF EXISTS `tvt`;
 
 CREATE TABLE `tvt` (
   `eventName` varchar(255) NOT NULL DEFAULT '',

@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `forums`
 -- ----------------------------
-DROP TABLE IF EXISTS `forums`;
 
 CREATE TABLE `forums` (
   `forum_id` int(8) NOT NULL DEFAULT '0',

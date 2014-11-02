@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `max_poly`
 -- ----------------------------
-DROP TABLE IF EXISTS `max_poly`;
 
 CREATE TABLE `max_poly` (
   `name` varchar(22) DEFAULT NULL,

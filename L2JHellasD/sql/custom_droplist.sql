@@ -22,7 +22,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `custom_droplist`
 -- ----------------------------
-DROP TABLE IF EXISTS `custom_droplist`;
 
 CREATE TABLE `custom_droplist` (
   `mobId` int(11) NOT NULL DEFAULT '0',

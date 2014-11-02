@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `character_raid_points`
 -- ---------------------------
-DROP TABLE IF EXISTS `character_raid_points`;
 
 CREATE TABLE `character_raid_points` (
   `charId` int(10) unsigned NOT NULL DEFAULT '0',

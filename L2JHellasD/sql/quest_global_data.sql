@@ -5,7 +5,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- against it, primarily for aesthetic purposes, cleaningness of code, expectability, and
 -- to keep char-related data purely as char-related data, global purely as global.
 -- ----------------------------
-DROP TABLE IF EXISTS `quest_global_data`;
 
 CREATE TABLE `quest_global_data` (
   `quest_name` varchar(40) NOT NULL DEFAULT '',

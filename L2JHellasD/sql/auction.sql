@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `auction`
 -- ---------------------------
-DROP TABLE IF EXISTS `auction`;
 
 CREATE TABLE `auction` (
   `id` int(11) NOT NULL DEFAULT '0',

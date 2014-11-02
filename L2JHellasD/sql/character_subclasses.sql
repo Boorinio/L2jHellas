@@ -2,7 +2,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ---------------------------
 -- Table structure for `character_subclasses`
 -- ---------------------------
-DROP TABLE IF EXISTS `character_subclasses`;
 
 CREATE TABLE `character_subclasses` (
   `char_obj_id` decimal(11,0) NOT NULL DEFAULT '0',
