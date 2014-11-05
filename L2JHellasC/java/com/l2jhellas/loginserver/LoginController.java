@@ -443,7 +443,7 @@ public class LoginController
 		}
 	}
 
-	public boolean isGM(String user)
+	public static boolean isGM(String user)
 	{
 		boolean ok = false;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -454,7 +454,7 @@ public class LoginController
 			if (rset.next())
 			{
 				int accessLevel = rset.getInt(1);
-				if (accessLevel >= 0)
+				if (accessLevel > 0)
 				{
 					ok = true;
 				}
@@ -464,7 +464,7 @@ public class LoginController
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + "  Could not check GM state: " + e.getMessage(), e);
+			_log.log(Level.WARNING, "  Could not check GM state: " + e.getMessage());
 			ok = false;
 		}
 		return ok;

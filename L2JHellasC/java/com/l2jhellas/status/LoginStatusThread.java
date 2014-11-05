@@ -234,7 +234,7 @@ public class LoginStatusThread extends Thread
 	 */
 	private boolean validLogin(String login)
 	{
-		if (!LoginController.getInstance().isGM(login))
+		if (!LoginController.isGM(login))
 			return false;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
