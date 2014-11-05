@@ -39,8 +39,8 @@ import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -7200,6 +7200,7 @@ public abstract class L2Character extends L2Object
 	/**
 	 * @return the RunSpeed (base+modifier) or WalkSpeed (base+modifier) of the L2Character in function of the movement type.
 	 */
+	@SuppressWarnings("unused")
 	public int getMoveSpeed()
 	{
 		if (this == null)

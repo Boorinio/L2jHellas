@@ -86,7 +86,7 @@ public class L2BossSpawnInstance extends L2Npc
 		for (final int boss : Config.BOSS_RESPAWN_INFO)
 		{
 			final String name = NpcData.getInstance().getTemplate(boss).getName();
-			final StatsSet stats = GrandBossManager.getInstance().getStatsSet(boss);
+			final StatsSet stats = GrandBossManager.getStatsSet(boss);
 			if (stats == null)
 			{
 				player.sendMessage("Stats for GrandBoss " + boss + " not found!");
