@@ -3,25 +3,23 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ai.individual;
 
-import java.util.List;
-
-import javolution.util.FastList;
-import ai.group_template.L2AttackableAIScript;
+import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
+import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -31,7 +29,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
@@ -39,307 +36,273 @@ import com.l2jhellas.util.Rnd;
 
 /**
  * Orfen AI
- * @author Emperorc
- *
+ * @author Emperorc, rewrote by Tryskell.
  */
-public class Orfen extends L2AttackableAIScript
+public class Orfen extends AbstractNpcAI
 {
-
-	private static final int[][] Pos = {{43728,17220,-4342},
-		{55024,17368,-5412},{53504,21248,-5486},{53248,24576,-5262}};
-
-	private static final String[] Text = {"PLAYERNAME, stop kidding yourthis about your own powerlessness!",
-	        "PLAYERNAME, I’ll make you feel what true fear is!",
-	        "You’re really stupid to have challenged me. PLAYERNAME! Get ready!",
-	        "PLAYERNAME, do you think that’s going to work?!"};
-
+	private static final L2BossZone _orfenLair = GrandBossManager.getZoneById(110013);
+	
+	private static final int[][] Pos =
+	{
+		{
+			43728,
+			17220,
+			-4342
+		},
+		{
+			55024,
+			17368,
+			-5412
+		},
+		{
+			53504,
+			21248,
+			-5486
+		},
+		{
+			53248,
+			24576,
+			-5262
+		}
+	};
+	
+	private static final String[] Text =
+	{
+		"$s1. Stop kidding yourself about your own powerlessness!",
+		"$s1. I'll make you feel what true fear is!",
+		"You're really stupid to have challenged me. $s1! Get ready!",
+		"$s1. Do you think that's going to work?!"
+	};
+	
 	private static final int ORFEN = 29014;
-	//private static final int RAIKEL = 29015;
 	private static final int RAIKEL_LEOS = 29016;
-	//private static final int RIBA = 29017;
 	private static final int RIBA_IREN = 29018;
-
-	private static boolean _IsTeleported;
-	private static List<L2Attackable> _Minions = new FastList<L2Attackable>();
-	private static L2BossZone _Zone;
-
+	
 	private static final byte ALIVE = 0;
 	private static final byte DEAD = 1;
-
-	public Orfen(int id, String name, String descr)
+	
+	private static long _LastAttackVsOrfenTime = 0;
+	private static boolean _IsTeleported;
+	private static int _currentIndex;
+	
+	public Orfen(String name, String descr)
 	{
-        super(id,name,descr);
-        int[] mobs = {ORFEN, RAIKEL_LEOS, RIBA_IREN};
-        this.registerMobs(mobs);
-        _IsTeleported = false;
-        _Zone = GrandBossManager.getInstance().getZone(Pos[0][0],Pos[0][1],Pos[0][2]);
-        StatsSet info = GrandBossManager.getInstance().getStatsSet(ORFEN);
-        int status = GrandBossManager.getInstance().getBossStatus(ORFEN);
-        if (status == DEAD)
-        {
-            // load the unlock date and time for Orfen from DB
-            long temp = info.getLong("respawn_time") - System.currentTimeMillis();
-            // if Orfen is locked until a certain time, mark it so and start the unlock timer
-            // the unlock time has not yet expired.
-            if (temp > 0)
-                this.startQuestTimer("orfen_unlock", temp, null, null);
-            else
-            {
-                // the time has already expired while the server was offline. Immediately spawn Orfen.
-                int i = Rnd.get(10);
-                int x = 0;
-                int y = 0;
-                int z = 0;
-                if (i < 4)
-                {
-                    x = Pos[1][0];
-                    y = Pos[1][1];
-                    z = Pos[1][2];
-                }
-                else if (i < 7)
-                {
-                    x = Pos[2][0];
-                    y = Pos[2][1];
-                    z = Pos[2][2];
-                }
-                else
-                {
-                    x = Pos[3][0];
-                    y = Pos[3][1];
-                    z = Pos[3][2];
-                }
-                L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN,x,y,z,0,false,0);
-                GrandBossManager.getInstance().setBossStatus(ORFEN,ALIVE);
-                this.spawnBoss(orfen);
-            }
-        }
-        else
-        {
-            int loc_x = info.getInteger("loc_x");
-            int loc_y = info.getInteger("loc_y");
-            int loc_z = info.getInteger("loc_z");
-            int heading = info.getInteger("heading");
-            int hp = info.getInteger("currentHP");
-            int mp = info.getInteger("currentMP");
-            L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN,loc_x,loc_y,loc_z,heading,false,0);
-            orfen.setCurrentHpMp(hp,mp);
-            this.spawnBoss(orfen);
-        }
+		super(name, descr);
+		
+		addKillId(ORFEN);
+		addAttackId(ORFEN, RIBA_IREN);
+		addFactionCallId(RAIKEL_LEOS, RIBA_IREN);
+		addSkillSeeId(ORFEN);
+		
+		_IsTeleported = false;
+		
+		final StatsSet info = GrandBossManager.getStatsSet(ORFEN);
+		final int status = GrandBossManager.getBossStatus(ORFEN);
+		
+		if (status == DEAD)
+		{
+			// load the unlock date and time for Orfen from DB
+			long temp = info.getLong("respawn_time") - System.currentTimeMillis();
+			if (temp > 0)
+			{
+				// The time has not yet expired. Mark Orfen as currently locked (dead).
+				startQuestTimer("orfen_unlock", temp, null, null, false);
+			}
+			else
+			{
+				// The time has already expired while the server was offline. Spawn Orfen in a random place.
+				_currentIndex = Rnd.get(1, 3);
+				
+				final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, Pos[_currentIndex][0], Pos[_currentIndex][1], Pos[_currentIndex][2], 0, false, 0, false);
+				GrandBossManager.setBossStatus(ORFEN, ALIVE);
+				spawnBoss(orfen);
+			}
+		}
+		else
+		{
+			final int loc_x = info.getInteger("loc_x");
+			final int loc_y = info.getInteger("loc_y");
+			final int loc_z = info.getInteger("loc_z");
+			final int heading = info.getInteger("heading");
+			final int hp = info.getInteger("currentHP");
+			final int mp = info.getInteger("currentMP");
+			
+			final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, loc_x, loc_y, loc_z, heading, false, 0, false);
+			orfen.setCurrentHpMp(hp, mp);
+			spawnBoss(orfen);
+		}
 	}
-
-    public void setSpawnPoint(L2Npc npc,int index)
-    {
-    	((L2Attackable) npc).clearAggroList();
-        npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
-        L2Spawn spawn = npc.getSpawn();
-        spawn.setLocx(Pos[index][0]);
-        spawn.setLocy(Pos[index][1]);
-        spawn.setLocz(Pos[index][2]);
-        npc.teleToLocation(Pos[index][0],Pos[index][1],Pos[index][2]);
-    }
-
-
-    public void spawnBoss(L2GrandBossInstance npc)
-    {
-        GrandBossManager.getInstance().addBoss(npc);
-        npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-        this.startQuestTimer("check_orfen_pos",10000,npc,null,true);
-        //Spawn minions
-        int x = npc.getX();
-        int y = npc.getY();
-        L2Npc mob;
-        mob = addSpawn(RAIKEL_LEOS,x+100,y+100,npc.getZ(),0,false,0);
-        mob.setIsRaidMinion(true);
-        _Minions.add((L2Attackable) mob);
-        mob = addSpawn(RAIKEL_LEOS,x+100,y-100,npc.getZ(),0,false,0);
-        mob.setIsRaidMinion(true);
-        _Minions.add((L2Attackable) mob);
-        mob = addSpawn(RAIKEL_LEOS,x-100,y+100,npc.getZ(),0,false,0);
-        mob.setIsRaidMinion(true);
-        _Minions.add((L2Attackable) mob);
-        mob = addSpawn(RAIKEL_LEOS,x-100,y-100,npc.getZ(),0,false,0);
-        mob.setIsRaidMinion(true);
-        _Minions.add((L2Attackable) mob);
-        this.startQuestTimer("check_minion_loc",10000,npc,null,true);
-    }
-
+	
 	@Override
-	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-        if (event.equalsIgnoreCase("orfen_unlock"))
-        {
-            int i = Rnd.get(10);
-            int x = 0;
-            int y = 0;
-            int z = 0;
-            if (i < 4)
-            {
-                x = Pos[1][0];
-                y = Pos[1][1];
-                z = Pos[1][2];
-            }
-            else if (i < 7)
-            {
-                x = Pos[2][0];
-                y = Pos[2][1];
-                z = Pos[2][2];
-            }
-            else
-            {
-                x = Pos[3][0];
-                y = Pos[3][1];
-                z = Pos[3][2];
-            }
-            L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN,x,y,z,0,false,0);
-            GrandBossManager.getInstance().setBossStatus(ORFEN,ALIVE);
-            this.spawnBoss(orfen);
-        }
-        else if (event.equalsIgnoreCase("check_orfen_pos"))
-        {
-            if ((_IsTeleported && npc.getCurrentHp() > npc.getMaxHp() * 0.95) || (!_Zone.isInsideZone(npc) && !_IsTeleported))
-            {
-                setSpawnPoint(npc,Rnd.get(3)+1);
-                _IsTeleported = false;
-            }
-            else if (_IsTeleported && !_Zone.isInsideZone(npc))
-                setSpawnPoint(npc,0);
-        }
-        else if (event.equalsIgnoreCase("check_minion_loc"))
-        {
-            for (int i=0;i<_Minions.size();i++)
-            {
-            	L2Attackable mob = _Minions.get(i);
-                if (!npc.isInsideRadius(mob,3000,false,false))
-                {
-                	mob.teleToLocation(npc.getX(),npc.getY(),npc.getZ());
-                    ((L2Attackable) npc).clearAggroList();
-                    npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
-                }
-            }
-        }
-        else if (event.equalsIgnoreCase("despawn_minions"))
-        {
-            for (int i=0;i<_Minions.size();i++)
-            {
-            	L2Attackable mob = _Minions.get(i);
-                if (mob != null)
-                	mob.decayMe();
-            }
-            _Minions.clear();
-        }
-        else if (event.equalsIgnoreCase("spawn_minion"))
-        {
-        	L2Npc mob = addSpawn(RAIKEL_LEOS,npc.getX(),npc.getY(),npc.getZ(),0,false,0);
-        	mob.setIsRaidMinion(true);
-            _Minions.add((L2Attackable) mob);
-        }
-        return super.onAdvEvent(event, npc, player);
+		if (event.equalsIgnoreCase("orfen_unlock"))
+		{
+			_currentIndex = Rnd.get(1, 3);
+			
+			final L2GrandBossInstance orfen = (L2GrandBossInstance) addSpawn(ORFEN, Pos[_currentIndex][0], Pos[_currentIndex][1], Pos[_currentIndex][2], 0, false, 0, false);
+			GrandBossManager.setBossStatus(ORFEN, ALIVE);
+			spawnBoss(orfen);
+		}
+		else if (event.equalsIgnoreCase("check_orfen_pos"))
+		{
+			// 30 minutes are gone without any hit ; Orfen will move to another location.
+			if (_LastAttackVsOrfenTime + 1800000 < System.currentTimeMillis())
+			{
+				// Generates a number until it is different of _currentIndex (avoid to spawn in same place 2 times).
+				int index = _currentIndex;
+				while (index == _currentIndex)
+					index = Rnd.get(1, 3);
+				
+				// Set the new index as _currentIndex.
+				_currentIndex = index;
+				
+				// Set the teleport flag to false
+				_IsTeleported = false;
+				
+				// Reinitialize the timer.
+				_LastAttackVsOrfenTime = System.currentTimeMillis();
+				
+				goTo(npc, _currentIndex);
+			}
+			// Orfen already ported once and is lured out of her lair ; teleport her back.
+			else if (_IsTeleported && !_orfenLair.isInsideZone(npc))
+				goTo(npc, 0);
+		}
+		return super.onAdvEvent(event, npc, player);
 	}
-
+	
 	@Override
-	public String onSkillSee (L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
-    {
-        if (npc.getNpcId() == ORFEN)
-        {
-            L2Character originalCaster = isPet? caster.getPet(): caster;
-            if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster,1000,false,false))
-            {
-                npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npc.getNpcId(),Text[Rnd.get(4)].replace("PLAYERNAME",caster.getName().toString())));
-                originalCaster.teleToLocation(npc.getX(),npc.getY(),npc.getZ());
-                npc.setTarget(originalCaster);
-                npc.doCast(SkillTable.getInstance().getInfo(4064,1));
-            }
-        }
-        return super.onSkillSee(npc,caster,skill,targets,isPet);
-    }
-
-    @Override
-	public String onFactionCall (L2Npc npc, L2Npc caller, L2PcInstance attacker, boolean isPet)
-    {
-        if (caller == null || npc == null)
-        	return super.onFactionCall(npc, caller, attacker, isPet);
-        int npcId = npc.getNpcId();
-        int callerId = caller.getNpcId();
-        if (npcId == RAIKEL_LEOS && Rnd.get(20) == 0)
-        {
-            npc.setTarget(attacker);
-            npc.doCast(SkillTable.getInstance().getInfo(4067,4));
-        }
-        else if (npcId == RIBA_IREN)
-        {
-            int chance = 1;
-            if (callerId == ORFEN)
-                chance = 9;
-            if (callerId != RIBA_IREN && caller.getCurrentHp() < (caller.getMaxHp() / 2) && Rnd.get(10) < chance)
-            {
-                npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
-                npc.setTarget(caller);
-                npc.doCast(SkillTable.getInstance().getInfo(4516,1));
-            }
-        }
-        return super.onFactionCall(npc, caller, attacker, isPet);
-    }
-
-    @Override
-	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
-    {
-        int npcId = npc.getNpcId();
-        if (npcId == ORFEN)
-        {
-            if ((npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2) && !_IsTeleported)
-            {
-                setSpawnPoint(npc,0);
-                _IsTeleported = true;
-            }
-            else if (npc.isInsideRadius(attacker,1000,false,false) && !npc.isInsideRadius(attacker,300,false,false) && Rnd.get(10) == 0)
-            {
-                npc.broadcastPacket(new NpcSay(npc.getObjectId(),0,npcId,Text[Rnd.get(3)].replace("PLAYERNAME",attacker.getName().toString())));
-                attacker.teleToLocation(npc.getX(),npc.getY(),npc.getZ());
-                npc.setTarget(attacker);
-                npc.doCast(SkillTable.getInstance().getInfo(4064,1));
-            }
-        }
-        else if (npcId == RIBA_IREN)
-        {
-            if ((npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2))
-            {
-                npc.setTarget(attacker);
-                npc.doCast(SkillTable.getInstance().getInfo(4516,1));
-            }
-        }
-        return super.onAttack(npc, attacker, damage, isPet);
-    }
-
-    @Override
-	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
-    {
-        if (npc.getNpcId() == ORFEN)
-        {
-            npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-            GrandBossManager.getInstance().setBossStatus(ORFEN,DEAD);
-            //time is 48hour	+/- 20hour
-            long respawnTime = Config.Interval_Of_Orfen_Spawn + Rnd.get(Config.Random_Of_Orfen_Spawn);
-            this.startQuestTimer("orfen_unlock", respawnTime, null, null);
-            // also save the respawn time so that the info is maintained past reboots
-            StatsSet info = GrandBossManager.getInstance().getStatsSet(ORFEN);
-            info.set("respawn_time",System.currentTimeMillis() + respawnTime);
-            GrandBossManager.getInstance().setStatsSet(ORFEN,info);
-            this.cancelQuestTimer("check_minion_loc",npc,null);
-            this.cancelQuestTimer("check_orfen_pos",npc,null);
-            this.startQuestTimer("despawn_minions",20000,null,null);
-            this.cancelQuestTimers("spawn_minion");
-        }
-        else if (GrandBossManager.getInstance().getBossStatus(ORFEN) == ALIVE && npc.getNpcId() == RAIKEL_LEOS)
-        {
-            _Minions.remove(npc);
-            this.startQuestTimer("spawn_minion",360000,npc,null);
-        }
-        return super.onKill(npc,killer,isPet);
-    }
-
-    public static void main(String[] args)
-    {
-    	// Quest class and state definition
-    	new Orfen(-1,"orfen","ai");
-    }
+	public String onSkillSee(L2Npc npc, L2PcInstance caster, L2Skill skill, L2Object[] targets, boolean isPet)
+	{
+		L2Character originalCaster = isPet ? caster.getPet() : caster;
+		if (skill.getAggroPoints() > 0 && Rnd.get(5) == 0 && npc.isInsideRadius(originalCaster, 1000, false, false))
+		{
+			npc.broadcastNpcSay(Text[Rnd.get(4)].replace("$s1", caster.getName()));
+			originalCaster.teleToLocation(npc.getX(), npc.getY(), npc.getZ(), false);
+			npc.setTarget(originalCaster);
+			npc.doCast(SkillTable.getInstance().getInfo(4064, 1));
+		}
+		return super.onSkillSee(npc, caster, skill, targets, isPet);
+	}
+	
+	@Override
+	public String onFactionCall(L2Npc npc, L2Npc caller, L2PcInstance attacker, boolean isPet)
+	{
+		if (caller == null || npc == null || npc.isCastingNow())
+			return super.onFactionCall(npc, caller, attacker, isPet);
+		
+		int npcId = npc.getNpcId();
+		int callerId = caller.getNpcId();
+		if (npcId == RAIKEL_LEOS && Rnd.get(20) == 0)
+		{
+			npc.setTarget(attacker);
+			npc.doCast(SkillTable.getInstance().getInfo(4067, 4));
+		}
+		else if (npcId == RIBA_IREN)
+		{
+			int chance = 1;
+			if (callerId == ORFEN)
+				chance = 9;
+			
+			if (callerId != RIBA_IREN && (caller.getCurrentHp() / caller.getMaxHp() < 0.5) && Rnd.get(10) < chance)
+			{
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
+				npc.setTarget(caller);
+				npc.doCast(SkillTable.getInstance().getInfo(4516, 1));
+			}
+		}
+		return super.onFactionCall(npc, caller, attacker, isPet);
+	}
+	
+	@Override
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
+	{
+		if (npc.getNpcId() == ORFEN)
+		{
+			// update a variable with the last action against Orfen.
+			_LastAttackVsOrfenTime = System.currentTimeMillis();
+			
+			if (!_IsTeleported && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2))
+			{
+				_IsTeleported = true;
+				goTo(npc, 0);
+			}
+			else if (npc.isInsideRadius(attacker, 1000, false, false) && !npc.isInsideRadius(attacker, 300, false, false) && Rnd.get(10) == 0)
+			{
+				npc.broadcastNpcSay(Text[Rnd.get(3)].replace("$s1", attacker.getName()));
+				attacker.teleToLocation(npc.getX(), npc.getY(), npc.getZ(), false);
+				npc.setTarget(attacker);
+				npc.doCast(SkillTable.getInstance().getInfo(4064, 1));
+			}
+		}
+		// RIBA_IREN case, as it's the only other registered.
+		else
+		{
+			if (!npc.isCastingNow() && (npc.getCurrentHp() - damage) < (npc.getMaxHp() / 2.0))
+			{
+				npc.setTarget(attacker);
+				npc.doCast(SkillTable.getInstance().getInfo(4516, 1));
+			}
+		}
+		return super.onAttack(npc, attacker, damage, isPet);
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	{
+		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		GrandBossManager.setBossStatus(ORFEN, DEAD);
+		
+		long respawnTime = (long) Config.Interval_Of_Orfen_Spawn + Rnd.get(-Config.Random_Of_Orfen_Spawn, Config.Random_Of_Orfen_Spawn);
+		respawnTime *= 3600000;
+		
+		startQuestTimer("orfen_unlock", respawnTime, null, null, false);
+		
+		// also save the respawn time so that the info is maintained past reboots
+		StatsSet info = GrandBossManager.getStatsSet(ORFEN);
+		info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+		GrandBossManager.setStatsSet(ORFEN, info);
+		
+		cancelQuestTimer("check_orfen_pos", npc, null);
+		return super.onKill(npc, killer, isPet);
+	}
+	
+	/**
+	 * This method is used by Orfen in order to move from one location to another.<br>
+	 * Index 0 means a direct teleport to her lair (case where her HPs <= 50%).
+	 * @param npc Orfen in any case.
+	 * @param index 0 for her lair (teleport) or 1-3 (walking through desert).
+	 */
+	private static void goTo(L2Npc npc, int index)
+	{
+		((L2Attackable) npc).clearAggroList();
+		npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
+		
+		// Edit the spawn location in case server crashes.
+		L2Spawn spawn = npc.getSpawn();
+		spawn.setLocx(Pos[index][0]);
+		spawn.setLocy(Pos[index][1]);
+		spawn.setLocz(Pos[index][2]);
+		
+		if (index == 0)
+			npc.teleToLocation(Pos[index][0], Pos[index][1], Pos[index][2], false);
+		else
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(Pos[index][0], Pos[index][1], Pos[index][2], 0));
+	}
+	
+	private void spawnBoss(L2GrandBossInstance npc)
+	{
+		GrandBossManager.addBoss(npc);
+		npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		startQuestTimer("check_orfen_pos", 60000, npc, null, true);
+		
+		// start monitoring Orfen's inactivity
+		_LastAttackVsOrfenTime = System.currentTimeMillis();
+	}
+	
+	public static void main(String[] args)
+	{
+		new Orfen(Orfen.class.getSimpleName(), "ai/individual");
+	}
 }

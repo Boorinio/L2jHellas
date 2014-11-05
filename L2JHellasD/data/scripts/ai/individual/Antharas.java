@@ -14,7 +14,8 @@
  */
 package ai.individual;
 
-import ai.group_template.L2AttackableAIScript;
+
+import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -30,22 +31,17 @@ import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
-/**
- * Antharas AI
- * 
- * @author Emperorc
- */
-public class Antharas extends L2AttackableAIScript
+public class Antharas extends AbstractNpcAI
 {
 	
-	private static final int ANTHARAS = 29019;
+	public static final int ANTHARAS = 29019;
 	
 	// Antharas Status Tracking :
-	private static final byte DORMANT = 0;     	// Antharas is spawned and no one has entered yet. Entry is unlocked
-	private static final byte WAITING = 1;     	// Antharas is spawend and someone has entered, triggering a 30 minute window for additional people to enter
+	public static final byte DORMANT = 0;     	// Antharas is spawned and no one has entered yet. Entry is unlocked
+	public static final byte WAITING = 1;     	// Antharas is spawend and someone has entered, triggering a 30 minute window for additional people to enter
 											// before he unleashes his attack. Entry is unlocked
-	private static final byte FIGHTING = 2;    	// Antharas is engaged in battle, annihilating his foes. Entry is locked
-	private static final byte DEAD = 3;        	// Antharas has been killed. Entry is locked
+	public static final byte FIGHTING = 2;    	// Antharas is engaged in battle, annihilating his foes. Entry is locked
+	public static final byte DEAD = 3;        	// Antharas has been killed. Entry is locked
 	
 	private static long _LastAction = 0;
 	
@@ -54,15 +50,15 @@ public class Antharas extends L2AttackableAIScript
 	// Boss: Antharas
 	public Antharas(int id, String name, String descr)
 	{
-		super(id, name, descr);
+		super(name, descr);
 		int[] mob =
 		{
 			ANTHARAS
 		};
 		this.registerMobs(mob);
 		_Zone = GrandBossManager.getInstance().getZone(179700, 113800, -7709);
-		StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS);
-		int status = GrandBossManager.getInstance().getBossStatus(ANTHARAS);
+		StatsSet info = GrandBossManager.getStatsSet(ANTHARAS);
+		int status = GrandBossManager.getBossStatus(ANTHARAS);
 		if (status == DEAD)
 		{
 			// load the unlock date and time for antharas from DB
@@ -73,16 +69,16 @@ public class Antharas extends L2AttackableAIScript
 			// setup a timer to fire after that many msec)
 			if (temp > 0)
 			{
-				this.startQuestTimer("antharas_unlock", temp, null, null);
+				this.startQuestTimer("antharas_unlock", temp, null, null,false);
 			}
 			else
 			{
 				// the time has already expired while the server was offline. Immediately spawn antharas in his cave.
 				// also, the status needs to be changed to DORMANT
-				L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 32768, false, 0);
-				GrandBossManager.getInstance().setBossStatus(ANTHARAS, DORMANT);
+				L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 32768, false, 0,false);
+				GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
 				antharas.broadcastPacket(new Earthquake(185708, 114298, -8221, 20, 10));
-				GrandBossManager.getInstance().addBoss(antharas);
+				GrandBossManager.addBoss(antharas);
 			}
 		}
 		else
@@ -93,13 +89,13 @@ public class Antharas extends L2AttackableAIScript
 			int heading = info.getInteger("heading");
 			int hp = info.getInteger("currentHP");
 			int mp = info.getInteger("currentMP");
-			L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, loc_x, loc_y, loc_z, heading, false, 0);
-			GrandBossManager.getInstance().addBoss(antharas);
+			L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, loc_x, loc_y, loc_z, heading, false, 0,false);
+			GrandBossManager.addBoss(antharas);
 			antharas.setCurrentHpMp(hp, mp);
 			if (status == WAITING)
 			{
 				// Start timer to lock entry after 30 minutes
-				this.startQuestTimer("waiting", Config.Antharas_Wait_Time, antharas, null);
+				this.startQuestTimer("waiting", Config.Antharas_Wait_Time, antharas, null,false);
 			}
 			else if (status == FIGHTING)
 			{
@@ -121,26 +117,26 @@ public class Antharas extends L2AttackableAIScript
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(181911, 114835, -7678, 0));
 				this.startQuestTimer("antharas_has_arrived", 2000, npc, null, true);
 				npc.broadcastPacket(new PlaySound(1, "BS02_A", 1, npc.getObjectId(), 185452, 114835, -8221));
-				GrandBossManager.getInstance().setBossStatus(ANTHARAS, FIGHTING);
+				GrandBossManager.setBossStatus(ANTHARAS, FIGHTING);
 			}
 			else if (event.equalsIgnoreCase("camera_1"))
 			{
-				this.startQuestTimer("camera_2", 3000, npc, null);
+				this.startQuestTimer("camera_2", 3000, npc, null,false);
 				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 13, -19, 0, 20000));
 			}
 			else if (event.equalsIgnoreCase("camera_2"))
 			{
-				this.startQuestTimer("camera_3", 10000, npc, null);
+				this.startQuestTimer("camera_3", 10000, npc, null,false);
 				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 13, 0, 6000, 20000));
 			}
 			else if (event.equalsIgnoreCase("camera_3"))
 			{
-				this.startQuestTimer("camera_4", 200, npc, null);
+				this.startQuestTimer("camera_4", 200, npc, null,false);
 				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 3700, 0, -3, 0, 10000));
 			}
 			else if (event.equalsIgnoreCase("camera_4"))
 			{
-				this.startQuestTimer("camera_5", 10800, npc, null);
+				this.startQuestTimer("camera_5", 10800, npc, null,false);
 				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 0, -3, 22000, 30000));
 			}
 			else if (event.equalsIgnoreCase("camera_5"))
@@ -155,7 +151,7 @@ public class Antharas extends L2AttackableAIScript
 				if (temp > 900000)
 				{
 					npc.teleToLocation(185708, 114298, -8221);
-					GrandBossManager.getInstance().setBossStatus(ANTHARAS, DORMANT);
+					GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
 					npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
 					_Zone.oustAllPlayers();
 					this.cancelQuestTimer("antharas_despawn", npc, null);
@@ -167,7 +163,7 @@ public class Antharas extends L2AttackableAIScript
 				int dy = Math.abs(npc.getY() - 114835);
 				if (dx <= 50 && dy <= 50)
 				{
-					this.startQuestTimer("camera_1", 2000, npc, null);
+					this.startQuestTimer("camera_1", 2000, npc, null,false);
 					npc.getSpawn().setLocx(181911);
 					npc.getSpawn().setLocy(114835);
 					npc.getSpawn().setLocz(-7678);
@@ -181,25 +177,25 @@ public class Antharas extends L2AttackableAIScript
 			}
 			else if (event.equalsIgnoreCase("spawn_cubes"))
 			{
-				addSpawn(31859, 177615, 114941, -7709, 0, false, 900000);
+				addSpawn(31859, 177615, 114941, -7709, 0, false, 900000,false);
 				int radius = 1500;
 				for (int i = 0; i < 20; i++)
 				{
 					int x = (int) (radius * Math.cos(i * .331)); // .331~2pi/19
 					int y = (int) (radius * Math.sin(i * .331));
-					addSpawn(31859, 177615 + x, 114941 + y, -7709, 0, false, 900000);
+					addSpawn(31859, 177615 + x, 114941 + y, -7709, 0, false, 900000,false);
 				}
 				this.cancelQuestTimer("antharas_despawn", npc, null);
-				this.startQuestTimer("remove_players", 900000, null, null);
+				this.startQuestTimer("remove_players", 900000, null, null,false);
 			}
 		}
 		else
 		{
 			if (event.equalsIgnoreCase("antharas_unlock"))
 			{
-				L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 32768, false, 0);
-				GrandBossManager.getInstance().addBoss(antharas);
-				GrandBossManager.getInstance().setBossStatus(ANTHARAS, DORMANT);
+				L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 32768, false, 0,false);
+				GrandBossManager.addBoss(antharas);
+				GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
 				antharas.broadcastPacket(new Earthquake(185708, 114298, -8221, 20, 10));
 			}
 			else if (event.equalsIgnoreCase("remove_players"))
@@ -212,7 +208,7 @@ public class Antharas extends L2AttackableAIScript
 	
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (GrandBossManager.getInstance().getBossStatus(ANTHARAS) != FIGHTING)
+		if (GrandBossManager.getBossStatus(ANTHARAS) != FIGHTING)
 		{
 			_Zone.oustAllPlayers();
 			return null;
@@ -226,14 +222,14 @@ public class Antharas extends L2AttackableAIScript
 		if (npc.getNpcId() == ANTHARAS)
 		{
 			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-			this.startQuestTimer("spawn_cubes", 10000, npc, null);
-			GrandBossManager.getInstance().setBossStatus(ANTHARAS, DEAD);
+			this.startQuestTimer("spawn_cubes", 10000, npc, null,false);
+			GrandBossManager.setBossStatus(ANTHARAS, DEAD);
 			long respawnTime = (Config.Interval_Of_Antharas_Spawn + Rnd.get(Config.Random_Of_Antharas_Spawn)* 3600000);
-			this.startQuestTimer("antharas_unlock", respawnTime, null, null);
+			this.startQuestTimer("antharas_unlock", respawnTime, null, null,false);
 			// also save the respawn time so that the info is maintained past reboots
-			StatsSet info = GrandBossManager.getInstance().getStatsSet(ANTHARAS);
+			StatsSet info = GrandBossManager.getStatsSet(ANTHARAS);
 			info.set("respawn_time", (System.currentTimeMillis() + respawnTime));
-			GrandBossManager.getInstance().setStatsSet(ANTHARAS, info);
+			GrandBossManager.setStatsSet(ANTHARAS, info);
 		}
 		return super.onKill(npc, killer, isPet);
 	}

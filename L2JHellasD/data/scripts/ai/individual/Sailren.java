@@ -3,301 +3,278 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package ai.individual;
 
-import ai.group_template.L2AttackableAIScript;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
-import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
+import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
+import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
-import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
-/**
- * Sailren AI
- * Update by rocknow
- */
-public class Sailren extends L2AttackableAIScript
+public class Sailren extends AbstractNpcAI
 {
-	private static final int SAILREN = 29065;
-	private static final int VELOCIRAPTOR = 22218;
+	private static final L2BossZone _nest = GrandBossManager.getZoneById(110015);
+	
+	public static final int SAILREN = 29065;
+	
+	public static final byte DORMANT = 0; // No one has entered yet. Entry is unlocked.
+	public static final byte FIGHTING = 1; // A group entered in the nest. Entry is locked.
+	public static final byte DEAD = 2; // Sailren has been killed. Entry is locked.
+	
+	private static final int VELOCIRAPTOR = 22223;
 	private static final int PTEROSAUR = 22199;
-	private static final int TYRANNOSAURUS = 22217;
-	private static final int STATUE = 32109;
-
-	//Sailren Status Tracking :
-	private static final byte DORMANT = 0;		//Sailren is spawned and no one has entered yet. Entry is unlocked
-	private static final byte WAITING = 1;		//Sailren is spawend and someone has entered, triggering a 30 minute window for additional people to enter
-												//before he unleashes his attack. Entry is unlocked
-	private static final byte FIGHTING = 2; 	//Sailren is engaged in battle, annihilating his foes. Entry is locked
-	private static final byte DEAD = 3;			//Sailren has been killed. Entry is locked
-
-	private static long _LastAction = 0;
-
-	// Boss: Sailren
-	public Sailren(int id,String name,String descr)
+	private static final int TREX = 22217;
+	
+	private static final int DUMMY = 32110;
+	private static final int CUBE = 32107;
+	
+	private static final long INTERVAL_CHECK = 600000L; // 10 minutes
+	
+	private static final Location SAILREN_LOC = new Location(27549, -6638, -2008);
+	
+	private final List<L2Npc> _mobs = new CopyOnWriteArrayList<L2Npc>();
+	private static long _timeTracker;
+	
+	public Sailren(String name, String descr)
 	{
-		super(id,name,descr);
-		int[] mob = {SAILREN, VELOCIRAPTOR, PTEROSAUR, TYRANNOSAURUS};
-		this.registerMobs(mob);
-		addStartNpc(STATUE);
-		addTalkId(STATUE);
-		StatsSet info = GrandBossManager.getInstance().getStatsSet(SAILREN);
-		int status = GrandBossManager.getInstance().getBossStatus(SAILREN);
-		if (status == DEAD)
+		super(name, descr);
+		
+		addAttackId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
+		addKillId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
+		
+		final StatsSet info = GrandBossManager.getStatsSet(SAILREN);
+		
+		switch (GrandBossManager.getBossStatus(SAILREN))
 		{
-			long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
-			if (temp > 0)
-			{
-				this.startQuestTimer("sailren_unlock", temp, null, null);
-			}
-			else
-			{
-				GrandBossManager.getInstance().setBossStatus(SAILREN,DORMANT);
-			}
-		}
-		else
-		{
-			GrandBossManager.getInstance().setBossStatus(SAILREN,DORMANT);
+			case DEAD: // Launch the timer to set DORMANT, or set DORMANT directly if timer expired while offline.
+				final long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
+				if (temp > 0)
+					startQuestTimer("unlock", temp, null, null, false);
+				else
+					GrandBossManager.setBossStatus(SAILREN, DORMANT);
+				break;
+			
+			case FIGHTING:
+				final int loc_x = info.getInteger("loc_x");
+				final int loc_y = info.getInteger("loc_y");
+				final int loc_z = info.getInteger("loc_z");
+				final int heading = info.getInteger("heading");
+				final int hp = info.getInteger("currentHP");
+				final int mp = info.getInteger("currentMP");
+				
+				final L2Npc sailren = addSpawn(SAILREN, loc_x, loc_y, loc_z, heading, false, 0, false);
+				GrandBossManager.addBoss((L2GrandBossInstance) sailren);
+				_mobs.add(sailren);
+				
+				sailren.setCurrentHpMp(hp, mp);
+				sailren.setRunning();
+				
+				// Don't need to edit _timeTracker, as it's initialized to 0.
+				startQuestTimer("inactivity", INTERVAL_CHECK, null, null, true);
+				break;
 		}
 	}
-
+	
 	@Override
-	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		long temp = 0;
-		if (event.equalsIgnoreCase("waiting"))
+		if (event.equalsIgnoreCase("beginning"))
 		{
-			GrandBossManager.getInstance().setBossStatus(SAILREN,FIGHTING);
-			L2Npc mob1 = addSpawn(VELOCIRAPTOR,27852,-5536,-1983,44732,false,0);
-			this.startQuestTimer("start",0, mob1, null);
+			_timeTracker = 0;
+			
+			for (int i = 0; i < 3; i++)
+			{
+				final L2Npc temp = addSpawn(VELOCIRAPTOR, SAILREN_LOC, true, 0, false);
+				temp.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				temp.setRunning();
+				_mobs.add(temp);
+			}
+			startQuestTimer("inactivity", INTERVAL_CHECK, null, null, true);
 		}
-		else if (event.equalsIgnoreCase("waiting2"))
+		else if (event.equalsIgnoreCase("spawn"))
 		{
-			L2Npc mob2 = addSpawn(PTEROSAUR,27852,-5536,-1983,44732,false,0);
-			this.startQuestTimer("start",0, mob2, null);
+			// Dummy spawn used to cast the skill. Despawned after 26sec.
+			final L2Npc temp = addSpawn(DUMMY, SAILREN_LOC, false, 26000, false);
+			
+			// Cast skill every 2,5sec.
+			_nest.broadcastPacket(new MagicSkillUse(npc, npc, 5090, 1, 2500, 0));
+			startQuestTimer("skill", 2500, temp, null, true);
+			
+			// Cinematic, meanwhile.
+			_nest.broadcastPacket(new SpecialCamera(temp.getObjectId(), 60, 110, 30, 4000, 4000, 0, 65, 1, 0)); // 4sec
+			
+			startQuestTimer("camera_0", 3900, temp, null, false); // 3sec
+			startQuestTimer("camera_1", 6800, temp, null, false); // 3sec
+			startQuestTimer("camera_2", 9700, temp, null, false); // 3sec
+			startQuestTimer("camera_3", 12600, temp, null, false); // 3sec
+			startQuestTimer("camera_4", 15500, temp, null, false); // 3sec
+			startQuestTimer("camera_5", 18400, temp, null, false); // 7sec
 		}
-		else if (event.equalsIgnoreCase("waiting3"))
-		{
-			L2Npc mob3 = addSpawn(TYRANNOSAURUS,27852,-5536,-1983,44732,false,0);
-			this.startQuestTimer("start",0, mob3, null);
-		}
-		else if (event.equalsIgnoreCase("waiting_boss"))
-		{
-			L2GrandBossInstance sailren = (L2GrandBossInstance) addSpawn(SAILREN,27734,-6938,-1982,44732,false,0);
-			GrandBossManager.getInstance().addBoss(sailren);
-			this.startQuestTimer("start2",0, sailren, null);
-		}
-		else if (event.equalsIgnoreCase("start"))
-		{
-			npc.setRunning();
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(27628,-6109,-1982,44732));
-			this.startQuestTimer("mob_has_arrived", 200, npc, null, true);
-		}
-		else if (event.equalsIgnoreCase("start2"))
-		{
-			npc.setRunning();
-			npc.setIsInvul(true);
-			npc.setIsParalyzed(true);
-			npc.setIsImmobilized(true);
-			this.startQuestTimer("camera_1", 2000, npc, null);
-			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,0,32,2000,11000));
-		}
-		else if (event.equalsIgnoreCase("action_1"))
-		{
-			npc.broadcastPacket(new SocialAction(npc.getObjectId(),2));
-			this.startQuestTimer("camera_6", 2500, npc, null);
-		}
+		else if (event.equalsIgnoreCase("skill"))
+			_nest.broadcastPacket(new MagicSkillUse(npc, npc, 5090, 1, 2500, 0));
+		else if (event.equalsIgnoreCase("camera_0"))
+			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 100, 180, 30, 3000, 3000, 0, 50, 1, 0));
 		else if (event.equalsIgnoreCase("camera_1"))
-		{
-			npc.setTarget(npc);
-			npc.setIsParalyzed(false);
-			npc.doCast(SkillTable.getInstance().getInfo(5118,1));
-			npc.setIsParalyzed(true);
-			this.startQuestTimer("camera_2", 4000, npc, null);
-			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,90,24,4000,11000));
-		}
+			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 150, 270, 25, 3000, 3000, 0, 30, 1, 0));
 		else if (event.equalsIgnoreCase("camera_2"))
-		{
-			npc.setTarget(npc);
-			npc.setIsParalyzed(false);
-			npc.doCast(SkillTable.getInstance().getInfo(5118,1));
-			npc.setIsParalyzed(true);
-			this.startQuestTimer("camera_3", 4000, npc, null);
-			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,160,16,4000,11000));
-		}
+			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 160, 360, 20, 3000, 3000, 10, 15, 1, 0));
 		else if (event.equalsIgnoreCase("camera_3"))
-		{
-			npc.setTarget(npc);
-			npc.setIsParalyzed(false);
-			npc.doCast(SkillTable.getInstance().getInfo(5118,1));
-			npc.setIsParalyzed(true);
-			this.startQuestTimer("camera_4", 4000, npc, null);
-			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,250,8,4000,11000));
-		}
+			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 160, 450, 10, 3000, 3000, 0, 10, 1, 0));
 		else if (event.equalsIgnoreCase("camera_4"))
 		{
-			npc.setTarget(npc);
-			npc.setIsParalyzed(false);
-			npc.doCast(SkillTable.getInstance().getInfo(5118,1));
-			npc.setIsParalyzed(true);
-			this.startQuestTimer("camera_5", 4000, npc, null);
-			npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),300,340,0,4000,11000));
+			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 160, 560, 0, 3000, 3000, 0, 10, 1, 0));
+			
+			final L2Npc temp = addSpawn(SAILREN, SAILREN_LOC, false, 0, false);
+			GrandBossManager.addBoss((L2GrandBossInstance) temp);
+			_mobs.add(temp);
+			
+			// Stop skill task.
+			cancelQuestTimers("skill");
+			_nest.broadcastPacket(new MagicSkillUse(npc, npc, 5091, 1, 2500, 0));
+			
+			temp.broadcastPacket(new SocialAction(temp.getObjectId(), 2));
 		}
 		else if (event.equalsIgnoreCase("camera_5"))
+			_nest.broadcastPacket(new SpecialCamera(npc.getObjectId(), 70, 560, 0, 500, 7000, -15, 10, 1, 0));
+		else if (event.equalsIgnoreCase("unlock"))
+			GrandBossManager.setBossStatus(SAILREN, DORMANT);
+		else if (event.equalsIgnoreCase("inactivity"))
 		{
-			npc.broadcastPacket(new SocialAction(npc.getObjectId(),2));
-			this.startQuestTimer("camera_6", 5000, npc, null);
-		}
-		else if (event.equalsIgnoreCase("camera_6"))
-		{
-			npc.setIsInvul(false);
-			npc.setIsParalyzed(false);
-			npc.setIsImmobilized(false);
-			_LastAction = System.currentTimeMillis();
-			this.startQuestTimer("sailren_despawn",30000, npc, null, true);
-		}
-		else if (event.equalsIgnoreCase("sailren_despawn"))
-		{
-			temp = (System.currentTimeMillis() - _LastAction);
-			if (temp > 600000)
+			// 10 minutes without any attack activity leads to a reset.
+			if ((System.currentTimeMillis() - _timeTracker) >= INTERVAL_CHECK)
 			{
-				npc.deleteMe();
-				GrandBossManager.getInstance().setBossStatus(SAILREN,DORMANT);
-				this.cancelQuestTimer("sailren_despawn", npc, null);
-			}
-		}
-		else if (event.equalsIgnoreCase("mob_has_arrived"))
-		{
-			int dx = Math.abs(npc.getX() - 27628);
-			int dy = Math.abs(npc.getY() + 6109);
-			if (dx <= 10 && dy <= 10)
-			{
-				npc.setIsImmobilized(true);
-				this.startQuestTimer("action_1",500, npc, null);
-				npc.getSpawn().setLocx(27628);
-				npc.getSpawn().setLocy(-6109);
-				npc.getSpawn().setLocz(-1982);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-				this.cancelQuestTimer("mob_has_arrived", npc, null);
-			}
-		}
-		else if (event.equalsIgnoreCase("spawn_cubes"))
-		{
-			addSpawn(32107,27734,-6838,-1982,0,false,600000);
-		}
-		else if (event.equalsIgnoreCase("sailren_unlock"))
-		{
-			GrandBossManager.getInstance().setBossStatus(SAILREN,DORMANT);
-		}
-	return super.onAdvEvent(event, npc, player);
-	}
-
-	@Override
-	public String onTalk(L2Npc npc,L2PcInstance player)
-	{
-	String htmltext = "";
-	if (GrandBossManager.getInstance().getBossStatus(SAILREN) == DORMANT || GrandBossManager.getInstance().getBossStatus(SAILREN) == WAITING)
-		{
-			if (player.isFlying())
-			{
-				htmltext = "<html><body>...</body></html>";
-			}
-			else if (player.getQuestState("sailren").getQuestItemsCount(8784) > 0)
-			{
-				player.getQuestState("sailren").takeItems(8784,1);
-				player.teleToLocation(27734 + Rnd.get(-80, 80),-6938 + Rnd.get(-80, 80),-1982);
-				htmltext = "";
-				if (GrandBossManager.getInstance().getBossStatus(SAILREN) == DORMANT)
+				// Set it dormant.
+				GrandBossManager.setBossStatus(SAILREN, DORMANT);
+				
+				// Delete all monsters and clean the list.
+				if (!_mobs.isEmpty())
 				{
-					this.startQuestTimer("waiting",60000, npc, null);
-					GrandBossManager.getInstance().setBossStatus(SAILREN,WAITING);
+					for (L2Npc mob : _mobs)
+						mob.deleteMe();
+					
+					_mobs.clear();
 				}
+				
+				// Oust all players from area.
+				_nest.oustAllPlayers();
+				
+				// Cancel inactivity task.
+				cancelQuestTimers("inactivity");
 			}
-			else
-				htmltext = "<html><body>...<br><font color=LEVEL>...</body></html>";
 		}
-	else if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING)
-		htmltext = "<html><body>...<br><font color=\"LEVEL\">...</font></body></html>";
-	else
-		htmltext = "<html><body>..<br><font color=\"LEVEL\">...</font></body></html>";
-	return htmltext;
-	}
-
-	@Override
-	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
-	{
-		_LastAction = System.currentTimeMillis();
-		if (npc.isInvul() && npc.getNpcId() == SAILREN)
+		else if (event.equalsIgnoreCase("oust"))
 		{
+			// Oust all players from area.
+			_nest.oustAllPlayers();
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
+	{
+		if (!_mobs.contains(npc) || !_nest.getAllowedPlayers().contains(killer.getObjectId()))
 			return null;
-		}
-		if ((npc.getNpcId() == VELOCIRAPTOR || npc.getNpcId() == PTEROSAUR || npc.getNpcId() == TYRANNOSAURUS) && GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING)
+		
+		switch (npc.getNpcId())
 		{
-			if (getQuestTimer("mob_has_arrived", npc, null) != null)
-			{
-				getQuestTimer("mob_has_arrived", npc, null).cancel();
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO,new L2CharPosition(npc.getX(),npc.getY(),npc.getZ(),npc.getHeading()));
-				this.startQuestTimer("camera_6", 0, npc, null);
-			}
+			case VELOCIRAPTOR:
+				// Once the 3 Velociraptors are dead, spawn a Pterosaur.
+				if (_mobs.remove(npc) && _mobs.isEmpty())
+				{
+					final L2Npc temp = addSpawn(PTEROSAUR, SAILREN_LOC, false, 0, false);
+					temp.setRunning();
+					temp.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);
+					_mobs.add(temp);
+				}
+				break;
+			
+			case PTEROSAUR:
+				// Pterosaur is dead, spawn a Trex.
+				if (_mobs.remove(npc))
+				{
+					final L2Npc temp = addSpawn(TREX, SAILREN_LOC, false, 0, false);
+					temp.setRunning();
+					temp.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, killer);
+					temp.broadcastNpcSay("?");
+					_mobs.add(temp);
+				}
+				break;
+			
+			case TREX:
+				// Trex is dead, wait 5min and spawn Sailren.
+				if (_mobs.remove(npc))
+				{ 
+				    startQuestTimer("spawn", 5 * 60000, npc, killer, false);
+				}
+				break;
+			
+			case SAILREN:
+				if (_mobs.remove(npc))
+				{
+					// Set Sailren as dead.
+					GrandBossManager.setBossStatus(SAILREN, DEAD);
+					
+					// Spawn the Teleport Cube for 10min.
+					addSpawn(CUBE, npc, false, INTERVAL_CHECK, false);
+					
+					// Cancel inactivity task.
+					cancelQuestTimers("inactivity");
+					
+					long respawnTime = (long) Config.Interval_Of_Sailren_Spawn + Rnd.get(-Config.Random_Of_Sailren_Spawn, Config.Random_Of_Sailren_Spawn);
+					respawnTime *= 3600000;
+					
+					startQuestTimer("oust", INTERVAL_CHECK, null, null, false);
+					startQuestTimer("unlock", respawnTime, null, null, false);
+					
+					// Save the respawn time so that the info is maintained past reboots.
+					final StatsSet info = GrandBossManager.getStatsSet(SAILREN);
+					info.set("respawn_time", System.currentTimeMillis() + respawnTime);
+					GrandBossManager.setStatsSet(SAILREN, info);
+				}
+				break;
 		}
-		return super.onAttack(npc, attacker, damage, isPet);
+		
+		return null;
 	}
-
+	
 	@Override
-	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
+	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING && npc.getNpcId() == SAILREN)
-		{
-			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-			this.cancelQuestTimer("sailren_despawn", npc, null);
-			this.startQuestTimer("spawn_cubes", 5000, npc, null);
-			GrandBossManager.getInstance().setBossStatus(SAILREN,DEAD);
-			long respawnTime = (Config.Interval_Of_Sailren_Spawn + Rnd.get(Config.Random_Of_Sailren_Spawn));
-			this.startQuestTimer("sailren_unlock", respawnTime, npc, null);
-			// also save the respawn time so that the info is maintained past reboots
-			StatsSet info = GrandBossManager.getInstance().getStatsSet(SAILREN);
-			info.set("respawn_time",System.currentTimeMillis() + respawnTime);
-			GrandBossManager.getInstance().setStatsSet(SAILREN,info);
-		}
-		else if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING && npc.getNpcId() == VELOCIRAPTOR)
-		{
-			this.cancelQuestTimer("sailren_despawn", npc, null);
-			this.startQuestTimer("waiting2", 15000, npc, null);
-		}
-		else if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING && npc.getNpcId() == PTEROSAUR)
-		{
-			this.cancelQuestTimer("sailren_despawn", npc, null);
-			this.startQuestTimer("waiting3", 15000, npc, null);
-		}
-		else if (GrandBossManager.getInstance().getBossStatus(SAILREN) == FIGHTING && npc.getNpcId() == TYRANNOSAURUS)
-		{
-			this.cancelQuestTimer("sailren_despawn", npc, null);
-			this.startQuestTimer("waiting_boss", 15000, npc, null);
-		}
-		return super.onKill(npc,killer,isPet);
+		if (!_mobs.contains(npc) || !_nest.getAllowedPlayers().contains(attacker.getObjectId()))
+			return null;
+		
+		// Actualize _timeTracker.
+		_timeTracker = System.currentTimeMillis();
+		
+		return null;
 	}
-
+	
 	public static void main(String[] args)
 	{
-		// now call the constructor (starts up the ai)
-		new Sailren(-1,"sailren","ai");
+		new Sailren(Sailren.class.getSimpleName(), "ai/individual");
 	}
 }

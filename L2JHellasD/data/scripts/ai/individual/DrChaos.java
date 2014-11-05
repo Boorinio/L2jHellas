@@ -28,11 +28,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
 
-/**
- * DrChaos AI
- * @author Kerberos
- *
- */
 public class DrChaos extends Quest
 {
 
@@ -73,7 +68,7 @@ public class DrChaos extends Quest
 	                if (event.equalsIgnoreCase("Chat"))
 	                {
 	                        npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "Fools! Why haven't you fled yet? Prepare you learn a lesson!"));
-	                        startQuestTimer("1", 3000, npc, player);
+	                        startQuestTimer("1", 3000, npc, player,false);
 	                }
 	                else if (event.equalsIgnoreCase("1"))
 	    {
@@ -85,20 +80,20 @@ public class DrChaos extends Quest
 	       }
 	       else
 	         //print "Dr Chaos AI: problem finding Strange Machine (npcid = "+STRANGE_MACHINE+"). Error: not spawned!"
-	       startQuestTimer("2",2000,npc,player);
-	       startQuestTimer("3",10000,npc,player);
+	       startQuestTimer("2",2000,npc,player,false);
+	       startQuestTimer("3",10000,npc,player,false);
 	    }
 	    else if (event.equalsIgnoreCase("2"))
 	       npc.broadcastPacket(new SocialAction(npc.getObjectId(),3));
 	    else if (event.equalsIgnoreCase("3"))
 	    {
 	       npc.broadcastPacket(new SpecialCamera(npc.getObjectId(),1,-150,10,3000,20000));
-	       startQuestTimer("4",2500,npc,player);
+	       startQuestTimer("4",2500,npc,player,false);
 	    }
 	    else if (event.equalsIgnoreCase("4"))
 	    {
 	       npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(96055,-110759,-3312,0));
-	       startQuestTimer("5",2000,npc,player);
+	       startQuestTimer("5",2000,npc,player,false);
 	    }
 	    else if (event.equalsIgnoreCase("5"))
 	    {
@@ -106,9 +101,9 @@ public class DrChaos extends Quest
 	       npc.teleToLocation(-113091,-243942,-15536);
 	       if (!_IsGolemSpawned)
 	       {
-	          L2Npc golem = addSpawn(CHAOS_GOLEM,94640,-112496,-3336,0,false,0);
+	          L2Npc golem = addSpawn(CHAOS_GOLEM,94640,-112496,-3336,0,false,0,false);
 	          _IsGolemSpawned = true;
-	          startQuestTimer("6",1000,golem,player);
+	          startQuestTimer("6",1000,golem,player,false);
 	          player.sendPacket(new PlaySound(1,"Rm03_A",0,0,0,0,0));
 	       }
 	    }
@@ -124,7 +119,7 @@ public class DrChaos extends Quest
 		{
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "How dare you trespass into my territory? Have you no fear?"));
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(96323,-110914,-3328,0));
-			this.startQuestTimer("Chat",3000,npc,player);
+			this.startQuestTimer("Chat",3000,npc,player,false);
 		}
 		return "";
 	}

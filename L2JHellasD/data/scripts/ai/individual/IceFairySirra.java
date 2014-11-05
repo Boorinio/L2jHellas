@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import javolution.util.FastList;
-import ai.group_template.L2AttackableAIScript;
+import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -31,19 +31,14 @@ import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * Ice Fairy Sirra AI
- * 
- * @author Kerberos
- */
-public class IceFairySirra extends L2AttackableAIScript
+public class IceFairySirra extends AbstractNpcAI
 {
 	private static final int STEWARD = 32029;
 	private static final int SILVER_HEMOCYTE = 8057;
@@ -52,15 +47,15 @@ public class IceFairySirra extends L2AttackableAIScript
 	protected FastList<L2Npc> _allMobs = new FastList<L2Npc>();
 	protected Future<?> _onDeadEventTask = null;
 
-	public IceFairySirra(int id, String name, String descr)
+	public IceFairySirra(String name, String descr)
 	{
-		super(id, name, descr);
+		super(name, descr);
 		int[] mob =
 			{ STEWARD, 22100, 22102, 22104 };
 		registerMobs(mob);
-		addEventId(STEWARD, Quest.QuestEventType.QUEST_START);
-		addEventId(STEWARD, Quest.QuestEventType.ON_TALK);
-		addEventId(STEWARD, Quest.QuestEventType.ON_FIRST_TALK);
+		addEventId(STEWARD, QuestEventType.QUEST_START);
+		addEventId(STEWARD, QuestEventType.ON_TALK);
+		addEventId(STEWARD, QuestEventType.ON_FIRST_TALK);
 		init();
 	}
 
@@ -329,7 +324,7 @@ public class IceFairySirra extends L2AttackableAIScript
 				{
 					if (checkItems(player) == true)
 					{
-						startQuestTimer("start", 100000, null, player);
+						startQuestTimer("start", 100000, null, player,false);
 						_player = player;
 						destroyItems(player);
 						player.getInventory().addItem("Scroll", 8379, 3, player, null);
@@ -360,24 +355,24 @@ public class IceFairySirra extends L2AttackableAIScript
 			_freyasZone.setZoneEnabled(true);
 			closeGates();
 			doSpawns();
-			startQuestTimer("Party_Port", 2000, null, player);
-			startQuestTimer("End", 1802000, null, player);
+			startQuestTimer("Party_Port", 2000, null, player,false);
+			startQuestTimer("End", 1802000, null, player,false);
 		}
 		else if (event.equalsIgnoreCase("Party_Port"))
 		{
 			teleportInside(player);
 			screenMessage(player, "Steward: Please restore the Queen's appearance!", 10000);
-			startQuestTimer("30MinutesRemaining", 300000, null, player);
+			startQuestTimer("30MinutesRemaining", 300000, null, player,false);
 		}
 		else if (event.equalsIgnoreCase("30MinutesRemaining"))
 		{
 			screenMessage(player, "30 minute(s) are remaining.", 10000);
-			startQuestTimer("20minutesremaining", 600000, null, player);
+			startQuestTimer("20minutesremaining", 600000, null, player,false);
 		}
 		else if (event.equalsIgnoreCase("20MinutesRemaining"))
 		{
 			screenMessage(player, "20 minute(s) are remaining.", 10000);
-			startQuestTimer("10minutesremaining", 600000, null, player);
+			startQuestTimer("10minutesremaining", 600000, null, player,false);
 		}
 		else if (event.equalsIgnoreCase("10MinutesRemaining"))
 		{
@@ -393,6 +388,6 @@ public class IceFairySirra extends L2AttackableAIScript
 
 	public static void main(String[] args)
 	{
-		new IceFairySirra(-1, "IceFairySirra", "ai");
+		new IceFairySirra("IceFairySirra", "ai");
 	}
 }

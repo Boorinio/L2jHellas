@@ -16,7 +16,7 @@ package ai.individual;
 
 import java.util.logging.Logger;
 
-import ai.group_template.L2AttackableAIScript;
+import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -42,7 +42,7 @@ import com.l2jhellas.util.Rnd;
  * Zaken AI
  *
  */
-public class Zaken extends L2AttackableAIScript
+public class Zaken extends AbstractNpcAI
 {
 	protected static final Logger log = Logger.getLogger(Zaken.class.getName());
 
@@ -75,9 +75,9 @@ public class Zaken extends L2AttackableAIScript
 
 	private static L2BossZone _Zone;
 
-	public Zaken (int questId, String name, String descr)
+	public Zaken (String name, String descr)
 	{
-        super(questId,name,descr);
+        super(name,descr);
 
         // Zaken doors handling
         ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
@@ -116,8 +116,8 @@ public class Zaken extends L2AttackableAIScript
         registerMobs(mobs);
         _Zone = GrandBossManager.getInstance().getZone(55312, 219168, -3223);
 
-        StatsSet info = GrandBossManager.getInstance().getStatsSet(ZAKEN);
-        int status = GrandBossManager.getInstance().getBossStatus(ZAKEN);
+        StatsSet info = GrandBossManager.getStatsSet(ZAKEN);
+        int status = GrandBossManager.getBossStatus(ZAKEN);
         if (status == DEAD)
         {
             // load the unlock date and time for zaken from DB
@@ -125,12 +125,12 @@ public class Zaken extends L2AttackableAIScript
             // if zaken is locked until a certain time, mark it so and start the unlock timer
             // the unlock time has not yet expired.
             if (temp > 0)
-                startQuestTimer("zaken_unlock", temp, null, null);
+                startQuestTimer("zaken_unlock", temp, null, null,false);
             else
             {
                 // the time has already expired while the server was offline. Immediately spawn zaken.
-                L2GrandBossInstance zaken = (L2GrandBossInstance) addSpawn(ZAKEN,55312, 219168, -3223,0,false,0);
-                GrandBossManager.getInstance().setBossStatus(ZAKEN,ALIVE);
+                L2GrandBossInstance zaken = (L2GrandBossInstance) addSpawn(ZAKEN,55312, 219168, -3223,0,false,0,false);
+                GrandBossManager.setBossStatus(ZAKEN,ALIVE);
                 spawnBoss(zaken);
             }
         }
@@ -142,7 +142,7 @@ public class Zaken extends L2AttackableAIScript
             int heading = info.getInteger("heading");
             int hp = info.getInteger("currentHP");
             int mp = info.getInteger("currentMP");
-            L2GrandBossInstance zaken = (L2GrandBossInstance) addSpawn(ZAKEN,loc_x,loc_y,loc_z,heading,false,0);
+            L2GrandBossInstance zaken = (L2GrandBossInstance) addSpawn(ZAKEN,loc_x,loc_y,loc_z,heading,false,0,false);
             zaken.setCurrentHpMp(hp,mp);
             spawnBoss(zaken);
         }
@@ -155,7 +155,7 @@ public class Zaken extends L2AttackableAIScript
     		log.warning("Zaken AI failed to load, missing Zaken in grandboss_data.sql");
     		return;
     	}
-        GrandBossManager.getInstance().addBoss(npc);
+        GrandBossManager.addBoss(npc);
 
         npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
         _ai0 = 0;
@@ -182,7 +182,7 @@ public class Zaken extends L2AttackableAIScript
 	@Override
 	public String onAdvEvent (String event, L2Npc npc, L2PcInstance player)
 	{
-		int status = GrandBossManager.getInstance().getBossStatus(ZAKEN);
+		int status = GrandBossManager.getBossStatus(ZAKEN);
 		if (status == DEAD && !event.equalsIgnoreCase("zaken_unlock"))
 			return super.onAdvEvent(event, npc, player);
 
@@ -380,125 +380,125 @@ public class Zaken extends L2AttackableAIScript
 			if( _ai4 == 1 )
 			{
 				int rr = Rnd.get(15);
-				addSpawn(pirates_zombie_captain_b,Xcoords[rr]+Rnd.get(650),Ycoords[rr]+Rnd.get(650),Zcoords[rr],Rnd.get(65536),false,0).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,Xcoords[rr]+Rnd.get(650),Ycoords[rr]+Rnd.get(650),Zcoords[rr],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
 				_ai4 = 2;
 			}
 			else if( _ai4 == 2 )
 			{
 				int rr = Rnd.get(15);
-				addSpawn(doll_blader_b,Xcoords[rr]+Rnd.get(650),Ycoords[rr]+Rnd.get(650),Zcoords[rr],Rnd.get(65536),false,0).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,Xcoords[rr]+Rnd.get(650),Ycoords[rr]+Rnd.get(650),Zcoords[rr],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
 				_ai4 = 3;
 			}
 			else if( _ai4 == 3 )
 			{
-				addSpawn(vale_master_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0).setIsRaidMinion(true);
+				addSpawn(vale_master_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
 				_ai4 = 4;
 			}
 			else if( _ai4 == 4 )
 			{
-				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,Xcoords[Rnd.get(15)]+Rnd.get(650),Ycoords[Rnd.get(15)]+Rnd.get(650),Zcoords[Rnd.get(15)],Rnd.get(65536),false,0,false).setIsRaidMinion(true);
 				_ai4 = 5;
 			}
 			else if( _ai4 == 5 )
 			{
-				addSpawn(doll_blader_b,52675,219371,-3290,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,52687,219596,-3368,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,52672,219740,-3418,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,52857,219992,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,52959,219997,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,53381,220151,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,54236,220948,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54885,220144,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55264,219860,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,55399,220263,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55679,220129,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,56276,220783,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,57173,220234,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,56267,218826,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,56294,219482,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,56094,219113,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,56364,218967,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,57113,218079,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,56186,217153,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55440,218081,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,55202,217940,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55225,218236,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54973,218075,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,53412,218077,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54226,218797,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54394,219067,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54139,219253,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,54262,219480,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,52675,219371,-3290,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,52687,219596,-3368,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,52672,219740,-3418,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,52857,219992,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,52959,219997,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,53381,220151,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,54236,220948,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54885,220144,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55264,219860,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,55399,220263,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55679,220129,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,56276,220783,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,57173,220234,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,56267,218826,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,56294,219482,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,56094,219113,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,56364,218967,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,57113,218079,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,56186,217153,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55440,218081,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,55202,217940,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55225,218236,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54973,218075,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,53412,218077,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54226,218797,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54394,219067,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54139,219253,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,54262,219480,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
 				_ai4 = 6;
 			}
 			else if( _ai4 == 6 )
 			{
-				addSpawn(pirates_zombie_b,53412,218077,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54413,217132,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,54841,217132,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,55372,217128,-3343,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,55893,217122,-3488,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,56282,217237,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,56963,218080,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,56267,218826,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,56294,219482,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,56094,219113,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,56364,218967,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,56276,220783,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,57173,220234,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54885,220144,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55264,219860,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,55399,220263,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55679,220129,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,54236,220948,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,54464,219095,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54226,218797,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54394,219067,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54139,219253,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,54262,219480,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,53412,218077,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55440,218081,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,55202,217940,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55225,218236,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54973,218075,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,53412,218077,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54413,217132,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,54841,217132,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,55372,217128,-3343,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,55893,217122,-3488,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,56282,217237,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,56963,218080,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,56267,218826,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,56294,219482,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,56094,219113,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,56364,218967,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,56276,220783,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,57173,220234,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54885,220144,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55264,219860,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,55399,220263,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55679,220129,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,54236,220948,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,54464,219095,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54226,218797,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54394,219067,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54139,219253,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,54262,219480,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,53412,218077,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55440,218081,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,55202,217940,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55225,218236,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54973,218075,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
 				_ai4 = 7;
 			}
 			else if( _ai4 == 7 )
 			{
-				addSpawn(pirates_zombie_b,54228,217504,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54181,217168,-3216,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,54714,217123,-3168,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,55298,217127,-3073,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,55787,217130,-2993,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,56284,217216,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,56963,218080,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,56267,218826,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,56294,219482,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,56094,219113,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,56364,218967,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,56276,220783,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,57173,220234,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54885,220144,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55264,219860,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,55399,220263,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55679,220129,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,54236,220948,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,54464,219095,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54226,218797,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(vale_master_b,54394,219067,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54139,219253,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(doll_blader_b,54262,219480,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,53412,218077,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,54280,217200,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55440,218081,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_captain_b,55202,217940,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,55225,218236,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
-				addSpawn(pirates_zombie_b,54973,218075,-2944,Rnd.get(65536),false,0).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54228,217504,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54181,217168,-3216,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,54714,217123,-3168,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,55298,217127,-3073,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,55787,217130,-2993,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,56284,217216,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,56963,218080,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,56267,218826,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,56294,219482,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,56094,219113,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,56364,218967,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,56276,220783,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,57173,220234,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54885,220144,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55264,219860,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,55399,220263,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55679,220129,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,54236,220948,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,54464,219095,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54226,218797,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(vale_master_b,54394,219067,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54139,219253,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(doll_blader_b,54262,219480,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,53412,218077,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,54280,217200,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55440,218081,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_captain_b,55202,217940,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,55225,218236,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
+				addSpawn(pirates_zombie_b,54973,218075,-2944,Rnd.get(65536),false,0,false).setIsRaidMinion(true);
 				_ai4 = 8;
 				cancelQuestTimer("1003", null, null);
 			}
@@ -506,13 +506,13 @@ public class Zaken extends L2AttackableAIScript
 
 		else if (event.equalsIgnoreCase("zaken_unlock"))
         {
-            L2GrandBossInstance zaken = (L2GrandBossInstance) addSpawn(ZAKEN,55312, 219168, -3223,0,false,0);
-            GrandBossManager.getInstance().setBossStatus(ZAKEN,ALIVE);
+            L2GrandBossInstance zaken = (L2GrandBossInstance) addSpawn(ZAKEN,55312, 219168, -3223,0,false,0,false);
+            GrandBossManager.setBossStatus(ZAKEN,ALIVE);
             spawnBoss(zaken);
         }
         else if (event.equalsIgnoreCase("CreateOnePrivateEx"))
         {
-            addSpawn(npc.getNpcId(),npc.getX(),npc.getY(),npc.getZ(),0,false,0).setIsRaidMinion(true);
+            addSpawn(npc.getNpcId(),npc.getX(),npc.getY(),npc.getZ(),0,false,0,false).setIsRaidMinion(true);
         }
         return super.onAdvEvent(event, npc, player);
 	}
@@ -534,7 +534,7 @@ public class Zaken extends L2AttackableAIScript
             	_ai1 = caller.getX();
                 _ai2 = caller.getY();
                 _ai3 = caller.getZ();
-                startQuestTimer("1002",300,caller,null);
+                startQuestTimer("1002",300,caller,null,false);
             }
         }
         return super.onFactionCall(npc, caller, attacker, isPet);
@@ -759,22 +759,22 @@ public class Zaken extends L2AttackableAIScript
         if (npcId == ZAKEN)
         {
             npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-            GrandBossManager.getInstance().setBossStatus(ZAKEN,DEAD);
+            GrandBossManager.setBossStatus(ZAKEN,DEAD);
             //time is 36hour	+/- 17hour
             long respawnTime = Config.Interval_Of_Zaken_Spawn + Rnd.get(Config.Random_Of_Zaken_Spawn);
-            startQuestTimer("zaken_unlock", respawnTime, null, null);
+            startQuestTimer("zaken_unlock", respawnTime, null, null,false);
             cancelQuestTimer("1001", npc, null);
             cancelQuestTimer("1003", npc, null);
             // also save the respawn time so that the info is maintained past reboots
-            StatsSet info = GrandBossManager.getInstance().getStatsSet(ZAKEN);
+            StatsSet info = GrandBossManager.getStatsSet(ZAKEN);
             info.set("respawn_time",System.currentTimeMillis() + respawnTime);
-            GrandBossManager.getInstance().setStatsSet(ZAKEN,info);
+            GrandBossManager.setStatsSet(ZAKEN,info);
         }
-        else if (GrandBossManager.getInstance().getBossStatus(ZAKEN) == ALIVE)
+        else if (GrandBossManager.getBossStatus(ZAKEN) == ALIVE)
         {
             if (npcId != ZAKEN)
             {
-                startQuestTimer("CreateOnePrivateEx",((30 + Rnd.get(60))*1000),npc,null);
+                startQuestTimer("CreateOnePrivateEx",((30 + Rnd.get(60))*1000),npc,null,false);
             }
         }
         return super.onKill(npc,killer,isPet);
@@ -934,6 +934,6 @@ public class Zaken extends L2AttackableAIScript
     public static void main(String[] args)
     {
     	// now call the constructor (starts up the ai)
-    	new Zaken(-1,"zaken","ai");
+    	new Zaken("zaken","ai");
     }
 }
