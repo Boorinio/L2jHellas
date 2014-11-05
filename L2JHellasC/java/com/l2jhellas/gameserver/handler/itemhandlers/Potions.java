@@ -98,12 +98,6 @@ public class Potions implements IItemHandler
 		else
 			return;
 
-		if (activeChar.isSitting())
-		{
-			playable.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-
 		if ((activeChar._inEventTvT && TvT._started && !Config.TVT_ALLOW_POTIONS) || (activeChar._inEventCTF && CTF._started && !Config.CTF_ALLOW_POTIONS) || (activeChar._inEventDM && DM._started && !Config.DM_ALLOW_POTIONS))
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
