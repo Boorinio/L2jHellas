@@ -54,7 +54,7 @@ public class GMViewQuestList extends L2GameServerPacket
 
 		for (Quest q : questList)
 		{
-			writeD(q.getQuestIntId());
+			writeD(q.getQuestId());
 
 			QuestState qs = _activeChar.getQuestState(q.getName());
 

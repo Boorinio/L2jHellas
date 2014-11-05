@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -41,6 +42,7 @@ import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.gameserver.network.serverpackets.SpawnItem;
 import com.l2jhellas.gameserver.network.serverpackets.SpawnItemPoly;
 import com.l2jhellas.gameserver.network.serverpackets.StaticObject;
+import com.l2jhellas.gameserver.network.serverpackets.VehicleDeparture;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
 
 public class PcKnownList extends PlayableKnownList
@@ -49,7 +51,6 @@ public class PcKnownList extends PlayableKnownList
 	{
 		super(activeChar);
 	}
-
 	/**
 	 * Add a visible L2Object to L2PcInstance _knownObjects and _knownPlayer (if necessary) and send Server-Client Packets needed to inform the L2PcInstance of its state and
 	 * actions in progress.<BR>
@@ -123,7 +124,7 @@ public class PcKnownList extends PlayableKnownList
 					if (object != getActiveChar().getBoat())
 					{
 						getActiveChar().sendPacket(new VehicleInfo((L2BoatInstance) object));
-						((L2BoatInstance) object).sendVehicleDeparture(getActiveChar());
+						getActiveChar().sendPacket(new VehicleDeparture((L2BoatInstance) object));
 					}
 			}
 			else if (object instanceof L2StaticObjectInstance)
@@ -156,6 +157,9 @@ public class PcKnownList extends PlayableKnownList
 			}
 			else if (object instanceof L2PcInstance)
 			{
+				if (((L2PcInstance) object).inObserverMode())
+					return false;
+				
 				L2PcInstance otherPlayer = (L2PcInstance) object;
 				if (otherPlayer.isInBoat())
 				{
@@ -164,7 +168,7 @@ public class PcKnownList extends PlayableKnownList
 					int relation = otherPlayer.getRelation(getActiveChar());
 					if (otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != relation)
 						getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
-					getActiveChar().sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().getX(), otherPlayer.getInBoatPosition().getY(), otherPlayer.getInBoatPosition().getZ()));
+					getActiveChar().sendPacket(new GetOnVehicle(otherPlayer.getObjectId(), otherPlayer.getBoat().getObjectId(), otherPlayer.getInVehiclePosition()));		
 					/*
 					 * if(otherPlayer.getBoat().GetVehicleDeparture() == null)
 					 * {
@@ -258,32 +262,16 @@ public class PcKnownList extends PlayableKnownList
 	@Override
 	public int getDistanceToForgetObject(L2Object object)
 	{
-		// when knownlist grows, the distance to forget should be at least
-		// the same as the previous watch range, or it becomes possible that
-		// extra charinfo packets are being sent (watch-forget-watch-forget)
-		int knownlistSize = getKnownObjects().size();
-		if (knownlistSize <= 25)
-			return 4200;
-		if (knownlistSize <= 35)
-			return 3600;
-		if (knownlistSize <= 70)
-			return 2910;
-		else
-			return 2310;
+		return (int) Math.round(1.5 * getDistanceToWatchObject(object));
 	}
-
+	
 	@Override
 	public int getDistanceToWatchObject(L2Object object)
 	{
-		int knownlistSize = getKnownObjects().size();
-
-		if (knownlistSize <= 25)
-			return 3500; // empty field
-		if (knownlistSize <= 35)
-			return 2900;
-		if (knownlistSize <= 70)
-			return 2300;
-		else
-			return 1700; // Siege, TOI, city
+		if (object instanceof L2Vehicle)
+			return 8000;
+		
+		return Math.max(1800, 3600 - (_knownObjects.size() * 20));
 	}
+	
 }

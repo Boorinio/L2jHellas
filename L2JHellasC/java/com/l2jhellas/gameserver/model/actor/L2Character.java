@@ -61,7 +61,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
@@ -76,6 +75,7 @@ import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -1729,7 +1729,7 @@ public abstract class L2Character extends L2Object
 		// Notify Quest of character's death
 		for (QuestState qs : getNotifyQuestOfDeath())
 		{
-			qs.getQuest().notifyDeath((killer == null ? this : killer), this, qs);
+			qs.getQuest().notifyDeath((killer == null ? this : killer), this, qs.getPlayer());
 		}
 		getNotifyQuestOfDeath().clear();
 		
@@ -1984,7 +1984,7 @@ public abstract class L2Character extends L2Object
 	}
 	
 	/** Return True if the L2Character is flying. */
-	public final boolean isFlying()
+	public boolean isFlying()
 	{
 		return _isFlying;
 	}
@@ -3384,7 +3384,7 @@ public abstract class L2Character extends L2Object
 	 * Return a list of L2Character that attacked.<BR>
 	 * <BR>
 	 */
-	public final List<QuestState> getNotifyQuestOfDeath()
+	public List<QuestState> getNotifyQuestOfDeath()
 	{
 		if (_NotifyQuestOfDeathList == null)
 			_NotifyQuestOfDeathList = new FastList<QuestState>();
@@ -4048,38 +4048,18 @@ public abstract class L2Character extends L2Object
 		{
 			// Set the timer of last position update to now
 			m._moveTimestamp = gameTicks;
-			
-			// Set the position of the L2Character to the destination
-			if (this instanceof L2BoatInstance)
-			{
-				super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
-				((L2BoatInstance) this).updatePeopleInTheBoat(m._xDestination, m._yDestination, m._zDestination);
-			}
-			else
-			{
-				super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
-			}
-			
+
+			super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
+
 			return true;
 		}
-		
-		// Estimate the position of the L2Character dureing the movement
-		// according to its _xSpeedTicks and _ySpeedTicks
-		// The Z position is obtained from the client
-		if (this instanceof L2BoatInstance)
-		{
-			super.getPosition().setXYZ(m._xMoveFrom + (int) (elapsed * m._xSpeedTicks), m._yMoveFrom + (int) (elapsed * m._ySpeedTicks), super.getZ());
-			((L2BoatInstance) this).updatePeopleInTheBoat(m._xMoveFrom + (int) (elapsed * m._xSpeedTicks), m._yMoveFrom + (int) (elapsed * m._ySpeedTicks), super.getZ());
-		}
-		else
-		{
+			
 			super.getPosition().setXYZ(m._xMoveFrom + (int) (elapsed * m._xSpeedTicks), m._yMoveFrom + (int) (elapsed * m._ySpeedTicks), super.getZ());
 			if (this instanceof L2PcInstance)
 				((L2PcInstance) this).revalidateZone(false);
 			else
 				revalidateZone();
-		}
-		
+			
 		// Set the timer of last position update to now
 		m._moveTimestamp = gameTicks;
 		
@@ -6361,8 +6341,8 @@ public abstract class L2Character extends L2Object
 							{
 								L2Npc npcMob = (L2Npc) target;
 								
-								if ((npcMob.isInsideRadius(caster, 1000, true, true)) && (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null))
-									for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))
+								if ((npcMob.isInsideRadius(caster, 1000, true, true)) && (npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE) != null))
+									for (Quest quest : npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE))
 										quest.notifySkillSee(npcMob, caster, skill, targets, this instanceof L2Summon);
 							}
 						}
@@ -6405,8 +6385,8 @@ public abstract class L2Character extends L2Object
 					{
 						L2Npc npcMob = (L2Npc) target;
 						
-						if ((npcMob.isInsideRadius(caster, 1000, true, true)) && (npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE) != null))
-							for (Quest quest : npcMob.getTemplate().getEventQuests(Quest.QuestEventType.ON_SKILL_SEE))
+						if ((npcMob.isInsideRadius(caster, 1000, true, true)) && (npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE) != null))
+							for (Quest quest : npcMob.getTemplate().getEventQuests(QuestEventType.ON_SKILL_SEE))
 								quest.notifySkillSee(npcMob, caster, skill, targets, this instanceof L2Summon);
 					}
 				}
@@ -7129,4 +7109,111 @@ public abstract class L2Character extends L2Object
 	{
 		_mob = m;
 	}
+	
+	
+	/**
+	 * @param target Target to check.
+	 * @return True if the L2Character is behind the target and can't be seen.
+	 */
+	public boolean isBehind(L2Character target)
+	{
+		if (target == null)
+			return false;
+		
+		final double maxAngleDiff = 60;
+		
+		double angleChar = Util.calculateAngleFrom(this, target);
+		double angleTarget = Util.convertHeadingToDegree(target.getHeading());
+		double angleDiff = angleChar - angleTarget;
+		
+		if (angleDiff <= -360 + maxAngleDiff)
+			angleDiff += 360;
+		
+		if (angleDiff >= 360 - maxAngleDiff)
+			angleDiff -= 360;
+		
+		return Math.abs(angleDiff) <= maxAngleDiff;
+	}
+	
+	/**
+	 * @param target Target to check.
+	 * @return True if the target is facing the L2Character.
+	 */
+	public boolean isInFrontOf(L2Character target)
+	{
+		if (target == null)
+			return false;
+		
+		final double maxAngleDiff = 60;
+		
+		double angleTarget = Util.calculateAngleFrom(target, this);
+		double angleChar = Util.convertHeadingToDegree(target.getHeading());
+		double angleDiff = angleChar - angleTarget;
+		
+		if (angleDiff <= -360 + maxAngleDiff)
+			angleDiff += 360;
+		
+		if (angleDiff >= 360 - maxAngleDiff)
+			angleDiff -= 360;
+		
+		return Math.abs(angleDiff) <= maxAngleDiff;
+	}
+	
+	/**
+	 * @param target Target to check.
+	 * @param maxAngle The angle to check.
+	 * @return true if target is in front of L2Character (shield def etc)
+	 */
+	public boolean isFacing(L2Object target, int maxAngle)
+	{
+		if (target == null)
+			return false;
+		
+		double maxAngleDiff = maxAngle / 2;
+		double angleTarget = Util.calculateAngleFrom(this, target);
+		double angleChar = Util.convertHeadingToDegree(getHeading());
+		double angleDiff = angleChar - angleTarget;
+		
+		if (angleDiff <= -360 + maxAngleDiff)
+			angleDiff += 360;
+		
+		if (angleDiff >= 360 - maxAngleDiff)
+			angleDiff -= 360;
+		
+		return Math.abs(angleDiff) <= maxAngleDiff;
+	}
+	
+	public boolean isInFrontOfTarget()
+	{
+		L2Object target = getTarget();
+		if (target instanceof L2Character)
+			return isInFrontOf((L2Character) target);
+		
+		return false;
+	}
+	
+	public void initKnownList()
+	{
+		setKnownList(new CharKnownList(this));
+	}
+	
+	/**
+	 * @return the RunSpeed (base+modifier) or WalkSpeed (base+modifier) of the L2Character in function of the movement type.
+	 */
+	public int getMoveSpeed()
+	{
+		if (this == null)
+			return 1;
+		
+		if (isRunning())
+			return getRunSpeed();
+		
+		return getWalkSpeed();
+	}
+	
+	public void stopAllEffectsExceptThoseThatLastThroughDeath()
+	{
+		_effects.stopAllEffectsExceptThoseThatLastThroughDeath();
+	}
+	
 }

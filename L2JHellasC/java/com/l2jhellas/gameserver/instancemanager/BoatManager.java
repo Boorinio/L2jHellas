@@ -14,22 +14,20 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.LineNumberReader;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
-import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
+import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -37,16 +35,20 @@ public class BoatManager
 {
 	protected static final Logger _log = Logger.getLogger(BoatManager.class.getName());
 
-	private static BoatManager _instance;
+	private final Map<Integer, L2BoatInstance> _boats = new HashMap<>();
+	private final boolean[] _docksBusy = new boolean[3];
+	
+	public static final int TALKING_ISLAND = 0;
+	public static final int GLUDIN_HARBOR = 1;
+	public static final int RUNE_HARBOR = 2;
+	
+	public static final int BOAT_BROADCAST_RADIUS = 20000;
 
+	private static BoatManager _instance;
 	public static final BoatManager getInstance()
 	{
-		if (_instance == null)
-		{
-			System.out.println("Initializing BoatManager.");
-			_instance = new BoatManager();
-			_instance.load();
-		}
+		if( _instance == null)
+		 _instance = new BoatManager();
 		return _instance;
 	}
 
@@ -56,88 +58,21 @@ public class BoatManager
 
 	public BoatManager()
 	{
-	}
-
-	public void reload()
-	{
-		_staticItems.clear();
-		load();
+		for (int i = 0; i < _docksBusy.length; i++)
+			_docksBusy[i] = false;
 	}
 	
-	private final void load()
-	{
-		_initialized = true;
-		if (!Config.ALLOW_BOAT)
-		{
-			_initialized = false;
-			return;
-		}
-		LineNumberReader lnr = null;
-		try
-		{
-			File doorData = new File(PackRoot.DATAPACK_ROOT, "data/csv/boat.csv");
-			lnr = new LineNumberReader(new BufferedReader(new FileReader(doorData)));
-
-			String line = null;
-			while ((line = lnr.readLine()) != null)
-			{
-				if (line.trim().length() == 0 || line.startsWith("#"))
-				{
-					continue;
-				}
-				L2BoatInstance boat = parseLine(line);
-				boat.spawn();
-				_staticItems.put(boat.getObjectId(), boat);
-				if (Config.DEBUG)
-				{
-					_log.log(Level.CONFIG, getClass().getName() + ": Boat ID : " + boat.getObjectId());
-				}
-			}
-		}
-		catch (FileNotFoundException e)
-		{
-			_initialized = false;
-			_log.log(Level.WARNING, getClass().getName() + ": boat.csv is missing in data folder");
-		}
-		catch (Exception e)
-		{
-			_initialized = false;
-			_log.log(Level.WARNING, getClass().getName() + ": error boat.csv not found. " + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
-		}
-		finally
-		{
-			try
-			{
-				lnr.close();
-			}
-			catch (Exception e1)
-			{ /* ignore problems */
-			}
-		}
-	}
-
 	/**
 	 * @param line
 	 * @return
 	 */
-	private L2BoatInstance parseLine(String line)
+	public L2BoatInstance getNewBoat(int boatId, int x, int y, int z, int heading)
 	{
-		L2BoatInstance boat;
-		StringTokenizer st = new StringTokenizer(line, ";");
-
-		String name = st.nextToken();
-		int id = Integer.parseInt(st.nextToken());
-		int xspawn = Integer.parseInt(st.nextToken());
-		int yspawn = Integer.parseInt(st.nextToken());
-		int zspawn = Integer.parseInt(st.nextToken());
-		int heading = Integer.parseInt(st.nextToken());
+		if (!Config.ALLOW_BOAT)
+			return null;
 
 		StatsSet npcDat = new StatsSet();
-		npcDat.set("npcId", id);
+		npcDat.set("npcId", boatId);
 		npcDat.set("level", 0);
 		npcDat.set("jClass", "boat");
 
@@ -174,45 +109,129 @@ public class BoatManager
 		npcDat.set("armor", 0);
 		npcDat.set("baseWalkSpd", 0);
 		npcDat.set("baseRunSpd", 0);
-		npcDat.set("name", name);
 		npcDat.set("baseHpMax", 50000);
 		npcDat.set("baseHpReg", 3.e-3f);
 		npcDat.set("baseMpReg", 3.e-3f);
 		npcDat.set("basePDef", 100);
 		npcDat.set("baseMDef", 100);
+		
 		L2CharTemplate template = new L2CharTemplate(npcDat);
-		boat = new L2BoatInstance(IdFactory.getInstance().getNextId(), template, name);
-		boat.getPosition().setHeading(heading);
-		boat.setXYZ(xspawn, yspawn, zspawn);
-		// boat.spawnMe();
-
-		int IdWaypoint1 = Integer.parseInt(st.nextToken());
-		int IdWTicket1 = Integer.parseInt(st.nextToken());
-		int ntx1 = Integer.parseInt(st.nextToken());
-		int nty1 = Integer.parseInt(st.nextToken());
-		int ntz1 = Integer.parseInt(st.nextToken());
-		String npc1 = st.nextToken();
-		String mess10_1 = st.nextToken();
-		String mess5_1 = st.nextToken();
-		String mess1_1 = st.nextToken();
-		String mess0_1 = st.nextToken();
-		String messb_1 = st.nextToken();
-		boat.setTrajet1(IdWaypoint1, IdWTicket1, ntx1, nty1, ntz1, npc1, mess10_1, mess5_1, mess1_1, mess0_1, messb_1);
-		IdWaypoint1 = Integer.parseInt(st.nextToken());
-		IdWTicket1 = Integer.parseInt(st.nextToken());
-		ntx1 = Integer.parseInt(st.nextToken());
-		nty1 = Integer.parseInt(st.nextToken());
-		ntz1 = Integer.parseInt(st.nextToken());
-		npc1 = st.nextToken();
-		mess10_1 = st.nextToken();
-		mess5_1 = st.nextToken();
-		mess1_1 = st.nextToken();
-		mess0_1 = st.nextToken();
-		messb_1 = st.nextToken();
-		boat.setTrajet2(IdWaypoint1, IdWTicket1, ntx1, nty1, ntz1, npc1, mess10_1, mess5_1, mess1_1, mess0_1, messb_1);
+		L2BoatInstance boat = new L2BoatInstance(IdFactory.getInstance().getNextId(), template);
+		
+		_boats.put(boat.getObjectId(), boat);
+		
+		boat.setHeading(heading);
+		boat.setXYZInvisible(x, y, z);
+		boat.spawnMe();
 		return boat;
 	}
-
+	
+	/**
+	 * @param boatId
+	 * @return
+	 */
+	public L2BoatInstance getBoat(int boatId)
+	{
+		return _boats.get(boatId);
+	}
+	
+	/**
+	 * Lock/unlock dock so only one ship can be docked
+	 * @param h Dock Id
+	 * @param value True if dock is locked
+	 */
+	public void dockShip(int h, boolean value)
+	{
+		try
+		{
+			_docksBusy[h] = value;
+		}
+		catch (ArrayIndexOutOfBoundsException e)
+		{
+		}
+	}
+	
+	/**
+	 * Check if dock is busy
+	 * @param h Dock Id
+	 * @return Trye if dock is locked
+	 */
+	public boolean dockBusy(int h)
+	{
+		try
+		{
+			return _docksBusy[h];
+		}
+		catch (ArrayIndexOutOfBoundsException e)
+		{
+			return false;
+		}
+	}
+	/**
+	 * Broadcast one packet in both path points
+	 * @param point1
+	 * @param point2
+	 * @param packet The packet to broadcast.
+	 */
+	public void broadcastPacket(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket packet)
+	{
+		double dx, dy;
+		final Collection<L2PcInstance> players = L2World.getAllPlayers();
+		for (L2PcInstance player : players)
+		{
+			if (player == null)
+				continue;
+			
+			dx = (double) player.getX() - point1.x;
+			dy = (double) player.getY() - point1.y;
+			
+			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+				player.sendPacket(packet);
+			else
+			{
+				dx = (double) player.getX() - point2.x;
+				dy = (double) player.getY() - point2.y;
+				
+				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+					player.sendPacket(packet);
+			}
+		}
+	}
+	
+	/**
+	 * Broadcast several packets in both path points
+	 * @param point1
+	 * @param point2
+	 * @param packets The packets to broadcast.
+	 */
+	public void broadcastPackets(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket... packets)
+	{
+		double dx, dy;
+		final Collection<L2PcInstance> players = L2World.getAllPlayers();
+		for (L2PcInstance player : players)
+		{
+			if (player == null)
+				continue;
+			
+			dx = (double) player.getX() - point1.x;
+			dy = (double) player.getY() - point1.y;
+			
+			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+			{
+				for (L2GameServerPacket p : packets)
+					player.sendPacket(p);
+			}
+			else
+			{
+				dx = (double) player.getX() - point2.x;
+				dy = (double) player.getY() - point2.y;
+				
+				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+					for (L2GameServerPacket p : packets)
+						player.sendPacket(p);
+			}
+		}
+	}
 	/**
 	 * @param boatId
 	 * @return
@@ -224,5 +243,5 @@ public class BoatManager
 			_staticItems = new FastMap<Integer, L2BoatInstance>();
 		}
 		return _staticItems.get(boatId);
-	}
+	}		
 }

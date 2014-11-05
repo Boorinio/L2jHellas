@@ -2493,4 +2493,91 @@ public class L2Clan
 			_siegeDeaths.set(0);
 		}
 	}
+	/**
+	 * Launch behaviors following how big or low is the actual reputation.<br>
+	 * <b>This method DOESN'T update the database.</b>
+	 * @param value : The total amount to set to _reputationScore.
+	 */
+	private void setReputationScore(int value)
+	{
+		// That check is used to see if it needs a refresh.
+		final boolean needRefresh = (_reputationScore > 0 && value <= 0) || (value > 0 && _reputationScore <= 0);
+		
+		// Store the online members (used in 2 positions, can't merge)
+		final L2PcInstance[] members = getOnlineMembers("");
+		
+		_reputationScore = Math.min(100000000, Math.max(-100000000, value));
+		
+		// Refresh clan windows of all clan members, and reward/remove skills.
+		if (needRefresh)
+		{
+			final L2Skill[] skills = getAllSkills();
+			
+			if (_reputationScore <= 0)
+			{
+				for (L2PcInstance member : members)
+				{
+					member.sendPacket(SystemMessageId.REPUTATION_POINTS_0_OR_LOWER_CLAN_SKILLS_DEACTIVATED);
+					
+					for (L2Skill sk : skills)
+						member.removeSkill(sk, false);
+					
+					member.sendSkillList();
+				}
+			}
+			else
+			{
+				for (L2PcInstance member : members)
+				{
+					member.sendPacket(SystemMessageId.CLAN_SKILLS_WILL_BE_ACTIVATED_SINCE_REPUTATION_IS_0_OR_HIGHER);
+					
+					for (L2Skill sk : skills)
+					{
+						if (sk.getMinPledgeClass() <= member.getPledgeClass())
+							member.addSkill(sk, false);
+					}
+					
+					member.sendSkillList();
+				}
+			}
+		}
+		
+		// Points reputation update for all.
+		final PledgeShowInfoUpdate infoRefresh = new PledgeShowInfoUpdate(this);
+		for (L2PcInstance member : members)
+			member.sendPacket(infoRefresh);
+		
+		// Save the amount on the database.
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			final PreparedStatement statement = con.prepareStatement("UPDATE clan_data SET reputation_score=? WHERE clan_id=?");
+			statement.setInt(1, _reputationScore);
+			statement.setInt(2, _clanId);
+			statement.execute();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "Exception on updateClanScoreInDb(): " + e.getMessage(), e);
+		}
+	}
+	/**
+	 * Add the value to the total amount of the clan's reputation score.<br>
+	 * <b>This method updates the database.</b>
+	 * @param value : The value to add to current amount.
+	 */
+	public synchronized void addReputationScore(int value)
+	{
+		setReputationScore(_reputationScore + value);
+	}
+	
+	/**
+	 * Removes the value to the total amount of the clan's reputation score.<br>
+	 * <b>This method updates the database.</b>
+	 * @param value : The value to remove to current amount.
+	 */
+	public synchronized void takeReputationScore(int value)
+	{
+		setReputationScore(_reputationScore - value);
+	}
 }

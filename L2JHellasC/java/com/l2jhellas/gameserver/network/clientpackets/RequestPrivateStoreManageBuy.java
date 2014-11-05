@@ -43,7 +43,12 @@ public final class RequestPrivateStoreManageBuy extends L2GameClientPacket
             _log.warning("Player " + player.getName() + " try exploit at login with privatestore!");
             return;
         }
-
+        
+		if(player.getActiveTradeList()!=null || player.getActiveWarehouse()!=null || player.getActiveEnchantItem()!=null)
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
         // If player is in store mode /offline_shop like L2OFF
         if (player.isStored())
         {

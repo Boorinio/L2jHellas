@@ -52,7 +52,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.AttackableKnownList;
 import com.l2jhellas.gameserver.model.base.SoulCrystal;
 import com.l2jhellas.gameserver.model.quest.Quest;
-import com.l2jhellas.gameserver.model.quest.Quest.QuestEventType;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
@@ -117,8 +117,8 @@ public class L2Attackable extends L2Npc
 			// If aggro is negative, its comming from SEE_SPELL, buffs use constant 150
 			if (targetPlayer != null && aggro == 0 && _type == AttackableType.ATTACKABLE_NPC)
 			{
-				if (getTemplate().getEventQuests(Quest.QuestEventType.ON_AGGRO_RANGE_ENTER) != null)
-					for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_AGGRO_RANGE_ENTER))
+				if (getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER) != null)
+					for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER))
 						quest.notifyAggroRangeEnter(this, targetPlayer, (attacker instanceof L2Summon));
 			}
 			else if (aggro < 0)
@@ -146,8 +146,8 @@ public class L2Attackable extends L2Npc
 						{
 							L2PcInstance player = attacker instanceof L2PcInstance ? (L2PcInstance) attacker : ((L2Summon) attacker).getOwner();
 							
-							if (getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK) != null)
-								for (Quest quest : getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK))
+							if (getTemplate().getEventQuests(QuestEventType.ON_ATTACK) != null)
+								for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_ATTACK))
 								{
 									if (quest != null)
 										quest.notifyAttack(this, player, damage, attacker instanceof L2Summon);
@@ -508,6 +508,15 @@ public class L2Attackable extends L2Npc
 			return false;
 		}
 		
+		public boolean isRegistered()
+		{
+			return isAbsorbed();
+		}
+		
+		public boolean isValid(int itemObjectId)
+		{
+			return _objId == itemObjectId && _absorbedHP < 50;
+		}
 		@Override
 		public int hashCode()
 		{
@@ -585,7 +594,7 @@ public class L2Attackable extends L2Npc
 	private CommandChannelTimer _commandChannelTimer = null;
 	private long _commandChannelLastAttack = 0;
 	
-	private boolean _absorbed;
+	private static boolean _absorbed;
 	private final Map<Integer, AbsorberInfo> _absorbersList = new ConcurrentHashMap<>();
 	
 	/**
@@ -1938,7 +1947,7 @@ public class L2Attackable extends L2Npc
 	/**
 	 * @return True if the L2Attackable had his soul absorbed.
 	 */
-	public boolean isAbsorbed()
+	public static boolean isAbsorbed()
 	{
 		return _absorbed;
 	}

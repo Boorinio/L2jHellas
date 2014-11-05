@@ -23,6 +23,7 @@ import javolution.util.FastMap;
 import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2MinionData;
@@ -294,5 +295,107 @@ public class MinionList
 
 		if (Config.DEBUG)
 			_log.fine("Spawned minion template " + minionTemplate.npcId + " with objid: " + monster.getObjectId() + " to boss " + master.getObjectId() + " ,at: " + monster.getX() + " x, " + monster.getY() + " y, " + monster.getZ() + " z");
+	}
+	
+	/**
+	 * Called on the minion death/delete. Removed minion from the list of the spawned minions and reuse if possible.
+	 * @param minion The minion to make checks on.
+	 * @param respawnTime (ms) enable respawning of this minion while master is alive. -1 - use default value: 0 (disable) for mobs and config value for raids.
+	 */
+	public void onMinionDie(L2MonsterInstance minion, int respawnTime)
+	{
+		((L2MinionInstance) minion).setLeader(null); // prevent memory leaks
+		minionReferences.remove(minion);
+		
+		final int time = master.isRaid() ? (int) Config.RAID_MINION_RESPAWN_TIMER : respawnTime;
+		if (time > 0 && !master.isAlikeDead())
+			ThreadPoolManager.getInstance().scheduleGeneral(new MinionRespawnTask(minion), time);
+	}
+	private final class MinionRespawnTask implements Runnable
+	{
+		private final L2MonsterInstance _minion;
+		
+		public MinionRespawnTask(L2MonsterInstance minion)
+		{
+			_minion = minion;
+		}
+		
+		@Override
+		public void run()
+		{
+			if (!master.isAlikeDead() && master.isVisible())
+			{
+				// minion can be already spawned or deleted
+				if (!_minion.isVisible())
+				{
+					_minion.refreshID();
+					initializeNpcInstance(master, _minion);
+				}
+			}
+		}
+	}
+	
+	protected static final L2MonsterInstance initializeNpcInstance(L2MonsterInstance master, L2MonsterInstance minion)
+	{
+		minion.stopAllEffects();
+
+		
+		// Set the Minion HP, MP and Heading
+		minion.setCurrentHpMp(minion.getMaxHp(), minion.getMaxMp());
+		minion.setHeading(master.getHeading());
+		
+		// Set the Minion leader to this RaidBoss
+		((L2MinionInstance) minion).setLeader(master);
+		
+		// Init the position of the Minion and add it in the world as a visible object
+		final int offset = 100 + minion.getCollisionRadius() + master.getCollisionRadius();
+		final int minRadius = master.getCollisionRadius() + 30;
+		
+		int newX = Rnd.get(minRadius * 2, offset * 2); // x
+		int newY = Rnd.get(newX, offset * 2); // distance
+		newY = (int) Math.sqrt(newY * newY - newX * newX); // y
+		if (newX > offset + minRadius)
+			newX = master.getX() + newX - offset;
+		else
+			newX = master.getX() - newX + minRadius;
+		if (newY > offset + minRadius)
+			newY = master.getY() + newY - offset;
+		else
+			newY = master.getY() - newY + minRadius;
+		
+		minion.spawnMe(newX, newY, master.getZ());
+		
+		if (Config.DEBUG)
+			_log.fine("Spawned minion template " + minion.getNpcId() + " with objid: " + minion.getObjectId() + " to boss " + master.getObjectId() + " ,at: " + minion.getX() + " x, " + minion.getY() + " y, " + minion.getZ() + " z");
+		
+		return minion;
+	}
+	
+	/**
+	 * Delete all spawned minions and try to reuse them.
+	 */
+	public void deleteSpawnedMinions()
+	{
+		if (!minionReferences.isEmpty())
+		{
+			for (L2MonsterInstance minion : minionReferences)
+			{
+				if (minion != null)
+				{
+					((L2MinionInstance) minion).setLeader(null);
+					minion.deleteMe();
+				}
+			}
+			minionReferences.clear();
+		}
+	}
+	/**
+	 * Called on the master death/delete.
+	 * @param force if true - force delete of the spawned minions By default minions deleted only for raidbosses
+	 */
+	public void onMasterDie(boolean force)
+	{
+		if (master.isRaid() || force)
+			deleteSpawnedMinions();
 	}
 }

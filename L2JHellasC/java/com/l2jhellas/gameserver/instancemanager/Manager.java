@@ -21,7 +21,7 @@ public class Manager
 		//ArenaManager.
 		AuctionManager.getInstance().reload();
 		//AwayManager.
-		BoatManager.getInstance().reload();
+		BoatManager.getInstance();
 		CastleManager.getInstance().reload();
 		ClanHallManager.getInstance().reload();
 		CoupleManager.getInstance().reload();

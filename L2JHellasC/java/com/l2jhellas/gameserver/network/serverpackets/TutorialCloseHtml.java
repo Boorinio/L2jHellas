@@ -14,10 +14,13 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+
 public class TutorialCloseHtml extends L2GameServerPacket
 {
 	@SuppressWarnings("unused")
 	private static final String _S__TutorialCloseHtml = "[S] A7 TutorialCloseHtml";
+	
+	public static final TutorialCloseHtml STATIC_PACKET = new TutorialCloseHtml();
 
 	@Override
 	protected final void writeImpl()

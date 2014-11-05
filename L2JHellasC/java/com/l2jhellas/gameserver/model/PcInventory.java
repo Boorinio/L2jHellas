@@ -17,8 +17,10 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
 
 import javolution.util.FastList;
 
@@ -674,4 +676,37 @@ public class PcInventory extends Inventory
 	{
 		return (_totalWeight + weight <= _owner.getMaxLoad());
 	}
+
+	/**
+	 * Check for multiple items in player's inventory.
+	 * @param itemIds a list of item Ids to check.
+	 * @return true if at least one items exists in player's inventory, false otherwise
+	 */
+	public boolean hasAtLeastOneItem(int... itemIds)
+	{
+		for (int itemId : itemIds)
+		{
+			if (getItemByItemId(itemId) != null)
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns the item's list from inventory by using its <B>itemId</B><BR>
+	 * <BR>
+	 * @param itemId : int designating the ID of the item
+	 * @return List<L2ItemInstance> designating the items list (empty list if not found)
+	 */
+	public List<L2ItemInstance> getItemsByItemId(int itemId)
+	{
+		List<L2ItemInstance> returnList = new ArrayList<>();
+		for (L2ItemInstance item : _items)
+		{
+			if (item != null && item.getItemId() == itemId)
+				returnList.add(item);
+		}
+		return returnList;
+	}
+	
 }

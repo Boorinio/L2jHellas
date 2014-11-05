@@ -130,11 +130,6 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		_curY = activeChar.getY();
 		_curZ = activeChar.getZ();
 
-		if (activeChar.isInBoat())
-		{
-			activeChar.setInBoat(false);
-		}
-		
 		if (activeChar.getTeleMode() > 0)
 		{
 			if (activeChar.getTeleMode() == 1)

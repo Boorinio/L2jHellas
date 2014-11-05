@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.templates;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -25,6 +26,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
@@ -37,6 +39,8 @@ import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
  */
 public abstract class L2Item
 {
+	private final List<Quest> _questEvents = new ArrayList<>();
+
 	public static final int TYPE1_WEAPON_RING_EARRING_NECKLACE = 0;
 	public static final int TYPE1_SHIELD_ARMOR = 1;
 	public static final int TYPE1_ITEM_QUESTITEM_ADENA = 4;
@@ -688,5 +692,15 @@ public abstract class L2Item
 
 	    }
 		return true;
+	}
+	
+	public void addQuestEvent(Quest q)
+	{
+		_questEvents.add(q);
+	}
+	
+	public List<Quest> getQuestEvents()
+	{
+		return _questEvents;
 	}
 }

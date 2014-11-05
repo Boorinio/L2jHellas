@@ -36,6 +36,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SpawnItem;
 import com.l2jhellas.gameserver.network.serverpackets.SpawnItemPoly;
 import com.l2jhellas.gameserver.network.serverpackets.StaticObject;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
+import com.l2jhellas.gameserver.network.serverpackets.VehicleDeparture;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
 
 public class RequestRecordInfo extends L2GameClientPacket
@@ -86,7 +87,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 					if (!_activeChar.isInBoat() && object != _activeChar.getBoat())
 					{
 						_activeChar.sendPacket(new VehicleInfo((L2BoatInstance) object));
-						((L2BoatInstance) object).sendVehicleDeparture(_activeChar);
+						_activeChar.sendPacket(new VehicleDeparture((L2BoatInstance) object));
 					}
 				}
 				else if (object instanceof L2StaticObjectInstance)
@@ -122,7 +123,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 						int relation = otherPlayer.getRelation(_activeChar);
 						if (otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != relation)
 							_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
-						_activeChar.sendPacket(new GetOnVehicle(otherPlayer, otherPlayer.getBoat(), otherPlayer.getInBoatPosition().getX(), otherPlayer.getInBoatPosition().getY(), otherPlayer.getInBoatPosition().getZ()));
+						_activeChar.sendPacket(new GetOnVehicle(otherPlayer.getObjectId(), otherPlayer.getBoat().getObjectId(), otherPlayer.getInVehiclePosition()));		
 					}
 					else
 					{

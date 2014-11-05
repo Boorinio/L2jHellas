@@ -49,6 +49,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
@@ -726,10 +727,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 							{
 								if ((originalAttackTarget instanceof L2PcInstance) || (originalAttackTarget instanceof L2Summon))
 								{
-									if (npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL) != null)
+									if (npc.getTemplate().getEventQuests(QuestEventType.ON_FACTION_CALL) != null)
 									{
 										L2PcInstance player = (originalAttackTarget instanceof L2PcInstance) ? (L2PcInstance) originalAttackTarget : ((L2Summon) originalAttackTarget).getOwner();
-										for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_FACTION_CALL))
+										for (Quest quest : npc.getTemplate().getEventQuests(QuestEventType.ON_FACTION_CALL))
 											quest.notifyFactionCall(npc, (L2Npc) _actor, player, (originalAttackTarget instanceof L2Summon));
 									}
 								}

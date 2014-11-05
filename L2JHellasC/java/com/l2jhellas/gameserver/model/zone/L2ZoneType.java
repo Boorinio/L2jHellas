@@ -15,7 +15,9 @@
 package com.l2jhellas.gameserver.model.zone;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javolution.util.FastList;
 import javolution.util.FastMap;
@@ -23,6 +25,8 @@ import javolution.util.FastMap;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 
 /**
@@ -37,6 +41,7 @@ public abstract class L2ZoneType
 	protected List<L2ZoneForm> _zone;
 	protected FastMap<Integer, L2Character> _characterList;
 	protected FastMap<Integer, Integer> _zones;
+	private Map<QuestEventType, List<Quest>> _questEvents;
 
 	/** Parameters to affect specific characters */
 	private boolean _checkAffected;
@@ -420,5 +425,29 @@ public abstract class L2ZoneType
 	public String getName()
 	{
 		return _name;
+	}
+	
+	public void addQuestEvent(QuestEventType eventType, Quest quest)
+	{
+		if (_questEvents == null)
+			_questEvents = new HashMap<>();
+		
+		List<Quest> eventList = _questEvents.get(eventType);
+		if (eventList == null)
+		{
+			eventList = new ArrayList<>();
+			eventList.add(quest);
+			_questEvents.put(eventType, eventList);
+		}
+		else
+		{
+			eventList.remove(quest);
+			eventList.add(quest);
+		}
+	}
+	
+	public List<Quest> getQuestByEvent(QuestEventType EventType)
+	{
+		return (_questEvents == null) ? null : _questEvents.get(EventType);
 	}
 }

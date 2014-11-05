@@ -28,7 +28,6 @@ import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.FourSepulchersManager;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
-import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -283,11 +282,6 @@ public class Shutdown extends Thread
 			
 			CursedWeaponsManager.getInstance().saveData();
 			System.out.println("Cursed weapons Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-			
-			// Save all global (non-player specific) Quest data that needs to
-			// persist after reboot
-			QuestManager.getInstance().save();
-			System.out.println("Quest data that needs to be saved has been saved (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 			
 			// Start Hitman Event.
 			if (Hitman.start())

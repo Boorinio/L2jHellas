@@ -72,7 +72,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 
-		if (activeChar == null || _command==null)
+		if (activeChar == null || _command.isEmpty())
 			return;
 
 		if (!activeChar.getAntiFlood().getServerBypass().tryPerformAction(_command) && !activeChar.isGM())
@@ -314,8 +314,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			else if (_command.startsWith("npc_"))
 			{
 				if (!activeChar.validateBypass(_command))
+				{
 					return;
-				
+				}
 				int endOfId = _command.indexOf('_', 5);
 				String id;
 				if (endOfId > 0)
@@ -327,6 +328,11 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				{
 					L2Object object = L2World.findObject(Integer.parseInt(id));
 
+					if(object != null && object instanceof L2Npc && endOfId > 0 && activeChar.isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false) || ((Config.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)))
+					{
+						((L2Npc) object).onBypassFeedback(activeChar, _command.substring(endOfId + 1));
+					}
+					
 					if (_command.substring(endOfId + 1).startsWith("event_participate"))
 					{
 						L2Event.inscribePlayer(activeChar);
@@ -401,11 +407,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 							activeChar.sendMessage("The event is already started. You can not leave now!");
 						}
 					}
-
-					if(object != null && object instanceof L2Npc && endOfId > 0 && activeChar.isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false) || ((Config.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)))
-					{
-						((L2Npc) object).onBypassFeedback(activeChar, _command.substring(endOfId + 1));
-					}
+				
 					activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				catch (NumberFormatException nfe)
@@ -450,21 +452,12 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				if (!activeChar.validateBypass(_command))
 					return;
-
-				L2PcInstance player = getClient().getActiveChar();
-				if (player == null)
-					return;
-
-				String p = _command.substring(6).trim();
-				int idx = p.indexOf(' ');
-				if (idx < 0)
-				{
-					player.processQuestEvent(p, "");
-				}
+				
+				String[] str = _command.substring(6).trim().split(" ", 2);
+				if (str.length == 1)
+					activeChar.processQuestEvent(str[0], "");
 				else
-				{
-					player.processQuestEvent(p.substring(0, idx), p.substring(idx).trim());
-				}
+					activeChar.processQuestEvent(str[0], str[1]);
 			}
 			// Balancer: ->
 			// -------------------------------------------------------------------------------
@@ -619,6 +612,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					 return;
 				}
 			}
+
 			// -------------------------------------------------------------------------------
 		}
 		catch (Exception e)

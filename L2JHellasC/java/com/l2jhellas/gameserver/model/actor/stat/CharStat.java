@@ -612,7 +612,7 @@ public class CharStat
 	 * Return the RunSpeed (base+modifier) or WalkSpeed (base+modifier) of the
 	 * L2Character in function of the movement type.
 	 */
-	public final float getMoveSpeed()
+	public float getMoveSpeed()
 	{
 		return (_activeChar.isRunning()) ? getRunSpeed() : getWalkSpeed();
 	}

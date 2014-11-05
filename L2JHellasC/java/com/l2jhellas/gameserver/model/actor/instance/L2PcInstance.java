@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -83,6 +84,7 @@ import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
+import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminEditChar;
 import com.l2jhellas.gameserver.handler.skillhandlers.SiegeFlag;
 import com.l2jhellas.gameserver.handler.skillhandlers.StrSiegeAssault;
 import com.l2jhellas.gameserver.handler.skillhandlers.TakeCastle;
@@ -136,6 +138,7 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
 import com.l2jhellas.gameserver.model.actor.knownlist.PcKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.PcStat;
@@ -161,8 +164,8 @@ import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.model.quest.State;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -553,9 +556,9 @@ public final class L2PcInstance extends L2Playable
 	public RankPvpSystemComboKill _rankPvpSystemComboKill = null;
 	
 	/** Boat */
-	private boolean _inBoat;
-	private L2BoatInstance _boat;
 	private Point3D _inBoatPosition;
+	private L2Vehicle _vehicle = null;
+
 	
 	private int _mountType;
 	/** Store object used to summon the strider you are mounting **/
@@ -747,6 +750,9 @@ public final class L2PcInstance extends L2Playable
 	/** The table containing all Quests began by the L2PcInstance */
 	private final Map<String, QuestState> _quests = new FastMap<String, QuestState>();
 	
+	/** List of all QuestState instance that needs to be notified of this L2PcInstance's or its pet's death */
+	private final List<QuestState> _notifyQuestOfDeathList = new ArrayList<>();
+
 	/** The list containing all shortCuts of this L2PcInstance */
 	private final ShortCuts _shortCuts = new ShortCuts(this);
 	
@@ -1602,6 +1608,17 @@ public final class L2PcInstance extends L2Playable
 		return _quests.get(quest);
 	}
 	
+		@Override
+	public void onActionShift(L2PcInstance player)
+	{
+			if (player.getTarget() != this)
+				player.setTarget(this);
+			else if (player.isGM())
+				AdminEditChar.showCharacterInfo(player, this);
+			
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+	}
+		
 	/**
 	 * Add a QuestState to the table _quest containing all quests began by the L2PcInstance.
 	 * 
@@ -1610,7 +1627,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void setQuestState(QuestState qs)
 	{
-		_quests.put(qs.getQuestName(), qs);
+		_quests.put(qs.getQuest().getName(), qs);
 	}
 	
 	/**
@@ -1645,7 +1662,7 @@ public final class L2PcInstance extends L2Playable
 		
 		for (QuestState qs : _quests.values())
 		{
-			int questId = qs.getQuest().getQuestIntId();
+			int questId = qs.getQuest().getQuestId();
 			if ((questId > 999) || (questId < 1))
 			{
 				continue;
@@ -1674,7 +1691,7 @@ public final class L2PcInstance extends L2Playable
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_ATTACK))
+		for (Quest quest : npc.getTemplate().getEventQuests(QuestEventType.ON_ATTACK))
 		{
 			// Check if the Identifier of the L2Attackable attck is needed for the current quest
 			if (getQuestState(quest.getName()) != null)
@@ -1710,7 +1727,7 @@ public final class L2PcInstance extends L2Playable
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		for (Quest quest : npc.getTemplate().getEventQuests(Quest.QuestEventType.ON_KILL))
+		for (Quest quest : npc.getTemplate().getEventQuests(QuestEventType.ON_KILL))
 		{
 			// Check if the Identifier of the L2Attackable killed is needed for the current quest
 			if (getQuestState(quest.getName()) != null)
@@ -1747,7 +1764,7 @@ public final class L2PcInstance extends L2Playable
 		QuestState[] states = null;
 		
 		// Go through the QuestState of the L2PcInstance quests
-		Quest[] quests = NpcData.getInstance().getTemplate(npcId).getEventQuests(Quest.QuestEventType.ON_TALK);
+		List<Quest> quests = NpcData.getInstance().getTemplate(npcId).getEventQuests(QuestEventType.ON_TALK);
 		if (quests != null)
 		{
 			for (Quest quest : quests)
@@ -1810,11 +1827,11 @@ public final class L2PcInstance extends L2Playable
 					{
 						for (QuestState state : states)
 						{
-							if ((state.getQuest().getQuestIntId() == qs.getQuest().getQuestIntId()))
+							if ((state.getQuest().getQuestId() == qs.getQuest().getQuestId()))
 							{
 								if (qs.getQuest().notifyEvent(event, npc, this))
 								{
-									showQuestWindow(quest, State.getStateName(qs.getState()));
+									showQuestWindow(quest, state.getQuest().getName());									
 								}
 								
 								retval = qs;
@@ -11943,26 +11960,6 @@ public final class L2PcInstance extends L2Playable
 		_validBypass2.clear();
 	}
 	
-	public boolean isInBoat()
-	{
-		return _inBoat;
-	}
-	
-	public void setInBoat(boolean inBoat)
-	{
-		_inBoat = inBoat;
-	}
-	
-	public L2BoatInstance getBoat()
-	{
-		return _boat;
-	}
-	
-	public void setBoat(L2BoatInstance boat)
-	{
-		_boat = boat;
-	}
-	
 	public void setInCrystallize(boolean inCrystallize)
 	{
 		_inCrystallize = inCrystallize;
@@ -15165,4 +15162,121 @@ public final class L2PcInstance extends L2Playable
 			OnEnter.subhtml(p);
 		}
 	}
+	
+		/**
+		 * Remove a QuestState from the table _quest containing all quests began by the L2PcInstance.
+		 * @param qs : The QuestState to be removed from _quest.
+		 */
+		public void delQuestState(QuestState qs)
+		{
+			_quests.remove(qs);
+		}
+		
+		/**
+		 * @param completed : If true, include completed quests to the list.
+		 * @return list of started and eventually completed quests of the player.
+		 */
+		public List<Quest> getAllQuests(boolean completed)
+		{
+			List<Quest> quests = new ArrayList<>();
+			
+			for (QuestState qs : _quests.values())
+			{
+				if (qs == null || completed && qs.isCreated() || !completed && !qs.isStarted())
+					continue;
+				
+				Quest quest = qs.getQuest();
+				if (quest == null || !quest.isRealQuest())
+					continue;
+				
+				quests.add(quest);
+			}
+			
+			return quests;
+		}
+		
+		/**
+		 * Add QuestState instance that is to be notified of L2PcInstance's death.
+		 * @param qs The QuestState that subscribe to this event
+		 */
+		public void addNotifyQuestOfDeath(QuestState qs)
+		{
+			if (qs == null)
+				return;
+			
+			if (!_notifyQuestOfDeathList.contains(qs))
+				_notifyQuestOfDeathList.add(qs);
+		}
+		
+		/**
+		 * Remove QuestState instance that is to be notified of L2PcInstance's death.
+		 * @param qs The QuestState that subscribe to this event
+		 */
+		public void removeNotifyQuestOfDeath(QuestState qs)
+		{
+			if (qs == null)
+				return;
+			
+			_notifyQuestOfDeathList.remove(qs);
+		}
+		
+		/**
+		 * @return A list of QuestStates which registered for notify of death of this L2PcInstance.
+		 */
+		public List<QuestState> getNotifyQuestOfDeath()
+		{
+			return _notifyQuestOfDeathList;
+		}
+		
+		/**
+		 * @return Returns the inBoat.
+		 */
+		public boolean isInBoat()
+		{
+			return _vehicle != null && _vehicle.isBoat();
+		}
+		
+		/**
+		 * @return
+		 */
+		public L2Vehicle getBoat()
+		{
+			return  _vehicle;
+		}
+		
+		public L2Vehicle getVehicle()
+		{
+			return _vehicle;
+		}
+		
+		public void setVehicle(L2Vehicle v)
+		{
+			if (v == null && _vehicle != null)
+				_vehicle.removePassenger(this);
+			
+			_vehicle = v;
+		}
+		
+		/**
+		 * @return
+		 */
+		public Point3D getInVehiclePosition()
+		{
+			return _inBoatPosition;
+		}
+		
+		public void setInVehiclePosition(Point3D pt)
+		{
+			_inBoatPosition = pt;
+		}
+
+		@Override
+		public final void stopAllEffectsExceptThoseThatLastThroughDeath()
+		{
+			super.stopAllEffectsExceptThoseThatLastThroughDeath();
+			updateAndBroadcastStatus(2);
+		}
+		
+		
+
 }

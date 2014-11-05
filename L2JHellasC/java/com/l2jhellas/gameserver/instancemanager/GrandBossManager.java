@@ -90,9 +90,9 @@ public class GrandBossManager
 
 	protected static Map<Integer, StatsSet> _storedInfo;
 
-	private Map<Integer, Integer> _bossStatus;
+	private static Map<Integer, Integer> _bossStatus;
 
-	private L2FastList<L2BossZone> _zones;
+	private static L2FastList<L2BossZone> _zones;
 
 	public static GrandBossManager getInstance()
 	{
@@ -233,10 +233,8 @@ public class GrandBossManager
 
 	public void addZone(L2BossZone zone)
 	{
-		if (_zones != null)
-		{
+		if (zone!=null && !_zones.contains(zone))
 			_zones.add(zone);
-		}
 	}
 
 	public final L2BossZone getZone(L2Character character)
@@ -288,12 +286,12 @@ public class GrandBossManager
 	/**
 	 * The rest
 	 */
-	public int getBossStatus(int bossId)
+	public static int getBossStatus(int bossId)
 	{
 		return _bossStatus.get(bossId);
 	}
 
-	public void setBossStatus(int bossId, int status)
+	public static void setBossStatus(int bossId, int status)
 	{
 		_bossStatus.remove(bossId);
 		_bossStatus.put(bossId, status);
@@ -302,7 +300,7 @@ public class GrandBossManager
 	/**
 	 * Adds a L2GrandBossInstance to the list of bosses.
 	 */
-	public void addBoss(L2GrandBossInstance boss)
+	public static void addBoss(L2GrandBossInstance boss)
 	{
 		if (boss != null)
 		{
@@ -317,12 +315,12 @@ public class GrandBossManager
 		return _bosses.get(bossId);
 	}
 
-	public StatsSet getStatsSet(int bossId)
+	public static StatsSet getStatsSet(int bossId)
 	{
 		return _storedInfo.get(bossId);
 	}
 
-	public void setStatsSet(int bossId, StatsSet info)
+	public static void setStatsSet(int bossId, StatsSet info)
 	{
 		if (_storedInfo.containsKey(bossId))
 			_storedInfo.remove(bossId);
@@ -330,7 +328,7 @@ public class GrandBossManager
 		storeToDb();
 	}
 
-	private void storeToDb()
+	private static void storeToDb()
 	{
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -394,14 +392,33 @@ public class GrandBossManager
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Couldn't store grandbosses to database:" + e);
+			_log.log(Level.WARNING, _log.getName() + ": Couldn't store grandbosses to database:" + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
 			}
 		}
 	}
-
+	public static boolean isInBossZone(L2Character character)
+	{
+		for (L2BossZone temp : _zones)
+		{
+			if (temp.isCharacterInZone(character))
+				return true;
+		}
+		return false;
+	}
+	
+	
+	public static L2BossZone getZoneById(int id)
+	{
+		for (L2BossZone temp : _zones)
+		{
+			if (temp.getId() == id)
+				return temp;
+		}
+		return null;
+	}
 	/**
 	 * Saves all Grand Boss info and then clears all info from memory,
 	 * including all schedules.

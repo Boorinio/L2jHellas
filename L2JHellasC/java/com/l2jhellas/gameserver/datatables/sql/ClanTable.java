@@ -140,45 +140,45 @@ public class ClanTable
 	 */
 	public L2Clan createClan(L2PcInstance player, String clanName)
 	{
-		if (null == player)
+		if (player==null)
+		{
 			return null;
-
-		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": " + player.getObjectId() + "(" + player.getName() + ") requested a clan creation.");
-
-		if (10 > player.getLevel())
+		}
+		
+		if (player.getLevel() < 10)
 		{
 			player.sendPacket(SystemMessageId.YOU_DO_NOT_MEET_CRITERIA_IN_ORDER_TO_CREATE_A_CLAN);
 			return null;
 		}
-		if (0 != player.getClanId())
+		
+		if (player.getClanId() != 0)
 		{
 			player.sendPacket(SystemMessageId.FAILED_TO_CREATE_CLAN);
 			return null;
 		}
+		
+		
 		if (System.currentTimeMillis() < player.getClanCreateExpiryTime())
 		{
 			player.sendPacket(SystemMessageId.YOU_MUST_WAIT_XX_DAYS_BEFORE_CREATING_A_NEW_CLAN);
 			return null;
 		}
-		if (!Util.isAlphaNumeric(clanName) || 2 > clanName.length())
+		if (!Util.isAlphaNumeric(clanName))
 		{
 			player.sendPacket(SystemMessageId.CLAN_NAME_INVALID);
 			return null;
 		}
-		if (16 < clanName.length())
+		
+		if (clanName.length() < 2 || clanName.length() > 16)
 		{
 			player.sendPacket(SystemMessageId.CLAN_NAME_LENGTH_INCORRECT);
 			return null;
 		}
-
-		if (null != getClanByName(clanName))
+		
+		if (getClanByName(clanName) != null)
 		{
 			// clan name is already taken
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_EXISTS);
-			sm.addString(clanName);
-			player.sendPacket(sm);
-			sm = null;
+			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_EXISTS).addString(clanName));
 			return null;
 		}
 

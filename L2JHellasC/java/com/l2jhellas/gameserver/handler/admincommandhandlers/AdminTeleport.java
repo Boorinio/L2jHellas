@@ -123,6 +123,7 @@ public class AdminTeleport implements IAdminCommandHandler
 					Location loc = MapRegionTable.getInstance().getTeleToLocation(player, MapRegionTable.TeleportWhereType.Town);
 					player.setInstanceId(0);
 					player.teleToLocation(loc, true);
+					activeChar.setTarget(null);
 				}
 				else
 					activeChar.sendMessage("User is not online.");

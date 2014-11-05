@@ -108,6 +108,7 @@ import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
 import com.l2jhellas.gameserver.instancemanager.PetitionManager;
+import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
@@ -126,7 +127,6 @@ import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
-import com.l2jhellas.gameserver.scripting.CompiledScriptCache;
 import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
@@ -333,57 +333,26 @@ public class GameServer
 		UserCommandHandler.getInstance();
 		VoicedCommandHandler.getInstance();
 		Util.printSection("Scripts");
+		QuestManager.getInstance();
+		
 		if (!Config.ALT_DEV_NO_SCRIPT)
-		{
-			try
 			{
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Scripts.");
-				File scripts = new File(PackRoot.DATAPACK_ROOT, "data/scripts.cfg");
-				L2ScriptEngineManager.getInstance().executeScriptList(scripts);
-			}
-			catch (IOException ioe)
-			{
-				_log.log(Level.SEVERE, getClass().getSimpleName() + ": Failed to load!!" + ioe);
-				if (Config.DEVELOPER)
+				try
 				{
-					ioe.printStackTrace();
+					File scripts = new File("./data/scripts.cfg");
+					L2ScriptEngineManager.getInstance().executeScriptList(scripts);
 				}
-			}
-			try
-			{
-				CompiledScriptCache compiledScriptCache = L2ScriptEngineManager.getInstance().getCompiledScriptCache();
-				if (compiledScriptCache == null)
+				catch (IOException ioe)
 				{
-					_log.log(Level.INFO, getClass().getSimpleName() + ": The Cache of scripts is disabled.");
+					_log.severe("Failed loading scripts.cfg, no script going to be loaded");
 				}
-				else
-				{
-					compiledScriptCache.purge();
+				QuestManager.getInstance().report();
+			}
+			else
+			{
+				_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts are disabled by Config.");
+			}
 
-					if (compiledScriptCache.isModified())
-					{
-						compiledScriptCache.save();
-						_log.log(Level.INFO, getClass().getSimpleName() + ": The script hasn't updated the Cache.");
-					}
-					else
-					{
-						_log.log(Level.INFO, getClass().getSimpleName() + ": The script has been updated Cache.");
-					}
-				}
-			}
-			catch (IOException e)
-			{
-				_log.log(Level.SEVERE, getClass().getSimpleName() + ": Failed to load Cache Script.", e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		else
-		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts are disabled by Config.");
-		}
 
 		Util.printSection("Customs");
 		// we could add general custom config?

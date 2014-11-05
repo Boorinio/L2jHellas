@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -753,5 +754,10 @@ public class NpcData
 				list.add((L2NpcTemplate) t);
 
 		return list.toArray(new L2NpcTemplate[list.size()]);
+	}
+
+	public Collection<L2NpcTemplate> getAllNpcs()
+	{
+		return _npcs.values();
 	}
 }

@@ -73,25 +73,24 @@ public class RaidBossSpawnManager
 	
 	private void init()
 	{
-		_bosses = new FastMap<>();
-		_schedules = new FastMap<>();
-		_storedInfo = new FastMap<>();
-		_spawns = new FastMap<>();
+		_bosses = new FastMap<Integer, L2RaidBossInstance>();
+		_spawns = new FastMap<Integer, L2Spawn>();
+		_storedInfo = new FastMap<Integer, StatsSet>();
+		_schedules = new FastMap<Integer, ScheduledFuture<?>>();
+	
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM raidboss_spawnlist ORDER BY boss_id");
+			PreparedStatement statement = con.prepareStatement("SELECT * from raidboss_spawnlist ORDER BY boss_id");
 			ResultSet rset = statement.executeQuery();
-
-			L2Spawn spawnDat;
-			L2NpcTemplate template;
-			long respawnTime;
+			
 			while (rset.next())
 			{
-				template = getValidTemplate(rset.getInt("boss_id"));
+				final L2NpcTemplate template = getValidTemplate(rset.getInt("boss_id"));
 				if (template != null)
 				{
-					spawnDat = new L2Spawn(template);
+					long respawnTime;
+					final L2Spawn spawnDat = new L2Spawn(template);		
 					spawnDat.setLocx(rset.getInt("loc_x"));
 					spawnDat.setLocy(rset.getInt("loc_y"));
 					spawnDat.setLocz(rset.getInt("loc_z"));
@@ -350,46 +349,44 @@ public class RaidBossSpawnManager
 
 	private void updateDb()
 	{
-		for (Integer bossId : _storedInfo.keySet())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist SET respawn_time=?, currentHP=?, currentMP=? WHERE boss_id=?");
+			
+			for (Integer bossId : _storedInfo.keySet())
 			{
-				L2RaidBossInstance boss = _bosses.get(bossId);
-
+				if (bossId == null)
+					continue;
+				
+				final L2RaidBossInstance boss = _bosses.get(bossId);
 				if (boss == null)
-				{
 					continue;
-				}
-
+				
 				if (boss.getRaidStatus().equals(StatusEnum.ALIVE))
-				{
 					updateStatus(boss, false);
-				}
-
-				StatsSet info = _storedInfo.get(bossId);
-
+				
+				final StatsSet info = _storedInfo.get(bossId);
 				if (info == null)
-				{
 					continue;
-				}
-
-				PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist SET respawn_time=?, currentHP=?, currentMP=? WHERE boss_id=?");
-				statement.setLong(1, info.getLong("respawnTime"));
-				statement.setDouble(2, info.getDouble("currentHP"));
-				statement.setDouble(3, info.getDouble("currentMP"));
-				statement.setInt(4, bossId);
-				statement.execute();
-
-				statement.close();
-			}
-			catch (SQLException e)
-			{
-				_log.log(Level.WARNING, getClass().getName() + ": Couldn't update raidboss_spawnlist table " + e);
-				if (Config.DEVELOPER)
+				
+				try
 				{
-					e.printStackTrace();
+					statement.setLong(1, info.getLong("respawnTime"));
+					statement.setDouble(2, info.getDouble("currentHP"));
+					statement.setDouble(3, info.getDouble("currentMP"));
+					statement.setInt(4, bossId);
+					statement.execute();
+				}
+				catch (SQLException e)
+				{
+					_log.log(Level.WARNING, "RaidBossSpawnManager: Couldnt update raidboss_spawnlist table " + e.getMessage(), e);
 				}
 			}
+			statement.close();
+		}
+		catch (SQLException e)
+		{
+			_log.log(Level.WARNING, "SQL error while updating RaidBoss spawn to database: " + e.getMessage(), e);
 		}
 	}
 

@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javolution.text.TextBuilder;
@@ -76,10 +77,11 @@ import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.model.quest.State;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowVariationCancelWindow;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowVariationMakeWindow;
@@ -87,6 +89,7 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.network.serverpackets.RadarControl;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -153,7 +156,8 @@ public class L2Npc extends L2Character
 	private int _currentRHandId;  // normally this shouldn't change from the template, but there exist exceptions
 	private int _currentCollisionHeight; // used for npc grow effect skills
 	private int _currentCollisionRadius; // used for npc grow effect skills
-
+	private int _scriptValue = 0;
+	
 	/** Task launching the function onRandomAnimation() */
 	protected class RandomAnimationTask implements Runnable
 	{
@@ -727,9 +731,10 @@ public class L2Npc extends L2Character
 						CTF.CheckRestoreFlags();
 					else
 					{
-						Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.ON_FIRST_TALK);
-						if ((qlst != null) && qlst.length == 1)
-							qlst[0].notifyFirstTalk(this, player);
+						List<Quest> qlst = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
+						if (qlst != null && qlst.size() == 1)
+							qlst.get(0).notifyFirstTalk(this, player);
+
 						else
 							showChatWindow(player, 0);
 					}
@@ -1041,7 +1046,7 @@ public class L2Npc extends L2Character
 				catch (IndexOutOfBoundsException ioobe)
 				{
 				}
-				if (quest.length() == 0)
+				if (quest.isEmpty())
 					showQuestWindow(player);
 				else
 					showQuestWindow(player, quest);
@@ -1444,11 +1449,11 @@ public class L2Npc extends L2Character
 		if (q == null)
 		{
 			// no quests found
-			content = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
+			content = "<html><body>You are asd either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
 		}
 		else
 		{
-			if ((q.getQuestIntId() >= 1 && q.getQuestIntId() < 1000) && (player.getWeightPenalty() >= 3 || player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize()))
+			if ((q.getQuestId() >= 1 && q.getQuestId() < 1000) && (player.getWeightPenalty() >= 3 || player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize()))
 			{
 				player.sendPacket(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT);
 				return;
@@ -1456,7 +1461,7 @@ public class L2Npc extends L2Character
 
 			if (qs == null)
 			{
-				if (q.getQuestIntId() >= 1 && q.getQuestIntId() < 1000)
+				if (q.getQuestId() >= 1 && q.getQuestId() < 1000)
 				{
 					Quest[] questList = player.getAllActiveQuests();
 					if (questList.length >= 25)
@@ -1465,13 +1470,13 @@ public class L2Npc extends L2Character
 					}
 				}
 				// check for start point
-				Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
+				List<Quest> qlst = getTemplate().getEventQuests(QuestEventType.QUEST_START);
 
-				if (qlst != null && qlst.length > 0)
+				if (qlst != null && qlst.size() > 0)
 				{
-					for (int i = 0; i < qlst.length; i++)
+					for (int i = 0; i < qlst.size(); i++)
 					{
-						if (qlst[i] == q)
+						if (qlst.get(i).equals(q))
 						{
 							qs = q.newQuestState(player);
 							break;
@@ -1483,13 +1488,13 @@ public class L2Npc extends L2Character
 		if (qs != null)
 		{
 			// If the quest is already started, no need to show a window
-			if (!qs.getQuest().notifyTalk(this, qs))
+			if (!qs.getQuest().notifyTalk(this, qs.getPlayer()))
 				return;
 
 			questId = qs.getQuest().getName();
-			String stateId = State.getStateName(qs.getState());
-			String path = "data/scripts/quests/" + questId + "/" + stateId + ".htm";
-			content = HtmCache.getInstance().getHtm(path); // TODO path for quests html
+			String stateId = QuestState.getStateName(qs.getState());
+			String path  = "data/scripts/quests/" + questId + "/" + stateId + ".htm";
+		    content = HtmCache.getInstance().getHtm(path); // TODO path for quests html
 
 			if (Config.DEBUG)
 			{
@@ -1527,47 +1532,42 @@ public class L2Npc extends L2Character
 	 */
 	public void showQuestWindow(L2PcInstance player)
 	{
-		// collect awaiting quests and start points
-		List<Quest> options = new FastList<Quest>();
-
-		QuestState[] awaits = player.getQuestsForTalk(getTemplate().npcId);
-		Quest[] starts = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
-
-		// Quests are limited between 1 and 999 because those are the quests that are supported by the client.
-		// By limiting them there, we are allowed to create custom quests at higher IDs without interfering
+         List<Quest> quests = new ArrayList<Quest>();
+		
+		List<Quest> awaits = getTemplate().getEventQuests(QuestEventType.ON_TALK);
 		if (awaits != null)
 		{
-			for (QuestState x : awaits)
+			for (Quest quest : awaits)
 			{
-				if (!options.contains(x))
-					if ((x.getQuest().getQuestIntId() > 0) && (x.getQuest().getQuestIntId() < 1000))
-						options.add(x.getQuest());
+				if (quest == null || !quest.isRealQuest() || quests.contains(quest))
+					continue;
+				
+				QuestState qs = player.getQuestState(quest.getName());
+				if (qs == null || qs.isCreated())
+					continue;
+				
+				quests.add(quest);
 			}
 		}
-
+		
+		List<Quest> starts = getTemplate().getEventQuests(QuestEventType.QUEST_START);
 		if (starts != null)
 		{
-			for (Quest x : starts)
+			for (Quest quest : starts)
 			{
-				if (!options.contains(x))
-					if ((x.getQuestIntId() > 0) && (x.getQuestIntId() < 1000))
-						options.add(x);
+				if (quest == null || !quest.isRealQuest() || quests.contains(quest))
+					continue;
+				
+				quests.add(quest);
 			}
 		}
-
-		// Display a QuestChooseWindow (if several quests are available) or QuestWindow
-		if (options.size() > 1)
-		{
-			showQuestChooseWindow(player, options.toArray(new Quest[options.size()]));
-		}
-		else if (options.size() == 1)
-		{
-			showQuestWindow(player, options.get(0).getName());
-		}
-		else
-		{
+		
+		if (quests.isEmpty())
 			showQuestWindow(player, "");
-		}
+		else if (quests.size() == 1)
+			showQuestWindow(player, quests.get(0).getName());
+		else
+			showQuestChooseWindow(player, quests.toArray(new Quest[quests.size()]));
 	}
 
 	/**
@@ -2809,5 +2809,29 @@ public class L2Npc extends L2Character
 			if (_npc != null)
 				_npc.deleteMe();
 		}
+	}
+	
+	public int getScriptValue()
+	{
+		return _scriptValue;
+	}
+	
+	public void setScriptValue(int val)
+	{
+		_scriptValue = val;
+	}
+	
+	public boolean isScriptValue(int val)
+	{
+		return _scriptValue == val;
+	}
+	
+	/**
+	 * Make the NPC speaks to his current knownlist.
+	 * @param message The String message to send.
+	 */
+	public void broadcastNpcSay(String message)
+	{
+		broadcastPacket(new NpcSay(getObjectId(), Say2.ALL, getNpcId(), message));
 	}
 }

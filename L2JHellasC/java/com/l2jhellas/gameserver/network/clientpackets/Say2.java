@@ -31,8 +31,10 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.PunishLevel;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
+import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class Say2 extends L2GameClientPacket
@@ -45,39 +47,41 @@ public final class Say2 extends L2GameClientPacket
 	public final static int SHOUT = 1; // !
 	public final static int TELL = 2;
 	public final static int PARTY = 3; // #
-	public final static int CLAN = 4;  // @
+	public final static int CLAN = 4; // @
 	public final static int GM = 5;
-	public final static int PETITION_PLAYER = 6; // used for petition
-	public final static int PETITION_GM = 7; // * used for petition
+	public final static int PETITION_PLAYER = 6;
+	public final static int PETITION_GM = 7;
 	public final static int TRADE = 8; // +
 	public final static int ALLIANCE = 9; // $
 	public final static int ANNOUNCEMENT = 10;
-	public final static int PARTYROOM_ALL = 16; // (Red)
+	public final static int BOAT = 11;
+	public final static int L2FRIEND = 12;
+	public final static int MSNCHAT = 13;
+	public final static int PARTYMATCH_ROOM = 14;
 	public final static int PARTYROOM_COMMANDER = 15; // (Yellow)
+	public final static int PARTYROOM_ALL = 16; // (Red)
 	public final static int HERO_VOICE = 17;
 
 	private final static String[] CHAT_NAMES =
 	{
-	/** @formatter:off */
-		"ALL  ",
+		"ALL",
 		"SHOUT",
-		"TELL ",
+		"TELL",
 		"PARTY",
-		"CLAN ",
-		"GM   ",
+		"CLAN",
+		"GM",
 		"PETITION_PLAYER",
 		"PETITION_GM",
 		"TRADE",
 		"ALLIANCE",
-		"ANNOUNCEMENT", //10
+		"ANNOUNCEMENT", // 10
+		"BOAT",
 		"WILLCRASHCLIENT:)",
 		"FAKEALL?",
-		"FAKEALL?",
-		"FAKEALL?",
-		"PARTYROOM_ALL",
+		"PARTYMATCH_ROOM",
 		"PARTYROOM_COMMANDER",
+		"PARTYROOM_ALL",
 		"HERO_VOICE"
-		/** @formatter:on */
 	};
 
 	private String _text;
@@ -105,6 +109,11 @@ public final class Say2 extends L2GameClientPacket
 		if (Config.DEBUG)
 			_log.info("Say2: Msg Type = '" + _type + "' Text = '" + _text + "'.");
 
+		final L2PcInstance activeChar = getClient().getActiveChar();
+
+		if (activeChar == null)
+			return;
+		
 		if (_type < 0 || _type >= CHAT_NAMES.length)
 		{
 			_log.warning("Say2: Invalid type: " + _type);
@@ -115,21 +124,28 @@ public final class Say2 extends L2GameClientPacket
 		{
 			return;
 		}
+		
 
-		L2PcInstance activeChar = getClient().getActiveChar();
-
-		if (activeChar == null)
+		if (_text.isEmpty())
 		{
+			_log.warning(activeChar.getName() + ": sending empty text. Possible packet hack.");
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			activeChar.logout();
 			return;
 		}
-
 		if (_text.length() > Config.MAX_CHAT_LENGTH)
 		{
 			_log.info("Say2: Msg Type = '" + _type + "' Text length more than " + Config.MAX_CHAT_LENGTH + " truncate them.");
 			_text = _text.substring(0, Config.MAX_CHAT_LENGTH);
 			return;
 		}
-
+		
+		if (_type == TELL && checkBot(_text))
+		{
+			Util.handleIllegalPlayerAction(activeChar, "Client Emulator Detect: " + activeChar.getName() + " is using L2Walker.", Config.DEFAULT_PUNISH);
+			return;
+		}
+		
 		// Say Filter implementation
 		if (Config.USE_SAY_FILTER)
 			checkText(activeChar);
@@ -157,12 +173,7 @@ public final class Say2 extends L2GameClientPacket
 			activeChar.sendMessage("Shout and trade chatting cannot be used while possessing a cursed weapon.");
 			return;
 		}
-		
-		if (_type == PETITION_PLAYER && activeChar.isGM())
-		{
-			_type = PETITION_GM;
-		}
-		
+
 		if (_type == PETITION_PLAYER && activeChar.isGM())
 			_type = PETITION_GM;
 
@@ -334,5 +345,54 @@ public final class Say2 extends L2GameClientPacket
 	public String getType()
 	{
 		return _C__38_SAY2;
+	}
+	
+	private static final String[] WALKER_COMMAND_LIST =
+	{
+		"USESKILL",
+		"USEITEM",
+		"BUYITEM",
+		"SELLITEM",
+		"SAVEITEM",
+		"LOADITEM",
+		"MSG",
+		"DELAY",
+		"LABEL",
+		"JMP",
+		"CALL",
+		"RETURN",
+		"MOVETO",
+		"NPCSEL",
+		"NPCDLG",
+		"DLGSEL",
+		"CHARSTATUS",
+		"POSOUTRANGE",
+		"POSINRANGE",
+		"GOHOME",
+		"SAY",
+		"EXIT",
+		"PAUSE",
+		"STRINDLG",
+		"STRNOTINDLG",
+		"CHANGEWAITTYPE",
+		"FORCEATTACK",
+		"ISMEMBER",
+		"REQUESTJOINPARTY",
+		"REQUESTOUTPARTY",
+		"QUITPARTY",
+		"MEMBERSTATUS",
+		"CHARBUFFS",
+		"ITEMCOUNT",
+		"FOLLOWTELEPORT"
+	};
+	
+	private static boolean checkBot(String text)
+	{
+		for (String botCommand : WALKER_COMMAND_LIST)
+		{
+			if (text.startsWith(botCommand))
+				return true;
+		}
+		return false;
 	}
 }

@@ -322,7 +322,7 @@ public class AdminReload implements IAdminCommandHandler
 					}
 					catch (ScriptException e)
 					{
-						L2ScriptEngineManager.getInstance().reportScriptFileError(file, e);
+						L2ScriptEngineManager.reportScriptFileError(file, e);
 						activeChar.sendMessage("There was an error while loading handlers.");
 					}
 					sendReloadPage(activeChar);

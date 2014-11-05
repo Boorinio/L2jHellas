@@ -14,7 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.actor.knownlist;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javolution.util.FastMap;
@@ -23,14 +25,12 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Util;
 
 public class ObjectKnownList
 {
-	private final L2Object _activeObject;
-	private Map<Integer, L2Object> _knownObjects;
+	protected final L2Object _activeObject;
+	protected Map<Integer, L2Object> _knownObjects;
 
 	public ObjectKnownList(L2Object activeObject)
 	{
@@ -151,7 +151,7 @@ public class ObjectKnownList
 	private final void forgetObjects()
 	{
 		// Go through knownObjects
-		Collection<L2Object> knownObjects = getKnownObjects().values();
+		final Collection<L2Object> knownObjects = getKnownObjects().values();
 
 		if ((knownObjects == null) || (knownObjects.size() == 0))
 			return;
@@ -160,26 +160,9 @@ public class ObjectKnownList
 		{
 			if (object == null)
 				continue;
-
-			// Remove all invisible object
-			// Remove all too far object
-			if (!object.isVisible() || !Util.checkIfInRange(getDistanceToForgetObject(object), getActiveObject(), object, true))
-				if (object instanceof L2BoatInstance && getActiveObject() instanceof L2PcInstance)
-					if (((L2BoatInstance) (object)).getVehicleDeparture() == null)
-					{
-						//
-					}
-					else if (((L2PcInstance) getActiveObject()).isInBoat())
-						if (((L2PcInstance) getActiveObject()).getBoat() == object)
-						{
-							//
-						}
-						else
-							removeKnownObject(object);
-					else
-						removeKnownObject(object);
-				else
-					removeKnownObject(object);
+			
+			if (!object.isVisible() || !Util.checkIfInRange(getDistanceToForgetObject(object), _activeObject, object, true))
+				removeKnownObject(object);
 		}
 	}
 
@@ -206,6 +189,19 @@ public class ObjectKnownList
 		return _knownObjects;
 	}
 
+	@SuppressWarnings("unchecked")
+	public final <A> Collection<A> getKnownTypeInRadius(Class<A> type, int radius)
+	{
+		List<A> result = new ArrayList<>();
+		
+		for (L2Object obj : _knownObjects.values())
+		{
+			if (type.isAssignableFrom(obj.getClass()) && Util.checkIfInRange(radius, getActiveObject(), obj, true))
+				result.add((A) obj);
+		}
+		return result;
+	}
+	
 	public static class KnownListAsynchronousUpdateTask implements Runnable
 	{
 		private final L2Object _obj;

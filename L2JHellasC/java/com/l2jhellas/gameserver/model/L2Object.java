@@ -138,7 +138,7 @@ public abstract class L2Object
 	 * <li>Delete NPC/PC or Unsummon</li><BR>
 	 * <BR>
 	 */
-	public final void decayMe()
+	public void decayMe()
 	{
 		if (Config.ASSERT)
 			assert getPosition().getWorldRegion() != null;

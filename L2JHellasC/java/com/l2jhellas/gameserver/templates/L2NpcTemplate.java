@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.templates;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -28,6 +30,7 @@ import com.l2jhellas.gameserver.model.L2NpcAIData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.skills.Stats;
 /**
  * This cl contains all generic data of a L2Spawn object.<BR><BR>
@@ -146,7 +149,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	private Map<Integer, L2Skill> _skills;
 	private Map<Stats, Double> _vulnerabilities;
 	// contains a list of quests for each event type (questStart, questAttack, questKill, etc)
-	private Map<Quest.QuestEventType, Quest[]> _questEvents;
+	private final Map<QuestEventType, List<Quest>> _questEvents = new HashMap<QuestEventType, List<Quest>>();
 	
 	/**
 	 * Constructor of L2Character.<BR><BR>
@@ -421,67 +424,35 @@ public final class L2NpcTemplate extends L2CharTemplate
 		return _skills;
 	}
 	
-	public void addQuestEvent(Quest.QuestEventType EventType, Quest q)
+	public void addQuestEvent(QuestEventType eventType, Quest quest)
 	{
-		if (_questEvents == null)
-			_questEvents = new FastMap<Quest.QuestEventType, Quest[]>();
+		List<Quest> eventList = _questEvents.get(eventType);
+		if (eventList == null)
+		{
+			eventList = new ArrayList<>();
+			eventList.add(quest);
+			_questEvents.put(eventType, eventList);
+		}
+		else
+		{
+			eventList.remove(quest);
 			
-			if (_questEvents.get(EventType) == null)
-			{
-				_questEvents.put(EventType, new Quest[] { q });
-			}
+			if (eventType.isMultipleRegistrationAllowed() || eventList.isEmpty())
+				eventList.add(quest);
 			else
-			{
-				Quest[] _quests = _questEvents.get(EventType);
-				int len = _quests.length;
-				
-				// if only one registration per npc is allowed for this event type
-				// then only register this NPC if not already registered for the specified event.
-				// if a quest allows multiple registrations, then register regardless of count
-				// In all cases, check if this new registration is replacing an older copy of the SAME quest
-				// Finally, check quest class hierarchy: a parent class should never replace a child class.
-				// a child class should always replace a parent class.
-				if (!EventType.isMultipleRegistrationAllowed())
-				{
-					// if it is the same quest (i.e. reload) or the existing is a superclass of the new one, replace the existing.
-					if (_quests[0].getName().equals(q.getName()) || L2NpcTemplate.isAssignableTo(q, _quests[0].getClass()))
-					{
-						_quests[0] = q;
-					}
-					else
-					{
-						_log.warning("Quest event not allowed in multiple quests.  Skipped addition of Event Type \"" + EventType + "\" for NPC \"" + name + "\" and quest \"" + q.getName() + "\".");
-					}
-				}
-				else
-				{
-					// be ready to add a new quest to a new copy of the list, with larger size than previously.
-					Quest[] tmp = new Quest[len + 1];
-					
-					// loop through the existing quests and copy them to the new list.  While doing so, also
-					// check if this new quest happens to be just a replacement for a previously loaded quest.
-					// Replace existing if the new quest is the same (reload) or a child of the existing quest.
-					// Do nothing if the new quest is a superclass of an existing quest.
-					// Add the new quest in the end of the list otherwise.
-					for (int i = 0; i < len; i++)
-					{
-						if (_quests[i].getName().equals(q.getName()) || L2NpcTemplate.isAssignableTo(q, _quests[i].getClass()))
-						{
-							_quests[i] = q;
-							return;
-						}
-						else if (L2NpcTemplate.isAssignableTo(_quests[i], q.getClass()))
-						{
-							return;
-						}
-						tmp[i] = _quests[i];
-					}
-					tmp[len] = q;
-					_questEvents.put(EventType, tmp);
-				}
-			}
+				_log.warning("Quest event not allow multiple quest registrations. Skipped addition of EventType \"" + eventType + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
+		}
 	}
 	
+	public Map<QuestEventType, List<Quest>> getEventQuests()
+	{
+		return _questEvents;
+	}
+	
+	public List<Quest> getEventQuests(QuestEventType EventType)
+	{
+		return _questEvents.get(EventType);
+	}
 	/**
 	 * Checks if obj can be assigned to the Class represented by clazz.<br>
 	 * This is true if, and only if, obj is the same class represented by clazz,
@@ -528,16 +499,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 		
 		return false;
 	}
-	
-	public Quest[] getEventQuests(Quest.QuestEventType EventType)
-	{
-		if (_questEvents == null)
-		{
-			return null;
-		}
-		return _questEvents.get(EventType);
-	}
-	
+		
 	public void setRace(int raceId)
 	{
 		switch (raceId)
@@ -938,4 +900,6 @@ public final class L2NpcTemplate extends L2CharTemplate
 	{
 		return isQuestMonster;
 	}
+	
+	
 }

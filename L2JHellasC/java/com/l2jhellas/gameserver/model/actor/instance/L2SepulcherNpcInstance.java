@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
@@ -245,12 +247,12 @@ public class L2SepulcherNpcInstance extends L2Npc
 
 			default:
 			{
-				Quest[] qlsa = getTemplate().getEventQuests(Quest.QuestEventType.QUEST_START);
-				if ((qlsa != null) && qlsa.length > 0)
+				List<Quest> qlsa = getTemplate().getEventQuests(QuestEventType.QUEST_START);
+				if ((qlsa != null) && qlsa.size() > 0)
 					player.setLastQuestNpcObject(getObjectId());
-				Quest[] qlst = getTemplate().getEventQuests(Quest.QuestEventType.ON_FIRST_TALK);
-				if ((qlst != null) && qlst.length == 1)
-					qlst[0].notifyFirstTalk(this, player);
+				List<Quest> qlst = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
+				if ((qlst != null) && qlst.size() == 1)
+					qlst.get(0).notifyFirstTalk(this, player);
 				else
 					showChatWindow(player, 0);
 			}

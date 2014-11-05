@@ -72,6 +72,11 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			return;
 		}
 
+		if(player.getActiveTradeList()!=null || player.getActiveWarehouse()!=null || player.getActiveEnchantItem()!=null)
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		L2Object object = L2World.findObject(_storePlayerId);
 		if ((object == null) || !(object instanceof L2PcInstance))
 			return;

@@ -104,9 +104,9 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 						NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 						TextBuilder sb = new TextBuilder();
 						sb.append("<html><body<table width=200>");
-						sb.append("<tr><td><center>" + CharTemplateData.getClassNameById(player.getClassId().getId()) + " Class Master:</center></td></tr>");
+						sb.append("<tr><td><center>" + CharTemplateData.getInstance().getClassNameById(player.getClassId().getId()) + " Class Master:</center></td></tr>");
 						sb.append("<tr><td><br></td></tr>");
-						sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class " + (88 + i) + "\">Advance to " + CharTemplateData.getClassNameById(88 + i) + "</a></td></tr>");
+						sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class " + (88 + i) + "\">Advance to " + CharTemplateData.getInstance().getClassNameById(88 + i) + "</a></td></tr>");
 						sb.append("<tr><td><br></td></tr>");
 						sb.append("</table></body></html>");
 						html.setHtml(sb.toString());
@@ -211,7 +211,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				TextBuilder sb = new TextBuilder();
 				sb.append("<html><body>");
-				sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateData.getClassNameById(player.getClassId().getId()) + "</font>.");
+				sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateData.getInstance().getClassNameById(player.getClassId().getId()) + "</font>.");
 				sb.append("</body></html>");
 
 				html.setHtml(sb.toString());
@@ -272,7 +272,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 			else
 				player.sendPacket(SystemMessageId.CLASS_TRANSFER); // system sound for 1st and 2nd occupation
 
-			player.broadcastPacket(new MagicSkillUse(player, player, 5103, 1, 0, 0));
+			player.broadcastPacket(new MagicSkillUse(player, player, 5103, 1, 1000, 0));
 
 			HtmlShow(player);
 			
@@ -317,24 +317,24 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		sb.append("<table width=200>");
 		sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
 		sb.append("<tr><td><br></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 1\">Advance to " + CharTemplateData.getClassNameById(1) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 4\">Advance to " + CharTemplateData.getClassNameById(4) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 7\">Advance to " + CharTemplateData.getClassNameById(7) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 11\">Advance to " + CharTemplateData.getClassNameById(11) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 15\">Advance to " + CharTemplateData.getClassNameById(15) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 19\">Advance to " + CharTemplateData.getClassNameById(19) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 22\">Advance to " + CharTemplateData.getClassNameById(22) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 26\">Advance to " + CharTemplateData.getClassNameById(26) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 29\">Advance to " + CharTemplateData.getClassNameById(29) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 32\">Advance to " + CharTemplateData.getClassNameById(32) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 35\">Advance to " + CharTemplateData.getClassNameById(35) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 39\">Advance to " + CharTemplateData.getClassNameById(39) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 42\">Advance to " + CharTemplateData.getClassNameById(42) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 45\">Advance to " + CharTemplateData.getClassNameById(45) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 47\">Advance to " + CharTemplateData.getClassNameById(47) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 50\">Advance to " + CharTemplateData.getClassNameById(50) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 54\">Advance to " + CharTemplateData.getClassNameById(54) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 56\">Advance to " + CharTemplateData.getClassNameById(56) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 1\">Advance to " + CharTemplateData.getInstance().getClassNameById(1) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 4\">Advance to " + CharTemplateData.getInstance().getClassNameById(4) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 7\">Advance to " + CharTemplateData.getInstance().getClassNameById(7) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 11\">Advance to " + CharTemplateData.getInstance().getClassNameById(11) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 15\">Advance to " + CharTemplateData.getInstance().getClassNameById(15) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 19\">Advance to " + CharTemplateData.getInstance().getClassNameById(19) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 22\">Advance to " + CharTemplateData.getInstance().getClassNameById(22) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 26\">Advance to " + CharTemplateData.getInstance().getClassNameById(26) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 29\">Advance to " + CharTemplateData.getInstance().getClassNameById(29) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 32\">Advance to " + CharTemplateData.getInstance().getClassNameById(32) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 35\">Advance to " + CharTemplateData.getInstance().getClassNameById(35) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 39\">Advance to " + CharTemplateData.getInstance().getClassNameById(39) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 42\">Advance to " + CharTemplateData.getInstance().getClassNameById(42) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 45\">Advance to " + CharTemplateData.getInstance().getClassNameById(45) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 47\">Advance to " + CharTemplateData.getInstance().getClassNameById(47) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 50\">Advance to " + CharTemplateData.getInstance().getClassNameById(50) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 54\">Advance to " + CharTemplateData.getInstance().getClassNameById(54) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 56\">Advance to " + CharTemplateData.getInstance().getClassNameById(56) + "</a></td></tr>");
 		sb.append("</table>");
 		sb.append("</body>");
 		sb.append("</html>");
@@ -352,37 +352,37 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		sb.append("<table width=200>");
 		sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
 		sb.append("<tr><td><br></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 2\">Advance to " + CharTemplateData.getClassNameById(2) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 3\">Advance to " + CharTemplateData.getClassNameById(3) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 5\">Advance to " + CharTemplateData.getClassNameById(5) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 6\">Advance to " + CharTemplateData.getClassNameById(6) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 8\">Advance to " + CharTemplateData.getClassNameById(8) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 9\">Advance to " + CharTemplateData.getClassNameById(9) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 12\">Advance to " + CharTemplateData.getClassNameById(12) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 13\">Advance to " + CharTemplateData.getClassNameById(13) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 14\">Advance to " + CharTemplateData.getClassNameById(14) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 16\">Advance to " + CharTemplateData.getClassNameById(16) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 17\">Advance to " + CharTemplateData.getClassNameById(17) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 20\">Advance to " + CharTemplateData.getClassNameById(20) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 21\">Advance to " + CharTemplateData.getClassNameById(21) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 23\">Advance to " + CharTemplateData.getClassNameById(23) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 24\">Advance to " + CharTemplateData.getClassNameById(24) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 27\">Advance to " + CharTemplateData.getClassNameById(27) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 28\">Advance to " + CharTemplateData.getClassNameById(28) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 30\">Advance to " + CharTemplateData.getClassNameById(30) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 33\">Advance to " + CharTemplateData.getClassNameById(33) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 34\">Advance to " + CharTemplateData.getClassNameById(34) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 36\">Advance to " + CharTemplateData.getClassNameById(36) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 37\">Advance to " + CharTemplateData.getClassNameById(37) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 40\">Advance to " + CharTemplateData.getClassNameById(40) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 41\">Advance to " + CharTemplateData.getClassNameById(41) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 43\">Advance to " + CharTemplateData.getClassNameById(43) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 46\">Advance to " + CharTemplateData.getClassNameById(46) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 48\">Advance to " + CharTemplateData.getClassNameById(48) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 51\">Advance to " + CharTemplateData.getClassNameById(51) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 52\">Advance to " + CharTemplateData.getClassNameById(52) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 55\">Advance to " + CharTemplateData.getClassNameById(55) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 57\">Advance to " + CharTemplateData.getClassNameById(57) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 2\">Advance to " + CharTemplateData.getInstance().getClassNameById(2) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 3\">Advance to " + CharTemplateData.getInstance().getClassNameById(3) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 5\">Advance to " + CharTemplateData.getInstance().getClassNameById(5) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 6\">Advance to " + CharTemplateData.getInstance().getClassNameById(6) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 8\">Advance to " + CharTemplateData.getInstance().getClassNameById(8) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 9\">Advance to " + CharTemplateData.getInstance().getClassNameById(9) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 12\">Advance to " + CharTemplateData.getInstance().getClassNameById(12) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 13\">Advance to " + CharTemplateData.getInstance().getClassNameById(13) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 14\">Advance to " + CharTemplateData.getInstance().getClassNameById(14) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 16\">Advance to " + CharTemplateData.getInstance().getClassNameById(16) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 17\">Advance to " + CharTemplateData.getInstance().getClassNameById(17) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 20\">Advance to " + CharTemplateData.getInstance().getClassNameById(20) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 21\">Advance to " + CharTemplateData.getInstance().getClassNameById(21) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 23\">Advance to " + CharTemplateData.getInstance().getClassNameById(23) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 24\">Advance to " + CharTemplateData.getInstance().getClassNameById(24) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 27\">Advance to " + CharTemplateData.getInstance().getClassNameById(27) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 28\">Advance to " + CharTemplateData.getInstance().getClassNameById(28) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 30\">Advance to " + CharTemplateData.getInstance().getClassNameById(30) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 33\">Advance to " + CharTemplateData.getInstance().getClassNameById(33) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 34\">Advance to " + CharTemplateData.getInstance().getClassNameById(34) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 36\">Advance to " + CharTemplateData.getInstance().getClassNameById(36) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 37\">Advance to " + CharTemplateData.getInstance().getClassNameById(37) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 40\">Advance to " + CharTemplateData.getInstance().getClassNameById(40) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 41\">Advance to " + CharTemplateData.getInstance().getClassNameById(41) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 43\">Advance to " + CharTemplateData.getInstance().getClassNameById(43) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 46\">Advance to " + CharTemplateData.getInstance().getClassNameById(46) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 48\">Advance to " + CharTemplateData.getInstance().getClassNameById(48) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 51\">Advance to " + CharTemplateData.getInstance().getClassNameById(51) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 52\">Advance to " + CharTemplateData.getInstance().getClassNameById(52) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 55\">Advance to " + CharTemplateData.getInstance().getClassNameById(55) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 57\">Advance to " + CharTemplateData.getInstance().getClassNameById(57) + "</a></td></tr>");
 		sb.append("</table>");
 		sb.append("</body>");
 		sb.append("</html>");
@@ -400,37 +400,37 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		sb.append("<table width=200>");
 		sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
 		sb.append("<tr><td><br></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 88\">Advance to " + CharTemplateData.getClassNameById(88) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 89\">Advance to " + CharTemplateData.getClassNameById(89) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 90\">Advance to " + CharTemplateData.getClassNameById(90) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 91\">Advance to " + CharTemplateData.getClassNameById(91) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 92\">Advance to " + CharTemplateData.getClassNameById(92) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 93\">Advance to " + CharTemplateData.getClassNameById(93) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 94\">Advance to " + CharTemplateData.getClassNameById(94) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 95\">Advance to " + CharTemplateData.getClassNameById(95) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 96\">Advance to " + CharTemplateData.getClassNameById(96) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 97\">Advance to " + CharTemplateData.getClassNameById(97) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 98\">Advance to " + CharTemplateData.getClassNameById(98) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 99\">Advance to " + CharTemplateData.getClassNameById(99) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 100\">Advance to " + CharTemplateData.getClassNameById(100) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 101\">Advance to " + CharTemplateData.getClassNameById(101) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 102\">Advance to " + CharTemplateData.getClassNameById(102) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 103\">Advance to " + CharTemplateData.getClassNameById(103) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 104\">Advance to " + CharTemplateData.getClassNameById(104) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 105\">Advance to " + CharTemplateData.getClassNameById(105) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 106\">Advance to " + CharTemplateData.getClassNameById(106) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 107\">Advance to " + CharTemplateData.getClassNameById(107) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 108\">Advance to " + CharTemplateData.getClassNameById(108) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 109\">Advance to " + CharTemplateData.getClassNameById(109) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 110\">Advance to " + CharTemplateData.getClassNameById(110) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 111\">Advance to " + CharTemplateData.getClassNameById(111) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 112\">Advance to " + CharTemplateData.getClassNameById(112) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 113\">Advance to " + CharTemplateData.getClassNameById(113) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 114\">Advance to " + CharTemplateData.getClassNameById(114) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 115\">Advance to " + CharTemplateData.getClassNameById(115) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 116\">Advance to " + CharTemplateData.getClassNameById(116) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 117\">Advance to " + CharTemplateData.getClassNameById(117) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 118\">Advance to " + CharTemplateData.getClassNameById(118) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 88\">Advance to " + CharTemplateData.getInstance().getClassNameById(88) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 89\">Advance to " + CharTemplateData.getInstance().getClassNameById(89) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 90\">Advance to " + CharTemplateData.getInstance().getClassNameById(90) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 91\">Advance to " + CharTemplateData.getInstance().getClassNameById(91) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 92\">Advance to " + CharTemplateData.getInstance().getClassNameById(92) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 93\">Advance to " + CharTemplateData.getInstance().getClassNameById(93) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 94\">Advance to " + CharTemplateData.getInstance().getClassNameById(94) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 95\">Advance to " + CharTemplateData.getInstance().getClassNameById(95) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 96\">Advance to " + CharTemplateData.getInstance().getClassNameById(96) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 97\">Advance to " + CharTemplateData.getInstance().getClassNameById(97) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 98\">Advance to " + CharTemplateData.getInstance().getClassNameById(98) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 99\">Advance to " + CharTemplateData.getInstance().getClassNameById(99) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 100\">Advance to " + CharTemplateData.getInstance().getClassNameById(100) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 101\">Advance to " + CharTemplateData.getInstance().getClassNameById(101) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 102\">Advance to " + CharTemplateData.getInstance().getClassNameById(102) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 103\">Advance to " + CharTemplateData.getInstance().getClassNameById(103) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 104\">Advance to " + CharTemplateData.getInstance().getClassNameById(104) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 105\">Advance to " + CharTemplateData.getInstance().getClassNameById(105) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 106\">Advance to " + CharTemplateData.getInstance().getClassNameById(106) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 107\">Advance to " + CharTemplateData.getInstance().getClassNameById(107) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 108\">Advance to " + CharTemplateData.getInstance().getClassNameById(108) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 109\">Advance to " + CharTemplateData.getInstance().getClassNameById(109) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 110\">Advance to " + CharTemplateData.getInstance().getClassNameById(110) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 111\">Advance to " + CharTemplateData.getInstance().getClassNameById(111) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 112\">Advance to " + CharTemplateData.getInstance().getClassNameById(112) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 113\">Advance to " + CharTemplateData.getInstance().getClassNameById(113) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 114\">Advance to " + CharTemplateData.getInstance().getClassNameById(114) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 115\">Advance to " + CharTemplateData.getInstance().getClassNameById(115) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 116\">Advance to " + CharTemplateData.getInstance().getClassNameById(116) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 117\">Advance to " + CharTemplateData.getInstance().getClassNameById(117) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 118\">Advance to " + CharTemplateData.getInstance().getClassNameById(118) + "</a></td></tr>");
 		sb.append("</table>");
 		sb.append("</body>");
 		sb.append("</html>");
@@ -448,15 +448,15 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		sb.append("<table width=200>");
 		sb.append("<tr><td><center>GM Class Master:</center></td></tr>");
 		sb.append("<tr><td><br></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 0\">Advance to " + CharTemplateData.getClassNameById(0) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 10\">Advance to " + CharTemplateData.getClassNameById(10) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 18\">Advance to " + CharTemplateData.getClassNameById(18) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 25\">Advance to " + CharTemplateData.getClassNameById(25) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 31\">Advance to " + CharTemplateData.getClassNameById(31) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 38\">Advance to " + CharTemplateData.getClassNameById(38) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 44\">Advance to " + CharTemplateData.getClassNameById(44) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 49\">Advance to " + CharTemplateData.getClassNameById(49) + "</a></td></tr>");
-		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 53\">Advance to " + CharTemplateData.getClassNameById(53) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 0\">Advance to " + CharTemplateData.getInstance().getClassNameById(0) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 10\">Advance to " + CharTemplateData.getInstance().getClassNameById(10) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 18\">Advance to " + CharTemplateData.getInstance().getClassNameById(18) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 25\">Advance to " + CharTemplateData.getInstance().getClassNameById(25) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 31\">Advance to " + CharTemplateData.getInstance().getClassNameById(31) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 38\">Advance to " + CharTemplateData.getInstance().getClassNameById(38) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 44\">Advance to " + CharTemplateData.getInstance().getClassNameById(44) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 49\">Advance to " + CharTemplateData.getInstance().getClassNameById(49) + "</a></td></tr>");
+		sb.append("<tr><td><a action=\"bypass -h npc_" + getObjectId() + "_change_class 53\">Advance to " + CharTemplateData.getInstance().getClassNameById(53) + "</a></td></tr>");
 		sb.append("</table>");
 		sb.append("</body>");
 		sb.append("</html>");
@@ -467,8 +467,13 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 
 	private void changeClass(L2PcInstance player, int val)
 	{
-		if (Config.DEBUG)
-			_log.fine("Changing class to ClassId:" + val);
+		final ClassId currentClassId = player.getClassId();
+		if (getMinLevel(currentClassId.level()) > player.getLevel())
+			return;
+		
+		if (!validateClassId(currentClassId, val))
+			return;
+		
 		player.setClassId(val);
 
 		if (player.isSubClassActive())
@@ -489,7 +494,6 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 
             // player.setBaseClass(player.getActiveClass());
 		}
-			
 		player.broadcastUserInfo();
 	}
 	
@@ -578,7 +582,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		TextBuilder sb = new TextBuilder();
 		sb.append("<html><body>");
-		sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateData.getClassNameById(player.getClassId().getId()) + "</font>.");
+		sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateData.getInstance().getClassNameById(player.getClassId().getId()) + "</font>.");
 		sb.append("</body></html>");
 
 		html.setHtml(sb.toString());
@@ -643,5 +647,60 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	{	
 		if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel == 4 && !player.isSubClassActive())
               autoEquip(player);
+	}
+	
+	/**
+	 * Returns true if class change is possible
+	 * @param oldCID current player ClassId
+	 * @param newCID new ClassId
+	 * @return true if class change is possible
+	 */
+	private static final boolean validateClassId(ClassId oldCID, ClassId newCID)
+	{
+		if (newCID == null || newCID.getRace() == null)
+			return false;
+		
+		if (oldCID.equals(newCID.getParent()))
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * @param level - current skillId level (0 - start, 1 - first, etc)
+	 * @return minimum player level required for next class transfer
+	 */
+	private static final int getMinLevel(int level)
+	{
+		switch (level)
+		{
+			case 0:
+				return 20;
+			case 1:
+				return 40;
+			case 2:
+				return 76;
+			default:
+				return Integer.MAX_VALUE;
+		}
+	}
+	
+	/**
+	 * Returns true if class change is possible
+	 * @param oldCID current player ClassId
+	 * @param val new class index
+	 * @return
+	 */
+	private static final boolean validateClassId(ClassId oldCID, int val)
+	{
+		try
+		{
+			return validateClassId(oldCID, ClassId.values()[val]);
+		}
+		catch (Exception e)
+		{
+			// possible ArrayOutOfBoundsException
+		}
+		return false;
 	}
 }

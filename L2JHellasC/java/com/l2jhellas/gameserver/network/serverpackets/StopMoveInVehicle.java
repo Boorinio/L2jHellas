@@ -15,35 +15,37 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.Point3D;
+
 
 /**
  * @author Maktakien
  */
 public class StopMoveInVehicle extends L2GameServerPacket
 {
-	private final L2PcInstance _activeChar;
+	private final int _charObjId;
 	private final int _boatId;
+	private final Point3D _pos;
+	private final int _heading;
 
-	/**
-	 * @param player
-	 * @param boatid
-	 */
-	public StopMoveInVehicle(L2PcInstance player, int boatid)
+	public StopMoveInVehicle(L2PcInstance player, int boatId)
 	{
-		_activeChar = player;
-		_boatId = boatid;
+		_charObjId = player.getObjectId();
+		_boatId = boatId;
+		_pos = player.getInVehiclePosition();
+		_heading = player.getHeading();
 	}
-
+	
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0x72);
-		writeD(_activeChar.getObjectId());
+		writeD(_charObjId);
 		writeD(_boatId);
-		writeD(_activeChar.getInBoatPosition().getX());
-		writeD(_activeChar.getInBoatPosition().getY());
-		writeD(_activeChar.getInBoatPosition().getZ());
-		writeD(_activeChar.getPosition().getHeading());
+		writeD(_pos.getX());
+		writeD(_pos.getY());
+		writeD(_pos.getZ());
+		writeD(_heading);
 	}
 
 	@Override

@@ -15,12 +15,19 @@
 package com.l2jhellas.util;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javolution.text.TextBuilder;
 
@@ -470,5 +477,183 @@ public final class Util
 		{
 			return ADENA_FORMATTER.format(amount);
 		}
+	}
+
+	public final static int convertDegreeToClientHeading(double degree)
+	{
+		if (degree < 0)
+			degree = 360 + degree;
+		
+		return (int) (degree * 182.044444444);
+	}
+
+	/**
+	 * Format the given date on the given format
+	 * @param date : the date to format.
+	 * @param format : the format to correct by.
+	 * @return a string representation of the formatted date.
+	 */
+	public static String formatDate(Date date, String format)
+	{
+		final DateFormat dateFormat = new SimpleDateFormat(format);
+		if (date != null)
+			return dateFormat.format(date);
+		
+		return null;
+	}
+	
+	public static String formatDate(long date, String format)
+	{
+		final DateFormat dateFormat = new SimpleDateFormat(format);
+		if (date > 0)
+			return dateFormat.format(date);
+		
+		return null;
+	}
+	
+	/**
+	 * Faster calculation than checkIfInRange if distance is short and collisionRadius isn't needed. Not for long distance checks (potential teleports, far away castles, etc)
+	 * @param radius The radius to use as check.
+	 * @param obj1 The position 1 to make check on.
+	 * @param obj2 The postion 2 to make check on.
+	 * @param includeZAxis Include Z check or not.
+	 * @return true if both objects are in the given radius.
+	 */
+	public static boolean checkIfInShortRadius(int radius, L2Object obj1, L2Object obj2, boolean includeZAxis)
+	{
+		if (obj1 == null || obj2 == null)
+			return false;
+		
+		if (radius == -1)
+			return true; // not limited
+			
+		int dx = obj1.getX() - obj2.getX();
+		int dy = obj1.getY() - obj2.getY();
+		
+		if (includeZAxis)
+		{
+			int dz = obj1.getZ() - obj2.getZ();
+			return dx * dx + dy * dy + dz * dz <= radius * radius;
+		}
+		
+		return dx * dx + dy * dy <= radius * radius;
+	}
+	/**
+	 * Verify if the given text matches with the regex pattern.
+	 * @param text : the text to test.
+	 * @param regex : the regex pattern to make test with.
+	 * @return true if matching.
+	 */
+	public static boolean isValidName(String text, String regex)
+	{
+		Pattern pattern;
+		try
+		{
+			pattern = Pattern.compile(regex);
+		}
+		catch (PatternSyntaxException e) // case of illegal pattern
+		{
+			pattern = Pattern.compile(".*");
+		}
+		
+		Matcher regexp = pattern.matcher(text);
+		
+		return regexp.matches();
+	}
+	
+	/**
+	 * Child of isValidName, with regular pattern for players' name.
+	 * @param text : the text to test.
+	 * @return true if matching.
+	 */
+	public static boolean isValidPlayerName(String text)
+	{
+		return isValidName(text, "^[A-Za-z0-9]{1,16}$");
+	}
+	
+	/**
+	 * @param text - the text to check
+	 * @return {@code true} if {@code text} contains only numbers, {@code false} otherwise
+	 */
+	public static boolean isDigit(String text)
+	{
+		if (text == null)
+			return false;
+		
+		return text.matches("[0-9]+");
+	}
+	
+	/**
+	 * @param string the initial word to scramble.
+	 * @return an anagram of the given string.
+	 */
+	public static String scrambleString(String string)
+	{
+		List<String> letters = Arrays.asList(string.split(""));
+		Collections.shuffle(letters);
+		
+		StringBuilder sb = new StringBuilder(string.length());
+		for (String c : letters)
+			sb.append(c);
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * @param <T> The Object type.
+	 * @param array - the array to look into.
+	 * @param obj - the object to search for.
+	 * @return {@code true} if the array contains the object, {@code false} otherwise.
+	 */
+	public static <T> boolean contains(T[] array, T obj)
+	{
+		if (array == null || array.length == 0)
+			return false;
+		
+		for (T element : array)
+			if (element.equals(obj))
+				return true;
+		
+		return false;
+	}
+	
+	/**
+	 * @param <T> The Object type.
+	 * @param array1 - the array to look into.
+	 * @param array2 - the array to search for.
+	 * @return {@code true} if both arrays contains a similar value.
+	 */
+	public static <T> boolean contains(T[] array1, T[] array2)
+	{
+		if (array1 == null || array1.length == 0)
+			return false;
+		
+		if (array2 == null || array2.length == 0)
+			return false;
+		
+		for (T element1 : array1)
+		{
+			for (T element2 : array2)
+				if (element2.equals(element1))
+					return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @param array - the array to look into.
+	 * @param obj - the integer to search for.
+	 * @return {@code true} if the array contains the integer, {@code false} otherwise.
+	 */
+	public static boolean contains(int[] array, int obj)
+	{
+		if (array == null || array.length == 0)
+			return false;
+		
+		for (int element : array)
+			if (element == obj)
+				return true;
+		
+		return false;
 	}
 }

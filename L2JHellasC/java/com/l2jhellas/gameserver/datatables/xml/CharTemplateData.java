@@ -248,7 +248,7 @@ public class CharTemplateData
 		return _templates.get(key);
 	}
 
-	public static final String getClassNameById(int classId)
+	public final String getClassNameById(int classId)
 	{
 		return CHAR_CLASSES[classId];
 	}

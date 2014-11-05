@@ -268,4 +268,8 @@ public class L2MonsterInstance extends L2Attackable
 		}
 		_minionList.clearRespawnList();
 	}
+	public MinionList getMinionList()
+	{
+		return _minionList;
+	}
 }

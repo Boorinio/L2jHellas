@@ -14,48 +14,33 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.Point3D;
 
 /**
  * @author Maktakien
  */
 public class GetOnVehicle extends L2GameServerPacket
 {
-	private final int _x;
-	private final int _y;
-	private final int _z;
-	private final L2PcInstance _activeChar;
-	private final L2BoatInstance _boat;
-
-	/**
-	 * @param activeChar
-	 * @param boat
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	public GetOnVehicle(L2PcInstance activeChar, L2BoatInstance boat, int x, int y, int z)
+	private final int _charObjId;
+	private final int _boatObjId;
+	private final Point3D _pos;
+	
+	public GetOnVehicle(int charObjId, int boatObjId, Point3D pos)
 	{
-		_activeChar = activeChar;
-		_boat = boat;
-		_x = x;
-		_y = y;
-		_z = z;
-
-		_activeChar.setInBoat(true);
-		_activeChar.setBoat(_boat);
+		_charObjId = charObjId;
+		_boatObjId = boatObjId;
+		_pos = pos;
 	}
-
+	
 	@Override
 	protected void writeImpl()
 	{
-		writeC(0x5c);
-		writeD(_activeChar.getObjectId());
-		writeD(_boat.getObjectId());
-		writeD(_x);
-		writeD(_y);
-		writeD(_z);
+		writeC(0x5C);
+		writeD(_charObjId);
+		writeD(_boatObjId);
+		writeD(_pos.getX());
+		writeD(_pos.getY());
+		writeD(_pos.getZ());
 	}
 
 	@Override
