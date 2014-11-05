@@ -156,6 +156,7 @@ public class L2AchievementsInstance extends L2Npc
 		msg.replace("%objectId%", String.valueOf(getObjectId()));
 
 		player.sendPacket(msg);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showMyAchievements(L2PcInstance player)
@@ -191,8 +192,8 @@ public class L2AchievementsInstance extends L2Npc
 		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
 		msg.replace("%objectId%", String.valueOf(getObjectId()));
-
 		player.sendPacket(msg);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showAchievementInfo(int achievementID, L2PcInstance player)
@@ -227,8 +228,8 @@ public class L2AchievementsInstance extends L2Npc
 		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
 		msg.replace("%objectId%", String.valueOf(getObjectId()));
-
 		player.sendPacket(msg);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showMyStatsWindow(L2PcInstance player)
@@ -249,8 +250,8 @@ public class L2AchievementsInstance extends L2Npc
 		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
 		msg.replace("%objectId%", String.valueOf(getObjectId()));
-
 		player.sendPacket(msg);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showTopListWindow(L2PcInstance player)
@@ -268,8 +269,8 @@ public class L2AchievementsInstance extends L2Npc
 		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
 		msg.replace("%objectId%", String.valueOf(getObjectId()));
-
 		player.sendPacket(msg);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private void showHelpWindow(L2PcInstance player)
@@ -291,8 +292,8 @@ public class L2AchievementsInstance extends L2Npc
 		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
 		msg.replace("%objectId%", String.valueOf(getObjectId()));
-
 		player.sendPacket(msg);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	private String getStatusString(int achievementID, L2PcInstance player)
