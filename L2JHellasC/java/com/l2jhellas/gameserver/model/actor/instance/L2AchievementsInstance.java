@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.AchievmentsEngine.base.Achievement;
 import Extensions.AchievmentsEngine.base.Condition;
@@ -41,9 +40,8 @@ public class L2AchievementsInstance extends L2Npc
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if (player == null)
-		{
 			return;
-		}
+		
 		if (command.startsWith("showMyAchievements"))
 		{
 			player.getAchievemntData();
@@ -145,7 +143,7 @@ public class L2AchievementsInstance extends L2Npc
 			AchievementsManager.getInstance().loadUsed();
 			first = false;
 		}
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Achievements Manager</title><body><center><br>");
 		tb.append("Hello <font color=\"LEVEL\">" + player.getName() + "</font><br>Are you looking for challenge?");
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1\"><br>");
@@ -153,16 +151,16 @@ public class L2AchievementsInstance extends L2Npc
 		//tb.append("<button value=\"Statistics\" action=\"bypass -h npc_%objectId%_showMyStats\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21>");
 		tb.append("<button value=\"Help\" action=\"bypass -h npc_%objectId%_showHelpWindow\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21>");
 
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 
 		player.sendPacket(msg);
 	}
 
 	private void showMyAchievements(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Achievements Manager</title><body><br>");
 
 		tb.append("<center><font color=\"LEVEL\">My achievements</font>:</center><br>");
@@ -190,9 +188,9 @@ public class L2AchievementsInstance extends L2Npc
 			tb.append("<center><button value=\"Back\" action=\"bypass -h npc_%objectId%_showMainWindow\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21></center>");
 		}
 
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 
 		player.sendPacket(msg);
 	}
@@ -201,7 +199,7 @@ public class L2AchievementsInstance extends L2Npc
 	{
 		Achievement a = AchievementsManager.getInstance().getAchievementList().get(achievementID);
 
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Achievements Manager</title><body><br>");
 
 		tb.append("<table width=270 border=0 bgcolor=\"33FF33\">");
@@ -226,16 +224,16 @@ public class L2AchievementsInstance extends L2Npc
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1s\"><br>");
 		tb.append("<center><button value=\"Back\" action=\"bypass -h npc_%objectId%_showMyAchievements\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21></center>");
 
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 
 		player.sendPacket(msg);
 	}
 
 	private void showMyStatsWindow(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Achievements Manager</title><body><center><br>");
 		tb.append("Check your <font color=\"LEVEL\">Achievements </font>statistics:");
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1\"><br>");
@@ -248,16 +246,16 @@ public class L2AchievementsInstance extends L2Npc
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1s\"><br>");
 		tb.append("<center><button value=\"Back\" action=\"bypass -h npc_%objectId%_showMainWindow\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21></center>");
 
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 
 		player.sendPacket(msg);
 	}
 
 	private void showTopListWindow(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Achievements Manager</title><body><center><br>");
 		tb.append("Check your <font color=\"LEVEL\">Achievements </font>Top List:");
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1\"><br>");
@@ -267,16 +265,16 @@ public class L2AchievementsInstance extends L2Npc
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1s\"><br>");
 		tb.append("<center><button value=\"Back\" action=\"bypass -h npc_%objectId%_showMainWindow\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21></center>");
 
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 
 		player.sendPacket(msg);
 	}
 
 	private void showHelpWindow(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Achievements Manager</title><body><center><br>");
 		tb.append("Achievements <font color=\"LEVEL\">Help </font>page:");
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1\"><br>");
@@ -290,40 +288,24 @@ public class L2AchievementsInstance extends L2Npc
 		tb.append("<br><img src=\"l2ui.squaregray\" width=\"270\" height=\"1s\"><br>");
 		tb.append("<center><button value=\"Back\" action=\"bypass -h npc_%objectId%_showMainWindow\" back=\"L2UI_ch3.bigbutton_over\" fore=\"L2UI_ch3.bigbutton\" width=95 height=21></center>");
 
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(tb.toString());
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 
 		player.sendPacket(msg);
 	}
 
-	@SuppressWarnings("static-method")
 	private String getStatusString(int achievementID, L2PcInstance player)
 	{
 		if (player.getCompletedAchievements().contains(achievementID))
-		{
 			return "<font color=\"5EA82E\">Completed</font>";
-		}
 		else
-		{
-			if (AchievementsManager.getInstance().getAchievementList().get(achievementID).meetAchievementRequirements(player))
-			{
-				return "<font color=\"LEVEL\">Get Reward</font>";
-			}
-			else
-			{
-				return "<font color=\"FF0000\">Not Completed</font>";
-			}
-		}
+			return (AchievementsManager.getInstance().getAchievementList().get(achievementID).meetAchievementRequirements(player)) ? "<font color=\"LEVEL\">Get Reward</font>" : "<font color=\"FF0000\">Not Completed</font>";
 	}
 
-	@SuppressWarnings("static-method")
 	private String getTableColor(int i)
 	{
-		if (i % 2 == 0)
-			return "<table width=270 border=0 bgcolor=\"444444\">";
-		else
-			return "<table width=270 border=0>";
+		return (i % 2 == 0) ? "<table width=270 border=0 bgcolor=\"444444\">" : "<table width=270 border=0>";
 	}
 
 	private String getConditionsStatus(int achievementID, L2PcInstance player)
