@@ -65,7 +65,7 @@ public class ObjectPosition
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Object Id at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ")." + e);
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": Object Id at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ")." + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();

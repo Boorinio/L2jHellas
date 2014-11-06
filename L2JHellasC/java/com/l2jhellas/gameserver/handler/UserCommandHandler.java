@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-import Extensions.RankSystem.IUserCommandHandlerPvpInfo;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelDelete;
@@ -33,6 +32,7 @@ import com.l2jhellas.gameserver.handler.usercommandhandlers.Loc;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.Mount;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.OlympiadStat;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.PartyInfo;
+import com.l2jhellas.gameserver.handler.usercommandhandlers.PvpInfo;
 import com.l2jhellas.gameserver.handler.usercommandhandlers.Time;
 
 public class UserCommandHandler
@@ -67,8 +67,8 @@ public class UserCommandHandler
 		registerUserCommandHandler(new ChannelLeave());
 		registerUserCommandHandler(new ChannelDelete());
 		registerUserCommandHandler(new ChannelListUpdate());
-		if (Config.PVP_INFO_USER_COMMAND_ENABLED && Config.PVP_INFO_COMMAND_ENABLED)
-			registerUserCommandHandler(new IUserCommandHandlerPvpInfo());
+		if (Config.RANK_PVP_SYSTEM_ENABLED && Config.PVP_INFO_USER_COMMAND_ENABLED && Config.PVP_INFO_COMMAND_ENABLED)
+			registerUserCommandHandler(new PvpInfo());
 
 		_log.log(Level.FINE, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
 		return _datatable.get(new Integer(userCommand));

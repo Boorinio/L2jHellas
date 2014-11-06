@@ -15,225 +15,207 @@
 package Extensions.RankSystem.Util;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-import javolution.util.FastMap;
-import javolution.util.FastMap.Entry;
 import Extensions.RankSystem.Rank;
+import Extensions.RankSystem.RankTable;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 
 /**
+ * This class contains all of the rank images as buffered files.
+ * 
  * @author Masterio
  */
 public class ServerSideImage
 {
+	public static final Logger log = Logger.getLogger(ServerSideImage.class.getName());
 
 	private static ServerSideImage _instance = null;
 
-	/** <rank_id, File> */
-	private FastMap<Integer, File> _iconImages = new FastMap<Integer, File>();
-	private FastMap<Integer, File> _nameImages = new FastMap<Integer, File>();
-	private FastMap<Integer, File> _expImages = new FastMap<Integer, File>();
-
-	public final int IMG_PREFIX = Config.IMAGE_PREFIX;
+	/** <rank_id, converted image data as byte array> */
+	private static Map<Integer, byte[]> _iconImages = new HashMap<>();
+	private static Map<Integer, byte[]> _nameImages = new HashMap<>();
+	private static Map<Integer, byte[]> _expImages = new HashMap<>();
 
 	private ServerSideImage()
 	{
-
-		load();
-
-		System.out.println(" - IconImages loaded " + (getIconImages().size()) + " objects.");
-		System.out.println(" - NameImages loaded " + (getNameImages().size()) + " objects.");
-		System.out.println(" - ExpImages loaded " + (getExpImages().size()) + " objects.");
-
+		if (Config.SERVER_SIDE_IMAGES_ENABLED)
+			load();
+		else
+			log.info(" - ImageTable: Images will be requested from Client.");
 	}
 
 	public static ServerSideImage getInstance()
 	{
 		if (_instance == null)
-		{
 			_instance = new ServerSideImage();
-		}
 
 		return _instance;
 	}
 
-	public void load()
+	private void load()
 	{
+		Map<Integer, Rank> rankList = RankTable.getInstance().getRankList();
 
-		for (Entry<Integer, Rank> e = Config.RANKS.head(), end = Config.RANKS.tail(); (e = e.getNext()) != end;)
+		for (Map.Entry<Integer, Rank> e : rankList.entrySet())
 		{
-
 			String src = null;
 			File image = null;
 
 			try
 			{
-
 				// set icon images:
 				src = "rank_pvp_system/rank/rank_" + e.getValue().getId();
 				image = new File("data/images/" + src + ".png");
-				getIconImages().put(e.getValue().getId(), image);
+				_iconImages.put(e.getValue().getId(), DDSConverter.convertToDDS(image).array());
 
 				// set name images:
 				src = "rank_pvp_system/rank_name/rank_name_" + e.getValue().getId();
 				image = new File("data/images/" + src + ".png");
-				getNameImages().put(e.getValue().getId(), image);
+				_nameImages.put(e.getValue().getId(), DDSConverter.convertToDDS(image).array());
 
 			}
 			catch (Exception e1)
 			{
-				e1.printStackTrace();
+				log.info(e1.getMessage());
 				return;
 			}
-
 		}
 
 		for (int i = 0; i <= 100; i++)
 		{
-
 			String src = null;
 			File image = null;
 
 			try
 			{
-
 				// set exp images:
 				src = "rank_pvp_system/exp/exp_" + i;
 				image = new File("data/images/" + src + ".png");
-				getExpImages().put(i, image);
-
+				_expImages.put(i, DDSConverter.convertToDDS(image).array());
 			}
 			catch (Exception e1)
 			{
-				e1.printStackTrace();
+				log.info(e1.getMessage());
 				return;
 			}
 		}
 
+		log.info(" - ImageTable: Data loaded. " + (_iconImages.size()) + " icons, " + _nameImages.size() + " names and " + _expImages.size() + " exp images.");
 	}
 
-	public TextBuilder getExpImageHtmlTag(L2PcInstance player, int expId, int width, int height)
+	public String getExpImageHtmlTag(L2PcInstance player, int expId, int width, int height)
 	{
+		String tb = "";
 
-		TextBuilder tb = new TextBuilder();
-		try
+		if (Config.SERVER_SIDE_IMAGES_ENABLED)
 		{
+			try
+			{
+				int id = 400000000 + expId + (Config.IMAGE_PREFIX * 200);
+				ImageServerPacket packet = new ImageServerPacket(id, _expImages.get(expId));
+				player.sendPacket(packet);
 
-			int id = 400000000 + expId + (IMG_PREFIX * 200);
-			PledgeCrest packet = new PledgeCrest(id, DDSConverter.convertToDDS(getExpImages().get(expId)).array());
-			player.sendPacket(packet);
-
-			tb.append("<img src=\"Crest.crest_" + Config.SERVER_ID + "_" + id + "\" width=" + width + " height=" + height + ">");
-
+				tb += "<img src=\"Crest.crest_" + Config.SERVER_ID + "_" + id + "\" width=" + width + " height=" + height + ">";
+			}
+			catch (Exception e)
+			{
+				log.info(e.getMessage());
+			}
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			tb = "<img src=\"RPS_byMasterio.exp_" + expId + "\" width=" + width + " height=" + height + ">";
 		}
 
 		return tb;
-
 	}
 
-	public TextBuilder getRankIconImageHtmlTag(L2PcInstance player, int rankId, int width, int height)
+	public String getRankIconImageHtmlTag(L2PcInstance player, int rankId, int width, int height)
 	{
+		String tb = "";
 
-		TextBuilder tb = new TextBuilder();
-		try
+		if (Config.SERVER_SIDE_IMAGES_ENABLED)
 		{
+			try
+			{
+				int id = 500000000 + rankId + (Config.IMAGE_PREFIX * 200);
+				ImageServerPacket packet = new ImageServerPacket(id, _iconImages.get(rankId));
+				player.sendPacket(packet);
 
-			int id = 500000000 + rankId + (IMG_PREFIX * 200);
-			PledgeCrest packet = new PledgeCrest(id, DDSConverter.convertToDDS(getIconImages().get(rankId)).array());
-			player.sendPacket(packet);
-
-			tb.append("<img src=\"Crest.crest_" + Config.SERVER_ID + "_" + id + "\" width=" + width + " height=" + height + ">");
-
+				tb += "<img src=\"Crest.crest_" + Config.SERVER_ID + "_" + id + "\" width=" + width + " height=" + height + ">";
+			}
+			catch (Exception e)
+			{
+				log.info(e.getMessage());
+			}
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			tb = "<img src=\"RPS_byMasterio.rank_" + rankId + "\" width=" + width + " height=" + height + ">";
 		}
 
 		return tb;
-
 	}
 
-	public TextBuilder getRankNameImageHtmlTag(L2PcInstance player, int rankId, int width, int height)
+	public String getRankNameImageHtmlTag(L2PcInstance player, int rankId, int width, int height)
 	{
+		String tb = "";
 
-		TextBuilder tb = new TextBuilder();
-		try
+		if (Config.SERVER_SIDE_IMAGES_ENABLED)
 		{
+			try
+			{
+				int id = 600000000 + rankId + (Config.IMAGE_PREFIX * 200);
+				ImageServerPacket packet = new ImageServerPacket(id, _nameImages.get(rankId));
+				player.sendPacket(packet);
 
-			int id = 600000000 + rankId + (IMG_PREFIX * 200);
-			PledgeCrest packet = new PledgeCrest(id, DDSConverter.convertToDDS(getNameImages().get(rankId)).array());
-			player.sendPacket(packet);
-
-			tb.append("<img src=\"Crest.crest_" + Config.SERVER_ID + "_" + id + "\" width=" + width + " height=" + height + ">");
-
+				tb += "<img src=\"Crest.crest_" + Config.SERVER_ID + "_" + id + "\" width=" + width + " height=" + height + ">";
+			}
+			catch (Exception e)
+			{
+				log.info(e.getMessage());
+			}
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			tb = "<img src=\"RPS_byMasterio.rank_name_" + rankId + "\" width=" + width + " height=" + height + ">";
 		}
 
 		return tb;
-
 	}
 
-	/**
-	 * @return the _iconImages
-	 */
-	public FastMap<Integer, File> getIconImages()
+	public Map<Integer, byte[]> getIconImages()
 	{
 		return _iconImages;
 	}
 
-	/**
-	 * @param _iconImages
-	 *        the _iconImages to set
-	 */
-	public void setIconImages(FastMap<Integer, File> _iconImages)
+	public void setIconImages(HashMap<Integer, byte[]> iconImages)
 	{
-		this._iconImages = _iconImages;
+		_iconImages = iconImages;
 	}
 
-	/**
-	 * @return the _nameImages
-	 */
-	public FastMap<Integer, File> getNameImages()
+	public Map<Integer, byte[]> getNameImages()
 	{
 		return _nameImages;
 	}
 
-	/**
-	 * @param _nameImages
-	 *        the _nameImages to set
-	 */
-	public void setNameImages(FastMap<Integer, File> _nameImages)
+	public void setNameImages(HashMap<Integer, byte[]> nameImages)
 	{
-		this._nameImages = _nameImages;
+		_nameImages = nameImages;
 	}
 
-	/**
-	 * @return the _expImages
-	 */
-	public FastMap<Integer, File> getExpImages()
+	public Map<Integer, byte[]> getExpImages()
 	{
 		return _expImages;
 	}
 
-	/**
-	 * @param _expImages
-	 *        the _expImages to set
-	 */
-	public void setExpImages(FastMap<Integer, File> _expImages)
+	public void setExpImages(HashMap<Integer, byte[]> expImages)
 	{
-		this._expImages = _expImages;
+		_expImages = expImages;
 	}
-
 }

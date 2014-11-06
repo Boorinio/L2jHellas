@@ -191,12 +191,7 @@ public class AdminReload implements IAdminCommandHandler
 					activeChar.sendMessage("Cache[Crest]: " + String.format("%.3f", CrestCache.getInstance().getMemoryUsage()) + " megabytes on " + CrestCache.getInstance().getLoadedFiles() + " files loaded.");
 					sendReloadPage(activeChar);
 				}
-				else if (command.startsWith("fix_crest"))
-				{
-					CrestCache.getInstance().convertOldPedgeFiles();
-					activeChar.sendMessage("Cache[Crest]: crests fixed.");
-					sendReloadPage(activeChar);
-				}
+
 				else if (type.startsWith("item") || type.startsWith("items"))
 				{
 					ItemTable.getInstance().reload();

@@ -395,7 +395,7 @@ public class L2Clan
 		exMember.saveApprenticeAndSponsor(0, 0);
 		if (Config.REMOVE_CASTLE_CIRCLETS)
 		{
-			CastleManager.getInstance().removeCirclet(exMember, getHasCastle());
+			CastleManager.getInstance().removeCirclet(exMember, hasCastle());
 		}
 		if (exMember.isOnline())
 		{
@@ -574,7 +574,7 @@ public class L2Clan
 	/**
 	 * @return
 	 */
-	public int getHasCastle()
+	public int hasCastle()
 	{
 		return _hasCastle;
 	}
@@ -582,7 +582,7 @@ public class L2Clan
 	/**
 	 * @return
 	 */
-	public int getHasHideout()
+	public int hasHideout()
 	{
 		return _hasHideout;
 	}
@@ -726,7 +726,7 @@ public class L2Clan
 			statement.setInt(1, getClanId());
 			statement.setString(2, getName());
 			statement.setInt(3, getLevel());
-			statement.setInt(4, getHasCastle());
+			statement.setInt(4, hasCastle());
 			statement.setInt(5, getAllyId());
 			statement.setString(6, getAllyName());
 			statement.setInt(7, getLeaderId());

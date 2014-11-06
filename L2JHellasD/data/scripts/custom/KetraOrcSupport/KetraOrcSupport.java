@@ -373,6 +373,8 @@ public class KetraOrcSupport extends Quest
 						}
 					}
 					break;
+				default:
+					break;
 			}
 		}
 		

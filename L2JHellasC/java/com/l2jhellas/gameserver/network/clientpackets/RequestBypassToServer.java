@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import Extensions.Balancer.Balancer;
 import Extensions.Balancer.BalancerEdit;
-import Extensions.RankSystem.RankPvpSystemPlayerInfo;
+import Extensions.RankSystem.RPSBypass;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -514,57 +514,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				Balancer.sendBalanceWindow(classId, activeChar);
 			}
 			// Rank PvP System by Masterio --------------------------------------------
-			else if (_command.equals("_rps_equip"))
-			{ // for "details" button
-				try
-				{
-					if (activeChar._rankPvpSystemDeathMgr != null)
-					{
-						if (activeChar._rankPvpSystemDeathMgr.getKiller() != null)
-						{
-							activeChar._rankPvpSystemDeathMgr.sendVictimResponse();
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-			else if (_command.equals("_rps_info"))
-			{ // for "back" button
-				try
-				{
-					if (activeChar._rankPvpSystemDeathMgr != null)
-					{
-						// required for death manager, shows killer info:
-						RankPvpSystemPlayerInfo playerInfo = new RankPvpSystemPlayerInfo();
-						if (activeChar._rankPvpSystemDeathMgr.getKiller() != null)
-						{
-							playerInfo.sendPlayerResponse(activeChar, activeChar._rankPvpSystemDeathMgr.getKiller());
-						}
-						playerInfo = null;
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-			else if (_command.equals("_rps_reward"))
-			{ // for "get reward" button
-				try
-				{
-					if (activeChar._rankPvpSystemRankPointsReward != null && activeChar._rankPvpSystemRankPointsReward.getRankRewardsCount() > 0 && activeChar._rankPvpSystemRankPointsReward.getPlayer() != null)
-					{
-						activeChar._rankPvpSystemRankPointsReward.addRankRewardsToInventory();
-						activeChar._rankPvpSystemRankPointsReward = null;
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
+			else if(_command.startsWith("RPS."))
+			{ 
+				RPSBypass.executeCommand(activeChar, _command);
 			}
 			// ------------------------------------------------------------------------
 			else if (_command.startsWith("_match"))

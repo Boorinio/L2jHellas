@@ -167,7 +167,6 @@ public class GameServerTable
 			}
 			rset.close();
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{

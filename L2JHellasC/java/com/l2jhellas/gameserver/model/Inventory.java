@@ -66,8 +66,9 @@ public abstract class Inventory extends ItemContainer
 	public static final int PAPERDOLL_FACE = 15;
 	public static final int PAPERDOLL_HAIR = 16;
 	public static final int PAPERDOLL_DHAIR = 17;
-	public static final int PAPERDOLL_NULL = 18;
-
+	public static final int PAPERDOLL_TOTALSLOTS = 18;
+	public static final int PAPERDOLL_NULL = 19;
+	
 	// Speed percentage mods
 	public static final double MAX_ARMOR_WEIGHT = 12000;
 

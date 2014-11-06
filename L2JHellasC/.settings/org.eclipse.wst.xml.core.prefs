@@ -1,8 +1,10 @@
 attributeHasNoValue=2
 eclipse.preferences.version=1
 endTagWithAttributes=2
+honourAllSchemaLocations=true
 indicateNoGrammar=-1
 indiciateNoDocumentElement=-1
+markupValidation=true
 missingClosingBracket=2
 missingClosingQuote=2
 missingEndTag=2
@@ -13,3 +15,4 @@ namespaceInPITarget=2
 use-project-settings=true
 whitespaceAtStart=2
 whitespaceBeforeTagName=2
+xinclude=true

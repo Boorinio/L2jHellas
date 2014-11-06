@@ -77,7 +77,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 					switch (_requestedPointType)
 					{
 						case 1: // to clanhall
-							if (activeChar.getClan().getHasHideout() == 0)
+							if (activeChar.getClan().hasHideout() == 0)
 							{
 								// cheater
 								activeChar.sendMessage("You may not use this respawn point!");
@@ -101,7 +101,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 								if (castle.getSiege().checkIsDefender(activeChar.getClan()))
 									isInDefense = true;
 							}
-							if (activeChar.getClan().getHasCastle() == 0 && !isInDefense)
+							if (activeChar.getClan().hasCastle() == 0 && !isInDefense)
 							{
 								// cheater
 								activeChar.sendMessage("You may not use this respawn point!");

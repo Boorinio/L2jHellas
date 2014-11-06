@@ -28,11 +28,7 @@ import java.util.logging.Logger;
 import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
-import Extensions.RankSystem.CharacterRankRewardTable;
-import Extensions.RankSystem.PvpTable;
-import Extensions.RankSystem.RankRewardTable;
-import Extensions.RankSystem.TopTable;
-import Extensions.RankSystem.Util.ServerSideImage;
+import Extensions.RankSystem.RankLoader;
 import Extensions.Vote.VoteManager;
 import Extensions.Vote.VoteRewardHopzone;
 import Extensions.Vote.VoteRewardTopzone;
@@ -361,26 +357,22 @@ public class GameServer
 		PolymporphTable.getInstance();
 		Hitman.start();
 		VoteManager.load();
-		if(Config.ALLOW_TOPZONE_VOTE_REWARD)
+		if (Config.ALLOW_TOPZONE_VOTE_REWARD)
 			VoteRewardTopzone.LoadTopZone();
-		if(Config.ALLOW_HOPZONE_VOTE_REWARD)
+		if (Config.ALLOW_HOPZONE_VOTE_REWARD)
 			VoteRewardHopzone.LoadHopZone();
 		// Rank System.
-		PvpTable.getInstance();
-		CharacterRankRewardTable.getInstance();
-		RankRewardTable.getInstance();
-		TopTable.getInstance();
-		ServerSideImage.getInstance().load();
+		RankLoader.load();
 
 		if (Config.ZODIAC_ENABLE)
 		{
 			ZodiacMain.ZodiacIn();
 		}
-		if(Config.ALLOW_CTF_AUTOEVENT)
+		if (Config.ALLOW_CTF_AUTOEVENT)
 		{
 			new EventHandlerCtf().startHandler();
 		}
-		if(Config.TVT_ALLOW_AUTOEVENT)
+		if (Config.TVT_ALLOW_AUTOEVENT)
 		{
 			new EventHandlerTvT().startHandler();
 		}

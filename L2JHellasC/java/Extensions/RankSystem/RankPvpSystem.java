@@ -15,64 +15,37 @@
 package Extensions.RankSystem;
 
 import java.util.Calendar;
-import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 /**
+ * Class is used on PvP. Manage rewards, points, ranks and checking all conditions.
+ * 
  * @author Masterio
  */
 public class RankPvpSystem
 {
-	private static final Logger _log = Logger.getLogger(RankPvpSystem.class.getName());
+	private L2PcInstance _killer = null;
+	private L2PcInstance _victim = null;
 
-	private L2PcInstance killer = null;
-	private L2PcInstance victim = null;
+	private final long _protectionTime = Config.PROTECTION_TIME_RESET;
+	private boolean _protectionTimeEnabled = false;
 
-	public RankPvpSystem(L2Character killer, L2PcInstance victim)
+	public RankPvpSystem(L2PcInstance killer, L2PcInstance victim)
 	{
-
-		// killer can be a Player, Pet or Summon:
-		if (killer != null && killer instanceof L2PcInstance)
-		{
-			setKiller((L2PcInstance) killer);
-
-		}
-		else if (killer != null && killer instanceof L2PetInstance && ((L2PetInstance) killer).getOwner() != null)
-		{
-			setKiller(((L2PetInstance) killer).getOwner());
-
-		}
-		else if (killer != null && killer instanceof L2SummonInstance && ((L2SummonInstance) killer).getOwner() != null)
-		{
-			setKiller(((L2SummonInstance) killer).getOwner());
-
-		}
-		else
-		{
-			return;
-
-		}
-
-		setVictim(victim);
+		_victim = victim;
+		_killer = killer;
 	}
 
 	/**
-	 * Executed when kill player (from victim side)
+	 * Executed when kill player (from killer side)
 	 */
-	public void doPvp()
+	public synchronized void doPvp()
 	{
-
-		if (checkBasicConditions(killer, victim))
+		if (checkBasicConditions(_killer, _victim))
 		{
-
 			// set pvp times:
 			Calendar c = Calendar.getInstance();
 			long systemTime = c.getTimeInMillis(); // date & time
@@ -83,76 +56,100 @@ public class RankPvpSystem
 			c.set(Calendar.HOUR, 0);
 			long systemDay = c.getTimeInMillis(); // date
 
-			long protectionTime = (1000 * 60 * Config.PROTECTION_TIME_RESET);
-
 			// get killer - victim pvp:
-			Pvp pvp = PvpTable.getInstance().getPvp(killer.getObjectId(), victim.getObjectId(), systemDay);
+			Pvp pvp = PvpTable.getInstance().getPvp(_killer.getObjectId(), _victim.getObjectId(), systemDay, false);
 
 			// check time protection:
-			boolean timeProtectionOn = false;
+			_protectionTimeEnabled = checkProtectionTime(pvp, systemTime);
+
 			String nextRewardTime = "";
-			if (Config.PROTECTION_TIME_RESET > 0)
+			if (_protectionTimeEnabled)
 			{
-				if ((pvp.getKillTime() + protectionTime) > (systemTime))
-				{
-					timeProtectionOn = true;
-					nextRewardTime = calculateTimeToString(systemTime, pvp.getKillTime());
-				}
+				nextRewardTime = calculateTimeToString(systemTime, pvp.getKillTime());
 			}
 
-			// update pvp:
-			increasePvp(pvp, systemTime, systemDay, timeProtectionOn);
-
 			// get Killer and Victim pvp stats:
-			PvpStats killerPvpStats = PvpTable.getInstance().getPvpStats(killer.getObjectId(), systemDay);
-			PvpStats victimPvpStats = PvpTable.getInstance().getPvpStats(victim.getObjectId(), systemDay);
+			PvpSummary killerPvpSummary = PvpTable.getInstance().getKillerPvpSummary(_killer.getObjectId(), systemDay, false, false);
+			PvpSummary victimPvpSummary = PvpTable.getInstance().getKillerPvpSummary(_victim.getObjectId(), systemDay, true, false);
+
+			// update pvp:
+			increasePvp(pvp, killerPvpSummary, systemTime, systemDay);
 
 			// update killer Alt+T info.
-			if (Config.LEGAL_COUNTER_ALTT_ENABLED)
+			if (Config.PVP_COUNTER_FOR_ALTT_ENABLED)
 			{
-				killer.setPvpKills(killerPvpStats.getTotalKillsLegal());
-				killer.sendPacket(new UserInfo(killer));
-				killer.broadcastUserInfo();
+				if (Config.PVP_COUNTER_FOR_ALTT_LEGAL_KILLS_ONLY)
+					_killer.setPvpKills(killerPvpSummary.getTotalKillsLegal());
+				else
+					_killer.setPvpKills(killerPvpSummary.getTotalKills());
+
+				_killer.sendPacket(new UserInfo(_killer));
+				_killer.broadcastUserInfo();
 			}
 
 			// start message separator:
-			killer.sendMessage("----------------------------------------------------------------");
-			victim.sendMessage("----------------------------------------------------------------");
+			_killer.sendMessage("----------------------------------------------------------------");
+			_victim.sendMessage("----------------------------------------------------------------");
 
-			// execute PvP reward script if enabled:
-			if (checkItemRewardConditions(pvp, timeProtectionOn, nextRewardTime))
+			int[] pvpPointsTable = null;	// used for check if points are added for decrease pvp exp system.
+
+			// PvP Reward || Rank PvP Reward || RPC || RP
+			if (checkRewardProtections(pvp))
 			{
-				addItemRewardForKiller();
+				// give PvP Reward:
+				if (checkPvpRewardConditions(pvp))
+					RewardTable.getInstance().giveReward(_killer);
+
+				// give Rank PvP Reward:
+				if (checkRankPvpRewardConditions(pvp))
+					RewardTable.getInstance().giveRankPvpRewards(_killer, victimPvpSummary.getRankId());
+
+				// add RPC:
+				if (checkRpcConditions(pvp))
+					RPCTable.getInstance().addRpcForPlayer(_killer.getObjectId(), Config.RPC_REWARD_AMOUNT);
+
+				// add RP:
+				if (checkRankPointsConditions(pvp))
+					pvpPointsTable = addRankPointsForKiller(pvp, killerPvpSummary, victimPvpSummary);
 			}
 
-			// execute rank points script if enabled:
-			if (checkRankPointsConditions(pvp, timeProtectionOn, nextRewardTime))
+			// decrease PvP Exp (if not decreased before):
+			if (Config.PVP_EXP_DECREASE_ENABLED && !Config.PVP_EXP_DECREASE_ON_LEGAL_KILL_ENABLED && pvpPointsTable == null)
 			{
-				addRankPointsForKiller(pvp, killerPvpStats, victimPvpStats);
+				pvpPointsTable = getPointsForKill(pvp, killerPvpSummary, victimPvpSummary, _killer, _victim);
+				int loseExp = victimPvpSummary.decreasePvpExpBy(pvpPointsTable);
+
+				if (loseExp > 0)
+					_victim.sendMessage("You lose " + loseExp + " PvP exp.");
 			}
+
+			if (_protectionTimeEnabled)
+				_killer.sendMessage("Protection Time is activated for: " + nextRewardTime);
 
 			// update nick and title colors:
-			updateNickAndTitleColor(killer, killerPvpStats);
+			updateNickAndTitleColor(_killer, killerPvpSummary);
 
 			// show message:
 			shoutPvpMessage(pvp);
 
 			// end message separator:
-			killer.sendMessage("----------------------------------------------------------------");
-			victim.sendMessage("----------------------------------------------------------------");
+			_killer.sendMessage("----------------------------------------------------------------");
+			_victim.sendMessage("----------------------------------------------------------------");
 
 			if (Config.DEATH_MANAGER_DETAILS_ENABLED)
-			{
-				victim._rankPvpSystemDeathMgr = new RankPvpSystemDeathMgr(killer, victim);
-			}
+				_victim.getRPSCookie().setDeathStatus(new RPSHtmlDeathStatus(_killer));
 
 			if (Config.PVP_INFO_COMMAND_ON_DEATH_ENABLED)
 			{
-				if (!RankPvpSystemZoneChecker.isInDMRestrictedZone(killer))
-				{
-					RankPvpSystemPlayerInfo playerInfo = new RankPvpSystemPlayerInfo();
-					playerInfo.sendPlayerResponse(victim, killer);
-				}
+				if (!RPSProtection.isInDMRestrictedZone(_killer))
+					RPSHtmlPvpStatus.sendPage(_victim, _killer);
+			}
+
+			// shout defeat message, if victim have combo level > 0
+			if (_victim.getRPSCookie().isComboKillActive())
+			{
+				_victim.getRPSCookie().getComboKill().shoutDefeatMessage(_victim);
+				_victim.getRPSCookie().setComboKill(null); // reset current combo for victim.
 			}
 		}
 	}
@@ -162,79 +159,146 @@ public class RankPvpSystem
 	 * (rank points are increased in addRankPointsForKiller() method)
 	 * 
 	 * @param pvp
+	 * @param killerPvpSummary
 	 * @param systemTime
 	 * @param systemDay
-	 * @param timeProtectionOn
 	 */
-	private void increasePvp(Pvp pvp, long systemTime, long systemDay, boolean timeProtectionOn)
+	private void increasePvp(Pvp pvp, PvpSummary killerPvpSummary, long systemTime, long systemDay)
 	{
+		// killerPvpSummary today fields are updated on the end.
 
 		// add normal kills, checking is outside this method:
 		pvp.increaseKills();
+		killerPvpSummary.addTotalKills(1);
 
-		if (pvp.getKillDay() == systemDay)
-		{
+		if (pvp.getKillDay() == systemDay) // daily
 			pvp.increaseKillsToday();
-		}
 		else
-		{
 			pvp.setKillsToday(1);
-		}
 
-		if (victim.getClan() != null && killer.getClan() != null && killer.getClan().isAtWarWith(victim.getClanId()))
-		{
-			pvp.increaseWarKills();
-		}
+		if (RPSProtection.checkWar(_killer, _victim))
+			killerPvpSummary.addTotalWarKills(1);
 
 		// shout combo kill, if legal kill protection is disabled:
 		if (Config.COMBO_KILL_ENABLED && !Config.COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED)
-		{
 			shoutComboKill(systemTime);
-		}
 
-		if (checkLegalKillConditions(pvp))
+		if (checkLegalKillConditions(_killer, _victim, pvp))
 		{
-			// add legal kills:
-			if (checkIsLegalKill(killer, victim))
+			if (!_protectionTimeEnabled)
 			{
+				pvp.increaseKillsLegal();
+				killerPvpSummary.addTotalKillsLegal(1);
 
-				if (!timeProtectionOn)
-				{
+				if (RPSProtection.checkWar(_killer, _victim))
+					killerPvpSummary.addTotalWarKillsLegal(1);
 
-					pvp.increaseKillsLegal();
+				if (pvp.getKillDay() == systemDay)
+					pvp.increaseKillsLegalToday(); // daily
+				else
+					pvp.setKillsLegalToday(1); // daily
 
-					if (victim.getClan() != null && killer.getClan() != null && killer.getClan().isAtWarWith(victim.getClanId()))
-					{
-						pvp.increaseWarKillsLegal();
-					}
+				// shout combo kill, if legal kill protection is enabled:
+				if (Config.COMBO_KILL_ENABLED && Config.COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED)
+					shoutComboKill(systemTime);
 
-					if (pvp.getKillDay() == systemDay)
-					{
-						pvp.increaseKillsLegalToday();
-					}
-					else
-					{
-						pvp.setKillsLegalToday(1);
-					}
-
-					// shout combo kill, if legal kill protection is enabled:
-					if (Config.COMBO_KILL_ENABLED && Config.COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED)
-					{
-						shoutComboKill(systemTime);
-					}
-				}
-
-			}
-
-			// add kill time and kill day if necessary:
-			if (!timeProtectionOn)
-			{ // if protection is OFF set the current kill time.
+				// if protection is OFF set the current kill time. 
 				pvp.setKillTime(systemTime);
 			}
 		}
 
+		if (pvp.getKillTime() == 0) // set last kill time if it is initial kill.
+			pvp.setKillTime(systemTime);
+
 		pvp.setKillDay(systemDay);
 
+		// update daily fields for killerPvpSummary:
+		killerPvpSummary.updateDailyStats(systemDay);
+
+		// used for check not active killers on top list filter:
+		killerPvpSummary.setLastKillTime(systemTime);
+	}
+
+	/**
+	 * Add rank points for kill, and update killer rank. Gives RPC and Rank Rewards for killer. <br>
+	 * Decrease victim PvP experience if enabled.
+	 * 
+	 * @param pvp
+	 * @param killerPvpSummary
+	 * @param victimPvpSummary
+	 * @return Points for Kill for this PvP.
+	 */
+	private int[] addRankPointsForKiller(Pvp pvp, PvpSummary killerPvpSummary, PvpSummary victimPvpSummary)
+	{
+		int[] points_table = getPointsForKill(pvp, killerPvpSummary, victimPvpSummary, _killer, _victim);
+
+		// old rank id:
+		int oldRankId = killerPvpSummary.getRankId();
+		int oldMaxRankId = killerPvpSummary.getMaxRankId();
+
+		// increase rank points:
+		pvp.increaseRankPointsBy(points_table[0]);
+		pvp.increaseRankPointsTodayBy(points_table[0]);
+
+		// required update this object for increasePvp() (only in this method):
+		killerPvpSummary.addTotalRankPoints(points_table[0]);
+		killerPvpSummary.addTotalRankPointsToday(points_table[0]);		// required for show in chat below.
+		killerPvpSummary.increasePvpExp(points_table[0]);				// add pvp exp, and update rankId and maxRankId.
+
+		// decrease victim PvP experience:
+		int loseExp = 0;
+		if (Config.PVP_EXP_DECREASE_ENABLED && Config.PVP_EXP_DECREASE_ON_LEGAL_KILL_ENABLED)
+			loseExp = victimPvpSummary.decreasePvpExpBy(points_table);
+
+		// add rank RPC for killer:
+		if (Config.RANK_RPC_ENABLED)
+		{
+			// cut RPC if enabled:
+			if (Config.RANK_POINTS_CUT_ENABLED && killerPvpSummary.getRank().getRpc() < victimPvpSummary.getRank().getRpc())
+				RPCTable.getInstance().addRpcForPlayer(_killer.getObjectId(), killerPvpSummary.getRank().getRpc());
+			else
+				RPCTable.getInstance().addRpcForPlayer(_killer.getObjectId(), victimPvpSummary.getRank().getRpc());
+		}
+
+		// new rank shout (include deleveled ranks):
+		if (oldRankId < killerPvpSummary.getRankId())
+		{
+			_killer.sendMessage("You have reached a new rank: " + RankTable.getInstance().getRankById(killerPvpSummary.getRankId()).getName());
+
+			// give rank rewards and skill rewards for new ranks (exclude deleveled ranks):
+			if (Config.RANK_LEVEL_REWARD_ENABLED || Config.RANK_SKILL_REWARD_ENABLED)
+			{
+				// if player reached 1 or more new ranks.
+				// oldRankId+1 because we want get reward for new rank.
+				for (int i = oldRankId + 1; i <= killerPvpSummary.getRankId(); i++)
+				{
+					if (i > oldMaxRankId)
+					{
+						if (Config.RANK_LEVEL_REWARD_ENABLED)
+							RewardTable.getInstance().giveRankLevelRewards(_killer, i);
+
+						if (Config.RANK_SKILL_REWARD_ENABLED)
+							RewardTable.getInstance().giveRankSkillRewards(_killer, i);
+					}
+				}
+			}
+		}
+
+		// shout current PvP informations:
+		if (Config.RANK_SHOUT_INFO_ON_KILL_ENABLED)
+		{
+			_killer.sendMessage("You have obtained " + points_table[0] + " Rank Points for kill " + _victim.getName());
+
+			showBonusDataPointsForKiller(points_table);
+
+			_killer.sendMessage("Your Rank Points: " + killerPvpSummary.getTotalRankPoints() + " (" + killerPvpSummary.getTotalRankPointsToday() + " today)");
+			_victim.sendMessage("You have been killed by " + _killer.getName() + " (" + killerPvpSummary.getRank().getName() + ")");
+		}
+
+		if (loseExp > 0)
+			_victim.sendMessage("You lose " + loseExp + " PvP exp.");
+
+		return points_table;
 	}
 
 	/**
@@ -254,26 +318,22 @@ public class RankPvpSystem
 				{
 					timeStr1 = "st time";
 				}
-				String msgVictim1 = killer.getName() + " killed you " + pvp.getKills() + " times";
-				String msgVictim2 = killer.getName() + " killed you " + pvp.getKills() + " times (" + pvp.getKillsToday() + "" + timeStr1 + " today)";
-				String msgKiller1 = "You have killed " + victim.getName() + " " + pvp.getKills() + " times";
-				String msgKiller2 = "You have killed " + victim.getName() + " " + pvp.getKills() + " times (" + pvp.getKillsToday() + "" + timeStr1 + " today)";
 
 				if (Config.PROTECTION_TIME_RESET == 0)
 				{
-					victim.sendMessage(msgVictim1);
-					killer.sendMessage(msgKiller1);
+					_victim.sendMessage(_killer.getName() + " killed you " + pvp.getKills() + " times");
+					_killer.sendMessage("You have killed " + _victim.getName() + " " + pvp.getKills() + " times");
 				}
 				else
 				{
-					victim.sendMessage(msgVictim2);
-					killer.sendMessage(msgKiller2);
+					_victim.sendMessage(_killer.getName() + " killed you " + pvp.getKills() + " times (" + pvp.getKillsToday() + "" + timeStr1 + " today)");
+					_killer.sendMessage("You have killed " + _victim.getName() + " " + pvp.getKills() + " times (" + pvp.getKillsToday() + "" + timeStr1 + " today)");
 				}
 			}
 			else
 			{
-				victim.sendMessage("This is the first time you have been killed by " + killer.getName());
-				killer.sendMessage("You have killed " + victim.getName() + " for the first time");
+				_victim.sendMessage("This is the first time you have been killed by " + _killer.getName());
+				_killer.sendMessage("You have killed " + _victim.getName() + " for the first time");
 			}
 		}
 		else
@@ -285,172 +345,136 @@ public class RankPvpSystem
 				{
 					timeStr1 = "st time";
 				}
-				String msgVictim1 = killer.getName() + " killed you " + pvp.getKillsLegal() + " times legally";
-				String msgVictim2 = killer.getName() + " killed you " + pvp.getKillsLegal() + " times (" + pvp.getKillsLegalToday() + "" + timeStr1 + " today) legally";
-				String msgKiller1 = "You have killed " + victim.getName() + " " + pvp.getKillsLegal() + " times legally";
-				String msgKiller2 = "You have killed " + victim.getName() + " " + pvp.getKillsLegal() + " times (" + pvp.getKillsLegalToday() + "" + timeStr1 + " today) legally";
 
 				if (Config.PROTECTION_TIME_RESET == 0)
 				{
-					victim.sendMessage(msgVictim1);
-					killer.sendMessage(msgKiller1);
+					_victim.sendMessage(_killer.getName() + " killed you " + pvp.getKillsLegal() + " times legally");
+					_killer.sendMessage("You have killed " + _victim.getName() + " " + pvp.getKillsLegal() + " times legally");
 				}
 				else
 				{
-					victim.sendMessage(msgVictim2);
-					killer.sendMessage(msgKiller2);
+					_victim.sendMessage(_killer.getName() + " killed you " + pvp.getKillsLegal() + " times (" + pvp.getKillsLegalToday() + "" + timeStr1 + " today) legally");
+					_killer.sendMessage("You have killed " + _victim.getName() + " " + pvp.getKillsLegal() + " times (" + pvp.getKillsLegalToday() + "" + timeStr1 + " today) legally");
 				}
 			}
 			else
 			{
-				victim.sendMessage("This is the first time you have been killed by " + killer.getName() + " legally.");
-				killer.sendMessage("You have killed " + victim.getName() + " for the first time legally.");
+				_victim.sendMessage("This is the first time you have been killed by " + _killer.getName() + " legally.");
+				_killer.sendMessage("You have killed " + _victim.getName() + " for the first time legally.");
 			}
 		}
 
-	}
-
-	private void addRankPointsForKiller(Pvp pvp, PvpStats killerPvpStats, PvpStats victimPvpStats)
-	{
-
-		int[] points_table = getPointsForKill(pvp, killerPvpStats, victimPvpStats, getKiller(), getVictim());
-
-		// increase rank points:
-		pvp.increaseRankPointsBy(points_table[0]);
-		pvp.increaseRankPointsTodayBy(points_table[0]);
-		// required update this object for increasePvp() (only in this method):
-		killerPvpStats.addTotalRankPoints(points_table[0]);
-		killerPvpStats.addTotalRankPointsToday(points_table[0]);
-
-		// add rank reward into killer inventory:
-		if (Config.RANK_REWARD_ENABLED)
-		{
-			killer.addItem("Rank Reward", victimPvpStats.getRank().getRewardId(), victimPvpStats.getRank().getRewardAmount(), killer, true);
-		}
-
-		// shout rank informations:
-		if (Config.RANK_SHOUT_INFO_ON_KILL_ENABLED)
-		{
-			String killerRankName = killerPvpStats.getRank().getName();
-
-			killer.sendMessage("You have obtained " + points_table[0] + " Rank Points for kill " + victim.getName()/* +" ("+victimPvpStats.getRank().getName()+")" */);
-			if (Config.RANK_SHOUT_BONUS_INFO_ON_KILL_ENABLED && Config.RANK_SHOUT_INFO_ON_KILL_ENABLED)
-			{
-				showBonusDataPointsForKiller(points_table);
-			}
-			killer.sendMessage("Your Rank Points: " + killerPvpStats.getTotalRankPoints() + " (" + killerPvpStats.getTotalRankPointsToday() + " today)"/*
-																																						 * +", current Rank: "+
-																																						 * killerRankName
-																																						 */);
-			victim.sendMessage("You have been killed by " + killer.getName() + " (" + killerRankName + ")");
-		}
 	}
 
 	private void showBonusDataPointsForKiller(int[] points_table)
 	{
-
 		// show bonus points data for killer:
 		String war = "";
 		String area = "";
 		String combo = "";
 
 		if (points_table[1] > 0)
-		{
 			war = "war: " + points_table[1] + ", ";
-		}
+
 		if (points_table[2] > 0)
-		{
 			area = "area: " + points_table[2] + ", ";
-		}
+
 		if (points_table[3] > 0)
-		{
 			combo = "combo: " + points_table[3] + ", ";
-		}
 
 		if (points_table[1] > 0 || points_table[2] > 0 || points_table[3] > 0)
 		{
-
 			String msg = war + area + combo;
 			msg = msg.substring(0, msg.length() - 2);
 
-			killer.sendMessage("Bonus RP (" + msg + ")");
-		}
-
-	}
-
-	private void updateNickAndTitleColor(L2PcInstance killer, PvpStats killerPvpStats)
-	{
-
-		if (Config.NICK_COLOR_ENABLED && killer.getAppearance().getNameColor() != killerPvpStats.getRank().getNickColor())
-		{
-			killer.getAppearance().setNameColor(killerPvpStats.getRank().getNickColor());
-			killer.sendPacket(new UserInfo(killer));
-			killer.broadcastUserInfo();
-		}
-
-		if (Config.TITLE_COLOR_ENABLED && killer.getAppearance().getTitleColor() != killerPvpStats.getRank().getTitleColor())
-		{
-			killer.getAppearance().setTitleColor(killerPvpStats.getRank().getTitleColor());
-			killer.broadcastTitleInfo();
+			_killer.sendMessage("Bonus RP (" + msg + ")");
 		}
 	}
 
 	/**
-	 * Adds the item reward.
+	 * Update nick and title color for character with specified rank.
+	 * 
+	 * @param killer
+	 *        - can not be null
+	 * @param killerPvpSummary
+	 *        - if null then PvpSummary will be found.
 	 */
-	private void addItemRewardForKiller()
+	public static void updateNickAndTitleColor(L2PcInstance killer, PvpSummary killerPvpSummary)
 	{
-		if (killer != null)
+		if (killer == null)
+			return;
+
+		if (!Config.GM_IGNORE_ENABLED && killer.isGM())
+			return;
+
+		PvpSummary PvpSummary = killerPvpSummary;
+
+		if (PvpSummary == null)
 		{
-			killer.addItem("PvP Reward", Config.PVP_REWARD_ID, Config.PVP_REWARD_AMOUNT, killer, true);
+			PvpSummary = PvpTable.getInstance().getKillerPvpSummary(killer.getObjectId(), true, false);
+			if (PvpSummary == null)
+				return;
+		}
+
+		Rank rank = PvpSummary.getRank();
+
+		if (rank == null)
+			return;
+
+		if (Config.NICK_COLOR_ENABLED && killer.getAppearance().getNameColor() != rank.getNickColor() && rank.getNickColor() > -1)
+		{
+			killer.getAppearance().setNameColor(rank.getNickColor());
+			killer.sendPacket(new UserInfo(killer));
+			killer.broadcastUserInfo();
+		}
+
+		if (Config.TITLE_COLOR_ENABLED && killer.getAppearance().getTitleColor() != rank.getTitleColor() && rank.getTitleColor() > -1)
+		{
+			killer.getAppearance().setTitleColor(rank.getTitleColor());
+			killer.broadcastTitleInfo();
 		}
 	}
 
 	public static final String calculateTimeToString(long sys_time, long kill_time)
 	{
-		long TimeToRewardInMilli = ((kill_time + (1000 * 60 * Config.PROTECTION_TIME_RESET)) - sys_time);
-		long TimeToRewardHours = TimeToRewardInMilli / (60 * 60 * 1000);
-		long TimeToRewardMinutes = (TimeToRewardInMilli % (60 * 60 * 1000)) / (60 * 1000);
-		long TimeToRewardSeconds = (TimeToRewardInMilli % (60 * 1000)) / (1000);
+		long TimeToRewardInMilli = ((kill_time + (Config.PROTECTION_TIME_RESET)) - sys_time);
+		long TimeToRewardHours = TimeToRewardInMilli / 3600000;
+		long TimeToRewardMinutes = (TimeToRewardInMilli % 3600000) / 60000;
+		long TimeToRewardSeconds = (TimeToRewardInMilli % 60000) / 1000;
 
 		String H = Long.toString(TimeToRewardHours);
 		String M = Long.toString(TimeToRewardMinutes);
 		String S = Long.toString(TimeToRewardSeconds);
+
 		if (TimeToRewardHours <= 9)
-		{
 			H = "0" + H;
-		}
 		if (TimeToRewardMinutes <= 9)
-		{
 			M = "0" + M;
-		}
 		if (TimeToRewardSeconds <= 9)
-		{
 			S = "0" + S;
-		}
 
 		return H + ":" + M + ":" + S;
 	}
 
 	/**
-	 * Calculate Rank points table for kill victim <br>
-	 * [0] - Sum of Rank Points. <br>
+	 * Calculate Rank Points awarded for Killer<br>
+	 * [0] - Sum of Rank Points and Bonus Points. <br>
 	 * [1] - Bonus points for War.<br>
 	 * [2] - Bonus points for Area.<br>
 	 * [3] - Bonus points for Combo.
 	 * 
 	 * @param pvp
-	 * @param killerPvpStats
-	 * @param victimPvpStats
+	 * @param killerPvpSummary
+	 * @param victimPvpSummary
 	 * @param killer
 	 * @param victim
-	 * @return Rank points table for kill victim <br>
-	 *         [0] - Sum of Rank Points. <br>
+	 * @return Returns table of Rank Points awarded for Killer<br>
+	 *         [0] - Sum of Rank Points and Bonus Points. <br>
 	 *         [1] - Bonus points for War.<br>
 	 *         [2] - Bonus points for Area.<br>
 	 *         [3] - Bonus points for Combo.
 	 */
-	public int[] getPointsForKill(Pvp pvp, PvpStats killerPvpStats, PvpStats victimPvpStats, L2PcInstance killer, L2PcInstance victim)
+	private int[] getPointsForKill(Pvp pvp, PvpSummary killerPvpSummary, PvpSummary victimPvpSummary, L2PcInstance killer, L2PcInstance victim)
 	{
 
 		int points = 0;
@@ -462,11 +486,12 @@ public class RankPvpSystem
 		if (Config.RANK_POINTS_DOWN_COUNT_ENABLED)
 		{
 			int i = 1;
-			for (FastList.Node<Integer> n = Config.RANK_POINTS_DOWN_AMOUNTS.head(), end = Config.RANK_POINTS_DOWN_AMOUNTS.tail(); (n = n.getNext()) != end;)
+
+			for (Integer value : Config.RANK_POINTS_DOWN_AMOUNTS)
 			{
 				if (pvp.getKillsLegalToday() == i)
 				{
-					points = n.getValue();
+					points = value;
 					break;
 				}
 				i++;
@@ -474,40 +499,31 @@ public class RankPvpSystem
 		}
 		else
 		{
-			points = victimPvpStats.getRank().getPointsForKill();
+			points = victimPvpSummary.getRank().getPointsForKill();
 		}
 
 		// cut points if enabled:
-		if (Config.RANK_POINTS_CUT_ENABLED && killerPvpStats.getRank().getPointsForKill() < points)
-		{
-			points = killerPvpStats.getRank().getPointsForKill();
-		}
+		if (Config.RANK_POINTS_CUT_ENABLED && killerPvpSummary.getRank().getPointsForKill() < points)
+			points = killerPvpSummary.getRank().getPointsForKill();
 
 		// add war points, if Killer's clan and Victim's clan at war:
-		if (Config.WAR_KILLS_ENABLED && points > 0 && Config.WAR_RANK_POINTS_RATIO > 1 && killer.getClan() != null && victim.getClan() != null && killer.getClan().isAtWarWith(victim.getClanId()))
-		{
+		if (Config.WAR_KILLS_ENABLED && points > 0 && Config.WAR_RANK_POINTS_RATIO > 1 && RPSProtection.checkWar(killer, victim))
 			points_war = (int) Math.floor((points * Config.WAR_RANK_POINTS_RATIO) - points);
-		}
 
 		// add bonus zone points, if Killer is inside bonus zone:
 		if (points > 0)
 		{
-			double zone_ratio_killer = RankPvpSystemZoneChecker.getZoneBonusRatio(killer);
+			double zone_ratio_killer = RPSProtection.getZoneBonusRatio(killer);
 			if (zone_ratio_killer > 1)
-			{
 				points_bonus_zone = (int) Math.floor((points * zone_ratio_killer) - points);
-			}
 		}
 
 		// add combo points:
-		if (Config.COMBO_KILL_RANK_POINTS_RATIO_ENABLED)
+		if (Config.COMBO_KILL_RANK_POINTS_RATIO_ENABLED && killer.getRPSCookie().getComboKill() != null)
 		{
-			double combo_ratio = killer._rankPvpSystemComboKill.getComboKillRankPointsRatio();
+			double combo_ratio = killer.getRPSCookie().getComboKill().getComboKillRankPointsRatio();
 			if (combo_ratio > 1)
-			{
 				points_combo = (int) Math.floor((points * combo_ratio) - points);
-
-			}
 		}
 
 		points = points + points_war + points_bonus_zone + points_combo;
@@ -528,49 +544,35 @@ public class RankPvpSystem
 	 */
 	private void shoutComboKill(long killTime)
 	{
-
-		// create new combo instance if not exists or reset old combo if kill reseter enabled:
-		if (killer._rankPvpSystemComboKill == null)
+		// create new combo instance if not exists:
+		if (_killer.getRPSCookie().getComboKill() == null)
 		{
-
-			killer._rankPvpSystemComboKill = new RankPvpSystemComboKill();
-
+			_killer.getRPSCookie().setComboKill(new RPSHtmlComboKill());
 		}
-		else if (Config.COMBO_KILL_RESETER > 0 && (killTime - killer._rankPvpSystemComboKill.getLastKillTime()) > Config.COMBO_KILL_RESETER * 1000)
+		// reset old combo if kill reseter enabled
+		else if (Config.COMBO_KILL_RESETER > 0 && (killTime - _killer.getRPSCookie().getComboKill().getLastKillTime()) > Config.COMBO_KILL_RESETER * 1000)
 		{
-
-			killer._rankPvpSystemComboKill = new RankPvpSystemComboKill();
-
+			_killer.getRPSCookie().setComboKill(new RPSHtmlComboKill());
 		}
 
 		// rise combo level and shout message:
-		if (killer._rankPvpSystemComboKill.addVictim(victim.getObjectId(), killTime))
+		if (_killer.getRPSCookie().getComboKill().addVictim(_victim.getObjectId(), killTime))
 		{
-
-			killer._rankPvpSystemComboKill.shoutComboKill(killer, victim);
-
+			_killer.getRPSCookie().getComboKill().shoutComboKill(_killer, _victim);
 		}
-
 	}
 
 	/**
-	 * Return TRUE if at event or at olympiad.
+	 * Returns TRUE if protection time is activated.
 	 * 
-	 * @param player
+	 * @param pvp
+	 * @param systemTime
 	 * @return
 	 */
-	private boolean checkPlayerEventStatus(L2PcInstance player)
+	private boolean checkProtectionTime(Pvp pvp, long systemTime)
 	{
-
-		if (player.isInOlympiadMode() || player.isOlympiadStart())
-		{
+		if (Config.PROTECTION_TIME_RESET > 0 && pvp.getKillTime() + _protectionTime > systemTime)
 			return true;
-		}
-
-		if (player.atEvent || player._inEventCTF || player._inEventDM || player._inEventTvT || player._inEventVIP)
-		{
-			return true;
-		}
 
 		return false;
 	}
@@ -587,197 +589,79 @@ public class RankPvpSystem
 	{
 
 		if (killer == null || victim == null)
-		{
 			return false;
-		}
 
 		if (killer.isDead() || killer.isAlikeDead())
-		{
 			return false;
-		}
 
-		if (checkPlayerEventStatus(killer))
+		if (RPSProtection.checkEvent(killer))
+			return false;
+
+		if (Config.GM_IGNORE_ENABLED && (killer.isGM() || victim.isGM()))
 		{
+			killer.sendMessage("Rank PvP System ignore GM characters!");
 			return false;
 		}
 
 		// check if killer is in allowed zone & not in restricted zone:
-		if (!RankPvpSystemZoneChecker.isInPvpAllowedZone(killer) || RankPvpSystemZoneChecker.isInPvpRestrictedZone(killer))
+		if (!RPSProtection.isInPvpAllowedZone(killer) || RPSProtection.isInPvpRestrictedZone(killer))
 		{
-			if (Config.PVP_REWARD_ENABLED && Config.RANKS_ENABLED)
+			if ((Config.RPC_REWARD_ENABLED || Config.PVP_REWARD_ENABLED || Config.RANK_PVP_REWARD_ENABLED) && Config.RANKS_ENABLED)
 			{
-				killer.sendMessage("You can't get Reward and Rank Points in restricted zone");
-				return false;
-			}
-			if (Config.PVP_REWARD_ENABLED)
-			{
-				killer.sendMessage("You can't get Reward in restricted zone");
-				return false;
-			}
-			if (Config.RANKS_ENABLED)
-			{
-				killer.sendMessage("You can't rise Rank Points in restricted zone");
+				killer.sendMessage("You can't earn Reward or Rank Points in restricted zone");
 				return false;
 			}
 			return false;
 		}
 
-		if (!antiFarmCheck(killer, victim))
-		{
+		if (!RPSProtection.antiFarmCheck(killer, victim))
 			return false;
-		}
-
 		return true;
 	}
 
-	private boolean checkLegalKillConditions(Pvp pvp)
+	private boolean checkLegalKillProtection(Pvp pvp)
 	{
 		// 1: check total legal kills:
-		if (pvp.getKillsLegal() > Config.LEGAL_KILL_PROTECTION && Config.LEGAL_KILL_PROTECTION > 0)
-		{
-			killer.sendMessage("Legal Kill is not possible for kill this player!");
+		if (Config.LEGAL_KILL_PROTECTION > 0 && pvp.getKillsLegal() > Config.LEGAL_KILL_PROTECTION)
 			return false;
-		}
 
 		// 2: check total legal kills today:
-		if (pvp.getKillsLegalToday() > Config.DAILY_LEGAL_KILL_PROTECTION && Config.DAILY_LEGAL_KILL_PROTECTION > 0)
-		{
-			killer.sendMessage("Legal Kill is not possible for kill this player today!");
+		if (Config.DAILY_LEGAL_KILL_PROTECTION > 0 && pvp.getKillsLegalToday() > Config.DAILY_LEGAL_KILL_PROTECTION)
 			return false;
-		}
-
+		// 3. check protectionTimeEnabled
+		if (_protectionTimeEnabled)
+			return false;
 		return true;
 	}
 
-	private boolean checkItemRewardConditions(Pvp pvp, boolean timeProtectionOn, String nextRewardTime)
+	/**
+	 * Returns TRUE if okay.<br>
+	 * Check the reward protections like:<br>
+	 * REWARD_FOR_INNOCENT_KILL, <br>
+	 * REWARD_FOR_PK_KILLER, <br>
+	 * REWARD_LEGAL_KILL.
+	 * 
+	 * @param pvp
+	 * @return
+	 */
+	private boolean checkRewardProtections(Pvp pvp)
 	{
-
-		if (!Config.PVP_REWARD_ENABLED)
-		{
-			return false;
-		}
-
-		if ((Config.PVP_REWARD_MIN_LVL > victim.getLevel()) || (Config.PVP_REWARD_MIN_LVL > killer.getLevel()))
-		{
-			killer.sendMessage("You or your target have not required level!");
-			return false;
-		}
-
 		// if PK mode is disabled:
-		if (!Config.PVP_REWARD_FOR_INNOCENT_KILL_ENABLED && (killer.getKarma() > 0) && (victim.getPvpFlag() == 0) && victim.getKarma() == 0)
+		if (!Config.REWARD_FOR_INNOCENT_KILL_ENABLED && _victim.getPvpFlag() == 0 && _victim.getKarma() == 0)
 		{
-			killer.sendMessage("You can't earn Reward for kill innocent players!");
+			_killer.sendMessage("You can't earn reward on innocent players!");
 			return false;
 		}
 
 		// if reward for PK kill is disabled:
-		if (!Config.PVP_REWARD_FOR_PK_KILLER_ENABLED && (victim.getKarma() > 0))
+		if (!Config.REWARD_FOR_PK_KILLER_ENABLED && _victim.getKarma() > 0)
 		{
-			killer.sendMessage("No Reward for kill player with Karma!");
+			_killer.sendMessage("No reward for kill player with Karma!");
 			return false;
 		}
 
-		// 1: check total legal kills:
-		if (pvp.getKillsLegal() > Config.LEGAL_KILL_PROTECTION && Config.LEGAL_KILL_PROTECTION > 0)
-		{
-			if (!Config.RANKS_ENABLED)
-			{
-				killer.sendMessage("Reward has been awarded for kill this player!");
-			}
+		if (Config.REWARD_LEGAL_KILL_ENABLED && !checkLegalKillProtection(pvp))
 			return false;
-		}
-
-		// 2: check total legal kills today:
-		if (pvp.getKillsLegalToday() > Config.DAILY_LEGAL_KILL_PROTECTION && Config.DAILY_LEGAL_KILL_PROTECTION > 0)
-		{
-			if (!Config.RANKS_ENABLED)
-			{
-				killer.sendMessage("Reward has been awarded for kill this player today!");
-			}
-			return false;
-		}
-
-		// 3: check time protection:
-		if (timeProtectionOn)
-		{
-			if (!Config.RANKS_ENABLED)
-			{
-				killer.sendMessage("Reward protection is on for " + nextRewardTime);
-			}
-			return false;
-		}
-
-		return true;
-	}
-
-	private boolean checkRankPointsConditions(Pvp pvp, boolean timeProtectionOn, String nextRewardTime)
-	{
-
-		if (!Config.RANKS_ENABLED)
-			return false;
-
-		if ((Config.RANK_POINTS_MIN_LVL > victim.getLevel()) || (Config.RANK_POINTS_MIN_LVL > killer.getLevel()))
-		{
-			killer.sendMessage("You or your target have not required level!");
-			return false;
-		}
-
-		// if PK mode is disabled:
-		if ((!Config.RANK_REWARD_FOR_INNOCENT_KILL_ENABLED) && (killer.getKarma() > 0) && (victim.getPvpFlag() == 0) && victim.getKarma() == 0)
-		{
-			killer.sendMessage("You can't earn Rank Points on innocent players!");
-			return false;
-		}
-
-		// if points for PK kill is disabled:
-		if ((!Config.RANK_REWARD_FOR_PK_KILLER_ENABLED) && (victim.getKarma() > 0))
-		{
-			killer.sendMessage("No Rank Points for kill player with Karma!");
-			return false;
-		}
-
-		// 1: check total legal kills:
-		if (pvp.getKillsLegal() > Config.LEGAL_KILL_PROTECTION && Config.LEGAL_KILL_PROTECTION > 0)
-		{
-			if (!Config.PVP_REWARD_ENABLED)
-			{
-				killer.sendMessage("Rank Points has been awarded for kill this player!");
-			}
-			else
-			{
-				killer.sendMessage("Reward & Rank Points has been awarded for kill this player!");
-			}
-			return false;
-		}
-
-		// 2: check total legal kills today:
-		if (pvp.getKillsLegalToday() > Config.DAILY_LEGAL_KILL_PROTECTION && Config.DAILY_LEGAL_KILL_PROTECTION > 0)
-		{
-			if (!Config.PVP_REWARD_ENABLED)
-			{
-				killer.sendMessage("Rank Points has been awarded for kill this player today!");
-			}
-			else
-			{
-				killer.sendMessage("Reward & Rank Points has been awarded for kill this player today!");
-			}
-			return false;
-		}
-
-		// 3: check time protection:
-		if (timeProtectionOn)
-		{
-			if (!Config.PVP_REWARD_ENABLED)
-			{
-				killer.sendMessage("Rank Points protection is on for " + nextRewardTime);
-			}
-			else
-			{
-				killer.sendMessage("Reward & Rank Points protection is on for " + nextRewardTime);
-			}
-			return false;
-		}
-
 		return true;
 	}
 
@@ -786,117 +670,108 @@ public class RankPvpSystem
 	 * 
 	 * @param killer
 	 * @param victim
+	 * @param pvp
 	 * @return
 	 */
-	private boolean checkIsLegalKill(L2PcInstance killer, L2PcInstance victim)
+	private boolean checkLegalKillConditions(L2PcInstance killer, L2PcInstance victim, Pvp pvp)
 	{
 		if ((Config.LEGAL_KILL_MIN_LVL > victim.getLevel()) || (Config.LEGAL_KILL_MIN_LVL > killer.getLevel()))
-		{
 			return false;
-		}
-
-		if ((!Config.LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED && killer.getKarma() > 0))
-		{
+		
+		if (!Config.LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED && victim.getKarma() == 0 && victim.getPvpFlag() == 0)
 			return false;
-		}
-
-		if (!Config.LEGAL_KILL_FOR_PK_KILLER_ENABLED && killer.getKarma() == 0 && victim.getKarma() > 0)
-		{
+		
+		if (!Config.LEGAL_KILL_FOR_PK_KILLER_ENABLED && victim.getKarma() > 0)
 			return false;
-		}
-
+		
+		if (!checkLegalKillProtection(pvp))
+			return false;
 		return true;
 	}
 
-	/**
-	 * If returns TRUE is OK (no farming detected).<BR>
-	 * Checking: Party, Clan/Ally, IP, self-kill.
-	 * 
-	 * @param player1
-	 * @param player2
-	 * @return
-	 */
-	public static final boolean antiFarmCheck(L2PcInstance player1, L2PcInstance player2)
+	private boolean checkRpcConditions(Pvp pvp)
+	{
+		if (!Config.RPC_REWARD_ENABLED)
+			return false;
+		
+		if ((Config.RPC_REWARD_MIN_LVL > _victim.getLevel()) || (Config.RPC_REWARD_MIN_LVL > _killer.getLevel()))
+		{
+			_killer.sendMessage("You or your target have not required level!");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean checkPvpRewardConditions(Pvp pvp)
 	{
 
-		if (player1 == null || player2 == null)
+		if (!Config.PVP_REWARD_ENABLED)
+			return false;
+		if ((Config.PVP_REWARD_MIN_LVL > _victim.getLevel()) || (Config.PVP_REWARD_MIN_LVL > _killer.getLevel()))
 		{
-			return true;
-		}
-
-		if (player1.equals(player2))
-		{
+			_killer.sendMessage("You or your target have not required level!");
 			return false;
 		}
+		return true;
+	}
 
-		// Anti FARM Clan - Ally
-		if (Config.ANTI_FARM_CLAN_ALLY_ENABLED && (player1.getClan() != null && player2.getClan() != null) && (player1.getClan().getClanId() > 0 && player2.getClan().getClanId() > 0 && player1.getClan().getClanId() == player2.getClan().getClanId()) || (player1.getAllyId() > 0 && player2.getAllyId() > 0 && player1.getAllyId() == player2.getAllyId()))
+	private boolean checkRankPvpRewardConditions(Pvp pvp)
+	{
+
+		if (!Config.RANK_PVP_REWARD_ENABLED)
+			return false;
+		if ((Config.RANK_PVP_REWARD_MIN_LVL > _victim.getLevel()) || (Config.RANK_PVP_REWARD_MIN_LVL > _killer.getLevel()))
 		{
-			player1.sendMessage("PvP Farm is not allowed!");
-			_log.warning("PVP POINT FARM ATTEMPT, " + player1.getName() + " and " + player2.getName() + ". SAME CLAN or ALLY.");
+			_killer.sendMessage("You or your target have not required level!");
 			return false;
 		}
+		return true;
+	}
 
-		// Anti FARM Party
-		if (Config.ANTI_FARM_PARTY_ENABLED && player1.getParty() != null && player2.getParty() != null && player1.getParty().equals(player2.getParty()))
-		{
-			player1.sendMessage("PvP Farm is not allowed!");
-			_log.warning("PVP POINT FARM ATTEMPT, " + player1.getName() + " and " + player2.getName() + ". SAME PARTY.");
+	private boolean checkRankPointsConditions(Pvp pvp)
+	{
+		if (!Config.RANKS_ENABLED)
 			return false;
-		}
 
-		// Anti FARM same IP
-		if (Config.ANTI_FARM_IP_ENABLED)
+		if ((Config.RANK_POINTS_MIN_LVL > _victim.getLevel()) || (Config.RANK_POINTS_MIN_LVL > _killer.getLevel()))
 		{
-
-			if (player1.getClient() != null && player2.getClient() != null)
-			{
-				String ip1 = player1.getClient().getConnection().getInetAddress().getHostAddress();
-				String ip2 = player2.getClient().getConnection().getInetAddress().getHostAddress();
-
-				if (ip1.equals(ip2))
-				{
-					player1.sendMessage("PvP Farm is not allowed!");
-					_log.warning("PVP POINT FARM ATTEMPT: " + player1.getName() + " and " + player2.getName() + ". SAME IP.");
-					return false;
-				}
-			}
+			_killer.sendMessage("You or your target have not required level!");
+			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @return the killer
+	 * @return the _killer
 	 */
 	public L2PcInstance getKiller()
 	{
-		return killer;
+		return _killer;
 	}
 
 	/**
 	 * @param killer
-	 *        the killer to set
+	 *        the _killer to set
 	 */
 	public void setKiller(L2PcInstance killer)
 	{
-		this.killer = killer;
+		_killer = killer;
 	}
 
 	/**
-	 * @return the victim
+	 * @return the _victim
 	 */
 	public L2PcInstance getVictim()
 	{
-		return victim;
+		return _victim;
 	}
 
 	/**
 	 * @param victim
-	 *        the victim to set
+	 *        the _victim to set
 	 */
 	public void setVictim(L2PcInstance victim)
 	{
-		this.victim = victim;
+		_victim = victim;
 	}
-
 }

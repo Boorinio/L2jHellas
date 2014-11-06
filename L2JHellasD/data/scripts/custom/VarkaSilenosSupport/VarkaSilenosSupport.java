@@ -372,6 +372,8 @@ public class VarkaSilenosSupport extends Quest
 						}
 					}
 					break;
+				default:
+					break;
 			}
 		}
 		

@@ -75,7 +75,6 @@ public class AdminNoble implements IAdminCommandHandler
 
 					if (objId == 0)
 					{
-						con.close();
 						return false;
 					}
 
@@ -83,7 +82,6 @@ public class AdminNoble implements IAdminCommandHandler
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
-					con.close();
 				}
 				catch (Exception e)
 				{
@@ -114,7 +112,6 @@ public class AdminNoble implements IAdminCommandHandler
 
 					if (objId == 0)
 					{
-						con.close();
 						return false;
 					}
 
@@ -122,7 +119,6 @@ public class AdminNoble implements IAdminCommandHandler
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
-					con.close();
 				}
 				catch (Exception e)
 				{

@@ -108,7 +108,6 @@ public class Hitman
 			_log.info("Hitman: Loaded " + map.size() + " Assassination Target(s)");
 			rs.close();
 			st.close();
-			con.close();
 		}
 		catch (Exception e)
 		{
@@ -177,7 +176,6 @@ public class Hitman
 				st.setInt(5, pta.isPendingDelete() ? 1 : 0);
 				st.executeQuery();
 				st.close();
-				con.close();
 			}
 		}
 		catch (Exception e)
@@ -258,7 +256,6 @@ public class Hitman
 			st.setInt(1, obId);
 			st.execute();
 			st.close();
-			con.close();
 
 			if (live)
 			{
@@ -356,7 +353,6 @@ public class Hitman
 
 			rs.close();
 			st.close();
-			con.close();
 		}
 		catch (Exception e)
 		{

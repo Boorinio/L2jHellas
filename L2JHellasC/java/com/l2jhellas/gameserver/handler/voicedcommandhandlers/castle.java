@@ -34,7 +34,7 @@ public class castle implements IVoicedCommandHandler
 		if (command.startsWith(VOICED_COMMANDS[0]) && target.equals("castle") && (activeChar.isClanLeader()))
 		{
 			L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
-			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
+			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().hasCastle());
 			if (door == null || castle == null)
 				return false;
 			if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
@@ -46,7 +46,7 @@ public class castle implements IVoicedCommandHandler
 		else if (command.startsWith(VOICED_COMMANDS[1]) && target.equals("castle") && (activeChar.isClanLeader()))
 		{
 			L2DoorInstance door = (L2DoorInstance) activeChar.getTarget();
-			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().getHasCastle());
+			Castle castle = CastleManager.getInstance().getCastleById(activeChar.getClan().hasCastle());
 			if (door == null || castle == null)
 				return false;
 			if (castle.checkIfInZone(door.getX(), door.getY(), door.getZ()))
@@ -57,7 +57,7 @@ public class castle implements IVoicedCommandHandler
 		}
 		else if (command.startsWith(VOICED_COMMANDS[2]) && target.equals("castle"))
 		{
-			if (activeChar.getClan().getHasCastle() > 0 && activeChar.isClanLeader())
+			if (activeChar.getClan().hasCastle() > 0 && activeChar.isClanLeader())
 			{
 				if (!activeChar.disarmWeapons())
 					return false;

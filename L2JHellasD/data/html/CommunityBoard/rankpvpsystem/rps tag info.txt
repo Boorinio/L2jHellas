@@ -8,8 +8,8 @@ body.htm (body of the list):
 	%button_1%			- button on the right side of header.
 	%list%				- top 10 list content (1 row is table header, next rows with player's data).
 	%message%			- replaced by information: why player is not listed?
-	%refresh_time%		- replaced by table refresh time interval in days.
-	
+	%refresh_time%		- replaced by table with update time.
+	%version%			- current RPS version.
 	
 list_head.htm (header of the list):
 	

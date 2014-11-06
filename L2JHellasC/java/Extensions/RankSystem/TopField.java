@@ -23,7 +23,8 @@ public class TopField
 	private String _characterName = null;
 	private int _characterLevel = 0;
 	private int _characterBaseClassId = 0;
-	private long _characterPoints = 0;
+	private long _value = 0; 			// rank points or total kills
+	private int _topPosition = 0;
 
 	/**
 	 * @return the _characterId
@@ -34,29 +35,33 @@ public class TopField
 	}
 
 	/**
-	 * @param _characterId
+	 * @param characterId
 	 *        the _characterId to set
 	 */
-	public void setCharacterId(int _characterId)
+	public void setCharacterId(int characterId)
 	{
-		this._characterId = _characterId;
+		_characterId = characterId;
 	}
 
 	/**
-	 * @return the _characterPoints
+	 * Get Kills or Points. This fields are the same.
+	 * 
+	 * @return the _value
 	 */
-	public long getCharacterPoints()
+	public long getValue()
 	{
-		return _characterPoints;
+		return _value;
 	}
 
 	/**
-	 * @param _characterPoints
-	 *        the _characterPoints to set
+	 * Set Kills or Points. This fields are the same.
+	 * 
+	 * @param value
+	 *        the _value to set
 	 */
-	public void setCharacterPoints(long _characterPoints)
+	public void setValue(long value)
 	{
-		this._characterPoints = _characterPoints;
+		_value = value;
 	}
 
 	/**
@@ -68,12 +73,12 @@ public class TopField
 	}
 
 	/**
-	 * @param _characterName
+	 * @param characterName
 	 *        the _characterName to set
 	 */
-	public void setCharacterName(String _characterName)
+	public void setCharacterName(String characterName)
 	{
-		this._characterName = _characterName;
+		_characterName = characterName;
 	}
 
 	/**
@@ -85,12 +90,12 @@ public class TopField
 	}
 
 	/**
-	 * @param _characterLevel
+	 * @param characterLevel
 	 *        the _characterLevel to set
 	 */
-	public void setCharacterLevel(int _characterLevel)
+	public void setCharacterLevel(int characterLevel)
 	{
-		this._characterLevel = _characterLevel;
+		_characterLevel = characterLevel;
 	}
 
 	/**
@@ -102,12 +107,32 @@ public class TopField
 	}
 
 	/**
-	 * @param _characterBaseClassId
+	 * @param characterBaseClassId
 	 *        the _characterBaseClassId to set
 	 */
-	public void setCharacterBaseClassId(int _characterBaseClassId)
+	public void setCharacterBaseClassId(int characterBaseClassId)
 	{
-		this._characterBaseClassId = _characterBaseClassId;
+		_characterBaseClassId = characterBaseClassId;
+	}
+
+	/**
+	 * Returns actual position on top list.
+	 * 
+	 * @return
+	 */
+	public int getTopPosition()
+	{
+		return _topPosition;
+	}
+
+	/**
+	 * Set actual position on top list.
+	 * 
+	 * @param topPosition
+	 */
+	public void setTopPosition(int topPosition)
+	{
+		_topPosition = topPosition;
 	}
 
 }

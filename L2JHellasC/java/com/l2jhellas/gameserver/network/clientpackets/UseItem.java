@@ -163,7 +163,7 @@ public final class UseItem extends L2GameClientPacket
 
 		final L2Clan cl = activeChar.getClan();
 		
-		if (((cl == null) || cl.getHasCastle() == 0) && itemId == 7015 && Config.CASTLE_SHIELD)
+		if (((cl == null) || cl.hasCastle() == 0) && itemId == 7015 && Config.CASTLE_SHIELD)
 		{
 			// A shield that can only be used by the members of a clan that owns a castle.
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
@@ -191,7 +191,7 @@ public final class UseItem extends L2GameClientPacket
 			return;
 		}
 
-		if (itemId == 6841 && Config.CASTLE_CROWN && (cl == null || (cl.getHasCastle() == 0 || !activeChar.isClanLeader())))
+		if (itemId == 6841 && Config.CASTLE_CROWN && (cl == null || (cl.hasCastle() == 0 || !activeChar.isClanLeader())))
 		{
 			// The Lord's Crown used by castle lords only
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
@@ -212,7 +212,7 @@ public final class UseItem extends L2GameClientPacket
 			}
 			else
 			{
-				int circletId = CastleManager.getInstance().getCircletByCastleId(cl.getHasCastle());
+				int circletId = CastleManager.getInstance().getCircletByCastleId(cl.hasCastle());
 				if (activeChar.getPledgeType() == -1 || circletId != itemId)
 				{
 					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);

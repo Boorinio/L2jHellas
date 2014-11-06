@@ -99,14 +99,12 @@ public class L2FactionInstance extends L2NpcInstance
 							statement.close();
 							if (objId == 0)
 							{
-								con.close();
 								return;
 							}
 							statement = con.prepareStatement("UPDATE characters SET good=1 WHERE obj_Id=?");
 							statement.setInt(1, objId);
 							statement.execute();
 							statement.close();
-							con.close();
 						}
 						catch (Exception e)
 						{
@@ -170,14 +168,12 @@ public class L2FactionInstance extends L2NpcInstance
 							statement.close();
 							if (objId == 0)
 							{
-								con.close();
 								return;
 							}
 							statement = con.prepareStatement("UPDATE characters SET evil=1 WHERE obj_Id=?");
 							statement.setInt(1, objId);
 							statement.execute();
 							statement.close();
-							con.close();
 						}
 						catch (Exception e)
 						{

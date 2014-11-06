@@ -128,7 +128,7 @@ public class SiegeManager
 		if (clan == null)
 			return false;
 
-		if (clan.getHasCastle() > 0)
+		if (clan.hasCastle() > 0)
 			return true;
 
 		boolean register = false;

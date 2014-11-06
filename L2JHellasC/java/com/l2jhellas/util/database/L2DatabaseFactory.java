@@ -31,7 +31,7 @@ public class L2DatabaseFactory
 	private static L2DatabaseFactory _instance;
 	private BoneCPDataSource _source;
 	private int database_partition_count = 3;
-	private int database_timeout = 0;
+	private int database_timeout = 10;
 
 	public L2DatabaseFactory()
 	{
@@ -66,7 +66,7 @@ public class L2DatabaseFactory
 			_source.setAcquireRetryAttempts(0);
 			_source.setAcquireRetryDelayInMs(500);
 			_source.setAcquireIncrement(5);
-
+			//_source.setCloseConnectionWatch(true); // for debugging unclosed connections
 			_source.setConnectionTimeoutInMs(database_timeout);
 
 			_source.setIdleConnectionTestPeriodInMinutes(1);
@@ -158,7 +158,7 @@ public class L2DatabaseFactory
 			try
 			{
 				//just remove this until the refactor
-				if (!c.isClosed() && c != null && Config.DEBUG)
+				if (!c.isClosed() && c != null && Config.DEVELOPER)
 					_log.log(Level.WARNING, "Unclosed connection! Trace: " + exp.getStackTrace()[1], exp);					
 			}
 			catch (SQLException e)

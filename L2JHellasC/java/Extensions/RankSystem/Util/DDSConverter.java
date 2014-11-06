@@ -25,7 +25,7 @@ import javax.imageio.ImageIO;
 
 public class DDSConverter
 {
-	public static final Logger _log = Logger.getLogger(DDSConverter.class.getName());
+	public static final Logger log = Logger.getLogger(DDSConverter.class.getName());
 
 	protected static class Color
 	{
@@ -84,13 +84,13 @@ public class DDSConverter
 		if (file == null)
 		{
 			String s = "nullValue.FileIsNull";
-			_log.severe(s);
+			log.severe(s);
 			throw new IllegalArgumentException(s);
 		}
 		if (!file.exists() || !file.canRead())
 		{
 			String s1 = "DDSConverter.NoFileOrNoPermission";
-			_log.severe(s1);
+			log.severe(s1);
 			throw new IllegalArgumentException(s1);
 		}
 		BufferedImage bufferedimage = ImageIO.read(file);

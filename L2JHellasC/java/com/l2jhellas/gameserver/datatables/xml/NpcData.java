@@ -23,9 +23,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -50,7 +50,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.L2HashMap;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class NpcData
@@ -68,7 +67,7 @@ public class NpcData
 	
 	private static NpcData _instance;
 
-	private final ConcurrentMap<Integer, L2NpcTemplate> _npcs;
+	private final HashMap<Integer, L2NpcTemplate> _npcs;
 
 	public static NpcData getInstance()
 	{
@@ -82,8 +81,7 @@ public class NpcData
 
 	private NpcData()
 	{
-		_npcs = new L2HashMap<Integer, L2NpcTemplate>();
-
+		_npcs = new HashMap<Integer, L2NpcTemplate>();
 		restoreNpcData();
 	}
 

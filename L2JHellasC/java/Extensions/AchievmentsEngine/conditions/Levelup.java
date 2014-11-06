@@ -18,9 +18,9 @@ import Extensions.AchievmentsEngine.base.Condition;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-public class Level extends Condition
+public class Levelup extends Condition
 {
-	public Level(Object value)
+	public Levelup(Object value)
 	{
 		super(value);
 		setName("Level");

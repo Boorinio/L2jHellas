@@ -106,9 +106,7 @@ public class DimensionalRiftManager
 
 				_rooms.get(type).put(room_id, new DimensionalRiftRoom(type, room_id, xMin, xMax, yMin, yMax, z1, z2, xT, yT, zT, isBossRoom));
 			}
-
 			s.close();
-			con.close();
 		}
 		catch (Exception e)
 		{

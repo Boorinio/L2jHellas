@@ -5,7 +5,7 @@ title L2J Hellas Game Server Console http://l2jhellas.info/
 
 REM -------------------------------------
 REM Default parameters for a basic server.
-java -Dfile.encoding=UTF-8 -Xmx768m -Xmn256m -Xmn256m -XX:PermSize=32m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*; com.l2jhellas.gameserver.GameServer
+java -Dfile.encoding=UTF-8 -Xmx768m -Xmn256m -Xmn256m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*; com.l2jhellas.gameserver.GameServer
 REM -------------------------------------
 REM If you have a big server and lots of memory,
 REM you could experiment for example with:
@@ -21,8 +21,8 @@ REM FOR GOOD COMPUTERS
 REM java -Dfile.encoding=UTF-8 -Xmx2g -Xmn512m -Xmn512m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
 REM
 REM FOR SUPER COMPUTERS
-REM 1: java -server -Dfile.encoding=UTF-8 -Xmx2g -Xmn512m -Xmn512m -XX:PermSize=128m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
-REM 2: java -server -Dfile.encoding=UTF-8 -Xmx4g -Xmn2g -Xmn1g -XX:PermSize=512m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
+REM 1: java -server -Dfile.encoding=UTF-8 -Xmx2g -Xmn512m -Xmn512m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
+REM 2: java -server -Dfile.encoding=UTF-8 -Xmx4g -Xmn2g -Xmn1g -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
 REM Some of those isn't tested (we got less ram than 3Gb) ;'(
 REM -------------------------------------
 REM you can use

@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -47,7 +48,7 @@ import Extensions.AchievmentsEngine.conditions.Hero;
 import Extensions.AchievmentsEngine.conditions.HeroCount;
 import Extensions.AchievmentsEngine.conditions.ItemsCount;
 import Extensions.AchievmentsEngine.conditions.Karma;
-import Extensions.AchievmentsEngine.conditions.Level;
+import Extensions.AchievmentsEngine.conditions.Levelup;
 import Extensions.AchievmentsEngine.conditions.Mage;
 import Extensions.AchievmentsEngine.conditions.Marry;
 import Extensions.AchievmentsEngine.conditions.MinCMcount;
@@ -71,6 +72,7 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AchievementsManager
 {
+	private static final Logger log = Logger.getLogger(AchievementsManager.class.getSimpleName());
 	private final Map<Integer, Achievement> _achievementList = new FastMap<>();
 
 	private final FastList<String> _binded = new FastList<>();
@@ -191,7 +193,7 @@ public class AchievementsManager
 		}
 		catch (SQLException e)
 		{
-
+			log.log(Level.WARNING, e.getMessage());
 		}
 	}
 
@@ -241,7 +243,7 @@ public class AchievementsManager
 	private static void addToConditionList(String nodeName, Object value, FastList<Condition> conditions)
 	{
 		/** @formatter:off */
-		if (nodeName.equals("minLevel")) conditions.add(new Level(value));
+		if (nodeName.equals("minLevel")) conditions.add(new Levelup(value));
 		else if (nodeName.equals("minPvPCount")) conditions.add(new Pvp(value));
 		else if (nodeName.equals("minPkCount")) conditions.add(new Pk(value));
 		else if (nodeName.equals("minClanLevel")) conditions.add(new ClanLevel(value));

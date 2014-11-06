@@ -76,7 +76,6 @@ public class AdminDonator implements IAdminCommandHandler
 
 					if (objId == 0)
 					{
-						con.close();
 						return false;
 					}
 
@@ -84,7 +83,6 @@ public class AdminDonator implements IAdminCommandHandler
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
-					con.close();
 				}
 				catch (Exception e)
 				{
@@ -116,7 +114,6 @@ public class AdminDonator implements IAdminCommandHandler
 
 					if (objId == 0)
 					{
-						con.close();
 						return false;
 					}
 
@@ -124,7 +121,6 @@ public class AdminDonator implements IAdminCommandHandler
 					statement.setInt(1, objId);
 					statement.execute();
 					statement.close();
-					con.close();
 				}
 				catch (Exception e)
 				{

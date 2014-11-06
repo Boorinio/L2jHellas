@@ -214,7 +214,7 @@ public class ClanTable
 		}
 
 		clan.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_HAS_DISPERSED));
-		int castleId = clan.getHasCastle();
+		int castleId = clan.hasCastle();
 		if (castleId == 0)
 		{
 			for (Siege siege : SiegeManager.getInstance().getSieges())

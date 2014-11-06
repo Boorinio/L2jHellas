@@ -554,7 +554,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 			player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_WAR);
 			return;
 		}
-		if (clan.getHasCastle() != 0 || clan.getHasHideout() != 0)
+		if (clan.hasCastle() != 0 || clan.hasHideout() != 0)
 		{
 			player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_OWNING_CLAN_HALL_OR_CASTLE);
 			return;

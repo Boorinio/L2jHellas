@@ -20,39 +20,45 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
+import Extensions.RankSystem.Util.RPSUtil;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
+ * This class contains all killer's PvP data.<br>
+ * Each KillerPvpSummary contains all killer versus victim data.<br>
+ * PvP is searched by Killer Id.
+ * 
  * @author Masterio
  */
 public class PvpTable
 {
+	public static final Logger log = Logger.getLogger(PvpTable.class.getSimpleName());
+
 	private static PvpTable _instance = null;
 
-	/** <pvp_id, PvP> contains killer pvp's data (victim, kills on victim, last kill time, etc.) */
-	private FastMap<Integer, Pvp> _pvpTable = new FastMap<Integer, Pvp>();
+	/** [killer_id, PvpSummary] */
+	private Map<Integer, PvpSummary> _pvpTable = new ConcurrentHashMap<>();
 
 	private PvpTable()
 	{
-		Calendar c = Calendar.getInstance();
-		long startTime = c.getTimeInMillis();
+		long startTime = Calendar.getInstance().getTimeInMillis();
 
 		if (Config.DATABASE_CLEANER_ENABLED)
-		{
 			cleanPvpTable();
-		}
 
 		load();
 
-		c = Calendar.getInstance();
-		long endTime = c.getTimeInMillis();
-		System.out.println(" - PvpTable loaded " + (this.getPvpTable().size()) + " objects in " + (endTime - startTime) + " ms.");
+		long endTime = Calendar.getInstance().getTimeInMillis();
+
+		log.log(Level.INFO, " - PvpTable: Data loaded. " + (_pvpTable.size()) + " objects in " + (endTime - startTime) + " ms.");
 
 		ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), Config.PVP_TABLE_UPDATE_INTERVAL);
 	}
@@ -60,231 +66,271 @@ public class PvpTable
 	public static PvpTable getInstance()
 	{
 		if (_instance == null)
-		{
 			_instance = new PvpTable();
-		}
 
 		return _instance;
 	}
 
 	/**
-	 * Get Pvp object, if not found returns new Pvp object for killer - victim.
-	 *
+	 * Get PvP object, if not found returns new PvP object for killer -> victim and save in PvPTable.<br>
+	 * 1: Search killerPvpTable by killerId<br>
+	 * 2: Search victimPvpTable by victimId.
+	 * 
 	 * @param killerId
 	 * @param victimId
+	 * @param readOnly
+	 *        - If TRUE and PvP will be not founded in table, it will returns dummy PvP object.<br>
+	 *        If FALSE and it will not found the PvP in table, it will create new one and returns it (it will be saved in database).
+	 * @param updateDailyStats
+	 *        - update daily stats will execute database update.
 	 * @return
 	 */
-	public Pvp getPvp(int killerId, int victimId)
+	public Pvp getPvp(int killerId, int victimId, boolean readOnly, boolean updateDailyStats)
 	{
+		// find and get PvP:
+		PvpSummary kps = getKillerPvpSummary(killerId, readOnly, updateDailyStats);
 
-		// getPvp:
-		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
+		if (kps != null)
 		{
-			if (e.getValue().getKillerObjId() == killerId && e.getValue().getVictimObjId() == victimId)
-				return e.getValue();
+			Pvp pvp = kps.getVictimPvpTable().get(victimId);
+
+			if (pvp != null)
+				return pvp;
 		}
 
-		// create and getPvp:
-		Pvp pvp = new Pvp();
-		pvp.setKillerObjId(killerId);
-		pvp.setVictimObjId(victimId);
-		pvp.setDbStatus((byte) 2);
+		// otherwise create and get new PvP:
+		if (kps == null)
+		{
+			kps = new PvpSummary();
+			kps.setKillerId(killerId);
+			kps.updateRankId();
+		}
 
-		int pvpId = getPvpTable().size() + 1;
-		getPvpTable().put(pvpId, pvp);
+		Pvp pvp = kps.getVictimPvpTable().get(victimId);
 
-		return getPvpTable().get(pvpId);
+		if (pvp == null)
+		{
+			pvp = new Pvp();
 
+			pvp.setVictimId(victimId);
+
+			if (readOnly)
+				pvp.setDbStatus(DBStatus.NONE);
+			else
+				kps.getVictimPvpTable().put(victimId, pvp);
+		}
+
+		return pvp;
 	}
 
 	/**
-	 * Get Pvp object, if not found returns new Pvp object for killer - victim, and reset daily fields if required.
-	 *
+	 * Get PvP object, if not found returns new PvP object for killer -> victim and save in PvPTable.<br>
+	 * 1: Search killerPvpTable by killerId<br>
+	 * 2: Search victimPvpTable by victimId.<br>
+	 * Reset daily fields if required.
+	 * 
 	 * @param killerId
 	 * @param victimId
 	 * @param systemDay
+	 * @param updateDailyStats
+	 *        - update daily stats will execute database update.
 	 * @return
 	 */
-	public Pvp getPvp(int killerId, int victimId, long systemDay)
+	public Pvp getPvp(int killerId, int victimId, long systemDay, boolean updateDailyStats)
 	{
+		// find and get PvP:
+		PvpSummary kps = getKillerPvpSummary(killerId, systemDay, false, updateDailyStats);
 
-		// getPvp:
-		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
+		if (kps != null)
 		{
-			if (e.getValue().getKillerObjId() == killerId && e.getValue().getVictimObjId() == victimId)
+			Pvp pvp = kps.getVictimPvpTable().get(victimId);
+
+			if (pvp != null)
 			{
-				// check daily fields, set 0 if kill day is other than system day:
-				if (e.getValue().getKillDay() != systemDay)
-				{
-					e.getValue().setKillsToday(0);
-					e.getValue().setKillsLegalToday(0);
-					e.getValue().setRankPointsToday(0);
-				}
-				return e.getValue();
+				// check daily fields, reset if kill day is other than system day:
+				if (pvp.getKillDay() != systemDay)
+					pvp.resetDailyFields();
+
+				return pvp;
 			}
 		}
 
-		// create and getPvp:
-		Pvp pvp = new Pvp();
-		pvp.setKillerObjId(killerId);
-		pvp.setVictimObjId(victimId);
-		pvp.setDbStatus((byte) 2);
+		// otherwise create and get new PvP:
+		if (kps == null)
+		{
+			kps = new PvpSummary();
+			kps.setKillerId(killerId);
+			kps.updateRankId();
+		}
 
-		int pvpId = getPvpTable().size() + 1;
-		getPvpTable().put(pvpId, pvp);
+		Pvp pvp = kps.getVictimPvpTable().get(victimId);
 
-		return getPvpTable().get(pvpId);
+		if (pvp == null)
+		{
+			pvp = new Pvp();
 
+			pvp.setVictimId(victimId);
+
+			kps.getVictimPvpTable().put(victimId, pvp);
+		}
+
+		return pvp;
 	}
 
 	/**
-	 * Returns PvP statistics like total kills, total legal kills, etc. for character id.
-	 *
-	 * @param characterId
+	 * Returns Killer PvP statistics like total kills, total legal kills, etc. for killer id.<br>
+	 * Reset daily fields if required (today taken from current time).
+	 * 
+	 * @param killerId
+	 * @param readOnly
+	 *        - If TRUE then if not founded, it will not create new one. <br>
+	 *        If FALSE, it will create new KillerPvpSummary object in model (object with 0 values).
+	 * @param updateDailyStats
+	 *        - if TRUE updates daily stats and all victim pvp daily stats. It will execute database update.
 	 * @return
 	 */
-	public PvpStats getPvpStats(int characterId)
+	public PvpSummary getKillerPvpSummary(int killerId, boolean readOnly, boolean updateDailyStats)
 	{
-
 		// get system day for update daily fields:
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.MILLISECOND, 0);
 		c.set(Calendar.SECOND, 0);
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.HOUR, 0);
+
 		long systemDay = c.getTimeInMillis(); // current system day
 
-		PvpStats pvpStats = new PvpStats();
-		long totalRankPoints = 0; // because addTotalRankPoints updates on every add// now will be faster.
+		// find and get PvP:
+		PvpSummary kps = _pvpTable.get(killerId);
 
-		// getPvpStats:
-		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
+		if (kps == null)
 		{
-			if (e.getValue().getKillerObjId() == characterId)
-			{
-				pvpStats.addTotalKills(e.getValue().getKills());
-				pvpStats.addTotalKillsLegal(e.getValue().getKillsLegal());
-				totalRankPoints += e.getValue().getRankPoints();
-				pvpStats.addTotalWarKills(e.getValue().getWarKills());
-				pvpStats.addTotalWarKillsLegal(e.getValue().getWarKillsLegal());
+			kps = new PvpSummary();
+			kps.setKillerId(killerId);
+			kps.updateRankId();
+			kps.updateDailyStats(systemDay);
 
-				// add if is today:
-				if (e.getValue().getKillDay() == systemDay)
-				{
-					pvpStats.addTotalKillsToday(e.getValue().getKillsToday());
-					pvpStats.addTotalKillsLegalToday(e.getValue().getKillsLegalToday());
-					pvpStats.addTotalRankPointsToday(e.getValue().getRankPointsToday());
-				}
-			}
+			if (!readOnly)
+				_pvpTable.put(killerId, kps);
 		}
-		pvpStats.setTotalRankPoints(totalRankPoints); // set rank points and update Rank.
+		else if (updateDailyStats)
+		{
+			kps.updateDailyStats(systemDay);
+		}
 
-		return pvpStats;
+		return kps;
 	}
 
 	/**
-	 * Returns PvP statistics like total kills, total legal kills, etc. for character id, daily fields are not ignored<br>
-	 * if kill day = system day.
-	 *
-	 * @param characterId
+	 * Returns Killer PvP statistics like total kills, total legal kills, etc. for killer id.<br>
+	 * Reset daily fields if required. Automatic update Daily Stats.
+	 * 
+	 * @param killerId
 	 * @param systemDay
+	 * @param readOnly
+	 *        - If TRUE then if not founded, it will not create new one. <br>
+	 *        If FALSE, it will create new KillerPvpSummary object in model (object with 0 values).
+	 * @param updateDailyStats
+	 *        - if TRUE updates daily stats and victim pvp daily stats. It will execute database update.
 	 * @return
 	 */
-	public PvpStats getPvpStats(int characterId, long systemDay)
+	public PvpSummary getKillerPvpSummary(int killerId, long systemDay, boolean readOnly, boolean updateDailyStats)
 	{
+		// find and get PvP:
+		PvpSummary kps = _pvpTable.get(killerId);
 
-		PvpStats pvpStats = new PvpStats();
-		long totalRankPoints = 0; // because addTotalRankPoints updates on every add// now will be faster.
-
-		// getPvpStats:
-		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
+		if (kps == null)
 		{
-			if (e.getValue().getKillerObjId() == characterId)
-			{
-				pvpStats.addTotalKills(e.getValue().getKills());
-				pvpStats.addTotalKillsLegal(e.getValue().getKillsLegal());
-				totalRankPoints += e.getValue().getRankPoints();
-				pvpStats.addTotalWarKills(e.getValue().getWarKills());
-				pvpStats.addTotalWarKillsLegal(e.getValue().getWarKillsLegal());
+			kps = new PvpSummary();
 
-				// add if is today:
-				if (e.getValue().getKillDay() == systemDay)
-				{
-					pvpStats.addTotalKillsToday(e.getValue().getKillsToday());
-					pvpStats.addTotalKillsLegalToday(e.getValue().getKillsLegalToday());
-					pvpStats.addTotalRankPointsToday(e.getValue().getRankPointsToday());
-				}
-			}
+			kps.setKillerId(killerId);
+			kps.updateRankId();
+			kps.updateDailyStats(systemDay);
+
+			if (!readOnly)
+				_pvpTable.put(killerId, kps);
 		}
-		pvpStats.setTotalRankPoints(totalRankPoints); // set rank points and update Rank.
-
-		return pvpStats;
-	}
-
-	public FastList<Integer> getKillersList()
-	{
-		FastList<Integer> list = new FastList<Integer>();
-
-		for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
+		else if (updateDailyStats)
 		{
-			if (!list.contains(e.getValue().getKillerObjId()))
-			{
-
-				list.add(e.getValue().getKillerObjId());
-
-			}
+			kps.updateDailyStats(systemDay);
 		}
 
-		return list;
+		return kps;
 	}
 
 	/**
-	 * @return the _PvpTable
+	 * Returns selected killer rank id. <br>
+	 * This method is faster than getKillerPvpSummary().getRankId().
+	 * 
+	 * @param killerId
+	 * @return rank id or -1 if not founded.
 	 */
-	public FastMap<Integer, Pvp> getPvpTable()
+	public int getRankId(int killerId)
+	{
+		// find and get PvP:
+		PvpSummary kps = _pvpTable.get(killerId);
+
+		if (kps != null)
+			return kps.getRankId();
+
+		return -1;
+	}
+
+	public Map<Integer, PvpSummary> getPvpTable()
 	{
 		return _pvpTable;
 	}
 
-	/**
-	 * @param _pvpTable
-	 *        the _PvpTable to set
-	 */
-	public void setPvpTable(FastMap<Integer, Pvp> _pvpTable)
+	public void setPvpTable(Map<Integer, PvpSummary> pvpTable)
 	{
-		this._pvpTable = _pvpTable;
+		_pvpTable = pvpTable;
 	}
 
 	private void load()
 	{
-
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM rank_pvp_system");
-
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM rank_pvp_system_pvp");
 			ResultSet rset = statement.executeQuery();
-
 			while (rset.next())
 			{
 				Pvp pvp = new Pvp();
 
-				pvp.setKillerObjId(rset.getInt("killer_id"));
-				pvp.setVictimObjId(rset.getInt("victim_id"));
+				pvp.setVictimId(rset.getInt("victim_id"));
 				pvp.setKills(rset.getInt("kills"));
 				pvp.setKillsToday(rset.getInt("kills_today"));
 				pvp.setKillsLegal(rset.getInt("kills_legal"));
 				pvp.setKillsLegalToday(rset.getInt("kills_today_legal"));
 				pvp.setRankPoints(rset.getLong("rank_points"));
 				pvp.setRankPointsToday(rset.getLong("rank_points_today"));
-				pvp.setWarKillsLegal(rset.getInt("war_kills_legal"));
-				pvp.setWarKills(rset.getInt("war_kills"));
 				pvp.setKillTime(rset.getLong("kill_time"));
 				pvp.setKillDay(rset.getLong("kill_day"));
 
-				pvp.setDbStatus((byte) 0); // load as updated.
+				PvpSummary kps = getKillerPvpSummary(rset.getInt("killer_id"), false, false);
 
-				_pvpTable.put(getPvpTable().size() + 1, pvp);
+				pvp.setDbStatus(DBStatus.NONE);
 
+				kps.addVictimPvpOnLoadFromDB(pvp);
+			}
+
+			rset.close();
+			statement.close();
+
+			statement = con.prepareStatement("SELECT * FROM rank_pvp_system_pvp_summary");
+			rset = statement.executeQuery();
+			while (rset.next())
+			{
+				// get only existed summaries:
+				PvpSummary kps = getKillerPvpSummary(rset.getInt("killer_id"), true, false);
+
+				kps.setPvpExp(rset.getLong("pvp_exp"));
+				kps.setTotalWarKills(rset.getInt("total_war_kills"));
+				kps.setTotalWarKillsLegal(rset.getInt("total_war_kills_legal"));
+				kps.setMaxRankId(rset.getInt("max_rank_id"));
+
+				kps.setDbStatus(DBStatus.NONE);
+
+				kps.updateRankId();
 			}
 
 			rset.close();
@@ -292,66 +338,120 @@ public class PvpTable
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
-		}
-	}
-
-	public void updateDB()
-	{
-		Statement statement = null;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			statement = con.createStatement();
-
-			// search new or updated fields in PvpTable:
-			for (FastMap.Entry<Integer, Pvp> e = getPvpTable().head(), end = getPvpTable().tail(); (e = e.getNext()) != end;)
-			{
-
-				if (e.getValue().getDbStatus() == 1)
-				{
-					statement.addBatch("UPDATE rank_pvp_system SET kills=" + e.getValue().getKills() + ", kills_today=" + e.getValue().getKillsToday() + ", kills_legal=" + e.getValue().getKillsLegal() + ", kills_today_legal=" + e.getValue().getKillsLegalToday() + ", rank_points=" + e.getValue().getRankPoints() + ", rank_points_today=" + e.getValue().getRankPointsToday() + ", war_kills_legal=" + e.getValue().getWarKillsLegal() + ", war_kills=" + e.getValue().getWarKills() + ", kill_time=" + e.getValue().getKillTime() + ", kill_day=" + e.getValue().getKillDay() + " WHERE killer_id=" + e.getValue().getKillerObjId() + " AND victim_id=" + e.getValue().getVictimObjId());
-					e.getValue().setDbStatus((byte) 0);
-				}
-				else if (e.getValue().getDbStatus() == 2)
-				{
-					statement.addBatch("INSERT INTO rank_pvp_system (killer_id, victim_id, kills, kills_today, kills_legal, kills_today_legal, rank_points, rank_points_today, war_kills_legal, war_kills, kill_time, kill_day) VALUES (" + e.getValue().getKillerObjId() + ", " + e.getValue().getVictimObjId() + ", " + e.getValue().getKills() + ", " + e.getValue().getKillsToday() + ", " + e.getValue().getKillsLegal() + ", " + e.getValue().getKillsLegalToday() + ", " + e.getValue().getRankPoints() + ", " + e.getValue().getRankPointsToday() + ", " + e.getValue().getWarKillsLegal() + ", " + e.getValue().getWarKills() + ", " + e.getValue().getKillTime() + ", " + e.getValue().getKillDay() + ")");
-					e.getValue().setDbStatus((byte) 0);
-				}
-
-			}
-
-			statement.executeBatch();
-
-			statement.close();
-
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			log.log(Level.WARNING, e.getMessage());
 		}
 	}
 
 	/**
-	 * Remove permanently not active players!
+	 * Returns an array with 3 values:<br>
+	 * [0] - 0: update complete, -1: update failed.<br>
+	 * [1] - inserts count.<br>
+	 * [2] - updates count.
+	 * 
+	 * @return
+	 */
+	public int[] updateDB()
+	{
+		int[] result =
+		{
+		0, 0, 0
+		};
+
+		int insertCount = 0;					// count of insert queries
+		int updateCount = 0;					// count of update queries
+
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			Statement statement = con.createStatement();
+			// search new or updated fields in VictimPvpTable:
+			for (Map.Entry<Integer, PvpSummary> e : _pvpTable.entrySet())
+			{
+				PvpSummary kps = e.getValue();
+
+				if (kps == null)
+					break;
+
+				Map<Integer, Pvp> victimPvpTable = kps.getVictimPvpTable();
+
+				for (Map.Entry<Integer, Pvp> f : victimPvpTable.entrySet())
+				{
+					Pvp pvp = f.getValue();
+
+					if (pvp == null)
+						break;
+
+					if (pvp.getDbStatus() == DBStatus.UPDATED)
+					{
+						// rank_pvp_system_pvp:
+						statement.addBatch("UPDATE rank_pvp_system_pvp SET kills=" + pvp.getKills() + ", kills_today=" + pvp.getKillsToday() + ", kills_legal=" + pvp.getKillsLegal() + ", kills_today_legal=" + pvp.getKillsLegalToday() + ", rank_points=" + pvp.getRankPoints() + ", rank_points_today=" + pvp.getRankPointsToday() + ", kill_time=" + pvp.getKillTime() + ", kill_day=" + pvp.getKillDay() + " WHERE killer_id=" + kps.getKillerId() + " AND victim_id=" + pvp.getVictimId());
+						pvp.setDbStatus(DBStatus.NONE); // it is after query because PvP is updating in real time.
+						updateCount++;
+					}
+					else if (pvp.getDbStatus() == DBStatus.INSERTED)
+					{
+						// rank_pvp_system_pvp:
+						statement.addBatch("INSERT INTO rank_pvp_system_pvp (killer_id, victim_id, kills, kills_today, kills_legal, kills_today_legal, rank_points, rank_points_today, kill_time, kill_day) VALUES (" + kps.getKillerId() + ", " + pvp.getVictimId() + ", " + pvp.getKills() + ", " + pvp.getKillsToday() + ", " + pvp.getKillsLegal() + ", " + pvp.getKillsLegalToday() + ", " + pvp.getRankPoints() + ", " + pvp.getRankPointsToday() + ", " + pvp.getKillTime() + ", " + pvp.getKillDay() + ")");
+						pvp.setDbStatus(DBStatus.NONE);
+						insertCount++;
+					}
+				}
+
+				if (kps.getDbStatus() == DBStatus.UPDATED)
+				{
+					// rank_pvp_system_pvp_summary:
+					statement.addBatch("UPDATE rank_pvp_system_pvp_summary SET pvp_exp=" + kps.getPvpExp() + ", total_war_kills=" + kps.getTotalWarKills() + ", total_war_kills_legal=" + kps.getTotalWarKillsLegal() + ", max_rank_id=" + kps.getMaxRankId() + " WHERE killer_id=" + kps.getKillerId());
+					kps.setDbStatus(DBStatus.NONE);
+					updateCount++;
+				}
+				else if (kps.getDbStatus() == DBStatus.INSERTED)
+				{
+					// rank_pvp_system_pvp_summary:
+					statement.addBatch("INSERT INTO rank_pvp_system_pvp_summary (killer_id, pvp_exp, total_war_kills, total_war_kills_legal, max_rank_id) VALUES (" + kps.getKillerId() + ", " + kps.getPvpExp() + ", " + kps.getTotalWarKills() + ", " + kps.getTotalWarKillsLegal() + ", " + kps.getMaxRankId() + ")");
+					kps.setDbStatus(DBStatus.NONE);
+					insertCount++;
+				}
+			}
+
+			statement.executeBatch();
+			statement.close();
+		}
+		catch (SQLException e)
+		{
+			log.log(Level.WARNING, e.getMessage());
+			result[0] = -1;
+		}
+
+		result[1] = insertCount;
+		result[2] = updateCount;
+
+		return result;
+	}
+
+	/**
+	 * Remove permanently not active players! Only when server is starting!
 	 */
 	private static void cleanPvpTable()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("DELETE FROM rank_pvp_system WHERE (SELECT (lastAccess) FROM characters WHERE obj_Id = killer_id) < ?");
-
 			// calculate ignore time:
 			Calendar c = Calendar.getInstance();
 			long ignoreTime = c.getTimeInMillis() - Config.DATABASE_CLEANER_REPEAT_TIME;
 
-			statement.setLong(1, ignoreTime);
-			statement.execute();
+			Statement statement = con.createStatement();
+
+			statement.addBatch("DELETE FROM rank_pvp_system_pvp WHERE (SELECT (lastAccess) FROM characters WHERE " + RankLoader.CHAR_ID_COLUMN_NAME + " = killer_id) < " + ignoreTime);
+			statement.addBatch("DELETE FROM rank_pvp_system_pvp_summary WHERE (SELECT (lastAccess) FROM characters WHERE " + RankLoader.CHAR_ID_COLUMN_NAME + " = killer_id) < " + ignoreTime);
+
+			statement.executeBatch();
+			statement.close();
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
+			log.log(Level.WARNING, e.getMessage());
 		}
-		System.out.println("Cleaned Pvp Table with players who are inactive for longer than " + Math.round((double) Config.DATABASE_CLEANER_REPEAT_TIME / 86400000) + " day(s).");
+
+		log.log(Level.INFO, " - PvpTable: Data older than " + Math.round((double) Config.DATABASE_CLEANER_REPEAT_TIME / (double) 86400000) + " day(s) removed.");
 	}
 
 	private static class PvpTableSchedule implements Runnable
@@ -366,11 +466,22 @@ public class PvpTable
 		{
 			if (!TopTable.getInstance().isUpdating())
 			{
-				PvpTable.getInstance().updateDB();
+				int[] up = PvpTable.getInstance().updateDB();
+
+				if (up[0] == 0)
+				{
+					log.log(Level.INFO, "PvpTable: Data updated [" + up[1] + " inserts and " + up[2] + " updates] <<< Next update at " + RPSUtil.timeToString(Calendar.getInstance().getTimeInMillis() + Config.PVP_TABLE_UPDATE_INTERVAL));
+				}
+
+				// update RPC here:
+				if (Config.RPC_REWARD_ENABLED || Config.RANK_RPC_ENABLED || Config.RPC_TABLE_FORCE_UPDATE_ENABLED)
+					RPCTable.getInstance().updateDB();
+
 				ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), Config.PVP_TABLE_UPDATE_INTERVAL);
 			}
 			else
 			{
+				log.log(Level.INFO, "PvpTable: Waiting for update. <<< Next try for 30 seconds.");
 				ThreadPoolManager.getInstance().scheduleGeneral(new PvpTableSchedule(), 30000);
 			}
 		}

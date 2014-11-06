@@ -67,11 +67,7 @@ public class SevenSignsFestival implements SpawnListener
 	private static final String SELECT_FEST = "SELECT festivalId, cabal, cycle, date, score, members FROM seven_signs_festival";
 	private static final String UPDATE_FEST = "UPDATE seven_signs_festival SET date=?, score=?, members=? WHERE cycle=? AND cabal=? AND festivalId=?";
 	private static final String INSERT_FEST = "INSERT INTO seven_signs_festival (festivalId, cabal, cycle, date, score, members) VALUES (?,?,?,?,?,?)";
-	
-	
-	
-	
-	
+
 	/**
 	 * These length settings are important! :)
 	 * All times are relative to the ELAPSED time (in ms) since a festival begins.
@@ -1028,12 +1024,8 @@ public class SevenSignsFestival implements SpawnListener
 
 			rset.close();
 			statement.close();
-			con.close();
-
 			if (Config.DEBUG)
-			{
 				_log.log(Level.CONFIG, getClass().getName() + ": Loaded data from database.");
-			}
 		}
 		catch (SQLException e)
 		{
@@ -1111,8 +1103,6 @@ public class SevenSignsFestival implements SpawnListener
 					}
 				}
 			}
-			con.close();
-
 			// Updates Seven Signs DB data also, so call only if really necessary.
 			if (updateSettings)
 			{

@@ -15,21 +15,21 @@
 package Extensions.RankSystem;
 
 /**
- * All that data stored in global table: FastMap&ltInteger, Rank&gt RANKS in ExternalConfig class.
+ * All that data stored in RankTable class.
  * 
  * @author Masterio
  */
 public class Rank
 {
-	private int _id = 0;
-	private String _name = null; // rank name
-	private long _minPoints = 0; // for get this rank
-	private int _pointsForKill = 0; // for kill player with this rank
+	private int _id = 0;				// rank id
+	private String _name = null; 		// rank name
+	private long _minExp = 0; 			// for rich this rank
+	private int _pointsForKill = 0;		// points awarded for kill the player with this rank
 
-	private int _rewardId = 0; // reward for kill this player
-	private int _rewardAmount = 0; // reward amount
-	private int _nickColor = -1; // no color
-	private int _titleColor = -1; // no color
+	private long _rpc = 0;				// RPC awarded for kill the player with this rank
+
+	private int _nickColor = -1; 		// nick color, colors will be override in EnterWorld class if the value will be greater than -1
+	private int _titleColor = -1; 		// title color, colors will be override in EnterWorld class if the value will be greater than -1
 
 	/**
 	 * @return the _id
@@ -40,12 +40,12 @@ public class Rank
 	}
 
 	/**
-	 * @param _id
+	 * @param id
 	 *        the _id to set
 	 */
-	public void setId(int _id)
+	public void setId(int id)
 	{
-		this._id = _id;
+		_id = id;
 	}
 
 	/**
@@ -57,31 +57,31 @@ public class Rank
 	}
 
 	/**
-	 * @param _name
+	 * @param name
 	 *        the _name to set
 	 */
-	public void setName(String _name)
+	public void setName(String name)
 	{
-		this._name = _name;
+		_name = name;
 	}
 
 	/**
 	 * Store information about minimum Rank Points for obtain this Rank.
 	 * 
-	 * @return the _minPoints
+	 * @return the _minExp
 	 */
-	public long getMinPoints()
+	public long getMinExp()
 	{
-		return _minPoints;
+		return _minExp;
 	}
 
 	/**
-	 * @param _minPoints
-	 *        the _minPoints to set
+	 * @param minExp
+	 *        the _minExp to set
 	 */
-	public void setMinPoints(long _minPoints)
+	public void setMinPoints(long minExp)
 	{
-		this._minPoints = _minPoints;
+		_minExp = minExp;
 	}
 
 	/**
@@ -93,46 +93,12 @@ public class Rank
 	}
 
 	/**
-	 * @param _pointsForKill
+	 * @param pointsForKill
 	 *        the _pointsForKill to set
 	 */
-	public void setPointsForKill(int _pointsForKill)
+	public void setPointsForKill(int pointsForKill)
 	{
-		this._pointsForKill = _pointsForKill;
-	}
-
-	/**
-	 * @return the _rewardId
-	 */
-	public int getRewardId()
-	{
-		return _rewardId;
-	}
-
-	/**
-	 * @param _rewardId
-	 *        the _rewardId to set
-	 */
-	public void setRewardId(int _rewardId)
-	{
-		this._rewardId = _rewardId;
-	}
-
-	/**
-	 * @return the _rewardAmount
-	 */
-	public int getRewardAmount()
-	{
-		return _rewardAmount;
-	}
-
-	/**
-	 * @param _rewardAmount
-	 *        the _rewardAmount to set
-	 */
-	public void setRewardAmount(int _rewardAmount)
-	{
-		this._rewardAmount = _rewardAmount;
+		_pointsForKill = pointsForKill;
 	}
 
 	/**
@@ -144,12 +110,12 @@ public class Rank
 	}
 
 	/**
-	 * @param _nickColor
+	 * @param nickColor
 	 *        the _nickColor to set
 	 */
-	public void setNickColor(int _nickColor)
+	public void setNickColor(int nickColor)
 	{
-		this._nickColor = _nickColor;
+		_nickColor = nickColor;
 	}
 
 	/**
@@ -161,11 +127,21 @@ public class Rank
 	}
 
 	/**
-	 * @param _titleColor
+	 * @param titleColor
 	 *        the _titleColor to set
 	 */
-	public void setTitleColor(int _titleColor)
+	public void setTitleColor(int titleColor)
 	{
-		this._titleColor = _titleColor;
+		_titleColor = titleColor;
+	}
+
+	public long getRpc()
+	{
+		return _rpc;
+	}
+
+	public void setRpc(long rpc)
+	{
+		_rpc = rpc;
 	}
 }

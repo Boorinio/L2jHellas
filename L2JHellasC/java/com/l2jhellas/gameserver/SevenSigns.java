@@ -784,7 +784,6 @@ public class SevenSigns
 			statement.execute();
 
 			statement.close();
-			con.close();
 		}
 		catch (SQLException e)
 		{
@@ -884,12 +883,9 @@ public class SevenSigns
 				statement.execute();
 
 				statement.close();
-				con.close();
 
 				if (Config.DEBUG)
-				{
 					_log.log(Level.CONFIG, getClass().getName() + ": Updated data in database.");
-				}
 			}
 		}
 		catch (SQLException e)
@@ -988,7 +984,6 @@ public class SevenSigns
 				statement.execute();
 
 				statement.close();
-				con.close();
 
 				if (Config.DEBUG)
 				{

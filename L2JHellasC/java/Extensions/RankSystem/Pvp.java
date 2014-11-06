@@ -18,30 +18,25 @@ import java.util.Calendar;
 
 /**
  * Class contains informations about victim. <br>
- * Example: How many times Killer killed Victim? <br>
+ * Question: How many times Killer killed the Victim? <br>
  * Answer: getKills().
  * 
  * @author Masterio
  */
 public class Pvp
 {
-	private int _killerObjId = 0;
-
-	private int _victimObjId = 0;
+	private int _victimId = 0;
 	private int _kills = 0;
 	private int _killsToday = 0;
 	private int _killsLegal = 0;
 	private int _killsLegalToday = 0;
 	private long _rankPoints = 0;
 	private long _rankPointsToday = 0;
-	private int _warKills = 0;
-	private int _warKillsLegal = 0;
 
-	private long _killTime = 0; // store date and time, used in anti-farm options.
-	private long _killDay = 0; // store only date without time.
+	private long _killTime = 0; 	//store date and time, used in anti-farm options.
+	private long _killDay = 0; 		//store only date without time.
 
-	/** 0 - object not changed, 1 - object updated, 2 - object inserted. */
-	private byte _dbStatus = 2;
+	private byte _dbStatus = DBStatus.INSERTED;
 
 	public void increaseKills()
 	{
@@ -79,51 +74,21 @@ public class Pvp
 		onUpdate();
 	}
 
-	public void increaseWarKills()
-	{
-		_warKills++;
-		onUpdate();
-	}
-
-	public void increaseWarKillsLegal()
-	{
-		_warKillsLegal++;
-		onUpdate();
-	}
-
-	/**
-	 * @return the _killerObjId
-	 */
-	public int getKillerObjId()
-	{
-		return _killerObjId;
-	}
-
-	/**
-	 * @param _killerObjId
-	 *        the _killerObjId to set
-	 */
-	public void setKillerObjId(int _killerObjId)
-	{
-		this._killerObjId = _killerObjId;
-		onUpdate();
-	}
-
 	/**
 	 * @return the _victimObjId
 	 */
-	public int getVictimObjId()
+	public int getVictimId()
 	{
-		return _victimObjId;
+		return _victimId;
 	}
 
 	/**
-	 * @param _victimObjId
-	 *        the _victimObjId to set
+	 * @param victimId
+	 *        the _victimId to set
 	 */
-	public void setVictimObjId(int _victimObjId)
+	public void setVictimId(int victimId)
 	{
-		this._victimObjId = _victimObjId;
+		_victimId = victimId;
 		onUpdate();
 	}
 
@@ -136,12 +101,12 @@ public class Pvp
 	}
 
 	/**
-	 * @param _kills
+	 * @param kills
 	 *        the _kills to set
 	 */
-	public void setKills(int _kills)
+	public void setKills(int kills)
 	{
-		this._kills = _kills;
+		_kills = kills;
 		onUpdate();
 	}
 
@@ -151,19 +116,18 @@ public class Pvp
 	public int getKillsToday()
 	{
 		if (!checkToday())
-		{
 			return 0;
-		}
+
 		return _killsToday;
 	}
 
 	/**
-	 * @param _killsToday
+	 * @param killsToday
 	 *        the _killsToday to set
 	 */
-	public void setKillsToday(int _killsToday)
+	public void setKillsToday(int killsToday)
 	{
-		this._killsToday = _killsToday;
+		_killsToday = killsToday;
 		onUpdate();
 	}
 
@@ -176,12 +140,12 @@ public class Pvp
 	}
 
 	/**
-	 * @param _killsLegal
+	 * @param killsLegal
 	 *        the _killsLegal to set
 	 */
-	public void setKillsLegal(int _killsLegal)
+	public void setKillsLegal(int killsLegal)
 	{
-		this._killsLegal = _killsLegal;
+		_killsLegal = killsLegal;
 		onUpdate();
 	}
 
@@ -191,19 +155,18 @@ public class Pvp
 	public int getKillsLegalToday()
 	{
 		if (!checkToday())
-		{
 			return 0;
-		}
+
 		return _killsLegalToday;
 	}
 
 	/**
-	 * @param _killsLegalToday
+	 * @param killsLegalToday
 	 *        the _killsLegalToday to set
 	 */
-	public void setKillsLegalToday(int _killsLegalToday)
+	public void setKillsLegalToday(int killsLegalToday)
 	{
-		this._killsLegalToday = _killsLegalToday;
+		_killsLegalToday = killsLegalToday;
 		onUpdate();
 	}
 
@@ -216,70 +179,33 @@ public class Pvp
 	}
 
 	/**
-	 * @param _rankPoints
+	 * @param rankPoints
 	 *        the _rankPoints to set
 	 */
-	public void setRankPoints(long _rankPoints)
+	public void setRankPoints(long rankPoints)
 	{
-		this._rankPoints = _rankPoints;
+		_rankPoints = rankPoints;
 		onUpdate();
 	}
 
 	/**
-	 * @return the _rankPintsToday
+	 * @return the _rankPointsToday
 	 */
 	public long getRankPointsToday()
 	{
 		if (!checkToday())
-		{
 			return 0;
-		}
+
 		return _rankPointsToday;
 	}
 
 	/**
-	 * @param _rankPointsToday
-	 *        the _rankPintsToday to set
+	 * @param rankPointsToday
+	 *        the _rankPointsToday to set
 	 */
-	public void setRankPointsToday(long _rankPointsToday)
+	public void setRankPointsToday(long rankPointsToday)
 	{
-		this._rankPointsToday = _rankPointsToday;
-		onUpdate();
-	}
-
-	/**
-	 * @return the _warKills
-	 */
-	public int getWarKills()
-	{
-		return _warKills;
-	}
-
-	/**
-	 * @param _warKills
-	 *        the _warKills to set
-	 */
-	public void setWarKills(int _warKills)
-	{
-		this._warKills = _warKills;
-		onUpdate();
-	}
-
-	/**
-	 * @return the _warKillsLegal
-	 */
-	public int getWarKillsLegal()
-	{
-		return _warKillsLegal;
-	}
-
-	/**
-	 * @param _warKillsLegal
-	 *        the _warKillsLegal to set
-	 */
-	public void setWarKillsLegal(int _warKillsLegal)
-	{
-		this._warKillsLegal = _warKillsLegal;
+		_rankPointsToday = rankPointsToday;
 		onUpdate();
 	}
 
@@ -292,12 +218,12 @@ public class Pvp
 	}
 
 	/**
-	 * @param _killTime
+	 * @param killTime
 	 *        the _killTime to set
 	 */
-	public void setKillTime(long _killTime)
+	public void setKillTime(long killTime)
 	{
-		this._killTime = _killTime;
+		_killTime = killTime;
 		onUpdate();
 	}
 
@@ -310,12 +236,12 @@ public class Pvp
 	}
 
 	/**
-	 * @param _killDay
+	 * @param killDay
 	 *        the _killDay to set
 	 */
-	public void setKillDay(long _killDay)
+	public void setKillDay(long killDay)
 	{
-		this._killDay = _killDay;
+		_killDay = killDay;
 		onUpdate();
 	}
 
@@ -328,20 +254,18 @@ public class Pvp
 	}
 
 	/**
-	 * @param _dbStatus
+	 * @param dbStatus
 	 *        the _dbStatus to set
 	 */
-	public void setDbStatus(byte _dbStatus)
+	public void setDbStatus(byte dbStatus)
 	{
-		this._dbStatus = _dbStatus;
+		_dbStatus = dbStatus;
 	}
 
 	private void onUpdate()
 	{
-		if (_dbStatus == 0)
-		{
-			_dbStatus = 1;
-		}
+		if (_dbStatus == DBStatus.NONE)
+			_dbStatus = DBStatus.UPDATED;
 	}
 
 	/**
@@ -351,21 +275,24 @@ public class Pvp
 	 */
 	private boolean checkToday()
 	{
-
 		Calendar c = Calendar.getInstance();
-
 		c.set(Calendar.MILLISECOND, 0);
 		c.set(Calendar.SECOND, 0);
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.HOUR, 0);
 		long systemDay = c.getTimeInMillis(); // date
-
-		if (getKillDay() != systemDay)
-		{
+		if (_killDay != systemDay)
 			return false;
-		}
-
 		return true;
 	}
 
+	/**
+	 * Clear KillsToday, KillsLegalToday, RankPointsToday. It not cause DBStatus change.
+	 */
+	public void resetDailyFields()
+	{
+		_killsToday = 0;
+		_killsLegalToday = 0;
+		_rankPointsToday = 0;
+	}
 }

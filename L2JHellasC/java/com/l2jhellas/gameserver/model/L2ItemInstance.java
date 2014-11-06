@@ -1191,7 +1191,6 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = true;
 			_storedInDb = true;
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{

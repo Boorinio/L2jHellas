@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.util.FastMap;
-import Extensions.RankSystem.IVoicedCommandHandlerPvpInfo;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Away;
@@ -28,6 +27,7 @@ import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Cl;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.MailCmd;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.OnlinePlayers;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Premium;
+import com.l2jhellas.gameserver.handler.voicedcommandhandlers.PvpInfo;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.QuizCmd;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ServerRestartVote;
 import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VipTeleport;
@@ -82,8 +82,8 @@ public class VoicedCommandHandler
 			registerVoicedCommandHandler(new OnlinePlayers());
 		if (Config.BANKING_SYSTEM_ENABLED)
 			registerVoicedCommandHandler(new Banking());
-		if (Config.PVP_INFO_COMMAND_ENABLED && Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_INFO_USER_COMMAND_ENABLED)
-			registerVoicedCommandHandler(new IVoicedCommandHandlerPvpInfo());
+		if (Config.RANK_PVP_SYSTEM_ENABLED && Config.PVP_INFO_COMMAND_ENABLED && Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_INFO_USER_COMMAND_ENABLED)
+			registerVoicedCommandHandler(new PvpInfo());
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 			registerVoicedCommandHandler(new MailCmd());
 		if (Config.ZODIAC_ENABLE)

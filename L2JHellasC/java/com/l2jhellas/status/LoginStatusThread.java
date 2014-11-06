@@ -245,14 +245,13 @@ public class LoginStatusThread extends Thread
 			{
 				_pass = rset.getString("password");
 				statement.close();
-				con.close();
 				return true;
 			}
 			statement.close();
 		}
-		catch (SQLException sqle)
+		catch (SQLException e)
 		{
-			sqle.printStackTrace();
+			e.printStackTrace();
 		}
 		return false;
 	}

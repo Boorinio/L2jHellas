@@ -43,12 +43,8 @@ import Extensions.OnEnter;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.RaidEvent.L2EventChecks;
 import Extensions.RaidEvent.L2RaidEvent;
-import Extensions.RankSystem.PvpStats;
-import Extensions.RankSystem.PvpTable;
+import Extensions.RankSystem.RPSCookie;
 import Extensions.RankSystem.RankPvpSystem;
-import Extensions.RankSystem.RankPvpSystemComboKill;
-import Extensions.RankSystem.RankPvpSystemDeathMgr;
-import Extensions.RankSystem.RankPvpSystemRankPointsReward;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
@@ -551,9 +547,11 @@ public final class L2PcInstance extends L2Playable
 	private SystemMessageId _noDuelReason = SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL;
 	
 	/** Rank PvP System */
-	public RankPvpSystemDeathMgr _rankPvpSystemDeathMgr = null;
-	public RankPvpSystemRankPointsReward _rankPvpSystemRankPointsReward = null;
-	public RankPvpSystemComboKill _rankPvpSystemComboKill = null;
+	private RPSCookie _RPSCookie = new RPSCookie();
+	public RPSCookie getRPSCookie()
+	{
+		return _RPSCookie;
+	}
 	
 	/** Boat */
 	private Point3D _inBoatPosition;
@@ -5554,6 +5552,7 @@ public final class L2PcInstance extends L2Playable
 	 * @param attacker
 	 *        The L2Character who attacks
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	public boolean doDie(L2Character killer)
 	{
@@ -5564,21 +5563,9 @@ public final class L2PcInstance extends L2Playable
 		if (killer != null)
 		{
 			L2PcInstance pk = killer.getActingPlayer();
-			@SuppressWarnings("unused")
 			boolean clanWarKill = false;
-			@SuppressWarnings("unused")
 			boolean playerKill = false;
-			// Rank PvP System by Masterio
-			if (Config.RANK_PVP_SYSTEM_ENABLED)
-			{
-				RankPvpSystem rps = new RankPvpSystem(killer, this);
-				if (_rankPvpSystemComboKill != null)
-				{ // shout defeat msg if player have combo level > 0
-					_rankPvpSystemComboKill.shoutDefeatMessage(this);
-					_rankPvpSystemComboKill = null; // reset current combo for victim.
-				}
-				rps.doPvp();
-			}
+
 			if (pk != null && pk._inEventTvT && _inEventTvT)
 			{
 				if (TvT._teleport || TvT._started)
@@ -5956,6 +5943,10 @@ public final class L2PcInstance extends L2Playable
 			return;
 		if (!(target instanceof L2Playable))
 			return;
+		
+		// Rank PvP System by Masterio
+		_RPSCookie.runPvpTask(this, target);
+		
 		if (_inEventCTF || _inEventTvT || _inEventVIP || _inEventDM || isinZodiac)
 			return;
 		
@@ -6083,10 +6074,9 @@ public final class L2PcInstance extends L2Playable
 	{
 		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
-		
-		if (!Config.LEGAL_COUNTER_ALTT_ENABLED)
+		// Rank PvP System by Masterio
+		if(!Config.RANK_PVP_SYSTEM_ENABLED || (Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_COUNTER_FOR_ALTT_ENABLED))
 		{
-			// add pvp
 			setPvpKills(getPvpKills() + 1);
 		}
 		if (Config.PVPEXPSP_SYSTEM)
@@ -13308,7 +13298,6 @@ public final class L2PcInstance extends L2Playable
 			banReason = rset.getString("chatban_reason");
 			rset.close();
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{
@@ -13360,7 +13349,6 @@ public final class L2PcInstance extends L2Playable
 			statement.setString(3, getName());
 			statement.execute();
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{
@@ -14182,9 +14170,9 @@ public final class L2PcInstance extends L2Playable
 			
 			if (clan != null)
 			{
-				if (clan.getHasCastle() > 0)
+				if (clan.hasCastle() > 0)
 				{
-					Castle castle = CastleManager.getInstance().getCastleById(clan.getHasCastle());
+					Castle castle = CastleManager.getInstance().getCastleById(clan.hasCastle());
 					if ((castle != null) && (getObjectId() == clan.getLeaderId()))
 					{
 						Announcements.getInstance().announceToAll("Lord " + getName() + " ruler of " + castle.getName() + " castle is now online!");
@@ -14204,16 +14192,6 @@ public final class L2PcInstance extends L2Playable
 				AdminData.getInstance().addGm(this, false);
 			else
 				AdminData.getInstance().addGm(this, true);
-		}
-		
-		// Rank PvP System by Masterio:
-		if (Config.NICK_COLOR_ENABLED || Config.TITLE_COLOR_ENABLED)
-		{
-			PvpStats activeCharPvpStats = PvpTable.getInstance().getPvpStats(getObjectId());
-			if (Config.NICK_COLOR_ENABLED)
-				getAppearance().setNameColor(activeCharPvpStats.getRank().getNickColor());
-			if (Config.TITLE_COLOR_ENABLED)
-				getAppearance().setTitleColor(activeCharPvpStats.getRank().getTitleColor());
 		}
 		
 		// apply augmentation bonus for equipped items
@@ -14284,6 +14262,9 @@ public final class L2PcInstance extends L2Playable
 				}
 			}
 		}
+		
+		if(Config.RANK_PVP_SYSTEM_ENABLED)
+			RankPvpSystem.updateNickAndTitleColor(this, null);
 		
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 		{
@@ -15163,120 +15144,125 @@ public final class L2PcInstance extends L2Playable
 		}
 	}
 	
-		/**
-		 * Remove a QuestState from the table _quest containing all quests began by the L2PcInstance.
-		 * @param qs : The QuestState to be removed from _quest.
-		 */
-		public void delQuestState(QuestState qs)
+	/**
+	 * Remove a QuestState from the table _quest containing all quests began by the L2PcInstance.
+	 * 
+	 * @param qs
+	 *        : The QuestState to be removed from _quest.
+	 */
+	public void delQuestState(QuestState qs)
+	{
+		_quests.remove(qs);
+	}
+
+	/**
+	 * @param completed
+	 *        : If true, include completed quests to the list.
+	 * @return list of started and eventually completed quests of the player.
+	 */
+	public List<Quest> getAllQuests(boolean completed)
+	{
+		List<Quest> quests = new ArrayList<>();
+
+		for (QuestState qs : _quests.values())
 		{
-			_quests.remove(qs);
-		}
-		
-		/**
-		 * @param completed : If true, include completed quests to the list.
-		 * @return list of started and eventually completed quests of the player.
-		 */
-		public List<Quest> getAllQuests(boolean completed)
-		{
-			List<Quest> quests = new ArrayList<>();
-			
-			for (QuestState qs : _quests.values())
-			{
-				if (qs == null || completed && qs.isCreated() || !completed && !qs.isStarted())
-					continue;
-				
-				Quest quest = qs.getQuest();
-				if (quest == null || !quest.isRealQuest())
-					continue;
-				
-				quests.add(quest);
-			}
-			
-			return quests;
-		}
-		
-		/**
-		 * Add QuestState instance that is to be notified of L2PcInstance's death.
-		 * @param qs The QuestState that subscribe to this event
-		 */
-		public void addNotifyQuestOfDeath(QuestState qs)
-		{
-			if (qs == null)
-				return;
-			
-			if (!_notifyQuestOfDeathList.contains(qs))
-				_notifyQuestOfDeathList.add(qs);
-		}
-		
-		/**
-		 * Remove QuestState instance that is to be notified of L2PcInstance's death.
-		 * @param qs The QuestState that subscribe to this event
-		 */
-		public void removeNotifyQuestOfDeath(QuestState qs)
-		{
-			if (qs == null)
-				return;
-			
-			_notifyQuestOfDeathList.remove(qs);
-		}
-		
-		/**
-		 * @return A list of QuestStates which registered for notify of death of this L2PcInstance.
-		 */
-		public List<QuestState> getNotifyQuestOfDeath()
-		{
-			return _notifyQuestOfDeathList;
-		}
-		
-		/**
-		 * @return Returns the inBoat.
-		 */
-		public boolean isInBoat()
-		{
-			return _vehicle != null && _vehicle.isBoat();
-		}
-		
-		/**
-		 * @return
-		 */
-		public L2Vehicle getBoat()
-		{
-			return  _vehicle;
-		}
-		
-		public L2Vehicle getVehicle()
-		{
-			return _vehicle;
-		}
-		
-		public void setVehicle(L2Vehicle v)
-		{
-			if (v == null && _vehicle != null)
-				_vehicle.removePassenger(this);
-			
-			_vehicle = v;
-		}
-		
-		/**
-		 * @return
-		 */
-		public Point3D getInVehiclePosition()
-		{
-			return _inBoatPosition;
-		}
-		
-		public void setInVehiclePosition(Point3D pt)
-		{
-			_inBoatPosition = pt;
+			if (qs == null || completed && qs.isCreated() || !completed && !qs.isStarted())
+				continue;
+
+			Quest quest = qs.getQuest();
+			if (quest == null || !quest.isRealQuest())
+				continue;
+
+			quests.add(quest);
 		}
 
-		@Override
-		public final void stopAllEffectsExceptThoseThatLastThroughDeath()
-		{
-			super.stopAllEffectsExceptThoseThatLastThroughDeath();
-			updateAndBroadcastStatus(2);
-		}
-		
-		
+		return quests;
+	}
+
+	/**
+	 * Add QuestState instance that is to be notified of L2PcInstance's death.
+	 * 
+	 * @param qs
+	 *        The QuestState that subscribe to this event
+	 */
+	public void addNotifyQuestOfDeath(QuestState qs)
+	{
+		if (qs == null)
+			return;
+
+		if (!_notifyQuestOfDeathList.contains(qs))
+			_notifyQuestOfDeathList.add(qs);
+	}
+
+	/**
+	 * Remove QuestState instance that is to be notified of L2PcInstance's death.
+	 * 
+	 * @param qs
+	 *        The QuestState that subscribe to this event
+	 */
+	public void removeNotifyQuestOfDeath(QuestState qs)
+	{
+		if (qs == null)
+			return;
+
+		_notifyQuestOfDeathList.remove(qs);
+	}
+
+	/**
+	 * @return A list of QuestStates which registered for notify of death of this L2PcInstance.
+	 */
+	public List<QuestState> getNotifyQuestOfDeath()
+	{
+		return _notifyQuestOfDeathList;
+	}
+
+	/**
+	 * @return Returns the inBoat.
+	 */
+	public boolean isInBoat()
+	{
+		return _vehicle != null && _vehicle.isBoat();
+	}
+
+	/**
+	 * @return
+	 */
+	public L2Vehicle getBoat()
+	{
+		return _vehicle;
+	}
+
+	public L2Vehicle getVehicle()
+	{
+		return _vehicle;
+	}
+
+	public void setVehicle(L2Vehicle v)
+	{
+		if (v == null && _vehicle != null)
+			_vehicle.removePassenger(this);
+
+		_vehicle = v;
+	}
+
+	/**
+	 * @return
+	 */
+	public Point3D getInVehiclePosition()
+	{
+		return _inBoatPosition;
+	}
+
+	public void setInVehiclePosition(Point3D pt)
+	{
+		_inBoatPosition = pt;
+	}
+
+	@Override
+	public final void stopAllEffectsExceptThoseThatLastThroughDeath()
+	{
+		super.stopAllEffectsExceptThoseThatLastThroughDeath();
+		updateAndBroadcastStatus(2);
+	}
 
 }

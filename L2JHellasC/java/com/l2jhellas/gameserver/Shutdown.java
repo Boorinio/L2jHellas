@@ -293,8 +293,12 @@ public class Shutdown extends Thread
 			// Rank PvP System by Masterio:
 			if (Config.RANK_PVP_SYSTEM_ENABLED)
 			{
-				PvpTable.getInstance().updateDB();
-				System.out.println("Rank System Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+				int[] up = PvpTable.getInstance().updateDB();
+				
+				if(up[0] == 0)
+				{
+					_log.info("PvpTable: Data saved ["+up[1]+" inserts and "+up[2]+" updates] in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+				}
 			}
 			
 			// Save items on ground before closing

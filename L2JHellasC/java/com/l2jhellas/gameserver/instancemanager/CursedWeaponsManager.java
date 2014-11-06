@@ -295,16 +295,9 @@ public class CursedWeaponsManager
 					rset.close();
 					statement.close();
 				}
-				catch (SQLException sqlE)
+				catch (SQLException e)
 				{
-				}
-				// close the statement to avoid multiply prepared statement errors in following iterations.
-				try
-				{
-					con.close();
-				}
-				catch (Exception e)
-				{
+					_log.log(Level.WARNING, getClass().getName() + ": " + e);
 				}
 			}
 		}
@@ -434,7 +427,6 @@ public class CursedWeaponsManager
 			statement.executeUpdate();
 
 			statement.close();
-			con.close();
 		}
 		catch (SQLException e)
 		{

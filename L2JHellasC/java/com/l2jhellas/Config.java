@@ -27,6 +27,8 @@ import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -36,6 +38,7 @@ import java.util.logging.Logger;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 import Extensions.RankSystem.Rank;
+import Extensions.RankSystem.RankTable;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.shield.antiflood.FloodProtectorConfig;
@@ -578,90 +581,133 @@ public final class Config
 	 */
 	public static boolean RANK_PVP_SYSTEM_ENABLED;
 	public static int LEGAL_KILL_MIN_LVL;
-	public static boolean LEGAL_COUNTER_ALTT_ENABLED;
+	public static boolean PVP_COUNTER_FOR_ALTT_ENABLED;
+	public static boolean PVP_COUNTER_FOR_ALTT_LEGAL_KILLS_ONLY;
 	public static boolean LEGAL_KILL_FOR_PK_KILLER_ENABLED;
 	public static boolean LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED;
 	public static int PROTECTION_TIME_RESET;
 	public static int LEGAL_KILL_PROTECTION;
 	public static int DAILY_LEGAL_KILL_PROTECTION;
-	// PvP Reward:
+
+	public static boolean GM_IGNORE_ENABLED;
+
+	// PvP + RPC Reward:
+	public static boolean RPC_REWARD_ENABLED;
+	public static long RPC_REWARD_AMOUNT;
+	public static int RPC_REWARD_MIN_LVL;
+
 	public static boolean PVP_REWARD_ENABLED;
 	public static int PVP_REWARD_ID;
-	public static int PVP_REWARD_AMOUNT;
+	public static long PVP_REWARD_AMOUNT;
 	public static int PVP_REWARD_MIN_LVL;
-	public static boolean PVP_REWARD_FOR_PK_KILLER_ENABLED;
-	public static boolean PVP_REWARD_FOR_INNOCENT_KILL_ENABLED;
+
+	public static boolean REWARD_FOR_PK_KILLER_ENABLED;
+	public static boolean REWARD_FOR_INNOCENT_KILL_ENABLED;
+
+	public static boolean RANK_PVP_REWARD_ENABLED;
+	public static int RANK_PVP_REWARD_MIN_LVL;
+	public static boolean REWARD_LEGAL_KILL_ENABLED;
+	public static boolean RANK_LEVEL_REWARD_ENABLED;
+	public static boolean RANK_SKILL_REWARD_ENABLED;
+
 	// Ranks:
-	/** FastMap &lt;rankId, Rank&gt; - store all Ranks as Rank objects. */
-	public static FastMap<Integer, Rank> RANKS = new FastMap<Integer, Rank>();
 	public static boolean RANKS_ENABLED;
 	public static int RANK_POINTS_MIN_LVL;
 	public static boolean RANK_POINTS_CUT_ENABLED;
-	public static boolean RANK_REWARD_ENABLED;
+	public static boolean RANK_RPC_ENABLED;
+	public static boolean RANK_RPC_CUT_ENABLED;
+
 	public static boolean RANK_POINTS_DOWN_COUNT_ENABLED;
-	public static FastList<Integer> RANK_POINTS_DOWN_AMOUNTS = new FastList<Integer>();
+	public static List<Integer> RANK_POINTS_DOWN_AMOUNTS = new ArrayList<>();
+
 	public static boolean RANK_SHOUT_INFO_ON_KILL_ENABLED;
 	public static boolean RANK_SHOUT_BONUS_INFO_ON_KILL_ENABLED;
-	public static boolean RANK_REWARD_FOR_PK_KILLER_ENABLED;
-	public static boolean RANK_REWARD_FOR_INNOCENT_KILL_ENABLED;
-	public static boolean RANK_POINTS_REWARD_ENABLED;
+
+	public static boolean RPC_EXCHANGE_ENABLED;
+	public static boolean RPC_EXCHANGE_CONFIRM_BOX_ENABLED;
+
+	public static boolean PVP_EXP_DECREASE_ENABLED;
+	public static int PVP_EXP_DECREASE_METHOD;
+	public static int PVP_EXP_DECREASE_CONSTANT;
+	public static double PVP_EXP_DECREASE_FRACTION;
+	public static boolean PVP_EXP_DECREASE_ON_LEGAL_KILL_ENABLED;
+
 	// War Kills:
 	public static boolean WAR_KILLS_ENABLED;
 	public static double WAR_RANK_POINTS_RATIO;
+
 	// Combo Kill:
 	public static boolean COMBO_KILL_ENABLED;
 	public static boolean COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED;
 	public static boolean COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED;
-	public static FastMap<Integer, String> COMBO_KILL_LOCAL_AREA_MESSAGES = new FastMap<Integer, String>();
-	public static FastMap<Integer, String> COMBO_KILL_GLOBAL_AREA_MESSAGES = new FastMap<Integer, String>();
+
+	public static Map<Integer, String> COMBO_KILL_LOCAL_AREA_MESSAGES = new HashMap<>();
+	public static Map<Integer, String> COMBO_KILL_GLOBAL_AREA_MESSAGES = new HashMap<>();
+
 	public static boolean COMBO_KILL_ALT_MESSAGES_ENABLED;
 	public static String COMBO_KILL_ALT_MESSAGE;
 	public static int COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL;
+
 	public static boolean COMBO_KILL_DEFEAT_MESSAGE_ENABLED;
 	public static int COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL;
 	public static String COMBO_KILL_DEFEAT_MESSAGE;
+
 	public static int COMBO_KILL_RESETER;
 	public static boolean COMBO_KILL_RANK_POINTS_RATIO_ENABLED;
-	public static FastMap<Integer, Double> COMBO_KILL_RANK_POINTS_RATIO = new FastMap<Integer, Double>();
-	public static boolean COMBO_KILL_ON_EVENTS_ENABLED;
+	public static Map<Integer, Double> COMBO_KILL_RANK_POINTS_RATIO = new HashMap<>();
+
 	// Title & Nick Color:
 	public static boolean NICK_COLOR_ENABLED;
 	public static boolean TITLE_COLOR_ENABLED;
+
 	// Zones:
-	public static FastList<Integer> ALLOWED_ZONES_IDS = new FastList<Integer>();
-	public static FastList<Integer> RESTRICTED_ZONES_IDS = new FastList<Integer>();
-	public static FastList<Integer> DEATH_MANAGER_RESTRICTED_ZONES_IDS = new FastList<Integer>();
-	public static FastMap<Integer, Double> RANK_POINTS_BONUS_ZONES_IDS = new FastMap<Integer, Double>();
-	// pvpinfo command, death manager:
+	public static List<Integer> ALLOWED_ZONES_IDS = new ArrayList<>();
+	public static List<Integer> RESTRICTED_ZONES_IDS = new ArrayList<>();
+	public static List<Integer> DEATH_MANAGER_RESTRICTED_ZONES_IDS = new ArrayList<>();
+	public static Map<Integer, Double> RANK_POINTS_BONUS_ZONES_IDS = new HashMap<>();
+
+	// pvpinfo command, pvp status window, death manager:
 	public static boolean PVP_INFO_COMMAND_ENABLED;
 	public static boolean PVP_INFO_USER_COMMAND_ENABLED;
 	public static int PVP_INFO_USER_COMMAND_ID;
+
 	public static boolean PVP_INFO_COMMAND_ON_DEATH_ENABLED;
 	public static boolean DEATH_MANAGER_DETAILS_ENABLED;
 	public static boolean DEATH_MANAGER_SHOW_ITEMS_ENABLED;
+
 	public static boolean TOTAL_KILLS_IN_SHOUT_ENABLED;
 	public static boolean TOTAL_KILLS_IN_PVPINFO_ENABLED;
 	public static boolean TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED;
+	public static boolean SHOW_PLAYER_LEVEL_IN_PVPINFO_ENABLED;
+
 	// Anti-Farm:
 	public static boolean ANTI_FARM_CLAN_ALLY_ENABLED;
 	public static boolean ANTI_FARM_PARTY_ENABLED;
 	public static boolean ANTI_FARM_IP_ENABLED;
-	// Community Board:
-	public static boolean COMMUNITY_BOARD_TOP_LIST_ENABLED;
-	public static long COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT;
+
+	// Top List (Community Board):
+	public static boolean TOP_LIST_ENABLED;
+	public static long TOP_LIST_IGNORE_TIME_LIMIT;
+
 	// Database:
 	public static long PVP_TABLE_UPDATE_INTERVAL;
-	public static long TOP_TABLE_UPDATE_INTERVAL;
+	public static List<Long> TOP_TABLE_UPDATE_TIMES = new ArrayList<>();
+	public static boolean RPC_TABLE_FORCE_UPDATE_ENABLED;
+
 	public static boolean DATABASE_CLEANER_ENABLED;
 	public static long DATABASE_CLEANER_REPEAT_TIME;
-	// Image:
-	public static int IMAGE_PREFIX;
-	// Button style:
-	public static final String BUTTON_UP = "Button_DF_Calculator";
-	public static final String BUTTON_DOWN = "Button_DF_Calculator_Down";
-	public static final String BUTTON_W = "65";
-	public static final String BUTTON_H = "20";
 
+	// Image:
+	public static boolean SERVER_SIDE_IMAGES_ENABLED;
+	public static int IMAGE_PREFIX;
+
+	// Button style:
+	public static String BUTTON_UP;
+	public static String BUTTON_DOWN;
+	public static String BUTTON_W;
+	public static String BUTTON_H;
+	public static String BUTTON_BIG_W;
+	public static String BUTTON_BIG_H;
 	/**
 	 * VoteManager Config File
 	 */
@@ -1268,7 +1314,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + ALT_SETTINGS_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + ALT_SETTINGS_FILE + " settings!", e);
 			}
 			//auto loot
 			AUTO_LOOT = Boolean.parseBoolean(altSettings.getProperty("AutoLoot", "False"));
@@ -1443,7 +1489,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + FLOOD_PROTECTORS_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + FLOOD_PROTECTORS_FILE + " settings!", e);
 			}
 			loadFloodProtectorConfigs(FloodProtectors);
 			
@@ -1458,7 +1504,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + CLANHALL_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + CLANHALL_CONFIG_FILE + " settings!", e);
 			}
 			CH_TELE_FEE_RATIO = Long.valueOf(clanhallSettings.getProperty("ClanHallTeleportFunctionFeeRation", "86400000"));
 			CH_TELE1_FEE = Integer.valueOf(clanhallSettings.getProperty("ClanHallTeleportFunctionFeeLvl1", "86400000"));
@@ -1525,7 +1571,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + SERVER_VERSION_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + SERVER_VERSION_FILE + " settings!", e);
 			}
 			SERVER_VERSION = versionSettings.getProperty("version", "Unsupported Custom Version.");
 			SERVER_BUILD_DATE = versionSettings.getProperty("builddate", "Undefined Date.");
@@ -1541,7 +1587,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + ADMIN_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + ADMIN_CONFIG_FILE + " settings!", e);
 			}
 			GM_HERO_AURA = Boolean.parseBoolean(AdminSettings.getProperty("GMHeroAura", "False"));
 			GM_STARTUP_INVULNERABLE = Boolean.parseBoolean(AdminSettings.getProperty("GMStartupInvulnerable", "True"));
@@ -1563,7 +1609,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + ID_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + ID_CONFIG_FILE + " settings!", e);
 			}
 			MAP_TYPE = ObjectMapType.valueOf(idSettings.getProperty("L2Map", "WorldObjectMap"));
 			SET_TYPE = ObjectSetType.valueOf(idSettings.getProperty("L2Set", "WorldObjectSet"));
@@ -1581,7 +1627,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MOD_CHAMPIONS_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MOD_CHAMPIONS_CONFIG_FILE + " settings!", e);
 			}
 			CHAMPION_PASSIVE = Boolean.parseBoolean(ChampionSettings.getProperty("ChampionPassive", "False"));
 			CHAMPION_TITLE = ChampionSettings.getProperty("ChampionTitle", "Champion").trim();
@@ -1614,7 +1660,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + PVP_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + PVP_CONFIG_FILE + " settings!", e);
 			}
 			ALLOW_POTS_IN_PVP = Boolean.parseBoolean(PvPSettings.getProperty("AllowPotsInPvP", "True"));
 			ALLOW_SOE_IN_PVP = Boolean.parseBoolean(PvPSettings.getProperty("AllowSoEInPvP", "True"));
@@ -1689,7 +1735,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MOD_L2JHellas_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MOD_L2JHellas_CONFIG_FILE + " settings!", e);
 			}
 			BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JHellasSettings.getProperty("BankingEnabled", "False"));
 			BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JHellasSettings.getProperty("BankingGoldbarCount", "1"));
@@ -1792,6 +1838,505 @@ public final class Config
 			CLAN_LEADER_COLOR_CLAN_LEVEL = Integer.parseInt(L2JHellasSettings.getProperty("ClanLeaderColorAtClanLevel", "1"));
 			ENABLED_MESSAGE_SYSTEM = Boolean.parseBoolean(L2JHellasSettings.getProperty("EnableMessageSystem", "False"));
 
+			/**
+			 * Rank PvP System
+			 */
+			Properties RankSettings = new Properties();
+			final File Rank = new File(MOD_RANK_CONFIG_FILE);
+			try (InputStream is = new FileInputStream(Rank))
+			{
+				RankSettings.load(is);
+			}
+			catch (Exception e)
+			{
+				_log.log(Level.WARNING, "Error while loading " + MOD_L2JHellas_CONFIG_FILE + " settings!", e);
+			}
+			RANK_PVP_SYSTEM_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPvpSystemEnabled", "false"));
+			
+
+			PVP_COUNTER_FOR_ALTT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpCounterForAltTEnabled", "false"));
+			PVP_COUNTER_FOR_ALTT_LEGAL_KILLS_ONLY = Boolean.parseBoolean(RankSettings.getProperty("PvpCounterForAltTLegalKillsOnly", "false"));
+
+			DATABASE_CLEANER_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("DatabaseCleanerEnabled", "false"));
+			DATABASE_CLEANER_REPEAT_TIME = Integer.parseInt(RankSettings.getProperty("DatabaseCleanerRepeatTime", "0"));
+			if (DATABASE_CLEANER_REPEAT_TIME <= 0)
+			{
+				DATABASE_CLEANER_ENABLED = false;
+				_log.log(Level.WARNING, "[DatabaseCleanerRepeatTime]: invalid config property -> \"" + DATABASE_CLEANER_REPEAT_TIME + "\"");
+			}
+			else
+			{
+				DATABASE_CLEANER_REPEAT_TIME *= 86400000;
+			}
+
+			RPC_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RpcRewardEnabled", "false"));
+			RPC_REWARD_AMOUNT = Integer.parseInt(RankSettings.getProperty("RpcRewardAmmount", "1"));
+			RPC_REWARD_MIN_LVL = Integer.parseInt(RankSettings.getProperty("RpcRewardMinLvl", "76"));
+
+			PVP_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpRewardEnabled", "false"));
+			PVP_REWARD_ID = Integer.parseInt(RankSettings.getProperty("PvpRewardId", "57"));
+			PVP_REWARD_AMOUNT = Integer.parseInt(RankSettings.getProperty("PvpRewardAmount", "1"));
+			PVP_REWARD_MIN_LVL = Integer.parseInt(RankSettings.getProperty("PvpRewardMinLvl", "76"));
+
+			REWARD_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RewardForPkKillerEnabled", "true"));
+			RANK_PVP_REWARD_MIN_LVL = Integer.parseInt(RankSettings.getProperty("RankPvpRewardMinLvl", "76"));
+			REWARD_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RewardForInnocentKillEnabled", "false"));
+
+			RANK_PVP_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPvpRewardEnabled", "true"));
+			REWARD_LEGAL_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RewardLegalKillEnabled", "true"));
+			RANK_LEVEL_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankLevelRewardEnabled", "true"));
+			RANK_SKILL_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankSkillRewardEnabled", "true"));
+
+			RANKS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RanksEnabled", "false"));
+			RANK_POINTS_MIN_LVL = Integer.parseInt(RankSettings.getProperty("RankPointsMinLvl", "76"));
+			RANK_POINTS_CUT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPointsCutEnabled", "true"));
+
+			RANK_RPC_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankRpcEnabled", "false"));
+			RANK_RPC_CUT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankRpcCutEnabled", "true"));
+
+			// set rank's:
+			String id1[] = RankSettings.getProperty("RankNames", "").split(",");
+			String id2[] = RankSettings.getProperty("RankMinPoints", "").split(",");
+			String id3[] = RankSettings.getProperty("RankPointsForKill", "").split(",");
+			String id5[] = RankSettings.getProperty("RankRpcAmount", "").split(",");
+			String id6[] = RankSettings.getProperty("NickColors", "").split(",");
+			String id7[] = RankSettings.getProperty("TitleColors", "").split(",");
+
+			if (RANK_PVP_SYSTEM_ENABLED || RANK_RPC_ENABLED || RANKS_ENABLED)
+			{
+				if (id1.length != id2.length || id1.length != id3.length || id1.length != id5.length || id1.length != id6.length || id1.length != id7.length)
+				{
+					_log.log(Level.INFO, "[RankPvpSystemConfig]: Arrays sizes should be the same!");
+
+					_log.log(Level.INFO, "RANK_NAMES         		 :" + id1.length);
+					_log.log(Level.INFO, "RANK_MIN_POINTS    		 :" + id2.length);
+					_log.log(Level.INFO, "RANK_POINTS_FOR_KILL		 :" + id3.length);
+					_log.log(Level.INFO, "RANK_RPC_AMOUNT		 	 :" + id5.length);
+					_log.log(Level.INFO, "RANK_NICK_COLORS    		 :" + id6.length);
+					_log.log(Level.INFO, "RANK_TITLE_COLORS  		 :" + id7.length);
+				}
+				else if (id1.length == 0 || id2.length == 0 || id3.length == 0 || id5.length == 0 || id6.length == 0 || id7.length == 0)
+				{
+					_log.log(Level.INFO, "[RankPvpSystemConfig]: Arrays sizes must be greater than 0!");
+
+					_log.log(Level.INFO, "RANK_NAMES         		 :" + id1.length);
+					_log.log(Level.INFO, "RANK_MIN_POINTS    		 :" + id2.length);
+					_log.log(Level.INFO, "RANK_POINTS_FOR_KILL		 :" + id3.length);
+					_log.log(Level.INFO, "RANK_RPC_AMOUNT		 	 :" + id5.length);
+					_log.log(Level.INFO, "RANK_NICK_COLORS    		 :" + id6.length);
+					_log.log(Level.INFO, "RANK_TITLE_COLORS  		 :" + id7.length);
+				}
+				else if (id2.length > 0 && Integer.parseInt(id2[id2.length - 1]) != 0)
+				{
+					_log.log(Level.INFO, "[RankMinPoints]: Last value must equal 0! Example: ...,6,5,4,3,2,1,0");
+				}
+				else
+				{
+					for (int i = 1; i <= id1.length; i++)
+					{
+						Rank rank = new Rank();
+
+						rank.setId(i);
+						rank.setName(id1[id1.length - i]);
+						rank.setMinPoints(Long.parseLong(id2[id1.length - i]));
+						rank.setPointsForKill(Integer.parseInt(id3[id1.length - i]));
+
+						rank.setRpc(Integer.parseInt(id5[id1.length - i]));
+						rank.setNickColor(Integer.decode("0x" + id6[id1.length - i]));
+						rank.setTitleColor(Integer.decode("0x" + id7[id1.length - i]));
+
+						RankTable.getInstance().getRankList().put(i, rank);
+					}
+				}
+			}
+
+			NICK_COLOR_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("NickColorEnabled", "false"));
+			TITLE_COLOR_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TitleColorEnabled", "false"));
+
+			RANK_POINTS_DOWN_COUNT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPointsDownCountEnabled", "false"));
+			RANK_POINTS_DOWN_AMOUNTS = new ArrayList<>();
+			for (String id4 : RankSettings.getProperty("RankPointsDownAmounts", "").split(","))
+			{
+				RANK_POINTS_DOWN_AMOUNTS.add(Integer.parseInt(id4));
+			}
+
+			RANK_SHOUT_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankShoutInfoOnKillEnabled", "false"));
+			RANK_SHOUT_BONUS_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankShoutBonusInfoOnKillEnabled", "false"));
+
+			WAR_KILLS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("WarKillsEnabled", "false"));
+			if (WAR_KILLS_ENABLED)
+			{
+				WAR_RANK_POINTS_RATIO = Double.parseDouble(RankSettings.getProperty("WarRankPointsRatio", "1.0"));
+			}
+			else
+			{
+				WAR_RANK_POINTS_RATIO = 1.0;
+			}
+
+			COMBO_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillEnabled", "false"));
+			COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillProtectionWithLegalKillEnabled", "false"));
+			COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillProtectionNoRepeatEnabled", "false"));
+
+			PVP_EXP_DECREASE_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpExpDecreaseEnabled", "false"));
+			PVP_EXP_DECREASE_METHOD = Integer.parseInt(RankSettings.getProperty("PvpExpDecreaseMethod", "1"));
+			if (PVP_EXP_DECREASE_METHOD <= 0 || PVP_EXP_DECREASE_METHOD > 3)
+				PVP_EXP_DECREASE_METHOD = 1;
+
+			PVP_EXP_DECREASE_CONSTANT = Integer.parseInt(RankSettings.getProperty("PvpExpDecreaseConstant", "1"));
+			if (PVP_EXP_DECREASE_CONSTANT <= 0)
+				PVP_EXP_DECREASE_CONSTANT = 1;
+
+			PVP_EXP_DECREASE_FRACTION = Double.parseDouble(RankSettings.getProperty("PvpExpDecreaseFraction", "1.0"));
+			if (PVP_EXP_DECREASE_FRACTION <= 0.0 || PVP_EXP_DECREASE_FRACTION > 1.0)
+				PVP_EXP_DECREASE_FRACTION = 1.0;
+
+			PVP_EXP_DECREASE_ON_LEGAL_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpExpDecreaseOnLegalKillEnabled", "true"));
+
+			String propertyValue = RankSettings.getProperty("ComboKillLocalAreaMessages");
+			if ((propertyValue != null) && (propertyValue.length() > 0))
+			{
+				String[] propertySplit = propertyValue.split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String value : propertySplit)
+					{
+						String[] valueSplit = value.split(",");
+						if (valueSplit.length != 2)
+						{
+							_log.log(Level.WARNING, StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", value, "\""));
+						}
+						else
+						{
+							try
+							{
+								COMBO_KILL_LOCAL_AREA_MESSAGES.put(Integer.parseInt(valueSplit[0]), valueSplit[1]);
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!value.isEmpty())
+								{
+									_log.log(Level.WARNING, StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			propertyValue = RankSettings.getProperty("ComboKillGlobalAreaMessages", "");
+			if ((propertyValue != null) && (propertyValue.length() > 0))
+			{
+				String[] propertySplit = RankSettings.getProperty("ComboKillGlobalAreaMessages").split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String value : propertySplit)
+					{
+						String[] valueSplit = value.split(",");
+						if (valueSplit.length != 2)
+						{
+							_log.log(Level.WARNING, StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", value, "\""));
+						}
+						else
+						{
+							try
+							{
+								COMBO_KILL_GLOBAL_AREA_MESSAGES.put(Integer.parseInt(valueSplit[0]), valueSplit[1]);
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!value.isEmpty())
+								{
+									_log.log(Level.WARNING, StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			COMBO_KILL_ALT_MESSAGES_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillAltMessagesEnabled", "false"));
+			COMBO_KILL_ALT_MESSAGE = RankSettings.getProperty("ComboKillAltMessage", "%killer% have %combo_level% Combo kills!");
+			COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL = Integer.parseInt(RankSettings.getProperty("ComboKillAltGlobalMessageMinLvl", "0"));
+
+			COMBO_KILL_DEFEAT_MESSAGE_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillDefeatMessageEnabled", "true"));
+			COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL = Integer.parseInt(RankSettings.getProperty("ComboKillDefeatMessageMinComboLvl", "0"));
+			COMBO_KILL_DEFEAT_MESSAGE = RankSettings.getProperty("ComboKillDefeatMessage", "%killer% is defeated with %combo_level% combo lvl!!!");
+
+			COMBO_KILL_RESETER = Integer.parseInt(RankSettings.getProperty("ComboKillReseter", "0"));
+			COMBO_KILL_RANK_POINTS_RATIO_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillRankPointsRatioEnabled", "false"));
+
+			propertyValue = RankSettings.getProperty("ComboKillRankPointsRatio", "");
+			if ((propertyValue != null) && (propertyValue.length() > 0))
+			{
+				String[] propertySplit = RankSettings.getProperty("ComboKillRankPointsRatio").split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String value : propertySplit)
+					{
+						String[] valueSplit = value.split(",");
+						if (valueSplit.length != 2)
+						{
+							_log.log(Level.WARNING, StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", value, "\""));
+						}
+						else
+						{
+							try
+							{
+								COMBO_KILL_RANK_POINTS_RATIO.put(Integer.parseInt(valueSplit[0]), Double.parseDouble(valueSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!value.isEmpty())
+								{
+									_log.log(Level.WARNING, StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// additional security for combo kill system:
+			if ((COMBO_KILL_LOCAL_AREA_MESSAGES.size() == 0) && (COMBO_KILL_GLOBAL_AREA_MESSAGES.size() == 0))
+			{
+				COMBO_KILL_ENABLED = false;
+			}
+
+			int i = 0;
+			String tempStr = RankSettings.getProperty("AllowedZonesIds");
+			if ((tempStr != null) && (tempStr.length() > 0))
+			{
+				for (String rZoneId : tempStr.split(","))
+				{
+					try
+					{
+						ALLOWED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
+					}
+					catch (Exception e)
+					{
+						_log.log(Level.WARNING, e.getMessage());
+					}
+					i++;
+				}
+			}
+
+			i = 0;
+			tempStr = RankSettings.getProperty("RestrictedZonesIds");
+			if ((tempStr != null) && (tempStr.length() > 0))
+			{
+				for (String rZoneId : tempStr.split(","))
+				{
+					try
+					{
+						RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
+					}
+					catch (Exception e)
+					{
+						_log.log(Level.WARNING, e.getMessage());
+					}
+					i++;
+				}
+			}
+			LEGAL_KILL_MIN_LVL = Integer.parseInt(RankSettings.getProperty("LegalKillMinLvl", "1"));
+			LEGAL_KILL_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("LegalKillForPkKillerEnabled", "true"));
+			LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("LegalKillForInnocentKillEnabled", "false"));
+			PROTECTION_TIME_RESET = Integer.parseInt(RankSettings.getProperty("ProtectionTimeReset", "0"));
+			if (PROTECTION_TIME_RESET > 0)
+				PROTECTION_TIME_RESET = PROTECTION_TIME_RESET * 60000;
+			else if (PROTECTION_TIME_RESET < 0)
+				PROTECTION_TIME_RESET = 0;
+
+			LEGAL_KILL_PROTECTION = Integer.parseInt(RankSettings.getProperty("LegalKillProtection", "0"));
+			DAILY_LEGAL_KILL_PROTECTION = Integer.parseInt(RankSettings.getProperty("DailyLegalKillProtection", "0"));
+
+			GM_IGNORE_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("GMIgnoreEnabled", "true"));
+
+			PVP_INFO_COMMAND_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpInfoCommandEnabled", "true"));
+			PVP_INFO_USER_COMMAND_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpInfoUserCommandEnabled", "false"));
+			PVP_INFO_USER_COMMAND_ID = Integer.parseInt(RankSettings.getProperty("PvpInfoUserCommandId", "114"));
+
+			PVP_INFO_COMMAND_ON_DEATH_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpInfoCommandShowOnDeathEnabled", "true"));
+			DEATH_MANAGER_DETAILS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("DeathManagerDetailsEnabled", "true"));
+			DEATH_MANAGER_SHOW_ITEMS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("DeathManagerShowItemsEnabled", "true"));
+
+			i = 0;
+			tempStr = RankSettings.getProperty("DeathManagerRestrictedZonesIds");
+			if ((tempStr != null) && (tempStr.length() > 0))
+			{
+				for (String rZoneId : tempStr.split(","))
+				{
+					try
+					{
+						DEATH_MANAGER_RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
+					}
+					catch (Exception e)
+					{
+						_log.log(Level.WARNING, e.getMessage());
+					}
+					i++;
+				}
+			}
+
+			propertyValue = RankSettings.getProperty("RankPointsBonusZonesIds", "");
+			if ((propertyValue != null) && (propertyValue.length() > 0))
+			{
+				String[] propertySplit = RankSettings.getProperty("RankPointsBonusZonesIds", "").split(";");
+				if (propertySplit.length > 0)
+				{
+					for (String value : propertySplit)
+					{
+						String[] valueSplit = value.split(",");
+						if (valueSplit.length != 2)
+						{
+							_log.log(Level.WARNING, StringUtil.concat("[RankPointsBonusZonesIds]: invalid config property -> \"", value, "\""));
+						}
+						else
+						{
+							try
+							{
+								RANK_POINTS_BONUS_ZONES_IDS.put(Integer.parseInt(valueSplit[0]), Double.parseDouble(valueSplit[1]));
+							}
+							catch (NumberFormatException nfe)
+							{
+								if (!value.isEmpty())
+								{
+									_log.log(Level.WARNING, StringUtil.concat("[RankPointsBonusZonesIds]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			TOTAL_KILLS_IN_SHOUT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TotalKillsInShoutEnabled", "true"));
+			TOTAL_KILLS_IN_PVPINFO_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TotalKillsInPvpInfoEnabled", "true"));
+			TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TotalKillsOnMeInPvpInfoEnabled", "true"));
+			SHOW_PLAYER_LEVEL_IN_PVPINFO_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ShowPlayerLevelInPvpInfoEnabled", "true"));
+
+			RPC_EXCHANGE_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RpcExchangeEnabled", "true"));
+			RPC_EXCHANGE_CONFIRM_BOX_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RpcExchangeConfirmBoxEnabled", "true"));
+
+			ANTI_FARM_CLAN_ALLY_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("AntiFarmClanAllyEnabled", "true"));
+			ANTI_FARM_PARTY_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("AntiFarmPartyEnabled", "true"));
+			ANTI_FARM_IP_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("AntiFarmIpEnabled", "true"));
+
+			PVP_TABLE_UPDATE_INTERVAL = (Integer.parseInt(RankSettings.getProperty("PvpTableUpdateInterval", "1")) * 60000);
+			if (PVP_TABLE_UPDATE_INTERVAL < 1)
+			{
+				_log.log(Level.WARNING, StringUtil.concat("[PvpTableUpdateInterval]: invalid config property -> \"", Long.toString(PVP_TABLE_UPDATE_INTERVAL), "\""));
+				PVP_TABLE_UPDATE_INTERVAL = 60000;
+			}
+			RPC_TABLE_FORCE_UPDATE_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RpcTableForceUpdate", "true"));
+
+			// top table update times:
+			propertyValue = RankSettings.getProperty("TopTableUpdateTimes", "3:00");
+			List<Long> temp_time_list = new ArrayList<>();
+			if ((propertyValue != null) && (propertyValue.length() > 0))
+			{
+				String[] propertySplit = RankSettings.getProperty("TopTableUpdateTimes", "").split(",");
+				if (propertySplit.length > 0)
+				{
+					for (String value : propertySplit)
+					{
+						String[] hm = value.split(":");
+						if (hm.length != 2)	// hm table length
+						{
+							_log.log(Level.WARNING, StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\""));
+						}
+						else
+						{
+							try
+							{
+								// prepare h & m:
+								String h_s = hm[0];
+								String m_s = hm[1];
+
+								if (m_s.length() != 2)
+								{
+									_log.log(Level.WARNING, StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\" minutes format incorrect [hh:mm]"));
+									break;
+								}
+
+								// check times like: [0]3:15, 3:[0]5.
+								if (h_s.startsWith("0") && h_s.length() == 2)
+								{
+									h_s = h_s.substring(1);
+								}
+								if (m_s.startsWith("0") && m_s.length() == 2)
+								{
+									m_s = m_s.substring(1);
+								}
+								if (h_s.equals("0"))
+								{
+									h_s = "24";
+								}
+
+								// calculate all times for times in ms from time 0:00.
+								long h = Long.parseLong(h_s);
+								long m = Long.parseLong(m_s);
+
+								if (h < 0 || m < 0 || h > 24 || m > 59)
+								{
+									_log.log(Level.WARNING, StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\" minutes format incorrect [hh:mm]"));
+									break;
+								}
+
+								long mili = (h * 60 + m) * 60000 - (3600000);	// - 1h
+
+								if (mili >= 0 && !temp_time_list.contains(mili))
+									temp_time_list.add(mili);
+							}
+							catch (NumberFormatException nfe)
+							{
+							}
+						}
+					}
+				}
+			}
+
+			class LongComparator implements Comparator<Long>
+			{
+				@Override
+				public int compare(Long v1, Long v2)
+				{
+					if (v1 > v2)
+					{
+						return 1;
+					}
+					else if (v1 == v2)
+					{
+						return 0;
+					}
+					else
+					{
+						return -1;
+					}
+				}
+			}
+
+			Comparator<Long> comp = new LongComparator();
+			Long[] aol = new Long[temp_time_list.size()];
+			Arrays.sort(temp_time_list.toArray(aol), comp);
+			TOP_TABLE_UPDATE_TIMES = Arrays.asList(aol);
+
+			TOP_LIST_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TopListEnabled", "true"));
+			TOP_LIST_IGNORE_TIME_LIMIT = Integer.parseInt(RankSettings.getProperty("TopListIgnoreTimeLimit", "0"));
+			if (TOP_LIST_IGNORE_TIME_LIMIT > 0)
+			{
+				TOP_LIST_IGNORE_TIME_LIMIT *= 86400000; // in milliseconds
+			}
+
+			SERVER_SIDE_IMAGES_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ServerSideImagesEnabled", "true"));
+			IMAGE_PREFIX = Integer.parseInt(RankSettings.getProperty("ImagePrefix", "1"));
+
+			// Buttons style:
+			BUTTON_UP = RankSettings.getProperty("ButtonFore", "L2UI_ch3.BigButton3_over");
+			BUTTON_DOWN = RankSettings.getProperty("ButtonBack", "L2UI_ch3.BigButton3");
+			BUTTON_W = RankSettings.getProperty("ButtonWidth", "134");
+			BUTTON_H = RankSettings.getProperty("ButtonHeight", "21");
+			BUTTON_BIG_W = RankSettings.getProperty("ButtonBigWidth", "180");
+			BUTTON_BIG_H = RankSettings.getProperty("ButtonBigHeight", "24");
+			
 			if (USE_SAY_FILTER)
 			{
 				try
@@ -1829,13 +2374,13 @@ public final class Config
 				CLAN_SKILLS = new FastMap<Integer, Integer>(AioSkillsSplit.length);
 				String arr[] = AioSkillsSplit;
 				int len = arr.length;
-				for (int i = 0; i < len; i++)
+				for (int ii = 0; ii < len; ii++)
 				{
-					String skill = arr[i];
+					String skill = arr[ii];
 					String skillSplit[] = skill.split(",");
 					if (skillSplit.length != 2)
 					{
-						System.out.println((new StringBuilder()).append("[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills \"").append(skill).append("\"").toString());
+						_log.log(Level.WARNING, "[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills " + skill);
 						continue;
 					}
 					try
@@ -1848,320 +2393,12 @@ public final class Config
 					}
 					if (!skill.equals(""))
 					{
-						System.out.println((new StringBuilder()).append("[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills \"").append(skillSplit[0]).append("\"").append(skillSplit[1]).toString());
+						_log.log(Level.WARNING, "[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills " + skillSplit[0] + " " + skillSplit[1]);
 					}
 				}
 			}
 			CLAN_LEVEL = Byte.parseByte(L2JHellasSettings.getProperty("ClanSetLevel", "8"));
 			REPUTATION_QUANTITY = Integer.parseInt(L2JHellasSettings.getProperty("ReputationScore", "10000"));
-
-			/**
-			 * Rank PvP System
-			 */
-			Properties RankSettings = new Properties();
-			final File rankset = new File(MOD_RANK_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(rankset))
-			{
-				RankSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while " + MOD_RANK_CONFIG_FILE + " settings!", e);
-			}
-			RANK_PVP_SYSTEM_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPvpSystemEnabled", "false"));
-			LEGAL_COUNTER_ALTT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("LegalCounterAltTEnabled", "false"));
-			PVP_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpRewardEnabled", "false"));
-
-			DATABASE_CLEANER_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("DatabaseCleanerEnabled", "false"));
-			DATABASE_CLEANER_REPEAT_TIME = Integer.parseInt(RankSettings.getProperty("DatabaseCleanerRepeatTime", "0"));
-			if (DATABASE_CLEANER_REPEAT_TIME <= 0)
-				DATABASE_CLEANER_ENABLED = false;
-			else
-				DATABASE_CLEANER_REPEAT_TIME *= 86400000;
-
-			PVP_REWARD_ID = Integer.parseInt(RankSettings.getProperty("PvpRewardId", "6392"));
-			PVP_REWARD_AMOUNT = Integer.parseInt(RankSettings.getProperty("PvpRewardAmmount", "1"));
-			PVP_REWARD_MIN_LVL = Integer.parseInt(RankSettings.getProperty("PvpRewardMinLvl", "76"));
-			PVP_REWARD_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpRewardForPkKillerEnabled", "true"));
-			PVP_REWARD_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpRewardForInnocentKillEnabled", "false"));
-			RANKS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RanksEnabled", "false"));
-			RANK_POINTS_MIN_LVL = Integer.parseInt(RankSettings.getProperty("RankPointsMinLvl", "76"));
-			RANK_POINTS_CUT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPointsCutEnabled", "true"));
-
-			RANK_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankRewardEnabled", "false"));
-
-			// set rank's:
-			String id1[] = RankSettings.getProperty("RankNames", "").split(",");
-			String id2[] = RankSettings.getProperty("RankMinPoints", "").split(",");
-			String id3[] = RankSettings.getProperty("RankPointsForKill", "").split(",");
-			String id4[] = RankSettings.getProperty("RankRewardIds", "").split(",");
-			String id5[] = RankSettings.getProperty("RankRewardAmounts", "").split(",");
-			String id6[] = RankSettings.getProperty("NickColors", "").split(",");
-			String id7[] = RankSettings.getProperty("TitleColors", "").split(",");
-
-			if (RANK_PVP_SYSTEM_ENABLED || RANK_REWARD_ENABLED || RANKS_ENABLED)
-				if ((id1.length != id2.length) || (id1.length != id3.length) || (id1.length != id4.length) || (id1.length != id5.length) || (id1.length != id6.length) || (id1.length != id7.length))
-				{
-					_log.info("ERROR: Rank PvP System Config: Arrays sizes should be the same!");
-
-					_log.info("RANK_NAMES          :" + id1.length);
-					_log.info("RANK_MIN_POINTS     :" + id2.length);
-					_log.info("RANK_POINTS_FOR_KILL:" + id3.length);
-					_log.info("RANK_REWARD_IDS     :" + id4.length);
-					_log.info("RANK_REWARD_AMOUNTS :" + id5.length);
-					_log.info("RANK_NICK_COLORS    :" + id6.length);
-					_log.info("RANK_TITLE_COLORS   :" + id7.length);
-
-				}
-				else
-					for (int i = 0; i < id1.length; i++)
-					{
-						Rank rank = new Rank();
-
-						rank.setId(id1.length - i);
-						rank.setName(id1[i]);
-						rank.setMinPoints(Long.parseLong(id2[i]));
-						rank.setPointsForKill(Integer.parseInt(id3[i]));
-						rank.setRewardId(Integer.parseInt(id4[i]));
-						rank.setRewardAmount(Integer.parseInt(id5[i]));
-						rank.setNickColor(Integer.decode("0x" + id6[i]));
-						rank.setTitleColor(Integer.decode("0x" + id7[i]));
-
-						RANKS.put(id1.length - i, rank);
-					}
-
-			NICK_COLOR_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("NickColorEnabled", "false"));
-			TITLE_COLOR_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TitleColorEnabled", "false"));
-
-			RANK_POINTS_DOWN_COUNT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPointsDownCountEnabled", "false"));
-			RANK_POINTS_DOWN_AMOUNTS = new FastList<Integer>();
-			for (String rankid : RankSettings.getProperty("RankPointsDownAmounts", "").split(","))
-				RANK_POINTS_DOWN_AMOUNTS.add(Integer.parseInt(rankid));
-
-			RANK_SHOUT_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankShoutInfoOnKillEnabled", "false"));
-			RANK_SHOUT_BONUS_INFO_ON_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankShoutBonusInfoOnKillEnabled", "false"));
-			RANK_REWARD_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankRewardForPkKillerEnabled", "false"));
-			RANK_REWARD_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankRewardForInnocentKillEnabled", "false"));
-			WAR_KILLS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("WarKillsEnabled", "false"));
-			if (WAR_KILLS_ENABLED)
-				WAR_RANK_POINTS_RATIO = Double.parseDouble(RankSettings.getProperty("WarRankPointsRatio", "1.0"));
-			else
-				WAR_RANK_POINTS_RATIO = 1.0;
-
-			COMBO_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillEnabled", "false"));
-			COMBO_KILL_PROTECTION_WITH_LEGAL_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillProtectionWithLegalKillEnabled", "false"));
-			COMBO_KILL_PROTECTION_NO_REPEAT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillProtectionNoRepeatEnabled", "false"));
-
-			String propertyValue = RankSettings.getProperty("ComboKillLocalAreaMessages");
-			if ((propertyValue != null) && (propertyValue.length() > 0))
-			{
-
-				String[] propertySplit = propertyValue.split(";");
-				if (propertySplit.length > 0)
-					for (String skill : propertySplit)
-					{
-
-						String[] skillSplit = skill.split(",");
-						if (skillSplit.length != 2)
-						{
-							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
-						}
-						else
-							try
-							{
-								COMBO_KILL_LOCAL_AREA_MESSAGES.put(Integer.parseInt(skillSplit[0]), skillSplit[1]);
-							}
-							catch (NumberFormatException nfe)
-							{
-								if (!skill.isEmpty())
-									_log.warning(StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-							}
-					}
-			}
-
-			propertyValue = RankSettings.getProperty("ComboKillGlobalAreaMessages", "");
-			if ((propertyValue != null) && (propertyValue.length() > 0))
-			{
-
-				String[] propertySplit = RankSettings.getProperty("ComboKillGlobalAreaMessages").split(";");
-				if (propertySplit.length > 0)
-					for (String skill : propertySplit)
-					{
-
-						String[] skillSplit = skill.split(",");
-						if (skillSplit.length != 2)
-						{
-							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
-						}
-						else
-							try
-							{
-								COMBO_KILL_GLOBAL_AREA_MESSAGES.put(Integer.parseInt(skillSplit[0]), skillSplit[1]);
-							}
-							catch (NumberFormatException nfe)
-							{
-								if (!skill.isEmpty())
-									_log.warning(StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-							}
-					}
-			}
-
-			COMBO_KILL_ALT_MESSAGES_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillAltMessagesEnabled", "false"));
-			COMBO_KILL_ALT_MESSAGE = RankSettings.getProperty("ComboKillAltMessage", "%killer% have %combo_level% Combo kills!");
-			COMBO_KILL_ALT_GLOBAL_MESSAGE_LVL = Integer.parseInt(RankSettings.getProperty("ComboKillAltGlobalMessageMinLvl", "0"));
-
-			COMBO_KILL_DEFEAT_MESSAGE_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillDefeatMessageEnabled", "true"));
-			COMBO_KILL_DEFEAT_MESSAGE_MIN_LVL = Integer.parseInt(RankSettings.getProperty("ComboKillDefeatMessageMinComboLvl", "0"));
-			COMBO_KILL_DEFEAT_MESSAGE = RankSettings.getProperty("ComboKillDefeatMessage", "%killer% is defeated with %combo_level% combo lvl!!!");
-
-			COMBO_KILL_RESETER = Integer.parseInt(RankSettings.getProperty("ComboKillReseter", "0"));
-			COMBO_KILL_RANK_POINTS_RATIO_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillRankPointsRatioEnabled", "false"));
-
-			propertyValue = RankSettings.getProperty("ComboKillRankPointsRatio", "");
-			if ((propertyValue != null) && (propertyValue.length() > 0))
-			{
-
-				String[] propertySplit = RankSettings.getProperty("ComboKillRankPointsRatio").split(";");
-				if (propertySplit.length > 0)
-					for (String skill : propertySplit)
-					{
-
-						String[] skillSplit = skill.split(",");
-						if (skillSplit.length != 2)
-						{
-							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
-						}
-						else
-							try
-							{
-								COMBO_KILL_RANK_POINTS_RATIO.put(Integer.parseInt(skillSplit[0]), Double.parseDouble(skillSplit[1]));
-							}
-							catch (NumberFormatException nfe)
-							{
-								if (!skill.isEmpty())
-									_log.warning(StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-							}
-					}
-			}
-
-			COMBO_KILL_ON_EVENTS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("ComboKillOnEventsEnabled", "false"));
-
-			// additional security for combo kill system:
-			if ((COMBO_KILL_LOCAL_AREA_MESSAGES.size() == 0) && (COMBO_KILL_GLOBAL_AREA_MESSAGES.size() == 0))
-				COMBO_KILL_ENABLED = false;
-
-			int i = 0;
-			String tempStr = RankSettings.getProperty("AllowedZonesIds");
-			if ((tempStr != null) && (tempStr.length() > 0))
-				for (String rZoneId : tempStr.split(","))
-				{
-					try
-					{
-						ALLOWED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-					i++;
-				}
-
-			i = 0;
-			tempStr = RankSettings.getProperty("RestrictedZonesIds");
-			if ((tempStr != null) && (tempStr.length() > 0))
-				for (String rZoneId : tempStr.split(","))
-				{
-					try
-					{
-						RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-					i++;
-				}
-			LEGAL_KILL_MIN_LVL = Integer.parseInt(RankSettings.getProperty("LegalKillMinLvl", "1"));
-			LEGAL_KILL_FOR_PK_KILLER_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("LegalKillForPkKillerEnabled", "true"));
-			LEGAL_KILL_FOR_INNOCENT_KILL_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("LegalKillForInnocentKillerEnabled", "false"));
-			PROTECTION_TIME_RESET = Integer.parseInt(RankSettings.getProperty("ProtectionTimeReset", "0"));
-
-			LEGAL_KILL_PROTECTION = Integer.parseInt(RankSettings.getProperty("LegalKillProtection", "0"));
-			DAILY_LEGAL_KILL_PROTECTION = Integer.parseInt(RankSettings.getProperty("DailyLegalKillProtection", "0"));
-
-			PVP_INFO_COMMAND_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpInfoCommandEnabled", "true"));
-			PVP_INFO_USER_COMMAND_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpInfoUserCommandEnabled", "false"));
-			PVP_INFO_USER_COMMAND_ID = Integer.parseInt(RankSettings.getProperty("PvpInfoUserCommandId", "114"));
-
-			PVP_INFO_COMMAND_ON_DEATH_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("PvpInfoCommandShowOnDeathEnabled", "true"));
-			DEATH_MANAGER_DETAILS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("DeathManagerDetailsEnabled", "true"));
-			DEATH_MANAGER_SHOW_ITEMS_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("DeathManagerShowItemsEnabled", "true"));
-
-			i = 0;
-			tempStr = RankSettings.getProperty("DeathManagerRestrictedZonesIds");
-			if ((tempStr != null) && (tempStr.length() > 0))
-				for (String rZoneId : tempStr.split(","))
-				{
-					try
-					{
-						DEATH_MANAGER_RESTRICTED_ZONES_IDS.add(i, Integer.parseInt(rZoneId));
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-					i++;
-				}
-
-			propertyValue = RankSettings.getProperty("RankPointsBonusZonesIds", "");
-			if ((propertyValue != null) && (propertyValue.length() > 0))
-			{
-				String[] propertySplit = RankSettings.getProperty("RankPointsBonusZonesIds", "").split(";");
-				if (propertySplit.length > 0)
-					for (String skill : propertySplit)
-					{
-						String[] skillSplit = skill.split(",");
-						if (skillSplit.length != 2)
-						{
-							// _log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> RankPvpRankPointsBonusArea \"", skill, "\""));
-						}
-						else
-							try
-							{
-								RANK_POINTS_BONUS_ZONES_IDS.put(Integer.parseInt(skillSplit[0]), Double.parseDouble(skillSplit[1]));
-							}
-							catch (NumberFormatException nfe)
-							{
-								if (!skill.isEmpty())
-									_log.warning(StringUtil.concat("[RankPvpRankPointsBonusArea]: invalid config property -> \"", skillSplit[0], "\"", skillSplit[1]));
-							}
-					}
-			}
-
-			TOTAL_KILLS_IN_SHOUT_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TotalKillsInShoutEnabled", "true"));
-			TOTAL_KILLS_IN_PVPINFO_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TotalKillsInPvpInfoEnabled", "true"));
-			TOTAL_KILLS_ON_ME_IN_PVPINFO_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("TotalKillsOnMeInPvpInfoEnabled", "true"));
-
-			RANK_POINTS_REWARD_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPointsRewardEnabled", "true"));
-
-			ANTI_FARM_CLAN_ALLY_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("AntiFarmClanAllyEnabled", "true"));
-			ANTI_FARM_PARTY_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("AntiFarmPartyEnabled", "true"));
-			ANTI_FARM_IP_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("AntiFarmIpEnabled", "true"));
-
-			PVP_TABLE_UPDATE_INTERVAL = (Integer.parseInt(RankSettings.getProperty("PvpTableUpdateInterval", "1")) * 60000);
-			if (PVP_TABLE_UPDATE_INTERVAL < 1)
-				PVP_TABLE_UPDATE_INTERVAL = 60000;
-
-			TOP_TABLE_UPDATE_INTERVAL = (Integer.parseInt(RankSettings.getProperty("TopTableUpdateInterval", "60")) * 60000);
-			if (TOP_TABLE_UPDATE_INTERVAL < 10)
-				TOP_TABLE_UPDATE_INTERVAL = 3600000;
-
-			COMMUNITY_BOARD_TOP_LIST_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("CommunityBoardTopListEnabled", "true"));
-			COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT = Integer.parseInt(RankSettings.getProperty("CommunityBoardTopListIgnoreTimeLimit", "0"));
-			if (COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT > 0)
-				COMMUNITY_BOARD_TOP_LIST_IGNORE_TIME_LIMIT *= 86400000;
-
-			IMAGE_PREFIX = Integer.parseInt(RankSettings.getProperty("ImagePrefix", "1"));
 
 			/**
 			 * Automation System
@@ -2174,7 +2411,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MOD_AUTOMATION_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MOD_AUTOMATION_CONFIG_FILE + " settings!", e);
 			}
 			ALLOW_SERVER_RESTART_COMMAND = Boolean.parseBoolean(autoSettings.getProperty("AllowServerRestartCommand", "False"));
 			VOTES_NEEDED_FOR_RESTART = Integer.parseInt(autoSettings.getProperty("VotesNeededForRestart", "20"));
@@ -2214,7 +2451,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MOD_VOTE_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MOD_VOTE_CONFIG_FILE + " settings!", e);
 			}
 			VOTE_LINK_HOPZONE = VoteSettings.getProperty("HopzoneUrl", "null");
 			VOTE_LINK_TOPZONE = VoteSettings.getProperty("TopzoneUrl", "null");
@@ -2240,7 +2477,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MOD_SMART_CB_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MOD_SMART_CB_CONFIG_FILE + " settings!", e);
 			}
 			TOP_PLAYER_ROW_HEIGHT = Integer.parseInt(smartCBSettings.getProperty("TopPlayerRowHeight", "19"));
 			TOP_PLAYER_RESULTS = Integer.parseInt(smartCBSettings.getProperty("TopPlayerResults", "20"));
@@ -2275,7 +2512,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MOD_CUSTOM_NPC_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MOD_CUSTOM_NPC_CONFIG_FILE + " settings!", e);
 			}
 			ENABLE_CACHE_INFO = Boolean.parseBoolean(CustomNpcSettings.getProperty("EnableCacheInfo", "False"));
 			SHOW_NPC_CREST = Boolean.parseBoolean(CustomNpcSettings.getProperty("ShowNpcCrest", "False"));
@@ -2317,7 +2554,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + OLYMPIAD_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + OLYMPIAD_FILE + " settings!", e);
 			}
 			
 			ALT_OLY_START_TIME = Integer.parseInt(OlySettings.getProperty("AltOlyStartTime", "18"));
@@ -2365,7 +2602,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + GEO_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + GEO_FILE + " settings!", e);
 			}
 			ACCEPT_GEOEDITOR_CONN = Boolean.parseBoolean(geoSettings.getProperty("AcceptGeoeditorConn", "False"));
 			COORD_SYNCHRONIZE = Integer.parseInt(geoSettings.getProperty("CoordSynchronize", "-1"));
@@ -2385,7 +2622,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + OPTIONS_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + OPTIONS_FILE + " settings!", e);
 			}
 			ZONE_TOWN = Integer.parseInt(optionsSettings.getProperty("ZoneTown", "0"));
 			DEFAULT_GLOBAL_CHAT = optionsSettings.getProperty("GlobalChat", "GLOBAL");
@@ -2471,7 +2708,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + OTHER_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + OTHER_CONFIG_FILE + " settings!", e);
 			}
 			STARTING_ADENA = Integer.parseInt(otherSettings.getProperty("StartingAdena", "100"));
 			STARTING_ANCIENT = Integer.parseInt(otherSettings.getProperty("StartingAncientAdena", "100"));
@@ -2560,7 +2797,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_ZODIAC_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_ZODIAC_CONFIG_FILE + " settings!", e);
 			}
 			ZODIAC_ENABLE = Boolean.parseBoolean(EventZodiacSettings.getProperty("Zodiace", "true"));
 			ZODIAC_REWARD = Integer.parseInt(EventZodiacSettings.getProperty("ZodiadReward", "3470"));
@@ -2582,7 +2819,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_TVT_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_TVT_CONFIG_FILE + " settings!", e);
 			}
 			TVT_ALLOW_AUTOEVENT = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAutomatedEvent", "true"));
 			TVT_EVENT_TIMES= EventTVTSettings.getProperty("TvTStartUpTimes", "17:00,18:00,19:00");
@@ -2625,7 +2862,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_HITMAN_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_HITMAN_CONFIG_FILE + " settings!", e);
 			}
 			ENABLE_HITMAN_EVENT = Boolean.parseBoolean(EventHITMANSettings.getProperty("EnableHitmanEvent", "False"));
 			HITMAN_TAKE_KARMA = Boolean.parseBoolean(EventHITMANSettings.getProperty("HitmansTakekarma", "True"));
@@ -2642,7 +2879,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_DM_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_DM_CONFIG_FILE + " settings!", e);
 			}
 			DM_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventDMSettings.getProperty("DMAllowInterference", "false"));
 			DM_ALLOW_POTIONS = Boolean.parseBoolean(EventDMSettings.getProperty("DMAllowPotions", "false"));
@@ -2666,7 +2903,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_CTF_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_CTF_CONFIG_FILE + " settings!", e);
 			}
 			ALLOW_CTF_AUTOEVENT = Boolean.parseBoolean(EventCTFSettings.getProperty("CTFAutomatedEvent", "true"));
 			CTF_EVENT_TIMES= EventCTFSettings.getProperty("CTFStartUpTimes", "17:00,18:00,19:00");
@@ -2697,7 +2934,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_RAID_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_RAID_CONFIG_FILE + " settings!", e);
 			}
 			RAID_SYSTEM_ENABLED = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidEnginesEnabled", "false"));
 			RAID_SYSTEM_GIVE_BUFFS = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidGiveBuffs", "true"));
@@ -2715,7 +2952,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_QUIZ_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_QUIZ_CONFIG_FILE + " settings!", e);
 			}
 			ENABLED_QUIZ_EVENT = Boolean.parseBoolean(EventQUIZSettings.getProperty("EnableQuizEvent", "False"));
 			QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN = Integer.parseInt(EventQUIZSettings.getProperty("MinutesUntilNextQuestion", "120"));
@@ -2734,7 +2971,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + EVENT_WEDDING_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + EVENT_WEDDING_CONFIG_FILE + " settings!", e);
 			}
 			MOD_ALLOW_WEDDING = Boolean.valueOf(EventWEDDINGSettings.getProperty("AllowWedding", "False"));
 			MOD_WEDDING_PRICE = Integer.parseInt(EventWEDDINGSettings.getProperty("WeddingPrice", "250000000"));
@@ -2759,7 +2996,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + RATES_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + RATES_CONFIG_FILE + " settings!", e);
 			}
 			// Premium Service
 			USE_PREMIUMSERVICE = Boolean.parseBoolean(ratesSettings.getProperty("UsePremiumServices", "False"));
@@ -3006,7 +3243,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + GRANDBOSS_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + GRANDBOSS_CONFIG_FILE + " settings!", e);
 			}
 			Antharas_Wait_Time = Integer.parseInt(grandbossSettings.getProperty("AntharasWaitTime", "10"));
 			if (Antharas_Wait_Time < 3 || Antharas_Wait_Time > 60)
@@ -3103,7 +3340,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + SEVENSIGNS_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + SEVENSIGNS_FILE + " settings!", e);
 			}
 			ALT_GAME_REQUIRE_CASTLE_DAWN = Boolean.parseBoolean(SevenSettings.getProperty("AltRequireCastleForDawn", "False"));
 			ALT_GAME_REQUIRE_CLAN_CASTLE = Boolean.parseBoolean(SevenSettings.getProperty("AltRequireClanCastle", "False"));
@@ -3129,7 +3366,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + CONFIGURATION_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + CONFIGURATION_FILE + " settings!", e);
 			}
 			// Dev's Config
 			DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
@@ -3181,7 +3418,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + GS_IP + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + GS_IP + " settings!", e);
 			}
 			// Dev's Config
 			EXTERNAL_HOSTNAME = gsIpSettings.getProperty("ExternalHostname", "*");
@@ -3202,7 +3439,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + HEXID_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + HEXID_FILE + " settings!", e);
 			}
 			SERVER_ID = Integer.parseInt(hexidSettings.getProperty("ServerID"));
 			HEX_ID = new BigInteger(hexidSettings.getProperty("HexID"), 16).toByteArray();
@@ -3218,7 +3455,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + TELNET_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + TELNET_FILE + " settings!", e);
 			}
 			IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
 
@@ -3233,7 +3470,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MMOCORE_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MMOCORE_CONFIG_FILE + " settings!", e);
 			}
 			MMO_SELECTOR_SLEEP_TIME = Integer.parseInt(mmoSettings.getProperty("SleepTime", "20"));
 			MMO_IO_SELECTOR_THREAD_COUNT = Integer.parseInt(mmoSettings.getProperty("IOSelectorThreadCount", "2"));
@@ -3256,7 +3493,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + LOGIN_CONFIGURATION_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + LOGIN_CONFIGURATION_FILE + " settings!", e);
 			}
 			ASSERT = Boolean.parseBoolean(serverSettings.getProperty("Assert", "False"));
 			ACCEPT_NEW_GAMESERVER = Boolean.parseBoolean(serverSettings.getProperty("AcceptNewGameServer", "True"));
@@ -3290,7 +3527,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + LS_IP + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + LS_IP + " settings!", e);
 			}
 			GAME_SERVER_LOGIN_HOST = lsIpSettings.getProperty("LoginHostname", "127.0.0.1");
 			GAME_SERVER_LOGIN_PORT = Integer.parseInt(lsIpSettings.getProperty("LoginPort", "9014"));
@@ -3310,7 +3547,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + SERVER_VERSION_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + SERVER_VERSION_FILE + " settings!", e);
 			}
 			SERVER_VERSION = versionSettings.getProperty("version", "Unsupported Custom Version.");
 			SERVER_BUILD_DATE = versionSettings.getProperty("builddate", "Undefined Date.");
@@ -3326,7 +3563,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + TELNET_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + TELNET_FILE + " settings!", e);
 			}
 			IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
 			
@@ -3341,7 +3578,7 @@ public final class Config
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while " + MMOCORE_CONFIG_FILE + " settings!", e);
+				_log.log(Level.SEVERE, "Error while loading " + MMOCORE_CONFIG_FILE + " settings!", e);
 			}
 			MMO_SELECTOR_SLEEP_TIME = Integer.parseInt(mmoSettings.getProperty("SleepTime", "20"));
 			MMO_IO_SELECTOR_THREAD_COUNT = Integer.parseInt(mmoSettings.getProperty("IOSelectorThreadCount", "2"));

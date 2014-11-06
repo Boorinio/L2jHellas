@@ -44,8 +44,8 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 		writeS(_clan.getLeaderName());
 		writeD(_clan.getCrestId()); // -> no, it's no longer used (nuocnam) fix by game
 		writeD(_clan.getLevel());
-		writeD(_clan.getHasCastle());
-		writeD(_clan.getHasHideout());
+		writeD(_clan.hasCastle());
+		writeD(_clan.hasHideout());
 		writeD(_clan.getRank());
 		writeD(_clan.getReputationScore());
 		writeD(0);

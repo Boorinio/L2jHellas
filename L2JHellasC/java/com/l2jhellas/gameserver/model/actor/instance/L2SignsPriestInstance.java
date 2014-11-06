@@ -591,12 +591,12 @@ public class L2SignsPriestInstance extends L2NpcInstance
 
 				for (L2Clan clan : clanList)
 					if (clan.getAllyId() == allyId)
-						if (clan.getHasCastle() > 0)
+						if (clan.hasCastle() > 0)
 							return true;
 			}
 		}
 
-		return (playerClan.getHasCastle() > 0);
+		return (playerClan.hasCastle() > 0);
 	}
 
 	private void showChatWindow(L2PcInstance player, int val, String suffix, boolean isDescription)
