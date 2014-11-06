@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
@@ -31,7 +32,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.L2FastList;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -92,7 +92,7 @@ public class GrandBossManager
 
 	private static Map<Integer, Integer> _bossStatus;
 
-	private static L2FastList<L2BossZone> _zones;
+	private static FastList<L2BossZone> _zones;
 
 	public static GrandBossManager getInstance()
 	{
@@ -116,7 +116,7 @@ public class GrandBossManager
 	
 	private void init()
 	{
-		_zones = new L2FastList<L2BossZone>();
+		_zones = new FastList<L2BossZone>();
 
 		_bosses = new FastMap<Integer, L2GrandBossInstance>();
 		_storedInfo = new FastMap<Integer, StatsSet>();
@@ -176,7 +176,7 @@ public class GrandBossManager
 	 */
 	public void initZones()
 	{
-		FastMap<Integer, L2FastList<Integer>> zones = new FastMap<Integer, L2FastList<Integer>>();
+		FastMap<Integer, FastList<Integer>> zones = new FastMap<Integer, FastList<Integer>>();
 
 		if (_zones == null)
 		{
@@ -188,7 +188,7 @@ public class GrandBossManager
 		{
 			if (zone == null)
 				continue;
-			zones.put(zone.getId(), new L2FastList<Integer>());
+			zones.put(zone.getId(), new FastList<Integer>());
 		}
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -342,7 +342,7 @@ public class GrandBossManager
 				if (zone == null)
 					continue;
 				Integer id = zone.getId();
-				L2FastList<Integer> list = zone.getAllowedPlayers();
+				FastList<Integer> list = zone.getAllowedPlayers();
 				if (list == null || list.isEmpty())
 					continue;
 				for (Integer player : list)
@@ -433,7 +433,7 @@ public class GrandBossManager
 		_zones.clear();
 	}
 
-	public L2FastList<L2BossZone> getZones()
+	public FastList<L2BossZone> getZones()
 	{
 		return _zones;
 	}

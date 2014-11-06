@@ -32,3 +32,7 @@ CREATE TABLE `achievements` (
   PRIMARY KEY (`owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';
 
+-- ----------------------------
+-- Records of achievements
+-- ----------------------------
+INSERT INTO `achievements` VALUES ('0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');

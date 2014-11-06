@@ -822,7 +822,6 @@ public final class Config
 	public static boolean PRECISE_DROP_CALCULATION;
 	public static boolean MULTIPLE_ITEM_DROP;
 	public static boolean FORCE_INVENTORY_UPDATE;
-	public static boolean LAZY_CACHE;
 	public static int MAX_DRIFT_RANGE;
 	public static int MIN_NPC_ANIMATION;
 	public static int MAX_NPC_ANIMATION;
@@ -2652,7 +2651,6 @@ public final class Config
 			PRECISE_DROP_CALCULATION = Boolean.valueOf(optionsSettings.getProperty("PreciseDropCalculation", "True"));
 			MULTIPLE_ITEM_DROP = Boolean.valueOf(optionsSettings.getProperty("MultipleItemDrop", "True"));
 			FORCE_INVENTORY_UPDATE = Boolean.valueOf(optionsSettings.getProperty("ForceInventoryUpdate", "False"));
-			LAZY_CACHE = Boolean.valueOf(optionsSettings.getProperty("LazyCache", "False"));
 			MAX_DRIFT_RANGE = Integer.parseInt(optionsSettings.getProperty("MaxDriftRange", "300"));
 			MIN_NPC_ANIMATION = Integer.parseInt(optionsSettings.getProperty("MinNPCAnimation", "10"));
 			MAX_NPC_ANIMATION = Integer.parseInt(optionsSettings.getProperty("MaxNPCAnimation", "20"));

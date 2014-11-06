@@ -14,195 +14,145 @@
  */
 package com.l2jhellas.gameserver.cache;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.util.L2FastMap;
-import com.l2jhellas.util.Util;
-import com.l2jhellas.util.filters.file.HTMLFilter;
+import com.l2jhellas.util.UnicodeReader;
+import com.l2jhellas.util.filters.file.HtmFilter;
 
 /**
- * @author Layane
+ * @author Layane, reworked by Java-man and Hasha
  */
 public class HtmCache
 {
 	private static final Logger _log = Logger.getLogger(HtmCache.class.getName());
 	
-	private static final HTMLFilter htmlFilter = new HTMLFilter();
+	private static final Map<Integer, String> _htmCache = new HashMap<>();
+	private static final FileFilter _htmFilter = new HtmFilter();
 	
-	private static final Map<String, String> _cache = new L2FastMap<>(Config.LAZY_CACHE);
-	
-	private int _loadedFiles;
-	private long _bytesBuffLen;
+	public static HtmCache getInstance()
+	{
+		return SingletonHolder._instance;
+	}
 	
 	protected HtmCache()
 	{
 		reload();
 	}
 	
+	/**
+	 * Cleans HtmCache.
+	 */
 	public void reload()
 	{
-		reload(PackRoot.DATAPACK_ROOT);
-	}
-	
-	public void reload(File f)
-	{
-		if (!Config.LAZY_CACHE)
-		{
-			_log.info("Html cache start...");
-			parseDir(f);
-			_log.info("Cache[HTML]: " + String.format("%.3f", getMemoryUsage()) + " megabytes on " + getLoadedFiles() + " files loaded");
-		}
-		else
-		{
-			_cache.clear();
-			_loadedFiles = 0;
-			_bytesBuffLen = 0;
-			_log.info("Cache[HTML]: Running lazy cache");
-		}
-	}
-	
-	public void reloadPath(File f)
-	{
-		parseDir(f);
-		_log.info("Cache[HTML]: Reloaded specified path.");
-	}
-	
-	public double getMemoryUsage()
-	{
-		return ((float) _bytesBuffLen / 1048576);
-	}
-	
-	public int getLoadedFiles()
-	{
-		return _loadedFiles;
-	}
-	
-	private void parseDir(File dir)
-	{
-		final File[] files = dir.listFiles();
-		for (File file : files)
-		{
-			if (!file.isDirectory())
-			{
-				loadFile(file);
-			}
-			else
-			{
-				parseDir(file);
-			}
-		}
-	}
-	
-	public String loadFile(File file)
-	{
-		if (!htmlFilter.accept(file))
-		{
-			return null;
-		}
-		
-		final String relpath = Util.getRelativePath(PackRoot.DATAPACK_ROOT, file);
-		String content = null;
-		try (FileInputStream fis = new FileInputStream(file);
-			BufferedInputStream bis = new BufferedInputStream(fis))
-		{
-			final int bytes = bis.available();
-			byte[] raw = new byte[bytes];
-			
-			bis.read(raw);
-			content = new String(raw, "UTF-8");
-			
-			String oldContent = _cache.get(relpath);
-			if (oldContent == null)
-			{
-				_bytesBuffLen += bytes;
-				_loadedFiles++;
-			}
-			else
-			{
-				_bytesBuffLen = (_bytesBuffLen - oldContent.length()) + bytes;
-			}
-			_cache.put(relpath, content);
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, "Problem with htm file " + e.getMessage(), e);
-		}
-		return content;
-	}
-	
-	public String getHtmForce(String path)
-	{
-		String content = getHtm(path);
-		if (content == null)
-		{
-			content = "<html><body>My text is missing:<br>" + path + "</body></html>";
-			_log.warning("Cache[HTML]: Missing HTML page: " + path);
-		}
-		return content;
-	}
-	
-	public String getHtm(String prefix, String path)
-	{
-		String newPath = null;
-		String content;
-		if ((prefix != null) && !prefix.isEmpty())
-		{
-			newPath = prefix + path;
-			content = getHtm(newPath);
-			if (content != null)
-			{
-				return content;
-			}
-		}
-		
-		content = getHtm(path);
-		if ((content != null) && (newPath != null))
-		{
-			_cache.put(newPath, content);
-		}
-		
-		return content;
-	}
-	
-	public String getHtm(String path)
-	{
-		if ((path == null) || path.isEmpty())
-		{
-			return ""; // avoid possible NPE
-		}
-		
-		String content = _cache.get(path);
-		if (Config.LAZY_CACHE && (content == null))
-		{
-			content = loadFile(new File(PackRoot.DATAPACK_ROOT, path));
-		}
-		return content;
-	}
-	
-	public boolean contains(String path)
-	{
-		return _cache.containsKey(path);
+		_log.info("HtmCache: Cache cleared, had " + _htmCache.size() + " entries.");
+		_htmCache.clear();
 	}
 	
 	/**
+	 * Reloads given directory. All sub-directories are parsed, all html files are loaded to HtmCache.
+	 * @param path : Directory to be reloaded.
+	 */
+	public void reloadPath(String path)
+	{
+		parseDir(new File(path));
+		_log.info("HtmCache: Reloaded specified " + path + " path.");
+	}
+	
+	/**
+	 * Parse given directory, all html files are loaded to HtmCache.
+	 * @param dir : Directory to be parsed.
+	 */
+	private static void parseDir(File dir)
+	{
+		for (File file : dir.listFiles(_htmFilter))
+		{
+			if (file.isDirectory())
+				parseDir(file);
+			else
+				loadFile(file);
+		}
+	}
+	
+	/**
+	 * Loads html file content to HtmCache.
+	 * @param file : File to be cached.
+	 * @return String : Content of the file.
+	 */
+	private static String loadFile(File file)
+	{
+		if (file.exists() && _htmFilter.accept(file) && !file.isDirectory())
+		{
+			try (FileInputStream fis = new FileInputStream(file); UnicodeReader ur = new UnicodeReader(fis, "UTF-8"); BufferedReader br = new BufferedReader(ur))
+			{
+				StringBuilder sb = new StringBuilder();
+				String line;
+				
+				while ((line = br.readLine()) != null)
+					sb.append(line).append('\n');
+				
+				String content = sb.toString().replaceAll("\r\n", "\n");
+				sb = null;
+				
+				_htmCache.put(file.getPath().replace("\\", "/").hashCode(), content);
+				return content;
+			}
+			catch (Exception e)
+			{
+				_log.warning("HtmCache: problem with loading file " + e);
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Check if an HTM exists and can be loaded. If so, it is loaded into HtmCache.
 	 * @param path The path to the HTM
-	 * @return {@code true} if the path targets a HTM or HTML file, {@code false} otherwise.
+	 * @return true if the HTM can be loaded.
 	 */
 	public boolean isLoadable(String path)
 	{
-		return htmlFilter.accept(new File(path));
+		return loadFile(new File(path)) != null;
 	}
 	
-	public static HtmCache getInstance()
+	/**
+	 * Return content of html message given by filename.
+	 * @param filename : Desired html filename.
+	 * @return String : Returns content if filename exists, otherwise returns null.
+	 */
+	public String getHtm(String filename)
 	{
-		return SingletonHolder._instance;
+		if (filename == null || filename.isEmpty())
+			return "";
+		
+		String content = _htmCache.get(filename.hashCode());
+		if (content == null)
+			content = loadFile(new File(filename));
+		
+		return content;
+	}
+	
+	/**
+	 * Return content of html message given by filename. In case filename does not exist, returns notice.
+	 * @param filename : Desired html filename.
+	 * @return String : Returns content if filename exists, otherwise returns notice.
+	 */
+	public String getHtmForce(String filename)
+	{
+		String content = getHtm(filename);
+		if (content == null)
+		{
+			content = "<html><body>My html is missing:<br>" + filename + "</body></html>";
+			_log.warning("HtmCache: " + filename + " is missing.");
+		}
+		
+		return content;
 	}
 	
 	private static class SingletonHolder

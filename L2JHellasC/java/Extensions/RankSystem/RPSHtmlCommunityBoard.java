@@ -256,17 +256,17 @@ public final class RPSHtmlCommunityBoard
 
 	private static final String getBody()
 	{
-		return HtmCache.getInstance().getHtm("RPS", "data/html/CommunityBoard/rankpvpsystem/body.htm");
+		return HtmCache.getInstance().getHtmForce("data/html/CommunityBoard/rankpvpsystem/body.htm");
 	}
 
 	private static final String getListHead()
 	{
-		return HtmCache.getInstance().getHtm("RPS", "data/html/CommunityBoard/rankpvpsystem/list_head.htm");
+		return HtmCache.getInstance().getHtmForce("data/html/CommunityBoard/rankpvpsystem/list_head.htm");
 	}
 
 	private static final String getListItem()
 	{
-		return HtmCache.getInstance().getHtm("RPS", "data/html/CommunityBoard/rankpvpsystem/list_item.htm");
+		return HtmCache.getInstance().getHtmForce("data/html/CommunityBoard/rankpvpsystem/list_item.htm");
 	}
 
 }

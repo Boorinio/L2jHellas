@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.CrestCache;
+import com.l2jhellas.gameserver.cache.CrestCache.CrestType;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
 
 public final class RequestPledgeCrest extends L2GameClientPacket
@@ -43,7 +44,7 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 			_log.fine("crestid " + _crestId + " requested");
 		}
 
-		byte[] data = CrestCache.getInstance().getPledgeCrest(_crestId);
+		byte[] data = CrestCache.getCrest(CrestType.PLEDGE, _crestId);
 
 		if (data != null)
 		{
@@ -54,7 +55,7 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 		{
 			if (Config.DEBUG)
 			{
-				_log.fine("crest is missing:" + _crestId);
+				_log.warning("crest is missing:" + _crestId);
 			}
 		}
 	}

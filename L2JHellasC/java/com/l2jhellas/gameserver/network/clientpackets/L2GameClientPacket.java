@@ -36,7 +36,7 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 	protected boolean read()
 	{
 		if (Config.DEBUG)
-			System.out.println("l2gameclient packet: " + this.getType());
+			System.out.println("l2gameclient packet: " + getType());
 		try
 		{
 			readImpl();

@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.CrestCache;
+import com.l2jhellas.gameserver.cache.CrestCache.CrestType;
 import com.l2jhellas.gameserver.network.serverpackets.AllyCrest;
 
 public final class RequestAllyCrest extends L2GameClientPacket
@@ -44,7 +45,7 @@ public final class RequestAllyCrest extends L2GameClientPacket
 		if (Config.DEBUG)
 			_log.fine("allycrestid " + _crestId + " requested");
 
-		byte[] data = CrestCache.getInstance().getAllyCrest(_crestId);
+		byte[] data = CrestCache.getCrest(CrestType.ALLY, _crestId);
 
 		if (data != null)
 		{

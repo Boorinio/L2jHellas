@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.cache.CrestCache;
+import com.l2jhellas.gameserver.cache.CrestCache.CrestType;
 import com.l2jhellas.gameserver.network.serverpackets.ExPledgeCrestLarge;
 
 /**
@@ -40,13 +41,9 @@ public final class RequestExPledgeCrestLarge extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		byte[] data = CrestCache.getInstance().getPledgeCrestLarge(_crestId);
-
+		byte[] data = CrestCache.getCrest(CrestType.PLEDGE_LARGE, _crestId);
 		if (data != null)
-		{
-			ExPledgeCrestLarge pcl = new ExPledgeCrestLarge(_crestId, data);
-			sendPacket(pcl);
-		}
+			sendPacket(new ExPledgeCrestLarge(_crestId, data));
 	}
 
 	@Override

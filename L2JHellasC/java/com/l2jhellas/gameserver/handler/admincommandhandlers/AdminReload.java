@@ -23,7 +23,6 @@ import javax.script.ScriptException;
 
 import Extensions.Balancer.BalanceLoad;
 
-import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.cache.CrestCache;
@@ -113,8 +112,8 @@ public class AdminReload implements IAdminCommandHandler
 				else if (type.equals("npc") || type.equals("npcs"))
 				{
 					NpcData.getInstance().reloadAllNpc();
-					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);
+					activeChar.sendMessage("All NPCs have been reloaded.");
 				}
 				else if (type.equals("respawn_npc") || type.equals("respawn_npcs"))
 				{
@@ -147,51 +146,22 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				else if (type.equals("html") || type.equals("htm"))
 				{
-					HtmCache.getInstance().reload(PackRoot.DATAPACK_ROOT);
-					activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB on " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
+					HtmCache.getInstance().reload();
 					sendReloadPage(activeChar);
+					activeChar.sendMessage("The HTM cache has been reloaded.");
 				}
-				else if (type.equals("path"))
+				else if (command.startsWith("crest"))
 				{
-					try
-					{
-						String path = command.split(" ")[1];
-						HtmCache.getInstance().reloadPath(new File(PackRoot.DATAPACK_ROOT, path));
-						activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB in " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
-					}
-					catch (Exception e)
-					{
-						activeChar.sendMessage("Usage: //reload path <path>");
-					}
+					CrestCache.load();
 					sendReloadPage(activeChar);
+					activeChar.sendMessage("Crests have been reloaded.");
 				}
-				else if (type.equals("file"))
+				else if (command.equals("fix_crest"))
 				{
-					try
-					{
-						String path = command.split(" ")[1];
-						if (HtmCache.getInstance().loadFile(new File(PackRoot.DATAPACK_ROOT, path)) != null)
-						{
-							activeChar.sendMessage("Cache[HTML]: file was loaded.");
-						}
-						else
-						{
-							activeChar.sendMessage("Cache[HTML]: file can't be loaded.");
-						}
-					}
-					catch (Exception e)
-					{
-						activeChar.sendMessage("Usage: //reload file <relative_path/file>");
-					}
+					CrestCache.convertOldPledgeFiles();
 					sendReloadPage(activeChar);
+					activeChar.sendMessage("Crets fixed.");
 				}
-				else if (command.startsWith("crest_cache"))
-				{
-					CrestCache.reload();
-					activeChar.sendMessage("Cache[Crest]: " + String.format("%.3f", CrestCache.getInstance().getMemoryUsage()) + " megabytes on " + CrestCache.getInstance().getLoadedFiles() + " files loaded.");
-					sendReloadPage(activeChar);
-				}
-
 				else if (type.startsWith("item") || type.startsWith("items"))
 				{
 					ItemTable.getInstance().reload();
@@ -201,6 +171,7 @@ public class AdminReload implements IAdminCommandHandler
 				else if (type.startsWith("access"))
 				{
 					AdminData.getInstance().reload();
+					sendReloadPage(activeChar);
 					activeChar.sendMessage("Access Rights have been reloaded.");
 				}
 				else if (type.startsWith("instancemanager"))

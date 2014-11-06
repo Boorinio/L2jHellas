@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import javolution.util.FastList;
 import ai.AbstractNpcAI;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
@@ -269,18 +268,8 @@ public class IceFairySirra extends AbstractNpcAI
 		if (val == 0)
 			pom = "32029";
 		String temp = "data/html/default/" + pom + ".htm";
-		if (!Config.LAZY_CACHE)
-		{
-			// If not running lazy cache the file must be in the cache or it
-			// doesnt exist
-			if (HtmCache.getInstance().contains(temp))
-				return temp;
-		}
-		else
-		{
-			if (HtmCache.getInstance().isLoadable(temp))
-				return temp;
-		}
+		if (HtmCache.getInstance().isLoadable(temp))
+			return temp;
 		// If the file is not found, the standard message
 		// "I have nothing to say to you" is returned
 		return "data/html/npcdefault.htm";

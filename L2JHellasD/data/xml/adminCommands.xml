@@ -30,7 +30,11 @@
 	<!-- ADMIN CHANGE ACCESS LEVEL -->
 	<admin command="admin_changelvl" accessLevel="7" />
 	
-	
+	<!-- ADMIN CREST RELOAD-FIX -->
+	<admin command="admin_reload_cache_path" accessLevel="7" />
+	<admin command="admin_reload_cache_file" accessLevel="7" />
+	<admin command="admin_fix_cache_crest" accessLevel="7" />
+		
 	<!-- ADMIN ANNOUNCEMENTS -->
 	<admin command="admin_list_announcements" accessLevel="7" />
 	<admin command="admin_reload_announcements" accessLevel="7" />

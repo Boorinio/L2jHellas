@@ -17,21 +17,11 @@ package com.l2jhellas.util.filters.file;
 import java.io.File;
 import java.io.FileFilter;
 
-/**
- * Specialized {@link FileFilter} class.<br>
- * Accepts <b>files</b> ending with ".htm" and ".html" only.
- * @author Zoey76
- */
-public class HTMLFilter implements FileFilter
+public class BmpFilter implements FileFilter
 {
 	@Override
-	public boolean accept(File f)
+	public boolean accept(File file)
 	{
-		if ((f == null) || !f.isFile())
-		{
-			return false;
-		}
-		final String name = f.getName().toLowerCase();
-		return name.endsWith(".htm") || name.endsWith(".html");
+		return file.getName().endsWith(".bmp");
 	}
 }

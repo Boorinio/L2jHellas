@@ -14,14 +14,10 @@
  */
 package com.l2jhellas.gameserver.handler.admincommandhandlers;
 
-import java.io.File;
-
-import com.PackRoot;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * @author Layanere
@@ -29,69 +25,54 @@ import com.l2jhellas.logs.GMAudit;
 public class AdminCache implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
-		"admin_cache_htm_rebuild",
-		"admin_cache_htm_reload",
-		"admin_cache_reload_path",
-		"admin_cache_reload_file",
-		"admin_cache_crest_rebuild",
-		"admin_cache_crest_reload",
-		"admin_cache_crest_fix"
-	};/** @formatter:on */
-
+	{
+		"admin_reload_cache_path",
+		"admin_reload_cache_file",
+		"admin_fix_cache_crest"
+	};
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		if (command.startsWith("admin_cache_htm_rebuild") || command.equals("admin_cache_htm_reload"))
-		{
-			HtmCache.getInstance().reload(PackRoot.DATAPACK_ROOT);
-			activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB on " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
-		}
-		else if (command.startsWith("admin_cache_reload_path "))
+		if (command.startsWith("admin_reload_cache_path "))
 		{
 			try
 			{
-				String path = command.split(" ")[1];
-				HtmCache.getInstance().reloadPath(new File(PackRoot.DATAPACK_ROOT, path));
-				activeChar.sendMessage("Cache[HTML]: " + HtmCache.getInstance().getMemoryUsage() + " MB in " + HtmCache.getInstance().getLoadedFiles() + " file(s) loaded.");
+				final String path = command.split(" ")[1];
+				HtmCache.getInstance().reloadPath(path);
+				activeChar.sendMessage("HTM paths' cache have been reloaded.");
 			}
 			catch (Exception e)
 			{
-				activeChar.sendMessage("Usage: //cache_reload_path <path>");
+				activeChar.sendMessage("Usage: //reload_cache_path <path>");
 			}
 		}
-		else if (command.startsWith("admin_cache_reload_file "))
+		else if (command.startsWith("admin_reload_cache_file "))
 		{
 			try
 			{
 				String path = command.split(" ")[1];
-				if (HtmCache.getInstance().loadFile(new File(PackRoot.DATAPACK_ROOT, path)) != null)
-				{
-					activeChar.sendMessage("Cache[HTML]: file was loaded");
-				}
+				if (HtmCache.getInstance().isLoadable(path))
+					activeChar.sendMessage("Cache[HTML]: requested file was loaded.");
 				else
-				{
-					activeChar.sendMessage("Cache[HTML]: file can't be loaded");
-				}
+					activeChar.sendMessage("Cache[HTML]: requested file couldn't be loaded.");
 			}
 			catch (Exception e)
 			{
-				activeChar.sendMessage("Usage: //cache_reload_file <relative_path/file>");
+				activeChar.sendMessage("Usage: //reload_cache_file <relative_path/file>");
 			}
 		}
-		else if (command.startsWith("admin_cache_crest_rebuild") || command.startsWith("admin_cache_crest_reload"))
+		else if (command.startsWith("admin_fix_cache_crest"))
 		{
-			CrestCache.reload();
-			activeChar.sendMessage("Cache[Crest]: " + String.format("%.3f", CrestCache.getInstance().getMemoryUsage()) + " megabytes on " + CrestCache.getInstance().getLoadedFiles() + " files loaded");
+			CrestCache.convertOldPledgeFiles();
+			activeChar.sendMessage("Cache[Crest]: crests have been fixed.");
 		}
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
 }

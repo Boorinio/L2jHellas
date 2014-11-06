@@ -168,7 +168,7 @@ public class GameServer
 		Util.printSection("Chache");
 		// Call to load caches
 		HtmCache.getInstance();
-		CrestCache.getInstance();
+		CrestCache.load();
 
 		Util.printSection("World");
 		L2World.init();

@@ -1368,28 +1368,16 @@ public class L2Npc extends L2Character
 	 */
 	public String getHtmlPath(int npcId, int val)
 	{
-		String pom = "";
-
+		String filename;
+		
 		if (val == 0)
-			pom = "" + npcId;
+			filename = "data/html/default/" + npcId + ".htm";
 		else
-			pom = npcId + "-" + val;
-
-		String temp = "data/html/default/" + pom + ".htm";
-
-		if (!Config.LAZY_CACHE)
-		{
-			// If not running lazy cache the file must be in the cache or it doesn't exist
-			if (HtmCache.getInstance().contains(temp))
-				return temp;
-		}
-		else
-		{
-			if (HtmCache.getInstance().isLoadable(temp))
-				return temp;
-		}
-
-		// If the file is not found, the standard message "I have nothing to say to you" is returned
+			filename = "data/html/default/" + npcId + "-" + val + ".htm";
+		
+		if (HtmCache.getInstance().isLoadable(filename))
+			return filename;
+		
 		return "data/html/npcdefault.htm";
 	}
 
