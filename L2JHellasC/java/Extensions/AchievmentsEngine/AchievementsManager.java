@@ -74,10 +74,7 @@ public class AchievementsManager
 {
 	private static final Logger log = Logger.getLogger(AchievementsManager.class.getSimpleName());
 	private final Map<Integer, Achievement> _achievementList = new FastMap<>();
-
 	private final FastList<String> _binded = new FastList<>();
-
-	private static Logger _log = Logger.getLogger(AchievementsManager.class.getName());
 
 	public AchievementsManager()
 	{
@@ -94,7 +91,7 @@ public class AchievementsManager
 
 		if (!file.exists())
 		{
-			_log.warning("AchievementsEngine: Error achievements xml file does not exist, check directory!");
+			log.log(Level.WARNING, getClass().getSimpleName(), ": Error achievements xml file does not exist, check directory!");
 		}
 		try
 		{
@@ -126,12 +123,13 @@ public class AchievementsManager
 				}
 			}
 
-			_log.info("AchievementsEngine: loaded " + getAchievementList().size() + " achievements from xml!");
+			log.log(Level.INFO, getClass().getSimpleName(), ": loaded " + getAchievementList().size() + " achievements from xml!");
 		}
 		catch (Exception e)
 		{
-			_log.warning("AchievementsEngine: Error " + e);
-			e.printStackTrace();
+			log.log(Level.WARNING, getClass().getSimpleName(), ": Error " + e);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -162,7 +160,6 @@ public class AchievementsManager
 		return b;
 	}
 
-	@SuppressWarnings("static-method")
 	private int checkInt(Node d, String nodename)
 	{
 		int i = 0;
@@ -193,7 +190,7 @@ public class AchievementsManager
 		}
 		catch (SQLException e)
 		{
-			log.log(Level.WARNING, e.getMessage());
+			
 		}
 	}
 
@@ -309,7 +306,7 @@ public class AchievementsManager
 		}
 		catch (SQLException e)
 		{
-			_log.warning("[ACHIEVEMENTS SAVE GETDATA]");
+			log.log(Level.WARNING, getClass().getSimpleName(), ":[ACHIEVEMENTS SAVE GETDATA]");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
