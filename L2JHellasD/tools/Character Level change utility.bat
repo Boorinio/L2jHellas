@@ -20,7 +20,7 @@ set mysqlPath="%mysqlBinPath%\mysql"
 
 echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 echo              You Are Running an l2jhellas ServerPack Interlude Version
-echo                             Copyright 2012
+echo                             Copyright 2012-2014
 echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo.
@@ -41,7 +41,7 @@ cls
 
 echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 echo              You Are Running an l2jhellas ServerPack Interlude Version
-echo                             Copyright 2012
+echo                             Copyright 2012-2014
 echo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo.

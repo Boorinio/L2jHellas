@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<project name="L2JHellasD" default="Build" basedir="." xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project name="L2JHellasD" default="Build" basedir=".">
 	<description>
 		This program is free software: you can redistribute it and/or modify it under
 		the terms of the GNU General Public License as published by the Free Software
@@ -90,17 +90,16 @@
 		<mkdir dir="C:/L2JHellas" />
 		<mkdir dir="C:/L2JHellas/Backup" />
 		<echo>Store L2jhellas.</echo>
-		<unzip src="${build}/L2J Hellas DataPack.zip" dest="C:/L2JHellas" />
+		<unzip src="${build}/L2J_Hellas_DataPack.zip" dest="C:/L2JHellas" />
 		<echo>Backup L2jhellas.</echo>
-		<copy file="${build}/L2J Hellas DataPack.zip" todir="C:/L2JHellas/Backup"></copy>
+		<copy file="${build}/L2J_Hellas_DataPack.zip" todir="C:/L2JHellas/Backup"></copy>
 		<delete dir="${build}" />
 		<echo>L2J Hellas DataPack stored in C:/L2JHellas.</echo>
 		<echo>Please visit our forum http://l2jhellas.info/</echo>
 		<echo>Owner Boorinio.</echo>
 	</target>
 	
-	<target name="clean"
-		description="Deletes the whole build space and existing packages.">
+	<target name="clean" description="Deletes the whole build space and existing packages.">
 		<delete dir="${build}" />
 	</target>
 </project>

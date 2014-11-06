@@ -39,7 +39,6 @@ import javolution.util.FastMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskCleanUp;
-import com.l2jhellas.gameserver.taskmanager.tasks.TaskJython;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskOlympiadSave;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskRecom;
 import com.l2jhellas.gameserver.taskmanager.tasks.TaskRestart;
@@ -177,7 +176,6 @@ public final class TaskManager
 	private void initializate()
 	{
 		registerTask(new TaskCleanUp());
-		registerTask(new TaskJython());
 		registerTask(new TaskOlympiadSave());
 		registerTask(new TaskRecom());
 		registerTask(new TaskRestart());
