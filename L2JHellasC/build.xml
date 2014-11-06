@@ -44,14 +44,16 @@
     	<mkdir dir="${build.dist.libs}" />
     </target>
 	
-    <target name="Compile" depends="Version" description="Compile the source.">
+    <target name="Compile" depends="Requirements,Version" description="Compile the source.">
     	<echo>Compiling L2J Hellas.</echo>
-		<javac destdir="${build.classes}" 
+		<javac compiler="javac1.8"
+				destdir="${build.classes}" 
 				optimize="on"
 				encoding="utf-8"
-				debug="on"
-				source="1.7"
-				target="1.7"
+				debug="true"
+				debuglevel="lines,vars,source"
+				source="1.8"
+				target="1.8"
 				nowarn="off"
 				includeantruntime="false">
 			<src path="${src}"/>
@@ -261,6 +263,19 @@ L2jHellas Project details:
 			Timeline = https://www.assembla.com/code/l2hellas/subversion/changesets
 		</concat>
 		<echo>version = ${revision}</echo>
+	</target>
+	
+	<!-- Requirements -->
+	<target name="Requirements" description="Check Requirements.">
+		<fail message="Ant 1.9.1 is required But your version is ${ant.version} and if you are using Eclipse probably is outdated.">
+			<condition>
+				<not>
+					<antversion atleast="1.9.1" />
+				</not>
+			</condition>
+		</fail>
+		<available classname="java.util.stream.Stream" property="JDK8.present" />
+		<fail unless="JDK8.present" message="Java 1.8 is required. But your version is Java ${ant.java.version} and probably JDK is not installed." />
 	</target>
 	
 	<!-- Clean UP -->
