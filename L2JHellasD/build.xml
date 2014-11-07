@@ -25,7 +25,7 @@
 	<property name="build.dist.sql.updates" location="${build.dist}/sql/updates" />
 	<property name="build.dist.sql.maintenance" location="${build.dist}/sql/maintenance" />
 	
-	<target name="init" description="Create the output directories. Do nothing if dirs were already created">
+	<target name="init" depends="clean" description="Create the output directories. Do nothing if dirs were already created">
 		<mkdir dir="${build}" />
 		<mkdir dir="${build.dist}" />
 		<mkdir dir="${build.dist.game}" />
@@ -35,7 +35,7 @@
 		<mkdir dir="${build.dist.sql.maintenance}" />
 	</target>
 	<echo>Creating L2J Hellas DataPack please wait..</echo>
-	<target name="export" description="Syncronizes build space contents with project.">
+	<target name="export" depends="init" description="Syncronizes build space contents with project.">
 		<sync todir="${build.dist.doc}">
 			<fileset dir="${basedir}">
 				<include name="gpl.txt" />
@@ -86,7 +86,7 @@
 	</target>	
 	
 	<target name="Build" depends="export" description="Creates a ZIP file. Suitable for distribution but building takes longer. See dist-deflate for faster builds.">
-		<zip destfile="${build}/L2J Hellas DataPack.zip" basedir="${build.dist}" level="9" />
+		<zip destfile="${build}/L2J_Hellas_DataPack.zip" basedir="${build.dist}" level="9" />
 		<mkdir dir="C:/L2JHellas" />
 		<mkdir dir="C:/L2JHellas/Backup" />
 		<echo>Store L2jhellas.</echo>
