@@ -85,7 +85,7 @@ public class CursedWeapon
 			if (_player != null && _player.isOnline() == 1)
 			{
 				// Remove from player
-				_log.log(Level.INFO, getClass().getName() + ": " + _name + " being removed online.");
+				_log.log(Level.INFO, getClass().getSimpleName() + ": " + _name + " being removed online.");
 
 				_player.abortAttack();
 
@@ -118,7 +118,7 @@ public class CursedWeapon
 			else
 			{
 				// Remove from Db
-				_log.log(Level.INFO, getClass().getName() + ": " + _name + " being removed offline.");
+				_log.log(Level.INFO, getClass().getSimpleName() + ": " + _name + " being removed offline.");
 
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
@@ -192,7 +192,7 @@ public class CursedWeapon
 			{
 				_item.decayMe();
 				L2World.removeObject(_item);
-				_log.log(Level.INFO, getClass().getName() + ": " + _name + " item has been removed from World.");
+				_log.log(Level.INFO, getClass().getSimpleName() + ": " + _name + " item has been removed from World.");
 			}
 		}
 

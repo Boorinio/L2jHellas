@@ -14,84 +14,57 @@
  */
 package com.l2jhellas.gameserver.handler;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javolution.util.FastMap;
-
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelDelete;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelLeave;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.ChannelListUpdate;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.ClanPenalty;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.ClanWarsList;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.DisMount;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.Escape;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.Loc;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.Mount;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.OlympiadStat;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.PartyInfo;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.PvpInfo;
-import com.l2jhellas.gameserver.handler.usercommandhandlers.Time;
-
-public class UserCommandHandler
+public class UserCommandHandler implements IHandler<IUserCommandHandler, Integer>
 {
-	private static Logger _log = Logger.getLogger(UserCommandHandler.class.getName());
-
-	private static UserCommandHandler _instance;
 	private final Map<Integer, IUserCommandHandler> _datatable;
-
-	public static UserCommandHandler getInstance()
+	
+	protected UserCommandHandler()
 	{
-		if (_instance == null)
-		{
-			_instance = new UserCommandHandler();
-		}
-		return _instance;
+		_datatable = new HashMap<>();
 	}
-
-	public IUserCommandHandler getUserCommandHandler(int userCommand)
-	{
-		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": getting handler for user command: " + userCommand);
-		registerUserCommandHandler(new ClanPenalty());
-		registerUserCommandHandler(new ClanWarsList());
-		registerUserCommandHandler(new DisMount());
-		registerUserCommandHandler(new Escape());
-		registerUserCommandHandler(new Loc());
-		registerUserCommandHandler(new Mount());
-		registerUserCommandHandler(new PartyInfo());
-		registerUserCommandHandler(new Time());
-		registerUserCommandHandler(new OlympiadStat());
-		registerUserCommandHandler(new ChannelLeave());
-		registerUserCommandHandler(new ChannelDelete());
-		registerUserCommandHandler(new ChannelListUpdate());
-		if (Config.RANK_PVP_SYSTEM_ENABLED && Config.PVP_INFO_USER_COMMAND_ENABLED && Config.PVP_INFO_COMMAND_ENABLED)
-			registerUserCommandHandler(new PvpInfo());
-
-		_log.log(Level.FINE, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
-		return _datatable.get(new Integer(userCommand));
-	}
-
-	private UserCommandHandler()
-	{
-		_datatable = new FastMap<Integer, IUserCommandHandler>();
-	}
-
-	public void registerUserCommandHandler(IUserCommandHandler handler)
+	
+	@Override
+	public void registerHandler(IUserCommandHandler handler)
 	{
 		int[] ids = handler.getUserCommandList();
-		for (int i = 0; i < ids.length; i++)
+		for (int id : ids)
 		{
-			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Adding handler for user command " + ids[i]);
-			_datatable.put(new Integer(ids[i]), handler);
+			_datatable.put(id, handler);
 		}
 	}
-
+	
+	@Override
+	public synchronized void removeHandler(IUserCommandHandler handler)
+	{
+		int[] ids = handler.getUserCommandList();
+		for (int id : ids)
+		{
+			_datatable.remove(id);
+		}
+	}
+	
+	@Override
+	public IUserCommandHandler getHandler(Integer userCommand)
+	{
+		return _datatable.get(userCommand);
+	}
+	
+	@Override
 	public int size()
 	{
 		return _datatable.size();
+	}
+	
+	public static UserCommandHandler getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final UserCommandHandler _instance = new UserCommandHandler();
 	}
 }

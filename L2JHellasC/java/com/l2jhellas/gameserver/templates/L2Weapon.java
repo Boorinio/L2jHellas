@@ -394,7 +394,7 @@ public final class L2Weapon extends L2Item
 			try
 			{
 				// Get the skill handler corresponding to the skill type
-				ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
+				ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 
 				L2Character[] targets = new L2Character[1];
 				targets[0] = target;

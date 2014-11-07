@@ -43,7 +43,9 @@ import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
+import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
+import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.TownManager;
 import com.l2jhellas.gameserver.model.ChanceSkillList;
 import com.l2jhellas.gameserver.model.CharEffectList;
@@ -72,6 +74,7 @@ import com.l2jhellas.gameserver.model.actor.knownlist.CharKnownList;
 import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
+import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -6324,7 +6327,7 @@ public abstract class L2Character extends L2Object
 				// L2Character
 				if (getFirstEffect(skill.getId()) != null)
 				{
-					handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
+					handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 					if (handler != null)
 						
 						handler.useSkill(this, skill, targets);
@@ -6367,7 +6370,7 @@ public abstract class L2Character extends L2Object
 			}
 			// Get the skill handler corresponding to the skill type (PDAM,
 			// MDAM, SWEEP...) started in gameserver
-			handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
+			handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 			// Launch the magic skill and calculate its effects
 			if (handler != null)
 				
@@ -7216,5 +7219,77 @@ public abstract class L2Character extends L2Object
 	{
 		_effects.stopAllEffectsExceptThoseThatLastThroughDeath();
 	}
+
+	public boolean checkIfOkToUseStriderSiegeAssault(L2Character activeChar, Castle castle, boolean isCheckOnly)
+	{
+		if (activeChar == null || !(activeChar instanceof L2PcInstance))
+			return false;
+
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
+		L2PcInstance player = (L2PcInstance) activeChar;
+
+		if (castle == null || castle.getCastleId() <= 0)
+			sm.addString("You must be on castle ground to use strider siege assault");
+		else if (!castle.getSiege().getIsInProgress())
+			sm.addString("You can only use strider siege assault during a siege.");
+		else if (!(player.getTarget() instanceof L2DoorInstance))
+			sm.addString("You can only use strider siege assault on doors and walls.");
+		else if (!activeChar.isRiding())
+			sm.addString("You can only use strider siege assault when on strider.");
+		else
+			return true;
+
+		if (!isCheckOnly)
+		{
+			player.sendPacket(sm);
+		}
+		return false;
+	}
+	public boolean checkIfOkToUseStriderSiegeAssault(L2Character activeChar, boolean isCheckOnly)
+	{
+		return checkIfOkToUseStriderSiegeAssault(activeChar, CastleManager.getInstance().getCastle(activeChar), isCheckOnly);
+	}
 	
+	/**
+	 * Return true if character clan place a flag<BR>
+	 * <BR>
+	 * 
+	 * @param activeChar
+	 *        The L2Character of the character placing the flag
+	 * @param isCheckOnly
+	 *        if false, it will send a notification to the player telling him
+	 *        why it failed
+	 */
+	public boolean checkIfOkToPlaceFlag(L2Character activeChar, boolean isCheckOnly)
+	{
+		return checkIfOkToPlaceFlag(activeChar, CastleManager.getInstance().getCastle(activeChar), isCheckOnly);
+	}
+
+	public boolean checkIfOkToPlaceFlag(L2Character activeChar, Castle castle, boolean isCheckOnly)
+	{
+		if (activeChar == null || !(activeChar instanceof L2PcInstance))
+			return false;
+
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
+		L2PcInstance player = (L2PcInstance) activeChar;
+
+		if (castle == null || castle.getCastleId() <= 0)
+			sm.addString("You must be on castle ground to place a flag");
+		else if (!castle.getSiege().getIsInProgress())
+			sm.addString("You can only place a flag during a siege.");
+		else if (castle.getSiege().getAttackerClan(player.getClan()) == null)
+			sm.addString("You must be an attacker to place a flag");
+		else if (player.getClan() == null || !player.isClanLeader())
+			sm.addString("You must be a clan leader to place a flag");
+		else if (castle.getSiege().getAttackerClan(player.getClan()).getNumFlags() >= SiegeManager.getInstance().getFlagMaxCount())
+			sm.addString("You have already placed the maximum number of flags possible");
+		else
+			return true;
+
+		if (!isCheckOnly)
+		{
+			player.sendPacket(sm);
+		}
+		return false;
+	}
 }

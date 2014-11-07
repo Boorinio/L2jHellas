@@ -80,10 +80,6 @@ import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
-import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminEditChar;
-import com.l2jhellas.gameserver.handler.skillhandlers.SiegeFlag;
-import com.l2jhellas.gameserver.handler.skillhandlers.StrSiegeAssault;
-import com.l2jhellas.gameserver.handler.skillhandlers.TakeCastle;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.CoupleManager;
@@ -1606,15 +1602,15 @@ public final class L2PcInstance extends L2Playable
 		return _quests.get(quest);
 	}
 	
-		@Override
+	@Override
 	public void onActionShift(L2PcInstance player)
 	{
-			if (player.getTarget() != this)
-				player.setTarget(this);
-			else if (player.isGM())
-				AdminEditChar.showCharacterInfo(player, this);
+		if (player.getTarget() != this)
+			player.setTarget(this);
+		else if (player.isGM())
+			showCharacterInfo(player, this);
 			
-			player.sendPacket(ActionFailed.STATIC_PACKET);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 		
 	/**
@@ -9495,21 +9491,21 @@ public final class L2PcInstance extends L2Playable
 					return;
 				}
 		}
-		
-		if (sklTargetType == L2SkillTargetType.TARGET_HOLY && !TakeCastle.checkIfOkToCastSealOfRule(this, false))
+
+		if (sklTargetType == L2SkillTargetType.TARGET_HOLY && !checkIfOkToCastSealOfRule(CastleManager.getInstance().getCastle(this), false, skill))
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			abortCast();
 			return;
 		}
 		
-		if (SkillType == L2SkillType.SIEGEFLAG && !SiegeFlag.checkIfOkToPlaceFlag(this, false))
+		if (SkillType == L2SkillType.SIEGEFLAG && !checkIfOkToPlaceFlag(this, false))
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			abortCast();
 			return;
 		}
-		else if (SkillType == L2SkillType.STRSIEGEASSAULT && !StrSiegeAssault.checkIfOkToUseStriderSiegeAssault(this, false))
+		else if (SkillType == L2SkillType.STRSIEGEASSAULT && !checkIfOkToUseStriderSiegeAssault(this, false))
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			abortCast();
@@ -15264,5 +15260,111 @@ public final class L2PcInstance extends L2Playable
 		super.stopAllEffectsExceptThoseThatLastThroughDeath();
 		updateAndBroadcastStatus(2);
 	}
+	public static void gatherCharacterInfo(L2PcInstance activeChar, L2PcInstance player, String filename)
+	{
+		String ip = "N/A";
+		String account = "N/A";
+		try
+		{
+			String clientInfo = player.getClient().toString();
+			account = clientInfo.substring(clientInfo.indexOf("Account: ") + 9, clientInfo.indexOf(" - IP: "));
+			ip = clientInfo.substring(clientInfo.indexOf(" - IP: ") + 7, clientInfo.lastIndexOf("]"));
+		}
+		catch (Exception e)
+		{
+		}
+		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		adminReply.setFile("data/html/admin/" + filename);
+		adminReply.replace("%name%", player.getName());
+		adminReply.replace("%level%", String.valueOf(player.getLevel()));
+		adminReply.replace("%clan%", String.valueOf(ClanTable.getInstance().getClan(player.getClanId())));
+		adminReply.replace("%xp%", String.valueOf(player.getExp()));
+		adminReply.replace("%sp%", String.valueOf(player.getSp()));
+		adminReply.replace("%class%", player.getTemplate().className);
+		adminReply.replace("%ordinal%", String.valueOf(player.getClassId().ordinal()));
+		adminReply.replace("%classid%", String.valueOf(player.getClassId()));
+		adminReply.replace("%x%", String.valueOf(player.getX()));
+		adminReply.replace("%y%", String.valueOf(player.getY()));
+		adminReply.replace("%z%", String.valueOf(player.getZ()));
+		adminReply.replace("%currenthp%", String.valueOf((int) player.getCurrentHp()));
+		adminReply.replace("%maxhp%", String.valueOf(player.getMaxHp()));
+		adminReply.replace("%karma%", String.valueOf(player.getKarma()));
+		adminReply.replace("%currentmp%", String.valueOf((int) player.getCurrentMp()));
+		adminReply.replace("%maxmp%", String.valueOf(player.getMaxMp()));
+		adminReply.replace("%pvpflag%", String.valueOf(player.getPvpFlag()));
+		adminReply.replace("%currentcp%", String.valueOf((int) player.getCurrentCp()));
+		adminReply.replace("%maxcp%", String.valueOf(player.getMaxCp()));
+		adminReply.replace("%pvpkills%", String.valueOf(player.getPvpKills()));
+		adminReply.replace("%pkkills%", String.valueOf(player.getPkKills()));
+		adminReply.replace("%currentload%", String.valueOf(player.getCurrentLoad()));
+		adminReply.replace("%maxload%", String.valueOf(player.getMaxLoad()));
+		adminReply.replace("%percent%", String.valueOf(Util.roundTo(((float) player.getCurrentLoad() / (float) player.getMaxLoad()) * 100, 2)));
+		adminReply.replace("%patk%", String.valueOf(player.getPAtk(null)));
+		adminReply.replace("%matk%", String.valueOf(player.getMAtk(null, null)));
+		adminReply.replace("%pdef%", String.valueOf(player.getPDef(null)));
+		adminReply.replace("%mdef%", String.valueOf(player.getMDef(null, null)));
+		adminReply.replace("%accuracy%", String.valueOf(player.getAccuracy()));
+		adminReply.replace("%evasion%", String.valueOf(player.getEvasionRate(null)));
+		adminReply.replace("%critical%", String.valueOf(player.getCriticalHit(null, null)));
+		adminReply.replace("%runspeed%", String.valueOf(player.getRunSpeed()));
+		adminReply.replace("%patkspd%", String.valueOf(player.getPAtkSpd()));
+		adminReply.replace("%matkspd%", String.valueOf(player.getMAtkSpd()));
+		adminReply.replace("%access%", String.valueOf(player.getAccessLevel().getLevel()));
+		adminReply.replace("%account%", account);
+		adminReply.replace("%ip%", ip);
+		activeChar.sendPacket(adminReply);
+	}
+	
+	public static void showCharacterInfo(L2PcInstance activeChar, L2PcInstance player)
+	{
+		if (player == null)
+		{
+			L2Object target = activeChar.getTarget();
+			if (target instanceof L2PcInstance)
+				player = (L2PcInstance) target;
+			else
+				return;
+		}
+		else
+			activeChar.setTarget(player);
+		gatherCharacterInfo(activeChar, player, "charinfo.htm");
+	}
+	
+	public boolean checkIfOkToCastSealOfRule(Castle castle, boolean isCheckOnly, L2Skill skill)
+	{
+		SystemMessage sm;
+		if (castle == null || castle.getCastleId() <= 0)
+		{
+			sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+			sm.addSkillName(skill);
+		}
+		else if (!castle.getSiege().getIsInProgress())
+		{
+			sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+			sm.addSkillName(skill);
+		}
+		else if (!Util.checkIfInRange(200, this, getTarget(), true))
+		{
+			sm = SystemMessage.getSystemMessage(SystemMessageId.DIST_TOO_FAR_CASTING_STOPPED);
+		}
+		else if (castle.getSiege().getAttackerClan(getClan()) == null)
+		{
+			sm = SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED);
+			sm.addSkillName(skill);
+		}
+		else
+		{
+			if (!isCheckOnly)
+			{
+				sm = SystemMessage.getSystemMessage(SystemMessageId.OPPONENT_STARTED_ENGRAVING);
+				sendPacket(sm);
+			}
+			return true;
+		}
 
+		sendPacket(sm);
+		return false;
+	}
+	
+	
 }

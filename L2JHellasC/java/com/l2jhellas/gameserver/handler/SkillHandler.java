@@ -14,114 +14,59 @@
  */
 package com.l2jhellas.gameserver.handler;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.handler.skillhandlers.BalanceLife;
-import com.l2jhellas.gameserver.handler.skillhandlers.BeastFeed;
-import com.l2jhellas.gameserver.handler.skillhandlers.Blow;
-import com.l2jhellas.gameserver.handler.skillhandlers.Charge;
-import com.l2jhellas.gameserver.handler.skillhandlers.CombatPointHeal;
-import com.l2jhellas.gameserver.handler.skillhandlers.Continuous;
-import com.l2jhellas.gameserver.handler.skillhandlers.CpDam;
-import com.l2jhellas.gameserver.handler.skillhandlers.Craft;
-import com.l2jhellas.gameserver.handler.skillhandlers.DeluxeKey;
-import com.l2jhellas.gameserver.handler.skillhandlers.Disablers;
-import com.l2jhellas.gameserver.handler.skillhandlers.DrainSoul;
-import com.l2jhellas.gameserver.handler.skillhandlers.Fishing;
-import com.l2jhellas.gameserver.handler.skillhandlers.FishingSkill;
-import com.l2jhellas.gameserver.handler.skillhandlers.GetPlayer;
-import com.l2jhellas.gameserver.handler.skillhandlers.Harvest;
-import com.l2jhellas.gameserver.handler.skillhandlers.Heal;
-import com.l2jhellas.gameserver.handler.skillhandlers.ManaHeal;
-import com.l2jhellas.gameserver.handler.skillhandlers.Manadam;
-import com.l2jhellas.gameserver.handler.skillhandlers.Mdam;
-import com.l2jhellas.gameserver.handler.skillhandlers.Pdam;
-import com.l2jhellas.gameserver.handler.skillhandlers.Recall;
-import com.l2jhellas.gameserver.handler.skillhandlers.Resurrect;
-import com.l2jhellas.gameserver.handler.skillhandlers.SiegeFlag;
-import com.l2jhellas.gameserver.handler.skillhandlers.Sow;
-import com.l2jhellas.gameserver.handler.skillhandlers.Spoil;
-import com.l2jhellas.gameserver.handler.skillhandlers.StrSiegeAssault;
-import com.l2jhellas.gameserver.handler.skillhandlers.SummonFriend;
-import com.l2jhellas.gameserver.handler.skillhandlers.SummonTreasureKey;
-import com.l2jhellas.gameserver.handler.skillhandlers.Sweep;
-import com.l2jhellas.gameserver.handler.skillhandlers.TakeCastle;
-import com.l2jhellas.gameserver.handler.skillhandlers.Unlock;
 import com.l2jhellas.gameserver.model.L2SkillType;
 
-public class SkillHandler
+public class SkillHandler implements IHandler<ISkillHandler, L2SkillType>
 {
-	private static Logger _log = Logger.getLogger(SkillHandler.class.getName());
-
-	private static SkillHandler _instance;
-	private final Map<L2SkillType, ISkillHandler> _datatable;
-
-	public static SkillHandler getInstance()
+	private final Map<Integer, ISkillHandler> _datatable;
+	
+	protected SkillHandler()
 	{
-		if (_instance == null)
-		{
-			_instance = new SkillHandler();
-		}
-		return _instance;
+		_datatable = new HashMap<>();
 	}
-
-	private SkillHandler()
-	{
-		_datatable = new TreeMap<L2SkillType, ISkillHandler>();
-		registerSkillHandler(new Blow());
-		registerSkillHandler(new Pdam());
-		registerSkillHandler(new Mdam());
-		registerSkillHandler(new CpDam());
-		registerSkillHandler(new Manadam());
-		registerSkillHandler(new Heal());
-		registerSkillHandler(new CombatPointHeal());
-		registerSkillHandler(new ManaHeal());
-		registerSkillHandler(new BalanceLife());
-		registerSkillHandler(new Charge());
-		registerSkillHandler(new Continuous());
-		registerSkillHandler(new Resurrect());
-		registerSkillHandler(new Spoil());
-		registerSkillHandler(new Sweep());
-		registerSkillHandler(new StrSiegeAssault());
-		registerSkillHandler(new SummonFriend());
-		registerSkillHandler(new SummonTreasureKey());
-		registerSkillHandler(new Disablers());
-		registerSkillHandler(new Recall());
-		registerSkillHandler(new SiegeFlag());
-		registerSkillHandler(new TakeCastle());
-		registerSkillHandler(new Unlock());
-		registerSkillHandler(new DrainSoul());
-		registerSkillHandler(new Craft());
-		registerSkillHandler(new Fishing());
-		registerSkillHandler(new FishingSkill());
-		registerSkillHandler(new BeastFeed());
-		registerSkillHandler(new DeluxeKey());
-		registerSkillHandler(new Sow());
-		registerSkillHandler(new Harvest());
-		registerSkillHandler(new GetPlayer());
-
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
-	}
-
-	public void registerSkillHandler(ISkillHandler handler)
+	
+	@Override
+	public void registerHandler(ISkillHandler handler)
 	{
 		L2SkillType[] types = handler.getSkillIds();
 		for (L2SkillType t : types)
 		{
-			_datatable.put(t, handler);
+			_datatable.put(t.ordinal(), handler);
 		}
 	}
-
-	public ISkillHandler getSkillHandler(L2SkillType skillType)
+	
+	@Override
+	public synchronized void removeHandler(ISkillHandler handler)
 	{
-		return _datatable.get(skillType);
+		L2SkillType[] types = handler.getSkillIds();
+		for (L2SkillType t : types)
+		{
+			_datatable.remove(t.ordinal());
+		}
 	}
-
+	
+	@Override
+	public ISkillHandler getHandler(L2SkillType skillType)
+	{
+		return _datatable.get(skillType.ordinal());
+	}
+	
+	@Override
 	public int size()
 	{
 		return _datatable.size();
+	}
+	
+	public static SkillHandler getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final SkillHandler _instance = new SkillHandler();
 	}
 }

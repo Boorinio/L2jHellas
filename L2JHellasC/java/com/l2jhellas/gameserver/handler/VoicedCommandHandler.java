@@ -14,112 +14,62 @@
  */
 package com.l2jhellas.gameserver.handler;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javolution.util.FastMap;
-
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Away;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Banking;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Cl;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.MailCmd;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.OnlinePlayers;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Premium;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.PvpInfo;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.QuizCmd;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ServerRestartVote;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VipTeleport;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.VoiceInfo;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.Wedding;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.ZodiacRegistration;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.pmoff;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.stat;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.tradeoff;
-import com.l2jhellas.gameserver.handler.voicedcommandhandlers.version;
-
-public class VoicedCommandHandler
+public class VoicedCommandHandler implements IHandler<IVoicedCommandHandler, String>
 {
-	private static Logger _log = Logger.getLogger(VoicedCommandHandler.class.getName());
-
-	private static VoicedCommandHandler _instance;
 	private final Map<String, IVoicedCommandHandler> _datatable;
 
-	public static VoicedCommandHandler getInstance()
+	protected VoicedCommandHandler()
 	{
-		if (_instance == null)
-		{
-			_instance = new VoicedCommandHandler();
-		}
-		return _instance;
+		_datatable = new HashMap<>();
 	}
 
-	private VoicedCommandHandler()
-	{
-		_datatable = new FastMap<String, IVoicedCommandHandler>();
-		if (Config.MOD_ALLOW_WEDDING)
-			registerVoicedCommandHandler(new Wedding());
-		if (Config.ALLOW_AWAY_STATUS)
-			registerVoicedCommandHandler(new Away());
-		if (Config.ALLOW_TRADEOFF_COMMAND)
-			registerVoicedCommandHandler(new tradeoff());
-		if (Config.ALLOW_CLAN_LEADER_COMMAND)
-			registerVoicedCommandHandler(new Cl());
-		if (Config.ALLOW_VIPTELEPORT_COMMAND)
-			registerVoicedCommandHandler(new VipTeleport());
-		if (Config.ALLOW_INFO_COMMAND)
-			registerVoicedCommandHandler(new VoiceInfo());
-		if (Config.ALLOW_STAT_COMMAND)
-			registerVoicedCommandHandler(new stat());
-		if (Config.ALLOW_VERSION_COMMAND)
-			registerVoicedCommandHandler(new version());
-		if (Config.ALLOW_PLAYERS_REFUSAL)
-			registerVoicedCommandHandler(new pmoff());
-		if (Config.ALLOW_SERVER_RESTART_COMMAND)
-			registerVoicedCommandHandler(new ServerRestartVote());
-		if (Config.ONLINE_VOICE_ALLOW)
-			registerVoicedCommandHandler(new OnlinePlayers());
-		if (Config.BANKING_SYSTEM_ENABLED)
-			registerVoicedCommandHandler(new Banking());
-		if (Config.RANK_PVP_SYSTEM_ENABLED && Config.PVP_INFO_COMMAND_ENABLED && Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_INFO_USER_COMMAND_ENABLED)
-			registerVoicedCommandHandler(new PvpInfo());
-		if (Config.ENABLED_MESSAGE_SYSTEM)
-			registerVoicedCommandHandler(new MailCmd());
-		if (Config.ZODIAC_ENABLE)
-			registerVoicedCommandHandler(new ZodiacRegistration());
-		registerVoicedCommandHandler(new Premium());
-		if (Config.ENABLED_QUIZ_EVENT)
-			registerVoicedCommandHandler(new QuizCmd());
-
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + size() + " Handlers in total.");
-	}
-
-	public void registerVoicedCommandHandler(IVoicedCommandHandler handler)
+	@Override
+	public void registerHandler(IVoicedCommandHandler handler)
 	{
 		String[] ids = handler.getVoicedCommandList();
-		for (int i = 0; i < ids.length; i++)
+		for (String id : ids)
 		{
-			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Adding handler for command " + ids[i]);
-			_datatable.put(ids[i], handler);
+			_datatable.put(id, handler);
 		}
 	}
 
-	public IVoicedCommandHandler getVoicedCommandHandler(String voicedCommand)
+	@Override
+	public synchronized void removeHandler(IVoicedCommandHandler handler)
+	{
+		String[] ids = handler.getVoicedCommandList();
+		for (String id : ids)
+		{
+			_datatable.remove(id);
+		}
+	}
+
+	@Override
+	public IVoicedCommandHandler getHandler(String voicedCommand)
 	{
 		String command = voicedCommand;
-		if (voicedCommand.indexOf(" ") != -1)
+		if (voicedCommand.contains(" "))
 		{
 			command = voicedCommand.substring(0, voicedCommand.indexOf(" "));
 		}
-		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": getting handler for command: " + command + " -> " + (_datatable.get(command) != null));
 		return _datatable.get(command);
 	}
 
+	@Override
 	public int size()
 	{
 		return _datatable.size();
+	}
+
+	public static VoicedCommandHandler getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+
+	private static class SingletonHolder
+	{
+		protected static final VoicedCommandHandler _instance = new VoicedCommandHandler();
 	}
 }

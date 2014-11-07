@@ -202,7 +202,7 @@ public class L2CubicInstance
 							{
 								_target
 							};
-							ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
+							ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 
 							int x, y, z;
 							// temporary range check until real behavior of cubics is known/coded
@@ -321,7 +321,7 @@ public class L2CubicInstance
 							{
 								target
 							};
-							ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
+							ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 							if (handler != null)
 							{
 								handler.useSkill(_owner, skill, targets);

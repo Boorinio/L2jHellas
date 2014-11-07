@@ -79,13 +79,7 @@ import com.l2jhellas.gameserver.datatables.xml.ZoneData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
-import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.AutoAnnouncementHandler;
-import com.l2jhellas.gameserver.handler.ChatHandler;
-import com.l2jhellas.gameserver.handler.ItemHandler;
-import com.l2jhellas.gameserver.handler.SkillHandler;
-import com.l2jhellas.gameserver.handler.UserCommandHandler;
-import com.l2jhellas.gameserver.handler.VoicedCommandHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
 import com.l2jhellas.gameserver.instancemanager.AwayManager;
@@ -321,33 +315,26 @@ public class GameServer
 		Olympiad.getInstance();
 		Hero.getInstance();
 
-		Util.printSection("Handlers");
-		AdminCommandHandler.getInstance();
-		ChatHandler.getInstance();
-		ItemHandler.getInstance();
-		SkillHandler.getInstance();
-		UserCommandHandler.getInstance();
-		VoicedCommandHandler.getInstance();
 		Util.printSection("Scripts");
 		QuestManager.getInstance();
 		
 		if (!Config.ALT_DEV_NO_SCRIPT)
+		{
+			try
 			{
-				try
-				{
-					File scripts = new File("./data/scripts.cfg");
-					L2ScriptEngineManager.getInstance().executeScriptList(scripts);
-				}
-				catch (IOException ioe)
-				{
-					_log.severe("Failed loading scripts.cfg, no script going to be loaded");
-				}
-				QuestManager.getInstance().report();
+				final File scripts = new File("./data/scripts.cfg");
+				L2ScriptEngineManager.getInstance().executeScriptList(scripts);
 			}
-			else
+			catch (IOException ioe)
 			{
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts are disabled by Config.");
+				_log.severe("Failed loading scripts.cfg, no script going to be loaded.");
 			}
+			QuestManager.getInstance().report();
+		}
+		else
+		{
+			_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts are disabled by Config.");
+		}
 
 
 		Util.printSection("Customs");

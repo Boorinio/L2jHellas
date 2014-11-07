@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.handler.admincommandhandlers.AdminRecallAll;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -53,11 +52,6 @@ public final class DlgAnswer extends L2GameClientPacket
 
 		if (_messageId == SystemMessageId.RESSURECTION_REQUEST_BY_S1.getId())
 			player.reviveAnswer(_answer);
-		else if (_messageId == SystemMessageId.S1_WISHES_TO_SUMMON_YOU_FROM_S2_DO_YOU_ACCEPT.getId())
-			if(AdminRecallAll.isAdminSummoning == true && _answer==1)
-				player.teleToLocation(AdminRecallAll.x, AdminRecallAll.y, AdminRecallAll.z, false);
-			else
-				player.teleportAnswer(_answer, _unk);
 		else if (_messageId == SystemMessageId.WOULD_YOU_LIKE_TO_OPEN_THE_GATE.getId())
 			player.gatesAnswer(_answer, 1);
 		else if (_messageId == SystemMessageId.WOULD_YOU_LIKE_TO_CLOSE_THE_GATE.getId())

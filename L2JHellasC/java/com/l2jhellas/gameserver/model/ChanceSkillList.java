@@ -123,7 +123,7 @@ public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
 						return;
 				}
 
-				ISkillHandler handler = SkillHandler.getInstance().getSkillHandler(skill.getSkillType());
+				ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 				L2Object[] targets = skill.getTargetList(_owner, false);
 
 				_owner.broadcastPacket(new MagicSkillLaunched(_owner, skill.getDisplayId(), skill.getLevel(), targets));
