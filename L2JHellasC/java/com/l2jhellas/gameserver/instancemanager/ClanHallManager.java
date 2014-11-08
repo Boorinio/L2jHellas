@@ -27,6 +27,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
+import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -189,15 +190,21 @@ public class ClanHallManager
 	public final ClanHall getNearbyClanHall(int x, int y, int maxDist)
 	{
 
-		for (Map.Entry<Integer, ClanHall> ch : _clanHall.entrySet())
-			if (ch.getValue().getZone().getDistanceToZone(x, y) < maxDist)
-				return ch.getValue();
-
-		for (Map.Entry<Integer, ClanHall> ch : _freeClanHall.entrySet())
-			if (ch.getValue().getZone().getDistanceToZone(x, y) < maxDist)
-				return ch.getValue();
-
-		return null;
+		  L2ClanHallZone zone = null;
+			
+			for (Map.Entry<Integer, ClanHall> ch : _clanHall.entrySet())
+			{
+				zone = ch.getValue().getZone();
+				if (zone != null && zone.getDistanceToZone(x, y) < maxDist)
+					return ch.getValue();
+			}
+			for (Map.Entry<Integer, ClanHall> ch : _freeClanHall.entrySet())
+			{
+				zone = ch.getValue().getZone();
+				if (zone != null && zone.getDistanceToZone(x, y) < maxDist)
+					return ch.getValue();
+			}
+			return null;
 	}
 
 	/** Get Clan Hall by Owner */

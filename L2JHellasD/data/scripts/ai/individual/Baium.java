@@ -51,7 +51,7 @@ import com.l2jhellas.util.Util;
  */
 public class Baium extends AbstractNpcAI
 {
-	private static final L2BossZone _baiumLair = GrandBossManager.getZoneById(110002);
+	private static L2BossZone _baiumLair = GrandBossManager.getZoneById(110002);
 	
 	private static final int STONE_BAIUM = 29025;
 	private static final int LIVE_BAIUM = 29020;
@@ -311,9 +311,17 @@ public class Baium extends AbstractNpcAI
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
+		int npcId = npc.getNpcId();
 		String htmltext = "";
 		
-		if (GrandBossManager.getBossStatus(LIVE_BAIUM) == ASLEEP)
+		if (_baiumLair == null)
+		{
+			_baiumLair = GrandBossManager.getInstance().getZone(113100, 14500, 10077);
+			
+			if (_baiumLair == null)
+				return "<html><body>Angelic Vortex:<br>You may not enter!</body></html>";
+		}
+		if (npcId == STONE_BAIUM && GrandBossManager.getBossStatus(LIVE_BAIUM) == ASLEEP)
 		{
 			if (_baiumLair.isPlayerAllowed(player))
 			{
