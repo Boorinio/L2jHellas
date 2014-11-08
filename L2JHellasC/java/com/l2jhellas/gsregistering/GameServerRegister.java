@@ -130,7 +130,7 @@ public class GameServerRegister
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("DELETE * FROM gameservers");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM gameservers");
 			statement.executeUpdate();
 			statement.close();
 		}
