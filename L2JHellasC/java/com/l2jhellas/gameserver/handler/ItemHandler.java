@@ -54,7 +54,6 @@ import com.l2jhellas.gameserver.handler.itemhandlers.Seed;
 import com.l2jhellas.gameserver.handler.itemhandlers.SevenSignsRecord;
 import com.l2jhellas.gameserver.handler.itemhandlers.SoulCrystals;
 import com.l2jhellas.gameserver.handler.itemhandlers.SoulShots;
-import com.l2jhellas.gameserver.handler.itemhandlers.SpecialXMas;
 import com.l2jhellas.gameserver.handler.itemhandlers.SpiritShot;
 import com.l2jhellas.gameserver.handler.itemhandlers.SummonItems;
 
@@ -130,7 +129,6 @@ public class ItemHandler
 		registerItemHandler(new MercTicket());
 		registerItemHandler(new FishShots());
 		registerItemHandler(new ExtractableItems());
-		registerItemHandler(new SpecialXMas());
 		registerItemHandler(new SummonItems());
 		registerItemHandler(new BeastSpice());
 		if (Config.HERO_CUSTOM_ITEMS)

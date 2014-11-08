@@ -15,7 +15,6 @@
 package handlers.admincommandhandlers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.StringTokenizer;
 
 import javax.script.ScriptException;
@@ -27,7 +26,6 @@ import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.controllers.TradeController;
-import com.l2jhellas.gameserver.datatables.LevelUpData;
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.sql.BufferSkillsTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -36,6 +34,7 @@ import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.datatables.xml.LevelUpData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
@@ -209,10 +208,7 @@ public class AdminReload implements IAdminCommandHandler
 						L2ScriptEngineManager.reportScriptFileError(file, e);
 						activeChar.sendMessage("There was an error while loading handlers.");
 					}
-					catch (FileNotFoundException e)
-					{
-						activeChar.sendMessage("File not found: " + e.getMessage());
-					}
+
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Handlers has been reloaded.");
 					break;

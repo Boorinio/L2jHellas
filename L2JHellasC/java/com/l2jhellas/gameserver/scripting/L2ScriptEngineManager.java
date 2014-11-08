@@ -1,33 +1,38 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2013 L2J Server
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J Server.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J Server is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J Server is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.scripting;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.script.Compilable;
+import javax.script.CompiledScript;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -35,23 +40,26 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
+import javolution.util.FastMap;
+
+
 /**
- * Caches script engines and provides funcionality for executing and managing scripts.<BR>
+ * Caches script engines and provides functionality for executing and managing scripts.
  * @author KenM
  */
 public final class L2ScriptEngineManager
 {
 	private static final Logger _log = Logger.getLogger(L2ScriptEngineManager.class.getName());
 	
-	public final static File SCRIPT_FOLDER = new File("./data/scripts");
+	public static final File SCRIPT_FOLDER = new File("./data/scripts");
 	
 	public static L2ScriptEngineManager getInstance()
 	{
 		return SingletonHolder._instance;
 	}
 	
-	private final Map<String, ScriptEngine> _nameEngines = new HashMap<>();
-	private final Map<String, ScriptEngine> _extEngines = new HashMap<>();
+	private final Map<String, ScriptEngine> _nameEngines = new FastMap<>();
+	private final Map<String, ScriptEngine> _extEngines = new FastMap<>();
 	private final List<ScriptManager<?>> _scriptManagers = new LinkedList<>();
 	
 	private File _currentLoadingScript;
@@ -62,13 +70,18 @@ public final class L2ScriptEngineManager
 	 * Informs(logs) the scripts being loaded.<BR>
 	 * Apply only when executing script from files.<BR>
 	 */
-	private final boolean VERBOSE_LOADING = false;
+	private static final boolean VERBOSE_LOADING = false;
+	
+	/**
+	 * If the script engine supports compilation the script is compiled before execution.<BR>
+	 */
+	private static final boolean ATTEMPT_COMPILATION = true;
 	
 	/**
 	 * Clean an previous error log(if such exists) for the script being loaded before trying to load.<BR>
 	 * Apply only when executing script from files.<BR>
 	 */
-	private final boolean PURGE_ERROR_LOG = true;
+	private static final boolean PURGE_ERROR_LOG = true;
 	
 	protected L2ScriptEngineManager()
 	{
@@ -80,6 +93,7 @@ public final class L2ScriptEngineManager
 			try
 			{
 				ScriptEngine engine = factory.getScriptEngine();
+				boolean reg = false;
 				for (String name : factory.getNames())
 				{
 					ScriptEngine existentEngine = _nameEngines.get(name);
@@ -95,7 +109,13 @@ public final class L2ScriptEngineManager
 						}
 					}
 					
+					reg = true;
 					_nameEngines.put(name, engine);
+				}
+				
+				if (reg)
+				{
+					_log.info("Script Engine: " + factory.getEngineName() + " " + factory.getEngineVersion() + " - Language: " + factory.getLanguageName() + " - Language Version: " + factory.getLanguageVersion());
 				}
 				
 				for (String ext : factory.getExtensions())
@@ -108,9 +128,25 @@ public final class L2ScriptEngineManager
 			}
 			catch (Exception e)
 			{
-				_log.warning("Failed initializing factory. ");
-				e.printStackTrace();
+				_log.log(Level.WARNING, "Failed initializing factory: " + e.getMessage(), e);
 			}
+		}
+		
+		preConfigure();
+	}
+	
+	private void preConfigure()
+	{
+		// Jython sys.path
+		String dataPackDirForwardSlashes = SCRIPT_FOLDER.getPath().replaceAll("\\\\", "/");
+		String configScript = "import sys;sys.path.insert(0,'" + dataPackDirForwardSlashes + "');";
+		try
+		{
+			eval("jython", configScript);
+		}
+		catch (ScriptException e)
+		{
+			_log.severe("Failed preconfiguring jython: " + e.getMessage());
 		}
 	}
 	
@@ -127,57 +163,60 @@ public final class L2ScriptEngineManager
 	public void executeScriptList(File list) throws IOException
 	{
 		File file;
-		
+
+
 		if (list.isFile())
 		{
-			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(list)));
-			String line;
-			
-			while ((line = lnr.readLine()) != null)
+			try (FileInputStream fis = new FileInputStream(list);
+				InputStreamReader isr = new InputStreamReader(fis);
+				LineNumberReader lnr = new LineNumberReader(isr))
 			{
-				String[] parts = line.trim().split("#");
-				
-				if (parts.length > 0 && !parts[0].startsWith("#") && parts[0].length() > 0)
+				String line;
+				while ((line = lnr.readLine()) != null)
 				{
-					line = parts[0];
+					String[] parts = line.trim().split("#");
 					
-					if (line.endsWith("/**"))
+					if ((parts.length > 0) && !parts[0].isEmpty() && (parts[0].charAt(0) != '#'))
 					{
-						line = line.substring(0, line.length() - 3);
-					}
-					else if (line.endsWith("/*"))
-					{
-						line = line.substring(0, line.length() - 2);
-					}
-					
-					file = new File(SCRIPT_FOLDER, line);
-					
-					if (file.isDirectory() && parts[0].endsWith("/**"))
-					{
-						this.executeAllScriptsInDirectory(file, true, 32);
-					}
-					else if (file.isDirectory() && parts[0].endsWith("/*"))
-					{
-						this.executeAllScriptsInDirectory(file);
-					}
-					else if (file.isFile())
-					{
-						try
+						line = parts[0];
+						
+						if (line.endsWith("/**"))
 						{
-							this.executeScript(file);
+							line = line.substring(0, line.length() - 3);
 						}
-						catch (ScriptException e)
+						else if (line.endsWith("/*"))
 						{
-							reportScriptFileError(file, e);
+							line = line.substring(0, line.length() - 2);
 						}
-					}
-					else
-					{
-						_log.warning("Failed loading: (" + file.getCanonicalPath() + ") @ " + list.getName() + ":" + lnr.getLineNumber() + " - Reason: doesnt exists or is not a file.");
+						
+						file = new File(SCRIPT_FOLDER, line);
+						
+						if (file.isDirectory() && parts[0].endsWith("/**"))
+						{
+							executeAllScriptsInDirectory(file, true, 32);
+						}
+						else if (file.isDirectory() && parts[0].endsWith("/*"))
+						{
+							executeAllScriptsInDirectory(file);
+						}
+						else if (file.isFile())
+						{
+							try
+							{
+								executeScript(file);
+							}
+							catch (ScriptException e)
+							{
+								reportScriptFileError(file, e);
+							}
+						}
+						else
+						{
+							_log.warning("Failed loading: (" + file.getCanonicalPath() + ") @ " + list.getName() + ":" + lnr.getLineNumber() + " - Reason: doesnt exists or is not a file.");
+						}
 					}
 				}
 			}
-			lnr.close();
 		}
 		else
 		{
@@ -187,12 +226,12 @@ public final class L2ScriptEngineManager
 	
 	public void executeAllScriptsInDirectory(File dir)
 	{
-		this.executeAllScriptsInDirectory(dir, false, 0);
+		executeAllScriptsInDirectory(dir, false, 0);
 	}
 	
 	public void executeAllScriptsInDirectory(File dir, boolean recurseDown, int maxDepth)
 	{
-		this.executeAllScriptsInDirectory(dir, recurseDown, maxDepth, 0);
+		executeAllScriptsInDirectory(dir, recurseDown, maxDepth, 0);
 	}
 	
 	private void executeAllScriptsInDirectory(File dir, boolean recurseDown, int maxDepth, int currentDepth)
@@ -201,13 +240,13 @@ public final class L2ScriptEngineManager
 		{
 			for (File file : dir.listFiles())
 			{
-				if (file.isDirectory() && recurseDown && maxDepth > currentDepth)
+				if (file.isDirectory() && recurseDown && (maxDepth > currentDepth))
 				{
 					if (VERBOSE_LOADING)
 					{
 						_log.info("Entering folder: " + file.getName());
 					}
-					this.executeAllScriptsInDirectory(file, recurseDown, maxDepth, currentDepth + 1);
+					executeAllScriptsInDirectory(file, recurseDown, maxDepth, currentDepth + 1);
 				}
 				else if (file.isFile())
 				{
@@ -222,19 +261,13 @@ public final class L2ScriptEngineManager
 							ScriptEngine engine = getEngineByExtension(extension);
 							if (engine != null)
 							{
-								this.executeScript(engine, file);
+								executeScript(engine, file);
 							}
 						}
-					}
-					catch (FileNotFoundException e)
-					{
-						// should never happen
-						e.printStackTrace();
 					}
 					catch (ScriptException e)
 					{
 						reportScriptFileError(file, e);
-						// e.printStackTrace();
 					}
 				}
 			}
@@ -245,7 +278,7 @@ public final class L2ScriptEngineManager
 		}
 	}
 	
-	public void executeScript(File file) throws ScriptException, FileNotFoundException
+	public void executeScript(File file) throws ScriptException
 	{
 		String name = file.getName();
 		int lastIndex = name.lastIndexOf('.');
@@ -264,23 +297,21 @@ public final class L2ScriptEngineManager
 		{
 			throw new ScriptException("No engine registered for extension (" + extension + ")");
 		}
-		this.executeScript(engine, file);
+		executeScript(engine, file);
 	}
 	
-	public void executeScript(String engineName, File file) throws FileNotFoundException, ScriptException
+	public void executeScript(String engineName, File file) throws ScriptException
 	{
 		ScriptEngine engine = getEngineByName(engineName);
 		if (engine == null)
 		{
 			throw new ScriptException("No engine registered with name (" + engineName + ")");
 		}
-		this.executeScript(engine, file);
+		executeScript(engine, file);
 	}
 	
-	public void executeScript(ScriptEngine engine, File file) throws FileNotFoundException, ScriptException
+	public void executeScript(ScriptEngine engine, File file) throws ScriptException
 	{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		
 		if (VERBOSE_LOADING)
 		{
 			_log.info("Loading Script: " + file.getAbsolutePath());
@@ -296,21 +327,60 @@ public final class L2ScriptEngineManager
 			}
 		}
 		
-		ScriptContext context = new SimpleScriptContext();
-		context.setAttribute("mainClass", getClassForFile(file).replace('/', '.').replace('\\', '.'), ScriptContext.ENGINE_SCOPE);
-		context.setAttribute(ScriptEngine.FILENAME, file.getName(), ScriptContext.ENGINE_SCOPE);
-		context.setAttribute("classpath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
-		context.setAttribute("sourcepath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
-		setCurrentLoadingScript(file);
-		try
+		final String relativeName = file.getAbsolutePath().substring(SCRIPT_FOLDER.getAbsolutePath().length() + 1).replace('\\', '/');
+		try (FileInputStream fis = new FileInputStream(file);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader reader = new BufferedReader(isr))
 		{
-			engine.eval(reader, context);
+			if ((engine instanceof Compilable) && ATTEMPT_COMPILATION)
+			{
+				ScriptContext context = new SimpleScriptContext();
+				context.setAttribute("mainClass", getClassForFile(file).replace('/', '.').replace('\\', '.'), ScriptContext.ENGINE_SCOPE);
+				context.setAttribute(ScriptEngine.FILENAME, relativeName, ScriptContext.ENGINE_SCOPE);
+				context.setAttribute("classpath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
+				context.setAttribute("sourcepath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
+				
+				setCurrentLoadingScript(file);
+				ScriptContext ctx = engine.getContext();
+				try
+				{
+					engine.setContext(context);
+					Compilable eng = (Compilable) engine;
+					CompiledScript cs = eng.compile(reader);
+					cs.eval(context);
+				}
+				finally
+				{
+					engine.setContext(ctx);
+					setCurrentLoadingScript(null);
+					context.removeAttribute(ScriptEngine.FILENAME, ScriptContext.ENGINE_SCOPE);
+					context.removeAttribute("mainClass", ScriptContext.ENGINE_SCOPE);
+				}
+			}
+			else
+			{
+				ScriptContext context = new SimpleScriptContext();
+				context.setAttribute("mainClass", getClassForFile(file).replace('/', '.').replace('\\', '.'), ScriptContext.ENGINE_SCOPE);
+				context.setAttribute(ScriptEngine.FILENAME, relativeName, ScriptContext.ENGINE_SCOPE);
+				context.setAttribute("classpath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
+				context.setAttribute("sourcepath", SCRIPT_FOLDER.getAbsolutePath(), ScriptContext.ENGINE_SCOPE);
+				setCurrentLoadingScript(file);
+				try
+				{
+					engine.eval(reader, context);
+				}
+				finally
+				{
+					setCurrentLoadingScript(null);
+					engine.getContext().removeAttribute(ScriptEngine.FILENAME, ScriptContext.ENGINE_SCOPE);
+					engine.getContext().removeAttribute("mainClass", ScriptContext.ENGINE_SCOPE);
+				}
+				
+			}
 		}
-		finally
+		catch (IOException e)
 		{
-			setCurrentLoadingScript(null);
-			engine.getContext().removeAttribute(ScriptEngine.FILENAME, ScriptContext.ENGINE_SCOPE);
-			engine.getContext().removeAttribute("mainClass", ScriptContext.ENGINE_SCOPE);
+			_log.log(Level.WARNING, "Error executing script!", e);
 		}
 	}
 	
@@ -326,7 +396,7 @@ public final class L2ScriptEngineManager
 		return null;
 	}
 	
-	public static ScriptContext getScriptContext(ScriptEngine engine)
+	public ScriptContext getScriptContext(ScriptEngine engine)
 	{
 		return engine.getContext();
 	}
@@ -341,14 +411,20 @@ public final class L2ScriptEngineManager
 		return getScriptContext(engine);
 	}
 	
-	public static Object eval(ScriptEngine engine, String script, ScriptContext context) throws ScriptException
+	public Object eval(ScriptEngine engine, String script, ScriptContext context) throws ScriptException
 	{
+		if ((engine instanceof Compilable) && ATTEMPT_COMPILATION)
+		{
+			Compilable eng = (Compilable) engine;
+			CompiledScript cs = eng.compile(script);
+			return context != null ? cs.eval(context) : cs.eval();
+		}
 		return context != null ? engine.eval(script, context) : engine.eval(script);
 	}
 	
 	public Object eval(String engineName, String script) throws ScriptException
 	{
-		return this.eval(engineName, script, null);
+		return eval(engineName, script, null);
 	}
 	
 	public Object eval(String engineName, String script, ScriptContext context) throws ScriptException
@@ -361,7 +437,7 @@ public final class L2ScriptEngineManager
 		return eval(engine, script, context);
 	}
 	
-	public static Object eval(ScriptEngine engine, String script) throws ScriptException
+	public Object eval(ScriptEngine engine, String script) throws ScriptException
 	{
 		return eval(engine, script, null);
 	}
@@ -391,7 +467,6 @@ public final class L2ScriptEngineManager
 			_log.warning("Failed executing script: " + script.getAbsolutePath() + "\r\n" + e.getMessage() + "Additionally failed when trying to write an error report on script directory.");
 		}
 	}
-	
 	public void registerScriptManager(ScriptManager<?> manager)
 	{
 		_scriptManagers.add(manager);
