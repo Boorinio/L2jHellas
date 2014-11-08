@@ -80,6 +80,7 @@ import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.handler.AutoAnnouncementHandler;
+import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
 import com.l2jhellas.gameserver.instancemanager.AwayManager;
@@ -127,7 +128,6 @@ import com.l2jhellas.mmocore.network.SelectorThread;
 import com.l2jhellas.shield.antibot.AntiAfk;
 import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.status.Status;
-import com.l2jhellas.util.DynamicExtension;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -316,8 +316,8 @@ public class GameServer
 		Hero.getInstance();
 
 		Util.printSection("Scripts");
+		ItemHandler.getInstance(); // TODO move to datapack
 		QuestManager.getInstance();
-		
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
 			try
@@ -393,21 +393,7 @@ public class GameServer
 		{
 			CoupleManager.getInstance();
 		}
-		
-		Util.printSection("Dynamic Extensions");
-		// initialize the dynamic extension loader
-		try
-		{
-			DynamicExtension.getInstance();
-		}
-		catch (Exception ex)
-		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Dynamic Extension initials", ex);
-			if (Config.DEVELOPER)
-			{
-				ex.printStackTrace();
-			}
-		}
+
 		IpCatcher.ipsLoad();
 		// run garbage collector
 		System.gc();

@@ -19,7 +19,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
@@ -489,7 +488,7 @@ public class L2DoorInstance extends L2Character
 			}
 
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder html1 = new TextBuilder("<html><title>Door Edit</title><body><table border=0>");
+			StringBuilder html1 = new StringBuilder("<html><title>Door Edit</title><body><table border=0>");
 			html1.append("<tr><td>Door Stats:</td></tr>");
 			html1.append("<tr><td>HP: " + (int) getCurrentHp() + "/" + getMaxHp() +"</td></tr>");
 

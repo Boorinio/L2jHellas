@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
@@ -188,7 +187,7 @@ abstract class DocumentBase
 	protected void attachLambdaFunc(Node n, Object template, LambdaCalc calc)
 	{
 		String name = n.getNodeName();
-		TextBuilder sb = new TextBuilder(name);
+		StringBuilder sb = new StringBuilder(name);
 		sb.setCharAt(0, Character.toUpperCase(name.charAt(0)));
 		name = sb.toString();
 		Lambda lambda = getLambda(n, template);

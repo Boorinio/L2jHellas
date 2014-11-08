@@ -20,7 +20,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
@@ -186,7 +185,7 @@ public class PostBBSManager extends BaseBBSManager
 	 */
 	private void showHtmlEditPost(Topic topic, L2PcInstance activeChar, Forum forum, Post p)
 	{
-		TextBuilder html = new TextBuilder("<html>");
+		StringBuilder html = new StringBuilder("<html>");
 		html.append("<body><br><br>");
 		html.append("<table border=0 width=610><tr><td width=10></td><td width=600 align=left>");
 		html.append("<a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">" + forum.getName() + " Form</a>");
@@ -243,7 +242,7 @@ public class PostBBSManager extends BaseBBSManager
 		Post p = getGPosttByTopic(topic);
 		Locale locale = Locale.getDefault();
 		DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, locale);
-		TextBuilder html = new TextBuilder("<html><body><br><br>");
+		StringBuilder html = new StringBuilder("<html><body><br><br>");
 		html.append("<table border=0 width=610><tr><td width=10></td><td width=600 align=left>");
 		html.append("<a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">Memo Form</a>");
 		html.append("</td></tr>");

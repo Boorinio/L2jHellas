@@ -16,8 +16,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -141,7 +139,7 @@ public class L2CharNoblesInstance extends L2Npc
 
 	private void showWindow(L2PcInstance player, int window)
 	{
-		TextBuilder tb;
+		StringBuilder tb;
 		NpcHtmlMessage html;
 		if (window == 0)
 		{
@@ -151,12 +149,12 @@ public class L2CharNoblesInstance extends L2Npc
 		}
 		else if (window == 1 && Config.NPC_NOBLES_ENABLE)
 		{
-			tb = new TextBuilder();
+			tb = new StringBuilder();
 			tb.append("<html><title>Becoming a Nobles</title><body><center><br><br>");
 			tb.append("Here you can get a nobleman's status.<br>");
 			tb.append("<a action=\"bypass -h npc_%objectId%_setstatus 1\">Get the status of a nobleman</a>");
 			tb.append("Price:<br><table>");
-			tb.append("<tr><td>" + Config.NPC_NOBLESS_QUANTITY + " <font color=\"LEVEL\">" + ItemTable.getInstance().getTemplate(Config.NPC_NOBLESS_ID).getName() + "</font></td></tr><br>");
+			tb.append("<tr><td>" + Config.NPC_NOBLESS_QUANTITY + " <font color=\"LEVEL\">" + ItemTable.getInstance().getTemplate(Config.NPC_NOBLESS_ID).getItemName() + "</font></td></tr><br>");
 			tb.append("</table><br>This items can be droped by <font color=\"LEVEL\">RB's</font><br>For More info click on <a action=\"bypass -h npc_%objectId%_info\">List</a><br><button value=\"Back\" action=\"bypass -h npc_%objectId%_showwindow 0\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\"><br>");
 
 			tb.append("</center></body></html>");
@@ -166,7 +164,7 @@ public class L2CharNoblesInstance extends L2Npc
 		}
 		else
 		{
-			tb = new TextBuilder();
+			tb = new StringBuilder();
 			tb.append("<html><title>Becoming a Nobles</title>");
 			tb.append("<body><center><br><br><br><br><br><br><br><br><br><br><br><br><br><font color=\"LEVEL\"> Service is courently Disabled.</font><br><button value=\"Back\" action=\"bypass -h npc_%objectId%_showwindow 0\" width=\"96\" height=\"19\" back=\"noico.bi2\" fore=\"noico.bi2\">");
 			tb.append("</center></body></html>");

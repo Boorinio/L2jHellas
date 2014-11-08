@@ -64,7 +64,6 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
-import com.l2jhellas.util.DynamicExtension;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class GameStatusThread extends Thread
@@ -824,105 +823,6 @@ public class GameStatusThread extends Thread
 					}
 					catch (Exception e)
 					{
-					}
-				}
-				else if (_usrCommand.startsWith("extreload"))
-				{
-					String[] args = _usrCommand.split("\\s+");
-					if (args.length > 1)
-					{
-						for (int i = 1; i < args.length; i++)
-						{
-							DynamicExtension.getInstance().reload(args[i]);
-						}
-					}
-					else
-					{
-						DynamicExtension.getInstance().reload();
-					}
-				}
-				else if (_usrCommand.startsWith("extinit"))
-				{
-					String[] args = _usrCommand.split("\\s+");
-					if (args.length > 1)
-					{
-						for (int i = 1; i < args.length; i++)
-						{
-							_print.print(DynamicExtension.getInstance().initExtension(args[i]) + "\r\n");
-						}
-					}
-					else
-					{
-						_print.print(DynamicExtension.getInstance().initExtensions());
-					}
-				}
-				else if (_usrCommand.startsWith("extunload"))
-				{
-					String[] args = _usrCommand.split("\\s+");
-					if (args.length > 1)
-					{
-						for (int i = 1; i < args.length; i++)
-						{
-							_print.print(DynamicExtension.getInstance().unloadExtension(args[i]) + "\r\n");
-						}
-					}
-					else
-					{
-						_print.print(DynamicExtension.getInstance().unloadExtensions());
-					}
-				}
-				else if (_usrCommand.startsWith("extlist"))
-				{
-					for (String e : DynamicExtension.getInstance().getExtensions())
-					{
-						_print.print(e + "\r\n");
-					}
-				}
-				else if (_usrCommand.startsWith("get"))
-				{
-					Object o = null;
-					try
-					{
-						String[] args = _usrCommand.substring(3).split("\\s+");
-						if (args.length == 1)
-						{
-							o = DynamicExtension.getInstance().get(args[0], null);
-						}
-						else
-						{
-							o = DynamicExtension.getInstance().get(args[0], args[1]);
-						}
-					}
-					catch (Exception ex)
-					{
-						_print.print(ex.toString() + "\r\n");
-					}
-					if (o != null)
-					{
-						_print.print(o.toString() + "\r\n");
-					}
-				}
-				else if (_usrCommand.length() > 0)
-				{
-					try
-					{
-						String[] args = _usrCommand.split("\\s+");
-						if (args.length == 1)
-						{
-							DynamicExtension.getInstance().set(args[0], null, null);
-						}
-						else if (args.length == 2)
-						{
-							DynamicExtension.getInstance().set(args[0], null, args[1]);
-						}
-						else
-						{
-							DynamicExtension.getInstance().set(args[0], args[1], args[2]);
-						}
-					}
-					catch (Exception ex)
-					{
-						_print.print(ex.toString());
 					}
 				}
 				else if (_usrCommand.length() == 0)

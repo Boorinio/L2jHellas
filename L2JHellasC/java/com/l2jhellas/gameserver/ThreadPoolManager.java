@@ -25,8 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
@@ -307,7 +305,7 @@ public class ThreadPoolManager
 
 	public String getPacketStats()
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		ThreadFactory tf = _generalPacketsThreadPool.getThreadFactory();
 		if (tf instanceof PriorityThreadFactory)
 		{
@@ -337,7 +335,7 @@ public class ThreadPoolManager
 
 	public String getIOPacketStats()
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		ThreadFactory tf = _ioPacketsThreadPool.getThreadFactory();
 		if (tf instanceof PriorityThreadFactory)
 		{
@@ -367,7 +365,7 @@ public class ThreadPoolManager
 
 	public String getGeneralStats()
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		ThreadFactory tf = _generalThreadPool.getThreadFactory();
 		if (tf instanceof PriorityThreadFactory)
 		{

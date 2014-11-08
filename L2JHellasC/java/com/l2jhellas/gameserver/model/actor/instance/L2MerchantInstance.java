@@ -16,8 +16,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
@@ -188,7 +186,7 @@ public class L2MerchantInstance extends L2NpcInstance
 		if (!Config.LIST_PET_RENT_NPC.contains(getTemplate().npcId))
 			return;
 
-		TextBuilder html1 = new TextBuilder("<html><body>Pet Manager:<br>");
+		StringBuilder html1 = new StringBuilder("<html><body>Pet Manager:<br>");
 		html1.append("You can rent a wyvern or strider for adena.<br>My prices:<br1>");
 		html1.append("<table border=0><tr><td>Ride</td></tr>");
 		html1.append("<tr><td>Wyvern</td><td>Strider</td></tr>");
@@ -269,7 +267,7 @@ public class L2MerchantInstance extends L2NpcInstance
 			}
 
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder html1 = new TextBuilder("<html><body><table border=0>");
+			StringBuilder html1 = new StringBuilder("<html><body><table border=0>");
 			html1.append("<tr><td>Current Target:</td></tr>");
 			html1.append("<tr><td><br></td></tr>");
 

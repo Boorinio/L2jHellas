@@ -18,8 +18,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -30,7 +28,7 @@ public class RaidList
 	private static final String SELECT_RAID_DATA = "SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` ";
 	private static final String SELECT_SPAWN = "SELECT respawn_time, respawn_min_delay, respawn_max_delay FROM raidboss_spawnlist WHERE boss_id=";
 	
-	private final TextBuilder _raidList = new TextBuilder();
+	private final StringBuilder _raidList = new StringBuilder();
 
 	public RaidList(String rfid)
 	{

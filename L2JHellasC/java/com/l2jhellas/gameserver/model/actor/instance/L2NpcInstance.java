@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
@@ -64,7 +62,7 @@ public class L2NpcInstance extends L2Npc
 		if (_classesToTeach == null)
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder sb = new TextBuilder();
+			StringBuilder sb = new StringBuilder();
 			sb.append("<html><body>");
 			sb.append("I cannot teach you. My class list is empty.<br> Ask admin to fix it. Need add my npcid and classes to skill_learn.sql.<br>NpcId:" + npcId + ", Your classId:" + player.getClassId().getId() + "<br>");
 			sb.append("</body></html>");
@@ -77,7 +75,7 @@ public class L2NpcInstance extends L2Npc
 		if (!getTemplate().canTeach(classId))
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder sb = new TextBuilder();
+			StringBuilder sb = new StringBuilder();
 			sb.append("<html><body>");
 			sb.append("I cannot teach you any skills.<br> You must find your current class teachers.");
 			sb.append("</body></html>");
@@ -142,7 +140,7 @@ public class L2NpcInstance extends L2Npc
 		if (_classesToTeach == null)
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder sb = new TextBuilder();
+			StringBuilder sb = new StringBuilder();
 			sb.append("<html><body>");
 			sb.append("I cannot teach you. My class list is empty.<br> Ask admin to fix it. Need add my npcid and classes to skill_learn.sql.<br>NpcId:" + npcId + ", Your classId:" + player.getClassId().getId() + "<br>");
 			sb.append("</body></html>");
@@ -155,7 +153,7 @@ public class L2NpcInstance extends L2Npc
 		if (!getTemplate().canTeach(classId))
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder sb = new TextBuilder();
+			StringBuilder sb = new StringBuilder();
 			sb.append("<html><body>");
 			sb.append("I cannot teach you any skills.<br> You must find your current class teachers.");
 			sb.append("</body></html>");
@@ -167,7 +165,7 @@ public class L2NpcInstance extends L2Npc
 		if (player.getClassId().getId() < 88)
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			TextBuilder sb = new TextBuilder();
+			StringBuilder sb = new StringBuilder();
 			sb.append("<html><body>");
 			sb.append("You must have 3rd class change quest completed.");
 			sb.append("</body></html>");
@@ -203,7 +201,7 @@ public class L2NpcInstance extends L2Npc
 			}
 			else
 			{
-				TextBuilder sb = new TextBuilder();
+				StringBuilder sb = new StringBuilder();
 				sb.append("<html><body>");
 				sb.append("You've learned all skills for your class.<br>");
 				sb.append("</body></html>");

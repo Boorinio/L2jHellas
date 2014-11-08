@@ -17,8 +17,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -501,7 +499,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 				if (val != "")
 					getCastle().setTaxPercent(player, Integer.parseInt(val));
 
-				TextBuilder msg = new TextBuilder("<html><body>");
+				StringBuilder msg = new StringBuilder("<html><body>");
 				msg.append(getName() + ":<br>");
 				msg.append("Current tax rate: " + getCastle().getTaxPercent() + "%<br>");
 				msg.append("<table>");

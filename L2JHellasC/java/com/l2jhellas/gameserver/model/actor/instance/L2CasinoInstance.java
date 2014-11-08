@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -115,7 +113,7 @@ public class L2CasinoInstance extends L2Npc
 
 	private static String casinoWindow(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Casino Manager</title><body>");
 		tb.append("<center>");
 		tb.append("<br>");

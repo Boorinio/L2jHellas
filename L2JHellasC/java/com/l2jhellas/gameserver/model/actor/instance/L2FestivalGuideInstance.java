@@ -17,8 +17,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.Calendar;
 import java.util.List;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
@@ -305,7 +303,7 @@ public final class L2FestivalGuideInstance extends L2NpcInstance
 						showChatWindow(player, 3, "d", false);
 				break;
 				case 4: // Current High Scores
-					TextBuilder strBuffer = new TextBuilder("<html><body>Festival Guide:<br>These are the top scores of the week, for the ");
+					StringBuilder strBuffer = new StringBuilder("<html><body>Festival Guide:<br>These are the top scores of the week, for the ");
 
 					final StatsSet dawnData = SevenSignsFestival.getInstance().getHighestScoreData(SevenSigns.CABAL_DAWN, _festivalType);
 					final StatsSet duskData = SevenSignsFestival.getInstance().getHighestScoreData(SevenSigns.CABAL_DUSK, _festivalType);
@@ -449,7 +447,7 @@ public final class L2FestivalGuideInstance extends L2NpcInstance
 
 	private final String getStatsTable()
 	{
-		TextBuilder tableHtml = new TextBuilder();
+		StringBuilder tableHtml = new StringBuilder();
 
 		// Get the scores for each of the festival level ranges (types).
 		for (int i = 0; i < 5; i++)
@@ -472,7 +470,7 @@ public final class L2FestivalGuideInstance extends L2NpcInstance
 
 	private final String getBonusTable()
 	{
-		TextBuilder tableHtml = new TextBuilder();
+		StringBuilder tableHtml = new StringBuilder();
 
 		// Get the accumulated scores for each of the festival level ranges (types).
 		for (int i = 0; i < 5; i++)

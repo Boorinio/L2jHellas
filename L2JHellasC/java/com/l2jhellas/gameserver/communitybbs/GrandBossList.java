@@ -18,8 +18,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.games.Lottery;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -30,7 +28,7 @@ public class GrandBossList
 
 	private static final String SELECT_BOSS = "SELECT boss_id, status FROM grandboss_data";
 	private static final String SELECT_NAME = "SELECT name FROM npc WHERE id=";
-	private final TextBuilder _GrandBossList = new TextBuilder();
+	private final StringBuilder _GrandBossList = new StringBuilder();
 
 	public GrandBossList()
 	{

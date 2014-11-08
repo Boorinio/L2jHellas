@@ -18,8 +18,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -31,7 +29,7 @@ public class ClanList
 	private static final String SELECT_CASTLE = "SELECT name FROM castle WHERE id=";
 	private static final String SELECT_CHARNAME = "SELECT char_name FROM characters WHERE obj_Id=";
 	
-	private final TextBuilder _clanList = new TextBuilder();
+	private final StringBuilder _clanList = new StringBuilder();
 
 	public ClanList(int type)
 	{

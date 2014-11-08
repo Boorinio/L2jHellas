@@ -16,8 +16,6 @@ package com.l2jhellas.gameserver.communitybbs.Manager;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -154,7 +152,7 @@ public class ClanBBSManager extends BaseBBSManager
 			index = 1;
 		}
 		// header
-		TextBuilder html = new TextBuilder("<html><body><br><br><center>");
+		StringBuilder html = new StringBuilder("<html><body><br><br><center>");
 		html.append("<br1><br1><table border=0 cellspacing=0 cellpadding=0>");
 		html.append("<tr><td FIXWIDTH=15>&nbsp;</td>");
 		html.append("<td width=610 height=30 align=left>");
@@ -278,7 +276,7 @@ public class ClanBBSManager extends BaseBBSManager
 			}
 			else
 			{
-				TextBuilder html = new TextBuilder("<html><body><center><br><br>");
+				StringBuilder html = new StringBuilder("<html><body><center><br><br>");
 				html.append("<br1><br1><table border=0 cellspacing=0 cellpadding=0>");
 				html.append("<tr><td FIXWIDTH=15>&nbsp;</td>");
 				html.append("<td width=610 height=30 align=left>");

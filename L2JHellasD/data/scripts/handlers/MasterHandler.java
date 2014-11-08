@@ -92,43 +92,6 @@ import handlers.chathandlers.ChatPetition;
 import handlers.chathandlers.ChatShout;
 import handlers.chathandlers.ChatTell;
 import handlers.chathandlers.ChatTrade;
-import handlers.itemhandlers.BeastSoulShot;
-import handlers.itemhandlers.BeastSpice;
-import handlers.itemhandlers.BeastSpiritShot;
-import handlers.itemhandlers.BlessedSpiritShot;
-import handlers.itemhandlers.Book;
-import handlers.itemhandlers.CharChangePotions;
-import handlers.itemhandlers.ChestKey;
-import handlers.itemhandlers.ChristmasTree;
-import handlers.itemhandlers.CompBlessedSpiritShotPacks;
-import handlers.itemhandlers.CompShotPacks;
-import handlers.itemhandlers.CompSpiritShotPacks;
-import handlers.itemhandlers.CrystalCarol;
-import handlers.itemhandlers.EnchantScrolls;
-import handlers.itemhandlers.EnergyStone;
-import handlers.itemhandlers.ExtractableItems;
-import handlers.itemhandlers.Firework;
-import handlers.itemhandlers.FishShots;
-import handlers.itemhandlers.Harvester;
-import handlers.itemhandlers.HeroCustomItem;
-import handlers.itemhandlers.Maps;
-import handlers.itemhandlers.MercTicket;
-import handlers.itemhandlers.MysteryPotion;
-import handlers.itemhandlers.PaganKeys;
-import handlers.itemhandlers.Potions;
-import handlers.itemhandlers.Recipes;
-import handlers.itemhandlers.Remedy;
-import handlers.itemhandlers.RollingDice;
-import handlers.itemhandlers.ScrollOfEscape;
-import handlers.itemhandlers.ScrollOfResurrection;
-import handlers.itemhandlers.Scrolls;
-import handlers.itemhandlers.Seed;
-import handlers.itemhandlers.SevenSignsRecord;
-import handlers.itemhandlers.SoulCrystals;
-import handlers.itemhandlers.SoulShots;
-import handlers.itemhandlers.SpecialXMas;
-import handlers.itemhandlers.SpiritShot;
-import handlers.itemhandlers.SummonItems;
 import handlers.skillhandlers.BalanceLife;
 import handlers.skillhandlers.BeastFeed;
 import handlers.skillhandlers.Blow;
@@ -207,12 +170,9 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.ChatHandler;
 import com.l2jhellas.gameserver.handler.IHandler;
-import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.handler.UserCommandHandler;
 import com.l2jhellas.gameserver.handler.VoicedCommandHandler;
-import com.l2jhellas.util.Util;
-
 
 /**
  * Master handler.
@@ -225,7 +185,6 @@ public class MasterHandler
 	{
 		AdminCommandHandler.getInstance(),
 		ChatHandler.getInstance(),
-		ItemHandler.getInstance(),
 		SkillHandler.getInstance(),
 		UserCommandHandler.getInstance(),
 		VoicedCommandHandler.getInstance(),
@@ -324,48 +283,6 @@ public class MasterHandler
 			ChatTrade.class,
 		},
 		{
-			// Item Handlers
-			BeastSoulShot.class,
-			ScrollOfEscape.class,
-			ScrollOfResurrection.class,
-			SoulShots.class,
-			SpiritShot.class,
-			BlessedSpiritShot.class,
-			BeastSoulShot.class,
-			BeastSpiritShot.class,
-			ChestKey.class,
-			ChristmasTree.class,
-			CompBlessedSpiritShotPacks.class,
-			CompBlessedSpiritShotPacks.class,
-			CompShotPacks.class,
-			CompSpiritShotPacks.class,
-			PaganKeys.class,
-			Maps.class,
-			Potions.class,
-			Recipes.class,
-			RollingDice.class,
-			MysteryPotion.class,
-			EnchantScrolls.class,
-			EnergyStone.class,
-			Book.class,
-			Remedy.class,
-			Scrolls.class,
-			CrystalCarol.class,
-			SoulCrystals.class,
-			SevenSignsRecord.class,
-			CharChangePotions.class,
-			Firework.class,
-			Seed.class,
-			Harvester.class,
-			MercTicket.class,
-			FishShots.class,
-			ExtractableItems.class,
-			SpecialXMas.class,
-			SummonItems.class,
-			BeastSpice.class,
-			(Config.HERO_CUSTOM_ITEMS ? HeroCustomItem.class : null),
-		},
-		{
 			// Skill Handlers
 			BalanceLife.class,
 			BeastFeed.class,
@@ -456,7 +373,6 @@ public class MasterHandler
 	 */
 	public static void main(String[] args)
 	{
-		Util.printSection("Handlers");
 		Map<IHandler<?, ?>, Method> registerHandlerMethods = new HashMap<>();
 		for (IHandler<?, ?> loadInstance : _loadInstances)
 		{

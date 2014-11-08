@@ -16,8 +16,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
@@ -156,7 +154,7 @@ public class L2FishermanInstance extends L2NpcInstance
 			}
 			else
 			{
-				TextBuilder sb = new TextBuilder();
+				StringBuilder sb = new StringBuilder();
 				sb.append("<html><head><body>");
 				sb.append("You've learned all skills.<br>");
 				sb.append("</body></html>");

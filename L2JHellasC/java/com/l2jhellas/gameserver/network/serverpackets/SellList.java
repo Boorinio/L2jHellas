@@ -63,7 +63,7 @@ public class SellList extends L2GameServerPacket
 				{
 					_selllist.add(item);
 					if (Config.DEBUG)
-						_log.fine("item added to selllist: " + item.getItem().getName());
+						_log.fine("item added to selllist: " + item.getItem().getItemName());
 				}
 			}
 		}

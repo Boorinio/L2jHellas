@@ -17,8 +17,6 @@ package com.l2jhellas.gameserver.model.entity.engines;
 import java.util.ArrayList;
 import java.util.List;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -120,7 +118,7 @@ public class ZodiacMain
 	public static void showHtmlWindow(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 		tb.append("<html><head><title>Zodiac Event Voting</title></head><body>");
 		tb.append("<center>");
 		tb.append("<td valign=\"top\"><font color=\"FF6600\">Vote for the event you want to play!</font>");
@@ -162,7 +160,7 @@ public class ZodiacMain
 	{
 		
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 		tb.append("<html><title>Zodiac Event Engine</title><body>Current Votes:<br>");
 		tb.append("Current Votes:<br><br>");
 		tb.append("Peloponnesian War: " + count[0] + "<br>");

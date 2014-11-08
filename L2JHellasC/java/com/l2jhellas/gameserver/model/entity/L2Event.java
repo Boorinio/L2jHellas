@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -134,7 +132,7 @@ public class L2Event
 			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("data/events/" + eventName)));
 			BufferedReader inbr = new BufferedReader(new InputStreamReader(in));
 
-			TextBuilder replyMSG = new TextBuilder("<html><body>");
+			StringBuilder replyMSG = new StringBuilder("<html><body>");
 			replyMSG.append("<center><font color=\"LEVEL\">" + eventName + "</font><font color=\"FF0000\"> bY " + inbr.readLine() + "</font></center><br>");
 
 			replyMSG.append("<br>" + inbr.readLine());

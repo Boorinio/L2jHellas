@@ -15,8 +15,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
@@ -80,7 +78,7 @@ public class L2BossSpawnInstance extends L2Npc
 	private final void showRbInfo(L2PcInstance player)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Boss Info</title><body><br><center><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32>");
 
 		for (final int boss : Config.BOSS_RESPAWN_INFO)

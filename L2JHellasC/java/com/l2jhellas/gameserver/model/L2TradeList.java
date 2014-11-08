@@ -304,7 +304,7 @@ public class L2TradeList
 					gm = player;
 					target = reciever;
 				}
-				GMAudit.auditGMAction(gm.getName(), "trade", target.getName(), newitem.getItem().getName() + " - " + newitem.getItemId());
+				GMAudit.auditGMAction(gm.getName(), "trade", target.getName(), newitem.getItem().getItemName() + " - " + newitem.getItemId());
 			}
 			playerItem = playersInv.destroyItem("!L2TradeList!", playerItem.getObjectId(), temp.getCount(), null, null);
 			recieverItem = recieverInv.addItem("!L2TradeList!", newitem, null, null);

@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
@@ -31,7 +30,7 @@ public class HeroeList
 
 	private static final String SELECT_DATA = "SELECT h.count, h.played, ch.char_name, ch.base_class, ch.online, cl.clan_name, cl.ally_name FROM heroes h LEFT JOIN characters ch ON ch.obj_Id=h.char_id LEFT OUTER JOIN clan_data cl ON cl.clan_id=ch.clanid ORDER BY h.count DESC, ch.char_name ASC LIMIT 20";
 	private int _posId;
-	private final TextBuilder _heroeList = new TextBuilder();
+	private final StringBuilder _heroeList = new StringBuilder();
 
 	public HeroeList()
 	{

@@ -17,8 +17,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.Iterator;
 import java.util.Set;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
@@ -197,7 +195,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 				return;
 			}
 
-			TextBuilder content = new TextBuilder("<html><body>");
+			StringBuilder content = new StringBuilder("<html><body>");
 			Set<PlayerClass> subsAvailable;
 
 			int paramOne = 0;
@@ -900,7 +898,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 			}
 			else
 			{
-				TextBuilder sb = new TextBuilder();
+				StringBuilder sb = new StringBuilder();
 				sb.append("<html><body>");
 				sb.append("You've learned all skills available for your Clan.<br>");
 				sb.append("</body></html>");

@@ -110,7 +110,7 @@ public class InventoryUpdate extends L2GameServerPacket
 	{
 		for (ItemInfo item : _items)
 		{
-			_log.fine("oid:" + Integer.toHexString(item.getObjectId()) + " item:" + item.getItem().getName() + " last change:" + item.getChange());
+			_log.fine("oid:" + Integer.toHexString(item.getObjectId()) + " item:" + item.getItem().getItemName() + " last change:" + item.getChange());
 		}
 	}
 

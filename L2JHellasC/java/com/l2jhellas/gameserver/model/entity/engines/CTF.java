@@ -22,8 +22,6 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -87,7 +85,7 @@ public class CTF
 		{
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-			TextBuilder replyMSG = new TextBuilder();
+			StringBuilder replyMSG = new StringBuilder();
 
 			replyMSG.append("<html><body><center>");
 			replyMSG.append("CTF Flag<br><br>");
@@ -808,7 +806,7 @@ public class CTF
 		spawnEventNpc(activeChar);
 		AnnounceToPlayers(true, _eventName + " (CTF)!");
 		if (Config.CTF_ANNOUNCE_REWARD)
-			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getName());
+			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getItemName());
 		AnnounceToPlayers(true, "Recruiting levels " + _minlvl + " to " + _maxlvl);
 		AnnounceToPlayers(true, "Joinable in " + _joiningLocationName + "!");
 	}
@@ -828,7 +826,7 @@ public class CTF
 		AnnounceToPlayers(true, "Recruiting levels " + _minlvl + " to " + _maxlvl);
 		AnnounceToPlayers(true, "Joinable in " + _joiningLocationName + "!");
 		if (Config.CTF_ANNOUNCE_REWARD)
-			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getName());
+			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getItemName());
 	}
 
 	public static boolean startAutoJoin()
@@ -844,7 +842,7 @@ public class CTF
 		spawnEventNpc();
 		AnnounceToPlayers(true, _eventName + " (CTF)!");
 		if (Config.CTF_ANNOUNCE_REWARD)
-			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getName());
+			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getItemName());
 		AnnounceToPlayers(true, "Recruiting levels " + _minlvl + " to " + _maxlvl);
 		AnnounceToPlayers(true, "Joinable in " + _joiningLocationName + "!");
 		return true;
@@ -1354,7 +1352,7 @@ public class CTF
 					player.addItem("CTF Event: " + _eventName, _rewardId, _rewardAmount, player, true);
 
 					NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-					TextBuilder replyMSG = new TextBuilder();
+					StringBuilder replyMSG = new StringBuilder();
 
 					replyMSG.append("<html><body>Your team wins the event. Look in your inventory for the reward.</body></html>");
 
@@ -1694,14 +1692,14 @@ public class CTF
 		try
 		{
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-			TextBuilder replyMSG = new TextBuilder();
+			StringBuilder replyMSG = new StringBuilder();
 
 			replyMSG.append("<html><body>");
 			replyMSG.append("CTF Match<br><br><br>");
 			replyMSG.append("Current event...<br>");
 			replyMSG.append("   ... description:&nbsp;<font color=\"00FF00\">" + _eventDesc + "</font><br>");
 			if (Config.CTF_ANNOUNCE_REWARD)
-				replyMSG.append("   ... reward: (" + _rewardAmount + ") " + ItemTable.getInstance().getTemplate(_rewardId).getName() + "<br>");
+				replyMSG.append("   ... reward: (" + _rewardAmount + ") " + ItemTable.getInstance().getTemplate(_rewardId).getItemName() + "<br>");
 
 			if (!_started && !_joining)
 				replyMSG.append("<center>Wait till the admin/gm start the participation.</center>");

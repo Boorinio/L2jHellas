@@ -16,8 +16,6 @@ package handlers.usercommandhandlers;
 
 import java.text.SimpleDateFormat;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -42,7 +40,7 @@ public class ClanPenalty implements IUserCommandHandler
 		
 		boolean penalty = false;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		TextBuilder htmlContent = new TextBuilder("<html><body>");
+		StringBuilder htmlContent = new StringBuilder("<html><body>");
 		htmlContent.append("<center><table width=270 border=0 bgcolor=111111>");
 		htmlContent.append("<tr><td width=170>Penalty</td>");
 		htmlContent.append("<td width=100 align=center>Expiration Date</td></tr>");

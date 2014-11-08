@@ -247,7 +247,7 @@ public class RPSHtmlPvpStatus
 
 			else if (!Config.RANK_PVP_REWARD_ENABLED && Config.PVP_REWARD_ENABLED)
 			{
-				String item_name = ItemTable.getInstance().getTemplate(Config.PVP_REWARD_ID).getName();
+				String item_name = ItemTable.getInstance().getTemplate(Config.PVP_REWARD_ID).getItemName();
 				tb += "<tr><td width=135 height=22 align=left><font color=ae9977>PvP Reward</font></td><td width=135 height=22 align=left><font color=ffa000>" + Config.PVP_REWARD_AMOUNT + " </font>x<font color=FFFF00> " + item_name + "</font></td></tr>";
 			}
 			else if (Config.RANK_PVP_REWARD_ENABLED)

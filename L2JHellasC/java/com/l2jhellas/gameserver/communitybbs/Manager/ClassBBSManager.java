@@ -16,8 +16,6 @@ package com.l2jhellas.gameserver.communitybbs.Manager;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -47,7 +45,7 @@ public class ClassBBSManager extends BaseBBSManager
 		ClassId classId = activeChar.getClassId();
 		int jobLevel = classId.level();
 		int level = activeChar.getLevel();
-		TextBuilder html = new TextBuilder("");
+		StringBuilder html = new StringBuilder("");
 		html.append("<center>");
 		if ((Config.ALLOW_CLASS_MASTERS_LISTCB.isEmpty()) || (!Config.ALLOW_CLASS_MASTERS_LISTCB.contains(Integer.valueOf(jobLevel))))
 		{
@@ -61,7 +59,7 @@ public class ClassBBSManager extends BaseBBSManager
 			html.append("<tr><td><center>");
 			L2Item item = ItemTable.getInstance().getTemplate(Config.CLASS_MASTERS_PRICE_ITEMCB);
 			html.append("You Have To Pay: <font color=\"LEVEL\">");
-			html.append(Util.formatAdena(Config.CLASS_MASTERS_PRICE_LISTCB[jobLevel])).append("</font> <font color=\"LEVEL\">").append(item.getName()).append("</font> for proffesion.<br>");
+			html.append(Util.formatAdena(Config.CLASS_MASTERS_PRICE_LISTCB[jobLevel])).append("</font> <font color=\"LEVEL\">").append(item.getItemName()).append("</font> for proffesion.<br>");
 			for (ClassId cid : ClassId.values())
 			{
 				if ((cid.childOf(classId)) && (cid.level() == (classId.level() + 1)))

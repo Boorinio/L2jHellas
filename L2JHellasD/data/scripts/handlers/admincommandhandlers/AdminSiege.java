@@ -16,8 +16,6 @@ package handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
@@ -208,7 +206,7 @@ public class AdminSiege implements IAdminCommandHandler
 		int i = 0;
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/castles.htm");
-		TextBuilder cList = new TextBuilder();
+		StringBuilder cList = new StringBuilder();
 		for (Castle castle : CastleManager.getInstance().getCastles())
 		{
 			if (castle != null)
@@ -224,40 +222,40 @@ public class AdminSiege implements IAdminCommandHandler
 			}
 		}
 		adminReply.replace("%castles%", cList.toString());
-		cList.clear();
+		StringBuilder cList1 = new StringBuilder();
 		i = 0;
 		for (ClanHall clanhall : ClanHallManager.getInstance().getClanHalls().values())
 		{
 			if (clanhall != null)
 			{
-				cList.append("<td fixwidth=134><a action=\"bypass -h admin_clanhall " + clanhall.getId() + "\">");
-				cList.append(clanhall.getName() + "</a></td>");
+				cList1.append("<td fixwidth=134><a action=\"bypass -h admin_clanhall " + clanhall.getId() + "\">");
+				cList1.append(clanhall.getName() + "</a></td>");
 				i++;
 			}
 			if (i > 1)
 			{
-				cList.append("</tr><tr>");
+				cList1.append("</tr><tr>");
 				i = 0;
 			}
 		}
-		adminReply.replace("%clanhalls%", cList.toString());
-		cList.clear();
+		adminReply.replace("%clanhalls%", cList1.toString());
+		StringBuilder cList2 = new StringBuilder();
 		i = 0;
 		for (ClanHall clanhall : ClanHallManager.getInstance().getFreeClanHalls().values())
 		{
 			if (clanhall != null)
 			{
-				cList.append("<td fixwidth=134><a action=\"bypass -h admin_clanhall " + clanhall.getId() + "\">");
-				cList.append(clanhall.getName() + "</a></td>");
+				cList2.append("<td fixwidth=134><a action=\"bypass -h admin_clanhall " + clanhall.getId() + "\">");
+				cList2.append(clanhall.getName() + "</a></td>");
 				i++;
 			}
 			if (i > 1)
 			{
-				cList.append("</tr><tr>");
+				cList2.append("</tr><tr>");
 				i = 0;
 			}
 		}
-		adminReply.replace("%freeclanhalls%", cList.toString());
+		adminReply.replace("%freeclanhalls%", cList2.toString());
 		activeChar.sendPacket(adminReply);
 	}
 

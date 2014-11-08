@@ -24,8 +24,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -340,7 +338,7 @@ public class AdminWalker implements IAdminCommandHandler
 	private void mainMenu(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(activeChar.getObjectId());
-		TextBuilder sb = new TextBuilder();
+		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><title>Walker Routes</title></head><body><center>");
 		sb.append("<table width=260>");
 		sb.append("<tr>");
@@ -384,7 +382,7 @@ public class AdminWalker implements IAdminCommandHandler
 	private void addMenu(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(activeChar.getObjectId());
-		TextBuilder sb = new TextBuilder();
+		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><title>Walker Routes</title></head><body><center>");
 		sb.append("<table width=260>");
 		sb.append("<tr>");

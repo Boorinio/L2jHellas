@@ -22,7 +22,6 @@ import java.util.StringTokenizer;
 
 import javax.mail.MessagingException;
 
-import javolution.text.TextBuilder;
 import Extensions.AccountManager.L2Emailer;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -526,7 +525,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 
 	public void addSecHtml(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 
 		tb.append("<html><head><title>Add Security Question</title></head>");
@@ -628,7 +627,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	private void sendingHtml(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><head><title>Please Wait</title></head><body>");
 		tb.append("<center>");
@@ -649,7 +648,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	void secsuccesshtml(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><head><title>Success!</title></head><body>");
 		tb.append("<center>");
@@ -681,7 +680,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	void successchangehtml(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><head><title>Success!</title></head><body>");
 		tb.append("<center>");
@@ -713,7 +712,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	void successhtml(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><head><title>Success!</title></head><body>");
 		tb.append("<center>");
@@ -745,7 +744,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	private void mainHtml(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><head><title>Account manager</title></head><body>");
 		tb.append("<center>");
@@ -976,7 +975,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	public void changesechtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><title>Change your security answer.</title>");
 		tb.append("<body>");
@@ -1001,7 +1000,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	public void forgPassHtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><title>Forgot my password.</title>");
 		tb.append("<body>");
@@ -1026,7 +1025,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	public void changepasshtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><title>Change your pass.</title>");
 		tb.append("<body>");
@@ -1050,7 +1049,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 	public void changeemailhtml(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><title>Change your Email.</title>");
 		tb.append("<body>");
@@ -1271,7 +1270,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 
 	public void subhtml(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 
 		tb.append("<html><head><title>Submit your Email</title></head>");

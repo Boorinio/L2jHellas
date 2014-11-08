@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 
 /**
@@ -35,7 +33,7 @@ public class FileLogFormatter extends Formatter
 	@Override
 	public String format(LogRecord record)
 	{
-		TextBuilder output = new TextBuilder();
+		StringBuilder output = new StringBuilder();
 
 		output.append("L2jHellas");
 		output.append(tab);

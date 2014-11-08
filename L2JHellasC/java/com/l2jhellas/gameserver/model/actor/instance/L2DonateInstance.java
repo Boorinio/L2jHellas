@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -148,7 +146,7 @@ public class L2DonateInstance extends L2NpcInstance
 
 	private void showHtmlWindow(L2PcInstance activeChar)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 
 		tb.append("<html><head><title>Donation Manager</title></head><body><center><table width=\"250\" bgcolor=\"000000\"><tr><td align=center><font color=\"6fd3d1\">Easy Donation With Paysafe Card</font></td></tr></table>_______________________________________<br><br><table width=\"250\"><tr><td><font color=\"ddc16d\">Select Donation amount:</font></td><td><combobox width=80 height=17 var=amount list=10-Euro;25-Euro;50-Euro;100-Euro;></td></tr></table><br><br><font color=\"ddc16d\">Paysafe Card Pin:</font><table width=\"250\"><tr><td><edit var=\"pin1\" width=50 height=12 type=number></td><td><edit var=\"pin2\" width=50 height=12 type=number></td><td><edit var=\"pin3\" width=50 height=12 type=number></td><td><edit var=\"pin4\" width=50 height=12 type=number></td></table><br><br><multiedit var=\"message\" width=240 height=40><br><br><button value=\"Donate!\" action=\"bypass -h npc_" + getObjectId() + "_donate $amount $pin1 $pin2 $pin3 $pin4 $message\" width=95 height=21 back=\"bigbutton_over\" fore=\"bigbutton\"><br><button value=\"Donation List\" action=\"bypass -h npc_" + getObjectId() + "_dlist\" width=95 height=21 back=\"bigbutton_over\" fore=\"bigbutton\"><br><font color=\"a1df64\">L2jHellas Donation Manager</font></center></body></html>");
@@ -159,7 +157,7 @@ public class L2DonateInstance extends L2NpcInstance
 
 	private void info(L2PcInstance activeChar)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 
 		tb.append("<html><head><title>Donation Manager</title></head><body><center>Info goes here</center></body></html>");

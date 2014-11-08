@@ -23,7 +23,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
@@ -130,7 +129,7 @@ public class MacroList
 			statement.setString(4, macro.name);
 			statement.setString(5, macro.descr);
 			statement.setString(6, macro.acronym);
-			TextBuilder sb = new TextBuilder();
+			StringBuilder sb = new StringBuilder();
 			for (L2MacroCmd cmd : macro.commands)
 			{
 				sb.append(cmd.type).append(',');

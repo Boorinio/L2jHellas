@@ -134,7 +134,7 @@ public class Hitman
 				client.setHitmanTarget(0);
 			}
 
-			assassin.sendMessage("You assassinated " + target.getName() + ", his bounty will be converted in " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "!");
+			assassin.sendMessage("You assassinated " + target.getName() + ", his bounty will be converted in " + ItemTable.getInstance().getTemplate(ITEM_ID).getItemName() + "!");
 			assassin.addItem("Hitman", ITEM_ID, pta.getBounty(), target, true);
 			removeTarget(pta.getObjectId(), true);
 		}
@@ -145,7 +145,7 @@ public class Hitman
 		if (_targets.containsKey(activeChar.getObjectId()))
 		{
 			PlayerToAssasinate pta = _targets.get(activeChar.getObjectId());
-			activeChar.sendMessage("There is a hit on you. Worth " + pta.getBounty() + " " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "(s).");
+			activeChar.sendMessage("There is a hit on you. Worth " + pta.getBounty() + " " + ItemTable.getInstance().getTemplate(ITEM_ID).getItemName() + "(s).");
 		}
 
 		if (activeChar.getHitmanTarget() > 0)
@@ -196,7 +196,7 @@ public class Hitman
 		}
 		else if (client.getInventory().getItemByItemId(ITEM_ID) == null || client.getInventory().getItemByItemId(ITEM_ID).getCount() < bounty)
 		{
-			client.sendMessage("Not enough " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "(s).");
+			client.sendMessage("Not enough " + ItemTable.getInstance().getTemplate(ITEM_ID).getItemName() + "(s).");
 			return;
 		}
 		else if (player == null && CharNameTable.getInstance().doesCharNameExist(playerName))
@@ -219,7 +219,7 @@ public class Hitman
 				client.sendMessage("There is already a hit on that player.");
 				return;
 			}
-			player.sendMessage("There is a hit on you. Worth " + bounty + " " + ItemTable.getInstance().getTemplate(ITEM_ID).getName() + "(s).");
+			player.sendMessage("There is a hit on you. Worth " + bounty + " " + ItemTable.getInstance().getTemplate(ITEM_ID).getItemName() + "(s).");
 			_targets.put(player.getObjectId(), new PlayerToAssasinate(player, client.getObjectId(), bounty));
 			client.destroyItemByItemId("Hitman", ITEM_ID, bounty, client, false);
 			client.setHitmanTarget(player.getObjectId());

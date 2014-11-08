@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -16,9 +16,6 @@ package handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AdminForgePacket;
@@ -26,25 +23,22 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**
  * This class handles commands for gm to forge packets
- * 
  * @author Maktakien
  */
 public class AdminPForge implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_forge",
 		"admin_forge2",
 		"admin_forge3"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_forge"))
-		{
 			showMainPage(activeChar);
-		}
 		else if (command.startsWith("admin_forge2"))
 		{
 			try
@@ -56,7 +50,6 @@ public class AdminPForge implements IAdminCommandHandler
 			}
 			catch (Exception ex)
 			{
-				ex.printStackTrace();
 				activeChar.sendMessage("Usage: //forge2 format");
 			}
 		}
@@ -68,11 +61,13 @@ public class AdminPForge implements IAdminCommandHandler
 				st.nextToken();
 				String format = st.nextToken();
 				boolean broadcast = false;
+				
 				if (format.toLowerCase().equals("broadcast"))
 				{
 					format = st.nextToken();
 					broadcast = true;
 				}
+				
 				AdminForgePacket sp = new AdminForgePacket();
 				for (int i = 0; i < format.length(); i++)
 				{
@@ -140,60 +135,57 @@ public class AdminPForge implements IAdminCommandHandler
 					{
 						val = String.valueOf(((L2PcInstance) activeChar.getTarget()).getHeading());
 					}
-
+					
 					sp.addPart(format.getBytes()[i], val);
 				}
-				if (broadcast == true)
-				{
+				
+				if (broadcast)
 					activeChar.broadcastPacket(sp);
-				}
 				else
-				{
 					activeChar.sendPacket(sp);
-				}
+				
 				showPage3(activeChar, format, command);
 			}
 			catch (Exception ex)
 			{
-				if (Config.DEVELOPER)
-				{
-					ex.printStackTrace();
-				}
+				activeChar.sendMessage("Usage: //forge or //forge2 format");
 			}
 		}
 		return true;
 	}
-
-	private void showMainPage(L2PcInstance activeChar)
+	
+	private static void showMainPage(L2PcInstance activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "pforge1.htm");
 	}
-
-	private void showPage2(L2PcInstance activeChar, String format)
+	
+	private static void showPage2(L2PcInstance activeChar, String format)
 	{
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		NpcHtmlMessage adminReply = new NpcHtmlMessage(0);
 		adminReply.setFile("data/html/admin/pforge2.htm");
 		adminReply.replace("%format%", format);
-		TextBuilder replyMSG = new TextBuilder();
+		
+		StringBuilder replyMSG = new StringBuilder();
 		for (int i = 0; i < format.length(); i++)
 			replyMSG.append(format.charAt(i) + " : <edit var=\"v" + i + "\" width=100><br1>");
 		adminReply.replace("%valueditors%", replyMSG.toString());
-		replyMSG.clear();
+		replyMSG.setLength(0);
+		
 		for (int i = 0; i < format.length(); i++)
 			replyMSG.append(" \\$v" + i);
 		adminReply.replace("%send%", replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void showPage3(L2PcInstance activeChar, String format, String command)
+	
+	private static void showPage3(L2PcInstance activeChar, String format, String command)
 	{
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		NpcHtmlMessage adminReply = new NpcHtmlMessage(0);
 		adminReply.setFile("data/html/admin/pforge3.htm");
 		adminReply.replace("%format%", format);
 		adminReply.replace("%command%", command);
 		activeChar.sendPacket(adminReply);
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

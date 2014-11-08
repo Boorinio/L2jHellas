@@ -342,7 +342,7 @@ public abstract class L2Item
 	 * 
 	 * @return String
 	 */
-	public final String getName()
+	public final String getItemName()
 	{
 		return _name;
 	}

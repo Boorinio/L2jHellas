@@ -2483,11 +2483,11 @@ private boolean _canReturnToSpawnPoint = true;
 						{
 							try
 							{
-								if (item.getItem().getName().contains("Grade"))
+								if (item.getItem().getItemName().contains("Grade"))
 								{
 									// Split the name of the crystal into 'name'
 									// & 'level'
-									crystalNFO = item.getItem().getName().trim().replace(" Grade ", "-").split("-");
+									crystalNFO = item.getItem().getItemName().trim().replace(" Grade ", "-").split("-");
 									// Set Level to 13
 									crystalLVL = 13;
 									// Get Name
@@ -2497,7 +2497,7 @@ private boolean _canReturnToSpawnPoint = true;
 								{
 									// Split the name of the crystal into 'name'
 									// & 'level'
-									crystalNFO = item.getItem().getName().trim().replace(" Stage ", "").split("-");
+									crystalNFO = item.getItem().getItemName().trim().replace(" Stage ", "").split("-");
 									// Get Level
 									crystalLVL = Integer.parseInt(crystalNFO[1].trim());
 									// Get Name
@@ -2542,7 +2542,7 @@ private boolean _canReturnToSpawnPoint = true;
 						}
 						else
 						{
-							crystalNME = item.getItem().getName().toLowerCase().trim();
+							crystalNME = item.getItem().getItemName().toLowerCase().trim();
 							crystalNEW = id + 1;
 						}
 						

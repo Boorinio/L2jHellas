@@ -23,7 +23,6 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Properties;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
@@ -127,7 +126,7 @@ public class Status extends Thread
 
 	private String rndPW(int length)
 	{
-		TextBuilder password = new TextBuilder();
+		StringBuilder password = new StringBuilder();
 		String lowerChar = "qwertyuiopasdfghjklzxcvbnm";
 		String upperChar = "QWERTYUIOPASDFGHJKLZXCVBNM";
 		String digits = "1234567890";

@@ -66,7 +66,8 @@ public class L2DatabaseFactory
 			_source.setAcquireRetryAttempts(0);
 			_source.setAcquireRetryDelayInMs(500);
 			_source.setAcquireIncrement(5);
-			//_source.setCloseConnectionWatch(true); // for debugging unclosed connections
+			if (Config.DEVELOPER)
+				_source.setCloseConnectionWatch(true); // for debugging unclosed connections
 			_source.setConnectionTimeoutInMs(database_timeout);
 
 			_source.setIdleConnectionTestPeriodInMinutes(1);
@@ -158,7 +159,7 @@ public class L2DatabaseFactory
 			try
 			{
 				//just remove this until the refactor
-				if (!c.isClosed() && c != null && Config.DEVELOPER)
+				if (!c.isClosed() && c != null && Config.DEVELOPER) // Temporary config
 					_log.log(Level.WARNING, "Unclosed connection! Trace: " + exp.getStackTrace()[1], exp);					
 			}
 			catch (SQLException e)

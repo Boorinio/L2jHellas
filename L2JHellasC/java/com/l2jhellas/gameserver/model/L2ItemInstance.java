@@ -499,7 +499,7 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public String getItemName()
 	{
-		return _item.getName();
+		return _item.getItemName();
 	}
 
 	/**

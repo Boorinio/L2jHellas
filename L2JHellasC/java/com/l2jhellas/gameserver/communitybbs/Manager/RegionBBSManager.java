@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
@@ -100,7 +99,7 @@ public class RegionBBSManager extends BaseBBSManager
 	 */
 	private void showOldCommunityPI(L2PcInstance activeChar, String name)
 	{
-		TextBuilder htmlCode = new TextBuilder("<html><body><br>");
+		StringBuilder htmlCode = new StringBuilder("<html><body><br>");
 		htmlCode.append("<table border=0><tr><td FIXWIDTH=15></td><td align=center>L2JHellas Community Board<img src=\"sek.cbui355\" width=610 height=1></td></tr><tr><td FIXWIDTH=15></td><td>");
 		L2PcInstance player = L2World.getPlayer(name);
 
@@ -182,7 +181,7 @@ public class RegionBBSManager extends BaseBBSManager
 
 		if (ar1.equals("PM"))
 		{
-			TextBuilder htmlCode = new TextBuilder("<html><body><br>");
+			StringBuilder htmlCode = new StringBuilder("<html><body><br>");
 			htmlCode.append("<table border=0><tr><td FIXWIDTH=15></td><td align=center>L2JHellas Community Board<img src=\"sek.cbui355\" width=610 height=1></td></tr><tr><td FIXWIDTH=15></td><td>");
 
 			try
@@ -361,7 +360,7 @@ public class RegionBBSManager extends BaseBBSManager
 		for (int page : _onlinePlayers.keySet())
 		{
 			FastMap<String, String> communityPage = new FastMap<String, String>();
-			TextBuilder htmlCode = new TextBuilder("<html><body><br>");
+			StringBuilder htmlCode = new StringBuilder("<html><body><br>");
 			String tdClose = "</td>";
 			String tdOpen = "<td align=left valign=top>";
 			String trClose = "</tr>";
@@ -494,7 +493,7 @@ public class RegionBBSManager extends BaseBBSManager
 
 			communityPage.put("gm", htmlCode.toString());
 
-			htmlCode = new TextBuilder("<html><body><br>");
+			htmlCode = new StringBuilder("<html><body><br>");
 			htmlCode.append("<table>");
 
 			htmlCode.append(trOpen);

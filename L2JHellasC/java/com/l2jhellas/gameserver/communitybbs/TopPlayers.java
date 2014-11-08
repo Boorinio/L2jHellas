@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
@@ -34,7 +33,7 @@ public class TopPlayers
 	private static final String SELECT_CHARS = "SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY ";
 	
 	private int pos;
-	private final TextBuilder _topList = new TextBuilder();
+	private final StringBuilder _topList = new StringBuilder();
 	String sort = "";
 
 	public TopPlayers(String file)

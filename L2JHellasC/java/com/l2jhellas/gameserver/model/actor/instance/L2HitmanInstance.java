@@ -14,7 +14,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -80,7 +79,7 @@ public class L2HitmanInstance extends L2Npc
 
 	public NpcHtmlMessage showListWindow()
 	{
-		TextBuilder content = new TextBuilder("<html><head><body><center>");
+		StringBuilder content = new StringBuilder("<html><head><body><center>");
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 
 		content.append("<img src=L2Font-e.mini_logo-e width=245 height=80>");
@@ -133,7 +132,7 @@ public class L2HitmanInstance extends L2Npc
 
 	public NpcHtmlMessage showInfoWindow(int objectId)
 	{
-		TextBuilder content = new TextBuilder("<html><head><body><center>");
+		StringBuilder content = new StringBuilder("<html><head><body><center>");
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		PlayerToAssasinate pta = Hitman.getInstance().getTargets().get(objectId);
 		L2PcInstance target = L2World.getPlayer(pta.getName());
@@ -150,7 +149,7 @@ public class L2HitmanInstance extends L2Npc
 			content.append("<center><table border=1>");
 			content.append("<tr><td width=250 align=left>");
 			content.append("Name: " + pta.getName() + " <br1>");
-			content.append("Bounty: " + pta.getBounty() + " " + ItemTable.getInstance().getTemplate(Hitman.ITEM_ID).getName() + "<br1>");
+			content.append("Bounty: " + pta.getBounty() + " " + ItemTable.getInstance().getTemplate(Hitman.ITEM_ID).getItemName() + "<br1>");
 			content.append("Last Town: " + target.getLastTownName() + "<br1>");
 			content.append("Current Known Location: " + map.getClosestTownName(target) + " Teritory");
 			content.append("</td>");

@@ -25,8 +25,6 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -288,7 +286,7 @@ public class TvT
 		spawnEventNpc(activeChar);
 		AnnounceToPlayers(true, _eventName);
 		if (Config.TVT_ANNOUNCE_REWARD)
-			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getName());
+			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getItemName());
 		AnnounceToPlayers(true, "Recruiting levels " + _minlvl + " to " + _maxlvl);
 		AnnounceToPlayers(true, "Join in " + _joiningLocationName + "!");
 	}
@@ -306,7 +304,7 @@ public class TvT
 		spawnEventNpc();
 		AnnounceToPlayers(true, _eventName);
 		if (Config.TVT_ANNOUNCE_REWARD)
-			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getName());
+			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getItemName());
 		AnnounceToPlayers(true, "Recruiting levels " + _minlvl + " to " + _maxlvl);
 		AnnounceToPlayers(true, "Join in " + _joiningLocationName + "!");
 	}
@@ -324,7 +322,7 @@ public class TvT
 		spawnEventNpc();
 		AnnounceToPlayers(true, _eventName);
 		if (Config.TVT_ANNOUNCE_REWARD)
-			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getName());
+			AnnounceToPlayers(true, "Reward: " + _rewardAmount + " " + ItemTable.getInstance().getTemplate(_rewardId).getItemName());
 		AnnounceToPlayers(true, "Recruiting levels " + _minlvl + " to " + _maxlvl);
 		AnnounceToPlayers(true, "Join in " + _joiningLocationName + "!");
 		return true;
@@ -881,7 +879,7 @@ public class TvT
 					_playerWon = 1;
 
 					NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-					TextBuilder replyMSG = new TextBuilder("");
+					StringBuilder replyMSG = new StringBuilder("");
 
 					replyMSG.append("<html><body>Your team wins the event. Look in your inventory for the reward.</body></html>");
 
@@ -1184,13 +1182,13 @@ public class TvT
 		{
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-			TextBuilder replyMSG = new TextBuilder("<html><body>");
+			StringBuilder replyMSG = new StringBuilder("<html><body>");
 			replyMSG.append("TvT Match<br><br><br>");
 			replyMSG.append("Current event...<br1>");
 			replyMSG.append("    ... name:&nbsp;<font color=\"00FF00\">" + _eventName + "</font><br1>");
 			replyMSG.append("    ... description:&nbsp;<font color=\"00FF00\">" + _eventDesc + "</font><br>");
 			if (Config.TVT_ANNOUNCE_REWARD)
-				replyMSG.append("    ... reward: (" + _rewardAmount + ") " + ItemTable.getInstance().getTemplate(_rewardId).getName() + "<br>");
+				replyMSG.append("    ... reward: (" + _rewardAmount + ") " + ItemTable.getInstance().getTemplate(_rewardId).getItemName() + "<br>");
 
 			if (!_started && !_joining)
 				replyMSG.append("<center>Wait till the admin/gm start the participation.</center>");

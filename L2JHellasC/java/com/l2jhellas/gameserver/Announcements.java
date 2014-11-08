@@ -25,7 +25,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.PackRoot;
@@ -115,7 +114,7 @@ public class Announcements
 		String content = HtmCache.getInstance().getHtm("data/html/admin/announce.htm");
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setHtml(content);
-		TextBuilder replyMSG = new TextBuilder("<br>");
+		StringBuilder replyMSG = new StringBuilder("<br>");
 		for (int i = 0; i < _announcements.size(); i++)
 		{
 			replyMSG.append("<table width=260><tr><td width=220>" + _announcements.get(i) + "</td><td width=40>");

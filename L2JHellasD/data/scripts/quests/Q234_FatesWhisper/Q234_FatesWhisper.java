@@ -139,7 +139,7 @@ public class Q234_FatesWhisper extends Quest
 				{
 					int aGradeItemId = Integer.parseInt(event.replace("selectAGrade_", ""));
 					
-					htmltext = getHtmlText("31002-12.htm").replace("%weaponname%", ItemTable.getInstance().getTemplate(aGradeItemId).getName());
+					htmltext = getHtmlText("31002-12.htm").replace("%weaponname%", ItemTable.getInstance().getTemplate(aGradeItemId).getItemName());
 					st.takeItems(itemId, 1);
 					st.giveItems(aGradeItemId, 1);
 					st.giveItems(STAR_OF_DESTINY, 1);

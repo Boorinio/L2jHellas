@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.io.File;
 
-import javolution.text.TextBuilder;
 import Extensions.RankSystem.Util.DDSConverter;
 import Extensions.Vote.VoteManager;
 
@@ -128,7 +127,7 @@ public class L2VoteManagerInstance extends L2Npc
 		VoteManager.hasVotedTop(activeChar);
 
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 
 		tb.append("<html><head><title>Vote reward Manager</title></head><body>");
 		tb.append("<center>");
@@ -241,7 +240,7 @@ public class L2VoteManagerInstance extends L2Npc
 
 	public void showRewardsHtml(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 
 		tb.append("<html><head><title>Vote Reward Manager</title></head><body>");
@@ -256,12 +255,12 @@ public class L2VoteManagerInstance extends L2Npc
 		tb.append("</center>");
 		tb.append("<center>");
 		tb.append("<td valign=\"top\"><font color=\"FF6600\">Choose your reward " + player.getName() + ".</font>");
-		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID1).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT1 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward1\" width=204 height=20>");
-		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID2).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT2 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward2\" width=204 height=20>");
-		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID3).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT3 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward3\" width=204 height=20>");
+		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID1).getItemName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT1 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward1\" width=204 height=20>");
+		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID2).getItemName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT2 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward2\" width=204 height=20>");
+		tb.append("<button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID3).getItemName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT3 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward3\" width=204 height=20>");
 		if (VoteManager.getTotalVotes(player) >= Config.EXTRA_REW_VOTE_AM)
 		{
-			tb.append("<font color=\"FF6600\">Due to your votes you now have a 4th choise!</font><br><button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID4).getName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT4 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward4\" width=204 height=20>");
+			tb.append("<font color=\"FF6600\">Due to your votes you now have a 4th choise!</font><br><button value=\"Item:" + ItemTable.getInstance().getTemplate(Config.VOTE_REWARD_ID4).getItemName() + "   Amount:" + Config.VOTE_REWARD_AMOUNT4 + "\" action=\"bypass -h npc_" + getObjectId() + "_reward4\" width=204 height=20>");
 		}
 		tb.append("</center>");
 

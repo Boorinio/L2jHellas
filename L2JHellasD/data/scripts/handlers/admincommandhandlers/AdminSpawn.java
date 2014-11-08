@@ -17,8 +17,6 @@ package handlers.admincommandhandlers;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -218,7 +216,7 @@ public class AdminSpawn implements IAdminCommandHandler
 
 	private void showMonsters(L2PcInstance activeChar, int level, int from)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 
 		L2NpcTemplate[] mobs = NpcData.getInstance().getAllMonstersOfLevel(level);
 
@@ -258,7 +256,7 @@ public class AdminSpawn implements IAdminCommandHandler
 
 	private void showNpcs(L2PcInstance activeChar, String starting, int from)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		L2NpcTemplate[] mobs = NpcData.getInstance().getAllNpcStartingWith(starting);
 		// Start
 		tb.append("<html><title>Spawn Monster:</title><body><p> There are " + mobs.length + " Npcs whose name starts with " + starting + ":<br>");

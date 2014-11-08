@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.shield.antibot;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -58,7 +56,7 @@ public class PrivateAntiBot
 	{
 		int option = Rnd.get(1,7);
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
-		TextBuilder tb = new TextBuilder("");
+		StringBuilder tb = new StringBuilder("");
 		tb.append("<html><head><title>Antiboting system</title></head><body>");
 		tb.append("<center>");
 		tb.append("If you don't answer correctly or you don't answer at all<br>");

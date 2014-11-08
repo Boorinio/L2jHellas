@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 import javolution.util.FastMap;
 
@@ -278,7 +277,7 @@ public class TopicBBSManager extends BaseBBSManager
 	 */
 	private void showMemoNewTopics(Forum forum, L2PcInstance activeChar)
 	{
-		TextBuilder html = new TextBuilder("<html>");
+		StringBuilder html = new StringBuilder("<html>");
 		html.append("<body><br><br>");
 		html.append("<table border=0 width=610><tr><td width=10></td><td width=600 align=left>");
 		html.append("<a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">Memo Form</a>");
@@ -356,7 +355,7 @@ public class TopicBBSManager extends BaseBBSManager
 	private void showMemoTopics(Forum forum, L2PcInstance activeChar, int index)
 	{
 		forum.vload();
-		TextBuilder html = new TextBuilder("<html><body><br><br>");
+		StringBuilder html = new StringBuilder("<html><body><br><br>");
 		html.append("<table border=0 width=610><tr><td width=10></td><td width=600 align=left>");
 		html.append("<a action=\"bypass _bbshome\">HOME</a>&nbsp;>&nbsp;<a action=\"bypass _bbsmemo\">Memo Form</a>");
 		html.append("</td></tr>");

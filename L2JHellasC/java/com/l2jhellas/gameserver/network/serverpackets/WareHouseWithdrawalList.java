@@ -58,7 +58,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 		
 		if (Config.DEBUG)
 			for (L2ItemInstance item : _items)
-				_log.fine("item:" + item.getItem().getName() + " type1:" + item.getItem().getType1() + " type2:" + item.getItem().getType2());
+				_log.fine("item:" + item.getItem().getItemName() + " type1:" + item.getItem().getType1() + " type2:" + item.getItem().getType2());
 	}
 
 	@Override

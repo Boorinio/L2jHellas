@@ -16,7 +16,6 @@ package handlers.admincommandhandlers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +23,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.text.TextBuilder;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -689,19 +686,19 @@ public class AdminEditChar implements IAdminCommandHandler
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/charlist.htm");
-		TextBuilder replyMSG = new TextBuilder();
+		StringBuilder replyMSG = new StringBuilder();
 		for (int x = 0; x < MaxPages; x++)
 		{
 			int pagenr = x + 1;
 			replyMSG.append("<center><a action=\"bypass -h admin_show_characters " + x + "\">Page " + pagenr + "</a></center>");
 		}
 		adminReply.replace("%pages%", replyMSG.toString());
-		replyMSG.clear();
+		StringBuilder replyMSG2 = new StringBuilder();
 		for (int i = CharactersStart; i < CharactersEnd; i++)
 		{	// Add player info into new Table row
-			replyMSG.append("<tr><td width=80><a action=\"bypass -h admin_character_info " + players[i].getName() + "\">" + players[i].getName() + "</a></td><td width=110>" + players[i].getTemplate().className + "</td><td width=40>" + players[i].getLevel() + "</td></tr>");
+			replyMSG2.append("<tr><td width=80><a action=\"bypass -h admin_character_info " + players[i].getName() + "\">" + players[i].getName() + "</a></td><td width=110>" + players[i].getTemplate().className + "</td><td width=40>" + players[i].getLevel() + "</td></tr>");
 		}
-		adminReply.replace("%players%", replyMSG.toString());
+		adminReply.replace("%players%", replyMSG2.toString());
 		activeChar.sendPacket(adminReply);
 	}
 
@@ -886,9 +883,9 @@ public class AdminEditChar implements IAdminCommandHandler
 		String name;
 		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/charfind.htm");
-		TextBuilder replyMSG = new TextBuilder();
+		StringBuilder replyMSG = new StringBuilder(1000);
 		for (int i = 0; i < players.length; i++)
 		{	// Add player info into new Table row
 			name = players[i].getName();
@@ -901,20 +898,21 @@ public class AdminEditChar implements IAdminCommandHandler
 				break;
 		}
 		adminReply.replace("%results%", replyMSG.toString());
-		replyMSG.clear();
+		final String replyMSG2;
 		if (CharactersFound == 0)
-			replyMSG.append("s. Please try again.");
+			replyMSG2 = "s. Please try again.";
 		else if (CharactersFound > 20)
 		{
 			adminReply.replace("%number%", " more than 20");
-			replyMSG.append("s.<br>Please refine your search to see all of the results.");
+			replyMSG2 = "s.<br>Please refine your search to see all of the results.";
 		}
 		else if (CharactersFound == 1)
-			replyMSG.append(".");
+			replyMSG2 = ".";
 		else
-			replyMSG.append("s.");
+			replyMSG2 = "s.";
+		
 		adminReply.replace("%number%", String.valueOf(CharactersFound));
-		adminReply.replace("%end%", replyMSG.toString());
+		adminReply.replace("%end%", replyMSG2);
 		activeChar.sendPacket(adminReply);
 	}
 
@@ -923,19 +921,22 @@ public class AdminEditChar implements IAdminCommandHandler
 	 * @param IpAdress
 	 * @throws IllegalArgumentException
 	 */
-	private void findCharactersPerIp(L2PcInstance activeChar, String IpAdress) throws IllegalArgumentException
+	private void findCharactersPerIp(L2PcInstance activeChar, String IpAdress)
 	{
 		if (!IpAdress.matches("^(?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2(?:[0-4][0-9]|5[0-5]))\\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2(?:[0-4][0-9]|5[0-5]))$"))
-			throw new IllegalArgumentException("Malformed IPv4 number");
-		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
-		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
+			_log.log(Level.WARNING, getClass().getName() + ": Malformed IPv4 number");
+
 		int CharactersFound = 0;
 		String name, ip = "0.0.0.0";
-		TextBuilder replyMSG = new TextBuilder();
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		final StringBuilder replyMSG = new StringBuilder(1000);
+		final NpcHtmlMessage adminReply = new NpcHtmlMessage(CharactersFound);
 		adminReply.setFile("data/html/admin/ipfind.htm");
+		
+		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
+		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 		for (int i = 0; i < players.length; i++)
 		{
+			
 			ip = players[i].getClient().getConnection().getInetAddress().getHostAddress();
 			if (ip.equals(IpAdress))
 			{
@@ -947,21 +948,27 @@ public class AdminEditChar implements IAdminCommandHandler
 				break;
 		}
 		adminReply.replace("%results%", replyMSG.toString());
-		replyMSG.clear();
+		final String replyMSG2;
 		if (CharactersFound == 0)
-			replyMSG.append("s. Maybe they got d/c? :)");
+		{
+			replyMSG2 = "s. Maybe they got d/c? :)";
+		}
 		else if (CharactersFound > 20)
 		{
 			adminReply.replace("%number%", " more than " + String.valueOf(CharactersFound));
-			replyMSG.append("s.<br>In order to avoid you a client crash I won't <br1>display results beyond the 20th character.");
+			replyMSG2 = "s.<br>In order to avoid you a client crash I won't <br1>display results beyond the 20th character.";
 		}
 		else if (CharactersFound == 1)
-			replyMSG.append(".");
+		{
+			replyMSG2 = ".";
+		}
 		else
-			replyMSG.append("s.");
-		adminReply.replace("%ip%", ip);
+		{
+			replyMSG2 = "s.";
+		}
+		adminReply.replace("%ip%", IpAdress);
 		adminReply.replace("%number%", String.valueOf(CharactersFound));
-		adminReply.replace("%end%", replyMSG.toString());
+		adminReply.replace("%end%", replyMSG2);
 		activeChar.sendPacket(adminReply);
 	}
 
@@ -970,7 +977,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	 * @param characterName
 	 * @throws IllegalArgumentException
 	 */
-	private void findCharactersPerAccount(L2PcInstance activeChar, String characterName) throws IllegalArgumentException
+	private void findCharactersPerAccount(L2PcInstance activeChar, String characterName)
 	{
 		if (characterName.matches(Config.CNAME_TEMPLATE))
 		{
@@ -978,14 +985,17 @@ public class AdminEditChar implements IAdminCommandHandler
 			Map<Integer, String> chars;
 			L2PcInstance player = L2World.getPlayer(characterName);
 			if (player == null)
+			{
 				throw new IllegalArgumentException("Player doesn't exist");
+			}
 			chars = player.getAccountChars();
 			account = player.getAccountName();
-			TextBuilder replyMSG = new TextBuilder();
-			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+			final StringBuilder replyMSG = new StringBuilder(chars.size() * 20);
+			final NpcHtmlMessage adminReply = new NpcHtmlMessage(0);
 			adminReply.setFile("data/html/admin/accountinfo.htm");
 			for (String charname : chars.values())
-				replyMSG.append(charname + "<br1>");
+				StringUtil.append(replyMSG, charname, "<br1>");
+			
 			adminReply.replace("%characters%", replyMSG.toString());
 			adminReply.replace("%account%", account);
 			adminReply.replace("%player%", characterName);
@@ -999,62 +1009,56 @@ public class AdminEditChar implements IAdminCommandHandler
 	 * @param activeChar
 	 * @throws IllegalArgumentException
 	 */
-	@SuppressWarnings("unchecked")
 	private void findDualbox(L2PcInstance activeChar, int multibox) throws IllegalArgumentException
 	{
-		Collection<String> allPlayers = ((Map<Integer, String>) L2World.getAllPlayers()).values();
-		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
-		Map<String, List<L2PcInstance>> ipMap = new HashMap<String, List<L2PcInstance>>();
-
+		Map<String, List<L2PcInstance>> ipMap = new HashMap<>();
 		String ip = "0.0.0.0";
 		L2GameClient client;
-
-		final Map<String, Integer> dualboxIPs = new HashMap<String, Integer>();
-
-		for (L2PcInstance player : players)
+		final Map<String, Integer> dualboxIPs = new HashMap<>();
+		
+		for (L2PcInstance player : L2World.getPlayersSortedBy(Comparator.comparingLong(L2PcInstance::getUptime)))
 		{
 			client = player.getClient();
-			if (client.isDetached())
-				continue;
-			else
+			if ((client == null) || client.isDetached())
 			{
-				ip = client.getConnection().getInetAddress().getHostAddress();
-				if (ipMap.get(ip) == null)
-					ipMap.put(ip, new ArrayList<L2PcInstance>());
-				ipMap.get(ip).add(player);
-
-				if (ipMap.get(ip).size() >= multibox)
+				continue;
+			}
+			
+			ip = client.getConnection().getInetAddress().getHostAddress();
+			if (ipMap.get(ip) == null)
+			{
+				ipMap.put(ip, new ArrayList<L2PcInstance>());
+			}
+			ipMap.get(ip).add(player);
+			
+			if (ipMap.get(ip).size() >= multibox)
+			{
+				Integer count = dualboxIPs.get(ip);
+				if (count == null)
 				{
-					Integer count = dualboxIPs.get(ip);
-					if (count == null)
-						dualboxIPs.put(ip, 0);
-					else
-						dualboxIPs.put(ip, count + 1);
+					dualboxIPs.put(ip, multibox);
+				}
+				else
+				{
+					dualboxIPs.put(ip, count + 1);
 				}
 			}
 		}
-
-		List<String> keys = new ArrayList<String>(dualboxIPs.keySet());
-		Collections.sort(keys, new Comparator<String>()
-		{
-			@Override
-			public int compare(String left, String right)
-			{
-				return dualboxIPs.get(left).compareTo(dualboxIPs.get(right));
-			}
-		});
-		Collections.reverse(keys);
-
+		
+		List<String> keys = new ArrayList<>(dualboxIPs.keySet());
+		keys.sort(Comparator.comparing(s -> dualboxIPs.get(s)).reversed());
+		
 		final StringBuilder results = new StringBuilder();
 		for (String dualboxIP : keys)
 		{
-			StringUtil.append(results, "<a action=\"bypass -h admin_find_ip " + dualboxIP + "\">" + dualboxIP + " (" + dualboxIPs.get(dualboxIP) + "</a><br1>");
+			StringUtil.append(results, "<a action=\"bypass -h admin_find_ip " + dualboxIP + "\">" + dualboxIP + " (" + dualboxIPs.get(dualboxIP) + ")</a><br1>");
 		}
-
-		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
+		
+		final NpcHtmlMessage adminReply = new NpcHtmlMessage(multibox);
 		adminReply.setFile("data/html/admin/dualbox.htm");
 		adminReply.replace("%multibox%", String.valueOf(multibox));
 		adminReply.replace("%results%", results.toString());
+		adminReply.replace("%strict%", "");
 		activeChar.sendPacket(adminReply);
 	}
 

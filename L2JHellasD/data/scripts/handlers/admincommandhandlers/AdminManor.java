@@ -16,7 +16,6 @@ package handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
@@ -179,7 +178,7 @@ public class AdminManor implements IAdminCommandHandler
 	private void showMainPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder replyMSG = new TextBuilder("<html><body>");
+		StringBuilder replyMSG = new StringBuilder("<html><body>");
 
 		replyMSG.append("<center><font color=\"LEVEL\"> [Manor System] </font></center><br>");
 		replyMSG.append("<table width=\"100%\"><tr><td>");

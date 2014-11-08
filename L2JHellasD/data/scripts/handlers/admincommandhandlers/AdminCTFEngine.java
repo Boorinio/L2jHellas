@@ -14,11 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-/**
- * @author: FBIagent / fixed by SqueezeD
- */
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -28,6 +23,9 @@ import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.Util;
 
+/**
+ * @author: FBIagent / fixed by SqueezeD
+ */
 public class AdminCTFEngine implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
@@ -305,7 +303,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 	public void showEditPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder replyMSG = new TextBuilder("<html><body>");
+		StringBuilder replyMSG = new StringBuilder("<html><body>");
 
 		replyMSG.append("<center><font color=\"LEVEL\">[CTF Engine by Darki699]</font></center><br><br><br>");
 		replyMSG.append("<table><tr><td><edit var=\"input1\" width=\"125\"></td><td><edit var=\"input2\" width=\"125\"></td></tr></table>");
@@ -344,7 +342,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 	public void showControlPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder replyMSG = new TextBuilder("<html><body>");
+		StringBuilder replyMSG = new StringBuilder("<html><body>");
 
 		replyMSG.append("<center><font color=\"LEVEL\">[CTF Engine by Darki699]</font></center><br><br><br>");
 		replyMSG.append("<table border=\"0\"><tr>");
@@ -370,7 +368,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 	public void showMainPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder replyMSG = new TextBuilder("<html><body>");
+		StringBuilder replyMSG = new StringBuilder("<html><body>");
 
 		replyMSG.append("<center><font color=\"LEVEL\">[CTF Engine by Darki699]</font></center><br><br><br>");
 
@@ -388,7 +386,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		replyMSG.append("        <button value=\"Tele->NPC\" action=\"bypass -h admin_ctf_tele_npc\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"><br>");
 		replyMSG.append("    ... reward ID:&nbsp;<font color=\"00FF00\">" + CTF._rewardId + "</font><br1>");
 		if (ItemTable.getInstance().getTemplate(CTF._rewardId) != null)
-			replyMSG.append("    ... reward Item:&nbsp;<font color=\"00FF00\">" + ItemTable.getInstance().getTemplate(CTF._rewardId).getName() + "</font><br1>");
+			replyMSG.append("    ... reward Item:&nbsp;<font color=\"00FF00\">" + ItemTable.getInstance().getTemplate(CTF._rewardId).getItemName() + "</font><br1>");
 		else
 			replyMSG.append("    ... reward Item:&nbsp;<font color=\"00FF00\">(unknown)</font><br1>");
 		replyMSG.append("    ... reward Amount:&nbsp;<font color=\"00FF00\">" + CTF._rewardAmount + "</font><br>");

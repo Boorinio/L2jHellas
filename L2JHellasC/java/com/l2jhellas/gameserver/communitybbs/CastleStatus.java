@@ -20,8 +20,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -32,7 +30,7 @@ public class CastleStatus
 	private static final String SELECT_CLAN_DATA = "SELECT clan_name,clan_level FROM clan_data WHERE hasCastle=";
 	private static final String SELECT_CASTLE_DATA = "SELECT name,siegeDate,taxPercent FROM castle WHERE id=";
 	
-	private final TextBuilder _playerList = new TextBuilder();
+	private final StringBuilder _playerList = new StringBuilder();
 
 	public CastleStatus()
 	{

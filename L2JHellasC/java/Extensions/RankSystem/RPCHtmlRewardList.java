@@ -72,7 +72,7 @@ public class RPCHtmlRewardList
 
 		if (Config.PVP_REWARD_ENABLED && pageNo == 1)
 		{
-			String item_name = ItemTable.getInstance().getTemplate(Config.PVP_REWARD_ID).getName();
+			String item_name = ItemTable.getInstance().getTemplate(Config.PVP_REWARD_ID).getItemName();
 			list += getPvpRewardListItem(Config.PVP_REWARD_ID, item_name, Config.PVP_REWARD_AMOUNT, "PvP", pageNo);
 			i++;
 		}
@@ -90,7 +90,7 @@ public class RPCHtmlRewardList
 
 			if (i > (LIST_LENGTH * (pageNo - 1)) && i <= (LIST_LENGTH * (pageNo)))
 			{
-				String itemName = ItemTable.getInstance().getTemplate(r.getItemId()).getName();
+				String itemName = ItemTable.getInstance().getTemplate(r.getItemId()).getItemName();
 
 				list += getPvpRewardListItem(r.getId(), itemName, r.getItemAmount(), "Rank", pageNo);
 

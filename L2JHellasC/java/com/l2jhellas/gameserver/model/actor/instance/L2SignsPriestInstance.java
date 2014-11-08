@@ -18,8 +18,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -534,7 +532,7 @@ public class L2SignsPriestInstance extends L2NpcInstance
 					showChatWindow(player, val, fileSuffix, false);
 				break;
 				case 20: // Seal Status (for when joining a cabal)
-					TextBuilder contentBuffer = new TextBuilder("<html><body><font color=\"LEVEL\">[ Seal Status ]</font><br>");
+					StringBuilder contentBuffer = new StringBuilder("<html><body><font color=\"LEVEL\">[ Seal Status ]</font><br>");
 
 					for (int i = 1; i < 4; i++)
 					{

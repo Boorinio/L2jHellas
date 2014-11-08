@@ -14,17 +14,15 @@
  */
 package handlers.admincommandhandlers;
 
-/**
- * @author SqueezeD
- */
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.Util;
 
+/**
+ * @author SqueezeD
+ */
 public class AdminDMEngine implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
@@ -172,7 +170,7 @@ public class AdminDMEngine implements IAdminCommandHandler
 	public void showMainPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder replyMSG = new TextBuilder("<html><body>");
+		StringBuilder replyMSG = new StringBuilder("<html><body>");
 
 		replyMSG.append("<center><font color=\"LEVEL\">[dm Engine - by SqueezeD]</font></center><br><br><br>");
 		replyMSG.append("<table><tr><td><edit var=\"input1\" width=\"125\"></td><td><edit var=\"input2\" width=\"125\"></td></tr></table>");

@@ -14,8 +14,6 @@
  */
 package Extensions;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
@@ -23,7 +21,7 @@ public class OnEnter
 {
 	public static void subhtml(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 
 		tb.append("<html><head><title>Submit your Email</title></head>");

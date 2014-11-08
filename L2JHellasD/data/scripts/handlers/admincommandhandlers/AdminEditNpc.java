@@ -26,7 +26,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
@@ -435,18 +434,18 @@ public class AdminEditNpc implements IAdminCommandHandler
 			tradeList.replaceItem(itemID, Integer.parseInt(args[3]));
 			updateTradeList(itemID, price, tradeListID, order);
 
-			activeChar.sendMessage("Updated price for " + item.getName() + " in Trade List " + tradeListID);
+			activeChar.sendMessage("Updated price for " + item.getItemName() + " in Trade List " + tradeListID);
 			showShopList(activeChar, tradeListID, 1);
 			return;
 		}
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-		TextBuilder replyMSG = new TextBuilder();
+		StringBuilder replyMSG = new StringBuilder();
 		replyMSG.append("<html><title>Merchant Shop Item Edit</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<br>Edit an entry in merchantList.");
-		replyMSG.append("<br>Editing Item: " + item.getName());
+		replyMSG.append("<br>Editing Item: " + item.getItemName());
 		replyMSG.append("<table>");
 		replyMSG.append("<tr><td width=100>Property</td><td width=100>Edit Field</td><td width=100>Old Value</td></tr>");
 		replyMSG.append("<tr><td><br></td><td></td></tr>");
@@ -478,18 +477,18 @@ public class AdminEditNpc implements IAdminCommandHandler
 			tradeList.removeItem(itemID);
 			deleteTradeList(tradeListID, order);
 
-			activeChar.sendMessage("Deleted " + ItemTable.getInstance().getTemplate(itemID).getName() + " from Trade List " + tradeListID);
+			activeChar.sendMessage("Deleted " + ItemTable.getInstance().getTemplate(itemID).getItemName() + " from Trade List " + tradeListID);
 			showShopList(activeChar, tradeListID, 1);
 			return;
 		}
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-		TextBuilder replyMSG = new TextBuilder();
+		StringBuilder replyMSG = new StringBuilder();
 		replyMSG.append("<html><title>Merchant Shop Item Delete</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<br>Delete entry in merchantList.");
-		replyMSG.append("<br>Item to Delete: " + ItemTable.getInstance().getTemplate(itemID).getName());
+		replyMSG.append("<br>Item to Delete: " + ItemTable.getInstance().getTemplate(itemID).getItemName());
 		replyMSG.append("<table>");
 		replyMSG.append("<tr><td width=100>Property</td><td width=100>Value</td></tr>");
 		replyMSG.append("<tr><td><br></td><td></td></tr>");
@@ -528,14 +527,14 @@ public class AdminEditNpc implements IAdminCommandHandler
 			tradeList.addItem(newItem);
 			storeTradeList(itemID, price, tradeListID, order);
 
-			activeChar.sendMessage("Added " + newItem.getItem().getName() + " to Trade List " + tradeList.getListId());
+			activeChar.sendMessage("Added " + newItem.getItem().getItemName() + " to Trade List " + tradeList.getListId());
 			showShopList(activeChar, tradeListID, 1);
 			return;
 		}
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-		TextBuilder replyMSG = new TextBuilder();
+		StringBuilder replyMSG = new StringBuilder();
 		replyMSG.append("<html><title>Merchant Shop Item Add</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<br>Add a new entry in merchantList.");
@@ -562,16 +561,16 @@ public class AdminEditNpc implements IAdminCommandHandler
 			return;
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder html = itemListHtml(tradeList, page);
+		StringBuilder html = itemListHtml(tradeList, page);
 
 		adminReply.setHtml(html.toString());
 		activeChar.sendPacket(adminReply);
 
 	}
 
-	private TextBuilder itemListHtml(L2TradeList tradeList, int page)
+	private StringBuilder itemListHtml(L2TradeList tradeList, int page)
 	{
-		TextBuilder replyMSG = new TextBuilder();
+		StringBuilder replyMSG = new StringBuilder();
 
 		replyMSG.append("<html><title>Merchant Shop List Page: " + page + "</title>");
 		replyMSG.append("<body>");
@@ -582,7 +581,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		int end = Math.min(((page - 1) * PAGE_LIMIT) + (PAGE_LIMIT - 1), tradeList.getItems().size() - 1);
 		for (L2ItemInstance item : tradeList.getItems(start, end + 1))
 		{
-			replyMSG.append("<tr><td><a action=\"bypass -h admin_editShopItem " + tradeList.getListId() + " " + item.getItemId() + "\">" + item.getItem().getName() + "</a></td>");
+			replyMSG.append("<tr><td><a action=\"bypass -h admin_editShopItem " + tradeList.getListId() + " " + item.getItemId() + "\">" + item.getItem().getItemName() + "</a></td>");
 			replyMSG.append("<td>" + item.getPriceToSell() + "</td>");
 			replyMSG.append("<td><button value=\"Del\" action=\"bypass -h admin_delShopItem " + tradeList.getListId() + " " + item.getItemId() + "\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></td>");
 			replyMSG.append("</tr>");
@@ -621,7 +620,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-		TextBuilder replyMSG = new TextBuilder("<html><title>Merchant Shop Lists</title>");
+		StringBuilder replyMSG = new StringBuilder("<html><title>Merchant Shop Lists</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<br>Select a list to view");
 		replyMSG.append("<table>");
@@ -935,7 +934,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-		TextBuilder replyMSG = new TextBuilder("<html><title>NPC: " + npcData.name + "(" + npcData.npcId + ") 's drop manage</title>");
+		StringBuilder replyMSG = new StringBuilder("<html><title>NPC: " + npcData.name + "(" + npcData.npcId + ") 's drop manage</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<br>Notes: click[drop_id]to show the detail of drop data,click[del] to delete the drop data!");
 		replyMSG.append("<table>");
@@ -945,7 +944,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			for (L2DropCategory cat : npcData.getDropData())
 				for (L2DropData drop : cat.getAllDrops())
 				{
-					replyMSG.append("<tr><td><a action=\"bypass -h admin_edit_drop " + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "\">" + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "</a></td>" + "<td>" + ItemTable.getInstance().getTemplate(drop.getItemId()).getName() + "[" + drop.getItemId() + "]" + "</td><td>" + (drop.isQuestDrop() ? "Q" : (cat.isSweep() ? "S" : "D")) + "</td><td>" + "<a action=\"bypass -h admin_del_drop " + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "\">del</a></td></tr>");
+					replyMSG.append("<tr><td><a action=\"bypass -h admin_edit_drop " + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "\">" + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "</a></td>" + "<td>" + ItemTable.getInstance().getTemplate(drop.getItemId()).getItemName() + "[" + drop.getItemId() + "]" + "</td><td>" + (drop.isQuestDrop() ? "Q" : (cat.isSweep() ? "S" : "D")) + "</td><td>" + "<a action=\"bypass -h admin_del_drop " + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "\">del</a></td></tr>");
 				}
 
 		replyMSG.append("</table>");
@@ -967,14 +966,14 @@ public class AdminEditNpc implements IAdminCommandHandler
 
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-			TextBuilder replyMSG = new TextBuilder("<html><title>the detail of dropdata: (" + npcId + " " + itemId + " " + category + ")</title>");
+			StringBuilder replyMSG = new StringBuilder("<html><title>the detail of dropdata: (" + npcId + " " + itemId + " " + category + ")</title>");
 			replyMSG.append("<body>");
 
 			if (dropData.next())
 			{
 				replyMSG.append("<table>");
 				replyMSG.append("<tr><td>Appertain of NPC</td><td>" + NpcData.getInstance().getTemplate(dropData.getInt("mobId")).name + "</td></tr>");
-				replyMSG.append("<tr><td>ItemName</td><td>" + ItemTable.getInstance().getTemplate(dropData.getInt("itemId")).getName() + "(" + dropData.getInt("itemId") + ")</td></tr>");
+				replyMSG.append("<tr><td>ItemName</td><td>" + ItemTable.getInstance().getTemplate(dropData.getInt("itemId")).getItemName() + "(" + dropData.getInt("itemId") + ")</td></tr>");
 				replyMSG.append("<tr><td>Category</td><td>" + ((category == -1) ? "sweep" : Integer.toString(category)) + "</td></tr>");
 				replyMSG.append("<tr><td>MIN(" + dropData.getInt("min") + ")</td><td><edit var=\"min\" width=80></td></tr>");
 				replyMSG.append("<tr><td>MAX(" + dropData.getInt("max") + ")</td><td><edit var=\"max\" width=80></td></tr>");
@@ -1004,7 +1003,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
-		TextBuilder replyMSG = new TextBuilder("<html><title>Add dropdata to " + npcData.name + "(" + npcData.npcId + ")</title>");
+		StringBuilder replyMSG = new StringBuilder("<html><title>Add dropdata to " + npcData.name + "(" + npcData.npcId + ")</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<table>");
 		replyMSG.append("<tr><td>Item-Id</td><td><edit var=\"itemId\" width=80></td></tr>");
@@ -1055,7 +1054,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 				reLoadNpcDropList(npcId);
 
 				NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-				TextBuilder replyMSG = new TextBuilder("<html><title>Drop data modify complete!</title>");
+				StringBuilder replyMSG = new StringBuilder("<html><title>Drop data modify complete!</title>");
 				replyMSG.append("<body>");
 				replyMSG.append("<center><button value=\"DropList\" action=\"bypass -h admin_show_droplist " + npcId + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
 				replyMSG.append("</body></html>");
@@ -1093,7 +1092,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			reLoadNpcDropList(npcId);
 
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-			TextBuilder replyMSG = new TextBuilder("<html><title>Add drop data complete!</title>");
+			StringBuilder replyMSG = new StringBuilder("<html><title>Add drop data complete!</title>");
 			replyMSG.append("<body>");
 			replyMSG.append("<center><button value=\"Continue add\" action=\"bypass -h admin_add_drop " + npcId + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 			replyMSG.append("<br><br><button value=\"DropList\" action=\"bypass -h admin_show_droplist " + npcId + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
@@ -1128,7 +1127,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 				reLoadNpcDropList(npcId);
 
 				NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-				TextBuilder replyMSG = new TextBuilder("<html><title>Delete drop data(" + npcId + ", " + itemId + ", " + category + ")complete</title>");
+				StringBuilder replyMSG = new StringBuilder("<html><title>Delete drop data(" + npcId + ", " + itemId + ", " + category + ")complete</title>");
 				replyMSG.append("<body>");
 				replyMSG.append("<center><button value=\"DropList\" action=\"bypass -h admin_show_droplist " + npcId + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
 				replyMSG.append("</body></html>");

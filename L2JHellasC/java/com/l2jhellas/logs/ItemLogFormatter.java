@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 
 /**
@@ -34,7 +32,7 @@ public class ItemLogFormatter extends Formatter
 	@Override
 	public String format(LogRecord record)
 	{
-		TextBuilder output = new TextBuilder();
+		StringBuilder output = new StringBuilder();
 		output.append('[');
 		output.append(dateFmt.format(new Date(record.getMillis())));
 		output.append(']');
@@ -52,7 +50,7 @@ public class ItemLogFormatter extends Formatter
 				output.append("item " + item.getObjectId() + ":");
 				if (item.getEnchantLevel() > 0)
 					output.append("+" + item.getEnchantLevel() + " ");
-				output.append(item.getItem().getName());
+				output.append(item.getItem().getItemName());
 				output.append("(" + item.getCount() + ")");
 			}
 			// else if (p instanceof L2PcInstance)

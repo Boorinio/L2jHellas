@@ -29,8 +29,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -395,7 +393,7 @@ public final class Util
 
 	public static String printData(byte[] data, int len)
 	{
-		TextBuilder result = new TextBuilder();
+		StringBuilder result = new StringBuilder();
 
 		int counter = 0;
 

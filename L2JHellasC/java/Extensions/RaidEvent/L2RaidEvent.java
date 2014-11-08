@@ -20,8 +20,6 @@ import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -334,7 +332,7 @@ public class L2RaidEvent
 
 					member.setEventPoints(0);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-					TextBuilder replyMSG = new TextBuilder("<html><body>");
+					StringBuilder replyMSG = new StringBuilder("<html><body>");
 					replyMSG.append("<tr><td>A total of " + eventPoints + " points have been deduced from your party TOTAL Event Point Score.</td></tr><br>");
 					replyMSG.append("<tr><td>You didn't have enough Event Points, so we've used all of your points.</td></tr><br>");
 					replyMSG.append("<tr><td>You had " + previousPoints + ", and we needed " + individualPrice + " points.</td></tr><br><br><br>");
@@ -346,7 +344,7 @@ public class L2RaidEvent
 				{
 					member.setEventPoints(member.getEventPoints() - individualPrice);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-					TextBuilder replyMSG = new TextBuilder("<html><body>");
+					StringBuilder replyMSG = new StringBuilder("<html><body>");
 					replyMSG.append("<tr><td>A total of " + eventPoints + " points have been deduced from your party TOTAL Event Point Score.</td></tr><br>");
 					replyMSG.append("<tr><td>You had " + previousPoints + ", and now you have " + (previousPoints - individualPrice) + " points.</td></tr><br><br><br>");
 					replyMSG.append("</body></html>");
@@ -373,7 +371,7 @@ public class L2RaidEvent
 					int previousPoints = member.getEventPoints();
 					member.setEventPoints(0);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-					TextBuilder replyMSG = new TextBuilder("<html><body>");
+					StringBuilder replyMSG = new StringBuilder("<html><body>");
 					replyMSG.append("<tr><td>A total of " + eventPoints + " points have been deduced from your party TOTAL Event Point Score.</td></tr><br>");
 					replyMSG.append("<tr><td>You didn't have enough Event Points, so we've used all of your points.</td></tr><br>");
 					replyMSG.append("<tr><td>You had " + previousPoints + ", and we needed " + individualPrice + " points.</td></tr><br><br><br>");
@@ -387,7 +385,7 @@ public class L2RaidEvent
 					int previousPoints = member.getEventPoints();
 					member.setEventPoints(member.getEventPoints() - individualPrice);
 					NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-					TextBuilder replyMSG = new TextBuilder("<html><body>");
+					StringBuilder replyMSG = new StringBuilder("<html><body>");
 					replyMSG.append("<tr><td>A total of " + eventPoints + " points have been deduced from your party TOTAL Event Point Score.</td></tr><br>");
 					replyMSG.append("<tr><td>You had " + previousPoints + ", and now you have " + (previousPoints - individualPrice) + " points.</td></tr><br><br><br>");
 
@@ -832,7 +830,7 @@ public class L2RaidEvent
 		player.sendPacket(su);
 		player.sendPacket(new ItemList(player, true));
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		TextBuilder replyMSG = new TextBuilder("<html><body>");
+		StringBuilder replyMSG = new StringBuilder("<html><body>");
 		replyMSG.append("<tr><td>You won the event!</td></tr><br>");
 		replyMSG.append("<tr><td>You have Earned:</td></tr><br>");
 		if (hasItem1)

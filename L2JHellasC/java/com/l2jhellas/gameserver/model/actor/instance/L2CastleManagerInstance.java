@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.entity.Castle;
@@ -86,7 +84,7 @@ public class L2CastleManagerInstance extends L2Npc
 	
 	private static String showWindow(L2PcInstance player)
 	{
-		TextBuilder tb = new TextBuilder();
+		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Siege Manager</title><body>");
 		tb.append("<center><font color=\"LEVEL\">Choose The Castle Manager.</font><br1>");
 		tb.append("<table>");

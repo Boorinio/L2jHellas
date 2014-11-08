@@ -86,7 +86,7 @@ public class RPSHtmlRPCRewardList
 				if (rpcr == null)
 					break;
 
-				String itemName = ItemTable.getInstance().getTemplate(rpcr.getItemId()).getName();
+				String itemName = ItemTable.getInstance().getTemplate(rpcr.getItemId()).getItemName();
 
 				list += getRpcRewardListItem(rpcr.getId(), itemName, rpcr.getItemAmount(), rpcr.getRpc(), pageNo);
 

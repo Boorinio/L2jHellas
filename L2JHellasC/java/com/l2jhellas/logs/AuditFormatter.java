@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import javolution.text.TextBuilder;
-
 /**
  * @author zabbix
  *         Lets drink to code!
@@ -33,7 +31,7 @@ public class AuditFormatter extends Formatter
 	@Override
 	public String format(LogRecord record)
 	{
-		TextBuilder output = new TextBuilder();
+		StringBuilder output = new StringBuilder();
 		output.append('[');
 		output.append(dateFmt.format(new Date(record.getMillis())));
 		output.append(']');

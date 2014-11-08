@@ -69,7 +69,7 @@ public class ItemList extends L2GameServerPacket
 	{
 		for (L2ItemInstance temp : _items)
 		{
-			_log.fine("item:" + temp.getItem().getName() + " type1:" + temp.getItem().getType1() + " type2:" + temp.getItem().getType2());
+			_log.fine("item:" + temp.getItem().getItemName() + " type1:" + temp.getItem().getType1() + " type2:" + temp.getItem().getType2());
 		}
 	}
 

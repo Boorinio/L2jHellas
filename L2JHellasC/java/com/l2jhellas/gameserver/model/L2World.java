@@ -14,7 +14,9 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -897,5 +899,17 @@ public final class L2World
 			}
 		}
 		_log.info("All visible NPC's deleted.");
+	}
+
+	/**
+	 * Gets all players sorted by the given comparator.
+	 * @param comparator the comparator
+	 * @return the players sorted by the comparator
+	 */
+	public static L2PcInstance[] getPlayersSortedBy(Comparator<L2PcInstance> comparator)
+	{
+		final L2PcInstance[] players = _allPlayers.values().toArray(new L2PcInstance[_allPlayers.values().size()]);
+		Arrays.sort(players, comparator);
+		return players;
 	}
 }
