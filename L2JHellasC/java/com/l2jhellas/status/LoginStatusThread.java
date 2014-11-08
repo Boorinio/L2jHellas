@@ -30,6 +30,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -37,7 +38,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable;
 import com.l2jhellas.loginserver.LoginController;
 import com.l2jhellas.loginserver.LoginServer;
-import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class LoginStatusThread extends Thread
@@ -201,7 +201,7 @@ public class LoginStatusThread extends Thread
 	 */
 	private boolean validPassword(String password)
 	{
-		byte[] expectedPass = Base64.decode(_pass);
+		byte[] expectedPass = Base64.getDecoder().decode(_pass);
 		MessageDigest md;
 		try
 		{

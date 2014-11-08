@@ -24,6 +24,7 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Level;
@@ -40,7 +41,6 @@ import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.logs.LogRecorder;
-import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.crypt.ScrambledKeyPair;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -519,7 +519,7 @@ public class LoginController
 			ResultSet rset = statement.executeQuery();
 			if (rset.next())
 			{
-				expected = Base64.decode(rset.getString("password"));
+				expected = Base64.getDecoder().decode(rset.getString("password"));
 				access = rset.getInt("access_level");
 				lastServer = rset.getInt("lastServer");
 				if (lastServer <= 0)
@@ -539,7 +539,7 @@ public class LoginController
 					{
 						statement = con.prepareStatement(INSERT_ACCOUNT);
 						statement.setString(1, user);
-						statement.setString(2, Base64.encodeBytes(hash));
+						statement.setString(2, Base64.getEncoder().encodeToString(hash));
 						statement.setLong(3, System.currentTimeMillis());
 						statement.setInt(4, 0);
 						statement.setString(5, address.getHostAddress());

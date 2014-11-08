@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.Locale;
 
 import javolution.util.FastList;
@@ -29,7 +30,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.Server;
 import com.l2jhellas.tools.ngl.ConsoleLocalizator;
 import com.l2jhellas.tools.ngl.LocaleCodes;
-import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -208,7 +208,7 @@ public class SQLAccountManager
 			PreparedStatement statement = con.prepareStatement("REPLACE accounts (login, password, access_level) VALUES (?,?,?)"))
 		{
 			statement.setString(1, account);
-			statement.setString(2, Base64.encodeBytes(newpass));
+			statement.setString(2, Base64.getEncoder().encodeToString(newpass));
 			statement.setString(3, level);
 			statement.executeUpdate();
 		}

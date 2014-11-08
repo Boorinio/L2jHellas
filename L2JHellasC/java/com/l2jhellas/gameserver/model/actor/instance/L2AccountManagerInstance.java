@@ -18,6 +18,7 @@ import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Base64;
 import java.util.StringTokenizer;
 
 import javax.mail.MessagingException;
@@ -31,7 +32,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Base64;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -1095,7 +1095,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 			password = md.digest(password);
 
 			PreparedStatement statement = con.prepareStatement("UPDATE accounts SET password=? WHERE login=?");
-			statement.setString(1, Base64.encodeBytes(password));
+			statement.setString(1, Base64.getEncoder().encodeToString(password));
 			statement.setString(2, activeChar.getAccountName());
 			statement.execute();
 			statement.close();
@@ -1160,7 +1160,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 			password = md.digest(password);
 
 			PreparedStatement statement2 = con.prepareStatement("UPDATE accounts SET password=? WHERE login=?");
-			statement2.setString(1, Base64.encodeBytes(password));
+			statement2.setString(1, Base64.getEncoder().encodeToString(password));
 			statement2.setString(2, acc);
 			statement2.execute();
 			statement2.close();
