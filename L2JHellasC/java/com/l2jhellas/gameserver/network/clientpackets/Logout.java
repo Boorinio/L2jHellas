@@ -126,10 +126,6 @@ public final class Logout extends L2GameClientPacket
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
-		if (EnterWorld._onlineplayers.contains(player))
-		{
-			EnterWorld._onlineplayers.remove(player);
-		}
 		
 		player.deleteMe();
 		notifyFriends(player);

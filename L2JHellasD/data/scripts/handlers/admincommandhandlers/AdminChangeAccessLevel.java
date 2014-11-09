@@ -131,7 +131,7 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 		else
 		{
 			player.sendMessage("Your character has been banned. Bye.");
-			player.logout();
+			player.closeNetConnection();
 		}
 		activeChar.sendMessage("Character's access level is now set to " + lvl + ". Effects won't be noticeable until next session.");
 	}

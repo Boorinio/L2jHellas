@@ -129,49 +129,49 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				playerHelp(activeChar, _command.substring(12));
 			}
-			else if (ZodiacMain.voting && _command.startsWith("PeloponnesianWar"))
+			else if (ZodiacMain.voting && _command.startsWith("PeloponnesianWar") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for PeloponnesianWar!");
 				ZodiacMain.count[0]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
 			}
-			else if (ZodiacMain.voting && _command.startsWith("CaptureThem"))
+			else if (ZodiacMain.voting && _command.startsWith("CaptureThem") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for CaptureThem!");
 				ZodiacMain.count[1]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
 			}
-			else if (ZodiacMain.voting && _command.startsWith("CastleWars"))
+			else if (ZodiacMain.voting && _command.startsWith("CastleWars") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for CastleWars!");
 				ZodiacMain.count[2]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
 			}
-			else if(ZodiacMain.voting && _command.startsWith("ProtectTheLdr"))
+			else if(ZodiacMain.voting && _command.startsWith("ProtectTheLdr") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for ProtectTheLeader!");
 				ZodiacMain.count[3]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
 			}
-			else if (ZodiacMain.voting && _command.startsWith("TreasureChest"))
+			else if (ZodiacMain.voting && _command.startsWith("TreasureChest") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for TreasureChest!");
 				ZodiacMain.count[4]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
 			}
-			else if (ZodiacMain.voting && _command.startsWith("ChaosEvent"))
+			else if (ZodiacMain.voting && _command.startsWith("ChaosEvent") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for Chaos Event!");
 				ZodiacMain.count[5]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
 			}
-			else if (ZodiacMain.voting && _command.startsWith("Challenge"))
+			else if (ZodiacMain.voting && _command.startsWith("Challenge") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for Challenge Event!");
 				ZodiacMain.count[6]++;

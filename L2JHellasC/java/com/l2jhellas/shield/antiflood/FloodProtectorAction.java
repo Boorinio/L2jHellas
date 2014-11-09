@@ -152,7 +152,7 @@ public final class FloodProtectorAction
 		if (_log.isLoggable(Level.WARNING))
 			_log.warning(StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Account [", _player.getAccountName(), "] banned for flooding [char ", _player.getName(), "] ", _config.PUNISHMENT_TIME <= 0 ? "forever" : "for " + _config.PUNISHMENT_TIME + " mins"));
 
-		_player.logout();
+		_player.closeNetConnection();
 	}
 
 	/**

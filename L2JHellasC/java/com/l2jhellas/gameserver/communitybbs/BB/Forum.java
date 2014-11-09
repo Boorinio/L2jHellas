@@ -279,14 +279,13 @@ public class Forum
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("INSERT INTO forums (forum_id,forum_name,forum_parent,forum_post,forum_type,forum_perm,forum_owner_id) VALUES (?,?,?,?,?,?,?)");
-			statement.setInt(1, _forumId);
-			statement.setString(2, _forumName);
-			statement.setInt(3, _fParent.getID());
-			statement.setInt(4, _forumPost);
-			statement.setInt(5, _forumType);
-			statement.setInt(6, _forumPerm);
-			statement.setInt(7, _ownerID);
+			PreparedStatement statement = con.prepareStatement("INSERT INTO forums (forum_name,forum_parent,forum_post,forum_type,forum_perm,forum_owner_id) VALUES (?,?,?,?,?,?)");
+			statement.setString(1, _forumName);
+			statement.setInt(2, _fParent.getID());
+			statement.setInt(3, _forumPost);
+			statement.setInt(4, _forumType);
+			statement.setInt(5, _forumPerm);
+			statement.setInt(6, _ownerID);
 			statement.execute();
 			statement.close();
 		}

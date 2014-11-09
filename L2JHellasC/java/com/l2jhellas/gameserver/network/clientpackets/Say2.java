@@ -130,7 +130,7 @@ public final class Say2 extends L2GameClientPacket
 		{
 			_log.warning(activeChar.getName() + ": sending empty text. Possible packet hack.");
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			activeChar.logout();
+			activeChar.closeNetConnection();
 			return;
 		}
 		if (_text.length() > Config.MAX_CHAT_LENGTH)

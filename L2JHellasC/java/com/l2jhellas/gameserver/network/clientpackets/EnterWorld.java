@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class EnterWorld extends L2GameClientPacket
 {
-	public static Vector<L2PcInstance> _onlineplayers = new Vector<L2PcInstance>();
 	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
 
 	public TaskPriority getPriority()

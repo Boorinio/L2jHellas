@@ -483,7 +483,7 @@ public class GameStatusThread extends Thread
 						if (player != null)
 						{
 							player.sendMessage("You are kicked by gm");
-							player.logout();
+							player.closeNetConnection();
 							_print.println("Player kicked");
 						}
 					}

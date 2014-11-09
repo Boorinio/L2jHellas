@@ -118,11 +118,6 @@ public final class RequestRestart extends L2GameClientPacket
 		player.store();
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
-		
-		if (EnterWorld._onlineplayers.contains(player))
-		{
-			EnterWorld._onlineplayers.remove(player);
-		}
 
 		// detach the client from the char so that the connection isnt closed in the deleteMe
 		player.setClient(null);

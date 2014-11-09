@@ -161,7 +161,6 @@ import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.clientpackets.EnterWorld;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeWaitType;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
@@ -664,6 +663,7 @@ public final class L2PcInstance extends L2Playable
 			}
 			return;
 		}
+		
 	}
 	
 	private static void PStimeOver(String account)
@@ -1477,14 +1477,6 @@ public final class L2PcInstance extends L2Playable
 	public void isInCraftMode(boolean b)
 	{
 		_inCraftMode = b;
-	}
-	
-	/**
-	 * Manage Logout Task.
-	 */
-	public void logout()
-	{
-		closeNetConnection();
 	}
 	
 	/**
@@ -11272,21 +11264,6 @@ public final class L2PcInstance extends L2Playable
 		
 		// jail task
 		updateJailState();
-		if (isGM())
-		{
-			if (_isInvul)
-			{
-				sendMessage("Entering world in Invulnerable mode.");
-			}
-			if (getAppearance().getInvisible())
-			{
-				sendMessage("Entering world in Invisible mode.");
-			}
-			if (getMessageRefusal())
-			{
-				sendMessage("Entering world in Message Refusal mode.");
-			}
-		}
 		revalidateZone(true);
 	}
 	
@@ -13981,7 +13958,7 @@ public final class L2PcInstance extends L2Playable
 		final IpCatcher ipc = new IpCatcher();
 		
 		if (ipc.isCatched(this))
-			logout();
+			closeNetConnection();
 
 		standUp();
 		setRunning();
@@ -14158,7 +14135,7 @@ public final class L2PcInstance extends L2Playable
 		
 		if (Config.ANNOUNCE_HERO_LOGIN && isHero())
 		{
-			Announcements.getInstance().announceToAll("Hero: " + getName() + " has been logged in.");
+			Announcements.getInstance().announceToAll("Hero: " + getName() + " has just logged in.");
 		}
 		
 		if (Config.ANNOUNCE_CASTLE_LORDS)
@@ -14179,11 +14156,20 @@ public final class L2PcInstance extends L2Playable
 		if (isGM())
 		{
 			if (Config.GM_STARTUP_INVULNERABLE && AdminData.getInstance().hasAccess("admin_invul", getAccessLevel()))
+			{
 				setIsInvul(true);
+				sendMessage("Entering world in Invulnerable mode.");
+			}
 			if (Config.GM_STARTUP_INVISIBLE && AdminData.getInstance().hasAccess("admin_invisible", getAccessLevel()))
+			{
 				getAppearance().setInvisible();
+				sendMessage("Entering world in Invisible mode.");
+			}
 			if (Config.GM_STARTUP_SILENCE && AdminData.getInstance().hasAccess("admin_silence", getAccessLevel()))
+			{
 				setMessageRefusal(true);
+				sendMessage("Entering world in Message Refusal mode.");
+			}
 			if (Config.GM_STARTUP_AUTO_LIST && AdminData.getInstance().hasAccess("admin_gmliston", getAccessLevel()))
 				AdminData.getInstance().addGm(this, false);
 			else
@@ -14214,7 +14200,7 @@ public final class L2PcInstance extends L2Playable
 				{
 					player.sendMessage("I'm sorry, but multibox is not allowed here.");
 					player.sendPacket(new LeaveWorld());
-					player.logout();
+					closeNetConnection();
 					_log.log(Level.WARNING, getClass().getName() + ": Character " + getName() + " with IP " + ip + " kicked for multibox.");
 				}
 			}
@@ -14378,8 +14364,6 @@ public final class L2PcInstance extends L2Playable
 			if (!L2AccountManagerInstance.hasSubEmail(this))
 				ThreadPoolManager.getInstance().scheduleGeneral(new entermail(this), 20000);
 
-		EnterWorld._onlineplayers.add(this);
-
 		setPledgeClass();
 
 		// add char to online characters
@@ -14430,7 +14414,6 @@ public final class L2PcInstance extends L2Playable
 
 		if (Config.GAMEGUARD_ENFORCE)
 			sendPacket(new GameGuardQuery());
-      
 		sendPacket(ActionFailed.STATIC_PACKET); //just to avoid target issues
 	}
 	

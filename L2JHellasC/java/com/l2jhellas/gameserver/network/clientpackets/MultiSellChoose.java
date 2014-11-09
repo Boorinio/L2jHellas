@@ -67,13 +67,10 @@ public class MultiSellChoose extends L2GameClientPacket
 			return;
 
 		MultiSellListContainer list = MultisellData.getInstance().getList(_listId);
-		if (list == null)
-			return;
-
 		L2PcInstance player = getClient().getActiveChar();
-		if (player == null)
+		if (list == null || player == null)
 			return;
-
+		
 		if (!player.getAntiFlood().getMultiSell().tryPerformAction("multisell choose"))
 			return;
 
