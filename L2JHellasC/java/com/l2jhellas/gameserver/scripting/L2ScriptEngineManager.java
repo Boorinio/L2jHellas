@@ -1,20 +1,16 @@
 /*
- * Copyright (C) 2004-2013 L2J Server
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  * 
- * This file is part of L2J Server.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  * 
- * L2J Server is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J Server is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.scripting;
 
@@ -40,6 +36,8 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
+import com.l2jhellas.Config;
+
 import javolution.util.FastMap;
 
 
@@ -64,24 +62,22 @@ public final class L2ScriptEngineManager
 	
 	private File _currentLoadingScript;
 	
-	// Configs
-	// TODO move to config file
 	/**
 	 * Informs(logs) the scripts being loaded.<BR>
 	 * Apply only when executing script from files.<BR>
 	 */
-	private static final boolean VERBOSE_LOADING = false;
+	private static final boolean VERBOSE_LOADING = Config.VERBOSE_LOADING;
 	
 	/**
 	 * If the script engine supports compilation the script is compiled before execution.<BR>
 	 */
-	private static final boolean ATTEMPT_COMPILATION = true;
+	private static final boolean ATTEMPT_COMPILATION = Config.ATTEMPT_COMPILATION;
 	
 	/**
 	 * Clean an previous error log(if such exists) for the script being loaded before trying to load.<BR>
 	 * Apply only when executing script from files.<BR>
 	 */
-	private static final boolean PURGE_ERROR_LOG = true;
+	private static final boolean PURGE_ERROR_LOG = Config.PURGE_ERROR_LOG;
 	
 	protected L2ScriptEngineManager()
 	{
@@ -115,7 +111,8 @@ public final class L2ScriptEngineManager
 				
 				if (reg)
 				{
-					_log.info("Script Engine: " + factory.getEngineName() + " " + factory.getEngineVersion() + " - Language: " + factory.getLanguageName() + " - Language Version: " + factory.getLanguageVersion());
+					_log.info("Script Engine: Engine: " + factory.getEngineName() + " Engine Version: " + factory.getEngineVersion());
+					_log.info("Script Engine: -> Language: " + factory.getLanguageName() + " version: " + factory.getLanguageVersion());
 				}
 				
 				for (String ext : factory.getExtensions())
@@ -130,23 +127,6 @@ public final class L2ScriptEngineManager
 			{
 				_log.log(Level.WARNING, "Failed initializing factory: " + e.getMessage(), e);
 			}
-		}
-		
-		preConfigure();
-	}
-	
-	private void preConfigure()
-	{
-		// Jython sys.path
-		String dataPackDirForwardSlashes = SCRIPT_FOLDER.getPath().replaceAll("\\\\", "/");
-		String configScript = "import sys;sys.path.insert(0,'" + dataPackDirForwardSlashes + "');";
-		try
-		{
-			eval("jython", configScript);
-		}
-		catch (ScriptException e)
-		{
-			_log.severe("Failed preconfiguring jython: " + e.getMessage());
 		}
 	}
 	

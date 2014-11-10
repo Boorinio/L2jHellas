@@ -39,8 +39,7 @@ public class Restart
 	{
 		if (NextRestart.getTime() != null)
 			return format.format(NextRestart.getTime());
-		else
-			return "Something went wrong";
+		return "Something went wrong";
 	}
 
 	private Restart()

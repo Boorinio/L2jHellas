@@ -46,14 +46,11 @@ public class AdminDonator implements IAdminCommandHandler
 			L2Object target = activeChar.getTarget();
 			L2PcInstance player = null;
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			if (target instanceof L2PcInstance)
-			{
+
+			if (target != null && target instanceof L2PcInstance)
 				player = (L2PcInstance) target;
-			}
 			else
-			{
 				player = activeChar;
-			}
 
 			if (player.isDonator())
 			{
@@ -61,28 +58,30 @@ public class AdminDonator implements IAdminCommandHandler
 				player.updateNameTitleColor();
 				sm.addString("You are no longer a server donator.");
 				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " removed donator stat of player" + target.getName());
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
-					ResultSet rset = statement.executeQuery();
-					int objId = 0;
-					if (rset.next())
+					try (ResultSet rset = statement.executeQuery())
 					{
-						objId = rset.getInt(1);
+						int objId = 0;
+						if (rset.next())
+						{
+							objId = rset.getInt(1);
+						}
+						rset.close();
+						statement.close();
+	
+						if (objId == 0)
+						{
+							return false;
+						}
+						try (PreparedStatement statement1 = con.prepareStatement("UPDATE characters SET donator=0 WHERE obj_Id=?"))
+						{
+							statement1.setInt(1, objId);
+							statement1.execute();
+						}
 					}
-					rset.close();
-					statement.close();
-
-					if (objId == 0)
-					{
-						return false;
-					}
-
-					statement = con.prepareStatement("UPDATE characters SET donator=0 WHERE obj_Id=?");
-					statement.setInt(1, objId);
-					statement.execute();
-					statement.close();
 				}
 				catch (Exception e)
 				{
@@ -99,28 +98,31 @@ public class AdminDonator implements IAdminCommandHandler
 				player.updateNameTitleColor();
 				sm.addString("You are now a server donator, congratulations!");
 				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " has given donator stat for player " + target.getName() + ".");
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
-					ResultSet rset = statement.executeQuery();
-					int objId = 0;
-					if (rset.next())
+					try (ResultSet rset = statement.executeQuery())
 					{
-						objId = rset.getInt(1);
-					}
-					rset.close();
-					statement.close();
+						int objId = 0;
+						if (rset.next())
+						{
+							objId = rset.getInt(1);
+						}
+						rset.close();
+						statement.close();
+	
+						if (objId == 0)
+						{
+							return false;
+						}
 
-					if (objId == 0)
-					{
-						return false;
+						try (PreparedStatement statement1 = con.prepareStatement("UPDATE characters SET donator=1 WHERE obj_Id=?"))
+						{
+							statement1.setInt(1, objId);
+							statement1.execute();
+						}
 					}
-
-					statement = con.prepareStatement("UPDATE characters SET donator=1 WHERE obj_Id=?");
-					statement.setInt(1, objId);
-					statement.execute();
-					statement.close();
 				}
 				catch (Exception e)
 				{

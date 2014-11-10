@@ -89,10 +89,7 @@ public class AdminKill implements IAdminCommandHandler
 							return false;
 						}
 					}
-					else
-					{
-						kill(activeChar, plyr);
-					}
+					kill(activeChar, plyr);
 				}
 				else
 				{

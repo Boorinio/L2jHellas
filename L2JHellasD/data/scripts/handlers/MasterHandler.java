@@ -92,6 +92,42 @@ import handlers.chathandlers.ChatPetition;
 import handlers.chathandlers.ChatShout;
 import handlers.chathandlers.ChatTell;
 import handlers.chathandlers.ChatTrade;
+import handlers.itemhandlers.BeastSoulShot;
+import handlers.itemhandlers.BeastSpice;
+import handlers.itemhandlers.BeastSpiritShot;
+import handlers.itemhandlers.BlessedSpiritShot;
+import handlers.itemhandlers.Book;
+import handlers.itemhandlers.CharChangePotions;
+import handlers.itemhandlers.ChestKey;
+import handlers.itemhandlers.ChristmasTree;
+import handlers.itemhandlers.CompBlessedSpiritShotPacks;
+import handlers.itemhandlers.CompShotPacks;
+import handlers.itemhandlers.CompSpiritShotPacks;
+import handlers.itemhandlers.CrystalCarol;
+import handlers.itemhandlers.EnchantScrolls;
+import handlers.itemhandlers.EnergyStone;
+import handlers.itemhandlers.ExtractableItems;
+import handlers.itemhandlers.Firework;
+import handlers.itemhandlers.FishShots;
+import handlers.itemhandlers.Harvester;
+import handlers.itemhandlers.HeroCustomItem;
+import handlers.itemhandlers.Maps;
+import handlers.itemhandlers.MercTicket;
+import handlers.itemhandlers.MysteryPotion;
+import handlers.itemhandlers.PaganKeys;
+import handlers.itemhandlers.Potions;
+import handlers.itemhandlers.Recipes;
+import handlers.itemhandlers.Remedy;
+import handlers.itemhandlers.RollingDice;
+import handlers.itemhandlers.ScrollOfEscape;
+import handlers.itemhandlers.ScrollOfResurrection;
+import handlers.itemhandlers.Scrolls;
+import handlers.itemhandlers.Seed;
+import handlers.itemhandlers.SevenSignsRecord;
+import handlers.itemhandlers.SoulCrystals;
+import handlers.itemhandlers.SoulShots;
+import handlers.itemhandlers.SpiritShot;
+import handlers.itemhandlers.SummonItems;
 import handlers.skillhandlers.BalanceLife;
 import handlers.skillhandlers.BeastFeed;
 import handlers.skillhandlers.Blow;
@@ -136,6 +172,7 @@ import handlers.usercommandhandlers.Mount;
 import handlers.usercommandhandlers.OlympiadStat;
 import handlers.usercommandhandlers.PartyInfo;
 import handlers.usercommandhandlers.PvpInfo;
+import handlers.usercommandhandlers.SiegeStatus;
 import handlers.usercommandhandlers.Time;
 import handlers.voicedcommandhandlers.AwayCmd;
 import handlers.voicedcommandhandlers.BankingCmd;
@@ -170,6 +207,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.ChatHandler;
 import com.l2jhellas.gameserver.handler.IHandler;
+import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.handler.UserCommandHandler;
 import com.l2jhellas.gameserver.handler.VoicedCommandHandler;
@@ -185,6 +223,7 @@ public class MasterHandler
 	{
 		AdminCommandHandler.getInstance(),
 		ChatHandler.getInstance(),
+		ItemHandler.getInstance(),
 		SkillHandler.getInstance(),
 		UserCommandHandler.getInstance(),
 		VoicedCommandHandler.getInstance(),
@@ -193,12 +232,13 @@ public class MasterHandler
 	};
 	
 	private static final Class<?>[][] _handlers =
-	{
+	{//formatter:off
 		{
 			// Admin Command Handlers
 			AdminAdmin.class,
 			AdminAnnouncements.class,
 			AdminAutoAnnouncements.class,
+			Balancer.class,
 			AdminBan.class,
 			AdminBanChat.class,
 			AdminBBS.class,
@@ -206,24 +246,28 @@ public class MasterHandler
 			AdminChangeAccessLevel.class,
 			AdminClanFull.class,
 			AdminCreateItem.class,
+			AdminCTFEngine.class,
 			AdminCursedWeapons.class,
 			AdminDelete.class,
 			AdminDeport.class,
 			AdminDisconnect.class,
+			AdminDMEngine.class,
+			AdminDonator.class,
 			AdminDoorControl.class,
 			AdminEditChar.class,
 			AdminEditNpc.class,
 			AdminEffects.class,
 			AdminEnchant.class,
 			AdminEventEngine.class,
-			AdminFightCalculator.class,
 			AdminExpSp.class,
+			AdminFightCalculator.class,
 			AdminGeodata.class,
 			AdminGeoEditor.class,
 			AdminGm.class,
 			AdminGmChat.class,
 			AdminHeal.class,
 			AdminHelpPage.class,
+			AdminHero.class,
 			AdminInvul.class,
 			AdminKick.class,
 			AdminKill.class,
@@ -235,12 +279,15 @@ public class MasterHandler
 			AdminMenu.class,
 			AdminMobGroup.class,
 			AdminMonsterRace.class,
+			AdminNoble.class,
 			AdminPathNode.class,
 			AdminPetition.class,
 			AdminPForge.class,
 			AdminPledge.class,
 			AdminPolymorph.class,
+			AdminPremium.class,
 			AdminQuest.class,
+			AdminReload.class,
 			AdminRepairChar.class,
 			AdminRes.class,
 			AdminRideWyvern.class,
@@ -252,18 +299,10 @@ public class MasterHandler
 			AdminTarget.class,
 			AdminTeleport.class,
 			AdminTest.class,
-			AdminUnblockIp.class,
-			AdminZone.class,
-			AdminDonator.class,
-			AdminCTFEngine.class,
-			AdminDMEngine.class,
 			AdminTvTEngine.class,
-			AdminHero.class,
-			AdminNoble.class,
-			Balancer.class,
-			AdminPremium.class,
-			AdminReload.class,
+			AdminUnblockIp.class,
 			//AdminWalker.class,
+			AdminZone.class,
 			AdminWho.class,
 		},
 		{
@@ -281,6 +320,45 @@ public class MasterHandler
 			ChatShout.class,
 			ChatTell.class,
 			ChatTrade.class,
+		},
+		{
+			// Item Handlers
+			BeastSoulShot.class,
+			BeastSpice.class,
+			BeastSpiritShot.class,
+			BlessedSpiritShot.class,
+			Book.class,
+			CharChangePotions.class,
+			ChestKey.class,
+			ChristmasTree.class,
+			CompBlessedSpiritShotPacks.class,
+			CompShotPacks.class,
+			CompSpiritShotPacks.class,
+			CrystalCarol.class,
+			EnchantScrolls.class,
+			EnergyStone.class,
+			ExtractableItems.class,
+			Firework.class,
+			FishShots.class,
+			Harvester.class,
+			(Config.HERO_CUSTOM_ITEMS ? HeroCustomItem.class : null),
+			Maps.class,
+			MercTicket.class,
+			MysteryPotion.class,
+			PaganKeys.class,
+			Potions.class,
+			Recipes.class,
+			Remedy.class,
+			RollingDice.class,
+			ScrollOfEscape.class,
+			ScrollOfResurrection.class,
+			Scrolls.class,
+			Seed.class,
+			SevenSignsRecord.class,
+			SoulCrystals.class,
+			SoulShots.class,
+			SpiritShot.class,
+			SummonItems.class,
 		},
 		{
 			// Skill Handlers
@@ -319,19 +397,20 @@ public class MasterHandler
 		},
 		{
 			// User Command Handlers
+			ChannelDelete.class,
+			ChannelLeave.class,
+			ChannelListUpdate.class,
 			ClanPenalty.class,
 			ClanWarsList.class,
 			DisMount.class,
 			Escape.class,
 			Loc.class,
 			Mount.class,
-			PartyInfo.class,
-			Time.class,
 			OlympiadStat.class,
-			ChannelLeave.class,
-			ChannelDelete.class,
-			ChannelListUpdate.class,
+			PartyInfo.class,
 			(Config.RANK_PVP_SYSTEM_ENABLED && Config.PVP_INFO_USER_COMMAND_ENABLED && Config.PVP_INFO_COMMAND_ENABLED ? PvpInfo.class : null),
+			SiegeStatus.class,
+			Time.class,
 		},
 		{
 			// Voiced Command Handlers
@@ -366,7 +445,7 @@ public class MasterHandler
 		//	StatusHandler.class,
 		//	ThreadHandler.class,
 		},
-	};
+	};//formatter:on
 	
 	/**
 	 * @param args

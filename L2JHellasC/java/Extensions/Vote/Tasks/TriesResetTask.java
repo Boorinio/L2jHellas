@@ -37,13 +37,11 @@ public class TriesResetTask
 			@Override
 			public void run()
 			{
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("UPDATE characters SET tries=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("UPDATE characters SET tries=?");
-
 					statement.setInt(1, 3);
 					statement.execute();
-					statement.close();
 				}
 				catch (Exception e)
 				{

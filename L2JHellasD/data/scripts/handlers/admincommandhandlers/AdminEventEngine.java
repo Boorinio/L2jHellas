@@ -102,13 +102,10 @@ public class AdminEventEngine implements IAdminCommandHandler
 		else if (command.startsWith("admin_event_see"))
 		{
 			String eventName = command.substring(16);
-			try
+			try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("data/events/" + eventName)));
+				BufferedReader inbr = new BufferedReader(new InputStreamReader(in)))
 			{
 				NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
-				DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("data/events/" + eventName)));
-				BufferedReader inbr = new BufferedReader(new InputStreamReader(in));
-
 				StringBuilder replyMSG = new StringBuilder("<html><body>");
 				replyMSG.append("<center><font color=\"LEVEL\">" + eventName + "</font><font color=\"FF0000\"> bY " + inbr.readLine() + "</font></center><br>");
 
@@ -116,7 +113,6 @@ public class AdminEventEngine implements IAdminCommandHandler
 				replyMSG.append("</body></html>");
 				adminReply.setHtml(replyMSG.toString());
 				activeChar.sendPacket(adminReply);
-				inbr.close();
 			}
 			catch (Exception e)
 			{
@@ -158,13 +154,12 @@ public class AdminEventEngine implements IAdminCommandHandler
 		else if (command.startsWith("admin_event_store"))
 		{
 
-			try
+			try (FileOutputStream file = new FileOutputStream("data/events/" + tempName);
+				PrintStream p = new PrintStream(file))
 			{
-				FileOutputStream file = new FileOutputStream("data/events/" + tempName);
-				PrintStream p = new PrintStream(file);
+				;
 				p.println(activeChar.getName());
 				p.println(tempBuffer);
-				file.close();
 			}
 			catch (Exception e)
 			{

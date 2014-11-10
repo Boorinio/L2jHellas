@@ -66,21 +66,6 @@ public class AdminWalker implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		/*
-		 * if (!AdminCommandAccessRights.getInstance().hasAccess(command, activeChar.getAccessLevel()))
-		 * return false;
-		 *
-		 * if (Config.GMAUDIT)
-		 * {
-		 * Logger _logAudit = Logger.getLogger("gmaudit");
-		 * LogRecord record = new LogRecord(Level.INFO, command);
-		 * record.setParameters(new Object[]
-		 * {
-		 * "GM: " + activeChar.getName(), " to target [" + activeChar.getTarget() + "] "
-		 * });
-		 * _logAudit.log(record);
-		 * }
-		 */
 		try
 		{
 			String[] parts = command.split(" ");
@@ -99,32 +84,30 @@ public class AdminWalker implements IAdminCommandHandler
 				{
 					_npcid = Integer.parseInt(parts[1]);
 
-					try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+					try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+							PreparedStatement statement = con.prepareStatement("SELECT route_id FROM walker_routes WHERE npc_id=" + _npcid + ""))
 					{
-						PreparedStatement statement = con.prepareStatement("SELECT route_id FROM walker_routes WHERE npc_id=" + _npcid + "");
-						ResultSet rset = statement.executeQuery();
-
-						if (rset.next())
+						try (ResultSet rset = statement.executeQuery())
 						{
-							activeChar.sendMessage("Such NPC already exist, we add routes..");
-							_routeid = rset.getInt("route_id");
-						}
-						else
-						{
-							statement = con.prepareStatement("SELECT MAX(`route_id`) AS max FROM walker_routes");
-							ResultSet rset1 = statement.executeQuery();
-
-							if (rset1.next())
+							if (rset.next())
 							{
-								_routeid = rset1.getInt("max") + 1;
+								activeChar.sendMessage("Such NPC already exist, we add routes..");
+								_routeid = rset.getInt("route_id");
 							}
-
-							rset1.close();
-							rset1 = null;
+							else
+							{
+								try (PreparedStatement statement1 = con.prepareStatement("SELECT MAX(`route_id`) AS max FROM walker_routes"))
+								{
+									try (ResultSet rset1 = statement.executeQuery())
+									{
+										if (rset1.next())
+										{
+											_routeid = rset1.getInt("max") + 1;
+										}
+									}
+								}
+							}
 						}
-
-						statement.close();
-						statement = null;
 					}
 					catch (Exception e)
 					{
@@ -198,10 +181,9 @@ public class AdminWalker implements IAdminCommandHandler
 	private void save(L2PcInstance activeChar, String command)
 	{
 		// Create new custom npc if not exists
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement(INSERT))
 		{
-			PreparedStatement statement;
-			statement = con.prepareStatement(INSERT);
 			statement.setInt(1, _npcid); // id
 			statement.setInt(2, 31309); // idTemplate
 			statement.setString(3, "NPC"); // name
@@ -245,34 +227,31 @@ public class AdminWalker implements IAdminCommandHandler
 			statement.setInt(40, 0); // absorb_level
 			statement.setString(41, "LAST_HIT"); // absorb_type
 			statement.execute();
-			statement.close();
 
 			StringTokenizer st = new StringTokenizer(command);
 			st.nextToken();
 			String message = "";
-			try
+			String fname = "data/html/default/" + _npcid + ".htm";
+			try (FileWriter fstream = new FileWriter(fname);
+					BufferedWriter out = new BufferedWriter(fstream))
 			{
 				while (st.hasMoreTokens())
 				{
 					message = message + st.nextToken() + " ";
 				}
-
-				String fname = "data/html/default/" + _npcid + ".htm";
 				File file = new File(fname);
 				boolean exist = file.createNewFile();
 				if (!exist)
 					return;
-
-				FileWriter fstream = new FileWriter(fname);
-				BufferedWriter out = new BufferedWriter(fstream);
 				out.write("<html><body>\r\nL2jhellas Walker<br>\r\nchange me in data/html/default/" + _npcid + ".htm\r\n</body></html>");
 
 				_log.log(Level.INFO, getClass().getSimpleName() + ": Created data/html/default/" + _npcid + ".htm for Walker NPC.");
-				out.close();
 			}
 			catch (Exception e)
 			{
 				_log.log(Level.WARNING, getClass().getName() + ": could not create data/html/default/" + _npcid + ".htm for Walker NPC.");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 
 			mainMenu(activeChar);
@@ -291,36 +270,37 @@ public class AdminWalker implements IAdminCommandHandler
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-
 			if (_text.isEmpty())
 			{
-				statement = con.prepareStatement("INSERT INTO walker_routes (route_id,npc_id,move_point,chatText,move_x,move_y,move_z,delay,running) VALUES (?,?,?,NULL,?,?,?,?,?)");
-				statement.setInt(1, _routeid);
-				statement.setInt(2, _npcid);
-				statement.setInt(3, _point);
-				statement.setInt(4, x);
-				statement.setInt(5, y);
-				statement.setInt(6, z);
-				statement.setInt(7, _delay);
-				statement.setInt(8, _mode);
+				try (PreparedStatement statement = con.prepareStatement("INSERT INTO walker_routes (route_id,npc_id,move_point,chatText,move_x,move_y,move_z,delay,running) VALUES (?,?,?,NULL,?,?,?,?,?)"))
+				{
+					statement.setInt(1, _routeid);
+					statement.setInt(2, _npcid);
+					statement.setInt(3, _point);
+					statement.setInt(4, x);
+					statement.setInt(5, y);
+					statement.setInt(6, z);
+					statement.setInt(7, _delay);
+					statement.setInt(8, _mode);
+					statement.execute();
+				}
 			}
 			else
 			{
-				statement = con.prepareStatement("INSERT INTO walker_routes (route_id,npc_id,move_point,chatText,move_x,move_y,move_z,delay,running) VALUES (?,?,?,?,?,?,?,?,?)");
-				statement.setInt(1, _routeid);
-				statement.setInt(2, _npcid);
-				statement.setInt(3, _point);
-				statement.setString(4, _text);
-				statement.setInt(5, x);
-				statement.setInt(6, y);
-				statement.setInt(7, z);
-				statement.setInt(8, _delay);
-				statement.setInt(9, _mode);
+				try (PreparedStatement statement = con.prepareStatement("INSERT INTO walker_routes (route_id,npc_id,move_point,chatText,move_x,move_y,move_z,delay,running) VALUES (?,?,?,?,?,?,?,?,?)"))
+				{
+					statement.setInt(1, _routeid);
+					statement.setInt(2, _npcid);
+					statement.setInt(3, _point);
+					statement.setString(4, _text);
+					statement.setInt(5, x);
+					statement.setInt(6, y);
+					statement.setInt(7, z);
+					statement.setInt(8, _delay);
+					statement.setInt(9, _mode);
+					statement.execute();
+				}
 			}
-
-			statement.execute();
-			statement.close();
 		}
 		catch (Exception e)
 		{

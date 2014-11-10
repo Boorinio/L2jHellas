@@ -1169,7 +1169,6 @@ public final class Config
 	public static boolean ALT_DEV_NO_RB;
 	public static boolean VERBOSE_LOADING;
 	public static boolean ATTEMPT_COMPILATION;
-	public static boolean USE_COMPILED_CACHE;
 	public static boolean PURGE_ERROR_LOG;
 	public static int REQUEST_ID;
 	public static boolean ACCEPT_ALTERNATE_ID;
@@ -2338,9 +2337,8 @@ public final class Config
 			
 			if (USE_SAY_FILTER)
 			{
-				try
+				try (LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(CHAT_FILTER_FILE)))))
 				{
-					LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(CHAT_FILTER_FILE))));
 					String line = null;
 					while ((line = lnr.readLine()) != null)
 					{
@@ -2351,7 +2349,6 @@ public final class Config
 						FILTER_LIST.add(line.trim());
 					}
 					_log.info("Chat Filter: Loaded " + FILTER_LIST.size() + " words ");
-					lnr.close();
 				}
 				catch (Exception e)
 				{
@@ -3374,7 +3371,6 @@ public final class Config
 			ALT_DEV_NO_RB = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoRaidbosses", "False"));
 			VERBOSE_LOADING = Boolean.parseBoolean(serverSettings.getProperty("VerboseLoading", "False"));
 			ATTEMPT_COMPILATION = Boolean.parseBoolean(serverSettings.getProperty("AttemptCompilation", "False"));
-			USE_COMPILED_CACHE = Boolean.parseBoolean(serverSettings.getProperty("UseCompiledCache", "False"));
 			PURGE_ERROR_LOG = Boolean.parseBoolean(serverSettings.getProperty("PurgeErrorLog", "False"));
 			REQUEST_ID = Integer.parseInt(serverSettings.getProperty("RequestServerID", "0"));
 			ACCEPT_ALTERNATE_ID = Boolean.parseBoolean(serverSettings.getProperty("AcceptAlternateID", "True"));
@@ -4421,17 +4417,15 @@ public final class Config
 	 */
 	public static void saveHexid(int serverId, String hexId, String fileName)
 	{
-		try
+		File file = new File(fileName);
+		try (OutputStream out = new FileOutputStream(file))
 		{
 			Properties hexSetting = new Properties();
-			File file = new File(fileName);
 			// Create a new empty file only if it doesn't exist
 			file.createNewFile();
-			OutputStream out = new FileOutputStream(file);
 			hexSetting.setProperty("ServerID", String.valueOf(serverId));
 			hexSetting.setProperty("HexID", hexId);
 			hexSetting.store(out, "the hexID to auth into login.");
-			out.close();
 		}
 		catch (Exception e)
 		{
@@ -4450,9 +4444,8 @@ public final class Config
 
 	public static void loadFilter()
 	{
-		try
+		try (LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(FILTER_FILE)))))
 		{
-			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(FILTER_FILE))));
 			String line = null;
 			while ((line = lnr.readLine()) != null)
 			{
@@ -4464,7 +4457,6 @@ public final class Config
 				FILTER_LIST.add(line.trim());
 			}
 			_log.info("Loaded " + FILTER_LIST.size() + " Filter Words.");
-			lnr.close();
 		}
 		catch (Exception e)
 		{

@@ -735,9 +735,8 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 				_globalAggro = -25;
 				return;
 			}
-			else
-				for (L2Character aggroed : me.getAggroList().keySet())
-					me.addDamageHate(aggroed, 0, aggro);
+			for (L2Character aggroed : me.getAggroList().keySet())
+				me.addDamageHate(aggroed, 0, aggro);
 
 			aggro = me.getHating(mostHated);
 			if (aggro <= 0)

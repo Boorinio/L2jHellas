@@ -119,19 +119,17 @@ public class AdminPremium implements IAdminCommandHandler
 
 	private void addPremiumServices(int Hours, String AccName)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE))
 		{
 			Calendar finishtime = Calendar.getInstance();
 			finishtime.setTimeInMillis(System.currentTimeMillis());
 			finishtime.set(Calendar.SECOND, 0);
 			finishtime.add(Calendar.HOUR, Hours);
-
-			PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE);
 			statement.setInt(1, 1);
 			statement.setLong(2, finishtime.getTimeInMillis());
 			statement.setString(3, AccName);
 			statement.execute();
-			statement.close();
 		}
 		catch (SQLException e)
 		{

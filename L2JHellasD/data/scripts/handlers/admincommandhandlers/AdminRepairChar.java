@@ -20,7 +20,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.logs.GMAudit;
@@ -35,18 +34,20 @@ public class AdminRepairChar implements IAdminCommandHandler
 
 	private static final String[] ADMIN_COMMANDS =
 	{/** @formatter:off */
-		"admin_restore",
 		"admin_repair"
 	};/** @formatter:on */
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-
-		handleRepair(command);
-		return true;
+		if (command.equals("admin_repair"))
+		{
+			String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
+			GMAudit.auditGMAction(activeChar.getName(), command, target, "");
+			handleRepair(command);
+			return true;
+		}
+		return false;
 	}
 
 	private void handleRepair(String command)
@@ -57,62 +58,37 @@ public class AdminRepairChar implements IAdminCommandHandler
 			return;
 		}
 
-		String cmd = "UPDATE characters SET x=-84318, y=244579, z=-3730 WHERE char_name=?";
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement(cmd);
-			statement.setString(1, parts[1]);
-			statement.execute();
-
-			statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
-			statement.setString(1, parts[1]);
-			ResultSet rset = statement.executeQuery();
 			int objId = 0;
-			if (rset.next())
+			try (PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=-84318, y=244579, z=-3730 WHERE char_name=?"))
 			{
-				objId = rset.getInt(1);
+				statement.setString(1, parts[1]);
+				statement.execute();
 			}
-
-			rset.close();
-			statement.close();
+			try (PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?"))
+			{
+				statement.setString(1, parts[1]);
+				try (ResultSet rset = statement.executeQuery())
+				{
+					if (rset.next())
+						objId = rset.getInt(1);
+				}
+			}
 
 			if (objId == 0)
-			{
 				return;
-			}
 
-			// need test
-			try (Connection con2 = L2DatabaseFactory.getInstance().getConnection())
+			try (PreparedStatement statement = con.prepareStatement("DELETE FROM character_shortcuts WHERE char_obj_id=?"))
 			{
-				statement = con.prepareStatement("DELETE FROM character_shortcuts WHERE char_obj_id=?");
 				statement.setInt(1, objId);
 				statement.execute();
-				statement.close();
 			}
-			catch (Exception e)
+			try (PreparedStatement statement = con.prepareStatement("UPDATE items SET loc=\"INVENTORY\" WHERE owner_id=?"))
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": could not delete characters shortcuts:" + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
-			}
-			try (Connection con3 = L2DatabaseFactory.getInstance().getConnection())
-			{
-				statement = con.prepareStatement("UPDATE items SET loc=\"INVENTORY\" WHERE owner_id=?");
 				statement.setInt(1, objId);
 				statement.execute();
-				statement.close();
 			}
-			catch (Exception e)
-			{
-				_log.log(Level.WARNING, getClass().getName() + ": could not delete characters inventory items:" + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
-			}
-			// TODO need test
 		}
 		catch (Exception e)
 		{

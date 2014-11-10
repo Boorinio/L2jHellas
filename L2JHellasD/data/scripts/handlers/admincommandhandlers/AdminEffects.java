@@ -559,8 +559,7 @@ public class AdminEffects implements IAdminCommandHandler
 				character.startAbnormalEffect(action);
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	private boolean performSocial(int action, L2Object target, L2PcInstance activeChar)

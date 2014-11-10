@@ -22,7 +22,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.IllegalPlayerAction;
@@ -87,12 +86,11 @@ public class AdminExpSp implements IAdminCommandHandler
 	{
 		L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;
-		if (target instanceof L2PcInstance)
+		if (target != null & target instanceof L2PcInstance)
 			player = (L2PcInstance) target;
 		else
 		{
-			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-			return;
+			player = activeChar;
 		}
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/expsp.htm");
@@ -108,64 +106,60 @@ public class AdminExpSp implements IAdminCommandHandler
 	{
 		L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;
-		if (target instanceof L2PcInstance)
+		if (target != null && target instanceof L2PcInstance)
 		{
 			player = (L2PcInstance) target;
 		}
 		else
 		{
-			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-			return false;
+			player = activeChar;
 		}
 		StringTokenizer st = new StringTokenizer(ExpSp);
 		if (st.countTokens() != 2)
 		{
 			return false;
 		}
-		else
+		String exp = st.nextToken();
+		String sp = st.nextToken();
+		long expval = 0;
+		int spval = 0;
+		try
 		{
-			String exp = st.nextToken();
-			String sp = st.nextToken();
-			long expval = 0;
-			int spval = 0;
-			try
-			{
-				expval = Long.parseLong(exp);
-				spval = Integer.parseInt(sp);
-			}
-			catch (Exception e)
-			{
-				return false;
-			}
-			/**
-			 * Anti-Corrupt GMs Protection.
-			 * If GMEdit enabled, a GM won't be able to Add Exp or SP to any
-			 * other
-			 * player that's NOT a GM character. And in addition.. both player
-			 * and
-			 * GM WILL be banned.
-			 */
-			if (Config.GM_EDIT && (expval != 0 || spval != 0) && !player.isGM())
-			{
-				// Warn the player about his inmediate ban.
-				player.sendMessage("A GM tried to edit you in " + expval + " exp points and " + spval + " sp points.You will both be banned.");
-				Util.handleIllegalPlayerAction(player, "The player " + player.getName() + " has been edited. BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
+			expval = Long.parseLong(exp);
+			spval = Integer.parseInt(sp);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+		/**
+		 * Anti-Corrupt GMs Protection.
+		 * If GMEdit enabled, a GM won't be able to Add Exp or SP to any
+		 * other
+		 * player that's NOT a GM character. And in addition.. both player
+		 * and
+		 * GM WILL be banned.
+		 */
+		if (Config.GM_EDIT && (expval != 0 || spval != 0) && !player.isGM())
+		{
+			// Warn the player about his inmediate ban.
+			player.sendMessage("A GM tried to edit you in " + expval + " exp points and " + spval + " sp points.You will both be banned.");
+			Util.handleIllegalPlayerAction(player, "The player " + player.getName() + " has been edited. BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
 
-				// Warn the GM about his inmediate ban.
-				activeChar.sendMessage("You tried to edit " + player.getName() + " by " + expval + " exp points and " + spval + ". You will both be banned.Q_Q");
-				Util.handleIllegalPlayerAction(activeChar, "GM " + activeChar.getName() + " tried to edit " + player.getName() + ". BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
+			// Warn the GM about his inmediate ban.
+			activeChar.sendMessage("You tried to edit " + player.getName() + " by " + expval + " exp points and " + spval + ". You will both be banned.Q_Q");
+			Util.handleIllegalPlayerAction(activeChar, "GM " + activeChar.getName() + " tried to edit " + player.getName() + ". BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
 
-				_log.log(Level.INFO, getClass().getSimpleName() + ": GM " + activeChar.getName() + " tried to edit " + player.getName() + ". They both have been Banned. Q_Q");
-			}
-			else if (expval != 0 || spval != 0)
-			{
-				// Common character information
-				player.sendMessage("Admin is adding you " + expval + " xp and " + spval + " sp.");
-				player.addExpAndSp(expval, spval);
-				// Admin information
-				activeChar.sendMessage("Added " + expval + " xp and " + spval + " sp to " + player.getName() + ".");
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
-			}
+			_log.log(Level.INFO, getClass().getSimpleName() + ": GM " + activeChar.getName() + " tried to edit " + player.getName() + ". They both have been Banned. Q_Q");
+		}
+		else if (expval != 0 || spval != 0)
+		{
+			// Common character information
+			player.sendMessage("Admin is adding you " + expval + " xp and " + spval + " sp.");
+			player.addExpAndSp(expval, spval);
+			// Admin information
+			activeChar.sendMessage("Added " + expval + " xp and " + spval + " sp to " + player.getName() + ".");
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
 		}
 		return true;
 	}
@@ -174,42 +168,38 @@ public class AdminExpSp implements IAdminCommandHandler
 	{
 		L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;
-		if (target instanceof L2PcInstance)
+		if (target != null && target instanceof L2PcInstance)
 		{
 			player = (L2PcInstance) target;
 		}
 		else
 		{
-			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-			return false;
+			player = activeChar;
 		}
 		StringTokenizer st = new StringTokenizer(ExpSp);
 		if (st.countTokens() != 2)
 			return false;
-		else
+		String exp = st.nextToken();
+		String sp = st.nextToken();
+		long expval = 0;
+		int spval = 0;
+		try
 		{
-			String exp = st.nextToken();
-			String sp = st.nextToken();
-			long expval = 0;
-			int spval = 0;
-			try
-			{
-				expval = Long.parseLong(exp);
-				spval = Integer.parseInt(sp);
-			}
-			catch (Exception e)
-			{
-				return false;
-			}
-			if (expval != 0 || spval != 0)
-			{
-				// Common character information
-				player.sendMessage("Admin is removing you " + expval + " xp and " + spval + " sp.");
-				player.removeExpAndSp(expval, spval);
-				// Admin information
-				activeChar.sendMessage("Removed " + expval + " xp and " + spval + " sp from " + player.getName() + ".");
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
-			}
+			expval = Long.parseLong(exp);
+			spval = Integer.parseInt(sp);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+		if (expval != 0 || spval != 0)
+		{
+			// Common character information
+			player.sendMessage("Admin is removing you " + expval + " xp and " + spval + " sp.");
+			player.removeExpAndSp(expval, spval);
+			// Admin information
+			activeChar.sendMessage("Removed " + expval + " xp and " + spval + " sp from " + player.getName() + ".");
+			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
 		}
 		return true;
 	}

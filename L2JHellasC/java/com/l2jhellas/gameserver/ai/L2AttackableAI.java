@@ -99,6 +99,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		_globalAggro = -10; // 10 seconds timeout of ATTACK after respawn
 	}
 	
+	@Override
 	public void run()
 	{
 		// Launch actions corresponding to the Event Think
@@ -115,6 +116,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		}
 	}
 	
+	@Override
 	public void stopAITask()
 	{
 		if (_aiTask != null)
@@ -370,8 +372,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			if (target instanceof L2PcInstance && ((L2PcInstance) target).getKarma() > 0)
 				// Los Check
 				return GeoData.getInstance().canSeeTarget(me, target);
-			else
-				return false;
+			return false;
 		}
 		else
 		{ // The actor is a L2MonsterInstance
@@ -1145,269 +1146,266 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		}
 		// **************************************************
 		// Else, if this is close enough for physical attacks
-		else
+		// In case many mobs are trying to hit from same place, move a bit,
+		// circling around the target
+		if (Rnd.nextInt(100) <= 33) // check it once per 3 seconds
 		{
-			// In case many mobs are trying to hit from same place, move a bit,
-			// circling around the target
-			if (Rnd.nextInt(100) <= 33) // check it once per 3 seconds
+			for (L2Object nearby : _actor.getKnownList().getKnownCharactersInRadius(10))
 			{
-				for (L2Object nearby : _actor.getKnownList().getKnownCharactersInRadius(10))
+				if (nearby instanceof L2Attackable && nearby != _mostHatedAnalysis.character)
 				{
-					if (nearby instanceof L2Attackable && nearby != _mostHatedAnalysis.character)
-					{
-						int diffx = Rnd.get(combinedCollision, combinedCollision + 40);
-						if (Rnd.get(10) < 5)
-							diffx = -diffx;
-						int diffy = Rnd.get(combinedCollision, combinedCollision + 40);
-						if (Rnd.get(10) < 5)
-							diffy = -diffy;
-						moveTo(_mostHatedAnalysis.character.getX() + diffx, _mostHatedAnalysis.character.getY() + diffy, _mostHatedAnalysis.character.getZ());
-						return;
-					}
+					int diffx = Rnd.get(combinedCollision, combinedCollision + 40);
+					if (Rnd.get(10) < 5)
+						diffx = -diffx;
+					int diffy = Rnd.get(combinedCollision, combinedCollision + 40);
+					if (Rnd.get(10) < 5)
+						diffy = -diffy;
+					moveTo(_mostHatedAnalysis.character.getX() + diffx, _mostHatedAnalysis.character.getY() + diffy, _mostHatedAnalysis.character.getZ());
+					return;
 				}
 			}
-			
-			// Calculate a new attack timeout.
-			_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
-			
-			// check for close combat skills && heal/buff skills
-			
-			if (!_mostHatedAnalysis.isCanceled)
-			{
-				for (L2Skill sk : _selfAnalysis.cancelSkills)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
-						continue;
-					if (Rnd.nextInt(100) <= 8)
-					{
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						_mostHatedAnalysis.isCanceled = true;
-						return;
-					}
-				}
-			}
-			if (this._selfAnalysis.lastDebuffTick + 60 < GameTimeController.getGameTicks())
-			{
-				for (L2Skill sk : _selfAnalysis.debuffSkills)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
-						continue;
-					int chance = 5;
-					if (_selfAnalysis.isFighter && _mostHatedAnalysis.isMage)
-						chance = 3;
-					if (_selfAnalysis.isFighter && _mostHatedAnalysis.isArcher)
-						chance = 3;
-					if (_selfAnalysis.isMage && !_mostHatedAnalysis.isMage)
-						chance = 4;
-					if (_selfAnalysis.isHealer)
-						chance = 12;
-					if (_mostHatedAnalysis.isMagicResistant)
-						chance /= 2;
-					if (sk.getCastRange() < 200)
-						chance += 3;
-					if (Rnd.nextInt(100) <= chance)
-					{
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						_selfAnalysis.lastDebuffTick = GameTimeController.getGameTicks();
-						return;
-					}
-				}
-			}
-			if (!_mostHatedAnalysis.character.isMuted() && (_mostHatedAnalysis.isMage || _mostHatedAnalysis.isBalanced))
-			{
-				for (L2Skill sk : _selfAnalysis.muteSkills)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
-						continue;
-					if (Rnd.nextInt(100) <= 7)
-					{
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						return;
-					}
-				}
-			}
-			if (_secondMostHatedAnalysis.character != null && !_secondMostHatedAnalysis.character.isMuted() && (_secondMostHatedAnalysis.isMage || _secondMostHatedAnalysis.isBalanced))
-			{
-				double secondHatedDist2 = _actor.getPlanDistanceSq(_secondMostHatedAnalysis.character.getX(), _secondMostHatedAnalysis.character.getY());
-				for (L2Skill sk : _selfAnalysis.muteSkills)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (secondHatedDist2 > castRange * castRange))
-						continue;
-					if (Rnd.nextInt(100) <= 3)
-					{
-						_actor.setTarget(_secondMostHatedAnalysis.character);
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						_actor.setTarget(_mostHatedAnalysis.character);
-						return;
-					}
-				}
-			}
-			if (!_mostHatedAnalysis.character.isSleeping() && _selfAnalysis.isHealer)
-			{
-				for (L2Skill sk : _selfAnalysis.sleepSkills)
-				{
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
-						continue;
-					if (Rnd.nextInt(100) <= 10)
-					{
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
-						return;
-					}
-				}
-			}
-			if (_secondMostHatedAnalysis.character != null && !_secondMostHatedAnalysis.character.isSleeping())
-			{
-				double secondHatedDist2 = _actor.getPlanDistanceSq(_secondMostHatedAnalysis.character.getX(), _secondMostHatedAnalysis.character.getY());
-				for (L2Skill sk : _selfAnalysis.sleepSkills)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (secondHatedDist2 > castRange * castRange))
-						continue;
-					if (Rnd.nextInt(100) <= (_selfAnalysis.isHealer ? 10 : 4))
-					{
-						_actor.setTarget(_secondMostHatedAnalysis.character);
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						_actor.setTarget(_mostHatedAnalysis.character);
-						return;
-					}
-				}
-			}
-			if (!_mostHatedAnalysis.character.isRooted() && _mostHatedAnalysis.isFighter && !_selfAnalysis.isFighter)
-			{
-				for (L2Skill sk : _selfAnalysis.rootSkills)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
-						continue;
-					if (Rnd.nextInt(100) <= (_selfAnalysis.isHealer ? 10 : 4))
-					{
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						return;
-					}
-				}
-			}
-			if (!_mostHatedAnalysis.character.isAttackingDisabled())
-			{
-				for (L2Skill sk : _selfAnalysis.generalDisablers)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					int castRange = sk.getCastRange() + combinedCollision;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
-						continue;
-					if (Rnd.nextInt(100) <= ((sk.getCastRange() < 200) ? 10 : 7))
-					{
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						return;
-					}
-				}
-			}
-			if (_actor.getCurrentHp() < _actor.getMaxHp() * (_selfAnalysis.isHealer ? 0.7 : 0.4))
-			{
-				for (L2Skill sk : _selfAnalysis.healSkills)
-				{
-					if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
-						continue;
-					if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk))
-						continue;
-					int chance = (_selfAnalysis.isHealer ? 15 : 7);
-					if (_mostHatedAnalysis.character.isAttackingDisabled())
-						chance += 10;
-					if (_secondMostHatedAnalysis.character == null || _secondMostHatedAnalysis.character.isAttackingDisabled())
-						chance += 10;
-					if (Rnd.nextInt(100) <= chance)
-					{
-						_actor.setTarget(_actor);
-						clientStopMoving(null);
-						_accessor.doCast(sk);
-						_actor.setTarget(_mostHatedAnalysis.character);
-						return;
-					}
-				}
-			}
-			for (L2Skill sk : _selfAnalysis.generalSkills)
+		}
+		
+		// Calculate a new attack timeout.
+		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+		
+		// check for close combat skills && heal/buff skills
+		
+		if (!_mostHatedAnalysis.isCanceled)
+		{
+			for (L2Skill sk : _selfAnalysis.cancelSkills)
 			{
 				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
 					continue;
 				int castRange = sk.getCastRange() + combinedCollision;
 				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
 					continue;
-				
-				// chance decision for launching general skills in melee fight
-				// close range skills should be higher, long range lower
-				int castingChance = 5;
-				if (_selfAnalysis.isMage || _selfAnalysis.isHealer)
+				if (Rnd.nextInt(100) <= 8)
 				{
-					if (sk.getCastRange() < 200)
-						castingChance = 35;
-					else
-						castingChance = 25; // mages
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					_mostHatedAnalysis.isCanceled = true;
+					return;
 				}
-				if (_selfAnalysis.isBalanced)
+			}
+		}
+		if (this._selfAnalysis.lastDebuffTick + 60 < GameTimeController.getGameTicks())
+		{
+			for (L2Skill sk : _selfAnalysis.debuffSkills)
+			{
+				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+					continue;
+				int castRange = sk.getCastRange() + combinedCollision;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
+					continue;
+				int chance = 5;
+				if (_selfAnalysis.isFighter && _mostHatedAnalysis.isMage)
+					chance = 3;
+				if (_selfAnalysis.isFighter && _mostHatedAnalysis.isArcher)
+					chance = 3;
+				if (_selfAnalysis.isMage && !_mostHatedAnalysis.isMage)
+					chance = 4;
+				if (_selfAnalysis.isHealer)
+					chance = 12;
+				if (_mostHatedAnalysis.isMagicResistant)
+					chance /= 2;
+				if (sk.getCastRange() < 200)
+					chance += 3;
+				if (Rnd.nextInt(100) <= chance)
 				{
-					if (sk.getCastRange() < 200)
-						castingChance = 12;
-					else
-					{
-						if (_mostHatedAnalysis.isMage) // hit mages
-							castingChance = 2;
-						else
-							castingChance = 5;
-					}
-					
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					_selfAnalysis.lastDebuffTick = GameTimeController.getGameTicks();
+					return;
 				}
-				if (_selfAnalysis.isFighter)
-				{
-					if (sk.getCastRange() < 200)
-						castingChance = 12;
-					else
-					{
-						if (_mostHatedAnalysis.isMage)
-							castingChance = 1;
-						else
-							castingChance = 3;
-					}
-				}
-				if (Rnd.nextInt(100) <= castingChance)
+			}
+		}
+		if (!_mostHatedAnalysis.character.isMuted() && (_mostHatedAnalysis.isMage || _mostHatedAnalysis.isBalanced))
+		{
+			for (L2Skill sk : _selfAnalysis.muteSkills)
+			{
+				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+					continue;
+				int castRange = sk.getCastRange() + combinedCollision;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
+					continue;
+				if (Rnd.nextInt(100) <= 7)
 				{
 					clientStopMoving(null);
 					_accessor.doCast(sk);
 					return;
 				}
 			}
+		}
+		if (_secondMostHatedAnalysis.character != null && !_secondMostHatedAnalysis.character.isMuted() && (_secondMostHatedAnalysis.isMage || _secondMostHatedAnalysis.isBalanced))
+		{
+			double secondHatedDist2 = _actor.getPlanDistanceSq(_secondMostHatedAnalysis.character.getX(), _secondMostHatedAnalysis.character.getY());
+			for (L2Skill sk : _selfAnalysis.muteSkills)
+			{
+				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+					continue;
+				int castRange = sk.getCastRange() + combinedCollision;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (secondHatedDist2 > castRange * castRange))
+					continue;
+				if (Rnd.nextInt(100) <= 3)
+				{
+					_actor.setTarget(_secondMostHatedAnalysis.character);
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					_actor.setTarget(_mostHatedAnalysis.character);
+					return;
+				}
+			}
+		}
+		if (!_mostHatedAnalysis.character.isSleeping() && _selfAnalysis.isHealer)
+		{
+			for (L2Skill sk : _selfAnalysis.sleepSkills)
+			{
+				int castRange = sk.getCastRange() + combinedCollision;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
+					continue;
+				if (Rnd.nextInt(100) <= 10)
+				{
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+					return;
+				}
+			}
+		}
+		if (_secondMostHatedAnalysis.character != null && !_secondMostHatedAnalysis.character.isSleeping())
+		{
+			double secondHatedDist2 = _actor.getPlanDistanceSq(_secondMostHatedAnalysis.character.getX(), _secondMostHatedAnalysis.character.getY());
+			for (L2Skill sk : _selfAnalysis.sleepSkills)
+			{
+				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+					continue;
+				int castRange = sk.getCastRange() + combinedCollision;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (secondHatedDist2 > castRange * castRange))
+					continue;
+				if (Rnd.nextInt(100) <= (_selfAnalysis.isHealer ? 10 : 4))
+				{
+					_actor.setTarget(_secondMostHatedAnalysis.character);
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					_actor.setTarget(_mostHatedAnalysis.character);
+					return;
+				}
+			}
+		}
+		if (!_mostHatedAnalysis.character.isRooted() && _mostHatedAnalysis.isFighter && !_selfAnalysis.isFighter)
+		{
+			for (L2Skill sk : _selfAnalysis.rootSkills)
+			{
+				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+					continue;
+				int castRange = sk.getCastRange() + combinedCollision;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
+					continue;
+				if (Rnd.nextInt(100) <= (_selfAnalysis.isHealer ? 10 : 4))
+				{
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					return;
+				}
+			}
+		}
+		if (!_mostHatedAnalysis.character.isAttackingDisabled())
+		{
+			for (L2Skill sk : _selfAnalysis.generalDisablers)
+			{
+				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+					continue;
+				int castRange = sk.getCastRange() + combinedCollision;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
+					continue;
+				if (Rnd.nextInt(100) <= ((sk.getCastRange() < 200) ? 10 : 7))
+				{
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					return;
+				}
+			}
+		}
+		if (_actor.getCurrentHp() < _actor.getMaxHp() * (_selfAnalysis.isHealer ? 0.7 : 0.4))
+		{
+			for (L2Skill sk : _selfAnalysis.healSkills)
+			{
+				if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+					continue;
+				if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk))
+					continue;
+				int chance = (_selfAnalysis.isHealer ? 15 : 7);
+				if (_mostHatedAnalysis.character.isAttackingDisabled())
+					chance += 10;
+				if (_secondMostHatedAnalysis.character == null || _secondMostHatedAnalysis.character.isAttackingDisabled())
+					chance += 10;
+				if (Rnd.nextInt(100) <= chance)
+				{
+					_actor.setTarget(_actor);
+					clientStopMoving(null);
+					_accessor.doCast(sk);
+					_actor.setTarget(_mostHatedAnalysis.character);
+					return;
+				}
+			}
+		}
+		for (L2Skill sk : _selfAnalysis.generalSkills)
+		{
+			if ((_actor.isMuted() && sk.isMagic()) || (_actor.isPsychicalMuted() && !sk.isMagic()))
+				continue;
+			int castRange = sk.getCastRange() + combinedCollision;
+			if (_actor.isSkillDisabled(sk.getId()) || _actor.getCurrentMp() < _actor.getStat().getMpConsume(sk) || (dist2 > castRange * castRange))
+				continue;
 			
-			// Finally, physical attacks
-			if (!_selfAnalysis.isHealer)
+			// chance decision for launching general skills in melee fight
+			// close range skills should be higher, long range lower
+			int castingChance = 5;
+			if (_selfAnalysis.isMage || _selfAnalysis.isHealer)
+			{
+				if (sk.getCastRange() < 200)
+					castingChance = 35;
+				else
+					castingChance = 25; // mages
+			}
+			if (_selfAnalysis.isBalanced)
+			{
+				if (sk.getCastRange() < 200)
+					castingChance = 12;
+				else
+				{
+					if (_mostHatedAnalysis.isMage) // hit mages
+						castingChance = 2;
+					else
+						castingChance = 5;
+				}
+				
+			}
+			if (_selfAnalysis.isFighter)
+			{
+				if (sk.getCastRange() < 200)
+					castingChance = 12;
+				else
+				{
+					if (_mostHatedAnalysis.isMage)
+						castingChance = 1;
+					else
+						castingChance = 3;
+				}
+			}
+			if (Rnd.nextInt(100) <= castingChance)
 			{
 				clientStopMoving(null);
-				_accessor.doAttack(_mostHatedAnalysis.character);
+				_accessor.doCast(sk);
+				return;
 			}
+		}
+		
+		// Finally, physical attacks
+		if (!_selfAnalysis.isHealer)
+		{
+			clientStopMoving(null);
+			_accessor.doAttack(_mostHatedAnalysis.character);
 		}
 	}
 	
@@ -1536,6 +1534,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		super.onIntentionActive();
 	}
 	
+	@Override
 	public void setGlobalAggro(int value)
 	{
 		_globalAggro = value;

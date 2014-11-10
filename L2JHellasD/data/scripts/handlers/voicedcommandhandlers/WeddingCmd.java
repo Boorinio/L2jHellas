@@ -202,18 +202,19 @@ public class WeddingCmd implements IVoicedCommandHandler
 		// check if target has player on friendlist
 		boolean FoundOnFriendList = false;
 		int objectId = 0;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("SELECT friend_id FROM character_friends WHERE char_id=?"))
 		{
-			PreparedStatement statement;
-			statement = con.prepareStatement("SELECT friend_id FROM character_friends WHERE char_id=?");
-			statement.setInt(1, ptarget.getObjectId());
-			ResultSet rset = statement.executeQuery();
 			
-			while (rset.next())
+			statement.setInt(1, ptarget.getObjectId());
+			try (ResultSet rset = statement.executeQuery())
 			{
-				objectId = rset.getInt("friend_id");
-				if (objectId == activeChar.getObjectId())
-					FoundOnFriendList = true;
+				while (rset.next())
+				{
+					objectId = rset.getInt("friend_id");
+					if (objectId == activeChar.getObjectId())
+						FoundOnFriendList = true;
+				}
 			}
 		}
 		catch (Exception e)
@@ -295,7 +296,10 @@ public class WeddingCmd implements IVoicedCommandHandler
 			return false;
 		}
 		else if (partner.inObserverMode())
+		{
 			activeChar.sendMessage("Your partner is in the observation.");
+			return false;
+		}
 		else if (partner.getClan() != null && CastleManager.getInstance().getCastleByOwner(partner.getClan()) != null && CastleManager.getInstance().getCastleByOwner(partner.getClan()).getSiege().getIsInProgress())
 		{
 			activeChar.sendMessage("Your partner is in siege, you can't go to your partner.");
@@ -323,7 +327,10 @@ public class WeddingCmd implements IVoicedCommandHandler
 			return false;
 		}
 		else if (activeChar.inObserverMode())
+		{
 			activeChar.sendMessage("You are in the observation.");
+			return false;
+		}
 		else if (activeChar.getClan() != null && CastleManager.getInstance().getCastleByOwner(activeChar.getClan()) != null && CastleManager.getInstance().getCastleByOwner(activeChar.getClan()).getSiege().getIsInProgress())
 		{
 			activeChar.sendMessage("You are in siege, you can't go to your partner.");

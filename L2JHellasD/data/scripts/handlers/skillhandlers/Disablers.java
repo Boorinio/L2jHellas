@@ -687,6 +687,7 @@ public class Disablers implements ISkillHandler
 								}
 								catch (IOException e)
 								{
+									e.printStackTrace();
 								}
 							}
 						}// end for

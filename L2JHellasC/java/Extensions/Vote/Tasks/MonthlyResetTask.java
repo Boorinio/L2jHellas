@@ -37,13 +37,11 @@ public class MonthlyResetTask
 			@Override
 			public void run()
 			{
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("UPDATE characters SET monthVotes=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("UPDATE characters SET monthVotes=?");
-
 					statement.setInt(1, 0);
 					statement.execute();
-					statement.close();
 				}
 				catch (Exception e)
 				{

@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
@@ -37,7 +51,7 @@ public class LevelUpData
 
 	public static LevelUpData getInstance()
 	{
-		if(_instance == null)
+		if (_instance == null)
 		{
 			_instance = new LevelUpData();
 		}
@@ -50,17 +64,17 @@ public class LevelUpData
 		_instance = null;
 		getInstance();
 	}
-	
+
 	private LevelUpData()
 	{
 		_lvlTable = new FastMap<Integer, L2LvlupData>();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
-		File f = new File(PackRoot.DATAPACK_ROOT + "/data/xml/lvl_up_data.xml");
-		if(!f.exists())
+		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/lvl_up_data.xml");
+		if (!f.exists())
 		{
-			_log.warning("lvl_up_data.xml could not be loaded: file not found");
+			_log.log(Level.WARNING, "lvl_up_data.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -69,13 +83,13 @@ public class LevelUpData
 			in.setEncoding("UTF-8");
 			Document doc = factory.newDocumentBuilder().parse(in);
 			L2LvlupData lvlDat;
-			for(Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
-				if(n.getNodeName().equalsIgnoreCase("list"))
+				if (n.getNodeName().equalsIgnoreCase("list"))
 				{
-					for(Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 					{
-						if(d.getNodeName().equalsIgnoreCase("lvlup"))
+						if (d.getNodeName().equalsIgnoreCase("lvlup"))
 						{
 							lvlDat = new L2LvlupData();
 							int CLASS1_ID = Integer.valueOf(d.getAttributes().getNamedItem(CLASS_ID).getNodeValue());
@@ -109,21 +123,21 @@ public class LevelUpData
 			}
 			lvlDat = null;
 
-			_log.info("LevelUpData: Loaded " + _lvlTable.size() + " character level up templates.");
+			_log.log(Level.WARNING, "LevelUpData: Loaded " + _lvlTable.size() + " character level up templates.");
 		}
-		catch(SAXException e)
+		catch (SAXException e)
 		{
 			_log.log(Level.WARNING, "Error while creating table", e);
 		}
-		catch(IOException e)
-		{
-						_log.log(Level.WARNING, "Error while creating table", e);
-		}
-		catch(ParserConfigurationException e)
+		catch (IOException e)
 		{
 			_log.log(Level.WARNING, "Error while creating table", e);
 		}
-}
+		catch (ParserConfigurationException e)
+		{
+			_log.log(Level.WARNING, "Error while creating table", e);
+		}
+	}
 
 	public L2LvlupData getTemplate(int classId)
 	{

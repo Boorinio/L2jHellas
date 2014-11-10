@@ -476,7 +476,7 @@ public final class UseItem extends L2GameClientPacket
 			}
 			else
 			{
-				IItemHandler handler = ItemHandler.getInstance().getItemHandler(item.getItem().getItemId());
+				IItemHandler handler = ItemHandler.getInstance().getHandler(item.getItem().getItemId());
 				if (handler != null)
 					handler.useItem(activeChar, item);
 			}

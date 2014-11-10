@@ -272,9 +272,9 @@ public class AdminBan implements IAdminCommandHandler
 	
 	private void jailOfflinePlayer(L2PcInstance activeChar, String name, int delay)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?"))
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?");
 			statement.setInt(1, -114356);
 			statement.setInt(2, -249645);
 			statement.setInt(3, -2984);
@@ -284,7 +284,6 @@ public class AdminBan implements IAdminCommandHandler
 			
 			statement.execute();
 			int count = statement.getUpdateCount();
-			statement.close();
 			
 			if (count == 0)
 				activeChar.sendMessage("Character not found!");
@@ -301,9 +300,9 @@ public class AdminBan implements IAdminCommandHandler
 	
 	private void unjailOfflinePlayer(L2PcInstance activeChar, String name)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?"))
 		{
-			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?");
 			statement.setInt(1, 17836);
 			statement.setInt(2, 170178);
 			statement.setInt(3, -3507);
@@ -312,7 +311,6 @@ public class AdminBan implements IAdminCommandHandler
 			statement.setString(6, name);
 			statement.execute();
 			int count = statement.getUpdateCount();
-			statement.close();
 			if (count == 0)
 				activeChar.sendMessage("Character not found!");
 			else
@@ -364,14 +362,13 @@ public class AdminBan implements IAdminCommandHandler
 		}
 		else
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+					PreparedStatement statement = con.prepareStatement("UPDATE characters SET accesslevel=? WHERE char_name=?"))
 			{
-				PreparedStatement statement = con.prepareStatement("UPDATE characters SET accesslevel=? WHERE char_name=?");
 				statement.setInt(1, lvl);
 				statement.setString(2, player);
 				statement.execute();
 				int count = statement.getUpdateCount();
-				statement.close();
 				if (count == 0)
 				{
 					activeChar.sendMessage("Character not found or access level unaltered.");

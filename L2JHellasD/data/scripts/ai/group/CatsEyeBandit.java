@@ -36,6 +36,7 @@ public class CatsEyeBandit extends AbstractNpcAI
 		_FirstAttacked = false;
 	}
 
+	@Override
 	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
         if (npc.getNpcId() == BANDIT)
@@ -53,7 +54,8 @@ public class CatsEyeBandit extends AbstractNpcAI
         return super.onAttack(npc, attacker, damage, isPet);
     }
 
-    public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
+    @Override
+	public String onKill (L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
         int npcId = npc.getNpcId();
         if (npcId == BANDIT)

@@ -35,6 +35,7 @@ public class OlMahumGeneral extends AbstractNpcAI
 		_FirstAttacked = false;
 	}
 
+	@Override
 	public String onAttack (L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
         if (npc.getNpcId() == MAHUM)
@@ -53,6 +54,7 @@ public class OlMahumGeneral extends AbstractNpcAI
         return super.onAttack(npc, attacker, damage, isPet);
     }
 
+	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
         int npcId = npc.getNpcId();

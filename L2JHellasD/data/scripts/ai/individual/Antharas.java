@@ -106,6 +106,7 @@ public class Antharas extends AbstractNpcAI
 		}
 	}
 	
+	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		if (npc != null)
@@ -206,6 +207,7 @@ public class Antharas extends AbstractNpcAI
 		return super.onAdvEvent(event, npc, player);
 	}
 	
+	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		if (GrandBossManager.getBossStatus(ANTHARAS) != FIGHTING)
@@ -217,6 +219,7 @@ public class Antharas extends AbstractNpcAI
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
 	
+	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		if (npc.getNpcId() == ANTHARAS)

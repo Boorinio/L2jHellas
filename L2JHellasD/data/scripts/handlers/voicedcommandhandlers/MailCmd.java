@@ -61,22 +61,23 @@ public class MailCmd implements IVoicedCommandHandler
 
 	public String showMailReadWindow(L2PcInstance activeChar)
 	{
-		StringBuilder tb = new StringBuilder();
-		tb.append("<html><head><title>Inbox</title></head><body>");
-
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		StringBuilder tb = new StringBuilder("<html><head><title>Inbox</title></head><body>");
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE rece=? ORDER BY id DESC"))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM mails WHERE rece=? ORDER BY id DESC");
+			
 			statement.setString(1, activeChar.getName().toLowerCase());
-			ResultSet result = statement.executeQuery();
-			int messageId = 0;
-			while (result.next())
+			try (ResultSet result = statement.executeQuery())
 			{
-				tb.append("<font color=\"D6A718\">From:</font> <br>" + result.getString("sender") + "<br>");
-				tb.append("<font color=\"D6A718\">Title:</font> <br>" + result.getString("title") + "<br>");
-				tb.append("<font color=\"D6A718\">Message:</font> <br>" + result.getString("message") + "<br>");
-				messageId = result.getInt("id");
-				tb.append("<button value=\"Delete\" action=\"bypass -h delMsg " + messageId + "\" width=100 height=20><br>*******************************<br>");
+				int messageId = 0;
+				while (result.next())
+				{
+					tb.append("<font color=\"D6A718\">From:</font> <br>" + result.getString("sender") + "<br>");
+					tb.append("<font color=\"D6A718\">Title:</font> <br>" + result.getString("title") + "<br>");
+					tb.append("<font color=\"D6A718\">Message:</font> <br>" + result.getString("message") + "<br>");
+					messageId = result.getInt("id");
+					tb.append("<button value=\"Delete\" action=\"bypass -h delMsg " + messageId + "\" width=100 height=20><br>*******************************<br>");
+				}
 			}
 		}
 		catch (SQLException e)

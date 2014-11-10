@@ -264,10 +264,7 @@ public class AdminMenu implements IAdminCommandHandler
 		if (target != null && target instanceof L2PcInstance)
 			player = (L2PcInstance) target;
 		else
-		{
-			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-			return;
-		}
+			player = activeChar;
 		if (player.getObjectId() == activeChar.getObjectId())
 			player.sendPacket(SystemMessageId.CANNOT_USE_ON_YOURSELF);
 		else
@@ -288,28 +285,28 @@ public class AdminMenu implements IAdminCommandHandler
 
 	private void setAccountAccessLevel(String player, L2PcInstance activeChar, int banLevel)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement statement = con.prepareStatement("SELECT account_name FROM characters WHERE char_name=?"))
 		{
-			String stmt = "SELECT account_name FROM characters WHERE char_name = ?";
-			PreparedStatement statement = con.prepareStatement(stmt);
 			statement.setString(1, player);
-			ResultSet result = statement.executeQuery();
-			if (result.next())
+			try (ResultSet result = statement.executeQuery())
 			{
-				String acc_name = result.getString(1);
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-				if (acc_name.length() > 0)
+				if (result.next())
 				{
-					LoginServerThread.getInstance().sendAccessLevel(acc_name, banLevel);
-					sm.addString("Account Access Level for " + player + " set to " + banLevel + ".");
+					String acc_name = result.getString(1);
+					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
+					if (acc_name.length() > 0)
+					{
+						LoginServerThread.getInstance().sendAccessLevel(acc_name, banLevel);
+						sm.addString("Account Access Level for " + player + " set to " + banLevel + ".");
+					}
+					else
+						sm.addString("Couldn't find player: " + player + ".");
+					activeChar.sendPacket(sm);
 				}
 				else
-					sm.addString("Couldn't find player: " + player + ".");
-				activeChar.sendPacket(sm);
+					activeChar.sendMessage("Specified player name didn't lead to a valid account.");
 			}
-			else
-				activeChar.sendMessage("Specified player name didn't lead to a valid account.");
-			statement.close();
 		}
 		catch (Exception e)
 		{

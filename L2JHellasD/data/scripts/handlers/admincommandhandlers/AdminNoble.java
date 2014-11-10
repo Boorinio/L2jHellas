@@ -46,42 +46,34 @@ public class AdminNoble implements IAdminCommandHandler
 			L2Object target = activeChar.getTarget();
 			L2PcInstance player = null;
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			if (target instanceof L2PcInstance)
-			{
+			if (target != null && target instanceof L2PcInstance)
 				player = (L2PcInstance) target;
-			}
 			else
-			{
 				player = activeChar;
-			}
 
 			if (player.isNoble())
 			{
 				player.setNoble(false);
 				sm.addString("You are no longer a server noble.");
 				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " removed noble stat of player" + target.getName());
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
-					ResultSet rset = statement.executeQuery();
-					int objId = 0;
-					if (rset.next())
+					try (ResultSet rset = statement.executeQuery())
 					{
-						objId = rset.getInt(1);
+						int objId = 0;
+						if (rset.next())
+							objId = rset.getInt(1);
+						if (objId == 0)
+							return false;
+						try (PreparedStatement statement1 = con.prepareStatement("UPDATE characters SET nobless=0 WHERE obj_Id=?"))
+						{
+							statement1.setInt(1, objId);
+							statement1.execute();
+						}
 					}
-					rset.close();
-					statement.close();
-
-					if (objId == 0)
-					{
-						return false;
-					}
-
-					statement = con.prepareStatement("UPDATE characters SET nobless=0 WHERE obj_Id=?");
-					statement.setInt(1, objId);
-					statement.execute();
-					statement.close();
+					
 				}
 				catch (Exception e)
 				{
@@ -97,28 +89,23 @@ public class AdminNoble implements IAdminCommandHandler
 				player.setNoble(true);
 				sm.addString("You are now a server noble, congratulations!");
 				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " has given noble stat for player " + target.getName() + ".");
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
-					ResultSet rset = statement.executeQuery();
-					int objId = 0;
-					if (rset.next())
+					try (ResultSet rset = statement.executeQuery())
 					{
-						objId = rset.getInt(1);
+						int objId = 0;
+						if (rset.next())
+							objId = rset.getInt(1);
+						if (objId == 0)
+							return false;
+						try (PreparedStatement statement1 = con.prepareStatement("UPDATE characters SET nobless=1 WHERE obj_Id=?"))
+						{
+							statement1.setInt(1, objId);
+							statement1.execute();
+						}
 					}
-					rset.close();
-					statement.close();
-
-					if (objId == 0)
-					{
-						return false;
-					}
-
-					statement = con.prepareStatement("UPDATE characters SET nobless=1 WHERE obj_Id=?");
-					statement.setInt(1, objId);
-					statement.execute();
-					statement.close();
 				}
 				catch (Exception e)
 				{

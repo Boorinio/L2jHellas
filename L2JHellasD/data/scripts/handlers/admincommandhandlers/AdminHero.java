@@ -46,42 +46,38 @@ public class AdminHero implements IAdminCommandHandler
 			L2Object target = activeChar.getTarget();
 			L2PcInstance player = null;
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			if (target instanceof L2PcInstance)
-			{
+			if (target != null && target instanceof L2PcInstance)
 				player = (L2PcInstance) target;
-			}
 			else
-			{
 				player = activeChar;
-			}
 
 			if (player.isHero())
 			{
 				player.setHero(false);
 				sm.addString("You are no longer a server hero.");
 				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " removed hero stat of player" + target.getName());
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
-					ResultSet rset = statement.executeQuery();
-					int objId = 0;
-					if (rset.next())
+					try (ResultSet rset = statement.executeQuery())
 					{
-						objId = rset.getInt(1);
+						int objId = 0;
+						if (rset.next())
+						{
+							objId = rset.getInt(1);
+						}
+						if (objId == 0)
+						{
+							return false;
+						}
+						try (PreparedStatement statement1 = con.prepareStatement("UPDATE characters SET hero=0 WHERE obj_Id=?"))
+						{
+							statement1.setInt(1, objId);
+							statement1.execute();
+						}
 					}
-					rset.close();
-					statement.close();
-
-					if (objId == 0)
-					{
-						return false;
-					}
-
-					statement = con.prepareStatement("UPDATE characters SET hero=0 WHERE obj_Id=?");
-					statement.setInt(1, objId);
-					statement.execute();
-					statement.close();
+					
 				}
 				catch (Exception e)
 				{
@@ -97,28 +93,30 @@ public class AdminHero implements IAdminCommandHandler
 				player.setHero(true);
 				sm.addString("You are now a server Hero, congratulations!");
 				AdminData.getInstance().broadcastMessageToGMs("GM " + activeChar.getName() + " has given Hero stat for player " + target.getName() + ".");
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+				try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+						PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?"))
 				{
-					PreparedStatement statement = con.prepareStatement("SELECT obj_Id FROM characters WHERE char_name=?");
 					statement.setString(1, target.getName());
-					ResultSet rset = statement.executeQuery();
-					int objId = 0;
-					if (rset.next())
+					try (ResultSet rset = statement.executeQuery())
 					{
-						objId = rset.getInt(1);
+						int objId = 0;
+						if (rset.next())
+						{
+							objId = rset.getInt(1);
+						}
+						rset.close();
+						statement.close();
+	
+						if (objId == 0)
+						{
+							return false;
+						}
+						try (PreparedStatement statement1 = con.prepareStatement("UPDATE characters SET hero=1 WHERE obj_Id=?"))
+						{
+							statement1.setInt(1, objId);
+							statement1.execute();
+						}
 					}
-					rset.close();
-					statement.close();
-
-					if (objId == 0)
-					{
-						return false;
-					}
-
-					statement = con.prepareStatement("UPDATE characters SET hero=1 WHERE obj_Id=?");
-					statement.setInt(1, objId);
-					statement.execute();
-					statement.close();
 				}
 				catch (Exception e)
 				{
@@ -131,9 +129,6 @@ public class AdminHero implements IAdminCommandHandler
 			}
 			player.sendPacket(sm);
 			player.broadcastUserInfo();
-			if (player.isHero() == true)
-			{
-			}
 		}
 		return false;
 	}

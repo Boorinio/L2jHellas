@@ -138,12 +138,10 @@ public class Announcements
 
 	private void readFromDisk(File file)
 	{
-		LineNumberReader lnr = null;
-		try
+		try (LineNumberReader lnr = new LineNumberReader(new FileReader(file)))
 		{
 			int i = 0;
 			String line = null;
-			lnr = new LineNumberReader(new FileReader(file));
 			while ((line = lnr.readLine()) != null)
 			{
 				StringTokenizer st = new StringTokenizer(line, "\n\r");
@@ -161,35 +159,18 @@ public class Announcements
 		{
 			_log.log(Level.SEVERE, getClass().getName() + ": Error reading announcements" + e1);
 		}
-		finally
-		{
-			try
-			{
-				lnr.close();
-			}
-			catch (Exception e2)
-			{
-				// nothing
-			}
-		}
 	}
 
 	private void saveToDisk()
 	{
 		File file = new File("data/announcements.txt");
-		FileWriter save = null;
-
-		try
+		try (FileWriter save = new FileWriter(file))
 		{
-			save = new FileWriter(file);
 			for (int i = 0; i < _announcements.size(); i++)
 			{
 				save.write(_announcements.get(i));
 				save.write("\r\n");
 			}
-			save.flush();
-			save.close();
-			save = null;
 		}
 		catch (IOException e)
 		{

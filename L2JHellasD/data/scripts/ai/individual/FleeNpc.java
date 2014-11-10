@@ -37,6 +37,7 @@ public class FleeNpc extends AbstractNpcAI
 		}
 	}
 
+	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet) 
 	{
 		if (npc.getNpcId() >= 18150 && npc.getNpcId() <= 18157)
