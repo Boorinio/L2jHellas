@@ -4383,9 +4383,8 @@ public abstract class L2Character extends L2Object
 				{
 					if (gtx == _move.geoPathGtx && gty == _move.geoPathGty)
 						return;
-					else
-						_move.onGeodataPathIndex = -1; // Set not on geodata
-														// path
+					_move.onGeodataPathIndex = -1; // Set not on geodata
+													// path
 				}
 				
 				if (curX < L2World.MAP_MIN_X || curX > L2World.MAP_MAX_X || curY < L2World.MAP_MIN_Y || curY > L2World.MAP_MAX_Y)
@@ -4433,13 +4432,10 @@ public abstract class L2Character extends L2Object
 							getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 							return;
 						}
-						else
-						{
-							x = originalX;
-							y = originalY;
-							z = originalZ;
-							distance = originalDistance;
-						}
+						x = originalX;
+						y = originalY;
+						z = originalZ;
+						distance = originalDistance;
 					}
 					else
 					{
@@ -4839,16 +4835,11 @@ public abstract class L2Character extends L2Object
 		{
 			if (checkZ)
 				return (dx * dx + dy * dy + dz * dz) < radius * radius;
-			else
-				return (dx * dx + dy * dy) < radius * radius;
+			return (dx * dx + dy * dy) < radius * radius;
 		}
-		else
-		{
-			if (checkZ)
-				return (dx * dx + dy * dy + dz * dz) <= radius * radius;
-			else
-				return (dx * dx + dy * dy) <= radius * radius;
-		}
+		if (checkZ)
+			return (dx * dx + dy * dy + dz * dz) <= radius * radius;
+		return (dx * dx + dy * dy) <= radius * radius;
 	}
 	
 	// /**
@@ -5924,8 +5915,7 @@ public abstract class L2Character extends L2Object
 				abortCast();
 				return;
 			}
-			else
-				targets = targetList.toArray(new L2Character[targetList.size()]);
+			targets = targetList.toArray(new L2Character[targetList.size()]);
 		}
 		
 		// Ensure that a cast is in progress
@@ -6495,8 +6485,7 @@ public abstract class L2Character extends L2Object
 		L2Object target = getTarget();
 		if (target instanceof L2Character)
 			return isFront(target);
-		else
-			return false;
+		return false;
 	}
 	
 	/**

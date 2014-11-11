@@ -5549,6 +5549,17 @@ public final class L2PcInstance extends L2Playable
 		if (!super.doDie(killer))
 			return false;
 		
+		Castle castle = null;
+		if(getClan() != null)
+		{
+			castle = CastleManager.getInstance().getCastleByOwner(getClan());
+			if(castle != null)
+			{
+				castle.destroyClanGate();
+				castle = null;
+			}
+		}
+		
 		if (killer != null)
 		{
 			L2PcInstance pk = killer.getActingPlayer();
@@ -11952,7 +11963,6 @@ public final class L2PcInstance extends L2Playable
 	 * L2PcInstance from the world</li> <li>Stop Party and Unsummon Pet</li> <li>Update database with items in its inventory and remove them from the world</li> <li>Remove all
 	 * L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI</li> <li>Close the connection with the client</li>
 	 */
-	@SuppressWarnings("incomplete-switch")
 	public void deleteMe()
 	{
 		// Check if the L2PcInstance is in observer mode to set its position to
@@ -11960,6 +11970,16 @@ public final class L2PcInstance extends L2Playable
 		if (inObserverMode())
 		{
 			setXYZ(_obsX, _obsY, _obsZ);
+		}
+		
+		Castle castle = null;
+		if(getClan() != null)
+		{
+			castle = CastleManager.getInstance().getCastleByOwner(getClan());
+			if(castle != null)
+			{
+				castle.destroyClanGate();
+			}
 		}
 		
 		// Set the online Flag to True or False and update the characters table
@@ -13248,7 +13268,7 @@ public final class L2PcInstance extends L2Playable
 		sendPacket(sm);
 	}
 	
-	/*
+	/**
 	 * checkBanChat - checks is user's chat banned or not
 	 * boolean notEnterWorld - shows that checkup called not from EnterWorld
 	 * packet, if we'll not use it user will see
@@ -13429,7 +13449,6 @@ public final class L2PcInstance extends L2Playable
 	 * @param delayInMinutes
 	 *        0 - Indefinite
 	 */
-	@SuppressWarnings("incomplete-switch")
 	public void setPunishLevel(PunishLevel state, int delayInMinutes)
 	{
 		long delayInMilliseconds = delayInMinutes * 60000L;
@@ -13931,26 +13950,30 @@ public final class L2PcInstance extends L2Playable
    
     private final int[][] RandomSpawnG =
     {
-            {Config.GOODX+20, Config.GOODY+22, Config.GOODZ+1},
-            {Config.GOODX+15, Config.GOODY+26, Config.GOODZ+2},
-            {Config.GOODX+23, Config.GOODY+18, Config.GOODZ+3},
-            {Config.GOODX+16, Config.GOODY+16, Config.GOODZ+4},
-            {Config.GOODX+22, Config.GOODY+14, Config.GOODZ+5},
-            {Config.GOODX+24, Config.GOODY+19, Config.GOODZ+6},
+    		{Config.GOODX+20, Config.GOODY+22, Config.GOODZ+1},
+			{Config.GOODX+15, Config.GOODY+26, Config.GOODZ+2},
+			{Config.GOODX+23, Config.GOODY+18, Config.GOODZ+3},
+			{Config.GOODX+16, Config.GOODY+16, Config.GOODZ+4},
+			{Config.GOODX+22, Config.GOODY+14, Config.GOODZ+5},
+			{Config.GOODX+24, Config.GOODY+19, Config.GOODZ+6},
     };
    
-    public final int[] getRandomSpawn()
-    {
-            final int[] getPosE = RandomSpawnE[Rnd.get(RandomSpawnE.length)];
-            final int[] getPosG = RandomSpawnG[Rnd.get(RandomSpawnG.length)];
-           
-            if(isevil())
-                return getPosE;
-            else if(isgood())
-                    return getPosG;     
-            
-            return null;
-    }
+	public final int[] getRandomSpawn()
+	{
+		final int[] getPosE = RandomSpawnE[Rnd.get(RandomSpawnE.length)];
+		final int[] getPosG = RandomSpawnG[Rnd.get(RandomSpawnG.length)];
+
+		if (isevil())
+			return getPosE;
+		else if (isgood())
+			return getPosG;
+
+		return null;
+	}
+    
+    /**
+	 * EnterWorld checks
+	 */
 	public void checks()
 	{
 		final IpCatcher ipc = new IpCatcher();
@@ -14030,7 +14053,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			restoreEffects();
 		}
-	
+		
 		// check for crowns
 		CrownManager.getInstance().checkCrowns(this);
 		
@@ -14130,6 +14153,8 @@ public final class L2PcInstance extends L2Playable
 		{
 			updatePkColor(getPkKills());
 		}
+		if(Config.RANK_PVP_SYSTEM_ENABLED)
+			RankPvpSystem.updateNickAndTitleColor(this, null);
 		
 		if (Config.ANNOUNCE_HERO_LOGIN && isHero())
 		{
@@ -14242,9 +14267,6 @@ public final class L2PcInstance extends L2Playable
 				}
 			}
 		}
-		
-		if(Config.RANK_PVP_SYSTEM_ENABLED)
-			RankPvpSystem.updateNickAndTitleColor(this, null);
 		
 		if (Config.ENABLED_MESSAGE_SYSTEM)
 		{

@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.PcInventory;
@@ -306,15 +307,13 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 			}
 			else if (actualCommand.equalsIgnoreCase("Clan_Gate"))
 			{
-
-				L2PcInstance leader;
-				leader = (L2PcInstance) L2World.findObject(player.getClan().getLeaderId());
+				L2PcInstance leader = (L2PcInstance) L2World.findObject(player.getClan().getLeaderId());
 				if (leader == null)
 				{
 					player.sendMessage("Your Leader is not online.");
 				}
 
-				else if (leader.atEvent)
+				else if (leader.atEvent || leader.isinZodiac || leader.isInFunEvent())
 				{
 					player.sendMessage("Your leader is in an event.");
 					return;
@@ -362,19 +361,21 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 					return;
 				}
 
-				int leaderx;
-				int leadery;
-				int leaderz;
-
-				if (leader != null)
+				if (player.getClan() != null)
 				{
-					leaderx = leader.getX();
-					leadery = leader.getY();
-					leaderz = leader.getZ();
-
-					player.teleToLocation(leaderx, leadery, leaderz);
-					player.sendMessage("You have been teleported to your leader.");
-					return;
+					if (leader == null)
+						return;
+					
+					if (leader.getFirstEffect(EffectType.CLAN_GATE) != null)
+					{
+						if (!validateGateCondition(leader, player))
+							return;
+						
+						player.teleToLocation(leader.getX(), leader.getY(), leader.getZ());
+						return;
+					}
+					String filename = "data/html/chamberlain/chamberlain-nogate.htm";
+					showChatWindow(player, filename);
 				}
 				else
 					player.sendMessage("Your leader is unavailable.");
@@ -580,5 +581,37 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 		}
 
 		return COND_ALL_FALSE;
+	}
+	
+	private static final boolean validateGateCondition(L2PcInstance clanLeader, L2PcInstance player)
+	{
+		if (clanLeader.isAlikeDead() || clanLeader.isInStoreMode() || clanLeader.isRooted() || clanLeader.isInCombat() || clanLeader.isInOlympiadMode() || clanLeader.isFestivalParticipant() || clanLeader.inObserverMode() || clanLeader.isInsideZone(ZONE_NOSUMMONFRIEND))
+		{
+			player.sendMessage("Couldn't teleport to clan leader. The requirements was not meet.");
+			return false;
+		}
+		
+		if (player.isIn7sDungeon())
+		{
+			final int targetCabal = SevenSigns.getInstance().getPlayerCabal(clanLeader);
+			if (SevenSigns.getInstance().isSealValidationPeriod())
+			{
+				if (targetCabal != SevenSigns.getInstance().getCabalHighestScore())
+				{
+					player.sendMessage("Couldn't teleport to clan leader. The requirements was not meet.");
+					return false;
+				}
+			}
+			else
+			{
+				if (targetCabal == SevenSigns.CABAL_NULL)
+				{
+					player.sendMessage("Couldn't teleport to clan leader. The requirements was not meet.");
+					return false;
+				}
+			}
+		}
+		
+		return true;
 	}
 }

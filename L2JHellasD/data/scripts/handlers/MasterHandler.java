@@ -97,6 +97,7 @@ import handlers.itemhandlers.BeastSpice;
 import handlers.itemhandlers.BeastSpiritShot;
 import handlers.itemhandlers.BlessedSpiritShot;
 import handlers.itemhandlers.Book;
+import handlers.itemhandlers.BreakingArrow;
 import handlers.itemhandlers.CharChangePotions;
 import handlers.itemhandlers.ChestKey;
 import handlers.itemhandlers.ChristmasTree;
@@ -104,6 +105,7 @@ import handlers.itemhandlers.CompBlessedSpiritShotPacks;
 import handlers.itemhandlers.CompShotPacks;
 import handlers.itemhandlers.CompSpiritShotPacks;
 import handlers.itemhandlers.CrystalCarol;
+import handlers.itemhandlers.Crystals;
 import handlers.itemhandlers.EnchantScrolls;
 import handlers.itemhandlers.EnergyStone;
 import handlers.itemhandlers.ExtractableItems;
@@ -111,11 +113,16 @@ import handlers.itemhandlers.Firework;
 import handlers.itemhandlers.FishShots;
 import handlers.itemhandlers.Harvester;
 import handlers.itemhandlers.HeroCustomItem;
+import handlers.itemhandlers.JackpotSeed;
+import handlers.itemhandlers.MOSKey;
+import handlers.itemhandlers.MapForestOfTheDead;
 import handlers.itemhandlers.Maps;
 import handlers.itemhandlers.MercTicket;
 import handlers.itemhandlers.MysteryPotion;
+import handlers.itemhandlers.Nectar;
 import handlers.itemhandlers.PaganKeys;
 import handlers.itemhandlers.Potions;
+import handlers.itemhandlers.Primeval;
 import handlers.itemhandlers.Recipes;
 import handlers.itemhandlers.Remedy;
 import handlers.itemhandlers.RollingDice;
@@ -132,6 +139,7 @@ import handlers.skillhandlers.BalanceLife;
 import handlers.skillhandlers.BeastFeed;
 import handlers.skillhandlers.Blow;
 import handlers.skillhandlers.Charge;
+import handlers.skillhandlers.ClanGate;
 import handlers.skillhandlers.CombatPointHeal;
 import handlers.skillhandlers.Continuous;
 import handlers.skillhandlers.CpDam;
@@ -328,6 +336,7 @@ public class MasterHandler
 			BeastSpiritShot.class,
 			BlessedSpiritShot.class,
 			Book.class,
+			BreakingArrow.class,
 			CharChangePotions.class,
 			ChestKey.class,
 			ChristmasTree.class,
@@ -335,6 +344,7 @@ public class MasterHandler
 			CompShotPacks.class,
 			CompSpiritShotPacks.class,
 			CrystalCarol.class,
+			Crystals.class,
 			EnchantScrolls.class,
 			EnergyStone.class,
 			ExtractableItems.class,
@@ -342,11 +352,16 @@ public class MasterHandler
 			FishShots.class,
 			Harvester.class,
 			(Config.HERO_CUSTOM_ITEMS ? HeroCustomItem.class : null),
+			JackpotSeed.class,
+			MapForestOfTheDead.class,
 			Maps.class,
 			MercTicket.class,
+			MOSKey.class,
 			MysteryPotion.class,
+			Nectar.class,
 			PaganKeys.class,
 			Potions.class,
+			Primeval.class,
 			Recipes.class,
 			Remedy.class,
 			RollingDice.class,
@@ -366,6 +381,7 @@ public class MasterHandler
 			BeastFeed.class,
 			Blow.class,
 			Charge.class,
+			ClanGate.class,
 			CombatPointHeal.class,
 			Continuous.class,
 			CpDam.class,

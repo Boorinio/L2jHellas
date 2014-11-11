@@ -63,8 +63,7 @@ public final class EffectBluff extends L2Effect
 			getEffected().setHeading(getEffector().getHeading());
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	@Override

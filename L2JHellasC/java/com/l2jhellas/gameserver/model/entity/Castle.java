@@ -79,6 +79,10 @@ public class Castle
 	private L2CastleZone _zone;
 	private L2Clan _formerOwner = null;
 	private int _nbArtifact = 1;
+	private final int[] _gate =
+	{
+			Integer.MIN_VALUE, 0, 0
+	};
 	private final Map<Integer, Integer> _engrave = new FastMap<Integer, Integer>();
 
 	public Castle(int castleId)
@@ -1136,5 +1140,37 @@ public class Castle
 				owner.broadcastToOnlineMembers(new PledgeShowInfoUpdate(owner));
 			}
 		}
+	}
+
+	public void createClanGate(int x, int y, int z)
+	{
+		_gate[0] = x;
+		_gate[1] = y;
+		_gate[2] = z;
+	}
+
+	public void destroyClanGate()
+	{
+		_gate[0] = Integer.MIN_VALUE;
+	}
+
+	public boolean isGateOpen()
+	{
+		return _gate[0] != Integer.MIN_VALUE;
+	}
+
+	public int getGateX()
+	{
+		return _gate[0];
+	}
+
+	public int getGateY()
+	{
+		return _gate[1];
+	}
+
+	public int getGateZ()
+	{
+		return _gate[2];
 	}
 }

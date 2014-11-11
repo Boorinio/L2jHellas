@@ -29,12 +29,8 @@ public class LoginServerIP
 		// login server
 		if (IPConfigData.AUTO_IP)
 		{
-			try
+			try (BufferedWriter out = new BufferedWriter(new FileWriter(new File(dirLogin))))
 			{
-				File file = new File(dirLogin);
-				file.createNewFile();
-				FileWriter fstream = new FileWriter(dirLogin);
-				BufferedWriter out = new BufferedWriter(fstream);
 				/** @formatter:off */
 				out.write(
 					"##########################################################################################\r\n" +
@@ -60,7 +56,6 @@ public class LoginServerIP
 					"# The port on which login will listen for GameServers\r\n" +
 					"LoginPort = 9014");
 					/** @formatter:on */
-				out.close();
 			}
 			catch (Exception e)
 			{

@@ -52,13 +52,10 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
 					player.sendPacket(sm);
 					return;
 				}
-				else
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-					sm.addString("Summon your Strider first.");
-					player.sendPacket(sm);
-					return;
-				}
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
+				sm.addString("Summon your Strider first.");
+				player.sendPacket(sm);
+				return;
 			}
 			else if ((player.getPet().getNpcId() == 12526) || (player.getPet().getNpcId() == 12527) || (player.getPet().getNpcId() == 12528))
 			{
@@ -71,30 +68,24 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
 						player.sendPacket(sm);
 						return;
 					}
-					else
-					{
-						if (!player.disarmWeapons())
-							return;
-						player.getPet().unSummon(player);
-						player.getInventory().destroyItemByItemId("Wyvern", 1460, 10, player, player.getTarget());
-						Ride mount = new Ride(player.getObjectId(), Ride.ACTION_MOUNT, 12621);
-						player.sendPacket(mount);
-						player.broadcastPacket(mount);
-						player.setMountType(mount.getMountType());
-						player.addSkill(SkillTable.getInstance().getInfo(4289, 1));
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-						sm.addString("The Wyvern has been summoned successfully!");
-						player.sendPacket(sm);
+					if (!player.disarmWeapons())
 						return;
-					}
-				}
-				else
-				{
+					player.getPet().unSummon(player);
+					player.getInventory().destroyItemByItemId("Wyvern", 1460, 10, player, player.getTarget());
+					Ride mount = new Ride(player.getObjectId(), Ride.ACTION_MOUNT, 12621);
+					player.sendPacket(mount);
+					player.broadcastPacket(mount);
+					player.setMountType(mount.getMountType());
+					player.addSkill(SkillTable.getInstance().getInfo(4289, 1));
 					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-					sm.addString("You need 10 Crystals: B Grade.");
+					sm.addString("The Wyvern has been summoned successfully!");
 					player.sendPacket(sm);
 					return;
 				}
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
+				sm.addString("You need 10 Crystals: B Grade.");
+				player.sendPacket(sm);
+				return;
 			}
 			else
 			{
@@ -104,8 +95,7 @@ public class L2WyvernManagerInstance extends L2CastleChamberlainInstance
 				return;
 			}
 		}
-		else
-			super.onBypassFeedback(player, command);
+		super.onBypassFeedback(player, command);
 	}
 
 	@Override

@@ -245,7 +245,7 @@ public class CharSelectInfo extends L2GameServerPacket
 
 	private CharSelectInfoPackage restoreChar(ResultSet chardata) throws Exception
 	{
-		int objectId = chardata.getInt("obj_id");
+		int objectId = chardata.getInt("obj_Id");
 
 		// See if the char must be deleted
 		long deletetime = chardata.getLong("deletetime");

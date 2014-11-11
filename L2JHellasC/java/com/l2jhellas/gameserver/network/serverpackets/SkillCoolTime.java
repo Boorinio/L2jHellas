@@ -48,7 +48,8 @@ public class SkillCoolTime extends L2GameServerPacket
 		}
 	}
 	
-    public String getType()
+    @Override
+	public String getType()
     {
         return "[S] c1 SkillCoolTime";
     }

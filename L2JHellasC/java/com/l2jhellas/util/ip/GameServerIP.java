@@ -29,13 +29,8 @@ public class GameServerIP
 		// game server
 		if(IPConfigData.AUTO_IP)
 		{
-			try
+			try (BufferedWriter out = new BufferedWriter(new FileWriter(new File(dirGame))))
 			{
-				File file = new File(dirGame);
-				file.createNewFile();
-
-				FileWriter fstream = new FileWriter(dirGame);
-				BufferedWriter out = new BufferedWriter(fstream);
 				/** @formatter:off */
 				out.write(
 					"##########################################################################################\r\n" +
@@ -59,7 +54,6 @@ public class GameServerIP
 					"LoginPort = 9014\r\n" +
 					"LoginHost = 127.0.0.1\r\n");
 				/** @formatter:on */
-				out.close();
 			}
 			catch (Exception e)
 			{

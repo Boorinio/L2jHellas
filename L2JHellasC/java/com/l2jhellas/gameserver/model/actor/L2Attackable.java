@@ -2320,7 +2320,7 @@ public class L2Attackable extends L2Npc
 		
 		super.moveToLocation(x, y, z, offset);
 	}
-private boolean _canReturnToSpawnPoint = true;
+	private boolean _canReturnToSpawnPoint = true;
 	
 	public final boolean canReturnToSpawnPoint()
 	{

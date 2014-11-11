@@ -14,12 +14,8 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
-import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
 
 /**
@@ -36,16 +32,6 @@ public class EffectClanGate extends L2Effect
 	public boolean onStart()
 	{
 		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_MAGIC_CIRCLE);
-		if (getEffected() instanceof L2PcInstance)
-		{
-			L2Clan clan = ((L2PcInstance) getEffected()).getClan();
-			if (clan != null)
-			{
-				SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.COURT_MAGICIAN_CREATED_PORTAL);
-				clan.broadcastToOtherOnlineMembers(msg, ((L2PcInstance) getEffected()));
-			}
-		}
-
 		return true;
 	}
 

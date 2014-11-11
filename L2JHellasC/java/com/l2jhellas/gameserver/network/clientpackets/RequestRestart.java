@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
@@ -84,6 +85,11 @@ public final class RequestRestart extends L2GameClientPacket
 		{
 			player.sendMessage("You may not use an escape skill in a Event.");
 			return;
+		}
+
+		if (player.getClan() != null && player.getFirstEffect(EffectType.CLAN_GATE) != null)
+		{
+			player.sendMessage("You can't logout while Clan Gate is active.");
 		}
 		// Prevent player from restarting if they are a festival participant
 		// and it is in progress, otherwise notify party members that the player

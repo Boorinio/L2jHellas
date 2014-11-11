@@ -96,7 +96,7 @@ public class AchievementsManager
 		try
 		{
 			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-			in.setEncoding("UTF-8");
+
 			Document doc = factory.newDocumentBuilder().parse(in);
 
 			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())

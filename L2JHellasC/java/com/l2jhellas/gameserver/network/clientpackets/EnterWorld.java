@@ -12,8 +12,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.Vector;
-
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
