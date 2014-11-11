@@ -14,6 +14,7 @@
  */
 package Extensions.Balancer;
 
+import com.PackRoot;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -31,10 +32,11 @@ public class Balancer implements IAdminCommandHandler
 		if (command.equals("admin_balance") && activeChar.isGM())
 		{
 			NpcHtmlMessage htm = new NpcHtmlMessage(0);
-			htm.setFile("./data/html/admin/balance/main.htm");
+			htm.setFile(PackRoot.DATAPACK_ROOT + "/data/html/admin/balance/main.htm");
 			activeChar.sendPacket(htm);
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public static void sendBalanceWindow(int classId, L2PcInstance p)

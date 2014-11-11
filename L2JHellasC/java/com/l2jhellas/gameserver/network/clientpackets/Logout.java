@@ -122,8 +122,6 @@ public final class Logout extends L2GameClientPacket
 		
 		player.endDuel();
 		
-		player.store();
-		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
 		

@@ -121,8 +121,6 @@ public final class RequestRestart extends L2GameClientPacket
 		// Remove From Boss
 		player.removeFromBossZone();
 		
-		player.store();
-		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 
 		// detach the client from the char so that the connection isnt closed in the deleteMe

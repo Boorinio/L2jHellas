@@ -8409,13 +8409,6 @@ public final class L2PcInstance extends L2Playable
 					}
 				}
 			}
-			// Remove previously restored skills
-			try (PreparedStatement delete = con.prepareStatement(DELETE_SKILL_SAVE))
-			{
-				delete.setInt(1, getObjectId());
-				delete.setInt(2, getClassIndex());
-				delete.executeUpdate();
-			}
 		}
 		catch (Exception e)
 		{
@@ -14236,8 +14229,6 @@ public final class L2PcInstance extends L2Playable
 		
 		if (ZodiacMain.voting && !ZodiacMain.HasVoted(this))
  			ZodiacMain.showHtmlWindow(this);
-		sendSkillList();
-		sendPacket(new SkillCoolTime(this));
 		loadVotes();
 		if (Config.SERVER_NEWS)
 		{
@@ -14330,6 +14321,7 @@ public final class L2PcInstance extends L2Playable
 
 		
 		sendSkillList();
+		sendPacket(new SkillCoolTime(this));
 		sendPacket(new HennaInfo(this));
 		sendPacket(new FriendList(this));
 		sendPacket(new QuestList());

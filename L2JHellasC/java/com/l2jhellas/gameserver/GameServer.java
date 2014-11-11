@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -320,8 +321,7 @@ public class GameServer
 		{
 			try
 			{
-				final File scripts = new File("./data/scripts.cfg");
-				L2ScriptEngineManager.getInstance().executeScriptList(scripts);
+				L2ScriptEngineManager.getInstance().executeScriptList(new File("./data/scripts.cfg"));
 			}
 			catch (IOException ioe)
 			{
@@ -459,7 +459,7 @@ public class GameServer
 		{
 			_log.log(Level.INFO, getClass().getSimpleName() + ": Telnet is disabled by config.");
 		}
-
+		Toolkit.getDefaultToolkit().beep();
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();
 	}

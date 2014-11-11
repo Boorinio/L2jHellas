@@ -14,8 +14,6 @@
  */
 package handlers.itemhandlers;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
@@ -44,7 +42,7 @@ public class MapForestOfTheDead implements IItemHandler
 		if(itemId == 7063)
 		{
 			NpcHtmlMessage html = new NpcHtmlMessage(5);
-			TextBuilder map = new TextBuilder("<html><title>Map - Forest of the Dead</title>");
+			StringBuilder map = new StringBuilder("<html><title>Map - Forest of the Dead</title>");
 			map.append("<body>");
 			map.append("<br>");
 			map.append("Map :");
