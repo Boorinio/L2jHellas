@@ -8002,12 +8002,12 @@ public final class L2PcInstance extends L2Playable
 					statement = con.prepareStatement(ADD_SKILL_SAVE);
 					statement.setInt(1, getObjectId());
 					statement.setInt(2, t.getSkill());
-					statement.setInt(3, -1);
+					statement.setInt(3, 1);
 					statement.setInt(4, -1);
 					statement.setInt(5, -1);
 					statement.setLong(6, t.getReuse());
 					statement.setLong(7, t.getStamp());
-					statement.setInt(8, 1);
+					statement.setInt(8, 0);
 					statement.setInt(9, getClassIndex());
 					statement.setInt(10, ++buff_index);
 					statement.execute();
@@ -8389,7 +8389,7 @@ public final class L2PcInstance extends L2Playable
 					/**
 					 * Restore Type 0 These skills were still in effect on the character upon logout. Some of which were self casted and might still have a long reuse delay which also is restored.
 					 */
-					if (skill.hasEffects())
+					if (skill.hasEffects() && effectCount != -1)
 					{
 						Env env = new Env();
 						env.player = this;
