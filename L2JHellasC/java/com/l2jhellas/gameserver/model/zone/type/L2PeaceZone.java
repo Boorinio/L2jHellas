@@ -15,7 +15,10 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * A peaceful zone
@@ -34,12 +37,10 @@ public class L2PeaceZone extends L2ZoneType
 	{
 		character.setInsideZone(L2Character.ZONE_PEACE, true);
 
-		/*
-		 * if (character instanceof L2PcInstance)
-		 * {
-		 * ((L2PcInstance)character).sendMessage("You entered a peace zone!");
-		 * }
-		 */
+		if (character instanceof L2PcInstance)
+		{
+			character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ENTER_PEACEFUL_ZONE));
+		}
 	}
 
 	@Override
@@ -47,12 +48,10 @@ public class L2PeaceZone extends L2ZoneType
 	{
 		character.setInsideZone(L2Character.ZONE_PEACE, false);
 
-		/*
-		 * if (character instanceof L2PcInstance)
-		 * {
-		 * ((L2PcInstance)character).sendMessage("You exited a peace zone!");
-		 * }
-		 */
+		if (character instanceof L2PcInstance)
+		{
+			character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.EXIT_PEACEFUL_ZONE));
+		}
 	}
 
 	@Override

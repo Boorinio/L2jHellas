@@ -76,7 +76,6 @@ import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.datatables.xml.StaticObjData;
 import com.l2jhellas.gameserver.datatables.xml.SummonItemsData;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
-import com.l2jhellas.gameserver.datatables.xml.ZoneData;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
@@ -104,6 +103,7 @@ import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeReward;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.L2Manor;
@@ -243,8 +243,6 @@ public class GameServer
 		AuctionManager.getInstance();
 
 		Util.printSection("Zone");
-		ZoneData.getInstance();
-
 		Util.printSection("Castles");
 		CastleManager.getInstance();
 		SiegeManager.getInstance();
