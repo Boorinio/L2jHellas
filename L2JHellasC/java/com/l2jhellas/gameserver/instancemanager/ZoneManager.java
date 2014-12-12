@@ -349,7 +349,13 @@ public class ZoneManager
 							// Special managers for granbosses...
 							if (temp instanceof L2BossZone)
 								GrandBossManager.getInstance().addZone((L2BossZone) temp);
-
+							
+							else if (temp instanceof L2ArenaZone)
+								ArenaManager.getInstance().addArena((L2ArenaZone) temp);
+							else if (temp instanceof L2TownZone)
+								TownManager.getInstance().addTown((L2TownZone) temp);
+							else if (temp instanceof L2OlympiadStadiumZone)
+								OlympiadStadiaManager.getInstance().addStadium((L2OlympiadStadiumZone) temp);
 							// Increase the counter
 							zoneCount++;
 						}
@@ -437,10 +443,8 @@ public class ZoneManager
 		L2WorldRegion region = L2World.getRegion(x, y);
 		FastList<L2ZoneType> temp = new FastList<L2ZoneType>();
 		for (L2ZoneType zone : region.getZones())
-		{
 			if (zone.isInsideZone(x, y))
 				temp.add(zone);
-		}
 		return temp;
 	}
 
@@ -457,10 +461,8 @@ public class ZoneManager
 		L2WorldRegion region = L2World.getRegion(x, y);
 		FastList<L2ZoneType> temp = new FastList<L2ZoneType>();
 		for (L2ZoneType zone : region.getZones())
-		{
 			if (zone.isInsideZone(x, y, z))
 				temp.add(zone);
-		}
 		return temp;
 	}
 
@@ -470,11 +472,8 @@ public class ZoneManager
 			return null;
 
 		for (L2ZoneType temp : ZoneManager.getInstance().getZones(character.getX(), character.getY(), character.getZ()))
-		{
 			if (temp instanceof L2ArenaZone && temp.isCharacterInZone(character))
 				return ((L2ArenaZone) temp);
-		}
-
 		return null;
 	}
 
@@ -484,14 +483,11 @@ public class ZoneManager
 			return null;
 
 		for (L2ZoneType temp : ZoneManager.getInstance().getZones(character.getX(), character.getY(), character.getZ()))
-		{
 			if (temp instanceof L2OlympiadStadiumZone && temp.isCharacterInZone(character))
 				return ((L2OlympiadStadiumZone) temp);
-		}
 		return null;
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
 		protected static final ZoneManager _instance = new ZoneManager();
