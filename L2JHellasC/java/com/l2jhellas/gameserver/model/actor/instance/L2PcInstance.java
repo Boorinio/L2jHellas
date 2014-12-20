@@ -13982,10 +13982,8 @@ public final class L2PcInstance extends L2Playable
 		
 		if (isDead())
 		{
-			doRevive();
-			L2Skill skill = SkillTable.getInstance().getInfo(1323, 1);
-			skill.getEffects(this, this);	
 			doDie(this);
+            doRevive();
 		}
 		
 		L2Clan clan = this.getClan();
