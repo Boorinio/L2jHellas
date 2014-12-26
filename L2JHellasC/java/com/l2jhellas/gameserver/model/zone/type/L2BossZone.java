@@ -93,7 +93,6 @@ public class L2BossZone extends L2ZoneType
 		}
 	}
 
-	@Override
 	/**
 	 * Boss zones have special behaviors for player characters. Players are
 	 * automatically teleported out when the attempt to enter these zones,
@@ -102,79 +101,68 @@ public class L2BossZone extends L2ZoneType
 	 * any one of the following: 1) A player logs out while in a zone
 	 * (Expiration gets set to logoutTime + _timeInvade) 2) An external source
 	 * (such as a quest or AI of NPC) set up the player for entry.
-	 *
 	 * There exists one more case in which the player will be allowed to enter.
 	 * That is if the server recently rebooted (boot-up time more recent than
 	 * currentTime - _timeInvade) AND the player was in the zone prior to reboot.
 	 */
+	@Override
 	protected void onEnter(L2Character character)
 	{
-		if (_enabled)
+		if (_enabled && character instanceof L2PcInstance)
 		{
-			if (character instanceof L2PcInstance)
-			{
-				L2PcInstance player = (L2PcInstance) character;
-				player.setInsideZone(L2Character.ZONE_NOSUMMONFRIEND, true);
-				if (player.isGM())
-				{
-					player.sendMessage("You entered " + _zoneName);
-					return;
-				}
-				
-				if (!player.isGM() && (player.isinZodiac && ChaosEvent._isChaosActive))
-				{
-					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-					return;
-				}
-                // Ignore the check for Van Halter zone id 12014 if player got marks
-                if (getId() == 12014)
-                {
-                	L2ItemInstance VisitorsMark = player.getInventory().getItemByItemId(8064);
-                    L2ItemInstance FadedVisitorsMark = player.getInventory().getItemByItemId(8065);
-                    L2ItemInstance PagansMark = player.getInventory().getItemByItemId(8067);
-                    long mark1 = VisitorsMark == null ? 0 : VisitorsMark.getCount();
-                    long mark2 = FadedVisitorsMark == null ? 0 : FadedVisitorsMark.getCount();
-                    long mark3 = PagansMark == null ? 0 : PagansMark.getCount();
-                    if (mark1 != 0 || mark2 != 0 || mark3 != 0)
-                        return;                
-                }
-                
-                if (!player.isGM() && player.isFlying() && ! player.isFlying())
-                {
-                    player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-                    return;
-                }
-                
-				// if player has been (previously) cleared by npc/ai for entry and the zone is
-				// set to receive players (aka not waiting for boss to respawn)
-				if (_playersAllowed.contains(player.getObjectId()))
-				{
-					// Get the information about this player's last logout-exit from
-					// this zone.
-					Long expirationTime = _playerAllowedReEntryTimes.get(player.getObjectId());
+			L2PcInstance player = (L2PcInstance) character;
+			player.setInsideZone(L2Character.ZONE_NOSUMMONFRIEND, true);
+			if (player.isGM())
+				player.sendMessage("You entered " + _zoneName);
 
-					// with legal entries, do nothing.
-					if (expirationTime == null) // legal null expirationTime entries
-					{
-						long serverStartTime = GameServer.dateTimeServerStarted.getTimeInMillis();
-						if ((serverStartTime > (System.currentTimeMillis() - _timeInvade)))
-							return;
-					}
-					else
-					{
-						// legal non-null logoutTime entries
-						_playerAllowedReEntryTimes.remove(player.getObjectId());
-						if (expirationTime.longValue() > System.currentTimeMillis())
-							return;
-					}
-					_playersAllowed.remove(_playersAllowed.indexOf(player.getObjectId()));
-				}
-				// teleport out all players who attempt "illegal" (re-)entry
-				if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
-					player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2]);
-				else
-					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			if (!player.isGM() && (player.isinZodiac && ChaosEvent._isChaosActive))
+				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+
+			if (!player.isGM() && player.isFlying())
+				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+
+			// Ignore the check for Van Halter zone id 12014 if player got marks
+			if (getId() == 12014)
+			{
+				L2ItemInstance VisitorsMark = player.getInventory().getItemByItemId(8064);
+				L2ItemInstance FadedVisitorsMark = player.getInventory().getItemByItemId(8065);
+				L2ItemInstance PagansMark = player.getInventory().getItemByItemId(8067);
+				long mark1 = VisitorsMark == null ? 0 : VisitorsMark.getCount();
+				long mark2 = FadedVisitorsMark == null ? 0 : FadedVisitorsMark.getCount();
+				long mark3 = PagansMark == null ? 0 : PagansMark.getCount();
+				if (mark1 != 0 || mark2 != 0 || mark3 != 0)
+					return;
 			}
+
+			// if player has been (previously) cleared by npc/ai for entry and the zone is
+			// set to receive players (aka not waiting for boss to respawn)
+			if (_playersAllowed.contains(player.getObjectId()))
+			{
+				// Get the information about this player's last logout-exit from
+				// this zone.
+				Long expirationTime = _playerAllowedReEntryTimes.get(player.getObjectId());
+
+				// with legal entries, do nothing.
+				if (expirationTime == null) // legal null expirationTime entries
+				{
+					long serverStartTime = GameServer.dateTimeServerStarted.getTimeInMillis();
+					if ((serverStartTime > (System.currentTimeMillis() - _timeInvade)))
+						return;
+				}
+				else
+				{
+					// legal non-null logoutTime entries
+					_playerAllowedReEntryTimes.remove(player.getObjectId());
+					if (expirationTime.longValue() > System.currentTimeMillis())
+						return;
+				}
+				_playersAllowed.remove(_playersAllowed.indexOf(player.getObjectId()));
+			}
+			// teleport out all players who attempt "illegal" (re-)entry
+			if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
+				player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2]);
+			else
+				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 		}
 	}
 
@@ -188,10 +176,8 @@ public class L2BossZone extends L2ZoneType
 				L2PcInstance player = (L2PcInstance) character;
 				player.setInsideZone(L2Character.ZONE_NOSUMMONFRIEND, false);
 				if (player.isGM())
-				{
 					player.sendMessage("You left " + _zoneName);
-					return;
-				}
+
 				// if the player just got disconnected/logged out, store the dc
 				// time so that
 				// decisions can be made later about allowing or not the player
@@ -298,7 +284,6 @@ public class L2BossZone extends L2ZoneType
 	 * @param y
 	 * @param z
 	 */
-
 	public void movePlayersTo(int x, int y, int z)
 	{
 		if (_characterList == null || _characterList.isEmpty())
