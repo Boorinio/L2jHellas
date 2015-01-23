@@ -14,11 +14,10 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
@@ -31,8 +30,8 @@ public class SellListProcure extends L2GameServerPacket
 
 	private final L2PcInstance _activeChar;
 	private final int _money;
-	private final Map<L2ItemInstance, Integer> _sellList = new FastMap<L2ItemInstance, Integer>();
-	private List<CropProcure> _procureList = new FastList<CropProcure>();
+	private final Map<L2ItemInstance, Integer> _sellList = new HashMap<L2ItemInstance, Integer>();
+	private List<CropProcure> _procureList = new ArrayList<CropProcure>();
 	private final int _castle;
 
 	public SellListProcure(L2PcInstance player, int castleId)

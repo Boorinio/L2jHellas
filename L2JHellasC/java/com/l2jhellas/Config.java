@@ -147,6 +147,9 @@ public final class Config
 	public static int ALT_GAME_FREIGHT_PRICE;
 	public static float ALT_GAME_EXPONENT_XP;
 	public static float ALT_GAME_EXPONENT_SP;
+	public static boolean ALLOW_SATURDAY_RATE_XP_SP;
+	public static float SATURDAY_RATE_XP;
+	public static float SATURDAY_RATE_SP;
 	public static boolean ALT_GAME_TIREDNESS;
 	public static boolean ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE;
 	public static boolean ALT_GAME_KARMA_PLAYER_CAN_SHOP;
@@ -1369,6 +1372,9 @@ public final class Config
 			ALT_GAME_CREATION_SPEED = Double.parseDouble(altSettings.getProperty("AltGameCreationSpeed", "1"));
 			ALT_GAME_CREATION_XP_RATE = Double.parseDouble(altSettings.getProperty("AltGameCreationRateXp", "1"));
 			ALT_GAME_CREATION_SP_RATE = Double.parseDouble(altSettings.getProperty("AltGameCreationRateSp", "1"));
+			ALLOW_SATURDAY_RATE_XP_SP = Boolean.parseBoolean(altSettings.getProperty("AllowSaturDayXpSp", "False"));
+		    SATURDAY_RATE_XP = Float.parseFloat(altSettings.getProperty("SaturDayXp", "2."));
+			SATURDAY_RATE_SP = Float.parseFloat(altSettings.getProperty("SaturDaySp", "2."));
 			ALT_BLACKSMITH_USE_RECIPES = Boolean.parseBoolean(altSettings.getProperty("AltBlacksmithUseRecipes", "True"));
 			ALT_GAME_SUBCLASS_WITHOUT_QUESTS = Boolean.parseBoolean(altSettings.getProperty("AltSubClassWithoutQuests", "True"));
 			MAX_SUBCLASS = Byte.parseByte(altSettings.getProperty("MaxSubclass", "3"));

@@ -8075,6 +8075,8 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public L2Skill addSkill(L2Skill newSkill, boolean store)
 	{
+		_learningSkill = true;
+		
 		if (newSkill.isToggle())
 		{
 			final L2Effect toggleEffect = getFirstEffect(newSkill.getId());
@@ -8093,6 +8095,8 @@ public final class L2PcInstance extends L2Playable
 		{
 			storeSkill(newSkill, oldSkill, -1);
 		}
+		
+		_learningSkill = false;
 		
 		return oldSkill;
 	}
@@ -10952,6 +10956,12 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public synchronized boolean setActiveClass(int classIndex)
 	{
+		if (isInCombat() || this.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
+		{
+			sendMessage("Impossible switch class if in combat");
+			sendPacket(ActionFailed.STATIC_PACKET);
+			return false;
+		}
 		// Remove active item skills before saving char to database
 		// because next time when choosing this class, weared items can be different
 		for (L2ItemInstance temp : getInventory().getAugmentedItems())
@@ -11058,11 +11068,15 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 		
-		for (L2Skill oldSkill : getAllSkills())
+		synchronized (getAllSkills())
 		{
-			super.removeSkill(oldSkill);
+			
+			for (final L2Skill oldSkill : getAllSkills())
+			{
+				super.removeSkill(oldSkill);
+			}
+			
 		}
-		
 		// Yesod: Rebind CursedWeapon passive.
 		if (isCursedWeaponEquiped())
 		{
@@ -15359,5 +15373,10 @@ public final class L2PcInstance extends L2Playable
 		return false;
 	}
 	
+	private boolean _learningSkill = false;
 	
+	public boolean isLearningSkill()
+	{
+		return _learningSkill;
+	}
 }

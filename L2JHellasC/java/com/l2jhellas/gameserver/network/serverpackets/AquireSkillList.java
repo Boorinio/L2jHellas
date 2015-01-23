@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 
 /**
  * @formatter:off
@@ -73,7 +73,7 @@ public class AquireSkillList extends L2GameServerPacket
 
 	public AquireSkillList(skillType type)
 	{
-		_skills = new FastList<Skill>();
+		_skills = new ArrayList<Skill>();
 		_fishingSkills = type;
 	}
 

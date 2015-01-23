@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.Gui;
@@ -163,35 +165,43 @@ public class VoteRewardHopzone
 		}
 	}
 	
+
 	private static int getVotes()
 	{
-		int votes = 0;
-		String line = null;
-		
-		try
-		{
-			URLConnection con = new URL(Config.HOPZONE_SERVER_LINK).openConnection();
-			con.addRequestProperty("User-Agent", "Mozilla/4.76");
-			InputStreamReader isr = new InputStreamReader(con.getInputStream());
-			BufferedReader br = new BufferedReader(isr);
-			while ((line = br.readLine()) != null)
-				if (line.contains("rank anonymous tooltip"))
-				{
-					votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
-					Gui.hopzone.setText("HopZone Votes: "+votes);
-					return votes;
-				}
-			br.close();
-			isr.close();
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, " " + e);
-			_log.log(Level.WARNING, "Error while getting server vote count, votes:" + votes + " link:" + line);
-			_log.log(Level.WARNING, "Your URL is:" + Config.HOPZONE_SERVER_LINK);
-			_log.log(Level.WARNING, "Test in a browser to see if it correct!");
-		}
-		
-		return -1;
-	}
+	               InputStreamReader isr = null;
+	               BufferedReader br = null;
+	               int votes = 0;
+	               String line ="";
+	               try
+	               {
+	                       URLConnection con = new URL(Config.HOPZONE_SERVER_LINK).openConnection();
+	                       con.addRequestProperty("User-Agent", "Mozilla/4.76");
+	                       isr = new InputStreamReader(con.getInputStream());
+	                       br = new BufferedReader(isr);
+	                      
+	                     
+	                       while ((line = br.readLine()) != null)
+	                       {
+	                               if (line.contains("<li><span class=\"rank anonymous tooltip\""))
+	                               {
+	                                       votes = Integer.valueOf(line.replaceAll("[^\\d]", ""));
+	                                       Gui.hopzone.setText("HopZone Votes: " + votes);
+	                                       return votes;
+	                               }
+	                       }
+	                      
+	                       br.close();
+	                       isr.close();
+	               }
+	               catch (Exception e)
+	               {
+	       			Announcements.getInstance().gameAnnounceToAll("[AutoVoteReward]HOPZONE is offline. We will check reward as it will be online again");
+	                _log.log(Level.WARNING, " " + e);
+	       			_log.log(Level.WARNING, "Error while getting server vote count, votes:" + votes + " link:" + line);
+	       			_log.log(Level.WARNING, "Your URL is:" + Config.HOPZONE_SERVER_LINK);
+	       			_log.log(Level.WARNING, "Test in a browser to see if it correct!");
+	               }
+	              
+	               return -1;
+	       }
 }

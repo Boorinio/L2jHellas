@@ -16,6 +16,8 @@
 package Extensions.Vote;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -163,31 +165,68 @@ public class VoteRewardTopzone
 	
 	public static int getVotes()
 	{
-		int votes = 0;
-		String line = null;
+		int votes = -1;
+		URL url = null;
+		URLConnection con = null;
+		InputStream is = null;
+		InputStreamReader isr = null;
+		BufferedReader in = null;
+		
 		try
 		{
-			URLConnection con = new URL(Config.TOPZONE_SERVER_LINK).openConnection();
+			url = new URL(Config.TOPZONE_SERVER_LINK);
+			con = url.openConnection();
 			con.addRequestProperty("User-Agent", "L2TopZone");
-			InputStreamReader isr = new InputStreamReader(con.getInputStream());
-			BufferedReader br = new BufferedReader(isr);
-			
-			while ((line = br.readLine()) != null)
-				if(line.contains("Votes:"))
+			is = con.getInputStream();
+			isr = new InputStreamReader(is);
+			in = new BufferedReader(isr);
+			String inputLine;
+			while ((inputLine = in.readLine()) != null)
+			{
+				if (inputLine.contains("Votes"))
 				{
-					votes = Integer.valueOf(line.split(">")[3].replace("</div", " ").trim());
+					votes = Integer.valueOf(inputLine.split(">")[3].replace("</div", ""));
 					Gui.topzone.setText("TopZone Votes: " + votes);
-					return votes;
+					break;
+				}
+			}
+		}
+		catch (final Exception e)
+		{
+			System.out.println("[AutoVoteReward] TOPZONE is offline or something is wrong in link");
+			Announcements.getInstance().gameAnnounceToAll("[AutoVoteReward] TOPZONE is offline. We will check reward as it will be online again");
+		}
+		finally
+		{
+			if (in != null)
+				try
+				{
+					in.close();
+				}
+				catch (final IOException e1)
+				{
+					e1.printStackTrace();
+				}
+			if (isr != null)
+				try
+				{
+					isr.close();
+				}
+				catch (final IOException e1)
+				{
+					e1.printStackTrace();
+				}
+			if (is != null)
+				try
+				{
+					is.close();
+				}
+				catch (final IOException e1)
+				{
+					e1.printStackTrace();
 				}
 		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, " " + e);
-			_log.log(Level.WARNING, "Error while getting server vote count, votes:" + votes + " link:" + line);
-			_log.log(Level.WARNING, "Your URL is:" + Config.TOPZONE_SERVER_LINK);
-			_log.log(Level.WARNING, "Test in a browser to see if it correct!");
-		}
-		
-		return -1;
+		return votes;
 	}
+		
 }

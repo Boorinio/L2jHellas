@@ -80,6 +80,9 @@ public class SellList extends L2GameServerPacket
 
 		for (L2ItemInstance item : _selllist)
 		{
+			if (item == null || item.getItem() == null)
+				continue;
+			
 			writeH(item.getItem().getType1());
 			writeD(item.getObjectId());
 			writeD(item.getItemId());

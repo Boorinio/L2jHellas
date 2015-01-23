@@ -18,6 +18,7 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javolution.util.FastList;
@@ -2308,13 +2309,29 @@ public class L2Npc extends L2Character
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
+	private int Savvato()
+	{
+	   return Calendar.SATURDAY;
+	}
+	private int dayofweek()
+	{
+	   return Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+	}
+	
 	/**
 	 * Return the Exp Reward of this L2Npc contained in the L2NpcTemplate (modified by RATE_XP).<BR><BR>
 	 */
 	public int getExpReward()
 	{
-		double rateXp = getStat().calcStat(Stats.MAX_HP, 1, this, null);
-		return (int) (getTemplate().rewardExp * rateXp * Config.RATE_XP);
+		final double rateXp = getStat().calcStat(Stats.MAX_HP, 1, this, null);
+		int exp=0;
+		
+		 if(Config.ALLOW_SATURDAY_RATE_XP_SP && dayofweek() == Savvato())		 
+		  exp = (int) (getTemplate().rewardExp * rateXp * Config.SATURDAY_RATE_XP);
+		 else
+		  exp = (int) (getTemplate().rewardExp * rateXp * Config.RATE_XP);
+		 
+		 return exp;
 	}
 	
 	/**
@@ -2323,7 +2340,14 @@ public class L2Npc extends L2Character
 	public int getSpReward()
 	{
 		double rateSp = getStat().calcStat(Stats.MAX_HP, 1, this, null);
-		return (int) (getTemplate().rewardSp * rateSp * Config.RATE_SP);
+		int sp=0;
+		
+		 if(Config.ALLOW_SATURDAY_RATE_XP_SP && dayofweek() == Savvato())		 
+		     sp = (int) (getTemplate().rewardSp * rateSp * Config.SATURDAY_RATE_SP);
+		 else
+			 sp = (int) (getTemplate().rewardSp * rateSp * Config.RATE_SP);
+		 
+		 return sp;
 	}
 	
 	/**
