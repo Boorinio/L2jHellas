@@ -185,11 +185,12 @@ public class VoteRewardTopzone
 			{
 				if (inputLine.contains("Votes"))
 				{
-					votes = Integer.valueOf(inputLine.split(">")[3].replace("</div", ""));
-					Gui.topzone.setText("TopZone Votes: " + votes);
+					votes = Integer.valueOf(inputLine.split(">")[3].replace("</div", ""));					
 					break;
 				}
 			}
+			
+			Gui.topzone.setText("TopZone Votes: " + votes);
 		}
 		catch (final Exception e)
 		{

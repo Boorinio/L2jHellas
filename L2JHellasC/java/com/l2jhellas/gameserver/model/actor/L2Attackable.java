@@ -517,13 +517,14 @@ public class L2Attackable extends L2Npc
 		{
 			return _objId == itemObjectId && _absorbedHP < 50;
 		}
+		
 		@Override
 		public int hashCode()
 		{
 			return _objId;
 		}
 	}
-	
+
 	/**
 	 * This class is used to create item reward lists instead of creating item instances.<BR>
 	 * <BR>
@@ -1467,39 +1468,39 @@ public class L2Attackable extends L2Npc
 				{
 					item = calculateCategorizedRewardItem(player, cat, levelModifier);
 				}
-					
-					if (item != null)
+				
+				if (item != null)
+				{
+					if (Config.DEBUG)
 					{
-						if (Config.DEBUG)
-						{
-							_log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
-						}
+						_log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
+					}
+					
+					// Check if the autoLoot mode is active
+					if (Config.AUTO_LOOT && !(this instanceof L2RaidBossInstance) && !(this instanceof L2MinionInstance) && !(this instanceof L2GrandBossInstance))
+					{
+						player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
+					}
+					else if (Config.AUTO_LOOT_RAID && this instanceof L2RaidBossInstance && !(this instanceof L2MinionInstance))
+						player.doAutoLoot(this, item);
+					else if (Config.AUTO_LOOT_GRAND && this instanceof L2GrandBossInstance)
+						player.doAutoLoot(this, item);
+					else
+						dropItem(player, item); // drop the item on the ground
 						
-						// Check if the autoLoot mode is active
-						if (Config.AUTO_LOOT && !(this instanceof L2RaidBossInstance) && !(this instanceof L2MinionInstance) && !(this instanceof L2GrandBossInstance))
-						{
-							player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
-						}
-						else if (Config.AUTO_LOOT_RAID && this instanceof L2RaidBossInstance && !(this instanceof L2MinionInstance))
-							player.doAutoLoot(this, item);
-						else if (Config.AUTO_LOOT_GRAND && this instanceof L2GrandBossInstance)
-							player.doAutoLoot(this, item);
-						else
-							dropItem(player, item); // drop the item on the ground
-							
-						// Broadcast message if RaidBoss was defeated
-						// if(this instanceof L2RaidBossInstance)
-						if (isRaid() && !isRaidMinion())
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
-							sm.addString(getName());
-							sm.addItemName(item.getItemId());
-							sm.addNumber(item.getCount());
-							broadcastPacket(sm);
-						}
+					// Broadcast message if RaidBoss was defeated
+					// if(this instanceof L2RaidBossInstance)
+					if (isRaid() && !isRaidMinion())
+					{
+						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
+						sm.addString(getName());
+						sm.addItemName(item.getItemId());
+						sm.addNumber(item.getCount());
+						broadcastPacket(sm);
 					}
 				}
 			}
+		}
 		
 		// Apply Special Item drop with rnd qty for champions
 		if (isChampion() && Math.abs(getLevel() - player.getLevel()) <= Config.CHAMPION_SPCL_LVL_DIFF && !getTemplate().isQuestMonster() && Config.CHAMPION_SPCL_CHANCE > 0 && Rnd.get(100) < Config.CHAMPION_SPCL_CHANCE)
@@ -2320,7 +2321,7 @@ public class L2Attackable extends L2Npc
 		
 		super.moveToLocation(x, y, z, offset);
 	}
-	private boolean _canReturnToSpawnPoint = true;
+private boolean _canReturnToSpawnPoint = true;
 	
 	public final boolean canReturnToSpawnPoint()
 	{
