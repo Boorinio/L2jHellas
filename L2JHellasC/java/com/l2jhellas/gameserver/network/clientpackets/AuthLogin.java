@@ -20,6 +20,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.LoginServerThread.SessionKey;
 import com.l2jhellas.gameserver.network.L2GameClient;
+import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 
 public final class AuthLogin extends L2GameClientPacket
 {
@@ -66,10 +67,18 @@ public final class AuthLogin extends L2GameClientPacket
 
 		// avoid potential exploits
 		if (client.getAccountName() == null)
-		{
-			client.setAccountName(_loginName);
-			LoginServerThread.getInstance().addGameServerLogin(_loginName, client);
-			LoginServerThread.getInstance().addWaitingClientAndSendRequest(_loginName, client, key);
+		{		
+			if (LoginServerThread.getInstance().addGameServerLogin(_loginName, client))
+			{
+				client.setAccountName(_loginName);
+				LoginServerThread.getInstance().addWaitingClientAndSendRequest(_loginName, client, key);
+			}
+			else
+			{
+
+				client.closeNow();
+				client.close(new LeaveWorld());
+			}
 		}
 	}
 

@@ -429,11 +429,37 @@ public class LoginServerThread extends Thread
 		}
 	}
 
-	public void addGameServerLogin(String account, L2GameClient client)
-	{
-		_accountsInGameServer.put(account, client);
-	}
 
+	public boolean addGameServerLogin(final String account, final L2GameClient client)
+	{
+		
+		final L2GameClient savedClient = _accountsInGameServer.get(account);
+		
+		if (savedClient != null)
+		{
+			if (savedClient.isDetached())
+			{
+				if (Config.DEBUG)
+					System.out.println("Old Client was disconnected: Offline or OfflineMode --> Login Again");
+				_accountsInGameServer.put(account, client);
+				
+				return true;
+			}
+			if (Config.DEBUG)
+				System.out.println("Old Client was online --> Close Old Client Connection");
+			
+			savedClient.closeNow();
+			_accountsInGameServer.remove(account);
+			return false;
+		}
+		
+		if (Config.DEBUG)
+			System.out.println("Client was not online --> New Client Connection");
+		
+		_accountsInGameServer.put(account, client);
+		
+		return true;
+	}
 	public void sendAccessLevel(String account, int level)
 	{
 		ChangeAccessLevel cal = new ChangeAccessLevel(account, level);

@@ -239,6 +239,7 @@ import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.shield.antiflood.FloodProtectors;
 import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.FloodProtector;
+import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
@@ -4202,6 +4203,14 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public boolean dropItem(String process, L2ItemInstance item, L2Object reference, boolean sendMessage)
 	{
+		if (_freight.getItemByObjectId(item.getObjectId()) != null)
+		{
+			
+			this.sendPacket(ActionFailed.STATIC_PACKET);			
+			Util.handleIllegalPlayerAction(this, "Warning!! Character " + this.getName() + " of account " + this.getAccountName() + " tried to drop Freight Items", IllegalPlayerAction.PUNISH_KICK);
+			return false;
+			
+		}
 		item = _inventory.dropItem(process, item, this, reference);
 		
 		if (item == null)
@@ -4287,6 +4296,17 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public L2ItemInstance dropItem(String process, int objectId, int count, int x, int y, int z, L2Object reference, boolean sendMessage)
 	{
+		
+		if (_freight.getItemByObjectId(objectId) != null)
+		{
+			
+			// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
+			this.sendPacket(ActionFailed.STATIC_PACKET);
+			
+			Util.handleIllegalPlayerAction(this, "Warning!! Character " + this.getName() + " of account " + this.getAccountName() + " tried to drop Freight Items", IllegalPlayerAction.PUNISH_KICK);
+			return null;
+			
+		}
 		L2ItemInstance invitem = _inventory.getItemByObjectId(objectId);
 		L2ItemInstance item = _inventory.dropItem(process, objectId, count, this, reference);
 		
@@ -15379,4 +15399,5 @@ public final class L2PcInstance extends L2Playable
 	{
 		return _learningSkill;
 	}
+					
 }
