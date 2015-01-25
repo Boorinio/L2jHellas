@@ -383,10 +383,24 @@ public final class L2World
 				if (tmp != null)
 				{
 					_log.warning("Duplicate character? Closing both characters: (" + player.getName() + ")");
+					
+					if (Config.MOD_GVE_ENABLE_FACTION)
+					{
+						if (((L2PcInstance)player).isgood())
+							_allgoodPlayers.remove(player.getName().toLowerCase());
+
+						if (((L2PcInstance) player).isevil())
+							_allevilPlayers.remove(player.getName().toLowerCase());
+					}
+					
+					_allPlayers.remove(player.getName().toLowerCase());
+					_allPlayers.remove(tmp.getName().toLowerCase());
+					
 					player.closeNetConnection();
 					tmp.closeNetConnection();
 					return;
 				}
+				
 				_allPlayers.put(player.getName().toLowerCase(), player);
 			}
 			// l2jhellas Faction Good vs Evil
@@ -449,6 +463,16 @@ public final class L2World
 	 */
 	public static void removeFromAllPlayers(L2PcInstance cha)
 	{
+		
+		if (Config.MOD_GVE_ENABLE_FACTION)
+		{
+			if (cha.isgood())
+				_allgoodPlayers.remove(cha.getName().toLowerCase());
+
+			if (cha.isevil())
+				_allevilPlayers.remove(cha.getName().toLowerCase());
+		}
+		
 		_allPlayers.remove(cha.getName().toLowerCase());
 	}
 

@@ -196,13 +196,29 @@ public final class L2WarehouseInstance extends L2NpcInstance
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
+		
 		// Little check to prevent enchant exploit
-		if (player.getActiveEnchantItem() != null)
+		if (player.getActiveEnchantItem() != null || player.getActiveTradeList()!=null)
 		{
-			_log.info("Player " + player.getName() + " trying to use enchant exploit, ban this player!");
+			_log.info("Player " + player.getName() + " trying to use enchant or trade exploit, ban this player!");
 			player.closeNetConnection();
 			return;
 		}
+		
+		if (player.getPrivateStoreType() != 0)
+		{
+			player.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		if (player.isInStoreMode())
+		{
+			player.sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 
 		if (command.startsWith("WithdrawP"))
 		{

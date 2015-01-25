@@ -54,18 +54,21 @@ public final class RequestPrivateStoreManageSell extends L2GameClientPacket
 		// Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
 		if (player.isAlikeDead())
 		{
+			player.sendMessage("You are dead. you can't use it right now!");
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 
 		if (player.isInOlympiadMode())
 		{
+			player.sendMessage("You are in olympiade mode. you can't use it right now!");
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
 		if(player.getActiveTradeList()!=null || player.getActiveWarehouse()!=null || player.getActiveEnchantItem()!=null)
 		{
+			player.sendMessage("Trade-wh-enchant not allowded while managing private store.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
@@ -128,6 +129,8 @@ public final class RequestRestart extends L2GameClientPacket
 
 		RegionBBSManager.getInstance().changeCommunityBoard();
 
+		L2World.removeFromAllPlayers(player);
+		
 		// removing player from the world
 		player.deleteMe();
 		L2GameClient.saveCharToDisk(client.getActiveChar());

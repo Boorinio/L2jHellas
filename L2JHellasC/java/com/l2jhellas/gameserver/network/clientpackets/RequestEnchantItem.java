@@ -95,6 +95,20 @@ public final class RequestEnchantItem extends L2GameClientPacket
 			return;
 		}
 		
+		if (activeChar.getPrivateStoreType() != 0)
+		{
+			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		if (activeChar.isInStoreMode())
+		{
+			activeChar.sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		if (activeChar.getActiveWarehouse() != null || activeChar.getActiveTradeList() != null)
 		{
 			activeChar.sendMessage("You can't enchant items when you got active warehouse or active trade.");

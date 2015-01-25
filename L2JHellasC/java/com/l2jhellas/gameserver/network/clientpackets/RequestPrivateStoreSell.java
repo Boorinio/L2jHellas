@@ -120,9 +120,10 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
             return;
         }
 
-		if(player.getActiveTradeList()!=null || player.getActiveWarehouse()!=null || player.getActiveEnchantItem()!=null)
+		if(player.getActiveTradeList()!=null || player.getActiveEnchantItem()!=null)
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
+			player.sendMessage("You can't use this action right now!");
 			return;
 		}
 		

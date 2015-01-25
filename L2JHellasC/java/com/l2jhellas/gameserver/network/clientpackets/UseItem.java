@@ -106,12 +106,6 @@ public final class UseItem extends L2GameClientPacket
 			return;
 		}
 		
-		if (activeChar.getPrivateStoreType() != 0)
-		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
-			return;
-		}
-		
 		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
 		if (item == null)
 			return;

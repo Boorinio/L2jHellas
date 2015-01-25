@@ -153,7 +153,7 @@ public final class RequestSellItem extends L2GameClientPacket
 			}
 
 			L2ItemInstance item = player.checkItemManipulation(objectId, count, "sell");
-			if (item == null || (!item.getItem().isSellable()))
+			if (item == null || (!item.getItem().isSellable()) || item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
 				continue;
 
 			totalPrice += item.getReferencePrice() * count / 2;

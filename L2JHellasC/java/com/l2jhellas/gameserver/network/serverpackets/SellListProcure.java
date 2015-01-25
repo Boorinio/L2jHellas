@@ -43,7 +43,7 @@ public class SellListProcure extends L2GameServerPacket
 		for (CropProcure c : _procureList)
 		{
 			L2ItemInstance item = _activeChar.getInventory().getItemByItemId(c.getId());
-			if (item != null && c.getAmount() > 0)
+			if (item != null  && c.getAmount() > 0 && item.getLocation() == L2ItemInstance.ItemLocation.INVENTORY)
 			{
 				_sellList.put(item, c.getAmount());
 			}

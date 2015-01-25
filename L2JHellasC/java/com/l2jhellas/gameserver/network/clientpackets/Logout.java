@@ -125,6 +125,7 @@ public final class Logout extends L2GameClientPacket
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
 		
+		L2World.removeFromAllPlayers(player);
 		player.deleteMe();
 		notifyFriends(player);
 
