@@ -86,7 +86,7 @@ public class AdminRes implements IAdminCommandHandler
 		if (resParam != null)
 		{
 			// Check if a player name was specified as a param.
-			L2PcInstance plyr = L2World.getPlayer(resParam);
+			L2PcInstance plyr = L2World.getInstance().getPlayer(resParam);
 
 			if (plyr != null)
 			{

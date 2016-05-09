@@ -14,10 +14,9 @@
  */
 package handlers.skillhandlers;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -28,6 +27,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
@@ -55,14 +55,14 @@ public class SummonFriend implements ISkillHandler
 		}
 
 		// Checks summoner not in arenas, siege zones, jail
-		if (activePlayer.isInsideZone(L2Character.ZONE_PVP))
+		if (activePlayer.isInsideZone(ZoneId.PVP))
 		{
 			activePlayer.sendPacket(SystemMessageId.YOU_CANNOT_SUMMON_IN_COMBAT);
 			return;
 		}
 
 		// check for summoner not in raid areas
-		FastList<L2Object> objects = L2World.getVisibleObjects(activeChar, 5000);
+		List<L2Object> objects = L2World.getVisibleObjects(activeChar, 5000);
 
 		if (objects != null)
 		{
@@ -158,7 +158,7 @@ public class SummonFriend implements ISkillHandler
 
 					// Check for the target's jail status, arenas and siege
 					// zones
-					if (targetChar.isInsideZone(L2Character.ZONE_PVP))
+					if (targetChar.isInsideZone(ZoneId.PVP))
 					{
 						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_TARGET_IS_IN_AN_AREA_WHICH_BLOCKS_SUMMONING));
 						continue;

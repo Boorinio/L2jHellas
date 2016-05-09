@@ -323,8 +323,6 @@ public class Baium extends AbstractNpcAI
 		}
 		if (npcId == STONE_BAIUM && GrandBossManager.getBossStatus(LIVE_BAIUM) == ASLEEP)
 		{
-			if (_baiumLair.isPlayerAllowed(player))
-			{
 				GrandBossManager.setBossStatus(LIVE_BAIUM, AWAKE);
 				
 				final L2Npc baium = addSpawn(LIVE_BAIUM, npc, false, 0, false);
@@ -344,9 +342,6 @@ public class Baium extends AbstractNpcAI
 				
 				// Delete the statue.
 				npc.deleteMe();
-			}
-			else
-				htmltext = "Conditions are not right to wake up Baium";
 		}
 		return htmltext;
 	}
@@ -444,6 +439,9 @@ public class Baium extends AbstractNpcAI
 					continue;
 				
 				if (((L2PcInstance) obj).isGM() && ((L2PcInstance) obj).getAppearance().getInvisible())
+					continue;
+				
+				if (npcId == ARCHANGEL)
 					continue;
 				
 				if (npcId == ARCHANGEL && ((L2PcInstance) obj).getActiveWeaponInstance() == null)

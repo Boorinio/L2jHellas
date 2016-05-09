@@ -14,7 +14,8 @@
  */
 package ai.group;
 
-import javolution.util.FastMap;
+import java.util.HashMap;
+
 import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
@@ -29,7 +30,7 @@ public class Splendor extends AbstractNpcAI
 {
 	private static boolean AlwaysSpawn;
 
-	private static FastMap<Integer, int[]> SplendorId = new FastMap<Integer, int[]>();
+	private static HashMap<Integer, int[]> SplendorId = new HashMap<Integer, int[]>();
 	public Splendor(int questId, String name, String descr)
 	{
 		super(name, descr);

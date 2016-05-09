@@ -16,11 +16,11 @@ package handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.Location;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 public class AdminZone implements IAdminCommandHandler
 {
@@ -40,7 +40,7 @@ public class AdminZone implements IAdminCommandHandler
 
 		if (actualCommand.equalsIgnoreCase("admin_zone_check"))
 		{
-			if (activeChar.isInsideZone(L2Character.ZONE_PVP))
+			if (activeChar.isInsideZone(ZoneId.PVP))
 			{
 				activeChar.sendMessage("This is a PvP zone.");
 			}
@@ -49,7 +49,7 @@ public class AdminZone implements IAdminCommandHandler
 				activeChar.sendMessage("This is NOT a PvP zone.");
 			}
 
-			if (activeChar.isInsideZone(L2Character.ZONE_NOLANDING))
+			if (activeChar.isInsideZone(ZoneId.NO_LANDING))
 			{
 				activeChar.sendMessage("This is a no landing zone.");
 			}
@@ -58,9 +58,9 @@ public class AdminZone implements IAdminCommandHandler
 				activeChar.sendMessage("This is NOT a no landing zone.");
 			}
 
-			activeChar.sendMessage("MapRegion: x:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getX()) + " y:" + MapRegionTable.getInstance().getMapRegionX(activeChar.getY()));
+			activeChar.sendMessage("MapRegion: x:" + MapRegionTable.getMapRegionX(activeChar.getX()) + " y:" + MapRegionTable.getMapRegionX(activeChar.getY()));
 
-			activeChar.sendMessage("Closest Town: " + MapRegionTable.getInstance().getClosestTownName(activeChar));
+			activeChar.sendMessage("Closest Town: " + MapRegionTable.getInstance().getClosestTownName(activeChar.getX(),activeChar.getY()));
 
 			Location loc;
 

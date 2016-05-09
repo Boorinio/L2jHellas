@@ -92,7 +92,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			try
 			{
 				String val = command.substring(21);
-				L2PcInstance target = L2World.getPlayer(val);
+				L2PcInstance target = L2World.getInstance().getPlayer(val);
 				if (target != null)
 					showCharacterInfo(activeChar, target);
 				else
@@ -343,7 +343,7 @@ public class AdminEditChar implements IAdminCommandHandler
 					oldName = player.getName();
 					L2Clan temp= player.getClan();
 					boolean wasLeader=false;
-					L2World.removeFromAllPlayers(player);
+					L2World.getInstance().removeFromAllPlayers(player);
 					if (CharNameTable.getInstance().getIdByName(val) > 0)
 					{
 						activeChar.sendMessage("Warning, player name " + val + " already exists.");
@@ -358,7 +358,7 @@ public class AdminEditChar implements IAdminCommandHandler
 					}
 					player.setName(val);
 					player.store();
-					L2World.addToAllPlayers(player);
+					L2World.getInstance().addToAllPlayers(player);
 					
 					player.sendMessage("Your name has been changed by a GM.");
 					player.broadcastUserInfo();
@@ -666,7 +666,7 @@ public class AdminEditChar implements IAdminCommandHandler
 
 	private void listCharacters(L2PcInstance activeChar, int page)
 	{
-		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
+		Collection<L2PcInstance> allPlayers = L2World.getInstance().getAllPlayers().values();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 
 		int MaxCharactersPerPage = 20;
@@ -881,7 +881,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	{
 		int CharactersFound = 0;
 		String name;
-		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
+		Collection<L2PcInstance> allPlayers = L2World.getInstance().getAllPlayers().values();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 		final NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/charfind.htm");
@@ -932,7 +932,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		final NpcHtmlMessage adminReply = new NpcHtmlMessage(CharactersFound);
 		adminReply.setFile("data/html/admin/ipfind.htm");
 		
-		Collection<L2PcInstance> allPlayers = L2World.getAllPlayers();
+		Collection<L2PcInstance> allPlayers = L2World.getInstance().getAllPlayers().values();
 		L2PcInstance[] players = allPlayers.toArray(new L2PcInstance[allPlayers.size()]);
 		for (int i = 0; i < players.length; i++)
 		{
@@ -983,7 +983,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		{
 			String account = null;
 			Map<Integer, String> chars;
-			L2PcInstance player = L2World.getPlayer(characterName);
+			L2PcInstance player = L2World.getInstance().getPlayer(characterName);
 			if (player == null)
 			{
 				throw new IllegalArgumentException("Player doesn't exist");
@@ -1016,7 +1016,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		L2GameClient client;
 		final Map<String, Integer> dualboxIPs = new HashMap<>();
 		
-		for (L2PcInstance player : L2World.getPlayersSortedBy(Comparator.comparingLong(L2PcInstance::getUptime)))
+		for (L2PcInstance player : L2World.getInstance().getPlayersSortedBy(Comparator.comparingLong(L2PcInstance::getUptime)))
 		{
 			client = player.getClient();
 			if ((client == null) || client.isDetached())

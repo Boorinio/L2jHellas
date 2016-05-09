@@ -14,8 +14,8 @@
  */
 package ai;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -92,7 +92,7 @@ public abstract class AbstractNpcAI extends Quest
 	 */
 	public static L2PcInstance getRandomPlayer(L2Npc npc)
 	{
-		List<L2PcInstance> result = new ArrayList<L2PcInstance>();
+		List<L2PcInstance> result = new CopyOnWriteArrayList<L2PcInstance>();
 		
 		for (L2PcInstance player : npc.getKnownList().getKnownPlayers().values())
 		{

@@ -58,7 +58,7 @@ public class ChatTell implements IChatHandler
 		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 		L2PcInstance receiver = null;
 
-		receiver = L2World.getPlayer(target);
+		receiver = L2World.getInstance().getPlayer(target);
 
 		if (receiver != null && !BlockList.isBlocked(receiver, activeChar))
 		{

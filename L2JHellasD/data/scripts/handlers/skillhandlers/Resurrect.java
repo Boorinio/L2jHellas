@@ -14,9 +14,8 @@
  */
 package handlers.skillhandlers;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -46,7 +45,7 @@ public class Resurrect implements ISkillHandler
 
 		L2Character target = null;
 		L2PcInstance targetPlayer;
-		List<L2Character> targetToRes = new FastList<L2Character>();
+		List<L2Character> targetToRes = new ArrayList<L2Character>();
 
 		for (int index = 0; index < targets.length; index++)
 		{

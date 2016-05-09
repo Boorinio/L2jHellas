@@ -14,9 +14,9 @@
  */
 package ai.individual;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
@@ -47,7 +47,7 @@ public class QueenAnt extends AbstractNpcAI
 	private static final byte DEAD = 1;		// Queen Ant has been killed.
 
 	private static L2BossZone _Zone;
-	private static List<L2Attackable> _Minions = new FastList<L2Attackable>();
+	private static List<L2Attackable> _Minions = new ArrayList<L2Attackable>();
 
 	public QueenAnt(String name, String descr)
 	{
@@ -265,6 +265,6 @@ public class QueenAnt extends AbstractNpcAI
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new QueenAnt("queen_ant", "ai");
+		new QueenAnt("Queen Ant", "ai/individual");
 	}
 }

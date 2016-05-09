@@ -934,6 +934,6 @@ public class Zaken extends AbstractNpcAI
     public static void main(String[] args)
     {
     	// now call the constructor (starts up the ai)
-    	new Zaken("zaken","ai");
+    	new Zaken(Zaken.class.getSimpleName(), "ai/individual");
     }
 }

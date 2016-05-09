@@ -89,7 +89,7 @@ public class AdminHeal implements IAdminCommandHandler
 		L2Object obj = activeChar.getTarget();
 		if (player != null)
 		{
-			L2PcInstance plyr = L2World.getPlayer(player);
+			L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 
 			if (plyr != null)
 			{

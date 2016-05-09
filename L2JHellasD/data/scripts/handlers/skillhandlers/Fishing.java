@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
@@ -172,9 +173,9 @@ public class Fishing implements ISkillHandler
 			iu.addModifiedItem(lure2);
 			player.sendPacket(iu);
 		}
-
+         Location loc = new Location(player.getX(),player.getY(),player.getZ());
 		// If everything else checks out, actually cast the hook and start fishing... :P
-		player.startFishing(x, y, z);
+		player.startFishing(loc);
 
 	}
 

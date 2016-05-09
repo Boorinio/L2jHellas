@@ -60,10 +60,10 @@ public class AdminPathNode implements IAdminCommandHandler
 			}
 			if (activeChar.getTarget() != null)
 			{
-				int gx = (activeChar.getX() - L2World.MAP_MIN_X) >> 4;
-				int gy = (activeChar.getY() - L2World.MAP_MIN_Y) >> 4;
-				int gtx = (activeChar.getTarget().getX() - L2World.MAP_MIN_X) >> 4;
-				int gty = (activeChar.getTarget().getY() - L2World.MAP_MIN_Y) >> 4;
+				int gx = (activeChar.getX() - L2World.WORLD_X_MIN) >> 4;
+				int gy = (activeChar.getY() - L2World.WORLD_Y_MIN) >> 4;
+				int gtx = (activeChar.getTarget().getX() - L2World.WORLD_X_MIN) >> 4;
+				int gty = (activeChar.getTarget().getY() - L2World.WORLD_Y_MIN) >> 4;
 				PathNode[] path = GeoPathFinding.getInstance().findPath(gx, gy, (short) activeChar.getZ(), gtx, gty, (short) activeChar.getTarget().getZ());
 				if (path == null)
 				{

@@ -46,6 +46,9 @@ public class DisMount implements IUserCommandHandler
 		{
 			if (activeChar.setMountType(0))
 			{
+				if(activeChar.getActiveTradeList() !=null)
+					activeChar.cancelActiveTrade();
+				
 				if (activeChar.isFlying())
 					activeChar.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
 				Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);

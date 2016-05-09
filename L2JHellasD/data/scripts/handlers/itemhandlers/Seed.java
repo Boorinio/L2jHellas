@@ -14,7 +14,7 @@
  */
 package handlers.itemhandlers;
 
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -139,8 +139,7 @@ public class Seed implements IItemHandler
 		}
 
 		_seedId = item.getItemId();
-
-		if (areaValid(MapRegionTable.getInstance().getAreaCastle(_activeChar)))
+		if (areaValid(_seedId, MapRegionTable.getAreaCastle(playable.getX(), playable.getY())))
 		{
 			_target.setSeeded(_seedId, _activeChar);
 			L2Skill skill = SkillTable.getInstance().getInfo(2097, 3); // sowing skill
@@ -152,11 +151,10 @@ public class Seed implements IItemHandler
 		}
 	}
 
-	private boolean areaValid(int castleId)
+	private static boolean areaValid(int seedId, int castleId)
 	{
-		return (L2Manor.getInstance().getCastleIdForSeed(_seedId) == castleId);
+		return L2Manor.getInstance().getCastleIdForSeed(seedId) == castleId;
 	}
-
 	@Override
 	public int[] getItemIds()
 	{

@@ -123,7 +123,7 @@ public class SummonItems implements IItemHandler
 					spawn.setLocx(activeChar.getX());
 					spawn.setLocy(activeChar.getY());
 					spawn.setLocz(activeChar.getZ());
-					L2World.storeObject(spawn.spawnOne());
+					L2World.getInstance().storeObject(spawn.spawnOne());
 					activeChar.destroyItem("Summon", item.getObjectId(), 1, null, false);
 					activeChar.sendMessage("Created " + npcTemplate.name + " at x: " + spawn.getLocx() + " y: " + spawn.getLocy() + " z: " + spawn.getLocz());
 				}
@@ -158,7 +158,7 @@ public class SummonItems implements IItemHandler
 
 				activeChar.sendPacket(new MagicSkillUse(activeChar, 2046, 1, 1000, 600000));
 				activeChar.sendPacket(SystemMessageId.SUMMON_A_PET);
-				L2World.storeObject(petSummon);
+				L2World.getInstance().storeObject(petSummon);
 				petSummon.spawnMe(activeChar.getX() + 50, activeChar.getY() + 100, activeChar.getZ());
 				petSummon.startFeed(false);
 				item.setEnchantLevel(petSummon.getLevel());

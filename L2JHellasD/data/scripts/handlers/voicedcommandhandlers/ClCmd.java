@@ -37,7 +37,7 @@ public class ClCmd implements IVoicedCommandHandler
 				return false;
 
 			L2PcInstance leader = null;
-			leader = (L2PcInstance) L2World.findObject(activeChar.getClan().getLeaderId());
+			leader = (L2PcInstance) L2World.getInstance().findObject(activeChar.getClan().getLeaderId());
 
 			if (leader == null)
 			{

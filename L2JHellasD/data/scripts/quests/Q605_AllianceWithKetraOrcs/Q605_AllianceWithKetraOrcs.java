@@ -12,9 +12,8 @@
  */
 package quests.Q605_AllianceWithKetraOrcs;
 
+import java.util.HashMap;
 import java.util.Set;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -30,7 +29,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 	private static final String qn = "Q605_AllianceWithKetraOrcs";
 	private static final String qn2 = "Q606_WarWithVarkaSilenos";
 	
-	private static final FastMap<Integer, Integer> Chance = new FastMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> Chance = new HashMap<Integer, Integer>();
 	{
 		Chance.put(21350, 500000);
 		Chance.put(21351, 500000);
@@ -55,7 +54,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 		Chance.put(21375, 626000);
 	}
 	
-	private static final FastMap<Integer, Integer> ChanceMane = new FastMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> ChanceMane = new HashMap<Integer, Integer>();
 	{
 		ChanceMane.put(21350, 500000);
 		ChanceMane.put(21353, 510000);

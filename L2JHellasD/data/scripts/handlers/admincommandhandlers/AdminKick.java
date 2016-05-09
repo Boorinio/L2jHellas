@@ -44,7 +44,7 @@ public class AdminKick implements IAdminCommandHandler
 			{
 				st.nextToken();
 				String player = st.nextToken();
-				L2PcInstance plyr = L2World.getPlayer(player);
+				L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 				if (plyr != null)
 				{
 					plyr.sendPacket(new LeaveWorld());
@@ -57,7 +57,7 @@ public class AdminKick implements IAdminCommandHandler
 		if (command.startsWith("admin_kick_non_gm"))
 		{
 			int counter = 0;
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 			{
 				if (!player.isGM())
 				{

@@ -21,8 +21,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2CharPosition;
@@ -115,7 +115,7 @@ public class AdminTeleport implements IAdminCommandHandler
 					return false;
 				}
 				String targetName = param[1];
-				L2PcInstance player = L2World.getPlayer(targetName);
+				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
 				if (player != null)
 				{
 					Location loc = MapRegionTable.getInstance().getTeleToLocation(player, MapRegionTable.TeleportWhereType.Town);
@@ -207,7 +207,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(17);
-				L2PcInstance player = L2World.getPlayer(targetName);
+				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
 				teleportToCharacter(activeChar, player);
 			}
 			catch (StringIndexOutOfBoundsException e)
@@ -219,7 +219,7 @@ public class AdminTeleport implements IAdminCommandHandler
 			try
 			{
 				String targetName = command.substring(13);
-				L2PcInstance player = L2World.getPlayer(targetName);
+				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
 				teleportCharacter(player, activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			}
 			catch (StringIndexOutOfBoundsException e)

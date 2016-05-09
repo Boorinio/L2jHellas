@@ -14,10 +14,10 @@
  */
 package ai.individual;
 
+import java.util.ArrayList;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import javolution.util.FastList;
 import ai.AbstractNpcAI;
 
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -43,7 +43,7 @@ public class IceFairySirra extends AbstractNpcAI
 	private static final int SILVER_HEMOCYTE = 8057;
 	private static L2BossZone _freyasZone;
 	private static L2PcInstance _player = null;
-	protected FastList<L2Npc> _allMobs = new FastList<L2Npc>();
+	protected ArrayList<L2Npc> _allMobs = new ArrayList<L2Npc>();
 	protected Future<?> _onDeadEventTask = null;
 
 	public IceFairySirra(String name, String descr)
@@ -66,7 +66,7 @@ public class IceFairySirra extends AbstractNpcAI
 			_log.warning("IceFairySirraManager: Failed to load zone");
 			return;
 		}
-		_freyasZone.setZoneEnabled(false);
+
 		L2Npc steward = findTemplate(STEWARD);
 		if (steward != null)
 			steward.setBusy(false);
@@ -338,7 +338,6 @@ public class IceFairySirra extends AbstractNpcAI
 				cleanUp();
 				return super.onAdvEvent(event, npc, player);
 			}
-			_freyasZone.setZoneEnabled(true);
 			closeGates();
 			doSpawns();
 			startQuestTimer("Party_Port", 2000, null, player,false);
@@ -374,6 +373,6 @@ public class IceFairySirra extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new IceFairySirra("IceFairySirra", "ai");
+		new IceFairySirra(IceFairySirra.class.getSimpleName(), "ai/individual");
 	}
 }

@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
-import com.l2jhellas.gameserver.datatables.sql.BufferSkillsTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
@@ -117,18 +116,16 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "respawn_npcs":
 				{
-					for (L2PcInstance player : L2World.getAllPlayers())
+					for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 					{
+						if(player==null)
+							continue;
 						player.sendPacket(SystemMessageId.NPC_SERVER_NOT_OPERATING);
 					}
 					RaidBossSpawnManager.getInstance().cleanUp();
 					DayNightSpawnManager.getInstance().cleanUp();
-					L2World.deleteVisibleNpcSpawns();
+					L2World.getInstance().deleteVisibleNpcSpawns();
 					AdminData.getInstance().broadcastMessageToGMs("NPC Unspawn completed!");
-					// make sure all spawns are deleted
-					RaidBossSpawnManager.getInstance().cleanUp();
-					DayNightSpawnManager.getInstance().cleanUp();
-					L2World.deleteVisibleNpcSpawns();
 					// now respawn all
 					NpcData.getInstance().reloadAllNpc();
 					SpawnTable.getInstance().reloadAll();
@@ -273,7 +270,6 @@ public class AdminReload implements IAdminCommandHandler
 				case "skill":
 				{
 					SkillTable.reload();
-					BufferSkillsTable.getInstance().reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All skills has been reloaded.");
 					break;

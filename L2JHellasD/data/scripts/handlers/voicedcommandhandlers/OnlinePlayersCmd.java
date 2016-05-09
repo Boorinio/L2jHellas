@@ -18,30 +18,29 @@ import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * @author Ombladon1991 Equal
- *         this class...
- *         shows the amount of online players to anyone who calls it.
- */
+
 public class OnlinePlayersCmd implements IVoicedCommandHandler
 {
 	private static final String[] VOICED_COMMANDS =
 	{
 		"online"
 	};
-
+	
+		
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		if (command.startsWith(VOICED_COMMANDS[0]))
-			showPlayers(activeChar, target);
+		{
+			showPlayers(activeChar);
+		}
 		return true;
 	}
 
-	public void showPlayers(L2PcInstance player, String target)
+	public void showPlayers(L2PcInstance player)
 	{
 		player.sendMessage("====================\n");
-		player.sendMessage("There are " + L2World.getAllPlayers().size() + " players online\n");
+		player.sendMessage("There are " + L2World.getInstance().getAllPlayers().size() + " players online\n");
 		player.sendMessage("====================");
 
 	}

@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
@@ -232,7 +233,7 @@ public class Valakas extends AbstractNpcAI
 				npc.teleToLocation(212852, -114842, -1632, false);
 				
 				// Sound + socialAction.
-				for (L2PcInstance plyr : _valakasLair.getPlayersInside())
+				for (L2Character plyr : _valakasLair.getCharactersInside())
 				{
 					plyr.sendPacket(new PlaySound(1, "B03_A", 0, 0, 0, 0, 0));
 					plyr.sendPacket(new SocialAction(npc.getObjectId(), 3));

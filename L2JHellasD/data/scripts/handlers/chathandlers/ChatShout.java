@@ -17,7 +17,7 @@ package handlers.chathandlers;
 import java.util.Collection;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
@@ -39,13 +39,13 @@ public class ChatShout implements IChatHandler
 	{
 		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 
-		Collection<L2PcInstance> pls = L2World.getAllPlayers();
+		Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
 
 		if (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("on") || (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("gm") && activeChar.isGM()))
 		{
-			int region = MapRegionTable.getInstance().getMapRegion(activeChar.getX(), activeChar.getY());
+			int region = MapRegionTable.getMapRegion(activeChar.getX(), activeChar.getY());
 			for (L2PcInstance player : pls)
-				if (region == MapRegionTable.getInstance().getMapRegion(player.getX(), player.getY()) && !BlockList.isBlocked(player, activeChar) && player.getInstanceId() == activeChar.getInstanceId())
+				if (region == MapRegionTable.getMapRegion(player.getX(), player.getY()) && !BlockList.isBlocked(player, activeChar) && player.getInstanceId() == activeChar.getInstanceId())
 					player.sendPacket(cs);
 		}
 		else if (Config.DEFAULT_GLOBAL_CHAT.equalsIgnoreCase("global"))

@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -725,7 +724,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		if (content == null)
 			return null;
 		
-		List<L2TradeList> tradeLists = new FastList<L2TradeList>();
+		List<L2TradeList> tradeLists = new ArrayList<L2TradeList>();
 
 		String[] lines = content.split("\n");
 		int pos = 0;

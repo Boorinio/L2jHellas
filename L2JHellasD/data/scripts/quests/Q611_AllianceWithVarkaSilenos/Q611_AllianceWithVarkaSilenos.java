@@ -12,7 +12,7 @@
  */
 package quests.Q611_AllianceWithVarkaSilenos;
 
-import javolution.util.FastMap;
+import java.util.HashMap;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -28,7 +28,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 	private static final String qn = "Q611_AllianceWithVarkaSilenos";
 	private static final String qn2 = "Q612_WarWithKetraOrcs";
 	
-	private static final FastMap<Integer, Integer> Chance = new FastMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> Chance = new HashMap<Integer, Integer>();
 	{
 		Chance.put(21324, 508000);
 		Chance.put(21325, 500000);
@@ -53,7 +53,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 		Chance.put(21349, 627000);
 	}
 	
-	private static final FastMap<Integer, Integer> ChanceMolar = new FastMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> ChanceMolar = new HashMap<Integer, Integer>();
 	{
 		ChanceMolar.put(21324, 500000);
 		ChanceMolar.put(21327, 510000);

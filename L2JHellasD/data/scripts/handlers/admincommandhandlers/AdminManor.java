@@ -14,9 +14,8 @@
  */
 package handlers.admincommandhandlers;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -94,10 +93,10 @@ public class AdminManor implements IAdminCommandHandler
 			if (castleId > 0)
 			{
 				Castle castle = CastleManager.getInstance().getCastleById(castleId);
-				castle.setCropProcure(new FastList<CropProcure>(), CastleManorManager.PERIOD_CURRENT);
-				castle.setCropProcure(new FastList<CropProcure>(), CastleManorManager.PERIOD_NEXT);
-				castle.setSeedProduction(new FastList<SeedProduction>(), CastleManorManager.PERIOD_CURRENT);
-				castle.setSeedProduction(new FastList<SeedProduction>(), CastleManorManager.PERIOD_NEXT);
+				castle.setCropProcure(new ArrayList<CropProcure>(), CastleManorManager.PERIOD_CURRENT);
+				castle.setCropProcure(new ArrayList<CropProcure>(), CastleManorManager.PERIOD_NEXT);
+				castle.setSeedProduction(new ArrayList<SeedProduction>(), CastleManorManager.PERIOD_CURRENT);
+				castle.setSeedProduction(new ArrayList<SeedProduction>(), CastleManorManager.PERIOD_NEXT);
 				if (Config.ALT_MANOR_SAVE_ALL_ACTIONS)
 				{
 					castle.saveCropData();
@@ -109,10 +108,10 @@ public class AdminManor implements IAdminCommandHandler
 			{
 				for (Castle castle : CastleManager.getInstance().getCastles())
 				{
-					castle.setCropProcure(new FastList<CropProcure>(), CastleManorManager.PERIOD_CURRENT);
-					castle.setCropProcure(new FastList<CropProcure>(), CastleManorManager.PERIOD_NEXT);
-					castle.setSeedProduction(new FastList<SeedProduction>(), CastleManorManager.PERIOD_CURRENT);
-					castle.setSeedProduction(new FastList<SeedProduction>(), CastleManorManager.PERIOD_NEXT);
+					castle.setCropProcure(new ArrayList<CropProcure>(), CastleManorManager.PERIOD_CURRENT);
+					castle.setCropProcure(new ArrayList<CropProcure>(), CastleManorManager.PERIOD_NEXT);
+					castle.setSeedProduction(new ArrayList<SeedProduction>(), CastleManorManager.PERIOD_CURRENT);
+					castle.setSeedProduction(new ArrayList<SeedProduction>(), CastleManorManager.PERIOD_NEXT);
 					if (Config.ALT_MANOR_SAVE_ALL_ACTIONS)
 					{
 						castle.saveCropData();

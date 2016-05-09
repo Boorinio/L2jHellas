@@ -182,7 +182,6 @@ import handlers.usercommandhandlers.PartyInfo;
 import handlers.usercommandhandlers.PvpInfo;
 import handlers.usercommandhandlers.SiegeStatus;
 import handlers.usercommandhandlers.Time;
-import handlers.voicedcommandhandlers.AwayCmd;
 import handlers.voicedcommandhandlers.BankingCmd;
 import handlers.voicedcommandhandlers.CastleCmd;
 import handlers.voicedcommandhandlers.ClCmd;
@@ -191,7 +190,6 @@ import handlers.voicedcommandhandlers.OnlinePlayersCmd;
 import handlers.voicedcommandhandlers.PMonoffCmd;
 import handlers.voicedcommandhandlers.PremiumCmd;
 import handlers.voicedcommandhandlers.PvpInfoCmd;
-import handlers.voicedcommandhandlers.QuizCmd;
 import handlers.voicedcommandhandlers.ServerRestartVoteCmd;
 import handlers.voicedcommandhandlers.SetCmd;
 import handlers.voicedcommandhandlers.StatCmd;
@@ -430,7 +428,6 @@ public class MasterHandler
 		},
 		{
 			// Voiced Command Handlers
-			(Config.ALLOW_AWAY_STATUS ? AwayCmd.class : null),
 			(Config.BANKING_SYSTEM_ENABLED ? BankingCmd.class : null),
 			CastleCmd.class,
 			(Config.ALLOW_CLAN_LEADER_COMMAND ? ClCmd.class : null),
@@ -439,7 +436,6 @@ public class MasterHandler
 			(Config.ALLOW_PLAYERS_REFUSAL ? PMonoffCmd.class : null),
 			PremiumCmd.class,
 			(Config.RANK_PVP_SYSTEM_ENABLED && Config.PVP_INFO_COMMAND_ENABLED && Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_INFO_USER_COMMAND_ENABLED ? PvpInfoCmd.class : null),
-			(Config.ENABLED_QUIZ_EVENT ? QuizCmd.class : null),
 			(Config.ALLOW_SERVER_RESTART_COMMAND ? ServerRestartVoteCmd.class : null),
 			SetCmd.class,
 			(Config.ALLOW_STAT_COMMAND ? StatCmd.class : null),

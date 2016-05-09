@@ -391,7 +391,7 @@ public class AdminEffects implements IAdminCommandHandler
 					target = st.nextToken();
 					if (target != null)
 					{
-						L2PcInstance player = L2World.getPlayer(target);
+						L2PcInstance player = L2World.getInstance().getPlayer(target);
 						if (player != null)
 						{
 							if (performSocial(social, player, activeChar))
@@ -453,7 +453,7 @@ public class AdminEffects implements IAdminCommandHandler
 					target = st.nextToken();
 					if (target != null)
 					{
-						L2PcInstance player = L2World.getPlayer(target);
+						L2PcInstance player = L2World.getInstance().getPlayer(target);
 						if (player != null)
 						{
 							if (performAbnormal(abnormal, player))
@@ -624,7 +624,7 @@ public class AdminEffects implements IAdminCommandHandler
 		else
 			activeChar.sendMessage("Usage: //atmosphere <signsky dawn|dusk>|<sky day|night|red>");
 		if (packet != null)
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(packet);
 	}
 

@@ -14,9 +14,9 @@
  */
 package ai.group;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import javolution.util.FastMap;
 import ai.AbstractNpcAI;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -29,8 +29,8 @@ import com.l2jhellas.util.Rnd;
 
 public class RetreatOnAttack extends AbstractNpcAI
 {
-	private static Map<Integer, int[]> mobs = new FastMap<Integer, int[]>();
-	private static Map<Integer, String[]> text = new FastMap<Integer, String[]>();
+	private static Map<Integer, int[]> mobs = new HashMap<Integer, int[]>();
+	private static Map<Integer, String[]> text = new HashMap<Integer, String[]>();
 
 	static
 	{

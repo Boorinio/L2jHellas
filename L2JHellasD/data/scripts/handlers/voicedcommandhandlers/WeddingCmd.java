@@ -81,7 +81,7 @@ public class WeddingCmd implements IVoicedCommandHandler
 		else
 			activeChar.sendMessage("You have broken up as a couple.");
 		L2PcInstance partner;
-		partner = (L2PcInstance) L2World.findObject(_partnerId);
+		partner = (L2PcInstance) L2World.getInstance().findObject(_partnerId);
 		
 		if (partner != null)
 		{
@@ -259,7 +259,7 @@ public class WeddingCmd implements IVoicedCommandHandler
 		}
 		
 		L2PcInstance partner;
-		partner = (L2PcInstance) L2World.findObject(activeChar.getPartnerId());
+		partner = (L2PcInstance) L2World.getInstance().findObject(activeChar.getPartnerId());
 		if (partner == null)
 		{
 			activeChar.sendMessage("Your partner is not online.");

@@ -180,7 +180,7 @@ public class SagasSuperClass extends Quest
 		{
 			String np = _SpawnList.get(npc.getName()).toString();
 			
-			final L2PcInstance player = L2World.getPlayer(np);
+			final L2PcInstance player = L2World.getInstance().getPlayer(np);
 			if (player != null)
 				return player.getQuestState(qn);
 		}
@@ -477,7 +477,7 @@ public class SagasSuperClass extends Quest
 			else if (event.equalsIgnoreCase("Mob_3 Timer 1"))
 			{
 				// Search the NPC.
-				L2Npc Mob_2 = (L2Npc) L2World.findObject(st.getInt("Mob_2"));
+				L2Npc Mob_2 = (L2Npc) L2World.getInstance().findObject(st.getInt("Mob_2"));
 				if (Mob_2 == null)
 					return null;
 				
@@ -819,7 +819,7 @@ public class SagasSuperClass extends Quest
 		{
 			String np = _SpawnList.get(npc.getName()).toString();
 			
-			L2PcInstance quest_player = L2World.getPlayer(np);
+			L2PcInstance quest_player = L2World.getInstance().getPlayer(np);
 			if (quest_player == null)
 				return null;
 			

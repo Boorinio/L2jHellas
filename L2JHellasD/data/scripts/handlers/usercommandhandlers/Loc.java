@@ -14,7 +14,7 @@
  */
 package handlers.usercommandhandlers;
 
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -30,9 +30,8 @@ public class Loc implements IUserCommandHandler
 	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
-		int _nearestTown = MapRegionTable.getInstance().getClosestTownNumber(activeChar);
 		SystemMessageId msg;
-		switch (_nearestTown)
+		switch (MapRegionTable.getMapRegion(activeChar.getX(), activeChar.getY()))
 		{
 			case 0:
 				msg = SystemMessageId.LOC_TI_S1_S2_S3;

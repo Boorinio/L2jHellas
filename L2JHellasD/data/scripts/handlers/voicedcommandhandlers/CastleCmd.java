@@ -59,8 +59,13 @@ public class CastleCmd implements IVoicedCommandHandler
 		{
 			if (activeChar.getClan().hasCastle() > 0 && activeChar.isClanLeader())
 			{
+				
 				if (!activeChar.disarmWeapons())
 					return false;
+				
+				if(activeChar.getActiveTradeList() !=null)
+					activeChar.cancelActiveTrade();
+				
 				Ride mount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, 12621);
 				activeChar.sendPacket(mount);
 				activeChar.broadcastPacket(mount);

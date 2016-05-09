@@ -14,8 +14,8 @@
  */
 package ai.individual;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import ai.AbstractNpcAI;
 
@@ -43,7 +43,7 @@ public class Core extends AbstractNpcAI
 	private static final byte ALIVE = 0; // Core is spawned.
 	private static final byte DEAD = 1; // Core has been killed.
 	
-	List<L2Attackable> _minions = new ArrayList<L2Attackable>();
+	List<L2Attackable> _minions = new CopyOnWriteArrayList<L2Attackable>();
 	
 	public Core(String name, String descr)
 	{
