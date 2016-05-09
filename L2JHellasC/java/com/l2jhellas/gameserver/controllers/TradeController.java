@@ -21,14 +21,13 @@ import java.io.LineNumberReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
@@ -89,8 +88,8 @@ public class TradeController
 
 	private TradeController()
 	{
-		_lists = new FastMap<Integer, L2TradeList>();
-		_listsTaskItem = new FastMap<Integer, L2TradeList>();
+		_lists = new HashMap<Integer, L2TradeList>();
+		_listsTaskItem = new HashMap<Integer, L2TradeList>();
 		File buylistData = new File(PackRoot.DATAPACK_ROOT, "data/buylists.csv");
 		if (buylistData.exists())
 		{
@@ -301,7 +300,7 @@ public class TradeController
 
 	public List<L2TradeList> getBuyListByNpcId(int npcId)
 	{
-		List<L2TradeList> lists = new FastList<L2TradeList>();
+		List<L2TradeList> lists = new ArrayList<L2TradeList>();
 
 		for (L2TradeList list : _lists.values())
 		{

@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.HashMap;
 import java.util.concurrent.Future;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -38,7 +37,7 @@ public final class L2BabyPetInstance extends L2PetInstance
 		super(objectId, template, owner, control);
 
 		// look through the skills that this template has and find the weak and strong heal.
-		FastMap<Integer, L2Skill> skills = (FastMap<Integer, L2Skill>) getTemplate().getSkills();
+		HashMap<Integer, L2Skill> skills = (HashMap<Integer, L2Skill>) getTemplate().getSkills();
 		L2Skill skill1 = null;
 		L2Skill skill2 = null;
 

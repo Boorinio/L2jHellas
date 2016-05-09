@@ -22,13 +22,14 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.BoatKnownList;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
@@ -229,7 +230,7 @@ public abstract class L2Vehicle extends L2Character
 		player.setInVehiclePosition(null);
 		removePassenger(player);
 		
-		player.setInsideZone(2, false);
+		player.setInsideZone(ZoneId.PEACE, false);
 		player.sendPacket(SystemMessageId.EXIT_PEACEFUL_ZONE);
 	}
 	
@@ -244,7 +245,7 @@ public abstract class L2Vehicle extends L2Character
 		
 		_passengers.add(player);
 		
-		player.setInsideZone(2, true);
+		player.setInsideZone(ZoneId.PEACE, true);
 		player.sendPacket(SystemMessageId.ENTER_PEACEFUL_ZONE);
 		
 		return true;
@@ -252,6 +253,7 @@ public abstract class L2Vehicle extends L2Character
 	
 	public void removePassenger(L2PcInstance player)
 	{
+		
 		try
 		{
 			_passengers.remove(player);

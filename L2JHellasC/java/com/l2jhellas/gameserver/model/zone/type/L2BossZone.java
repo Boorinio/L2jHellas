@@ -3,373 +3,289 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.model.zone.type;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.l2jhellas.gameserver.GameServer;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.engines.ChaosEvent;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 /**
  * @author DaRkRaGe
  */
 public class L2BossZone extends L2ZoneType
 {
-	private String _zoneName;
+	// Track the times that players got disconnected. Players are allowed to log back into the zone as long as their log-out was within _timeInvade time...
+	private final Map<Integer, Long> _playerAllowEntry = new ConcurrentHashMap<>();
+	
+	// Track players admitted to the zone who should be allowed back in after reboot/server downtime, within 30min of server restart
+	private final List<Integer> _playerAllowed = new CopyOnWriteArrayList<>();
+	
 	private int _timeInvade;
-	private boolean _enabled = true; // default value, unless overridden by xml...
-
-	// track the times that players got disconnected. Players are allowed
-	// to log back into the zone as long as their log-out was within _timeInvade
-	// time...
-	// <player objectId, expiration time in milliseconds>
-	private final FastMap<Integer, Long> _playerAllowedReEntryTimes;
-
-	// track the players admitted to the zone who should be allowed back in
-	// after reboot/server downtime (outside of their control), within 30
-	// of server restart
-	private FastList<Integer> _playersAllowed;
-	private int[] _oustLoc =
-	{
-	0, 0, 0
-	};
-	protected FastList<L2Character> _raidList = new FastList<L2Character>();
-
+	private boolean _enabled = true;
+	private final int[] _oustLoc = new int[3];
+	
 	public L2BossZone(int id)
 	{
 		super(id);
-		_playerAllowedReEntryTimes = new FastMap<Integer, Long>();
-		_playersAllowed = new FastList<Integer>();
-		_oustLoc = new int[3];
+		
+		GrandBossManager.getInstance().addZone(this);
 	}
-
+	
 	@Override
 	public void setParameter(String name, String value)
 	{
-		if (name.equals("name"))
-		{
-			_zoneName = value;
-		}
-		else if (name.equals("InvadeTime"))
-		{
+		if (name.equals("InvadeTime"))
 			_timeInvade = Integer.parseInt(value);
-		}
 		else if (name.equals("EnabledByDefault"))
-		{
 			_enabled = Boolean.parseBoolean(value);
-		}
 		else if (name.equals("oustX"))
-		{
 			_oustLoc[0] = Integer.parseInt(value);
-		}
 		else if (name.equals("oustY"))
-		{
 			_oustLoc[1] = Integer.parseInt(value);
-		}
 		else if (name.equals("oustZ"))
-		{
 			_oustLoc[2] = Integer.parseInt(value);
-		}
 		else
-		{
 			super.setParameter(name, value);
-		}
 	}
-
-	/**
-	 * Boss zones have special behaviors for player characters. Players are
-	 * automatically teleported out when the attempt to enter these zones,
-	 * except if the time at which they enter the zone is prior to the entry
-	 * expiration time set for that player. Entry expiration times are set by
-	 * any one of the following: 1) A player logs out while in a zone
-	 * (Expiration gets set to logoutTime + _timeInvade) 2) An external source
-	 * (such as a quest or AI of NPC) set up the player for entry.
-	 * There exists one more case in which the player will be allowed to enter.
-	 * That is if the server recently rebooted (boot-up time more recent than
-	 * currentTime - _timeInvade) AND the player was in the zone prior to reboot.
-	 */
+	
 	@Override
 	protected void onEnter(L2Character character)
-	{
-		if (_enabled && character instanceof L2PcInstance)
-		{
-			L2PcInstance player = (L2PcInstance) character;
-			player.setInsideZone(L2Character.ZONE_NOSUMMONFRIEND, true);
-			if (player.isGM())
-				player.sendMessage("You entered " + _zoneName);
-
-			if (!player.isGM() && (player.isinZodiac && ChaosEvent._isChaosActive))
-				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-
-			if (!player.isGM() && player.isFlying())
-				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-
-			// Ignore the check for Van Halter zone id 12014 if player got marks
-			if (getId() == 12014)
-			{
-				L2ItemInstance VisitorsMark = player.getInventory().getItemByItemId(8064);
-				L2ItemInstance FadedVisitorsMark = player.getInventory().getItemByItemId(8065);
-				L2ItemInstance PagansMark = player.getInventory().getItemByItemId(8067);
-				long mark1 = VisitorsMark == null ? 0 : VisitorsMark.getCount();
-				long mark2 = FadedVisitorsMark == null ? 0 : FadedVisitorsMark.getCount();
-				long mark3 = PagansMark == null ? 0 : PagansMark.getCount();
-				if (mark1 != 0 || mark2 != 0 || mark3 != 0)
-					return;
-			}
-
-			// if player has been (previously) cleared by npc/ai for entry and the zone is
-			// set to receive players (aka not waiting for boss to respawn)
-			if (_playersAllowed.contains(player.getObjectId()))
-			{
-				// Get the information about this player's last logout-exit from
-				// this zone.
-				Long expirationTime = _playerAllowedReEntryTimes.get(player.getObjectId());
-
-				// with legal entries, do nothing.
-				if (expirationTime == null) // legal null expirationTime entries
-				{
-					long serverStartTime = GameServer.dateTimeServerStarted.getTimeInMillis();
-					if ((serverStartTime > (System.currentTimeMillis() - _timeInvade)))
-						return;
-				}
-				else
-				{
-					// legal non-null logoutTime entries
-					_playerAllowedReEntryTimes.remove(player.getObjectId());
-					if (expirationTime.longValue() > System.currentTimeMillis())
-						return;
-				}
-				_playersAllowed.remove(_playersAllowed.indexOf(player.getObjectId()));
-			}
-			// teleport out all players who attempt "illegal" (re-)entry
-			if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
-				player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2]);
-			else
-				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-		}
-	}
-
-	@Override
-	protected void onExit(L2Character character)
 	{
 		if (_enabled)
 		{
 			if (character instanceof L2PcInstance)
 			{
-				L2PcInstance player = (L2PcInstance) character;
-				player.setInsideZone(L2Character.ZONE_NOSUMMONFRIEND, false);
+				// Get player and set zone info.
+				final L2PcInstance player = (L2PcInstance) character;
+				player.setInsideZone(ZoneId.NO_SUMMON_FRIEND, true);
+				
+				// Skip other checks for GM.
 				if (player.isGM())
-					player.sendMessage("You left " + _zoneName);
-
-				// if the player just got disconnected/logged out, store the dc
-				// time so that
-				// decisions can be made later about allowing or not the player
-				// to log into the zone
-				if (player.isOnline() == 0 && _playersAllowed.contains(player.getObjectId()))
+					return;
+				
+				// Get player object id.
+				final int id = player.getObjectId();
+				
+				if (_playerAllowed.contains(id))
 				{
-					// mark the time that the player left the zone
-					_playerAllowedReEntryTimes.put(player.getObjectId(), System.currentTimeMillis() + _timeInvade);
+					// Get and remove the entry expiration time (once entered, can not enter enymore, unless specified).
+					final long entryTime = _playerAllowEntry.remove(id);
+					if (entryTime > System.currentTimeMillis())
+						return;
+					
+					// Player trying to join after expiration, remove from allowed list.
+					_playerAllowed.remove(Integer.valueOf(id));
 				}
+				
+				// Teleport out player, who attempt "illegal" (re-)entry.
+				if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
+					player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2], false);
 				else
-				{
-					if (_playersAllowed.contains(player.getObjectId()))
-						_playersAllowed.remove(_playersAllowed.indexOf(player.getObjectId()));
-					_playerAllowedReEntryTimes.remove(player.getObjectId());
-				}
+					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 			}
-			if (character instanceof L2Playable)
+			else if (character instanceof L2Summon)
 			{
-				if ((getCharactersInside() != null) && !getCharactersInside().isEmpty())
+				final L2PcInstance player = ((L2Summon) character).getOwner();
+				if (player != null)
 				{
-					_raidList.clear();
-					int count = 0;
-					for (L2Character obj : getCharactersInside().values())
+					if (_playerAllowed.contains(player.getObjectId()) || player.isGM())
+						return;
+					
+					// Teleport out owner who attempt "illegal" (re-)entry.
+					if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
+						player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2], false);
+					else
+						player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				}
+				
+				// Remove summon.
+				((L2Summon) character).unSummon(player);
+			}
+		}
+	}
+	
+	@Override
+	protected void onExit(L2Character character)
+	{
+		if (character instanceof L2Playable && _enabled)
+		{
+			if (character instanceof L2PcInstance)
+			{
+				// Get player and set zone info.
+				final L2PcInstance player = (L2PcInstance) character;
+				player.setInsideZone(ZoneId.NO_SUMMON_FRIEND, false);
+				
+				// Skip other checks for GM.
+				if (player.isGM())
+					return;
+				
+				// Get player object id.
+				final int id = player.getObjectId();
+				
+				if (_playerAllowed.contains(id))
+				{
+					if (player.isOnline()==0)
 					{
-						if (obj == null)
-							continue;
-						if (obj instanceof L2Playable)
-							count++;
-						else if (obj instanceof L2Attackable && obj.isRaid())
-						{
-							_raidList.add(obj);
-						}
+						// Player disconnected.
+						_playerAllowEntry.put(id, System.currentTimeMillis() + _timeInvade);
 					}
-					// if inside zone isnt any player, force all boss instance return to its spawn points
-					if (count == 0 && !_raidList.isEmpty())
+					else
 					{
-						for (int i = 0; i < _raidList.size(); i++)
-						{
-							L2Attackable raid = (L2Attackable) _raidList.get(i);
-							if (!raid.isInsideRadius(raid.getSpawn().getLocx(), raid.getSpawn().getLocy(), 150, false))
-								raid.returnHome();
-						}
+						// Player has allowed entry, do not delete from allowed list.
+						if (_playerAllowEntry.containsKey(id))
+							return;
+						
+						// Remove player allowed list.
+						_playerAllowed.remove(Integer.valueOf(id));
+					}
+				}
+			}
+			
+			// If playables aren't found, force all bosses to return to spawnpoint.
+			if (!_characterList.isEmpty())
+			{
+				if (!getKnownTypeInside(L2Playable.class).isEmpty())
+					return;
+				
+				for (L2Attackable raid : getKnownTypeInside(L2Attackable.class))
+				{
+					if (raid.isRaid())
+					{
+						if (raid.getSpawn() == null || raid.isDead())
+							continue;
+						
+						if (!raid.isInsideRadius(raid.getSpawn().getLocx(), raid.getSpawn().getLocy(), 150, false))
+							raid.returnHome();
 					}
 				}
 			}
 		}
-		if (character instanceof L2Attackable && character.isRaid())
-		{
+		else if (character instanceof L2Attackable && character.isRaid() && !character.isDead())
 			((L2Attackable) character).returnHome();
-		}
 	}
-
-	public void setZoneEnabled(boolean flag)
-	{
-		if (_enabled != flag)
-			oustAllPlayers();
-
-		_enabled = flag;
-	}
-
-	public String getZoneName()
-	{
-		return _zoneName;
-	}
-
-	public int getTimeInvade()
-	{
-		return _timeInvade;
-	}
-
-	public void setAllowedPlayers(FastList<Integer> players)
-	{
-		if (players != null)
-			_playersAllowed = players;
-	}
-
-	public FastList<Integer> getAllowedPlayers()
-	{
-		return _playersAllowed;
-	}
-
-	public boolean isPlayerAllowed(L2PcInstance player)
-	{
-		if (player.isGM())
-			return true;
-		else if (_playersAllowed.contains(player.getObjectId()))
-			return true;
-		else
-		{
-			if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
-				player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2]);
-			else
-				player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-			return false;
-		}
-	}
-
+	
 	/**
-	 * Some GrandBosses send all players in zone to a specific part of the zone,
-	 * rather than just removing them all. If this is the case, this command should
-	 * be used. If this is no the case, then use oustAllPlayers().
-	 * 
+	 * Enables the entry of a player to the boss zone for next "duration" seconds. If the player tries to enter the boss zone after this period, he will be teleported out.
+	 * @param player : Player to allow entry.
+	 * @param duration : Entry permission is valid for this period (in seconds).
+	 */
+	public void allowPlayerEntry(L2PcInstance player, int duration)
+	{
+		// Get player object id.
+		final int playerId = player.getObjectId();
+		
+		// Allow player entry.
+		if (!_playerAllowed.contains(playerId))
+			_playerAllowed.add(playerId);
+		
+		// For the given duration.
+		_playerAllowEntry.put(playerId, System.currentTimeMillis() + duration * 1000);
+	}
+	
+	/**
+	 * Enables the entry of a player to the boss zone after server shutdown/restart. The time limit is specified by each zone via "InvadeTime" parameter. If the player tries to enter the boss zone after this period, he will be teleported out.
+	 * @param playerId : The ID of player to allow entry.
+	 */
+	public void allowPlayerEntry(int playerId)
+	{
+		// Allow player entry.
+		if (!_playerAllowed.contains(playerId))
+			_playerAllowed.add(playerId);
+		
+		// For the given duration.
+		_playerAllowEntry.put(playerId, System.currentTimeMillis() + _timeInvade);
+	}
+	
+	/**
+	 * Removes the player from allowed list and cancel the entry permition.
+	 * @param player : Player to remove from the zone.
+	 */
+	public void removePlayer(L2PcInstance player)
+	{
+		// Get player object id.
+		final int id = player.getObjectId();
+		
+		// Remove player from allowed list.
+		_playerAllowed.remove(Integer.valueOf(id));
+		
+		// Remove player permission.
+		_playerAllowEntry.remove(id);
+	}
+	
+	/**
+	 * @return the list of all allowed players object ids.
+	 */
+	public List<Integer> getAllowedPlayers()
+	{
+		return _playerAllowed;
+	}
+	
+	/**
+	 * Some GrandBosses send all players in zone to a specific part of the zone, rather than just removing them all. If this is the case, this command should be used. If this is no the case, then use oustAllPlayers().
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
 	public void movePlayersTo(int x, int y, int z)
 	{
-		if (_characterList == null || _characterList.isEmpty())
+		if (_characterList.isEmpty())
 			return;
-
-		for (L2Character character : _characterList.values())
+		
+		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
 		{
-			if (character == null)
-				continue;
-			if (character instanceof L2PcInstance)
-			{
-				L2PcInstance player = (L2PcInstance) character;
-				if (player.isOnline() == 1)
-					player.teleToLocation(x, y, z);
-			}
+			if (player.isOnline()==1)
+				player.teleToLocation(x, y, z,  false);
 		}
 	}
-
-	public void removePlayer(L2PcInstance player)
-	{
-		if (!player.isGM())
-		{
-			_playersAllowed.remove(Integer.valueOf(player.getObjectId()));
-			_playerAllowedReEntryTimes.remove(player.getObjectId());
-		}
-	}
-
+	
 	/**
-	 * Occasionally, all players need to be sent out of the zone (for example,
-	 * if the players are just running around without fighting for too long, or
-	 * if all players die, etc). This call sends all online players to town and
-	 * marks offline players to be teleported (by clearing their relog
-	 * expiration times) when they log back in (no real need for off-line
-	 * teleport).
+	 * Occasionally, all players need to be sent out of the zone (for example, if the players are just running around without fighting for too long, or if all players die, etc). This call sends all online players to town and marks offline players to be teleported (by clearing their relog expiration
+	 * times) when they log back in (no real need for off-line teleport).
 	 */
 	public void oustAllPlayers()
 	{
-		if (_characterList == null || _characterList.isEmpty())
+		if (_characterList.isEmpty())
 			return;
-
-		for (L2Character character : _characterList.values())
+		
+		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
 		{
-			if (character == null)
-				continue;
-			if (character instanceof L2PcInstance)
+			if (player.isOnline()==1)
 			{
-				L2PcInstance player = (L2PcInstance) character;
-				if (player.isOnline() == 1)
-				{
-					if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
-						player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2]);
-					else
-						player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
-				}
+				if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
+					player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2],  false);
+				else
+					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
 			}
 		}
-		_playerAllowedReEntryTimes.clear();
-		_playersAllowed.clear();
+		_playerAllowEntry.clear();
+		_playerAllowed.clear();
 	}
-
-	/**
-	 * This function is to be used by external sources, such as quests and AI
-	 * in order to allow a player for entry into the zone for some time. Naturally
-	 * if the player does not enter within the allowed time, he/she will be
-	 * teleported out again...
-	 * 
-	 * @param player
-	 *        : reference to the player we wish to allow
-	 * @param durationInSec
-	 *        : amount of time in seconds during which entry is valid.
-	 */
-	public void allowPlayerEntry(L2PcInstance player, int durationInSec)
-	{
-		if (!player.isGM())
-		{
-			if (!_playersAllowed.contains(player.getObjectId()))
-				_playersAllowed.add(player.getObjectId());
-			_playerAllowedReEntryTimes.put(player.getObjectId(), System.currentTimeMillis() + durationInSec * 1000);
-		}
-	}
-
+	
 	@Override
 	public void onDieInside(L2Character character)
 	{
 	}
-
+	
 	@Override
 	public void onReviveInside(L2Character character)
 	{

@@ -51,9 +51,9 @@ public final class RequestConfirmGemStone extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2ItemInstance targetItem = (L2ItemInstance) L2World.findObject(_targetItemObjId);
-		L2ItemInstance refinerItem = (L2ItemInstance) L2World.findObject(_refinerItemObjId);
-		L2ItemInstance gemstoneItem = (L2ItemInstance) L2World.findObject(_gemstoneItemObjId);
+		L2ItemInstance targetItem = (L2ItemInstance) L2World.getInstance().findObject(_targetItemObjId);
+		L2ItemInstance refinerItem = (L2ItemInstance) L2World.getInstance().findObject(_refinerItemObjId);
+		L2ItemInstance gemstoneItem = (L2ItemInstance) L2World.getInstance().findObject(_gemstoneItemObjId);
 
 		if ((targetItem == null) || (refinerItem == null) || (gemstoneItem == null))
 			return;

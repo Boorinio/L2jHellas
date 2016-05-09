@@ -18,11 +18,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
@@ -49,7 +48,7 @@ public class ItemsOnGroundManager
 	{
 		if (!Config.SAVE_DROPPED_ITEM)
 			return;
-		_items = new FastList<L2ItemInstance>();
+		_items = new ArrayList<L2ItemInstance>();
 		if (Config.SAVE_DROPPED_ITEM_INTERVAL > 0)
 			ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new storeInDb(), Config.SAVE_DROPPED_ITEM_INTERVAL, Config.SAVE_DROPPED_ITEM_INTERVAL);
 	}
@@ -114,13 +113,13 @@ public class ItemsOnGroundManager
 			while (result.next())
 			{
 				L2ItemInstance item = new L2ItemInstance(result.getInt(1), result.getInt(2));
-				L2World.storeObject(item);
+				L2World.getInstance().storeObject(item);
 				if (item.isStackable() && result.getInt(3) > 1) // this check and..
 					item.setCount(result.getInt(3));
 				if (result.getInt(4) > 0)			// this, are really necessary?
 					item.setEnchantLevel(result.getInt(4));
 				item.getPosition().setWorldPosition(result.getInt(5), result.getInt(6), result.getInt(7));
-				item.getPosition().setWorldRegion(L2World.getRegion(item.getPosition().getWorldPosition()));
+				item.getPosition().setWorldRegion(L2World.getInstance().getRegion(item.getPosition().getWorldPosition()));
 				item.getPosition().getWorldRegion().addVisibleObject(item);
 				item.setDropTime(result.getLong(8));
 				if (result.getLong(8) == -1)
@@ -128,7 +127,7 @@ public class ItemsOnGroundManager
 				else
 					item.setProtected(false);
 				item.setIsVisible(true);
-				L2World.addVisibleObject(item, item.getPosition().getWorldRegion(), null);
+				L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion());
 				_items.add(item);
 				count++;
 				// add to ItemsAutoDestroy only items not protected
@@ -170,8 +169,6 @@ public class ItemsOnGroundManager
 
 	public void removeObject(L2Object item)
 	{
-		if (!Config.SAVE_DROPPED_ITEM)
-			return;
 		_items.remove(item);
 	}
 

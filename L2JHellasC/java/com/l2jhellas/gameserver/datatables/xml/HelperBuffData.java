@@ -18,13 +18,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -54,7 +53,7 @@ public class HelperBuffData
 
 	private HelperBuffData()
 	{
-		_helperBuff = new FastList<L2HelperBuff>();
+		_helperBuff = new ArrayList<L2HelperBuff>();
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);

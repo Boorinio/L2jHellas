@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.ai;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -466,7 +465,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 		double dy, dx;
 		double dblAggroRange = aggroRange * aggroRange;
 
-		List<L2Character> potentialTarget = new FastList<L2Character>();
+		List<L2Character> potentialTarget = new ArrayList<L2Character>();
 
 		for (L2Object obj : npc.getKnownList().getKnownObjects().values())
 		{

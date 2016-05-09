@@ -16,11 +16,10 @@ package com.l2jhellas.gameserver.communitybbs.Manager;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.BB.Post;
@@ -45,7 +44,7 @@ public class PostBBSManager extends BaseBBSManager
 
 	public PostBBSManager()
 	{
-		_postByTopic = new FastMap<Topic, Post>();
+		_postByTopic = new HashMap<Topic, Post>();
 	}
 
 	public Post getGPosttByTopic(Topic t)

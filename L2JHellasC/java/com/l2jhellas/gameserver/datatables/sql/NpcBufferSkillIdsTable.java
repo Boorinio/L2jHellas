@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.datatables.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.skills.NpcBufferSkills;
@@ -33,7 +32,7 @@ public class NpcBufferSkillIdsTable
 
 	private static NpcBufferSkillIdsTable _instance = null;
 
-	private final Map<Integer, NpcBufferSkills> _buffers = new FastMap<Integer, NpcBufferSkills>();
+	private final Map<Integer, NpcBufferSkills> _buffers = new HashMap<Integer, NpcBufferSkills>();
 
 	private NpcBufferSkillIdsTable()
 	{

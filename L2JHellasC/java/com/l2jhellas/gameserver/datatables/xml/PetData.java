@@ -18,13 +18,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -54,7 +53,7 @@ public class PetData
 
 	private PetData()
 	{
-		_petTable = new FastMap<Integer, Map<Integer, L2PetData>>();
+		_petTable = new HashMap<Integer, Map<Integer, L2PetData>>();
 	}
 
 	public void loadPetsData()
@@ -115,10 +114,10 @@ public class PetData
 							petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
 							petData.setOwnerExpTaken(Float.valueOf(d.getAttributes().getNamedItem("owner_exp_taken").getNodeValue()));
 
-							// if its the first data for this petid, we initialize its level FastMap
+							// if its the first data for this petid, we initialize its level HashMap
 							if (!_petTable.containsKey(petId))
 							{
-								_petTable.put(petId, new FastMap<Integer, L2PetData>());
+								_petTable.put(petId, new HashMap<Integer, L2PetData>());
 							}
 
 							_petTable.get(petId).put(petLevel, petData);
@@ -150,7 +149,7 @@ public class PetData
 
 		if (h == null)
 		{
-			Map<Integer, L2PetData> statTable = new FastMap<Integer, L2PetData>();
+			Map<Integer, L2PetData> statTable = new HashMap<Integer, L2PetData>();
 			statTable.put(petData.getPetLevel(), petData);
 			_petTable.put(petData.getPetID(), statTable);
 			statTable = null;

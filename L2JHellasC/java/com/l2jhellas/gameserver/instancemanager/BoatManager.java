@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2World;
@@ -52,7 +50,7 @@ public class BoatManager
 		return _instance;
 	}
 
-	private Map<Integer, L2BoatInstance> _staticItems = new FastMap<Integer, L2BoatInstance>();
+	private Map<Integer, L2BoatInstance> _staticItems = new HashMap<Integer, L2BoatInstance>();
 
 	public boolean _initialized;
 
@@ -176,7 +174,7 @@ public class BoatManager
 	public void broadcastPacket(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket packet)
 	{
 		double dx, dy;
-		final Collection<L2PcInstance> players = L2World.getAllPlayers();
+		final Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers().values();
 		for (L2PcInstance player : players)
 		{
 			if (player == null)
@@ -207,7 +205,7 @@ public class BoatManager
 	public void broadcastPackets(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket... packets)
 	{
 		double dx, dy;
-		final Collection<L2PcInstance> players = L2World.getAllPlayers();
+		final Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers().values();
 		for (L2PcInstance player : players)
 		{
 			if (player == null)
@@ -240,7 +238,7 @@ public class BoatManager
 	{
 		if (_staticItems == null)
 		{
-			_staticItems = new FastMap<Integer, L2BoatInstance>();
+			_staticItems = new HashMap<Integer, L2BoatInstance>();
 		}
 		return _staticItems.get(boatId);
 	}		

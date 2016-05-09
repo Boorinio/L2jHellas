@@ -14,16 +14,13 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
-import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Rnd;
 
 /**
  * This class manages all RaidBoss.
@@ -31,8 +28,6 @@ import com.l2jhellas.util.Rnd;
  */
 public final class L2RaidBossInstance extends L2MonsterInstance
 {
-	private static final int RAIDBOSS_MAINTENANCE_INTERVAL = 30000; // 30 sec
-
 	private RaidBossSpawnManager.StatusEnum _raidStatus;
 
 	/**
@@ -61,11 +56,6 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 		super.onSpawn();
 	}
 
-	@Override
-	protected int getMaintenanceInterval()
-	{
-		return RAIDBOSS_MAINTENANCE_INTERVAL;
-	}
 
 	@Override
 	public boolean doDie(L2Character killer)
@@ -91,31 +81,6 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 
 		RaidBossSpawnManager.getInstance().updateStatus(this, true);
 		return true;
-	}
-
-	/**
-	 * Spawn all minions at a regular interval
-	 * Also if boss is too far from home location at the time of this check, teleport it home
-	 */
-	@Override
-	protected void manageMinions()
-	{
-		_minionList.spawnMinions();
-		_minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				// teleport raid boss home if it's too far from home location
-				L2Spawn bossSpawn = getSpawn();
-				if (!isInsideRadius(bossSpawn.getLocx(), bossSpawn.getLocy(), bossSpawn.getLocz(), 5000, true, false))
-				{
-					teleToLocation(bossSpawn.getLocx(), bossSpawn.getLocy(), bossSpawn.getLocz(), true);
-					healFull(); // prevents minor exploiting with it
-				}
-				_minionList.maintainMinions();
-			}
-		}, 60000, getMaintenanceInterval() + Rnd.get(5000));
 	}
 
 	public void setRaidStatus(RaidBossSpawnManager.StatusEnum status)

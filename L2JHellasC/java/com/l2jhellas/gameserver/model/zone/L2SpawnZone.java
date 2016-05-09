@@ -14,12 +14,18 @@
  */
 package com.l2jhellas.gameserver.model.zone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.Rnd;
 
 public abstract class L2SpawnZone extends L2ZoneType
 {
 	private static Location[] _coords = new Location [22];
+	private List<Location> _chaoticSpawnLocs = null;
+	private List<Location> _spawnLocs = null;
 	
 	public static final void STADIUMSADD() 
 	{
@@ -61,5 +67,48 @@ public abstract class L2SpawnZone extends L2ZoneType
 	{
 		if(spec!=null)
 		spec.enterOlympiadObserverMode(getCoordinates(id).getX(), getCoordinates(id).getY(), getCoordinates(id).getZ(), id);
+	}
+	
+	public final void addSpawn(int x, int y, int z)
+	{
+		if (_spawnLocs == null)
+			_spawnLocs = new ArrayList<>();
+		
+		_spawnLocs.add(new Location(x, y, z));
+	}
+	
+	public final void addChaoticSpawn(int x, int y, int z)
+	{
+		if (_chaoticSpawnLocs == null)
+			_chaoticSpawnLocs = new ArrayList<>();
+		
+		_chaoticSpawnLocs.add(new Location(x, y, z));
+	}
+	
+	public final List<Location> getSpawns()
+	{
+		return _spawnLocs;
+	}
+	
+	public final Location getSpawnLoc()
+	{
+		return _spawnLocs.get(Rnd.get(_spawnLocs.size()));
+	}
+	
+	public void clearSpawnZone()
+	{
+		if(_spawnLocs !=null && !_spawnLocs.isEmpty())
+		_spawnLocs.clear();
+		
+		if(_chaoticSpawnLocs !=null && !_chaoticSpawnLocs.isEmpty())
+		_chaoticSpawnLocs.clear();
+	}
+	
+	public final Location getChaoticSpawnLoc()
+	{
+		if (_chaoticSpawnLocs != null)
+			return _chaoticSpawnLocs.get(Rnd.get(_chaoticSpawnLocs.size()));
+		
+		return getSpawnLoc();
 	}
 }

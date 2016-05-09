@@ -28,7 +28,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2WarehouseInstance;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -546,7 +545,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 
 				activeChar.broadcastUserInfo();
 
-				L2World.removeObject(destroyItem);
+				L2World.getInstance().removeObject(destroyItem);
 			}
 			else
 			{
@@ -561,9 +560,10 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		activeChar.sendPacket(su);
 		su = null;
 
-		activeChar.sendPacket(new EnchantResult(item.getEnchantLevel())); // FIXME i'm really not sure about this...
 		activeChar.sendPacket(new ItemList(activeChar, false)); // TODO update only the enchanted item
 		activeChar.broadcastUserInfo();
+		activeChar.setActiveEnchantItem(null);
+		
 		if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 			PrivateAntiBot.privateantibot(activeChar);
 	}

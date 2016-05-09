@@ -15,6 +15,7 @@
 package com.l2jhellas.util;
 
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -478,5 +479,33 @@ public final class Rnd
 	public static final long nextLong()
 	{
 		return rnd.nextLong();
+	}
+	
+	/**
+	 * Returns a randomly selected element taken from the given list.
+	 * @param <T> type of list elements.
+	 * @param list a list.
+	 * @return a randomly selected element.
+	 */
+	public static final <T> T get(List<T> list)
+	{
+		if (list == null || list.size() == 0)
+			return null;
+		
+		return list.get(get(list.size()));
+	}
+	
+	/**
+	 * Returns a randomly selected element taken from the given array.
+	 * @param <T> type of array elements.
+	 * @param array an array.
+	 * @return a randomly selected element.
+	 */
+	public static final <T> T get(T[] array)
+	{
+		if (array == null || array.length == 0)
+			return null;
+		
+		return array[get(array.length)];
 	}
 }

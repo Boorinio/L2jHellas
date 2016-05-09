@@ -39,7 +39,7 @@ public final class RequestRecipeShopMakeInfo extends L2GameClientPacket
 		if (player == null)
 			return;
 		
-		final L2PcInstance shop = L2World.getPlayer(player.getName());
+		final L2PcInstance shop = L2World.getInstance().getPlayer(player.getName());
 		
 		if (shop == null || _playerObjectId != shop.getObjectId() ||  shop.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_MANUFACTURE)
 			return;

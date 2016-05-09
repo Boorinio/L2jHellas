@@ -15,8 +15,8 @@
 package com.l2jhellas.gameserver.geodata.pathfinding.cellnodes;
 
 import com.l2jhellas.gameserver.geodata.GeoData;
-import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
+import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.model.L2World;
 
 public final class CellPathFinding extends PathFinding
@@ -34,13 +34,13 @@ public final class CellPathFinding extends PathFinding
 	@Override
 	public PathNode[] findPath(int x, int y, int z, int tx, int ty, int tz)
 	{
-		int gx = x - L2World.MAP_MIN_X >> 4;
-		int gy = y - L2World.MAP_MIN_Y >> 4;
+		int gx = x - L2World.WORLD_X_MIN >> 4;
+		int gy = y - L2World.WORLD_Y_MIN >> 4;
 		if (!GeoData.getInstance().hasGeo(x, y))
 			return null;
 		short gz = GeoData.getInstance().getHeight(x, y, z);
-		int gtx = tx - L2World.MAP_MIN_X >> 4;
-		int gty = ty - L2World.MAP_MIN_Y >> 4;
+		int gtx = tx - L2World.WORLD_X_MIN >> 4;
+		int gty = ty - L2World.WORLD_Y_MIN >> 4;
 		if (!GeoData.getInstance().hasGeo(tx, ty))
 			return null;
 		short gtz = GeoData.getInstance().getHeight(tx, ty, tz);

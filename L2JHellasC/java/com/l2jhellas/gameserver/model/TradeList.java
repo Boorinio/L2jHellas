@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -129,7 +128,7 @@ public class TradeList
 
 	public TradeList(L2PcInstance owner)
 	{
-		_items = new FastList<TradeItem>();
+		_items = new ArrayList<TradeItem>();
 		_owner = owner;
 	}
 
@@ -193,7 +192,7 @@ public class TradeList
 	 */
 	public TradeList.TradeItem[] getAvailableItems(PcInventory inventory)
 	{
-		List<TradeList.TradeItem> list = new FastList<TradeList.TradeItem>();
+		List<TradeList.TradeItem> list = new ArrayList<TradeList.TradeItem>();
 		for (TradeList.TradeItem item : _items)
 		{
 			item = new TradeItem(item, item.getCount(), item.getPrice());
@@ -317,7 +316,7 @@ public class TradeList
 			_log.warning(_owner.getName() + ": Attempt to modify locked TradeList!");
 			return null;
 		}
-		L2Object o = L2World.findObject(objectId);
+		L2Object o = L2World.getInstance().findObject(objectId);
 
 		if (o == null || !(o instanceof L2ItemInstance))
 		{
@@ -543,7 +542,7 @@ public class TradeList
 	private boolean validate()
 	{
 		// Check for Owner validity
-		if (_owner == null || L2World.findObject(_owner.getObjectId()) == null)
+		if (_owner == null || L2World.getInstance().findObject(_owner.getObjectId()) == null)
 		{
 			_log.warning("Invalid owner of TradeList");
 			return false;

@@ -14,12 +14,11 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -631,7 +630,7 @@ public class L2DoorInstance extends L2Character
 
 	public Collection<L2SiegeGuardInstance> getKnownSiegeGuards()
 	{
-		FastList<L2SiegeGuardInstance> result = new FastList<L2SiegeGuardInstance>();
+		ArrayList<L2SiegeGuardInstance> result = new ArrayList<L2SiegeGuardInstance>();
 
 		for (L2Object obj : getKnownList().getKnownObjects().values())
 		{

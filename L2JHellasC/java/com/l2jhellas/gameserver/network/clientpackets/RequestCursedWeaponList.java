@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -45,7 +44,7 @@ public class RequestCursedWeaponList extends L2GameClientPacket
 			return;
 
 		// send a ExCursedWeaponList :p
-		List<Integer> list = new FastList<Integer>();
+		List<Integer> list = new ArrayList<Integer>();
 		for (int id : CursedWeaponsManager.getInstance().getCursedWeaponsIds())
 		{
 			list.add(id);

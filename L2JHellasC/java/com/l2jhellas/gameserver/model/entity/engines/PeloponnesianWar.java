@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
@@ -36,9 +36,9 @@ public class PeloponnesianWar
 	private static boolean alaksokolies = true;
 	public static boolean PeloRunning = false, continuez, continuez2;
 	private static int i, countA, countS;
-	private static List<L2PcInstance> _participants = new FastList<L2PcInstance>();
-	private static List<L2PcInstance> _athenians = new FastList<L2PcInstance>();
-	private static List<L2PcInstance> _spartans = new FastList<L2PcInstance>();
+	private static List<L2PcInstance> _participants = new ArrayList<L2PcInstance>();
+	private static List<L2PcInstance> _athenians = new ArrayList<L2PcInstance>();
+	private static List<L2PcInstance> _spartans = new ArrayList<L2PcInstance>();
 	private static FastSet<L2Npc> _protectors = new FastSet<L2Npc>();
 	private static int athenianx = 72923;
 	private static int atheniany = 142764;
@@ -72,7 +72,7 @@ public class PeloponnesianWar
 		Announcements.getInstance().announceToAll("You have " + minutes / 2 + " minutes to register!");
 		waitSecs(minutes / 2 * 60);
 		ZodiacMain.ZodiacRegisterActive = false;
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (player.isinZodiac)
 			{

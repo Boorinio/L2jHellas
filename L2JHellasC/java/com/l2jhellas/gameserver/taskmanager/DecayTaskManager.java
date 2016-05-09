@@ -16,9 +16,8 @@ package com.l2jhellas.gameserver.taskmanager;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -31,7 +30,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 public class DecayTaskManager
 {
 	protected static final Logger _log = Logger.getLogger(DecayTaskManager.class.getName());
-	protected Map<L2Character, Long> _decayTasks = new FastMap<L2Character, Long>().setShared(true);
+	private final Map<L2Character, Long> _decayTasks = new ConcurrentHashMap<>();
 
 	private static DecayTaskManager _instance;
 

@@ -17,14 +17,13 @@ package com.l2jhellas.gameserver.model.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -50,10 +49,10 @@ public class Castle
 {
 	protected static Logger _log = Logger.getLogger(Castle.class.getName());
 
-	private FastList<CropProcure> _procure = new FastList<CropProcure>();
-	private FastList<SeedProduction> _production = new FastList<SeedProduction>();
-	private FastList<CropProcure> _procureNext = new FastList<CropProcure>();
-	private FastList<SeedProduction> _productionNext = new FastList<SeedProduction>();
+	private ArrayList<CropProcure> _procure = new ArrayList<CropProcure>();
+	private ArrayList<SeedProduction> _production = new ArrayList<SeedProduction>();
+	private ArrayList<CropProcure> _procureNext = new ArrayList<CropProcure>();
+	private ArrayList<SeedProduction> _productionNext = new ArrayList<SeedProduction>();
 	private boolean _isNextPeriodApproved = false;
 
 	private static final String CASTLE_MANOR_DELETE_PRODUCTION = "DELETE FROM castle_manor_production WHERE castle_id=?;";
@@ -64,8 +63,8 @@ public class Castle
 	private static final String CASTLE_UPDATE_SEED = "UPDATE castle_manor_production SET can_produce=? WHERE seed_id=? AND castle_id=? AND period=?";
 
 	private int _castleId = 0;
-	private final List<L2DoorInstance> _doors = new FastList<L2DoorInstance>();
-	private final List<String> _doorDefault = new FastList<String>();
+	private final List<L2DoorInstance> _doors = new ArrayList<L2DoorInstance>();
+	private final List<String> _doorDefault = new ArrayList<String>();
 	private String _name = "";
 	private int _ownerId = 0;
 	private Siege _siege = null;
@@ -83,7 +82,7 @@ public class Castle
 	{
 			Integer.MIN_VALUE, 0, 0
 	};
-	private final Map<Integer, Integer> _engrave = new FastMap<Integer, Integer>();
+	private final Map<Integer, Integer> _engrave = new HashMap<Integer, Integer>();
 
 	public Castle(int castleId)
 	{
@@ -719,25 +718,25 @@ public class Castle
 		}
 	}
 
-	public FastList<SeedProduction> getSeedProduction(int period)
+	public ArrayList<SeedProduction> getSeedProduction(int period)
 	{
 		return (period == CastleManorManager.PERIOD_CURRENT ? _production : _productionNext);
 	}
 
-	public FastList<CropProcure> getCropProcure(int period)
+	public ArrayList<CropProcure> getCropProcure(int period)
 	{
 		return (period == CastleManorManager.PERIOD_CURRENT ? _procure : _procureNext);
 	}
 
-	public void setSeedProduction(FastList<SeedProduction> seed, int period)
+	public void setSeedProduction(ArrayList<SeedProduction> production, int period)
 	{
 		if (period == CastleManorManager.PERIOD_CURRENT)
-			_production = seed;
+			_production = production;
 		else
-			_productionNext = seed;
+			_productionNext = production;
 	}
 
-	public void setCropProcure(FastList<CropProcure> crop, int period)
+	public void setCropProcure(ArrayList<CropProcure> crop, int period)
 	{
 		if (period == CastleManorManager.PERIOD_CURRENT)
 			_procure = crop;
@@ -771,8 +770,8 @@ public class Castle
 
 	public int getManorCost(int period)
 	{
-		FastList<CropProcure> procure;
-		FastList<SeedProduction> production;
+		ArrayList<CropProcure> procure;
+		ArrayList<SeedProduction> production;
 
 		if (period == CastleManorManager.PERIOD_CURRENT)
 		{
@@ -884,7 +883,7 @@ public class Castle
 			statement.execute();
 			statement.close();
 
-			FastList<SeedProduction> prod = null;
+			ArrayList<SeedProduction> prod = null;
 			prod = getSeedProduction(period);
 
 			if (prod != null)
@@ -997,7 +996,7 @@ public class Castle
 			statement.execute();
 			statement.close();
 
-			FastList<CropProcure> proc = null;
+			ArrayList<CropProcure> proc = null;
 			proc = getCropProcure(period);
 
 			if (proc != null)

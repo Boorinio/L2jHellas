@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.util.Rnd;
 
@@ -51,7 +50,7 @@ public class L2Territory
 
 	public L2Territory(int terr)
 	{
-		_points = new FastList<Point>();
+		_points = new ArrayList<Point>();
 		_terr = terr;
 		_xMin = 999999;
 		_xMax = -999999;

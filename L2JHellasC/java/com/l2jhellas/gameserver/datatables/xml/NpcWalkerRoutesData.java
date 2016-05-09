@@ -39,7 +39,7 @@ public class NpcWalkerRoutesData
 
 	private static NpcWalkerRoutesData _instance;
 
-	private static FastList<L2NpcWalkerNode> _routes;
+	private static FastList<L2NpcWalkerNode> _routes = new FastList<L2NpcWalkerNode>();
 
 	public static NpcWalkerRoutesData getInstance()
 	{
@@ -53,13 +53,18 @@ public class NpcWalkerRoutesData
 
 	public static void reload()
 	{
-		_routes.clear();
-		load();
+		if(!(_routes !=null))
+		{
+		   _routes.clear();
+			load();
+		}
+		else
+		_log.info("WalkerRoutesData npe error.");
+
 	}
 	
 	public static void load()
 	{
-		_routes = new FastList<L2NpcWalkerNode>();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
@@ -71,10 +76,10 @@ public class NpcWalkerRoutesData
 		}
 		try
 		{
-			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+			final InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
 			in.setEncoding("UTF-8");
 			Document doc = factory.newDocumentBuilder().parse(in);
-			L2NpcWalkerNode route;
+			final L2NpcWalkerNode route = new L2NpcWalkerNode();
 			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
 				if (n.getNodeName().equalsIgnoreCase("list"))
@@ -83,17 +88,17 @@ public class NpcWalkerRoutesData
 					{
 						if (d.getNodeName().equalsIgnoreCase("walker_route"))
 						{
-							route = new L2NpcWalkerNode();
+							
 
-							int route_id = Integer.valueOf(d.getAttributes().getNamedItem("route_id").getNodeValue());
-							int npc_id = Integer.valueOf(d.getAttributes().getNamedItem("npc_id").getNodeValue());
-							String move_point = String.valueOf(d.getAttributes().getNamedItem("move_point").getNodeValue());
-							String chatText = String.valueOf(d.getAttributes().getNamedItem("chatText").getNodeValue());
-							int move_x = Integer.valueOf(d.getAttributes().getNamedItem("move_x").getNodeValue());
-							int move_y = Integer.valueOf(d.getAttributes().getNamedItem("move_y").getNodeValue());
-							int move_z = Integer.valueOf(d.getAttributes().getNamedItem("move_z").getNodeValue());
-							int delay = Integer.valueOf(d.getAttributes().getNamedItem("delay").getNodeValue());
-							boolean running = Boolean.valueOf(d.getAttributes().getNamedItem("running").getNodeValue());
+							final int route_id = Integer.valueOf(d.getAttributes().getNamedItem("route_id").getNodeValue());
+							final int npc_id = Integer.valueOf(d.getAttributes().getNamedItem("npc_id").getNodeValue());
+							final String move_point = String.valueOf(d.getAttributes().getNamedItem("move_point").getNodeValue());
+							final String chatText = String.valueOf(d.getAttributes().getNamedItem("chatText").getNodeValue());
+							final int move_x = Integer.valueOf(d.getAttributes().getNamedItem("move_x").getNodeValue());
+							final int move_y = Integer.valueOf(d.getAttributes().getNamedItem("move_y").getNodeValue());
+							final int move_z = Integer.valueOf(d.getAttributes().getNamedItem("move_z").getNodeValue());
+							final int delay = Integer.valueOf(d.getAttributes().getNamedItem("delay").getNodeValue());
+							final boolean running = Boolean.valueOf(d.getAttributes().getNamedItem("running").getNodeValue());
 
 							route.setRouteId(route_id);
 							route.setNpcId(npc_id);
@@ -104,9 +109,7 @@ public class NpcWalkerRoutesData
 							route.setMoveZ(move_z);
 							route.setDelay(delay);
 							route.setRunning(running);
-
 							_routes.add(route);
-							route = null;
 						}
 					}
 				}
@@ -125,7 +128,7 @@ public class NpcWalkerRoutesData
 			_log.warning("Error while creating table");
 		}
 
-		_log.info("WalkerRoutesTable: Loaded " + _routes.size() + " npc walker routes.");
+		_log.info("WalkerRoutesData: Loaded " + _routes.size() + " npc walker routes.");
 	}
 
 	public FastList<L2NpcWalkerNode> getRouteForNpc(int id)

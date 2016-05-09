@@ -15,112 +15,101 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import com.PackRoot;
 import com.l2jhellas.gameserver.templates.L2Henna;
 import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.XMLDocumentFactory;
 
 public class HennaData
 {
-	protected static final Logger _log = Logger.getLogger(HennaData.class.getName());
-
-	private static HennaData _instance;
-
-	private Map<Integer, L2Henna> _henna;
-
-	public static HennaData getInstance()
+	private static Logger _log = Logger.getLogger(HennaData.class.getName());
+	
+	private final Map<Integer, L2Henna> _henna = new HashMap<>();
+	private final Map<Integer, List<L2Henna>> _hennaTrees = new HashMap<>();
+	
+	protected HennaData()
 	{
-		if (_instance == null)
-		{
-			_instance = new HennaData();
-		}
-
-		return _instance;
-	}
-
-	private HennaData()
-	{
-		_henna = new FastMap<Integer, L2Henna>();
-		restoreHennaData();
-	}
-
-	private void restoreHennaData()
-	{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/henna.xml");
-		if (!f.exists())
-		{
-			_log.warning("henna.xml could not be loaded: file not found");
-			return;
-		}
 		try
 		{
-			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-			in.setEncoding("UTF-8");
-			Document doc = factory.newDocumentBuilder().parse(in);
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			final File f = new File("./data/xml/henna.xml");
+			final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
+			final Node n = doc.getFirstChild();
+			
+			for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 			{
-				if (n.getNodeName().equalsIgnoreCase("list"))
+				if (!d.getNodeName().equalsIgnoreCase("henna"))
+					continue;
+				
+				final StatsSet hennaDat = new StatsSet();
+				final Integer id = Integer.valueOf(d.getAttributes().getNamedItem("symbol_id").getNodeValue());
+				
+				hennaDat.set("symbol_id", id);
+				
+				hennaDat.set("dye", Integer.valueOf(d.getAttributes().getNamedItem("dye_id").getNodeValue()));
+				hennaDat.set("price", Integer.valueOf(d.getAttributes().getNamedItem("price").getNodeValue()));
+				
+				hennaDat.set("INT", Integer.valueOf(d.getAttributes().getNamedItem("INT").getNodeValue()));
+				hennaDat.set("STR", Integer.valueOf(d.getAttributes().getNamedItem("STR").getNodeValue()));
+				hennaDat.set("CON", Integer.valueOf(d.getAttributes().getNamedItem("CON").getNodeValue()));
+				hennaDat.set("MEN", Integer.valueOf(d.getAttributes().getNamedItem("MEN").getNodeValue()));
+				hennaDat.set("DEX", Integer.valueOf(d.getAttributes().getNamedItem("DEX").getNodeValue()));
+				hennaDat.set("WIT", Integer.valueOf(d.getAttributes().getNamedItem("WIT").getNodeValue()));
+				final String[] classes = d.getAttributes().getNamedItem("classes").getNodeValue().split(",");
+				
+				final L2Henna template = new L2Henna(hennaDat);
+				_henna.put(id, template);
+				
+				for (String clas : classes)
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					final Integer classId = Integer.valueOf(clas);
+					if (!_hennaTrees.containsKey(classId))
 					{
-						if (d.getNodeName().equalsIgnoreCase("henna"))
-						{
-							StatsSet hennaDat = new StatsSet();
-							int id = Integer.valueOf(d.getAttributes().getNamedItem("symbol_id").getNodeValue());
-							hennaDat.set("symbol_id", id);
-							hennaDat.set("dye", Integer.valueOf(d.getAttributes().getNamedItem("dye_id").getNodeValue()));
-							hennaDat.set("amount", Integer.valueOf(d.getAttributes().getNamedItem("dye_amount").getNodeValue()));
-							hennaDat.set("price", Integer.valueOf(d.getAttributes().getNamedItem("price").getNodeValue()));
-							hennaDat.set("stat_INT", Integer.valueOf(d.getAttributes().getNamedItem("stat_INT").getNodeValue()));
-							hennaDat.set("stat_STR", Integer.valueOf(d.getAttributes().getNamedItem("stat_STR").getNodeValue()));
-							hennaDat.set("stat_CON", Integer.valueOf(d.getAttributes().getNamedItem("stat_CON").getNodeValue()));
-							hennaDat.set("stat_MEM", Integer.valueOf(d.getAttributes().getNamedItem("stat_MEM").getNodeValue()));
-							hennaDat.set("stat_DEX", Integer.valueOf(d.getAttributes().getNamedItem("stat_DEX").getNodeValue()));
-							hennaDat.set("stat_WIT", Integer.valueOf(d.getAttributes().getNamedItem("stat_WIT").getNodeValue()));
-
-							L2Henna template = new L2Henna(hennaDat);
-							_henna.put(id, template);
-						}
+						List<L2Henna> list = new ArrayList<>();
+						list.add(template);
+						_hennaTrees.put(classId, list);
 					}
+					else
+						_hennaTrees.get(classId).add(template);
 				}
 			}
 		}
-		catch (SAXException e)
+		catch (Exception e)
 		{
-			_log.warning("Error while creating table");
+			_log.log(Level.WARNING, "HennaTable: Error loading from database:" + e.getMessage(), e);
 		}
-		catch (IOException e)
-		{
-			_log.warning("Error while creating table");
-		}
-		catch (ParserConfigurationException e)
-		{
-			_log.warning("Error while creating table");
-		}
-
-		_log.info("HennaTable: Loaded " + _henna.size() + " templates.");
+		_log.config("HennaTable: Loaded " + _henna.size() + " templates.");
 	}
-
+	
 	public L2Henna getTemplate(int id)
 	{
 		return _henna.get(id);
+	}
+	
+	public List<L2Henna> getAvailableHenna(int classId)
+	{
+		final List<L2Henna> henna = _hennaTrees.get(classId);
+		if (henna == null)
+			return Collections.emptyList();
+		
+		return henna;
+	}
+	
+	public static HennaData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final HennaData _instance = new HennaData();
 	}
 }

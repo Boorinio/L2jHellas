@@ -21,7 +21,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -230,7 +230,7 @@ public class ChaosEvent
 		Announcements.getInstance().announceToAll("You have 5 minutes until the event is finished!");
 		_isChaosActive = true;
 		StartcheckBoss();
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			String html = HtmCache.getInstance().getHtm("data/html/zodiac/ChaosTuto.htm");
 			NpcHtmlMessage warning = new NpcHtmlMessage(1);

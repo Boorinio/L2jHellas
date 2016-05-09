@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.entity.Auction;
@@ -89,7 +88,7 @@ public class AuctionManager
 
 	public AuctionManager()
 	{
-		_auctions = new FastList<Auction>();
+		_auctions = new ArrayList<Auction>();
 		load();
 	}
 

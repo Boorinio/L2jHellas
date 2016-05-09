@@ -15,166 +15,90 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastList;
-
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import com.PackRoot;
 import com.l2jhellas.gameserver.model.FishData;
+import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.XMLDocumentFactory;
 
 public class FishTable
 {
-	protected static final Logger _log = Logger.getLogger(FishTable.class.getName());
-
-	static class instance
-	{
-		static final FishTable _instance = new FishTable();
-	}
-
-	private static List<FishData> _fishsNormal, _fishsEasy, _fishsHard;
-
+	private static final Logger _log = Logger.getLogger(FishTable.class.getName());
+	
+	private static final List<FishData> _fishes = new ArrayList<>();
+	
 	public static FishTable getInstance()
 	{
-		return instance._instance;
+		return SingletonHolder._instance;
 	}
-
-	private FishTable()
+	
+	protected FishTable()
 	{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		int count = 0;
-		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/fish.xml");
-		if (!f.exists())
-		{
-			_log.warning("fish.xml could not be loaded: file not found");
-			return;
-		}
 		try
 		{
-			_fishsEasy = new FastList<FishData>();
-			_fishsNormal = new FastList<FishData>();
-			_fishsHard = new FastList<FishData>();
-			FishData fish;
-
-			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-			in.setEncoding("UTF-8");
-			Document doc = factory.newDocumentBuilder().parse(in);
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			final File f = new File("./data/xml/fishes.xml");
+			final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
+			
+			final Node n = doc.getFirstChild();
+			for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 			{
-				if (n.getNodeName().equalsIgnoreCase("list"))
+				if (d.getNodeName().equalsIgnoreCase("fish"))
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
-					{
-						if (d.getNodeName().equalsIgnoreCase("fish"))
-						{
-							int id = Integer.valueOf(d.getAttributes().getNamedItem("id").getNodeValue());
-							int lvl = Integer.valueOf(d.getAttributes().getNamedItem("level").getNodeValue());
-							String name = String.valueOf(d.getAttributes().getNamedItem("name").getNodeValue());
-							int hp = Integer.valueOf(d.getAttributes().getNamedItem("hp").getNodeValue());
-							int hpreg = Integer.valueOf(d.getAttributes().getNamedItem("hpregen").getNodeValue());
-							int type = Integer.valueOf(d.getAttributes().getNamedItem("fish_type").getNodeValue());
-							int group = Integer.valueOf(d.getAttributes().getNamedItem("fish_group").getNodeValue());
-							int fish_guts = Integer.valueOf(d.getAttributes().getNamedItem("fish_guts").getNodeValue());
-							int guts_check_time = Integer.valueOf(d.getAttributes().getNamedItem("guts_check_time").getNodeValue());
-							int wait_time = Integer.valueOf(d.getAttributes().getNamedItem("wait_time").getNodeValue());
-							int combat_time = Integer.valueOf(d.getAttributes().getNamedItem("combat_time").getNodeValue());
-
-							fish = new FishData(id, lvl, name, hp, hpreg, type, group, fish_guts, guts_check_time, wait_time, combat_time);
-							switch (fish.getGroup())
-							{
-								case 0:
-									_fishsEasy.add(fish);
-								break;
-								case 1:
-									_fishsNormal.add(fish);
-								break;
-								case 2:
-									_fishsHard.add(fish);
-							}
-						}
-
-						count = _fishsEasy.size() + _fishsNormal.size() + _fishsHard.size();
-					}
+					NamedNodeMap attrs = d.getAttributes();
+					
+					int id = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
+					int lvl = Integer.parseInt(attrs.getNamedItem("level").getNodeValue());
+					String name = attrs.getNamedItem("name").getNodeValue();
+					int hp = Integer.parseInt(attrs.getNamedItem("hp").getNodeValue());
+					int hpreg = Integer.parseInt(attrs.getNamedItem("hpregen").getNodeValue());
+					int type = Integer.parseInt(attrs.getNamedItem("fish_type").getNodeValue());
+					int group = Integer.parseInt(attrs.getNamedItem("fish_group").getNodeValue());
+					int fish_guts = Integer.parseInt(attrs.getNamedItem("fish_guts").getNodeValue());
+					int guts_check_time = Integer.parseInt(attrs.getNamedItem("guts_check_time").getNodeValue());
+					int wait_time = Integer.parseInt(attrs.getNamedItem("wait_time").getNodeValue());
+					int combat_time = Integer.parseInt(attrs.getNamedItem("combat_time").getNodeValue());
+					
+					_fishes.add(new FishData(id, lvl, name, hp, hpreg, type, group, fish_guts, guts_check_time, wait_time, combat_time));
 				}
 			}
 		}
-		catch (SAXException e)
+		catch (Exception e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning("FishTable: Error while creating table" + e);
 		}
-		catch (IOException e)
-		{
-			_log.warning("Error while creating table");
-		}
-		catch (ParserConfigurationException e)
-		{
-			_log.warning("Error while creating table");
-		}
-
-		_log.info("FishTable: Loaded " + _fishsEasy.size() + " easy fishes.");
-		_log.info("FishTable: Loaded " + _fishsNormal.size() + " normal fishes.");
-		_log.info("FishTable: Loaded " + _fishsHard.size() + " hard fishes.");
-		_log.info("FishTable: Loaded " + count + " fishes.");
+		
+		_log.info("FishTable: Loaded " + _fishes.size() + " fishes.");
 	}
-
-	public List<FishData> getfish(int lvl, int type, int group)
+	
+	public static FishData getFish(int lvl, int type, int group)
 	{
-		List<FishData> result = new FastList<FishData>();
-		List<FishData> _Fishs = null;
-
-		switch (group)
+		final List<FishData> result = new ArrayList<>();
+		
+		for (FishData fish : _fishes)
 		{
-			case 0:
-				_Fishs = _fishsEasy;
-			break;
-			case 1:
-				_Fishs = _fishsNormal;
-			break;
-			case 2:
-				_Fishs = _fishsHard;
+			if (fish.getLevel() != lvl || fish.getType() != type || fish.getGroup() != group)
+				continue;
+			
+			result.add(fish);
 		}
-
-		if (_Fishs == null)
+		
+		if (result.isEmpty())
 		{
-			_log.warning("Fish are not defined!");
+			_log.warning("Couldn't find any fish with lvl: " + lvl + " and type: " + type);
 			return null;
 		}
-
-		for (FishData f : _Fishs)
-		{
-			if (f.getLevel() != lvl)
-			{
-				continue;
-			}
-
-			if (f.getType() != type)
-			{
-				continue;
-			}
-
-			result.add(f);
-		}
-
-		if (result.size() == 0)
-		{
-			_log.warning("Can't Find Any Fish!? - Lvl: " + lvl + " Type: " + type);
-		}
-
-		_Fishs = null;
-
-		return result;
+		
+		return Rnd.get(result);
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final FishTable _instance = new FishTable();
 	}
 }

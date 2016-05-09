@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -26,15 +27,12 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import javolution.util.FastMap;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.PackRoot;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
@@ -63,7 +61,7 @@ public class DoorData
 
 	public DoorData()
 	{
-		_staticItems = new FastMap<Integer, L2DoorInstance>();
+		_staticItems = new HashMap<Integer, L2DoorInstance>();
 		parseData();
 		onStart();
 	}
@@ -178,7 +176,7 @@ public class DoorData
 							door.setRange(rangeXMin, rangeYMin, rangeZMin, rangeXMax, rangeYMax, rangeZMax);
 							try
 							{
-								door.setMapRegion(MapRegionTable.getInstance().getMapRegion(x, y));
+								door.setMapRegion(MapRegionTable.getMapRegion(x, y));
 							}
 							catch (Exception e)
 							{
@@ -326,7 +324,7 @@ public class DoorData
 		template = null;
 		try
 		{
-			door.setMapRegion(MapRegionTable.getInstance().getMapRegion(x, y));
+			door.setMapRegion(MapRegionTable.getMapRegion(x, y));
 		}
 		catch (Exception e)
 		{
@@ -391,7 +389,7 @@ public class DoorData
 		int region;
 		try
 		{
-			region = MapRegionTable.getInstance().getMapRegion(x, y);
+			region = MapRegionTable.getMapRegion(x, y);
 		}
 		catch (Exception e)
 		{

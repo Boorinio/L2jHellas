@@ -96,7 +96,7 @@ public class PcKnownList extends PlayableKnownList
 		if (!super.addKnownObject(object, dropper))
 			return false;
 
-		if (object.getPoly().isMorphed() && object.getPoly().getPolyType().equals("item"))
+		if (object.isVisible() && object.getPoly().isMorphed() && object.getPoly().getPolyType().equals("item"))
 		{
 			// if (object.getPolytype().equals("item"))
 			getActiveChar().sendPacket(new SpawnItemPoly(object));
@@ -108,9 +108,9 @@ public class PcKnownList extends PlayableKnownList
 		{
 			if (object instanceof L2ItemInstance)
 			{
-				if (dropper != null)
+				if (object.isVisible() && dropper != null)
 					getActiveChar().sendPacket(new DropItem((L2ItemInstance) object, dropper.getObjectId()));
-				else
+				else if(object.isVisible())
 					getActiveChar().sendPacket(new SpawnItem((L2ItemInstance) object));
 			}
 			else if (object instanceof L2DoorInstance)
@@ -169,43 +169,6 @@ public class PcKnownList extends PlayableKnownList
 					if (otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != relation)
 						getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
 					getActiveChar().sendPacket(new GetOnVehicle(otherPlayer.getObjectId(), otherPlayer.getBoat().getObjectId(), otherPlayer.getInVehiclePosition()));		
-					/*
-					 * if(otherPlayer.getBoat().GetVehicleDeparture() == null)
-					 * {
-					 * 
-					 * int xboat = otherPlayer.getBoat().getX();
-					 * int yboat= otherPlayer.getBoat().getY();
-					 * double modifier = Math.PI/2;
-					 * if (yboat == 0)
-					 * {
-					 * yboat = 1;
-					 * }
-					 * if(yboat < 0)
-					 * {
-					 * modifier = -modifier;
-					 * }
-					 * double angleboat = modifier - Math.atan(xboat/yboat);
-					 * int xp = otherPlayer.getX();
-					 * int yp = otherPlayer.getY();
-					 * modifier = Math.PI/2;
-					 * if (yp == 0)
-					 * {
-					 * yboat = 1;
-					 * }
-					 * if(yboat < 0)
-					 * {
-					 * modifier = -modifier;
-					 * }
-					 * double anglep = modifier - Math.atan(yp/xp);
-					 * 
-					 * double finx = Math.cos(anglep - angleboat)*Math.sqrt(xp *xp +yp*yp ) + Math.cos(angleboat)*Math.sqrt(xboat *xboat +yboat*yboat );
-					 * double finy = Math.sin(anglep - angleboat)*Math.sqrt(xp *xp +yp*yp ) + Math.sin(angleboat)*Math.sqrt(xboat *xboat +yboat*yboat );
-					 * //otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getX() - otherPlayer.getInBoatPosition().x,otherPlayer.getBoat().getY() -
-					 * otherPlayer.getInBoatPosition().y,otherPlayer.getBoat().getZ()- otherPlayer.getInBoatPosition().z);
-					 * otherPlayer.getPosition().setWorldPosition((int)finx,(int)finy,otherPlayer.getBoat().getZ()- otherPlayer.getInBoatPosition().z);
-					 * 
-					 * }
-					 */
 				}
 				else
 				{
@@ -233,7 +196,6 @@ public class PcKnownList extends PlayableKnownList
 
 		return true;
 	}
-
 	/**
 	 * Remove a L2Object from L2PcInstance _knownObjects and _knownPlayer (if necessary) and send Server-Client Packet DeleteObject to the L2PcInstance.<BR>
 	 * <BR>
@@ -271,7 +233,7 @@ public class PcKnownList extends PlayableKnownList
 		if (object instanceof L2Vehicle)
 			return 8000;
 		
-		return Math.max(1800, 3600 - (_knownObjects.size() * 20));
+		return Math.max(1800, 3600 - (getKnownObjects().size() * 20));
 	}
 	
 }

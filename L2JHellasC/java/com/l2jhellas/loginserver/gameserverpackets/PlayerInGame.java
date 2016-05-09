@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.loginserver.gameserverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
@@ -33,7 +32,7 @@ public class PlayerInGame extends ClientBasePacket
 	public PlayerInGame(byte[] decrypt)
 	{
 		super(decrypt);
-		_accounts = new FastList<String>();
+		_accounts = new ArrayList<String>();
 		int size = readH();
 		for (int i = 0; i < size; i++)
 		{

@@ -19,14 +19,13 @@ import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.LoginServerThread;
@@ -78,7 +77,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 
 	private boolean _isAuthedGG;
 	private final long _connectionStartTime;
-	private final List<Integer> _charSlotMapping = new FastList<Integer>();
+	private final List<Integer> _charSlotMapping = new ArrayList<Integer>();
 
 	// Task
 	protected final ScheduledFuture<?> _autoSaveInDB;
@@ -145,7 +144,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		activeChar = pActiveChar;
 		if (activeChar != null)
 		{
-			L2World.storeObject(getActiveChar());
+			L2World.getInstance().storeObject(getActiveChar());
 		}
 	}
 

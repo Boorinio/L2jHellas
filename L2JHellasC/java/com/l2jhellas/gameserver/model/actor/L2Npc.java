@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javolution.util.FastList;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
@@ -55,6 +53,7 @@ import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.MobGroupTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControlTowerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
@@ -179,7 +178,7 @@ public class L2Npc extends L2Character
 					if (!isInActiveRegion()) // NPCs in inactive region don't run this task
 						return;
 					// update knownlist to remove playable which aren't in range any more
-					getKnownList().updateKnownObjects();
+					getKnownList().forgetObjects();
 				}
 
 				if (!(isDead() || isStunned() || isSleeping() || isParalyzed()))
@@ -2472,10 +2471,9 @@ public class L2Npc extends L2Character
 	 */
 	public void deleteMe()
 	{
-		if (getWorldRegion() != null)
-			getWorldRegion().removeFromZones(this);
-		//FIXME this is just a temp hack, we should find a better solution
-
+		final L2WorldRegion region = getWorldRegion();
+		if (region != null)
+			region.removeFromZones(this);		
 		try
 		{
 			decayMe();
@@ -2494,9 +2492,12 @@ public class L2Npc extends L2Character
 		{
 			_log.severe("deletedMe(): " + t);
 		}
-
 		// Remove L2Object object from _allObjects of L2World
-		L2World.removeObject(this);
+		L2World.getInstance().removeObject(this);
+		
+		super.deleteMe();
+		
+		
 	}
 
 	/**
@@ -2682,9 +2683,9 @@ public class L2Npc extends L2Character
 		
 	}
 	
-	public FastList<L2Skill> getLrangeSkill()
+	public ArrayList<L2Skill> getLrangeSkill()
 	{
-		FastList<L2Skill> skilldata = new FastList<L2Skill>();
+		ArrayList<L2Skill> skilldata = new ArrayList<L2Skill>();
 		boolean hasLrange = false;
 		L2NpcAIData AI = getTemplate().getAIDataStatic();
 		
@@ -2744,9 +2745,9 @@ public class L2Npc extends L2Character
 		return (hasLrange ? skilldata : null);
 	}
 	
-	public FastList<L2Skill> getSrangeSkill()
+	public ArrayList<L2Skill> getSrangeSkill()
 	{
-		FastList<L2Skill> skilldata = new FastList<L2Skill>();
+		ArrayList<L2Skill> skilldata = new ArrayList<L2Skill>();
 		boolean hasSrange = false;
 		L2NpcAIData AI = getTemplate().getAIDataStatic();
 		

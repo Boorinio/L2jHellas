@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 
 /**
@@ -25,17 +27,15 @@ public class ExFishingStart extends L2GameServerPacket
 {
 	private static final String _S__FE_13_EXFISHINGSTART = "[S] FE:13 ExFishingStart";
 	private final L2Character _activeChar;
-	private final int _x, _y, _z, _fishType;
-	@SuppressWarnings("unused")
+	private final Location _loc;
+	private final int _fishType;
 	private final boolean _isNightLure;
 
-	public ExFishingStart(L2Character character, int fishType, int x, int y, int z, boolean isNightLure)
+	public ExFishingStart(L2Character character, int fishType, Location loc, boolean isNightLure)
 	{
 		_activeChar = character;
 		_fishType = fishType;
-		_x = x;
-		_y = y;
-		_z = z;
+		_loc = loc;
 		_isNightLure = isNightLure;
 	}
 
@@ -46,13 +46,11 @@ public class ExFishingStart extends L2GameServerPacket
 		writeH(0x13);
 		writeD(_activeChar.getObjectId());
 		writeD(_fishType); // fish type
-		writeD(_x); // x poisson
-		writeD(_y); // y poisson
-		writeD(_z); // z poisson
-		writeC(0x00); // night lure
-		writeC(0x00); // ??
-		writeC((_fishType >= 7 && _fishType <= 9) ? 0x01 : 0x00); // 0 = day lure 1 = night lure
-		writeC(0x00);
+		writeD(_loc.getX()); // x position
+		writeD(_loc.getY()); // y position
+		writeD(_loc.getZ()); // z position
+		writeC(_isNightLure ? 0x01 : 0x00); // night lure
+		writeC(Config.ALLOWFISHING? 0x01 : 0x00); // show fish rank result button
 	}
 
 	@Override

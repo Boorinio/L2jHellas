@@ -17,14 +17,13 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.L2Macro.L2MacroCmd;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -38,7 +37,7 @@ public class MacroList
 	private final L2PcInstance _owner;
 	private int _revision;
 	private int _macroId;
-	private final Map<Integer, L2Macro> _macroses = new FastMap<Integer, L2Macro>();
+	private final Map<Integer, L2Macro> _macroses = new HashMap<Integer, L2Macro>();
 
 	public MacroList(L2PcInstance owner)
 	{
@@ -183,7 +182,7 @@ public class MacroList
 				String name = rset.getString("name");
 				String descr = rset.getString("descr");
 				String acronym = rset.getString("acronym");
-				List<L2MacroCmd> commands = new FastList<L2MacroCmd>();
+				List<L2MacroCmd> commands = new ArrayList<L2MacroCmd>();
 				StringTokenizer st1 = new StringTokenizer(rset.getString("commands"), ";");
 				while (st1.hasMoreTokens())
 				{

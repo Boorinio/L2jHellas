@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
@@ -32,7 +32,7 @@ public class OlympiadStadiaManager
 		return _instance;
 	}
 
-	private FastList<L2OlympiadStadiumZone> _olympiadStadias;
+	private ArrayList<L2OlympiadStadiumZone> _olympiadStadias;
 
 	public OlympiadStadiaManager()
 	{
@@ -41,7 +41,7 @@ public class OlympiadStadiaManager
 	public void addStadium(L2OlympiadStadiumZone arena)
 	{
 		if (_olympiadStadias == null)
-			_olympiadStadias = new FastList<L2OlympiadStadiumZone>();
+			_olympiadStadias = new ArrayList<L2OlympiadStadiumZone>();
 
 		_olympiadStadias.add(arena);
 	}

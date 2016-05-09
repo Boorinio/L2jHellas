@@ -60,7 +60,7 @@ public final class RequestFriendList extends L2GameClientPacket
 			{
 				// int friendId = rset.getInt("friend_id");
 				String friendName = rset.getString("friend_name");
-				friend = L2World.getPlayer(friendName);
+				friend = L2World.getInstance().getPlayer(friendName);
 
 				if (friend == null)
 				{

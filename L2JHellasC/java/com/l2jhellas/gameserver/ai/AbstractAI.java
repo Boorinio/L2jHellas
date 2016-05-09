@@ -29,6 +29,7 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStart;
@@ -701,13 +702,21 @@ abstract class AbstractAI implements Ctrl
 	 */
 	public void clientStartAutoAttack()
 	{
+		if (_actor instanceof L2Summon)
+		{
+			_actor.getActingPlayer().getAI().clientStartAutoAttack();
+			return;
+		}
 		if (!isAutoAttacking())
 		{
+			if (_actor instanceof L2PcInstance && ((L2PcInstance) _actor).getPet() != null)
+				((L2PcInstance) _actor).getPet().broadcastPacket(new AutoAttackStart(((L2PcInstance) _actor).getPet().getObjectId()));
+		
 			// Send a Server->Client packet AutoAttackStart to the actor and all L2PcInstance in its _knownPlayers
 			_actor.broadcastPacket(new AutoAttackStart(_actor.getObjectId()));
 			setAutoAttacking(true);
 		}
-		AttackStanceTaskManager.getInstance().addAttackStanceTask(_actor);
+		AttackStanceTaskManager.getInstance().add(_actor);
 	}
 
 	/**
@@ -718,10 +727,16 @@ abstract class AbstractAI implements Ctrl
 	 */
 	public void clientStopAutoAttack()
 	{
+		if (_actor instanceof L2Summon)
+		{
+			_actor.getActingPlayer().getAI().clientStopAutoAttack();
+			return;
+		}
+		
 		if (_actor instanceof L2PcInstance)
 		{
-			if (!AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor) && isAutoAttacking())
-				AttackStanceTaskManager.getInstance().addAttackStanceTask(_actor);
+			if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor) && isAutoAttacking())
+				AttackStanceTaskManager.getInstance().add(_actor);
 		}
 		else if (isAutoAttacking())
 		{

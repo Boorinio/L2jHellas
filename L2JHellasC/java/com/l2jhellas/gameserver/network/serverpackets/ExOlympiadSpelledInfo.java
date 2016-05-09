@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -46,7 +45,7 @@ public class ExOlympiadSpelledInfo extends L2GameServerPacket
 
 	public ExOlympiadSpelledInfo(L2PcInstance player)
 	{
-		_effects = new FastList<Effect>();
+		_effects = new ArrayList<Effect>();
 		_player = player;
 	}
 

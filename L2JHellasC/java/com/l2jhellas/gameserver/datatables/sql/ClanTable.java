@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.datatables.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -64,7 +63,7 @@ public class ClanTable
 
 	private ClanTable()
 	{
-		_clans = new FastMap<Integer, L2Clan>();
+		_clans = new HashMap<Integer, L2Clan>();
 		L2Clan clan;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

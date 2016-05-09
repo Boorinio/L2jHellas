@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.zone.type;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
@@ -67,7 +67,7 @@ public class L2SignetZone extends L2ZoneType
 	{
 		_region.removeZone(this);
 
-		for (L2Character member : _characterList.values())
+		for (L2Character member : _characterList)
 			member.stopSkillEffects(_skill.getId());
 
 		if (!_isOffensive)
@@ -94,8 +94,8 @@ public class L2SignetZone extends L2ZoneType
 
 	public L2Character[] getCharactersInZone()
 	{
-		FastList<L2Character> charsInZone = new FastList<L2Character>();
-		for (L2Character character : _characterList.values())
+		ArrayList<L2Character> charsInZone = new ArrayList<L2Character>();
+		for (L2Character character : _characterList)
 		{
 			if (!_isOffensive)
 				charsInZone.add(character);

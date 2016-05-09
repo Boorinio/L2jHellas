@@ -55,9 +55,12 @@ public class VoteManager
 	protected static int getHopZoneVotes()
 	{
 		int votes = -1;
-		String Hopzonelink = Config.VOTE_LINK_HOPZONE;
+		String Hopzonelink = Config.HOPZONE_SERVER_LINK;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
+		
+		if(!Config.HOPZONE_SERVER_LINK.endsWith(".html"))
+			Config.HOPZONE_SERVER_LINK+=".html";
 		
 		try
 		{
@@ -69,10 +72,10 @@ public class VoteManager
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				if (line.contains("rank anonymous tooltip"))
+				if (line.contains("no steal make love")||line.contains("no votes here")||line.contains("bang, you don't have votes")|| line.contains("la vita e bella"))
 				{
-					votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
-					break;
+				votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
+				return votes;				
 				}
 			}
 			
@@ -81,7 +84,7 @@ public class VoteManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "VoteManager: Crazy error call boorinio " + e);
+			_log.log(Level.WARNING, "VoteManager: Crazy error  " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -100,23 +103,36 @@ public class VoteManager
 		BufferedReader in = null;
 		try
 		{
-			url = new URL(Config.VOTE_LINK_TOPZONE);
+			
+			if(!Config.TOPZONE_SERVER_LINK.endsWith(".html"))
+				Config.TOPZONE_SERVER_LINK+=".html";
+			
+			url = new URL(Config.TOPZONE_SERVER_LINK);	
 			con = url.openConnection();
-			con.addRequestProperty("User-Agent", "L2TopZone");
+			con.addRequestProperty("User-L2Topzone", "Mozilla/4.76");
+			//con.addRequestProperty("User-Agent", "L2TopZone");
 			is = con.getInputStream();
 			isr = new InputStreamReader(is);
 			in = new BufferedReader(isr);
-			String inputLine;
-			while ((inputLine = in.readLine()) != null)
+			String line;
+			while ((line = in.readLine()) != null)
 			{
-				if (inputLine.contains("Votes"))
+				if (line.contains("fa fa-fw fa-lg fa-thumbs-up"))
 				{
-					String votesLine = inputLine;
 					
-					votes = Integer.valueOf(votesLine.split(">")[3].replace("</div", ""));
-					break;
+					final String letsSliptIt = line;
+					final String[] nowLetsFindTheVote = letsSliptIt.split("</i>");
+					final String nowLetsSplitTheVote = nowLetsFindTheVote[1];
+					final String[] vote = nowLetsSplitTheVote.split("</span>");
+					final String votess = vote[0];
+					
+				    votes = Integer.valueOf(votess);          
+				    return votes;				
 				}
 			}
+			
+			in.close();
+			isr.close();
 		}
 		catch (Exception e)
 		{
@@ -193,7 +209,7 @@ public class VoteManager
 
 	public static String whosVoting()
 	{
-		for (L2PcInstance voter : L2World.getAllPlayers())
+		for (L2PcInstance voter : L2World.getInstance().getAllPlayers().values())
 		{
 			if (voter.isVoting())
 			{
@@ -269,7 +285,7 @@ public class VoteManager
 		}
 		else if (((lastVoteHopzone + voteDelay) < System.currentTimeMillis()) && (getTries(player) > 0))
 		{
-			for (L2PcInstance j : L2World.getAllPlayers())
+			for (L2PcInstance j : L2World.getInstance().getAllPlayers().values())
 			{
 				if (j.isVoting())
 				{
@@ -285,7 +301,7 @@ public class VoteManager
 		}
 		else if ((getTries(player) <= 0) && ((lastVoteHopzone + voteDelay) < System.currentTimeMillis()))
 		{
-			for (L2PcInstance j : L2World.getAllPlayers())
+			for (L2PcInstance j : L2World.getInstance().getAllPlayers().values())
 			{
 				if (j.isVoting())
 				{
@@ -373,7 +389,7 @@ public class VoteManager
 		}
 		else if ((getTries(player) <= 0) && ((lastVoteTopzone + voteDelay) < System.currentTimeMillis()))
 		{
-			for (L2PcInstance j : L2World.getAllPlayers())
+			for (L2PcInstance j : L2World.getInstance().getAllPlayers().values())
 			{
 				if (j.isVoting())
 				{
@@ -388,7 +404,7 @@ public class VoteManager
 		}
 		else if (((lastVoteTopzone + voteDelay) < System.currentTimeMillis()) && (getTries(player) > 0))
 		{
-			for (L2PcInstance j : L2World.getAllPlayers())
+			for (L2PcInstance j : L2World.getInstance().getAllPlayers().values())
 			{
 				if (j.isVoting())
 				{

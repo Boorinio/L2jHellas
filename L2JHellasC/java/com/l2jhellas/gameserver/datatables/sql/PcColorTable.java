@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.datatables.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.PcColorContainer;
@@ -34,7 +33,7 @@ public class PcColorTable
 	/** The one and only instance of this class */
 	public static PcColorTable _instance = null;
 	/** List of names and color values container */
-	private static FastMap<String, PcColorContainer> _pcColors = new FastMap<String, PcColorContainer>();
+	private static HashMap<String, PcColorContainer> _pcColors = new HashMap<String, PcColorContainer>();
 
 	PcColorTable()
 	{

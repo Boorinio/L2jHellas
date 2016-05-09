@@ -19,13 +19,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.PackRoot;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -36,15 +35,14 @@ import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.script.DateRange;
 
 public class Announcements
 {
 	private static Logger _log = Logger.getLogger(Announcements.class.getName());
 
 	private static Announcements _instance;
-	private final List<String> _announcements = new FastList<String>();
-	private final List<List<Object>> _eventAnnouncements = new FastList<List<Object>>();
+	private final List<String> _announcements = new ArrayList<String>();
+	private final List<List<Object>> _eventAnnouncements = new ArrayList<List<Object>>();
 
 	public Announcements()
 	{
@@ -103,7 +101,7 @@ public class Announcements
 
 	public void addEventAnnouncement(DateRange validDateRange, String[] msg)
 	{
-		List<Object> entry = new FastList<Object>();
+		List<Object> entry = new ArrayList<Object>();
 		entry.add(validDateRange);
 		entry.add(msg);
 		_eventAnnouncements.add(entry);
@@ -183,7 +181,7 @@ public class Announcements
 	{
 		CreatureSay cs = new CreatureSay(0, 18, "", "Announcements: " + text);
 
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (player != null)
 				if (player.isOnline() != 0)
@@ -197,7 +195,7 @@ public class Announcements
 	{
 		CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", text);
 
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			player.sendPacket(cs);
 		}
@@ -206,7 +204,7 @@ public class Announcements
 	public void announceToAll(SystemMessage sm)
 	{
 
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			player.sendPacket(sm);
 		}

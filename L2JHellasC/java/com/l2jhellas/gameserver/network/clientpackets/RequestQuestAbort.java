@@ -55,7 +55,7 @@ public final class RequestQuestAbort extends L2GameClientPacket
 				sm.addString("Quest aborted.");
 				activeChar.sendPacket(sm);
 				sm = null;
-				QuestList ql = new QuestList();
+				QuestList ql = new QuestList(activeChar);
 				activeChar.sendPacket(ql);
 			}
 			else

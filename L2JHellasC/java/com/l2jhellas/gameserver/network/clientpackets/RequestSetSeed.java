@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -75,7 +75,7 @@ public class RequestSetSeed extends L2GameClientPacket
 		if (_size < 1)
 			return;
 
-		FastList<SeedProduction> seeds = new FastList<SeedProduction>();
+		ArrayList<SeedProduction> seeds = new ArrayList<SeedProduction>();
 		for (int i = 0; i < _size; i++)
 		{
 			int id = _items[i * 3 + 0];

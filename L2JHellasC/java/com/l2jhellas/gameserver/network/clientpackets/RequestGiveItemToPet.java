@@ -106,7 +106,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 			return;
 		}
 
-		L2PetInstance pet = (L2PetInstance) player.getPet();
+		final L2PetInstance pet = (L2PetInstance) player.getPet();
 		if (pet.isDead())
 		{
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_GIVE_ITEMS_TO_DEAD_PET));

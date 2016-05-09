@@ -37,14 +37,14 @@ public class RaidKill extends Condition
 
 		int val = Integer.parseInt(getValue().toString());
 
-		Map<Integer, Integer> list = RaidBossPointsManager.getList(player);
+		Map<Integer, Integer> list = RaidBossPointsManager.getInstance().getList(player);
 		if (list != null)
 		{
 			for (int bid : list.keySet())
 			{
 				if (bid == val)
 				{
-					if (RaidBossPointsManager.getList(player).get(bid) > 0)
+					if (RaidBossPointsManager.getInstance().getList(player).get(bid) > 0)
 						return true;
 				}
 			}

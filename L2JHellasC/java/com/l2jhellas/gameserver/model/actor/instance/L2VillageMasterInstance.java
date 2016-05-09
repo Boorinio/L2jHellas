@@ -34,6 +34,7 @@ import com.l2jhellas.gameserver.model.base.PlayerRace;
 import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.quest.QuestState;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;
@@ -181,15 +182,16 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		}
 		else if (command.startsWith("Subclass"))
 		{
-			int cmdChoice = Integer.parseInt(command.substring(9, 10).trim());
-
+			if(player.isFlying())
+				return;
+			
 			// Subclasses may not be changed while a skill is in use.
-			if (player.isCastingNow() || player.isAllSkillsDisabled())
+			if (player.isCastingNow() || player.isAllSkillsDisabled() || player.isLearningSkill())
 			{
 				player.sendPacket(SystemMessageId.SUBCLASS_NO_CHANGE_OR_CREATE_WHILE_SKILL_IN_USE);
 				return;
 			}
-			else if (player.isInCombat())
+			if (player.isInCombat())
 			{
 				player.sendMessage("Sub classes may not be created or changed while being in combat.");
 				return;
@@ -199,11 +201,16 @@ public class L2VillageMasterInstance extends L2NpcInstance
 				player.sendMessage("You can`t change Subclass while Cursed weapon equiped!");
 				return;
 			}
+			
+
+			
 			StringBuilder content = new StringBuilder("<html><body>");
 			Set<PlayerClass> subsAvailable;
 
 			int paramOne = 0;
 			int paramTwo = 0;
+			
+			int cmdChoice = Integer.parseInt(command.substring(9, 10).trim());
 
 			try
 			{
@@ -223,7 +230,24 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 			switch (cmdChoice)
 			{
-				case 1: // Add Subclass - Initial
+				case 1: 
+					
+					// Add Subclass - Initial
+					
+					// Subclasses may not be added while a summon is active.
+					if (player.getPet() != null)
+					{
+						player.sendPacket(SystemMessageId.CANT_SUBCLASS_WITH_SUMMONED_SERVITOR);
+						return;
+					}
+					
+					// Subclasses may not be added while you are over your weight limit.
+					if (player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
+					{
+						player.sendPacket(SystemMessageId.NOT_SUBCLASS_WHILE_OVERWEIGHT);
+						return;
+					}
+					
 					// Avoid giving player an option to add a new sub class, if they have three already.
 					if (player.getTotalSubClasses() == Config.MAX_SUBCLASS)
 					{
@@ -251,6 +275,20 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 					final int baseClassId = player.getBaseClass();
 
+					// Subclasses may not be changed while a summon is active.
+					if (player.getPet() != null)
+					{
+						player.sendPacket(SystemMessageId.CANT_SUBCLASS_WITH_SUMMONED_SERVITOR);
+						return;
+					}
+					
+					// Subclasses may not be changed while a you are over your weight limit.
+					if (player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
+					{
+						player.sendPacket(SystemMessageId.NOT_SUBCLASS_WHILE_OVERWEIGHT);
+						return;
+					}
+					
 					if (player.getSubClasses().isEmpty())
 					{
 						content.append("You can't change sub classes when you don't have a sub class to begin with.<br>" + "<a action=\"bypass -h npc_" + getObjectId() + "_Subclass 1\">Add subclass.</a>");
@@ -280,6 +318,11 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					content.append("Change Subclass:<br>Which of the following sub classes would you like to change?<br>");
 					int classIndex = 1;
 
+					if (player.getSubClasses() == null || player.getSubClasses().isEmpty())
+					{
+						html.setFile("data/html/villagemaster/SubClass_ModifyEmpty.htm");
+						break;
+					}
 					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 					else
@@ -380,13 +423,12 @@ public class L2VillageMasterInstance extends L2NpcInstance
 							return;
 						}
 					}
-					if (allowAddition)
+					if (allowAddition & isValidNewSubClass(player, paramOne))
 					{
 						String className = CharTemplateData.getInstance().getClassNameById(paramOne);
 
 						if (!player.addSubClass(paramOne, player.getTotalSubClasses() + 1))
-						{
-							
+						{					
 							player.sendMessage("The sub class could not be added.");
 							return;
 						}
@@ -442,6 +484,30 @@ public class L2VillageMasterInstance extends L2NpcInstance
 						return;
 					}
 
+					if (player.getClassIndex() == paramOne)
+					{
+						html.setFile("data/html/villagemaster/SubClass_Current.htm");
+						break;
+					}
+					
+					if (paramOne == 0)
+					{
+						if (!checkVillageMaster(player.getBaseClass()))
+							return;
+					}
+					else
+					{
+						try
+						{
+							if (!checkVillageMaster(player.getSubClasses().get(paramOne).getClassDefinition()))
+								return;
+						}
+						catch (NullPointerException e)
+						{
+							return;
+						}
+					}
+					
 					player.setActiveClass(paramOne);
 
 					content.append("Change Subclass:<br>Your active sub class is now a <font color=\"LEVEL\">" + CharTemplateData.getInstance().getClassNameById(player.getActiveClass()) + "</font>.");
@@ -450,10 +516,22 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					
 				break;
 				case 6: // Change/Cancel Subclass - Choice
+
+					if (paramOne < 1 || paramOne > 3)
+						return;
+					
 					content.append("Please choose a sub class to change to. If the one you are looking for is not here, " + "please seek out the appropriate master for that class.<br>" + "<font color=\"LEVEL\">Warning!</font> All classes and skills for this class will be removed.<br><br>");
 
+					
 					subsAvailable = getAvailableSubClasses(player);
 
+					// another validity check
+					if (subsAvailable == null || subsAvailable.isEmpty())
+					{
+						player.sendMessage("There are no sub classes available at this time.");
+						return;
+					}
+					
 					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())					{
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 					}
@@ -478,6 +556,8 @@ public class L2VillageMasterInstance extends L2NpcInstance
 						return;
 					
 					
+					if (!isValidNewSubClass(player, paramTwo))
+						return;
 					
 					if (!player.getAntiFlood().getSubclass().tryPerformAction("change class"))
 					{
@@ -546,6 +626,52 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		}
 	}
 
+	/*
+	 * Check new subclass classId for validity (villagemaster race/type is not contains in previous subclasses, but in allowed subclasses) Base class not added into allowed subclasses.
+	 */
+	private final boolean isValidNewSubClass(L2PcInstance player, int classId)
+	{
+		if (!checkVillageMaster(classId))
+			return false;
+		
+		final ClassId cid = ClassId.values()[classId];
+		for (Iterator<SubClass> subList = iterSubClasses(player); subList.hasNext();)
+		{
+			SubClass sub = subList.next();
+			ClassId subClassId = ClassId.values()[sub.getClassId()];
+			
+			if (subClassId.equalsOrChildOf(cid))
+				return false;
+		}
+		
+		// get player base class
+		final int currentBaseId = player.getBaseClass();
+		final ClassId baseCID = ClassId.values()[currentBaseId];
+		
+		// we need 2nd occupation ID
+		final int baseClassId;
+		if (baseCID.level() > 2)
+			baseClassId = baseCID.getParent().ordinal();
+		else
+			baseClassId = currentBaseId;
+		
+		Set<PlayerClass> availSubs = PlayerClass.values()[baseClassId].getAvailableSubclasses(player);
+		if (availSubs == null || availSubs.isEmpty())
+			return false;
+		
+		boolean found = false;
+		for (PlayerClass pclass : availSubs)
+		{
+			if (pclass.ordinal() == classId)
+			{
+				found = true;
+				break;
+			}
+		}
+		
+		return found;
+	}
+	
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -605,7 +731,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 				return;
 			}
 		}
-		if (player.isInsideZone(L2PcInstance.ZONE_SIEGE))
+		if (player.isInsideZone(ZoneId.SIEGE))
 		{
 			player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_WHILE_IN_SIEGE);
 			return;

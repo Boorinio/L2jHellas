@@ -16,8 +16,6 @@
 package Extensions.Vote;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -77,18 +75,18 @@ public class VoteRewardTopzone
 		}
 		if ((CurrentVotes >= LastVotes && CurrentVotes < GoalVotes) || CurrentVotes == LastVotes)
 		{
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(new ExShowScreenMessage("TopZone Votes: " + CurrentVotes, 4000, SMPOS.BOTTOM_RIGHT, true));
 			Announcements.getInstance().announceToAll("TopZone Votes: " + CurrentVotes);
 			Announcements.getInstance().announceToAll("Next Reward in: " + GoalVotes + " Votes.");
 			waitSecs(5);
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(new ExShowScreenMessage("Next Reward in: " + GoalVotes + " Votes.", 4000, SMPOS.BOTTOM_RIGHT, true));
 		}
 		if (CurrentVotes >= GoalVotes)
 		{
 			RewardPlayers();
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 			{
 				player.sendPacket(new ExShowScreenMessage("TopZone Rewarded!", 4000, SMPOS.BOTTOM_RIGHT, true));
 			}
@@ -97,7 +95,7 @@ public class VoteRewardTopzone
 			Announcements.getInstance().announceToAll("TopZone Votes: " + CurrentVotes);
 			Announcements.getInstance().announceToAll("Next Reward in : " + GoalVotes + " Votes.");
 			waitSecs(5);
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 			{
 				player.sendPacket(new ExShowScreenMessage("Next Reward in: " + GoalVotes + " Votes.", 4000, SMPOS.BOTTOM_RIGHT, true));
 			}
@@ -117,7 +115,7 @@ public class VoteRewardTopzone
 	
 	public static void RewardPlayers()
 	{
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			String temp = player.getClient().getConnection().getInetAddress().getHostAddress();
 			if (Config.TOPZONE_BOXES_ALLOWED != 0 && Boxes.contains(temp))
@@ -165,69 +163,51 @@ public class VoteRewardTopzone
 	
 	public static int getVotes()
 	{
-		int votes = -1;
-		URL url = null;
-		URLConnection con = null;
-		InputStream is = null;
 		InputStreamReader isr = null;
-		BufferedReader in = null;
-		
+		BufferedReader br = null;
+		int votes = -1;
 		try
 		{
-			url = new URL(Config.TOPZONE_SERVER_LINK);
-			con = url.openConnection();
-			con.addRequestProperty("User-Agent", "L2TopZone");
-			is = con.getInputStream();
-			isr = new InputStreamReader(is);
-			in = new BufferedReader(isr);
-			String inputLine;
-			while ((inputLine = in.readLine()) != null)
+			if(!Config.TOPZONE_SERVER_LINK.endsWith(".html"))
+				Config.TOPZONE_SERVER_LINK+=".html";
+			
+			URLConnection con = new URL(Config.TOPZONE_SERVER_LINK).openConnection();
+			
+			
+			con.addRequestProperty("User-L2Topzone", "Mozilla/4.76");
+			isr = new InputStreamReader(con.getInputStream());
+			br = new BufferedReader(isr);
+			
+			String line;
+			while ((line = br.readLine()) != null)
 			{
-				if (inputLine.contains("Votes"))
+				if (line.contains("fa fa-fw fa-lg fa-thumbs-up"))
 				{
-					votes = Integer.valueOf(inputLine.split(">")[3].replace("</div", ""));					
-					break;
+					
+					final String letsSliptIt = line;
+					final String[] nowLetsFindTheVote = letsSliptIt.split("</i>");
+					final String nowLetsSplitTheVote = nowLetsFindTheVote[1];
+					final String[] vote = nowLetsSplitTheVote.split("</span>");
+					final String votess = vote[0];
+					
+				    votes = Integer.valueOf(votess);
+                    Gui.topzone.setText("TopZone Votes: " + votes);
+
+				return votes;	
+		
 				}
 			}
 			
-			Gui.topzone.setText("TopZone Votes: " + votes);
+			br.close();
+			isr.close();
 		}
-		catch (final Exception e)
+		catch (Exception e)
 		{
-			System.out.println("[AutoVoteReward] TOPZONE is offline or something is wrong in link");
-			Announcements.getInstance().gameAnnounceToAll("[AutoVoteReward] TOPZONE is offline. We will check reward as it will be online again");
+			System.out.println(e);
+			System.out.println("Error while getting server vote count.");
 		}
-		finally
-		{
-			if (in != null)
-				try
-				{
-					in.close();
-				}
-				catch (final IOException e1)
-				{
-					e1.printStackTrace();
-				}
-			if (isr != null)
-				try
-				{
-					isr.close();
-				}
-				catch (final IOException e1)
-				{
-					e1.printStackTrace();
-				}
-			if (is != null)
-				try
-				{
-					is.close();
-				}
-				catch (final IOException e1)
-				{
-					e1.printStackTrace();
-				}
-		}
-		return votes;
+	
+	  return -1;
 	}
 		
 }

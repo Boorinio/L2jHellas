@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.templates.L2Henna;
 
 public class HennaRemoveList extends L2GameServerPacket
 {
@@ -32,16 +32,15 @@ public class HennaRemoveList extends L2GameServerPacket
 		writeC(0xe5);
 		writeD(_player.getAdena());
 		writeD(_player.getHennaEmptySlots());
-		writeD(Math.abs(_player.getHennaEmptySlots() - 4));
+		writeD(Math.abs(3 - _player.getHennaEmptySlots()));
 		
-		for (int i = 1; i <= 3; i++)
+		for (L2Henna henna : _player.getHennaList())
 		{
-			L2HennaInstance henna = _player.getHenna(i);
-			if (henna != null)
+			if(henna!=null)
 			{
 				writeD(henna.getSymbolId());
-				writeD(henna.getItemIdDye());
-				writeD(henna.getAmountDyeRequire() / 2);
+				writeD(henna.getDyeId());
+				writeD(L2Henna.getAmountDyeRequire() / 2);
 				writeD(henna.getPrice() / 5);
 				writeD(0x01);
 			}

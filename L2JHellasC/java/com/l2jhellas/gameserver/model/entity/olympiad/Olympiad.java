@@ -31,8 +31,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.GameServer;
@@ -296,7 +294,7 @@ public class Olympiad
 		_noblesRank.clear();
 
 		Map<Integer, Integer> tmpPlace;
-		tmpPlace = new FastMap<Integer, Integer>();
+		tmpPlace = new HashMap<Integer, Integer>();
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

@@ -15,14 +15,13 @@
 package com.l2jhellas.gameserver.instancemanager;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
@@ -93,7 +92,7 @@ public final class PetitionManager
 		private PetitionState _state = PetitionState.Pending;
 		private final String _content;
 
-		private final List<CreatureSay> _messageLog = new FastList<CreatureSay>();
+		private final List<CreatureSay> _messageLog = new ArrayList<CreatureSay>();
 
 		private final L2PcInstance _petitioner;
 		private L2PcInstance _responder;
@@ -237,8 +236,8 @@ public final class PetitionManager
 
 	private PetitionManager()
 	{
-		_pendingPetitions = new FastMap<Integer, Petition>();
-		_completedPetitions = new FastMap<Integer, Petition>();
+		_pendingPetitions = new HashMap<Integer, Petition>();
+		_completedPetitions = new HashMap<Integer, Petition>();
 	}
 
 	public void clearCompletedPetitions()

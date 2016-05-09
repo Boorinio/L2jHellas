@@ -24,9 +24,8 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_MOVE_TO;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.model.L2CharPosition;
@@ -41,6 +40,7 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -60,8 +60,6 @@ import com.l2jhellas.util.Rnd;
  */
 public class L2CharacterAI extends AbstractAI
 {
-	private static final int ZONE_PVP = 1;
-	
 	@Override
 	protected void onEvtAttacked(L2Character attacker)
 	{
@@ -125,7 +123,7 @@ public class L2CharacterAI extends AbstractAI
 		L2Character target = null;
 		if (target instanceof L2PcInstance && _actor instanceof L2PcInstance)
 		{
-			if (((L2PcInstance) _actor).getKarma() > 0 && (_actor.getLevel() - target.getLevel()) >= 10 && ((L2Playable) target).getProtectionBlessing() && !(target.isInsideZone(ZONE_PVP)))
+			if (((L2PcInstance) _actor).getKarma() > 0 && (_actor.getLevel() - target.getLevel()) >= 10 && ((L2Playable) target).getProtectionBlessing() && !(target.isInsideZone(ZoneId.PVP)))
 			{
 				// If attacker have karma and have level >= 10 than his target and target have Newbie Protection Buff,
 				clientActionFailed();
@@ -521,8 +519,8 @@ public class L2CharacterAI extends AbstractAI
 	{
 		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
 		_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
-		if (AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor))
-			AttackStanceTaskManager.getInstance().removeAttackStanceTask(_actor);
+		
+		AttackStanceTaskManager.getInstance().remove(_actor);
 		
 		// Stop Server AutoAttack also
 		setAutoAttacking(false);
@@ -549,9 +547,7 @@ public class L2CharacterAI extends AbstractAI
 	{
 		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
 		_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
-		if (AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor))
-			AttackStanceTaskManager.getInstance().removeAttackStanceTask(_actor);
-		
+		AttackStanceTaskManager.getInstance().remove(_actor);		
 		// stop Server AutoAttack also
 		setAutoAttacking(false);
 		
@@ -796,7 +792,7 @@ public class L2CharacterAI extends AbstractAI
 		// Stop an AI Follow Task
 		stopFollow();
 		
-		if (!AttackStanceTaskManager.getInstance().getAttackStanceTask(_actor))
+		if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor))
 			_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
 		
 		// Launch actions corresponding to the Event Think
@@ -1083,19 +1079,19 @@ public class L2CharacterAI extends AbstractAI
 		public boolean isHealer = false;
 		public boolean isFighter = false;
 		public boolean cannotMoveOnLand = false;
-		public List<L2Skill> generalSkills = new FastList<L2Skill>();
-		public List<L2Skill> buffSkills = new FastList<L2Skill>();
+		public List<L2Skill> generalSkills = new ArrayList<L2Skill>();
+		public List<L2Skill> buffSkills = new ArrayList<L2Skill>();
 		public int lastBuffTick = 0;
-		public List<L2Skill> debuffSkills = new FastList<L2Skill>();
+		public List<L2Skill> debuffSkills = new ArrayList<L2Skill>();
 		public int lastDebuffTick = 0;
-		public List<L2Skill> cancelSkills = new FastList<L2Skill>();
-		public List<L2Skill> healSkills = new FastList<L2Skill>();
-		//public List<L2Skill> trickSkills = new FastList<L2Skill>();
-		public List<L2Skill> generalDisablers = new FastList<L2Skill>();
-		public List<L2Skill> sleepSkills = new FastList<L2Skill>();
-		public List<L2Skill> rootSkills = new FastList<L2Skill>();
-		public List<L2Skill> muteSkills = new FastList<L2Skill>();
-		public List<L2Skill> resurrectSkills = new FastList<L2Skill>();
+		public List<L2Skill> cancelSkills = new ArrayList<L2Skill>();
+		public List<L2Skill> healSkills = new ArrayList<L2Skill>();
+		//public List<L2Skill> trickSkills = new ArrayList<L2Skill>();
+		public List<L2Skill> generalDisablers = new ArrayList<L2Skill>();
+		public List<L2Skill> sleepSkills = new ArrayList<L2Skill>();
+		public List<L2Skill> rootSkills = new ArrayList<L2Skill>();
+		public List<L2Skill> muteSkills = new ArrayList<L2Skill>();
+		public List<L2Skill> resurrectSkills = new ArrayList<L2Skill>();
 		public boolean hasHealOrResurrect = false;
 		public boolean hasLongRangeSkills = false;
 		public boolean hasLongRangeDamageSkills = false;

@@ -16,10 +16,9 @@ package com.l2jhellas.loginserver;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 
@@ -29,7 +28,7 @@ import com.l2jhellas.Config;
 public class GameServerListener extends FloodProtectedListener
 {
 	private static Logger _log = Logger.getLogger(GameServerListener.class.getName());
-	private static List<GameServerThread> _gameServers = new FastList<GameServerThread>();
+	private static List<GameServerThread> _gameServers = new ArrayList<GameServerThread>();
 
 	public GameServerListener() throws IOException
 	{

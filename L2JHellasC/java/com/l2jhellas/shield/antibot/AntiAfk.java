@@ -38,14 +38,14 @@ public class AntiAfk
 
 	static void antiafksystem()
 	{
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			player.botx = player.getX();
 			player.boty = player.getY();
 			player.botz = player.getZ();
 		}
 		waitSecs(60 * Config.MINUTES_AFK_PLAYERS);
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (player.botx == player.getX() && player.boty == player.getY() && player.botz == player.getZ() && !player.isGM())
 			{

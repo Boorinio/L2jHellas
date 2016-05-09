@@ -14,16 +14,15 @@
  */
 package com.l2jhellas.gameserver.skills;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import javolution.util.FastMap;
 
 public class NpcBufferSkills
 {
 	private int _npcId = 0;
-	private final Map<Integer, Integer> _skillLevels = new FastMap<Integer, Integer>();
-	private final Map<Integer, Integer> _skillFeeIds = new FastMap<Integer, Integer>();
-	private final Map<Integer, Integer> _skillFeeAmounts = new FastMap<Integer, Integer>();
+	private final Map<Integer, Integer> _skillLevels = new HashMap<Integer, Integer>();
+	private final Map<Integer, Integer> _skillFeeIds = new HashMap<Integer, Integer>();
+	private final Map<Integer, Integer> _skillFeeAmounts = new HashMap<Integer, Integer>();
 
 	public NpcBufferSkills(int npcId)
 	{

@@ -44,7 +44,7 @@ public final class RequestDuelStart extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		L2PcInstance targetChar = L2World.getPlayer(_player);
+		L2PcInstance targetChar = L2World.getInstance().getPlayer(_player);
 		if (activeChar == null)
 			return;
 		if (targetChar == null)

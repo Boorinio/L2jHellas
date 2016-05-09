@@ -21,6 +21,8 @@ import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
+import com.l2jhellas.gameserver.network.serverpackets.DoorInfo;
+import com.l2jhellas.gameserver.network.serverpackets.DoorStatusUpdate;
 
 /**
  * @author mkizub
@@ -165,8 +167,9 @@ public class L2DoorAI extends L2CharacterAI
 		@Override
 		public void run()
 		{
-			_door.getKnownList().updateKnownObjects();
-
+			_attacker.sendPacket(new DoorInfo(_door, false));
+			_attacker.sendPacket(new DoorStatusUpdate(_door));
+			
 			for (L2SiegeGuardInstance guard : _door.getKnownSiegeGuards())
 			{
 				if (_actor.isInsideRadius(guard, guard.getFactionRange(), false, true) && Math.abs(_attacker.getZ() - guard.getZ()) < 200)

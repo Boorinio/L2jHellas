@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import javolution.util.FastMap;
+import java.util.HashMap;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
@@ -44,12 +44,12 @@ public class ExShowProcureCropDetail extends L2GameServerPacket
 	private static final String _S__FE_22_EXSHOWPROCURECROPDETAIL = "[S] FE:22 ExShowProcureCropDetail";
 
 	private final int _cropId;
-	private final FastMap<Integer, CropProcure> _castleCrops;
+	private final HashMap<Integer, CropProcure> _castleCrops;
 
 	public ExShowProcureCropDetail(int cropId)
 	{
 		_cropId = cropId;
-		_castleCrops = new FastMap<Integer, CropProcure>();
+		_castleCrops = new HashMap<Integer, CropProcure>();
 
 		for (Castle c : CastleManager.getInstance().getCastles())
 		{

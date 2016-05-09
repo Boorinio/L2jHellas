@@ -14,11 +14,10 @@
  */
 package com.l2jhellas.gameserver.skills;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
@@ -40,7 +39,7 @@ public class SkillTable
 
 	private SkillTable()
 	{
-		_skills = new FastMap<Integer, L2Skill>();
+		_skills = new HashMap<Integer, L2Skill>();
 		SkillsEngine.getInstance().loadAllSkills(_skills);
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _skills.size() + " skills.");
 	}

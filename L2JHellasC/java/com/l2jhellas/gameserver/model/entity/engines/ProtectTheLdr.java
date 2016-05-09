@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
@@ -35,8 +35,8 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public class ProtectTheLdr
 {
-	public static List<L2PcInstance> _Team1 = new FastList<L2PcInstance>();
-	public static List<L2PcInstance> _Team2 = new FastList<L2PcInstance>();
+	public static List<L2PcInstance> _Team1 = new ArrayList<L2PcInstance>();
+	public static List<L2PcInstance> _Team2 = new ArrayList<L2PcInstance>();
 	public static int team1x = 86535;
 	public static int team1y = 257189;
 	public static int team1z = -11672;
@@ -135,7 +135,7 @@ public class ProtectTheLdr
 	
 	public static void shufflePlayers()
 	{
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (player.isinZodiac)
 			{

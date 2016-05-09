@@ -65,10 +65,10 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		while (list.size() > 1)
 		{
 			playerOneName = list.remove(Rnd.get(list.size()));
-			playerOne = L2World.getPlayer(playerOneName);
+			playerOne = L2World.getInstance().getPlayer(playerOneName);
 			if (playerOne == null || playerOne.isOnline()==0)
 				continue;
-			playerTwo = L2World.getPlayer(list.remove(Rnd.get(list.size())));
+			playerTwo = L2World.getInstance().getPlayer(list.remove(Rnd.get(list.size())));
 			if (playerTwo == null || playerTwo.isOnline()==0)
 			{
 				list.add(playerOneName);

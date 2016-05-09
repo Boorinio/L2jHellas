@@ -17,14 +17,13 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
@@ -55,7 +54,7 @@ public class AutoChatHandler implements SpawnListener
 
 	protected AutoChatHandler()
 	{
-		_registeredChats = new FastMap<Integer, AutoChatInstance>();
+		_registeredChats = new HashMap<Integer, AutoChatInstance>();
 		restoreChatData();
 		L2Spawn.addSpawnListener(this);
 	}
@@ -306,7 +305,7 @@ public class AutoChatHandler implements SpawnListener
 		private boolean _globalChat = false;
 		private boolean _isActive;
 
-		private final Map<Integer, AutoChatDefinition> _chatDefinitions = new FastMap<Integer, AutoChatDefinition>();
+		private final Map<Integer, AutoChatDefinition> _chatDefinitions = new HashMap<Integer, AutoChatDefinition>();
 		protected ScheduledFuture<?> _chatTask;
 
 		protected AutoChatInstance(int npcId, String[] chatTexts, long chatDelay, boolean isGlobal)
@@ -465,7 +464,7 @@ public class AutoChatHandler implements SpawnListener
 		 */
 		public L2Npc[] getNPCInstanceList()
 		{
-			List<L2Npc> npcInsts = new FastList<L2Npc>();
+			List<L2Npc> npcInsts = new ArrayList<L2Npc>();
 
 			for (AutoChatDefinition chatDefinition : _chatDefinitions.values())
 			{
@@ -758,8 +757,8 @@ public class AutoChatHandler implements SpawnListener
 					try
 					{
 						L2Npc chatNpc = chatDef._npcInstance;
-						List<L2PcInstance> nearbyPlayers = new FastList<L2PcInstance>();
-						List<L2PcInstance> nearbyGMs = new FastList<L2PcInstance>();
+						List<L2PcInstance> nearbyPlayers = new ArrayList<L2PcInstance>();
+						List<L2PcInstance> nearbyGMs = new ArrayList<L2PcInstance>();
 
 						for (L2Character player : chatNpc.getKnownList().getKnownCharactersInRadius(1500))
 						{

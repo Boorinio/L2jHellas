@@ -16,13 +16,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -41,8 +40,8 @@ public class ArmorSetsData
 	private static Logger _log = Logger.getLogger(ArmorSetsData.class.getName());
 	private static ArmorSetsData _instance;
 
-	private final FastMap<Integer, L2ArmorSet> _armorSets;
-	private final FastMap<Integer, ArmorDummy> _cusArmorSets;
+	private final HashMap<Integer, L2ArmorSet> _armorSets;
+	private final HashMap<Integer, ArmorDummy> _cusArmorSets;
 
 	public static ArmorSetsData getInstance()
 	{
@@ -53,8 +52,8 @@ public class ArmorSetsData
 
 	private ArmorSetsData()
 	{
-		_armorSets = new FastMap<Integer, L2ArmorSet>();
-		_cusArmorSets = new FastMap<Integer, ArmorDummy>();
+		_armorSets = new HashMap<Integer, L2ArmorSet>();
+		_cusArmorSets = new HashMap<Integer, ArmorDummy>();
 		loadData();
 	}
 

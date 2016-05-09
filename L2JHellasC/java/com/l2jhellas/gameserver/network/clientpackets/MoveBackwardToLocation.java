@@ -56,7 +56,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 
 	@Override
 	protected void readImpl()
-	{
+	{	
 		_targetX = readD();
 		_targetY = readD();
 		_targetZ = readD();
@@ -64,7 +64,11 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		_originY = readD();
 		_originZ = readD();
 		
+		if (_buf.remaining() < 4)
+			return;
+		
 		if(_buf.hasRemaining())
+		{
 		try
 		{
 			_moveMovement = readD(); // is 0 if cursor keys are used 1 if mouse is used
@@ -90,12 +94,13 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 				}
 			}
 		}
+		}
 	}
 
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null || activeChar.isDead() || activeChar.isFakeDeath())
 			return;
 
@@ -106,18 +111,17 @@ public class MoveBackwardToLocation extends L2GameClientPacket
             return;
         }
         
+		if (activeChar.isOutOfControl())
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
         // Like L2OFF movements prohibited when char is teleporting
         if (activeChar.isTeleporting())
         {
         	activeChar.sendPacket(ActionFailed.STATIC_PACKET);
             return;
-        }
-        
-        // Like L2OFF the enchant window will close
-        if (activeChar.getActiveEnchantItem() != null)
-        {
-            activeChar.sendPacket(new EnchantResult(0));
-            activeChar.setActiveEnchantItem(null);
         }
         
         if (_targetX == _originX && _targetY == _originY && _targetZ == _originZ)
@@ -159,7 +163,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			double dx = _targetX - _curX;
 			double dy = _targetY - _curY;
 			// Can't move if character is confused, or trying to move a huge distance
-			if (activeChar.isOutOfControl() || ((dx * dx + dy * dy) > 98010000)) // 9900*9900
+			if (((dx * dx + dy * dy) > 98010000)) // 9900*9900
 			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;

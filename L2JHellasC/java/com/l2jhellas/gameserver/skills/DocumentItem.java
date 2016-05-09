@@ -15,12 +15,11 @@
 package com.l2jhellas.gameserver.skills;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -41,8 +40,8 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 final class DocumentItem extends DocumentBase
 {
 	private Item _currentItem = null;
-	private final List<L2Item> _itemsInFile = new FastList<L2Item>();
-	private Map<Integer, Item> _itemData = new FastMap<Integer, Item>();
+	private final List<L2Item> _itemsInFile = new ArrayList<L2Item>();
+	private Map<Integer, Item> _itemData = new HashMap<Integer, Item>();
 
 	/**
 	 * @param armorData

@@ -15,15 +15,14 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -56,12 +55,12 @@ public class TeleportLocationData
 
 	public void reload()
 	{
-		_teleports = new FastMap<Integer, L2TeleportLocation>();
+		_teleports = new HashMap<Integer, L2TeleportLocation>();
 
 		Document doc = null;
 		L2TeleportLocation teleport = null;
 		int highestId = 0;
-		List<File> files = new FastList<File>();
+		List<File> files = new ArrayList<File>();
 		hashFiles("data/teleports", files);
 		hashFiles("data/teleports/custom", files);
 		for (File f : files)
@@ -98,7 +97,7 @@ public class TeleportLocationData
 								boolean isClanHallTp = false;
 								boolean isFortTp = false;
 								boolean isCastleTp = false;
-								List<int[]> items = new FastList<int[]>(1);
+								List<int[]> items = new ArrayList<int[]>(1);
 								int minLevel = 1;
 								int maxLevel = 85;
 

@@ -18,13 +18,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -64,7 +63,7 @@ public class SkillSpellbookData
 		if (!Config.SP_BOOK_NEEDED)
 			return;
 
-		_skillSpellbooks = new FastMap<Integer, Integer>();
+		_skillSpellbooks = new HashMap<Integer, Integer>();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);

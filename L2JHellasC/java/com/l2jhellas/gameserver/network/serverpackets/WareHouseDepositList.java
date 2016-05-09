@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -29,7 +29,7 @@ public class WareHouseDepositList extends L2GameServerPacket
 	private static final String _S__53_WAREHOUSEDEPOSITLIST = "[S] 41 WareHouseDepositList";
 	private final L2PcInstance _activeChar;
 	private final int _playerAdena;
-	private final FastList<L2ItemInstance> _items;
+	private final ArrayList<L2ItemInstance> _items;
 	private final int _whType;
 
 	public WareHouseDepositList(L2PcInstance player, int type)
@@ -37,7 +37,7 @@ public class WareHouseDepositList extends L2GameServerPacket
 		_activeChar = player;
 		_whType = type;
 		_playerAdena = _activeChar.getAdena();
-		_items = new FastList<L2ItemInstance>();
+		_items = new ArrayList<L2ItemInstance>();
 
 		if(_activeChar.getActiveTradeList()!=null || _activeChar.getActiveEnchantItem() != null)
 		{

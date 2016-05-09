@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ItemInfo;
@@ -55,7 +54,7 @@ public class InventoryUpdate extends L2GameServerPacket
 
 	public InventoryUpdate()
 	{
-		_items = new FastList<ItemInfo>();
+		_items = new ArrayList<ItemInfo>();
 		if (Config.DEBUG)
 		{
 			showDebug();

@@ -16,10 +16,9 @@ package com.l2jhellas.gameserver.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
@@ -71,7 +70,7 @@ public final class L2Augmentation
 		public augmentationStatBoni(int augmentationId)
 		{
 			_active = false;
-			FastList<AugmentationData.AugStat> as = AugmentationData.getInstance().getAugStatsById(augmentationId);
+			ArrayList<AugmentationData.AugStat> as = AugmentationData.getInstance().getAugStatsById(augmentationId);
 
 			_stats = new Stats[as.size()];
 			_values = new float[as.size()];

@@ -14,82 +14,97 @@
  */
 package com.l2jhellas.gameserver.templates;
 
+import com.l2jhellas.gameserver.datatables.xml.HennaData;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
+
 public class L2Henna
 {
-	public final int symbolId;
-	public final String symbolName;
-	public final int dye;
-	public final int price;
-	public final int amount;
-	public final int statINT;
-	public final int statSTR;
-	public final int statCON;
-	public final int statMEM;
-	public final int statDEX;
-	public final int statWIT;
-
+	private final int symbolId;
+	private final int dye;
+	private final int price;
+	private final int statINT;
+	private final int statSTR;
+	private final int statCON;
+	private final int statMEN;
+	private final int statDEX;
+	private final int statWIT;
+	
 	public L2Henna(StatsSet set)
 	{
 		symbolId = set.getInteger("symbol_id");
-		symbolName = ""; // set.getString("symbol_name");
 		dye = set.getInteger("dye");
 		price = set.getInteger("price");
-		amount = set.getInteger("amount");
-		statINT = set.getInteger("stat_INT");
-		statSTR = set.getInteger("stat_STR");
-		statCON = set.getInteger("stat_CON");
-		statMEM = set.getInteger("stat_MEM");
-		statDEX = set.getInteger("stat_DEX");
-		statWIT = set.getInteger("stat_WIT");
+		statINT = set.getInteger("INT");
+		statSTR = set.getInteger("STR");
+		statCON = set.getInteger("CON");
+		statMEN = set.getInteger("MEN");
+		statDEX = set.getInteger("DEX");
+		statWIT = set.getInteger("WIT");
 	}
-
+	
 	public int getSymbolId()
 	{
 		return symbolId;
 	}
-
+	
 	public int getDyeId()
 	{
 		return dye;
 	}
-
+	
 	public int getPrice()
 	{
 		return price;
 	}
-
-	public int getAmountDyeRequire()
+	
+	public static final int getAmountDyeRequire()
 	{
-		return amount;
+		return 10;
 	}
-
+	
 	public int getStatINT()
 	{
 		return statINT;
 	}
-
+	
 	public int getStatSTR()
 	{
 		return statSTR;
 	}
-
+	
 	public int getStatCON()
 	{
 		return statCON;
 	}
-
-	public int getStatMEM()
+	
+	public int getStatMEN()
 	{
-		return statMEM;
+		return statMEN;
 	}
-
+	
 	public int getStatDEX()
 	{
 		return statDEX;
 	}
-
+	
 	public int getStatWIT()
 	{
 		return statWIT;
+	}
+	
+	public boolean isForThisClass(L2PcInstance player)
+	{
+		for (L2Henna henna : HennaData.getInstance().getAvailableHenna(player.getClassId().getId()))
+			if (henna.equals(this))
+				return true;
+		
+		return false;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		return obj instanceof L2Henna && symbolId == ((L2Henna) obj).symbolId && dye == ((L2Henna) obj).dye;
 	}
 }

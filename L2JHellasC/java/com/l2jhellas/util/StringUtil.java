@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.util;
 
+import java.util.logging.Logger;
+
 /**
  * String utilities optimized for the best performance. <h1>How to Use It</h1> <h2>concat() or append()</h2> If concatenating strings
  * in single call, use StringUtil.concat(), otherwise use StringUtil.append()
@@ -189,6 +191,9 @@ package com.l2jhellas.util;
 public final class StringUtil
 {
 
+	private static final Logger LOG = Logger.getLogger(StringUtil.class.getName());
+	
+	
 	private StringUtil()
 	{
 	}
@@ -272,5 +277,32 @@ public final class StringUtil
 		}
 
 		return length;
+	}
+
+	/**
+	 * @param text : the String to check.
+	 * @return true if the String contains only numbers, false otherwise.
+	 */
+	public static boolean isDigit(String text)
+	{
+		if (text == null)
+			return false;
+		
+		return text.matches("[0-9]+");
+	}
+
+	/**
+	 * Format a given text to fit with logging "title" criterias, and send it.
+	 * @param text : the String to format.
+	 */
+	public static void printSection(String text)
+	{
+		final StringBuilder sb = new StringBuilder(80);
+		for (int i = 0; i < (73 - text.length()); i++)
+			sb.append("-");
+		
+		StringUtil.append(sb, "=[ ", text, " ]");
+		
+		LOG.info(sb.toString());
 	}
 }

@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
@@ -196,7 +195,7 @@ public class CastleManager
 	public final List<Castle> getCastles()
 	{
 		if (_castles == null)
-			_castles = new FastList<Castle>();
+			_castles = new ArrayList<Castle>();
 		return _castles;
 	}
 

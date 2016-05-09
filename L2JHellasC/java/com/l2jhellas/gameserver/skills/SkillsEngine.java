@@ -15,11 +15,10 @@
 package com.l2jhellas.gameserver.skills;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.PackRoot;
 import com.l2jhellas.gameserver.engines.Item;
@@ -40,10 +39,10 @@ public class SkillsEngine
 
 	private static final SkillsEngine _instance = new SkillsEngine();
 
-	private final List<File> _armorFiles = new FastList<File>();
-	private final List<File> _weaponFiles = new FastList<File>();
-	private final List<File> _etcitemFiles = new FastList<File>();
-	private final List<File> _skillFiles = new FastList<File>();
+	private final List<File> _armorFiles = new ArrayList<File>();
+	private final List<File> _weaponFiles = new ArrayList<File>();
+	private final List<File> _etcitemFiles = new ArrayList<File>();
+	private final List<File> _skillFiles = new ArrayList<File>();
 
 	public static SkillsEngine getInstance()
 	{
@@ -109,7 +108,7 @@ public class SkillsEngine
 
 	public List<L2Armor> loadArmors(Map<Integer, Item> armorData)
 	{
-		List<L2Armor> list = new FastList<L2Armor>();
+		List<L2Armor> list = new ArrayList<L2Armor>();
 		for (L2Item item : loadData(armorData, _armorFiles))
 		{
 			list.add((L2Armor) item);
@@ -119,7 +118,7 @@ public class SkillsEngine
 
 	public List<L2Weapon> loadWeapons(Map<Integer, Item> weaponData)
 	{
-		List<L2Weapon> list = new FastList<L2Weapon>();
+		List<L2Weapon> list = new ArrayList<L2Weapon>();
 		for (L2Item item : loadData(weaponData, _weaponFiles))
 		{
 			list.add((L2Weapon) item);
@@ -129,7 +128,7 @@ public class SkillsEngine
 
 	public List<L2EtcItem> loadItems(Map<Integer, Item> itemData)
 	{
-		List<L2EtcItem> list = new FastList<L2EtcItem>();
+		List<L2EtcItem> list = new ArrayList<L2EtcItem>();
 		for (L2Item item : loadData(itemData, _etcitemFiles))
 		{
 			list.add((L2EtcItem) item);
@@ -146,7 +145,7 @@ public class SkillsEngine
 
 	public List<L2Item> loadData(Map<Integer, Item> itemData, List<File> files)
 	{
-		List<L2Item> list = new FastList<L2Item>();
+		List<L2Item> list = new ArrayList<L2Item>();
 		for (File f : files)
 		{
 			DocumentItem document = new DocumentItem(itemData, f);

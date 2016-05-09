@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
@@ -44,7 +43,7 @@ public class PartySpelled extends L2GameServerPacket
 
 	public PartySpelled(L2Character cha)
 	{
-		_effects = new FastList<Effect>();
+		_effects = new ArrayList<Effect>();
 		_activeChar = cha;
 	}
 

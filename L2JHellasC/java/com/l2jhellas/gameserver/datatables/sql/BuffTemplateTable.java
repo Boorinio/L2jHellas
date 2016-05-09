@@ -15,10 +15,9 @@ package com.l2jhellas.gameserver.datatables.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
@@ -32,7 +31,7 @@ public class BuffTemplateTable
 	private static BuffTemplateTable _instance;
 
 	/** This table contains all the Buff Templates */
-	private final FastList<L2BuffTemplate> _buffs;
+	private final ArrayList<L2BuffTemplate> _buffs;
 
 	public static BuffTemplateTable getInstance()
 	{
@@ -49,7 +48,7 @@ public class BuffTemplateTable
 	 */
 	public BuffTemplateTable()
 	{
-		_buffs = new FastList<L2BuffTemplate>();
+		_buffs = new ArrayList<L2BuffTemplate>();
 		ReloadBuffTemplates();
 	}
 
@@ -119,9 +118,9 @@ public class BuffTemplateTable
 	/**
 	 * @return Returns the buffs of template by template Id
 	 */
-	public FastList<L2BuffTemplate> getBuffTemplate(int Id)
+	public ArrayList<L2BuffTemplate> getBuffTemplate(int Id)
 	{
-		FastList<L2BuffTemplate> _templateBuffs = new FastList<L2BuffTemplate>();
+		ArrayList<L2BuffTemplate> _templateBuffs = new ArrayList<L2BuffTemplate>();
 
 		for (L2BuffTemplate _bt : _buffs)
 		{
@@ -193,7 +192,7 @@ public class BuffTemplateTable
 	/**
 	 * @return Returns the buff templates list
 	 */
-	public FastList<L2BuffTemplate> getBuffTemplateTable()
+	public ArrayList<L2BuffTemplate> getBuffTemplateTable()
 	{
 		return _buffs;
 	}

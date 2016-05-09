@@ -62,7 +62,7 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 		}
 
 		L2PcInstance partner = player.getActiveRequester();
-		if ((partner == null) || (L2World.findObject(partner.getObjectId()) == null))
+		if ((partner == null) || (L2World.getInstance().findObject(partner.getObjectId()) == null))
 		{
 			// Trade partner not found, cancel trade
 			player.sendPacket(new SendTradeDone(0));

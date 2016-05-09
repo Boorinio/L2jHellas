@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ItemContainer;
@@ -42,7 +41,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestPackageSend.class.getName());
 	private static final String _C_9F_REQUESTPACKAGESEND = "[C] 9F RequestPackageSend";
-	private final List<Item> _items = new FastList<Item>();
+	private final List<Item> _items = new ArrayList<Item>();
 	private int _objectID;
 	private int _count;
 
@@ -92,7 +91,7 @@ public final class RequestPackageSend extends L2GameClientPacket
 			return;
 		}
 		
-		if(L2World.getPlayer(player.getName().toLowerCase()) != null)
+		if(L2World.getInstance().getPlayer(player.getName().toLowerCase()) != null)
 		return;
 		
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("freight"))

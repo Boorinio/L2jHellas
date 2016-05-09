@@ -14,18 +14,18 @@
  */
 package com.l2jhellas.gameserver.skills.conditions;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Env;
 
 public class ConditionTargetClassIdRestriction extends Condition
 {
-	private final FastList<Integer> _classIds;
+	private final ArrayList<Integer> _classIds;
 
-	public ConditionTargetClassIdRestriction(FastList<Integer> classId)
+	public ConditionTargetClassIdRestriction(ArrayList<Integer> array)
 	{
-		_classIds = classId;
+		_classIds = array;
 	}
 
 	@Override

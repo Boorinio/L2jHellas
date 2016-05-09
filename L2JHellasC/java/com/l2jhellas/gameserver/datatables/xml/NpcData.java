@@ -31,9 +31,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -545,7 +542,7 @@ public class NpcData
 		{
 			// save a copy of the old data
 			L2NpcTemplate old = getTemplate(id);
-			Map<Integer, L2Skill> skills = new FastMap<Integer, L2Skill>();
+			Map<Integer, L2Skill> skills = new HashMap<Integer, L2Skill>();
 
 			if (old.getSkills() != null)
 				skills.putAll(old.getSkills());
@@ -691,7 +688,7 @@ public class NpcData
 
 	public L2NpcTemplate[] getAllOfLevel(int lvl)
 	{
-		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
+		List<L2NpcTemplate> list = new ArrayList<L2NpcTemplate>();
 
 		for (L2NpcTemplate t : _npcs.values())
 			if (t.level == lvl)
@@ -704,7 +701,7 @@ public class NpcData
 
 	public L2NpcTemplate[] getAllMonstersOfLevel(int lvl)
 	{
-		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
+		List<L2NpcTemplate> list = new ArrayList<L2NpcTemplate>();
 
 		for (L2NpcTemplate t : _npcs.values())
 			if (t.level == lvl && "L2Monster".equals(t.type))
@@ -717,7 +714,7 @@ public class NpcData
 
 	public L2NpcTemplate[] getAllNpcStartingWith(String letter)
 	{
-		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
+		List<L2NpcTemplate> list = new ArrayList<L2NpcTemplate>();
 
 		for (L2NpcTemplate t : _npcs.values())
 			if (t.name.startsWith(letter) && "L2Npc".equals(t.type))
@@ -745,7 +742,7 @@ public class NpcData
 
 	public L2NpcTemplate[] getAllNpcOfClassType(String classType)
 	{
-		List<L2NpcTemplate> list = new FastList<L2NpcTemplate>();
+		List<L2NpcTemplate> list = new ArrayList<L2NpcTemplate>();
 
 		for (Object t : _npcs.values())
 			if (classType.equals(((L2NpcTemplate) t).type))

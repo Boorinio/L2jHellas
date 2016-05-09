@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.entity.engines;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
@@ -36,8 +36,8 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public class CastleWars
 {
-	private static List<L2PcInstance> _defenders = new FastList<L2PcInstance>();
-	private static List<L2PcInstance> _attackers = new FastList<L2PcInstance>();
+	private static List<L2PcInstance> _defenders = new ArrayList<L2PcInstance>();
+	private static List<L2PcInstance> _attackers = new ArrayList<L2PcInstance>();
 	private static FastSet<L2Npc> _flags = new FastSet<L2Npc>();
 	public static boolean isFinished;
 	public static boolean CastleWarsRunning = false;
@@ -267,7 +267,7 @@ public class CastleWars
 	
 	public static void shufflePlayers()
 	{
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (player.isinZodiac)
 			{

@@ -16,9 +16,8 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
+import java.util.HashMap;
 import java.util.concurrent.Future;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -243,7 +242,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 		// use of more than one debuff at this moment is acceptable
 		if (HPRatio >= 0.8)
 		{
-			FastMap<Integer, L2Skill> skills = (FastMap<Integer, L2Skill>) getTemplate().getSkills();
+			HashMap<Integer, L2Skill> skills = (HashMap<Integer, L2Skill>) getTemplate().getSkills();
 
 			for (L2Skill skill : skills.values())
 			{
@@ -263,7 +262,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 				chance = 2;
 
 			// if the owner has a lot of HP, then debuff the enemy with a random debuff among the available skills
-			FastMap<Integer, L2Skill> skills = (FastMap<Integer, L2Skill>) getTemplate().getSkills();
+			HashMap<Integer, L2Skill> skills = (HashMap<Integer, L2Skill>) getTemplate().getSkills();
 
 			for (L2Skill skill : skills.values())
 			{
@@ -396,7 +395,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 			L2Skill buffToGive = null;
 
 			// get this npc's skills: getSkills()
-			FastMap<Integer, L2Skill> skills = (FastMap<Integer, L2Skill>) _tamedBeast.getTemplate().getSkills();
+			HashMap<Integer, L2Skill> skills = (HashMap<Integer, L2Skill>) _tamedBeast.getTemplate().getSkills();
 
 			for (L2Skill skill : skills.values())
 			{

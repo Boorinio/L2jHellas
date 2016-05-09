@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 public class L2ManufactureList
 {
@@ -26,7 +25,7 @@ public class L2ManufactureList
 
 	public L2ManufactureList()
 	{
-		_list = new FastList<L2ManufactureItem>();
+		_list = new ArrayList<L2ManufactureItem>();
 		_confirmed = false;
 	}
 

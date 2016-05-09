@@ -20,14 +20,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -71,7 +70,7 @@ public class CursedWeaponsManager
 
 	public CursedWeaponsManager()
 	{
-		_cursedWeapons = new FastMap<Integer, CursedWeapon>();
+		_cursedWeapons = new HashMap<Integer, CursedWeapon>();
 
 		if (!Config.ALLOW_CURSED_WEAPONS)
 			return;
@@ -383,7 +382,7 @@ public class CursedWeaponsManager
 
 	public static void announce(SystemMessage sm)
 	{
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (player == null)
 				continue;

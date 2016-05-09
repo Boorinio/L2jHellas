@@ -65,6 +65,9 @@ public class L2EventTeleporter implements Runnable
 		if (_player == null)
 			return;
 
+		if(_player.getActiveTradeList() !=null)
+			_player.cancelActiveTrade();
+		
 		if (_player.isMounted())
 		{
 			if (_player.isFlying())

@@ -17,7 +17,9 @@ package com.l2jhellas.gameserver.model.actor;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -25,8 +27,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
+
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -35,9 +36,9 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
@@ -71,15 +72,15 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.SkillDat;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.actor.knownlist.CharKnownList;
-import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
-import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
+import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Attack;
@@ -172,42 +173,39 @@ public abstract class L2Character extends L2Object
 	/** Table of Calculators containing all used calculator */
 	private Calculator[] _calculators;
 	
-	/** FastMap(Integer, L2Skill) containing all skills of the L2Character */
-	protected final Map<Integer, L2Skill> _skills;
+	/** LinkedHashMap(Integer, L2Skill) containing all skills of the L2Character */
+	protected Map<Integer, L2Skill> _skills = new LinkedHashMap<>();
+	
 	
 	/** FastMap containing the active chance skills on this character */
 	protected ChanceSkillList _chanceSkills;
 	
-	/** Zone system */
-	public static final int ZONE_PVP = 1;
-	public static final int ZONE_PEACE = 2;
-	public static final int ZONE_SIEGE = 4;
-	public static final int ZONE_MOTHERTREE = 8;
-	public static final byte ZONE_NOSUMMONFRIEND = 12;
-	public static final int ZONE_CLANHALL = 16;
-	public static final int ZONE_UNUSED = 32;
-	public static final int ZONE_NOLANDING = 64;
-	public static final int ZONE_WATER = 128;
-	public static final int ZONE_JAIL = 256;
-	public static final int ZONE_MONSTERTRACK = 512;
 	
 	private int _PremiumService;
 	
 	public boolean _enemy;
 	
-	private int _currentZones = 0;
+	/** Zone system */
+	private final byte[] _zones = new byte[ZoneId.getZoneCount()];
+	protected byte _zoneValidateCounter = 4;
 	
-	public boolean isInsideZone(int zone)
+	public boolean isInsideZone(ZoneId zone)
 	{
-		return ((_currentZones & zone) != 0);
+		return zone == ZoneId.PVP ? _zones[ZoneId.PVP.getId()] > 0 && _zones[ZoneId.PEACE.getId()] == 0 : _zones[zone.getId()] > 0;
+
 	}
 	
-	public void setInsideZone(int zone, boolean state)
+	public void setInsideZone(ZoneId zone, boolean state)
 	{
+
 		if (state)
-			_currentZones |= zone;
-		else if (isInsideZone(zone)) // zone overlap possible
-			_currentZones ^= zone;
+			_zones[zone.getId()]++;
+		else
+		{
+			_zones[zone.getId()]--;
+			if (_zones[zone.getId()] < 0)
+				_zones[zone.getId()] = 0;
+		}
 	}
 	
 	/**
@@ -267,8 +265,8 @@ public abstract class L2Character extends L2Object
 		else
 		{
 			// Initialize the FastMap _skills to null
-			_skills = new FastMap<Integer, L2Skill>().setShared(true);
-			
+			_skills = new LinkedHashMap<>();
+		
 			// If L2Character is a L2PcInstance or a L2Summon, create the basic calculator set
 			_calculators = new Calculator[Stats.NUM_STATS];
 			Formulas.getInstance().addFuncsToNewCharacter(this);
@@ -1910,10 +1908,11 @@ public abstract class L2Character extends L2Object
 	}
 	
 	/** Return a list of L2Character that attacked. */
+	/** Return a list of L2Character that attacked. */
 	public final List<L2Character> getAttackByList()
 	{
 		if (_attackByList == null)
-			_attackByList = new FastList<L2Character>();
+			_attackByList = new ArrayList<L2Character>();
 		return _attackByList;
 	}
 	
@@ -3372,7 +3371,7 @@ public abstract class L2Character extends L2Object
 	 * List of all QuestState instance that needs to be notified of this
 	 * character's death
 	 */
-	private List<QuestState> _NotifyQuestOfDeathList = new FastList<QuestState>();
+	private List<QuestState> _NotifyQuestOfDeathList = new ArrayList<QuestState>();
 	
 	/**
 	 * Add QuestState instance that is to be notified of character's death.<BR>
@@ -3396,7 +3395,7 @@ public abstract class L2Character extends L2Object
 	public List<QuestState> getNotifyQuestOfDeath()
 	{
 		if (_NotifyQuestOfDeathList == null)
-			_NotifyQuestOfDeathList = new FastList<QuestState>();
+			_NotifyQuestOfDeathList = new ArrayList<QuestState>();
 		
 		return _NotifyQuestOfDeathList;
 	}
@@ -3480,7 +3479,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final synchronized void addStatFuncs(Func[] funcs)
 	{
-		FastList<Stats> modifiedStats = new FastList<Stats>();
+		List<Stats> modifiedStats = new ArrayList<Stats>();
 		
 		for (Func f : funcs)
 		{
@@ -3574,7 +3573,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final synchronized void removeStatFuncs(Func[] funcs)
 	{
-		FastList<Stats> modifiedStats = new FastList<Stats>();
+		List<Stats> modifiedStats = new ArrayList<Stats>();
 		
 		for (Func f : funcs)
 		{
@@ -3618,7 +3617,7 @@ public abstract class L2Character extends L2Object
 	public final synchronized void removeStatsOwner(Object owner)
 	{
 		
-		FastList<Stats> modifiedStats = null;
+		List<Stats> modifiedStats = null;
 		// Go through the Calculator set
 		for (int i = 0; i < _calculators.length; i++)
 		{
@@ -3655,7 +3654,7 @@ public abstract class L2Character extends L2Object
 		
 	}
 	
-	private void broadcastModifiedStats(FastList<Stats> stats)
+	private void broadcastModifiedStats(List<Stats> stats)
 	{
 		if (stats == null || stats.isEmpty())
 			return;
@@ -4118,8 +4117,7 @@ public abstract class L2Character extends L2Object
 				((L2PcInstance) this).revalidateZone(true);
 		}
 		sendPacket(new StopMove(this));
-		if (updateKnownObjects)
-			ThreadPoolManager.getInstance().executeTask(new KnownListAsynchronousUpdateTask(this));
+		broadcastPacket(new StopMove(this));
 	}
 	
 	/**
@@ -4364,8 +4362,8 @@ public abstract class L2Character extends L2Object
 			int originalX = x;
 			int originalY = y;
 			int originalZ = z;
-			int gtx = (originalX - L2World.MAP_MIN_X) >> 4;
-			int gty = (originalY - L2World.MAP_MIN_Y) >> 4;
+			int gtx = (originalX - L2World.WORLD_X_MIN) >> 4;
+			int gty = (originalY - L2World.WORLD_Y_MIN) >> 4;
 			
 			// Movement checks:
 			// when geodata == 2, for all characters except mobs returning home
@@ -4387,7 +4385,7 @@ public abstract class L2Character extends L2Object
 													// path
 				}
 				
-				if (curX < L2World.MAP_MIN_X || curX > L2World.MAP_MAX_X || curY < L2World.MAP_MIN_Y || curY > L2World.MAP_MAX_Y)
+				if (curX < L2World.WORLD_X_MIN || curX > L2World.WORLD_X_MAX || curY < L2World.WORLD_Y_MIN || curY > L2World.WORLD_Y_MAX)
 				{
 					// Temporary fix for character outside world region errors
 					_log.log(Level.WARNING, getClass().getCanonicalName() + ": Character " + this.getName() + " outside world area, in coordinates x:" + curX + " y:" + curY);
@@ -5440,11 +5438,11 @@ public abstract class L2Character extends L2Object
 		
 		if (attacker instanceof L2Character && target instanceof L2Character)
 		{
-			return (((L2Character) target).isInsideZone(ZONE_PEACE) || ((L2Character) attacker).isInsideZone(ZONE_PEACE));
+			return (((L2Character) target).isInsideZone(ZoneId.PEACE) || ((L2Character) attacker).isInsideZone(ZoneId.PEACE));
 		}
 		if (attacker instanceof L2Character)
 		{
-			return (TownManager.getTown(target.getX(), target.getY(), target.getZ()) != null || ((L2Character) attacker).isInsideZone(ZONE_PEACE));
+			return (TownManager.getTown(target.getX(), target.getY(), target.getZ()) != null || ((L2Character) attacker).isInsideZone(ZoneId.PEACE));
 		}
 		
 		return (TownManager.getTown(target.getX(), target.getY(), target.getZ()) != null || TownManager.getTown(attacker.getX(), attacker.getY(), attacker.getZ()) != null);
@@ -5457,7 +5455,7 @@ public abstract class L2Character extends L2Object
 	{
 		try
 		{
-			L2WorldRegion region = L2World.getRegion(getX(), getY());
+			L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY());
 			return ((region != null) && (region.isActive()));
 		}
 		catch (Exception e)
@@ -5885,7 +5883,7 @@ public abstract class L2Character extends L2Object
 		
 		if (escapeRange > 0 && skill.getTargetType() != L2SkillTargetType.TARGET_SIGNET)
 		{
-			List<L2Character> targetList = new FastList<L2Character>();
+			List<L2Character> targetList = new ArrayList<L2Character>();
 			for (int i = 0; i < targets.length; i++)
 			{
 				if (targets[i] instanceof L2Character)
@@ -6183,8 +6181,9 @@ public abstract class L2Character extends L2Object
 	 */
 	public void disableSkill(int skillId)
 	{
-		if (_disabledSkills == null)
-			_disabledSkills = Collections.synchronizedList(new FastList<Integer>());
+		
+		 if( _disabledSkills == null)
+			_disabledSkills = Collections.synchronizedList(new ArrayList<Integer>());
 		
 		_disabledSkills.add(skillId);
 	}
@@ -7286,5 +7285,11 @@ public abstract class L2Character extends L2Object
 			player.sendPacket(sm);
 		}
 		return false;
+	}
+
+	public void deleteMe()
+	{
+		if (hasAI())
+			getAI().stopAITask();
 	}
 }

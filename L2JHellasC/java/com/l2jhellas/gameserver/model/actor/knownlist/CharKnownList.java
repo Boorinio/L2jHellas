@@ -14,17 +14,27 @@
  */
 package com.l2jhellas.gameserver.model.actor.knownlist;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
+import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
+import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.PetInfo;
+import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
+import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgBuy;
+import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
+import com.l2jhellas.gameserver.network.serverpackets.RecipeShopMsg;
+import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.util.Util;
 
 public class CharKnownList extends ObjectKnownList
@@ -99,7 +109,7 @@ public class CharKnownList extends ObjectKnownList
 		if (object == getActiveChar().getTarget())
 			getActiveChar().setTarget(null);
 
-		return true;
+		return true;	
 	}
 
 	public L2Character getActiveChar()
@@ -121,7 +131,7 @@ public class CharKnownList extends ObjectKnownList
 
 	public Collection<L2Character> getKnownCharacters()
 	{
-		FastList<L2Character> result = new FastList<L2Character>();
+		ArrayList<L2Character> result = new ArrayList<L2Character>();
 
 		for (L2Object obj : getKnownObjects().values())
 		{
@@ -134,7 +144,7 @@ public class CharKnownList extends ObjectKnownList
 
 	public Collection<L2Character> getKnownCharactersInRadius(long radius)
 	{
-		FastList<L2Character> result = new FastList<L2Character>();
+		ArrayList<L2Character> result = new ArrayList<L2Character>();
 
 		for (L2Object obj : getKnownObjects().values())
 		{
@@ -161,20 +171,20 @@ public class CharKnownList extends ObjectKnownList
 	public final Map<Integer, L2PcInstance> getKnownPlayers()
 	{
 		if (_knownPlayers == null)
-			_knownPlayers = new FastMap<Integer, L2PcInstance>().setShared(true);
+			_knownPlayers = new ConcurrentHashMap<>();
 		return _knownPlayers;
 	}
 
 	public final Map<Integer, Integer> getKnownRelations()
 	{
 		if (_knownRelations == null)
-			_knownRelations = new FastMap<Integer, Integer>().setShared(true);
+			_knownRelations = new ConcurrentHashMap<>();
 		return _knownRelations;
 	}
 
 	public final Collection<L2PcInstance> getKnownPlayersInRadius(long radius)
 	{
-		FastList<L2PcInstance> result = new FastList<L2PcInstance>();
+		ArrayList<L2PcInstance> result = new ArrayList<L2PcInstance>();
 
 		for (L2PcInstance player : getKnownPlayers().values())
 			if (Util.checkIfInRange((int) radius, getActiveChar(), player, true))
@@ -182,4 +192,80 @@ public class CharKnownList extends ObjectKnownList
 
 		return result;
 	}
+	
+	public void refreshInfos()
+	{
+		Collection<L2Object> objects = getKnownObjects().values();
+		for (L2Object object : objects)
+		{
+			if (object instanceof L2PcInstance && ((L2PcInstance) object).inObserverMode())
+				continue;
+			
+			sendInfoFrom(object);
+		}
+	}
+	
+	private final void sendInfoFrom(L2Object object)
+	{
+		// get player
+		L2Character player = (L2Character) getActiveChar();
+
+            if (object instanceof L2Summon)
+			{
+				L2Summon summon = (L2Summon) object;
+
+				// Check if the L2PcInstance is the owner of the Pet
+				if (getActiveChar().equals(summon.getOwner()))
+				{
+					getActiveChar().sendPacket(new PetInfo(summon, 0));
+					// The PetInfo packet wipes the PartySpelled (list of active spells' icons). Re-add them
+					summon.updateEffectIcons(true);
+					if (summon instanceof L2PetInstance)
+					{
+						getActiveChar().sendPacket(new PetItemList((L2PetInstance) summon));
+					}
+				}
+				else
+					getActiveChar().sendPacket(new NpcInfo(summon, getActiveChar()));
+			}
+	        
+			else if (object instanceof L2PcInstance)
+			{
+				if (((L2PcInstance) object).inObserverMode())
+					return;
+				
+				L2PcInstance otherPlayer = (L2PcInstance) object;
+				if (otherPlayer.isInBoat())
+				{
+					otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getPosition().getWorldPosition());
+					getActiveChar().sendPacket(new CharInfo(otherPlayer));
+					int relation = otherPlayer.getRelation(getActiveChar().getActingPlayer());
+					if (otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != relation)
+						getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
+					getActiveChar().sendPacket(new GetOnVehicle(otherPlayer.getObjectId(), otherPlayer.getBoat().getObjectId(), otherPlayer.getInVehiclePosition()));		
+				}
+				else
+				{
+					getActiveChar().sendPacket(new CharInfo(otherPlayer));
+					int relation = otherPlayer.getRelation(getActiveChar().getActingPlayer());
+					if (otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(getActiveChar().getObjectId()) != relation)
+						getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
+				}
+
+				if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL)
+					getActiveChar().sendPacket(new PrivateStoreMsgSell(otherPlayer));
+				else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_BUY)
+					getActiveChar().sendPacket(new PrivateStoreMsgBuy(otherPlayer));
+				else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_MANUFACTURE)
+					getActiveChar().sendPacket(new RecipeShopMsg(otherPlayer));
+			}
+			
+			if (object instanceof L2Character)
+			{
+				// Update the state of the L2Character object client side by sending Server->Client packet MoveToPawn/MoveToLocation and AutoAttackStart to the L2PcInstance
+				L2Character obj = (L2Character) object;
+				if (obj.hasAI())
+					obj.getAI().describeStateToPlayer(player.getActingPlayer());
+			}
+		}
 }

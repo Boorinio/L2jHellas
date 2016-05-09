@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
+import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
@@ -27,7 +27,7 @@ public class L2SymbolMakerInstance extends L2NpcInstance
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		if (command.equals("Draw"))
-			player.sendPacket(new HennaEquipList(player, HennaTreeTable.getInstance().getAvailableHenna(player.getClassId())));
+			player.sendPacket(new HennaEquipList(player, HennaData.getInstance().getAvailableHenna(player.getClassId().getId())));
 		else if (command.equals("RemoveList"))
 		{
 			boolean hasHennas = false;

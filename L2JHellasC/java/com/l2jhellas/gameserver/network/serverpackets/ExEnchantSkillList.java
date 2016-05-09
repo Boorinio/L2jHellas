@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 public class ExEnchantSkillList extends L2GameServerPacket
 {
@@ -46,7 +45,7 @@ public class ExEnchantSkillList extends L2GameServerPacket
 
 	public ExEnchantSkillList()
 	{
-		_skills = new FastList<Skill>();
+		_skills = new ArrayList<Skill>();
 	}
 
 	@Override

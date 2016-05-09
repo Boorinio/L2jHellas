@@ -14,7 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 01 // Packet Identifier <BR>
@@ -62,7 +63,7 @@ public class StatusUpdate extends L2GameServerPacket
 	public static final int MAX_CP = 0x22;
 
 	private final int _objectId;
-	private final Vector<Attribute> _attributes;
+	private final List<Attribute> _attributes;
 
 	class Attribute
 	{
@@ -85,7 +86,7 @@ public class StatusUpdate extends L2GameServerPacket
 
 	public StatusUpdate(int objectId)
 	{
-		_attributes = new Vector<Attribute>();
+		_attributes = new ArrayList<>();
 		_objectId = objectId;
 	}
 
@@ -101,10 +102,8 @@ public class StatusUpdate extends L2GameServerPacket
 		writeD(_objectId);
 		writeD(_attributes.size());
 
-		for (int i = 0; i < _attributes.size(); i++)
+		for (Attribute temp : _attributes)
 		{
-			Attribute temp = _attributes.get(i);
-
 			writeD(temp.id);
 			writeD(temp.value);
 		}

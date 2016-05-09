@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Territory;
@@ -55,7 +54,7 @@ public class Territory
 
 	public void reload_data()
 	{
-		_territory = new FastMap<Integer, L2Territory>();
+		_territory = new HashMap<Integer, L2Territory>();
 
 		Integer[][] point = get2DIntArray(new String[]
 		{

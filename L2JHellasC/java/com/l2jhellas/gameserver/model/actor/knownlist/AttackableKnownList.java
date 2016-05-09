@@ -74,16 +74,13 @@ public class AttackableKnownList extends NpcKnownList
 	{
 		if (object instanceof L2NpcInstance || !(object instanceof L2Character))
 			return 0;
-
+		
 		if (object instanceof L2Playable)
-			return 1500;
-
-		if (getActiveChar().getAggroRange() > getActiveChar().getFactionRange())
-			return getActiveChar().getAggroRange();
-
-		if (getActiveChar().getFactionRange() > 200)
-			return getActiveChar().getFactionRange();
-
-		return 200;
+			return object.getKnownList().getDistanceToWatchObject(_activeObject);
+		
+		// get attackable
+		final L2Attackable attackable = (L2Attackable) _activeObject;
+		
+		return Math.max(300, Math.max(attackable.getAggroRange(), attackable.getClanRange()));
 	}
 }

@@ -17,10 +17,9 @@ package com.l2jhellas.gameserver.model.entity.engines;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -34,7 +33,7 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class Hitman
 {
 	private static Hitman _instance;
-	private FastMap<Integer, PlayerToAssasinate> _targets;
+	private HashMap<Integer, PlayerToAssasinate> _targets;
 	private final Logger _log = Logger.getLogger(Hitman.class.getName());
 
 	// Data Strings
@@ -79,9 +78,9 @@ public class Hitman
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new AISystem(), MIN_MAX_CLEAN_RATE, MIN_MAX_CLEAN_RATE);
 	}
 
-	private FastMap<Integer, PlayerToAssasinate> load()
+	private HashMap<Integer, PlayerToAssasinate> load()
 	{
-		FastMap<Integer, PlayerToAssasinate> map = new FastMap<Integer, PlayerToAssasinate>();
+		HashMap<Integer, PlayerToAssasinate> map = new HashMap<Integer, PlayerToAssasinate>();
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -112,7 +111,7 @@ public class Hitman
 		catch (Exception e)
 		{
 			_log.log(Level.WARNING, " Hitman: " + e.getCause());
-			return new FastMap<Integer, PlayerToAssasinate>();
+			return new HashMap<Integer, PlayerToAssasinate>();
 		}
 
 		return map;
@@ -124,7 +123,7 @@ public class Hitman
 		{
 			PlayerToAssasinate pta = _targets.get(target.getObjectId());
 			String name = getOfflineData(null, pta.getClientId())[1];
-			L2PcInstance client = L2World.getPlayer(name);
+			L2PcInstance client = L2World.getInstance().getPlayer(name);
 
 			target.sendMessage("You have been assassinated. Your bounty is 0.");
 
@@ -187,7 +186,7 @@ public class Hitman
 
 	public void putHitOn(L2PcInstance client, String playerName, int bounty)
 	{
-		L2PcInstance player = L2World.getPlayer(playerName);
+		L2PcInstance player = L2World.getInstance().getPlayer(playerName);
 
 		if (client.getHitmanTarget() > 0)
 		{
@@ -270,7 +269,7 @@ public class Hitman
 
 	public void cancelAssasination(String name, L2PcInstance client)
 	{
-		L2PcInstance target = L2World.getPlayer(name);
+		L2PcInstance target = L2World.getInstance().getPlayer(name);
 
 		if (client.getHitmanTarget() <= 0)
 		{
@@ -375,7 +374,7 @@ public class Hitman
 	/**
 	 * @return the _targets
 	 */
-	public FastMap<Integer, PlayerToAssasinate> getTargets()
+	public HashMap<Integer, PlayerToAssasinate> getTargets()
 	{
 		return _targets;
 	}
@@ -384,7 +383,7 @@ public class Hitman
 	 * @param targets
 	 *        the _targets to set
 	 */
-	public void set_targets(FastMap<Integer, PlayerToAssasinate> targets)
+	public void set_targets(HashMap<Integer, PlayerToAssasinate> targets)
 	{
 		_targets = targets;
 	}

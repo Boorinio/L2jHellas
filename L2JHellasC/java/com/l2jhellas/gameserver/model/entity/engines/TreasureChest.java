@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
@@ -21,7 +21,7 @@ public class TreasureChest
 {
 	public static boolean TreasureRunning = false;
 	private static int LuckyChest=0,Counter=0;
-	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
+	private static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
 	public static FastSet<L2Npc> _Npcs = new FastSet<L2Npc>();
 	private static int x = 87377, y = 20459, z = -5270, i;
 
@@ -35,7 +35,7 @@ public class TreasureChest
 		waitSecs(minutes / 2 * 60);
 		Announcements.getInstance().announceToAll("You have " + minutes / 2 + " minutes to register!");
 		waitSecs(minutes / 2 * 60);
-		for (L2PcInstance players : L2World.getAllPlayers())
+		for (L2PcInstance players : L2World.getInstance().getAllPlayers().values())
 		{
 			if (players.isinZodiac)
 				_players.add(players);

@@ -14,7 +14,8 @@
  */
 package com.l2jhellas.gameserver.skills;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.skills.funcs.Func;
 
@@ -152,10 +153,10 @@ public final class Calculator
 	 * Remove each Func with the specified owner of the Calculator.<BR>
 	 * <BR>
 	 */
-	public synchronized FastList<Stats> removeOwner(Object owner)
+	public synchronized List<Stats> removeOwner(Object owner)
 	{
 		Func[] funcs = _functions;
-		FastList<Stats> modifiedStats = new FastList<Stats>();
+		List<Stats> modifiedStats = new ArrayList<Stats>();
 
 		for (int i = 0; i < funcs.length; i++)
 		{

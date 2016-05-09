@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.util.Rnd;
@@ -24,7 +24,7 @@ import com.l2jhellas.util.Rnd;
  */
 public class L2DropCategory
 {
-	private final FastList<L2DropData> _drops;
+	private final ArrayList<L2DropData> _drops;
 	private int _categoryChance; // a sum of chances for calculating if an item will be dropped from this category
 	private int _categoryBalancedChance; // sum for balancing drop selection inside categories in high rate servers
 	private final int _categoryType;
@@ -32,7 +32,7 @@ public class L2DropCategory
 	public L2DropCategory(int categoryType)
 	{
 		_categoryType = categoryType;
-		_drops = new FastList<L2DropData>(0);
+		_drops = new ArrayList<L2DropData>(0);
 		_categoryChance = 0;
 		_categoryBalancedChance = 0;
 	}
@@ -42,7 +42,7 @@ public class L2DropCategory
 		if (drop.isQuestDrop())
 		{
 			//if (_questDrops == null)
-			//	_questDrops = new FastList<L2DropData>(0);
+			//	_questDrops = new ArrayList<L2DropData>(0);
 			//_questDrops.add(drop);
 		}
 		else
@@ -54,7 +54,7 @@ public class L2DropCategory
 		}
 	}
 
-	public FastList<L2DropData> getAllDrops()
+	public ArrayList<L2DropData> getAllDrops()
 	{
 		return _drops;
 	}
@@ -106,7 +106,7 @@ public class L2DropCategory
 	 */
 	public synchronized L2DropData dropSeedAllowedDropsOnly()
 	{
-		FastList<L2DropData> drops = new FastList<L2DropData>();
+		ArrayList<L2DropData> drops = new ArrayList<L2DropData>();
 		int subCatChance = 0;
 		for (L2DropData drop : getAllDrops())
 		{

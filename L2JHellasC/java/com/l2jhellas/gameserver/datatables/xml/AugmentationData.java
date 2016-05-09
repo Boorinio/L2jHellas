@@ -15,6 +15,8 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -22,9 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -75,28 +74,28 @@ public class AugmentationData
 	private static final int BASESTAT_INT = 16343;
 	private static final int BASESTAT_MEN = 16344;
 
-	private FastList<augmentationStat> _augmentationStats[];
-	private Map<Integer, FastList<augmentationSkill>> _blueSkills;
-	private Map<Integer, FastList<augmentationSkill>> _purpleSkills;
-	private Map<Integer, FastList<augmentationSkill>> _redSkills;
+	private ArrayList<augmentationStat> _augmentationStats[];
+	private Map<Integer, ArrayList<augmentationSkill>> _blueSkills;
+	private Map<Integer, ArrayList<augmentationSkill>> _purpleSkills;
+	private Map<Integer, ArrayList<augmentationSkill>> _redSkills;
 
 	@SuppressWarnings("unchecked")
 	private AugmentationData()
 	{
-		_augmentationStats = new FastList[4];
-		_augmentationStats[0] = new FastList<augmentationStat>();
-		_augmentationStats[1] = new FastList<augmentationStat>();
-		_augmentationStats[2] = new FastList<augmentationStat>();
-		_augmentationStats[3] = new FastList<augmentationStat>();
+		_augmentationStats = new ArrayList[4];
+		_augmentationStats[0] = new ArrayList<augmentationStat>();
+		_augmentationStats[1] = new ArrayList<augmentationStat>();
+		_augmentationStats[2] = new ArrayList<augmentationStat>();
+		_augmentationStats[3] = new ArrayList<augmentationStat>();
 
-		_blueSkills = new FastMap<Integer, FastList<augmentationSkill>>();
-		_purpleSkills = new FastMap<Integer, FastList<augmentationSkill>>();
-		_redSkills = new FastMap<Integer, FastList<augmentationSkill>>();
+		_blueSkills = new HashMap<Integer, ArrayList<augmentationSkill>>();
+		_purpleSkills = new HashMap<Integer, ArrayList<augmentationSkill>>();
+		_redSkills = new HashMap<Integer, ArrayList<augmentationSkill>>();
 		for (int i = 1; i <= 10; i++)
 		{
-			_blueSkills.put(i, new FastList<augmentationSkill>());
-			_purpleSkills.put(i, new FastList<augmentationSkill>());
-			_redSkills.put(i, new FastList<augmentationSkill>());
+			_blueSkills.put(i, new ArrayList<augmentationSkill>());
+			_purpleSkills.put(i, new ArrayList<augmentationSkill>());
+			_redSkills.put(i, new ArrayList<augmentationSkill>());
 		}
 
 		load();
@@ -350,7 +349,7 @@ public class AugmentationData
 										String tableName = attrs.getNamedItem("name").getNodeValue();
 
 										StringTokenizer data = new StringTokenizer(cd.getFirstChild().getNodeValue());
-										List<Float> array = new FastList<Float>();
+										List<Float> array = new ArrayList<Float>();
 
 										while (data.hasMoreTokens())
 										{
@@ -615,9 +614,9 @@ public class AugmentationData
 	 * @param augmentationId
 	 * @return
 	 */
-	public FastList<AugStat> getAugStatsById(int augmentationId)
+	public ArrayList<AugStat> getAugStatsById(int augmentationId)
 	{
-		FastList<AugStat> temp = new FastList<AugStat>();
+		ArrayList<AugStat> temp = new ArrayList<AugStat>();
 		// An augmentation id contains 2 short vaues so we gotta seperate them here
 		// both values contain a number from 1-16380, the first 14560 values are stats
 		// the 14560 stats are devided into 4 blocks each holding 3640 values

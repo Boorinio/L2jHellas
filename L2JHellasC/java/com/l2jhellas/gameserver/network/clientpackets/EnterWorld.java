@@ -22,7 +22,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class EnterWorld extends L2GameClientPacket
 {
 	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
-
+	
 	public TaskPriority getPriority()
 	{
 		return TaskPriority.PR_URGENT;
@@ -44,10 +44,8 @@ public class EnterWorld extends L2GameClientPacket
 			_log.warning("EnterWorld failed! activeChar is null...");
 			getClient().closeNow();
 			return;
-		}
-		
-		activeChar.checks();
-		
+		}	
+		activeChar.checks();	
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.scripting.ScriptManager;
@@ -117,7 +118,7 @@ public class QuestManager extends ScriptManager<Quest>
 				if (old != null && old.isRealQuest())
 				{
 					old.unload();
-					_log.info("QuestManager: Replaced: (" + old.getName() + ") with a new version (" + quest.getName() + ").");
+				//	_log.info("QuestManager: Replaced: (" + old.getName() + ") with a new version (" + quest.getName() + ").");
 					
 				}
 				
@@ -154,9 +155,10 @@ public class QuestManager extends ScriptManager<Quest>
 	public void reloadAllQuests()
 	{
 		_log.info("QuestManager: Reloading scripts.");
+		
+		// Load all quests again.
 		try
 		{
-			// Unload all quests first.
 			for (Quest quest : _quests)
 			{
 				if (quest != null)
@@ -166,14 +168,11 @@ public class QuestManager extends ScriptManager<Quest>
 			// Clear the quest list.
 			_quests.clear();
 			
-			// Load all quests again.
-			File scripts = new File("./data/scripts.cfg");
-			L2ScriptEngineManager.getInstance().executeScriptList(scripts);
-			QuestManager.getInstance().report();
+			L2ScriptEngineManager.getInstance().executeScriptList(new File("./data/scripts.cfg"));	
 		}
-		catch (IOException ioe)
+		catch (IOException e)
 		{
-			_log.severe("QuestManager: Failed loading scripts.cfg, scripts won't be loaded.");
+			e.printStackTrace();
 		}
 		
 	}

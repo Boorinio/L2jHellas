@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
@@ -36,7 +35,7 @@ public class SiegeGuardManager
 	private static Logger _log = Logger.getLogger(SiegeGuardManager.class.getName());
 
 	private final Castle _castle;
-	private final List<L2Spawn> _siegeGuardSpawn = new FastList<L2Spawn>();
+	private final List<L2Spawn> _siegeGuardSpawn = new ArrayList<L2Spawn>();
 
 	public SiegeGuardManager(Castle castle)
 	{

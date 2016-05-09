@@ -12,15 +12,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.script;
+package com.l2jhellas.gameserver;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-/**
- * @author Luis Arias
- */
 public class DateRange
 {
 	private final Date _startDate, _endDate;

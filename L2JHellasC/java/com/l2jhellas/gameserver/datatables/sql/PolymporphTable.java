@@ -18,10 +18,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2MaxPolyModel;
@@ -35,14 +34,14 @@ public class PolymporphTable
 {
 	private final Logger _log = Logger.getLogger(PolymporphTable.class.getName());
 
-	private final FastMap<Integer, L2MaxPolyModel> _map;
+	private final HashMap<Integer, L2MaxPolyModel> _map;
 	private static PolymporphTable _instance;
 
 	private final String SQL_SELECT = "SELECT * FROM max_poly";
 
 	public PolymporphTable()
 	{
-		_map = new FastMap<Integer, L2MaxPolyModel>();
+		_map = new HashMap<Integer, L2MaxPolyModel>();
 	}
 
 	public static PolymporphTable getInstance()

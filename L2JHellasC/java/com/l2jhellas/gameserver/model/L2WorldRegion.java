@@ -14,11 +14,12 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -32,29 +33,23 @@ import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.type.L2DerbyTrackZone;
 import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
-import com.l2jhellas.util.object.L2ObjectSet;
 
 public final class L2WorldRegion
 {
 	private static Logger _log = Logger.getLogger(L2WorldRegion.class.getName());
 
-	/** L2ObjectHashSet(L2PlayableInstance) containing L2PlayableInstance of all player & summon in game in this L2WorldRegion */
-	private final L2ObjectSet<L2Playable> _allPlayable;
-
-	/** L2ObjectHashSet(L2Object) containing L2Object visible in this L2WorldRegion */
-	private final L2ObjectSet<L2Object> _visibleObjects;
-
-	private final FastList<L2WorldRegion> _surroundingRegions;
+	private final Map<Integer, L2Object> _visibleObjects = new ConcurrentHashMap<>();
+	private final Map<Integer, L2Playable> _allPlayable = new ConcurrentHashMap<>();
+	
+	private final List<L2WorldRegion> _surroundingRegions = new ArrayList<>();
+	
 	private final int _tileX, _tileY;
 	private Boolean _active = false;
 	private ScheduledFuture<?> _neighborsTask = null;
-	private final FastList<L2ZoneType> _zones;
+	private final List<L2ZoneType> _zones = new ArrayList<>();
 
 	public L2WorldRegion(int pTileX, int pTileY)
 	{
-		_allPlayable = L2ObjectSet.createL2PlayerSet(); //new L2ObjectHashSet<L2PcInstance>();
-		_visibleObjects = L2ObjectSet.createL2ObjectSet(); // new L2ObjectHashSet<L2Object>();
-		_surroundingRegions = new FastList<L2WorldRegion>();
 		//_surroundingRegions.add(this); //done in L2World.initRegions()
 
 		_tileX = pTileX;
@@ -65,7 +60,6 @@ public final class L2WorldRegion
 			_active = true;
 		else
 			_active = false;
-		_zones = new FastList<L2ZoneType>();
 	}
 
 	public void addZone(L2ZoneType zone)
@@ -78,7 +72,7 @@ public final class L2WorldRegion
 		_zones.remove(zone);
 	}
 
-	public FastList<L2ZoneType> getZones()
+	public List<L2ZoneType> getZones()
 	{
 		return _zones;
 	}
@@ -193,7 +187,7 @@ public final class L2WorldRegion
 		int c = 0;
 		if (!isOn)
 		{
-			for (L2Object o : _visibleObjects)
+			for (L2Object o : _visibleObjects.values())
 			{
 				if (o instanceof L2Attackable)
 				{
@@ -227,7 +221,7 @@ public final class L2WorldRegion
 		}
 		else
 		{
-			for (L2Object o : _visibleObjects)
+			for (L2Object o : _visibleObjects.values())
 			{
 				if (o instanceof L2Attackable)
 				{
@@ -350,11 +344,11 @@ public final class L2WorldRegion
 
 		if (object == null)
 			return;
-		_visibleObjects.put(object);
+		_visibleObjects.put(object.getObjectId(),object);
 
 		if (object instanceof L2Playable)
 		{
-			_allPlayable.put((L2Playable) object);
+			_allPlayable.put(object.getObjectId(),(L2Playable) object);
 
 			// if this is the first player to enter the region, activate self & neighbors
 			if ((_allPlayable.size() == 1) && (!Config.GRIDS_ALWAYS_ON))
@@ -394,7 +388,7 @@ public final class L2WorldRegion
 	/**
 	 * Return the FastList _surroundingRegions containing all L2WorldRegion around the current L2WorldRegion
 	 */
-	public FastList<L2WorldRegion> getSurroundingRegions()
+	public List<L2WorldRegion> getSurroundingRegions()
 	{
 		//change to return L2WorldRegion[] ?
 		//this should not change after initialization, so maybe changes are not necessary
@@ -402,12 +396,7 @@ public final class L2WorldRegion
 		return _surroundingRegions;
 	}
 
-	public Iterator<L2Playable> iterateAllPlayers()
-	{
-		return _allPlayable.iterator();
-	}
-
-	public L2ObjectSet<L2Object> getVisibleObjects()
+	public Map<Integer, L2Object> getVisibleObjects()
 	{
 		return _visibleObjects;
 	}
@@ -420,24 +409,26 @@ public final class L2WorldRegion
 	/**
 	 * Deleted all spawns in the world.
 	 */
-	public synchronized void deleteVisibleNpcSpawns()
+	public void deleteVisibleNpcSpawns()
 	{
-		_log.fine("Deleting all visible NPC's in Region: " + getName());
-		for (L2Object obj : _visibleObjects)
+		for (L2Object obj : _visibleObjects.values())
 		{
 			if (obj instanceof L2Npc)
 			{
-				L2Npc target = (L2Npc) obj;
-				target.deleteMe();
-				L2Spawn spawn = target.getSpawn();
+				((L2Npc) obj).deleteMe();
+				
+				final L2Spawn spawn = ((L2Npc) obj).getSpawn();
 				if (spawn != null)
 				{
 					spawn.stopRespawn();
 					SpawnTable.getInstance().deleteSpawn(spawn, false);
 				}
-				_log.finest("Removed NPC " + target.getObjectId());
 			}
 		}
-		_log.finest("All visible NPC's deleted in Region: " + getName());
+	}
+	
+	public Map<Integer, L2Playable> getVisiblePlayable()
+	{
+		return _allPlayable;
 	}
 }

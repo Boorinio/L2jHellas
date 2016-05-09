@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.Gui;
@@ -82,25 +80,25 @@ public class VoteRewardHopzone
 		}
 		if ((HCurrentVotes >= HLastVotes && HCurrentVotes < HGoalVotes) || HCurrentVotes == HLastVotes)
 		{
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(new ExShowScreenMessage("HopZone Votes: " + HCurrentVotes, 4000, SMPOS.BOTTOM_RIGHT, true));
 			Announcements.getInstance().announceToAll("HopZone Votes: " + HCurrentVotes);
 			Announcements.getInstance().announceToAll("Next Reward in: " + HGoalVotes + " Votes.");
 			waitSecs(5);
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(new ExShowScreenMessage("Next Reward in: " + HGoalVotes + " Votes.", 4000, SMPOS.BOTTOM_RIGHT, true));
 		}
 		if (HCurrentVotes >= HGoalVotes)
 		{
 			RewardPlayers();
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(new ExShowScreenMessage("HopZone Rewarded!", 4000, SMPOS.BOTTOM_RIGHT, true));
 			Announcements.getInstance().announceToAll("All players Rewarded!");
 			HGoalVotes = HCurrentVotes + Config.HOPZONE_VOTES_DIFFERENCE;
 			Announcements.getInstance().announceToAll("HopZone Votes: " + HCurrentVotes);
 			Announcements.getInstance().announceToAll("Next Reward in : " + HGoalVotes + " Votes.");
 			waitSecs(5);
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(new ExShowScreenMessage("Next Reward in: " + HGoalVotes + " Votes.", 4000, SMPOS.BOTTOM_RIGHT, true));
 		}
 		HLastVotes = HCurrentVotes;
@@ -118,7 +116,7 @@ public class VoteRewardHopzone
 	
 	public static void RewardPlayers()
 	{
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			String temp = player.getClient().getConnection().getInetAddress().getHostAddress();
 			if (Config.HOPZONE_BOXES_ALLOWED != 0 && HBoxes.contains(temp))
@@ -177,7 +175,8 @@ public class VoteRewardHopzone
 				URLConnection con = new URL(Config.HOPZONE_SERVER_LINK).openConnection();
 				
 				
-				con.addRequestProperty("User-L2Hopzone", "Mozilla/4.76");
+				con.addRequestProperty("User-Agent", "Mozilla/5.0");
+				//con.addRequestProperty("User-L2Hopzone", "Mozilla/4.76");
 				isr = new InputStreamReader(con.getInputStream());
 				br = new BufferedReader(isr);
 				
@@ -188,7 +187,7 @@ public class VoteRewardHopzone
 					{
 					int votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
                     Gui.hopzone.setText("HopZone Votes: " + votes);
-					return votes;
+					return votes;				
 					}
 				}
 				

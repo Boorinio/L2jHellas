@@ -14,9 +14,10 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
+
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -50,7 +51,7 @@ public final class EffectConfusion extends L2Effect
 		getEffected().startConfused();
 		if (Config.DEBUG)
 			System.out.println(getEffected());
-		List<L2Character> targetList = new FastList<L2Character>();
+		List<L2Character> targetList = new ArrayList<L2Character>();
 
 		// Getting the possible targets
 

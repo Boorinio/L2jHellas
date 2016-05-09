@@ -131,6 +131,10 @@ public class L2DoormenInstance extends L2NpcInstance
 						}
 						if (!player.disarmWeapons())
 							return;
+						
+						if(player.getActiveTradeList() !=null)
+							player.cancelActiveTrade();
+						
 						player.getPet().unSummon(player);
 						player.getInventory().destroyItemByItemId("Wyvern", 1460, 10, player, player.getTarget());
 						Ride mount = new Ride(player.getObjectId(), Ride.ACTION_MOUNT, 12621);

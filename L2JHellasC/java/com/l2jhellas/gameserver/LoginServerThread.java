@@ -26,12 +26,12 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAKeyGenParameterSpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
@@ -120,7 +120,7 @@ public class LoginServerThread extends Thread
 		_reserveHost = Config.RESERVE_HOST_ON_LOGIN;
 		_gameExternalHost = Config.EXTERNAL_HOSTNAME;
 		_gameInternalHost = Config.INTERNAL_HOSTNAME;
-		_waitingClients = new FastList<WaitingClient>();
+		_waitingClients = new ArrayList<WaitingClient>();
 		_accountsInGameServer = new FastMap<String, L2GameClient>().setShared(true);
 		_maxPlayer = Config.MAXIMUM_ONLINE_USERS;
 	}
@@ -278,10 +278,10 @@ public class LoginServerThread extends Thread
 								st.addAttribute(ServerStatus.SERVER_LIST_STATUS, ServerStatus.STATUS_AUTO);
 
 							sendPacket(st);
-							if (L2World.getAllPlayersCount() > 0)
+							if (L2World.getInstance().getAllPlayersCount() > 0)
 							{
-								FastList<String> playerList = new FastList<String>();
-								for (L2PcInstance player : L2World.getAllPlayers())
+								ArrayList<String> playerList = new ArrayList<String>();
+								for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 								{
 									playerList.add(player.getAccountName());
 								}

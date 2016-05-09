@@ -20,17 +20,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
-
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2MinionData;
 import com.l2jhellas.gameserver.model.L2NpcAIData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
+import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.skills.Stats;
 /**
  * This cl contains all generic data of a L2Spawn object.<BR><BR>
@@ -78,26 +75,26 @@ public final class L2NpcTemplate extends L2CharTemplate
 	// quests, just plain quest monsters for preventing champion spawn
 	
 	//Skill AI
-	public FastList<L2Skill> _buffskills;
-	public FastList<L2Skill> _negativeskills;
-	public FastList<L2Skill> _debuffskills;
-	public FastList<L2Skill> _atkskills;
-	public FastList<L2Skill> _rootskills;
-	public FastList<L2Skill> _stunskills;
-	public FastList<L2Skill> _sleepskills;
-	public FastList<L2Skill> _paralyzeskills;
-	public FastList<L2Skill> _fossilskills;
-	public FastList<L2Skill> _floatskills;
-	public FastList<L2Skill> _immobiliseskills;
-	public FastList<L2Skill> _healskills;
-	public FastList<L2Skill> _resskills;
-	public FastList<L2Skill> _dotskills;
-	public FastList<L2Skill> _cotskills;
-	public FastList<L2Skill> _universalskills;
-	public FastList<L2Skill> _manaskills;
-	public FastList<L2Skill> _Lrangeskills;
-	public FastList<L2Skill> _Srangeskills;
-	public FastList<L2Skill> _generalskills;
+	public ArrayList<L2Skill> _buffskills;
+	public ArrayList<L2Skill> _negativeskills;
+	public ArrayList<L2Skill> _debuffskills;
+	public ArrayList<L2Skill> _atkskills;
+	public ArrayList<L2Skill> _rootskills;
+	public ArrayList<L2Skill> _stunskills;
+	public ArrayList<L2Skill> _sleepskills;
+	public ArrayList<L2Skill> _paralyzeskills;
+	public ArrayList<L2Skill> _fossilskills;
+	public ArrayList<L2Skill> _floatskills;
+	public ArrayList<L2Skill> _immobiliseskills;
+	public ArrayList<L2Skill> _healskills;
+	public ArrayList<L2Skill> _resskills;
+	public ArrayList<L2Skill> _dotskills;
+	public ArrayList<L2Skill> _cotskills;
+	public ArrayList<L2Skill> _universalskills;
+	public ArrayList<L2Skill> _manaskills;
+	public ArrayList<L2Skill> _Lrangeskills;
+	public ArrayList<L2Skill> _Srangeskills;
+	public ArrayList<L2Skill> _generalskills;
 	
 	private boolean _hasbuffskills;
 	private boolean _hasnegativeskills;
@@ -140,7 +137,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	//private final StatsSet _npcStatsSet;
 	
 	/** The table containing all Item that can be dropped by L2NpcInstance using this L2NpcTemplate*/
-	private FastList<L2DropCategory> _categories = null;
+	private ArrayList<L2DropCategory> _categories = null;
 	
 	/** The table containing all Minions that must be spawn with the L2NpcInstance using this L2NpcTemplate*/
 	private List<L2MinionData> _minions = null;
@@ -197,7 +194,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addTeachInfo(ClassId classId)
 	{
 		if (_teachInfo == null)
-			_teachInfo = new FastList<ClassId>();
+			_teachInfo = new ArrayList<ClassId>();
 		_teachInfo.add(classId);
 	}
 	
@@ -227,13 +224,13 @@ public final class L2NpcTemplate extends L2CharTemplate
 		if (drop.isQuestDrop())
 		{
 			//			if (_questDrops == null)
-			//				_questDrops = new FastList<L2DropData>(0);
+			//				_questDrops = new ArrayList<L2DropData>(0);
 			//			_questDrops.add(drop);
 		}
 		else
 		{
 			if (_categories == null)
-				_categories = new FastList<L2DropCategory>();
+				_categories = new ArrayList<L2DropCategory>();
 			// if the category doesn't already exist, create it first
 			synchronized (_categories)
 			{
@@ -260,14 +257,14 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addRaidData(L2MinionData minion)
 	{
 		if (_minions == null)
-			_minions = new FastList<L2MinionData>();
+			_minions = new ArrayList<L2MinionData>();
 		_minions.add(minion);
 	}
 	
 	public void addVulnerability(Stats id, double vuln)
 	{
 		if (_vulnerabilities == null)
-			_vulnerabilities = new FastMap<Stats, Double>();
+			_vulnerabilities = new HashMap<Stats, Double>();
 		_vulnerabilities.put(id, new Double(vuln));
 	}
 	
@@ -282,7 +279,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	{
 		
 		if (_skills == null)
-			_skills = new FastMap<Integer, L2Skill>();
+			_skills = new HashMap<Integer, L2Skill>();
 		
 		if (!skill.isPassive())
 		{
@@ -375,7 +372,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	/**
 	 * Return the list of all possible UNCATEGORIZED drops of this L2NpcTemplate.<BR><BR>
 	 */
-	public FastList<L2DropCategory> getDropData()
+	public ArrayList<L2DropCategory> getDropData()
 	{
 		return _categories;
 	}
@@ -388,7 +385,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	{
 		if (_categories == null)
 			return null;
-		List<L2DropData> lst = new FastList<L2DropData>();
+		List<L2DropData> lst = new ArrayList<L2DropData>();
 		for (L2DropCategory tmp : _categories)
 		{
 			lst.addAll(tmp.getAllDrops());
@@ -403,12 +400,12 @@ public final class L2NpcTemplate extends L2CharTemplate
 	{
 		if (_categories == null)
 			return;
+		
 		while (!_categories.isEmpty())
 		{
-			_categories.getFirst().clearAllDrops();
-			_categories.removeFirst();
+			_categories.clear();
 		}
-		_categories.clear();
+	
 	}
 	
 	/**
@@ -424,23 +421,23 @@ public final class L2NpcTemplate extends L2CharTemplate
 		return _skills;
 	}
 	
-	public void addQuestEvent(QuestEventType eventType, Quest quest)
+	public void addQuestEvent(QuestEventType QuestEventType, Quest quest)
 	{
-		List<Quest> eventList = _questEvents.get(eventType);
+		List<Quest> eventList = _questEvents.get(QuestEventType);
 		if (eventList == null)
 		{
 			eventList = new ArrayList<>();
 			eventList.add(quest);
-			_questEvents.put(eventType, eventList);
+			_questEvents.put(QuestEventType, eventList);
 		}
 		else
 		{
 			eventList.remove(quest);
 			
-			if (eventType.isMultipleRegistrationAllowed() || eventList.isEmpty())
+			if (QuestEventType.isMultipleRegistrationAllowed() || eventList.isEmpty())
 				eventList.add(quest);
 			else
-				_log.warning("Quest event not allow multiple quest registrations. Skipped addition of EventType \"" + eventType + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
+				_log.warning("Quest event not allow multiple quest registrations. Skipped addition of QuestEventType \"" + QuestEventType + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
 		}
 	}
 	
@@ -449,9 +446,9 @@ public final class L2NpcTemplate extends L2CharTemplate
 		return _questEvents;
 	}
 	
-	public List<Quest> getEventQuests(QuestEventType EventType)
+	public List<Quest> getEventQuests(QuestEventType QuestEventType)
 	{
-		return _questEvents.get(EventType);
+		return _questEvents.get(QuestEventType);
 	}
 	/**
 	 * Checks if obj can be assigned to the Class represented by clazz.<br>
@@ -598,7 +595,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addBuffSkill(L2Skill skill)
 	{
 		if (_buffskills == null)
-			_buffskills = new FastList<L2Skill>();
+			_buffskills = new ArrayList<L2Skill>();
 		_buffskills.add(skill);
 		_hasbuffskills = true;
 	}
@@ -606,7 +603,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addHealSkill(L2Skill skill)
 	{
 		if (_healskills == null)
-			_healskills = new FastList<L2Skill>();
+			_healskills = new ArrayList<L2Skill>();
 		_healskills.add(skill);
 		_hashealskills = true;
 	}
@@ -614,7 +611,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addResSkill(L2Skill skill)
 	{
 		if (_resskills == null)
-			_resskills = new FastList<L2Skill>();
+			_resskills = new ArrayList<L2Skill>();
 		_resskills.add(skill);
 		_hasresskills = true;
 	}
@@ -622,7 +619,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addAtkSkill(L2Skill skill)
 	{
 		if (_atkskills == null)
-			_atkskills = new FastList<L2Skill>();
+			_atkskills = new ArrayList<L2Skill>();
 		_atkskills.add(skill);
 		_hasatkskills = true;
 	}
@@ -630,7 +627,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addDebuffSkill(L2Skill skill)
 	{
 		if (_debuffskills == null)
-			_debuffskills = new FastList<L2Skill>();
+			_debuffskills = new ArrayList<L2Skill>();
 		_debuffskills.add(skill);
 		_hasdebuffskills = true;
 	}
@@ -638,7 +635,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addRootSkill(L2Skill skill)
 	{
 		if (_rootskills == null)
-			_rootskills = new FastList<L2Skill>();
+			_rootskills = new ArrayList<L2Skill>();
 		_rootskills.add(skill);
 		_hasrootskills = true;
 	}
@@ -646,7 +643,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addSleepSkill(L2Skill skill)
 	{
 		if (_sleepskills == null)
-			_sleepskills = new FastList<L2Skill>();
+			_sleepskills = new ArrayList<L2Skill>();
 		_sleepskills.add(skill);
 		_hassleepskills = true;
 	}
@@ -654,7 +651,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addStunSkill(L2Skill skill)
 	{
 		if (_stunskills == null)
-			_stunskills = new FastList<L2Skill>();
+			_stunskills = new ArrayList<L2Skill>();
 		_stunskills.add(skill);
 		_hasstunskills = true;
 	}
@@ -662,7 +659,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addParalyzeSkill(L2Skill skill)
 	{
 		if (_paralyzeskills == null)
-			_paralyzeskills = new FastList<L2Skill>();
+			_paralyzeskills = new ArrayList<L2Skill>();
 		_paralyzeskills.add(skill);
 		_hasparalyzeskills = true;
 	}
@@ -670,7 +667,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addFloatSkill(L2Skill skill)
 	{
 		if (_floatskills == null)
-			_floatskills = new FastList<L2Skill>();
+			_floatskills = new ArrayList<L2Skill>();
 		_floatskills.add(skill);
 		_hasfloatskills = true;
 	}
@@ -678,7 +675,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addFossilSkill(L2Skill skill)
 	{
 		if (_fossilskills == null)
-			_fossilskills = new FastList<L2Skill>();
+			_fossilskills = new ArrayList<L2Skill>();
 		_fossilskills.add(skill);
 		_hasfossilskills = true;
 	}
@@ -686,7 +683,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addNegativeSkill(L2Skill skill)
 	{
 		if (_negativeskills == null)
-			_negativeskills = new FastList<L2Skill>();
+			_negativeskills = new ArrayList<L2Skill>();
 		_negativeskills.add(skill);
 		_hasnegativeskills = true;
 	}
@@ -694,7 +691,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addImmobiliseSkill(L2Skill skill)
 	{
 		if (_immobiliseskills == null)
-			_immobiliseskills = new FastList<L2Skill>();
+			_immobiliseskills = new ArrayList<L2Skill>();
 		_immobiliseskills.add(skill);
 		_hasimmobiliseskills = true;
 	}
@@ -702,7 +699,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addDOTSkill(L2Skill skill)
 	{
 		if (_dotskills == null)
-			_dotskills = new FastList<L2Skill>();
+			_dotskills = new ArrayList<L2Skill>();
 		_dotskills.add(skill);
 		_hasdotskills = true;
 	}
@@ -710,7 +707,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addUniversalSkill(L2Skill skill)
 	{
 		if (_universalskills == null)
-			_universalskills = new FastList<L2Skill>();
+			_universalskills = new ArrayList<L2Skill>();
 		_universalskills.add(skill);
 		_hasuniversalskills = true;
 	}
@@ -718,7 +715,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addCOTSkill(L2Skill skill)
 	{
 		if (_cotskills == null)
-			_cotskills = new FastList<L2Skill>();
+			_cotskills = new ArrayList<L2Skill>();
 		_cotskills.add(skill);
 		_hascotskills = true;
 	}
@@ -726,7 +723,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addManaHealSkill(L2Skill skill)
 	{
 		if (_manaskills == null)
-			_manaskills = new FastList<L2Skill>();
+			_manaskills = new ArrayList<L2Skill>();
 		_manaskills.add(skill);
 		_hasmanaskills = true;
 	}
@@ -734,7 +731,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public void addGeneralSkill(L2Skill skill)
 	{
 		if (_generalskills == null)
-			_generalskills = new FastList<L2Skill>();
+			_generalskills = new ArrayList<L2Skill>();
 		_generalskills.add(skill);
 		_hasgeneralskills = true;
 	}
@@ -744,14 +741,14 @@ public final class L2NpcTemplate extends L2CharTemplate
 		if (skill.getCastRange() <= 150 && skill.getCastRange() > 0)
 		{
 			if (_Srangeskills == null)
-				_Srangeskills = new FastList<L2Skill>();
+				_Srangeskills = new ArrayList<L2Skill>();
 			_Srangeskills.add(skill);
 			_hasSrangeskills = true;
 		}
 		else if (skill.getCastRange() > 150)
 		{
 			if (_Lrangeskills == null)
-				_Lrangeskills = new FastList<L2Skill>();
+				_Lrangeskills = new ArrayList<L2Skill>();
 			_Lrangeskills.add(skill);
 			_hasLrangeskills = true;
 		}

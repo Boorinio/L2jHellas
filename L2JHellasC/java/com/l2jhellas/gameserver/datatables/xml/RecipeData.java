@@ -16,15 +16,14 @@ package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -56,7 +55,7 @@ public class RecipeData extends RecipeController
 
 	private RecipeData()
 	{
-		_lists = new FastMap<Integer, L2RecipeList>();
+		_lists = new HashMap<Integer, L2RecipeList>();
 
 		try
 		{
@@ -78,7 +77,7 @@ public class RecipeData extends RecipeController
 		if (file.exists())
 		{
 			Document doc = factory.newDocumentBuilder().parse(file);
-			List<L2RecipeInstance> recipePartList = new FastList<L2RecipeInstance>();
+			List<L2RecipeInstance> recipePartList = new ArrayList<L2RecipeInstance>();
 
 			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{

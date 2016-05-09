@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
-import com.l2jhellas.gameserver.model.L2HennaInstance;
+
+import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.HennaEquipList;
 
@@ -41,16 +41,11 @@ public final class RequestHennaList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
-		
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
-		final L2HennaInstance[] henna = HennaTreeTable.getInstance().getAvailableHenna(activeChar.getClassId());
-		if (henna == null)
-			return;
-		
-		activeChar.sendPacket(new HennaEquipList(activeChar, henna));
+		activeChar.sendPacket(new HennaEquipList(activeChar, HennaData.getInstance().getAvailableHenna(activeChar.getClassId().getId())));
 	}
 
 	@Override

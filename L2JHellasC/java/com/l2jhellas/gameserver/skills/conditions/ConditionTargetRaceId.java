@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.skills.conditions;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.Env;
@@ -24,11 +24,11 @@ import com.l2jhellas.gameserver.skills.Env;
  */
 public class ConditionTargetRaceId extends Condition
 {
-	private final FastList<Integer> _raceIds;
+	private final ArrayList<Integer> _raceIds;
 
-	public ConditionTargetRaceId(FastList<Integer> raceId)
+	public ConditionTargetRaceId(ArrayList<Integer> array)
 	{
-		_raceIds = raceId;
+		_raceIds = array;
 	}
 
 	@Override

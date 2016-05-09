@@ -33,6 +33,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.entity.Siege;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState;
@@ -951,7 +952,7 @@ public final class Formulas
 					hpRegenMultiplier *= siegeModifier;
 			}
 
-			if (player.isInsideZone(L2Character.ZONE_CLANHALL) && player.getClan() != null)
+			if (player.isInsideZone(ZoneId.CLAN_HALL) && player.getClan() != null)
 			{
 				int clanHallIndex = player.getClan().hasHideout();
 				if (clanHallIndex > 0)
@@ -964,7 +965,7 @@ public final class Formulas
 			}
 
 			// Mother Tree effect is calculated at last
-			if (player.isInsideZone(L2Character.ZONE_MOTHERTREE))
+			if (player.isInsideZone(ZoneId.MOTHER_TREE))
 				hpRegenBonus += 2;
 
 			// Calculate Movement bonus
@@ -1009,10 +1010,10 @@ public final class Formulas
 				mpRegenMultiplier *= calcFestivalRegenModifier(player);
 
 			// Mother Tree effect is calculated at last
-			if (player.isInsideZone(L2Character.ZONE_MOTHERTREE))
+			if (player.isInsideZone(ZoneId.MOTHER_TREE))
 				mpRegenBonus += 1;
 
-			if (player.isInsideZone(L2Character.ZONE_CLANHALL) && player.getClan() != null)
+			if (player.isInsideZone(ZoneId.CLAN_HALL) && player.getClan() != null)
 			{
 				int clanHallIndex = player.getClan().hasHideout();
 				if (clanHallIndex > 0)

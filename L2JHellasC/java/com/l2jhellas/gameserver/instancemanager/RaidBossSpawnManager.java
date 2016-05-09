@@ -19,12 +19,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -45,11 +44,11 @@ public class RaidBossSpawnManager
 {
 	protected final static Logger _log = Logger.getLogger(RaidBossSpawnManager.class.getName());
 	
-	protected static Map<Integer, L2RaidBossInstance> _bosses;
-	protected static Map<Integer, L2Spawn> _spawns;
-	protected static Map<Integer, StatsSet> _storedInfo;
-	protected static Map<Integer, ScheduledFuture<?>> _schedules;
-
+	protected static final Map<Integer, L2RaidBossInstance> _bosses = new HashMap<>();
+	protected static final Map<Integer, L2Spawn> _spawns = new HashMap<>();
+	protected static final Map<Integer, StatsSet> _storedInfo = new HashMap<>();
+	protected static final Map<Integer, ScheduledFuture<?>> _schedules = new HashMap<>();
+	
 	public static enum StatusEnum
 	{
 		ALIVE, DEAD, UNDEFINED
@@ -73,12 +72,6 @@ public class RaidBossSpawnManager
 	
 	private void init()
 	{
-		_bosses = new FastMap<Integer, L2RaidBossInstance>();
-		_spawns = new FastMap<Integer, L2Spawn>();
-		_storedInfo = new FastMap<Integer, StatsSet>();
-		_schedules = new FastMap<Integer, ScheduledFuture<?>>();
-	
-
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT * from raidboss_spawnlist ORDER BY boss_id");
@@ -501,14 +494,13 @@ public class RaidBossSpawnManager
 
 		if (_schedules != null)
 		{
-			for (Integer bossId : _schedules.keySet())
-			{
-				ScheduledFuture<?> f = _schedules.get(bossId);
+			for (ScheduledFuture<?> f : _schedules.values())
 				f.cancel(true);
-			}
+			
+				_schedules.clear();
 		}
 
-		_schedules.clear();
+		
 		_storedInfo.clear();
 		_spawns.clear();
 	}

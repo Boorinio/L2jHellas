@@ -737,13 +737,14 @@ public class L2Attackable extends L2Npc
 		// If this L2Attackable is a L2MonsterInstance and it has spawned minions, call its minions to battle
 		if (this instanceof L2MonsterInstance)
 		{
-			L2MonsterInstance master = (L2MonsterInstance) this;
+            L2MonsterInstance master = (L2MonsterInstance) this;
 			
 			if (master.hasMinions())
-			    master.callMinionsToAssist(attacker);
-			master = (L2MonsterInstance) master.getLeader();
+				master.getMinionList().onAssist(this, attacker);
+			
+			master = master.getLeader();
 			if (master != null && master.hasMinions())
-				 master.callMinionsToAssist(attacker);
+				master.getMinionList().onAssist(this, attacker);
 		}
 		// Reduce the current HP of the L2Attackable and launch the doDie Task if necessary
 		super.reduceCurrentHp(damage, attacker, awake);

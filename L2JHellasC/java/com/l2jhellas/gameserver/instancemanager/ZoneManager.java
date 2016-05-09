@@ -3,375 +3,344 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.instancemanager;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.PackRoot;
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.form.ZoneCuboid;
 import com.l2jhellas.gameserver.model.zone.form.ZoneCylinder;
 import com.l2jhellas.gameserver.model.zone.form.ZoneNPoly;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
-import com.l2jhellas.gameserver.model.zone.type.L2BigheadZone;
-import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.model.zone.type.L2CastleZone;
-import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
-import com.l2jhellas.gameserver.model.zone.type.L2DamageZone;
-import com.l2jhellas.gameserver.model.zone.type.L2DerbyTrackZone;
-import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
-import com.l2jhellas.gameserver.model.zone.type.L2JailZone;
-import com.l2jhellas.gameserver.model.zone.type.L2MotherTreeZone;
-import com.l2jhellas.gameserver.model.zone.type.L2NoLandingZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
-import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
-import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
-import com.l2jhellas.util.database.L2DatabaseFactory;
+import com.l2jhellas.util.XMLDocumentFactory;
 
 /**
- * This class manages the augmentation data and can also create new
- * augmentations.
- * 
+ * This class manages the zones
  * @author durgus
  */
 public class ZoneManager
 {
 	private static final Logger _log = Logger.getLogger(ZoneManager.class.getName());
-
-	private final Map<Class<? extends L2ZoneType>, Map<Integer, ? extends L2ZoneType>> _zones = new HashMap<>();
-
+	
+	private final Map<Class<? extends L2ZoneType>, Map<Integer, ? extends L2ZoneType>> _classZones = new HashMap<>();
+	private int _lastDynamicId = 0;
+	private final List<L2ItemInstance> _debugItems = new ArrayList<>();
+	boolean reload = false;
+	
 	public static final ZoneManager getInstance()
 	{
 		return SingletonHolder._instance;
 	}
-
-	private ZoneManager()
+	
+	protected ZoneManager()
 	{
 		load();
 	}
-
+	
 	public void reload()
 	{
-		// int zoneCount = 0;
-
 		// Get the world regions
 		int count = 0;
-		L2WorldRegion[][] worldRegions = L2World.getAllWorldRegions();
-		for (int x = 0; x < worldRegions.length; x++)
+		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
+		for (L2WorldRegion[] worldRegion : worldRegions)
 		{
-			for (int y = 0; y < worldRegions[x].length; y++)
+			for (L2WorldRegion element : worldRegion)
 			{
-				worldRegions[x][y].getZones().clear();
+				element.getZones().clear();
 				count++;
 			}
 		}
 		GrandBossManager.getInstance().getZones().clear();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Removed zones in " + count + " regions.");
+		_log.info("Removed zones in " + count + " regions.");
+		
+		reload = true;
+		
 		// Load the zones
 		load();
-	}
+		
+		for (L2Object o : L2World.getInstance().getAllVisibleObjects().values())
+		{
+			if (o instanceof L2Character)
+				((L2Character) o).revalidateZone();
+		}
 
+	}
+	
 	private final void load()
 	{
-		int zoneCount = 0;
-		_zones.clear();
-
+		_log.info("Loading zones...");
+		_classZones.clear();
+		
 		// Get the world regions
-		L2WorldRegion[][] worldRegions = L2World.getAllWorldRegions();
-
+		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
+		
 		// Load the zone xml
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try
 		{
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setValidating(false);
-			factory.setIgnoringComments(true);
-
-			File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/zone.xml");
-			if (!file.exists())
+			final File mainDir = new File("./data/xml/zones");
+			if (!mainDir.isDirectory())
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": The zone.xml file is missing.");
+				_log.log(Level.SEVERE, "ZoneManager: Main dir " + mainDir.getAbsolutePath() + " hasn't been found.");
 				return;
 			}
-
-			Document doc = factory.newDocumentBuilder().parse(file);
-
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			
+			int fileCounter = 0;
+			for (final File file : mainDir.listFiles())
 			{
-				if ("list".equalsIgnoreCase(n.getNodeName()))
+				if (file.isFile() && file.getName().endsWith(".xml"))
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
-					{
-						if ("zone".equalsIgnoreCase(d.getNodeName()))
-						{
-							NamedNodeMap attrs = d.getAttributes();
-							int zoneId = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
-							int minZ = Integer.parseInt(attrs.getNamedItem("minZ").getNodeValue());
-							int maxZ = Integer.parseInt(attrs.getNamedItem("maxZ").getNodeValue());
-							String zoneType = attrs.getNamedItem("type").getNodeValue();
-							String zoneShape = attrs.getNamedItem("shape").getNodeValue();
-
-							// Create the zone
-							L2ZoneType temp = null;
-
-							if (zoneType.equals("FishingZone"))
-								temp = new L2FishingZone(zoneId);
-							else if (zoneType.equals("ClanHallZone"))
-								temp = new L2ClanHallZone(zoneId);
-							else if (zoneType.equals("PeaceZone"))
-								temp = new L2PeaceZone(zoneId);
-							else if (zoneType.equals("Town"))
-								temp = new L2TownZone(zoneId);
-							else if (zoneType.equals("OlympiadStadium"))
-								temp = new L2OlympiadStadiumZone(zoneId);
-							else if (zoneType.equals("CastleZone"))
-								temp = new L2CastleZone(zoneId);
-							else if (zoneType.equals("DamageZone"))
-								temp = new L2DamageZone(zoneId);
-							else if (zoneType.equals("Arena"))
-								temp = new L2ArenaZone(zoneId);
-							else if (zoneType.equals("MotherTree"))
-								temp = new L2MotherTreeZone(zoneId);
-							else if (zoneType.equals("BigheadZone"))
-								temp = new L2BigheadZone(zoneId);
-							else if (zoneType.equals("NoLandingZone"))
-								temp = new L2NoLandingZone(zoneId);
-							else if (zoneType.equals("JailZone"))
-								temp = new L2JailZone(zoneId);
-							else if (zoneType.equals("DerbyTrackZone"))
-								temp = new L2DerbyTrackZone(zoneId);
-							else if (zoneType.equals("BossZone"))
-								temp = new L2BossZone(zoneId);
-							else if (zoneType.equals("WaterZone"))
-
-								// Check for unknown type
-								if (temp == null)
-								{
-									_log.log(Level.WARNING, getClass().getName() + ": No such zone type: " + zoneType);
-									continue;
-								}
-
-							// Get the zone shape from sql
-							try
-							{
-								PreparedStatement statement = null;
-
-								// Set the correct query
-								statement = con.prepareStatement("SELECT x,y FROM zone_vertices WHERE id=? ORDER BY 'order' ASC ");
-
-								statement.setInt(1, zoneId);
-								ResultSet rset = statement.executeQuery();
-
-								// Create this zone. Parsing for cuboids is a
-								// bit different than for other polygons
-								// cuboids need exactly 2 points to be defined.
-								// Other polygons need at least 3 (one per
-								// vertex)
-								if (zoneShape.equalsIgnoreCase("Cuboid"))
-								{
-									int[] x =
-									{
-									0, 0
-									};
-									int[] y =
-									{
-									0, 0
-									};
-									boolean successfulLoad = true;
-
-									for (int i = 0; i < 2; i++)
-									{
-										if (rset.next())
-										{
-											x[i] = rset.getInt("x");
-											y[i] = rset.getInt("y");
-										}
-										else
-										{
-											_log.log(Level.WARNING, getClass().getName() + ": Missing cuboid vertex in sql data for zone: " + zoneId);
-											rset.close();
-											statement.close();
-											successfulLoad = false;
-											break;
-										}
-									}
-
-									if (successfulLoad)
-										temp.setZone(new ZoneCuboid(x[0], x[1], y[0], y[1], minZ, maxZ));
-									else
-										continue;
-								}
-								else if (zoneShape.equalsIgnoreCase("NPoly"))
-								{
-									FastList<Integer> fl_x = new FastList<Integer>(), fl_y = new FastList<Integer>();
-
-									// Load the rest
-									while (rset.next())
-									{
-										fl_x.add(rset.getInt("x"));
-										fl_y.add(rset.getInt("y"));
-									}
-
-									// An nPoly needs to have at least 3
-									// vertices
-									if ((fl_x.size() == fl_y.size()) && (fl_x.size() > 2))
-									{
-										// Create arrays
-										int[] aX = new int[fl_x.size()];
-										int[] aY = new int[fl_y.size()];
-
-										// This runs only at server startup so
-										// dont complain :>
-										for (int i = 0; i < fl_x.size(); i++)
-										{
-											aX[i] = fl_x.get(i);
-											aY[i] = fl_y.get(i);
-										}
-
-										// Create the zone
-										temp.setZone(new ZoneNPoly(aX, aY, minZ, maxZ));
-									}
-									else
-									{
-										_log.log(Level.WARNING, getClass().getName() + ": Bad sql data for zone: " + zoneId);
-										rset.close();
-										statement.close();
-										continue;
-									}
-								}
-								else if (zoneShape.equalsIgnoreCase("Cylinder"))
-								{
-									// A Cylinder zone requires a centre point
-									// at x,y and a radius
-									int zoneRad = Integer.parseInt(attrs.getNamedItem("rad").getNodeValue());
-									if (rset.next() && zoneRad > 0)
-									{
-										int zoneX = rset.getInt("x");
-										int zoneY = rset.getInt("y");
-
-										// create the zone
-										temp.setZone(new ZoneCylinder(zoneX, zoneY, minZ, maxZ, zoneRad));
-									}
-									else
-									{
-										_log.log(Level.WARNING, getClass().getName() + ": Bad sql data for zone: " + zoneId);
-										rset.close();
-										statement.close();
-										continue;
-									}
-								}
-								else
-								{
-									_log.log(Level.WARNING, getClass().getName() + ": Unknown shape: " + zoneShape);
-									rset.close();
-									statement.close();
-									continue;
-								}
-
-								rset.close();
-								statement.close();
-							}
-							catch (Exception e)
-							{
-								_log.log(Level.WARNING, getClass().getName() + ": Failed to load zone coordinates: " + e);
-								if (Config.DEVELOPER)
-								{
-									e.printStackTrace();
-								}
-							}
-
-							// Check for aditional parameters
-							for (Node cd = d.getFirstChild(); cd != null; cd = cd.getNextSibling())
-							{
-								if ("stat".equalsIgnoreCase(cd.getNodeName()))
-								{
-									attrs = cd.getAttributes();
-									String name = attrs.getNamedItem("name").getNodeValue();
-									String val = attrs.getNamedItem("val").getNodeValue();
-
-									temp.setParameter(name, val);
-								}
-							}
-							addZone(zoneId, temp);
-
-							// Register the zone into any world region it
-							// intersects with...
-							// currently 11136 test for each zone :>
-							int ax, ay, bx, by;
-							for (int x = 0; x < worldRegions.length; x++)
-							{
-								for (int y = 0; y < worldRegions[x].length; y++)
-								{
-									ax = (x - L2World.OFFSET_X) << L2World.SHIFT_BY;
-									bx = ((x + 1) - L2World.OFFSET_X) << L2World.SHIFT_BY;
-									ay = (y - L2World.OFFSET_Y) << L2World.SHIFT_BY;
-									by = ((y + 1) - L2World.OFFSET_Y) << L2World.SHIFT_BY;
-
-									if (temp.getZone().intersectsRectangle(ax, bx, ay, by))
-									{
-										if (Config.DEBUG)
-											_log.log(Level.CONFIG, getClass().getName() + ": Zone (" + zoneId + ") added to: " + x + " " + y);
-
-										worldRegions[x][y].addZone(temp);
-									}
-								}
-							}
-
-							// Special managers for granbosses...
-							if (temp instanceof L2BossZone)
-								GrandBossManager.getInstance().addZone((L2BossZone) temp);
-							
-							else if (temp instanceof L2ArenaZone)
-								ArenaManager.getInstance().addArena((L2ArenaZone) temp);
-							else if (temp instanceof L2TownZone)
-								TownManager.getInstance().addTown((L2TownZone) temp);
-							else if (temp instanceof L2OlympiadStadiumZone)
-								OlympiadStadiaManager.getInstance().addStadium((L2OlympiadStadiumZone) temp);
-							// Increase the counter
-							zoneCount++;
-						}
-					}
+					// Set dynamically the ID range of next XML loading file.
+					_lastDynamicId = fileCounter++ * 1000;
+					loadFileZone(file, worldRegions);
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Error while loading zones." + e);
+			_log.log(Level.SEVERE, "Error while loading zones.", e);
 			return;
 		}
-
-		_log.log(Level.FINE, getClass().getSimpleName() + ": loaded " + zoneCount + " zones.");
+		
+		_log.info("ZoneManager: loaded " + _classZones.size() + " zones classes and " + getSize() + " zones.");
 	}
-
+	
+	private void loadFileZone(final File f, L2WorldRegion[][] worldRegions) throws Exception
+	{
+		final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+		{
+			if ("list".equalsIgnoreCase(n.getNodeName()))
+			{
+				NamedNodeMap attrs = n.getAttributes();
+				Node attribute = attrs.getNamedItem("enabled");
+				if (attribute != null && !Boolean.parseBoolean(attribute.getNodeValue()))
+					continue;
+				
+				for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+				{
+					if ("zone".equalsIgnoreCase(d.getNodeName()))
+					{
+						final NamedNodeMap nnmd = d.getAttributes();
+						
+						// Generate dynamically zone's ID.
+						int zoneId = _lastDynamicId++;
+						
+						// Dynamic id is replaced by handwritten id if existing.
+						attribute = nnmd.getNamedItem("id");
+						if (attribute != null)
+							zoneId = Integer.parseInt(attribute.getNodeValue());
+						
+						final String zoneType = nnmd.getNamedItem("type").getNodeValue();
+						final String zoneShape = nnmd.getNamedItem("shape").getNodeValue();
+						final int minZ = Integer.parseInt(nnmd.getNamedItem("minZ").getNodeValue());
+						final int maxZ = Integer.parseInt(nnmd.getNamedItem("maxZ").getNodeValue());
+						
+						// Create the zone
+						Class<?> newZone;
+						try
+						{
+							newZone = Class.forName("com.l2jhellas.gameserver.model.zone.type.L2" + zoneType);
+						}
+						catch (ClassNotFoundException e)
+						{
+							_log.warning("ZoneData: No such zone type: " + zoneType + " in file: " + f.getName());
+							continue;
+						}
+						
+						Constructor<?> zoneConstructor = newZone.getConstructor(int.class);
+						L2ZoneType temp = (L2ZoneType) zoneConstructor.newInstance(zoneId);
+						
+						// Get the zone shape from sql
+						try
+						{
+							List<int[]> rs = new ArrayList<>();
+							
+							// loading from XML first
+							for (Node cd = d.getFirstChild(); cd != null; cd = cd.getNextSibling())
+							{
+								if ("node".equalsIgnoreCase(cd.getNodeName()))
+								{
+									attrs = cd.getAttributes();
+									int[] point = new int[2];
+									point[0] = Integer.parseInt(attrs.getNamedItem("X").getNodeValue());
+									point[1] = Integer.parseInt(attrs.getNamedItem("Y").getNodeValue());
+									rs.add(point);
+								}
+							}
+							
+							int[][] coords = rs.toArray(new int[rs.size()][]);
+							
+							if (coords == null || coords.length == 0)
+							{
+								_log.warning("ZoneData: missing data for zone: " + zoneId + " on file: " + f.getName());
+								continue;
+							}
+							
+							// Create this zone. Parsing for cuboids is a
+							// bit different than for other polygons
+							// cuboids need exactly 2 points to be defined.
+							// Other polygons need at least 3 (one per
+							// vertex)
+							if (zoneShape.equalsIgnoreCase("Cuboid"))
+							{
+								if (coords.length == 2)
+									temp.setZone(new ZoneCuboid(coords[0][0], coords[1][0], coords[0][1], coords[1][1], minZ, maxZ));
+								else
+								{
+									_log.warning("ZoneData: Missing cuboid vertex in sql data for zone: " + zoneId + " in file: " + f.getName());
+									continue;
+								}
+							}
+							else if (zoneShape.equalsIgnoreCase("NPoly"))
+							{
+								// nPoly needs to have at least 3 vertices
+								if (coords.length > 2)
+								{
+									final int[] aX = new int[coords.length];
+									final int[] aY = new int[coords.length];
+									for (int i = 0; i < coords.length; i++)
+									{
+										aX[i] = coords[i][0];
+										aY[i] = coords[i][1];
+									}
+									temp.setZone(new ZoneNPoly(aX, aY, minZ, maxZ));
+								}
+								else
+								{
+									_log.warning("ZoneData: Bad data for zone: " + zoneId + " in file: " + f.getName());
+									continue;
+								}
+							}
+							else if (zoneShape.equalsIgnoreCase("Cylinder"))
+							{
+								// A Cylinder zone requires a center point
+								// at x,y and a radius
+								attrs = d.getAttributes();
+								final int zoneRad = Integer.parseInt(attrs.getNamedItem("rad").getNodeValue());
+								if (coords.length == 1 && zoneRad > 0)
+									temp.setZone(new ZoneCylinder(coords[0][0], coords[0][1], minZ, maxZ, zoneRad));
+								else
+								{
+									_log.warning("ZoneData: Bad data for zone: " + zoneId + " in file: " + f.getName());
+									continue;
+								}
+							}
+							else
+							{
+								_log.warning("ZoneData: Unknown shape: " + zoneShape + " in file: " + f.getName());
+								continue;
+							}
+						}
+						catch (Exception e)
+						{
+							_log.log(Level.WARNING, "ZoneData: Failed to load zone " + zoneId + " coordinates: " + e.getMessage(), e);
+						}
+						
+						// Check for additional parameters
+						for (Node cd = d.getFirstChild(); cd != null; cd = cd.getNextSibling())
+						{
+							if ("stat".equalsIgnoreCase(cd.getNodeName()))
+							{
+								attrs = cd.getAttributes();
+								String name = attrs.getNamedItem("name").getNodeValue();
+								String val = attrs.getNamedItem("val").getNodeValue();
+								
+								temp.setParameter(name, val);
+							}
+							else if ("spawn".equalsIgnoreCase(cd.getNodeName()) && temp instanceof L2SpawnZone)
+							{
+								attrs = cd.getAttributes();
+								int spawnX = Integer.parseInt(attrs.getNamedItem("X").getNodeValue());
+								int spawnY = Integer.parseInt(attrs.getNamedItem("Y").getNodeValue());
+								int spawnZ = Integer.parseInt(attrs.getNamedItem("Z").getNodeValue());
+								
+								Node val = attrs.getNamedItem("isChaotic");
+								
+								if(reload)
+									((L2SpawnZone) temp).clearSpawnZone();
+								
+								if (val != null && Boolean.parseBoolean(val.getNodeValue()))
+									((L2SpawnZone) temp).addChaoticSpawn(spawnX, spawnY, spawnZ);
+								else
+									((L2SpawnZone) temp).addSpawn(spawnX, spawnY, spawnZ);
+							}
+						}
+						if (checkId(zoneId))
+							_log.config("Caution: Zone (" + zoneId + ") from file: " + f.getName() + " overrides previos definition.");
+						
+						addZone(zoneId, temp);
+						
+						// Register the zone into any world region it
+						// intersects with...
+						// currently 11136 test for each zone :>
+						for (int x = 0; x < worldRegions.length; x++)
+						{
+							for (int y = 0; y < worldRegions[x].length; y++)
+							{
+								if (temp.getZone().intersectsRectangle(L2World.getRegionX(x), L2World.getRegionX(x + 1), L2World.getRegionY(y), L2World.getRegionY(y + 1)))
+								{
+									if (Config.DEBUG)
+										_log.info("Zone (" + zoneId + ") added to: " + x + " " + y);
+									
+									worldRegions[x][y].addZone(temp);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public int getSize()
+	{
+		int i = 0;
+		for (Map<Integer, ? extends L2ZoneType> map : _classZones.values())
+		{
+			i += map.size();
+		}
+		return i;
+	}
+	
+	public boolean checkId(int id)
+	{
+		for (Map<Integer, ? extends L2ZoneType> map : _classZones.values())
+		{
+			if (map.containsKey(id))
+				return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Add new zone
 	 * @param id
@@ -382,16 +351,17 @@ public class ZoneManager
 	public <T extends L2ZoneType> void addZone(Integer id, T zone)
 	{
 		// _zones.put(id, zone);
-		Map<Integer, T> map = (Map<Integer, T>) _zones.get(zone.getClass());
+		Map<Integer, T> map = (Map<Integer, T>) _classZones.get(zone.getClass());
 		if (map == null)
 		{
 			map = new HashMap<>();
 			map.put(id, zone);
-			_zones.put(zone.getClass(), map);
+			_classZones.put(zone.getClass(), map);
 		}
 		else
 			map.put(id, zone);
 	}
+	
 	/**
 	 * Return all zones by class type
 	 * @param <T>
@@ -401,7 +371,7 @@ public class ZoneManager
 	@SuppressWarnings("unchecked")
 	public <T extends L2ZoneType> Collection<T> getAllZones(Class<T> zoneType)
 	{
-		return (Collection<T>) _zones.get(zoneType).values();
+		return (Collection<T>) _classZones.get(zoneType).values();
 	}
 	
 	/**
@@ -412,82 +382,183 @@ public class ZoneManager
 	 */
 	public L2ZoneType getZoneById(int id)
 	{
-		for (Map<Integer, ? extends L2ZoneType> map : _zones.values())
+		for (Map<Integer, ? extends L2ZoneType> map : _classZones.values())
 		{
 			if (map.containsKey(id))
 				return map.get(id);
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Get zone by ID and zone class
+	 * @param <T>
+	 * @param id
+	 * @param zoneType
+	 * @return zone
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends L2ZoneType> T getZoneById(int id, Class<T> zoneType)
+	{
+		return (T) _classZones.get(zoneType).get(id);
+	}
+	
 	/**
 	 * Returns all zones from where the object is located
-	 * 
 	 * @param object
 	 * @return zones
 	 */
-	public FastList<L2ZoneType> getZones(L2Object object)
+	public List<L2ZoneType> getZones(L2Object object)
 	{
 		return getZones(object.getX(), object.getY(), object.getZ());
 	}
-
+	
+	/**
+	 * Returns zone from where the object is located by type
+	 * @param <T>
+	 * @param object
+	 * @param type
+	 * @return zone
+	 */
+	public <T extends L2ZoneType> T getZone(L2Object object, Class<T> type)
+	{
+		if (object == null)
+			return null;
+		return getZone(object.getX(), object.getY(), object.getZ(), type);
+	}
+	
 	/**
 	 * Returns all zones from given coordinates (plane)
-	 * 
 	 * @param x
 	 * @param y
 	 * @return zones
 	 */
-	public FastList<L2ZoneType> getZones(int x, int y)
+	public List<L2ZoneType> getZones(int x, int y)
 	{
-		L2WorldRegion region = L2World.getRegion(x, y);
-		FastList<L2ZoneType> temp = new FastList<L2ZoneType>();
+		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
+		List<L2ZoneType> temp = new ArrayList<>();
 		for (L2ZoneType zone : region.getZones())
+		{
 			if (zone.isInsideZone(x, y))
 				temp.add(zone);
+		}
 		return temp;
 	}
-
+	
 	/**
 	 * Returns all zones from given coordinates
-	 * 
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @return zones
 	 */
-	public FastList<L2ZoneType> getZones(int x, int y, int z)
+	public List<L2ZoneType> getZones(int x, int y, int z)
 	{
-		L2WorldRegion region = L2World.getRegion(x, y);
-		FastList<L2ZoneType> temp = new FastList<L2ZoneType>();
+		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
+		List<L2ZoneType> temp = new ArrayList<>();
 		for (L2ZoneType zone : region.getZones())
+		{
 			if (zone.isInsideZone(x, y, z))
 				temp.add(zone);
+		}
 		return temp;
 	}
-
-	public final L2ArenaZone getArena(L2Character character)
+	
+	/**
+	 * Returns zone from given coordinates
+	 * @param <T>
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param type
+	 * @return zone
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends L2ZoneType> T getZone(int x, int y, int z, Class<T> type)
+	{
+		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
+		for (L2ZoneType zone : region.getZones())
+		{
+			if (zone.isInsideZone(x, y, z) && type.isInstance(zone))
+				return (T) zone;
+		}
+		return null;
+	}
+	
+	public final static L2ArenaZone getArena(L2Character character)
 	{
 		if (character == null)
 			return null;
-
+		
 		for (L2ZoneType temp : ZoneManager.getInstance().getZones(character.getX(), character.getY(), character.getZ()))
+		{
 			if (temp instanceof L2ArenaZone && temp.isCharacterInZone(character))
 				return ((L2ArenaZone) temp);
+		}
+		
 		return null;
 	}
-
-	public final L2OlympiadStadiumZone getOlympiadStadium(L2Character character)
+	
+	public final static L2OlympiadStadiumZone getOlympiadStadium(L2Character character)
 	{
 		if (character == null)
 			return null;
-
+		
 		for (L2ZoneType temp : ZoneManager.getInstance().getZones(character.getX(), character.getY(), character.getZ()))
+		{
 			if (temp instanceof L2OlympiadStadiumZone && temp.isCharacterInZone(character))
 				return ((L2OlympiadStadiumZone) temp);
+		}
 		return null;
 	}
-
+	
+	/**
+	 * For testing purposes only
+	 * @param <T>
+	 * @param obj
+	 * @param type
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends L2ZoneType> T getClosestZone(L2Object obj, Class<T> type)
+	{
+		T zone = getZone(obj, type);
+		if (zone == null)
+		{
+			double closestdis = Double.MAX_VALUE;
+			for (T temp : (Collection<T>) _classZones.get(type).values())
+			{
+				double distance = temp.getDistanceToZone(obj);
+				if (distance < closestdis)
+				{
+					closestdis = distance;
+					zone = temp;
+				}
+			}
+		}
+		return zone;
+	}
+	
+	/**
+	 * General storage for debug items used for visualizing zones.
+	 * @return list of items
+	 */
+	public List<L2ItemInstance> getDebugItems()
+	{
+		return _debugItems;
+	}
+	
+	/**
+	 * Remove all debug items from l2world
+	 */
+	public void clearDebugItems()
+	{
+		for (L2ItemInstance item : _debugItems)
+			item.decayMe();
+		
+		_debugItems.clear();
+	}
+	
 	private static class SingletonHolder
 	{
 		protected static final ZoneManager _instance = new ZoneManager();

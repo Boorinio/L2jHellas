@@ -15,12 +15,11 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -49,7 +48,7 @@ import com.l2jhellas.util.Util;
  */
 public class L2SepulcherNpcInstance extends L2Npc
 {
-	protected static Map<Integer, Integer> _hallGateKeepers = new FastMap<Integer, Integer>();
+	protected static Map<Integer, Integer> _hallGateKeepers = new HashMap<Integer, Integer>();
 
 	protected Future<?> _closeTask = null;
 	protected Future<?> _spawnNextMysteriousBoxTask = null;
@@ -424,7 +423,7 @@ public class L2SepulcherNpcInstance extends L2Npc
 	{
 		if (msg == null || msg.isEmpty())
 			return;// wrong usage
-		Collection<L2PcInstance> knownPlayers = L2World.getAllPlayers();
+		Collection<L2PcInstance> knownPlayers = L2World.getInstance().getAllPlayers().values();
 		if ((knownPlayers == null) || knownPlayers.isEmpty())
 			return;
 		CreatureSay sm = new CreatureSay(0, Say2.SHOUT, this.getName(), msg);

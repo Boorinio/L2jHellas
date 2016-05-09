@@ -15,10 +15,9 @@
 package com.l2jhellas.gameserver.templates;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
@@ -30,8 +29,8 @@ import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
+import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.conditions.ConditionGameChance;
@@ -306,7 +305,7 @@ public final class L2Weapon extends L2Item
 	@Override
 	public Func[] getStatFuncs(L2ItemInstance instance, L2Character player)
 	{
-		List<Func> funcs = new FastList<Func>();
+		List<Func> funcs = new ArrayList<Func>();
 		if (_funcTemplates != null)
 		{
 			for (FuncTemplate t : _funcTemplates)
@@ -337,7 +336,7 @@ public final class L2Weapon extends L2Item
 	{
 		if (_skillsOnCrit == null || !crit)
 			return _emptyEffectSet;
-		List<L2Effect> effects = new FastList<L2Effect>();
+		List<L2Effect> effects = new ArrayList<L2Effect>();
 
 		for (L2Skill skill : _skillsOnCrit)
 		{
@@ -372,7 +371,7 @@ public final class L2Weapon extends L2Item
 	{
 		if (_skillsOnCast == null)
 			return _emptyEffectSet;
-		List<L2Effect> effects = new FastList<L2Effect>();
+		List<L2Effect> effects = new ArrayList<L2Effect>();
 
 		for (L2Skill skill : _skillsOnCast)
 		{

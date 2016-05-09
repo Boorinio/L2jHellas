@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -132,7 +131,7 @@ public abstract class Inventory extends ItemContainer
 		ChangeRecorder(Inventory inventory)
 		{
 			_inventory = inventory;
-			_changed = new FastList<L2ItemInstance>();
+			_changed = new ArrayList<L2ItemInstance>();
 			_inventory.addPaperdollListener(this);
 		}
 
@@ -537,7 +536,7 @@ public abstract class Inventory extends ItemContainer
 	protected Inventory()
 	{
 		_paperdoll = new L2ItemInstance[0x12];
-		_paperdollListeners = new FastList<PaperdollListener>();
+		_paperdollListeners = new ArrayList<PaperdollListener>();
 		addPaperdollListener(new ArmorSetListener());
 		addPaperdollListener(new BowListener());
 		addPaperdollListener(new ItemPassiveSkillsListener());
@@ -678,7 +677,7 @@ public abstract class Inventory extends ItemContainer
 	 */
 	public List<L2ItemInstance> getPaperdollItems()
 	{
-		final FastList<L2ItemInstance> itemsList = new FastList<L2ItemInstance>();
+		final ArrayList<L2ItemInstance> itemsList = new ArrayList<L2ItemInstance>();
 
 		for (final L2ItemInstance item : _paperdoll)
 		{
@@ -1402,6 +1401,14 @@ public abstract class Inventory extends ItemContainer
 				item = L2ItemInstance.restoreFromDb(objectId);
 				if (item == null)
 					continue;
+				
+				if (L2World.getInstance().findObject(inv.getInt("object_id")) != null)
+				{
+					getOwner().getActingPlayer().sendMessage("Dup not allowed!");
+					_log.log(Level.WARNING, "Item: " + item.getObjectId() + " Has Duplied on World And Cannot be Load");
+					L2World.getInstance().removeObject(item);
+					continue;				
+				}
 
 				if (getOwner() instanceof L2PcInstance)
 				{
@@ -1418,7 +1425,7 @@ public abstract class Inventory extends ItemContainer
 					}
 				}
 
-				L2World.forceObject(item);
+				L2World.getInstance().storeObject(item);
 
 				// If stackable item is found in inventory just add to current quantity
 				if (item.isStackable() && getItemByItemId(item.getItemId()) != null)

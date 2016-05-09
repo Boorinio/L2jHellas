@@ -14,12 +14,11 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
@@ -40,6 +39,7 @@ import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -403,7 +403,7 @@ public abstract class L2Skill
 		}
 		else
 		{
-			_canLearn = new FastList<ClassId>();
+			_canLearn = new ArrayList<ClassId>();
 			StringTokenizer st = new StringTokenizer(canLearn, " \r\n\t,;");
 			while (st.hasMoreTokens())
 			{
@@ -426,7 +426,7 @@ public abstract class L2Skill
 		}
 		else
 		{
-			_teachers = new FastList<Integer>();
+			_teachers = new ArrayList<Integer>();
 			StringTokenizer st = new StringTokenizer(teachers, " \r\n\t,;");
 			while (st.hasMoreTokens())
 			{
@@ -1140,7 +1140,7 @@ public abstract class L2Skill
 	@SuppressWarnings("incomplete-switch")
 	public final L2Object[] getTargetList(L2Character activeChar, boolean onlyFirst)
 	{
-		List<L2Character> targetList = new FastList<L2Character>();
+		List<L2Character> targetList = new ArrayList<L2Character>();
 
 		// Get the target type of the skill
 		// (ex : ONE, SELF, HOLY, PET, AURA, AURA_CLOSE, AREA, MULTIFACE, PARTY, CLAN, CORPSE_PLAYER, CORPSE_MOB, CORPSE_CLAN, UNLOCKABLE, ITEM, UNDEAD)
@@ -1267,7 +1267,7 @@ public abstract class L2Skill
 			case TARGET_AURA:
 			{
 				int radius = getSkillRadius();
-				boolean srcInArena = (activeChar.isInsideZone(L2Character.ZONE_PVP) && !activeChar.isInsideZone(L2Character.ZONE_SIEGE));
+				boolean srcInArena = (activeChar.isInsideZone(ZoneId.PVP) && !activeChar.isInsideZone(ZoneId.SIEGE));
 
 				L2PcInstance src = null;
 				if (activeChar instanceof L2PcInstance)
@@ -1302,7 +1302,7 @@ public abstract class L2Skill
 									continue;
 								if ((src.getParty() != null && ((L2PcInstance) obj).getParty() != null) && src.getParty().getPartyLeaderOID() == ((L2PcInstance) obj).getParty().getPartyLeaderOID())
 									continue;
-								if (!srcInArena && !(((L2Character) obj).isInsideZone(L2Character.ZONE_PVP) && !((L2Character) obj).isInsideZone(L2Character.ZONE_SIEGE)))
+								if (!srcInArena && !(((L2Character) obj).isInsideZone(ZoneId.PVP) && !((L2Character) obj).isInsideZone(ZoneId.SIEGE)))
 								{
 									if (src.getClanId() != 0 && src.getClanId() == ((L2PcInstance) obj).getClanId())
 										continue;
@@ -1317,7 +1317,7 @@ public abstract class L2Skill
 									continue;
 								if ((src.getParty() != null && trg.getParty() != null) && src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
 									continue;
-								if (!srcInArena && !(((L2Character) obj).isInsideZone(L2Character.ZONE_PVP) && !((L2Character) obj).isInsideZone(L2Character.ZONE_SIEGE)))
+								if (!srcInArena && !(((L2Character) obj).isInsideZone(ZoneId.PVP) && !((L2Character) obj).isInsideZone(ZoneId.SIEGE)))
 								{
 									if (src.getClanId() != 0 && src.getClanId() == trg.getClanId())
 										continue;
@@ -1373,7 +1373,7 @@ public abstract class L2Skill
 
 				int radius = getSkillRadius();
 
-				boolean srcInArena = (activeChar.isInsideZone(L2Character.ZONE_PVP) && !activeChar.isInsideZone(L2Character.ZONE_SIEGE));
+				boolean srcInArena = (activeChar.isInsideZone(ZoneId.PVP) && !activeChar.isInsideZone(ZoneId.SIEGE));
 
 				for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
 				{
@@ -1412,10 +1412,10 @@ public abstract class L2Skill
 								if ((src.getParty() != null && trg.getParty() != null) && src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
 									continue;
 
-								if (trg.isInsideZone(L2Character.ZONE_PEACE))
+								if (trg.isInsideZone(ZoneId.PEACE))
 									continue;
 
-								if (!srcInArena && !(trg.isInsideZone(L2Character.ZONE_PVP) && !trg.isInsideZone(L2Character.ZONE_SIEGE)))
+								if (!srcInArena && !(trg.isInsideZone(ZoneId.PVP) && !trg.isInsideZone(ZoneId.SIEGE)))
 								{
 									if (src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
 										continue;
@@ -1439,7 +1439,7 @@ public abstract class L2Skill
 								if ((src.getParty() != null && trg.getParty() != null) && src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
 									continue;
 
-								if (!srcInArena && !(trg.isInsideZone(L2Character.ZONE_PVP) && !trg.isInsideZone(L2Character.ZONE_SIEGE)))
+								if (!srcInArena && !(trg.isInsideZone(ZoneId.PVP) && !trg.isInsideZone(ZoneId.SIEGE)))
 								{
 									if (src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
 										continue;
@@ -1454,7 +1454,7 @@ public abstract class L2Skill
 										continue;
 								}
 
-								if (((L2Summon) obj).isInsideZone(L2Character.ZONE_PEACE))
+								if (((L2Summon) obj).isInsideZone(ZoneId.PEACE))
 									continue;
 							}
 						}
@@ -1682,7 +1682,7 @@ public abstract class L2Skill
 								if (getSkillType() == L2SkillType.RESURRECT)
 								{
 									// check target is not in a active siege zone
-									if (((L2PcInstance) newTarget).isInsideZone(L2Character.ZONE_SIEGE))
+									if (((L2PcInstance) newTarget).isInsideZone(ZoneId.SIEGE))
 										continue;
 								}
 							}
@@ -1749,7 +1749,7 @@ public abstract class L2Skill
 								if (getSkillType() == L2SkillType.RESURRECT)
 								{
 									// check target is not in a active siege zone
-									if (newTarget.isInsideZone(L2Character.ZONE_SIEGE))
+									if (newTarget.isInsideZone(ZoneId.SIEGE))
 										continue;
 								}
 							}
@@ -1800,7 +1800,7 @@ public abstract class L2Skill
 						if (getSkillType() == L2SkillType.RESURRECT)
 						{
 							// check target is not in a active siege zone
-							if (target.isInsideZone(L2Character.ZONE_SIEGE))
+							if (target.isInsideZone(ZoneId.SIEGE))
 							{
 								condGood = false;
 								player.sendPacket(SystemMessageId.CANNOT_BE_RESURRECTED_DURING_SIEGE);
@@ -1882,7 +1882,7 @@ public abstract class L2Skill
 						target
 					};
 
-				boolean srcInArena = (activeChar.isInsideZone(L2Character.ZONE_PVP) && !activeChar.isInsideZone(L2Character.ZONE_SIEGE));
+				boolean srcInArena = (activeChar.isInsideZone(ZoneId.PVP) && !activeChar.isInsideZone(ZoneId.SIEGE));
 				L2PcInstance src = null;
 				if (activeChar instanceof L2PcInstance)
 					src = (L2PcInstance) activeChar;
@@ -1910,10 +1910,10 @@ public abstract class L2Skill
 							if ((src.getParty() != null && trg.getParty() != null) && src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
 								continue;
 
-							if (trg.isInsideZone(L2Character.ZONE_PEACE))
+							if (trg.isInsideZone(ZoneId.PEACE))
 								continue;
 
-							if (!srcInArena && !(trg.isInsideZone(L2Character.ZONE_PVP) && !trg.isInsideZone(L2Character.ZONE_SIEGE)))
+							if (!srcInArena && !(trg.isInsideZone(ZoneId.PVP) && !trg.isInsideZone(ZoneId.SIEGE)))
 							{
 								if (src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
 									continue;
@@ -1935,7 +1935,7 @@ public abstract class L2Skill
 							if ((src.getParty() != null && trg.getParty() != null) && src.getParty().getPartyLeaderOID() == trg.getParty().getPartyLeaderOID())
 								continue;
 
-							if (!srcInArena && !(trg.isInsideZone(L2Character.ZONE_PVP) && !trg.isInsideZone(L2Character.ZONE_SIEGE)))
+							if (!srcInArena && !(trg.isInsideZone(ZoneId.PVP) && !trg.isInsideZone(ZoneId.SIEGE)))
 							{
 								if (src.getAllyId() == trg.getAllyId() && src.getAllyId() != 0)
 									continue;
@@ -1950,7 +1950,7 @@ public abstract class L2Skill
 									continue;
 							}
 
-							if (((L2Summon) obj).isInsideZone(L2Character.ZONE_PEACE))
+							if (((L2Summon) obj).isInsideZone(ZoneId.PEACE))
 								continue;
 						}
 
@@ -2073,7 +2073,7 @@ public abstract class L2Skill
 				if (target != null && target instanceof L2Summon)
 				{
 					L2Summon targetSummon = (L2Summon) target;
-					if (targetSummon.getOwner().getPvpFlag() != 0 || targetSummon.getOwner().getKarma() > 0 || targetSummon.getOwner().isInsideZone(L2Character.ZONE_PVP))
+					if (targetSummon.getOwner().getPvpFlag() != 0 || targetSummon.getOwner().getKarma() > 0 || targetSummon.getOwner().isInsideZone(ZoneId.PVP))
 						return new L2Character[]
 						{
 							targetSummon
@@ -2169,7 +2169,7 @@ public abstract class L2Skill
 			return _emptyFunctionSet;
 		if (_funcTemplates == null)
 			return _emptyFunctionSet;
-		List<Func> funcs = new FastList<Func>();
+		List<Func> funcs = new ArrayList<Func>();
 		for (FuncTemplate t : _funcTemplates)
 		{
 			Env env = new Env();
@@ -2204,7 +2204,7 @@ public abstract class L2Skill
 		if ((effector != effected) && effected.isInvul())
 			return _emptyEffectSet;
 			
-		List<L2Effect> effects = new FastList<L2Effect>();
+		List<L2Effect> effects = new ArrayList<L2Effect>();
 
 		boolean skillMastery = false;
 
@@ -2240,7 +2240,7 @@ public abstract class L2Skill
 		if (_effectTemplatesSelf == null)
 			return _emptyEffectSet;
 
-		List<L2Effect> effects = new FastList<L2Effect>();
+		List<L2Effect> effects = new ArrayList<L2Effect>();
 
 		for (EffectTemplate et : _effectTemplatesSelf)
 		{

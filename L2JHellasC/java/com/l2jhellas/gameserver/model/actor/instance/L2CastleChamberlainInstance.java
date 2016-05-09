@@ -29,6 +29,7 @@ import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.PcInventory;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.BuyList;
@@ -307,7 +308,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 			}
 			else if (actualCommand.equalsIgnoreCase("Clan_Gate"))
 			{
-				L2PcInstance leader = (L2PcInstance) L2World.findObject(player.getClan().getLeaderId());
+				L2PcInstance leader = (L2PcInstance) L2World.getInstance().findObject(player.getClan().getLeaderId());
 				if (leader == null)
 				{
 					player.sendMessage("Your Leader is not online.");
@@ -585,7 +586,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 	
 	private static final boolean validateGateCondition(L2PcInstance clanLeader, L2PcInstance player)
 	{
-		if (clanLeader.isAlikeDead() || clanLeader.isInStoreMode() || clanLeader.isRooted() || clanLeader.isInCombat() || clanLeader.isInOlympiadMode() || clanLeader.isFestivalParticipant() || clanLeader.inObserverMode() || clanLeader.isInsideZone(ZONE_NOSUMMONFRIEND))
+		if (clanLeader.isAlikeDead() || clanLeader.isInStoreMode() || clanLeader.isRooted() || clanLeader.isInCombat() || clanLeader.isInOlympiadMode() || clanLeader.isFestivalParticipant() || clanLeader.inObserverMode() || clanLeader.isInsideZone(ZoneId.NO_SUMMON_FRIEND))
 		{
 			player.sendMessage("Couldn't teleport to clan leader. The requirements was not meet.");
 			return false;

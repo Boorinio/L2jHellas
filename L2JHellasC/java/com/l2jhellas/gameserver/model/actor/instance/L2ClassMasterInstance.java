@@ -24,7 +24,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.ClassLevel;
 import com.l2jhellas.gameserver.model.base.PlayerClass;
-import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -43,7 +42,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	public static L2ClassMasterInstance ClassMaster = new L2ClassMasterInstance(31228, NpcData.getInstance().getTemplate(31228));
 	static
 	{
-		L2World.storeObject(ClassMaster);
+		L2World.getInstance().storeObject(ClassMaster);
 	}
 
 	/**
@@ -131,8 +130,8 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 					break;
 				}
 
-				for (Quest q : Quest.findAllEvents())
-					sb.append("Event: <a action=\"bypass -h Quest " + q.getName() + "\">" + q.getDescr() + "</a><br>");
+				//for (Quest q : Quest.findAllEvents())
+					//sb.append("Event: <a action=\"bypass -h Quest " + q.getName() + "\">" + q.getDescr() + "</a><br>");
 
 				sb.append("</body></html>");
 				html.setHtml(sb.toString());

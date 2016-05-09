@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.Vector;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  * sample
  * 0000: 6d 0c 00 00 00 00 00 00 00 03 00 00 00 f3 03 00 m...............
@@ -33,8 +33,8 @@ import java.util.Vector;
 public class SkillList extends L2GameServerPacket
 {
 	private static final String _S__6D_SKILLLIST = "[S] 58 SkillList";
-	private final Vector<Skill> _skills;
-
+	private final List<Skill> _skills;
+	
 	class Skill
 	{
 		public int id;
@@ -51,7 +51,7 @@ public class SkillList extends L2GameServerPacket
 
 	public SkillList()
 	{
-		_skills = new Vector<Skill>();
+		_skills = new ArrayList<>();
 	}
 
 	public void addSkill(int id, int level, boolean passive)
@@ -65,9 +65,8 @@ public class SkillList extends L2GameServerPacket
 		writeC(0x58);
 		writeD(_skills.size());
 
-		for (int i = 0; i < _skills.size(); i++)
+		for (Skill temp : _skills)
 		{
-			Skill temp = _skills.get(i);
 			writeD(temp.passive ? 1 : 0);
 			writeD(temp.level);
 			writeD(temp.id);

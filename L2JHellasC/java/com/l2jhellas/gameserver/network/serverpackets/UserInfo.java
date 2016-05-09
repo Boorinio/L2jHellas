@@ -58,25 +58,19 @@ public class UserInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
+		
+		if(_activeChar==null)
+			return;
+
+		if(_activeChar!=getClient().getActiveChar())
+			return;
+		
 		writeC(0x04);
 
-		if (!_critical_test)
-		{
-			writeD(_activeChar.getX());
-			writeD(_activeChar.getY());
-			writeD(_activeChar.getZ());
-			writeD(_activeChar.getHeading());
-		}
-		else
-		{ //critical values
-
-			writeD(-999999999);
-			writeD(-999999999);
-			writeD(-999999999);
-			writeD(-999999999);
-			writeD(-999999999); //one more to change the UserInfo packet size
-
-		}
+		writeD(_activeChar.getX());
+		writeD(_activeChar.getY());
+		writeD(_activeChar.getZ());
+		writeD(_activeChar.getHeading());
 
 		writeD(_activeChar.getObjectId());
 		writeS(_activeChar.getName());

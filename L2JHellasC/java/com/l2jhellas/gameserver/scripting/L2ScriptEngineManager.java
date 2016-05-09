@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +36,7 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
-
 import com.l2jhellas.Config;
-
-import javolution.util.FastMap;
 
 
 /**
@@ -56,10 +54,11 @@ public final class L2ScriptEngineManager
 		return SingletonHolder._instance;
 	}
 	
-	private final Map<String, ScriptEngine> _nameEngines = new FastMap<>();
-	private final Map<String, ScriptEngine> _extEngines = new FastMap<>();
+	private final Map<String, ScriptEngine> _nameEngines = new HashMap<>();
+	private final Map<String, ScriptEngine> _extEngines = new HashMap<>();
 	private final List<ScriptManager<?>> _scriptManagers = new LinkedList<>();
-	
+	public static final int PERIOD = 5 * 60 * 1000; // 5 minutes
+
 	private File _currentLoadingScript;
 	
 	/**
@@ -447,6 +446,7 @@ public final class L2ScriptEngineManager
 			_log.warning("Failed executing script: " + script.getAbsolutePath() + "\r\n" + e.getMessage() + "Additionally failed when trying to write an error report on script directory.");
 		}
 	}
+
 	public void registerScriptManager(ScriptManager<?> manager)
 	{
 		_scriptManagers.add(manager);

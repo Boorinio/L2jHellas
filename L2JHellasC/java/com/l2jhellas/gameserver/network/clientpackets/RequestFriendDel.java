@@ -49,7 +49,7 @@ public final class RequestFriendDel extends L2GameClientPacket
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			L2PcInstance friend = L2World.getPlayer(_name);
+			L2PcInstance friend = L2World.getInstance().getPlayer(_name);
 			PreparedStatement statement;
 			ResultSet rset;
 			if (friend != null)

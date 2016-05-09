@@ -27,14 +27,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.ObjectKnownList.KnownListAsynchronousUpdateTask;
 
 public class L2PlayerAI extends L2CharacterAI
 {
@@ -305,7 +303,7 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onEvtArrivedRevalidate()
 	{
-		ThreadPoolManager.getInstance().executeTask(new KnownListAsynchronousUpdateTask(_actor));
+		//_actor.getKnownList().refreshInfos();
 		super.onEvtArrivedRevalidate();
 	}
 }

@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -43,7 +42,7 @@ public class RequestBuyProcure extends L2GameClientPacket
 	private int _count;
 	private int[] _items;
 	@SuppressWarnings("unused")
-	private List<CropProcure> _procureList = new FastList<CropProcure>();
+	private List<CropProcure> _procureList = new ArrayList<CropProcure>();
 
 	@Override
 	protected void readImpl()

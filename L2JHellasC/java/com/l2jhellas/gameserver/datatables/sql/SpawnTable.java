@@ -18,10 +18,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
@@ -38,7 +37,7 @@ public class SpawnTable
 
 	private static final SpawnTable _instance = new SpawnTable();
 
-	private final Map<Integer, L2Spawn> _spawntable = new FastMap<Integer, L2Spawn>();
+	private final Map<Integer, L2Spawn> _spawntable = new ConcurrentHashMap<Integer, L2Spawn>();
 	private int _npcSpawnCount;
 
 	private int _highestId;
@@ -63,7 +62,7 @@ public class SpawnTable
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT id, count, npc_templateid, locx, locy, locz, heading, respawn_delay, loc_id, periodOfDay FROM spawnlist ORDER BY id");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM spawnlist");
 			ResultSet rset = statement.executeQuery();
 
 			L2Spawn spawnDat;
@@ -218,6 +217,7 @@ public class SpawnTable
 	// just wrapper
 	public void reloadAll()
 	{
+		_spawntable.clear();
 		fillSpawnTable();
 	}
 

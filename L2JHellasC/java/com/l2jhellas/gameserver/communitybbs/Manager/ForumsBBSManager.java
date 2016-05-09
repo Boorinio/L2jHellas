@@ -17,13 +17,12 @@ package com.l2jhellas.gameserver.communitybbs.Manager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
@@ -50,8 +49,8 @@ public class ForumsBBSManager extends BaseBBSManager
 
 	private ForumsBBSManager()
 	{
-		_root = new FastMap<Integer, Forum>();
-		_table = new FastList<Forum>();
+		_root = new HashMap<Integer, Forum>();
+		_table = new ArrayList<Forum>();
 	}
 
 	public void addForum(Forum ff)

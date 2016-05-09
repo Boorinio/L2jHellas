@@ -16,10 +16,9 @@ package com.l2jhellas.gameserver.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -43,7 +42,7 @@ public class L2TradeList
 
 	public L2TradeList(int listId)
 	{
-		_items = new FastList<L2ItemInstance>();
+		_items = new ArrayList<L2ItemInstance>();
 		_listId = listId;
 		_confirmed = false;
 	}
@@ -321,7 +320,7 @@ public class L2TradeList
 			}
 			else
 			{
-				L2World.removeObject(playerItem);
+				L2World.getInstance().removeObject(playerItem);
 				update.addRemovedItem(playerItem);
 			}
 
@@ -447,7 +446,7 @@ public class L2TradeList
 		int x = 0;
 		int y = 0;
 
-		List<SystemMessage> sysmsgs = new FastList<SystemMessage>();
+		List<SystemMessage> sysmsgs = new ArrayList<SystemMessage>();
 		SystemMessage msg = null;
 
 		for (TradeItem buyerItem : buyerslist)
@@ -536,7 +535,7 @@ public class L2TradeList
 				}
 				else
 				{
-					L2World.removeObject(sellerItem);
+					L2World.getInstance().removeObject(sellerItem);
 					sellerupdate.addRemovedItem(sellerItem);
 				}
 

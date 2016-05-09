@@ -19,12 +19,11 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -44,13 +43,13 @@ public class SiegeReward
 	public static boolean ACTIVATED_SYSTEM;
 	public static boolean REWARD_ACTIVE_MEMBERS_ONLY;
 
-	private final FastList<RewardInfoz> _list;
-	private final FastMap<Integer, FastList<ToReward>> _toReward; // Offline players that didn't get rewarded. =( poor guys, But they'll have a surprise
+	private final ArrayList<RewardInfoz> _list;
+	private final HashMap<Integer, ArrayList<ToReward>> _toReward; // Offline players that didn't get rewarded. =( poor guys, But they'll have a surprise
 
 	public SiegeReward()
 	{
-		_list = new FastList<RewardInfoz>();
-		_toReward = new FastMap<Integer, FastList<ToReward>>();
+		_list = new ArrayList<RewardInfoz>();
+		_toReward = new HashMap<Integer, ArrayList<ToReward>>();
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Activated.");
 	}
 
@@ -98,7 +97,7 @@ public class SiegeReward
 					try
 					// prevent errors
 					{
-						_toReward.put(charId, new FastList<ToReward>());
+						_toReward.put(charId, new ArrayList<ToReward>());
 					}
 					finally
 					{

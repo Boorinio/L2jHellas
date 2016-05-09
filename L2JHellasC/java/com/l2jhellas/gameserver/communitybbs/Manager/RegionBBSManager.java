@@ -14,16 +14,15 @@
  */
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameServer;
@@ -101,7 +100,7 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 		StringBuilder htmlCode = new StringBuilder("<html><body><br>");
 		htmlCode.append("<table border=0><tr><td FIXWIDTH=15></td><td align=center>L2JHellas Community Board<img src=\"sek.cbui355\" width=610 height=1></td></tr><tr><td FIXWIDTH=15></td><td>");
-		L2PcInstance player = L2World.getPlayer(name);
+		L2PcInstance player = L2World.getInstance().getPlayer(name);
 
 		if (player != null)
 		{
@@ -187,7 +186,7 @@ public class RegionBBSManager extends BaseBBSManager
 			try
 			{
 
-				L2PcInstance receiver = L2World.getPlayer(ar2);
+				L2PcInstance receiver = L2World.getInstance().getPlayer(ar2);
 				if (receiver == null)
 				{
 					htmlCode.append("Player not found!<br><button value=\"Back\" action=\"bypass _bbsloc;playerinfo;" + ar2 + "\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
@@ -271,8 +270,8 @@ public class RegionBBSManager extends BaseBBSManager
 	private static RegionBBSManager _instance = null;
 	private int _onlineCount = 0;
 	private int _onlineCountGm = 0;
-	private static FastMap<Integer, FastList<L2PcInstance>> _onlinePlayers = new FastMap<Integer, FastList<L2PcInstance>>().setShared(true);
-	private static FastMap<Integer, FastMap<String, String>> _communityPages = new FastMap<Integer, FastMap<String, String>>().setShared(true);
+	private static HashMap<Integer, ArrayList<L2PcInstance>> _onlinePlayers = new HashMap<Integer, ArrayList<L2PcInstance>>();
+	private static HashMap<Integer, HashMap<String, String>> _communityPages = new HashMap<Integer, HashMap<String, String>>();
 
 	/**
 	 * @return
@@ -288,8 +287,8 @@ public class RegionBBSManager extends BaseBBSManager
 
 	public synchronized void changeCommunityBoard()
 	{
-		Collection<L2PcInstance> players = L2World.getAllPlayers();
-		FastList<L2PcInstance> sortedPlayers = new FastList<L2PcInstance>();
+		Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers().values();
+		ArrayList<L2PcInstance> sortedPlayers = new ArrayList<L2PcInstance>();
 		sortedPlayers.addAll(players);
 		players = null;
 
@@ -320,7 +319,7 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 		boolean added = false;
 
-		for (FastList<L2PcInstance> page : _onlinePlayers.values())
+		for (ArrayList<L2PcInstance> page : _onlinePlayers.values())
 		{
 			if (page.size() < Config.NAME_PAGE_SIZE_COMMUNITYBOARD)
 			{
@@ -343,7 +342,7 @@ public class RegionBBSManager extends BaseBBSManager
 
 		if (!added)
 		{
-			FastList<L2PcInstance> temp = new FastList<L2PcInstance>();
+			ArrayList<L2PcInstance> temp = new ArrayList<L2PcInstance>();
 			int page = _onlinePlayers.size() + 1;
 			if (temp.add(player))
 			{
@@ -359,7 +358,7 @@ public class RegionBBSManager extends BaseBBSManager
 	{
 		for (int page : _onlinePlayers.keySet())
 		{
-			FastMap<String, String> communityPage = new FastMap<String, String>();
+			HashMap<String, String> communityPage = new HashMap<String, String>();
 			StringBuilder htmlCode = new StringBuilder("<html><body><br>");
 			String tdClose = "</td>";
 			String tdOpen = "<td align=left valign=top>";
@@ -411,7 +410,7 @@ public class RegionBBSManager extends BaseBBSManager
 			htmlCode.append(trClose);
 
 			htmlCode.append(trOpen);
-			htmlCode.append(tdOpen + L2World.getAllVisibleObjectsCount() + " Object count</td>");
+			htmlCode.append(tdOpen + L2World.getInstance().getAllVisibleObjectsCount() + " Object count</td>");
 			htmlCode.append(trClose);
 
 			htmlCode.append(trOpen);
@@ -649,7 +648,7 @@ public class RegionBBSManager extends BaseBBSManager
 			return _onlineCount;
 	}
 
-	private FastList<L2PcInstance> getOnlinePlayers(int page)
+	private ArrayList<L2PcInstance> getOnlinePlayers(int page)
 	{
 		return _onlinePlayers.get(page);
 	}

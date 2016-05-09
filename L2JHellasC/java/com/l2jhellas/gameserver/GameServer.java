@@ -49,9 +49,7 @@ import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
@@ -66,6 +64,7 @@ import com.l2jhellas.gameserver.datatables.xml.FishTable;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.datatables.xml.LevelUpData;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
@@ -82,7 +81,6 @@ import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.handler.AutoAnnouncementHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
-import com.l2jhellas.gameserver.instancemanager.AwayManager;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
@@ -103,6 +101,8 @@ import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeReward;
+import com.l2jhellas.gameserver.instancemanager.TownManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.L2Manor;
@@ -111,7 +111,6 @@ import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.engines.EventHandlerCtf;
 import com.l2jhellas.gameserver.model.entity.engines.EventHandlerTvT;
 import com.l2jhellas.gameserver.model.entity.engines.Hitman;
-import com.l2jhellas.gameserver.model.entity.engines.QuizEvent;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
@@ -121,6 +120,7 @@ import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.gameserver.taskmanager.KnownListUpdateTaskManager;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
@@ -164,7 +164,7 @@ public class GameServer
 		CrestCache.load();
 
 		Util.printSection("World");
-		L2World.init();
+		L2World.getInstance();
 		MapRegionTable.getInstance();
 		Announcements.getInstance();
 		AutoAnnouncementHandler.getInstance();
@@ -222,7 +222,6 @@ public class GameServer
 		CrownManager.getInstance();
 		AdminData.getInstance();
 		HennaData.getInstance();
-		HennaTreeTable.getInstance();
 		HelperBuffData.getInstance();
 		BuffTemplateTable.getInstance();
 
@@ -242,30 +241,18 @@ public class GameServer
 		AuctionManager.getInstance();
 
 		Util.printSection("Zone");
+		ZoneManager.getInstance();
+		TownManager.getInstance();
 		Util.printSection("Castles");
 		CastleManager.getInstance();
 		SiegeManager.getInstance();
 		SiegeReward.getInstance();
 
-		// util inside spawntable cause unknown problem -.-
-		if (!Config.ALT_DEV_NO_SPAWNS)
-		{
-			SpawnTable.getInstance();
-		}
-		else
-		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Spawns disabled by config.");
-		}
-		if (!Config.ALT_DEV_NO_RB)
-		{
-			RaidBossSpawnManager.getInstance();
-			GrandBossManager.getInstance();
-			RaidBossPointsManager.init();
-		}
-		else
-		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": RaidBoss disabled by config.");
-		}
+		SpawnTable.getInstance();
+
+		RaidBossSpawnManager.getInstance();
+		GrandBossManager.getInstance();
+		RaidBossPointsManager.getInstance();
 
 		Util.printSection("Dimensional Rift");
 		DimensionalRiftManager.getInstance();
@@ -298,6 +285,7 @@ public class GameServer
 
 		Util.printSection("Tasks");
 		TaskManager.getInstance();
+		KnownListUpdateTaskManager.getInstance();
 
 		Util.printSection("Manor");
 		L2Manor.getInstance();
@@ -316,14 +304,7 @@ public class GameServer
 		QuestManager.getInstance();
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
-			try
-			{
-				L2ScriptEngineManager.getInstance().executeScriptList(new File("./data/scripts.cfg"));
-			}
-			catch (IOException ioe)
-			{
-				_log.severe("Failed loading scripts.cfg, no script going to be loaded.");
-			}
+			L2ScriptEngineManager.getInstance().executeScriptList(new File("./data/scripts.cfg"));
 			QuestManager.getInstance().report();
 		}
 		else
@@ -333,7 +314,7 @@ public class GameServer
 
 
 		Util.printSection("Customs");
-		// we could add general custom config?
+
 		AchievementsManager.getInstance();
 		PcColorTable.getInstance();
 		PolymporphTable.getInstance();
@@ -357,14 +338,6 @@ public class GameServer
 		if (Config.TVT_ALLOW_AUTOEVENT)
 		{
 			new EventHandlerTvT().startHandler();
-		}
-		if (Config.ENABLED_QUIZ_EVENT)
-		{
-			QuizEvent.getInstance();
-		}
-		if (Config.ALLOW_AWAY_STATUS)
-		{
-			AwayManager.getInstance();
 		}
 		BalanceLoad.LoadEm();
 		if (Config.ALLOW_SEQURITY_QUE)

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -474,6 +475,45 @@ public class SkillTreeData
 		return result.toArray(new L2SkillLearn[result.size()]);
 	}
 
+	/**
+	 * @param cha L2PcInstance, player whom skills are compared.
+	 * @param classId ClassId, as a source for skill tree.
+	 * @return list of all available general skills <b>of maximal level</b> for L2PcInstance.
+	 */
+	public Collection<L2SkillLearn> getAllAvailableSkills(L2PcInstance cha, ClassId classId)
+	{
+		Map<Integer, L2SkillLearn> result = new LinkedHashMap<>();
+		
+		int skillId, level = cha.getLevel();
+		L2SkillLearn skill;
+		
+		for (L2SkillLearn sl : _skillTrees.get(classId).values())
+		{
+			skillId = sl.getId();
+			// Exception for Lucky skill, it can't be learned back once lost.
+			if (skillId == L2Skill.SKILL_LUCKY)
+				continue;
+			
+			if (sl.getMinLevel() <= level)
+			{
+				skill = result.get(skillId);
+				if (skill == null)
+					result.put(skillId, sl);
+				else if (sl.getLevel() > skill.getLevel())
+					result.put(skillId, sl);
+			}
+		}
+		for (L2Skill s : cha.getAllSkills())
+		{
+			skillId = s.getId();
+			skill = result.get(skillId);
+			if (skill != null)
+				if (s.getLevel() >= skill.getLevel())
+					result.remove(skillId);
+		}
+		return result.values();
+	}
+	
 	public L2SkillLearn[] getAvailableSkills(L2PcInstance cha)
 	{
 		if (_fishingSkillTrees.isEmpty())

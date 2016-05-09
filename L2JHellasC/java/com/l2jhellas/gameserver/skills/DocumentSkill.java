@@ -15,11 +15,10 @@
 package com.l2jhellas.gameserver.skills;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -45,12 +44,12 @@ final class DocumentSkill extends DocumentBase
 		public StatsSet[] enchsets1;
 		public StatsSet[] enchsets2;
 		public int currentLevel;
-		public List<L2Skill> skills = new FastList<L2Skill>();
-		public List<L2Skill> currentSkills = new FastList<L2Skill>();
+		public List<L2Skill> skills = new ArrayList<L2Skill>();
+		public List<L2Skill> currentSkills = new ArrayList<L2Skill>();
 	}
 
 	private Skill _currentSkill;
-	private final List<L2Skill> _skillsInFile = new FastList<L2Skill>();
+	private final List<L2Skill> _skillsInFile = new ArrayList<L2Skill>();
 
 	DocumentSkill(File file)
 	{
@@ -320,7 +319,7 @@ final class DocumentSkill extends DocumentBase
 	private void makeSkills()
 	{
 		int count = 0;
-		_currentSkill.currentSkills = new FastList<L2Skill>(_currentSkill.sets.length + _currentSkill.enchsets1.length + _currentSkill.enchsets2.length);
+		_currentSkill.currentSkills = new ArrayList<L2Skill>(_currentSkill.sets.length + _currentSkill.enchsets1.length + _currentSkill.enchsets2.length);
 
 		for (int i = 0; i < _currentSkill.sets.length; i++)
 		{

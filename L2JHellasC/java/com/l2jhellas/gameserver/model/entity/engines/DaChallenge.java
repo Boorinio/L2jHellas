@@ -15,9 +15,9 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import com.PackRoot;
@@ -34,8 +34,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
-import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
+import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
@@ -47,7 +47,7 @@ public class DaChallenge
 {
 	public static byte RoomCount;
 	public static boolean ChallengeRunning;
-	private static List<L2PcInstance> _Participants = new FastList<L2PcInstance>();
+	private static List<L2PcInstance> _Participants = new ArrayList<L2PcInstance>();
 	private static FastSet<L2Npc> _RoomMobs = new FastSet<L2Npc>();
 	
 	public static void StartEvent()
@@ -97,7 +97,7 @@ public class DaChallenge
 	
 	private static void PrepareAndTele()
 	{
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (player.isinZodiac)
 			{

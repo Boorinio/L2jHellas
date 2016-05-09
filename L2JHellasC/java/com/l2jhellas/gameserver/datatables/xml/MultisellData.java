@@ -15,13 +15,12 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -41,7 +40,7 @@ import com.l2jhellas.gameserver.templates.L2Weapon;
 public class MultisellData
 {
 	private static Logger _log = Logger.getLogger(MultisellData.class.getName());
-	private final List<MultiSellListContainer> _entries = new FastList<MultiSellListContainer>();
+	private final List<MultiSellListContainer> _entries = new ArrayList<MultiSellListContainer>();
 	private static MultisellData _instance = new MultisellData();
 
 	public MultiSellListContainer getList(int id)
@@ -253,8 +252,8 @@ public class MultisellData
 	{
 		private int _entryId;
 
-		private final List<MultiSellIngredient> _products = new FastList<MultiSellIngredient>();
-		private final List<MultiSellIngredient> _ingredients = new FastList<MultiSellIngredient>();
+		private final List<MultiSellIngredient> _products = new ArrayList<MultiSellIngredient>();
+		private final List<MultiSellIngredient> _ingredients = new ArrayList<MultiSellIngredient>();
 
 		/**
 		 * @param entryId
@@ -418,7 +417,7 @@ public class MultisellData
 
 		public MultiSellListContainer()
 		{
-			_entriesC = new FastList<MultiSellEntry>();
+			_entriesC = new ArrayList<MultiSellEntry>();
 		}
 
 		/**
@@ -489,7 +488,7 @@ public class MultisellData
 	{
 		Document doc = null;
 		int id = 0;
-		List<File> files = new FastList<File>();
+		List<File> files = new ArrayList<File>();
 		hashFiles("multisell", files);
 
 		for (File f : files)

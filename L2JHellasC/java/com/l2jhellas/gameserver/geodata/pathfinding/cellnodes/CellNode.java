@@ -34,13 +34,13 @@ public final class CellNode extends PathNode
 	@Override
 	public int getX()
 	{
-		return (_x << 4) + L2World.MAP_MIN_X;
+		return (_x << 4) + L2World.WORLD_X_MIN;
 	}
 
 	@Override
 	public int getY()
 	{
-		return (_y << 4) + L2World.MAP_MIN_Y;
+		return (_y << 4) + L2World.TILE_Y_MIN;
 	}
 
 	@Override

@@ -45,6 +45,7 @@ public final class AttackRequest extends L2GameClientPacket
 	protected void runImpl()
 	{
 		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
 		
@@ -63,10 +64,14 @@ public final class AttackRequest extends L2GameClientPacket
 		if (activeChar.getTargetId() == _objectId)
 			target = activeChar.getTarget();
 		else
-			target = L2World.findObject(_objectId);
+			target = L2World.getInstance().findObject(_objectId);
 		
 		if (target == null)
+		{
+			activeChar.getKnownList().removeKnownObject(target);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
 		
 		// Like L2OFF
 		if (activeChar.isAttackingNow() && activeChar.isMoving())

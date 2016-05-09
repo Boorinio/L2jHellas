@@ -464,7 +464,7 @@ public abstract class PathFinding
 	 */
 	public final int calculateWorldX(short node_x)
 	{
-		return L2World.MAP_MIN_X + node_x * 128 + 48;
+		return L2World.WORLD_X_MIN + node_x * 128 + 48;
 	}
 
 	/**
@@ -475,6 +475,6 @@ public abstract class PathFinding
 	 */
 	public final int calculateWorldY(short node_y)
 	{
-		return L2World.MAP_MIN_Y + node_y * 128 + 48;
+		return L2World.WORLD_Y_MIN + node_y * 128 + 48;
 	}
 }

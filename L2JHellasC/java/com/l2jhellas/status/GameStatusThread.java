@@ -279,8 +279,8 @@ public class GameStatusThread extends Thread
 					int playerCount = 0, objectCount = 0;
 					int max = LoginServerThread.getInstance().getMaxPlayer();
 
-					playerCount = L2World.getAllPlayersCount();
-					objectCount = L2World.getAllVisibleObjectsCount();
+					playerCount = L2World.getInstance().getAllPlayersCount();
+					objectCount = L2World.getInstance().getAllVisibleObjectsCount();
 
 					int itemCount = 0;
 					int itemVoidCount = 0;
@@ -294,7 +294,7 @@ public class GameStatusThread extends Thread
 					int summonCount = 0;
 					int AICount = 0;
 
-					for (L2Object obj : L2World.getAllVisibleObjects())
+					for (L2Object obj : L2World.getInstance().getAllVisibleObjects().values())
 					{
 						if (obj == null)
 						{
@@ -318,8 +318,8 @@ public class GameStatusThread extends Thread
 						else if (obj instanceof L2MonsterInstance)
 						{
 							monsterCount++;
-							minionCount += ((L2MonsterInstance) obj).getTotalSpawnedMinionsInstances();
-							minionsGroupCount += ((L2MonsterInstance) obj).getTotalSpawnedMinionsGroups();
+							//minionCount += ((L2MonsterInstance) obj).getTotalSpawnedMinionsInstances();
+							//minionsGroupCount += ((L2MonsterInstance) obj).getTotalSpawnedMinionsGroups();
 						}
 						else if (obj instanceof L2Npc)
 						{
@@ -403,7 +403,7 @@ public class GameStatusThread extends Thread
 						StringTokenizer st = new StringTokenizer(val);
 						String name = st.nextToken();
 						String message = val.substring(name.length() + 1);
-						L2PcInstance reciever = L2World.getPlayer(name);
+						L2PcInstance reciever = L2World.getInstance().getPlayer(name);
 						CreatureSay cs = new CreatureSay(0, Say2.TELL, "Telnet Priv", message);
 						if (reciever != null)
 						{
@@ -479,7 +479,7 @@ public class GameStatusThread extends Thread
 					try
 					{
 						_usrCommand = _usrCommand.substring(5);
-						L2PcInstance player = L2World.getPlayer(_usrCommand);
+						L2PcInstance player = L2World.getInstance().getPlayer(_usrCommand);
 						if (player != null)
 						{
 							player.sendMessage("You are kicked by gm");
@@ -542,7 +542,7 @@ public class GameStatusThread extends Thread
 
 					try
 					{
-						L2PcInstance player = L2World.getPlayer(st.nextToken());
+						L2PcInstance player = L2World.getInstance().getPlayer(st.nextToken());
 						int itemId = Integer.parseInt(st.nextToken());
 						int amount = Integer.parseInt(st.nextToken());
 
@@ -568,7 +568,7 @@ public class GameStatusThread extends Thread
 					StringTokenizer st = new StringTokenizer(_usrCommand.substring(5));
 					try
 					{
-						L2PcInstance playerObj = L2World.getPlayer(st.nextToken());
+						L2PcInstance playerObj = L2World.getInstance().getPlayer(st.nextToken());
 						int delay = 0;
 						try
 						{
@@ -609,7 +609,7 @@ public class GameStatusThread extends Thread
 					StringTokenizer st = new StringTokenizer(_usrCommand.substring(7));
 					try
 					{
-						L2PcInstance playerObj = L2World.getPlayer(st.nextToken());
+						L2PcInstance playerObj = L2World.getInstance().getPlayer(st.nextToken());
 
 						if (playerObj != null)
 						{
@@ -786,7 +786,7 @@ public class GameStatusThread extends Thread
 						// name;type;x;y;itemId:enchant:price...
 						if (type.equals("privatestore"))
 						{
-							for (L2PcInstance player : L2World.getAllPlayers())
+							for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 							{
 								if (player.getPrivateStoreType() == 0)
 								{

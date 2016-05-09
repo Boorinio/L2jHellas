@@ -12,9 +12,8 @@
  */
 package com.l2jhellas.gameserver.templates;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import javolution.util.FastMap;
 
 /**
  * @author mkizub <BR>
@@ -24,7 +23,7 @@ import javolution.util.FastMap;
  */
 public final class StatsSet
 {
-	private final Map<String, Object> _set = new FastMap<String, Object>();
+	private final Map<String, Object> _set = new HashMap<String, Object>();
 
 	/**
 	 * Returns the set of values

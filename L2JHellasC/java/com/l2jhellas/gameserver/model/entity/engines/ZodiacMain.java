@@ -68,7 +68,7 @@ public class ZodiacMain
 		}
 		
 		voting = true;
-		for (L2PcInstance players : L2World.getAllPlayers())
+		for (L2PcInstance players : L2World.getInstance().getAllPlayers().values())
 		{
 			if (players != null)
 				showHtmlWindow(players);

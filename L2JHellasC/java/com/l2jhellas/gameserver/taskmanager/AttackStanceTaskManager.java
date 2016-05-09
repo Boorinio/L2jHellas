@@ -15,85 +15,112 @@
 package com.l2jhellas.gameserver.taskmanager;
 
 import java.util.Map;
-import java.util.logging.Logger;
-
-import javolution.util.FastMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
+import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 
 /**
  * @author Luca Baldi
  */
-public class AttackStanceTaskManager
+public class AttackStanceTaskManager implements Runnable
 {
-	protected static final Logger _log = Logger.getLogger(AttackStanceTaskManager.class.getName());
-
-	protected Map<L2Character, Long> _attackStanceTasks = new FastMap<L2Character, Long>().setShared(true);
-
-	private static AttackStanceTaskManager _instance;
-
-	public AttackStanceTaskManager()
+	private static final long ATTACK_STANCE_PERIOD = 15000; // 15 seconds
+	
+	private final Map<L2Character, Long> _characters = new ConcurrentHashMap<>();
+	
+	public static final AttackStanceTaskManager getInstance()
 	{
-		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new FightModeScheduler(), 0, 1000);
+		return SingletonHolder._instance;
 	}
-
-	public static AttackStanceTaskManager getInstance()
+	
+	protected AttackStanceTaskManager()
 	{
-		if (_instance == null)
-			_instance = new AttackStanceTaskManager();
-
-		return _instance;
+		// Run task each second.
+		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
 	}
-
-	public void addAttackStanceTask(L2Character actor)
+	
+	/**
+	 * Adds {@link L2Character} to the AttackStanceTask.
+	 * @param character : {@link L2Character} to be added and checked.
+	 */
+	public final void add(L2Character character)
 	{
-		_attackStanceTasks.put(actor, System.currentTimeMillis());
-	}
-
-	public void removeAttackStanceTask(L2Character actor)
-	{
-		_attackStanceTasks.remove(actor);
-	}
-
-	public boolean getAttackStanceTask(L2Character actor)
-	{
-		return _attackStanceTasks.containsKey(actor);
-	}
-
-	private class FightModeScheduler implements Runnable
-	{
-		protected FightModeScheduler()
+		if (character instanceof L2Playable)
 		{
-			// Do nothing
+			for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
+				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+					cubic.doAction(character.getActingPlayer());
 		}
-
-		@Override
-		public void run()
+		
+		_characters.put(character, System.currentTimeMillis() + ATTACK_STANCE_PERIOD);
+	}
+	
+	/**
+	 * Removes {@link L2Character} from the AttackStanceTask.
+	 * @param character : {@link L2Character} to be removed.
+	 */
+	public final void remove(L2Character character)
+	{
+		if (character instanceof L2Summon)
+			character = character.getActingPlayer();
+		
+		_characters.remove(character);
+	}
+	
+	/**
+	 * Tests if {@link L2Character} is in AttackStanceTask.
+	 * @param character : {@link L2Character} to be removed.
+	 * @return boolean : True when {@link L2Character} is in attack stance.
+	 */
+	public final boolean isInAttackStance(L2Character character)
+	{
+		if (character instanceof L2Summon)
+			character = character.getActingPlayer();
+		
+		return _characters.containsKey(character);
+	}
+	
+	@Override
+	public final void run()
+	{
+		// List is empty, skip.
+		if (_characters.isEmpty())
+			return;
+		
+		// Get current time.
+		final long time = System.currentTimeMillis();
+		
+		// Loop all characters.
+		for (Map.Entry<L2Character, Long> entry : _characters.entrySet())
 		{
-			Long current = System.currentTimeMillis();
-			try
-			{
-				if (_attackStanceTasks != null)
-					synchronized (this)
-					{
-						for (L2Character actor : _attackStanceTasks.keySet())
-						{
-							if ((current - _attackStanceTasks.get(actor)) > 15000)
-							{
-								actor.broadcastPacket(new AutoAttackStop(actor.getObjectId()));
-								actor.getAI().setAutoAttacking(false);
-								_attackStanceTasks.remove(actor);
-							}
-						}
-					}
-			}
-			catch (Throwable e)
-			{
-				// TODO
-				_log.warning(e.toString());
-			}
+			// Time hasn't passed yet, skip.
+			if (time < entry.getValue())
+				continue;
+			
+			// Get character.
+			final L2Character character = entry.getKey();
+			
+			// Stop character attack stance animation.
+			character.broadcastPacket(new AutoAttackStop(character.getObjectId()));
+			
+			// Stop pet attack stance animation.
+			if (character instanceof L2PcInstance && ((L2PcInstance) character).getPet() != null)
+				((L2PcInstance) character).getPet().broadcastPacket(new AutoAttackStop(((L2PcInstance) character).getPet().getObjectId()));
+			
+			// Inform character AI and remove task.
+			character.getAI().setAutoAttacking(false);
+			_characters.remove(character);
 		}
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final AttackStanceTaskManager _instance = new AttackStanceTaskManager();
 	}
 }

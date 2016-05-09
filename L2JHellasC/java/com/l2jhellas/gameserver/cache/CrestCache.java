@@ -35,9 +35,6 @@ import com.l2jhellas.util.filters.file.BmpFilter;
 import com.l2jhellas.util.filters.file.OldPledgeFilter;
 
 
-/**
- * @author Layane, reworked by Java-man
- */
 public class CrestCache
 {
 	private static final Logger _log = Logger.getLogger(CrestCache.class.getName());

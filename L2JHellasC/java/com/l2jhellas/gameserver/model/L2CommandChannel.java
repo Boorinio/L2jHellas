@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
@@ -45,7 +44,7 @@ public class L2CommandChannel
 	public L2CommandChannel(L2PcInstance leader)
 	{
 		_commandLeader = leader;
-		_partys = new FastList<L2Party>();
+		_partys = new ArrayList<L2Party>();
 		_partys.add(leader.getParty());
 		_channelLvl = leader.getParty().getLevel();
 		leader.getParty().setCommandChannel(this);
@@ -159,7 +158,7 @@ public class L2CommandChannel
 	 */
 	public List<L2PcInstance> getMembers()
 	{
-		List<L2PcInstance> members = new FastList<L2PcInstance>();
+		List<L2PcInstance> members = new ArrayList<L2PcInstance>();
 		for (L2Party party : getPartys())
 		{
 			members.addAll(party.getPartyMembers());

@@ -67,7 +67,7 @@ public class BalancerEdit
 						if (Config.DEVELOPER)
 							e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -103,7 +103,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -139,7 +139,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -175,7 +175,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -211,7 +211,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -247,7 +247,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -283,7 +283,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -319,7 +319,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -355,7 +355,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -391,7 +391,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -427,7 +427,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -463,7 +463,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -499,7 +499,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -535,7 +535,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -571,7 +571,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -607,7 +607,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -643,7 +643,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -679,7 +679,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -715,7 +715,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -751,7 +751,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -787,7 +787,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -823,7 +823,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -859,7 +859,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;
@@ -895,7 +895,7 @@ public class BalancerEdit
 					if (Config.DEVELOPER)
 						e.printStackTrace();
 				}
-				for (L2PcInstance p : L2World.getAllPlayers())
+				for (L2PcInstance p : L2World.getInstance().getAllPlayers().values())
 					if (p.getClassId().getId() == classId)
 						p.sendPacket(new UserInfo(p));
 				break;

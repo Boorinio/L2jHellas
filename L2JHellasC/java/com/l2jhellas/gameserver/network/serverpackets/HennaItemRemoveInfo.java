@@ -34,7 +34,7 @@ public class HennaItemRemoveInfo extends L2GameServerPacket
 		writeC(0xe6);
 		writeD(_henna.getSymbolId()); // symbol Id
 		writeD(_henna.getDyeId()); // item id of dye
-		writeD(_henna.getAmountDyeRequire() / 2); // amount of given dyes
+		writeD(L2Henna.getAmountDyeRequire() / 2); // amount of given dyes
 		writeD(_henna.getPrice() / 5); // amount of required adenas
 		writeD(1); // able to remove or not 0 is false and 1 is true
 		writeD(_activeChar.getAdena());
@@ -46,7 +46,7 @@ public class HennaItemRemoveInfo extends L2GameServerPacket
 		writeD(_activeChar.getCON()); // current CON
 		writeC(_activeChar.getCON() - _henna.getStatCON()); // equip CON
 		writeD(_activeChar.getMEN()); // current MEM
-		writeC(_activeChar.getMEN() - _henna.getStatMEM()); // equip MEM
+		writeC(_activeChar.getMEN() - _henna.getStatMEN()); // equip MEM
 		writeD(_activeChar.getDEX()); // current DEX
 		writeC(_activeChar.getDEX() - _henna.getStatDEX()); // equip DEX
 		writeD(_activeChar.getWIT()); // current WIT

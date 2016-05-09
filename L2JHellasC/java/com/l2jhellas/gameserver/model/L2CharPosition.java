@@ -34,11 +34,4 @@ public final class L2CharPosition
 		heading = pHeading;
 	}
 
-	public L2CharPosition(Location loc)
-	{
-		x = loc.getX();
-		y = loc.getY();
-		z = loc.getZ();
-		heading = loc.getHeading();
-	}
 }

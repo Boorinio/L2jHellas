@@ -70,7 +70,7 @@ public final class Action extends L2GameClientPacket
 		}
 		
 		// If requested object doesn't exist
-		final L2Object obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : L2World.findObject(_objectId);
+		final L2Object obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : L2World.getInstance().findObject(_objectId);
 		if (obj == null)
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);

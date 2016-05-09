@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
@@ -1147,7 +1147,7 @@ public class SevenSigns
 	{
 		SystemMessage sm = SystemMessage.getSystemMessage(sysMsgId);
 
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			player.sendPacket(sm);
 		}
@@ -1386,7 +1386,7 @@ public class SevenSigns
 	 */
 	protected void teleLosingCabalFromDungeons(String compWinner)
 	{
-		for (L2PcInstance onlinePlayer : L2World.getAllPlayers())
+		for (L2PcInstance onlinePlayer : L2World.getInstance().getAllPlayers().values())
 		{
 			StatsSet currPlayer = getPlayerData(onlinePlayer);
 
@@ -1509,7 +1509,7 @@ public class SevenSigns
 
 			SignsSky ss = new SignsSky();
 
-			for (L2PcInstance player : L2World.getAllPlayers())
+			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 			{
 				player.sendPacket(ss);
 			}

@@ -16,15 +16,14 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javolution.util.FastMap;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -42,7 +41,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 	private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	private static final int COND_REGULAR = 3;
 
-	private final Map<Integer, Auction> _pendingAuctions = new FastMap<Integer, Auction>();
+	private final Map<Integer, Auction> _pendingAuctions = new HashMap<Integer, Auction>();
 
 	public L2AuctioneerInstance(int objectId, L2NpcTemplate template)
 	{
@@ -571,7 +570,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 			{
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile("data/html/auction/location.htm");
-				html.replace("%location%", MapRegionTable.getInstance().getClosestTownName(player));
+				html.replace("%location%", MapRegionTable.getInstance().getClosestTownName(player.getX(),player.getY()));
 				html.replace("%LOCATION%", getPictureName(player));
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_start");
 				player.sendPacket(html);
@@ -618,7 +617,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 
 	private String getPictureName(L2PcInstance plyr)
 	{
-		int nearestTownId = MapRegionTable.getInstance().getMapRegion(plyr.getX(), plyr.getY());
+		int nearestTownId = MapRegionTable.getMapRegion(plyr.getX(), plyr.getY());
 		String nearestTown;
 
 		switch (nearestTownId)

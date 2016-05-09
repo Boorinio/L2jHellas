@@ -18,14 +18,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -56,11 +55,11 @@ public class ItemTable
 	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
 	private static Logger _logItems = Logger.getLogger("item");
 
-	private static final Map<String, Integer> _materials = new FastMap<String, Integer>();
-	private static final Map<String, Integer> _crystalTypes = new FastMap<String, Integer>();
-	private static final Map<String, L2WeaponType> _weaponTypes = new FastMap<String, L2WeaponType>();
-	private static final Map<String, L2ArmorType> _armorTypes = new FastMap<String, L2ArmorType>();
-	private static final Map<String, Integer> _slots = new FastMap<String, Integer>();
+	private static final Map<String, Integer> _materials = new HashMap<String, Integer>();
+	private static final Map<String, Integer> _crystalTypes = new HashMap<String, Integer>();
+	private static final Map<String, L2WeaponType> _weaponTypes = new HashMap<String, L2WeaponType>();
+	private static final Map<String, L2ArmorType> _armorTypes = new HashMap<String, L2ArmorType>();
+	private static final Map<String, Integer> _slots = new HashMap<String, Integer>();
 
 	private L2Item[] _allTemplates;
 	private final Map<Integer, L2EtcItem> _etcItems;
@@ -170,11 +169,11 @@ public class ItemTable
 	};
 
 	/** List of etcItem */
-	private static final Map<Integer, Item> itemData = new FastMap<Integer, Item>();
+	private static final Map<Integer, Item> itemData = new HashMap<Integer, Item>();
 	/** List of weapons */
-	private static final Map<Integer, Item> weaponData = new FastMap<Integer, Item>();
+	private static final Map<Integer, Item> weaponData = new HashMap<Integer, Item>();
 	/** List of armor */
-	private static final Map<Integer, Item> armorData = new FastMap<Integer, Item>();
+	private static final Map<Integer, Item> armorData = new HashMap<Integer, Item>();
 
 	/**
 	 * Returns instance of ItemTable
@@ -205,9 +204,9 @@ public class ItemTable
 	 */
 	public ItemTable()
 	{
-		_etcItems = new FastMap<Integer, L2EtcItem>();
-		_armors = new FastMap<Integer, L2Armor>();
-		_weapons = new FastMap<Integer, L2Weapon>();
+		_etcItems = new HashMap<Integer, L2EtcItem>();
+		_armors = new HashMap<Integer, L2Armor>();
+		_weapons = new HashMap<Integer, L2Weapon>();
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -216,7 +215,7 @@ public class ItemTable
 				PreparedStatement statement = con.prepareStatement(selectQuery);
 				ResultSet rset = statement.executeQuery();
 
-				// Add item in correct FastMap
+				// Add item in correct HashMap
 				while (rset.next())
 				{
 					if (selectQuery.endsWith("etcitem"))
@@ -255,7 +254,7 @@ public class ItemTable
 				PreparedStatement statement = con.prepareStatement(selectQuery);
 				ResultSet rset = statement.executeQuery();
 
-				// Add item in correct FastMap
+				// Add item in correct HashMap
 				while (rset.next())
 				{
 					if (selectQuery.endsWith("etcitem"))
@@ -684,7 +683,7 @@ public class ItemTable
 	{
 		int highestId = 0;
 
-		// Get highest ID of item in armor FastMap, then in weapon FastMap, and finally in etcitem FastMap
+		// Get highest ID of item in armor HashMap, then in weapon HashMap, and finally in etcitem HashMap
 		for (Iterator<Integer> iter = _armors.keySet().iterator(); iter.hasNext();)
 		{
 			Integer id = iter.next();
@@ -820,7 +819,7 @@ public class ItemTable
 		}
 
 		// Add the L2ItemInstance object to _allObjects of L2world
-		L2World.storeObject(item);
+		L2World.getInstance().storeObject(item);
 
 		// Set Item parameters
 		if (item.isStackable() && count > 1)
@@ -848,36 +847,17 @@ public class ItemTable
 	}
 
 	/**
-	 * Returns a dummy (fr = factice) item.<BR>
-	 * <BR>
-	 * <U><I>Concept :</I></U><BR>
 	 * Dummy item is created by setting the ID of the object in the world at null value
-	 *
-	 * @param itemId
-	 *        : int designating the item
-	 * @return L2ItemInstance designating the dummy item created
+	 * @param itemId : int designating the item
+	 * @return ItemInstance designating the dummy item created
 	 */
 	public L2ItemInstance createDummyItem(int itemId)
 	{
-		L2Item item = getTemplate(itemId);
+		final L2Item item = getTemplate(itemId);
 		if (item == null)
 			return null;
-		L2ItemInstance temp = new L2ItemInstance(0, item);
-		try
-		{
-			temp = new L2ItemInstance(0, itemId);
-		}
-		catch (ArrayIndexOutOfBoundsException e)
-		{
-			// this can happen if the item templates were not initialized
-		}
-
-		if (temp.getItem() == null)
-		{
-			_log.log(Level.WARNING, getClass().getName() + ": Item Template missing for Id: " + itemId);
-		}
-
-		return temp;
+		
+		return new L2ItemInstance(0, item);
 	}
 
 	/**
@@ -907,7 +887,7 @@ public class ItemTable
 			item.setLocation(ItemLocation.VOID);
 			item.setLastChange(L2ItemInstance.REMOVED);
 
-			L2World.removeObject(item);
+			L2World.getInstance().removeObject(item);
 			IdFactory.getInstance().releaseId(item.getObjectId());
 
 			if (Config.LOG_ITEMS)

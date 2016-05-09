@@ -14,48 +14,48 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2HennaInstance;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.templates.L2Henna;
 
 public class GMViewHennaInfo extends L2GameServerPacket
 {
 	private final L2PcInstance _activeChar;
-	private final L2HennaInstance[] _hennas = new L2HennaInstance[3];
-	private final int _count;
-
+	private final L2Henna[] _hennas = new L2Henna[3];
+	private int _count;
+	
 	public GMViewHennaInfo(L2PcInstance activeChar)
 	{
-		this._activeChar = activeChar;
-
-		int j = 0;
+		_activeChar = activeChar;
+		_count = 0;
+		
 		for (int i = 0; i < 3; i++)
 		{
-			L2HennaInstance h = this._activeChar.getHenna(i + 1);
+			L2Henna h = _activeChar.getHenna(i + 1);
 			if (h != null)
-				this._hennas[(j++)] = h;
+				_hennas[_count++] = h;
 		}
-		this._count = j;
 	}
 
 	@Override
 	protected void writeImpl()
 	{
-		writeC(234);
-
-		writeC(this._activeChar.getHennaStatINT());
-		writeC(this._activeChar.getHennaStatSTR());
-		writeC(this._activeChar.getHennaStatCON());
-		writeC(this._activeChar.getHennaStatMEN());
-		writeC(this._activeChar.getHennaStatDEX());
-		writeC(this._activeChar.getHennaStatWIT());
-
-		writeD(3);
-
-		writeD(this._count);
-		for (int i = 0; i < this._count; i++)
+        writeC(0xea);
+		
+		writeC(_activeChar.getHennaStatINT());
+		writeC(_activeChar.getHennaStatSTR());
+		writeC(_activeChar.getHennaStatCON());
+		writeC(_activeChar.getHennaStatMEN());
+		writeC(_activeChar.getHennaStatDEX());
+		writeC(_activeChar.getHennaStatWIT());
+		
+		writeD(3); // slots?
+		
+		writeD(_count); // size
+		for (int i = 0; i < _count; i++)
 		{
-			writeD(this._hennas[i].getSymbolId());
-			writeD(1);
+			writeD(_hennas[i].getSymbolId());
+			writeD(_hennas[i].isForThisClass(_activeChar) ? _hennas[i].getSymbolId() : 0);
 		}
 	}
 

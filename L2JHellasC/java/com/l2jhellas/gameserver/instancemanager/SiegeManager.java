@@ -20,14 +20,13 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -64,8 +63,8 @@ public class SiegeManager
 	private int _defenderRespawnDelay = 10000; // Time in ms. Changeable in siege.config
 
 	// Siege settings
-	private FastMap<Integer, FastList<SiegeSpawn>> _artefactSpawnList;
-	private FastMap<Integer, FastList<SiegeSpawn>> _controlTowerSpawnList;
+	private HashMap<Integer, ArrayList<SiegeSpawn>> _artefactSpawnList;
+	private HashMap<Integer, ArrayList<SiegeSpawn>> _controlTowerSpawnList;
 
 	private int _controlTowerLosePenalty = 20000; // Time in ms. Changeable in siege.config
 	private int _flagMaxCount = 1; // Changeable in siege.config
@@ -186,12 +185,12 @@ public class SiegeManager
 			_daytosiege = Integer.parseInt(siegeSettings.getProperty("DayToSiege", "14"));
 
 			// Siege spawns settings
-			_controlTowerSpawnList = new FastMap<Integer, FastList<SiegeSpawn>>();
-			_artefactSpawnList = new FastMap<Integer, FastList<SiegeSpawn>>();
+			_controlTowerSpawnList = new HashMap<Integer, ArrayList<SiegeSpawn>>();
+			_artefactSpawnList = new HashMap<Integer, ArrayList<SiegeSpawn>>();
 
 			for (Castle castle : CastleManager.getInstance().getCastles())
 			{
-				FastList<SiegeSpawn> _controlTowersSpawns = new FastList<SiegeSpawn>();
+				ArrayList<SiegeSpawn> _controlTowersSpawns = new ArrayList<SiegeSpawn>();
 
 				for (int i = 1; i < 0xFF; i++)
 				{
@@ -222,7 +221,7 @@ public class SiegeManager
 					}
 				}
 
-				FastList<SiegeSpawn> _artefactSpawns = new FastList<SiegeSpawn>();
+				ArrayList<SiegeSpawn> _artefactSpawns = new ArrayList<SiegeSpawn>();
 
 				for (int i = 1; i < 0xFF; i++)
 				{
@@ -269,14 +268,14 @@ public class SiegeManager
 		}
 	}
 
-	public final FastList<SiegeSpawn> getArtefactSpawnList(int _castleId)
+	public final ArrayList<SiegeSpawn> getArtefactSpawnList(int _castleId)
 	{
 		if (_artefactSpawnList.containsKey(_castleId))
 			return _artefactSpawnList.get(_castleId);
 		return null;
 	}
 
-	public final FastList<SiegeSpawn> getControlTowerSpawnList(int _castleId)
+	public final ArrayList<SiegeSpawn> getControlTowerSpawnList(int _castleId)
 	{
 		if (_controlTowerSpawnList.containsKey(_castleId))
 			return _controlTowerSpawnList.get(_castleId);
@@ -339,7 +338,7 @@ public class SiegeManager
 	public final List<Siege> getSieges()
 	{
 		if (_sieges == null)
-			_sieges = new FastList<Siege>();
+			_sieges = new ArrayList<Siege>();
 		return _sieges;
 	}
 

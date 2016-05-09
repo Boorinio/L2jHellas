@@ -14,10 +14,11 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javolution.util.FastList;
+
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -64,7 +65,7 @@ public final class EffectConfuseMob extends L2Effect
 	@Override
 	public boolean onActionTime()
 	{
-		List<L2Character> targetList = new FastList<L2Character>();
+		List<L2Character> targetList = new ArrayList<L2Character>();
 
 		// Getting the possible targets
 

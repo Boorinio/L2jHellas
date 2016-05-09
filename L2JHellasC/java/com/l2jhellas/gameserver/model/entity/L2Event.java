@@ -80,7 +80,7 @@ public class L2Event
 				{
 					try
 					{
-						L2PcInstance player = L2World.getPlayer((String) it.next());
+						L2PcInstance player = L2World.getInstance().getPlayer((String) it.next());
 						if (!killersTemp.contains(player.getName()))
 						{
 							if (player.kills.size() > kills)
@@ -106,7 +106,7 @@ public class L2Event
 			{
 				try
 				{
-					L2PcInstance player = L2World.getPlayer(it.next());
+					L2PcInstance player = L2World.getInstance().getPlayer(it.next());
 					if (player.kills.size() > kills)
 					{
 						kills = player.kills.size();
@@ -193,7 +193,7 @@ public class L2Event
 	{
 		CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", text);
 
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			player.sendPacket(cs);
 		}

@@ -92,7 +92,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 			player.sendMessage("You selling items too fast");
 			return;
 		}
-		L2Object object = L2World.findObject(_storePlayerId);
+		L2Object object = L2World.getInstance().findObject(_storePlayerId);
 		if (object == null || !(object instanceof L2PcInstance))
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);

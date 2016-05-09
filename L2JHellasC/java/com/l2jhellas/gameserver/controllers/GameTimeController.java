@@ -15,13 +15,12 @@
 package com.l2jhellas.gameserver.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
@@ -41,7 +40,7 @@ public class GameTimeController
 	protected static long _gameStartTime;
 	protected static boolean _isNight = false;
 
-	private static List<L2Character> _movingObjects = new FastList<L2Character>();
+	private static List<L2Character> _movingObjects = new ArrayList<L2Character>();
 
 	protected static TimerThread _timer;
 	private final ScheduledFuture<?> _timerWatcher;
@@ -134,7 +133,7 @@ public class GameTimeController
 			{
 				_movingObjects.remove(cha);
 				if (ended == null)
-					ended = new FastList<L2Character>();
+					ended = new ArrayList<L2Character>();
 
 				ended.add(cha);
 			}
@@ -239,7 +238,7 @@ public class GameTimeController
 			{
 				try
 				{
-					cha.getKnownList().updateKnownObjects();
+					cha.getKnownList().refreshInfos();
 					cha.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
 				}
 				catch (NullPointerException e)

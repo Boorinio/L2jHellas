@@ -27,14 +27,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -63,8 +64,8 @@ public final class TaskManager
 
 	};/** @formatter:on */
 
-	private final FastMap<Integer, Task> _tasks = new FastMap<Integer, Task>();
-	protected final FastList<ExecutedTask> _currentTasks = new FastList<ExecutedTask>();
+	private final HashMap<Integer, Task> _tasks = new HashMap<Integer, Task>();
+	protected final List<ExecutedTask> _currentTasks = new ArrayList<>();
 
 	public class ExecutedTask implements Runnable
 	{

@@ -105,7 +105,7 @@ public class L2DonateInstance extends L2NpcInstance
 				out.close();
 				player.sendMessage("Donation sent, you can donate again after 1 hour!");
 
-				Collection<L2PcInstance> pls = L2World.getAllPlayers();
+				Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
 				for (L2PcInstance gms : pls)
 				{
 					if (gms.isGM())

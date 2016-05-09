@@ -164,7 +164,7 @@ public final class QuestState
 			
 			setQuestVarInDb("<state>", String.valueOf(_state));
 			
-			_player.sendPacket(new QuestList());
+			_player.sendPacket(new QuestList(_player));
 		}
 	}
 	
@@ -184,7 +184,7 @@ public final class QuestState
 		if (repeatable)
 		{
 			_player.delQuestState(this);
-			_player.sendPacket(new QuestList());
+			_player.sendPacket(new QuestList(_player));
 		}
 		else
 			setState(Quest.STATE_COMPLETED);
@@ -232,7 +232,7 @@ public final class QuestState
 	 * Return value of parameter "val" after adding the couple (var,val) in class variable "vars".<BR>
 	 * <BR>
 	 * <U><I>Actions :</I></U><BR>
-	 * <LI>Initialize class variable "vars" if is null</LI> <LI>Initialize parameter "val" if is null</LI> <LI>Add/Update couple (var,val) in class variable FastMap "vars"</LI> <LI>If the key represented by "var" exists in FastMap "vars", the couple (var,val) is updated in the database. The key is
+	 * <LI>Initialize class variable "vars" if is null</LI> <LI>Initialize parameter "val" if is null</LI> <LI>Add/Update couple (var,val) in class variable HashMap "vars"</LI> <LI>If the key represented by "var" exists in HashMap "vars", the couple (var,val) is updated in the database. The key is
 	 * known as existing if the preceding value of the key (given as result of function put()) is not null.<BR>
 	 * If the key doesn't exist, the couple is added/created in the database</LI>
 	 * @param var : String indicating the name of the variable for quest
@@ -243,7 +243,7 @@ public final class QuestState
 		if (var == null || var.isEmpty() || value == null || value.isEmpty())
 			return;
 		
-		// FastMap.put() returns previous value associated with specified key, or null if there was no mapping for key.
+		// HashMap.put() returns previous value associated with specified key, or null if there was no mapping for key.
 		String old = _vars.put(var, value);
 		
 		setQuestVarInDb(var, value);
@@ -363,7 +363,7 @@ public final class QuestState
 		}
 		
 		// send a packet to the client to inform it of the quest progress (step change)
-		_player.sendPacket(new QuestList());
+		_player.sendPacket(new QuestList(_player));
 		
 		if (_quest.isRealQuest() && cond > 0)
 			_player.sendPacket(new ExShowQuestMark(_quest.getQuestId()));
@@ -372,7 +372,7 @@ public final class QuestState
 	/**
 	 * Remove the variable of quest from the list of variables for the quest.<BR>
 	 * <BR>
-	 * <U><I>Concept : </I></U> Remove the variable of quest represented by "var" from the class variable FastMap "vars" and from the database.
+	 * <U><I>Concept : </I></U> Remove the variable of quest represented by "var" from the class variable HashMap "vars" and from the database.
 	 * @param var : String designating the variable for the quest to be deleted
 	 */
 	public void unset(String var)

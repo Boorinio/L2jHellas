@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.L2Manor;
 
@@ -44,7 +44,7 @@ public class ExShowManorDefaultInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_1C_EXSHOWSEEDINFO = "[S] FE:1E ExShowManorDefaultInfo";
 
-	private FastList<Integer> _crops = null;
+	private ArrayList<Integer> _crops = null;
 
 	public ExShowManorDefaultInfo()
 	{

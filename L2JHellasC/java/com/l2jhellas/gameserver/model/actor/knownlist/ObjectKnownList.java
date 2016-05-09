@@ -18,13 +18,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import javolution.util.FastMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.util.Util;
 
 public class ObjectKnownList
@@ -82,90 +79,19 @@ public class ObjectKnownList
 	}
 
 	/**
-	 * Update the _knownObject and _knowPlayers of the L2Character and of its already known L2Object.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Remove invisible and too far L2Object from _knowObject and if necessary from _knownPlayers of the L2Character</li> <li>Add visible L2Object near the L2Character to
-	 * _knowObject and if necessary to _knownPlayers of the L2Character</li> <li>Add L2Character to _knowObject and if necessary to _knownPlayers of L2Object alreday known by the
-	 * L2Character</li><BR>
-	 * <BR>
+	 * Remove object from known list, which are beyond distance to forget.
 	 */
-	public final synchronized void updateKnownObjects()
+	public final void forgetObjects()
 	{
-		// Only bother updating known objects for L2Character; don't for L2Object
-		if (getActiveObject() instanceof L2Character)
+		// for all objects in known list
+		for (L2Object object : getKnownObjects().values())
 		{
-			findCloseObjects();
-			forgetObjects();
-		}
-	}
-
-	private final void findCloseObjects()
-	{
-		boolean isActiveObjectPlayable = (getActiveObject() instanceof L2Playable);
-
-		if (isActiveObjectPlayable)
-		{
-			Collection<L2Object> objects = L2World.getVisibleObjects(getActiveObject());
-			if (objects == null)
-				return;
-
-			// Go through all visible L2Object near the L2Character
-			for (L2Object object : objects)
-			{
-				if (object == null)
-					continue;
-
-				// Try to add object to active object's known objects
-				// L2PlayableInstance sees everything
-				addKnownObject(object);
-
-				// Try to add active object to object's known objects
-				// Only if object is a L2Character and active object is a L2PlayableInstance
-				if (object instanceof L2Character)
-					object.getKnownList().addKnownObject(getActiveObject());
-			}
-		}
-		else
-		{
-			Collection<L2Playable> playables = L2World.getVisiblePlayable(getActiveObject());
-			if (playables == null)
-				return;
-
-			// Go through all visible L2Object near the L2Character
-			for (L2Object playable : playables)
-			{
-				if (playable == null)
-					continue;
-
-				// Try to add object to active object's known objects
-				// L2Character only needs to see visible L2PcInstance and L2PlayableInstance,
-				// when moving. Other l2characters are currently only known from initial spawn area.
-				// Possibly look into getDistanceToForgetObject values before modifying this approach...
-				addKnownObject(playable);
-			}
-		}
-	}
-
-	private final void forgetObjects()
-	{
-		// Go through knownObjects
-		final Collection<L2Object> knownObjects = getKnownObjects().values();
-
-		if ((knownObjects == null) || (knownObjects.size() == 0))
-			return;
-
-		for (L2Object object : knownObjects)
-		{
-			if (object == null)
-				continue;
-			
-			if (!object.isVisible() || !Util.checkIfInRange(getDistanceToForgetObject(object), _activeObject, object, true))
+			// object is not visible or out of distance to forget, remove from known list
+			if (!object.isVisible() || !Util.checkIfInShortRadius(getDistanceToForgetObject(object), _activeObject, object, true))
 				removeKnownObject(object);
 		}
 	}
-
+	
 	public L2Object getActiveObject()
 	{
 		return _activeObject;
@@ -185,37 +111,19 @@ public class ObjectKnownList
 	public final Map<Integer, L2Object> getKnownObjects()
 	{
 		if (_knownObjects == null)
-			_knownObjects = new FastMap<Integer, L2Object>().setShared(true);
+			_knownObjects = new ConcurrentHashMap<Integer, L2Object>();
 		return _knownObjects;
 	}
-
 	@SuppressWarnings("unchecked")
 	public final <A> Collection<A> getKnownTypeInRadius(Class<A> type, int radius)
 	{
 		List<A> result = new ArrayList<>();
 		
-		for (L2Object obj : _knownObjects.values())
+		for (L2Object obj : getKnownObjects().values())
 		{
 			if (type.isAssignableFrom(obj.getClass()) && Util.checkIfInRange(radius, getActiveObject(), obj, true))
 				result.add((A) obj);
 		}
 		return result;
-	}
-	
-	public static class KnownListAsynchronousUpdateTask implements Runnable
-	{
-		private final L2Object _obj;
-
-		public KnownListAsynchronousUpdateTask(L2Object obj)
-		{
-			_obj = obj;
-		}
-
-		@Override
-		public void run()
-		{
-			if (_obj != null)
-				_obj.getKnownList().updateKnownObjects();
-		}
-	}
+	}	
 }

@@ -15,11 +15,10 @@
 package com.l2jhellas.gameserver.model;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Territory;
@@ -93,7 +92,7 @@ public class L2Spawn
 	private int _instanceId = 0;
 
 	private L2Npc _lastSpawn;
-	private static List<SpawnListener> _spawnListeners = new FastList<SpawnListener>();
+	private static List<SpawnListener> _spawnListeners = new ArrayList<>();
 
 	/** The task launching the function doSpawn() */
 	class SpawnTask implements Runnable

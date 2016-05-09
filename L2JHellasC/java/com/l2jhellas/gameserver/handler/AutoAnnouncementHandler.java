@@ -18,12 +18,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -49,7 +48,7 @@ public class AutoAnnouncementHandler
 
 	protected AutoAnnouncementHandler()
 	{
-		_registeredAnnouncements = new FastMap<Integer, AutoAnnouncementInstance>();
+		_registeredAnnouncements = new HashMap<Integer, AutoAnnouncementInstance>();
 		restoreAnnouncementData();
 	}
 

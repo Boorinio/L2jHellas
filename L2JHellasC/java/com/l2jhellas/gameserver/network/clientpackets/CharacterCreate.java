@@ -37,6 +37,7 @@ import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateOk;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
+import com.l2jhellas.gameserver.scripting.ScriptManager;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
@@ -173,7 +174,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			_log.fine("Character init start");
 		}
-		L2World.storeObject(newChar);
+		L2World.getInstance().storeObject(newChar);
 
 		L2PcTemplate template = newChar.getTemplate();
 
@@ -250,7 +251,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		startTutorialQuest(newChar);
 		L2GameClient.saveCharToDisk(newChar);
 		newChar.deleteMe(); // release the world of this character and it's inventory
-		L2World.removeObject(newChar);
+		L2World.getInstance().removeObject(newChar);
 
 		// send char list
 		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);

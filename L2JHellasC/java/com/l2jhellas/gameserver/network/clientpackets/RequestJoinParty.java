@@ -57,7 +57,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 		if (requestor == null)
 			return;
 		
-		final L2PcInstance target = L2World.getPlayer(_name);
+		final L2PcInstance target = L2World.getInstance().getPlayer(_name);
 		if (target == null)
 		{
 			requestor.sendPacket(SystemMessageId.FIRST_SELECT_USER_TO_INVITE_TO_PARTY);

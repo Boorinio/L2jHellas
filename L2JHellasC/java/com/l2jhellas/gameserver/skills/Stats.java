@@ -191,7 +191,7 @@ public enum Stats
     HP_CONSUME_RATE("HpConsumeRate"),
     MP_CONSUME("MpConsume"),
     SOULSHOT_COUNT ("soulShotCount"),
-
+    DAMAGE_ZONE_VULN ("1"),
     // MASTERY
 	SKILL_MASTERY("skillMastery");
 	/** @formatter:on */

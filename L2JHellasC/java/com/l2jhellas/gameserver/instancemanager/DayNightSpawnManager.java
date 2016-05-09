@@ -14,11 +14,10 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
@@ -55,9 +54,9 @@ public class DayNightSpawnManager
 	
 	private DayNightSpawnManager()
 	{
-		_dayCreatures = new FastMap<L2Spawn, L2Npc>();
-		_nightCreatures = new FastMap<L2Spawn, L2Npc>();
-		_bosses = new FastMap<L2Spawn, L2RaidBossInstance>();
+		_dayCreatures = new HashMap<L2Spawn, L2Npc>();
+		_nightCreatures = new HashMap<L2Spawn, L2Npc>();
+		_bosses = new HashMap<L2Spawn, L2RaidBossInstance>();
 
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Day/Night handler initialised.");
 	}

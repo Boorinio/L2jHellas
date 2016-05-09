@@ -12,12 +12,11 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import javolution.util.FastList;
-
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.entity.PlayerToAssasinate;
@@ -90,7 +89,7 @@ public class L2HitmanInstance extends L2Npc
 		content.append("<td width=100 align=center>Bounty</td>");
 		content.append("<td width=100 align=center>State</td></tr></table>");
 
-		FastList<PlayerToAssasinate> list = new FastList<PlayerToAssasinate>();
+		ArrayList<PlayerToAssasinate> list = new ArrayList<PlayerToAssasinate>();
 
 		// First we parse the list.. so we woun't show just an empty list ^^
 		for (PlayerToAssasinate pta : Hitman.getInstance().getTargets().values())
@@ -135,7 +134,7 @@ public class L2HitmanInstance extends L2Npc
 		StringBuilder content = new StringBuilder("<html><head><body><center>");
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		PlayerToAssasinate pta = Hitman.getInstance().getTargets().get(objectId);
-		L2PcInstance target = L2World.getPlayer(pta.getName());
+		L2PcInstance target = L2World.getInstance().getPlayer(pta.getName());
 		MapRegionTable map = MapRegionTable.getInstance();
 
 		content.append("<img src=L2Font-e.mini_logo-e width=245 height=80>");
@@ -151,7 +150,7 @@ public class L2HitmanInstance extends L2Npc
 			content.append("Name: " + pta.getName() + " <br1>");
 			content.append("Bounty: " + pta.getBounty() + " " + ItemTable.getInstance().getTemplate(Hitman.ITEM_ID).getItemName() + "<br1>");
 			content.append("Last Town: " + target.getLastTownName() + "<br1>");
-			content.append("Current Known Location: " + map.getClosestTownName(target) + " Teritory");
+			content.append("Current Known Location: " + map.getClosestTownName(target.getX(),target.getY()) + " Teritory");
 			content.append("</td>");
 			content.append("</tr>");
 			content.append("</table>");

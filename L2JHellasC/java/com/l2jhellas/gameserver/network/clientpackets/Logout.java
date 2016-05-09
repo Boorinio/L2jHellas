@@ -55,7 +55,7 @@ public final class Logout extends L2GameClientPacket
 
 		player.getInventory().updateDatabase();
 
-		if (AttackStanceTaskManager.getInstance().getAttackStanceTask(player))
+		if (AttackStanceTaskManager.getInstance().isInAttackStance(player))
 		{
 			if (Config.DEBUG)
 			{
@@ -124,8 +124,10 @@ public final class Logout extends L2GameClientPacket
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
+		player.getKnownList().removeAllKnownObjects();
+		L2World.getInstance().removeFromAllPlayers(player);
+		L2World.getInstance().removeObject(player);
 		
-		L2World.removeFromAllPlayers(player);
 		player.deleteMe();
 		notifyFriends(player);
 
@@ -149,7 +151,7 @@ public final class Logout extends L2GameClientPacket
 			{
 				friendName = rset.getString("friend_name");
 
-				friend = L2World.getPlayer(friendName);
+				friend = L2World.getInstance().getPlayer(friendName);
 
 				if (friend != null) // friend logged in.
 				{

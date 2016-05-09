@@ -16,9 +16,9 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
+import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
@@ -76,12 +76,13 @@ public final class RequestRestart extends L2GameClientPacket
 			player.onTradeCancel(player.getActiveRequester());
 		}
 
-		if (AttackStanceTaskManager.getInstance().getAttackStanceTask(player) && !player.isGM())
+		if (AttackStanceTaskManager.getInstance().isInAttackStance(player) && !player.isGM())
 		{
 			player.sendPacket(SystemMessageId.CANT_RESTART_WHILE_FIGHTING);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
+		
 		if (player._inEventTvT)
 		{
 			player.sendMessage("You may not use an escape skill in a Event.");
@@ -129,7 +130,9 @@ public final class RequestRestart extends L2GameClientPacket
 
 		RegionBBSManager.getInstance().changeCommunityBoard();
 
-		L2World.removeFromAllPlayers(player);
+		player.getKnownList().removeAllKnownObjects();
+		L2World.getInstance().removeFromAllPlayers(player);
+		L2World.getInstance().removeObject(player);
 		
 		// removing player from the world
 		player.deleteMe();

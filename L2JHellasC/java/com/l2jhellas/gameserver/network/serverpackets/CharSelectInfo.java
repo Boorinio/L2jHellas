@@ -17,10 +17,9 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.CharSelectInfoPackage;
 import com.l2jhellas.gameserver.model.Inventory;
@@ -190,7 +189,7 @@ public class CharSelectInfo extends L2GameServerPacket
 	private CharSelectInfoPackage[] loadCharacterSelectInfo()
 	{
 		CharSelectInfoPackage charInfopackage;
-		List<CharSelectInfoPackage> characterList = new FastList<CharSelectInfoPackage>();
+		List<CharSelectInfoPackage> characterList = new ArrayList<CharSelectInfoPackage>();
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

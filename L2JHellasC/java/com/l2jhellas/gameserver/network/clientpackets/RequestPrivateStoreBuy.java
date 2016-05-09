@@ -77,7 +77,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		L2Object object = L2World.findObject(_storePlayerId);
+		L2Object object = L2World.getInstance().findObject(_storePlayerId);
 		if ((object == null) || !(object instanceof L2PcInstance))
 			return;
 

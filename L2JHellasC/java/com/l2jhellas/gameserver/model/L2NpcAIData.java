@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.templates.L2NpcTemplate.AIType;
 
@@ -52,23 +52,23 @@ public class L2NpcAIData
 	private AIType _aiType = AIType.FIGHTER;
 
 	//Skill AI
-	public FastList<L2Skill> _buffskills;
-	public FastList<L2Skill> _negativeskills;
-	public FastList<L2Skill> _debuffskills;
-	public FastList<L2Skill> _atkskills;
-	public FastList<L2Skill> _rootskills;
-	public FastList<L2Skill> _stunskills;
-	public FastList<L2Skill> _sleepskills;
-	public FastList<L2Skill> _paralyzeskills;
-	public FastList<L2Skill> _fossilskills;
-	public FastList<L2Skill> _floatskills;
-	public FastList<L2Skill> _immobiliseskills;
-	public FastList<L2Skill> _healskills;
-	public FastList<L2Skill> _resskills;
-	public FastList<L2Skill> _dotskills;
-	public FastList<L2Skill> _cotskills;
-	public FastList<L2Skill> _universalskills;
-	public FastList<L2Skill> _manaskills;
+	public ArrayList<L2Skill> _buffskills;
+	public ArrayList<L2Skill> _negativeskills;
+	public ArrayList<L2Skill> _debuffskills;
+	public ArrayList<L2Skill> _atkskills;
+	public ArrayList<L2Skill> _rootskills;
+	public ArrayList<L2Skill> _stunskills;
+	public ArrayList<L2Skill> _sleepskills;
+	public ArrayList<L2Skill> _paralyzeskills;
+	public ArrayList<L2Skill> _fossilskills;
+	public ArrayList<L2Skill> _floatskills;
+	public ArrayList<L2Skill> _immobiliseskills;
+	public ArrayList<L2Skill> _healskills;
+	public ArrayList<L2Skill> _resskills;
+	public ArrayList<L2Skill> _dotskills;
+	public ArrayList<L2Skill> _cotskills;
+	public ArrayList<L2Skill> _universalskills;
+	public ArrayList<L2Skill> _manaskills;
 
 	//--------------------------------------------------------------------------------------------------------------
 	//Setting....
@@ -316,119 +316,119 @@ public class L2NpcAIData
 	public void addBuffSkill(L2Skill skill)
 	{
 		if (_buffskills == null)
-			_buffskills = new FastList<L2Skill>();
+			_buffskills = new ArrayList<L2Skill>();
 		_buffskills.add(skill);
 	}
 
 	public void addHealSkill(L2Skill skill)
 	{
 		if (_healskills == null)
-			_healskills = new FastList<L2Skill>();
+			_healskills = new ArrayList<L2Skill>();
 		_healskills.add(skill);
 	}
 
 	public void addResSkill(L2Skill skill)
 	{
 		if (_resskills == null)
-			_resskills = new FastList<L2Skill>();
+			_resskills = new ArrayList<L2Skill>();
 		_resskills.add(skill);
 	}
 
 	public void addAtkSkill(L2Skill skill)
 	{
 		if (_atkskills == null)
-			_atkskills = new FastList<L2Skill>();
+			_atkskills = new ArrayList<L2Skill>();
 		_atkskills.add(skill);
 	}
 
 	public void addDebuffSkill(L2Skill skill)
 	{
 		if (_debuffskills == null)
-			_debuffskills = new FastList<L2Skill>();
+			_debuffskills = new ArrayList<L2Skill>();
 		_debuffskills.add(skill);
 	}
 
 	public void addRootSkill(L2Skill skill)
 	{
 		if (_rootskills == null)
-			_rootskills = new FastList<L2Skill>();
+			_rootskills = new ArrayList<L2Skill>();
 		_rootskills.add(skill);
 	}
 
 	public void addSleepSkill(L2Skill skill)
 	{
 		if (_sleepskills == null)
-			_sleepskills = new FastList<L2Skill>();
+			_sleepskills = new ArrayList<L2Skill>();
 		_sleepskills.add(skill);
 	}
 
 	public void addStunSkill(L2Skill skill)
 	{
 		if (_stunskills == null)
-			_stunskills = new FastList<L2Skill>();
+			_stunskills = new ArrayList<L2Skill>();
 		_stunskills.add(skill);
 	}
 
 	public void addParalyzeSkill(L2Skill skill)
 	{
 		if (_paralyzeskills == null)
-			_paralyzeskills = new FastList<L2Skill>();
+			_paralyzeskills = new ArrayList<L2Skill>();
 		_paralyzeskills.add(skill);
 	}
 
 	public void addFloatSkill(L2Skill skill)
 	{
 		if (_floatskills == null)
-			_floatskills = new FastList<L2Skill>();
+			_floatskills = new ArrayList<L2Skill>();
 		_floatskills.add(skill);
 	}
 
 	public void addFossilSkill(L2Skill skill)
 	{
 		if (_fossilskills == null)
-			_fossilskills = new FastList<L2Skill>();
+			_fossilskills = new ArrayList<L2Skill>();
 		_fossilskills.add(skill);
 	}
 
 	public void addNegativeSkill(L2Skill skill)
 	{
 		if (_negativeskills == null)
-			_negativeskills = new FastList<L2Skill>();
+			_negativeskills = new ArrayList<L2Skill>();
 		_negativeskills.add(skill);
 	}
 
 	public void addImmobiliseSkill(L2Skill skill)
 	{
 		if (_immobiliseskills == null)
-			_immobiliseskills = new FastList<L2Skill>();
+			_immobiliseskills = new ArrayList<L2Skill>();
 		_immobiliseskills.add(skill);
 	}
 
 	public void addDOTSkill(L2Skill skill)
 	{
 		if (_dotskills == null)
-			_dotskills = new FastList<L2Skill>();
+			_dotskills = new ArrayList<L2Skill>();
 		_dotskills.add(skill);
 	}
 
 	public void addUniversalSkill(L2Skill skill)
 	{
 		if (_universalskills == null)
-			_universalskills = new FastList<L2Skill>();
+			_universalskills = new ArrayList<L2Skill>();
 		_universalskills.add(skill);
 	}
 
 	public void addCOTSkill(L2Skill skill)
 	{
 		if (_cotskills == null)
-			_cotskills = new FastList<L2Skill>();
+			_cotskills = new ArrayList<L2Skill>();
 		_cotskills.add(skill);
 	}
 
 	public void addManaHealSkill(L2Skill skill)
 	{
 		if (_manaskills == null)
-			_manaskills = new FastList<L2Skill>();
+			_manaskills = new ArrayList<L2Skill>();
 		_manaskills.add(skill);
 	}
 

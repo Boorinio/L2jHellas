@@ -17,13 +17,14 @@ package com.l2jhellas.gameserver.model.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
+
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -250,8 +251,8 @@ public class ClanHall
 		_paidUntil = paidUntil;
 		_grade = Grade;
 		_paid = paid;
-		_doorDefault = new FastList<String>();
-		_functions = new FastMap<Integer, ClanHallFunction>();
+		_doorDefault = new ArrayList<String>();
+		_functions = new HashMap<Integer, ClanHallFunction>();
 
 		if (ownerId != 0)
 		{
@@ -320,7 +321,7 @@ public class ClanHall
 	{
 		if (_doors == null)
 		{
-			_doors = new FastList<L2DoorInstance>();
+			_doors = new ArrayList<L2DoorInstance>();
 		}
 		return _doors;
 	}

@@ -31,7 +31,7 @@ public class L2JHellasInfo
 		_log.info("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" +
 				"                              Interlude Project                                 " +
 				"                                     Owner                                      " +
-				"                                     Boorinio                                   " +
+				"                            Boorinio,AbsolutePower                              " +
 				"             ======================================================             " +
 				"             ====  ====  ============  ===  ============      =====             " +
 				"             ====  ====  ============  ===  ===========  ====  ====             " +
@@ -43,7 +43,7 @@ public class L2JHellasInfo
 				"             ====  ====  ===  =  ====  ===  ===  =  ===  ====  ====             " +
 				"             ====  ====  ====   =====  ===  ====    ====      =====             " +
 				"             ======================================================             " +
-				"                           Contact: tzou_08@yahoo.gr                            " +
+				"                           Contact: nikos.nikosnikos1                           " +
 				"                          Forum: http://l2jhellas.info/                         " +
 				" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" +
 				"             Server Version: " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE);

@@ -39,7 +39,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -191,7 +190,7 @@ public class CursedWeapon
 			else if (_item != null)
 			{
 				_item.decayMe();
-				L2World.removeObject(_item);
+				L2World.getInstance().removeObject(_item);
 				_log.log(Level.INFO, getClass().getSimpleName() + ": " + _name + " item has been removed from World.");
 			}
 		}
@@ -256,7 +255,7 @@ public class CursedWeapon
 			// RedSky and Earthquake
 			ExRedSky packet = new ExRedSky(10);
 			Earthquake eq = new Earthquake(player.getX(), player.getY(), player.getZ(), 14, 3);
-			for (L2PcInstance aPlayer : L2World.getAllPlayers())
+			for (L2PcInstance aPlayer : L2World.getInstance().getAllPlayers().values())
 			{
 				aPlayer.sendPacket(packet);
 				aPlayer.sendPacket(eq);
@@ -684,7 +683,7 @@ public class CursedWeapon
 		}
 	}
 
-	public Point3D getWorldPosition()
+	public Location getWorldPosition()
 	{
 		if (_isActivated && _player != null)
 			return _player.getPosition().getWorldPosition();

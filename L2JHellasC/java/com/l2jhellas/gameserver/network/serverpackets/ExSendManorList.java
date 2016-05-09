@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 /**
  * Format : (h) d [dS]<BR>
@@ -32,11 +32,11 @@ public class ExSendManorList extends L2GameServerPacket
 {
 	private static final String _S__FE_1B_EXSENDMANORLIST = "[S] FE:1B ExSendManorList";
 
-	private final FastList<String> _manors;
+	private final ArrayList<String> _manors;
 
-	public ExSendManorList(FastList<String> manors)
+	public ExSendManorList(ArrayList<String> manorsName)
 	{
-		_manors = manors;
+		_manors = manorsName;
 	}
 
 	@Override

@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.controllers.TradeController;
@@ -169,7 +168,7 @@ public class L2ManorManagerInstance extends L2MerchantInstance
 					else
 					{
 						L2TradeList tradeList = new L2TradeList(0);
-						FastList<SeedProduction> seeds = getCastle().getSeedProduction(CastleManorManager.PERIOD_CURRENT);
+						ArrayList<SeedProduction> seeds = getCastle().getSeedProduction(CastleManorManager.PERIOD_CURRENT);
 
 						for (SeedProduction s : seeds)
 						{

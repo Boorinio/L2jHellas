@@ -18,11 +18,11 @@ import java.lang.management.LockInfo;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MonitorInfo;
 import java.lang.management.ThreadInfo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
 
 /**
  * @author ProGramMoS
@@ -90,7 +90,7 @@ public abstract class L2Thread extends Thread
 
 	public static List<String> getStats(Thread t)
 	{
-		List<String> list = new FastList<String>();
+		List<String> list = new ArrayList<String>();
 
 		list.add(t.toString() + " - ID: " + t.getId());
 		list.add(" * State: " + t.getState());

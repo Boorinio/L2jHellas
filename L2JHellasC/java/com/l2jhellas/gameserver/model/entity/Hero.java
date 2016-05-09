@@ -634,7 +634,7 @@ public class Hero
 			{
 				String name = hero.getString(Olympiad.CHAR_NAME);
 				
-				L2PcInstance player = L2World.getPlayer(name);
+				L2PcInstance player = L2World.getInstance().getPlayer(name);
 				if (player == null)
 					continue;
 				

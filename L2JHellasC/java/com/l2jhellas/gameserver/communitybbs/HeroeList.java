@@ -15,11 +15,10 @@ package com.l2jhellas.gameserver.communitybbs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -95,7 +94,7 @@ public class HeroeList
 	public final static String className(int classId)
 	{
 		Map<Integer, String> classList;
-		classList = new FastMap<Integer, String>();
+		classList = new HashMap<Integer, String>();
 		classList.put(0, "Fighter");
 		classList.put(1, "Warrior");
 		classList.put(2, "Gladiator");

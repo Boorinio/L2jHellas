@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExSendManorList;
@@ -39,7 +39,7 @@ public class RequestManorList extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
-		FastList<String> manorsName = new FastList<String>();
+		ArrayList<String> manorsName = new ArrayList<String>();
 		manorsName.add("gludio");
 		manorsName.add("dion");
 		manorsName.add("giran");

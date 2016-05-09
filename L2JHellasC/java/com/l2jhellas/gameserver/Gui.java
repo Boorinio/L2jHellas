@@ -91,7 +91,7 @@ public class Gui extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				pc = L2World.getPlayer(pmPlayerName.getText().toString().trim());
+				pc = L2World.getInstance().getPlayer(pmPlayerName.getText().toString().trim());
 				if (pc == null || pc.isOnline() == 0)
 				{
 					generalMessage.setText("The player is offfline!");
@@ -114,7 +114,7 @@ public class Gui extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				pc = L2World.getPlayer(rewardName.getText().toString().trim());
+				pc = L2World.getInstance().getPlayer(rewardName.getText().toString().trim());
 				
 				if (pc == null || pc.isOnline() == 0)
 				{
@@ -205,7 +205,7 @@ public class Gui extends JFrame
 	public void initStats()
 	{
 		ramUsage.setText("Ram Usage: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576 + "MB");
-		onlinePlayers.setText("Online Players: " + L2World.getAllPlayersCount());
+		onlinePlayers.setText("Online Players: " + L2World.getInstance().getAllPlayersCount());
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override

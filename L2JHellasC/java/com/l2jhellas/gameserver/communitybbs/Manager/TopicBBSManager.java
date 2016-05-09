@@ -15,14 +15,13 @@
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.BB.Post;
@@ -48,8 +47,8 @@ public class TopicBBSManager extends BaseBBSManager
 
 	private TopicBBSManager()
 	{
-		_table = new FastList<Topic>();
-		_maxId = new FastMap<Forum, Integer>();
+		_table = new ArrayList<Topic>();
+		_maxId = new HashMap<Forum, Integer>();
 	}
 
 	public void addTopic(Topic tt)

@@ -14,11 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
-import com.l2jhellas.gameserver.network.serverpackets.ItemList;
+import com.l2jhellas.gameserver.templates.L2Henna;
 
 /**
  * format cd
@@ -44,14 +42,12 @@ public final class RequestHennaRemove extends L2GameClientPacket
 		
 		for (int i = 1; i <= 3; i++)
 		{
-			L2HennaInstance henna = activeChar.getHenna(i);
+			L2Henna henna = activeChar.getHenna(i);
 			if (henna != null && henna.getSymbolId() == _symbolId)
 			{
 				if (activeChar.getAdena() >= (henna.getPrice() / 5))
 				{
 					activeChar.removeHenna(i);
-					activeChar.sendPacket(new InventoryUpdate());
-					activeChar.sendPacket(new ItemList(activeChar, false));
 					break;
 				}
 				activeChar.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);

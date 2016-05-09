@@ -17,14 +17,13 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
@@ -32,8 +31,8 @@ import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
@@ -59,7 +58,7 @@ public class L2Clan
 	private String _name;
 	private int _clanId;
 	private L2ClanMember _leader;
-	private final Map<String, L2ClanMember> _members = new FastMap<String, L2ClanMember>();
+	private final Map<String, L2ClanMember> _members = new HashMap<String, L2ClanMember>();
 
 	private String _allyName;
 	private int _allyId;
@@ -87,14 +86,14 @@ public class L2Clan
 	public static final int PENALTY_TYPE_DISSOLVE_ALLY = 4;
 
 	private final ItemContainer _warehouse = new ClanWarehouse(this);
-	private final List<Integer> _atWarWith = new FastList<Integer>();
-	private final List<Integer> _atWarAttackers = new FastList<Integer>();
+	private final List<Integer> _atWarWith = new ArrayList<Integer>();
+	private final List<Integer> _atWarAttackers = new ArrayList<Integer>();
 
 	private boolean _hasCrestLarge;
 
 	private Forum _forum;
 
-	private final List<L2Skill> _skillList = new FastList<L2Skill>();
+	private final List<L2Skill> _skillList = new ArrayList<L2Skill>();
 
 	// Clan Privileges
 	/** No privilege to manage any clan activity */
@@ -146,10 +145,10 @@ public class L2Clan
 	/** Clan subunit type of Order of Knights B-2 */
 	public static final int SUBUNIT_KNIGHT4 = 2002;
 
-	/** FastMap(Integer, L2Skill) containing all skills of the L2Clan */
-	protected final Map<Integer, L2Skill> _skills = new FastMap<Integer, L2Skill>();
-	protected final Map<Integer, RankPrivs> _privs = new FastMap<Integer, RankPrivs>();
-	protected final Map<Integer, SubPledge> _subPledges = new FastMap<Integer, SubPledge>();
+	/** HashMap(Integer, L2Skill) containing all skills of the L2Clan */
+	protected final Map<Integer, L2Skill> _skills = new HashMap<Integer, L2Skill>();
+	protected final Map<Integer, RankPrivs> _privs = new HashMap<Integer, RankPrivs>();
+	protected final Map<Integer, SubPledge> _subPledges = new HashMap<Integer, SubPledge>();
 
 	private int _reputationScore = 0;
 	private int _rank = 0;
@@ -500,9 +499,9 @@ public class L2Clan
 	 * @param exclude the object Id to exclude from list.
 	 * @return all online members excluding the one with object id {code exclude}.
 	 */
-	public FastList<L2PcInstance> getOnlineMembers(int exclude)
+	public ArrayList<L2PcInstance> getOnlineMembers(int exclude)
 	{
-		final FastList<L2PcInstance> onlineMembers = new FastList<>();
+		final ArrayList<L2PcInstance> onlineMembers = new ArrayList<>();
 		for (L2ClanMember temp : _members.values())
 		{
 			if ((temp != null) && temp.isOnline() && (temp.getObjectId() != exclude))
@@ -515,7 +514,7 @@ public class L2Clan
 	
 	public L2PcInstance[] getOnlineMembers(String exclude)
 	{
-		List<L2PcInstance> result = new FastList<L2PcInstance>();
+		List<L2PcInstance> result = new ArrayList<L2PcInstance>();
 		for (L2ClanMember temp : _members.values())
 		{
 			try
@@ -2048,7 +2047,7 @@ public class L2Clan
 				return false;
 			}
 		}
-		if (activeChar.isInsideZone(L2Character.ZONE_SIEGE) && target.isInsideZone(L2Character.ZONE_SIEGE))
+		if (activeChar.isInsideZone(ZoneId.SIEGE) && target.isInsideZone(ZoneId.SIEGE))
 		{
 			activeChar.sendPacket(SystemMessageId.OPPOSING_CLAN_IS_PARTICIPATING_IN_SIEGE);
 			return false;
@@ -2187,7 +2186,7 @@ public class L2Clan
 			player.sendPacket(SystemMessageId.FEATURE_ONLY_FOR_ALLIANCE_LEADER);
 			return;
 		}
-		if (player.isInsideZone(L2Character.ZONE_SIEGE))
+		if (player.isInsideZone(ZoneId.SIEGE))
 		{
 			player.sendPacket(SystemMessageId.CANNOT_DISSOLVE_ALLY_WHILE_IN_SIEGE);
 			return;

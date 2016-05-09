@@ -18,15 +18,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 
 import com.l2jhellas.Config;
@@ -62,7 +59,6 @@ public class Quest extends ManagedScript
 {
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 		
-	private static Map<String, Quest> _allEventsS = new FastMap<String, Quest>();
 	private static final String LOAD_QUEST_STATES = "SELECT name,value FROM character_quests WHERE char_id=? AND var='<state>'";
 	private static final String LOAD_QUEST_VARIABLES = "SELECT name,var,value FROM character_quests WHERE char_id=? AND var<>'<state>'";
 	private static final String DELETE_INVALID_QUEST = "DELETE FROM character_quests WHERE name=?";
@@ -81,17 +77,7 @@ public class Quest extends ManagedScript
 	private final String _descr;
 	private boolean _onEnterWorld;
 	private int[] _itemsIds;
-	
-	/**
-	 * Return collection view of the values contains in the allEventS
-	 * 
-	 * @return Collection<Quest>
-	 */
-	public static Collection<Quest> findAllEvents()
-	{
-		return _allEventsS.values();
-	}
-	
+		
 	/**
 	 * (Constructor)Add values to class variables and put the quest in HashMaps.
 	 * @param questId : int pointing out the ID of the quest
@@ -106,7 +92,6 @@ public class Quest extends ManagedScript
 		_onEnterWorld = false;
 
 		QuestManager.getInstance().addQuest(Quest.this);
-		_allEventsS.put(name, this);
 	}
 	
 	/**
@@ -253,10 +238,11 @@ public class Quest extends ManagedScript
 		{
 			_log.log(Level.WARNING, "could not insert char quest:", e);
 		}
+
 		// events
-		for (String name : _allEventsS.keySet())
+		for (Quest q : QuestManager.getInstance().getAllManagedScripts())
 		{
-			player.processQuestEvent(name, "enter");
+			player.processQuestEvent(q.getName(), "enter");
 		}
 	}
 	

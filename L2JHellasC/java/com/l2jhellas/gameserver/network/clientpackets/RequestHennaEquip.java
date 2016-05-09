@@ -15,14 +15,10 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.HennaTreeTable;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
-import com.l2jhellas.gameserver.model.L2HennaInstance;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Henna;
 import com.l2jhellas.util.Util;
 
@@ -47,71 +43,45 @@ public final class RequestHennaEquip extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
-
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-
-		L2Henna template = HennaData.getInstance().getTemplate(_symbolId);
-
-		if (template == null)
+		
+		final L2Henna henna = HennaData.getInstance().getTemplate(_symbolId);
+		if (henna == null)
 			return;
-
-		L2HennaInstance temp = new L2HennaInstance(template);
-		int _count = 0;
-
-		/*
-		 * Prevents henna drawing exploit:
-		 * 1) talk to L2SymbolMakerInstance
-		 * 2) RequestHennaList
-		 * 3) Don't close the window and go to a GrandMaster and change your subclass
-		 * 4) Get SymbolMaker range again and press draw
-		 * You could draw any kind of henna just having the required subclass...
-		 */
-		boolean cheater = true;
-		for (L2HennaInstance h : HennaTreeTable.getInstance().getAvailableHenna(activeChar.getClassId()))
-		{
-			if (h.getSymbolId() == temp.getSymbolId())
-			{
-				cheater = false;
-				break;
-			}
-		}
-
-		try
-		{
-			_count = activeChar.getInventory().getItemByItemId(temp.getItemIdDye()).getCount();
-		}
-		catch (Exception e)
-		{
-		}
-
-		if (!cheater && (_count >= temp.getAmountDyeRequire()) && (activeChar.getAdena() >= temp.getPrice()) && activeChar.addHenna(temp))
-		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED);
-			sm.addNumber(temp.getItemIdDye());
-			activeChar.sendPacket(sm);
-			sm = null;
-			activeChar.sendPacket(SystemMessageId.SYMBOL_ADDED);
-
-			// HennaInfo hi = new HennaInfo(temp,activeChar);
-			// activeChar.sendPacket(hi);
-
-			activeChar.getInventory().reduceAdena("Henna", temp.getPrice(), activeChar, activeChar.getLastFolkNPC());
-			L2ItemInstance dyeToUpdate = activeChar.getInventory().destroyItemByItemId("Henna", temp.getItemIdDye(), temp.getAmountDyeRequire(), activeChar, activeChar.getLastFolkNPC());
-
-			// update inventory
-			InventoryUpdate iu = new InventoryUpdate();
-			iu.addModifiedItem(activeChar.getInventory().getAdenaInstance());
-			iu.addModifiedItem(dyeToUpdate);
-			activeChar.sendPacket(iu);
-		}
-		else
+			
+		if (!henna.isForThisClass(activeChar))
 		{
 			activeChar.sendPacket(SystemMessageId.CANT_DRAW_SYMBOL);
-			if ((!activeChar.isGM()) && (cheater))
-				Util.handleIllegalPlayerAction(activeChar, "Exploit attempt: Character " + activeChar.getName() + " of account " + activeChar.getAccountName() + " tryed to add a forbidden henna.", Config.DEFAULT_PUNISH);
+			Util.handleIllegalPlayerAction(activeChar, activeChar.getName() + " of account " + activeChar.getAccountName() + " tried to add a forbidden henna.", Config.DEFAULT_PUNISH);
+			return;
 		}
+		
+		if (activeChar.getHennaEmptySlots() == 0)
+		{
+			activeChar.sendPacket(SystemMessageId.SYMBOLS_FULL);
+			return;
+		}
+		
+		final L2ItemInstance ownedDyes = activeChar.getInventory().getItemByItemId(henna.getDyeId());
+		final int count = (ownedDyes == null) ? 0 : ownedDyes.getCount();
+		
+		if (count < L2Henna.getAmountDyeRequire())
+		{
+			activeChar.sendPacket(SystemMessageId.CANT_DRAW_SYMBOL);
+			return;
+		}
+		
+		// reduceAdena sends a message.
+		if (!activeChar.reduceAdena("Henna", henna.getPrice(), activeChar.getLastFolkNPC(), true))
+			return;
+		
+		// destroyItemByItemId sends a message.
+		if (!activeChar.destroyItemByItemId("Henna", henna.getDyeId(), L2Henna.getAmountDyeRequire(), activeChar, true))
+			return;
+		
+		activeChar.addHenna(henna);
 	}
 
 	@Override

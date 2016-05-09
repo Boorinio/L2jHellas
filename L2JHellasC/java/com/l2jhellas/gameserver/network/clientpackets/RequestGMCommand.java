@@ -46,7 +46,7 @@ public final class RequestGMCommand extends L2GameClientPacket
 		if (!getClient().getActiveChar().isGM() || !getClient().getActiveChar().getAccessLevel().allowAltG())
 			return;
 
-		L2PcInstance player = L2World.getPlayer(_targetName);
+		L2PcInstance player = L2World.getInstance().getPlayer(_targetName);
 
 		// player name was incorrect?
 		if (player == null)

@@ -36,7 +36,7 @@ public final class RequestPetGetItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2ItemInstance item = (L2ItemInstance) L2World.findObject(_objectId);
+		L2ItemInstance item = (L2ItemInstance) L2World.getInstance().findObject(_objectId);
 		if ((item == null) || (getClient().getActiveChar() == null))
 			return;
 		if (getClient().getActiveChar().getPet() instanceof L2SummonInstance)

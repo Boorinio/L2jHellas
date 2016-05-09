@@ -19,11 +19,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.LineNumberReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
@@ -40,11 +39,11 @@ public class L2Manor
 	private static Logger _log = Logger.getLogger(L2Manor.class.getName());
 	private static L2Manor _instance;
 
-	private static FastMap<Integer, SeedData> _seeds;
+	private static HashMap<Integer, SeedData> _seeds;
 
 	public L2Manor()
 	{
-		_seeds = new FastMap<Integer, SeedData>().setShared(true);
+		_seeds = new HashMap<Integer, SeedData>();
 		parseData();
 	}
 
@@ -57,9 +56,9 @@ public class L2Manor
 		return _instance;
 	}
 
-	public FastList<Integer> getAllCrops()
+	public ArrayList<Integer> getAllCrops()
 	{
-		FastList<Integer> crops = new FastList<Integer>();
+		ArrayList<Integer> crops = new ArrayList<Integer>();
 
 		for (SeedData seed : _seeds.values())
 		{
@@ -219,9 +218,9 @@ public class L2Manor
 	 * @param castleId
 	 * @return
 	 */
-	public FastList<Integer> getCropsForCastle(int castleId)
+	public ArrayList<Integer> getCropsForCastle(int castleId)
 	{
-		FastList<Integer> crops = new FastList<Integer>();
+		ArrayList<Integer> crops = new ArrayList<Integer>();
 
 		for (SeedData seed : _seeds.values())
 		{
@@ -241,9 +240,9 @@ public class L2Manor
 	 *        - id of the castle
 	 * @return seedIds - list of seed ids
 	 */
-	public FastList<Integer> getSeedsForCastle(int castleId)
+	public ArrayList<Integer> getSeedsForCastle(int castleId)
 	{
-		FastList<Integer> seedsID = new FastList<Integer>();
+		ArrayList<Integer> seedsID = new ArrayList<Integer>();
 
 		for (SeedData seed : _seeds.values())
 		{

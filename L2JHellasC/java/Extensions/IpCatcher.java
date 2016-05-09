@@ -23,9 +23,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-
-import javolution.util.FastList;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
@@ -36,7 +35,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class IpCatcher
 {
-	public static FastList<String> ips = new FastList<>();
+	public static ArrayList<String> ips = new ArrayList<>();
 	static File file = new File(PackRoot.DATAPACK_ROOT, "data/ips.txt");
 	
 	public String getMacAddr(L2PcInstance p)
@@ -47,8 +46,9 @@ public class IpCatcher
 		if (p != null)
 			try
 			{
-				p.getClient().getConnection().getInetAddress();
-				final InetAddress ip = InetAddress.getLocalHost();
+				@SuppressWarnings("static-access")
+				final InetAddress ip = p.getClient().getConnection().getInetAddress().getLocalHost();
+				
 				NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 				
 				if (network != null)

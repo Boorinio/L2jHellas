@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 
 public final class NpcInfo extends L2GameServerPacket
@@ -85,7 +86,7 @@ public final class NpcInfo extends L2GameServerPacket
 
 		if (Config.SHOW_NPC_CREST)
 		{
-			if (cha instanceof L2Npc && cha.isInsideZone(L2Character.ZONE_PEACE) && cha.getCastle().getOwnerId() != 0)
+			if (cha instanceof L2Npc && cha.isInsideZone(ZoneId.PEACE) && cha.getCastle().getOwnerId() != 0)
 			{
 				int _x, _y, _z;
 				_x = cha.getX();

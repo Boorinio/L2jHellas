@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.SeedProduction;
 import com.l2jhellas.gameserver.model.L2Manor;
@@ -46,16 +46,16 @@ import com.l2jhellas.gameserver.model.L2Manor;
 public class ExShowSeedInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_1C_EXSHOWSEEDINFO = "[S] FE:1C ExShowSeedInfo";
-	private FastList<SeedProduction> _seeds;
+	private ArrayList<SeedProduction> _seeds;
 	private final int _manorId;
 
-	public ExShowSeedInfo(int manorId, FastList<SeedProduction> seeds)
+	public ExShowSeedInfo(int manorId, ArrayList<SeedProduction> arrayList)
 	{
 		_manorId = manorId;
-		_seeds = seeds;
+		_seeds = arrayList;
 		if (_seeds == null)
 		{
-			_seeds = new FastList<SeedProduction>();
+			_seeds = new ArrayList<SeedProduction>();
 		}
 	}
 

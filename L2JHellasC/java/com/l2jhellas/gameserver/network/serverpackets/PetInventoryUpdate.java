@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ItemInfo;
@@ -47,7 +46,7 @@ public class PetInventoryUpdate extends L2GameServerPacket
 
 	public PetInventoryUpdate()
 	{
-		this(new FastList<ItemInfo>());
+		this(new ArrayList<ItemInfo>());
 	}
 
 	public void addItem(L2ItemInstance item)

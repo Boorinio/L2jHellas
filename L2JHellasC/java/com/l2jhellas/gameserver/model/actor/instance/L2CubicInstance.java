@@ -14,12 +14,11 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -52,7 +51,7 @@ public class L2CubicInstance
 	protected int _id;
 	protected int _level = 1;
 
-	protected List<Integer> _skills = new FastList<Integer>();
+	protected List<Integer> _skills = new ArrayList<Integer>();
 
 	private Future<?> _disappearTask;
 	private Future<?> _actionTask;

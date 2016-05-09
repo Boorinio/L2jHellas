@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,9 +24,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 
 /**
- * A dynamic zone?
- * Maybe use this for interlude skills like protection field :>
- * 
+ * A dynamic zone? Maybe use this for interlude skills like protection field :>
  * @author durgus
  */
 public class L2DynamicZone extends L2ZoneType
@@ -35,19 +33,19 @@ public class L2DynamicZone extends L2ZoneType
 	private final L2Character _owner;
 	private Future<?> _task;
 	private final L2Skill _skill;
-
+	
 	protected void setTask(Future<?> task)
 	{
 		_task = task;
 	}
-
+	
 	public L2DynamicZone(L2WorldRegion region, L2Character owner, L2Skill skill)
 	{
 		super(-1);
 		_region = region;
 		_owner = owner;
 		_skill = skill;
-
+		
 		Runnable r = new Runnable()
 		{
 			@Override
@@ -58,7 +56,7 @@ public class L2DynamicZone extends L2ZoneType
 		};
 		setTask(ThreadPoolManager.getInstance().scheduleGeneral(r, skill.getBuffDuration()));
 	}
-
+	
 	@Override
 	protected void onEnter(L2Character character)
 	{
@@ -72,14 +70,13 @@ public class L2DynamicZone extends L2ZoneType
 		{
 		}
 	}
-
+	
 	@Override
 	protected void onExit(L2Character character)
 	{
 		if (character instanceof L2PcInstance)
-		{
 			((L2PcInstance) character).sendMessage("You have left a temporary zone!");
-		}
+		
 		if (character == _owner)
 		{
 			remove();
@@ -87,16 +84,17 @@ public class L2DynamicZone extends L2ZoneType
 		}
 		character.stopSkillEffects(_skill.getId());
 	}
-
+	
 	protected void remove()
 	{
 		if (_task == null)
 			return;
+		
 		_task.cancel(false);
 		_task = null;
-
+		
 		_region.removeZone(this);
-		for (L2Character member : _characterList.values())
+		for (L2Character member : _characterList)
 		{
 			try
 			{
@@ -107,9 +105,9 @@ public class L2DynamicZone extends L2ZoneType
 			}
 		}
 		_owner.stopSkillEffects(_skill.getId());
-
+		
 	}
-
+	
 	@Override
 	public void onDieInside(L2Character character)
 	{
@@ -118,7 +116,7 @@ public class L2DynamicZone extends L2ZoneType
 		else
 			character.stopSkillEffects(_skill.getId());
 	}
-
+	
 	@Override
 	public void onReviveInside(L2Character character)
 	{

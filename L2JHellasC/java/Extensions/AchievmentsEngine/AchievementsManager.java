@@ -22,14 +22,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -73,8 +72,8 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class AchievementsManager
 {
 	private static final Logger log = Logger.getLogger(AchievementsManager.class.getSimpleName());
-	private final Map<Integer, Achievement> _achievementList = new FastMap<>();
-	private final FastList<String> _binded = new FastList<>();
+	private final Map<Integer, Achievement> _achievementList = new HashMap<>();
+	private final ArrayList<String> _binded = new ArrayList<>();
 
 	public AchievementsManager()
 	{
@@ -114,7 +113,7 @@ public class AchievementsManager
 							String reward = String.valueOf(d.getAttributes().getNamedItem("reward").getNodeValue());
 							boolean repeat = checkBoolean(d, "repeatable");
 
-							FastList<Condition> conditions = conditionList(d.getAttributes());
+							ArrayList<Condition> conditions = conditionList(d.getAttributes());
 
 							_achievementList.put(id, new Achievement(id, name, description, reward, repeat, conditions));
 							alterTable(id);
@@ -194,9 +193,9 @@ public class AchievementsManager
 		}
 	}
 
-	public FastList<Condition> conditionList(NamedNodeMap attributesList)
+	public ArrayList<Condition> conditionList(NamedNodeMap attributesList)
 	{
-		FastList<Condition> conditions = new FastList<>();
+		ArrayList<Condition> conditions = new ArrayList<>();
 
 		for (int j = 0; j < attributesList.getLength(); j++)
 		{
@@ -211,7 +210,7 @@ public class AchievementsManager
 		return _achievementList;
 	}
 
-	public FastList<String> getBinded()
+	public ArrayList<String> getBinded()
 	{
 		return _binded;
 	}
@@ -237,7 +236,7 @@ public class AchievementsManager
 		protected static final AchievementsManager _instance = new AchievementsManager();
 	}
 
-	private static void addToConditionList(String nodeName, Object value, FastList<Condition> conditions)
+	private static void addToConditionList(String nodeName, Object value, ArrayList<Condition> conditions)
 	{
 		/** @formatter:off */
 		if (nodeName.equals("minLevel")) conditions.add(new Levelup(value));

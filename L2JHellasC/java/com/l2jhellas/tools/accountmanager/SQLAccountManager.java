@@ -21,10 +21,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Locale;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
@@ -272,9 +271,9 @@ public class SQLAccountManager
 				statement.setString(1, account);
 				rset = statement.executeQuery();
 				
-				FastList<String> objIds = new FastList<>();
-				FastList<String> charNames = new FastList<>();
-				FastList<String> clanIds = new FastList<>();
+				ArrayList<String> objIds = new ArrayList<>();
+				ArrayList<String> charNames = new ArrayList<>();
+				ArrayList<String> clanIds = new ArrayList<>();
 				
 				while (rset.next())
 				{

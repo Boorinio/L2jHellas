@@ -12,7 +12,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -40,7 +40,7 @@ public class L2EventBufferInstance
 		if (player == null)
 			return;
 
-		FastList<L2BuffTemplate> _templateBuffs = new FastList<L2BuffTemplate>();
+		ArrayList<L2BuffTemplate> _templateBuffs = new ArrayList<L2BuffTemplate>();
 		_templateBuffs = BuffTemplateTable.getInstance().getBuffTemplate(_templateId);
 
 		if ((_templateBuffs == null) || (_templateBuffs.size() == 0))

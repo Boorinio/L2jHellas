@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -69,8 +68,8 @@ public class ClanHallManager
 	
 	private ClanHallManager()
 	{
-		_clanHall = new FastMap<Integer, ClanHall>();
-		_freeClanHall = new FastMap<Integer, ClanHall>();
+		_clanHall = new HashMap<Integer, ClanHall>();
+		_freeClanHall = new HashMap<Integer, ClanHall>();
 		load();
 	}
 

@@ -25,9 +25,6 @@ import java.util.logging.Logger;
 import com.l2jhellas.util.UnicodeReader;
 import com.l2jhellas.util.filters.file.HtmFilter;
 
-/**
- * @author Layane, reworked by Java-man and Hasha
- */
 public class HtmCache
 {
 	private static final Logger _log = Logger.getLogger(HtmCache.class.getName());

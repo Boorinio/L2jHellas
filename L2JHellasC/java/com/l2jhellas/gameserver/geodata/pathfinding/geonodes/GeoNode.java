@@ -34,13 +34,13 @@ public final class GeoNode extends PathNode
 	@Override
 	public int getX()
 	{
-		return L2World.MAP_MIN_X + _x * 128 + 48;
+		return L2World.WORLD_X_MIN + _x * 128 + 48;
 	}
 
 	@Override
 	public int getY()
 	{
-		return L2World.MAP_MIN_Y + _y * 128 + 48;
+		return L2World.WORLD_Y_MIN + _y * 128 + 48;
 	}
 
 	@Override

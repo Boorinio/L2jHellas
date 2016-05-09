@@ -72,26 +72,26 @@ public final class GeoEngine extends GeoData
 	@Override
 	public short getType(int x, int y)
 	{
-		return nGetType((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4);
+		return nGetType((x - L2World.WORLD_X_MIN) >> 4, (y - L2World.WORLD_Y_MIN) >> 4);
 	}
 
 	@Override
 	public short getHeight(int x, int y, int z)
 	{
-		return nGetHeight((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4, z);
+		return nGetHeight((x - L2World.WORLD_X_MIN) >> 4, (y - L2World.WORLD_Y_MIN) >> 4, z);
 	}
 
 	@Override
 	public short getSpawnHeight(int x, int y, int zmin, int zmax, int spawnid)
 	{
-		return nGetSpawnHeight((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4, zmin, zmax, spawnid);
+		return nGetSpawnHeight((x - L2World.WORLD_X_MIN) >> 4, (y - L2World.WORLD_Y_MIN) >> 4, zmin, zmax, spawnid);
 	}
 
 	@Override
 	public String geoPosition(int x, int y)
 	{
-		int gx = (x - L2World.MAP_MIN_X) >> 4;
-		int gy = (y - L2World.MAP_MIN_Y) >> 4;
+		int gx = (x - L2World.WORLD_X_MIN) >> 4;
+		int gy = (y - L2World.WORLD_Y_MIN) >> 4;
 		return "bx: " + getBlock(gx) + " by: " + getBlock(gy) + " cx: " + getCell(gx) + " cy: " + getCell(gy) + "  region offset: " + getRegionOffset(gx, gy);
 	}
 
@@ -145,14 +145,14 @@ public final class GeoEngine extends GeoData
 		}
 
 		if (z >= z2)
-			return canSeeDebug(gm, (gm.getX() - L2World.MAP_MIN_X) >> 4, (gm.getY() - L2World.MAP_MIN_Y) >> 4, z, (target.getX() - L2World.MAP_MIN_X) >> 4, (target.getY() - L2World.MAP_MIN_Y) >> 4, z2);
-		return canSeeDebug(gm, (target.getX() - L2World.MAP_MIN_X) >> 4, (target.getY() - L2World.MAP_MIN_Y) >> 4, z2, (gm.getX() - L2World.MAP_MIN_X) >> 4, (gm.getY() - L2World.MAP_MIN_Y) >> 4, z);
+			return canSeeDebug(gm, (gm.getX() - L2World.WORLD_X_MIN) >> 4, (gm.getY() - L2World.WORLD_Y_MIN) >> 4, z, (target.getX() - L2World.WORLD_X_MIN) >> 4, (target.getY() - L2World.WORLD_Y_MIN) >> 4, z2);
+		return canSeeDebug(gm, (target.getX() - L2World.WORLD_X_MIN) >> 4, (target.getY() - L2World.WORLD_Y_MIN) >> 4, z2, (gm.getX() - L2World.WORLD_X_MIN) >> 4, (gm.getY() - L2World.WORLD_Y_MIN) >> 4, z);
 	}
 
 	@Override
 	public short getNSWE(int x, int y, int z)
 	{
-		return nGetNSWE((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4, z);
+		return nGetNSWE((x - L2World.WORLD_X_MIN) >> 4, (y - L2World.WORLD_Y_MIN) >> 4, z);
 	}
 
 	@Override
@@ -170,14 +170,14 @@ public final class GeoEngine extends GeoData
 			return startpoint;
 
 		Location destiny = new Location(tx, ty, tz);
-		return moveCheck(startpoint, destiny, (x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4, z, (tx - L2World.MAP_MIN_X) >> 4, (ty - L2World.MAP_MIN_Y) >> 4, tz);
+		return moveCheck(startpoint, destiny, (x - L2World.WORLD_X_MIN) >> 4, (y - L2World.WORLD_Y_MIN) >> 4, z, (tx - L2World.WORLD_X_MIN) >> 4, (ty - L2World.WORLD_Y_MIN) >> 4, tz);
 	}
 
 	@Override
 	public void addGeoDataBug(L2PcInstance gm, String comment)
 	{
-		int gx = (gm.getX() - L2World.MAP_MIN_X) >> 4;
-		int gy = (gm.getY() - L2World.MAP_MIN_Y) >> 4;
+		int gx = (gm.getX() - L2World.WORLD_X_MIN) >> 4;
+		int gy = (gm.getY() - L2World.WORLD_Y_MIN) >> 4;
 		int bx = getBlock(gx);
 		int by = getBlock(gy);
 		int cx = getCell(gx);
@@ -201,14 +201,14 @@ public final class GeoEngine extends GeoData
 	@Override
 	public boolean canSeeTarget(int x, int y, int z, int tx, int ty, int tz)
 	{
-		return canSee((x - L2World.MAP_MIN_X) >> 4, (y - L2World.MAP_MIN_Y) >> 4, z, (tx - L2World.MAP_MIN_X) >> 4, (ty - L2World.MAP_MIN_Y) >> 4, tz);
+		return canSee((x - L2World.WORLD_X_MIN) >> 4, (y - L2World.WORLD_Y_MIN) >> 4, z, (tx - L2World.WORLD_X_MIN) >> 4, (ty - L2World.WORLD_Y_MIN) >> 4, tz);
 	}
 
 	@Override
 	public boolean hasGeo(int x, int y)
 	{
-		int gx = (x - L2World.MAP_MIN_X) >> 4;
-		int gy = (y - L2World.MAP_MIN_Y) >> 4;
+		int gx = (x - L2World.WORLD_X_MIN) >> 4;
+		int gy = (y - L2World.WORLD_Y_MIN) >> 4;
 		short region = getRegionOffset(gx, gy);
 
 		return _geodata.get(region) != null;
@@ -515,13 +515,13 @@ public final class GeoEngine extends GeoData
 					next_x += inc_x;
 					tempz = nCanMoveNext(x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
-						return new Location((x << 4) + L2World.MAP_MIN_X, (y << 4) + L2World.MAP_MIN_Y, (int) z);
+						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 					next_y += inc_y;
 					//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(next_x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
-						return new Location((x << 4) + L2World.MAP_MIN_X, (y << 4) + L2World.MAP_MIN_Y, (int) z);
+						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 				}
 				else
@@ -531,7 +531,7 @@ public final class GeoEngine extends GeoData
 					//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
-						return new Location((x << 4) + L2World.MAP_MIN_X, (y << 4) + L2World.MAP_MIN_Y, (int) z);
+						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 				}
 			}
@@ -551,13 +551,13 @@ public final class GeoEngine extends GeoData
 					next_y += inc_y;
 					tempz = nCanMoveNext(x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
-						return new Location((x << 4) + L2World.MAP_MIN_X, (y << 4) + L2World.MAP_MIN_Y, (int) z);
+						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 					next_x += inc_x;
 					//_log.warning("5: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(x, next_y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
-						return new Location((x << 4) + L2World.MAP_MIN_X, (y << 4) + L2World.MAP_MIN_Y, (int) z);
+						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 				}
 				else
@@ -567,7 +567,7 @@ public final class GeoEngine extends GeoData
 					//_log.warning("6: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
-						return new Location((x << 4) + L2World.MAP_MIN_X, (y << 4) + L2World.MAP_MIN_Y, (int) z);
+						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 				}
 			}

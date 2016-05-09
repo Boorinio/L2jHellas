@@ -18,31 +18,27 @@ public class Manager
 {
 	public static void reloadAll()
 	{
-		//ArenaManager.
+		ZoneManager.getInstance().reload();
+		TownManager.getInstance();
+		ItemsOnGroundManager.getInstance().reload();
+		FishingZoneManager.getInstance();	
 		AuctionManager.getInstance().reload();
-		//AwayManager.
 		BoatManager.getInstance();
 		CastleManager.getInstance().reload();
 		ClanHallManager.getInstance().reload();
 		CoupleManager.getInstance().reload();
 		CursedWeaponsManager.reload();
 		DayNightSpawnManager.getInstance().reload();
-		//DimensionalRiftManager.getInstance().reload();
-		//DuelManager
-		//FishingZoneManager.
-		//FourSepulchersManager.getInstance().
-		GrandBossManager.getInstance().reload();
-		ItemsOnGroundManager.getInstance().reload();
+		DimensionalRiftManager.getInstance().reload();
+		DuelManager.getInstance();	
+		FourSepulchersManager.getInstance();
+		GrandBossManager.getInstance().reload();	
 		MercTicketManager.getInstance().reload();
-		//OlympiadStadiaManager.getInstance().reload();
-		//PetitionManager.getInstance().
-		//QuestManager.getInstance().reloadAllQuests();
-		RaidBossPointsManager.getInstance().reload();
-		RaidBossSpawnManager.getInstance().reload();
-		//SiegeGuardManager.getInstance().
-		//SiegeManager.getInstance().
-		//SiegeReward.getInstance().
-		//TownManager.getInstance().reload();
-		//ZoneManager.getInstance().reload();
-	}// osa exoun reload(); vgazoun NPE apo to deftero-trito reload kai meta
-}// osa den exoun reload(); xreiazonte
+		OlympiadStadiaManager.getInstance();
+		PetitionManager.getInstance();
+		RaidBossSpawnManager.getInstance().reloadBosses();
+		SiegeManager.getInstance();
+		SiegeReward.getInstance();
+		
+	}
+}

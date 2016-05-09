@@ -14,12 +14,12 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javolution.util.FastList;
+import com.l2jhellas.gameserver.DateRange;
 
-import com.l2jhellas.gameserver.script.DateRange;
 
 /**
  * This class manage drop of Special Events created by GM for a defined period.
@@ -69,7 +69,7 @@ public class EventDroplist
 	 */
 	private EventDroplist()
 	{
-		_allNpcDateDrops = new FastList<DateDrop>();
+		_allNpcDateDrops = new ArrayList<DateDrop>();
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class EventDroplist
 	 */
 	public List<DateDrop> getAllDrops()
 	{
-		List<DateDrop> list = new FastList<DateDrop>();
+		List<DateDrop> list = new ArrayList<DateDrop>();
 
 		for (DateDrop drop : _allNpcDateDrops)
 		{

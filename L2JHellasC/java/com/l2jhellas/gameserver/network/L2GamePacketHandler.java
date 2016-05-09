@@ -72,6 +72,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 			case AUTHED:
 				switch (opcode)
 				{
+
 					case 0x01:
 					break;
 					case 0x09:
@@ -108,7 +109,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					break;
 				}
 			break;
-			case IN_GAME:
+			case IN_GAME:			
 				switch (opcode)
 				{
 					case 0x01:
@@ -556,9 +557,9 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 					case 0xa7:
 						msg = new MultiSellChoose();
 					break;
-					// case 0xa8:
-					// // NetPing
-					// break;
+					//case 0xa8:
+					//	msg = new NetPing();
+					//break;
 					case 0xaa:
 						msg = new RequestUserCommand();
 					break;

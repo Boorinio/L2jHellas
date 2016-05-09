@@ -18,17 +18,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
@@ -48,6 +47,7 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControlTowerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.gameserver.network.serverpackets.SiegeInfo;
@@ -220,15 +220,15 @@ public class Siege
 	}
 
 	// Attacker and Defender
-	private final List<L2SiegeClan> _attackerClans = new FastList<L2SiegeClan>(); // L2SiegeClan
+	private final List<L2SiegeClan> _attackerClans = new ArrayList<L2SiegeClan>(); // L2SiegeClan
 
-	private final List<L2SiegeClan> _defenderClans = new FastList<L2SiegeClan>(); // L2SiegeClan
-	private final List<L2SiegeClan> _defenderWaitingClans = new FastList<L2SiegeClan>(); // L2SiegeClan
+	private final List<L2SiegeClan> _defenderClans = new ArrayList<L2SiegeClan>(); // L2SiegeClan
+	private final List<L2SiegeClan> _defenderWaitingClans = new ArrayList<L2SiegeClan>(); // L2SiegeClan
 	private int _defenderRespawnDelayPenalty;
 
 	// Castle setting
-	private List<L2ArtefactInstance> _artifacts = new FastList<L2ArtefactInstance>();
-	private List<L2ControlTowerInstance> _controlTowers = new FastList<L2ControlTowerInstance>();
+	private List<L2ArtefactInstance> _artifacts = new ArrayList<L2ArtefactInstance>();
+	private List<L2ControlTowerInstance> _controlTowers = new ArrayList<L2ControlTowerInstance>();
 	private final Castle[] _castle;
 	private boolean _isInProgress = false;
 	private boolean _isNormalSide = true; // true = Atk is Atk, false = Atk is Def
@@ -503,7 +503,7 @@ public class Siege
 		}
 
 		// Get all players
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			player.sendMessage(message);
 		}
@@ -664,9 +664,9 @@ public class Siege
 	}
 
 	/** Return list of L2PcInstance registered as attacker in the zone. */
-	public List<L2PcInstance> getAttackersInZone()
+	public List<L2Character> getAttackersInZone()
 	{
-		List<L2PcInstance> players = new FastList<L2PcInstance>();
+		List<L2Character> players = new ArrayList<L2Character>();
 		L2Clan clan;
 		for (L2SiegeClan siegeclan : getAttackerClans())
 		{
@@ -681,9 +681,9 @@ public class Siege
 	}
 
 	/** Return list of L2PcInstance registered as defender but not owner in the zone. */
-	public List<L2PcInstance> getDefendersButNotOwnersInZone()
+	public List<L2Character> getDefendersButNotOwnersInZone()
 	{
-		List<L2PcInstance> players = new FastList<L2PcInstance>();
+		List<L2Character> players = new ArrayList<L2Character>();
 		L2Clan clan;
 		for (L2SiegeClan siegeclan : getDefenderClans())
 		{
@@ -700,15 +700,15 @@ public class Siege
 	}
 
 	/** Return list of L2PcInstance in the zone. */
-	public List<L2PcInstance> getPlayersInZone()
+	public List<L2Character> getPlayersInZone()
 	{
-		return getCastle().getZone().getAllPlayers();
+		return getCastle().getZone().getCharactersInside();
 	}
 
 	/** Return list of L2PcInstance owning the castle in the zone. */
-	public List<L2PcInstance> getOwnersInZone()
+	public List<L2Character> getOwnersInZone()
 	{
-		List<L2PcInstance> players = new FastList<L2PcInstance>();
+		List<L2Character> players = new ArrayList<L2Character>();
 		L2Clan clan;
 		for (L2SiegeClan siegeclan : getDefenderClans())
 		{
@@ -725,14 +725,14 @@ public class Siege
 	}
 
 	/** Return list of L2PcInstance not registered as attacker or defender in the zone. */
-	public List<L2PcInstance> getSpectatorsInZone()
+	public List<L2Character> getSpectatorsInZone()
 	{
-		List<L2PcInstance> players = new FastList<L2PcInstance>();
+		List<L2Character> players = new ArrayList<L2Character>();
 
-		for (L2PcInstance player : L2World.getAllPlayers())
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			// quick check from player states, which don't include siege number however
-			if (!player.isInsideZone(L2Character.ZONE_SIEGE) || player.getSiegeState() != 0)
+			if (!player.isInsideZone(ZoneId.SIEGE) || player.getSiegeState() != 0)
 				continue;
 			if (checkIfInZone(player.getX(), player.getY(), player.getZ()))
 				players.add(player);
@@ -896,7 +896,7 @@ public class Siege
 	 */
 	public void teleportPlayer(TeleportWhoType teleportWho, MapRegionTable.TeleportWhereType teleportWhere)
 	{
-		List<L2PcInstance> players;
+		List<L2Character> players;
 		switch (teleportWho)
 		{
 			case Owner:
@@ -915,9 +915,9 @@ public class Siege
 				players = getPlayersInZone();
 		};
 
-		for (L2PcInstance player : players)
+		for (L2Character player : players)
 		{
-			if (player.isGM() || player.isInJail())
+			if (player.getActingPlayer().isGM() || player.getActingPlayer().isInJail())
 				continue;
 			player.teleToLocation(teleportWhere);
 		}
@@ -1243,7 +1243,7 @@ public class Siege
 	{
 		// Set artifact array size if one does not exist
 		if (_artifacts == null)
-			_artifacts = new FastList<L2ArtefactInstance>();
+			_artifacts = new ArrayList<L2ArtefactInstance>();
 
 		for (SiegeSpawn _sp : SiegeManager.getInstance().getArtefactSpawnList(Id))
 		{
@@ -1263,7 +1263,7 @@ public class Siege
 	{
 		// Set control tower array size if one does not exist
 		if (_controlTowers == null)
-			_controlTowers = new FastList<L2ControlTowerInstance>();
+			_controlTowers = new ArrayList<L2ControlTowerInstance>();
 
 		for (SiegeSpawn _sp : SiegeManager.getInstance().getControlTowerSpawnList(Id))
 		{

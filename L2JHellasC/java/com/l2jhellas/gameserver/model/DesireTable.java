@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import javolution.util.FastMap;
 
 public class DesireTable
 {
@@ -61,7 +60,7 @@ public class DesireTable
 
 		public Desires(DesireType... desireList)
 		{
-			_desireTable = new FastMap<DesireType, DesireValue>();
+			_desireTable = new HashMap<DesireType, DesireValue>();
 
 			for (DesireType desire : desireList)
 			{
@@ -101,7 +100,7 @@ public class DesireTable
 	public DesireTable(DesireType... desireList)
 	{
 		_desireTypes = desireList;
-		_objectDesireTable = new FastMap<L2Object, Desires>();
+		_objectDesireTable = new HashMap<L2Object, Desires>();
 		_generalDesires = new Desires(_desireTypes);
 	}
 

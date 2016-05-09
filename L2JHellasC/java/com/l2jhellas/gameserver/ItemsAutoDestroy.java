@@ -14,11 +14,10 @@
  */
 package com.l2jhellas.gameserver;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
@@ -35,7 +34,7 @@ public class ItemsAutoDestroy
 
 	private ItemsAutoDestroy()
 	{
-		_items = new FastList<L2ItemInstance>();
+		_items = new ArrayList<L2ItemInstance>();
 		_sleep = Config.AUTODESTROY_ITEM_AFTER * 1000;
 		if (_sleep == 0)
 		{
@@ -84,8 +83,8 @@ public class ItemsAutoDestroy
 				{
 					if ((curtime - item.getDropTime()) > Config.HERB_AUTO_DESTROY_TIME)
 					{
-						L2World.removeVisibleObject(item, item.getWorldRegion());
-						L2World.removeObject(item);
+						L2World.getInstance().removeVisibleObject(item, item.getWorldRegion());
+						L2World.getInstance().removeObject(item);
 						_items.remove(item);
 						if (Config.SAVE_DROPPED_ITEM)
 						{
@@ -95,8 +94,8 @@ public class ItemsAutoDestroy
 				}
 				else if ((curtime - item.getDropTime()) > _sleep)
 				{
-					L2World.removeVisibleObject(item, item.getWorldRegion());
-					L2World.removeObject(item);
+					L2World.getInstance().removeVisibleObject(item, item.getWorldRegion());
+					L2World.getInstance().removeObject(item);
 					_items.remove(item);
 					if (Config.SAVE_DROPPED_ITEM)
 					{

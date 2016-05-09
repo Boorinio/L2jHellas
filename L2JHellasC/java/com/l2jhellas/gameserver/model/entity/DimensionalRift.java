@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.entity;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -30,7 +29,7 @@ public class DimensionalRift
 {
 	protected byte _type;
 	protected L2Party _party;
-	protected FastList<Byte> _completedRooms = new FastList<Byte>();
+	protected ArrayList<Byte> _completedRooms = new ArrayList<Byte>();
 	private static final long seconds_5 = 5000L;
 	//private static final int MILLISECONDS_IN_MINUTE = 60000;
 	protected byte jumps_current = 0;
@@ -42,8 +41,8 @@ public class DimensionalRift
 
 	protected byte _choosenRoom = -1;
 	private boolean _hasJumped = false;
-	protected FastList<L2PcInstance> deadPlayers = new FastList<L2PcInstance>();
-	protected FastList<L2PcInstance> revivedInWaitingRoom = new FastList<L2PcInstance>();
+	protected ArrayList<L2PcInstance> deadPlayers = new ArrayList<L2PcInstance>();
+	protected ArrayList<L2PcInstance> revivedInWaitingRoom = new ArrayList<L2PcInstance>();
 	private boolean isBossRoom = false;
 
 	public DimensionalRift(L2Party party, byte type, byte room)
@@ -332,12 +331,12 @@ public class DimensionalRift
 		}
 	}
 
-	public FastList<L2PcInstance> getDeadMemberList()
+	public ArrayList<L2PcInstance> getDeadMemberList()
 	{
 		return deadPlayers;
 	}
 
-	public FastList<L2PcInstance> getRevivedAtWaitingRoom()
+	public ArrayList<L2PcInstance> getRevivedAtWaitingRoom()
 	{
 		return revivedInWaitingRoom;
 	}

@@ -18,15 +18,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
-
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -92,7 +91,7 @@ public class GrandBossManager
 
 	private static Map<Integer, Integer> _bossStatus;
 
-	private static FastList<L2BossZone> _zones;
+	private static ArrayList<L2BossZone> _zones;
 
 	public static GrandBossManager getInstance()
 	{
@@ -116,11 +115,11 @@ public class GrandBossManager
 	
 	private void init()
 	{
-		_zones = new FastList<L2BossZone>();
+		_zones = new ArrayList<L2BossZone>();
 
-		_bosses = new FastMap<Integer, L2GrandBossInstance>();
-		_storedInfo = new FastMap<Integer, StatsSet>();
-		_bossStatus = new FastMap<Integer, Integer>();
+		_bosses = new HashMap<Integer, L2GrandBossInstance>();
+		_storedInfo = new HashMap<Integer, StatsSet>();
+		_bossStatus = new HashMap<Integer, Integer>();
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM grandboss_data ORDER BY boss_id");
@@ -176,7 +175,7 @@ public class GrandBossManager
 	 */
 	public void initZones()
 	{
-		FastMap<Integer, FastList<Integer>> zones = new FastMap<Integer, FastList<Integer>>();
+		HashMap<Integer, ArrayList<Integer>> zones = new HashMap<Integer, ArrayList<Integer>>();
 
 		if (_zones == null)
 		{
@@ -188,7 +187,7 @@ public class GrandBossManager
 		{
 			if (zone == null)
 				continue;
-			zones.put(zone.getId(), new FastList<Integer>());
+			zones.put(zone.getId(), new ArrayList<Integer>());
 		}
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -202,7 +201,14 @@ public class GrandBossManager
 				int zone_id = rset.getInt("zone");
 				zones.get(zone_id).add(id);
 			}
-
+			
+			for (L2BossZone zone : _zones)
+			{
+				if (zone == null)
+					continue;
+				zone.allowPlayerEntry(rset.getInt("player_id"));
+			}
+			
 			rset.close();
 			statement.close();
 
@@ -221,12 +227,7 @@ public class GrandBossManager
 			e.printStackTrace();
 		}
 
-		for (L2BossZone zone : _zones)
-		{
-			if (zone == null)
-				continue;
-			zone.setAllowedPlayers(zones.get(zone.getId()));
-		}
+		
 
 		zones.clear();
 	}
@@ -263,14 +264,6 @@ public class GrandBossManager
 		return null;
 	}
 
-	public boolean checkIfInZone(String zoneType, L2Object obj)
-	{
-		L2BossZone temp = getZone(obj.getX(), obj.getY(), obj.getZ());
-		if (temp == null)
-			return false;
-
-		return temp.getZoneName().equalsIgnoreCase(zoneType);
-	}
 
 	public boolean checkIfInZone(L2PcInstance player)
 	{
@@ -342,7 +335,7 @@ public class GrandBossManager
 				if (zone == null)
 					continue;
 				Integer id = zone.getId();
-				FastList<Integer> list = zone.getAllowedPlayers();
+				List<Integer> list = zone.getAllowedPlayers();
 				if (list == null || list.isEmpty())
 					continue;
 				for (Integer player : list)
@@ -433,7 +426,7 @@ public class GrandBossManager
 		_zones.clear();
 	}
 
-	public FastList<L2BossZone> getZones()
+	public ArrayList<L2BossZone> getZones()
 	{
 		return _zones;
 	}

@@ -17,11 +17,10 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
@@ -43,7 +42,7 @@ public abstract class ItemContainer
 
 	protected ItemContainer()
 	{
-		_items = new FastList<L2ItemInstance>();
+		_items = new ArrayList<L2ItemInstance>();
 	}
 
 	protected abstract L2Character getOwner();
@@ -584,18 +583,19 @@ public abstract class ItemContainer
 	 */
 	public void deleteMe()
 	{
-		try
+		
+		if (getOwner() != null)
 		{
-			updateDatabase();
+			for (L2ItemInstance item : _items)
+			{
+				if (item != null)
+				{
+					item.updateDatabase();
+					L2World.getInstance().removeObject(item);
+				}
+			}
 		}
-		catch (Throwable t)
-		{
-			_log.log(Level.SEVERE, "deletedMe()" + t);
-		}
-		List<L2Object> items = new FastList<L2Object>(_items);
 		_items.clear();
-
-		L2World.removeObjects(items);
 	}
 
 	/**
@@ -633,8 +633,8 @@ public abstract class ItemContainer
 				if (item == null)
 					continue;
 
-				L2World.forceObject(item);
-
+				L2World.getInstance().storeObject(item);
+				
 				// If stackable item is found in inventory just add to current quantity
 				if (item.isStackable() && getItemByItemId(item.getItemId()) != null)
 					addItem("Restore", item, null, getOwner());

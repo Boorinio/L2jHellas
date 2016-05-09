@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
 
@@ -31,7 +31,7 @@ public class FishingZoneManager
 		return _instance;
 	}
 
-	private FastList<L2FishingZone> _fishingZones;
+	private ArrayList<L2FishingZone> _fishingZones;
 
 	public FishingZoneManager()
 	{
@@ -40,7 +40,7 @@ public class FishingZoneManager
 	public void addFishingZone(L2FishingZone fishingZone)
 	{
 		if (_fishingZones == null)
-			_fishingZones = new FastList<L2FishingZone>();
+			_fishingZones = new ArrayList<L2FishingZone>();
 
 		_fishingZones.add(fishingZone);
 	}

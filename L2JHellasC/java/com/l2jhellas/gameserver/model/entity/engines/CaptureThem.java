@@ -15,9 +15,9 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-import javolution.util.FastList;
 import javolution.util.FastSet;
 
 import com.PackRoot;
@@ -43,7 +43,7 @@ public class CaptureThem
 {
 	public static boolean CaptureThemRunning = false;
 	private static int i;
-	private static List<L2PcInstance> _players = new FastList<L2PcInstance>();
+	private static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
 	private static FastSet<L2Npc> _flags = new FastSet<L2Npc>();
 	private static int flagId = 36006;
 	private static int MostPoints = 0;
@@ -75,7 +75,7 @@ public class CaptureThem
 	public static void stopRegistration()
 	{
 		Announcements.getInstance().announceToAll("CaptureThem Registration is Over!");
-		for (L2PcInstance players : L2World.getAllPlayers())
+		for (L2PcInstance players : L2World.getInstance().getAllPlayers().values())
 		{
 			if(players == null)
 				return;

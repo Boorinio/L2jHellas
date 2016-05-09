@@ -26,7 +26,6 @@ import com.l2jhellas.util.Rnd;
 
 public final class L2GrandBossInstance extends L2MonsterInstance
 {
-	private static final int BOSS_MAINTENANCE_INTERVAL = 10000;
 	private boolean _teleportedToNest;
 
 	protected boolean _isInSocialAction = false;
@@ -52,12 +51,6 @@ public final class L2GrandBossInstance extends L2MonsterInstance
 	public L2GrandBossInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-	}
-
-	@Override
-	protected int getMaintenanceInterval()
-	{
-		return BOSS_MAINTENANCE_INTERVAL;
 	}
 
 	/**
@@ -128,11 +121,11 @@ public final class L2GrandBossInstance extends L2MonsterInstance
 			{
 				for (L2PcInstance member : player.getParty().getPartyMembers())
 				{
-					RaidBossPointsManager.addPoints(member, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
+					RaidBossPointsManager.getInstance().addPoints(member, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
 				}
 			}
 			else
-				RaidBossPointsManager.addPoints(player, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
+				RaidBossPointsManager.getInstance().addPoints(player, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
 		}
 		return true;
 	}

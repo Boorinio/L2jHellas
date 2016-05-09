@@ -14,12 +14,12 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 public class ExEnchantSkillInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_18_EXENCHANTSKILLINFO = "[S] FE:18 ExEnchantSkillInfo";
-	private final FastList<Req> _reqs;
+	private final ArrayList<Req> _reqs;
 	private final int _id;
 	private final int _level;
 	private final int _spCost;
@@ -44,7 +44,7 @@ public class ExEnchantSkillInfo extends L2GameServerPacket
 
 	public ExEnchantSkillInfo(int id, int level, int spCost, int xpCost, int rate)
 	{
-		_reqs = new FastList<Req>();
+		_reqs = new ArrayList<Req>();
 		_id = id;
 		_level = level;
 		_spCost = spCost;

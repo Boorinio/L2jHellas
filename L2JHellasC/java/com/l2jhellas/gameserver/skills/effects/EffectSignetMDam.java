@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -92,7 +92,7 @@ final class EffectSignetMDam extends EffectSignet
 		if (!bss && !ss)
 			caster.rechargeAutoSoulShot(false, true, false);
 
-		FastList<L2Character> targets = new FastList<L2Character>();
+		ArrayList<L2Character> targets = new ArrayList<L2Character>();
 
 		for (L2Character cha : zone.getCharactersInZone())
 		{

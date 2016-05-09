@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.templates;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -156,7 +155,7 @@ public final class L2Armor extends L2Item
 	@Override
 	public Func[] getStatFuncs(L2ItemInstance instance, L2Character player)
 	{
-		List<Func> funcs = new FastList<Func>();
+		List<Func> funcs = new ArrayList<Func>();
 		if (_funcTemplates != null)
 		{
 			for (FuncTemplate t : _funcTemplates)

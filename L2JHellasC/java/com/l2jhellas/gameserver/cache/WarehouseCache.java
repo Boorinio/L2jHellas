@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.cache;
 
-import javolution.util.FastMap;
+import java.util.HashMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -26,7 +26,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class WarehouseCache
 {
 	private static WarehouseCache _instance;
-	protected final FastMap<L2PcInstance, Long> _cachedWh;
+	protected final HashMap<L2PcInstance, Long> _cachedWh;
 	protected final long _cacheTime;
 
 	public static WarehouseCache getInstance()
@@ -39,7 +39,7 @@ public class WarehouseCache
 	private WarehouseCache()
 	{
 		_cacheTime = Config.WAREHOUSE_CACHE_TIME * 60000L; // 60*1000 = 60000
-		_cachedWh = new FastMap<L2PcInstance, Long>().setShared(true);
+		_cachedWh = new HashMap<L2PcInstance, Long>();
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new CacheScheduler(), 120000, 60000);
 	}
 

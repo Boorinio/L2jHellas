@@ -17,11 +17,11 @@ package Extensions.RankSystem;
 import java.util.Map;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 /**
  * Class contains some check methods.
@@ -181,9 +181,9 @@ public class RPSProtection
 		if (Config.ALLOWED_ZONES_IDS.size() == 0)
 			return true;
 
-		for (Integer value : Config.ALLOWED_ZONES_IDS)
+		for (int value : Config.ALLOWED_ZONES_IDS)
 		{
-			int zone = getZoneId(value);
+			ZoneId zone = getZoneId(value);
 
 			if (player.isInsideZone(zone))
 				return true;
@@ -200,9 +200,9 @@ public class RPSProtection
 	 */
 	public static final boolean isInPvpRestrictedZone(L2PcInstance player)
 	{
-		for (Integer value : Config.RESTRICTED_ZONES_IDS)
+		for (int value : Config.RESTRICTED_ZONES_IDS)
 		{
-			int zone = getZoneId(value);
+			ZoneId zone = getZoneId(value);
 
 			if (player.isInsideZone(zone))
 				return true;
@@ -219,9 +219,9 @@ public class RPSProtection
 	 */
 	public static final boolean isInDMRestrictedZone(L2PcInstance player)
 	{
-		for (Integer value : Config.DEATH_MANAGER_RESTRICTED_ZONES_IDS)
+		for (int value : Config.DEATH_MANAGER_RESTRICTED_ZONES_IDS)
 		{
-			int zone = getZoneId(value);
+			ZoneId zone = getZoneId(value);
 
 			if (player.isInsideZone(zone))
 				return true;
@@ -240,7 +240,7 @@ public class RPSProtection
 	{
 		for (Map.Entry<Integer, Double> e : Config.RANK_POINTS_BONUS_ZONES_IDS.entrySet())
 		{
-			int zone = getZoneId(e.getKey());
+			ZoneId zone = getZoneId(e.getKey());
 
 			if (player.isInsideZone(zone))
 				return e.getValue();
@@ -248,7 +248,6 @@ public class RPSProtection
 
 		return 1.0;
 	}
-
 	/**
 	 * Returns the ZoneId.<br>
 	 * ZoneId not exists in lower revisions of l2jServer (H5), then this method can be removed.<br>
@@ -257,33 +256,32 @@ public class RPSProtection
 	 * @param zoneId
 	 * @return
 	 */
-	private static final int getZoneId(int zoneId)
+	private static final ZoneId getZoneId(int zoneId)
 	{
-		int zone = 0;
+		ZoneId zone = null;
+		
 		switch (zoneId)
 		{
 			case 1:
-				return L2Character.ZONE_PVP;
+				zone = ZoneId.PVP;
 			case 2:
-				return L2Character.ZONE_PEACE;
+				zone = ZoneId.PEACE;
 			case 4:
-				return L2Character.ZONE_SIEGE;
+				zone = ZoneId.SIEGE;
 			case 8:
-				return L2Character.ZONE_MOTHERTREE;
+				zone = ZoneId.MOTHER_TREE;
 			case 12:
-				return L2Character.ZONE_NOSUMMONFRIEND;
+				zone = ZoneId.NO_SUMMON_FRIEND;
 			case 16:
-				return L2Character.ZONE_CLANHALL;
-			case 32:
-				return L2Character.ZONE_UNUSED;
+				zone = ZoneId.CLAN_HALL;
 			case 64:
-				return L2Character.ZONE_NOLANDING;
+				zone = ZoneId.NO_LANDING;
 			case 128:
-				return L2Character.ZONE_WATER;
+				zone = ZoneId.WATER;
 			case 256:
-				return L2Character.ZONE_JAIL;
+				zone = ZoneId.JAIL;
 			case 512:
-				return L2Character.ZONE_MONSTERTRACK;
+				zone = ZoneId.MONSTER_TRACK;
 		}
 
 		return zone;

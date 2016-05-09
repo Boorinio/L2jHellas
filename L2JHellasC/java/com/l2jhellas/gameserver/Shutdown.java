@@ -583,7 +583,7 @@ public class Shutdown extends Thread
 	 */
 	private static void disconnectAllCharacters()
 	{
-		final Collection<L2PcInstance> pls = L2World.getAllPlayers();
+		final Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
 		for (L2PcInstance player : pls)
 		{
 			if (player == null)

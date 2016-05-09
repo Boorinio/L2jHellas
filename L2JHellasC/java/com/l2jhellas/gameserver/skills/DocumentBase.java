@@ -15,6 +15,8 @@
 package com.l2jhellas.gameserver.skills;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -22,9 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -81,7 +80,7 @@ abstract class DocumentBase
 	DocumentBase(File pFile)
 	{
 		_file = pFile;
-		_tables = new FastMap<String, String[]>();
+		_tables = new HashMap<String, String[]>();
 	}
 
 	Document parse()
@@ -121,7 +120,7 @@ abstract class DocumentBase
 
 	protected void resetTable()
 	{
-		_tables = new FastMap<String, String[]>();
+		_tables = new HashMap<String, String[]>();
 	}
 
 	protected void setTable(String name, String[] table)
@@ -501,7 +500,7 @@ abstract class DocumentBase
 			}
 			else if ("class_id_restriction".equalsIgnoreCase(a.getNodeName()))
 			{
-				FastList<Integer> array = new FastList<Integer>();
+				ArrayList<Integer> array = new ArrayList<Integer>();
 				StringTokenizer st = new StringTokenizer(a.getNodeValue(), ",");
 				while (st.hasMoreTokens())
 				{
@@ -512,7 +511,7 @@ abstract class DocumentBase
 			}
 			else if ("race_id".equalsIgnoreCase(a.getNodeName()))
 			{
-				FastList<Integer> array = new FastList<Integer>();
+				ArrayList<Integer> array = new ArrayList<Integer>();
 				StringTokenizer st = new StringTokenizer(a.getNodeValue(), ",");
 				while (st.hasMoreTokens())
 				{
@@ -649,7 +648,7 @@ abstract class DocumentBase
 		if (name.charAt(0) != '#')
 			_log.log(Level.WARNING, getClass().getName() + ": Table name must start with #");
 		StringTokenizer data = new StringTokenizer(n.getFirstChild().getNodeValue());
-		List<String> array = new FastList<String>();
+		List<String> array = new ArrayList<String>();
 		while (data.hasMoreTokens())
 			array.add(data.nextToken());
 		String[] res = new String[array.size()];

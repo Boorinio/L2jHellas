@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import javolution.util.FastList;
+import java.util.ArrayList;
 
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
@@ -35,7 +35,7 @@ public class TownManager
 		return _instance;
 	}
 
-	private FastList<L2TownZone> _towns;
+	private ArrayList<L2TownZone> _towns;
 
 	public TownManager()
 	{
@@ -44,14 +44,14 @@ public class TownManager
 	public void addTown(L2TownZone arena)
 	{
 		if (_towns == null)
-			_towns = new FastList<L2TownZone>();
+			_towns = new ArrayList<L2TownZone>();
 
 		_towns.add(arena);
 	}
 
 	public final L2TownZone getClosestTown(L2Object activeObject)
 	{
-		switch (MapRegionTable.getInstance().getMapRegion(activeObject.getPosition().getX(), activeObject.getPosition().getY()))
+		switch (MapRegionTable.getMapRegion(activeObject.getPosition().getX(), activeObject.getPosition().getY()))
 		{
 			case 0:
 				return getTown(2); // TI
@@ -116,7 +116,7 @@ public class TownManager
 
 	public final boolean townHasCastleInSiege(int x, int y)
 	{
-		int curtown = (MapRegionTable.getInstance().getMapRegion(x, y));
+		int curtown = (MapRegionTable.getMapRegion(x, y));
 		int[] castleidarray =
 		{
 		0, 0, 0, 0, 0, 1, 0, 2, 3, 4, 5, 0, 0, 6, 8, 7, 9, 0, 0

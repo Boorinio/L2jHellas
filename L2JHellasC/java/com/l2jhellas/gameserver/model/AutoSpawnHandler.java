@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -24,14 +25,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
 import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.sql.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -558,7 +558,7 @@ public class AutoSpawnHandler
 					}
 				}
 
-				String nearestTown = MapRegionTable.getInstance().getClosestTownName(npcInst);
+				String nearestTown = MapRegionTable.getInstance().getClosestTownName(npcInst.getX(),npcInst.getY());
 
 				// Announce to all players that the spawn has taken place, with
 				// the nearest town location.
@@ -671,9 +671,9 @@ public class AutoSpawnHandler
 
 		protected int _lastLocIndex = -1;
 
-		private final List<L2Npc> _npcList = new FastList<L2Npc>();
+		private final List<L2Npc> _npcList = new ArrayList<L2Npc>();
 
-		private final List<Location> _locList = new FastList<Location>();
+		private final List<Location> _locList = new ArrayList<Location>();
 
 		private boolean _spawnActive;
 
@@ -753,7 +753,7 @@ public class AutoSpawnHandler
 
 		public L2Spawn[] getSpawns()
 		{
-			List<L2Spawn> npcSpawns = new FastList<L2Spawn>();
+			List<L2Spawn> npcSpawns = new ArrayList<L2Spawn>();
 
 			for (L2Npc npcInst : _npcList)
 			{

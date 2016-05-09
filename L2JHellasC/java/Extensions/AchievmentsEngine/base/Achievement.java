@@ -14,10 +14,9 @@
  */
 package Extensions.AchievmentsEngine.base;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -30,12 +29,12 @@ public class Achievement
 	private String _description = "No Description!";
 	private final boolean _repeatable;
 
-	private final FastMap<Integer, Long> _rewardList;
-	private final FastList<Condition> _conditions;
+	private final HashMap<Integer, Long> _rewardList;
+	private final ArrayList<Condition> _conditions;
 
-	public Achievement(int id, String name, String description, String reward, boolean repeatable, FastList<Condition> conditions)
+	public Achievement(int id, String name, String description, String reward, boolean repeatable, ArrayList<Condition> conditions)
 	{
-		_rewardList = new FastMap<Integer, Long>();
+		_rewardList = new HashMap<Integer, Long>();
 		_id = id;
 		_name = name;
 		_description = description;
@@ -106,12 +105,12 @@ public class Achievement
 		return _repeatable;
 	}
 
-	public FastMap<Integer, Long> getRewardList()
+	public HashMap<Integer, Long> getRewardList()
 	{
 		return _rewardList;
 	}
 
-	public FastList<Condition> getConditions()
+	public ArrayList<Condition> getConditions()
 	{
 		return _conditions;
 	}

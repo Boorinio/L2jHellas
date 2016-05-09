@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -53,7 +54,8 @@ public final class L2BufferInstance extends L2NpcInstance
 		if (actualCommand.equalsIgnoreCase("getbuff")) {
 			if (buffid != 0) {
 				MagicSkillUse mgc = new MagicSkillUse(this, player, buffid, bufflevel, 5, 0);
-				SkillTable.getInstance().getInfo(buffid, bufflevel).getEffects(this, player);
+				final L2Skill skill = SkillTable.getInstance().getInfo(buffid, bufflevel);
+				skill.getEffects(player, player);
 				showMessageWindow(player);
 				player.broadcastPacket(mgc);
 			}

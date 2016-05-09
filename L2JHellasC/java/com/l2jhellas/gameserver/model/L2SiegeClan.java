@@ -14,16 +14,15 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 
 public class L2SiegeClan
 {
 	private int _clanId = 0;
-	private List<L2Npc> _flag = new FastList<L2Npc>();
+	private List<L2Npc> _flag = new ArrayList<L2Npc>();
 	private int _numFlagsAdded = 0;
 	private SiegeClanType _type;
 
@@ -97,7 +96,7 @@ public class L2SiegeClan
 	public final List<L2Npc> getFlag()
 	{
 		if (_flag == null)
-			_flag = new FastList<L2Npc>();
+			_flag = new ArrayList<L2Npc>();
 		return _flag;
 	}
 

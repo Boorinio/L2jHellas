@@ -832,7 +832,7 @@ public final class L2ItemInstance extends L2Object
 		if (resetConsumingMana)
 			_consumingMana = false;
 
-		L2PcInstance player = ((L2PcInstance) L2World.findObject(getOwnerId()));
+		L2PcInstance player = ((L2PcInstance) L2World.getInstance().findObject(getOwnerId()));
 		if (player != null)
 		{
 			SystemMessage sm;
@@ -895,7 +895,7 @@ public final class L2ItemInstance extends L2Object
 				}
 
 				// delete from world
-				L2World.removeObject(this);
+				L2World.getInstance().removeObject(this);
 			}
 			else
 			{
@@ -1152,15 +1152,18 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public final void dropMe(L2Character dropper, int x, int y, int z)
 	{
+		if(this.getItemType() == L2EtcItemType.HERB)
+			return;
+		
 		if (Config.ASSERT)
 			assert getPosition().getWorldRegion() == null;
-
+	
 		synchronized (this)
 		{
 			// Set the x,y,z position of the L2ItemInstance dropped and update its _worldregion
 			setIsVisible(true);
 			getPosition().setWorldPosition(x, y, z);
-			getPosition().setWorldRegion(L2World.getRegion(getPosition().getWorldPosition()));
+			getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
 
 			// Add the L2ItemInstance dropped to _visibleObjects of its L2WorldRegion
 			getPosition().getWorldRegion().addVisibleObject(this);
@@ -1169,8 +1172,8 @@ public final class L2ItemInstance extends L2Object
 
 		// this can synchronize on others instancies, so it's out of
 		// synchronized, to avoid deadlocks
-		// Add the L2ItemInstance dropped in the world as a visible object
-		L2World.addVisibleObject(this, getPosition().getWorldRegion(), dropper);
+		// Add the L2ItemInstance dropped in the world as a visible objectz
+		L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion());
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance().save(this);
 	}

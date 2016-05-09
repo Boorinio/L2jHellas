@@ -14,11 +14,10 @@
  */
 package com.l2jhellas.gameserver.datatables;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 /**
  * This class has just one simple function to return the item id of a crown
@@ -29,7 +28,7 @@ import javolution.util.FastList;
 public class CrownTable
 {
 	private static Logger _log = Logger.getLogger(CrownTable.class.getName());
-	private static List<Integer> _crownList = new FastList<Integer>();
+	private static List<Integer> _crownList = new ArrayList<Integer>();
 
 	public static List<Integer> getCrownList()
 	{

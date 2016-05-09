@@ -35,8 +35,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastList;
-import javolution.util.FastMap;
 import Extensions.RankSystem.Rank;
 import Extensions.RankSystem.RankTable;
 
@@ -126,7 +124,7 @@ public final class Config
 	public static boolean AUTO_LEARN_SKILLS;
 	public static boolean CHECK_SKILLS_ON_ENTER;
 	public static String ALLOWED_SKILLS;
-	public static FastList<Integer> ALLOWED_SKILLS_LIST = new FastList<Integer>();
+	public static ArrayList<Integer> ALLOWED_SKILLS_LIST = new ArrayList<Integer>();
 	public static boolean LIFE_CRYSTAL_NEEDED;
 	public static boolean SP_BOOK_NEEDED;
 	public static boolean ES_SP_BOOK_NEEDED;
@@ -400,9 +398,9 @@ public final class Config
 	public static int KARMA_LOST_BASE;
 	public static boolean KARMA_DROP_GM;
 	public static String KARMA_NONDROPPABLE_PET_ITEMS;
-	public static List<Integer> KARMA_LIST_NONDROPPABLE_PET_ITEMS = new FastList<Integer>();
+	public static List<Integer> KARMA_LIST_NONDROPPABLE_PET_ITEMS = new ArrayList<Integer>();
 	public static String KARMA_NONDROPPABLE_ITEMS;
-	public static List<Integer> KARMA_LIST_NONDROPPABLE_ITEMS = new FastList<Integer>();
+	public static List<Integer> KARMA_LIST_NONDROPPABLE_ITEMS = new ArrayList<Integer>();
 	public static int KARMA_PK_LIMIT;
 	public static boolean KARMA_AWARD_PK_KILL;
 	public static int PVP_NORMAL_TIME;
@@ -785,7 +783,7 @@ public final class Config
 	public static boolean ALT_OLY_ANNOUNCE_GAMES;
 	public static int OLY_ENCHANT_LIMIT;
 	public static boolean OLY_SAME_IP;
-	public static FastList<Integer> OLY_RESTRICTED_ITEMS_LIST = new FastList<Integer>();
+	public static ArrayList<Integer> OLY_RESTRICTED_ITEMS_LIST = new ArrayList<Integer>();
 	/** new Olympiad  end*/
 
 	/**
@@ -814,7 +812,7 @@ public final class Config
 	public static int AUTODESTROY_ITEM_AFTER;
 	public static int HERB_AUTO_DESTROY_TIME;
 	public static String PROTECTED_ITEMS;
-	public static List<Integer> LIST_PROTECTED_ITEMS = new FastList<Integer>();
+	public static List<Integer> LIST_PROTECTED_ITEMS = new ArrayList<Integer>();
 	public static boolean DESTROY_DROPPED_PLAYER_ITEM;
 	public static boolean DESTROY_EQUIPABLE_PLAYER_ITEM;
 	public static boolean SAVE_DROPPED_ITEM;
@@ -935,7 +933,7 @@ public final class Config
 	public static int MAX_PVTSTORE_SLOTS_OTHER;
 	public static boolean STORE_SKILL_COOLTIME;
 	public static String PET_RENT_NPC;
-	public static List<Integer> LIST_PET_RENT_NPC = new FastList<Integer>();
+	public static List<Integer> LIST_PET_RENT_NPC = new ArrayList<Integer>();
 	public static boolean ANNOUNCE_MAMMON_SPAWN;
 	public static boolean JAIL_IS_PVP;
 	public static boolean JAIL_DISABLE_CHAT;
@@ -1067,6 +1065,12 @@ public final class Config
 	public static int PREMIUM_KARMA_RATE_DROP_EQUIP_WEAPON;
 	
 	// Normal Settings
+	public static double RATE_QUEST_DROP;
+	public static double RATE_QUEST_REWARD;
+	public static double RATE_QUEST_REWARD_XP;
+	public static double RATE_QUEST_REWARD_SP;
+	public static double RATE_QUEST_REWARD_ADENA;
+	
 	public static float RATE_XP;
 	public static float RATE_SP;
 	public static float RATE_PARTY_XP;
@@ -1326,7 +1330,7 @@ public final class Config
 			AUTO_LEARN_SKILLS = Boolean.parseBoolean(altSettings.getProperty("AutoLearnSkills", "False"));
 			CHECK_SKILLS_ON_ENTER = Boolean.parseBoolean(altSettings.getProperty("CheckSkillsOnEnter", "False"));
 			ALLOWED_SKILLS = altSettings.getProperty("AllowedSkills", "541,542,543,544,545,546,547,548,549,550,551,552,553,554,555,556,557,558,617,618,619");
-			ALLOWED_SKILLS_LIST = new FastList<Integer>();
+			ALLOWED_SKILLS_LIST = new ArrayList<Integer>();
 			for (String id : ALLOWED_SKILLS.trim().split(","))
 			{
 				ALLOWED_SKILLS_LIST.add(Integer.parseInt(id.trim()));
@@ -1365,6 +1369,7 @@ public final class Config
 			ALT_PLAYER_PROTECTION = Boolean.parseBoolean(altSettings.getProperty("AltPlayerProtection", "False"));
 			ALT_PLAYER_PROTECTION_LEVEL = Integer.parseInt(altSettings.getProperty("AltPlayerProtectionLevel", "25"));
 			//crafting
+			
 			IS_CRAFTING_ENABLED = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "True"));
 			DWARF_RECIPE_LIMIT = Integer.parseInt(altSettings.getProperty("DwarfRecipeLimit", "50"));
 			COMMON_RECIPE_LIMIT = Integer.parseInt(altSettings.getProperty("CommonRecipeLimit", "50"));
@@ -1709,13 +1714,13 @@ public final class Config
 			KARMA_LOST_BASE = Integer.parseInt(PvPSettings.getProperty("BaseKarmaLost", "0"));
 			KARMA_DROP_GM = Boolean.parseBoolean(PvPSettings.getProperty("CanGMDropEquipment", "False"));
 			KARMA_NONDROPPABLE_PET_ITEMS = PvPSettings.getProperty("ListOfPetItems", "2375,3500,3501,3502,4422,4423,4424,4425,6648,6649,6650");
-			KARMA_LIST_NONDROPPABLE_PET_ITEMS = new FastList<Integer>();
+			KARMA_LIST_NONDROPPABLE_PET_ITEMS = new ArrayList<Integer>();
 			for (String petid : KARMA_NONDROPPABLE_PET_ITEMS.split(","))
 			{
 				KARMA_LIST_NONDROPPABLE_PET_ITEMS.add(Integer.parseInt(petid));
 			}
 			KARMA_NONDROPPABLE_ITEMS = PvPSettings.getProperty("ListOfNonDroppableItems", "57,1147,425,1146,461,10,2368,7,6,2370,2369,6842,6611,6612,6613,6614,6615,6616,6617,6618,6619,6620,6621");
-			KARMA_LIST_NONDROPPABLE_ITEMS = new FastList<Integer>();
+			KARMA_LIST_NONDROPPABLE_ITEMS = new ArrayList<Integer>();
 			for (String petid : KARMA_NONDROPPABLE_ITEMS.split(","))
 			{
 				KARMA_LIST_NONDROPPABLE_ITEMS.add(Integer.parseInt(petid));
@@ -2373,7 +2378,7 @@ public final class Config
 			if (ENABLE_CLAN_SYSTEM)
 			{
 				String AioSkillsSplit[] = L2JHellasSettings.getProperty("ClanSkills", "").split(";");
-				CLAN_SKILLS = new FastMap<Integer, Integer>(AioSkillsSplit.length);
+				CLAN_SKILLS = new HashMap<Integer, Integer>(AioSkillsSplit.length);
 				String arr[] = AioSkillsSplit;
 				int len = arr.length;
 				for (int ii = 0; ii < len; ii++)
@@ -2587,7 +2592,7 @@ public final class Config
 			ALT_OLY_ANNOUNCE_GAMES = Boolean.parseBoolean(OlySettings.getProperty("AltOlyAnnounceGames", "True"));
 			OLY_ENCHANT_LIMIT = Integer.parseInt(OlySettings.getProperty("OlyMaxEnchant", "-1"));
 			OLY_SAME_IP = Boolean.parseBoolean(OlySettings.getProperty("OlySameIp", "True"));
-			OLY_RESTRICTED_ITEMS_LIST = new FastList<Integer>();
+			OLY_RESTRICTED_ITEMS_LIST = new ArrayList<Integer>();
 			for (String olyId : OlySettings.getProperty("OlyRestrictedItems", "0").split(","))
 			{
 				OLY_RESTRICTED_ITEMS_LIST.add(Integer.parseInt(olyId));
@@ -2639,7 +2644,7 @@ public final class Config
 			AUTODESTROY_ITEM_AFTER = Integer.parseInt(optionsSettings.getProperty("AutoDestroyDroppedItemAfter", "0"));
 			HERB_AUTO_DESTROY_TIME = Integer.parseInt(optionsSettings.getProperty("AutoDestroyHerbTime", "15")) * 1000;
 			PROTECTED_ITEMS = optionsSettings.getProperty("ListOfProtectedItems");
-			LIST_PROTECTED_ITEMS = new FastList<Integer>();
+			LIST_PROTECTED_ITEMS = new ArrayList<Integer>();
 			for (String listid : PROTECTED_ITEMS.split(","))
 			{
 				LIST_PROTECTED_ITEMS.add(Integer.parseInt(listid));
@@ -2768,7 +2773,7 @@ public final class Config
 			MAX_PVTSTORE_SLOTS_OTHER = Integer.parseInt(otherSettings.getProperty("MaxPvtStoreSlotsOther", "4"));
 			STORE_SKILL_COOLTIME = Boolean.parseBoolean(otherSettings.getProperty("StoreSkillCooltime", "True"));
 			PET_RENT_NPC = otherSettings.getProperty("ListPetRentNpc", "30827");
-			LIST_PET_RENT_NPC = new FastList<Integer>();
+			LIST_PET_RENT_NPC = new ArrayList<Integer>();
 			for (String listid : PET_RENT_NPC.split(","))
 			{
 				LIST_PET_RENT_NPC.add(Integer.parseInt(listid));
@@ -3019,6 +3024,12 @@ public final class Config
 			PREMIUM_KARMA_RATE_DROP_EQUIP = Integer.parseInt(ratesSettings.getProperty("PremiumKarmaRateDropEquip", "20"));
 			PREMIUM_KARMA_RATE_DROP_EQUIP_WEAPON = Integer.parseInt(ratesSettings.getProperty("PremiumKarmaRateDropEquipWeapon", "5"));
 			
+			RATE_QUEST_DROP = Float.parseFloat(ratesSettings.getProperty("RateQuestDrop", "1"));
+			RATE_QUEST_REWARD = Float.parseFloat(ratesSettings.getProperty("RateQuestReward", "1"));
+			RATE_QUEST_REWARD_XP = Float.parseFloat(ratesSettings.getProperty("RateQuestRewardXP", "1"));
+			RATE_QUEST_REWARD_SP = Float.parseFloat(ratesSettings.getProperty("RateQuestRewardSP", "1"));
+			RATE_QUEST_REWARD_ADENA = Float.parseFloat(ratesSettings.getProperty("RateQuestRewardAdena", "1"));
+		
 			RATE_XP = Float.parseFloat(ratesSettings.getProperty("RateXp", "1"));
 			RATE_SP = Float.parseFloat(ratesSettings.getProperty("RateSp", "1"));
 			RATE_PARTY_XP = Float.parseFloat(ratesSettings.getProperty("RatePartyXp", "1"));
@@ -3076,12 +3087,12 @@ public final class Config
 			String[] propertySplitBlessedWeapon = ratesSettings.getProperty("BlessedEnchantChanceWeaponList", "").split(";");
 			String[] propertySplitBlessedArmor = ratesSettings.getProperty("BlessedEnchantChanceArmorList", "").split(";");
 			String[] propertySplitBlessedJewelry = ratesSettings.getProperty("BlessedEnchantChanceJewelryList", "").split(";");
-			ENCHANT_CHANCE_WEAPON_LIST = new FastMap<Integer, Integer>(propertySplitWeapon.length);
-			ENCHANT_CHANCE_ARMOR_LIST = new FastMap<Integer, Integer>(propertySplitArmor.length);
-			ENCHANT_CHANCE_JEWELRY_LIST = new FastMap<Integer, Integer>(propertySplitJewelry.length);
-			BLESSED_ENCHANT_CHANCE_WEAPON_LIST = new FastMap<Integer, Integer>(propertySplitBlessedWeapon.length);
-			BLESSED_ENCHANT_CHANCE_ARMOR_LIST = new FastMap<Integer, Integer>(propertySplitBlessedArmor.length);
-			BLESSED_ENCHANT_CHANCE_JEWELRY_LIST = new FastMap<Integer, Integer>(propertySplitBlessedJewelry.length);
+			ENCHANT_CHANCE_WEAPON_LIST = new HashMap<Integer, Integer>(propertySplitWeapon.length);
+			ENCHANT_CHANCE_ARMOR_LIST = new HashMap<Integer, Integer>(propertySplitArmor.length);
+			ENCHANT_CHANCE_JEWELRY_LIST = new HashMap<Integer, Integer>(propertySplitJewelry.length);
+			BLESSED_ENCHANT_CHANCE_WEAPON_LIST = new HashMap<Integer, Integer>(propertySplitBlessedWeapon.length);
+			BLESSED_ENCHANT_CHANCE_ARMOR_LIST = new HashMap<Integer, Integer>(propertySplitBlessedArmor.length);
+			BLESSED_ENCHANT_CHANCE_JEWELRY_LIST = new HashMap<Integer, Integer>(propertySplitBlessedJewelry.length);
 			if (propertySplitWeapon.length > 1)
 			{
 				for (String enchant : propertySplitWeapon)

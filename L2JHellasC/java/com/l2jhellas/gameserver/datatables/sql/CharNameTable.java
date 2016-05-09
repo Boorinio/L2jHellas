@@ -18,13 +18,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -39,8 +38,8 @@ public class CharNameTable
 
 	private CharNameTable()
 	{
-		_chars = new FastMap<Integer, String>();
-		_accessLevels = new FastMap<Integer, Integer>();
+		_chars = new HashMap<>();
+		_accessLevels = new HashMap<>();
 	}
 
 	public static CharNameTable getInstance()

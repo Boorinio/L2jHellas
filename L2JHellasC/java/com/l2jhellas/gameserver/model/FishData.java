@@ -14,6 +14,9 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import com.l2jhellas.gameserver.controllers.GameTimeController;
+
+
 public class FishData
 {
 	private final int _id;
@@ -97,6 +100,14 @@ public class FishData
 		return _type;
 	}
 
+	public int getType(boolean isLureNight)
+	{
+		if (!GameTimeController.getInstance().isNowNight() && isLureNight)
+			return -1;
+		
+		return _type;
+	}
+	
 	public int getGroup()
 	{
 		return _group;

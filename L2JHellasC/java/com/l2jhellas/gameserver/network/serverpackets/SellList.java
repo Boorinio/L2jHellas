@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -31,7 +30,7 @@ public class SellList extends L2GameServerPacket
 	private final L2PcInstance _activeChar;
 	private final L2MerchantInstance _lease;
 	private final int _money;
-	private final List<L2ItemInstance> _selllist = new FastList<L2ItemInstance>();
+	private final List<L2ItemInstance> _selllist = new ArrayList<L2ItemInstance>();
 
 	public SellList(L2PcInstance player)
 	{
