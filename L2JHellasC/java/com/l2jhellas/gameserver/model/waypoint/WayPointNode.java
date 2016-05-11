@@ -14,12 +14,13 @@
  */
 package com.l2jhellas.gameserver.model.waypoint;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import javolution.util.FastList;
+
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -184,7 +185,7 @@ public class WayPointNode extends L2Object
 
 		int steps = distance / 40;
 
-		List<WayPointNode> lineNodes = new FastList<WayPointNode>();
+		List<WayPointNode> lineNodes = new ArrayList<WayPointNode>();
 
 		for (int i = 0; i < steps; i++)
 		{
@@ -245,7 +246,7 @@ public class WayPointNode extends L2Object
 
 	public List<WayPointNode> getLineNodes()
 	{
-		List<WayPointNode> list = new FastList<WayPointNode>();
+		List<WayPointNode> list = new ArrayList<WayPointNode>();
 
 		for (List<WayPointNode> points : _linkLists.values())
 		{

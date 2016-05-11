@@ -159,18 +159,6 @@ public class ScrollOfEscape implements IItemHandler
 
 			_activeChar.setIsIn7sDungeon(false);
 
-			// l2jhellas Faction GvE (enable_faction_base may be true) - Check
-			// to see if player is good or evil and redirect to his village
-			// principal
-			if (Config.MOD_GVE_ENABLE_FACTION)
-			{
-				if (_activeChar.isgood())
-					_activeChar.teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ, true); // good Base
-
-				if (_activeChar.isevil())
-					_activeChar.teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ, true); // evil Base
-			}
-
 			try
 			{
 				if ((_itemId == 1830 || _itemId == 5859) && CastleManager.getInstance().getCastleByOwner(_activeChar.getClan()) != null) // escape to castle if own's one

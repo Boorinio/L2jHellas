@@ -742,6 +742,8 @@ public class Duel
 				broadcastToTeam1(sm);
 				broadcastToTeam2(sm);
 				break;
+			default:
+				break;
 		}
 		
 		// Send end duel packet

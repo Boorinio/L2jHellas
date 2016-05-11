@@ -118,20 +118,7 @@ public class WeddingCmd implements IVoicedCommandHandler
 		{
 			activeChar.sendMessage("You can only ask another player to engage you.");
 			return false;
-		}
-		
-		if (activeChar.isgood() && ((L2PcInstance) activeChar.getTarget()).isevil())
-		{
-			activeChar.sendMessage("You Can't Marry if You Are Not In The Same Faction.");
-			return false;
-		}
-		
-		if (activeChar.isevil() && ((L2PcInstance) activeChar.getTarget()).isgood())
-		{
-			activeChar.sendMessage("You Can't Marry if You Are Not In The Same Faction.");
-			return false;
-		}
-		
+		}	
 		// check if player is already engaged
 		if (activeChar.getPartnerId() != 0)
 		{

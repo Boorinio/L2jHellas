@@ -86,8 +86,6 @@ CREATE TABLE `characters` (
   `chatban_timer` decimal(20,0) DEFAULT '0',
   `chatban_reason` varchar(255) NOT NULL DEFAULT '',
   `chat_filter_count` int(1) DEFAULT '0',
-  `good` int(1) DEFAULT '0',
-  `evil` int(1) DEFAULT '0',
   `hitman_target` int(16) NOT NULL DEFAULT '0',
   `email` varchar(100) DEFAULT NULL,
   `emailcode` int(10) unsigned DEFAULT '0',

@@ -74,24 +74,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 		{
 			requestor.sendPacket(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET);
 			return;
-		}
-
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
-		// Good and Evil can't join same party
-		if (target.isevil() && requestor.isgood())
-		{
-			requestor.sendPacket(SystemMessageId.INCORRECT_TARGET);
-			return;
-		}
-
-		if (target.isgood() && requestor.isevil())
-		{
-			requestor.sendPacket(SystemMessageId.INCORRECT_TARGET);
-			return;
-		}
-		}
-		
+		}		
 		if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE) && !requestor.isGM()))
 		{
 			if ((target._inEventTvT && !requestor._inEventTvT) || (!target._inEventTvT && requestor._inEventTvT))

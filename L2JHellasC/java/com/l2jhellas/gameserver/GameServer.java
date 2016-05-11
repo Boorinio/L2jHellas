@@ -30,7 +30,6 @@ import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
 import Extensions.RankSystem.RankLoader;
-import Extensions.Vote.VoteManager;
 import Extensions.Vote.VoteRewardHopzone;
 import Extensions.Vote.VoteRewardTopzone;
 
@@ -110,7 +109,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.engines.EventHandlerCtf;
 import com.l2jhellas.gameserver.model.entity.engines.EventHandlerTvT;
-import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
@@ -126,7 +124,6 @@ import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
 import com.l2jhellas.shield.antibot.AntiAfk;
 import com.l2jhellas.shield.antibot.AntiBot;
-import com.l2jhellas.status.Status;
 import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -142,7 +139,6 @@ public class GameServer
 	public static boolean _instanceOk = false;
 	public static GameServer gameServer;
 	private final LoginServerThread _loginThread;
-	private static Status _statusServer;
 	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
 	public Gui gui;
 
@@ -314,12 +310,9 @@ public class GameServer
 
 
 		Util.printSection("Customs");
-
 		AchievementsManager.getInstance();
 		PcColorTable.getInstance();
 		PolymporphTable.getInstance();
-		Hitman.start();
-		VoteManager.load();
 		if (Config.ALLOW_TOPZONE_VOTE_REWARD)
 			VoteRewardTopzone.LoadTopZone();
 		if (Config.ALLOW_HOPZONE_VOTE_REWARD)
@@ -419,16 +412,6 @@ public class GameServer
 		long serverLoadEnd = System.currentTimeMillis();
 		_log.log(Level.INFO, getClass().getSimpleName() + ": Server Started in: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
 
-		Util.printSection("Telnet");
-		if (Config.IS_TELNET_ENABLED)
-		{
-			_statusServer = new Status(Server.serverMode);
-			_statusServer.start();
-		}
-		else
-		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Telnet is disabled by config.");
-		}
 		Toolkit.getDefaultToolkit().beep();
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();

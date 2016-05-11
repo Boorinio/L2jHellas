@@ -58,19 +58,6 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			return;
 		}
-		// Faction Good vs Evil
-		if (targetPlayer.isevil() && activeChar.isgood())
-		{
-			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
-			return;
-		}
-
-		if (targetPlayer.isgood() && activeChar.isevil())
-		{
-			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
-			return;
-		}
-
 		if (Config.LOG_CHAT)
 		{
 			LogRecord record = new LogRecord(Level.INFO, _message);

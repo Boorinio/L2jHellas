@@ -35,7 +35,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.Server;
 import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
-import com.l2jhellas.status.Status;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 import com.l2jhellas.util.ip.IPConfigData;
@@ -54,7 +53,6 @@ public class LoginServer
 
 	private GameServerListener _gameServerListener;
 	private SelectorThread<L2LoginClient> _selectorThread;
-	private Status _statusServer;
 	private Thread _restartLoginServer;
 
 	public static void main(String[] args)
@@ -223,27 +221,6 @@ public class LoginServer
 			System.exit(1);
 		}
 
-		if (Config.IS_TELNET_ENABLED)
-		{
-			try
-			{
-				_statusServer = new Status(Server.serverMode);
-				_statusServer.start();
-			}
-			catch (IOException e)
-			{
-				_log.log(Level.WARNING, getClass().getName() + " Failed to start the Telnet Server. Reason: " + e);
-				if (Config.DEVELOPER)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		else
-		{
-			System.out.println("Telnet server is currently disabled.");
-		}
-
 		try
 		{
 			_selectorThread.openServerSocket(bindAddress, Config.PORT_LOGIN);
@@ -259,11 +236,6 @@ public class LoginServer
 		}
 		_selectorThread.start();
 		_log.log(Level.INFO, getClass().getSimpleName() + " Login Server ready on " + (bindAddress == null ? "*" : bindAddress.getHostAddress()) + ":" + Config.PORT_LOGIN);
-	}
-
-	public Status getStatusServer()
-	{
-		return _statusServer;
 	}
 
 	public GameServerListener getGameServerListener()

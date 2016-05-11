@@ -143,17 +143,6 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 			return;
 		}
 
-		// Faction Good vs Evil
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
-			if ((storePlayer.isevil() && player.isgood()) || (storePlayer.isgood() && player.isevil()))
-			{
-				player.sendPacket(ActionFailed.STATIC_PACKET);
-				player.sendMessage("You cant sell on enemy Faction.");
-				return;
-			}
-		}
-
 		if (!storeList.PrivateStoreSell(player, _items, _price))
 		{
 			 player.sendPacket(ActionFailed.STATIC_PACKET);

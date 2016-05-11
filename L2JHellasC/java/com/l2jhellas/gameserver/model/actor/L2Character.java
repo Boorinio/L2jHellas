@@ -642,22 +642,6 @@ public abstract class L2Character extends L2Object
 					((L2Summon) this).getOwner().sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return;
 				}
-				if (Config.MOD_GVE_ENABLE_FACTION && (target instanceof L2PcInstance || target instanceof L2PetInstance || target instanceof L2Summon))
-				{
-					if (isInsidePeaceZone(this, target))
-					{
-						return;
-					}
-					
-					if (((L2Summon) this).getOwner().isgood() && target.getActingPlayer().isgood())
-					{
-						return;
-					}
-					else if (((L2Summon) this).getOwner().isevil() && target.getActingPlayer().isgood())
-					{
-						return;
-					}
-				}
 			}
 		}
 		if (isAttackingDisabled())
@@ -700,18 +684,6 @@ public abstract class L2Character extends L2Object
 				if (((L2PcInstance) this).isCursedWeaponEquiped() && ((L2PcInstance) target).getLevel() <= 20)
 				{
 					((L2PcInstance) this).sendMessage("Can't attack a newbie player using a cursed weapon.");
-					sendPacket(ActionFailed.STATIC_PACKET);
-					return;
-				}
-				if (((L2PcInstance) this).isgood() && ((L2PcInstance) target).isgood() && Config.MOD_GVE_ENABLE_FACTION)
-				{
-					((L2PcInstance) this).sendMessage("Cant attack a player from your faction");
-					sendPacket(ActionFailed.STATIC_PACKET);
-					return;
-				}
-				if (((L2PcInstance) this).isevil() && ((L2PcInstance) target).isevil() && Config.MOD_GVE_ENABLE_FACTION)
-				{
-					((L2PcInstance) this).sendMessage("Cant attack a player from your faction");
 					sendPacket(ActionFailed.STATIC_PACKET);
 					return;
 				}
@@ -1302,34 +1274,6 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 		
-		if (Config.MOD_GVE_ENABLE_FACTION && this instanceof L2PcInstance && this.getTarget() instanceof L2PcInstance && this != null && this.getTarget() != null)
-		{
-			L2PcInstance caster = (this instanceof L2PcInstance) ? (L2PcInstance) this : ((L2Summon) this).getOwner();
-			if (skill.isOffensive() && caster.getTarget() != null && skill.getTargetType() != L2SkillTargetType.TARGET_AURA)
-			{
-				if (!checkGvEtarget(getTarget(), true))
-				{
-					caster.sendMessage("Cant attack player from your faction!");
-					sendPacket(ActionFailed.STATIC_PACKET);
-					return;
-				}
-			}
-			if ((skill.getSkillType() == L2SkillType.HEAL || skill.getSkillType() == L2SkillType.BUFF || skill.getSkillType() == L2SkillType.COMBATPOINTHEAL || skill.getSkillType() == L2SkillType.MANAHEAL || skill.getSkillType() == L2SkillType.REFLECT || skill.getSkillType() == L2SkillType.SEED || skill.getSkillType() == L2SkillType.NEGATE || skill.getSkillType() == L2SkillType.HEAL_PERCENT || skill.getSkillType() == L2SkillType.UNPOISON || skill.getSkillType() == L2SkillType.UNBLEED || skill.getTargetType() == L2SkillTargetType.TARGET_SELF || skill.getTargetType() == L2SkillTargetType.TARGET_PET || skill.getTargetType() == L2SkillTargetType.TARGET_PARTY || skill.getTargetType() == L2SkillTargetType.TARGET_CLAN || skill.getTargetType() == L2SkillTargetType.TARGET_ALLY) &&
-			
-			!skill.isPotion())
-			{
-				if (caster.getTarget() != null)
-				{
-					if (!checkGvEtarget(getTarget(), false))
-					{
-						caster.sendMessage("Can't help other faction player!");
-						sendPacket(ActionFailed.STATIC_PACKET);
-						return;
-					}
-				}
-			}
-		}
-		
 		// Can't use Hero and resurrect skills during Olympiad
 		if (this instanceof L2PcInstance && ((L2PcInstance) this).isInOlympiadMode() && (skill.isHeroSkill() || skill.getSkillType() == L2SkillType.RESURRECT))
 		{
@@ -1761,18 +1705,6 @@ public abstract class L2Character extends L2Object
 		{
 			setIsPendingRevive(false);
 			setIsKilledAlready(false);
-			
-			if (Config.MOD_GVE_ENABLE_FACTION && this.isDead())
-			{
-				if ((this instanceof L2PcInstance) && (((L2PcInstance) this).isgood()))
-				{
-					teleToLocation(Config.GOODX, Config.GOODY, Config.GOODZ);
-				}
-				if ((this instanceof L2PcInstance) && (((L2PcInstance) this).isevil()))
-				{
-					teleToLocation(Config.EVILX, Config.EVILY, Config.EVILZ);
-				}
-			}
 			
 			if (this instanceof L2Playable && ((L2Playable) this).isPhoenixBlessed())
 			{
@@ -5389,11 +5321,6 @@ public abstract class L2Character extends L2Object
 	 */
 	public boolean isInsidePeaceZone(L2PcInstance attacker)
 	{
-		if (Config.MOD_GVE_ENABLE_FACTION)
-			if (this instanceof L2PcInstance)
-				if (((L2PcInstance) this).isgood() && attacker.isevil() || ((L2PcInstance) this).isevil() && attacker.isgood())
-					return false;
-		
 		return isInsidePeaceZone(attacker, this);
 	}
 	
@@ -6980,35 +6907,6 @@ public abstract class L2Character extends L2Object
 	public ForceBuff getForceBuff()
 	{
 		return null;
-	}
-	
-	public boolean checkGvEtarget(L2Object target, boolean check)
-	{
-		L2PcInstance caster = (this instanceof L2PcInstance) ? (L2PcInstance) this : ((L2Summon) this).getOwner();
-		
-		if (check)
-		{
-			if (caster.isgood() && target instanceof L2PcInstance && ((L2PcInstance) target).isgood())
-				return false;
-			if (caster.isgood() && target instanceof L2Summon && ((L2Summon) target).getOwner().isgood())
-				return false;
-			if (caster.isevil() && target instanceof L2PcInstance && ((L2PcInstance) target).isevil())
-				return false;
-			if (caster.isevil() && target instanceof L2Summon && ((L2Summon) target).getOwner().isevil())
-				return false;
-		}
-		if (!check)
-		{
-			if (caster.isgood() && target instanceof L2PcInstance && ((L2PcInstance) target).isevil())
-				return false;
-			if (caster.isgood() && target instanceof L2Summon && ((L2Summon) target).getOwner().isevil())
-				return false;
-			if (caster.isevil() && target instanceof L2PcInstance && ((L2PcInstance) target).isgood())
-				return false;
-			if (caster.isevil() && target instanceof L2Summon && ((L2Summon) target).getOwner().isgood())
-				return false;
-		}
-		return true;
 	}
 	
 	public void disableCoreAI(boolean val)

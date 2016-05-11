@@ -28,13 +28,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.io.UTF8StreamReader;
-import javolution.util.FastMap;
 import javolution.xml.stream.XMLStreamConstants;
 import javolution.xml.stream.XMLStreamException;
 import javolution.xml.stream.XMLStreamReaderImpl;
@@ -57,10 +58,10 @@ public class GameServerTable
 	private static GameServerTable _instance;
 
 	// Server Names Config
-	private static Map<Integer, String> _serverNames = new FastMap<Integer, String>();
+	private static Map<Integer, String> _serverNames = new HashMap<Integer, String>();
 
 	// Game Server Table
-	private final Map<Integer, GameServerInfo> _gameServerTable = new FastMap<Integer, GameServerInfo>().setShared(true);
+	private final Map<Integer, GameServerInfo> _gameServerTable = new ConcurrentHashMap<Integer, GameServerInfo>();
 
 	// RSA Config
 	private static final int KEYS_SIZE = 10;

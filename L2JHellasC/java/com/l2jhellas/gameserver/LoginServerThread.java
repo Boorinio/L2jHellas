@@ -29,10 +29,10 @@ import java.security.spec.RSAPublicKeySpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
@@ -121,7 +121,7 @@ public class LoginServerThread extends Thread
 		_gameExternalHost = Config.EXTERNAL_HOSTNAME;
 		_gameInternalHost = Config.INTERNAL_HOSTNAME;
 		_waitingClients = new ArrayList<WaitingClient>();
-		_accountsInGameServer = new FastMap<String, L2GameClient>().setShared(true);
+		_accountsInGameServer = new ConcurrentHashMap<>();
 		_maxPlayer = Config.MAXIMUM_ONLINE_USERS;
 	}
 

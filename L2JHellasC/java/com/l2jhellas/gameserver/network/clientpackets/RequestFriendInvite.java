@@ -20,7 +20,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -58,23 +57,6 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		{
 			// Target is not found in the game.
 			sm = SystemMessage.getSystemMessage(SystemMessageId.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
-			activeChar.sendPacket(sm);
-			sm = null;
-			return;
-		}
-		// Faction Good vs Evil
-		else if (friend.isevil() && activeChar.isgood() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			// Target is wrong.
-			sm = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
-			activeChar.sendPacket(sm);
-			sm = null;
-			return;
-		}
-		else if (friend.isgood() && activeChar.isevil() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			// Target is wrong.
-			sm = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT);
 			activeChar.sendPacket(sm);
 			sm = null;
 			return;

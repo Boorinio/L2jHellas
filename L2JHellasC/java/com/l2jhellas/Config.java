@@ -80,7 +80,6 @@ public final class Config
 	private static final String EVENT_DM_CONFIG_FILE = "./config/Events/DM.ini";
 	private static final String EVENT_CTF_CONFIG_FILE = "./config/Events/CTF.ini";
 	private static final String EVENT_RAID_CONFIG_FILE = "./config/Events/Raid.ini";
-	private static final String EVENT_QUIZ_CONFIG_FILE = "./config/Events/Quiz.ini";
 	private static final String EVENT_WEDDING_CONFIG_FILE = "./config/Events/Wedding.ini";
 	// Mods Folder
 	private static final String MOD_CHAMPIONS_CONFIG_FILE = "./config/Mods/Champions.ini";
@@ -98,7 +97,6 @@ public final class Config
 	private static final String SERVER_VERSION_FILE = "./config/Version/L2J Hellas Version.ini";
 	// Network Folder
 	private static final String CONFIGURATION_FILE = "./config/Network/GameServer.ini";
-	private static final String MMOCORE_CONFIG_FILE = "./config/Network/mmocore.ini";
 	private static final String HEXID_FILE = "./config/Network/HexId/hexid.txt";
 	private static final String GS_IP = "./config/Network/IPConfig/IPGameServer.ini";
 	// Telnet
@@ -420,10 +418,6 @@ public final class Config
 	public static int BANKINGALTERNATE_SYSTEM_GOLDBARS;
 	public static int BANKINGALTERNATE_SYSTEM_ADENA;
 
-	public static boolean OFFLINE_TRADE_ENABLE;
-	public static boolean OFFLINE_CRAFT_ENABLE;
-	public static boolean OFFLINE_SET_NAME_COLOR;
-	public static int OFFLINE_NAME_COLOR;
 	public static boolean ANNOUNCE_HERO_LOGIN;
 	public static boolean ANNOUNCE_CASTLE_LORDS;
 	public static boolean CHAR_TITLE;
@@ -480,31 +474,9 @@ public final class Config
 	public static String CHAT_FILTER_PUNISHMENT;
 	public static boolean ENABLE_SAY_SOCIAL_ACTIONS;
 	public static ArrayList<String> FILTER_LIST = new ArrayList<String>();
-	public static boolean MOD_GVE_ENABLE_FACTION;
-	public static int PRIMAR_X;
-	public static int PRIMAR_Y;
-	public static int PRIMAR_Z;
-	public static int GOODX;
-	public static int GOODY;
-	public static int GOODZ;
-	public static int EVILX;
-	public static int EVILY;
-	public static int EVILZ;
-	public static String MOD_GVE_NAME_TEAM_GOOD;
-	public static String MOD_GVE_NAME_TEAM_EVIL;
-	public static int MOD_GVE_COLOR_NAME_GOOD;
-	public static int MOD_GVE_COLOR_NAME_EVIL;
-	public static boolean MOD_GVE_GET_ADENA_BY_PVP;
-	public static int MOD_GVE_AMMOUNT_ADENA_BY_PVP;
-	public static boolean MOD_GVE_ACTIVE_ANIM_SS;
+
+
 	public static boolean ALLOW_CHAR_KILL_PROTECT;
-	public static boolean ALLOW_AWAY_STATUS;
-	public static boolean AWAY_PEACE_ZONE;
-	public static boolean AWAY_ALLOW_INTERFERENCE;
-	public static boolean AWAY_PLAYER_TAKE_AGGRO;
-	public static int AWAY_TITLE_COLOR;
-	public static int AWAY_TIMER;
-	public static int BACK_TIMER;
 	public static int DUEL_COORD_X;
 	public static int DUEL_COORD_Y;
 	public static int DUEL_COORD_Z;
@@ -1022,12 +994,7 @@ public final class Config
 	public static boolean RAID_SYSTEM_GIVE_BUFFS;
 	public static boolean RAID_SYSTEM_RESURRECT_PLAYER;
 	public static int RAID_SYSTEM_FIGHT_TIME;
-	// Quiz Settings
-	public static boolean ENABLED_QUIZ_EVENT;
-	public static int QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN;
-	public static int QUIZ_MINUTES_TO_ANSWER;
-	public static int QUIZ_REWARD_ID;
-	public static int QUIZ_REWARD_QUANTITY;
+
 	// Wedding Settings
 	public static boolean MOD_ALLOW_WEDDING;
 	public static int MOD_WEDDING_PRICE;
@@ -1244,19 +1211,14 @@ public final class Config
 	public static boolean RESERVE_HOST_ON_LOGIN = false;
 
 	/**
-	 * Telnet Config File
-	 */
-	public static boolean IS_TELNET_ENABLED;
-
-	/**
 	 * MMocore Config File
 	 */
-	public static int MMO_SELECTOR_SLEEP_TIME;
-	public static int MMO_MAX_SEND_PER_PASS;
-	public static int MMO_MAX_READ_PER_PASS;
-	public static int MMO_HELPER_BUFFER_COUNT;
-	public static int MMO_IO_SELECTOR_THREAD_COUNT;
-
+	public static int MMO_SELECTOR_SLEEP_TIME = 20; // default 20
+	public static int MMO_MAX_SEND_PER_PASS = 12; // default 12
+	public static int MMO_MAX_READ_PER_PASS = 12; // default 12
+	public static int MMO_HELPER_BUFFER_COUNT = 20; // default 20
+	public static int MMO_IO_SELECTOR_THREAD_COUNT = 2;
+	
 	/**
 	 * AntiFlood Config File
 	 */
@@ -1750,10 +1712,6 @@ public final class Config
 			BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JHellasSettings.getProperty("BankingGoldbarCount", "1"));
 			BANKING_SYSTEM_ADENA = Integer.parseInt(L2JHellasSettings.getProperty("BankingAdenaCount", "500000000"));
 			BANKING_SYSTEM_ITEM = Integer.parseInt(L2JHellasSettings.getProperty("BankingItemId", "3470"));
-			OFFLINE_TRADE_ENABLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("OfflineTradeEnable", "false"));
-			OFFLINE_CRAFT_ENABLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("OfflineCraftEnable", "false"));
-			OFFLINE_SET_NAME_COLOR = Boolean.parseBoolean(L2JHellasSettings.getProperty("OfflineSetNameColor", "false"));
-			OFFLINE_NAME_COLOR = Integer.decode("0x" + L2JHellasSettings.getProperty("OfflineNameColor", "808080"));
 			ANNOUNCE_HERO_LOGIN = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnounceHeroLogin", "False"));
 			ANNOUNCE_CASTLE_LORDS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AnnounceCastleLords", "false"));
 			CHAR_TITLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("CharTitle", "False"));
@@ -1812,31 +1770,7 @@ public final class Config
 			CHAT_FILTER_PUNISHMENT_PARAM1 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam1", "1"));
 			CHAT_FILTER_PUNISHMENT_PARAM2 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam2", "1"));
 			ENABLE_SAY_SOCIAL_ACTIONS = Boolean.valueOf(L2JHellasSettings.getProperty("SocialActions", "False"));
-			MOD_GVE_ENABLE_FACTION = Boolean.valueOf(L2JHellasSettings.getProperty("EnableFaction", "False"));
-			PRIMAR_X = Integer.parseInt(L2JHellasSettings.getProperty("PrimarBaseX", "139990"));
-			PRIMAR_Y = Integer.parseInt(L2JHellasSettings.getProperty("PrimarBaseY", "-124423"));
-			PRIMAR_Z = Integer.parseInt(L2JHellasSettings.getProperty("PrimarBaseZ", "-1903"));
-			GOODX = Integer.parseInt(L2JHellasSettings.getProperty("GoodBaseX", "-84318"));
-			GOODY = Integer.parseInt(L2JHellasSettings.getProperty("GoodBaseY", "244579"));
-			GOODZ = Integer.parseInt(L2JHellasSettings.getProperty("GoodBaseZ", "-3730"));
-			EVILX = Integer.parseInt(L2JHellasSettings.getProperty("EvilBaseX", "-44836"));
-			EVILY = Integer.parseInt(L2JHellasSettings.getProperty("EvilBaseY", "-112524"));
-			EVILZ = Integer.parseInt(L2JHellasSettings.getProperty("EvilBaseZ", "-235"));
-			MOD_GVE_NAME_TEAM_GOOD = L2JHellasSettings.getProperty("NameTeamGood", "Angels");
-			MOD_GVE_NAME_TEAM_EVIL = L2JHellasSettings.getProperty("NameTeamEvil", "Demons");
-			MOD_GVE_COLOR_NAME_GOOD = Integer.decode("0x" + L2JHellasSettings.getProperty("ColorNameGood", "00FF00"));
-			MOD_GVE_COLOR_NAME_EVIL = Integer.decode("0x" + L2JHellasSettings.getProperty("ColorNameEvil", "FF0000"));
-			MOD_GVE_GET_ADENA_BY_PVP = Boolean.parseBoolean(L2JHellasSettings.getProperty("PlayerGetAdenaByPvP", "False"));
-			MOD_GVE_AMMOUNT_ADENA_BY_PVP = Integer.parseInt(L2JHellasSettings.getProperty("AmmountAdenaGetByPvP", "1"));
-			MOD_GVE_ACTIVE_ANIM_SS = Boolean.parseBoolean(L2JHellasSettings.getProperty("ActiveAnimeSS", "False"));
 			ALLOW_CHAR_KILL_PROTECT = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowLowLvlProtect", "False"));
-			ALLOW_AWAY_STATUS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowAwayStatus", "False"));
-			AWAY_PEACE_ZONE = Boolean.parseBoolean(L2JHellasSettings.getProperty("AwayOnlyInPeaceZone", "False"));
-			AWAY_ALLOW_INTERFERENCE = Boolean.parseBoolean(L2JHellasSettings.getProperty("AwayAllowInterference", "False"));
-			AWAY_PLAYER_TAKE_AGGRO = Boolean.parseBoolean(L2JHellasSettings.getProperty("AwayPlayerTakeAggro", "False"));
-			AWAY_TITLE_COLOR = Integer.decode("0x" + L2JHellasSettings.getProperty("AwayTitleColor", "0000FF"));
-			AWAY_TIMER = Integer.parseInt(L2JHellasSettings.getProperty("AwayTimer", "30"));
-			BACK_TIMER = Integer.parseInt(L2JHellasSettings.getProperty("BackTimer", "30"));
 			DUEL_COORD_X = Integer.parseInt(L2JHellasSettings.getProperty("DuelCoordinateX", "149319"));
 			DUEL_COORD_Y = Integer.parseInt(L2JHellasSettings.getProperty("DuelCoordinateY", "46710"));
 			DUEL_COORD_Z = Integer.parseInt(L2JHellasSettings.getProperty("DuelCoordinateZ", "-3413"));
@@ -2805,9 +2739,9 @@ public final class Config
 			{
 				_log.log(Level.SEVERE, "Error while loading " + EVENT_ZODIAC_CONFIG_FILE + " settings!", e);
 			}
-			ZODIAC_ENABLE = Boolean.parseBoolean(EventZodiacSettings.getProperty("Zodiace", "true"));
+			ZODIAC_ENABLE = Boolean.parseBoolean(EventZodiacSettings.getProperty("Zodiac", "true"));
 			ZODIAC_REWARD = Integer.parseInt(EventZodiacSettings.getProperty("ZodiadReward", "3470"));
-			ZODIAC_REWARD_COUN = Integer.parseInt(EventZodiacSettings.getProperty("ZodiadRewardc", "1"));
+			ZODIAC_REWARD_COUN = Integer.parseInt(EventZodiacSettings.getProperty("ZodiacdRewardc", "1"));
 			ZODIAC_VOTE_MINUTES = Integer.parseInt(EventZodiacSettings.getProperty("VotingMin", "5"));
 			SAME_IP_ZODIAC = Boolean.parseBoolean(EventZodiacSettings.getProperty("SameIpProtection", "true"));
 			INITIAL_START = Integer.parseInt(EventZodiacSettings.getProperty("MinutesInitial", "10"));
@@ -2947,25 +2881,6 @@ public final class Config
 			RAID_SYSTEM_RESURRECT_PLAYER = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidResurrectPlayer", "true"));
 			RAID_SYSTEM_MAX_EVENTS = Integer.parseInt(EventRAIDSettings.getProperty("RaidMaxNumEvents", "3"));
 			RAID_SYSTEM_FIGHT_TIME = Integer.parseInt(EventRAIDSettings.getProperty("RaidSystemFightTime", "60"));
-			/**
-			 * Event QUIZ
-			 */
-			Properties EventQUIZSettings = new Properties();
-			final File eventQUIZ = new File(EVENT_QUIZ_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventQUIZ))
-			{
-				EventQUIZSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_QUIZ_CONFIG_FILE + " settings!", e);
-			}
-			ENABLED_QUIZ_EVENT = Boolean.parseBoolean(EventQUIZSettings.getProperty("EnableQuizEvent", "False"));
-			QUIZ_MINUTES_UNTIL_EVENT_STARTS_AGAIN = Integer.parseInt(EventQUIZSettings.getProperty("MinutesUntilNextQuestion", "120"));
-			QUIZ_MINUTES_TO_ANSWER = Integer.parseInt(EventQUIZSettings.getProperty("MinutesToAnswer", "10"));
-			QUIZ_REWARD_ID = Integer.parseInt(EventQUIZSettings.getProperty("QuizRewardId", "57"));
-			QUIZ_REWARD_QUANTITY = Integer.parseInt(EventQUIZSettings.getProperty("QuizRewardQuantity", "1000000"));
-
 			/**
 			 * Event WEDDING
 			 */
@@ -3455,40 +3370,6 @@ public final class Config
 			SERVER_ID = Integer.parseInt(hexidSettings.getProperty("ServerID"));
 			HEX_ID = new BigInteger(hexidSettings.getProperty("HexID"), 16).toByteArray();
 
-			/**
-			 * Telnet
-			 */
-			Properties telnetSettings = new Properties();
-			final File telnet = new File(TELNET_FILE);
-			try (InputStream is = new FileInputStream(telnet))
-			{
-				telnetSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while loading " + TELNET_FILE + " settings!", e);
-			}
-			IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
-
-			/**
-			 * MMOCore
-			 */
-			Properties mmoSettings = new Properties();
-			final File mmo = new File(MMOCORE_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(mmo))
-			{
-				mmoSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while loading " + MMOCORE_CONFIG_FILE + " settings!", e);
-			}
-			MMO_SELECTOR_SLEEP_TIME = Integer.parseInt(mmoSettings.getProperty("SleepTime", "20"));
-			MMO_IO_SELECTOR_THREAD_COUNT = Integer.parseInt(mmoSettings.getProperty("IOSelectorThreadCount", "2"));
-			MMO_MAX_SEND_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxSendPerPass", "12"));
-			MMO_MAX_READ_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxReadPerPass", "12"));
-			MMO_HELPER_BUFFER_COUNT = Integer.parseInt(mmoSettings.getProperty("HelperBufferCount", "20"));
-
 			_log.log(Level.INFO, "Configuration Files Loaded.");
 		}
 		else if (Server.serverMode == Server.MODE_LOGINSERVER)
@@ -3563,40 +3444,6 @@ public final class Config
 			SERVER_VERSION = versionSettings.getProperty("version", "Unsupported Custom Version.");
 			SERVER_BUILD_DATE = versionSettings.getProperty("builddate", "Undefined Date.");
 			
-			/**
-			 * Telnet
-			 */
-			Properties telnetSettings = new Properties();
-			final File telnet = new File(TELNET_FILE);
-			try (InputStream is = new FileInputStream(telnet))
-			{
-				telnetSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while loading " + TELNET_FILE + " settings!", e);
-			}
-			IS_TELNET_ENABLED = Boolean.valueOf(telnetSettings.getProperty("EnableTelnet", "False"));
-			
-			/**
-			 * MMOCore
-			 */
-			Properties mmoSettings = new Properties();
-			final File mmo = new File(MMOCORE_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(mmo))
-			{
-				mmoSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while loading " + MMOCORE_CONFIG_FILE + " settings!", e);
-			}
-			MMO_SELECTOR_SLEEP_TIME = Integer.parseInt(mmoSettings.getProperty("SleepTime", "20"));
-			MMO_IO_SELECTOR_THREAD_COUNT = Integer.parseInt(mmoSettings.getProperty("IOSelectorThreadCount", "2"));
-			MMO_MAX_SEND_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxSendPerPass", "12"));
-			MMO_MAX_READ_PER_PASS = Integer.parseInt(mmoSettings.getProperty("MaxReadPerPass", "12"));
-			MMO_HELPER_BUFFER_COUNT = Integer.parseInt(mmoSettings.getProperty("HelperBufferCount", "20"));
-
 			_log.log(Level.INFO, "Configuration Files Loaded.");
 		}
 		else
@@ -4177,18 +4024,6 @@ public final class Config
 			break;
 			case "AbortRestart":
 				ABORT_RR = (pValue);
-			break;
-			case "EnableFaction":
-				MOD_GVE_ENABLE_FACTION = Boolean.valueOf(pValue);
-			break;
-			case "PlayerGetAdenaByPvP":
-				MOD_GVE_GET_ADENA_BY_PVP = Boolean.valueOf(pValue);
-			break;
-			case "AmmountAdenaGetByPvP":
-				MOD_GVE_AMMOUNT_ADENA_BY_PVP = Integer.parseInt(pValue);
-			break;
-			case "ActiveAnimSS":
-				MOD_GVE_ACTIVE_ANIM_SS = Boolean.valueOf(pValue);
 			break;
 			case "CTFEvenTeams":
 				CTF_EVEN_TEAMS = pValue;

@@ -176,7 +176,7 @@ public final class L2AttackableAIScript extends Quest
 			}
 			catch (ClassNotFoundException ex)
 			{
-				_log.info("Class not found: " + template.type + "Instance");
+				_log.info("AttackableAiScript Class not found: " + template.type + "Instance");
 			}
 		}
 	}

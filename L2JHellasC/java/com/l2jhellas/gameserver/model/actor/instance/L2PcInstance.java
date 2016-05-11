@@ -149,7 +149,6 @@ import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
-import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
@@ -266,8 +265,8 @@ public final class L2PcInstance extends L2Playable
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 	
 	// Character Character
-	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?, maxHp=?, curHp=?, maxCp=?, curCp=?, maxMp=?, curMp=?, str=?, con=?, dex=?, _int=?, men=?, wit=?, face=?, hairStyle=?, hairColor=?, heading=?, x=?, y=?, z=?, exp=?, expBeforeDeath=?, sp=?, karma=?, pvpkills=?, pkkills=?, rec_have=?, rec_left=?, clanid=?, maxload=?, race=?, classid=?, deletetime=?, title=?, accesslevel=?, online=?, isin7sdungeon=?, clan_privs=?, wantspeace=?, base_class=?, onlinetime=?, in_jail=?, jail_timer=?, newbie=?, nobless=?, power_grade=?, subpledge=?, last_recom_date=?, lvl_joined_academy=?, apprentice=?, sponsor=?, varka_ketra_ally=?, clan_join_expiry_time=?, clan_create_expiry_time=?, char_name=?, death_penalty_level=?, chat_filter_count=?, good=?, evil=?, hitman_target=?, event_points=? WHERE obj_id=?";
-	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, good,evil, hitman_target, email, emailcode, hasSubEmail, answer, secCode, emailchangecode, hasSubSec, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries, event_points FROM characters WHERE obj_Id=?";
+	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?, maxHp=?, curHp=?, maxCp=?, curCp=?, maxMp=?, curMp=?, str=?, con=?, dex=?, _int=?, men=?, wit=?, face=?, hairStyle=?, hairColor=?, heading=?, x=?, y=?, z=?, exp=?, expBeforeDeath=?, sp=?, karma=?, pvpkills=?, pkkills=?, rec_have=?, rec_left=?, clanid=?, maxload=?, race=?, classid=?, deletetime=?, title=?, accesslevel=?, online=?, isin7sdungeon=?, clan_privs=?, wantspeace=?, base_class=?, onlinetime=?, in_jail=?, jail_timer=?, newbie=?, nobless=?, power_grade=?, subpledge=?, last_recom_date=?, lvl_joined_academy=?, apprentice=?, sponsor=?, varka_ketra_ally=?, clan_join_expiry_time=?, clan_create_expiry_time=?, char_name=?, death_penalty_level=?, chat_filter_count=?,hitman_target=?, event_points=? WHERE obj_id=?";
+	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count,hitman_target, email, emailcode, hasSubEmail, answer, secCode, emailchangecode, hasSubSec, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries, event_points FROM characters WHERE obj_Id=?";
 	private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
 	private static final String INSERT_CHARACTER = "INSERT INTO characters (account_name,obj_Id,char_name,level,maxHp,curHp,maxCp,curCp,maxMp,curMp,acc,crit,evasion,mAtk,mDef,mSpd,pAtk,pDef,pSpd,runSpd,walkSpd,str,con,dex,_int,men,wit,face,hairStyle,hairColor,sex,movement_multiplier,attack_speed_multiplier,colRad,colHeight,exp,sp,karma,pvpkills,pkkills,clanid,maxload,race,classid,deletetime,cancraft,title,accesslevel,online,isin7sdungeon,clan_privs,wantspeace,base_class,newbie,nobless,power_grade,last_recom_date) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -527,11 +526,6 @@ public final class L2PcInstance extends L2Playable
 	/** The _is stored. */
 	private boolean _isStored = false;
 	
-	/** character away mode **/
-	private boolean _isAway = false;
-	public int _originalTitleColorAway;
-	public String _originalTitleAway;
-	
 	/** Olympiad */
 	private boolean _inOlympiadMode = false;
 	private boolean _OlympiadStart = false;
@@ -629,11 +623,7 @@ public final class L2PcInstance extends L2Playable
 	
 	private boolean _noble = false;
 	private boolean _hero = false;
-	
-	/** Faction Good vs Evil */
-	private boolean _isgood = false;
-	private boolean _isevil = false;
-	
+		
 	/** Account Manager */
 	private String _email = null;
 	private int _emailcode = 0;
@@ -1951,8 +1941,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		if (getPvpFlag() == value)
 			return;
-		if (isgood() || isevil())
-			return;
+
 		setPvpFlag(value);
 		sendPacket(new UserInfo(this));
 		
@@ -3085,10 +3074,6 @@ public final class L2PcInstance extends L2Playable
 		else if (TvT._sitForced && _inEventTvT || CTF._sitForced && _inEventCTF || DM._sitForced && _inEventDM)
 		{
 			sendMessage("The Admin/GM handle if you sit or stand in this match!");
-		}
-		else if (isAway())
-		{
-			sendMessage("You can't stand up if your Status is Away");
 		}
 		else if (_waitTypeSitting && !isInStoreMode() && !isAlikeDead())
 		{
@@ -4503,13 +4488,6 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public void onAction(L2PcInstance player)
 	{
-		// Away Sys
-		if (isAway() && !Config.AWAY_ALLOW_INTERFERENCE)
-		{
-			sendMessage("You can't target Away Players.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
 		
 		if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE) && !player.isGM()))
 		{
@@ -5696,10 +5674,6 @@ public final class L2PcInstance extends L2Playable
 			{
 				pk.kills.add(getName());
 			}
-			if (pk != null && Config.ENABLE_HITMAN_EVENT)
-			{
-				Hitman.getInstance().onDeath(pk, this);
-			}
 			
 			// Clear resurrect xp calculation
 			setExpBeforeDeath(0);
@@ -5991,37 +5965,6 @@ public final class L2PcInstance extends L2Playable
 			}
 			return;
 		}
-		
-		// l2jhellas Faction GvE - adena reward
-		if (Config.MOD_GVE_GET_ADENA_BY_PVP && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			if ((isgood() && targetPlayer.isgood()) || (isevil() && targetPlayer.isevil()))
-			{
-				sendMessage("Cant get adena reward from same faction.");
-				return;
-			}
-			else
-			{
-				if (targetPlayer instanceof L2PcInstance)
-				{
-					int itemReward = Config.MOD_GVE_AMMOUNT_ADENA_BY_PVP;
-					addItem("Loot", 57, itemReward, this, true);
-					sendMessage("You've Won " + itemReward + " adena(s) from pvp kill.");
-				}
-			}
-		}
-		
-		// Check if it's pvp
-		if ((isgood() && targetPlayer.isevil()) || isevil() && targetPlayer.isgood() || (checkIfPvP(target) && targetPlayer.getPvpFlag() != 0) || (isInsideZone(ZoneId.PVP) && targetPlayer.isInsideZone(ZoneId.PVP)))
-		{
-			increasePvpKills();
-			
-			if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
-			{
-				Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
-			}
-			return;
-		}
 		else
 		{
 			// check about wars
@@ -6057,8 +6000,6 @@ public final class L2PcInstance extends L2Playable
 			}
 			else if (targetPlayer.getPvpFlag() == 0) // Target player doesn't have karma
 			{
-				if (Config.ENABLE_HITMAN_EVENT && Config.HITMAN_TAKE_KARMA && Hitman.getInstance().exists(targetPlayer.getObjectId()))
-					return;
 				increasePkKillsAndKarma(targetPlayer.getLevel());
 				if (target instanceof L2PcInstance && Config.ANNOUNCE_PK_KILL)
 				{
@@ -6124,10 +6065,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
-		
-		if (Config.MOD_GVE_ENABLE_FACTION)
-			return;
-		
+
 		int baseKarma = Config.KARMA_MIN_KARMA;
 		
 		int newKarma = baseKarma;
@@ -6263,9 +6201,6 @@ public final class L2PcInstance extends L2Playable
 	public void updatePvPStatus()
 	{
 		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
-			return;
-		
-		if (isgood() || isevil())
 			return;
 		
 		if (isInsideZone(ZoneId.PVP))
@@ -7180,11 +7115,6 @@ public final class L2PcInstance extends L2Playable
 		{
 			_isOnline = isOnline;
 		}
-		
-		if (Config.ENABLE_HITMAN_EVENT && Hitman.getInstance().exists(getObjectId()))
-		{
-			Hitman.getInstance().getTarget(getObjectId()).setOnline(isOnline);
-		}
 		// Update the characters table of the database with online status and lastAccess (called when login and logout)
 		updateOnlineStatus();
 	}
@@ -7380,8 +7310,6 @@ public final class L2PcInstance extends L2Playable
 					player.setNewbie(rset.getInt("newbie") == 1);
 					player.setNoble(rset.getInt("nobless") == 1);
 					
-					player.setgood((rset.getInt("good") == 1) ? true : false);
-					player.setevil((rset.getInt("evil") == 1) ? true : false);
 					// l2jhellas Donator and Hero Mod
 					player.setHero(rset.getInt("hero") == 1);
 					player.setDonator(rset.getInt("donator") == 1);
@@ -7888,11 +7816,9 @@ public final class L2PcInstance extends L2Playable
 			statement.setString(55, getName());
 			statement.setLong(56, getDeathPenaltyBuffLevel());
 			statement.setInt(57, getChatFilterCount());
-			statement.setInt(58, isgood() ? 1 : 0);
-			statement.setInt(59, isevil() ? 1 : 0);
-			statement.setInt(60, getHitmanTarget());
-			statement.setInt(61, getEventPoints());
-			statement.setInt(62, getObjectId());
+			statement.setInt(58, getHitmanTarget());
+			statement.setInt(59, getEventPoints());
+			statement.setInt(60, getObjectId());
 			
 			statement.execute();
 			statement.close();
@@ -8817,14 +8743,7 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{
-		// l2jhellas Faction Good vs Evil
-		if ((attacker instanceof L2PcInstance) && ((L2PcInstance) attacker).isgood())
-			return true;
-		
 		if ((attacker instanceof L2PcInstance && ((L2PcInstance) attacker).isinZodiac) && this.isinZodiac)
-			return true;
-		
-		if ((attacker instanceof L2PcInstance) && ((L2PcInstance) attacker).isevil())
 			return true;
 		
 		// Check if the attacker isn't the L2PcInstance Pet
@@ -9538,9 +9457,7 @@ public final class L2PcInstance extends L2Playable
 			
 			if ((_inEventTvT && TvT._started) || (_inEventDM && DM._started) || (_inEventCTF && CTF._started) || isinZodiac)
 				return true;
-			if (isgood() || isevil())
-				return true;
-			
+
 			// check for PC->PC Pvp status
 			if (character != this && // target is not self and
 			!(isInDuel() && character.getDuelId() == getDuelId()) && // self is not in a duel and attacking opponent
@@ -10381,16 +10298,6 @@ public final class L2PcInstance extends L2Playable
 		sendSkillList();
 	}
 	
-	public boolean isAway()
-	{
-		return _isAway;
-	}
-	
-	public void setIsAway(boolean state)
-	{
-		_isAway = state;
-	}
-	
 	public void setIsInOlympiadMode(boolean b)
 	{
 		_inOlympiadMode = b;
@@ -10671,28 +10578,6 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 		sendPacket(sl);
-	}
-	
-	// l2jhellas Faction Good vs Evil
-	public boolean isgood()
-	{
-		return _isgood;
-	}
-	
-	public boolean isevil()
-	{
-		return _isevil;
-	}
-	
-	// l2jhellas Faction Good vs Evil
-	public void setgood(boolean value)
-	{
-		_isgood = value;
-	}
-	
-	public void setevil(boolean value)
-	{
-		_isevil = value;
 	}
 	
 	/**
@@ -13897,39 +13782,6 @@ public final class L2PcInstance extends L2Playable
 		if (isInDuel() && getDuelState() == Duel.DUELSTATE_DUELLING)
 			setDuelState(Duel.DUELSTATE_INTERRUPTED);
 	}
-    private final int[][] RandomSpawnE =
-    {
-            {Config.EVILX+20, Config.EVILY+23, Config.EVILZ+1},
-            {Config.EVILX+15, Config.EVILY+25, Config.EVILZ+2},
-            {Config.EVILX+18, Config.EVILY+18, Config.EVILZ+3},
-            {Config.EVILX+10, Config.EVILY+15, Config.EVILZ+4},
-            {Config.EVILX+25, Config.EVILY+26, Config.EVILZ+5},
-            {Config.EVILX+24, Config.EVILY+14, Config.EVILZ+6},
-    };
-   
-    private final int[][] RandomSpawnG =
-    {
-    		{Config.GOODX+20, Config.GOODY+22, Config.GOODZ+1},
-			{Config.GOODX+15, Config.GOODY+26, Config.GOODZ+2},
-			{Config.GOODX+23, Config.GOODY+18, Config.GOODZ+3},
-			{Config.GOODX+16, Config.GOODY+16, Config.GOODZ+4},
-			{Config.GOODX+22, Config.GOODY+14, Config.GOODZ+5},
-			{Config.GOODX+24, Config.GOODY+19, Config.GOODZ+6},
-    };
-   
-	public final int[] getRandomSpawn()
-	{
-		final int[] getPosE = RandomSpawnE[Rnd.get(RandomSpawnE.length)];
-		final int[] getPosG = RandomSpawnG[Rnd.get(RandomSpawnG.length)];
-
-		if (isevil())
-			return getPosE;
-		else if (isgood())
-			return getPosG;
-
-		return null;
-	}
-    
     /**
 	 * EnterWorld checks
 	 */
@@ -13940,18 +13792,19 @@ public final class L2PcInstance extends L2Playable
 		if (ipc.isCatched(this))
 			closeNetConnection();
 
-		standUp();
-		setRunning();
-		
-		// restore info about chat ban
-		checkBanChat(false);
-		
 		if (isDead())
 		{
 			doDie(this);
             doRevive();
 		}
 		
+		standUp();
+		setRunning();
+		
+		// restore info about chat ban
+		checkBanChat(false);
+		
+
 		final L2Clan clan = this.getClan();
 		
 		if (Config.APELLA_ARMORS && (clan == null || getPledgeClass() < 5))
@@ -14264,9 +14117,7 @@ public final class L2PcInstance extends L2Playable
 			sendPacket(new Die(this));// no broadcast needed since the player will already spawn dead to others
 		if (AntiBot.isvoting)
 			AntiBot.showHtmlWindow(this);
-		
-		if (Config.ENABLE_HITMAN_EVENT)
-			Hitman.getInstance().onEnterWorld(this);
+
 		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(getObjectId()))
 			setHero(true);
 		onPlayerEnter();
@@ -14299,26 +14150,6 @@ public final class L2PcInstance extends L2Playable
 		Announcements.getInstance().showAnnouncements(this);
 		spawnMe(getX(), getY(), getZ());
 
-		// l2jhellas Faction Good vs Evil
-		// Welcome for evil
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
-			if (isevil())
-			{
-				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_EVIL);
-				teleToLocation(this.getRandomSpawn()[0], this.getRandomSpawn()[1], this.getRandomSpawn()[2]);
-                sendMessage("You have been teleported Back to your Faction Base.");
-                sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_EVIL + "  Faction.");
-			}
-			if (isgood())
-			{
-				getAppearance().setNameColor(Config.MOD_GVE_COLOR_NAME_GOOD);
-				teleToLocation(getRandomSpawn()[0], getRandomSpawn()[1], getRandomSpawn()[2]);
-				sendMessage("You have been teleported Back to your Faction Base.");
-				sendMessage("Welcome " + getName() + " u are fighting for " + Config.MOD_GVE_NAME_TEAM_GOOD + " Faction.");
-			}
-			broadcastUserInfo();
-		}
 		// engage and notify Partner
 		if (Config.MOD_ALLOW_WEDDING)
 		{
@@ -15394,6 +15225,5 @@ public final class L2PcInstance extends L2Playable
  	public boolean isSeated()
  	{
  		return _mountObjectID > 0;
- 	}
-					
+ 	}					
 }

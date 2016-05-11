@@ -74,19 +74,6 @@ public final class TradeRequest extends L2GameClientPacket
 			return;
 		}
 		
-		// Faction Good vs Evil
-		L2PcInstance player2 = (L2PcInstance) target;
-		if (player2.isevil() && player.isgood() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			player.sendMessage("You Can't Trade with Different Faction.");
-			return;
-		}
-		if (partner.isAway())
-        {
-            player.sendMessage("You can't Request a Trade when partner is Away");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
 		if (partner.isStunned())
         {
             player.sendMessage("You can't Request a Trade when partner Stunned");
@@ -160,12 +147,6 @@ public final class TradeRequest extends L2GameClientPacket
             player.sendPacket(ActionFailed.STATIC_PACKET);
             return;
         }
-        
-		if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			player.sendMessage("You can't trade with different faction.");
-			return;
-		}
 
 		// Alt game - Karma punishment
 		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && ((player.getKarma() > 0) || (partner.getKarma() > 0)))

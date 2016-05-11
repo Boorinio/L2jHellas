@@ -20,11 +20,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
@@ -145,10 +145,10 @@ public class SevenSigns
 
 	public SevenSigns()
 	{
-		_signsPlayerData = new FastMap<Integer, StatsSet>();
-		_signsSealOwners = new FastMap<Integer, Integer>();
-		_signsDuskSealTotals = new FastMap<Integer, Integer>();
-		_signsDawnSealTotals = new FastMap<Integer, Integer>();
+		_signsPlayerData = new HashMap<>();
+		_signsSealOwners = new HashMap<>();
+		_signsDuskSealTotals = new HashMap<>();
+		_signsDawnSealTotals = new HashMap<>();
 
 		try
 		{

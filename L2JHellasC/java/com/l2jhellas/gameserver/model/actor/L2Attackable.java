@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-import javolution.util.FastList;
 import Extensions.RaidEvent.L2RaidEvent;
 
 import com.l2jhellas.Config;
@@ -278,7 +277,7 @@ public class L2Attackable extends L2Npc
 			L2Character mostHated = null;
 			L2Character secondMostHated = null;
 			int maxHate = 0;
-			List<L2Character> result = new FastList<L2Character>();
+			List<L2Character> result = new ArrayList<L2Character>();
 			
 			// While iterating over this map removing objects is not allowed
 			synchronized (this)
@@ -311,7 +310,7 @@ public class L2Attackable extends L2Npc
 			if (_aggroListPro.isEmpty() || isAlikeDead())
 				return null;
 			
-			List<L2Character> result = new FastList<L2Character>();
+			List<L2Character> result = new ArrayList<L2Character>();
 			
 			synchronized (this)
 			{
@@ -1429,7 +1428,7 @@ public class L2Attackable extends L2Npc
 				// according to sh1ny, seeded mobs CAN be spoiled and swept.
 				if (isSpoil()/* && !isSeeded() */)
 				{
-					FastList<RewardItem> sweepList = new FastList<RewardItem>();
+					ArrayList<RewardItem> sweepList = new ArrayList<RewardItem>();
 					
 					for (L2DropData drop : cat.getAllDrops())
 					{
@@ -2433,7 +2432,7 @@ private boolean _canReturnToSpawnPoint = true;
 		// 4- Everything is correct, the crystal level up. A sound event is
 		// played. (32.5%)
 		
-		List<L2PcInstance> players = new FastList<L2PcInstance>();
+		List<L2PcInstance> players = new ArrayList<L2PcInstance>();
 		
 		if (absorbType == L2NpcTemplate.AbsorbCrystalType.FULL_PARTY && killer.isInParty())
 		{

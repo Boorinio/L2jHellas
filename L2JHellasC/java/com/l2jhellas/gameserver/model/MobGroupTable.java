@@ -14,9 +14,8 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
 
@@ -33,7 +32,7 @@ public class MobGroupTable
 
 	public MobGroupTable()
 	{
-		_groupMap = new FastMap<Integer, MobGroup>();
+		_groupMap = new HashMap<Integer, MobGroup>();
 	}
 
 	public static MobGroupTable getInstance()

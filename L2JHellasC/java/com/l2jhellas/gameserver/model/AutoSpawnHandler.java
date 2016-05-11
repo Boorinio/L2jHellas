@@ -18,14 +18,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -78,8 +77,8 @@ public class AutoSpawnHandler
 	@SuppressWarnings("rawtypes")
 	private AutoSpawnHandler()
 	{
-		_registeredSpawns = new FastMap<Integer, AutoSpawnInstance>().setShared(true);
-		_runningSpawns = new FastMap<Integer, ScheduledFuture>().setShared(true);
+		_registeredSpawns = new HashMap<Integer, AutoSpawnInstance>();
+		_runningSpawns = new HashMap<Integer, ScheduledFuture>();
 
 		restoreSpawnData();
 	}
@@ -406,7 +405,7 @@ public class AutoSpawnHandler
 
 	public Map<Integer, AutoSpawnInstance> getAutoSpawnInstances(int npcId)
 	{
-		Map<Integer, AutoSpawnInstance> spawnInstList = new FastMap<Integer, AutoSpawnInstance>();
+		Map<Integer, AutoSpawnInstance> spawnInstList = new HashMap<Integer, AutoSpawnInstance>();
 
 		for (AutoSpawnInstance spawnInst : _registeredSpawns.values())
 			if (spawnInst.getNpcId() == npcId)

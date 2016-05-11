@@ -55,15 +55,6 @@ public class Escape implements IUserCommandHandler
 			activeChar.sendMessage("You may not use an escape command in a festival.");
 			return false;
 		}
-		// MOD Faction GvE - Check to see if the player is in faction.
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
-			if (activeChar.isevil() || activeChar.isgood())
-			{
-				activeChar.sendMessage("You May Not Use The Escape Command In Faction Mode.");
-				return false;
-			}
-		}
 
 		// Check to see if player is in jail
 		if (activeChar.isInJail())

@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -44,19 +43,6 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 		if (!player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		// MODS Faction Good vs Evil
-		if (Config.MOD_GVE_ENABLE_FACTION && player2.isevil() && player.isgood())
-		{
-			player.sendMessage("You can't trade with different Faction.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		if (player2.isgood() && player.isevil() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			player.sendMessage("You can't trade with different Faction.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

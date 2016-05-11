@@ -494,28 +494,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			boolean fast = true;
 
 			try
-			{
-				isDetached(true);
+			{		
 				L2PcInstance player = L2GameClient.this.getActiveChar();
-				if (player != null)
+				if (player != null && !player.getClient().isDetached())
 				{
-					if (!player.isInOlympiadMode() && !player.isFestivalParticipant() && !player.isInJail())
-					{
-						if ((player.isInStoreMode() && Config.OFFLINE_TRADE_ENABLE) || (player.isInCraftMode() && Config.OFFLINE_CRAFT_ENABLE))
-						{
-							player.leaveParty();
-							if (Config.OFFLINE_SET_NAME_COLOR)
-							{
-								player.getAppearance().setNameColor(Config.OFFLINE_NAME_COLOR);
-								player.broadcastUserInfo();
-							}
-							return;
-						}
-					}
-					if (player.isInCombat())
-					{
-						fast = false;
-					}
+					player.getClient().isDetached(true);
+					fast = !player.isInCombat();
 				}
 				cleanMe(fast);
 			}

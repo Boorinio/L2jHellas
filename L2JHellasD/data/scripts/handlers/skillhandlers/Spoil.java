@@ -27,7 +27,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 
 /**
- * @author _drunk_
+ * @author AbsolutePower
  */
 public class Spoil implements ISkillHandler
 {
@@ -37,48 +37,47 @@ public class Spoil implements ISkillHandler
 	};
 
 	@Override
-	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
+	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] t)
 	{
 		if (!(activeChar instanceof L2PcInstance))
 			return;
-
-		if (targets == null)
-			return;
-
-		for (int index = 0; index < targets.length; index++)
+		
+		if (t == null)
 		{
-			if (!(targets[index] instanceof L2MonsterInstance))
+			activeChar.getActingPlayer().sendMessage("No target found");
+			return;
+		}
+		
+		for (L2Object spoiledtarget : t)
+		{
+			boolean isMonster = spoiledtarget instanceof L2MonsterInstance;
+
+			if(!isMonster)
 				continue;
-
-			L2MonsterInstance target = (L2MonsterInstance) targets[index];
-
-			if (target.isSpoil())
+			
+			final L2MonsterInstance target = (L2MonsterInstance) spoiledtarget;
+			boolean isDead = target.isDead();
+			
+			if (isDead)
+				continue;
+			
+			boolean alreadySpoiled = target.getIsSpoiledBy() != 0;
+			
+			if (alreadySpoiled)
 			{
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ALREADY_SPOILED));
 				continue;
 			}
-
-			// SPOIL SYSTEM by Lbaldi
-			boolean spoil = false;
-			if (target.isDead() == false)
+			
+			if (Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character) spoiledtarget, skill))
 			{
-				spoil = Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character) targets[index], skill);
-
-				if (spoil)
-				{
-					target.setSpoil(true);
-					target.setIsSpoiledBy(activeChar.getObjectId());
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SPOIL_SUCCESS));
-				}
-				else
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
-					sm.addString(target.getName());
-					sm.addSkillName(skill.getDisplayId());
-					activeChar.sendPacket(sm);
-				}
-				target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
+				target.setIsSpoiledBy(activeChar.getObjectId());
+				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SPOIL_SUCCESS));
 			}
+			else
+				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill.getId()));
+			
+			target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
 		}
 	}
 

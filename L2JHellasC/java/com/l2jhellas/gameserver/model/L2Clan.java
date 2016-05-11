@@ -1896,18 +1896,6 @@ public class L2Clan
 			return false;
 		}
 
-		// Mod Faction Good vs Evil
-		if (activeChar.isgood() && target.isevil() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			activeChar.sendPacket(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET);
-			return false;
-		}
-		if (activeChar.isevil() && target.isgood() && Config.MOD_GVE_ENABLE_FACTION)
-		{
-			activeChar.sendPacket(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET);
-			return false;
-		}
-
 		if (activeChar.getObjectId() == target.getObjectId())
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_INVITE_YOURSELF);

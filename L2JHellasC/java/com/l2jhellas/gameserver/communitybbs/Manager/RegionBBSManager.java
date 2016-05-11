@@ -210,12 +210,6 @@ public class RegionBBSManager extends BaseBBSManager
 					return;
 				}
 
-				if (receiver.isAway())
-				{
-					activeChar.sendMessage(receiver.getName() + " is Away please try again later.");
-					return;
-				}
-
 				if (Config.LOG_CHAT)
 				{
 					LogRecord record = new LogRecord(Level.INFO, ar3);
@@ -434,8 +428,6 @@ public class RegionBBSManager extends BaseBBSManager
 
 				if (player.isGM())
 					htmlCode.append("<font color=\"ffe400\">" + player.getName() + "</font>");
-				else if (player.isAway() && Config.ALLOW_AWAY_STATUS)
-					htmlCode.append(player.getName() + " *Away* ");
 				else if (player.isHero())
 					htmlCode.append("<font color=\"f9f8a3\">" + player.getName() + "</font>");
 				else if (player.isNoble())
@@ -555,10 +547,6 @@ public class RegionBBSManager extends BaseBBSManager
 				if (player.isGM())
 				{
 					htmlCode.append("<font color=\"ffe400\">" + player.getName() + "</font>");
-				}
-				else if (player.isAway() && Config.ALLOW_AWAY_STATUS)
-				{
-					htmlCode.append(player.getName() + " *Away* ");
 				}
 				else if (player.isHero())
 				{

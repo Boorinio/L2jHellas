@@ -627,7 +627,7 @@ public class Olympiad
 	
 	public boolean playerInStadia(L2PcInstance player)
 	{
-		return ZoneManager.getInstance().getOlympiadStadium(player) != null;
+		return ZoneManager.getOlympiadStadium(player) != null;
 	}
 	
 	/**

@@ -14,8 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class RequestDeleteMacro extends L2GameClientPacket
 {
@@ -31,13 +30,12 @@ public final class RequestDeleteMacro extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		if (getClient().getActiveChar() == null)
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
+		if (activeChar == null)
 			return;
-		getClient().getActiveChar().deleteMacro(_id);
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-		sm.addString("Delete macro id=" + _id);
-		sendPacket(sm);
-		sm = null;
+
+		activeChar.deleteMacro(_id);	
 	}
 
 	@Override

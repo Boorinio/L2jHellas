@@ -68,15 +68,6 @@ public class ChatTell implements IChatHandler
 				return;
 			}
 
-			if (receiver.isAway())
-			{
-				receiver.sendPacket(new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text));
-				activeChar.sendPacket(new CreatureSay(activeChar.getObjectId(), type, "->" + receiver.getName(), text));
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-				sm.addString(target + " is Away try again later.");
-				activeChar.sendPacket(sm);
-			}
-
 			if (receiver.isChatBanned())
 			{
 				activeChar.sendMessage("Player is chat banned.");

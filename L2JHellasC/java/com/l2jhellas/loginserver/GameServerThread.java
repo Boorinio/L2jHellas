@@ -172,7 +172,6 @@ public class GameServerThread extends Thread
 			String serverName = (getServerId() != -1 ? "[" + getServerId() + "] " + GameServerTable.getInstance().getServerNameById(getServerId()) : "(" + _connectionIPAddress + ")");
 			String msg = "GameServer " + serverName + ": Connection lost: " + e.getMessage();
 			_log.info(msg);
-			broadcastToTelnet(msg);
 		}
 		finally
 		{
@@ -226,7 +225,6 @@ public class GameServerThread extends Thread
 			{
 				_log.info("Authed: id: " + getGameServerInfo().getId());
 			}
-			broadcastToTelnet("GameServer [" + getServerId() + "] " + GameServerTable.getInstance().getServerNameById(getServerId()) + " is connected");
 		}
 	}
 
@@ -243,8 +241,6 @@ public class GameServerThread extends Thread
 				{
 					_log.info("Account " + account + " logged in GameServer: [" + getServerId() + "] " + GameServerTable.getInstance().getServerNameById(getServerId()));
 				}
-
-				broadcastToTelnet("Account " + account + " logged in GameServer " + getServerId());
 			}
 		}
 		else
@@ -263,8 +259,6 @@ public class GameServerThread extends Thread
 			{
 				_log.info("Player " + plo.getAccount() + " logged out from gameserver [" + getServerId() + "] " + GameServerTable.getInstance().getServerNameById(getServerId()));
 			}
-
-			broadcastToTelnet("Player " + plo.getAccount() + " disconnected from GameServer " + getServerId());
 		}
 		else
 		{
@@ -619,14 +613,6 @@ public class GameServerThread extends Thread
 			_out.write(len >> 8 & 0xff);
 			_out.write(data);
 			_out.flush();
-		}
-	}
-
-	private void broadcastToTelnet(String msg)
-	{
-		if (LoginServer.getInstance().getStatusServer() != null)
-		{
-			LoginServer.getInstance().getStatusServer().sendMessageToTelnets(msg);
 		}
 	}
 

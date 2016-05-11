@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
@@ -234,28 +233,6 @@ public final class L2World
 				{
 					_log.warning("Duplicate character!? Closing both characters (" + player.getName() + ")");
 					
-					if (Config.MOD_GVE_ENABLE_FACTION)
-					{
-						final L2PcInstance tmpgood = _allgoodPlayers.get(player.getObjectId());
-						final L2PcInstance tmpevil = _allevilPlayers.get(player.getObjectId());
-
-						if (tmpgood != null &&  ((L2PcInstance)player).isgood())
-						{
-							_allgoodPlayers.remove(player.getObjectId());
-						    _allgoodPlayers.remove(tmp.getObjectId());
-						    player.closeNetConnection();
-						    tmpgood.closeNetConnection();
-						}
-
-						if (tmpevil != null &&  ((L2PcInstance) player).isevil())
-						{
-							_allevilPlayers.remove(player.getObjectId());
-						    _allevilPlayers.remove(tmp.getObjectId());
-						    player.closeNetConnection();
-						    tmpevil.closeNetConnection();
-						}
-					}
-					
 					_allPlayers.remove(player.getObjectId());
 					_allPlayers.remove(tmp.getObjectId());
 					
@@ -264,19 +241,6 @@ public final class L2World
 					return;
 				}
 				_allPlayers.put(player.getObjectId(), player);
-				
-				if (Config.MOD_GVE_ENABLE_FACTION)
-				{
-					if (((L2PcInstance) object).isgood())
-					{
-						_allgoodPlayers.put(player.getObjectId(), player);
-					}
-
-					if (((L2PcInstance) object).isevil())
-					{
-						_allevilPlayers.put(player.getObjectId(), player);
-					}
-				}
 			}
 		}
 		

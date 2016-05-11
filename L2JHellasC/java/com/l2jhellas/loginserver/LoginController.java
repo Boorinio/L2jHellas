@@ -26,7 +26,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,7 +70,7 @@ public class LoginController
 	/** Authed Clients on LoginServer */
 	protected FastMap<String, L2LoginClient> _loginServerClients = new FastMap<String, L2LoginClient>().setShared(true);
 
-	private final Map<InetAddress, BanInfo> _bannedIps = new FastMap<InetAddress, BanInfo>().setShared(true);
+	private final Map<InetAddress, BanInfo> _bannedIps = new ConcurrentHashMap<InetAddress, BanInfo>();
 
 	private final Map<InetAddress, FailedLoginAttempt> _hackProtection;
 
@@ -98,7 +100,7 @@ public class LoginController
 	{
 		_log.info("Loading LoginContoller...");
 
-		_hackProtection = new FastMap<InetAddress, FailedLoginAttempt>();
+		_hackProtection = new HashMap<InetAddress, FailedLoginAttempt>();
 
 		_keyPairs = new ScrambledKeyPair[10];
 

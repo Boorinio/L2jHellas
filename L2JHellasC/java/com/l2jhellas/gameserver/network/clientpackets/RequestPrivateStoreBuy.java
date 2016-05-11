@@ -91,17 +91,6 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		// Faction Good vs Evil
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
-			if ((storePlayer.isevil() && player.isgood()) || (storePlayer.isgood() && player.isevil()))
-			{
-				player.sendMessage("You cant Buy from Different Faction");
-				player.sendPacket(ActionFailed.STATIC_PACKET);
-				return;
-			}
-		}
-
 		if (!player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");

@@ -646,14 +646,6 @@ public abstract class L2Summon extends L2Playable
 				return;
 		}
 
-		if (Config.MOD_GVE_ENABLE_FACTION)
-		{
-			if (this.getOwner().isgood() && ((L2PcInstance) target).isgood())
-				return;
-			if (this.getOwner().isevil() && ((L2PcInstance) target).isevil())
-				return;
-		}
-
 		// ************************************* Check skill availability *******************************************
 
 		// Check if this skill is enabled (ex : reuse time)

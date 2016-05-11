@@ -163,20 +163,15 @@ public class VoteRewardTopzone
 	
 	public static int getVotes()
 	{
-		InputStreamReader isr = null;
-		BufferedReader br = null;
 		int votes = -1;
 		try
 		{
 			if(!Config.TOPZONE_SERVER_LINK.endsWith(".html"))
 				Config.TOPZONE_SERVER_LINK+=".html";
 			
-			URLConnection con = new URL(Config.TOPZONE_SERVER_LINK).openConnection();
-			
-			
+			URLConnection con = new URL(Config.TOPZONE_SERVER_LINK).openConnection();			
 			con.addRequestProperty("User-L2Topzone", "Mozilla/4.76");
-			isr = new InputStreamReader(con.getInputStream());
-			br = new BufferedReader(isr);
+			BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			
 			String line;
 			while ((line = br.readLine()) != null)
@@ -199,12 +194,11 @@ public class VoteRewardTopzone
 			}
 			
 			br.close();
-			isr.close();
 		}
 		catch (Exception e)
 		{
 			System.out.println(e);
-			System.out.println("Error while getting server vote count.");
+			System.out.println("Error while getting server vote count on TOPZONE.");
 		}
 	
 	  return -1;

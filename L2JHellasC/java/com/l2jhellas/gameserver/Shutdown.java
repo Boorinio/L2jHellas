@@ -32,7 +32,6 @@ import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Hero;
-import com.l2jhellas.gameserver.model.entity.engines.Hitman;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -282,13 +281,6 @@ public class Shutdown extends Thread
 			
 			CursedWeaponsManager.getInstance().saveData();
 			System.out.println("Cursed weapons Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-			
-			// Start Hitman Event.
-			if (Hitman.start())
-			{
-				Hitman.getInstance().save();
-				System.out.println("Hitman Lists saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-			}
 			
 			// Rank PvP System by Masterio:
 			if (Config.RANK_PVP_SYSTEM_ENABLED)

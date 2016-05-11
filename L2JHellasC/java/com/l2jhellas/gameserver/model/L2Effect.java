@@ -87,6 +87,7 @@ public abstract class L2Effect
 		BLUFF,
 		CHARM_OF_LUCK,
 		INVINCIBLE,
+		SPOIL,
 		PROTECTION_BLESSING
 	}/** @formatter:on */
 

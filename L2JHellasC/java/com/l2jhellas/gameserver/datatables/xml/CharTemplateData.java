@@ -154,17 +154,11 @@ public class CharTemplateData
 													set.set("baseShldDef", 0);
 													set.set("baseShldRate", 0);
 													set.set("baseAtkRange", 40);
-													if (Config.SPAWN_CHAR && !Config.MOD_GVE_ENABLE_FACTION)
+													if (Config.SPAWN_CHAR)
 													{
 														set.set("spawnX", Config.SPAWN_X);
 														set.set("spawnY", Config.SPAWN_Y);
 														set.set("spawnZ", Config.SPAWN_Z);
-													}
-													else if (Config.MOD_GVE_ENABLE_FACTION)
-													{
-														set.set("spawnX", Config.PRIMAR_X);
-														set.set("spawnY", Config.PRIMAR_Y);
-														set.set("spawnZ", Config.PRIMAR_Z);
 													}
 													else
 													{

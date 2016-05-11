@@ -149,13 +149,6 @@ public class SummonFriend implements ISkillHandler
 						continue;
 					}
 
-					// Faction GvE
-					if (targetChar.isevil() || targetChar.isgood())
-					{
-						activePlayer.sendMessage("You may not use an Summon Friend skill in a Faction mode.");
-						continue;
-					}
-
 					// Check for the target's jail status, arenas and siege
 					// zones
 					if (targetChar.isInsideZone(ZoneId.PVP))

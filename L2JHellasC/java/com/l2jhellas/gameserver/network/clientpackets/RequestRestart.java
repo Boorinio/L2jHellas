@@ -64,9 +64,9 @@ public final class RequestRestart extends L2GameClientPacket
 
 		player.getInventory().updateDatabase();
 
-		if (player.getPrivateStoreType() != 0)
+		if ((player.isInStoreMode() || (player.isInCraftMode())))
 		{
-			player.sendMessage("You can't logout while trading.");
+			player.sendMessage("You cannot restart while you are on store mode.");
 			return;
 		}
 

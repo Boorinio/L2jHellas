@@ -117,7 +117,7 @@ public class IpCatcher
 		final String name = p.getName();
 		
 		if (ip != null && name != null)
-			ips.add("Name");
+		ips.add("Name");
 		ips.add(name);
 		ips.add("Ip");
 		ips.add(ip);

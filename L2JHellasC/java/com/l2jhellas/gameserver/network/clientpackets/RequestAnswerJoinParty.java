@@ -48,14 +48,6 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 			if (requestor == null)
 				return;
 
-			// Faction Good vs Evil
-			if (player.isevil() && requestor.isgood() || player.isgood() && requestor.isevil())
-			{
-				requestor.sendPacket(ActionFailed.STATIC_PACKET);
-				player.sendPacket(ActionFailed.STATIC_PACKET);
-				return;
-			}
-
 			JoinParty join = new JoinParty(_response);
 			requestor.sendPacket(join);
 

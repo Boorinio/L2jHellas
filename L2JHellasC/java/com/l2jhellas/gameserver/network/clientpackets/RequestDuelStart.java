@@ -64,14 +64,6 @@ public final class RequestDuelStart extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.YOU_ARE_UNABLE_TO_REQUEST_A_DUEL_AT_THIS_TIME);
 			return;
 		}
-
-		// Faction Good vs Evil
-		if ((Config.MOD_GVE_ENABLE_FACTION && activeChar.isevil()) || activeChar.isgood())
-		{
-			activeChar.sendPacket(SystemMessageId.YOU_ARE_UNABLE_TO_REQUEST_A_DUEL_AT_THIS_TIME);
-			return;
-		}
-
 		else if (!targetChar.canDuel())
 		{
 			activeChar.sendPacket(targetChar.getNoDuelReason());

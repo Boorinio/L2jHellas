@@ -1280,13 +1280,6 @@ public abstract class L2Skill
 				{
 					if (src instanceof L2PcInstance && obj != null && (obj instanceof L2Attackable || obj instanceof L2Playable))
 					{
-						if (Config.MOD_GVE_ENABLE_FACTION)
-						{
-							if (src.isgood() && (obj instanceof L2PcInstance && ((L2PcInstance) obj).isgood() || obj instanceof L2Summon && ((L2Summon) obj).getOwner().isgood()))
-								continue;
-							if (src.isevil() && (obj instanceof L2PcInstance && ((L2PcInstance) obj).isevil() || obj instanceof L2Summon && ((L2Summon) obj).getOwner().isevil()))
-								continue;
-						}
 
 						// Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met
 						if (obj == activeChar || obj == src)
@@ -1384,14 +1377,6 @@ public abstract class L2Skill
 					if (obj == cha)
 						continue;
 					target = (L2Character) obj;
-
-					if (Config.MOD_GVE_ENABLE_FACTION)
-					{
-						if (src.isgood() && (obj instanceof L2PcInstance && ((L2PcInstance) obj).isgood() || obj instanceof L2Summon && ((L2Summon) obj).getOwner().isgood()))
-							continue;
-						if (src.isevil() && (obj instanceof L2PcInstance && ((L2PcInstance) obj).isevil() || obj instanceof L2Summon && ((L2Summon) obj).getOwner().isevil()))
-							continue;
-					}
 
 					if (!GeoData.getInstance().canSeeTarget(activeChar, target))
 						continue;

@@ -73,11 +73,6 @@ public final class Logout extends L2GameClientPacket
 			return;
 		}
 
-		if (player.isAway())
-		{
-			player.sendMessage("You can't restart in Away mode.");
-			return;
-		}
 		if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 		{
 			player.sendMessage("You can't logout while you are in olympiad.");
@@ -108,16 +103,11 @@ public final class Logout extends L2GameClientPacket
 
 		if ((player.isInStoreMode() || (player.isInCraftMode())))
 		{
-			player.closeNetConnection();
+			player.sendMessage("You cannot log out while you are on store mode.");
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
-		if ((player.isInStoreMode() && Config.OFFLINE_TRADE_ENABLE) || (player.isInCraftMode() && Config.OFFLINE_CRAFT_ENABLE))
-		{
-			player.closeNetConnection();
-			return;
-		}
-
+		
 		RegionBBSManager.getInstance().changeCommunityBoard();
 		
 		player.endDuel();

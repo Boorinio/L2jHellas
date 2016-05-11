@@ -75,6 +75,9 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		if (commandStr.length >= 3)
 			cmdParams2 = commandStr[2];
 
+		if (player.isLearningSkill())
+			return;
+		
 		if (actualCommand.equalsIgnoreCase("create_clan"))
 		{
 			ClanTable.getInstance().createClan(player, cmdParams);
@@ -343,14 +346,12 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					
 					if (player.isLearningSkill())
 						return;
-					
-					
+
 					boolean allowAddition = true;
 
 					if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
 					{
 						_log.warning("Player " + player.getName() + " has performed a subclass change too fast");
-						
 						return;
 					}
 			
@@ -369,14 +370,12 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 					if (player._inEventCTF || player._inEventDM || player._inEventTvT || player._inEventVIP)
 					{
-						
 						player.sendMessage("You may not add a new sub class while being registered on event.");
 						return;
 					}
 
 					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())		
 					{				
-								
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 						return;
 					}
@@ -411,14 +410,12 @@ public class L2VillageMasterInstance extends L2NpcInstance
 						QuestState qs = player.getQuestState("235_MimirsElixir");
 						if ((qs == null) || !qs.isCompleted())
 						{
-							
 							player.sendMessage("You must have completed the Mimir's Elixir quest to continue adding your sub class.");
 							return;
 						}
 						qs = player.getQuestState("234_FatesWhisper");
 						if ((qs == null) || !qs.isCompleted())
 						{
-							
 							player.sendMessage("You must have completed the Fate's Whisper quest to continue adding your sub class.");
 							return;
 						}
@@ -428,7 +425,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 						String className = CharTemplateData.getInstance().getClassNameById(paramOne);
 
 						if (!player.addSubClass(paramOne, player.getTotalSubClasses() + 1))
-						{					
+						{			
 							player.sendMessage("The sub class could not be added.");
 							return;
 						}
@@ -442,7 +439,6 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					{
 						html.setFile("data/html/villagemaster/SubClass_Fail.htm");
 					}
-					
 				break;
 
 				case 5: // Change Class - Action
@@ -455,12 +451,9 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 					if (player.isLearningSkill())
 						return;
-					
-					
-					
+
 					if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
 					{
-						
 						_log.warning("Player " + player.getName() + " has performed a subclass change too fast");
 						return;
 					}
@@ -469,7 +462,6 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					
 					if (player._inEventCTF || player._inEventDM || player._inEventTvT || player._inEventVIP)
 					{
-						
 						player.sendMessage("You may not add a new sub class while being registered on event.");
 						return;
 					}
@@ -479,7 +471,6 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 					{
-						
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 						return;
 					}
@@ -513,7 +504,6 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					content.append("Change Subclass:<br>Your active sub class is now a <font color=\"LEVEL\">" + CharTemplateData.getInstance().getClassNameById(player.getActiveClass()) + "</font>.");
 
 					player.sendPacket(SystemMessageId.SUBCLASS_TRANSFER_COMPLETED); // Transfer completed.
-					
 				break;
 				case 6: // Change/Cancel Subclass - Choice
 
@@ -555,13 +545,11 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					if (player.isLearningSkill())
 						return;
 					
-					
 					if (!isValidNewSubClass(player, paramTwo))
 						return;
 					
 					if (!player.getAntiFlood().getSubclass().tryPerformAction("change class"))
 					{
-						
 						_log.warning("Player " + player.getName() + " has performed a subclass change too fast");
 						return;
 					}
@@ -573,7 +561,6 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 					if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 					{
-						
 						player.sendPacket(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT);
 						return;
 					}
@@ -602,10 +589,8 @@ public class L2VillageMasterInstance extends L2NpcInstance
 						player.setActiveClass(0); // Also updates _classIndex plus switching _classid to baseclass.
 
 						player.sendMessage("The sub class could not be added, you have been reverted to your base class.");
-						
 						return;
 					}
-				
 				break;
 			}
 
