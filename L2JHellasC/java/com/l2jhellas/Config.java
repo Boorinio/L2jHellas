@@ -3391,7 +3391,7 @@ public final class Config
 			PURGE_ERROR_LOG = Boolean.parseBoolean(serverSettings.getProperty("PurgeErrorLog", "False"));
 			REQUEST_ID = Integer.parseInt(serverSettings.getProperty("RequestServerID", "0"));
 			ACCEPT_ALTERNATE_ID = Boolean.parseBoolean(serverSettings.getProperty("AcceptAlternateID", "True"));
-			DATABASE_DRIVER = serverSettings.getProperty("Driver", "com.mysql.jdbc.Driver");
+			DATABASE_DRIVER = serverSettings.getProperty("Driver", "com.mysql.cj.jdbc.Driver");
 			DATABASE_URL = serverSettings.getProperty("URL", "jdbc:mysql://localhost/l2jdb");
 			DATABASE_LOGIN = serverSettings.getProperty("Login", "root");
 			DATABASE_PASSWORD = serverSettings.getProperty("Password", "");
@@ -3512,7 +3512,7 @@ public final class Config
 			ACCEPT_ALTERNATE_ID = Boolean.parseBoolean(serverSettings.getProperty("AcceptAlternateID", "True"));
 			LOGIN_TRY_BEFORE_BAN = Integer.parseInt(serverSettings.getProperty("LoginTryBeforeBan", "10"));
 			LOGIN_BLOCK_AFTER_BAN = Integer.parseInt(serverSettings.getProperty("LoginBlockAfterBan", "600"));
-			DATABASE_DRIVER = serverSettings.getProperty("Driver", "com.mysql.jdbc.Driver");
+			DATABASE_DRIVER = serverSettings.getProperty("Driver", "com.mysql.cj.jdbc.Driver");
 			DATABASE_URL = serverSettings.getProperty("URL", "jdbc:mysql://localhost/l2jdb");
 			DATABASE_LOGIN = serverSettings.getProperty("Login", "root");
 			DATABASE_PASSWORD = serverSettings.getProperty("Password", "");
