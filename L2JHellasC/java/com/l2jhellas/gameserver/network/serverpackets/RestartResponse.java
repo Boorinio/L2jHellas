@@ -21,7 +21,7 @@ public class RestartResponse extends L2GameServerPacket
 
 	public RestartResponse()
 	{
-		_message = "ok merong~ khaha";
+		_message = "rr ok";
 	}
 
 	@Override

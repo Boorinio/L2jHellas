@@ -53,8 +53,6 @@ public final class Logout extends L2GameClientPacket
 		if (player == null)
 			return;
 
-		player.getInventory().updateDatabase();
-
 		if (AttackStanceTaskManager.getInstance().isInAttackStance(player))
 		{
 			if (Config.DEBUG)
@@ -113,10 +111,6 @@ public final class Logout extends L2GameClientPacket
 		player.endDuel();
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
-		
-		player.getKnownList().removeAllKnownObjects();
-		L2World.getInstance().removeFromAllPlayers(player);
-		L2World.getInstance().removeObject(player);
 		
 		player.deleteMe();
 		notifyFriends(player);

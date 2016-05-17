@@ -23,8 +23,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
-
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -59,7 +57,7 @@ public class AdminData extends DocumentParser
 	{
 		_accessLevels = new HashMap<>();
 		_adminCommandAccessRights = new HashMap<>();
-		_gmList = new FastMap<L2PcInstance, Boolean>().setShared(true);
+		_gmList = new HashMap<L2PcInstance, Boolean>();
 		load();
 	}
 

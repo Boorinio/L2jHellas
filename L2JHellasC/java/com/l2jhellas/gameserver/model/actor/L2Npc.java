@@ -2472,32 +2472,17 @@ public class L2Npc extends L2Character
 	public void deleteMe()
 	{
 		final L2WorldRegion region = getWorldRegion();
+		
 		if (region != null)
 			region.removeFromZones(this);		
-		try
-		{
-			decayMe();
-		}
-		catch (Throwable t)
-		{
-			_log.severe("deletedMe(): " + t);
-		}
 
+		decayMe();
 		// Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI
-		try
-		{
-			getKnownList().removeAllKnownObjects();
-		}
-		catch (Throwable t)
-		{
-			_log.severe("deletedMe(): " + t);
-		}
+		getKnownList().removeAllKnownObjects();
 		// Remove L2Object object from _allObjects of L2World
 		L2World.getInstance().removeObject(this);
 		
-		super.deleteMe();
-		
-		
+		super.deleteMe();				
 	}
 
 	/**

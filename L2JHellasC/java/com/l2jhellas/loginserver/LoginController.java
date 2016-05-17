@@ -35,7 +35,6 @@ import java.util.logging.Logger;
 import javax.crypto.Cipher;
 
 import javolution.util.FastCollection.Record;
-import javolution.util.FastMap;
 import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
@@ -68,7 +67,7 @@ public class LoginController
 	protected FastSet<L2LoginClient> _clients = new FastSet<L2LoginClient>();
 
 	/** Authed Clients on LoginServer */
-	protected FastMap<String, L2LoginClient> _loginServerClients = new FastMap<String, L2LoginClient>().setShared(true);
+	protected Map<String, L2LoginClient> _loginServerClients = new ConcurrentHashMap<>();
 
 	private final Map<InetAddress, BanInfo> _bannedIps = new ConcurrentHashMap<InetAddress, BanInfo>();
 
@@ -737,23 +736,19 @@ public class LoginController
 					for (Record e = _clients.head(), end = _clients.tail(); (e = e.getNext()) != end;)
 					{
 						L2LoginClient client = _clients.valueOf(e);
-						if (client.getConnectionStartTime() + LOGIN_TIMEOUT >= System.currentTimeMillis())
-						{
+						
+						if ((client.getConnectionStartTime() + LOGIN_TIMEOUT) < System.currentTimeMillis())
 							client.close(LoginFailReason.REASON_ACCESS_FAILED);
-						}
 					}
 				}
 
-				synchronized (_loginServerClients)
+				for (L2LoginClient client : _loginServerClients.values())
 				{
-					for (FastMap.Entry<String, L2LoginClient> e = _loginServerClients.head(), end = _loginServerClients.tail(); (e = e.getNext()) != end;)
-					{
-						L2LoginClient client = e.getValue();
-						if (client.getConnectionStartTime() + LOGIN_TIMEOUT >= System.currentTimeMillis())
-						{
-							client.close(LoginFailReason.REASON_ACCESS_FAILED);
-						}
-					}
+					if (client == null)
+						continue;
+					
+					if ((client.getConnectionStartTime() + LOGIN_TIMEOUT) < System.currentTimeMillis())
+						client.close(LoginFailReason.REASON_ACCESS_FAILED);
 				}
 
 				try

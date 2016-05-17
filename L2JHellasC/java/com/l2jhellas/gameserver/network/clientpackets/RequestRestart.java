@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.L2Party;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
@@ -61,8 +60,6 @@ public final class RequestRestart extends L2GameClientPacket
 			player.abortCast();
 			player.setIsTeleporting(false);
 		}
-
-		player.getInventory().updateDatabase();
 
 		if ((player.isInStoreMode() || (player.isInCraftMode())))
 		{
@@ -128,14 +125,8 @@ public final class RequestRestart extends L2GameClientPacket
 		// detach the client from the char so that the connection isnt closed in the deleteMe
 		player.setClient(null);
 
-		RegionBBSManager.getInstance().changeCommunityBoard();
-
-		player.getKnownList().removeAllKnownObjects();
-		L2World.getInstance().removeFromAllPlayers(player);
-		L2World.getInstance().removeObject(player);
-		
-		// removing player from the world
 		player.deleteMe();
+			
 		L2GameClient.saveCharToDisk(client.getActiveChar());
 
 		getClient().setActiveChar(null);
@@ -143,13 +134,14 @@ public final class RequestRestart extends L2GameClientPacket
 		// return the client to the authed status
 		client.setState(GameClientState.AUTHED);
 
-		RestartResponse response = new RestartResponse();
-		sendPacket(response);
-
+		sendPacket(new RestartResponse());
 		// send char list
 		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		sendPacket(cl);
 		client.setCharSelection(cl.getCharInfo());
+
+		RegionBBSManager.getInstance().changeCommunityBoard();
+		
 	}
 
 	@Override

@@ -56,8 +56,9 @@ public class CharKnownList extends ObjectKnownList
 	@Override
 	public boolean addKnownObject(L2Object object, L2Character dropper)
 	{
-		if (!super.addKnownObject(object, dropper))
+		if (!super.addKnownObject(object, dropper) || !object.isVisible())
 			return false;
+		
 		if (object instanceof L2PcInstance)
 		{
 			getKnownPlayers().put(object.getObjectId(), (L2PcInstance) object);
@@ -135,7 +136,7 @@ public class CharKnownList extends ObjectKnownList
 
 		for (L2Object obj : getKnownObjects().values())
 		{
-			if ((obj != null) && obj instanceof L2Character)
+			if ((obj != null) && obj instanceof L2Character && obj.isVisible())
 				result.add((L2Character) obj);
 		}
 
@@ -148,17 +149,17 @@ public class CharKnownList extends ObjectKnownList
 
 		for (L2Object obj : getKnownObjects().values())
 		{
-			if (obj instanceof L2PcInstance)
+			if (obj instanceof L2PcInstance && obj.isVisible())
 			{
 				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
 					result.add((L2PcInstance) obj);
 			}
-			else if (obj instanceof L2MonsterInstance)
+			else if (obj instanceof L2MonsterInstance && obj.isVisible())
 			{
 				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
 					result.add((L2MonsterInstance) obj);
 			}
-			else if (obj instanceof L2Npc)
+			else if (obj instanceof L2Npc && obj.isVisible())
 			{
 				if (Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
 					result.add((L2Npc) obj);
@@ -187,7 +188,7 @@ public class CharKnownList extends ObjectKnownList
 		ArrayList<L2PcInstance> result = new ArrayList<L2PcInstance>();
 
 		for (L2PcInstance player : getKnownPlayers().values())
-			if (Util.checkIfInRange((int) radius, getActiveChar(), player, true))
+			if (player.isVisible() && Util.checkIfInRange((int) radius, getActiveChar(), player, true))
 				result.add(player);
 
 		return result;
@@ -198,7 +199,7 @@ public class CharKnownList extends ObjectKnownList
 		Collection<L2Object> objects = getKnownObjects().values();
 		for (L2Object object : objects)
 		{
-			if (object instanceof L2PcInstance && ((L2PcInstance) object).inObserverMode())
+			if (object instanceof L2PcInstance && ((L2PcInstance) object).inObserverMode() || !object.isVisible())
 				continue;
 			
 			sendInfoFrom(object);

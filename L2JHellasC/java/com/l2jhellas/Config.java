@@ -86,7 +86,6 @@ public final class Config
 	private static final String MOD_L2JHellas_CONFIG_FILE = "./config/Mods/L2JHellas.ini";
 	private static final String MOD_RANK_CONFIG_FILE = "./config/Mods/Rank PvP System.ini";
 	private static final String MOD_AUTOMATION_CONFIG_FILE = "./config/Mods/Automatation.ini";
-	private static final String MOD_VOTE_CONFIG_FILE = "./config/Mods/Vote System.ini";
 	private static final String MOD_SMART_CB_CONFIG_FILE = "./config/Mods/Smart Community Board.ini";
 	private static final String MOD_CUSTOM_NPC_CONFIG_FILE = "./config/Mods/Custom Npcs.ini";
 	// Olympiad Folder
@@ -681,21 +680,6 @@ public final class Config
 	public static String BUTTON_H;
 	public static String BUTTON_BIG_W;
 	public static String BUTTON_BIG_H;
-	/**
-	 * VoteManager Config File
-	 */
-	public static String VOTE_LINK_HOPZONE;
-	public static String VOTE_LINK_TOPZONE;
-	public static int VOTE_REWARD_ID1;
-	public static int VOTE_REWARD_ID2;
-	public static int VOTE_REWARD_ID3;
-	public static int VOTE_REWARD_ID4;
-	public static int VOTE_REWARD_AMOUNT1;
-	public static int VOTE_REWARD_AMOUNT2;
-	public static int VOTE_REWARD_AMOUNT3;
-	public static int VOTE_REWARD_AMOUNT4;
-	public static int SECS_TO_VOTE;
-	public static int EXTRA_REW_VOTE_AM;
 
 	/**
 	 * NPC Config File
@@ -2379,34 +2363,7 @@ public final class Config
 			ALLOW_ANTI_AFK = Boolean.valueOf(autoSettings.getProperty("AllowAntiAfk", "True"));
 			MINUTES_AFK_PLAYERS = Integer.parseInt(autoSettings.getProperty("AntiAfkMinutes", "20"));
 			ALLOW_PRIVATE_ANTI_BOT = Boolean.valueOf(autoSettings.getProperty("AllowPrivateAntiBot", "False"));
-			ENCHANT_BOT_CHANCE = Integer.parseInt(autoSettings.getProperty("PrivateBotChance", "15"));
-			
-			/**
-			 * Vote System
-			 */
-			Properties VoteSettings = new Properties();
-			final File vote = new File(MOD_VOTE_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(vote))
-			{
-				VoteSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.log(Level.SEVERE, "Error while loading " + MOD_VOTE_CONFIG_FILE + " settings!", e);
-			}
-			VOTE_LINK_HOPZONE = VoteSettings.getProperty("HopzoneUrl", "null");
-			VOTE_LINK_TOPZONE = VoteSettings.getProperty("TopzoneUrl", "null");
-			VOTE_REWARD_ID1 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId1", "300"));
-			VOTE_REWARD_ID2 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId2", "300"));
-			VOTE_REWARD_ID3 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId3", "300"));
-			VOTE_REWARD_ID4 = Integer.parseInt(VoteSettings.getProperty("VoteRewardId4", "300"));
-			VOTE_REWARD_AMOUNT1 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount1", "300"));
-			VOTE_REWARD_AMOUNT2 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount2", "300"));
-			VOTE_REWARD_AMOUNT3 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount3", "300"));
-			VOTE_REWARD_AMOUNT4 = Integer.parseInt(VoteSettings.getProperty("VoteRewardAmount4", "300"));
-			SECS_TO_VOTE = Integer.parseInt(VoteSettings.getProperty("SecondsToVote", "20"));
-			EXTRA_REW_VOTE_AM = Integer.parseInt(VoteSettings.getProperty("ExtraRewVoteAm", "20"));
-
+			ENCHANT_BOT_CHANCE = Integer.parseInt(autoSettings.getProperty("PrivateBotChance", "15"));			
 			/**
 			 * Smart CB
 			 */

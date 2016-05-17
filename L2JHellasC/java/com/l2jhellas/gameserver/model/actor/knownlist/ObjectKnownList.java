@@ -32,6 +32,7 @@ public class ObjectKnownList
 	public ObjectKnownList(L2Object activeObject)
 	{
 		_activeObject = activeObject;
+		_knownObjects = new ConcurrentHashMap<Integer, L2Object>();
 	}
 
 	public boolean addKnownObject(L2Object object)
@@ -41,7 +42,7 @@ public class ObjectKnownList
 
 	public boolean addKnownObject(L2Object object, L2Character dropper)
 	{
-		if ((object == null) || (object == getActiveObject()))
+		if ((object == null) || (object == getActiveObject()) || !object.isVisible())
 			return false;
 
 		// Check if already know object
@@ -110,10 +111,9 @@ public class ObjectKnownList
 	/** Return the _knownObjects containing all L2Object known by the L2Character. */
 	public final Map<Integer, L2Object> getKnownObjects()
 	{
-		if (_knownObjects == null)
-			_knownObjects = new ConcurrentHashMap<Integer, L2Object>();
 		return _knownObjects;
 	}
+	
 	@SuppressWarnings("unchecked")
 	public final <A> Collection<A> getKnownTypeInRadius(Class<A> type, int radius)
 	{
