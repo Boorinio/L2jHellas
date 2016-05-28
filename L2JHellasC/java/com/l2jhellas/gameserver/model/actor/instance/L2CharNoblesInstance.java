@@ -79,7 +79,7 @@ public class L2CharNoblesInstance extends L2Npc
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
 		{
 			SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-			broadcastPacket(sa);
+			broadcastPacket(sa,1200);
 			NpcHtmlMessage html = new NpcHtmlMessage(1);
 			html.setHtml(NPC_MENU);
 			sendHtmlMessage(player, html);

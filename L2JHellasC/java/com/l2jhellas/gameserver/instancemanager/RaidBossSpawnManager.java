@@ -18,9 +18,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +48,7 @@ public class RaidBossSpawnManager
 	
 	protected static final Map<Integer, L2RaidBossInstance> _bosses = new HashMap<>();
 	protected static final Map<Integer, L2Spawn> _spawns = new HashMap<>();
-	protected static final Map<Integer, StatsSet> _storedInfo = new HashMap<>();
+	protected static final Map<Integer, StatsSet> _storedInfo = new ConcurrentHashMap<>();
 	protected static final Map<Integer, ScheduledFuture<?>> _schedules = new HashMap<>();
 	
 	public static enum StatusEnum
@@ -169,7 +171,7 @@ public class RaidBossSpawnManager
 		if (!_storedInfo.containsKey(boss.getNpcId()))
 			return;
 
-		StatsSet info = _storedInfo.get(boss.getNpcId());
+		final StatsSet info = _storedInfo.get(boss.getNpcId());
 
 		if (isBossDead)
 		{
@@ -185,15 +187,15 @@ public class RaidBossSpawnManager
 			info.set("currentMP", boss.getMaxMp());
 			info.set("respawnTime", respawnTime);
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Updated " + boss.getName() + " respawn time to " + respawnTime);
-
-			ScheduledFuture<?> futureSpawn;
-			futureSpawn = ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(boss.getNpcId()), respawn_delay);
-
-			_schedules.put(boss.getNpcId(), futureSpawn);
-			
-			if (Config.RB_IMMEDIATE_INFORM)
+			if (!_schedules.containsKey(boss.getNpcId()))
+			{
+				_log.info("RaidBoss: " + boss.getName() + " - " + new SimpleDateFormat("dd-MM-yyyy HH:mm").format(respawnTime) + " (" + respawn_delay + "h).");
+				
+				_schedules.put(boss.getNpcId(), ThreadPoolManager.getInstance().scheduleGeneral(new spawnSchedule(boss.getNpcId()), respawn_delay * 3600000));
+				
+				if (Config.RB_IMMEDIATE_INFORM)
 				updateDb();
+			}
 		}
 		else
 		{
@@ -204,7 +206,6 @@ public class RaidBossSpawnManager
 			info.set("respawnTime", 0L);
 		}
 
-		_storedInfo.remove(boss.getNpcId());
 		_storedInfo.put(boss.getNpcId(), info);
 	}
 
@@ -346,12 +347,12 @@ public class RaidBossSpawnManager
 		{
 			PreparedStatement statement = con.prepareStatement("UPDATE raidboss_spawnlist SET respawn_time=?, currentHP=?, currentMP=? WHERE boss_id=?");
 			
-			for (Integer bossId : _storedInfo.keySet())
+			for (Map.Entry<Integer, StatsSet> storedInfoEntry : _storedInfo.entrySet())
 			{
-				if (bossId == null)
-					continue;
-				
+				final int bossId = storedInfoEntry.getKey();
+
 				final L2RaidBossInstance boss = _bosses.get(bossId);
+				
 				if (boss == null)
 					continue;
 				

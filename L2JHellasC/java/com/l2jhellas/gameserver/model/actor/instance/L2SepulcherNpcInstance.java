@@ -177,7 +177,7 @@ public class L2SepulcherNpcInstance extends L2Npc
 					// L2PcInstance on the _knownPlayer of the L2NpcInstance
 					// to display a social action of the L2NpcInstance on their client
 					SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-					broadcastPacket(sa);
+					broadcastPacket(sa,1200);
 
 					doAction(player);
 				}

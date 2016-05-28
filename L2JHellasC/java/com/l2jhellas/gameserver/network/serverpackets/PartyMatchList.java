@@ -14,6 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.l2jhellas.gameserver.model.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.PartyMatchRoomList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -46,40 +51,55 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class PartyMatchList extends L2GameServerPacket
 {
 	private static final String _S__AF_PARTYMATCHLIST = "[S] 96 PartyMatchList";
-	private final L2PcInstance[] _matchingPlayers;
-
-	/**
-	 * @param allPlayers
-	 */
-	public PartyMatchList(L2PcInstance[] allPlayers)
+	private final L2PcInstance _cha;
+	private final int _loc;
+	private final int _lim;
+	private final List<PartyMatchRoom> _rooms;
+	
+	public PartyMatchList(L2PcInstance player, int auto, int location, int limit)
 	{
-		_matchingPlayers = allPlayers;
+		_cha = player;
+		_loc = location;
+		_lim = limit;
+		_rooms = new ArrayList<>();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
-		writeC(0x96);
-
-		int size = _matchingPlayers.length;
-		if (size > 40)
+		if (getClient().getActiveChar() == null)
+			return;
+		
+		for (PartyMatchRoom room : PartyMatchRoomList.getInstance().getRooms())
 		{
-			size = 40; // the client only displays 40 players, so we also limit the list to 40
+			if (room.getMembers() < 1 || room.getOwner() == null || room.getOwner().isOnline()==0 || room.getOwner().getPartyRoom() != room.getId())
+			{
+				PartyMatchRoomList.getInstance().deleteRoom(room.getId());
+				continue;
+			}
+			
+			if (_loc > 0 && _loc != room.getLocation())
+				continue;
+			
+			if (_lim == 0 && ((_cha.getLevel() < room.getMinLvl()) || (_cha.getLevel() > room.getMaxLvl())))
+				continue;
+			
+			_rooms.add(room);
 		}
-
-		writeD(size);
-		for (int i = 0; i < size; i++)
+		
+		writeC(0x96);
+		writeD((!_rooms.isEmpty()) ? 1 : 0);
+		writeD(_rooms.size());
+		for (PartyMatchRoom room : _rooms)
 		{
-			writeD(_matchingPlayers[i].getObjectId());
-			writeS(_matchingPlayers[i].getName());
-			writeD(_matchingPlayers[i].getLevel());
-			writeD(_matchingPlayers[i].getClassId().getId());
-			writeD(00); // 00 -white name 01-red name
-			writeD(_matchingPlayers[i].getClanId());
-			writeD(00); // 00 - no affil 01-party 02-party pending 03-
-			writeD(_matchingPlayers[i].getX());
-			writeD(_matchingPlayers[i].getY());
-			writeD(_matchingPlayers[i].getZ());
+			writeD(room.getId());
+			writeS(room.getTitle());
+			writeD(room.getLocation());
+			writeD(room.getMinLvl());
+			writeD(room.getMaxLvl());
+			writeD(room.getMembers());
+			writeD(room.getMaxMembers());
+			writeS(room.getOwner().getName());
 		}
 	}
 

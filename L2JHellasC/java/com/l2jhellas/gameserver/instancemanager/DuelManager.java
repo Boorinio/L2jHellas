@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -33,7 +34,7 @@ public class DuelManager
 	}
 	
 	private final List<Duel> _duels;
-	private int _currentDuelId = 0x90;
+	private final AtomicInteger _currentDuelId = new AtomicInteger();
 	
 	protected DuelManager()
 	{
@@ -43,11 +44,7 @@ public class DuelManager
 	
 	private int getNextDuelId()
 	{
-		// In case someone wants to run the server forever :)
-		if (++_currentDuelId >= 2147483640)
-			_currentDuelId = 1;
-		
-		return _currentDuelId;
+		return _currentDuelId.incrementAndGet();
 	}
 	
 	public Duel getDuel(int duelId)

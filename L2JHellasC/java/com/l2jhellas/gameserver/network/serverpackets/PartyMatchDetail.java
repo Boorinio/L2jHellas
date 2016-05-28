@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.PartyMatchRoom;
 
 /**
  * sample
@@ -28,43 +28,24 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class PartyMatchDetail extends L2GameServerPacket
 {
 	private static final String _S__B0_PARTYMATCHDETAIL = "[S] 97 PartyMatchDetail";
-	private final L2PcInstance _activeChar;
+	private final PartyMatchRoom _room;
 
-	/**
-	 * @param allPlayers
-	 */
-	public PartyMatchDetail(L2PcInstance player)
+	public PartyMatchDetail(PartyMatchRoom room)
 	{
-		_activeChar = player;
+		_room = room;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x97);
-
-		writeD(_activeChar.getObjectId());
-		if (_activeChar.isPartyMatchingShowLevel())
-		{
-			writeD(1); // show level
-		}
-		else
-		{
-			writeD(0); // hide level
-		}
-
-		if (_activeChar.isPartyMatchingShowClass())
-		{
-			writeD(1); // show class
-		}
-		else
-		{
-			writeD(0); // hide class
-		}
-
-		writeD(0); // c2
-
-		writeS("  " + _activeChar.getPartyMatchingMemo()); // seems to be bugged.. first 2 chars get stripped away
+		writeD(_room.getId()); // Room ID
+		writeD(_room.getMaxMembers()); // Max Members
+		writeD(_room.getMinLvl()); // Level Min
+		writeD(_room.getMaxLvl()); // Level Max
+		writeD(_room.getLootType()); // Loot Type
+		writeD(_room.getLocation()); // Room Location
+		writeS(_room.getTitle()); // Room title
 	}
 
 	@Override

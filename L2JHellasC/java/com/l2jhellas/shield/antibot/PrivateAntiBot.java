@@ -32,8 +32,11 @@ public class PrivateAntiBot
 	public static void privateantibot(final L2PcInstance player)
 	{
 		if(!player.isGM())
-		showHtmlWindow(player);
-		player.sendMessage("You have to choose within 2 minutes.");
+		{
+		    showHtmlWindow(player);
+		    player.sendMessage("You have to choose within 2 minutes.");
+		}
+		
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override

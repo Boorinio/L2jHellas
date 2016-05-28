@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-
 public class OnlinePlayersCmd implements IVoicedCommandHandler
 {
 	private static final String[] VOICED_COMMANDS =
@@ -42,7 +41,6 @@ public class OnlinePlayersCmd implements IVoicedCommandHandler
 		player.sendMessage("====================\n");
 		player.sendMessage("There are " + L2World.getInstance().getAllPlayers().size() + " players online\n");
 		player.sendMessage("====================");
-
 	}
 
 	@Override

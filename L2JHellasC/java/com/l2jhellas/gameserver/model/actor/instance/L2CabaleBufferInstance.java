@@ -71,7 +71,7 @@ public class L2CabaleBufferInstance extends L2Npc
 				// Send a Server->Client packet SocialAction to the all L2PcInstance on the _knownPlayer of the L2NpcInstance
 				// to display a social action of the L2NpcInstance on their client
 				SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-				broadcastPacket(sa);
+				broadcastPacket(sa,1200);
 			}
 		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet

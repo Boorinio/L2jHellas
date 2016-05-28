@@ -21,6 +21,8 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2CabaleBufferInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalGuideInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.Util;
 
 public class NpcKnownList extends CharKnownList
 {
@@ -35,6 +37,33 @@ public class NpcKnownList extends CharKnownList
 		return (L2Npc) super.getActiveChar();
 	}
 
+	@Override
+	public boolean addKnownObject(L2Object object, L2Character dropper)
+	{
+		if(object instanceof L2PcInstance)
+		{
+			
+		if (!super.addKnownObject(object, dropper))
+			return false;
+		
+		return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean removeKnownObject(L2Object object)
+	{
+		if (!super.removeKnownObject(object))
+			return false;
+
+		// object is not visible or out of distance to forget, remove from known list
+		if (!object.isVisible() || !Util.checkIfInShortRadius(getDistanceToForgetObject(object), _activeObject, object, true))
+			removeKnownObject(object);
+		
+		return true;
+	}
+	
 	@Override
 	public int getDistanceToForgetObject(L2Object object)
 	{

@@ -53,6 +53,9 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 				try
 				{
 					StringTokenizer st = new StringTokenizer(command.substring(27));
+					
+					if(st!=null)
+					{
 					int delay = Integer.parseInt(st.nextToken().trim());
 					String autoAnnounce = st.nextToken();
 
@@ -66,6 +69,9 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 						AutoAnnouncementHandler.getInstance().registerAnnouncment(autoAnnounce, delay);
 						AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
 					}
+					else
+						admin.sendMessage("Delay must be > 30");
+				    }
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{

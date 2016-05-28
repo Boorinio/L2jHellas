@@ -59,7 +59,6 @@ public class MyTargetSelected extends L2GameServerPacket
 		writeC(0xa6);
 		writeD(_objectId);
 		writeH(_color);
-		writeD(0x00);
 	}
 
 	@Override

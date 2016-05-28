@@ -14,7 +14,8 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import javolution.util.FastMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
@@ -26,7 +27,7 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 /**
  * @author kombat
  */
-public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
+public class ChanceSkillList extends ConcurrentHashMap<L2Skill, ChanceCondition>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +36,6 @@ public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
 	public ChanceSkillList(L2Character owner)
 	{
 		super();
-		setShared(true);
 		_owner = owner;
 	}
 
@@ -101,11 +101,17 @@ public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
 
 	public void onEvent(int event, L2Character target)
 	{
-		for (FastMap.Entry<L2Skill, ChanceCondition> e = head(), end = tail(); (e = e.getNext()) != end;)
+		if (_owner.isDead())
+			return;
+		
+		for (Map.Entry<L2Skill, ChanceCondition> entry : entrySet())
 		{
-			if (e.getValue() != null && e.getValue().trigger(event))
+			L2Skill sk = entry.getKey();
+			ChanceCondition val = entry.getValue();
+			
+			if (val != null && val.trigger(event))
 			{
-				makeCast(e.getKey(), target);
+				makeCast(sk, target);
 			}
 		}
 	}
@@ -123,8 +129,18 @@ public class ChanceSkillList extends FastMap<L2Skill, ChanceCondition>
 						return;
 				}
 
-				ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
+				if (_owner.isSkillDisabled(skill.getId()))
+					return;
+				
+				if (skill.getReuseDelay() > 0)
+					_owner.disableSkill(skill.getId());
+				
 				L2Object[] targets = skill.getTargetList(_owner, false);
+
+				if (targets.length == 0)
+					return;
+				
+				ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 
 				_owner.broadcastPacket(new MagicSkillLaunched(_owner, skill.getDisplayId(), skill.getLevel(), targets));
 				_owner.broadcastPacket(new MagicSkillUse(_owner, (L2Character) targets[0], skill.getDisplayId(), skill.getLevel(), 0, 0));

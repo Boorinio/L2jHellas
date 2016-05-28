@@ -200,7 +200,7 @@ public class L2Npc extends L2Character
 	{
 		// Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
 		SocialAction sa = new SocialAction(getObjectId(), Rnd.get(2, 3));
-		broadcastPacket(sa);
+		broadcastPacket(sa,1200);
 	}
 
 	/**
@@ -713,7 +713,7 @@ public class L2Npc extends L2Character
 					// Send a Server->Client packet SocialAction to the all L2PcInstance on the _knownPlayer of the L2NpcInstance
 					// to display a social action of the L2NpcInstance on their client
 					SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-					broadcastPacket(sa);
+					broadcastPacket(sa,1200);
 
 					/// Open a chat window on client with the text of the L2NpcInstance
 					if (isEventMob)

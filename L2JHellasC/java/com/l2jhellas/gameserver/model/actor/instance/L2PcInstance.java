@@ -119,6 +119,9 @@ import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.MacroList;
+import com.l2jhellas.gameserver.model.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
 import com.l2jhellas.gameserver.model.PcFreight;
 import com.l2jhellas.gameserver.model.PcInventory;
 import com.l2jhellas.gameserver.model.PcWarehouse;
@@ -166,6 +169,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ChangeWaitType;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ConfirmDlg;
 import com.l2jhellas.gameserver.network.serverpackets.Die;
+import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
 import com.l2jhellas.gameserver.network.serverpackets.ExDuelUpdateUserInfo;
@@ -768,13 +772,7 @@ public final class L2PcInstance extends L2Playable
 	// client radar
 	// TODO: This needs to be better integrated and saved/loaded
 	private L2Radar _radar;
-	
-	// these values are only stored temporarily
-	private boolean _partyMatchingAutomaticRegistration;
-	private boolean _partyMatchingShowLevel;
-	private boolean _partyMatchingShowClass;
-	private String _partyMatchingMemo;
-	
+
 	// Clan related attributes
 	/** The Clan Identifier of the L2PcInstance */
 	private int _clanId;
@@ -6318,58 +6316,6 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	/**
-	 * @param b
-	 */
-	public void setPartyMatchingAutomaticRegistration(boolean b)
-	{
-		_partyMatchingAutomaticRegistration = b;
-	}
-	
-	/**
-	 * @param b
-	 */
-	public void setPartyMatchingShowLevel(boolean b)
-	{
-		_partyMatchingShowLevel = b;
-	}
-	
-	/**
-	 * @param b
-	 */
-	public void setPartyMatchingShowClass(boolean b)
-	{
-		_partyMatchingShowClass = b;
-	}
-	
-	/**
-	 * @param memo
-	 */
-	public void setPartyMatchingMemo(String memo)
-	{
-		_partyMatchingMemo = memo;
-	}
-	
-	public boolean isPartyMatchingAutomaticRegistration()
-	{
-		return _partyMatchingAutomaticRegistration;
-	}
-	
-	public String getPartyMatchingMemo()
-	{
-		return _partyMatchingMemo;
-	}
-	
-	public boolean isPartyMatchingShowClass()
-	{
-		return _partyMatchingShowClass;
-	}
-	
-	public boolean isPartyMatchingShowLevel()
-	{
-		return _partyMatchingShowLevel;
-	}
-	
-	/**
 	 * Manage the increase level task of a L2PcInstance (Max MP, Max MP, Recommandation, Expertise and beginner skills...).<BR>
 	 * <BR>
 	 * <B><U> Actions</U> :</B><BR>
@@ -10992,7 +10938,7 @@ public final class L2PcInstance extends L2Playable
 		_shortCuts.restore();
 		sendPacket(new ShortCutInit(this));
 		
-		broadcastPacket(new SocialAction(getObjectId(), 15));
+		broadcastPacket(new SocialAction(getObjectId(), 15),1200);
 		sendPacket(new SkillCoolTime(this));
 		
 		// decayMe();
@@ -11817,11 +11763,26 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void deleteMe()
 	{
+		try
+		{
+		abortAttack();
+		abortCast();
+		stopMove(null);
+		setTarget(null);
+		
 		// Check if the L2PcInstance is in observer mode to set its position to
 		// its position before entering in observer mode
 		if (inObserverMode())
 		{
 			setXYZ(_obsX, _obsY, _obsZ);
+		}
+		
+		PartyMatchWaitingList.getInstance().removePlayer(this);
+		if (_partyroom != 0)
+		{
+			PartyMatchRoom room = PartyMatchRoomList.getInstance().getRoom(_partyroom);
+			if (room != null)
+				room.deleteMember(this);
 		}
 		
 		Castle castle = null;
@@ -11858,9 +11819,6 @@ public final class L2PcInstance extends L2Playable
 				{
 					character.abortCast();
 				}
-		
-		try
-		{
 			for (L2Effect effect : getAllEffects())
 			{
 				switch (effect.getEffectType())
@@ -11874,11 +11832,7 @@ public final class L2PcInstance extends L2Playable
 						break;
 				}
 			}
-		}
-		catch (Throwable t)
-		{
-			_log.log(Level.SEVERE, "deleteMe()", t);
-		}
+
 		
 		// Remove the L2PcInstance from the world
 		decayMe();
@@ -11959,6 +11913,11 @@ public final class L2PcInstance extends L2Playable
 		// Remove L2Object object from _allObjects of L2World
 		L2World.getInstance().removeObject(this);
 		L2World.getInstance().removeFromAllPlayers(this);	
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "Exception on deleteMe()" + e.getMessage(), e);
+		}
 	}
 	
 	private FishData _fish;
@@ -15121,5 +15080,132 @@ public final class L2PcInstance extends L2Playable
  	public boolean isSeated()
  	{
  		return _mountObjectID > 0;
- 	}					
+ 	}	
+ 	
+	private int _partyroom = 0;
+	
+	public boolean isPartyWaiting()
+	{
+		return PartyMatchWaitingList.getInstance().getPlayers().contains(this);
+	}
+	
+	public void setPartyRoom(int id)
+	{
+		_partyroom = id;
+	}
+	
+	public int getPartyRoom()
+	{
+		return _partyroom;
+	}
+	
+	public boolean isInPartyMatchRoom()
+	{
+		return _partyroom > 0;
+	}
+	
+	public void cancellEnchant()
+	{
+		setActiveEnchantItem(null);
+		sendPacket(EnchantResult.CANCELLED);
+	}
+	
+	public boolean canEnchant()
+	{
+
+		Collection<L2Character> knowns = getKnownList().getKnownCharactersInRadius(400);
+
+		for (L2Object wh : knowns)
+		{
+			if (wh instanceof L2WarehouseInstance)
+			{
+				sendMessage("You cannot enchant near warehouse.");
+				return false;
+			}
+		}
+
+
+		if (isProcessingTransaction())
+		{
+			sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
+			cancellEnchant();
+			return false;
+		}
+
+		if (isOnline() == 0)
+		{
+			setActiveEnchantItem(null);
+			return false;
+		}
+		
+		if (getPrivateStoreType() != 0)
+		{
+			sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+			cancellEnchant();
+			return false;
+		}
+		
+		if (isInStoreMode())
+		{
+			sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
+			cancellEnchant();
+			return false;
+		}
+		
+		if (getActiveWarehouse() != null ||getActiveTradeList() != null)
+		{
+			sendMessage("You can't enchant items when you got active warehouse or active trade.");
+			cancellEnchant();
+			return false;
+		}	
+		return true;
+	}
+	
+	public void ReqMagicSkillUse(int skillId,boolean ctrlPressed,boolean shiftPressed)
+	{
+		
+		// Get the level of the used skill
+		final int level = getSkillLevel(skillId);
+		if (level <= 0)
+		{
+			sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		if (isOutOfControl())
+		{
+			sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		// Get the L2Skill template corresponding to the skillID received from the client
+		final L2Skill skill = SkillTable.getInstance().getInfo(skillId, level);
+		
+		// Check the validity of the skill
+		if (skill != null)
+		{
+			//players mounted on pets cannot use any toggle skills
+			if (skill.isToggle() && isMounted())
+			{
+				sendPacket(ActionFailed.STATIC_PACKET);
+				return;
+			}
+			// If Alternate rule Karma punishment is set to true, forbid skill Return to player with Karma
+			if (skill.getSkillType() == L2SkillType.RECALL && !Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT && getKarma() > 0)
+				return;
+
+			// activeChar.stopMove();
+			useMagic(skill, ctrlPressed, shiftPressed);
+			
+			if(Config.DEBUG)
+			{
+				_log.info("RequestMagicSkillUse:Char:"+getName()+ " skill:" +skill.getName()+",ControlPressed:"+ctrlPressed+",shiftPressed:"+shiftPressed);
+			}
+		}
+		else
+		{
+			sendPacket(ActionFailed.STATIC_PACKET);
+			_log.warning("RequestMagicSkillUse: No skill found!!");
+		}
+		
+
+	}
 }

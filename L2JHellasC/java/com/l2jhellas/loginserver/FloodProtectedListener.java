@@ -18,11 +18,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javolution.util.FastMap;
 
 import com.l2jhellas.Config;
 
@@ -32,7 +31,7 @@ import com.l2jhellas.Config;
 public abstract class FloodProtectedListener extends Thread
 {
 	private final Logger _log = Logger.getLogger(FloodProtectedListener.class.getName());
-	private final Map<String, ForeignConnection> _floodProtection = new FastMap<String, ForeignConnection>();
+	private final Map<String, ForeignConnection> _floodProtection = new HashMap<String, ForeignConnection>();
 	private final String _listenIp;
 	private final int _port;
 	private ServerSocket _serverSocket;

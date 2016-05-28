@@ -210,7 +210,7 @@ public class PcStat extends PlayableStat
 				}
 			}
 			getActiveChar().setCurrentCp(getMaxCp());
-			getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15));
+			getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15),1200);
 			getActiveChar().sendPacket(SystemMessageId.YOU_INCREASED_YOUR_LEVEL);
 
 			if (getActiveChar().isInFunEvent())

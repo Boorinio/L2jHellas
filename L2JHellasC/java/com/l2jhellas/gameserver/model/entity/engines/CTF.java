@@ -274,7 +274,7 @@ public class CTF
 		}
 		// add the flag in his hands
 		_player.getInventory().equipItem(ItemTable.getInstance().createItem("", CTF._FLAG_IN_HAND_ITEM_ID, 1, _player, null));
-		_player.broadcastPacket(new SocialAction(_player.getObjectId(), 16)); // amazing glow
+		_player.broadcastPacket(new SocialAction(_player.getObjectId(), 16),2000); // amazing glow
 		_player._haveFlagCTF = true;
 		_player.broadcastUserInfo();
 		CreatureSay cs = new CreatureSay(_player.getObjectId(), 15, ":", "You got it! Run back! ::"); // 8D
@@ -507,9 +507,9 @@ public class CTF
 						_flagsTaken.set(indexEnemy, false);
 						spawnFlag(_player._teamNameHaveFlagCTF);
 						// remove the flag from this player
-						_player.broadcastPacket(new SocialAction(_player.getObjectId(), 16)); // amazing glow
+						_player.broadcastPacket(new SocialAction(_player.getObjectId(), 16),2000); // amazing glow
 						_player.broadcastUserInfo();
-						_player.broadcastPacket(new SocialAction(_player.getObjectId(), 3)); // Victory
+						_player.broadcastPacket(new SocialAction(_player.getObjectId(), 3),2000); // Victory
 						_player.broadcastUserInfo();
 						removeFlagFromPlayer(_player);
 						_teamPointsCount.set(indexOwn, teamPointsCount(team) + 1);
@@ -1323,11 +1323,11 @@ public class CTF
 			{
 				if (!player._teamNameCTF.equals(teamName))
 				{
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 7));
+					player.broadcastPacket(new SocialAction(player.getObjectId(), 7),2000);
 				}
 				else if (player._teamNameCTF.equals(teamName))
 				{
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+					player.broadcastPacket(new SocialAction(player.getObjectId(), 3),2000);
 				}
 			}
 		}

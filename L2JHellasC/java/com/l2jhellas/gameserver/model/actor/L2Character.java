@@ -29,6 +29,8 @@ import java.util.logging.Logger;
 
 
 
+
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
@@ -86,14 +88,12 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Attack;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeMoveType;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeWaitType;
-import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.CharMoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
-import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.gameserver.network.serverpackets.Revive;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -111,6 +111,7 @@ import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
+import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
@@ -345,83 +346,26 @@ public abstract class L2Character extends L2Object
 			return;
 		getAttackByList().add(player);
 	}
-	
+
 	/**
-	 * Send a packet to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * <BR>
-	 * L2PcInstance in the detection area of the L2Character are identified in <B>_knownPlayers</B>.
-	 * In order to inform other players of state modification on the L2Character, server just need to go through _knownPlayers to send Server->Client Packet<BR>
-	 * <BR>
+	 * Send a packet to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character.
+	 * @param mov The packet to send.
 	 */
-	public final void broadcastPacket(L2GameServerPacket mov)
-	{
-		if (!(mov instanceof CharInfo))
-			sendPacket(mov);
-		
-		// if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
-		
-		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
-		{
-			try
-			{	
-				if (player!=null)
-				{
-					player.sendPacket(mov);
-					if (mov instanceof CharInfo && this instanceof L2PcInstance)
-					{
-						int relation = ((L2PcInstance) this).getRelation(player);
-						if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
-							player.sendPacket(new RelationChanged((L2PcInstance) this, relation, player.isAutoAttackable(this)));
-					}
-				}
-				// if(Config.DEVELOPER && !isInsideRadius(player, 3500, false, false)) _log.warning("broadcastPacket: Too far player see event!");
-			}
-			catch (NullPointerException e)
-			{
-			}
-		}
+	public void broadcastPacket(L2GameServerPacket mov)
+	{	
+		Broadcast.toSelfAndKnownPlayers(this, mov);		
 	}
 	
 	/**
-	 * Send a packet to the L2Character AND to all L2PcInstance in the radius (max knownlist radius) from the L2Character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * <BR>
-	 * L2PcInstance in the detection area of the L2Character are identified in <B>_knownPlayers</B>.
-	 * In order to inform other players of state modification on the L2Character, server just need to go through _knownPlayers to send Server->Client Packet<BR>
-	 * <BR>
+	 * Send a packet to the L2Character AND to all L2PcInstance in the radius (max knownlist radius) from the L2Character.
+	 * @param mov The packet to send.
+	 * @param radius The radius to make check on.
 	 */
-	public final void broadcastPacket(L2GameServerPacket mov, int radiusInKnownlist)
+	public void broadcastPacket(L2GameServerPacket mov, int radius)
 	{
-		if (!(mov instanceof CharInfo))
-			sendPacket(mov);
-		
-		// if (Config.DEBUG) _log.fine("players to notify:" + knownPlayers.size() + " packet:"+mov.getType());
-		
-		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
-		{
-			try
-			{
-				if (player!=null)
-				{
-					if (!isInsideRadius(player, radiusInKnownlist, false, false))
-						continue;
-					player.sendPacket(mov);
-					if (mov instanceof CharInfo && this instanceof L2PcInstance)
-					{
-						int relation = ((L2PcInstance) this).getRelation(player);
-						if (getKnownList().getKnownRelations().get(player.getObjectId()) != null && getKnownList().getKnownRelations().get(player.getObjectId()) != relation)
-							player.sendPacket(new RelationChanged((L2PcInstance) this, relation, player.isAutoAttackable(this)));
-					}
-				}
-			}
-			catch (NullPointerException e)
-			{
-			}
-		}
+		Broadcast.toSelfAndKnownPlayersInRadius(this, mov, radius);
 	}
+	
 	
 	/**
 	 * Returns true if hp update should be done, false if not

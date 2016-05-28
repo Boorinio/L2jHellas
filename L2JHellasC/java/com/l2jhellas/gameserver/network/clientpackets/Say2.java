@@ -61,6 +61,7 @@ public final class Say2 extends L2GameClientPacket
 	public final static int PARTYROOM_COMMANDER = 15; // (Yellow)
 	public final static int PARTYROOM_ALL = 16; // (Red)
 	public final static int HERO_VOICE = 17;
+	public static final int CRITICAL_ANNOUNCE = 18;
 
 	private final static String[] CHAT_NAMES =
 	{
@@ -81,7 +82,8 @@ public final class Say2 extends L2GameClientPacket
 		"PARTYMATCH_ROOM",
 		"PARTYROOM_COMMANDER",
 		"PARTYROOM_ALL",
-		"HERO_VOICE"
+		"HERO_VOICE",
+		"CRITICAL_ANNOUNCEMENT"
 	};
 
 	private String _text;
@@ -214,14 +216,14 @@ public final class Say2 extends L2GameClientPacket
 			    		|| _text.contains("ciao")
 			    		|| _text.contains("geia")
 			            || _text.contains("hi"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 2));
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 2),2000);
 				
 				if (_text.equalsIgnoreCase("lol")
 						|| _text.contains("haha")
 			            || _text.contains("xaxa")
 			            || _text.contains("ghgh")
 			            || _text.contains("jaja"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 10));
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 10),2000);
 
 				if (_text.equalsIgnoreCase("yes")
 			            || _text.contains("si")
@@ -229,13 +231,13 @@ public final class Say2 extends L2GameClientPacket
 			            || _text.contains("entaksei")
 			            || _text.contains("ok")
 			            || _text.contains("yep"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 6));
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 6),2000);
 
 				if (_text.contains("no")
 			            || _text.contains("nop")
 			            || _text.contains("oxi")
 			            || _text.contains("nope"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 5));
+					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 5),2000);
 			}
 		}/** @formatter:on */
 		

@@ -15,12 +15,11 @@
 package com.l2jhellas.util.geodata;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javolution.util.FastList;
 
 @SuppressWarnings("unchecked")
 public final class L2Arrays
@@ -105,7 +104,7 @@ public final class L2Arrays
 		if (newSize <= 8)
 			return new CopyOnWriteArrayList<T>(compact(array));
 
-		final List<T> result = new FastList<T>(newSize);
+		final List<T> result = new ArrayList<T>(newSize);
 
 		for (T t : array)
 			if (t != null)

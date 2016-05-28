@@ -968,7 +968,7 @@ public class Hero
 		_heroes.put(player.getObjectId(), hero);
 		
 		player.setHero(true);
-		player.broadcastPacket(new SocialAction(player.getObjectId(), 16));
+		player.broadcastPacket(new SocialAction(player.getObjectId(), 16),2000);
 		player.broadcastUserInfo();
 		
 		L2Clan clan = player.getClan();

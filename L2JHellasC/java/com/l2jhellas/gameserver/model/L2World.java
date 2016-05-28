@@ -51,8 +51,6 @@ public final class L2World
 	private static final int REGION_Y_OFFSET = Math.abs(WORLD_Y_MIN / REGION_SIZE);
 	
 	private final Map<Integer, L2PcInstance> _allPlayers = new ConcurrentHashMap<>();
-	private final Map<Integer, L2PcInstance> _allgoodPlayers = new ConcurrentHashMap<>();
-	private final Map<Integer, L2PcInstance> _allevilPlayers = new ConcurrentHashMap<>();
 	private final Map<Integer, L2Object> _allObjects = new ConcurrentHashMap<>();
 	private final Map<Integer, L2PetInstance> _petsInstance = new ConcurrentHashMap<>();
 	
@@ -240,7 +238,7 @@ public final class L2World
 					tmp.closeNetConnection();
 					return;
 				}
-				_allPlayers.put(player.getObjectId(), player);
+				_allPlayers.putIfAbsent(player.getObjectId(), player);
 			}
 		}
 		
@@ -489,17 +487,6 @@ public final class L2World
 	private static class SingletonHolder
 	{
 		protected static final L2World _instance = new L2World();
-	}
-
-
-	public Map<Integer, L2PcInstance>  getAllgoodPlayers()
-	{
-		return _allgoodPlayers;
-	}
-
-	public Map<Integer, L2PcInstance> getAllevilPlayers()
-	{
-		return _allevilPlayers;
 	}
 
 	/**

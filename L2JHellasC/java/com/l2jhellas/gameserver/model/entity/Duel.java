@@ -192,7 +192,7 @@ public class Duel
 				else if (status != DuelResultEnum.Continue)
 				{
 					setFinished(true);
-					playKneelAnimation();
+					playAnim();
 					ThreadPoolManager.getInstance().scheduleGeneral(new ScheduleEndDuelTask(_duel, status), 5000);
 				}
 				else
@@ -608,22 +608,55 @@ public class Duel
 		return null;
 	}
 	
-	/**
-	 * Playback the bow animation for all loosers
-	 */
-	public void playKneelAnimation()
+	protected void playAnim()
 	{
-		L2PcInstance looser = getLooser();
-		if (looser == null)
-			return;
-		
-		if (_partyDuel && looser.getParty() != null)
+		if (_playerA.isOnline()==1)
 		{
-			for (L2PcInstance temp : looser.getParty().getPartyMembers())
-				temp.broadcastPacket(new SocialAction(temp.getObjectId(), 7));
+			if (_playerA.getDuelState() == DUELSTATE_WINNER)
+			{
+				if (_partyDuel && _playerA.getParty() != null)
+				{
+					for (L2PcInstance partyPlayer : _playerA.getParty().getPartyMembers())
+						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 3),2000);
+				}
+				else
+					_playerA.broadcastPacket(new SocialAction(_playerA.getObjectId(), 3),2000);
+			}
+			else if (_playerA.getDuelState() == DUELSTATE_DEAD)
+			{
+				if (_partyDuel && _playerA.getParty() != null)
+				{
+					for (L2PcInstance partyPlayer : _playerA.getParty().getPartyMembers())
+						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 7),2000);
+				}
+				else
+					_playerA.broadcastPacket(new SocialAction(_playerA.getObjectId(), 7),2000);
+			}
 		}
-		else
-			looser.broadcastPacket(new SocialAction(looser.getObjectId(), 7));
+		
+		if (_playerB.isOnline() ==1)
+		{
+			if (_playerB.getDuelState() == DUELSTATE_WINNER)
+			{
+				if (_partyDuel && _playerB.getParty() != null)
+				{
+					for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
+						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 3),2000);
+				}
+				else
+					_playerB.broadcastPacket(new SocialAction(_playerB.getObjectId(), 3),2000);
+			}
+			else if (_playerB.getDuelState() == DUELSTATE_DEAD)
+			{
+				if (_partyDuel && _playerB.getParty() != null)
+				{
+					for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
+						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 7),2000);
+				}
+				else
+					_playerB.broadcastPacket(new SocialAction(_playerB.getObjectId(), 7),2000);
+			}
+		}
 	}
 	
 	/**

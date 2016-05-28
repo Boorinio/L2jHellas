@@ -83,14 +83,14 @@ public class PaganKeys implements IItemHandler
 						activeChar.sendMessage("You opened Anterooms Door.");
 						door.openMe();
 						door.onOpen(); // Closes the door after 60sec
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3),900);
 					}
 					else
 					{
 						// test with: activeChar.sendPacket(new
 						// SystemMessage(SystemMessage.FAILED_TO_UNLOCK_DOOR));
 						activeChar.sendMessage("You failed to open Anterooms Door.");
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
+						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13),900);
 						PlaySound playSound = new PlaySound("interfacesound.system_close_01");
 						activeChar.sendPacket(playSound);
 					}

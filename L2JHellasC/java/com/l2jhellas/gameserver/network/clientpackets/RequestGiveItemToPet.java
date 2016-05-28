@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
@@ -95,9 +96,10 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ITEM_NOT_FOR_PETS));
 			return;
 		}
-		if ((item.getItem().getItemType() == L2WeaponType.ROD) || ((item.getItemId() >= 6611) && (item.getItemId() <= 6621)) || ((item.getItemId() >= 7816) && (item.getItemId() <= 7831)) || item.isShadowItem())
+		if ((item.getItem().getItemType() == L2WeaponType.ROD) || ((item.getItemId() >= 6611) && (item.getItemId() <= 6621)) || ((item.getItemId() >= 7816) && (item.getItemId() <= 7831)) || item.isShadowItem() ||
+			item.isHeroItem()  || item.getItem().getItemType() == L2EtcItemType.ARROW || item.getItem().getItemType() == L2EtcItemType.SHOT)
 		{
-			player.sendMessage("Hero weapons protection, you can't use pet's inventory.");
+			player.sendMessage("Hero weapons protection,arrows or shot, you can't use pet's inventory.");
 			return;
 		}
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("giveitemtopet"))

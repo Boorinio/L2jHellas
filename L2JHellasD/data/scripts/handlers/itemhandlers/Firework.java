@@ -58,7 +58,7 @@ public class Firework implements IItemHandler
 		{
 			MagicSkillUse MSU = new MagicSkillUse(playable, activeChar, 2023, 1, 1, 0);
 			activeChar.sendPacket(MSU);
-			activeChar.broadcastPacket(MSU);
+			activeChar.broadcastPacket(MSU,800);
 			useFw(activeChar, 2023, 1);
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 		}
@@ -69,7 +69,7 @@ public class Firework implements IItemHandler
 		{
 			MagicSkillUse MSU = new MagicSkillUse(playable, activeChar, 2024, 1, 1, 0);
 			activeChar.sendPacket(MSU);
-			activeChar.broadcastPacket(MSU);
+			activeChar.broadcastPacket(MSU,800);
 			useFw(activeChar, 2024, 1);
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 		}
@@ -80,7 +80,7 @@ public class Firework implements IItemHandler
 		{
 			MagicSkillUse MSU = new MagicSkillUse(playable, activeChar, 2025, 1, 1, 0);
 			activeChar.sendPacket(MSU);
-			activeChar.broadcastPacket(MSU);
+			activeChar.broadcastPacket(MSU,800);
 			useFw(activeChar, 2025, 1);
 			playable.destroyItem("Consume", item.getObjectId(), 1, null, false);
 		}

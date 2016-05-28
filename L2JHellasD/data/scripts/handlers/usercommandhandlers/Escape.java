@@ -68,7 +68,7 @@ public class Escape implements IUserCommandHandler
 			activeChar.sendPacket(SystemMessage.sendString("You can't escape while in Event."));
 			return false;
 		}
-
+		
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 		sm.addString("After " + unstuckTimer / 60000 + " min. you be returned to near village.");
 
@@ -77,6 +77,7 @@ public class Escape implements IUserCommandHandler
 		activeChar.setTarget(activeChar);
 		activeChar.disableAllSkills();
 
+
 		MagicSkillUse msk = new MagicSkillUse(activeChar, 1050, 1, unstuckTimer, 0);
 		Broadcast.toSelfAndKnownPlayersInRadius(activeChar, msk, 810000/* 900 */);
 		SetupGauge sg = new SetupGauge(0, unstuckTimer);
@@ -84,10 +85,10 @@ public class Escape implements IUserCommandHandler
 		// End SoE Animation section
 
 		EscapeFinalizer ef = new EscapeFinalizer(activeChar);
+		
 		// continue execution later
 		activeChar.setSkillCast(ThreadPoolManager.getInstance().scheduleGeneral(ef, unstuckTimer));
 		activeChar.setSkillCastEndTime(10 + GameTimeController.getGameTicks() + unstuckTimer / GameTimeController.MILLIS_IN_TICK);
-
 		return true;
 	}
 

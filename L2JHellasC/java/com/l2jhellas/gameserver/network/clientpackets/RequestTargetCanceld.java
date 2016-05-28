@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class RequestTargetCanceld extends L2GameClientPacket
 {
@@ -31,7 +31,8 @@ public final class RequestTargetCanceld extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2Character activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
+
 		if (activeChar != null)
 		{
 			if (_unselect == 0)

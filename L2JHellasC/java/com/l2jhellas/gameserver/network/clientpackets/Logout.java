@@ -105,9 +105,7 @@ public final class Logout extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
-		RegionBBSManager.getInstance().changeCommunityBoard();
-		
+			
 		player.endDuel();
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -117,6 +115,8 @@ public final class Logout extends L2GameClientPacket
 
 		// Remove From Boss
 		player.removeFromBossZone();
+		
+		RegionBBSManager.getInstance().changeCommunityBoard();
 	}
 
 	private void notifyFriends(L2PcInstance cha)

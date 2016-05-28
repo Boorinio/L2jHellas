@@ -69,7 +69,7 @@ public class RequestSocialAction extends L2GameClientPacket
 				_log.fine("Social Action:" + _actionId);
 
 			SocialAction atk = new SocialAction(activeChar.getObjectId(), _actionId);
-			activeChar.broadcastPacket(atk);
+			activeChar.broadcastPacket(atk,2000);
 			/*
 			 * // Schedule a social task to wait for the animation to finish
 			 * ThreadPoolManager.getInstance().scheduleGeneral(new SocialTask(this), 2600);

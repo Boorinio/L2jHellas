@@ -150,8 +150,8 @@ public class GameServer
 
 	public GameServer() throws Exception
 	{
-		long serverLoadStart = System.currentTimeMillis();
 		gameServer = this;
+		long serverLoadStart = System.currentTimeMillis();
 		ThreadPoolManager.getInstance();
 
 		Util.printSection("Chache");
@@ -169,7 +169,7 @@ public class GameServer
 		AutoChatHandler.getInstance();
 		Universe.getInstance();
 		FloodProtector.getInstance();
-		StaticObjData.getInstance();
+		StaticObjData.load();
 		TeleportLocationData.getInstance();
 		GameTimeController.getInstance();
 		CharNameTable.getInstance();

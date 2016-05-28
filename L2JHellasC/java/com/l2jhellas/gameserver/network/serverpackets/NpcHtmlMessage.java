@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.clientpackets.RequestBypassToServer;
@@ -147,8 +146,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 	@Override
 	public void runImpl()
 	{
-		if (Config.BYPASS_VALIDATION)
-			buildBypassCache(getClient().getActiveChar());
+		buildBypassCache(getClient().getActiveChar());
 	}
 
 	public void setHtml(String text)
@@ -177,9 +175,29 @@ public class NpcHtmlMessage extends L2GameServerPacket
 		return true;
 	}
 
+	public void basicReplace(String pattern, String value)
+	{
+		_html = _html.replaceAll(pattern, value);
+	}
+	
 	public void replace(String pattern, String value)
 	{
-		_html = _html.replaceAll(pattern, value.replaceAll("\\$", "\\\\\\$")); // FIXME: WTF is this shit?
+		_html = _html.replaceAll(pattern, value.replaceAll("\\$", "\\\\\\$"));
+	}
+	
+	public void replace(String pattern, int value)
+	{
+		_html = _html.replaceAll(pattern, Integer.toString(value));
+	}
+	
+	public void replace(String pattern, long value)
+	{
+		_html = _html.replaceAll(pattern, Long.toString(value));
+	}
+	
+	public void replace(String pattern, double value)
+	{
+		_html = _html.replaceAll(pattern, Double.toString(value));
 	}
 
 	private final void buildBypassCache(L2PcInstance activeChar)
@@ -221,7 +239,6 @@ public class NpcHtmlMessage extends L2GameServerPacket
 
 		writeD(_npcObjId);
 		writeS(_html);
-		writeD(0x00);
 	}
 
 	@Override

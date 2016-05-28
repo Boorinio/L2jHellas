@@ -241,25 +241,12 @@ public final class StringUtil
 		return sbString;
 	}
 
-	/**
-	 * Appends strings to existing string builder.
-	 * 
-	 * @param sbString
-	 *        string builder
-	 * @param strings
-	 *        strings to be appended
-	 * @see StringUtil
-	 */
-	public static void append(final StringBuilder sbString, final String... strings)
+	public static void append(StringBuilder sb, Object... content)
 	{
-		sbString.ensureCapacity(sbString.length() + getLength(strings));
-
-		for (final String string : strings)
-		{
-			sbString.append(string);
-		}
+		for (Object obj : content)
+			sb.append((obj == null) ? null : obj.toString());
 	}
-
+	
 	/**
 	 * Counts total length of all the strings.
 	 * 

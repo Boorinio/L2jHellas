@@ -47,7 +47,10 @@ public final class RequestShortCutReg extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-
+		
+		if (_page > 10 || _page < 0)
+			return;
+		
 		switch (_type)
 		{
 			case 0x01:// item

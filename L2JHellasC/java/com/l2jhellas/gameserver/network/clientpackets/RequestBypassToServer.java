@@ -80,7 +80,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 
 		try
 		{
-			if (_command.startsWith("admin_"))
+			if (_command.startsWith("admin_") && activeChar.isGM())
 			{
 				String command = _command.split(" ")[0];
 
@@ -461,7 +461,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			}
 			// Balancer: ->
 			// -------------------------------------------------------------------------------
-			else if (_command.startsWith("bp_balance"))
+			else if (_command.startsWith("bp_balance") && activeChar.isGM())
 			{
 				String bp = _command.substring(11);
 				StringTokenizer st = new StringTokenizer(bp);
@@ -476,7 +476,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				Balancer.sendBalanceWindow(classId, activeChar);
 			}
 			
-			else if (_command.startsWith("bp_add"))
+			else if (_command.startsWith("bp_add") && activeChar.isGM())
 			{
 				String bp = _command.substring(7);
 				StringTokenizer st = new StringTokenizer(bp);
@@ -495,7 +495,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				Balancer.sendBalanceWindow(classId, activeChar);
 			}
 			
-			else if (_command.startsWith("bp_rem"))
+			else if (_command.startsWith("bp_rem") && activeChar.isGM())
 			{
 				String bp = _command.substring(7);
 				StringTokenizer st = new StringTokenizer(bp);

@@ -16,14 +16,13 @@ package com.l2jhellas.util.object;
 
 import java.util.Iterator;
 import java.util.Map;
-
-import javolution.util.FastMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
 
 public class WorldObjectMap<T extends L2Object> extends L2ObjectMap<T>
 {
-	Map<Integer, T> _objectMap = new FastMap<Integer, T>().setShared(true);
+	Map<Integer, T> _objectMap = new ConcurrentHashMap<Integer, T>();
 
 	@Override
 	public int size()

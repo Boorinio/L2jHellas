@@ -14,20 +14,19 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.Collection;
 import java.util.logging.Logger;
+
+
+
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2WarehouseInstance;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -68,63 +67,35 @@ public final class RequestEnchantItem extends L2GameClientPacket
 	protected void runImpl()
 	{
 		final L2PcInstance activeChar = getClient().getActiveChar();
-		final Collection<L2Character> knowns = activeChar.getKnownList().getKnownCharactersInRadius(400);
+		
 		if (activeChar == null || _objectId == 0)
 			return;
+		
+		if(!activeChar.canEnchant())
+			return;
 
-		for (L2Object wh : knowns)
-		{
-			if (wh instanceof L2WarehouseInstance)
-			{
-				activeChar.sendMessage("You cannot enchant near warehouse.");
-				return;
-			}
-		}
-
-		if (activeChar.isProcessingTransaction())
-		{
-			activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
-			activeChar.setActiveEnchantItem(null);
-			return;
-		}
-
-		if (activeChar.isOnline() == 0)
-		{
-			activeChar.setActiveEnchantItem(null);
-			return;
-		}
-		
-		if (activeChar.getPrivateStoreType() != 0)
-		{
-			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
-		if (activeChar.isInStoreMode())
-		{
-			activeChar.sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
-		if (activeChar.getActiveWarehouse() != null || activeChar.getActiveTradeList() != null)
-		{
-			activeChar.sendMessage("You can't enchant items when you got active warehouse or active trade.");
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
 		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
-		L2ItemInstance scroll = activeChar.getActiveEnchantItem();
-		activeChar.setActiveEnchantItem(null);
-		if ((item == null) || (scroll == null))
+		
+		if (item == null)
+		{
+			activeChar.cancellEnchant();
 			return;
+	    }
+		
+		L2ItemInstance scroll = activeChar.getActiveEnchantItem();
+		
+		if (scroll == null)
+		{
+			activeChar.cancellEnchant();
+			return;
+		}
+		
 		if (Config.ENCHANT_MAX_WEAPON > 0)
 		{
 			if (item.getItem().getType2() == L2Item.TYPE2_WEAPON && item.getEnchantLevel() >= Config.ENCHANT_MAX_WEAPON)
 			{
 				activeChar.sendMessage("This server has a +" + Config.ENCHANT_MAX_WEAPON + " limit for enchanting weapons with scrolls.");
+				activeChar.cancellEnchant();
 				return;
 			}
 		}
@@ -134,6 +105,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 			if (item.getItem().getType2() == L2Item.TYPE2_SHIELD_ARMOR && item.getEnchantLevel() >= Config.ENCHANT_MAX_ARMOR)
 			{
 				activeChar.sendMessage("This server has a +" + Config.ENCHANT_MAX_ARMOR + " limit for enchanting armors with scrolls.");
+				activeChar.cancellEnchant();
 				return;
 			}
 		}
@@ -143,6 +115,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 			if (item.getItem().getType2() == L2Item.TYPE2_ACCESSORY && item.getEnchantLevel() >= Config.ENCHANT_MAX_JEWELRY)
 			{
 				activeChar.sendMessage("This server has a +" + Config.ENCHANT_MAX_JEWELRY + " limit for enchanting jewelry with scrolls.");
+				activeChar.cancellEnchant();
 				return;
 			}
 		}
@@ -150,10 +123,12 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		if (item.getItem().getItemType() == L2WeaponType.ROD || item.getItemId() >= 6611 && item.getItemId() <= 6621 || item.isShadowItem())
 		{
 			activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
+			activeChar.cancellEnchant();
 			return;
 		}
 		if (item.isWear())
 		{
+			activeChar.cancellEnchant();
 			Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " tried to enchant a weared Item", IllegalPlayerAction.PUNISH_KICK);
 			return;
 		}
@@ -260,6 +235,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		if (!enchantItem)
 		{
 			activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
+			activeChar.cancellEnchant();
 			return;
 		}
 
@@ -277,6 +253,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		scroll = activeChar.getInventory().destroyItem("Enchant", scroll, activeChar, item);
 		if (scroll == null)
 		{
+			activeChar.cancellEnchant();
 			activeChar.sendPacket(SystemMessageId.NOT_ENOUGH_ITEMS);
 			Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " tried to enchant with a scroll he doesnt have", Config.DEFAULT_PUNISH);
 			return;
@@ -430,11 +407,13 @@ public final class RequestEnchantItem extends L2GameClientPacket
 				if (item.getOwnerId() != activeChar.getObjectId() // has just lost the item
 						|| (item.getEnchantLevel() >= maxEnchantLevel && maxEnchantLevel != 0))
 				{
+					activeChar.cancellEnchant();
 					activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
 					return;
 				}
 				if (item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY && item.getLocation() != L2ItemInstance.ItemLocation.PAPERDOLL)
 				{
+					activeChar.cancellEnchant();
 					activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
 					return;
 				}
@@ -515,6 +494,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 					count = 1;
 
 				L2ItemInstance destroyItem = activeChar.getInventory().destroyItem("Enchant", item, activeChar, null);
+				
 				if (destroyItem == null)
 					return;
 
@@ -563,6 +543,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 		activeChar.sendPacket(new ItemList(activeChar, false)); // TODO update only the enchanted item
 		activeChar.broadcastUserInfo();
 		activeChar.setActiveEnchantItem(null);
+		activeChar.sendPacket(EnchantResult.SUCCESS);
 		
 		if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 			PrivateAntiBot.privateantibot(activeChar);

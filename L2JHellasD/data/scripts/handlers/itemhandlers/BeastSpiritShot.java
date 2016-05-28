@@ -113,7 +113,7 @@ public class BeastSpiritShot implements IItemHandler
 		}
 		
 		activeOwner.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PET_USES_S1).addItemName(itemId));
-		Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUse(activePet, activePet, ((itemId == 6646) ? 2008 : 2009), 1, 0, 0), 360000);
+		Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUse(activePet, activePet, ((itemId == 6646) ? 2008 : 2009), 1, 0, 0), 600);
 	}
 
 	@Override

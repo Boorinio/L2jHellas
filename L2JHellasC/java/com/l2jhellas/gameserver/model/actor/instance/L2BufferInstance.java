@@ -84,7 +84,7 @@ public final class L2BufferInstance extends L2NpcInstance
 		}
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false)) {
 			SocialAction sa = new SocialAction(this.getObjectId(), Rnd.get(8));
-			broadcastPacket(sa);
+			broadcastPacket(sa,1200);
 			player.setLastFolkNPC(this);
 			showMessageWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);

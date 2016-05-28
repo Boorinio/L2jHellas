@@ -16,8 +16,7 @@ package com.l2jhellas.util.object;
 
 import java.util.Iterator;
 import java.util.Map;
-
-import javolution.util.FastMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
 
@@ -27,7 +26,7 @@ public class WorldObjectSet<T extends L2Object> extends L2ObjectSet<T>
 
 	public WorldObjectSet()
 	{
-		_objectMap = new FastMap<Integer, T>().setShared(true);
+		_objectMap = new ConcurrentHashMap<Integer, T>();
 	}
 
 	@Override

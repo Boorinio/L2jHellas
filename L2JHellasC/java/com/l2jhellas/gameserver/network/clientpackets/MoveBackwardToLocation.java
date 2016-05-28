@@ -145,8 +145,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 
 		if (activeChar.getActiveEnchantItem() != null)
 		{
-			activeChar.setActiveEnchantItem(null);
-			activeChar.sendPacket(EnchantResult.CANCELLED);
+			activeChar.cancellEnchant();
 			activeChar.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 		}
 

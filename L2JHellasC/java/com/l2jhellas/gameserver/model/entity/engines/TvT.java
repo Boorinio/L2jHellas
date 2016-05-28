@@ -835,9 +835,9 @@ public class TvT
 			if (player != null)
 			{
 				if (!player._teamNameTvT.equals(teamName))
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 7));
+					player.broadcastPacket(new SocialAction(player.getObjectId(), 7),2000);
 				else if (player._teamNameTvT.equals(teamName))
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+					player.broadcastPacket(new SocialAction(player.getObjectId(), 3),2000);
 			}
 		}
 	}

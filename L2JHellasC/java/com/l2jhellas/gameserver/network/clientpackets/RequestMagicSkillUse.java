@@ -14,18 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.skills.SkillTable;
 
 public final class RequestMagicSkillUse extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestMagicSkillUse.class.getName());
 	private static final String _C__2F_REQUESTMAGICSKILLUSE = "[C] 2F RequestMagicSkillUse";
 
 	private int _magicId;
@@ -44,49 +37,12 @@ public final class RequestMagicSkillUse extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// Get the current L2PcInstance of the player
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 
-		if (activeChar == null)
+		if (activeChar == null || activeChar.isOnline()==0)
 			return;
 
-		// Get the level of the used skill
-		int level = activeChar.getSkillLevel(_magicId);
-		if (level <= 0)
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-
-		if (activeChar.isOutOfControl())
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-
-		// Get the L2Skill template corresponding to the skillID received from the client
-		L2Skill skill = SkillTable.getInstance().getInfo(_magicId, level);
-
-		// Check the validity of the skill
-		if (skill != null)
-		{
-			// TODO nightwolf add to debug that
-			// _log.fine("	skill:"+skill.getName() + " level:"+skill.getLevel() + " passive:"+skill.isPassive());
-			// _log.fine("	range:"+skill.getCastRange()+" targettype:"+skill.getTargetType()+" optype:"+skill.getOperateType()+" power:"+skill.getPower());
-			// _log.fine("	reusedelay:"+skill.getReuseDelay()+" hittime:"+skill.getHitTime());
-			// _log.fine("	currentState:"+activeChar.getCurrentState()); //for debug
-
-			// If Alternate rule Karma punishment is set to true, forbid skill Return to player with Karma
-			if (skill.getSkillType() == L2SkillType.RECALL && !Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT && activeChar.getKarma() > 0)
-				return;
-
-			// activeChar.stopMove();
-			activeChar.useMagic(skill, _ctrlPressed, _shiftPressed);
-		}
-		else
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			_log.warning("No skill found!!");
-		}
+		activeChar.ReqMagicSkillUse(_magicId, _ctrlPressed, _shiftPressed);	
 	}
 
 	@Override

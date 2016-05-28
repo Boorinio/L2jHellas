@@ -37,13 +37,17 @@ public class MonsterKnownList extends AttackableKnownList
 	@Override
 	public boolean addKnownObject(L2Object object, L2Character dropper)
 	{
+	  if(object instanceof L2PcInstance)
+	   {
 		if (!super.addKnownObject(object, dropper))
 			return false;
 
 		// Set the L2MonsterInstance Intention to AI_INTENTION_ACTIVE if the state was AI_INTENTION_IDLE
-		if (object instanceof L2PcInstance && getActiveChar().getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
+		if (getActiveChar().getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
 			getActiveChar().getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
-		return true;
+		    return true;
+		}
+		 return false;
 	}
 
 	@Override

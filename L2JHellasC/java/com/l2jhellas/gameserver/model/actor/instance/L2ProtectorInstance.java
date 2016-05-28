@@ -63,7 +63,7 @@ public class L2ProtectorInstance extends L2NpcInstance
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
 		{
 			SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-			broadcastPacket(sa);
+			broadcastPacket(sa,1200);
 			player.setLastFolkNPC(this);
 			showHtmlWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
