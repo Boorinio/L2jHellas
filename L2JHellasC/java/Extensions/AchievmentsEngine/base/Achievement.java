@@ -62,7 +62,7 @@ public class Achievement
 			}
 			catch (NumberFormatException nfe)
 			{
-				_log.warning("AchievementsEngine: Error wrong reward " + nfe);
+				_log.warning(Achievement.class.getName() + ": Error wrong reward " + nfe);
 			}
 			_rewardList.put(item, count);
 		}

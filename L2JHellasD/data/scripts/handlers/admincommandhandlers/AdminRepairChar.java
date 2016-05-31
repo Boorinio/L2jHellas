@@ -17,9 +17,10 @@ package handlers.admincommandhandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.logs.GMAudit;
@@ -90,9 +91,11 @@ public class AdminRepairChar implements IAdminCommandHandler
 				statement.execute();
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not repair char:" + e);
+			_log.warning(AdminRepairChar.class.getName() + ": could not repair char:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

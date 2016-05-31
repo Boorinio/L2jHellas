@@ -25,11 +25,10 @@ class PacketHistory
 	@SuppressWarnings("rawtypes")
 	protected Map<Class, Long> _info;
 	protected long _timeStamp;
-
+	@SuppressWarnings("rawtypes")
 	protected static final XMLFormat<PacketHistory> PACKET_HISTORY_XML = new XMLFormat<PacketHistory>(PacketHistory.class)
 	{
-
-		@SuppressWarnings("rawtypes")
+		
 		@Override
 		public void read(InputElement xml, PacketHistory packetHistory) throws XMLStreamException
 		{

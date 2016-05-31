@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -84,11 +83,9 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while saving new Post to db " + e);
+			_log.warning(Post.class.getName() + ": error while saving new Post to db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -125,7 +122,7 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not delete post", e);
+			_log.warning(Post.class.getName() + ": could not delete post");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -161,11 +158,9 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": data error on Post " + t.getForumID() + "/" + t.getID() + " : " + e);
+			_log.warning(Post.class.getName() + ": data error on Post " + t.getForumID() + "/" + t.getID() + " : ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -187,11 +182,9 @@ public class Post
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while saving new Post to db " + e);
+			_log.warning(Post.class.getName() + ": error while saving new Post to db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

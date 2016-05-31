@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
+
 /**
  * Format: (ch) S
  * 
@@ -34,7 +36,8 @@ public final class RequestPCCafeCouponUse extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// @TODO
-		System.out.println("C5: RequestPCCafeCouponUse: S: " + _str);
+		if (Config.DEBUG)
+			_log.config(RequestPCCafeCouponUse.class.getName() + ": C5: RequestPCCafeCouponUse: S: " + _str);
 	}
 
 	@Override

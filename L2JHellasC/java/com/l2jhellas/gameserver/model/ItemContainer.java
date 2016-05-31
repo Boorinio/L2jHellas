@@ -17,9 +17,9 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -257,7 +257,7 @@ public abstract class ItemContainer
 				L2Item template = ItemTable.getInstance().getTemplate(itemId);
 				if (template == null)
 				{
-					_log.log(Level.WARNING, (actor != null ? "[" + actor.getName() + "] " : "") + "Invalid ItemId requested: ", itemId);
+					_log.warning(ItemContainer.class.getName() + ": " + (actor != null ? "[" + actor.getName() + "] " : "") + "Invalid ItemId requested: " + itemId);
 					return null;
 				}
 
@@ -646,13 +646,11 @@ public abstract class ItemContainer
 			statement.close();
 			refreshWeight();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not restore container:" + e);
+			_log.warning(ItemContainer.class.getName() + ": could not restore container");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

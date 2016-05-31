@@ -37,7 +37,6 @@ import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharCreateOk;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
-import com.l2jhellas.gameserver.scripting.ScriptManager;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
@@ -157,7 +156,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		}
 		catch (PatternSyntaxException e) // case of illegal pattern
 		{
-			_log.warning("ERROR : Character name pattern of config is wrong!using default .*");
+			_log.warning(CharacterCreate.class.getName() + ": ERROR : Character name pattern of config is wrong!using default .*");
 			pattern = Pattern.compile(".*");
 		}
 		Matcher regexp = pattern.matcher(test);

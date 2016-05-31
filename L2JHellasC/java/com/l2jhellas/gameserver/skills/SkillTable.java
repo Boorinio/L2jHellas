@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.skills;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -41,7 +40,7 @@ public class SkillTable
 	{
 		_skills = new HashMap<Integer, L2Skill>();
 		SkillsEngine.getInstance().loadAllSkills(_skills);
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _skills.size() + " skills.");
+		_log.info(SkillTable.class.getSimpleName() + ": Loaded " + _skills.size() + " skills.");
 	}
 
 	public static void reload()

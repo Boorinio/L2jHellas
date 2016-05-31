@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -106,15 +105,13 @@ public class CastleManager
 
 			statement.close();
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getCastles().size() + " castles.");
+			_log.info(CastleManager.class.getSimpleName() + ": Loaded: " + getCastles().size() + " castles.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": loadCastleData(): " + e);
+			_log.warning(CastleManager.class.getName() + ": loadCastleData(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -280,7 +277,7 @@ public class CastleManager
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Failed to remove castle circlets offline for player " + member.getName());
+				_log.warning(CastleManager.class.getName() + ": Failed to remove castle circlets offline for player " + member.getName());
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();

@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -143,7 +142,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "could not delete pet objectid: ", e);
+				_log.warning(RequestDestroyItem.class.getSimpleName() + ": could not delete pet objectid: ");
 			}
 		}
 

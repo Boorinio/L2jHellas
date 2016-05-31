@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -101,11 +100,11 @@ public class AugmentationData
 		load();
 
 		// Use size*4: since there's 4 blocks of stat-data with equivalent size
-		_log.info("Augment: Loaded " + _augmentationStats[0].size() * 4 + " augmentation stats.");
+		_log.info(AugmentationData.class.getSimpleName() + "Augment: Loaded " + _augmentationStats[0].size() * 4 + " augmentation stats.");
 
 		for (int i = 1; i <= 10; i++)
 		{
-			_log.info("Augment: Loaded " + _blueSkills.get(i).size() + " blue, " + _purpleSkills.get(i).size() + " purple and " + _redSkills.get(i).size() + " red skills for lifeStoneLevel " + i);
+			_log.info(AugmentationData.class.getSimpleName() + "Augment: Loaded " + _blueSkills.get(i).size() + " blue, " + _purpleSkills.get(i).size() + " purple and " + _redSkills.get(i).size() + " red skills for lifeStoneLevel " + i);
 		}
 	}
 
@@ -208,7 +207,7 @@ public class AugmentationData
 			File file = new File(PackRoot.DATAPACK_ROOT, "data/stats/augmentation/augmentation_skillmap.xml");
 			if (!file.exists())
 			{
-				System.out.println("The augmentation skillmap file is missing.");
+				_log.severe(AugmentationData.class.getName() + ": The augmentation skillmap file is missing.");
 				return;
 			}
 
@@ -248,17 +247,13 @@ public class AugmentationData
 
 							if (skillId == 0)
 							{
-								
-									_log.log(Level.SEVERE, "Bad skillId in augmentation_skillmap.xml in the augmentationId:" + augmentationId);
-								
+								_log.warning(AugmentationData.class.getName() + ": Bad skillId in augmentation_skillmap.xml in the augmentationId:" + augmentationId);
 								badAugmantData++;
 								continue;
 							}
 							else if (skillLvL == 0)
 							{
-								
-									_log.log(Level.SEVERE, "Bad skillLevel in augmentation_skillmap.xml in the augmentationId:" + augmentationId);
-								
+								_log.warning(AugmentationData.class.getName() + ": Bad skillLevel in augmentation_skillmap.xml in the augmentationId:" + augmentationId);
 								badAugmantData++;
 								continue;
 							}
@@ -290,7 +285,7 @@ public class AugmentationData
 
 			if (badAugmantData != 0)
 			{
-				_log.info("AugmentationData: " + badAugmantData + " bad skill(s) were skipped.");
+				_log.warning(AugmentationData.class.getName() + ": " + badAugmantData + " bad skill(s) were skipped.");
 			}
 
 			doc = null;
@@ -298,11 +293,9 @@ public class AugmentationData
 		}
 		catch (Exception e)
 		{
-			if (Config.DEBUG)
+			_log.severe(AugmentationData.class.getName() + ": Error parsing augmentation_skillmap.xml.");
+			if (Config.DEVELOPER)
 				e.printStackTrace();
-
-			_log.log(Level.SEVERE, "Error parsing augmentation_skillmap.xml.", e);
-
 			return;
 		}
 
@@ -316,13 +309,9 @@ public class AugmentationData
 				factory.setIgnoringComments(true);
 
 				File file = new File(PackRoot.DATAPACK_ROOT, "data/stats/augmentation/augmentation_stats" + i + ".xml");
-
 				if (!file.exists())
 				{
-					
-						System.out.println("The augmentation stat data file " + i + " is missing.");
-					
-
+					_log.severe(AugmentationData.class.getName() + ": The augmentation stat data file " + i + " is missing.");
 					return;
 				}
 
@@ -397,10 +386,9 @@ public class AugmentationData
 			}
 			catch (Exception e)
 			{
-				if (Config.DEBUG)
+				_log.severe(AugmentationData.class.getName() + ": Error parsing augmentation_stats" + i + ".xml");
+				if (Config.DEVELOPER)
 					e.printStackTrace();
-
-				_log.log(Level.SEVERE, "Error parsing augmentation_stats" + i + ".xml.", e);
 				return;
 			}
 		}
@@ -580,7 +568,7 @@ public class AugmentationData
 		}
 		if (Config.DEBUG)
 		{
-			_log.info("Augmentation success: stat12=" + stat12 + "; stat34=" + stat34 + "; resultColor=" + resultColor + "; level=" + lifeStoneLevel + "; grade=" + lifeStoneGrade);
+			_log.config(AugmentationData.class.getName() + ": Augmentation success: stat12=" + stat12 + "; stat34=" + stat34 + "; resultColor=" + resultColor + "; level=" + lifeStoneLevel + "; grade=" + lifeStoneGrade);
 		}
 
 		return new L2Augmentation(item, ((stat34 << 16) + stat12), skill, true);

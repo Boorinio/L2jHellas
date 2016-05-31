@@ -489,7 +489,7 @@ public final class RequestActionUse extends L2GameClientPacket
 					useSkill(5111);
 			break;
 			default:
-				_log.warning(activeChar.getName() + ": unhandled action type " + _actionId);
+				_log.warning(RequestActionUse.class.getName() + ": " +activeChar.getName() + ": unhandled action type " + _actionId);
 		}
 	}
 
@@ -530,7 +530,7 @@ public final class RequestActionUse extends L2GameClientPacket
 			if (skill == null)
 			{
 				if (Config.DEBUG)
-					_log.warning("Skill " + skillId + " missing from npcskills.sql for a summon id " + activeSummon.getNpcId());
+					_log.warning(RequestActionUse.class.getName() + ": Skill " + skillId + " missing from npcskills.sql for a summon id " + activeSummon.getNpcId());
 				return;
 			}
 

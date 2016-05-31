@@ -21,6 +21,7 @@ import java.io.LineNumberReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +94,7 @@ public class TradeController
 		File buylistData = new File(PackRoot.DATAPACK_ROOT, "data/buylists.csv");
 		if (buylistData.exists())
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Do, please, remove buylists from data folder and use SQL buylist instead.");
+			_log.warning(TradeController.class.getName() + ": Do, please, remove buylists from data folder and use SQL buylist instead.");
 			String line = null;
 			LineNumberReader lnr = null;
 			int dummyItemCount = 0;
@@ -113,15 +114,13 @@ public class TradeController
 				if (Config.DEBUG)
 					_log.log(Level.FINE, getClass().getName() + ": " + dummyItemCount + " Dummy-Items for buylists");
 
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _lists.size() + " Buylists.");
+				_log.info(TradeController.class.getSimpleName() + ": Loaded " + _lists.size() + " Buylists.");
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": error while creating trade controller in linenr: " + lnr.getLineNumber() + e);
+				_log.warning(TradeController.class.getName() + ": error while creating trade controller in linenr: " + lnr.getLineNumber());
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 		else
@@ -203,11 +202,9 @@ public class TradeController
 						}
 						catch (Exception e)
 						{
-							_log.log(Level.WARNING, getClass().getName() + ": Problem with buylist " + buy1.getListId() + " item " + itemId);
+							_log.warning(TradeController.class.getName() + ": Problem with buylist " + buy1.getListId() + " item " + itemId);
 							if (Config.DEVELOPER)
-							{
 								e.printStackTrace();
-							}
 						}
 						if (LimitedItem)
 							_listsTaskItem.put(new Integer(buy1.getListId()), buy1);
@@ -225,8 +222,8 @@ public class TradeController
 				if (Config.DEBUG)
 					_log.log(Level.FINE, getClass().getName() + ": created " + dummyItemCount + " Dummy-Items for buylists");
 
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _lists.size() + " Buylists.");
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _listsTaskItem.size() + " Limited Buylists.");
+				_log.info(TradeController.class.getSimpleName() + ": Loaded " + _lists.size() + " Buylists.");
+				_log.info(TradeController.class.getSimpleName() + ": Loaded " + _listsTaskItem.size() + " Limited Buylists.");
 				/*
 				 * Restore Task for reinitialize count of buy item
 				 */
@@ -249,23 +246,19 @@ public class TradeController
 					rset2.close();
 					statement2.close();
 				}
-				catch (Exception e)
+				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Could not restore Timer for Item count.");
+					_log.warning(TradeController.class.getName() + ": Could not restore Timer for Item count.");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 			catch (Exception e)
 			{
 				// problem with initializing spawn, go to next one
-				_log.log(Level.WARNING, getClass().getName() + ": Buylists could not be initialized.");
+				_log.warning(TradeController.class.getName() + ": Buylists could not be initialized.");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -338,20 +331,16 @@ public class TradeController
 			statement.executeUpdate();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Could not update Timer save in Buylist." + e);
+			_log.warning(TradeController.class.getName() + ": Could not update Timer save in Buylist.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
 	public void dataCountStore()
 	{
-		PreparedStatement statement;
-
 		int listId;
 		if (_listsTaskItem == null)
 			return;
@@ -369,7 +358,7 @@ public class TradeController
 				{
 					if (Item.getCount() < Item.getInitCount()) // needed?
 					{
-						statement = con.prepareStatement(UPDATE_MERCHANT_CURCOUNT);
+						PreparedStatement statement = con.prepareStatement(UPDATE_MERCHANT_CURCOUNT);
 						statement.setInt(1, Item.getCount());
 						statement.setInt(2, Item.getItemId());
 						statement.setInt(3, listId);
@@ -379,13 +368,11 @@ public class TradeController
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Could not store Count Item");
+			_log.warning(TradeController.class.getName() + ": Could not store Count Item");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

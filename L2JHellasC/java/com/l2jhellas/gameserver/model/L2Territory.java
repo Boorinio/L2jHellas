@@ -79,11 +79,11 @@ public class L2Territory
 		_procMax += proc;
 	}
 
-	public void print()
-	{
-		for (Point p : _points)
-			System.out.println("(" + p._x + "," + p._y + ")");
-	}
+	//public void print()
+	//{
+	//	for (Point p : _points)
+	//		_log.info(L2Territory.class.getName() + ": (" + p._x + "," + p._y + ")");
+	//}
 
 	public boolean isIntersect(int x, int y, Point p1, Point p2)
 	{
@@ -169,7 +169,7 @@ public class L2Territory
 				return p;
 			}
 		}
-		_log.warning("Can't make point for territory" + _terr);
+		_log.warning(L2Territory.class.getName() + ": Can't make point for territory" + _terr);
 		return p;
 	}
 

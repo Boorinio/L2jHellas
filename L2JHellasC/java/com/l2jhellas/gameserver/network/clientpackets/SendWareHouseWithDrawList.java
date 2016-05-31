@@ -164,7 +164,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			final L2ItemInstance newItem = warehouse.transferItem("Warehouse", objectId, count, player.getInventory(), player, player.getLastFolkNPC());
 			if (newItem == null)
 			{
-				_log.warning("Error withdrawing a warehouse object for char " + player.getName());
+				_log.warning(SendWareHouseWithDrawList.class.getName() + ": Error withdrawing a warehouse object for char " + player.getName());
 				continue;
 			}
 

@@ -14,7 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
@@ -83,7 +82,7 @@ public class AdminDisconnect implements IAdminCommandHandler
 			sm.addString("Character " + player.getName() + " disconnected from server.");
 			activeChar.sendPacket(sm);
 
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": " + player.getName() + " kicked from server.");
+			_log.warning(AdminDisconnect.class.getSimpleName() + ": " + player.getName() + " kicked from server.");
 
 			// Logout Character
 			LeaveWorld ql = new LeaveWorld();

@@ -17,9 +17,9 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -80,7 +80,6 @@ public class AuctionManager
 	{
 		if (_instance == null)
 		{
-			System.out.println("Initializing AuctionManager");
 			_instance = new AuctionManager();
 		}
 		return _instance;
@@ -100,24 +99,21 @@ public class AuctionManager
 
 	private final void load()
 	{
+		_log.info(AuctionManager.class.getSimpleName() + ": Initializing AuctionManager");
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-			statement = con.prepareStatement("SELECT id FROM auction ORDER BY id");
-			rs = statement.executeQuery();
+			PreparedStatement statement = con.prepareStatement("SELECT id FROM auction ORDER BY id");
+			ResultSet rs = statement.executeQuery();
 			while (rs.next())
 				_auctions.add(new Auction(rs.getInt("id")));
 			statement.close();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getAuctions().size() + " auction(s)");
+			_log.info(AuctionManager.class.getSimpleName() + ": Loaded: " + getAuctions().size() + " auction(s)");
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": AuctionManager.load(): " + e);
+			_log.warning(AuctionManager.class.getName() + ": AuctionManager.load(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -155,24 +151,21 @@ public class AuctionManager
 				break;
 		if (i >= ItemInitDataId.length)
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Clan Hall auction not found for Id :" + id);
+			_log.warning(AuctionManager.class.getSimpleName() + ": Clan Hall auction not found for Id :" + id);
 			return;
 		}
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+			PreparedStatement statement = con.prepareStatement("INSERT INTO auction VALUES " + ITEM_INIT_DATA[i]))
 		{
-			PreparedStatement statement;
-			statement = con.prepareStatement("INSERT INTO auction VALUES " + ITEM_INIT_DATA[i]);
 			statement.execute();
 			statement.close();
 			_auctions.add(new Auction(id));
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Auction.initNPC(): " + e);
+			_log.warning(AuctionManager.class.getName() + ": Auction.initNPC(): "+ id);
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

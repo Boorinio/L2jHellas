@@ -22,7 +22,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -275,7 +274,7 @@ public class ThreadPoolManager
 			_ioPacketsThreadPool.shutdown();
 			_generalThreadPool.shutdown();
 			_aiThreadPool.shutdown();
-			_log.log(Level.INFO, getClass().getName() + ": All ThreadPools are now stoped.");
+			_log.info(ThreadPoolManager.class.getName() + ": All ThreadPools are now stoped.");
 
 		}
 		catch (InterruptedException e)

@@ -26,8 +26,8 @@ import com.l2jhellas.gameserver.model.L2MinionData;
 import com.l2jhellas.gameserver.model.L2NpcAIData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.skills.Stats;
 /**
  * This cl contains all generic data of a L2Spawn object.<BR><BR>
@@ -437,7 +437,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 			if (QuestEventType.isMultipleRegistrationAllowed() || eventList.isEmpty())
 				eventList.add(quest);
 			else
-				_log.warning("Quest event not allow multiple quest registrations. Skipped addition of QuestEventType \"" + QuestEventType + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
+				_log.warning(L2NpcTemplate.class.getName() + ": Quest event not allow multiple quest registrations. Skipped addition of QuestEventType \"" + QuestEventType + "\" for NPC \"" + getName() + "\" and quest \"" + quest.getName() + "\".");
 		}
 	}
 	

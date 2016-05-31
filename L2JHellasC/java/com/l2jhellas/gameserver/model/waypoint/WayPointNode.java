@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;

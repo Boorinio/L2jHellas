@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -78,7 +77,7 @@ public class RaidBossPointsManager
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "RaidPointsManager: Couldnt load Raid Points characters infos ", e);
+			_log.warning(RaidBossPointsManager.class.getSimpleName() + ": RaidPointsManager: Couldnt load Raid Points characters infos ");
 		}
 	}
 	
@@ -95,7 +94,7 @@ public class RaidBossPointsManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not update char raid points:", e);
+			_log.warning(RaidBossPointsManager.class.getSimpleName() + ": could not update char raid points:");
 		}
 	}
 	
@@ -148,7 +147,7 @@ public class RaidBossPointsManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not clean raid points: ", e);
+			_log.warning(RaidBossPointsManager.class.getSimpleName() + ": could not clean raid points: ");
 		}
 	}
 	

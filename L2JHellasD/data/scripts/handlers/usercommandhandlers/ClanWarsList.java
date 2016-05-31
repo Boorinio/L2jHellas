@@ -17,7 +17,7 @@ package handlers.usercommandhandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -103,13 +103,11 @@ public class ClanWarsList implements IUserCommandHandler
 			}
 			activeChar.sendPacket(SystemMessageId.FRIEND_LIST_FOOTER);
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error cant find DB " + e);
+			_log.warning(ClanWarsList.class.getName() + ": Error cant find DB ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return true;
 	}

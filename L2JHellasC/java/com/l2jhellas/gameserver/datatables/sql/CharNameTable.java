@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -105,11 +104,9 @@ public class CharNameTable
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not check existing char name: " + e);
+			_log.warning(CharNameTable.class.getName() + " Could not check existing char name: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		if (id > 0)
@@ -148,11 +145,9 @@ public class CharNameTable
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not check existing char id: " + e);
+			_log.warning(CharNameTable.class.getName() + " Could not check existing char id: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		if (name != null && !name.isEmpty())
 		{
@@ -186,11 +181,9 @@ public class CharNameTable
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " could not check existing charname:" + e);
+			_log.warning(CharNameTable.class.getName() + " could not check existing charname:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return result;
 	}
@@ -213,16 +206,14 @@ public class CharNameTable
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " could not check existing char number:" + e);
+			_log.warning(CharNameTable.class.getName() + " could not check existing char number:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return number;
 	}
 
-	@SuppressWarnings("synthetic-access")
+	
 	private static class SingletonHolder
 	{
 		protected static final CharNameTable _instance = new CharNameTable();

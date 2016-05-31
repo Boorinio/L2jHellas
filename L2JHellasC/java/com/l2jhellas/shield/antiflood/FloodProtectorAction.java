@@ -15,7 +15,6 @@
 package com.l2jhellas.shield.antiflood;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.controllers.GameTimeController;
@@ -87,9 +86,9 @@ public final class FloodProtectorAction
 
 		if (curTick < _nextGameTick || _punishmentInProgress)
 		{
-			if (_config.LOG_FLOODING && !_logged && _log.isLoggable(Level.WARNING))
+			if (_config.LOG_FLOODING && !_logged)
 			{
-				_log.warning(StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Player [", _player.getName(), "] called command [", command, "] [~", String.valueOf((_config.FLOOD_PROTECTION_INTERVAL - (_nextGameTick - curTick)) * GameTimeController.MILLIS_IN_TICK), " ms] after previous command"));
+				_log.warning(FloodProtectorAction.class.getName() + ": " + StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Player [", _player.getName(), "] called command [", command, "] [~", String.valueOf((_config.FLOOD_PROTECTION_INTERVAL - (_nextGameTick - curTick)) * GameTimeController.MILLIS_IN_TICK), " ms] after previous command"));
 				_logged = true;
 			}
 
@@ -120,8 +119,8 @@ public final class FloodProtectorAction
 
 		if (_count.get() > 0)
 		{
-			if (_config.LOG_FLOODING && _log.isLoggable(Level.WARNING))
-				_log.warning(StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Player [", _player.getName(), "] issued [", String.valueOf(_count), "] extra requests within [~", String.valueOf(_config.FLOOD_PROTECTION_INTERVAL * GameTimeController.MILLIS_IN_TICK), " ms]"));
+			if (_config.LOG_FLOODING)
+				_log.warning(FloodProtectorAction.class.getName() + ": " + StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Player [", _player.getName(), "] issued [", String.valueOf(_count), "] extra requests within [~", String.valueOf(_config.FLOOD_PROTECTION_INTERVAL * GameTimeController.MILLIS_IN_TICK), " ms]"));
 		}
 
 		_nextGameTick = curTick + _config.FLOOD_PROTECTION_INTERVAL;
@@ -137,9 +136,7 @@ public final class FloodProtectorAction
 	private void kickPlayer()
 	{
 		_player.closeNetConnection();
-
-		if (_log.isLoggable(Level.WARNING))
-			_log.warning(StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Account [", _player.getAccountName(), "] kicked for flooding [char ", _player.getName(), "]"));
+		_log.warning(FloodProtectorAction.class.getName() + ": " + StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Account [", _player.getAccountName(), "] kicked for flooding [char ", _player.getName(), "]"));
 	}
 
 	/**
@@ -148,10 +145,7 @@ public final class FloodProtectorAction
 	private void banAccount()
 	{
 		_player.setAccountAccesslevel(-100);
-
-		if (_log.isLoggable(Level.WARNING))
-			_log.warning(StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Account [", _player.getAccountName(), "] banned for flooding [char ", _player.getName(), "] ", _config.PUNISHMENT_TIME <= 0 ? "forever" : "for " + _config.PUNISHMENT_TIME + " mins"));
-
+		_log.warning(FloodProtectorAction.class.getName() + ": " + StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Account [", _player.getAccountName(), "] banned for flooding [char ", _player.getName(), "] ", _config.PUNISHMENT_TIME <= 0 ? "forever" : "for " + _config.PUNISHMENT_TIME + " mins"));
 		_player.closeNetConnection();
 	}
 
@@ -161,8 +155,6 @@ public final class FloodProtectorAction
 	private void jailChar()
 	{
 		_player.setInJail(true, _config.PUNISHMENT_TIME);
-
-		if (_log.isLoggable(Level.WARNING))
-			_log.warning(StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Player [", _player.getName(), "] jailed for flooding [char ", _player.getName(), "] ", _config.PUNISHMENT_TIME <= 0 ? "forever" : "for " + _config.PUNISHMENT_TIME + " mins"));
+		_log.warning(FloodProtectorAction.class.getName() + ": " + StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Player [", _player.getName(), "] jailed for flooding [char ", _player.getName(), "] ", _config.PUNISHMENT_TIME <= 0 ? "forever" : "for " + _config.PUNISHMENT_TIME + " mins"));
 	}
 }

@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.ai;
 
-import java.util.logging.Level;
-
 import javolution.util.FastList;
 
 import com.l2jhellas.Config;
@@ -99,7 +97,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	@Override
 	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
 	{
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": ID: " + getActor().getNpcId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
+		_log.warning(L2NpcWalkerAI.class.getSimpleName() + ": ID: " + getActor().getNpcId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
 
 		int destinationX = _route.get(_currentPos).getMoveX();
 		int destinationY = _route.get(_currentPos).getMoveY();
@@ -126,11 +124,9 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 				}
 				catch (ArrayIndexOutOfBoundsException e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Error, " + e);
+					_log.warning(L2NpcWalkerAI.class.getName() + ": Error, ");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 
@@ -142,7 +138,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 			{
 				delay = DEFAULT_MOVE_DELAY;
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, getClass().getName() + ": Wrong Delay Set in Npc Walker Functions = " + delay + " secs, using default delay: " + DEFAULT_MOVE_DELAY + " secs instead.");
+					_log.config(L2NpcWalkerAI.class.getName() + ": Wrong Delay Set in Npc Walker Functions = " + delay + " secs, using default delay: " + DEFAULT_MOVE_DELAY + " secs instead.");
 			}
 
 			_nextMoveTime = System.currentTimeMillis() + delay;

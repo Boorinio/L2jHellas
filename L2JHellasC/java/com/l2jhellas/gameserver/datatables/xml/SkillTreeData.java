@@ -94,7 +94,7 @@ public class SkillTreeData
 
 		learnMap = null;
 
-		_log.warning("Expertise not found for grade " + grade);
+		_log.warning(SkillTreeData.class.getName() + ": Expertise not found for grade " + grade);
 		return 0;
 	}
 
@@ -142,7 +142,7 @@ public class SkillTreeData
 		File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/skill_tree.xml");
 		if (!file.exists())
 		{
-			_log.warning("skill_tree.xml could not be loaded: file not found");
+			_log.warning(SkillTreeData.class.getName() + ": skill_tree.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -199,15 +199,15 @@ public class SkillTreeData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 
 		_log.info("SkillTreeTable: Loaded " + count + " skills.");
@@ -224,7 +224,7 @@ public class SkillTreeData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/fishing_skill_tree.xml");
 		if (!f.exists())
 		{
-			_log.warning("fishing_skill_tree.xml could not be loaded: file not found");
+			_log.warning(SkillTreeData.class.getName() + ": fishing_skill_tree.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -272,15 +272,15 @@ public class SkillTreeData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 
 		count2 = _fishingSkillTrees.size();
@@ -295,7 +295,7 @@ public class SkillTreeData
 		File f2 = new File(PackRoot.DATAPACK_ROOT, "data/xml/enchant_skill_tree.xml");
 		if (!f2.exists())
 		{
-			_log.warning("enchant_skill_tree.xml could not be loaded: file not found");
+			_log.warning(SkillTreeData.class.getName() + ": enchant_skill_tree.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -351,15 +351,15 @@ public class SkillTreeData
 		}
 		catch (SAXException e0)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e0)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e0)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 
 		count4 = _enchantSkillTrees.size();
@@ -372,7 +372,7 @@ public class SkillTreeData
 		File f1 = new File(PackRoot.DATAPACK_ROOT, "data/xml/pledge_skill_tree.xml");
 		if (!f1.exists())
 		{
-			_log.warning("pledge_skill_tree.xml could not be loaded: file not found");
+			_log.warning(SkillTreeData.class.getName() + ": pledge_skill_tree.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -410,15 +410,15 @@ public class SkillTreeData
 		}
 		catch (SAXException e1)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e1)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e1)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillTreeData.class.getName() + ": Error while creating table");
 		}
 
 		count5 = _pledgeSkillTrees.size();
@@ -519,7 +519,7 @@ public class SkillTreeData
 		if (_fishingSkillTrees.isEmpty())
 		{
 			// the skilltree for this class is undefined, so we give an empty list
-			_log.warning("Skilltree for fishing is not defined !");
+			_log.warning(SkillTreeData.class.getName() + ": Skilltree for fishing is not defined !");
 			return new L2SkillLearn[0];
 		}
 
@@ -651,7 +651,7 @@ public class SkillTreeData
 		if (skills == null)
 		{
 			// the skilltree for this class is undefined, so we give an empty list
-			_log.warning("Skilltree for class " + classId + " is not defined !");
+			_log.warning(SkillTreeData.class.getName() + ": Skilltree for class " + classId + " is not defined !");
 			return minLevel;
 		}
 
@@ -679,7 +679,7 @@ public class SkillTreeData
 		if (skills.isEmpty())
 		{
 			// the skilltree for this class is undefined, so we give an empty list
-			_log.warning("SkillTree for fishing is not defined !");
+			_log.warning(SkillTreeData.class.getName() + ": SkillTree for fishing is not defined !");
 			return minLevel;
 		}
 

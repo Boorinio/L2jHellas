@@ -20,7 +20,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -267,17 +266,15 @@ public class CastleManorManager
 
 				if (!procure.isEmpty() || !procureNext.isEmpty() || !production.isEmpty() || !productionNext.isEmpty())
 				{
-					_log.log(Level.INFO, getClass().getSimpleName() + ": " + castle.getName() + ": Data loaded.");
+					_log.info(CastleManorManager.class.getSimpleName() + ": " + castle.getName() + ": Data loaded.");
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error restoring manor data: " + e);
+			_log.warning(CastleManorManager.class.getName() + ": Error restoring manor data: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -297,7 +294,7 @@ public class CastleManorManager
 
 	public void updateManorRefresh()
 	{
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Manor refresh updated.");
+		_log.info(CastleManorManager.class.getSimpleName() + ": Manor refresh updated.");
 		_scheduledManorRefresh = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
@@ -306,7 +303,7 @@ public class CastleManorManager
 				if (!isDisabled())
 				{
 					setUnderMaintenance(true);
-					_log.log(Level.INFO, getClass().getSimpleName() + ": Under maintenance mode started.");
+					_log.info(CastleManorManager.class.getSimpleName() + ": Under maintenance mode started.");
 
 					_scheduledMaintenanceEnd = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 					{
@@ -321,11 +318,9 @@ public class CastleManorManager
 							}
 							catch (Exception e)
 							{
-								_log.log(Level.WARNING, getClass().getName() + ": Failed to save manor data: " + e);
+								_log.warning(CastleManorManager.class.getName() + ": Failed to save manor data: ");
 								if (Config.DEVELOPER)
-								{
 									e.printStackTrace();
-								}
 							}
 							setUnderMaintenance(false);
 						}
@@ -339,7 +334,7 @@ public class CastleManorManager
 
 	public void updatePeriodApprove()
 	{
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Manor period approve updated.");
+		_log.info(CastleManorManager.class.getSimpleName() + ": Manor period approve updated.");
 		_scheduledNextPeriodapprove = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
@@ -348,7 +343,7 @@ public class CastleManorManager
 				if (!isDisabled())
 				{
 					approveNextPeriod();
-					_log.log(Level.INFO, getClass().getSimpleName() + ": Next period approved.");
+					_log.info(CastleManorManager.class.getSimpleName() + ": Next period approved.");
 				}
 				updatePeriodApprove();
 			}
@@ -370,7 +365,7 @@ public class CastleManorManager
 		_manorRefresh.set(Calendar.MINUTE, MANOR_REFRESH_MIN);
 		_manorRefresh.add(Calendar.HOUR_OF_DAY, 24);
 
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Schedule for manor refresh @ " + _manorRefresh.getTime());
+		_log.info(CastleManorManager.class.getSimpleName() + ": Schedule for manor refresh @ " + _manorRefresh.getTime());
 
 		return (_manorRefresh.getTimeInMillis() - Calendar.getInstance().getTimeInMillis());
 	}
@@ -390,7 +385,7 @@ public class CastleManorManager
 		_periodApprove.set(Calendar.MINUTE, NEXT_PERIOD_APPROVE_MIN);
 		_periodApprove.add(Calendar.HOUR_OF_DAY, 24);
 
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Schedule for period approve @ " + _periodApprove.getTime());
+		_log.info(CastleManorManager.class.getSimpleName() + ": Schedule for period approve @ " + _periodApprove.getTime());
 
 		return (_periodApprove.getTimeInMillis() - Calendar.getInstance().getTimeInMillis());
 	}
@@ -412,7 +407,7 @@ public class CastleManorManager
 			ItemContainer cwh = clan.getWarehouse();
 			if (!(cwh instanceof ClanWarehouse))
 			{
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
+				_log.info(CastleManorManager.class.getSimpleName() + ": Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
 				return;
 			}
 
@@ -515,7 +510,7 @@ public class CastleManorManager
 				ItemContainer cwh = ClanTable.getInstance().getClan(c.getOwnerId()).getWarehouse();
 				if (!(cwh instanceof ClanWarehouse))
 				{
-					_log.log(Level.INFO, getClass().getSimpleName() + ": Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
+					_log.info(CastleManorManager.class.getSimpleName() + ": Can't get clan warehouse for clan " + ClanTable.getInstance().getClan(c.getOwnerId()));
 					return;
 				}
 				int slots = 0;

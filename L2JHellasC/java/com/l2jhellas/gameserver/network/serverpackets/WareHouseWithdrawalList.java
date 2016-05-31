@@ -45,7 +45,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 		if (_activeChar.getActiveWarehouse() == null)
 		{
 			// Something went wrong!
-			_log.warning("error while sending withdraw request to: " + _activeChar.getName());
+			_log.warning(WareHouseWithdrawalList.class.getName() + ": error while sending withdraw request to: " + _activeChar.getName());
 			return;
 		}
 		if(_activeChar.getActiveTradeList()!=null || _activeChar.getActiveEnchantItem() != null)

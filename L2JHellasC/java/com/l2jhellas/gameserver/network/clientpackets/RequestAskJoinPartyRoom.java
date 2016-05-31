@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
+
 /**
  * Format: (ch) S
  * 
@@ -34,7 +36,8 @@ public class RequestAskJoinPartyRoom extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// TODO
-		System.out.println("C5:RequestAskJoinPartyRoom: S: " + _player);
+		if (Config.DEBUG)
+			_log.config(RequestAskJoinPartyRoom.class.getName() + ": C5:RequestAskJoinPartyRoom: S: " + _player);
 	}
 
 	@Override

@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
+
 /**
  * Format: (ch)
  * this is just a trigger : no data
@@ -34,7 +36,8 @@ public final class RequestExitPartyMatchingWaitingRoom extends L2GameClientPacke
 	protected void runImpl()
 	{
 		// TODO
-		System.out.println("C5: RequestExitPartyMatchingWaitingRoom");
+		if (Config.DEBUG)
+			_log.config(RequestExitPartyMatchingWaitingRoom.class.getName() + ": C5: RequestExitPartyMatchingWaitingRoom");
 	}
 
 	@Override

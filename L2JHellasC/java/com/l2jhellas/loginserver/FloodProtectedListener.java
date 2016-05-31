@@ -20,7 +20,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -72,7 +71,7 @@ public abstract class FloodProtectedListener extends Thread
 							connection.close();
 							fConnection.connectionNumber -= 1;
 							if (!fConnection.isFlooding)
-								_log.warning("Potential Flood from " + connection.getInetAddress().getHostAddress());
+								_log.warning(FloodProtectedListener.class.getName() + ": Potential Flood from " + connection.getInetAddress().getHostAddress());
 							fConnection.isFlooding = true;
 							continue;
 						}
@@ -109,7 +108,7 @@ public abstract class FloodProtectedListener extends Thread
 					}
 					catch (IOException io)
 					{
-						_log.log(Level.INFO, "", io);
+						_log.info(FloodProtectedListener.class.getName() + " error");
 					}
 					break;
 				}
@@ -150,7 +149,7 @@ public abstract class FloodProtectedListener extends Thread
 		}
 		else
 		{
-			_log.warning("Removing a flood protection for a GameServer that was not in the connection map??? :" + ip);
+			_log.warning(FloodProtectedListener.class.getName() + ": Removing a flood protection for a GameServer that was not in the connection map??? :" + ip);
 		}
 	}
 

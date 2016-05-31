@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -149,11 +148,9 @@ public class SiegeManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": checkIsRegistered(): " + e);
+			_log.warning(SiegeManager.class.getName() + ": checkIsRegistered(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return register;
 	}
@@ -213,11 +210,9 @@ public class SiegeManager
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": Error while loading control tower(s) for " + castle.getName() + " castle." + e);
+						_log.warning(SiegeManager.class.getName() + ": Error while loading control tower(s) for " + castle.getName() + " castle.");
 						if (Config.DEVELOPER)
-						{
 							e.printStackTrace();
-						}
 					}
 				}
 
@@ -244,11 +239,9 @@ public class SiegeManager
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": Error while loading artefact(s) for " + castle.getName() + " castle." + e);
+						_log.warning(SiegeManager.class.getName() + ": Error while loading artefact(s) for " + castle.getName() + " castle.");
 						if (Config.DEVELOPER)
-						{
 							e.printStackTrace();
-						}
 					}
 				}
 
@@ -260,11 +253,9 @@ public class SiegeManager
 		catch (Exception e)
 		{
 			// _initialized = false;
-			_log.log(Level.WARNING, getClass().getName() + ": Error while loading siege data." + e);
+			_log.warning(SiegeManager.class.getName() + ": Error while loading siege data.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

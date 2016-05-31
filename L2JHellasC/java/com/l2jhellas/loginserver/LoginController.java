@@ -14,22 +14,24 @@
  */
 package com.l2jhellas.loginserver;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.RSAKeyGenParameterSpec;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
@@ -205,10 +207,9 @@ public class LoginController
 		INVALID_PASSWORD, ACCOUNT_BANNED, ALREADY_ON_LS, ALREADY_ON_GS, AUTH_SUCCESS
 	};
 
-	public AuthLoginResult tryAuthLogin(String account, String password, L2LoginClient client) throws HackingException
+	public AuthLoginResult tryAuthLogin(String account, String password, L2LoginClient client) throws HackingException, NoSuchAlgorithmException
 	{
 		AuthLoginResult ret = AuthLoginResult.INVALID_PASSWORD;
-		// check auth
 		if (loginValid(account, password, client))
 		{
 			// login was successful, verify presence on Gameservers
@@ -418,9 +419,11 @@ public class LoginController
 					statement.executeUpdate();
 					statement.close();
 				}
-				catch (Exception e)
+				catch (SQLException e)
 				{
-					_log.warning("WARNING: Could not set lastServer: " + e);
+					_log.warning(LoginController.class.getName() + ": WARNING: Could not set lastServer: ");
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 				}
 			}
 			return loginOk;
@@ -438,9 +441,11 @@ public class LoginController
 			statement.executeUpdate();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("WARNING: Could not set accessLevel: " + e);
+			_log.warning(LoginController.class.getName() + ": WARNING: Could not set accessLevel: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -463,9 +468,11 @@ public class LoginController
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "  Could not check GM state: " + e.getMessage());
+			_log.warning(LoginController.class.getSimpleName() + ":   Could not check GM state: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			ok = false;
 		}
 		return ok;
@@ -490,9 +497,10 @@ public class LoginController
 	 * @param password
 	 * @param address
 	 * @return
+	 * @throws NoSuchAlgorithmException 
 	 */
-	@SuppressWarnings("resource")
-	public boolean loginValid(String user, String password, L2LoginClient client)// throws HackingException
+	
+	public boolean loginValid(String user, String password, L2LoginClient client)
 	{
 		boolean ok = false;
 		InetAddress address = client.getConnection().getInetAddress();
@@ -507,8 +515,26 @@ public class LoginController
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			MessageDigest md = MessageDigest.getInstance("SHA");
-			byte[] raw = password.getBytes("UTF-8");
+			MessageDigest md = null;
+			try
+			{
+				md = MessageDigest.getInstance("SHA");
+			}
+			catch (NoSuchAlgorithmException e1)
+			{
+				if (Config.DEVELOPER)
+					e1.printStackTrace();
+			}
+			byte[] raw = null;
+			try
+			{
+				raw = password.getBytes("UTF-8");
+			}
+			catch (UnsupportedEncodingException e)
+			{
+				if (Config.DEVELOPER)
+					e.printStackTrace();
+			}
 			byte[] hash = md.digest(raw);
 
 			byte[] expected = null;
@@ -551,10 +577,10 @@ public class LoginController
 						return true;
 
 					}
-					_log.warning("Invalid username creation/use attempt: " + user);
+					_log.warning(LoginController.class.getName() + ": Invalid username creation/use attempt: " + user);
 					return false;
 				}
-				_log.warning("WARNING: Account missing for user " + user);
+				_log.warning(LoginController.class.getName() + ": WARNING: Account missing for user " + user);
 				return false;
 			}
 			else
@@ -582,17 +608,19 @@ public class LoginController
 			{
 				client.setAccessLevel(access);
 				client.setLastServer(lastServer);
-				statement = con.prepareStatement(UPDATE_ACTIVITY);
-				statement.setLong(1, System.currentTimeMillis());
-				statement.setString(2, address.getHostAddress());
-				statement.setString(3, user);
-				statement.execute();
-				statement.close();
+				PreparedStatement statement2 = con.prepareStatement(UPDATE_ACTIVITY);
+				statement2.setLong(1, System.currentTimeMillis());
+				statement2.setString(2, address.getHostAddress());
+				statement2.setString(3, user);
+				statement2.execute();
+				statement2.close();
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("WARNING: Could not check password: " + e);
+			_log.warning(LoginController.class.getName() + ": WARNING: Could not check password: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			ok = false;
 		}
 
@@ -646,9 +674,11 @@ public class LoginController
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("WARNING: Could not check ban state: " + e);
+			_log.warning(LoginController.class.getName() + ": WARNING: Could not check ban state: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			ok = false;
 		}
 

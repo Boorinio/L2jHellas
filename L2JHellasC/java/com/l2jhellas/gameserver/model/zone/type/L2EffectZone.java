@@ -76,7 +76,7 @@ public class L2EffectZone extends L2ZoneType
 			{
 				String[] skillSplit = skill.split("-");
 				if (skillSplit.length != 2)
-					_log.warning(StringUtil.concat(getClass().getSimpleName() + ": invalid config property -> skillsIdLvl \"", skill, "\""));
+					_log.warning(L2EffectZone.class.getName() + ": " + StringUtil.concat(getClass().getSimpleName() + ": invalid config property -> skillsIdLvl \"", skill, "\""));
 				else
 				{
 					try
@@ -86,7 +86,7 @@ public class L2EffectZone extends L2ZoneType
 					catch (NumberFormatException nfe)
 					{
 						if (!skill.isEmpty())
-							_log.warning(StringUtil.concat(getClass().getSimpleName() + ": invalid config property -> skillsIdLvl \"", skillSplit[0], "\"", skillSplit[1]));
+							_log.warning(L2EffectZone.class.getName() + ": " + StringUtil.concat(getClass().getSimpleName() + ": invalid config property -> skillsIdLvl \"", skillSplit[0], "\"", skillSplit[1]));
 					}
 				}
 			}

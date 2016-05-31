@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.datatables.xml;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,7 +53,7 @@ public class MultisellData
 			}
 		}
 
-		_log.warning("[L2Multisell] can't find list with id: " + id);
+		_log.warning(MultisellData.class.getName() + ": can't find list with id: " + id);
 		return null;
 	}
 
@@ -504,7 +503,7 @@ public class MultisellData
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Error loading file " + f, e);
+				_log.warning(MultisellData.class.getSimpleName() + ": Error loading file " + f);
 			}
 			try
 			{
@@ -514,10 +513,10 @@ public class MultisellData
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Error in file " + f, e);
+				_log.warning(MultisellData.class.getSimpleName() + ": Error in file " + f);
 			}
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _entries.size() + " lists.");
+		_log.info(MultisellData.class.getSimpleName() + ": Loaded " + _entries.size() + " lists.");
 	}
 
 	protected MultiSellListContainer parseDocument(Document doc)

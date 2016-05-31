@@ -40,7 +40,7 @@ public final class RequestPrivateStoreManageSell extends L2GameClientPacket
 		if (!player.isVisible())
 		{
 			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " try exploit at login with privatestore!", Config.DEFAULT_PUNISH);
-			_log.warning("Player " + player.getName() + " try exploit at login with privatestore!");
+			_log.warning(RequestPrivateStoreManageSell.class.getName() + ": Player " + player.getName() + " try exploit at login with privatestore!");
 			return;
 		}
 

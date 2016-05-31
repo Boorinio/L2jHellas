@@ -147,7 +147,6 @@ public class PlayableStat extends CharStat
 	{
 		if (value < 0)
 		{
-			System.out.println("wrong usage");
 			return false;
 		}
 		int currentSp = getSp();

@@ -14,7 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -79,7 +78,7 @@ public class AdminShop implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": admin buylist failed:" + command);
+			_log.warning(AdminShop.class.getName() + ": admin buylist failed:" + command);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -96,7 +95,7 @@ public class AdminShop implements IAdminCommandHandler
 		}
 		else
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": no buylist with id:" + val);
+			_log.warning(AdminShop.class.getName() + ": no buylist with id:" + val);
 		}
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}

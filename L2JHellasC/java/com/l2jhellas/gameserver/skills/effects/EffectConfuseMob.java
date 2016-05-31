@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
-
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -90,7 +88,7 @@ public final class EffectConfuseMob extends L2Effect
 		// getEffected().setTarget(target);
 		getEffected().setTarget(target);
 		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
-
+		((L2Attackable) getEffected()).addDamageHate((L2Character) target, 0, (4 + Rnd.get(4)) * getEffector().getLevel());
 		return true;
 	}
 }

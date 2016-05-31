@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -13803,7 +13802,7 @@ public final class SystemMessageId
 				}
 				catch (final Exception e)
 				{
-					_log.log(Level.WARNING, "SystemMessageId: Failed field access for '" + field.getName() + "'", e);
+					_log.warning(SystemMessageId.class.getSimpleName() + ": SystemMessageId: Failed field access for '" + field.getName() + "'");
 				}
 			}
 		}

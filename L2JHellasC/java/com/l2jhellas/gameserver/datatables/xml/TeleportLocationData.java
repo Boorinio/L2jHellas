@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,6 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.PackRoot;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2TeleportLocation;
 import com.l2jhellas.util.filters.file.XMLFilter;
 
@@ -74,7 +74,9 @@ public class TeleportLocationData
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error loading file " + f, e);
+				_log.severe(TeleportLocationData.class.getName() + ": Error loading file " + f);
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 				continue;
 			}
 			try
@@ -144,7 +146,7 @@ public class TeleportLocationData
 									}
 									catch (Exception e)
 									{
-										_log.log(Level.WARNING, "[" + getClass().getSimpleName() + "]: Error while parsing price for teleport id: " + id, e);
+										_log.warning(TeleportLocationData.class.getSimpleName() + ": [" + getClass().getSimpleName() + "]: Error while parsing price for teleport id: " + id);
 										continue;
 									}
 								}
@@ -159,7 +161,7 @@ public class TeleportLocationData
 									}
 									catch (Exception e)
 									{
-										_log.log(Level.WARNING, "[" + getClass().getSimpleName() + "]: Error while parsing minMaxLevel for teleport id: " + id, e);
+										_log.warning(TeleportLocationData.class.getSimpleName() + ": [" + getClass().getSimpleName() + "]: Error while parsing minMaxLevel for teleport id: " + id);
 										continue;
 									}
 								}
@@ -167,7 +169,7 @@ public class TeleportLocationData
 								if (_teleports.containsKey(id))
 								{
 									L2TeleportLocation loc = _teleports.get(id);
-									_log.log(Level.INFO, "[" + getClass().getSimpleName() + "]: Duplicate teleport found! \nid: " + id + " X: " + x + " Y: " + y + " Z: " + z + " \nExisting: X: " + loc.getLocX() + " Y: " + loc.getLocY() + " Z: " + loc.getLocZ());
+									_log.info(TeleportLocationData.class.getName() + "[" + getClass().getSimpleName() + "]: Duplicate teleport found! \nid: " + id + " X: " + x + " Y: " + y + " Z: " + z + " \nExisting: X: " + loc.getLocX() + " Y: " + loc.getLocY() + " Z: " + loc.getLocZ());
 								}
 
 								teleport = new L2TeleportLocation();
@@ -196,7 +198,9 @@ public class TeleportLocationData
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error in file " + f, e);
+				_log.severe(TeleportLocationData.class.getName() + ": Error in file " + f);
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 		_log.info("[" + getClass().getSimpleName() + "]: Loaded " + _teleports.size() + " Location Templates.");
@@ -208,7 +212,7 @@ public class TeleportLocationData
 		File dir = new File(PackRoot.DATAPACK_ROOT, dirname);
 		if (!dir.exists())
 		{
-			_log.log(Level.WARNING, "Dir " + dir.getAbsolutePath() + " not exists");
+			_log.warning(TeleportLocationData.class.getSimpleName() + ": Dir " + dir.getAbsolutePath() + " not exists");
 			return;
 		}
 

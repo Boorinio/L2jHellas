@@ -12,7 +12,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/javolution.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jna-3.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/mail.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/mmocore.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/slf4j-api-1.7.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/slf4j-simple-1.7.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/Subnet-1.0.jar"/>

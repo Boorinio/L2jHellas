@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.CrownTable;
@@ -42,7 +41,7 @@ public class CrownManager
 
 	public CrownManager()
 	{
-		_log.log(Level.INFO, getClass().getSimpleName() + ": initialized.");
+		_log.info(CrownManager.class.getSimpleName() + ": initialized.");
 	}
 
 	public void checkCrowns(L2Clan clan)

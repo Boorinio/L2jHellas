@@ -61,7 +61,6 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  * <p>
  * dddddSdddddddddddddddddddddddddddffffdddSdddddccccccch dddddSddddddddddddddddddddddddddddffffdddSdddddccccccch (h) c (dchd) ddc dcc c cddd d
  * dddddSdddddddddddddddhhhhhhhhhhhhhhhhhhhhhhhhddddddddddddddffffdddSdddddccccccch [h] c (ddhd) ddc c ddc cddd d d dd d d d
- * 
  */
 public class CharInfo extends L2GameServerPacket
 {
@@ -192,7 +191,7 @@ public class CharInfo extends L2GameServerPacket
 			}
 			else
 			{
-				_log.warning("Character " + _activeChar.getName() + " (" + _activeChar.getObjectId() + ") morphed in a Npc (" + _activeChar.getPoly().getPolyId() + ") w/o template.");
+				_log.warning(CharInfo.class.getName() + ": Character " + _activeChar.getName() + " (" + _activeChar.getObjectId() + ") morphed in a Npc (" + _activeChar.getPoly().getPolyId() + ") w/o template.");
 			}
 		}
 		else

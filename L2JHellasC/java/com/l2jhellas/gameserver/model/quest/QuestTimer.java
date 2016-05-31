@@ -15,9 +15,9 @@
 package com.l2jhellas.gameserver.model.quest;
 
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -101,7 +101,9 @@ public class QuestTimer
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "", e);
+				_log.severe(ScheduleTimerTask.class.getName() + ": Could not run schedule timer");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}

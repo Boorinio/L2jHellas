@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -216,7 +215,7 @@ public class L2ClanMember
 		}
 		catch (Exception e)
 		{
-			//_log.warning("could not set char power_grade:"+e);
+			_log.warning(L2ClanMember.class.getName() + ": could not set char power_grade:");
 		}
 	}
 
@@ -258,9 +257,11 @@ public class L2ClanMember
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not set char power_grade:" + e.getMessage(), e);
+			_log.warning(L2ClanMember.class.getName() + " Could not set char power_grade:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -467,11 +468,9 @@ public class L2ClanMember
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " could not set apprentice/sponsor:" + e);
+			_log.warning(L2ClanMember.class.getName() + " could not set apprentice/sponsor:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

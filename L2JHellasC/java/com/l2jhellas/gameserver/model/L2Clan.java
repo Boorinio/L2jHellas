@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -345,7 +346,7 @@ public class L2Clan
 		L2ClanMember exMember = _members.remove(name);
 		if (exMember == null)
 		{
-			_log.log(Level.WARNING, getClass().getCanonicalName() + ": Member " + name + " not found in clan while trying to remove.");
+			_log.warning(L2Clan.class.getClass().getCanonicalName() + ": Member " + name + " not found in clan while trying to remove.");
 			return;
 		}
 		int leadssubpledge = getLeaderSubPledge(name);
@@ -704,16 +705,14 @@ public class L2Clan
 
 			if (Config.DEBUG)
 			{
-				_log.log(Level.CONFIG, getClass().getName() + ": New clan leader saved in db: " + getClanId());
+				_log.config(L2Clan.class.getName() + ": New clan leader saved in db: " + getClanId());
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while saving new clan leader to db " + e);
+			_log.warning(L2Clan.class.getName() + ": error while saving new clan leader to db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -736,16 +735,14 @@ public class L2Clan
 
 			if (Config.DEBUG)
 			{
-				_log.log(Level.CONFIG, getClass().getName() + ": New clan saved in db: " + getClanId());
+				_log.config(L2Clan.class.getName() + ": New clan saved in db: " + getClanId());
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while saving new clan to db " + e);
+			_log.warning(L2Clan.class.getName() + ": error while saving new clan to db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -775,16 +772,15 @@ public class L2Clan
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while removing clan member in db " + e);
+			_log.warning(L2Clan.class.getName() + ": error while removing clan member in db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
+	
 	@SuppressWarnings("unused")
 	private void updateWarsInDB()
 	{
@@ -799,13 +795,11 @@ public class L2Clan
 
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not update clans wars data:" + e);
+			_log.warning(L2Clan.class.getName() + ": could not update clans wars data:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -878,11 +872,16 @@ public class L2Clan
 						}
 					}
 				}
+				catch (Exception e)
+				{
+					if (Config.DEVELOPER)
+						e.printStackTrace();
+				}
 			}
 
 			if (Config.DEBUG && getName() != null)
 			{
-				_log.log(Level.CONFIG, getClass().getSimpleName() + ": Restored clan data for: " + getName() + " from database.");
+				_log.config(L2Clan.class.getSimpleName() + ": Restored clan data for: " + getName() + " from database.");
 			}
 
 			restoreSubPledges();
@@ -890,13 +889,11 @@ public class L2Clan
 			restoreSkills();
 			restoreNotice();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while restoring clan " + e.getMessage(), e);
+			_log.warning(L2Clan.class.getName() + ": error while restoring clan ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -921,13 +918,11 @@ public class L2Clan
 				_skills.put(skill.getId(), skill);
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not restore clan skills: " + e);
+			_log.warning(L2Clan.class.getName() + ": Could not restore clan skills: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -946,13 +941,11 @@ public class L2Clan
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error restoring clan notice." + e.getMessage(), e);
+			_log.warning(L2Clan.class.getName() + ": Error restoring clan notice.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -987,13 +980,11 @@ public class L2Clan
 			}
 			statement.execute();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error could not store clan notice: " + e);
+			_log.warning(L2Clan.class.getName() + ": Error could not store clan notice: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		_notice = notice;
 		_noticeEnabled = enabled;
@@ -1085,13 +1076,11 @@ public class L2Clan
 					}
 				}
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Error could not store char skills: " + e);
+				_log.warning(L2Clan.class.getName() + ": Error could not store char skills: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 
 			for (L2ClanMember temp : _members.values())
@@ -1454,13 +1443,11 @@ public class L2Clan
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not restore clan sub-units: " + e);
+			_log.warning(L2Clan.class.getName() + ": Could not restore clan sub-units: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -1564,16 +1551,14 @@ public class L2Clan
 
 				if (Config.DEBUG)
 				{
-					_log.log(Level.CONFIG, getClass().getName() + ": New sub_clan saved in db: " + getClanId() + "; " + pledgeType);
+					_log.config(L2Clan.class.getName() + ": New sub_clan saved in db: " + getClanId() + "; " + pledgeType);
 				}
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": error while saving new sub_clan to db " + e);
+				_log.warning(L2Clan.class.getName() + ": error while saving new sub_clan to db ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 		broadcastToOnlineMembers(new PledgeShowInfoUpdate(_leader.getClan()));
@@ -1585,7 +1570,7 @@ public class L2Clan
 	{
 		if (_subPledges.get(pledgeType) != null)
 		{
-			// _log.warning("found sub-unit with id: "+pledgeType);
+			// _log.warning(L2Clan.class.getName() + ": found sub-unit with id: "+pledgeType);
 			switch (pledgeType)
 			{
 				case SUBUNIT_ACADEMY:
@@ -1623,16 +1608,14 @@ public class L2Clan
 
 			if (Config.DEBUG)
 			{
-				_log.log(Level.CONFIG, getClass().getName() + ": New subpledge leader saved in db: " + getClanId());
+				_log.config(L2Clan.class.getName() + ": New subpledge leader saved in db: " + getClanId());
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while saving new clan leader to db " + e);
+			_log.warning(L2Clan.class.getName() + ": error while saving new clan leader to db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -1643,7 +1626,7 @@ public class L2Clan
 		{
 			// Retrieve all skills of this L2PcInstance from the database
 			statement.setInt(1, getClanId());
-			// _log.warning("clanPrivs restore for ClanId : "+getClanId());
+			// _log.warning(L2Clan.class.getName() + ": clanPrivs restore for ClanId : "+getClanId());
 			try (ResultSet rset = statement.executeQuery())
 			{
 				// Go though the recordset of this SQL query
@@ -1661,13 +1644,11 @@ public class L2Clan
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not restore clan privs by rank: " + e);
+			_log.warning(L2Clan.class.getName() + ": Could not restore clan privs by rank: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -1707,13 +1688,11 @@ public class L2Clan
 				statement.setInt(5, privs);
 				statement.execute();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could not store clan privs for rank: " + e);
+				_log.warning(L2Clan.class.getName() + ": Could not store clan privs for rank: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			for (L2ClanMember cm : getMembers())
 			{
@@ -1741,13 +1720,11 @@ public class L2Clan
 				statement.setInt(4, privs);
 				statement.execute();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could not create new rank and store clan privs for rank: " + e);
+				_log.warning(L2Clan.class.getName() + ": Could not create new rank and store clan privs for rank: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -1862,13 +1839,11 @@ public class L2Clan
 				statement.setInt(2, getClanId());
 				statement.execute();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could not store auction for clan: " + e.getMessage(), e);
+				_log.warning(L2Clan.class.getName() + ": Could not store auction for clan: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -2106,7 +2081,7 @@ public class L2Clan
 
 		if (Config.DEBUG)
 		{
-			_log.log(Level.CONFIG, getClass().getName() + ": " + player.getObjectId() + "(" + player.getName() + ") requested ally creation from ");
+			_log.config(L2Clan.class.getName() + ": " + player.getObjectId() + "(" + player.getName() + ") requested ally creation from ");
 		}
 
 		if (!player.isClanLeader())
@@ -2388,9 +2363,11 @@ public class L2Clan
 			statement.setInt(2, getClanId());
 			statement.execute();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "could not increase clan level:" + e.getMessage(), e);
+			_log.warning(L2Clan.class.getSimpleName() + ": could not increase clan level:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 
 		setLevel(level);
@@ -2543,9 +2520,11 @@ public class L2Clan
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "Exception on updateClanScoreInDb(): " + e.getMessage(), e);
+			_log.warning(L2Clan.class.getSimpleName() + ": Exception on updateClanScoreInDb(): ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	/**

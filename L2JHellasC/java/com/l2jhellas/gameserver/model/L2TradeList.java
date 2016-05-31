@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -310,7 +311,7 @@ public class L2TradeList
 
 			if (playerItem == null)
 			{
-				_log.warning("L2TradeList: PlayersInv.destroyItem returned NULL!");
+				_log.warning(L2TradeList.class.getName() + ": L2TradeList: PlayersInv.destroyItem returned NULL!");
 				continue;
 			}
 
@@ -361,7 +362,9 @@ public class L2TradeList
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not change pet item object id: " + e);
+			_log.warning(L2TradeList.class.getName() + ": could not change pet item object id: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 
 	}
@@ -477,7 +480,7 @@ public class L2TradeList
 				}
 				if (buyerItem.getCount() > Integer.MAX_VALUE / buyerItem.getOwnersPrice())
 				{
-					_log.warning("Integer Overflow on Cost. Possible Exploit attempt between " + buyer.getName() + " and " + seller.getName() + ".");
+					_log.warning(L2TradeList.class.getName() + ": Integer Overflow on Cost. Possible Exploit attempt between " + buyer.getName() + " and " + seller.getName() + ".");
 					return;
 				}
 				//int cost = amount * buyerItem.getOwnersPrice();

@@ -73,8 +73,8 @@ public class L2FishermanInstance extends L2NpcInstance
 		}
 		else
 		{
-			_log.warning("possible client hacker: " + player.getName() + " attempting to buy from GM shop! < Ban him!");
-			_log.warning("buylist id:" + val);
+			_log.warning(L2FishermanInstance.class.getName() + ": possible client hacker: " + player.getName() + " attempting to buy from GM shop! < Ban him!");
+			_log.warning(L2FishermanInstance.class.getName() + ": buylist id:" + val);
 		}
 
 		player.sendPacket(ActionFailed.STATIC_PACKET);

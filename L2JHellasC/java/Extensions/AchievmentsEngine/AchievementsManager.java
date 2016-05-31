@@ -126,7 +126,7 @@ public class AchievementsManager
 		}
 		catch (Exception e)
 		{
-			log.log(Level.WARNING, getClass().getSimpleName(), ": Error " + e);
+			log.log(Level.WARNING, getClass().getSimpleName(), ": Error ");
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}

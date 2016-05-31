@@ -351,7 +351,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 					if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
 					{
-						_log.warning("Player " + player.getName() + " has performed a subclass change too fast");
+						_log.warning(L2VillageMasterInstance.class.getName() + ": Player " + player.getName() + " has performed a subclass change too fast");
 						return;
 					}
 			
@@ -454,7 +454,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 					if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
 					{
-						_log.warning("Player " + player.getName() + " has performed a subclass change too fast");
+						_log.warning(L2VillageMasterInstance.class.getName() + ": Player " + player.getName() + " has performed a subclass change too fast");
 						return;
 					}
 					
@@ -550,7 +550,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					
 					if (!player.getAntiFlood().getSubclass().tryPerformAction("change class"))
 					{
-						_log.warning("Player " + player.getName() + " has performed a subclass change too fast");
+						_log.warning(L2VillageMasterInstance.class.getName() + ": Player " + player.getName() + " has performed a subclass change too fast");
 						return;
 					}
 					

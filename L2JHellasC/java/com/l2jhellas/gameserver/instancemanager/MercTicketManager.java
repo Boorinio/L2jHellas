@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -165,10 +164,8 @@ public class MercTicketManager
 		// load merc tickets into the world
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-			statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE isHired=1");
-			rs = statement.executeQuery();
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE isHired=1");
+			ResultSet rs = statement.executeQuery();
 
 			int npcId;
 			int itemId;
@@ -211,15 +208,13 @@ public class MercTicketManager
 			}
 			statement.close();
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + getDroppedTickets().size() + " Mercenary Tickets.");
+			_log.info(MercTicketManager.class.getSimpleName() + ": Loaded " + getDroppedTickets().size() + " Mercenary Tickets.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": loadMercenaryData(): " + e);
+			_log.warning(MercTicketManager.class.getName() + ": loadMercenaryData(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

@@ -15,6 +15,8 @@
 package Extensions.AccountManager;
 
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -27,6 +29,8 @@ import com.l2jhellas.Config;
 
 public class L2Emailer
 {
+	protected final static Logger log = Logger.getLogger(L2Emailer.class.getName());
+	
 	public static void sendL2Mail(String[] towho, String sub, String text) throws MessagingException
 	{
 		String host = "smtp.gmail.com";
@@ -66,7 +70,7 @@ public class L2Emailer
 		transport.connect(host, from, pass);
 		transport.sendMessage(message, message.getAllRecipients());
 		if (Config.DEBUG)
-			System.out.println("An email was successfully sent to " + toAddress);
+			log.log(Level.WARNING, "An email was successfully sent to " + toAddress);
 		transport.close();
 	}
 }

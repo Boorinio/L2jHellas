@@ -16,10 +16,11 @@ package ai.individual;
 
 import java.util.ArrayList;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ai.AbstractNpcAI;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
@@ -39,6 +40,7 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class IceFairySirra extends AbstractNpcAI
 {
+	private static final Logger _log = Logger.getLogger(IceFairySirra.class.getName());
 	private static final int STEWARD = 32029;
 	private static final int SILVER_HEMOCYTE = 8057;
 	private static L2BossZone _freyasZone;
@@ -63,7 +65,7 @@ public class IceFairySirra extends AbstractNpcAI
 		_freyasZone = GrandBossManager.getInstance().getZone(105546, -127892, -2768);
 		if (_freyasZone == null)
 		{
-			_log.warning("IceFairySirraManager: Failed to load zone");
+			_log.warning(IceFairySirra.class.getName() + ": IceFairySirraManager: Failed to load zone");
 			return;
 		}
 
@@ -89,7 +91,9 @@ public class IceFairySirra extends AbstractNpcAI
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "IceFairySirraManager: Failed deleting mob.", e);
+				_log.severe(IceFairySirra.class.getName() + ": Failed deleting mob.");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 		_allMobs.clear();
@@ -122,12 +126,12 @@ public class IceFairySirra extends AbstractNpcAI
 				}
 				else
 				{
-					_log.warning("IceFairySirraManager: Attempted to open undefined door. doorId: " + i);
+					_log.warning(IceFairySirra.class.getName() + ": Attempted to open undefined door. doorId: " + i);
 				}
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "IceFairySirraManager: Failed closing door", e);
+				_log.warning(IceFairySirra.class.getName() + ": Failed closing door");
 			}
 		}
 	}
@@ -145,12 +149,12 @@ public class IceFairySirra extends AbstractNpcAI
 				}
 				else
 				{
-					_log.warning("IceFairySirraManager: Attempted to close undefined door. doorId: " + i);
+					_log.warning(IceFairySirra.class.getName() + ": Attempted to close undefined door. doorId: " + i);
 				}
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "IceFairySirraManager: Failed closing door", e);
+				_log.warning(IceFairySirra.class.getName() + ": Failed closing door");
 			}
 		}
 	}
@@ -196,7 +200,7 @@ public class IceFairySirra extends AbstractNpcAI
 				pc.teleToLocation(113533, -126159, -3488, false);
 				if (_freyasZone == null)
 				{
-					_log.warning("IceFairySirraManager: Failed to load zone");
+					_log.warning(IceFairySirra.class.getName() + ": Failed to load zone");
 					cleanUp();
 					return;
 				}
@@ -251,13 +255,15 @@ public class IceFairySirra extends AbstractNpcAI
 				}
 				else
 				{
-					_log.warning("IceFairySirraManager: Data missing in NPC table for ID: " + mobs[i][0]);
+					_log.warning(IceFairySirra.class.getName() + ": Data missing in NPC table for ID: " + mobs[i][0]);
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			_log.warning("IceFairySirraManager: Spawns could not be initialized: " + e);
+			_log.warning(IceFairySirra.class.getName() + ": Spawns could not be initialized: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -334,7 +340,7 @@ public class IceFairySirra extends AbstractNpcAI
 		{
 			if (_freyasZone == null)
 			{
-				_log.warning("IceFairySirraManager: Failed to load zone");
+				_log.warning(IceFairySirra.class.getName() + ": Failed to load zone");
 				cleanUp();
 				return super.onAdvEvent(event, npc, player);
 			}

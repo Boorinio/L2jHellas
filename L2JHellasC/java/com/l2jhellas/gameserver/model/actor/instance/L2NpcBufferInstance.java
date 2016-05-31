@@ -14,6 +14,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.Vector;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
@@ -34,7 +35,7 @@ import com.l2jhellas.util.Rnd;
  */
 public class L2NpcBufferInstance extends L2Npc
 {
-
+	private static final Logger _log = Logger.getLogger(L2NpcBufferInstance.class.getName());
 	private class BuffTask implements Runnable
 	{
 		private Boolean _buffing = false;
@@ -50,6 +51,7 @@ public class L2NpcBufferInstance extends L2Npc
 			_task = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(this, 100, 100);
 		}
 
+		
 		@SuppressWarnings("unused")
 		public void addBuff(L2PcInstance playerInstance, int skillId, int skillLevel)
 		{
@@ -149,7 +151,7 @@ public class L2NpcBufferInstance extends L2Npc
 				skill.getEffects(playerInstance, playerInstance);
 			}
 			else
-				System.out.println("NpcBuffer warning(" + getNpcId() + " at " + getX() + ", " + getY() + ", " + getZ() + "): Skill or Player null!");
+				_log.warning(L2NpcBufferInstance.class.getName() + ": NpcBuffer warning(" + getNpcId() + " at " + getX() + ", " + getY() + ", " + getZ() + "): Skill or Player null!");
 
 			synchronized (_playerInstances)
 			{
@@ -258,7 +260,7 @@ public class L2NpcBufferInstance extends L2Npc
 
 			if (skillInfos == null)
 			{
-				System.out.println("NpcBuffer warning(" + npcId + " at " + getX() + ", " + getY() + ", " + getZ() + "): Player " + playerInstance.getName() + " tried to use skill(" + skillId + ") not assigned to npc buffer!");
+				_log.warning(L2NpcBufferInstance.class.getName() + ": NpcBuffer warning(" + npcId + " at " + getX() + ", " + getY() + ", " + getZ() + "): Player " + playerInstance.getName() + " tried to use skill(" + skillId + ") not assigned to npc buffer!");
 				return;
 			}
 
@@ -270,7 +272,7 @@ public class L2NpcBufferInstance extends L2Npc
 			{
 				if (skillFeeAmount == 0)
 				{
-					System.out.println("NpcBuffer warning(" + npcId + " at " + getX() + ", " + getY() + ", " + getZ() + "): Fee amount of skill(" + skillId + ") fee id(" + skillFeeId + ") is 0!");
+					_log.warning(L2NpcBufferInstance.class.getName() + ": NpcBuffer warning(" + npcId + " at " + getX() + ", " + getY() + ", " + getZ() + "): Fee amount of skill(" + skillId + ") fee id(" + skillFeeId + ") is 0!");
 					return;
 				}
 

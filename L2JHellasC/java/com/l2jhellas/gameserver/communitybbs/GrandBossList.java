@@ -15,7 +15,6 @@ package com.l2jhellas.gameserver.communitybbs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -72,11 +71,9 @@ public class GrandBossList
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error Loading DB " + e);
+			_log.warning(GrandBossList.class.getName() + ": Error Loading DB ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -53,7 +52,9 @@ public final class CharacterDelete extends L2GameClientPacket
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + " could not delete character slot:" + _charSlot, e);
+			_log.warning(CharacterDelete.class.getName() + ": could not delete character slot:" + _charSlot);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 
 		if (character == null)

@@ -15,7 +15,7 @@ package Extensions.PremiumService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -47,18 +47,16 @@ public class Prem
 			}
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error connecting on database. " + e);
+			_log.warning(Prem.class.getName() + ": Error connecting on database. ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return _end_pr_date;
 	}
 
-	@SuppressWarnings("synthetic-access")
+	
 	private static class SingletonHolder
 	{
 		protected static final Prem _instance = new Prem();

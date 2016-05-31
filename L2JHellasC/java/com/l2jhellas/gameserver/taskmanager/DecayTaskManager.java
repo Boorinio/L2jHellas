@@ -19,6 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
@@ -98,8 +99,9 @@ public class DecayTaskManager
 			}
 			catch (Throwable e)
 			{
-				// TODO
-				_log.warning(e.toString());
+				_log.warning(DecayTaskManager.class.getName() + ": Decay task failed");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}

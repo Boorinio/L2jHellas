@@ -14,7 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -128,33 +127,33 @@ public class AdminRes implements IAdminCommandHandler
 
 		if (obj instanceof L2PcInstance)
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected character " + obj.getName() + "(" + obj.getObjectId() + ")");
+			_log.warning(AdminRes.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected character " + obj.getName() + "(" + obj.getObjectId() + ")");
 		}
 		else if (obj instanceof L2MonsterInstance)
 		{
 			if (((L2MonsterInstance) obj).isChampion() && Config.CHAMPION_ENABLE)
 			{
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected champion " + obj.getName() + "(" + obj.getObjectId() + ")");
+				_log.warning(AdminRes.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected champion " + obj.getName() + "(" + obj.getObjectId() + ")");
 			}
 			else if (((L2MonsterInstance) obj).isBoss())
 			{
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected grand boss " + obj.getName() + "(" + obj.getObjectId() + ")");
+				_log.warning(AdminRes.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected grand boss " + obj.getName() + "(" + obj.getObjectId() + ")");
 			}
 			else if (((L2MonsterInstance) obj).isRaidMinion())
 			{
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected raid minion " + obj.getName() + "(" + obj.getObjectId() + ")");
+				_log.warning(AdminRes.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected raid minion " + obj.getName() + "(" + obj.getObjectId() + ")");
 			}
 			else if (((L2MonsterInstance) obj).isRaid())
 			{
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected raid " + obj.getName() + "(" + obj.getObjectId() + ")");
+				_log.warning(AdminRes.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected raid " + obj.getName() + "(" + obj.getObjectId() + ")");
 			}
 			else if (((L2MonsterInstance) obj).isMob())
 			{
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected monster " + obj.getName() + "(" + obj.getObjectId() + ")");
+				_log.warning(AdminRes.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected monster " + obj.getName() + "(" + obj.getObjectId() + ")");
 			}
 			else
 			{
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected etc " + obj.getName() + "(" + obj.getObjectId() + ")");
+				_log.warning(AdminRes.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " resurrected etc " + obj.getName() + "(" + obj.getObjectId() + ")");
 			}
 		}
 		doResurrect((L2Character) obj);

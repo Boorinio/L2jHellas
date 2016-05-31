@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Stack;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -49,7 +48,7 @@ public class StackIDFactory extends IdFactory
 			{
 				_curOID = tmp_obj_ids[tmp_obj_ids.length - 1];
 			}
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Max Id = " + _curOID);
+			_log.info(StackIDFactory.class.getSimpleName() + ": Max Id = " + _curOID);
 
 			int N = tmp_obj_ids.length;
 			for (int idx = 0; idx < N; idx++)
@@ -58,16 +57,14 @@ public class StackIDFactory extends IdFactory
 			}
 
 			_curOID++;
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Next usable Object ID is: " + _curOID);
+			_log.info(StackIDFactory.class.getSimpleName() + ": Next usable Object ID is: " + _curOID);
 			_initialized = true;
 		}
-		catch (Exception e1)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": ID Factory could not be initialized correctly:" + e1);
+			_log.warning(StackIDFactory.class.getName() + ": ID Factory could not be initialized correctly:");
 			if (Config.DEVELOPER)
-			{
-				e1.printStackTrace();
-			}
+				e.printStackTrace();
 		}
 	}
 
@@ -92,7 +89,7 @@ public class StackIDFactory extends IdFactory
 				while (rs.next())
 				{
 					int badId = rs.getInt(1);
-					_log.log(Level.WARNING, getClass().getSimpleName() + ": Bad ID " + badId + " in DB found by: " + check);
+					_log.warning(StackIDFactory.class.getName() + ": Bad ID " + badId + " in DB found by: " + check);
 					throw new RuntimeException();
 				}
 				rs.close();
@@ -106,7 +103,8 @@ public class StackIDFactory extends IdFactory
 			hole = N - idx;
 		for (int i = 1; i <= hole; i++)
 		{
-			// System.out.println("Free ID added " + (_tempOID));
+			if (Config.DEBUG)
+				_log.config(StackIDFactory.class.getName() + "Free ID added " + (_tempOID));
 			_freeOIDStack.push(_tempOID);
 			_tempOID++;
 			// _curOID++;

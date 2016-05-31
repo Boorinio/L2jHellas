@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.entity.olympiad;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -168,7 +167,7 @@ public abstract class AbstractOlympiadGame
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage(), e);
+			_log.warning(AbstractOlympiadGame.class.getName() + ": error");
 			return false;
 		}
 		return true;
@@ -247,7 +246,7 @@ public abstract class AbstractOlympiadGame
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage(), e);
+			_log.warning(AbstractOlympiadGame.class.getName() + ": error");
 		}
 	}
 	
@@ -310,7 +309,7 @@ public abstract class AbstractOlympiadGame
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage(), e);
+			_log.warning(AbstractOlympiadGame.class.getName() + ": error");
 		}
 	}
 	
@@ -353,7 +352,7 @@ public abstract class AbstractOlympiadGame
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage(), e);
+			_log.warning(AbstractOlympiadGame.class.getName() + ": error");
 		}
 	}
 	
@@ -397,7 +396,7 @@ public abstract class AbstractOlympiadGame
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage(), e);
+			_log.warning(AbstractOlympiadGame.class.getName() + ": error");
 		}
 	}
 	

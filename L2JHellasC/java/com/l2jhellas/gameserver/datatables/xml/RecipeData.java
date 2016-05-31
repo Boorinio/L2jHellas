@@ -95,7 +95,7 @@ public class RecipeData extends RecipeController
 							att = attrs.getNamedItem("id");
 							if (att == null)
 							{
-								_log.warning("RecipeTable: Missing id for recipe item, skipping");
+								_log.warning(RecipeData.class.getName() + ": Missing id for recipe item, skipping");
 								continue;
 							}
 							id = Integer.parseInt(att.getNodeValue());
@@ -103,7 +103,7 @@ public class RecipeData extends RecipeController
 							att = attrs.getNamedItem("name");
 							if (att == null)
 							{
-								_log.warning("RecipeTable: Missing name for recipe item id: " + id + ", skipping");
+								_log.warning(RecipeData.class.getName() + ": Missing name for recipe item id: " + id + ", skipping");
 								continue;
 							}
 							recipeName = att.getNodeValue();
@@ -156,7 +156,7 @@ public class RecipeData extends RecipeController
 			}
 		}
 		else
-			_log.warning("RecipeTable: recipes.xml is missing in data folder.");
+			_log.warning(RecipeData.class.getName() + ": recipes.xml is missing in data folder.");
 	}
 
 	public int getRecipesCount()

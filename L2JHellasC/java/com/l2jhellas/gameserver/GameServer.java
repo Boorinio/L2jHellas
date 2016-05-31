@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Calendar;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -178,7 +177,7 @@ public class GameServer
 		Util.printSection("Skills");
 		if (!SkillTable.getInstance().isInitialized())
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
+			_log.warning(GameServer.class.getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
 		SkillTreeData.getInstance();
 		SkillSpellbookData.getInstance();
@@ -189,7 +188,7 @@ public class GameServer
 		Util.printSection("Items");
 		if (!ItemTable.getInstance().isInitialized())
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
+			_log.warning(GameServer.class.getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
 		ArmorSetsData.getInstance();
 		ExtractableItemsData.getInstance();
@@ -305,7 +304,7 @@ public class GameServer
 		}
 		else
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Scripts are disabled by Config.");
+			_log.info(GameServer.class.getSimpleName() + ": Scripts are disabled by Config.");
 		}
 
 
@@ -343,12 +342,12 @@ public class GameServer
 		}
 		if (Config.RESTART_BY_TIME_OF_DAY)
 		{
-			_log.log(Level.INFO, "Restart System: Auto Restart System is Enabled.");
+			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Enabled.");
 			Restart.getInstance().StartCalculationOfNextRestartTime();
 		}
 		else
 		{
-			_log.log(Level.INFO, "Restart System: Auto Restart System is Disabled.");
+			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Disabled.");
 		}
 		if (Config.MOD_ALLOW_WEDDING)
 		{
@@ -363,11 +362,11 @@ public class GameServer
 		if (Config.ENABLE_GUI)
 			gui = new Gui();
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
-		_log.log(Level.INFO, getClass().getSimpleName() + ": IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
+		_log.info(GameServer.class.getSimpleName() + ": IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
 		if (!IdFactory.getInstance().isInitialized())
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Could not read object IDs from DB. Please Check Your Data.");
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": Could not initialize the ID factory.");
+			_log.info(GameServer.class.getSimpleName() + ": Could not read object IDs from DB. Please Check Your Data.");
+			_log.warning(GameServer.class.getSimpleName() + ": Could not initialize the ID factory.");
 		}
 		final SelectorConfig sc = new SelectorConfig();
 		sc.MAX_READ_PER_PASS = Config.MMO_MAX_READ_PER_PASS;
@@ -385,11 +384,9 @@ public class GameServer
 			}
 			catch (UnknownHostException e1)
 			{
-				_log.log(Level.SEVERE, getClass().getSimpleName() + ": WARNING: The GameServer bind address is invalid, using all avaliable IPs. Reason: " + e1.getMessage());
+				_log.severe(GameServer.class.getName() + ": WARNING: The GameServer bind address is invalid, using all avaliable IPs. Reason: ");
 				if (Config.DEVELOPER)
-				{
 					e1.printStackTrace();
-				}
 			}
 		}
 		try
@@ -398,19 +395,17 @@ public class GameServer
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.SEVERE, getClass().getSimpleName() + ": FATAL: Failed to open server socket. Reason: " + e.getMessage());
+			_log.severe(GameServer.class.getName() + ": FATAL: Failed to open server socket. Reason: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 			System.exit(1);
 		}
 
 		_selectorThread.start();
 		Util.printRuntimeInfo();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
+		_log.info(GameServer.class.getSimpleName() + ": Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
 		long serverLoadEnd = System.currentTimeMillis();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Server Started in: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
+		_log.info(GameServer.class.getSimpleName() + ": Server Started in: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
 
 		Toolkit.getDefaultToolkit().beep();
 		_loginThread = LoginServerThread.getInstance();
@@ -431,7 +426,6 @@ public class GameServer
 		{
 			new File(PackRoot.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 		}
-		;
 		/*** Main ***/
 		// Create directories
 		File logFolder = new File(PackRoot.DATAPACK_ROOT, LOG_FOLDER);

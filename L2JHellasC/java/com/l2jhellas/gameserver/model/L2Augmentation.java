@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -131,11 +130,9 @@ public final class L2Augmentation
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Could not save augmentation for item: " + _item.getObjectId() + " from DB:" + e);
+			_log.severe(L2Augmentation.class.getName() + ": Could not save augmentation for item: " + _item.getObjectId() + " from DB:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -154,11 +151,9 @@ public final class L2Augmentation
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Could not delete augmentation for item: " + _item.getObjectId() + " from DB:" + e);
+			_log.severe(L2Augmentation.class.getName() + ": Could not delete augmentation for item: " + _item.getObjectId() + " from DB");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

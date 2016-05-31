@@ -21,7 +21,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -53,12 +52,12 @@ public class VoteRewardHopzone
 		if (HCurrentVotes == -1)
 		{
 			if (HCurrentVotes == -1)
-				_log.log(Level.WARNING, "There was a problem on getting Hopzone server votes.");
+				_log.warning(VoteRewardHopzone.class.getSimpleName() + ": There was a problem on getting Hopzone server votes.");
 			return;
 		}
 		HLastVotes = HCurrentVotes;
 		HGoalVotes = HCurrentVotes + Config.HOPZONE_VOTES_DIFFERENCE;
-		_log.log(Level.INFO, "Hopzone - Vote reward system initialized.");
+		_log.info(VoteRewardHopzone.class.getName() + "Hopzone - Vote reward system initialized.");
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
 		{
 			@Override
@@ -75,7 +74,7 @@ public class VoteRewardHopzone
 		if (HCurrentVotes == -1)
 		{
 			if (HCurrentVotes == -1)
-				_log.log(Level.WARNING, "There was a problem on getting Hopzone server votes.");
+				_log.warning(VoteRewardHopzone.class.getSimpleName() + ": There was a problem on getting Hopzone server votes.");
 			return;
 		}
 		if ((HCurrentVotes >= HLastVotes && HCurrentVotes < HGoalVotes) || HCurrentVotes == HLastVotes)
@@ -102,7 +101,6 @@ public class VoteRewardHopzone
 				player.sendPacket(new ExShowScreenMessage("Next Reward in: " + HGoalVotes + " Votes.", 4000, SMPOS.BOTTOM_RIGHT, true));
 		}
 		HLastVotes = HCurrentVotes;
-		
 	}
 	
 	public static int countNumberEqual(String itemToCheck)
@@ -135,7 +133,6 @@ public class VoteRewardHopzone
 					}
 					HBoxes.add(temp);
 				}
-				
 			}
 			else
 			{
@@ -159,47 +156,37 @@ public class VoteRewardHopzone
 		}
 		catch (InterruptedException ie)
 		{
-			ie.printStackTrace();
+			if (Config.DEVELOPER)
+				ie.printStackTrace();
 		}
 	}
 	private static int getVotes()
 	{
-			InputStreamReader isr = null;
-			BufferedReader br = null;
+		try
+		{
+			if(!Config.HOPZONE_SERVER_LINK.endsWith(".html"))
+				Config.HOPZONE_SERVER_LINK+=".html";
 			
-			try
+			URLConnection con = new URL(Config.HOPZONE_SERVER_LINK).openConnection();
+			con.addRequestProperty("User-Agent", "Mozilla/5.0");
+			//con.addRequestProperty("User-L2Hopzone", "Mozilla/4.76");
+			BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String line;
+			while ((line = br.readLine()) != null)
 			{
-				if(!Config.HOPZONE_SERVER_LINK.endsWith(".html"))
-					Config.HOPZONE_SERVER_LINK+=".html";
-				
-				URLConnection con = new URL(Config.HOPZONE_SERVER_LINK).openConnection();
-				
-				
-				con.addRequestProperty("User-Agent", "Mozilla/5.0");
-				//con.addRequestProperty("User-L2Hopzone", "Mozilla/4.76");
-				isr = new InputStreamReader(con.getInputStream());
-				br = new BufferedReader(isr);
-				
-				String line;
-				while ((line = br.readLine()) != null)
+				if (line.contains("no steal make love")||line.contains("no votes here")||line.contains("bang, you don't have votes")|| line.contains("la vita e bella"))
 				{
-					if (line.contains("no steal make love")||line.contains("no votes here")||line.contains("bang, you don't have votes")|| line.contains("la vita e bella"))
-					{
 					int votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
-                    Gui.hopzone.setText("HopZone Votes: " + votes);
+					Gui.hopzone.setText("HopZone Votes: " + votes);
 					return votes;				
-					}
 				}
-				
-				br.close();
-				isr.close();
 			}
-			catch (Exception e)
-			{
-				System.out.println(e);
-				System.out.println("Error while getting server vote count.");
-			}
-		
+			br.close();
+		}
+		catch (Exception e)
+		{
+			_log.warning(VoteRewardHopzone.class.getSimpleName() + ": Error while getting server vote count.");
+		}
 		return -1;
 	}
 }

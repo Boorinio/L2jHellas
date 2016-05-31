@@ -17,7 +17,7 @@ package handlers.admincommandhandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -83,13 +83,11 @@ public class AdminDonator implements IAdminCommandHandler
 						}
 					}
 				}
-				catch (Exception e)
+				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": could not set donator stats of char:" + e);
+					_log.warning(AdminDonator.class.getName() + ": could not set donator stats of char:");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 			else
@@ -124,13 +122,11 @@ public class AdminDonator implements IAdminCommandHandler
 						}
 					}
 				}
-				catch (Exception e)
+				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": could not set donator stats of char:" + e);
+					_log.warning(AdminDonator.class.getName() + ": could not set donator stats of char:");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 			player.sendPacket(sm);

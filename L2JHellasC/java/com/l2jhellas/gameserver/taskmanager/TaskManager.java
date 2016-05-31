@@ -33,9 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -104,11 +102,9 @@ public final class TaskManager
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + " Could not update the Global Task " + id + ": " + e);
+				_log.warning(TaskManager.class.getName() + " Could not update the Global Task " + id + ": ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 
 			if (type == TYPE_SHEDULED || type == TYPE_TIME)
@@ -223,8 +219,9 @@ public final class TaskManager
 		}
 		catch (Exception e)
 		{
-			_log.severe("error while loading Global Task table " + e);
-			e.printStackTrace();
+			_log.severe("error while loading Global Task table ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -285,7 +282,7 @@ public final class TaskManager
 
 			if (hour.length != 3)
 			{
-				_log.warning("Task " + task.getId() + " has incorrect parameters");
+				_log.warning(TaskManager.class.getName() + ": Task " + task.getId() + " has incorrect parameters");
 				return false;
 			}
 
@@ -301,7 +298,9 @@ public final class TaskManager
 			}
 			catch (Exception e)
 			{
-				_log.warning("Bad parameter on task " + task.getId() + ": " + e.getMessage());
+				_log.warning(TaskManager.class.getName() + ": Bad parameter on task " + task.getId());
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 				return false;
 			}
 
@@ -350,11 +349,9 @@ public final class TaskManager
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "TaskManager Could not add the unique task: " + e);
+			_log.warning(TaskManager.class.getSimpleName() + ": TaskManager Could not add the unique task: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return false;
 	}
@@ -382,11 +379,9 @@ public final class TaskManager
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "TaskManager Could not add the task:  " + e);
+			_log.warning(TaskManager.class.getSimpleName() + ": TaskManager Could not add the task:  ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return false;
 	}

@@ -14,7 +14,6 @@
  */
 package handlers.skillhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -76,11 +75,9 @@ public class SummonTreasureKey implements ISkillHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error using skill summon Treasure Key:" + e);
+			_log.warning(SummonTreasureKey.class.getName() + ": Error using skill summon Treasure Key:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

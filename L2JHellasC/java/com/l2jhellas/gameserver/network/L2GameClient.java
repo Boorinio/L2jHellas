@@ -19,12 +19,12 @@ import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -214,9 +214,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Data error on update delete time of char: " + e);
+			_log.warning(L2GameClient.class.getName() + ": Data error on update delete time of char: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		return null;
 	}
@@ -246,7 +248,9 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		}
 		catch (Exception e)
 		{
-			_log.severe("Error saving player character: " + e);
+			_log.severe("Error saving player character: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -262,9 +266,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.severe("Data error on restoring char: " + e);
+			_log.severe("Data error on restoring char: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -363,9 +369,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Data error on deleting char: " + e);
+			_log.warning(L2GameClient.class.getSimpleName() + ": Data error on deleting char: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -419,7 +427,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	{
 		if (charslot < 0 || charslot >= _charSlotMapping.size())
 		{
-			_log.warning(toString() + " tried to delete Character in slot " + charslot + " but no characters exits at that slot.");
+			_log.warning(L2GameClient.class.getName() + ": " + toString() + " tried to delete Character in slot " + charslot + " but no characters exits at that slot.");
 			return -1;
 		}
 		Integer objectId = _charSlotMapping.get(charslot);
@@ -505,7 +513,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			}
 			catch (Exception e1)
 			{
-				_log.log(Level.WARNING, "Error while disconnecting client.", e1);
+				_log.warning(L2GameClient.class.getSimpleName() + ": Error while disconnecting client.");
 			}
 		}
 	}
@@ -525,7 +533,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		}
 		catch (Exception e1)
 		{
-			_log.log(Level.WARNING, "Error during cleanup.", e1);
+			_log.warning(L2GameClient.class.getSimpleName() + ": Error during cleanup.");
 		}
 	}
 
@@ -583,7 +591,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			}
 			catch (Exception e1)
 			{
-				_log.log(Level.WARNING, "Error while cleanup client.", e1);
+				_log.warning(L2GameClient.class.getSimpleName() + ": Error while cleanup client.");
 			}
 			finally
 			{

@@ -16,7 +16,6 @@ package com.l2jhellas.util.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.jolbox.bonecp.BoneCPDataSource;
@@ -40,18 +39,19 @@ public class L2DatabaseFactory
 			if (Config.DATABASE_MAX_CONNECTIONS < 10)
 			{
 				Config.DATABASE_MAX_CONNECTIONS = 10;
-				_log.warning("at least " + Config.DATABASE_MAX_CONNECTIONS + " db connections are required.");
+				_log.warning(getClass().getSimpleName() + ": at least " + Config.DATABASE_MAX_CONNECTIONS + " db connections are required.");
 			}
 
 			if (database_partition_count > 4)
 			{
 				database_partition_count = 4;
-				_log.warning("max {} db connections partitions. " + database_partition_count);
+				_log.warning(L2DatabaseFactory.class.getSimpleName() + ": max {} db connections partitions. " + database_partition_count);
 			}
 
 			if (Config.DATABASE_MAX_CONNECTIONS * database_partition_count > 200)
 			{
-				_log.warning("Max Connections number is higher then 60.. Using Partition 2 and Connection 30");
+				_log.warning(L2DatabaseFactory.class.getSimpleName() + ": Max Connections > 60.");
+				_log.warning(L2DatabaseFactory.class.getSimpleName() + ": -> Using Partition 2 and Connection 30");
 				Config.DATABASE_MAX_CONNECTIONS = 50;
 				database_partition_count = 4;
 			}
@@ -82,11 +82,13 @@ public class L2DatabaseFactory
 
 			_source.getConnection().close();
 			
-			_log.log(Level.INFO, "Database loaded.");
+			_log.info(L2DatabaseFactory.class.getSimpleName() + ": Database Connected.");
 		}
 		catch (Exception e)
 		{
-			throw new Error("L2DatabaseFactory: Failed to init database connections: " + e, e);
+			_log.severe(L2DatabaseFactory.class.getSimpleName() + ": Failed to init database connections: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -98,7 +100,7 @@ public class L2DatabaseFactory
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.INFO, "", e);
+			_log.info(L2DatabaseFactory.class.getName() + "");
 		}
 		try
 		{
@@ -106,7 +108,7 @@ public class L2DatabaseFactory
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.INFO, "", e);
+			_log.info(L2DatabaseFactory.class.getName() + "");
 		}
 	}
 
@@ -136,7 +138,9 @@ public class L2DatabaseFactory
 			}
 			catch (SQLException e)
 			{
-				_log.warning("L2DatabaseFactory: getConnection() failed, trying again " + e);
+				_log.warning(L2DatabaseFactory.class.getSimpleName() + ": Database connection failed, trying again.");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 		return con;
@@ -159,12 +163,13 @@ public class L2DatabaseFactory
 			try
 			{
 				//just remove this until the refactor
-				if (!c.isClosed() && c != null && Config.DEVELOPER) // Temporary config
-					_log.log(Level.WARNING, "Unclosed connection! Trace: " + exp.getStackTrace()[1], exp);					
+				if (!c.isClosed() && c != null)
+					_log.warning(L2DatabaseFactory.class.getSimpleName() + ": Unclosed connection! Trace: " + exp.getStackTrace()[1] + exp);
 			}
 			catch (SQLException e)
 			{
-				e.printStackTrace();
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}

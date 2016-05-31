@@ -15,7 +15,6 @@
 package handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -150,7 +149,7 @@ public class AdminExpSp implements IAdminCommandHandler
 			activeChar.sendMessage("You tried to edit " + player.getName() + " by " + expval + " exp points and " + spval + ". You will both be banned.Q_Q");
 			Util.handleIllegalPlayerAction(activeChar, "GM " + activeChar.getName() + " tried to edit " + player.getName() + ". BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": GM " + activeChar.getName() + " tried to edit " + player.getName() + ". They both have been Banned. Q_Q");
+			_log.info(AdminExpSp.class.getSimpleName() + ": GM " + activeChar.getName() + " tried to edit " + player.getName() + ". They both have been Banned. Q_Q");
 		}
 		else if (expval != 0 || spval != 0)
 		{
@@ -159,7 +158,7 @@ public class AdminExpSp implements IAdminCommandHandler
 			player.addExpAndSp(expval, spval);
 			// Admin information
 			activeChar.sendMessage("Added " + expval + " xp and " + spval + " sp to " + player.getName() + ".");
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
+			_log.warning(AdminExpSp.class.getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") added " + expval + " xp and " + spval + " sp to " + player.getObjectId() + ".");
 		}
 		return true;
 	}
@@ -199,7 +198,7 @@ public class AdminExpSp implements IAdminCommandHandler
 			player.removeExpAndSp(expval, spval);
 			// Admin information
 			activeChar.sendMessage("Removed " + expval + " xp and " + spval + " sp from " + player.getName() + ".");
-			_log.log(Level.WARNING, getClass().getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
+			_log.warning(AdminExpSp.class.getSimpleName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") removed " + expval + " xp and " + spval + " sp from " + player.getObjectId() + ".");
 		}
 		return true;
 	}

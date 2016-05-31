@@ -18,13 +18,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.entity.Auction;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
@@ -287,9 +287,7 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		{
 			SystemMessage _sm;
 			_log.config("Match from same ip " + _playerOne.player.getName() + "(IP : " + _playerOne.player.getClient().getConnection().getInetAddress() + " )" + " vs " + _playerTwo.player.getName() + "(IP : " + _playerOne.player.getClient().getConnection().getInetAddress() + " )");
-			@SuppressWarnings("unused")
-			String gmBroadcastMsg = "";
-			gmBroadcastMsg = "Olympiad: Match from same IP! ( " + ploneIp + " )";
+			
 			_sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
 			stadium.broadcastPacket(_sm);
 			_playerOne.player.sendMessage("Match suspected of Illegal Violation: GM informed!");
@@ -324,7 +322,7 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
+						_log.warning(OlympiadGameNormal.class.getSimpleName() + ": Exception on validateWinner(): " + e.getMessage());
 					}
 				}
 				
@@ -337,14 +335,14 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
+						_log.warning(OlympiadGameNormal.class.getSimpleName() + ": Exception on validateWinner(): " + e.getMessage());
 					}
 				}
 				return;
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
+				_log.warning(OlympiadGameNormal.class.getSimpleName() + ": Exception on validateWinner(): " + e.getMessage());
 				return;
 			}
 		}
@@ -400,7 +398,7 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
+				_log.warning(OlympiadGameNormal.class.getSimpleName() + ": Exception on validateWinner(): " + e.getMessage());
 				return;
 			}
 		}
@@ -486,7 +484,7 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception on validateWinner(): " + e.getMessage(), e);
+			_log.warning(OlympiadGameNormal.class.getSimpleName() + ": Exception on validateWinner(): " + e.getMessage());
 		}
 	}
 	
@@ -562,8 +560,9 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		}
 		catch (SQLException e)
 		{
-			if (_log.isLoggable(Level.SEVERE))
-				_log.log(Level.SEVERE, "SQL exception while saving olympiad fight.", e);
+			_log.severe(Auction.class.getName() + ": SQL exception while saving olympiad fight");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 }

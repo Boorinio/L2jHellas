@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 
 /**
@@ -223,6 +223,7 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 	 * @param type
 	 * @return a list of given instances within this zone.
 	 */
+	
 	@SuppressWarnings("unchecked")
 	public final <A> List<A> getKnownTypeInside(Class<A> type)
 	{

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -148,25 +147,16 @@ public class GrandBossManager
 				info = null;
 			}
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _storedInfo.size() + " Instances.");
+			_log.info(GrandBossManager.class.getSimpleName() + ": Loaded " + _storedInfo.size() + " Instances.");
 
 			rset.close();
 			statement.close();
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not load grandboss_data table" + e);
+			_log.warning(GrandBossManager.class.getName() + ": Could not load grandboss_data table");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
-		}
-		catch (Exception e)
-		{
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -179,7 +169,7 @@ public class GrandBossManager
 
 		if (_zones == null)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not read Grand Boss zone data");
+			_log.warning(GrandBossManager.class.getName() + ": Could not read Grand Boss zone data");
 			return;
 		}
 
@@ -212,23 +202,14 @@ public class GrandBossManager
 			rset.close();
 			statement.close();
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Initialized " + _zones.size() + " Grand Boss Zones.");
+			_log.info(GrandBossManager.class.getSimpleName() + ": Initialized " + _zones.size() + " Grand Boss Zones.");
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not load grandboss_list table" + e);
+			_log.warning(GrandBossManager.class.getName() + ": Could not load grandboss_list table");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		
-
 		zones.clear();
 	}
 
@@ -385,11 +366,9 @@ public class GrandBossManager
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, _log.getName() + ": Couldn't store grandbosses to database:" + e);
+			_log.warning(GrandBossManager.class.getName() + ": Couldn't store grandbosses to database:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 	public static boolean isInBossZone(L2Character character)

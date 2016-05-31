@@ -70,7 +70,7 @@ public class SkillSpellbookData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/skill_spellbooks.xml");
 		if (!f.exists())
 		{
-			_log.warning("skill_spellbooks.xml could not be loaded: file not found");
+			_log.warning(SkillSpellbookData.class.getName() + ": skill_spellbooks.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -94,15 +94,15 @@ public class SkillSpellbookData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillSpellbookData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillSpellbookData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SkillSpellbookData.class.getName() + ": Error while creating table");
 		}
 
 		_log.info("SkillSpellbookTable: Loaded " + _skillSpellbooks.size() + " spellbooks.");

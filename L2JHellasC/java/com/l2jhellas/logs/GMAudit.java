@@ -19,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -49,11 +48,9 @@ public class GMAudit
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.SEVERE, ": GMAudit for GM " + gmName + " could not be saved: " + e);
+			_log.warning(GMAudit.class.getName() + ": GMAudit for GM " + gmName + " could not be saved: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		finally
 		{

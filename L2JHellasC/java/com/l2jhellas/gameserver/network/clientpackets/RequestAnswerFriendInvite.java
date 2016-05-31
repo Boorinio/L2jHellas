@@ -17,8 +17,10 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -87,9 +89,11 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 					requestor.sendPacket(new FriendList(requestor));
 
 				}
-				catch (Exception e)
+				catch (SQLException e)
 				{
-					_log.warning("could not add friend objectid: " + e);
+					_log.warning(RequestAnswerFriendInvite.class.getName() + ": could not add friend objectid: ");
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 				}
 			}
 			else
@@ -131,9 +135,11 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("could not restore friend data:" + e);
+			_log.warning(RequestAnswerFriendInvite.class.getName() + ": could not restore friend data:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

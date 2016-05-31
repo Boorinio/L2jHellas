@@ -295,7 +295,7 @@ public class TvT
 	{
 		if (!startJoinOk())
 		{
-			_log.log(Level.WARNING, " Event not setted propertly.");
+			_log.warning(TvT.class.getSimpleName() + ":  Event not setted propertly.");
 			if (Config.DEBUG)
 				_log.log(Level.FINER, "TvT Engine[startJoin(startJoinOk() = false");
 			return;
@@ -362,7 +362,9 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " TvT Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
+			_log.warning(TvT.class.getSimpleName() + ":  TvT Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -395,7 +397,9 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " TvT Engine[spawnEventNpc(exception: " + e.getMessage());
+			_log.warning(TvT.class.getSimpleName() + ":  TvT Engine[spawnEventNpc(exception: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1114,7 +1118,9 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " Exception: TvT.loadData(): " + e.getMessage());
+			_log.warning(TvT.class.getSimpleName() + ":  Exception: TvT.loadData(): ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1172,7 +1178,9 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " Exception: TvT.saveData(): " + e.getMessage());
+			_log.warning(TvT.class.getSimpleName() + ":  Exception: TvT.saveData(): ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1275,7 +1283,9 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " TvT Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
+			_log.warning(TvT.class.getSimpleName() + ":  TvT Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1323,7 +1333,9 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "" + e);
+			_log.warning(TvT.class.getSimpleName() + ": TVT unknown error");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1408,7 +1420,9 @@ public class TvT
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " TvT Engine exception: " + e.getMessage());
+			_log.warning(TvT.class.getSimpleName() + ":  TvT Engine exception: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 
 		if (Config.TVT_EVEN_TEAMS.equals("NO"))
@@ -1613,7 +1627,7 @@ public class TvT
 							}
 							catch (SQLException se)
 							{
-								_log.log(Level.WARNING, "" + se);
+								_log.warning(TvT.class.getSimpleName() + ": " + se);
 							}
 						}
 					}
@@ -1695,7 +1709,7 @@ public class TvT
 		}
 		catch (InterruptedException ie)
 		{
-			_log.log(Level.WARNING, "Error, " + ie.getMessage());
+			_log.warning(TvT.class.getSimpleName() + ": Error, " + ie.getMessage());
 			if (Config.DEVELOPER)
 			{
 				ie.printStackTrace();

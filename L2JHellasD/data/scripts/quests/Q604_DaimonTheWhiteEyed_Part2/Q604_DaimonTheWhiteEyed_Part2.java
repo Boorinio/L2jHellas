@@ -12,7 +12,7 @@
  */
 package quests.Q604_DaimonTheWhiteEyed_Part2;
 
-import java.util.logging.Level;
+import quests.Q625_TheFinestIngredients_Part2.Q625_TheFinestIngredients_Part2;
 
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager.StatusEnum;
@@ -69,7 +69,7 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 		switch (RaidBossSpawnManager.getInstance().getRaidBossStatusId(DAIMON_THE_WHITE_EYED))
 		{
 			case UNDEFINED:
-				_log.log(Level.WARNING, qn + ": can not find spawned L2RaidBoss id=" + DAIMON_THE_WHITE_EYED);
+				_log.warning(Q625_TheFinestIngredients_Part2.class.getName()+ ": " + qn + " can not find spawned L2RaidBoss id=" + DAIMON_THE_WHITE_EYED);
 				break;
 			
 			case ALIVE:

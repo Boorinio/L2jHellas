@@ -14,7 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
@@ -59,7 +58,7 @@ public class AdminGm implements IAdminCommandHandler
 			activeChar.setAccessLevel(0);
 
 			activeChar.sendMessage("You no longer have GM status.");
-			_log.log(Level.CONFIG, getClass().getName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") turned his GM status off");
+			_log.config(AdminGm.class.getName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") turned his GM status off");
 		}
 		else
 		{
@@ -67,7 +66,7 @@ public class AdminGm implements IAdminCommandHandler
 			activeChar.setAccessLevel(activeChar.tempAc);
 
 			activeChar.sendMessage("You now have GM status.");
-			_log.log(Level.CONFIG, getClass().getName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") turned his GM status on");
+			_log.config(AdminGm.class.getName() + ": GM: " + activeChar.getName() + "(" + activeChar.getObjectId() + ") turned his GM status on");
 		}
 	}
 }

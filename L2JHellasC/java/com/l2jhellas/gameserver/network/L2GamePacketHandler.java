@@ -673,7 +673,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 						}
 						else
 						{
-							_log.warning("Client: " + client.toString() + " sent a 0xd0 without the second opcode.");
+							_log.warning(L2GamePacketHandler.class.getName() + ": Client: " + client.toString() + " sent a 0xd0 without the second opcode.");
 							break;
 						}
 
@@ -841,19 +841,19 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 	private void printDebug(int opcode, ByteBuffer buf, GameClientState state, L2GameClient client)
 	{
 		int size = buf.remaining();
-		_log.warning("Unknown Packet: " + Integer.toHexString(opcode) + " on State: " + state.name() + " Client: " + client.toString());
+		_log.warning(L2GamePacketHandler.class.getName() + ": Unknown Packet: " + Integer.toHexString(opcode) + " on State: " + state.name() + " Client: " + client.toString());
 		byte[] array = new byte[size];
 		buf.get(array);
-		_log.warning(Util.printData(array, size));
+		_log.warning(L2GamePacketHandler.class.getName() + ": " + Util.printData(array, size));
 	}
 
 	private void printDebugDoubleOpcode(int opcode, int id2, ByteBuffer buf, GameClientState state, L2GameClient client)
 	{
 		int size = buf.remaining();
-		_log.warning("Unknown Packet: " + Integer.toHexString(opcode) + ":" + Integer.toHexString(id2) + " on State: " + state.name() + " Client: " + client.toString());
+		_log.warning(L2GamePacketHandler.class.getName() + ": Unknown Packet: " + Integer.toHexString(opcode) + ":" + Integer.toHexString(id2) + " on State: " + state.name() + " Client: " + client.toString());
 		byte[] array = new byte[size];
 		buf.get(array);
-		_log.warning(Util.printData(array, size));
+		_log.warning(L2GamePacketHandler.class.getName() + ": " + Util.printData(array, size));
 	}
 
 	@SuppressWarnings("unused")
@@ -868,7 +868,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				}
 			break;
 			case (2):
-				_log.warning("PacketProtection: " + client.toString() + " got kicked due flooding of unknown packets.");
+				_log.warning(L2GamePacketHandler.class.getName() + ": PacketProtection: " + client.toString() + " got kicked due flooding of unknown packets.");
 				if (client.getActiveChar() != null)
 				{
 					AdminData.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got kicked.");
@@ -877,7 +877,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				}
 			break;
 			case (3):
-				_log.warning("PacketProtection: " + client.toString() + " got banned due flooding of unknown packets.");
+				_log.warning(L2GamePacketHandler.class.getName() + ": PacketProtection: " + client.toString() + " got banned due flooding of unknown packets.");
 				LoginServerThread.getInstance().sendAccessLevel(client.getAccountName(), -99);
 				if (client.getActiveChar() != null)
 				{

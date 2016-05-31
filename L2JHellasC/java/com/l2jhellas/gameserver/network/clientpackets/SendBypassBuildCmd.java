@@ -60,13 +60,13 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 				activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist.");
 			}
 
-			_log.warning("No handler registered for admin command '" + command + "'");
+			_log.warning(SendBypassBuildCmd.class.getName() + ": No handler registered for admin command '" + command + "'");
 			return;
 		}
 		if (!AdminData.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 		{
 			activeChar.sendMessage("You don't have the access right to use this command.");
-			_log.warning(activeChar.getName() + " tried to use admin command " + command + ", but have no access to use it.");
+			_log.warning(SendBypassBuildCmd.class.getName() + ": " + activeChar.getName() + " tried to use admin command " + command + ", but have no access to use it.");
 			return;
 		}
 

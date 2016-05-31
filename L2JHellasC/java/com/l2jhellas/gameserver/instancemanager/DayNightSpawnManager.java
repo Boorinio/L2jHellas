@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -58,14 +57,14 @@ public class DayNightSpawnManager
 		_nightCreatures = new HashMap<L2Spawn, L2Npc>();
 		_bosses = new HashMap<L2Spawn, L2RaidBossInstance>();
 
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Day/Night handler initialised.");
+		_log.info(DayNightSpawnManager.class.getSimpleName() + ": Day/Night handler initialised.");
 	}
 
 	public void addDayCreature(L2Spawn spawnDat)
 	{
 		if (_dayCreatures.containsKey(spawnDat))
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Spawn already added into day map.");
+			_log.warning(DayNightSpawnManager.class.getName() + ": Spawn already added into day map.");
 			return;
 		}
 		else
@@ -76,7 +75,7 @@ public class DayNightSpawnManager
 	{
 		if (_nightCreatures.containsKey(spawnDat))
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Spawn already added into night map.");
+			_log.warning(DayNightSpawnManager.class.getName() + ": Spawn already added into night map.");
 			return;
 		}
 		else
@@ -122,7 +121,7 @@ public class DayNightSpawnManager
 					dayCreature.deleteMe();
 					i++;
 				}
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Deleted " + i + " " + UnspawnLogInfo + " creatures.");
+				_log.info(DayNightSpawnManager.class.getSimpleName() + ": Deleted " + i + " " + UnspawnLogInfo + " creatures.");
 			}
 
 			int i = 0;
@@ -157,15 +156,13 @@ public class DayNightSpawnManager
 				i++;
 			}
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Spawning " + i + " " + SpawnLogInfo + " creatures");
+			_log.info(DayNightSpawnManager.class.getSimpleName() + ": Spawning " + i + " " + SpawnLogInfo + " creatures");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not spawn day/night creatures." + e);
+			_log.warning(DayNightSpawnManager.class.getName() + ": Could not spawn day/night creatures.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -185,7 +182,7 @@ public class DayNightSpawnManager
 				specialNightBoss(1);
 			break;
 			default:
-				_log.log(Level.WARNING, getClass().getName() + ": Wrong mode sent");
+				_log.warning(DayNightSpawnManager.class.getName() + ": Wrong mode sent");
 			break;
 		}
 	}
@@ -201,11 +198,9 @@ public class DayNightSpawnManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not notify change mode." + e);
+			_log.warning(DayNightSpawnManager.class.getName() + ": Could not notify change mode.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -243,11 +238,9 @@ public class DayNightSpawnManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not spawn day/night special bosses." + e);
+			_log.warning(DayNightSpawnManager.class.getName() + ": Could not spawn day/night special bosses.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -257,11 +250,11 @@ public class DayNightSpawnManager
 		{
 			case 0:
 				boss.deleteMe();
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Deleting Hellman Raidboss!");
+				_log.info(DayNightSpawnManager.class.getSimpleName() + ": Deleting Hellman Raidboss!");
 			break;
 			case 1:
 				boss.spawnMe();
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Spawning Hellman Raidboss!");
+				_log.info(DayNightSpawnManager.class.getSimpleName() + ": Spawning Hellman Raidboss!");
 			break;
 		}
 	}

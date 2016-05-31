@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -51,7 +50,7 @@ public class CastleUpdater implements Runnable
 					{
 						castle.saveSeedData();
 						castle.saveCropData();
-						_log.log(Level.INFO, getClass().getName() + ": all data for " + castle.getName() + " saved.");
+						_log.info(CastleUpdater.class.getName() + ": all data for " + castle.getName() + " saved.");
 					}
 				}
 				_runCount++;
@@ -61,11 +60,9 @@ public class CastleUpdater implements Runnable
 		}
 		catch (Throwable e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not save data." + e);
+			_log.warning(CastleUpdater.class.getName() + ": could not save data.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

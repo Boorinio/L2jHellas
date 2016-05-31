@@ -15,7 +15,6 @@
 package handlers.skillhandlers;
 
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -177,11 +176,9 @@ public class SummonFriend implements ISkillHandler
 		}
 		catch (Throwable e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error " + e);
+			_log.warning(SummonFriend.class.getName() + ": error ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

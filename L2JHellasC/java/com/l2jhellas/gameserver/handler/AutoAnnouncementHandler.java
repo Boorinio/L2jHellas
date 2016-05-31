@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -71,15 +70,13 @@ public class AutoAnnouncementHandler
 			}
 
 			statement.close();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + numLoaded + " Auto Announcements.");
+			_log.info(AutoAnnouncementHandler.class.getSimpleName() + ": Loaded " + numLoaded + " Auto Announcements.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error cant find DB" + e);
+			_log.warning(AutoAnnouncementHandler.class.getName() + ": Error cant find DB");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -174,11 +171,9 @@ public class AutoAnnouncementHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could Not Insert Auto Announcment into DataBase: Reason: Duplicate Id" + e);
+			_log.warning(AutoAnnouncementHandler.class.getName() + ": Could Not Insert Auto Announcment into DataBase: Reason: Duplicate Id");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		return registerAnnouncement(nextId, announcementTexts, announcementDelay);
@@ -207,11 +202,9 @@ public class AutoAnnouncementHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error cant select from DB " + e);
+			_log.warning(AutoAnnouncementHandler.class.getName() + ": Error cant select from DB ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		return nextId;
@@ -258,7 +251,7 @@ public class AutoAnnouncementHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not Delete Auto Announcement in Database, Reason:", e);
+			_log.warning(AutoAnnouncementHandler.class.getName() + ": Could not Delete Auto Announcement in Database, Reason:");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();

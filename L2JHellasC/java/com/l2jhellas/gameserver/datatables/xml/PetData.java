@@ -64,7 +64,7 @@ public class PetData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/pet_stats.xml");
 		if (!f.exists())
 		{
-			_log.warning("pet_stats.xml could not be loaded: file not found");
+			_log.warning(PetData.class.getName() + ": pet_stats.xml could not be loaded: file not found");
 			return;
 		}
 		int k = 0;
@@ -129,15 +129,15 @@ public class PetData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(PetData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(PetData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(PetData.class.getName() + ": Error while creating table");
 		}
 
 		_log.info("PetStatsTable: Loaded " + _petTable.size() + " pets with " + k + " stats.");

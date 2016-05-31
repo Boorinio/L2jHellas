@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -67,7 +66,7 @@ public class CharTemplateData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/char_templates.xml");
 		if (!f.exists())
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": char_templates.xml could not be loaded: file not found");
+			_log.warning(CharTemplateData.class.getName() + ": char_templates.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -203,30 +202,24 @@ public class CharTemplateData
 		}
 		catch (SAXException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while loading char templates", e);
+			_log.warning(CharTemplateData.class.getName() + ": error while loading char templates");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while loading char templates", e);
+			_log.warning(CharTemplateData.class.getName() + ": error while loading char templates");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while loading char templates", e);
+			_log.warning(CharTemplateData.class.getName() + ": error while loading char templates");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _templates.size() + " character templates.");
+		_log.info(CharTemplateData.class.getSimpleName() + ": Loaded " + _templates.size() + " character templates.");
 	}
 
 	public L2PcTemplate getTemplate(ClassId classId)

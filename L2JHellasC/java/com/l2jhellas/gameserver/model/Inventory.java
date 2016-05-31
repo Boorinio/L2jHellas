@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -355,7 +356,7 @@ public abstract class Inventory extends ItemContainer
 						player.sendSkillList();
 					}
 					else
-						_log.log(Level.WARNING, getClass().getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getSkillId() + ".");
+						_log.warning(Inventory.class.getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getSkillId() + ".");
 
 					if (armorSet.containShield(player)) // has shield from set
 					{
@@ -366,7 +367,7 @@ public abstract class Inventory extends ItemContainer
 							player.sendSkillList();
 						}
 						else
-							_log.log(Level.WARNING, getClass().getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getShieldSkillId() + ".");
+							_log.warning(Inventory.class.getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getShieldSkillId() + ".");
 					}
 					if (armorSet.isEnchanted6(player)) // has all parts of set enchanted to 6 or more
 					{
@@ -380,7 +381,7 @@ public abstract class Inventory extends ItemContainer
 								player.sendSkillList();
 							}
 							else
-								_log.log(Level.WARNING, getClass().getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getEnchant6skillId() + ".");
+								_log.warning(Inventory.class.getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getEnchant6skillId() + ".");
 						}
 					}
 				}
@@ -396,7 +397,7 @@ public abstract class Inventory extends ItemContainer
 						player.sendSkillList();
 					}
 					else
-						_log.log(Level.WARNING, getClass().getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getShieldSkillId() + ".");
+						_log.warning(Inventory.class.getName() + ": .ArmorSetListener: Incorrect skill: " + armorSet.getShieldSkillId() + ".");
 				}
 			}
 		}
@@ -457,7 +458,7 @@ public abstract class Inventory extends ItemContainer
 					if (skill != null)
 						player.removeSkill(skill);
 					else
-						_log.log(Level.WARNING, getClass().getName() + ": .ArmorSetListener: Incorrect skill: " + removeSkillId1 + ".");
+						_log.warning(Inventory.class.getName() + ": .ArmorSetListener: Incorrect skill: " + removeSkillId1 + ".");
 				}
 				if (removeSkillId2 != 0)
 				{
@@ -465,7 +466,7 @@ public abstract class Inventory extends ItemContainer
 					if (skill != null)
 						player.removeSkill(skill);
 					else
-						_log.log(Level.WARNING, getClass().getName() + ": .ArmorSetListener: Incorrect skill: " + removeSkillId2 + ".");
+						_log.warning(Inventory.class.getName() + ": .ArmorSetListener: Incorrect skill: " + removeSkillId2 + ".");
 				}
 				if (removeSkillId3 != 0)
 				{
@@ -473,7 +474,7 @@ public abstract class Inventory extends ItemContainer
 					if (skill != null)
 						player.removeSkill(skill);
 					else
-						_log.log(Level.WARNING, getClass().getName() + ": .ArmorSetListener: Incorrect skill: " + removeSkillId3 + ".");
+						_log.warning(Inventory.class.getName() + ": .ArmorSetListener: Incorrect skill: " + removeSkillId3 + ".");
 				}
 				player.sendSkillList();
 			}
@@ -1307,7 +1308,7 @@ public abstract class Inventory extends ItemContainer
 				setPaperdollItem(PAPERDOLL_BACK, item);
 			break;
 			default:
-				_log.log(Level.WARNING, getClass().getName() + ": unknown body slot:" + targetSlot);
+				_log.warning(Inventory.class.getName() + ": unknown body slot:" + targetSlot);
 				setPaperdollItem(PAPERDOLL_NULL, item);
 			break;
 		}
@@ -1405,7 +1406,7 @@ public abstract class Inventory extends ItemContainer
 				if (L2World.getInstance().findObject(inv.getInt("object_id")) != null)
 				{
 					getOwner().getActingPlayer().sendMessage("Dup not allowed!");
-					_log.log(Level.WARNING, "Item: " + item.getObjectId() + " Has Duplied on World And Cannot be Load");
+					_log.warning(Inventory.class.getSimpleName() + ": Item: " + item.getObjectId() + " Has Duplied on World And Cannot be Load");
 					L2World.getInstance().removeObject(item);
 					continue;				
 				}
@@ -1438,13 +1439,11 @@ public abstract class Inventory extends ItemContainer
 			statement.close();
 			refreshWeight();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not restore inventory : " + e);
+			_log.warning(Inventory.class.getName() + ": Could not restore inventory : ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

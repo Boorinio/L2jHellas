@@ -14,9 +14,9 @@
  */
 package vehicles;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
@@ -287,7 +287,9 @@ public class BoatGludinRune implements Runnable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, e.getMessage());
+			_log.warning(BoatGludinRune.class.getName() + ": error");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	

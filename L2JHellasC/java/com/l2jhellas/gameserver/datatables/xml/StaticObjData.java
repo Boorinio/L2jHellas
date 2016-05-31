@@ -15,11 +15,11 @@ package com.l2jhellas.gameserver.datatables.xml;
 import java.io.File;
 import java.util.logging.Logger;
 
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 import com.l2jhellas.util.XMLDocumentFactory;
@@ -56,8 +56,10 @@ public class StaticObjData
 		}
 		catch (Exception e)
 		{
-			_log.warning("StaticObject: Error while creating StaticObjects table: " + e);
+			_log.warning(StaticObjData.class.getName() + ": Error while creating StaticObjects table: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
-		_log.info("StaticObject: Loaded " + count + " templates.");
+		_log.info(StaticObjData.class.getSimpleName() + ": Loaded " + count + " templates.");
 	}
 }

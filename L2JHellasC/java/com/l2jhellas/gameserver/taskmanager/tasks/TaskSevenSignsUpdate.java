@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.taskmanager.tasks;
 
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.taskmanager.Task;
@@ -54,7 +55,9 @@ public class TaskSevenSignsUpdate extends Task
 		}
 		catch (Exception e)
 		{
-			_log.warning("SevenSigns: Failed to save Seven Signs configuration: " + e);
+			_log.warning(TaskSevenSignsUpdate.class.getName() + ": SevenSigns: Failed to save Seven Signs configuration: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

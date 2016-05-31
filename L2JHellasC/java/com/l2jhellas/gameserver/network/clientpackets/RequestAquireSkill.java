@@ -272,7 +272,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 
 		else
 		{
-			_log.warning("Recived Wrong Packet Data in Aquired Skill - unk1:" + _skillType);
+			_log.warning(RequestAquireSkill.class.getName() + ": Recived Wrong Packet Data in Aquired Skill - unk1:" + _skillType);
 			return;
 		}
 

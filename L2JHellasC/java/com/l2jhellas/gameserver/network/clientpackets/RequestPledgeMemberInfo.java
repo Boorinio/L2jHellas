@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -27,7 +28,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeReceiveMemberInfo;
 public final class RequestPledgeMemberInfo extends L2GameClientPacket
 {
 	private static final String _C__D0_1D_REQUESTPLEDGEMEMBERINFO = "[C] D0:1D RequestPledgeMemberInfo";
-	@SuppressWarnings("unused")
 	private int _unk1;
 	private String _player;
 
@@ -41,8 +41,11 @@ public final class RequestPledgeMemberInfo extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// System.out.println("C5: RequestPledgeMemberInfo d:"+_unk1);
-		// System.out.println("C5: RequestPledgeMemberInfo S:"+_player);
+		if (Config.DEBUG)
+		{
+			_log.config(RequestPledgeMemberInfo.class.getName() + ": C5: RequestPledgeMemberInfo d:"+_unk1);
+			_log.config(RequestPledgeMemberInfo.class.getName() + ": C5: RequestPledgeMemberInfo S:"+_player);
+		}
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;

@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -92,13 +93,11 @@ public class NpcData
 				ResultSet npcdata = statement.executeQuery();
 				fillNpcTable(npcdata, false);
 				npcdata.close();
-				npcdata = null;
 				statement.close();
-				statement = null;
 			}
 			catch (Exception e)
 			{
-				_log.warning("NPCTable: Error creating NPC table");
+				_log.warning(NpcData.class.getName() + ": Error creating NPC table");
 			}
 
 			try
@@ -139,13 +138,11 @@ public class NpcData
 				}
 
 				npcskills.close();
-				npcskills = null;
 				statement.close();
-				statement = null;
 			}
 			catch (Exception e)
 			{
-				_log.warning("NPCTable: Error reading NPC skills table");
+				_log.warning(NpcData.class.getName() + ": Error reading NPC skills table");
 			}
 
 			try
@@ -163,7 +160,7 @@ public class NpcData
 
 					if (npcDat == null)
 					{
-						_log.warning("NPCTable: No npc correlating with id: " + mobId);
+						_log.warning(NpcData.class.getName() + ": No npc correlating with id: " + mobId);
 						continue;
 					}
 
@@ -181,30 +178,27 @@ public class NpcData
 				}
 
 				dropData.close();
-				dropData = null;
 				statement2.close();
-				statement2 = null;
 			}
 			catch (Exception e)
 			{
-				_log.warning("NPCTable: Error reading NPC drop data");
+				_log.warning(NpcData.class.getName() + ": Error reading NPC drop data");
 			}
 
 			try
 			{
-				PreparedStatement statement;
-				statement = con.prepareStatement(RESTORE_SELECT_CUSTOM_NPC);
+				PreparedStatement statement = con.prepareStatement(RESTORE_SELECT_CUSTOM_NPC);
 				ResultSet npcdata = statement.executeQuery();
 
 				fillNpcTable(npcdata, true);
 				npcdata.close();
-				npcdata = null;
 				statement.close();
-				statement = null;
 			}
 			catch (Exception e)
 			{
-				_log.info("NPCTable: Error creating custom NPC table: " + e);
+				_log.info("NPCTable: Error creating custom NPC table: ");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 
 			try
@@ -245,13 +239,13 @@ public class NpcData
 				}
 
 				npcskills.close();
-				npcskills = null;
 				statement.close();
-				statement = null;
 			}
 			catch (Exception e)
 			{
-				_log.info("NPCTable: Error reading NPC skills table: " + e);
+				_log.warning(NpcData.class.getName() + ": Error reading NPC skills table: ");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 
 			try
@@ -271,7 +265,7 @@ public class NpcData
 
 					if (npcDat == null)
 					{
-						_log.warning("NPCTable: CUSTOM DROPLIST No npc correlating with id : " + mobId);
+						_log.warning(NpcData.class.getName() + ":  CUSTOM DROPLIST No npc correlating with id : " + mobId);
 						continue;
 					}
 
@@ -288,10 +282,8 @@ public class NpcData
 					dropDat = null;
 				}
 				dropData.close();
-				dropData = null;
 				statement2.close();
-				statement2 = null;
-				_log.info("CustomDropList: Loaded " + cCount + " custom droplist.");
+				_log.info(NpcData.class.getSimpleName() + ": Loaded " + cCount + " custom droplist.");
 
 				if (Config.ENABLE_CACHE_INFO)
 				{
@@ -300,7 +292,9 @@ public class NpcData
 			}
 			catch (Exception e)
 			{
-				_log.info("NPCTable: Error reading NPC CUSTOM drop data: " + e);
+				_log.warning(NpcData.class.getName() + ": Error reading NPC CUSTOM drop data: ");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 
 			try
@@ -336,13 +330,13 @@ public class NpcData
 				}
 
 				dropData.close();
-				dropData = null;
 				statement2.close();
-				statement2 = null;
 			}
 			catch (Exception e)
 			{
-				_log.info("NPCTable: Error reading NPC drop data: " + e);
+				_log.warning(NpcData.class.getName() + ": Error reading NPC drop data: ");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -352,7 +346,7 @@ public class NpcData
 			File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/skill_learn.xml");
 			if (!f.exists())
 			{
-				_log.warning("skill_learn.xml could not be loaded: file not found");
+				_log.warning(NpcData.class.getName() + ": skill_learn.xml could not be loaded: file not found");
 				return;
 			}
 			try
@@ -374,7 +368,7 @@ public class NpcData
 
 								if (npc == null)
 								{
-									_log.warning("NPCTable: Error getting NPC template ID " + npcId + " while trying to load skill trainer data.");
+									_log.warning(NpcData.class.getName() + ":  Error getting NPC template ID " + npcId + " while trying to load skill trainer data.");
 									continue;
 								}
 
@@ -387,15 +381,15 @@ public class NpcData
 			}
 			catch (SAXException e)
 			{
-				_log.warning("NPCTable: Error reading NPC trainer data");
+				_log.warning(NpcData.class.getName() + ":  Error reading NPC trainer data");
 			}
 			catch (IOException e)
 			{
-				_log.warning("NPCTable: Error reading NPC trainer data");
+				_log.warning(NpcData.class.getName() + ":  Error reading NPC trainer data");
 			}
 			catch (ParserConfigurationException e)
 			{
-				_log.warning("NPCTable: Error reading NPC trainer data");
+				_log.warning(NpcData.class.getName() + ":  Error reading NPC trainer data");
 			}
 			_log.info("NpcTable: Loaded " + th + " teachers.");
 
@@ -406,7 +400,7 @@ public class NpcData
 			File f1 = new File(PackRoot.DATAPACK_ROOT, "data/xml/minion.xml");
 			if (!f1.exists())
 			{
-				_log.warning("minion.xml could not be loaded: file not found");
+				_log.warning(NpcData.class.getName() + ": minion.xml could not be loaded: file not found");
 				return;
 			}
 			try
@@ -445,21 +439,22 @@ public class NpcData
 			}
 			catch (SAXException e)
 			{
-				_log.warning("Error loading minion data");
+				_log.warning(NpcData.class.getName() + ": Error loading minion data");
 			}
 			catch (IOException e)
 			{
-				_log.warning("Error loading minion data");
+				_log.warning(NpcData.class.getName() + ": Error loading minion data");
 			}
 			catch (ParserConfigurationException e)
 			{
-				_log.warning("Error loading minion data");
+				_log.warning(NpcData.class.getName() + ": Error loading minion data");
 			}
-			_log.info("NpcTable: Loaded " + cnt + " minions.");
+			_log.info(NpcData.class.getSimpleName() + ": Loaded " + cnt + " minions.");
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-		} //never happen, 4finally
+			_log.warning(NpcData.class.getName() + ": Error General");
+		}
 	}
 
 	private void fillNpcTable(ResultSet NpcData, boolean customData) throws Exception
@@ -533,7 +528,7 @@ public class NpcData
 			_npcs.put(id, template);
 		}
 
-		_log.info("NpcTable: Loaded " + _npcs.size() + " npc templates.");
+		_log.info(NpcData.class.getSimpleName() + ": Loaded " + _npcs.size() + " npc templates.");
 	}
 
 	public void reloadNpc(int id)
@@ -579,9 +574,11 @@ public class NpcData
 					st.close();
 				}
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-
+				_log.warning(NpcData.class.getName() + ": Error reloading NPC");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 
 			// restore additional data from saved copy
@@ -613,7 +610,9 @@ public class NpcData
 		}
 		catch (Exception e)
 		{
-			_log.warning("NPCTable: Could not reload data for NPC " + id);
+			_log.warning(NpcData.class.getName() + ":  Could not reload data for NPC " + id);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -661,9 +660,11 @@ public class NpcData
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("NPCTable: Could not store new NPC data in database");
+			_log.warning(NpcData.class.getName() + ":  Could not store new NPC data in database");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -737,7 +738,7 @@ public class NpcData
 			InfoCache.addToDroplistCache(npc.npcId, npc.getAllDropData());
 		}
 
-		_log.info("Players droplist was cached.");
+		_log.info(NpcData.class.getSimpleName() + ": Players droplist was cached.");
 	}
 
 	public L2NpcTemplate[] getAllNpcOfClassType(String classType)

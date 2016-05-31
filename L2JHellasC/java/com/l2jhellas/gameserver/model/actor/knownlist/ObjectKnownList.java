@@ -114,6 +114,7 @@ public class ObjectKnownList
 		return _knownObjects;
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	public final <A> Collection<A> getKnownTypeInRadius(Class<A> type, int radius)
 	{

@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.entity.engines;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -24,16 +25,16 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 /**
  * @author Boorinio
  */
-
 public class EventHandlerTvT
 {
+	private static final Logger _log = Logger.getLogger(EventHandlerTvT.class.getName());
 	public List<Long> datesTvT = new ArrayList<Long>();
 	
 	public void startHandler()
 	{
 		loadConfisTvT(false);
 		getNextTimeStampTvT();
-		System.out.println("TvT handler initiated");
+		_log.info(EventHandlerTvT.class.getSimpleName() + ": TvT handler initiated.");
 	}
 	
 	public void loadConfisTvT(boolean NextDay)

@@ -12,7 +12,7 @@
  */
 package quests.Q616_MagicalPowerOfFire_Part2;
 
-import java.util.logging.Level;
+import quests.Q625_TheFinestIngredients_Part2.Q625_TheFinestIngredients_Part2;
 
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager.StatusEnum;
@@ -58,7 +58,7 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 		switch (RaidBossSpawnManager.getInstance().getRaidBossStatusId(SOUL_OF_FIRE_NASTRON))
 		{
 			case UNDEFINED:
-				_log.log(Level.WARNING, qn + ": can not find spawned L2RaidBoss id=" + SOUL_OF_FIRE_NASTRON);
+				_log.warning(Q625_TheFinestIngredients_Part2.class.getName()+ ": " + qn + ": can not find spawned L2RaidBoss id=" + SOUL_OF_FIRE_NASTRON);
 				break;
 			
 			case ALIVE:

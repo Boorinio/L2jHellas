@@ -6,7 +6,6 @@ package com.l2jhellas.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 /**
@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 public final class XMLParser
 {
 	private static Logger _log = Logger.getLogger(XMLParser.class.getName());
-	
 	private final File _file;
 	private final ArrayList<StatsSet> _sets;
 	private final String _type;
@@ -38,7 +37,7 @@ public final class XMLParser
 	{
 		if (_file == null)
 		{
-			_log.log(Level.WARNING, "XMLParser: Couldn't find the XML File!");
+			_log.warning(XMLParser.class.getSimpleName() + ": XMLParser: Couldn't find the XML File!");
 			return null;
 		}
 		parse();
@@ -58,7 +57,9 @@ public final class XMLParser
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "XMLParser: Error loading file " + _file, e);
+			_log.severe(XMLParser.class.getName() + ": Error loading file " + _file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			return null;
 		}
 		
@@ -68,7 +69,9 @@ public final class XMLParser
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "XMLParser: Error in file " + _file, e);
+			_log.severe(XMLParser.class.getName() + ": Error in file " + _file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			return null;
 		}
 		return doc;

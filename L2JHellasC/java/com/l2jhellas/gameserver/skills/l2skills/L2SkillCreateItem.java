@@ -67,12 +67,13 @@ public class L2SkillCreateItem extends L2Skill
 	 * @param itemId
 	 * @param count
 	 */
-	@SuppressWarnings("unused")
+	
 	public void giveItems(L2PcInstance activeChar, int itemId, int count)
 	{
 		L2ItemInstance item = new L2ItemInstance(IdFactory.getInstance().getNextId(), itemId);
-		if (item == null)
-			return;
+		
+		if (item != null)
+		{
 		item.setCount(count);
 		activeChar.getInventory().addItem("Skill", item, activeChar, activeChar);
 
@@ -91,5 +92,6 @@ public class L2SkillCreateItem extends L2Skill
 		}
 		ItemList il = new ItemList(activeChar, false);
 		activeChar.sendPacket(il);
+		}
 	}
 }

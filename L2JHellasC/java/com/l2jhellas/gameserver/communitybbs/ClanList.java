@@ -15,7 +15,6 @@ package com.l2jhellas.gameserver.communitybbs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -101,11 +100,9 @@ public class ClanList
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error loading DB " + e);
+			_log.warning(ClanList.class.getName() + ": Error loading DB ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

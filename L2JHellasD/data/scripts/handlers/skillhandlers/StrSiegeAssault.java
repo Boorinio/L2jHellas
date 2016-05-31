@@ -14,7 +14,6 @@
  */
 package handlers.skillhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -106,11 +105,9 @@ public class StrSiegeAssault implements ISkillHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error using siege assault:" + e);
+			_log.warning(StrSiegeAssault.class.getName() + ": Error using siege assault:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

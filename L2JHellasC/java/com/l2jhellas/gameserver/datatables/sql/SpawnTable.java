@@ -124,7 +124,7 @@ public class SpawnTable
 				}
 				else
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Data missing in NPC table for ID: " + rset.getInt("npc_templateid") + ".");
+					_log.warning(SpawnTable.class.getName() + ": Data missing in NPC table for ID: " + rset.getInt("npc_templateid") + ".");
 				}
 			}
 			rset.close();
@@ -133,15 +133,13 @@ public class SpawnTable
 		catch (Exception e)
 		{
 			// problem with initializing spawn, go to next one
-			_log.log(Level.WARNING, getClass().getName() + ": Spawn could not be initialized: " + e);
+			_log.warning(SpawnTable.class.getName() + ": Spawn could not be initialized: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		Util.printSection("Spawnlist");
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
+		_log.info(SpawnTable.class.getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
 
 		if (Config.DEBUG)
 			_log.log(Level.FINE, getClass().getName() + ": Spawning completed, total number of NPCs in the world: " + _npcSpawnCount);
@@ -179,11 +177,9 @@ public class SpawnTable
 			catch (Exception e)
 			{
 				// problem with storing spawn
-				_log.log(Level.WARNING, getClass().getName() + ": Could not store spawn in the DB:" + e);
+				_log.warning(SpawnTable.class.getName() + ": Could not store spawn in the DB:");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -205,11 +201,9 @@ public class SpawnTable
 			catch (Exception e)
 			{
 				// problem with deleting spawn
-				_log.log(Level.WARNING, getClass().getName() + ": Spawn " + spawn.getId() + " could not be removed from DB: " + e);
+				_log.warning(SpawnTable.class.getName() + ": Spawn " + spawn.getId() + " could not be removed from DB: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}

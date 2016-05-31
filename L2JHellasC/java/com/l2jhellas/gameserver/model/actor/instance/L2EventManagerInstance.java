@@ -15,7 +15,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.logging.Level;
 
 import Extensions.RaidEvent.L2EventChecks;
 
@@ -185,11 +184,9 @@ public class L2EventManagerInstance extends L2Npc
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Error while getting html command." + e);
+				_log.warning(L2EventManagerInstance.class.getName() + ": Error while getting html command.");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 		super.onBypassFeedback(player, command);

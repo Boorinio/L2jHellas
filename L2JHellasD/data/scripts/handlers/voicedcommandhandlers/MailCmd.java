@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -82,11 +81,9 @@ public class MailCmd implements IVoicedCommandHandler
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not retrieve mails " + e);
+			_log.warning(MailCmd.class.getName() + " Could not retrieve mails ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		tb.append("</body></html>");
 		return tb.toString();

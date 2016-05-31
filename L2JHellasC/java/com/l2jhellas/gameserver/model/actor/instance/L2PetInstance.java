@@ -158,13 +158,9 @@ public class L2PetInstance extends L2Summon
 			}
 			catch (Throwable e)
 			{
-				_logPet.log(Level.WARNING, getClass().getName() + ": Pet [#" + getObjectId() + "] a feed task error has occurred: " + e);
+				_logPet.log(Level.WARNING, getClass().getName() + ": Pet [#" + getObjectId() + "] a feed task error has occurred: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
-				if (Config.DEBUG)
-					_logPet.warning("Pet [#" + getObjectId() + "] a feed task error has occurred: " + e);
 			}
 		}
 	}
@@ -670,11 +666,9 @@ public class L2PetInstance extends L2Summon
 		}
 		catch (Exception e)
 		{
-			_logPet.log(Level.WARNING, getClass().getName() + ": Give all items error " + e);
+			_logPet.log(Level.WARNING, getClass().getName() + ": Give all items error ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -691,11 +685,9 @@ public class L2PetInstance extends L2Summon
 		}
 		catch (Exception e)
 		{
-			_logPet.log(Level.WARNING, getClass().getName() + ": Error while giving item to owner: " + e);
+			_logPet.log(Level.WARNING, getClass().getName() + ": Error while giving item to owner: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -730,11 +722,9 @@ public class L2PetInstance extends L2Summon
 		}
 		catch (Exception e)
 		{
-			_logPet.log(Level.WARNING, getClass().getName() + ": Error while destroying control item: " + e);
+			_logPet.log(Level.WARNING, getClass().getName() + ": Error while destroying control item: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		// pet control item no longer exists, delete the pet from the db
@@ -747,11 +737,9 @@ public class L2PetInstance extends L2Summon
 		}
 		catch (Exception e)
 		{
-			_logPet.log(Level.WARNING, getClass().getName() + ": could not delete pet:" + e);
+			_logPet.log(Level.WARNING, getClass().getName() + ": could not delete pet:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -767,11 +755,9 @@ public class L2PetInstance extends L2Summon
 		}
 		catch (Exception e)
 		{
-			_logPet.log(Level.WARNING, getClass().getName() + ": Pet Drop Error: " + e);
+			_logPet.log(Level.WARNING, getClass().getName() + ": Pet Drop Error: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -857,11 +843,9 @@ public class L2PetInstance extends L2Summon
 		}
 		catch (Exception e)
 		{
-			_logPet.log(Level.WARNING, ": could not restore pet data: " + e);
+			_logPet.log(Level.WARNING, ": could not restore pet data: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 			return null;
 		}
 	}
@@ -899,11 +883,9 @@ public class L2PetInstance extends L2Summon
 		}
 		catch (Exception e)
 		{
-			_logPet.log(Level.WARNING, getClass().getName() + ": could not store pet data: " + e);
+			_logPet.log(Level.WARNING, getClass().getName() + ": could not store pet data: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		L2ItemInstance itemInst = getControlItem();

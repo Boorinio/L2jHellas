@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -31,7 +30,9 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
- * @author Blaze,Nightwolf
+ * @author Nightwolf
+ * This class is unfinished its working though just need to make the code from SQL to XML 
+ * it creates automatically points to where the gm is with simple clicks via gm panel
  */
 public class AdminWalker implements IAdminCommandHandler
 {
@@ -111,11 +112,9 @@ public class AdminWalker implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": could not select walker_routes from database." + e.getMessage());
+						_log.warning(AdminWalker.class.getName() + ": could not select walker_routes from database.");
 						if (Config.DEVELOPER)
-						{
 							e.printStackTrace();
-						}
 					}
 
 					_point = 1;
@@ -166,8 +165,9 @@ public class AdminWalker implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error1." + e.getMessage());
-			e.printStackTrace();
+			_log.warning(AdminWalker.class.getName() + ": error1.");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		return true;
 	}
@@ -245,11 +245,11 @@ public class AdminWalker implements IAdminCommandHandler
 					return;
 				out.write("<html><body>\r\nL2jhellas Walker<br>\r\nchange me in data/html/default/" + _npcid + ".htm\r\n</body></html>");
 
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Created data/html/default/" + _npcid + ".htm for Walker NPC.");
+				_log.info(AdminWalker.class.getSimpleName() + ": Created data/html/default/" + _npcid + ".htm for Walker NPC.");
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": could not create data/html/default/" + _npcid + ".htm for Walker NPC.");
+				_log.warning(AdminWalker.class.getName() + ": could not create data/html/default/" + _npcid + ".htm for Walker NPC.");
 				if (Config.DEVELOPER)
 					e.printStackTrace();
 			}
@@ -258,11 +258,9 @@ public class AdminWalker implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not create new custom_npc with id:" + _npcid + e.getMessage());
+			_log.warning(AdminWalker.class.getName() + ": could not create new custom_npc with id:" + _npcid);
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -304,11 +302,9 @@ public class AdminWalker implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not insert walker_routes into database." + e.getMessage());
+			_log.warning(AdminWalker.class.getName() + ": could not insert walker_routes into database.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

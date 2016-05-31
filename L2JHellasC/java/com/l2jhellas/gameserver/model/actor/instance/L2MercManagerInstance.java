@@ -122,8 +122,8 @@ public final class L2MercManagerInstance extends L2NpcInstance
 		}
 		else
 		{
-			_log.warning("possible client hacker: " + player.getName() + " attempting to buy from GM shop! < Ban him!");
-			_log.warning("buylist id:" + val);
+			_log.warning(L2MercManagerInstance.class.getName() + ": possible client hacker: " + player.getName() + " attempting to buy from GM shop! < Ban him!");
+			_log.warning(L2MercManagerInstance.class.getName() + ": buylist id:" + val);
 		}
 	}
 

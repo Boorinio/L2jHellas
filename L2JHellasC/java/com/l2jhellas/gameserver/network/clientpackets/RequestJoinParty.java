@@ -167,13 +167,13 @@ public final class RequestJoinParty extends L2GameClientPacket
 			
 			requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_INVITED_S1_TO_PARTY).addPcName(target));
 			if (Config.DEBUG)
-				_log.fine("Sent out a party invitation to " + target.getName());
+				_log.warning(RequestJoinParty.class.getSimpleName() + ": Sent out a party invitation to " + target.getName());
 		}
 		else
 		{
 			requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER).addPcName(target));
 			if (Config.DEBUG)
-				_log.warning(requestor.getName() + " already received a party invitation");
+				_log.warning(RequestJoinParty.class.getName() + ": " + requestor.getName() + " already received a party invitation");
 		}
 	}
 	
@@ -192,7 +192,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 			requestor.getParty().setPendingInvitation(true);
 			
 			if (Config.DEBUG)
-				_log.fine("Sent out a party invitation to " + target.getName());
+				_log.warning(RequestJoinParty.class.getName() + ": Sent out a party invitation to " + target.getName());
 			
 			requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_INVITED_S1_TO_PARTY).addPcName(target));
 		}
@@ -201,7 +201,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 			requestor.sendPacket(SystemMessageId.WAITING_FOR_ANOTHER_REPLY);
 			
 			if (Config.DEBUG)
-				_log.warning(requestor.getName() + " already received a party invitation");
+				_log.warning(RequestJoinParty.class.getName() + ": " + requestor.getName() + " already received a party invitation");
 		}
 	}
 	

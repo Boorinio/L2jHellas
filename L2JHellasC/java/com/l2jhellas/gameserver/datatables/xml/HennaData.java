@@ -20,11 +20,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
 import com.l2jhellas.gameserver.templates.L2Henna;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.XMLDocumentFactory;
@@ -84,7 +84,7 @@ public class HennaData
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "HennaTable: Error loading from database:" + e.getMessage(), e);
+			_log.warning(HennaData.class.getSimpleName() + ": HennaTable: Error loading from database:" + e.getMessage());
 		}
 		_log.config("HennaTable: Loaded " + _henna.size() + " templates.");
 	}

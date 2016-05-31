@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -93,8 +92,7 @@ public class Lottery
 		_prize += count;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			statement = con.prepareStatement(UPDATE_PRICE);
+			PreparedStatement statement = con.prepareStatement(UPDATE_PRICE);
 			statement.setInt(1, getPrize());
 			statement.setInt(2, getPrize());
 			statement.setInt(3, getId());
@@ -103,11 +101,9 @@ public class Lottery
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not increase current lottery prize: " + e);
+			_log.warning(Lottery.class.getName() + ": Could not increase current lottery prize: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -180,15 +176,13 @@ public class Lottery
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could not restore lottery data: " + e);
+				_log.warning(Lottery.class.getName() + ": Could not restore lottery data: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Starting ticket sell for lottery #" + getId() + ".");
+				_log.config(Lottery.class.getName() + ": Starting ticket sell for lottery #" + getId() + ".");
 
 			_isSellingTickets = true;
 			_isStarted = true;
@@ -228,11 +222,9 @@ public class Lottery
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could not store new lottery data: " + e);
+				_log.warning(Lottery.class.getName() + ": Could not store new lottery data: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -248,7 +240,7 @@ public class Lottery
 		public void run()
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Stopping ticket sell for lottery #" + getId() + ".");
+				_log.config(Lottery.class.getName() + ": Stopping ticket sell for lottery #" + getId() + ".");
 
 			_isSellingTickets = false;
 
@@ -267,7 +259,7 @@ public class Lottery
 		public void run()
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Ending lottery #" + getId() + ".");
+				_log.config(Lottery.class.getName() + ": Ending lottery #" + getId() + ".");
 
 			int[] luckynums = new int[5];
 			int luckynum = 0;
@@ -290,7 +282,7 @@ public class Lottery
 			}
 
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": The lucky numbers are " + luckynums[0] + ", " + luckynums[1] + ", " + luckynums[2] + ", " + luckynums[3] + ", " + luckynums[4] + ".");
+				_log.config(Lottery.class.getName() + ": The lucky numbers are " + luckynums[0] + ", " + luckynums[1] + ", " + luckynums[2] + ", " + luckynums[3] + ", " + luckynums[4] + ".");
 
 			int enchant = 0;
 			int type2 = 0;
@@ -304,7 +296,7 @@ public class Lottery
 			}
 
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Encoded lucky numbers are " + enchant + ", " + type2);
+				_log.config(Lottery.class.getName() + ": Encoded lucky numbers are " + enchant + ", " + type2);
 
 			int count1 = 0;
 			int count2 = 0;
@@ -358,11 +350,9 @@ public class Lottery
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could restore lottery data: " + e);
+				_log.warning(Lottery.class.getName() + ": Could restore lottery data: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 
 			int prize4 = count4 * Config.ALT_LOTTERY_2_AND_1_NUMBER_PRIZE;
@@ -379,14 +369,14 @@ public class Lottery
 			if (count3 > 0)
 				prize3 = (int) ((getPrize() - prize4) * Config.ALT_LOTTERY_3_NUMBER_RATE / count3);
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count1 + " players with all FIVE numbers each win " + prize1 + ".");
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count2 + " players with FOUR numbers each win " + prize2 + ".");
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count3 + " players with THREE numbers each win " + prize3 + ".");
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + count4 + " players with ONE or TWO numbers each win " + prize4 + ".");
+			_log.info(Lottery.class.getSimpleName() + ": " + count1 + " players with all FIVE numbers each win " + prize1 + ".");
+			_log.info(Lottery.class.getSimpleName() + ": " + count2 + " players with FOUR numbers each win " + prize2 + ".");
+			_log.info(Lottery.class.getSimpleName() + ": " + count3 + " players with THREE numbers each win " + prize3 + ".");
+			_log.info(Lottery.class.getSimpleName() + ": " + count4 + " players with ONE or TWO numbers each win " + prize4 + ".");
 
 			int newprize = getPrize() - (prize1 + prize2 + prize3 + prize4);
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Jackpot for next lottery is " + newprize + ".");
+			_log.info(Lottery.class.getSimpleName() + ": Jackpot for next lottery is " + newprize + ".");
 
 			SystemMessage sm;
 			if (count1 > 0)
@@ -423,11 +413,9 @@ public class Lottery
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Could not store finished lottery data: " + e);
+				_log.warning(Lottery.class.getName() + ": Could not store finished lottery data: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 
 			ThreadPoolManager.getInstance().scheduleGeneral(new startLottery(), MINUTE);
@@ -539,7 +527,7 @@ public class Lottery
 				}
 
 				if (Config.DEBUG)
-					_log.warning("count: " + count + ", id: " + id + ", enchant: " + enchant + ", type2: " + type2);
+					_log.warning(Lottery.class.getName() + ": count: " + count + ", id: " + id + ", enchant: " + enchant + ", type2: " + type2);
 			}
 
 			rset.close();
@@ -547,11 +535,9 @@ public class Lottery
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not check lottery ticket #" + id + ": " + e);
+			_log.warning(Lottery.class.getName() + ": Could not check lottery ticket #" + id + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return res;
 	}

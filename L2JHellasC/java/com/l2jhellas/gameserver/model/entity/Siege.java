@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -637,10 +639,11 @@ public class Siege
 			getDefenderClans().clear();
 			getDefenderWaitingClans().clear();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			System.out.println("Exception: clearSiegeClan(): " + e.getMessage());
-			e.printStackTrace();
+			_log.warning(Siege.class.getName() + ": Exception: clearSiegeClan(): ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -656,10 +659,11 @@ public class Siege
 
 			getDefenderWaitingClans().clear();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			System.out.println("Exception: clearSiegeWaitingClan(): " + e.getMessage());
-			e.printStackTrace();
+			_log.warning(Siege.class.getName() + ": clearSiegeWaitingClan(): ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -841,6 +845,9 @@ public class Siege
 		}
 		catch (Exception e)
 		{
+			_log.warning(Siege.class.getName() + ": Could not remove from siege clan" + clanId);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -878,7 +885,7 @@ public class Siege
 	{
 		correctSiegeDateTime();
 
-		System.out.println("Siege of " + getCastle().getName() + ": " + getCastle().getSiegeDate().getTime());
+		_log.info(Siege.class.getSimpleName() + ": Siege of " + getCastle().getName() + ": " + getCastle().getSiegeDate().getTime());
 
 		loadSiegeClan();
 
@@ -1074,8 +1081,9 @@ public class Siege
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: loadSiegeClan(): " + e.getMessage());
-			e.printStackTrace();
+			_log.warning(Siege.class.getName() + ": loadSiegeClan(): ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1157,8 +1165,9 @@ public class Siege
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: saveSiegeDate(): " + e.getMessage());
-			e.printStackTrace();
+			_log.warning(Siege.class.getName() + ": saveSiegeDate(): ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1222,8 +1231,9 @@ public class Siege
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception: saveSiegeClan(L2Clan clan, int typeId, boolean isUpdateRegistration): " + e.getMessage());
-			e.printStackTrace();
+			_log.warning(Siege.class.getName() + ": saveSiegeClan(L2Clan clan, int typeId, boolean isUpdateRegistration): " + e.getMessage());
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

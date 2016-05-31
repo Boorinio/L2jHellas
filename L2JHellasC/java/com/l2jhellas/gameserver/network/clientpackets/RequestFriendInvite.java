@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.L2World;
@@ -107,7 +106,7 @@ public final class RequestFriendInvite extends L2GameClientPacket
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not add friend objectid: ", e);
+			_log.warning(RequestFriendInvite.class.getSimpleName() + ": could not add friend objectid: ");
 		}
 	}
 

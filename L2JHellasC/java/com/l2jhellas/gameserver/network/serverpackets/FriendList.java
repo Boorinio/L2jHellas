@@ -17,8 +17,10 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -99,9 +101,11 @@ public class FriendList extends L2GameServerPacket
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Error found in " + _activeChar.getName() + "'s FriendList: " + e);
+			_log.warning(FriendList.class.getName() + ": Error found in " + _activeChar.getName() + "'s FriendList: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

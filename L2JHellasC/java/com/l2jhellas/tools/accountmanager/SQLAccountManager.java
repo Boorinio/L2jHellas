@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
@@ -37,6 +38,7 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
  */
 public class SQLAccountManager
 {
+	protected static final Logger _log = Logger.getLogger(SQLAccountManager.class.getName());
 	private static String _uname = "";
 	private static String _pass = "";
 	private static String _level = "";
@@ -187,7 +189,7 @@ public class SQLAccountManager
 		{
 			while (rset.next())
 			{
-				System.out.println(rset.getString("login") + " -> " + rset.getInt("access_level"));
+				_log.info(SQLAccountManager.class.getName() + rset.getString("login") + " -> " + rset.getInt("access_level"));;
 				count++;
 			}
 		}

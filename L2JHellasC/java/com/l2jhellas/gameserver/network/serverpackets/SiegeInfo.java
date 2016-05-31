@@ -75,7 +75,7 @@ public class SiegeInfo extends L2GameServerPacket
 				writeS(owner.getAllyName());   // Ally Name
 			}
 			else
-				_log.warning("Null owner for castle: " + _castle.getName());
+				_log.warning(SiegeInfo.class.getName() + ": Null owner for castle: " + _castle.getName());
 		}
 		else
 		{

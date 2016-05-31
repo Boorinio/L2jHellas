@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -117,11 +116,9 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " data error on Forum " + _forumId + " : " + e);
+			_log.warning(Forum.class.getName() + " data error on Forum " + _forumId + " : ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -143,11 +140,9 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " data error on Forum " + _forumId + " : " + e);
+			_log.warning(Forum.class.getName() + " data error on Forum " + _forumId + " : ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -169,11 +164,9 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " data error on Forum (children): " + e);
+			_log.warning(Forum.class.getName() + " data error on Forum (children): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -290,11 +283,9 @@ public class Forum
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " error while saving new Forum to db " + e);
+			_log.warning(Forum.class.getName() + " error while saving new Forum to db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

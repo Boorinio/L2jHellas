@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -99,27 +98,26 @@ public class RaidBossSpawnManager
 				}
 				else
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Could not load raidboss #" + rset.getInt("boss_id") + " from DB.");
+					_log.warning(RaidBossSpawnManager.class.getName() + ": Could not load raidboss #" + rset.getInt("boss_id") + " from DB.");
 				}
 			}
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _bosses.size() + " Instances.");
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Scheduled " + _schedules.size() + " Instances.");
+			_log.info(RaidBossSpawnManager.class.getSimpleName() + ": Loaded " + _bosses.size() + " Instances.");
+			_log.info(RaidBossSpawnManager.class.getSimpleName() + ": Scheduled " + _schedules.size() + " Instances.");
 
 			rset.close();
 			statement.close();
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ":  Couldnt load raidboss_spawnlist table" + e);
+			_log.warning(RaidBossSpawnManager.class.getName() + ":  Couldnt load raidboss_spawnlist table");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -282,11 +280,9 @@ public class RaidBossSpawnManager
 			catch (Exception e)
 			{
 				// problem with storing spawn
-				_log.log(Level.WARNING, getClass().getName() + ": Could not store raidboss #" + bossId + " in the DB:" + e);
+				_log.warning(RaidBossSpawnManager.class.getName() + ": Could not store raidboss #" + bossId + " in the DB:");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -329,14 +325,12 @@ public class RaidBossSpawnManager
 				statement.execute();
 				statement.close();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
 				// problem with deleting spawn
-				_log.log(Level.WARNING, getClass().getName() + ": Could not remove raidboss #" + bossId + " from DB: " + e);
+				_log.warning(RaidBossSpawnManager.class.getName() + ": Could not remove raidboss #" + bossId + " from DB: ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -373,14 +367,18 @@ public class RaidBossSpawnManager
 				}
 				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, "RaidBossSpawnManager: Couldnt update raidboss_spawnlist table " + e.getMessage(), e);
+					_log.warning(RaidBossSpawnManager.class.getSimpleName() + ": RaidBossSpawnManager: Couldnt update raidboss_spawnlist table ");
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 				}
 			}
 			statement.close();
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "SQL error while updating RaidBoss spawn to database: " + e.getMessage(), e);
+			_log.warning(RaidBossSpawnManager.class.getSimpleName() + ": SQL error while updating RaidBoss spawn to database: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

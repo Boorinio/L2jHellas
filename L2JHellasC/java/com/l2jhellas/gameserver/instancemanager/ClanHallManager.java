@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -105,17 +104,15 @@ public class ClanHallManager
 				}
 			}
 			statement.close();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getClanHalls().size() + " taken clan halls.");
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getFreeClanHalls().size() + " free clan halls.");
+			_log.info(ClanHallManager.class.getSimpleName() + ": Loaded: " + getClanHalls().size() + " taken clan halls.");
+			_log.info(ClanHallManager.class.getSimpleName() + ": Loaded: " + getFreeClanHalls().size() + " free clan halls.");
 			_loaded = true;
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": ClanHallManager.load(): " + e);
+			_log.warning(ClanHallManager.class.getName() + ": ClanHallManager.load(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

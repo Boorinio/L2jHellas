@@ -16,6 +16,7 @@ package com.l2jhellas.loginserver.clientpackets;
 
 import java.net.InetAddress;
 import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
@@ -111,7 +112,16 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		L2LoginClient client = getClient();
 		try
 		{
-			AuthLoginResult result = lc.tryAuthLogin(_user, _password, getClient());
+			AuthLoginResult result = null;
+			try
+			{
+				result = lc.tryAuthLogin(_user, _password, getClient());
+			}
+			catch (NoSuchAlgorithmException e)
+			{
+				if (Config.DEVELOPER)
+					e.printStackTrace();
+			}
 
 			switch (result)
 			{

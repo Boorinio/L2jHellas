@@ -34,7 +34,7 @@ public final class GGAuth extends L2LoginServerPacket
 		_response = response;
 		if (Config.DEBUG)
 		{
-			_log.warning("Reason Hex: " + (Integer.toHexString(response)));
+			_log.warning(GGAuth.class.getName() + ": Reason Hex: " + (Integer.toHexString(response)));
 		}
 	}
 

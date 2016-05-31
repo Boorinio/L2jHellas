@@ -17,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -65,7 +64,7 @@ public class ArmorSetsData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/armor_sets.xml");
 		if (!f.exists())
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": armorsets.xml could not be loaded: file not found");
+			_log.warning(ArmorSetsData.class.getName() + ": armorsets.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -101,38 +100,30 @@ public class ArmorSetsData
 		}
 		catch (SAXException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table SAX " + e);
+			_log.warning(ArmorSetsData.class.getName() + ": Error while creating table SAX ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table IO " + e);
+			_log.warning(ArmorSetsData.class.getName() + ": Error while creating table IO ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while creating table Parser " + e);
+			_log.warning(ArmorSetsData.class.getName() + ": Error while creating table Parser ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error reading ArmorSets table: " + e);
+			_log.warning(ArmorSetsData.class.getName() + ": Error reading ArmorSets table: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _armorSets.size() + " armor sets.");
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _cusArmorSets.size() + " custom armor sets.");
+		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _armorSets.size() + " armor sets.");
+		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _cusArmorSets.size() + " custom armor sets.");
 	}
 
 	public boolean setExists(int chestId)

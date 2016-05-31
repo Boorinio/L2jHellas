@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
@@ -113,7 +112,7 @@ public class MapRegionTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "MapRegionTable: Error while loading \"map_region.xml\".", e);
+			_log.warning(MapRegionTable.class.getSimpleName() + ": MapRegionTable: Error while loading \"map_region.xml\".");
 		}
 		_log.info("MapRegionTable: Loaded " + count + " regions.");
 	}
@@ -128,7 +127,7 @@ public class MapRegionTable
 		{
 			// Position sent is outside MapRegionTable area.
 			if (Config.DEBUG)
-				_log.log(Level.WARNING, "MapRegionTable: Player outside map regions at X,Y=" + posX + "," + posY, e);
+				_log.warning(MapRegionTable.class.getSimpleName() + ": MapRegionTable: Player outside map regions at X,Y=" + posX + "," + posY);
 			
 			return 0;
 		}

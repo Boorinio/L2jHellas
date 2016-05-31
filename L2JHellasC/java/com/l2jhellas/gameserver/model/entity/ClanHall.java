@@ -21,10 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -181,7 +178,7 @@ public class ClanHall
 						ClanTable.getInstance().getClan(getOwnerId()).getWarehouse().destroyItemByItemId("CH_function_fee", 57, fee, null, null);
 						if (Config.DEBUG)
 						{
-							_log.log(Level.CONFIG, getClass().getName() + ": deducted " + fee + " adena from " + getName() + " owner's cwh for function id : " + getType());
+							_log.config(ClanHall.class.getName() + ": deducted " + fee + " adena from " + getName() + " owner's cwh for function id : " + getType());
 						}
 
 						ThreadPoolManager.getInstance().scheduleGeneral(new FunctionTask(), getRate());
@@ -227,11 +224,9 @@ public class ClanHall
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, getClass().getName() + ": Exception: ClanHall.updateFunctions(int type, int lvl, int lease, long rate, long time, boolean addNew): " + e.getMessage(), e);
+				_log.severe(ClanHall.class.getName() + ": ClanHall.updateFunctions(int type, int lvl, int lease, long rate, long time, boolean addNew)");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 	}
@@ -243,7 +238,7 @@ public class ClanHall
 		_ownerId = ownerId;
 		if (Config.DEBUG)
 		{
-			_log.log(Level.CONFIG, getClass().getSimpleName() + ": Init Owner : " + _ownerId);
+			_log.config(ClanHall.class.getSimpleName() + ": Init Owner : " + _ownerId);
 		}
 		_lease = lease;
 		_desc = desc;
@@ -486,11 +481,9 @@ public class ClanHall
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-			statement = con.prepareStatement("SELECT * FROM clanhall_functions WHERE hall_id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM clanhall_functions WHERE hall_id=?");
 			statement.setInt(1, getId());
-			rs = statement.executeQuery();
+			ResultSet rs = statement.executeQuery();
 			while (rs.next())
 			{
 				_functions.put(rs.getInt("type"), new ClanHallFunction(rs.getInt("type"), rs.getInt("lvl"), rs.getInt("lease"), 0, rs.getLong("rate"), rs.getLong("endTime")));
@@ -499,11 +492,9 @@ public class ClanHall
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Exception: ClanHall.loadFunctions(): " + e.getMessage(), e);
+			_log.severe(ClanHall.class.getName() + ": ClanHall.loadFunctions()");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -513,8 +504,7 @@ public class ClanHall
 		_functions.remove(functionType);
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			statement = con.prepareStatement("DELETE FROM clanhall_functions WHERE hall_id=? AND type=?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM clanhall_functions WHERE hall_id=? AND type=?");
 			statement.setInt(1, getId());
 			statement.setInt(2, functionType);
 			statement.execute();
@@ -522,11 +512,9 @@ public class ClanHall
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Exception: ClanHall.removeFunctions(int functionType): " + e.getMessage(), e);
+			_log.severe(ClanHall.class.getName() + ": Exception: ClanHall.removeFunctions(int functionType)");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -535,7 +523,7 @@ public class ClanHall
 	{
 		if (Config.DEBUG)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Called ClanHall.updateFunctions(int type, int lvl, int lease, long rate, boolean addNew) Owner : " + getOwnerId());
+			_log.warning(ClanHall.class.getName() + ": Called ClanHall.updateFunctions(int type, int lvl, int lease, long rate, boolean addNew) Owner : " + getOwnerId());
 		}
 
 		if (addNew)
@@ -555,7 +543,7 @@ public class ClanHall
 				int diffLease = lease - _functions.get(type).getLease();
 				if (Config.DEBUG)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Called ClanHall.updateFunctions diffLease : " + diffLease);
+					_log.warning(ClanHall.class.getName() + ": Called ClanHall.updateFunctions diffLease : " + diffLease);
 				}
 				if (diffLease > 0)
 				{
@@ -580,9 +568,7 @@ public class ClanHall
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-
-			statement = con.prepareStatement("UPDATE clanhall SET ownerId=?, paidUntil=?, paid=? WHERE id=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE clanhall SET ownerId=?, paidUntil=?, paid=? WHERE id=?");
 			statement.setInt(1, _ownerId);
 			statement.setLong(2, _paidUntil);
 			statement.setInt(3, (_paid) ? 1 : 0);
@@ -592,11 +578,9 @@ public class ClanHall
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
+			_log.severe(ClanHall.class.getName() + ": Exception: updateOwnerInDB(L2Clan clan)");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -656,7 +640,7 @@ public class ClanHall
 					ClanTable.getInstance().getClan(getOwnerId()).getWarehouse().destroyItemByItemId("CH_rental_fee", 57, getLease(), null, null);
 					if (Config.DEBUG)
 					{
-						_log.warning("deducted " + getLease() + " adena from " + getName() + " owner's cwh for ClanHall _paidUntil" + _paidUntil);
+						_log.warning(ClanHall.class.getName() + ": deducted " + getLease() + " adena from " + getName() + " owner's cwh for ClanHall _paidUntil" + _paidUntil);
 					}
 					ThreadPoolManager.getInstance().scheduleGeneral(new FeeTask(), _paidUntil - System.currentTimeMillis());
 					_paid = true;
@@ -697,6 +681,9 @@ public class ClanHall
 			}
 			catch (Throwable t)
 			{
+				_log.severe(ClanHall.class.getName() + ": Exception: FeeTask RUN");
+				if (Config.DEVELOPER)
+					t.printStackTrace();
 			}
 		}
 	}

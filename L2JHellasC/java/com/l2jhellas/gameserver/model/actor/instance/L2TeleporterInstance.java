@@ -266,7 +266,7 @@ public final class L2TeleporterInstance extends L2NpcInstance
 		}
 		else
 		{
-			_log.warning("No teleport destination with id:" + val);
+			_log.warning(L2TeleporterInstance.class.getName() + ":No teleport destination with id:" + val);
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}

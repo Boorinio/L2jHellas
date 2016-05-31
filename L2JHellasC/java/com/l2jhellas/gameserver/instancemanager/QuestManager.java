@@ -18,10 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
@@ -78,7 +75,7 @@ public class QuestManager extends ScriptManager<Quest>
 	}
 	public final void report()
 	{
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _quests.size() + " quests.");
+		_log.info(QuestManager.class.getSimpleName() + ": Loaded: " + _quests.size() + " quests.");
 	}
 
 	public final Quest getQuest(String name)

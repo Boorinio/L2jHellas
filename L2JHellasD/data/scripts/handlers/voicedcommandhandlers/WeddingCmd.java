@@ -17,7 +17,7 @@ package handlers.voicedcommandhandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -204,13 +204,11 @@ public class WeddingCmd implements IVoicedCommandHandler
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not read friend data:" + e);
+			_log.warning(WeddingCmd.class.getName() + ": could not read friend data:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		
 		if (!FoundOnFriendList)
@@ -241,7 +239,7 @@ public class WeddingCmd implements IVoicedCommandHandler
 		if (activeChar.getPartnerId() == 0)
 		{
 			activeChar.sendMessage("Couldn't find your fiance in the Database - Inform a Gamemaster.");
-			_log.log(Level.WARNING, getClass().getName() + ": Married but couldn't find parter for " + activeChar.getName());
+			_log.warning(WeddingCmd.class.getName() + ": Married but couldn't find parter for " + activeChar.getName());
 			return false;
 		}
 		
@@ -401,7 +399,7 @@ public class WeddingCmd implements IVoicedCommandHandler
 			}
 			catch (Throwable e)
 			{
-				_log.log(Level.WARNING, getClass().getName(), e);
+				_log.warning(WeddingCmd.class.getName() + "error RUN");
 			}
 		}
 	}

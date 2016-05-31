@@ -21,10 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -119,11 +116,11 @@ public class DimensionalRiftManager
 											
 											L2NpcTemplate template = NpcData.getInstance().getTemplate(mobId);
 											if (template == null)
-												_log.log(Level.WARNING, "Template " + mobId + " not found!");
+												_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Template " + mobId + " not found!");
 											if (!_rooms.containsKey(type))
-												_log.log(Level.WARNING, "Type " + type + " not found!");
+												_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Type " + type + " not found!");
 											else if (!_rooms.get(type).containsKey(roomId))
-												_log.log(Level.WARNING, "Room " + roomId + " in Type " + type + " not found!");
+												_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Room " + roomId + " in Type " + type + " not found!");
 											
 											for (int i = 0; i < count; i++)
 											{
@@ -160,7 +157,9 @@ public class DimensionalRiftManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Error on loading dimensional rift spawns: " + e);
+			_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Error on loading dimensional rift spawns: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		
 		int typeSize = _rooms.keySet().size();
@@ -486,7 +485,7 @@ public class DimensionalRiftManager
 		showHtmlFile(player, "data/html/seven_signs/rift/Cheater.htm", npc);
 		if (!player.isGM())
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Player " + player.getName() + "(" + player.getObjectId() + ") was cheating in dimension rift area!");
+			_log.warning(DimensionalRiftManager.class.getName() + ": Player " + player.getName() + "(" + player.getObjectId() + ") was cheating in dimension rift area!");
 			Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " tried to cheat in dimensional rift.", Config.DEFAULT_PUNISH);
 		}
 	}

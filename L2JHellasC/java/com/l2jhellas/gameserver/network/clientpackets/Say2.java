@@ -118,7 +118,7 @@ public final class Say2 extends L2GameClientPacket
 		
 		if (_type < 0 || _type >= CHAT_NAMES.length)
 		{
-			_log.warning("Say2: Invalid type: " + _type);
+			_log.warning(Say2.class.getName() + ": Invalid type: " + _type);
 			return;
 		}
 
@@ -130,7 +130,7 @@ public final class Say2 extends L2GameClientPacket
 
 		if (_text.isEmpty())
 		{
-			_log.warning(activeChar.getName() + ": sending empty text. Possible packet hack.");
+			_log.warning(Say2.class.getName() + ": " + activeChar.getName() + ": sending empty text. Possible packet hack.");
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			activeChar.closeNetConnection();
 			return;
@@ -320,11 +320,9 @@ public final class Say2 extends L2GameClientPacket
 				}
 				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + " Could not check character for chat filter punishment data: " + e);
+					_log.warning(Say2.class.getName() + " Could not check character for chat filter punishment data: ");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 			activeChar.setPunishLevel(PunishLevel.JAIL, punishmentLength);

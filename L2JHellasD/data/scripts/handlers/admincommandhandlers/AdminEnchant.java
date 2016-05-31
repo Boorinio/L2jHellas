@@ -14,7 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -162,20 +161,16 @@ public class AdminEnchant implements IAdminCommandHandler
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{
-					if (Config.DEBUG)
-					{
-						_log.log(Level.WARNING, getClass().getName() + ": Set enchant error: " + e);
-					}
-
+					_log.warning(AdminEnchant.class.getName() + ": Set enchant error: ");
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 					activeChar.sendMessage("Please specify a new enchant value.");
 				}
 				catch (NumberFormatException e)
 				{
-					if (Config.DEBUG)
-					{
-						_log.log(Level.WARNING, getClass().getName() + ": Set enchant error: " + e);
-					}
-
+					_log.warning(AdminEnchant.class.getName() + ": Set enchant error: ");
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 					activeChar.sendMessage("Please specify a valid new enchant value.");
 				}
 			}

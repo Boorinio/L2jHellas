@@ -94,30 +94,30 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 			player.sendMessage("Transactions are disabled for your Access Level.");
 			return;
 		}
-		if(player.getActiveTradeList() != null)
+		if (player.getActiveTradeList() != null)
 		{
 			player.sendMessage("You can't deposit items when you are trading.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if(player.isDead() || player.isFakeDeath())
+		if (player.isDead() || player.isFakeDeath())
 		{
 			player.sendMessage("You can't deposit items while you are dead or fakedeath.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if(player.isCastingNow())
+		if (player.isCastingNow())
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if(player.getPrivateStoreType() != 0)
+		if (player.getPrivateStoreType() != 0)
 		{
 			player.sendMessage("You can't deposit items when you are trading.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
+
 		// Alt game - Karma punishment
 		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && (player.getKarma() > 0))
 			return;
@@ -143,7 +143,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 			L2ItemInstance item = player.checkItemManipulation(objectId, count, "deposit");
 			if (item == null)
 			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (validity check)");
+				_log.warning(SendWareHouseDepositList.class.getName() + ": Error depositing a warehouse object for char " + player.getName() + " (validity check)");
 				_items[i * 2 + 0] = 0;
 				_items[i * 2 + 1] = 0;
 				continue;
@@ -188,7 +188,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 			L2ItemInstance oldItem = player.getInventory().getItemByObjectId(objectId);
 			if (oldItem == null)
 			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (olditem == null)");
+				_log.warning(SendWareHouseDepositList.class.getName() + ": Error depositing a warehouse object for char " + player.getName() + " (olditem == null)");
 				continue;
 			}
 
@@ -200,7 +200,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 			L2ItemInstance newItem = player.getInventory().transferItem("Warehouse", objectId, count, warehouse, player, player.getLastFolkNPC());
 			if (newItem == null)
 			{
-				_log.warning("Error depositing a warehouse object for char " + player.getName() + " (newitem == null)");
+				_log.warning(SendWareHouseDepositList.class.getName() + ": Error depositing a warehouse object for char " + player.getName() + " (newitem == null)");
 				continue;
 			}
 

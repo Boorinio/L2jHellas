@@ -205,7 +205,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Extensions.Balancer.Balancer;
@@ -445,17 +444,6 @@ public class MasterHandler
 			(Config.MOD_ALLOW_WEDDING ? WeddingCmd.class : null),
 			(Config.ZODIAC_ENABLE ? ZodiacRegistrationCmd.class : null),
 		},
-		{
-			// Telnet Handlers
-		//	ChatsHandler.class,
-		//	DebugHandler.class,
-		//	HelpHandler.class,
-		//	PlayerHandler.class,
-		//	ReloadHandler.class,
-		//	ServerHandler.class,
-		//	StatusHandler.class,
-		//	ThreadHandler.class,
-		},
 	};//formatter:on
 	
 	/**
@@ -478,7 +466,7 @@ public class MasterHandler
 		
 		registerHandlerMethods.entrySet().stream().filter(e -> e.getValue() == null).forEach(e ->
 		{
-			_log.log(Level.WARNING, "Failed loading handlers of: " + e.getKey().getClass().getSimpleName() + " seems registerHandler function does not exist.");
+			_log.warning(MasterHandler.class.getName() + ": Failed loading handlers of: " + e.getKey().getClass().getSimpleName() + " seems registerHandler function does not exist.");
 		});
 		
 		for (Class<?> classes[] : _handlers)
@@ -503,7 +491,7 @@ public class MasterHandler
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.WARNING, "Failed loading handler: " + c.getSimpleName(), e);
+					_log.warning(MasterHandler.class.getName()+ ": " + "Failed loading handler: " + c.getSimpleName());
 					continue;
 				}
 			}
@@ -511,7 +499,7 @@ public class MasterHandler
 		
 		for (IHandler<?, ?> loadInstance : _loadInstances)
 		{
-			_log.log(Level.INFO, loadInstance.getClass().getSimpleName() + ": Loaded " + loadInstance.size() + " Handlers.");
+			_log.info(MasterHandler.class.getSimpleName()+ ":  Loaded " + loadInstance.size() + " Handlers.");
 		}
 	}
 }

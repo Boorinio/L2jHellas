@@ -26,7 +26,6 @@ import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
@@ -278,7 +277,7 @@ public final class GeoEngine extends GeoData
 						return false;
 					next_y += inc_y;
 					z += inc_z_directiony;
-					//_log.warning("1: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 1: next_x:"+next_x+" next_y"+next_y);
 					if (!nLOS(next_x, y, (int) z, 0, inc_y, inc_z_directiony, tz, false))
 						return false;
 				}
@@ -286,7 +285,7 @@ public final class GeoEngine extends GeoData
 				{
 					d += delta_A;
 					next_x += inc_x;
-					//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 2: next_x:"+next_x+" next_y"+next_y);
 					z += inc_z_directionx;
 					if (!nLOS(x, y, (int) z, inc_x, 0, inc_z_directionx, tz, false))
 						return false;
@@ -311,7 +310,7 @@ public final class GeoEngine extends GeoData
 						return false;
 					next_x += inc_x;
 					z += inc_z_directionx;
-					//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 3: next_x:"+next_x+" next_y"+next_y);
 					if (!nLOS(x, next_y, (int) z, inc_x, 0, inc_z_directionx, tz, false))
 						return false;
 				}
@@ -319,7 +318,7 @@ public final class GeoEngine extends GeoData
 				{
 					d += delta_A;
 					next_y += inc_y;
-					//_log.warning("4: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 4: next_x:"+next_x+" next_y"+next_y);
 					z += inc_z_directiony;
 					if (!nLOS(x, y, (int) z, 0, inc_y, inc_z_directiony, tz, false))
 						return false;
@@ -405,7 +404,7 @@ public final class GeoEngine extends GeoData
 						return false;
 					next_y += inc_y;
 					z += inc_z_directiony;
-					//_log.log(Level.WARNING, "1: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getSimpleName() + ": 1: next_x:"+next_x+" next_y"+next_y);
 					if (!nLOS(next_x, y, (int) z, 0, inc_y, inc_z_directiony, tz, true))
 						return false;
 				}
@@ -413,7 +412,7 @@ public final class GeoEngine extends GeoData
 				{
 					d += delta_A;
 					next_x += inc_x;
-					//_log.log(Level.WARNING, "2: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getSimpleName() + ": 2: next_x:"+next_x+" next_y"+next_y);
 					z += inc_z_directionx;
 					if (!nLOS(x, y, (int) z, inc_x, 0, inc_z_directionx, tz, true))
 						return false;
@@ -438,7 +437,7 @@ public final class GeoEngine extends GeoData
 						return false;
 					next_x += inc_x;
 					z += inc_z_directionx;
-					//_log.log(Level.WARNING, "3: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getSimpleName() + ": 3: next_x:"+next_x+" next_y"+next_y);
 					if (!nLOS(x, next_y, (int) z, inc_x, 0, inc_z_directionx, tz, true))
 						return false;
 				}
@@ -446,7 +445,7 @@ public final class GeoEngine extends GeoData
 				{
 					d += delta_A;
 					next_y += inc_y;
-					//_log.log(Level.WARNING, "4: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getSimpleName() + ": 4: next_x:"+next_x+" next_y"+next_y);
 					z += inc_z_directiony;
 					if (!nLOS(x, y, (int) z, 0, inc_y, inc_z_directiony, tz, true))
 						return false;
@@ -518,7 +517,7 @@ public final class GeoEngine extends GeoData
 						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 					next_y += inc_y;
-					//_log.warning("2: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 2: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(next_x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
 						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
@@ -528,7 +527,7 @@ public final class GeoEngine extends GeoData
 				{
 					d += delta_A;
 					next_x += inc_x;
-					//_log.warning("3: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 3: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
 						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
@@ -554,7 +553,7 @@ public final class GeoEngine extends GeoData
 						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
 					z = tempz;
 					next_x += inc_x;
-					//_log.warning("5: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 5: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(x, next_y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
 						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
@@ -564,7 +563,7 @@ public final class GeoEngine extends GeoData
 				{
 					d += delta_A;
 					next_y += inc_y;
-					//_log.warning("6: next_x:"+next_x+" next_y"+next_y);
+					//_log.warning(GeoEngine.class.getName() + ": 6: next_x:"+next_x+" next_y"+next_y);
 					tempz = nCanMoveNext(x, y, (int) z, next_x, next_y, tz);
 					if (tempz == Double.MIN_VALUE)
 						return new Location((x << 4) + L2World.WORLD_X_MIN, (y << 4) + L2World.WORLD_Y_MIN, (int) z);
@@ -587,7 +586,7 @@ public final class GeoEngine extends GeoData
 	//GeoEngine
 	private void nInitGeodata()
 	{
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Geodata...");
+		_log.info(GeoEngine.class.getSimpleName() + ": Loading Geodata...");
 		File Data = new File(PackRoot.DATAPACK_ROOT, "data/geodata/geo_index.txt");
 		if (!Data.exists())
 			return;
@@ -615,15 +614,12 @@ public final class GeoEngine extends GeoData
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": failed loading geo files " + e);
+			_log.warning(GeoEngine.class.getName() + ": failed loading geo files ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		finally
 		{
-
 			if (lnr != null)
 				try
 				{
@@ -631,7 +627,8 @@ public final class GeoEngine extends GeoData
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 				}
 
 			if (reader != null)
@@ -641,7 +638,8 @@ public final class GeoEngine extends GeoData
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 				}
 		}
 
@@ -654,11 +652,9 @@ public final class GeoEngine extends GeoData
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": failed write geo_bugs.txt " + e);
+			_log.warning(GeoEngine.class.getName() + ": failed write geo_bugs.txt ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -723,11 +719,11 @@ public final class GeoEngine extends GeoData
 			_geodata.set(regionoffset, geo);
 
 			output = true;
-			_log.log(Level.INFO, "GeoEngine: Max Layers: " + flor + " Size: " + size + " Loaded: " + index);
+			_log.info(GeoEngine.class.getName() + "GeoEngine: Max Layers: " + flor + " Size: " + size + " Loaded: " + index);
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Failed to Load GeoFile at block: " + block + "\n");
+			_log.warning(GeoEngine.class.getSimpleName() + ": Failed to Load GeoFile at block: " + block + "\n");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -814,7 +810,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return 0;
 		}
 		return geo.get(index);
@@ -843,7 +839,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return (short) z;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -879,7 +875,7 @@ public final class GeoEngine extends GeoData
 			if (layers <= 0 || layers > 125)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "Broken geofile (case1), region: " + region + " - invalid layer count: " + layers + " at: " + geox + " " + geoy);
+					_log.config(GeoEngine.class.getName() + "Broken geofile (case1), region: " + region + " - invalid layer count: " + layers + " at: " + geox + " " + geoy);
 				return (short) z;
 			}
 			short temph = Short.MIN_VALUE;
@@ -920,7 +916,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return (short) z;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -956,7 +952,7 @@ public final class GeoEngine extends GeoData
 			if (layers <= 0 || layers > 125)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "Broken geofile (case1), region: " + region + " - invalid layer count: " + layers + " at: " + geox + " " + geoy);
+					_log.config(GeoEngine.class.getName() + "Broken geofile (case1), region: " + region + " - invalid layer count: " + layers + " at: " + geox + " " + geoy);
 				return (short) z;
 			}
 			short temph = Short.MAX_VALUE;
@@ -1001,7 +997,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return (short) zmin;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -1038,7 +1034,7 @@ public final class GeoEngine extends GeoData
 			if (layers <= 0 || layers > 125)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "Broken geofile (case2), region: " + region + " - invalid layer count: " + layers + " at: " + geox + " " + geoy);
+					_log.config(GeoEngine.class.getName() + "Broken geofile (case2), region: " + region + " - invalid layer count: " + layers + " at: " + geox + " " + geoy);
 				return (short) zmin;
 			}
 			while (layers > 0)
@@ -1054,14 +1050,14 @@ public final class GeoEngine extends GeoData
 			if (temph > zmax + 200 || temph < zmin - 200)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "SpawnHeight Error - Couldnt find correct layer to spawn NPC - GeoData or Spawnlist Bug!: zmin: " + zmin + " zmax: " + zmax + " value: " + temph + " SpawnId: " + spawnid + " at: " + geox + " : " + geoy);
+					_log.config(GeoEngine.class.getName() + "SpawnHeight Error - Couldnt find correct layer to spawn NPC - GeoData or Spawnlist Bug!: zmin: " + zmin + " zmax: " + zmax + " value: " + temph + " SpawnId: " + spawnid + " at: " + geox + " : " + geoy);
 				return (short) zmin;
 			}
 		}
 		if (temph > zmax + 1000 || temph < zmin - 1000)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "SpawnHeight Error - Spawnlist z value is wrong or GeoData error: zmin: " + zmin + " zmax: " + zmax + " value: " + temph + " SpawnId: " + spawnid + " at: " + geox + " : " + geoy);
+				_log.config(GeoEngine.class.getName() + "SpawnHeight Error - Spawnlist z value is wrong or GeoData error: zmin: " + zmin + " zmax: " + zmax + " value: " + temph + " SpawnId: " + spawnid + " at: " + geox + " : " + geoy);
 			return (short) zmin;
 		}
 		return temph;
@@ -1096,7 +1092,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return z;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -1130,13 +1126,13 @@ public final class GeoEngine extends GeoData
 				offset--;
 			}
 			byte layers = geo.get(index);
-			//_log.log(Level.WARNING, "layers"+layers);
+			//_log.warning(GeoEngine.class.getSimpleName() + ": layers"+layers);
 			index++;
 			short height = -1;
 			if (layers <= 0 || layers > 125)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "Broken geofile (case3), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
+					_log.config(GeoEngine.class.getName() + "Broken geofile (case3), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
 				return z;
 			}
 			short tempz = Short.MIN_VALUE;
@@ -1194,7 +1190,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return true;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -1204,7 +1200,7 @@ public final class GeoEngine extends GeoData
 		{
 			short height = geo.getShort(index);
 			if (debug)
-				_log.log(Level.CONFIG, "flatheight:" + height);
+				_log.config(GeoEngine.class.getName() + "flatheight:" + height);
 			if (z > height)
 				return inc_z > height;
 			return inc_z < height;
@@ -1221,7 +1217,7 @@ public final class GeoEngine extends GeoData
 			if (!checkNSWE(NSWE, x, y, x + inc_x, y + inc_y))
 			{
 				if (debug)
-					_log.log(Level.CONFIG, "height:" + height + " z" + z);
+					_log.config(GeoEngine.class.getName() + "height:" + height + " z" + z);
 
 				return z >= nGetUpperHeight(x + inc_x, y + inc_y, height);
 			}
@@ -1247,7 +1243,7 @@ public final class GeoEngine extends GeoData
 			if (layers <= 0 || layers > 125)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "Broken geofile (case4), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
+					_log.config(GeoEngine.class.getName() + "Broken geofile (case4), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
 				return false;
 			}
 			short upperHeight = Short.MAX_VALUE; // big positive value
@@ -1275,14 +1271,14 @@ public final class GeoEngine extends GeoData
 				index += 2;
 			}
 			if (debug)
-				_log.log(Level.CONFIG, "z:" + z + " x: " + cellX + " y:" + cellY + " la " + layers + " lo:" + lowerHeight + " up:" + upperHeight);
+				_log.config(GeoEngine.class.getName() + "z:" + z + " x: " + cellX + " y:" + cellY + " la " + layers + " lo:" + lowerHeight + " up:" + upperHeight);
 			// Check if LOS goes under a layer/floor
 			// clearly under layer but not too much under
 			// lowerheight here only for geodata bug checking, layers very close? maybe could be removed
 			if ((z - upperHeight) < -10 && (z - upperHeight) > inc_z - 10 && (z - lowerHeight) > 40)
 			{
 				if (debug)
-					_log.log(Level.CONFIG, "false, incz" + inc_z);
+					_log.config(GeoEngine.class.getName() + "false, incz" + inc_z);
 				return false;
 			}
 
@@ -1293,7 +1289,7 @@ public final class GeoEngine extends GeoData
 				if (!checkNSWE(NSWE, x, y, x + inc_x, y + inc_y)) // cannot move
 				{
 					if (debug)
-						_log.log(Level.CONFIG, "block and next in x" + inc_x + " y" + inc_y + " is:" + nGetUpperHeight(x + inc_x, y + inc_y, lowerHeight));
+						_log.config(GeoEngine.class.getName() + "block and next in x" + inc_x + " y" + inc_y + " is:" + nGetUpperHeight(x + inc_x, y + inc_y, lowerHeight));
 					// check one inc_x inc_y further, for the height there
 					return z >= nGetUpperHeight(x + inc_x, y + inc_y, lowerHeight);
 				}
@@ -1334,7 +1330,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return 15;
 		}
 		//Read current block type: 0-flat,1-complex,2-multilevel
@@ -1368,7 +1364,7 @@ public final class GeoEngine extends GeoData
 			if (layers <= 0 || layers > 125)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "Broken geofile (case5), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
+					_log.config(GeoEngine.class.getName() + "Broken geofile (case5), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
 				return 15;
 			}
 			short tempz = Short.MIN_VALUE;
@@ -1431,7 +1427,7 @@ public final class GeoEngine extends GeoData
 		if (geo == null)
 		{
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, "Geo Region - Region Offset: " + region + " dosnt exist!!");
+				_log.config(GeoEngine.class.getName() + "Geo Region - Region Offset: " + region + " dosnt exist!!");
 			return null;
 		}
 
@@ -1519,7 +1515,7 @@ public final class GeoEngine extends GeoData
 			if (layers <= 0 || layers > 125)
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, "Broken geofile (case5), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
+					_log.config(GeoEngine.class.getName() + "Broken geofile (case5), region: " + region + " - invalid layer count: " + layers + " at: " + x + " " + y);
 				return null;
 			}
 			short tempz = Short.MIN_VALUE;

@@ -19,7 +19,6 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -91,7 +90,9 @@ abstract class AbstractAI implements Ctrl
 			}
 			catch (Throwable t)
 			{
-				_log.warning("" + t);
+				_log.warning(AbstractAI.class.getName() + ": ");
+				if (Config.DEVELOPER)
+					t.printStackTrace();
 			}
 		}
 	}
@@ -221,7 +222,7 @@ abstract class AbstractAI implements Ctrl
 	{
 
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": changeIntention -> " + intention + " " + arg0 + " " + arg1);
+			_log.config(AbstractAI.class.getName() + ": changeIntention -> " + intention + " " + arg0 + " " + arg1);
 
 		_intention = intention;
 		_intentionArg0 = arg0;
@@ -280,7 +281,7 @@ abstract class AbstractAI implements Ctrl
 			return;
 
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": setIntention -> " + intention + " " + arg0 + " " + arg1);
+			_log.config(AbstractAI.class.getName() + ": setIntention -> " + intention + " " + arg0 + " " + arg1);
 
 		// Stop the follow mode if necessary
 		if (intention != AI_INTENTION_FOLLOW && intention != AI_INTENTION_ATTACK)
@@ -371,14 +372,14 @@ abstract class AbstractAI implements Ctrl
 	 *        The second parameter of the Event (optional target)
 	 */
 	@Override
-	@SuppressWarnings("incomplete-switch")
+	
 	public final void notifyEvent(CtrlEvent evt, Object arg0, Object arg1)
 	{
 		if (!_actor.isVisible() || !_actor.hasAI())
 			return;
 
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": notifyEvent -> " + evt + " " + arg0 + " " + arg1);
+			_log.config(AbstractAI.class.getName() + ": notifyEvent -> " + evt + " " + arg0 + " " + arg1);
 
 		switch (evt)
 		{
@@ -436,6 +437,9 @@ abstract class AbstractAI implements Ctrl
 			case EVT_FINISH_CASTING:
 				onEvtFinishCasting();
 			break;
+			default:
+				onEvtThink();
+				break;
 		}
 	}
 
@@ -646,7 +650,7 @@ abstract class AbstractAI implements Ctrl
 	protected void clientStopMoving(L2CharPosition pos)
 	{
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": clientStopMoving();");
+			_log.config(AbstractAI.class.getName() + ": clientStopMoving();");
 
 		// Stop movement of the L2Character
 		if (_actor.isMoving())

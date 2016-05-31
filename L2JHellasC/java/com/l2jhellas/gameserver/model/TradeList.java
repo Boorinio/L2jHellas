@@ -313,14 +313,14 @@ public class TradeList
 	{
 		if (isLocked())
 		{
-			_log.warning(_owner.getName() + ": Attempt to modify locked TradeList!");
+			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to modify locked TradeList!");
 			return null;
 		}
 		L2Object o = L2World.getInstance().findObject(objectId);
 
 		if (o == null || !(o instanceof L2ItemInstance))
 		{
-			_log.warning(_owner.getName() + ": Attempt to add invalid item to TradeList!");
+			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to add invalid item to TradeList!");
 			return null;
 		}
 
@@ -334,7 +334,7 @@ public class TradeList
 
 		if (!item.isStackable() && count > 1)
 		{
-			_log.warning(_owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
+			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
 			return null;
 		}
 		for (TradeItem checkitem : _items)
@@ -365,14 +365,14 @@ public class TradeList
 	{
 		if (isLocked())
 		{
-			_log.warning(_owner.getName() + ": Attempt to modify locked TradeList!");
+			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to modify locked TradeList!");
 			return null;
 		}
 
 		L2Item item = ItemTable.getInstance().getTemplate(itemId);
 		if (item == null)
 		{
-			_log.warning(_owner.getName() + ": Attempt to add invalid item to TradeList!");
+			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to add invalid item to TradeList!");
 			return null;
 		}
 
@@ -381,7 +381,7 @@ public class TradeList
 
 		if (!item.isStackable() && count > 1)
 		{
-			_log.warning(_owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
+			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
 			return null;
 		}
 
@@ -406,7 +406,7 @@ public class TradeList
 	{
 		if (isLocked())
 		{
-			_log.warning(_owner.getName() + ": Attempt to modify locked TradeList!");
+			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to modify locked TradeList!");
 			return null;
 		}
 
@@ -419,7 +419,7 @@ public class TradeList
 					TradeList partnerList = _partner.getActiveTradeList();
 					if (partnerList == null)
 					{
-						_log.warning(_partner.getName() + ": Trading partner (" + _partner.getName() + ") is invalid in this trade!");
+						_log.warning(TradeList.class.getName() + ": " + _partner.getName() + ": Trading partner (" + _partner.getName() + ") is invalid in this trade!");
 						return null;
 					}
 					partnerList.invalidateConfirmation();
@@ -484,7 +484,7 @@ public class TradeList
 			TradeList partnerList = _partner.getActiveTradeList();
 			if (partnerList == null)
 			{
-				_log.warning(_partner.getName() + ": Trading partner (" + _partner.getName() + ") is invalid in this trade!");
+				_log.warning(TradeList.class.getName() + ": " + _partner.getName() + ": Trading partner (" + _partner.getName() + ") is invalid in this trade!");
 				return false;
 			}
 
@@ -544,7 +544,7 @@ public class TradeList
 		// Check for Owner validity
 		if (_owner == null || L2World.getInstance().findObject(_owner.getObjectId()) == null)
 		{
-			_log.warning("Invalid owner of TradeList");
+			_log.warning(TradeList.class.getName() + ": Invalid owner of TradeList");
 			return false;
 		}
 
@@ -554,7 +554,7 @@ public class TradeList
 			L2ItemInstance item = _owner.checkItemManipulation(titem.getObjectId(), titem.getCount(), "transfer");
 			if (item == null || titem.getCount() < 1)
 			{
-				_log.warning(_owner.getName() + ": Invalid Item in TradeList");
+				_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Invalid Item in TradeList");
 				return false;
 			}
 		}

@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver;
 
 import java.lang.reflect.Constructor;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -75,9 +76,9 @@ public class MonsterRace
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
-			//System.out.println("Monster "+i+" is id: "+(id+random));
 		}
 		newSpeeds();
 	}

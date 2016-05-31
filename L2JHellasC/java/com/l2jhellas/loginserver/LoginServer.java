@@ -25,7 +25,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -90,7 +89,7 @@ public class LoginServer
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed reading log file. Reason: " + e);
+			_log.warning(LoginServer.class.getName() + " Failed reading log file. Reason: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -131,7 +130,7 @@ public class LoginServer
 		}
 		catch (GeneralSecurityException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed initializing LoginController. Reason: " + e);
+			_log.warning(LoginServer.class.getName() + " Failed initializing LoginController. Reason: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -146,7 +145,7 @@ public class LoginServer
 		}
 		catch (GeneralSecurityException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed to load GameServerTable. Reason: " + e);
+			_log.warning(LoginServer.class.getName() + " Failed to load GameServerTable. Reason: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -155,7 +154,7 @@ public class LoginServer
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed to load GameServerTable. Reason: " + e);
+			_log.warning(LoginServer.class.getName() + " Failed to load GameServerTable. Reason: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -175,7 +174,7 @@ public class LoginServer
 			}
 			catch (UnknownHostException e1)
 			{
-				_log.log(Level.WARNING, getClass().getName() + " The LoginServer bind address is invalid, using all avaliable IPs. Reason: " + e1);
+				_log.warning(LoginServer.class.getName() + " The LoginServer bind address is invalid, using all avaliable IPs. Reason: " + e1);
 				if (Config.DEVELOPER)
 				{
 					e1.printStackTrace();
@@ -197,7 +196,7 @@ public class LoginServer
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed to open Selector. Reason: " + e);
+			_log.warning(LoginServer.class.getName() + " Failed to open Selector. Reason: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -213,7 +212,7 @@ public class LoginServer
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed to start the Game Server Listener. Reason: " + e);
+			_log.warning(LoginServer.class.getName() + " Failed to start the Game Server Listener. Reason: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -227,7 +226,7 @@ public class LoginServer
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed to open server socket. Reason: " + e);
+			_log.warning(LoginServer.class.getName() + " Failed to open server socket. Reason: " + e);
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -235,7 +234,7 @@ public class LoginServer
 			System.exit(1);
 		}
 		_selectorThread.start();
-		_log.log(Level.INFO, getClass().getSimpleName() + " Login Server ready on " + (bindAddress == null ? "*" : bindAddress.getHostAddress()) + ":" + Config.PORT_LOGIN);
+		_log.info(LoginServer.class.getSimpleName() + " Login Server ready on " + (bindAddress == null ? "*" : bindAddress.getHostAddress()) + ":" + Config.PORT_LOGIN);
 	}
 
 	public GameServerListener getGameServerListener()
@@ -255,7 +254,7 @@ public class LoginServer
 			}
 			catch (FileNotFoundException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + " Failed to load bannedIPs file (" + bannedFile.getName() + ") for reading. Reason: " + e);
+				_log.warning(LoginServer.class.getName() + " Failed to load bannedIPs file (" + bannedFile.getName() + ") for reading. Reason: " + e);
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
@@ -292,7 +291,7 @@ public class LoginServer
 							}
 							catch (NumberFormatException e)
 							{
-								_log.log(Level.WARNING, getClass().getName() + " Incorrect ban duration (" + parts[1] + ") on (" + bannedFile.getName() + "). Line: " + reader.getLineNumber());
+								_log.warning(LoginServer.class.getName() + " Incorrect ban duration (" + parts[1] + ") on (" + bannedFile.getName() + "). Line: " + reader.getLineNumber());
 								continue;
 							}
 						}
@@ -303,28 +302,28 @@ public class LoginServer
 						}
 						catch (UnknownHostException e)
 						{
-							_log.log(Level.WARNING, getClass().getName() + " Invalid address (" + parts[0] + ") on (" + bannedFile.getName() + "). Line: " + reader.getLineNumber());
+							_log.warning(LoginServer.class.getName() + " Invalid address (" + parts[0] + ") on (" + bannedFile.getName() + "). Line: " + reader.getLineNumber());
 						}
 					}
 				}
 			}
 			catch (IOException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + " Error while reading the bannedIPs file (" + bannedFile.getName() + "). Details: " + e);
+				_log.warning(LoginServer.class.getName() + " Error while reading the bannedIPs file (" + bannedFile.getName() + "). Details: " + e);
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
 				}
 			}
-			_log.log(Level.INFO, getClass().getSimpleName() + " Loaded " + LoginController.getInstance().getBannedIps().size() + " IP Bans.");
+			_log.info(LoginServer.class.getSimpleName() + " Loaded " + LoginController.getInstance().getBannedIps().size() + " IP Bans.");
 		}
 		else
 		{
-			_log.log(Level.WARNING, getClass().getSimpleName() + " IP Bans file (" + bannedFile.getName() + ") is missing or is a directory, skipped.");
+			_log.warning(LoginServer.class.getSimpleName() + " IP Bans file (" + bannedFile.getName() + ") is missing or is a directory, skipped.");
 		}
 		if (Config.LOGIN_SERVER_SCHEDULE_RESTART)
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + " Scheduled restart after " + Config.LOGIN_SERVER_SCHEDULE_RESTART_TIME + " hours.");
+			_log.info(LoginServer.class.getSimpleName() + " Scheduled restart after " + Config.LOGIN_SERVER_SCHEDULE_RESTART_TIME + " hours.");
 			_restartLoginServer = new LoginServerRestart();
 			_restartLoginServer.setDaemon(true);
 			_restartLoginServer.start();

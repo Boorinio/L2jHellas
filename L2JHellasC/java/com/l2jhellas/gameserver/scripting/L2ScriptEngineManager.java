@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.script.Compilable;
@@ -36,6 +35,7 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
+
 import com.l2jhellas.Config;
 
 
@@ -124,7 +124,7 @@ public final class L2ScriptEngineManager
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Failed initializing factory: " + e.getMessage(), e);
+				_log.warning(L2ScriptEngineManager.class.getSimpleName() + ": Failed initializing factory: " + e.getMessage());
 			}
 		}
 	}
@@ -191,7 +191,7 @@ public final class L2ScriptEngineManager
 						}
 						else
 						{
-							_log.warning("Failed loading: (" + file.getCanonicalPath() + ") @ " + list.getName() + ":" + lnr.getLineNumber() + " - Reason: doesnt exists or is not a file.");
+							_log.warning(L2ScriptEngineManager.class.getName() + ": Failed loading: (" + file.getCanonicalPath() + ") @ " + list.getName() + ":" + lnr.getLineNumber() + " - Reason: doesnt exists or is not a file.");
 						}
 					}
 				}
@@ -359,7 +359,7 @@ public final class L2ScriptEngineManager
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, "Error executing script!", e);
+			_log.warning(L2ScriptEngineManager.class.getSimpleName() + ": Error executing script!");
 		}
 	}
 	
@@ -433,17 +433,17 @@ public final class L2ScriptEngineManager
 				String errorHeader = "Error on: " + file.getCanonicalPath() + "\r\nLine: " + e.getLineNumber() + " - Column: " + e.getColumnNumber() + "\r\n\r\n";
 				fos.write(errorHeader.getBytes());
 				fos.write(e.getMessage().getBytes());
-				_log.warning("Failed executing script: " + script.getAbsolutePath() + ". See " + file.getName() + " for details.");
+				_log.warning(L2ScriptEngineManager.class.getSimpleName() + ": Failed executing script: " + script.getAbsolutePath() + ". See " + file.getName() + " for details.");
 			}
 			catch (IOException ioe)
 			{
-				_log.warning("Failed executing script: " + script.getAbsolutePath() + "\r\n" + e.getMessage() + "Additionally failed when trying to write an error report on script directory. Reason: " + ioe.getMessage());
+				_log.warning(L2ScriptEngineManager.class.getSimpleName() + ": Failed executing script: " + script.getAbsolutePath() + "\r\n" + e.getMessage() + "Additionally failed when trying to write an error report on script directory. Reason: " + ioe.getMessage());
 				ioe.printStackTrace();
 			}
 		}
 		else
 		{
-			_log.warning("Failed executing script: " + script.getAbsolutePath() + "\r\n" + e.getMessage() + "Additionally failed when trying to write an error report on script directory.");
+			_log.warning(L2ScriptEngineManager.class.getSimpleName() + ": Failed executing script: " + script.getAbsolutePath() + "\r\n" + e.getMessage() + "Additionally failed when trying to write an error report on script directory.");
 		}
 	}
 

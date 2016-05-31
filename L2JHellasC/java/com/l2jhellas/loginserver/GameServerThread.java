@@ -118,7 +118,7 @@ public class GameServerThread extends Thread
 
 				if (receivedBytes != length - 2)
 				{
-					_log.warning("Incomplete Packet is sent to the server, closing connection.(LS)");
+					_log.warning(GameServerThread.class.getName() + ": Incomplete Packet is sent to the server, closing connection.(LS)");
 					break;
 				}
 
@@ -127,13 +127,13 @@ public class GameServerThread extends Thread
 				checksumOk = NewCrypt.verifyChecksum(data);
 				if (!checksumOk)
 				{
-					_log.warning("Incorrect packet checksum, closing connection (LS)");
+					_log.warning(GameServerThread.class.getName() + ": Incorrect packet checksum, closing connection (LS)");
 					return;
 				}
 
 				if (Config.DEBUG)
 				{
-					_log.warning("[C]\n" + Util.printData(data, newBytes));
+					_log.warning(GameServerThread.class.getName() + ": [C]\n" + Util.printData(data, newBytes));
 				}
 
 				int packetType = data[0] & 0xff;
@@ -161,7 +161,7 @@ public class GameServerThread extends Thread
 						onReceiveServerStatus(data);
 					break;
 					default:
-						_log.warning("Unknown Opcode (" + Integer.toHexString(packetType).toUpperCase() + ") from GameServer, closing connection.");
+						_log.warning(GameServerThread.class.getName() + ": Unknown Opcode (" + Integer.toHexString(packetType).toUpperCase() + ") from GameServer, closing connection.");
 						forceClose(LoginServerFail.NOT_AUTHED);
 				}
 
@@ -202,7 +202,7 @@ public class GameServerThread extends Thread
 		 * }
 		 * else
 		 * {
-		 * _log.warning("GameServer attempted to re-initialize the blowfish key.");
+		 * _log.warning(GameServerThread.class.getName() + ": GameServer attempted to re-initialize the blowfish key.");
 		 * // TODO get a better reason
 		 * this.forceClose(LoginServerFail.NOT_AUTHED);
 		 * }
@@ -649,7 +649,7 @@ public class GameServerThread extends Thread
 			}
 			catch (UnknownHostException e)
 			{
-				_log.warning("Couldn't resolve hostname \"" + gameExternalHost + "\"");
+				_log.warning(GameServerThread.class.getName() + ": Couldn't resolve hostname \"" + gameExternalHost + "\"");
 			}
 		}
 		else
@@ -664,7 +664,7 @@ public class GameServerThread extends Thread
 			}
 			catch (UnknownHostException e)
 			{
-				_log.warning("Couldn't resolve hostname \"" + gameInternalHost + "\"");
+				_log.warning(GameServerThread.class.getName() + ": Couldn't resolve hostname \"" + gameInternalHost + "\"");
 			}
 		}
 		else

@@ -16,7 +16,9 @@ package handlers.chathandlers;
 
 import java.util.Collection;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.handler.VoicedCommandHandler;
@@ -29,6 +31,7 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
  */
 public class ChatAll implements IChatHandler
 {
+	private static final Logger _log = Logger.getLogger(ChatAll.class.getName());
 	private static final int[] COMMAND_IDS =
 	{
 		0
@@ -54,14 +57,10 @@ public class ChatAll implements IChatHandler
 				command = text.substring(1);
 				vch = VoicedCommandHandler.getInstance().getHandler(command);
 			}
-			if (vch != null)
-			{
-				vch.useVoicedCommand(command, activeChar, target);
-			}
-			else
-			{
-				//_log.warning("No handler registered for bypass '" + command + "'");
-			}
+			if (vch == null && Config.DEBUG)
+				_log.warning(ChatAll.class.getName() + ": No handler registered for bypass '" + command + "'");
+				
+			vch.useVoicedCommand(command, activeChar, target);
 		}
 		else
 		{

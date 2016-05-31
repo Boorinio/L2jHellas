@@ -16,15 +16,14 @@ package com.l2jhellas.gameserver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 
 public class Restart
 {
-	private static Restart _bitching = null;
 	protected static final Logger _log = Logger.getLogger(Restart.class.getName());
+	private static Restart _bitching = null;
 	private Calendar NextRestart;
 	private final SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 
@@ -42,14 +41,9 @@ public class Restart
 		return "Something went wrong";
 	}
 
-	private Restart()
-	{
-
-	}
-
 	public void StartCalculationOfNextRestartTime()
 	{
-		_log.log(Level.INFO, "[Restart System]: System actived");
+		_log.info(Restart.class.getName() + "[Restart System]: System actived");
 		try
 		{
 			Calendar currentTime = Calendar.getInstance();
@@ -81,12 +75,12 @@ public class Restart
 				}
 				count++;
 			}
-			_log.log(Level.CONFIG, "[Restart System]: Next Restart Time: " + NextRestart.getTime().toString());
+			_log.info(Restart.class.getName() + "[Restart System]: Next Restart Time: " + NextRestart.getTime().toString());
 			ThreadPoolManager.getInstance().scheduleGeneral(new StartRestartTask(), flush2);
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": [Restart System]: The automatic restart system presented error while loading the configs.");
+			_log.warning(Restart.class.getName() + ": [Restart System]: The automatic restart system presented error while loading the configs.");
 		}
 	}
 
@@ -95,7 +89,7 @@ public class Restart
 		@Override
 		public void run()
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Start automated restart GameServer.");
+			_log.info(Restart.class.getSimpleName() + ": Start automated restart GameServer.");
 			Shutdown.getInstance().autoRestart(Config.RESTART_SECONDS);
 		}
 	}

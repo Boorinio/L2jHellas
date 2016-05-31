@@ -32,7 +32,7 @@ public class eventKills extends Condition
 		if (getValue() == null)
 			return false;
 
-		@SuppressWarnings("unused")
+		@SuppressWarnings("unused")	
 		int val = Integer.parseInt(getValue().toString());
 
 		// if (EventStats.getInstance().getEventKills(player.getObjectId()) >= val)

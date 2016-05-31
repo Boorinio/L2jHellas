@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
@@ -109,7 +108,7 @@ public class ZoneManager
 			final File mainDir = new File("./data/xml/zones");
 			if (!mainDir.isDirectory())
 			{
-				_log.log(Level.SEVERE, "ZoneManager: Main dir " + mainDir.getAbsolutePath() + " hasn't been found.");
+				_log.severe(ZoneManager.class.getName() + ": Main dir " + mainDir.getAbsolutePath() + " hasn't been found.");
 				return;
 			}
 			
@@ -126,7 +125,9 @@ public class ZoneManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error while loading zones.", e);
+			_log.severe(ZoneManager.class.getName() + ": Error while loading zones.");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			return;
 		}
 		
@@ -172,7 +173,7 @@ public class ZoneManager
 						}
 						catch (ClassNotFoundException e)
 						{
-							_log.warning("ZoneData: No such zone type: " + zoneType + " in file: " + f.getName());
+							_log.warning(ZoneManager.class.getName() + ": No such zone type: " + zoneType + " in file: " + f.getName());
 							continue;
 						}
 						
@@ -201,7 +202,7 @@ public class ZoneManager
 							
 							if (coords == null || coords.length == 0)
 							{
-								_log.warning("ZoneData: missing data for zone: " + zoneId + " on file: " + f.getName());
+								_log.warning(ZoneManager.class.getName() + ": missing data for zone: " + zoneId + " on file: " + f.getName());
 								continue;
 							}
 							
@@ -216,7 +217,7 @@ public class ZoneManager
 									temp.setZone(new ZoneCuboid(coords[0][0], coords[1][0], coords[0][1], coords[1][1], minZ, maxZ));
 								else
 								{
-									_log.warning("ZoneData: Missing cuboid vertex in sql data for zone: " + zoneId + " in file: " + f.getName());
+									_log.warning(ZoneManager.class.getName() + ": Missing cuboid vertex in sql data for zone: " + zoneId + " in file: " + f.getName());
 									continue;
 								}
 							}
@@ -236,7 +237,7 @@ public class ZoneManager
 								}
 								else
 								{
-									_log.warning("ZoneData: Bad data for zone: " + zoneId + " in file: " + f.getName());
+									_log.warning(ZoneManager.class.getName() + ": Bad data for zone: " + zoneId + " in file: " + f.getName());
 									continue;
 								}
 							}
@@ -250,19 +251,19 @@ public class ZoneManager
 									temp.setZone(new ZoneCylinder(coords[0][0], coords[0][1], minZ, maxZ, zoneRad));
 								else
 								{
-									_log.warning("ZoneData: Bad data for zone: " + zoneId + " in file: " + f.getName());
+									_log.warning(ZoneManager.class.getName() + ": Bad data for zone: " + zoneId + " in file: " + f.getName());
 									continue;
 								}
 							}
 							else
 							{
-								_log.warning("ZoneData: Unknown shape: " + zoneShape + " in file: " + f.getName());
+								_log.warning(ZoneManager.class.getName() + ": Unknown shape: " + zoneShape + " in file: " + f.getName());
 								continue;
 							}
 						}
 						catch (Exception e)
 						{
-							_log.log(Level.WARNING, "ZoneData: Failed to load zone " + zoneId + " coordinates: " + e.getMessage(), e);
+							_log.warning(ZoneManager.class.getSimpleName() + ": ZoneData: Failed to load zone " + zoneId + " coordinates: " + e.getMessage());
 						}
 						
 						// Check for additional parameters

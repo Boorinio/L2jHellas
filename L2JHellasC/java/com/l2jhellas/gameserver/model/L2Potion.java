@@ -25,6 +25,7 @@ public class L2Potion extends L2Object
 {
 	protected static final Logger _log = Logger.getLogger(L2Character.class.getName());
 
+	
 	@SuppressWarnings("unused")
 	private L2Character _target;
 
@@ -69,7 +70,9 @@ public class L2Potion extends L2Object
 			}
 			catch (Exception e)
 			{
-				_log.warning("Error in hp potion task:" + e);
+				_log.warning(L2Potion.class.getName() + ": Error in hp potion task:");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}
@@ -165,7 +168,9 @@ public class L2Potion extends L2Object
 			}
 			catch (Exception e)
 			{
-				_log.warning("error in mp potion task:" + e);
+				_log.warning(L2Potion.class.getName() + ": error in mp potion task:");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}

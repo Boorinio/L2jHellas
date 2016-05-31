@@ -49,24 +49,23 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if ((player == null) || (player.getPet() == null) || !(player.getPet() instanceof L2PetInstance))
 			return;
-		
+
 		if (_amount <= 0)
 		{
 			return;
 		}
-		
+
 		// Alt game - Karma punishment
 		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && player.getKarma() > 0)
 			return;
 
-		
 		if (player.getActiveEnchantItem() != null)
 		{
 			player.setAccessLevel(-100);
 			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " Tried To Use Enchant Exploit And Got Banned!", IllegalPlayerAction.PUNISH_KICKBAN);
 			return;
 		}
-		
+
 		if (player.getActiveWarehouse() != null || player.getActiveTradeList() != null)
 		{
 			player.sendMessage("You can't give items when you got active warehouse or active trade.");
@@ -81,10 +80,10 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 
 		// Exploit Fix for Hero weapons Uses pet Inventory to buy New One.
 		final L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
-		
+
 		if (item == null)
 			return;
-		
+
 		if (item.isAugmented())
 		{
 			player.sendMessage("You cannot give augmented items to pet.");
@@ -117,7 +116,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 
 		if (player.transferItem("Transfer", _objectId, _amount, pet.getInventory(), pet) == null)
 		{
-			_log.warning("Invalid item transfer request: " + pet.getName() + "(pet) --> " + player.getName());
+			_log.warning(RequestGiveItemToPet.class.getName() + ": Invalid item transfer request: " + pet.getName() + "(pet) --> " + player.getName());
 		}
 	}
 

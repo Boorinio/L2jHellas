@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -205,7 +204,7 @@ public class PcStat extends PlayableStat
 					getActiveChar().setNewbie(false);
 					if (Config.DEBUG)
 					{
-						_log.log(Level.CONFIG, getClass().getName() + ": Newbie character ended: " + getActiveChar().getCharId());
+						_log.config(PcStat.class.getName() + ": Newbie character ended: " + getActiveChar().getCharId());
 					}
 				}
 			}

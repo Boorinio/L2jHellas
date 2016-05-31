@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -95,7 +94,9 @@ abstract class DocumentBase
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error loading file " + _file, e);
+			_log.severe(DocumentBase.class.getName() + ": Error loading file " + _file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			return null;
 		}
 		try
@@ -104,7 +105,9 @@ abstract class DocumentBase
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error in file " + _file, e);
+			_log.severe(DocumentBase.class.getName() + ": Error in file " + _file);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			return null;
 		}
 		return doc;
@@ -161,7 +164,7 @@ abstract class DocumentBase
 			else if ("effect".equalsIgnoreCase(n.getNodeName()))
 			{
 				if (template instanceof EffectTemplate)
-					_log.log(Level.WARNING, getClass().getName() + ": Nested effects");
+					_log.warning(DocumentBase.class.getName() + ": Nested effects");
 				attachEffect(n, template, condition);
 			}
 		}
@@ -646,7 +649,7 @@ abstract class DocumentBase
 		NamedNodeMap attrs = n.getAttributes();
 		String name = attrs.getNamedItem("name").getNodeValue();
 		if (name.charAt(0) != '#')
-			_log.log(Level.WARNING, getClass().getName() + ": Table name must start with #");
+			_log.warning(DocumentBase.class.getName() + ": Table name must start with #");
 		StringTokenizer data = new StringTokenizer(n.getFirstChild().getNodeValue());
 		List<String> array = new ArrayList<String>();
 		while (data.hasMoreTokens())
@@ -699,7 +702,7 @@ abstract class DocumentBase
 					return new LambdaConst(Double.parseDouble(getValue(field, template)));
 				}
 				// failed
-				_log.log(Level.WARNING, getClass().getName() + ": Unknown value " + val);
+				_log.warning(DocumentBase.class.getName() + ": Unknown value " + val);
 			}
 			else
 			{
@@ -711,7 +714,7 @@ abstract class DocumentBase
 		while (n != null && n.getNodeType() != Node.ELEMENT_NODE)
 			n = n.getNextSibling();
 		if (n == null || !"val".equals(n.getNodeName()))
-			_log.log(Level.WARNING, getClass().getName() + ": Value not specified");
+			_log.warning(DocumentBase.class.getName() + ": Value not specified");
 
 		for (n = n.getFirstChild(); n != null; n = n.getNextSibling())
 		{
@@ -732,7 +735,7 @@ abstract class DocumentBase
 			else if (template instanceof Integer)
 				return getTableValue(value, ((Integer) template).intValue());
 			else
-				_log.log(Level.WARNING, getClass().getName() + ": error");
+				_log.warning(DocumentBase.class.getName() + ": error");
 		}
 		return value;
 	}

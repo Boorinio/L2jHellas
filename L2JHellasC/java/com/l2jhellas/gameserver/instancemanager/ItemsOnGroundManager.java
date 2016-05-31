@@ -17,10 +17,10 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -93,13 +93,11 @@ public class ItemsOnGroundManager
 				statement.execute();
 				statement.close();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": error while updating table ItemsOnGround " + e);
+				_log.warning(ItemsOnGroundManager.class.getName() + ": error while updating table ItemsOnGround ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 		}
 
@@ -143,17 +141,15 @@ public class ItemsOnGroundManager
 			result.close();
 			s.close();
 			if (count > 0)
-				_log.log(Level.INFO, getClass().getSimpleName() + ": restored " + count + " items.");
+				_log.info(ItemsOnGroundManager.class.getSimpleName() + ": restored " + count + " items.");
 			else
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Initializing ItemsOnGroundManager.");
+				_log.info(ItemsOnGroundManager.class.getSimpleName() + ": Initializing ItemsOnGroundManager.");
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while loading ItemsOnGround " + e);
+			_log.warning(ItemsOnGroundManager.class.getName() + ": error while loading ItemsOnGround ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		if (Config.EMPTY_DROPPED_ITEM_TABLE_AFTER_LOAD)
@@ -190,13 +186,11 @@ public class ItemsOnGroundManager
 			del.execute();
 			del.close();
 		}
-		catch (Exception e1)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": error while cleaning table ItemsOnGround " + e1);
+			_log.warning(ItemsOnGroundManager.class.getName() + ": error while cleaning table ItemsOnGround ");
 			if (Config.DEVELOPER)
-			{
-				e1.printStackTrace();
-			}
+				e.printStackTrace();
 		}
 	}
 
@@ -213,7 +207,7 @@ public class ItemsOnGroundManager
 			if (_items.isEmpty())
 			{
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, getClass().getName() + ": nothing to save...");
+					_log.config(ItemsOnGroundManager.class.getName() + ": nothing to save...");
 				return;
 			}
 
@@ -244,17 +238,15 @@ public class ItemsOnGroundManager
 					statement.execute();
 					statement.close();
 				}
-				catch (Exception e)
+				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": error while inserting into table ItemsOnGround " + e);
+					_log.warning(ItemsOnGroundManager.class.getName() + ": error while inserting into table ItemsOnGround ");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": " + _items.size() + " items on ground saved.");
+				_log.config(ItemsOnGroundManager.class.getName() + ": " + _items.size() + " items on ground saved.");
 		}
 	}
 }

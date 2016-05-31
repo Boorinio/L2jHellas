@@ -50,7 +50,7 @@ public class SiegeReward
 	{
 		_list = new ArrayList<RewardInfoz>();
 		_toReward = new HashMap<Integer, ArrayList<ToReward>>();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Activated.");
+		_log.info(SiegeReward.class.getSimpleName() + ": Activated.");
 	}
 
 	public static SiegeReward getInstance()
@@ -114,11 +114,9 @@ public class SiegeReward
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not load offline members from DB." + e);
+			_log.warning(SiegeReward.class.getName() + " Could not load offline members from DB.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -134,11 +132,9 @@ public class SiegeReward
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not connect to rewards table." + e);
+			_log.warning(SiegeReward.class.getName() + " Could not connect to rewards table.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -165,11 +161,9 @@ public class SiegeReward
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not connect to rewards table." + e);
+			_log.warning(SiegeReward.class.getName() + " Could not connect to rewards table.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		finally
 		{
@@ -195,11 +189,9 @@ public class SiegeReward
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Could not store into database." + e);
+			_log.warning(SiegeReward.class.getName() + " Could not store into database.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

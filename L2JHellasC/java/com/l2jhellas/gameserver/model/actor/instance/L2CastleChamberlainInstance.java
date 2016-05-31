@@ -236,8 +236,8 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 				}
 				else
 				{
-					_log.warning("player: " + player.getName() + " attempting to buy from chamberlain that don't have buylist!");
-					_log.warning("buylist id:" + buy);
+					_log.warning(L2CastleChamberlainInstance.class.getName() + ": player: " + player.getName() + " attempting to buy from chamberlain that don't have buylist!");
+					_log.warning(L2CastleChamberlainInstance.class.getName() + ": buylist id:" + buy);
 				}
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 			}

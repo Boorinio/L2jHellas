@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -84,7 +83,7 @@ public class CursedWeapon
 			if (_player != null && _player.isOnline() == 1)
 			{
 				// Remove from player
-				_log.log(Level.INFO, getClass().getSimpleName() + ": " + _name + " being removed online.");
+				_log.info(CursedWeapon.class.getSimpleName() + ": " + _name + " being removed online.");
 
 				_player.abortAttack();
 
@@ -117,7 +116,7 @@ public class CursedWeapon
 			else
 			{
 				// Remove from Db
-				_log.log(Level.INFO, getClass().getSimpleName() + ": " + _name + " being removed offline.");
+				_log.info(CursedWeapon.class.getSimpleName() + ": " + _name + " being removed offline.");
 
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 				{
@@ -127,7 +126,7 @@ public class CursedWeapon
 					statement.setInt(2, _itemId);
 					if (statement.executeUpdate() != 1)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": Error while deleting itemId " + _itemId + " from userId " + _playerId);
+						_log.warning(CursedWeapon.class.getName() + ": Error while deleting itemId " + _itemId + " from userId " + _playerId);
 					}
 					statement.close();
 					/*
@@ -138,7 +137,7 @@ public class CursedWeapon
 					 * statement.setInt(2, _skillId);
 					 * if (statement.executeUpdate() != 1)
 					 * {
-					 * _log.warning("Error while deleting skillId "+ _skillId +" from userId "+_playerId);
+					 * _log.warning(CursedWeapon.class.getName() + ": Error while deleting skillId "+ _skillId +" from userId "+_playerId);
 					 * }
 					 */
 					// Restore the karma
@@ -148,18 +147,16 @@ public class CursedWeapon
 					statement.setInt(3, _playerId);
 					if (statement.executeUpdate() != 1)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": Error while updating karma & pkkills for userId " + _playerId);
+						_log.warning(CursedWeapon.class.getName() + ": Error while updating karma & pkkills for userId " + _playerId);
 					}
 
 					statement.close();
 				}
-				catch (Exception e)
+				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Could not delete from db : " + e);
+					_log.warning(CursedWeapon.class.getName() + ": Could not delete from db : ");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 		}
@@ -191,7 +188,7 @@ public class CursedWeapon
 			{
 				_item.decayMe();
 				L2World.getInstance().removeObject(_item);
-				_log.log(Level.INFO, getClass().getSimpleName() + ": " + _name + " item has been removed from World.");
+				_log.info(CursedWeapon.class.getSimpleName() + ": " + _name + " item has been removed from World.");
 			}
 		}
 
@@ -309,7 +306,7 @@ public class CursedWeapon
 		_player.addSkill(skill, false);
 
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": Player " + _player.getName() + " has been awarded with skill " + skill);
+			_log.config(CursedWeapon.class.getName() + ": Player " + _player.getName() + " has been awarded with skill " + skill);
 		_player.sendSkillList();
 	}
 
@@ -433,7 +430,7 @@ public class CursedWeapon
 	public void saveData()
 	{
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": Saving data to disk.");
+			_log.config(CursedWeapon.class.getName() + ": Saving data to disk.");
 
 		PreparedStatement statement = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -459,11 +456,9 @@ public class CursedWeapon
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Failed to save data: " + e);
+			_log.warning(CursedWeapon.class.getName() + " Failed to save data: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

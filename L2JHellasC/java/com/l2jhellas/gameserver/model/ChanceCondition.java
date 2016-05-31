@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -108,11 +107,9 @@ public final class ChanceCondition
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "ChanceCondition: Condition parse error." + e);
+			_log.warning(ChanceCondition.class.getSimpleName() + ": ChanceCondition: Condition parse error.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return null;
 	}

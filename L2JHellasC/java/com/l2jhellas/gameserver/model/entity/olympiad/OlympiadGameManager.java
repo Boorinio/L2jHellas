@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.model.entity.olympiad;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
@@ -49,7 +48,7 @@ public class OlympiadGameManager implements Runnable
 		for (L2OlympiadStadiumZone zone : zones)
 			_tasks[i++] = new OlympiadGameTask(zone);
 		
-		_log.log(Level.INFO, "Olympiad System: Loaded " + _tasks.length + " stadiums.");
+		_log.info(OlympiadGameManager.class.getSimpleName() + "Olympiad System: Loaded " + _tasks.length + " stadiums.");
 	}
 	
 	public static final OlympiadGameManager getInstance()
@@ -129,7 +128,7 @@ public class OlympiadGameManager implements Runnable
 			{
 				OlympiadManager.getInstance().clearRegistered();
 				_battleStarted = false;
-				_log.log(Level.INFO, "Olympiad System: All current games finished.");
+				_log.info(OlympiadGameManager.class.getName() + "Olympiad System: All current games finished.");
 			}
 		}
 	}

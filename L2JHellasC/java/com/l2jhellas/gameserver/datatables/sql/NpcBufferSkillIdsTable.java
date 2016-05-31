@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -74,14 +73,12 @@ public class NpcBufferSkillIdsTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error reading npc_buffer_skill_ids table: " + e);
+			_log.warning(NpcBufferSkillIdsTable.class.getName() + ": Error reading npc_buffer_skill_ids table: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _buffers.size() + " buffers and " + skillCount + " skills.");
+		_log.info(NpcBufferSkillIdsTable.class.getSimpleName() + ": Loaded " + _buffers.size() + " buffers and " + skillCount + " skills.");
 	}
 
 	public static NpcBufferSkillIdsTable getInstance()

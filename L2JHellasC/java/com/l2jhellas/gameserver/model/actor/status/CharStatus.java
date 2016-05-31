@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model.actor.status;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -525,7 +524,9 @@ public class CharStatus
 			}
 			catch (Throwable e)
 			{
-				_log.log(Level.SEVERE, "", e);
+				_log.severe(RegenTask.class.getName() + ": Throwable: run");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}

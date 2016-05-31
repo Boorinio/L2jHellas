@@ -229,7 +229,7 @@ public final class L2World
 				L2PcInstance tmp = _allPlayers.get(player.getObjectId());
 				if (tmp != null)
 				{
-					_log.warning("Duplicate character!? Closing both characters (" + player.getName() + ")");
+					_log.warning(L2World.class.getName() + ": Duplicate character!? Closing both characters (" + player.getName() + ")");
 					
 					_allPlayers.remove(player.getObjectId());
 					_allPlayers.remove(tmp.getObjectId());

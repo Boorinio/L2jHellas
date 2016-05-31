@@ -17,10 +17,12 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
@@ -85,9 +87,11 @@ public class ShortCuts
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Could not store character shortcut: " + e);
+			_log.warning(ShortCuts.class.getName() + ": Could not store character shortcut: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -150,9 +154,11 @@ public class ShortCuts
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Could not delete character shortcut: " + e);
+			_log.warning(ShortCuts.class.getName() + ": Could not delete character shortcut: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -182,9 +188,11 @@ public class ShortCuts
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Could not restore character shortcuts: " + e);
+			_log.warning(ShortCuts.class.getName() + ": Could not restore character shortcuts: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		// verify shortcuts
 		for (L2ShortCut sc : getAllShortCuts())

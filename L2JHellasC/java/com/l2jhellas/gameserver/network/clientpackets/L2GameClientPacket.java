@@ -30,13 +30,17 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 {
 	protected static final Logger _log = Logger.getLogger(L2GameClientPacket.class.getName());
 
+	/**
+	 * @return A String with this packet name for debugging purposes
+	 */
+	public abstract String getType();
 	protected int _opcode = 0;
 
 	@Override
 	protected boolean read()
 	{
 		if (Config.DEBUG)
-			System.out.println("l2gameclient packet: " + getType());
+			_log.config(L2GameClientPacket.class.getName() + ": packet: " + getType());
 		try
 		{
 			readImpl();
@@ -44,8 +48,9 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: " + getClient().toString() + " - Failed reading: " + getType() + " packet - l2jhellas Server Version: " + Config.SERVER_VERSION);
-			t.printStackTrace();
+			_log.warning(L2GameClientPacket.class.getName() + ": Client: " + getClient().toString() + " - Failed reading: " + getType() + " packet - l2jhellas Server Version: " + Config.SERVER_VERSION);
+			if (Config.DEVELOPER)
+				t.printStackTrace();
 		}
 		return false;
 	}
@@ -62,16 +67,16 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 			if (this instanceof MoveBackwardToLocation || this instanceof AttackRequest || this instanceof RequestMagicSkillUse)
 			// could include pickup and talk too, but less is better
 			{
-				// Removes onspawn protection - player has faster computer than
-				// average
+				// Removes onspawn protection - player has faster computer than average
 				if (getClient().getActiveChar() != null)
 					getClient().getActiveChar().onActionRequest();
 			}
 		}
 		catch (Throwable t)
 		{
-			_log.severe("Client: " + getClient().toString() + " - Failed running: " + getType() + " - l2jhellas Server Version: " + Config.SERVER_VERSION);
-			t.printStackTrace();
+			_log.warning(L2GameClientPacket.class.getName() + ": Client: " + getClient().toString() + " - Failed running: " + getType() + " - l2jhellas Server Version: " + Config.SERVER_VERSION);
+			if (Config.DEVELOPER)
+				t.printStackTrace();
 		}
 	}
 
@@ -81,9 +86,4 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 	{
 		getClient().sendPacket(gsp);
 	}
-
-	/**
-	 * @return A String with this packet name for debugging purposes
-	 */
-	public abstract String getType();
 }

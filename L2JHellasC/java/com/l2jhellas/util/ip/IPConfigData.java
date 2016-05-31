@@ -32,10 +32,10 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.PackRoot;
+import com.l2jhellas.Config;
 
 public class IPConfigData
 {
@@ -51,15 +51,15 @@ public class IPConfigData
 	private static void config()
 	{
 		Properties IPSettings = new Properties();
-		final File server = new File(PackRoot.DATAPACK_ROOT, "config/Network/AutomaticIP.ini");
-		
-		try (InputStream is = new FileInputStream(server))
+		try (InputStream is = new FileInputStream(new File(PackRoot.DATAPACK_ROOT, "config/Network/AutomaticIP.ini")))
 		{
 			IPSettings.load(is);
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error while " + server + " settings!", e);
+			_log.warning(IPConfigData.class.getSimpleName() + ": Error while config/Network/AutomaticIP.ini settings!");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		AUTO_IP = Boolean.parseBoolean(IPSettings.getProperty("AutomaticIP", "True"));
 	}
@@ -69,7 +69,7 @@ public class IPConfigData
 		config();
 		if (AUTO_IP == false)
 		{
-			System.out.println("Network Config: Manual Configuration.");
+			_log.info("Network Config: Manual Configuration.");
 		}
 		else
 		// Auto configuration...
@@ -90,8 +90,10 @@ public class IPConfigData
 		}
 		catch (IOException e)
 		{
-			System.err.println("Network Config: Failed to connect to api.externalip.net please check your internet connection using 127.0.0.1!");
+			_log.warning("Network Config: Failed to connect to api.externalip.net please check your internet connection using 127.0.0.1!");
 			externalIp = "127.0.0.1";
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 
 		try
@@ -126,7 +128,7 @@ public class IPConfigData
 					{
 						_subnets.add(subnet);
 						_hosts.add(sub.getIPAddress());
-						System.out.println("Network Config: Adding new subnet: " + subnet + " address: " + sub.getIPAddress());
+						_log.info("Network Config: Adding new subnet: " + subnet + " address: " + sub.getIPAddress());
 					}
 				}
 			}
@@ -134,12 +136,13 @@ public class IPConfigData
 			// External host and subnet
 			_hosts.add(externalIp);
 			_subnets.add("0.0.0.0/0");
-			System.out.println("Network Config: Adding new subnet: 0.0.0.0/0 address: " + externalIp);
+			_log.info("Network Config: Adding new subnet: 0.0.0.0/0 address: " + externalIp);
 		}
 		catch (SocketException e)
 		{
-			System.err.println("Network Config: Configuration failed please configure manually using IPGameServer.ini and IPLoginServer.ini");
-			e.printStackTrace();
+			_log.warning("Network Config: Configuration failed please configure manually using IPGameServer.ini and IPLoginServer.ini");
+			if(Config.DEVELOPER)
+				e.printStackTrace();
 			System.exit(0);
 		}
 	}

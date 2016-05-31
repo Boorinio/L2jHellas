@@ -241,11 +241,9 @@ public class ItemTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": data error on item: ", e);
+			_log.warning(ItemTable.class.getName() + ": data error on item: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -297,29 +295,27 @@ public class ItemTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": data error on custom_item: ", e);
+			_log.warning(ItemTable.class.getName() + ": data error on custom_item: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		for (L2Armor armor : SkillsEngine.getInstance().loadArmors(armorData))
 		{
 			_armors.put(armor.getItemId(), armor);
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _armors.size() + " Armors.");
+		_log.info(ItemTable.class.getSimpleName() + ": Loaded " + _armors.size() + " Armors.");
 
 		for (L2EtcItem item : SkillsEngine.getInstance().loadItems(itemData))
 		{
 			_etcItems.put(item.getItemId(), item);
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _etcItems.size() + " Items.");
+		_log.info(ItemTable.class.getSimpleName() + ": Loaded " + _etcItems.size() + " Items.");
 
 		for (L2Weapon weapon : SkillsEngine.getInstance().loadWeapons(weaponData))
 		{
 			_weapons.put(weapon.getItemId(), weapon);
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _weapons.size() + " Weapons.");
+		_log.info(ItemTable.class.getSimpleName() + ": Loaded " + _weapons.size() + " Weapons.");
 
 		// fillEtcItemsTable();
 		// fillArmorsTable();
@@ -714,7 +710,7 @@ public class ItemTable
 		}
 
 		// Create a FastLookUp Table called _allTemplates of size : value of the highest item ID
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Highest item Id used: " + highestId);
+		_log.info(ItemTable.class.getSimpleName() + ": Highest item Id used: " + highestId);
 		_allTemplates = new L2Item[highestId + 1];
 
 		// Insert armor item in Fast Look Up Table
@@ -815,7 +811,7 @@ public class ItemTable
 
 		if (Config.DEBUG)
 		{
-			_log.log(Level.CONFIG, getClass().getName() + ": Item created  oid:" + item.getObjectId() + " itemid:" + itemId);
+			_log.config(ItemTable.class.getName() + ": Item created  oid:" + item.getObjectId() + " itemid:" + itemId);
 		}
 
 		// Add the L2ItemInstance object to _allObjects of L2world
@@ -914,7 +910,7 @@ public class ItemTable
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": could not delete pet objectid:", e);
+					_log.warning(ItemTable.class.getName() + ": could not delete pet objectid:");
 					if (Config.DEVELOPER)
 					{
 						e.printStackTrace();

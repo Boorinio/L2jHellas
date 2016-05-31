@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -33,6 +34,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
  */
 public class ZodiacMain
 {
+	private static final Logger _log = Logger.getLogger(ZodiacMain.class.getName());
 	public static List<String> Ips = new ArrayList<String>();
 	public static boolean ZodiacRegisterActive;
 	public static int i, max;
@@ -52,7 +54,7 @@ public class ZodiacMain
 			public void run()
 			{
 				startVoting();
-				System.out.println("Zodiac Engine Started.");
+				_log.info(ZodiacMain.class.getSimpleName() + ": Zodiac Engine Started.");
 			}
 		}, 60 * 1000 * Config.INITIAL_START);
 	}

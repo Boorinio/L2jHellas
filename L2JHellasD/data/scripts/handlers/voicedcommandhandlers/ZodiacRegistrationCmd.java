@@ -15,7 +15,6 @@
 package handlers.voicedcommandhandlers;
 
 import java.io.File;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.PackRoot;
@@ -63,7 +62,7 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 				File mainText = new File(PackRoot.DATAPACK_ROOT, Castle_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Castle_Path + " check your files.");
+					_log.warning(ZodiacRegistrationCmd.class.getName() + ": cant find " + PackRoot.DATAPACK_ROOT + Castle_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Castle_Path);
@@ -75,7 +74,7 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 				File mainText = new File(PackRoot.DATAPACK_ROOT, Capture_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Capture_Path + " check your files.");
+					_log.warning(ZodiacRegistrationCmd.class.getName() + ": cant find " + PackRoot.DATAPACK_ROOT + Capture_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);
@@ -87,7 +86,7 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 				File mainText = new File(PackRoot.DATAPACK_ROOT, Pelo_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Pelo_Path + " check your files.");
+					_log.warning(ZodiacRegistrationCmd.class.getName() + ": cant find " + PackRoot.DATAPACK_ROOT + Pelo_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Pelo_Path);
@@ -99,7 +98,7 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 				File mainText = new File(PackRoot.DATAPACK_ROOT, Protect_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Protect_Path + " check your files.");
+					_log.warning(ZodiacRegistrationCmd.class.getName() + ": cant find " + PackRoot.DATAPACK_ROOT + Protect_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Protect_Path);
@@ -111,7 +110,7 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 				File mainText = new File(PackRoot.DATAPACK_ROOT, Capture_Path);
 				if (!mainText.exists())
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": cant find " + PackRoot.DATAPACK_ROOT, Capture_Path + " check your files.");
+					_log.warning(ZodiacRegistrationCmd.class.getName() + ": cant find " + PackRoot.DATAPACK_ROOT + Capture_Path + " check your files.");
 				}
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(Capture_Path);

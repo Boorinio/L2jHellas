@@ -49,9 +49,6 @@ REM 3 - abort
 if ERRORLEVEL 2 goto restart
 if ERRORLEVEL 1 goto error
 goto end
-:tellrestart
-echo Telnet server Restart ...
-goto start
 :taskrestart
 echo Auto Task Restart ...
 goto start
@@ -60,9 +57,6 @@ echo Admin Restart ...
 goto start
 :taskdown
 echo Game Server terminated (Auto task)
-goto end
-:telldown
-echo Game Server terminated (Telnet)
 goto end
 :error
 echo Game Server terminated abnormally

@@ -395,11 +395,11 @@ public class L2Manor
 		}
 		catch (FileNotFoundException e)
 		{
-			_log.warning("seeds.csv is missing in data folder.");
+			_log.warning(L2Manor.class.getName() + ": seeds.csv is missing in data folder.");
 		}
 		catch (Exception e)
 		{
-			_log.warning("error while loading seeds: " + e.getMessage());
+			_log.warning(L2Manor.class.getName() + ": error while loading seeds: " + e.getMessage());
 		}
 		finally
 		{

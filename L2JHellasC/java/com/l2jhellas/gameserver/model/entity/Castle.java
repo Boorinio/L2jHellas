@@ -17,12 +17,12 @@ package com.l2jhellas.gameserver.model.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -181,6 +181,9 @@ public class Castle
 		}
 		catch (Exception e)
 		{
+			_log.warning(Castle.class.getClass().getName() + ": error");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		return true;
 	}
@@ -364,11 +367,9 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error updating TaxPercent" + e);
+			_log.warning(Castle.class.getName() + ": Error updating TaxPercent");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -426,12 +427,9 @@ public class Castle
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-
-			statement = con.prepareStatement("SELECT * FROM castle WHERE id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle WHERE id=?");
 			statement.setInt(1, getCastleId());
-			rs = statement.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
 			while (rs.next())
 			{
@@ -480,11 +478,9 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: loadCastleData(): " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Exception: loadCastleData(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -510,10 +506,11 @@ public class Castle
 
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			System.out.println("Exception: loadCastleDoor(): " + e.getMessage());
-			e.printStackTrace();
+			_log.warning(Castle.class.getName() + ": loadCastleDoor() ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -533,13 +530,11 @@ public class Castle
 
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: loadCastleDoorUpgrade(): " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Exception: loadCastleDoorUpgrade(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -552,13 +547,11 @@ public class Castle
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: removeDoorUpgrade(): " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Exception: removeDoorUpgrade(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -574,13 +567,11 @@ public class Castle
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: saveDoorUpgrade(int doorId, int hp, int pDef, int mDef): " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Exception: saveDoorUpgrade(int doorId, int hp, int pDef, int mDef): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -620,13 +611,11 @@ public class Castle
 				ThreadPoolManager.getInstance().scheduleGeneral(new CastleUpdater(clan, 1), 3600000);// Schedule owner tasks to start running
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: updateOwnerInDB(L2Clan clan): " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Exception: updateOwnerInDB(L2Clan clan): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -805,16 +794,12 @@ public class Castle
 	// save manor production data
 	public void saveSeedData()
 	{
-		PreparedStatement statement;
-
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement(CASTLE_MANOR_DELETE_PRODUCTION);
+			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PRODUCTION);
 			statement.setInt(1, getCastleId());
-
 			statement.execute();
 			statement.close();
-
 			if (_production != null)
 			{
 				int count = 0;
@@ -861,23 +846,20 @@ public class Castle
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Error adding seed production data for castle " + getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
 	// save manor production data for specified period
 	public void saveSeedData(int period)
 	{
-		PreparedStatement statement;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement(CASTLE_MANOR_DELETE_PRODUCTION_PERIOD);
+			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PRODUCTION_PERIOD);
 			statement.setInt(1, getCastleId());
 			statement.setInt(2, period);
 			statement.execute();
@@ -909,23 +891,20 @@ public class Castle
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Error adding seed production data for castle " + getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
 	// save crop procure data
 	public void saveCropData()
 	{
-		PreparedStatement statement;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement(CASTLE_MANOR_DELETE_PROCURE);
+			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PROCURE);
 			statement.setInt(1, getCastleId());
 			statement.execute();
 			statement.close();
@@ -974,23 +953,20 @@ public class Castle
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Error adding crop data for castle " + getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
 	// save crop procure data for specified period
 	public void saveCropData(int period)
 	{
-		PreparedStatement statement;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement(CASTLE_MANOR_DELETE_PROCURE_PERIOD);
+			PreparedStatement statement = con.prepareStatement(CASTLE_MANOR_DELETE_PROCURE_PERIOD);
 			statement.setInt(1, getCastleId());
 			statement.setInt(2, period);
 			statement.execute();
@@ -1023,22 +999,19 @@ public class Castle
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Error adding crop data for castle " + getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
 	public void updateCrop(int cropId, int amount, int period)
 	{
-		PreparedStatement statement;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement(CASTLE_UPDATE_CROP);
+			PreparedStatement statement = con.prepareStatement(CASTLE_UPDATE_CROP);
 			statement.setInt(1, amount);
 			statement.setInt(2, cropId);
 			statement.setInt(3, getCastleId());
@@ -1046,22 +1019,19 @@ public class Castle
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error adding crop data for castle " + getName() + ": " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Error adding crop data for castle " + getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
 	public void updateSeed(int seedId, int amount, int period)
 	{
-		PreparedStatement statement;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement(CASTLE_UPDATE_SEED);
+			PreparedStatement statement = con.prepareStatement(CASTLE_UPDATE_SEED);
 			statement.setInt(1, amount);
 			statement.setInt(2, seedId);
 			statement.setInt(3, getCastleId());
@@ -1069,22 +1039,19 @@ public class Castle
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error adding seed production data for castle " + getName() + ": " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Error adding seed production data for castle " + getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
 	public void updateShowNpcCrest()
 	{
-		PreparedStatement statement;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			statement = con.prepareStatement("UPDATE castle SET showNpcCrest=? WHERE id=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE castle SET showNpcCrest=? WHERE id=?");
 			statement.setString(1, String.valueOf(getShowNpcCrest()));
 			statement.setInt(2, getCastleId());
 			statement.execute();
@@ -1092,11 +1059,9 @@ public class Castle
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error saving showNpcCrest for castle " + getName() + ": " + e.getMessage());
+			_log.warning(Castle.class.getName() + ": Error saving showNpcCrest for castle " + getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

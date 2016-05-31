@@ -161,7 +161,9 @@ public final class RequestRestartPoint extends L2GameClientPacket
 			}
 			catch (Throwable e)
 			{
-				// _log.log(Level.SEVERE, "", e);
+				_log.severe(RequestRestartPoint.class.getName() + ": error");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}
@@ -186,7 +188,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		}
 		else if (!activeChar.isAlikeDead())
 		{
-			_log.warning("Living player [" + activeChar.getName() + "] called RestartPointPacket! Ban this player!");
+			_log.warning(RequestRestartPoint.class.getName() + ": Living player [" + activeChar.getName() + "] called RestartPointPacket! Ban this player!");
 			return;
 		}
 		

@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,11 +65,9 @@ public class PetNameTable
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not check existing petname:" + e);
+			_log.warning(PetNameTable.class.getName() + ": could not check existing petname:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		return result;
 	}
@@ -89,11 +86,9 @@ public class PetNameTable
 		}
 		catch (PatternSyntaxException e) // case of illegal pattern
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error Pet name pattern of config is wrong!" + e);
+			_log.warning(PetNameTable.class.getName() + ": Error Pet name pattern of config is wrong!");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 			pattern = Pattern.compile(".*");
 		}
 		Matcher regexp = pattern.matcher(name);

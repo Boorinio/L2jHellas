@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -382,7 +381,7 @@ public class L2SepulcherNpcInstance extends L2Npc
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": cant close door " + _DoorId, e);
+				_log.warning(L2SepulcherNpcInstance.class.getName() + ": cant close door " + _DoorId);
 			}
 		}
 	}

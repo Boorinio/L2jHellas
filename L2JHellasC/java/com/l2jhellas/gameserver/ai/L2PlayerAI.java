@@ -23,7 +23,6 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -75,7 +74,7 @@ public class L2PlayerAI extends L2CharacterAI
 	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
 	{
 		if (Config.DEBUG)
-			_log.log(Level.WARNING, getClass().getName() + ": changeIntention -> " + intention + " " + arg0 + " " + arg1);
+			_log.warning(L2PlayerAI.class.getName() + ": changeIntention -> " + intention + " " + arg0 + " " + arg1);
 
 		// nothing to do if it does not CAST intention
 		if (intention != AI_INTENTION_CAST)
@@ -135,7 +134,7 @@ public class L2PlayerAI extends L2CharacterAI
 			{
 
 				if (Config.DEBUG)
-					_log.log(Level.CONFIG, getClass().getName() + ": no previous intention set... Setting it to IDLE");
+					_log.config(L2PlayerAI.class.getName() + ": no previous intention set... Setting it to IDLE");
 
 				// set intention to idle if skill doesn't change intention.
 				setIntention(AI_INTENTION_IDLE);
@@ -198,7 +197,7 @@ public class L2PlayerAI extends L2CharacterAI
 	{
 		L2Character target = getCastTarget();
 		if (Config.DEBUG)
-			_log.log(Level.WARNING, getClass().getName() + ": thinkCast -> Start");
+			_log.warning(L2PlayerAI.class.getName() + ": thinkCast -> Start");
 
 		if (_skill.getTargetType() == L2SkillTargetType.TARGET_SIGNET_GROUND && _actor instanceof L2PcInstance)
 		{
@@ -280,7 +279,7 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 
 		if (Config.DEBUG)
-			_log.log(Level.WARNING, getClass().getName() + ": onEvtThink -> Check intention");
+			_log.warning(L2PlayerAI.class.getName() + ": onEvtThink -> Check intention");
 
 		_thinking = true;
 		try

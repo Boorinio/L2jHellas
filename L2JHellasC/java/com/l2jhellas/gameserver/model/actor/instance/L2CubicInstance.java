@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -229,11 +228,9 @@ public class L2CubicInstance
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.SEVERE, getClass().getName(), e);
+					_log.severe(L2CubicInstance.class.getName() + ": Throwable: Action");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 		}

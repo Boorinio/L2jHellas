@@ -69,7 +69,7 @@ public class L2MerchantInstance extends L2NpcInstance
 		}
 		else
 		{
-			_log.warning("no buylist with id:" + val);
+			_log.warning(L2MerchantInstance.class.getName() + ": no buylist with id:" + val);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
@@ -95,8 +95,8 @@ public class L2MerchantInstance extends L2NpcInstance
 		}
 		else
 		{
-			_log.warning("possible client hacker: " + player.getName() + " attempting to buy from GM shop! < Ban him!");
-			_log.warning("buylist id:" + val);
+			_log.warning(L2MerchantInstance.class.getName() + ": possible client hacker: " + player.getName() + " attempting to buy from GM shop! < Ban him!");
+			_log.warning(L2MerchantInstance.class.getName() + ": buylist id:" + val);
 		}
 
 		player.sendPacket(ActionFailed.STATIC_PACKET);

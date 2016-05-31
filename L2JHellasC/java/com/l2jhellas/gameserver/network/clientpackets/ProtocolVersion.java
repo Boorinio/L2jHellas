@@ -46,7 +46,7 @@ public final class ProtocolVersion extends L2GameClientPacket
 		else if (_version < 1 || _version > 999)
 		{
 			_log.info("Client: " + getClient().toString() + " -> Protocol Revision: " + _version + " is invalid. Minimum is " + 1 + " and Maximum is " + 999 + " are supported. Closing connection.");
-			_log.warning("Wrong Protocol Version " + _version);
+			_log.warning(ProtocolVersion.class.getName() + ": Wrong Protocol Version " + _version);
 			getClient().closeNow();
 		}
 		else

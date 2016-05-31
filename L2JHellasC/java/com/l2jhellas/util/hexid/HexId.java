@@ -69,11 +69,9 @@ public class HexId
 		}
 		catch (SQLException e)
 		{
-			System.err.println("SQL error while deleting gameserver: " + e);
+			System.err.println("SQL error while deleting gameserver: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -86,11 +84,9 @@ public class HexId
 		}
 		catch (SQLException e)
 		{
-			System.err.println("SQL error while saving gameserver: " + e);
+			System.err.println("SQL error while saving gameserver: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

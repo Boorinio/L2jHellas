@@ -46,7 +46,15 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 
 		if (activeChar == null)
 			return;
-
+		
+		if (activeChar.isSitting())
+		{
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_AUTO_USE_LACK_OF_S1);
+			sm.addItemName(_itemId);
+			activeChar.sendPacket(sm);
+			return;
+		}
+		
 		if (activeChar.getPrivateStoreType() == 0 && activeChar.getActiveRequester() == null && !activeChar.isDead())
 		{
 			if (Config.DEBUG)

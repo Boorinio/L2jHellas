@@ -53,14 +53,10 @@ public class NpcWalkerRoutesData
 
 	public static void reload()
 	{
-		if(!(_routes !=null))
-		{
-		   _routes.clear();
-			load();
-		}
-		else
-		_log.info("WalkerRoutesData npe error.");
-
+		if(_routes == null)
+			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": WalkerRoutesData NPE error.");
+		_routes.clear();
+		load();
 	}
 	
 	public static void load()
@@ -71,7 +67,7 @@ public class NpcWalkerRoutesData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/walker_routes.xml");
 		if (!f.exists())
 		{
-			_log.warning("walker_routes.xml could not be loaded: file not found");
+			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": walker_routes.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -88,8 +84,6 @@ public class NpcWalkerRoutesData
 					{
 						if (d.getNodeName().equalsIgnoreCase("walker_route"))
 						{
-							
-
 							final int route_id = Integer.valueOf(d.getAttributes().getNamedItem("route_id").getNodeValue());
 							final int npc_id = Integer.valueOf(d.getAttributes().getNamedItem("npc_id").getNodeValue());
 							final String move_point = String.valueOf(d.getAttributes().getNamedItem("move_point").getNodeValue());
@@ -117,32 +111,26 @@ public class NpcWalkerRoutesData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": Error while creating table");
 		}
 
-		_log.info("WalkerRoutesData: Loaded " + _routes.size() + " npc walker routes.");
+		_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": WalkerRoutesData: Loaded " + _routes.size() + " npc walker routes.");
 	}
 
 	public FastList<L2NpcWalkerNode> getRouteForNpc(int id)
 	{
 		FastList<L2NpcWalkerNode> _return = new FastList<L2NpcWalkerNode>();
-
 		for (FastList.Node<L2NpcWalkerNode> n = _routes.head(), end = _routes.tail(); (n = n.getNext()) != end;)
-		{
 			if (n.getValue().getNpcId() == id)
-			{
 				_return.add(n.getValue());
-			}
-		}
-
 		return _return;
 	}
 }

@@ -21,7 +21,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -48,12 +47,12 @@ public class VoteRewardTopzone
 		if (CurrentVotes == -1)
 		{
 			if (CurrentVotes == -1)
-				_log.log(Level.WARNING, "There was a problem on getting Topzone server votes.");
+				_log.warning(VoteRewardTopzone.class.getSimpleName() + ": There was a problem on getting Topzone server votes.");
 			return;
 		}
 		LastVotes = CurrentVotes;
 		GoalVotes = CurrentVotes + Config.TOPZONE_VOTES_DIFFERENCE;
-		_log.log(Level.INFO, "Topzone - Vote reward system initialized.");
+		_log.info(VoteRewardTopzone.class.getName() + "Topzone - Vote reward system initialized.");
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable()
 		{
 			@Override
@@ -70,7 +69,7 @@ public class VoteRewardTopzone
 		if (CurrentVotes == -1)
 		{
 			if (CurrentVotes == -1)
-				_log.log(Level.WARNING, "There was a problem on getting Topzone server votes.");
+				_log.warning(VoteRewardTopzone.class.getSimpleName() + ": There was a problem on getting Topzone server votes.");
 			return;
 		}
 		if ((CurrentVotes >= LastVotes && CurrentVotes < GoalVotes) || CurrentVotes == LastVotes)

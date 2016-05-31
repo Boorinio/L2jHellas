@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -530,11 +529,9 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				_log.warning(AdminEditChar.class.getName() + ": invalid command ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			activeChar.getStatus().setCurrentCp(cp);
 		}
@@ -548,11 +545,9 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				_log.warning(AdminEditChar.class.getName() + ": invalid command ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			activeChar.getStatus().setCurrentHp(hp);
 		}
@@ -566,11 +561,9 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				_log.warning(AdminEditChar.class.getName() + ": invalid command ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			activeChar.getStatus().setCurrentMp(mp);
 		}
@@ -584,11 +577,9 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				_log.warning(AdminEditChar.class.getName() + ": invalid command ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			if (activeChar.getTarget() instanceof L2PcInstance)
 			{
@@ -613,11 +604,9 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				_log.warning(AdminEditChar.class.getName() + ": invalid command ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			if (activeChar.getTarget() instanceof L2PcInstance)
 			{
@@ -642,11 +631,9 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": invalid command " + e);
+				_log.warning(AdminEditChar.class.getName() + ": invalid command ");
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			if (activeChar.getTarget() instanceof L2PcInstance)
 			{
@@ -858,7 +845,7 @@ public class AdminEditChar implements IAdminCommandHandler
 		player.sendMessage("Changed stats of " + player.getName() + "." + "  HP: " + hpval + "  MP: " + mpval + "  CP: " + cpval + "  PvP: " + pvpflagval + " / " + pvpkillsval);
 
 		if (Config.DEVELOPER || Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ": [GM]" + activeChar.getName() + " changed stats of " + player.getName() + ". " + " HP: " + hpval + " MP: " + mpval + " CP: " + cpval + " PvP: " + pvpflagval + " / " + pvpkillsval);
+			_log.config(AdminEditChar.class.getName() + ": [GM]" + activeChar.getName() + " changed stats of " + player.getName() + ". " + " HP: " + hpval + " MP: " + mpval + " CP: " + cpval + " PvP: " + pvpflagval + " / " + pvpkillsval);
 
 		showCharacterInfo(activeChar, null); // Back to start
 
@@ -924,7 +911,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	private void findCharactersPerIp(L2PcInstance activeChar, String IpAdress)
 	{
 		if (!IpAdress.matches("^(?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2(?:[0-4][0-9]|5[0-5]))\\.){3}(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2(?:[0-4][0-9]|5[0-5]))$"))
-			_log.log(Level.WARNING, getClass().getName() + ": Malformed IPv4 number");
+			_log.warning(AdminEditChar.class.getName() + ": Malformed IPv4 number");
 
 		int CharactersFound = 0;
 		String name, ip = "0.0.0.0";
@@ -1002,7 +989,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			activeChar.sendPacket(adminReply);
 		}
 		else
-			_log.log(Level.WARNING, getClass().getName() + ": Malformed character name");
+			_log.warning(AdminEditChar.class.getName() + ": Malformed character name");
 	}
 
 	/**

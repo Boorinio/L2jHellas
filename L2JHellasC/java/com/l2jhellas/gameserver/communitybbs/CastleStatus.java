@@ -17,7 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -77,11 +76,9 @@ public class CastleStatus
 
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error loading db " + e);
+			_log.warning(CastleStatus.class.getName() + ": Error loading db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

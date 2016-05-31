@@ -24,7 +24,6 @@ import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.PackRoot;
@@ -222,7 +221,7 @@ public final class GeoPathFinding extends PathFinding
 		idx += layer * 10 + 1;//byte + layer*10byte
 		if (nodes < layer)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": SmthWrong!");
+			_log.warning(GeoPathFinding.class.getName() + ": SmthWrong!");
 		}
 		short node_z = pn.getShort(idx);
 		idx += 2;
@@ -266,7 +265,7 @@ public final class GeoPathFinding extends PathFinding
 
 		try
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loading Path Nodes...");
+			_log.info(GeoPathFinding.class.getSimpleName() + ": Loading Path Nodes...");
 			File Data = new File(PackRoot.DATAPACK_ROOT, "/data/pathnode/pn_index.txt");
 			if (!Data.exists())
 				return;
@@ -288,11 +287,9 @@ public final class GeoPathFinding extends PathFinding
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": failed loading path nodes. " + e);
+			_log.warning(GeoPathFinding.class.getName() + ": failed loading path nodes. ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		finally
 		{
@@ -304,9 +301,7 @@ public final class GeoPathFinding extends PathFinding
 				catch (Exception e1)
 				{
 					if (Config.DEVELOPER)
-					{
 						e1.printStackTrace();
-					}
 				}
 
 			if (buff != null)
@@ -317,9 +312,7 @@ public final class GeoPathFinding extends PathFinding
 				catch (Exception e1)
 				{
 					if (Config.DEVELOPER)
-					{
 						e1.printStackTrace();
-					}
 				}
 
 			if (reader != null)
@@ -330,9 +323,7 @@ public final class GeoPathFinding extends PathFinding
 				catch (Exception e1)
 				{
 					if (Config.DEVELOPER)
-					{
 						e1.printStackTrace();
-					}
 				}
 		}
 	}
@@ -341,7 +332,7 @@ public final class GeoPathFinding extends PathFinding
 	{
 		String fname = PackRoot.DATAPACK_ROOT + "/data/pathnode/" + rx + "_" + ry + ".pn";
 		short regionoffset = getRegionOffset(rx, ry);
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loading " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
+		_log.info(GeoPathFinding.class.getSimpleName() + ": Loading " + fname + " -> region offset: " + regionoffset + "X: " + rx + " Y: " + ry);
 		File Pn = new File(fname);
 		int node = 0, size, index = 0;
 		RandomAccessFile raf = null;
@@ -373,7 +364,7 @@ public final class GeoPathFinding extends PathFinding
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Failed to Load PathNode File: " + fname + "\n", e);
+			_log.warning(GeoPathFinding.class.getName() + ": Failed to Load PathNode File: " + fname + "\n");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();

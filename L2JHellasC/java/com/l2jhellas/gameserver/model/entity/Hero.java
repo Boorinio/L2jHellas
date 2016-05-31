@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -234,7 +233,7 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "Hero System: Couldnt load heroes: " + e.getMessage(), e);
+			_log.warning(Hero.class.getSimpleName() + ": Hero System: Couldnt load heroes: " + e.getMessage());
 		}
 		
 		_log.info("Hero System: Loaded " + _heroes.size() + " Heroes.");
@@ -271,7 +270,7 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "Hero System: Couldnt load Hero message for char_id: " + charId, e);
+			_log.warning(Hero.class.getSimpleName() + ": Hero System: Couldnt load Hero message for char_id: " + charId);
 		}
 	}
 	
@@ -323,7 +322,7 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "Hero System: Couldnt load Hero Diary for char_id: " + charId + ", " + e.getMessage(), e);
+			_log.warning(Hero.class.getSimpleName() + ": Hero System: Couldnt load Hero Diary for char_id: " + charId + ", " + e.getMessage());
 		}
 	}
 	
@@ -451,7 +450,7 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "Hero System: Couldnt load Hero fights history for char_id: " + charId + ", " + e.getMessage(), e);
+			_log.warning(Hero.class.getSimpleName() + ": Hero System: Couldnt load Hero fights history for char_id: " + charId + ", " + e.getMessage());
 		}
 	}
 	
@@ -795,7 +794,7 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "Hero System: Couldnt update heroes: " + e.getMessage(), e);
+			_log.warning(Hero.class.getSimpleName() + ": Hero System: Couldnt update heroes: " + e.getMessage());
 		}
 	}
 	
@@ -874,8 +873,9 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			if (_log.isLoggable(Level.SEVERE))
-				_log.log(Level.SEVERE, "SQL exception while saving DiaryData.", e);
+			_log.severe(Hero.class.getName() + ": SQL exception while saving DiaryData.");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	
@@ -888,7 +888,7 @@ public class Hero
 	{
 		_heroMessage.put(player.getObjectId(), message);
 		if (Config.DEBUG)
-			_log.info("Hero message for player: " + player.getName() + ":[" + player.getObjectId() + "] set to: [" + message + "]");
+			_log.info(Hero.class.getSimpleName() + ": Hero message for player: " + player.getName() + ":[" + player.getObjectId() + "] set to: [" + message + "]");
 	}
 	
 	/**
@@ -910,7 +910,9 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, "SQL exception while saving HeroMessage.", e);
+			_log.severe(Hero.class.getName() + ": SQL exception while saving HeroMessage.");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	
@@ -924,7 +926,9 @@ public class Hero
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, "Couldn't delete items on db: " + e.getMessage(), e);
+			_log.severe(Hero.class.getName() + ": Couldn't delete items on db.");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	

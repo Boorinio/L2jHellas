@@ -19,10 +19,12 @@ import java.util.List;
 
 
 
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.util.Rnd;
@@ -77,6 +79,7 @@ public final class EffectConfusion extends L2Effect
 		// getEffected().setTarget(target);
 		getEffected().setTarget(target);
 		getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+		((L2Attackable) getEffected()).addDamageHate((L2Character) target, 0, (4 + Rnd.get(4)) * getEffector().getLevel());
 		return true;
 	}
 

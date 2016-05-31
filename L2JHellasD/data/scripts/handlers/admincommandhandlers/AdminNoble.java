@@ -17,7 +17,6 @@ package handlers.admincommandhandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -77,11 +76,9 @@ public class AdminNoble implements IAdminCommandHandler
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": could not set noble stats of char:", e);
+					_log.warning(AdminNoble.class.getName() + ": could not set noble stats of char:");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 			else
@@ -109,11 +106,9 @@ public class AdminNoble implements IAdminCommandHandler
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": could not set noble stats of char:", e);
+					_log.warning(AdminNoble.class.getName() + ": could not set noble stats of char:");
 					if (Config.DEVELOPER)
-					{
 						e.printStackTrace();
-					}
 				}
 			}
 			player.sendPacket(sm);

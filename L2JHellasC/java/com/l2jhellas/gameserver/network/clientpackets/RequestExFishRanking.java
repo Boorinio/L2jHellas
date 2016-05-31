@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
+
 /**
  * Format: (ch)
  * just a trigger
@@ -34,7 +36,8 @@ public final class RequestExFishRanking extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// TODO
-		System.out.println("C5: RequestExFishRanking");
+		if (Config.DEBUG)
+			_log.config(RequestExFishRanking.class.getName() + ": C5: RequestExFishRanking");
 	}
 
 	@Override

@@ -12,8 +12,6 @@
  */
 package quests.Q610_MagicalPowerOfWater_Part2;
 
-import java.util.logging.Level;
-
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager.StatusEnum;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -58,7 +56,7 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 		switch (RaidBossSpawnManager.getInstance().getRaidBossStatusId(SOUL_OF_WATER_ASHUTAR))
 		{
 			case UNDEFINED:
-				_log.log(Level.WARNING, qn + ": can not find spawned L2RaidBoss id=" + SOUL_OF_WATER_ASHUTAR);
+				_log.warning(Q610_MagicalPowerOfWater_Part2.class.getName()+ ": " + qn + " can not find spawned L2RaidBoss id=" + SOUL_OF_WATER_ASHUTAR);
 				break;
 			
 			case ALIVE:

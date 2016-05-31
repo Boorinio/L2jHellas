@@ -14,7 +14,6 @@
  */
 package handlers.skillhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -69,11 +68,9 @@ public class SiegeFlag implements ISkillHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error placing flag:" + e);
+			_log.warning(SiegeFlag.class.getName() + ": Error placing flag:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

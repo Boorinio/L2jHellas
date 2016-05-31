@@ -25,7 +25,6 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -116,11 +115,9 @@ public class AdminEventEngine implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Error " + eventName, e);
+				_log.warning(AdminEventEngine.class.getName() + ": Error " + eventName);
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 
 		}
@@ -163,11 +160,9 @@ public class AdminEventEngine implements IAdminCommandHandler
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": could not store data/events/" + tempName, e);
+				_log.warning(AdminEventEngine.class.getName() + ": could not store data/events/" + tempName);
 				if (Config.DEVELOPER)
-				{
 					e.printStackTrace();
-				}
 			}
 			tempBuffer = "";
 			tempName = "";

@@ -16,7 +16,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -93,24 +92,22 @@ public class BuffTemplateTable
 				L2BuffTemplate template = new L2BuffTemplate(Buff);
 				if (template.getSkill() == null)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Error while loading buff template Id " + template.getId() + " skill Id " + template.getSkillId());
+					_log.warning(BuffTemplateTable.class.getName() + ": Error while loading buff template Id " + template.getId() + " skill Id " + template.getSkillId());
 				}
 				else
 					_buffs.add(template);
 			}
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _buffTemplates + " Buff Templates.");
+			_log.info(BuffTemplateTable.class.getSimpleName() + ": Loaded " + _buffTemplates + " Buff Templates.");
 
 			rset.close();
 			statement.close();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while loading buff templates " + e);
+			_log.warning(BuffTemplateTable.class.getName() + ": Error while loading buff templates ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 	}

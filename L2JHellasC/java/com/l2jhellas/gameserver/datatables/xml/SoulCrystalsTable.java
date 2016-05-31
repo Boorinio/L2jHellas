@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.datatables.xml;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
@@ -154,7 +153,7 @@ public class SoulCrystalsTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "SoulCrystalsTable: Could not parse soul_crystals.xml file: " + e.getMessage(), e);
+			_log.warning(SoulCrystalsTable.class.getSimpleName() + ": SoulCrystalsTable: Could not parse soul_crystals.xml file: " + e.getMessage());
 		}
 		
 		_log.info("SoulCrystalsTable: Loaded " + _soulCrystals.size() + " SC(s) data and " + _npcLevelingInfos.size() + " NPC(s) data.");

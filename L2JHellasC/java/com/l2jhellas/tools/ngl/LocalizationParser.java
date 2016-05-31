@@ -18,7 +18,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -94,7 +93,7 @@ public class LocalizationParser
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Could not load localization file");
+				_log.warning(LocalizationParser.class.getSimpleName() + ": Could not load localization file");
 				return;
 			}
 

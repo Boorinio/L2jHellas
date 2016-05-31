@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
+
 /**
  * Format:(ch) h
  * 
@@ -33,7 +35,8 @@ public final class RequestExMPCCShowPartyMembersInfo extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		System.out.println("C6: RequestExMPCCShowPartyMembersInfo. unk: " + _unk);
+		if (Config.DEBUG)
+			_log.config(RequestExMPCCShowPartyMembersInfo.class.getName() + ": C6: RequestExMPCCShowPartyMembersInfo. unk: " + _unk);
 	}
 
 	@Override

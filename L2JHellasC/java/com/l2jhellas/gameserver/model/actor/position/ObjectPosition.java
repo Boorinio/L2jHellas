@@ -55,7 +55,7 @@ public class ObjectPosition
 		}
 		catch (Exception e)
 		{
-			_log.warning("Object Id at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
+			_log.warning(ObjectPosition.class.getName() + ":Object Id at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
 			badCoords();
 		}
 	}

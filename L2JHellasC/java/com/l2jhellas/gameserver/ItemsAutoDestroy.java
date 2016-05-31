@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -41,14 +40,14 @@ public class ItemsAutoDestroy
 			_sleep = 3600000;
 		}
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckItemsForDestroy(), _sleep, _sleep);
-		_log.log(Level.INFO, "ItemsAutoDestroy: Time " + _sleep / 1000 + ".");
+		_log.info(ItemsAutoDestroy.class.getSimpleName() + "ItemsAutoDestroy: Time " + _sleep / 1000 + ".");
 	}
 
 	public static ItemsAutoDestroy getInstance()
 	{
 		if (_instance == null)
 		{
-			_log.log(Level.INFO, "ItemsAutoDestroy: Initialized.");
+			_log.info(ItemsAutoDestroy.class.getSimpleName() + "ItemsAutoDestroy: Initialized.");
 			_instance = new ItemsAutoDestroy();
 		}
 		return _instance;
@@ -64,7 +63,7 @@ public class ItemsAutoDestroy
 	{
 		if (Config.DEBUG)
 		{
-			_log.log(Level.CONFIG, getClass().getName() + ": " + _items.size() + " items to check.");
+			_log.config(ItemsAutoDestroy.class.getName() + ": " + _items.size() + " items to check.");
 		}
 
 		if (_items.isEmpty())
@@ -106,7 +105,7 @@ public class ItemsAutoDestroy
 		}
 		if (Config.DEBUG)
 		{
-			_log.log(Level.CONFIG, getClass().getName() + ": " + _items.size() + " items remaining.");
+			_log.config(ItemsAutoDestroy.class.getName() + ": " + _items.size() + " items remaining.");
 		}
 	}
 

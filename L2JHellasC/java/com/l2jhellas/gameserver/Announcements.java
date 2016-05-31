@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.PackRoot;
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -63,11 +63,9 @@ public class Announcements
 	{
 		_announcements.clear();
 		File file = new File(PackRoot.DATAPACK_ROOT, "data/announcements.txt");
-		if (file.exists())
-			readFromDisk(file);
-
-		else
-			_log.log(Level.WARNING, getClass().getName() + ": data/announcements.txt doesn't exist.");
+		if (!file.exists())
+			_log.warning(Announcements.class.getName() + ": data/announcements.txt doesn't exist.");
+		readFromDisk(file);
 	}
 
 	public void showAnnouncements(L2PcInstance activeChar)
@@ -95,7 +93,6 @@ public class Announcements
 				}
 				activeChar.sendPacket(sm);
 			}
-
 		}
 	}
 
@@ -109,9 +106,8 @@ public class Announcements
 
 	public void listAnnouncements(L2PcInstance activeChar)
 	{
-		String content = HtmCache.getInstance().getHtm("data/html/admin/announce.htm");
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-		adminReply.setHtml(content);
+		adminReply.setHtml(HtmCache.getInstance().getHtm("data/html/admin/announce.htm"));
 		StringBuilder replyMSG = new StringBuilder("<br>");
 		for (int i = 0; i < _announcements.size(); i++)
 		{
@@ -151,18 +147,19 @@ public class Announcements
 					i++;
 				}
 			}
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + i + " Announcements.");
+			_log.info(Announcements.class.getSimpleName() + ": Loaded " + i + " Announcements.");
 		}
 		catch (IOException e1)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Error reading announcements" + e1);
+			_log.severe(Announcements.class.getName() + ": Error reading announcements");
+			if (Config.DEVELOPER)
+				e1.printStackTrace();
 		}
 	}
 
 	private void saveToDisk()
 	{
-		File file = new File("data/announcements.txt");
-		try (FileWriter save = new FileWriter(file))
+		try (FileWriter save = new FileWriter(new File("data/announcements.txt")))
 		{
 			for (int i = 0; i < _announcements.size(); i++)
 			{
@@ -172,7 +169,9 @@ public class Announcements
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": saving the announcements file has failed: " + e);
+			_log.warning(Announcements.class.getName() + ": saving the announcements file has failed: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

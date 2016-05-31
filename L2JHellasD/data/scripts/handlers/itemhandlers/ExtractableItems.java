@@ -14,7 +14,6 @@
  */
 package handlers.itemhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
@@ -77,7 +76,7 @@ public class ExtractableItems implements IItemHandler
 		{
 			if (ItemTable.getInstance().createDummyItem(createItemID) == null)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": createItemID " + createItemID + " doesn't have template!");
+				_log.warning(ExtractableItems.class.getName() + ": createItemID " + createItemID + " doesn't have template!");
 				activeChar.sendMessage("Nothing happened.");
 				return;
 			}

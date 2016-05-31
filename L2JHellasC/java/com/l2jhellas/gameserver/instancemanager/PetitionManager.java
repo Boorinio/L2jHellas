@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -103,7 +102,7 @@ public final class PetitionManager
 			_id = IdFactory.getInstance().getNextId();
 			if (petitionType >= PetitionType.values().length)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": invalid petition type (received type was +1) : " + petitionType);
+				_log.warning(PetitionManager.class.getName() + ": invalid petition type (received type was +1) : " + petitionType);
 			}
 			_type = PetitionType.values()[petitionType];
 			_content = petitionText;
@@ -179,6 +178,7 @@ public final class PetitionManager
 			return _responder;
 		}
 
+		
 		@SuppressWarnings("unused")
 		public long getEndTime()
 		{
@@ -245,7 +245,7 @@ public final class PetitionManager
 		int numPetitions = getPendingPetitionCount();
 
 		getCompletedPetitions().clear();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Completed petition data cleared. " + numPetitions + " petition(s) removed.");
+		_log.info(PetitionManager.class.getSimpleName() + ": Completed petition data cleared. " + numPetitions + " petition(s) removed.");
 	}
 
 	public void clearPendingPetitions()
@@ -253,7 +253,7 @@ public final class PetitionManager
 		int numPetitions = getPendingPetitionCount();
 
 		getPendingPetitions().clear();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Pending petition queue cleared. " + numPetitions + " petition(s) removed.");
+		_log.info(PetitionManager.class.getSimpleName() + ": Pending petition queue cleared. " + numPetitions + " petition(s) removed.");
 	}
 
 	public boolean acceptPetition(L2PcInstance respondingAdmin, int petitionId)

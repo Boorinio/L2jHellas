@@ -55,7 +55,7 @@ public final class RequestPledgeCrest extends L2GameClientPacket
 		{
 			if (Config.DEBUG)
 			{
-				_log.warning("crest is missing:" + _crestId);
+				_log.warning(RequestPledgeCrest.class.getName() + ": crest is missing:" + _crestId);
 			}
 		}
 	}

@@ -41,7 +41,7 @@ public class RaidFightManager
 			eventMob.deleteMe();
 			L2EventManagerInstance._currentEvents -= 1;
 		}
-		_log.warning("Raid Engine: All the Members from the Event are now dead or Have Left The event. Event Finished.");
+		_log.warning(RaidFightManager.class.getName() + ": All the Members from the Event are now dead or Have Left The event. Event Finished.");
 
 	}
 

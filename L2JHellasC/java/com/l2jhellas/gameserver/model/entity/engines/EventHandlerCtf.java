@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.entity.engines;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -24,16 +25,16 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 /**
  * @author Boorinio
  */
-
 public class EventHandlerCtf
 {
+	private static final Logger _log = Logger.getLogger(EventHandlerCtf.class.getName());
 	public List<Long> datesCtf = new ArrayList<Long>();
 	
 	public void startHandler()
 	{
 		loadConfisCtf(false);
 		getNextTimeStampCTF();
-		System.out.println("Ctf handler initiated");
+		_log.info(EventHandlerCtf.class.getSimpleName() + ": Ctf handler initiated");
 	}
 	
 	public void loadConfisCtf(boolean NextDay)

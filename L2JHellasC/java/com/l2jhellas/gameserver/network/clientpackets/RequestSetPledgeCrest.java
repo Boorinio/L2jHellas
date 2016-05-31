@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -102,7 +101,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 				crestId = IdFactory.getInstance().getNextId();
 				if (!CrestCache.saveCrest(CrestType.PLEDGE, crestId, _data))
 				{
-					_log.log(Level.WARNING, "Error saving crest for clan " + clan.getName() + " [" + clan.getClanId() + "]");
+					_log.warning(RequestSetPledgeCrest.class.getSimpleName() + ": Error saving crest for clan " + clan.getName() + " [" + clan.getClanId() + "]");
 					return;
 				}
 				updated = true;
@@ -118,7 +117,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + " Could not update the crest id:" + e);
+				_log.warning(RequestSetPledgeCrest.class.getName() + " Could not update the crest id:");
 				if (Config.DEVELOPER)
 					e.printStackTrace();
 			}

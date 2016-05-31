@@ -61,7 +61,7 @@ public class HelperBuffData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/helper_buff_list.xml");
 		if (!f.exists())
 		{
-			_log.warning("HelperBuffTable: helper_buff_list.xml could not be loaded: file not found");
+			_log.warning(HelperBuffData.class.getName() + ": helper_buff_list.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -128,15 +128,15 @@ public class HelperBuffData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(HelperBuffData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(HelperBuffData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(HelperBuffData.class.getName() + ": Error while creating table");
 		}
 
 		_log.info("HelperBuffTable: Loaded " + _helperBuff.size() + " buffs.");
@@ -167,7 +167,7 @@ public class HelperBuffData
 		return _physicClassLowestLevel;
 	}
 
-	@SuppressWarnings("synthetic-access")
+	
 	private static class SingletonHolder
 	{
 		protected static final HelperBuffData _instance = new HelperBuffData();

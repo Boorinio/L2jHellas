@@ -65,7 +65,7 @@ public class SummonItemsData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/summon_items.xml");
 		if (!f.exists())
 		{
-			_log.warning("summon_items.xml could not be loaded: file not found");
+			_log.warning(SummonItemsData.class.getName() + ": summon_items.xml could not be loaded: file not found");
 			return;
 		}
 		int itemID = 0, npcID = 0;
@@ -95,15 +95,15 @@ public class SummonItemsData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SummonItemsData.class.getName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SummonItemsData.class.getName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("Error while creating table");
+			_log.warning(SummonItemsData.class.getName() + ": Error while creating table");
 		}
 
 		_log.info("Summon: Loaded " + _summonitems.size() + " summon items.");

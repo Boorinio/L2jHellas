@@ -23,7 +23,7 @@ public final class RequestHennaRemoveList extends L2GameClientPacket
 	private static final String _C__0XBD_RequestHennaRemoveList = "[C] 0xbd RequestHennaRemoveList";
 
 	
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused")	
 	private int _unknown;
 	
 	@Override

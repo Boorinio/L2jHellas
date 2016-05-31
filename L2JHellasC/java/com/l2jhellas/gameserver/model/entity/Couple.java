@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -46,12 +45,9 @@ public class Couple
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-
-			statement = con.prepareStatement("SELECT * FROM mods_wedding WHERE id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM mods_wedding WHERE id=?");
 			statement.setInt(1, _Id);
-			rs = statement.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
 			while (rs.next())
 			{
@@ -70,11 +66,9 @@ public class Couple
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: Couple.load(): " + e.getMessage(), e);
+			_log.warning(Couple.class.getName() + ": Exception: Couple.load(): " + e.getMessage());
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -94,9 +88,8 @@ public class Couple
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
 			_Id = IdFactory.getInstance().getNextId();
-			statement = con.prepareStatement("INSERT INTO mods_wedding (id, player1Id, player2Id, married, affianceDate, weddingDate) VALUES (?,?,?,?,?,?)");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO mods_wedding (id, player1Id, player2Id, married, affianceDate, weddingDate) VALUES (?,?,?,?,?,?)");
 			statement.setInt(1, _Id);
 			statement.setInt(2, _player1Id);
 			statement.setInt(3, _player2Id);
@@ -110,11 +103,9 @@ public class Couple
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": ", e);
+			_log.warning(Couple.class.getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -122,9 +113,7 @@ public class Couple
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-
-			statement = con.prepareStatement("UPDATE mods_wedding SET married=?, weddingDate=? WHERE id=?");
+			PreparedStatement statement = con.prepareStatement("UPDATE mods_wedding SET married=?, weddingDate=? WHERE id=?");
 			statement.setBoolean(1, true);
 			_weddingDate = Calendar.getInstance();
 			statement.setLong(2, _weddingDate.getTimeInMillis());
@@ -135,11 +124,9 @@ public class Couple
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": ", e);
+			_log.warning(Couple.class.getName() + ": ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -147,19 +134,15 @@ public class Couple
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-
-			statement = con.prepareStatement("DELETE FROM mods_wedding WHERE id=?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM mods_wedding WHERE id=?");
 			statement.setInt(1, _Id);
 			statement.execute();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: Couple.divorce(): " + e.getMessage(), e);
+			_log.warning(Couple.class.getName() + ": Exception: Couple.divorce(): " + e.getMessage());
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

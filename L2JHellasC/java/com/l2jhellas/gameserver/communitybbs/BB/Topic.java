@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.communitybbs.BB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -74,11 +73,9 @@ public class Topic
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": error while saving new Topic to db " + e);
+			_log.warning(Topic.class.getName() + ": error while saving new Topic to db ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -120,11 +117,9 @@ public class Topic
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error deleting topic " + e);
+			_log.warning(Topic.class.getName() + ": Error deleting topic ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

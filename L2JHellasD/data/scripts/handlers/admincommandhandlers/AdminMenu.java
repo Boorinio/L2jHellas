@@ -17,8 +17,8 @@ package handlers.admincommandhandlers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -308,13 +308,11 @@ public class AdminMenu implements IAdminCommandHandler
 					activeChar.sendMessage("Specified player name didn't lead to a valid account.");
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not set accessLevel:" + e);
+			_log.warning(AdminMenu.class.getName() + ": Could not set accessLevel:");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

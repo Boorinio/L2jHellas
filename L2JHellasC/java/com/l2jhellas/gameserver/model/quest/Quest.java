@@ -22,9 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -33,6 +31,7 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
+import com.l2jhellas.gameserver.model.L2Augmentation;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -236,7 +235,7 @@ public class Quest extends ManagedScript
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not insert char quest:", e);
+			_log.warning(Quest.class.getSimpleName() + ": could not insert char quest:");
 		}
 
 		// events
@@ -662,7 +661,7 @@ public class Quest extends ManagedScript
 				// default spawn location, which is at the player's loc.
 				if ((x == 0) && (y == 0))
 				{
-					_log.log(Level.SEVERE, "Failed to adjust bad locks for quest spawn!  Spawn aborted!");
+					_log.severe(L2Augmentation.class.getName() + ": Failed to adjust bad locks for quest spawn!  Spawn aborted!");
 					return null;
 				}
 				
@@ -688,7 +687,7 @@ public class Quest extends ManagedScript
 		}
 		catch (Exception e1)
 		{
-			_log.warning("Could not spawn Npc " + npcId);
+			_log.warning(Quest.class.getName() + ": Could not spawn Npc " + npcId);
 		}
 		
 		return null;
@@ -765,7 +764,7 @@ public class Quest extends ManagedScript
 	 */
 	public boolean showError(L2PcInstance player, Throwable e)
 	{
-		_log.log(Level.WARNING, getScriptFile().getAbsolutePath(), e);
+		_log.warning(Quest.class.getName() + ": " + getScriptFile().getAbsolutePath());
 		
 		if (e.getMessage() == null)
 			e.printStackTrace();
@@ -809,7 +808,7 @@ public class Quest extends ManagedScript
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception on addEventId(): " + e.getMessage(), e);
+			_log.warning(Quest.class.getSimpleName() + ": Exception on addEventId(): " + e.getMessage());
 		}
 	}
 	
@@ -1301,7 +1300,7 @@ public class Quest extends ManagedScript
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Exception on onSpawn() in notifySpawn(): " + e.getMessage(), e);
+			_log.warning(Quest.class.getSimpleName() + ": Exception on onSpawn() in notifySpawn(): " + e.getMessage());
 			return true;
 		}
 		return false;

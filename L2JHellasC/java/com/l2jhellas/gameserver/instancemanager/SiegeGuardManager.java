@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -96,11 +95,9 @@ public class SiegeGuardManager
 		}
 		catch (Exception e1)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error deleting hired siege guard at " + x + ',' + y + ',' + z + ":" + e1);
+			_log.warning(SiegeGuardManager.class.getName() + ": Error deleting hired siege guard at " + x + ',' + y + ',' + z + ":" + e1);
 			if (Config.DEVELOPER)
-			{
 				e1.printStackTrace();
-			}
 		}
 	}
 
@@ -119,11 +116,9 @@ public class SiegeGuardManager
 		}
 		catch (Exception e1)
 		{
-			_log.warning("Error deleting hired siege guard for castle " + getCastle().getName() + ":" + e1);
+			_log.warning(SiegeGuardManager.class.getName() + ": Error deleting hired siege guard for castle " + getCastle().getName() + ":" + e1);
 			if (Config.DEVELOPER)
-			{
 				e1.printStackTrace();
-			}
 		}
 	}
 
@@ -192,18 +187,16 @@ public class SiegeGuardManager
 				}
 				else
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Missing npc data in npc table for id: " + rs.getInt("npcId"));
+					_log.warning(SiegeGuardManager.class.getName() + ": Missing npc data in npc table for id: " + rs.getInt("npcId"));
 				}
 			}
 			statement.close();
 		}
 		catch (Exception e1)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error loading siege guard for castle " + getCastle().getName() + ":" + e1);
+			_log.warning(SiegeGuardManager.class.getName() + ": Error loading siege guard for castle " + getCastle().getName() + ":" + e1);
 			if (Config.DEVELOPER)
-			{
 				e1.printStackTrace();
-			}
 		}
 	}
 
@@ -232,7 +225,7 @@ public class SiegeGuardManager
 		}
 		catch (Exception e1)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error adding siege guard for castle " + getCastle().getName() + ":" + e1);
+			_log.warning(SiegeGuardManager.class.getName() + ": Error adding siege guard for castle " + getCastle().getName());
 			if (Config.DEVELOPER)
 			{
 				e1.printStackTrace();

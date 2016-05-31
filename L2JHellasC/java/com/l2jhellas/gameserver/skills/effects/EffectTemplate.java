@@ -98,7 +98,7 @@ public final class EffectTemplate
 		}
 		catch (InvocationTargetException e)
 		{
-			_log.warning("Error creating new instance of Class " + _func + " Exception was:");
+			_log.warning(EffectTemplate.class.getName() + ": Error creating new instance of Class " + _func + " Exception was:");
 			e.getTargetException().printStackTrace();
 			return null;
 		}

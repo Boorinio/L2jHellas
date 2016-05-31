@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan.RankPrivs;
 
 /**
@@ -44,7 +45,8 @@ public class PledgePowerGradeList extends L2GameServerPacket
 		{
 			writeD(_privs[i].getRank());
 			writeD(_privs[i].getParty());
-			// _log.warning("rank: "+_privs[i].getRank()+" party: "+_privs[i].getParty());
+			if (Config.DEBUG)
+				_log.warning(PledgePowerGradeList.class.getName() + ": rank: "+_privs[i].getRank()+" party: "+_privs[i].getParty());
 		}
 
 	}

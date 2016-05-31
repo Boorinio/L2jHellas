@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.skills.conditions;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.effects.EffectSeed;
@@ -23,17 +25,18 @@ import com.l2jhellas.gameserver.skills.effects.EffectSeed;
  */
 public class ConditionElementSeed extends Condition
 {
+	private static final Logger _log = Logger.getLogger(ConditionElementSeed.class.getName());
 	private static int[] seedSkills =
 	{
-	1285, 1286, 1287, 426, 427
+		1285, 1286, 1287, 426, 427
 	};
 	private final int[] _requiredSeeds;
 
 	public ConditionElementSeed(int[] seeds)
 	{
 		_requiredSeeds = seeds;
-		if (Config.DEVELOPER)
-			System.out.println("Required seeds: " + _requiredSeeds[0] + ", " + _requiredSeeds[1] + ", " + _requiredSeeds[2] + ", " + _requiredSeeds[3] + ", " + _requiredSeeds[4]);
+		if (Config.DEBUG)
+			_log.config(ConditionElementSeed.class.getName() + ": Required seeds: " + _requiredSeeds[0] + ", " + _requiredSeeds[1] + ", " + _requiredSeeds[2] + ", " + _requiredSeeds[3] + ", " + _requiredSeeds[4]);
 	}
 
 	ConditionElementSeed(int fire, int water, int wind, int battle, int spell, int various, int any)
@@ -61,8 +64,8 @@ public class ConditionElementSeed extends Condition
 				return false;
 		}
 
-		if (Config.DEVELOPER)
-			System.out.println("Seeds: " + Seeds[0] + ", " + Seeds[1] + ", " + Seeds[2]);
+		if (Config.DEBUG)
+			_log.config(ConditionElementSeed.class.getName() + ": Seeds: " + Seeds[0] + ", " + Seeds[1] + ", " + Seeds[2]);
 
 		if (_requiredSeeds[5] > 0)
 		{

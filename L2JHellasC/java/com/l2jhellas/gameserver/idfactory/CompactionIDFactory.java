@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -48,16 +47,14 @@ public class CompactionIDFactory extends IdFactory
 				N = insertUntil(tmp_obj_ids, idx, N, con);
 			}
 			_curOID++;
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Next usable Object ID is: " + _curOID);
+			_log.info(CompactionIDFactory.class.getSimpleName() + ": Next usable Object ID is: " + _curOID);
 			_initialized = true;
 		}
-		catch (Exception e1)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": ID Factory could not be initialized correctly:" + e1);
+			_log.warning(CompactionIDFactory.class.getName() + ": ID Factory could not be initialized correctly:");
 			if (Config.DEVELOPER)
-			{
-				e1.printStackTrace();
-			}
+				e.printStackTrace();
 		}
 	}
 
@@ -81,7 +78,7 @@ public class CompactionIDFactory extends IdFactory
 				while (rs.next())
 				{
 					int badId = rs.getInt(1);
-					_log.log(Level.SEVERE, getClass().getName() + ": Bad ID " + badId + " in DB found by: " + check);
+					_log.severe(CompactionIDFactory.class.getName() + ": Bad ID " + badId + " in DB found by: " + check);
 					throw new RuntimeException();
 				}
 				rs.close();
@@ -95,7 +92,7 @@ public class CompactionIDFactory extends IdFactory
 		for (int i = 1; i <= hole; i++)
 		{
 			id = tmp_obj_ids[N - i];
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Compacting DB object ID=" + id + " into " + (_curOID));
+			_log.info(CompactionIDFactory.class.getSimpleName() + ": Compacting DB object ID=" + id + " into " + (_curOID));
 			for (String update : ID_UPDATES)
 			{
 				PreparedStatement ps = con.prepareStatement(update);

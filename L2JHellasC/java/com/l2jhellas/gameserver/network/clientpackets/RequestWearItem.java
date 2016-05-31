@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -72,7 +71,9 @@ public final class RequestWearItem extends L2GameClientPacket
 			}
 			catch (Throwable e)
 			{
-				_log.log(Level.SEVERE, "", e);
+				_log.severe(RequestWearItem.class.getName() + ": ");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}

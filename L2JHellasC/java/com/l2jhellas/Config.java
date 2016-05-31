@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Extensions.RankSystem.Rank;
@@ -98,8 +97,6 @@ public final class Config
 	private static final String CONFIGURATION_FILE = "./config/Network/GameServer.ini";
 	private static final String HEXID_FILE = "./config/Network/HexId/hexid.txt";
 	private static final String GS_IP = "./config/Network/IPConfig/IPGameServer.ini";
-	// Telnet
-	public static final String TELNET_FILE = "./config/Telnet.ini";
 
 	/*********************************
 	 * LoginServer Config locations *
@@ -416,7 +413,6 @@ public final class Config
 	public static boolean BANKINGALTERNATE_SYSTEM_ENABLED;
 	public static int BANKINGALTERNATE_SYSTEM_GOLDBARS;
 	public static int BANKINGALTERNATE_SYSTEM_ADENA;
-
 	public static boolean ANNOUNCE_HERO_LOGIN;
 	public static boolean ANNOUNCE_CASTLE_LORDS;
 	public static boolean CHAR_TITLE;
@@ -473,8 +469,6 @@ public final class Config
 	public static String CHAT_FILTER_PUNISHMENT;
 	public static boolean ENABLE_SAY_SOCIAL_ACTIONS;
 	public static ArrayList<String> FILTER_LIST = new ArrayList<String>();
-
-
 	public static boolean ALLOW_CHAR_KILL_PROTECT;
 	public static int DUEL_COORD_X;
 	public static int DUEL_COORD_Y;
@@ -1202,7 +1196,7 @@ public final class Config
 	public static int MMO_MAX_READ_PER_PASS = 12; // default 12
 	public static int MMO_HELPER_BUFFER_COUNT = 20; // default 20
 	public static int MMO_IO_SELECTOR_THREAD_COUNT = 2;
-	
+
 	/**
 	 * AntiFlood Config File
 	 */
@@ -1258,14 +1252,13 @@ public final class Config
 			 * AltSettings
 			 */
 			Properties altSettings = new Properties();
-			final File altset = new File(ALT_SETTINGS_FILE);
-			try (InputStream is = new FileInputStream(altset))
+			try (InputStream is = new FileInputStream(new File(ALT_SETTINGS_FILE)))
 			{
 				altSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + ALT_SETTINGS_FILE + " settings!", e);
+					_log.severe(Config.class.getName() + ": Error while loading " + ALT_SETTINGS_FILE + " settings!");
 			}
 			//auto loot
 			AUTO_LOOT = Boolean.parseBoolean(altSettings.getProperty("AutoLoot", "False"));
@@ -1437,14 +1430,13 @@ public final class Config
 
 			// Load FloodProtector L2Properties file
 			Properties FloodProtectors = new Properties();
-			final File flood = new File(FLOOD_PROTECTORS_FILE);
-			try (InputStream is = new FileInputStream(flood))
+			try (InputStream is = new FileInputStream(new File(FLOOD_PROTECTORS_FILE)))
 			{
 				FloodProtectors.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + FLOOD_PROTECTORS_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + FLOOD_PROTECTORS_FILE + " settings!");
 			}
 			loadFloodProtectorConfigs(FloodProtectors);
 			
@@ -1452,14 +1444,13 @@ public final class Config
 			 * ClanHall Settings
 			 */
 			Properties clanhallSettings = new Properties();
-			final File clan = new File(CLANHALL_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(clan))
+			try (InputStream is = new FileInputStream(new File(CLANHALL_CONFIG_FILE)))
 			{
 				clanhallSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + CLANHALL_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + CLANHALL_CONFIG_FILE + " settings!");
 			}
 			CH_TELE_FEE_RATIO = Long.valueOf(clanhallSettings.getProperty("ClanHallTeleportFunctionFeeRation", "86400000"));
 			CH_TELE1_FEE = Integer.valueOf(clanhallSettings.getProperty("ClanHallTeleportFunctionFeeLvl1", "86400000"));
@@ -1519,14 +1510,13 @@ public final class Config
 			 * Server Version
 			 */
 			Properties versionSettings = new Properties();
-			final File version = new File(SERVER_VERSION_FILE);
-			try (InputStream is = new FileInputStream(version))
+			try (InputStream is = new FileInputStream(new File(SERVER_VERSION_FILE)))
 			{
 				versionSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + SERVER_VERSION_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + SERVER_VERSION_FILE + " settings!");
 			}
 			SERVER_VERSION = versionSettings.getProperty("version", "Unsupported Custom Version.");
 			SERVER_BUILD_DATE = versionSettings.getProperty("builddate", "Undefined Date.");
@@ -1535,14 +1525,13 @@ public final class Config
 			 * Admin
 			 */
 			Properties AdminSettings = new Properties();
-			final File admin = new File(ADMIN_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(admin))
+			try (InputStream is = new FileInputStream(new File(ADMIN_CONFIG_FILE)))
 			{
 				AdminSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + ADMIN_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + ADMIN_CONFIG_FILE + " settings!");
 			}
 			GM_HERO_AURA = Boolean.parseBoolean(AdminSettings.getProperty("GMHeroAura", "False"));
 			GM_STARTUP_INVULNERABLE = Boolean.parseBoolean(AdminSettings.getProperty("GMStartupInvulnerable", "True"));
@@ -1557,14 +1546,13 @@ public final class Config
 			 * Id
 			 */
 			Properties idSettings = new Properties();
-			final File id = new File(ID_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(id))
+			try (InputStream is = new FileInputStream(new File(ID_CONFIG_FILE)))
 			{
 				idSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + ID_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + ID_CONFIG_FILE + " settings!");
 			}
 			MAP_TYPE = ObjectMapType.valueOf(idSettings.getProperty("L2Map", "WorldObjectMap"));
 			SET_TYPE = ObjectSetType.valueOf(idSettings.getProperty("L2Set", "WorldObjectSet"));
@@ -1575,14 +1563,13 @@ public final class Config
 			 * Champions
 			 */
 			Properties ChampionSettings = new Properties();
-			final File champ = new File(MOD_CHAMPIONS_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(champ))
+			try (InputStream is = new FileInputStream(new File(MOD_CHAMPIONS_CONFIG_FILE)))
 			{
 				ChampionSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + MOD_CHAMPIONS_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + MOD_CHAMPIONS_CONFIG_FILE + " settings!");
 			}
 			CHAMPION_PASSIVE = Boolean.parseBoolean(ChampionSettings.getProperty("ChampionPassive", "False"));
 			CHAMPION_TITLE = ChampionSettings.getProperty("ChampionTitle", "Champion").trim();
@@ -1608,14 +1595,13 @@ public final class Config
 			 * PvP
 			 */
 			Properties PvPSettings = new Properties();
-			final File pvp = new File(PVP_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(pvp))
+			try (InputStream is = new FileInputStream(new File(PVP_CONFIG_FILE)))
 			{
 				PvPSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + PVP_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + PVP_CONFIG_FILE + " settings!");
 			}
 			ALLOW_POTS_IN_PVP = Boolean.parseBoolean(PvPSettings.getProperty("AllowPotsInPvP", "True"));
 			ALLOW_SOE_IN_PVP = Boolean.parseBoolean(PvPSettings.getProperty("AllowSoEInPvP", "True"));
@@ -1683,14 +1669,13 @@ public final class Config
 			 * PvP
 			 */
 			Properties L2JHellasSettings = new Properties();
-			final File l2jhellas = new File(MOD_L2JHellas_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(l2jhellas))
+			try (InputStream is = new FileInputStream(new File(MOD_L2JHellas_CONFIG_FILE)))
 			{
 				L2JHellasSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + MOD_L2JHellas_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + MOD_L2JHellas_CONFIG_FILE + " settings!");
 			}
 			BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JHellasSettings.getProperty("BankingEnabled", "False"));
 			BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JHellasSettings.getProperty("BankingGoldbarCount", "1"));
@@ -1745,9 +1730,9 @@ public final class Config
 			ADD_SP = Integer.parseInt(L2JHellasSettings.getProperty("AddSpAtPvp", "0"));
 			ABORT_RR = L2JHellasSettings.getProperty("AbortRestart", "L2JHellas");
 			SPAWN_CHAR = Boolean.parseBoolean(L2JHellasSettings.getProperty("CustomSpawn", "False"));
-			SPAWN_X = Integer.parseInt(L2JHellasSettings.getProperty("SpawnX", ""));
-			SPAWN_Y = Integer.parseInt(L2JHellasSettings.getProperty("SpawnY", ""));
-			SPAWN_Z = Integer.parseInt(L2JHellasSettings.getProperty("SpawnZ", ""));
+			SPAWN_X = Integer.parseInt(L2JHellasSettings.getProperty("SpawnX", "0"));
+			SPAWN_Y = Integer.parseInt(L2JHellasSettings.getProperty("SpawnY", "0"));
+			SPAWN_Z = Integer.parseInt(L2JHellasSettings.getProperty("SpawnZ", "0"));
 			USE_SAY_FILTER = Boolean.parseBoolean(L2JHellasSettings.getProperty("UseChatFilter", "False"));
 			CHAT_FILTER_CHARS = L2JHellasSettings.getProperty("ChatFilterChars", "***");
 			CHAT_FILTER_PUNISHMENT = L2JHellasSettings.getProperty("ChatFilterPunishment", "off");
@@ -1769,14 +1754,13 @@ public final class Config
 			 * Rank PvP System
 			 */
 			Properties RankSettings = new Properties();
-			final File Rank = new File(MOD_RANK_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(Rank))
+			try (InputStream is = new FileInputStream(new File(MOD_RANK_CONFIG_FILE)))
 			{
 				RankSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Error while loading " + MOD_L2JHellas_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + MOD_L2JHellas_CONFIG_FILE + " settings!");
 			}
 			RANK_PVP_SYSTEM_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RankPvpSystemEnabled", "false"));
 			
@@ -1789,7 +1773,7 @@ public final class Config
 			if (DATABASE_CLEANER_REPEAT_TIME <= 0)
 			{
 				DATABASE_CLEANER_ENABLED = false;
-				_log.log(Level.WARNING, "[DatabaseCleanerRepeatTime]: invalid config property -> \"" + DATABASE_CLEANER_REPEAT_TIME + "\"");
+				_log.warning(Config.class.getName() + ": [DatabaseCleanerRepeatTime]: invalid config property -> \"" + DATABASE_CLEANER_REPEAT_TIME + "\"");
 			}
 			else
 			{
@@ -1833,29 +1817,29 @@ public final class Config
 			{
 				if (id1.length != id2.length || id1.length != id3.length || id1.length != id5.length || id1.length != id6.length || id1.length != id7.length)
 				{
-					_log.log(Level.INFO, "[RankPvpSystemConfig]: Arrays sizes should be the same!");
+					_log.info(Config.class.getName() + "[RankPvpSystemConfig]: Arrays sizes should be the same!");
 
-					_log.log(Level.INFO, "RANK_NAMES         		 :" + id1.length);
-					_log.log(Level.INFO, "RANK_MIN_POINTS    		 :" + id2.length);
-					_log.log(Level.INFO, "RANK_POINTS_FOR_KILL		 :" + id3.length);
-					_log.log(Level.INFO, "RANK_RPC_AMOUNT		 	 :" + id5.length);
-					_log.log(Level.INFO, "RANK_NICK_COLORS    		 :" + id6.length);
-					_log.log(Level.INFO, "RANK_TITLE_COLORS  		 :" + id7.length);
+					_log.info(Config.class.getName() + "RANK_NAMES         		 :" + id1.length);
+					_log.info(Config.class.getName() + "RANK_MIN_POINTS    		 :" + id2.length);
+					_log.info(Config.class.getName() + "RANK_POINTS_FOR_KILL		 :" + id3.length);
+					_log.info(Config.class.getName() + "RANK_RPC_AMOUNT		 	 :" + id5.length);
+					_log.info(Config.class.getName() + "RANK_NICK_COLORS    		 :" + id6.length);
+					_log.info(Config.class.getName() + "RANK_TITLE_COLORS  		 :" + id7.length);
 				}
 				else if (id1.length == 0 || id2.length == 0 || id3.length == 0 || id5.length == 0 || id6.length == 0 || id7.length == 0)
 				{
-					_log.log(Level.INFO, "[RankPvpSystemConfig]: Arrays sizes must be greater than 0!");
+					_log.info(Config.class.getName() + "[RankPvpSystemConfig]: Arrays sizes must be greater than 0!");
 
-					_log.log(Level.INFO, "RANK_NAMES         		 :" + id1.length);
-					_log.log(Level.INFO, "RANK_MIN_POINTS    		 :" + id2.length);
-					_log.log(Level.INFO, "RANK_POINTS_FOR_KILL		 :" + id3.length);
-					_log.log(Level.INFO, "RANK_RPC_AMOUNT		 	 :" + id5.length);
-					_log.log(Level.INFO, "RANK_NICK_COLORS    		 :" + id6.length);
-					_log.log(Level.INFO, "RANK_TITLE_COLORS  		 :" + id7.length);
+					_log.info(Config.class.getName() + "RANK_NAMES         		 :" + id1.length);
+					_log.info(Config.class.getName() + "RANK_MIN_POINTS    		 :" + id2.length);
+					_log.info(Config.class.getName() + "RANK_POINTS_FOR_KILL		 :" + id3.length);
+					_log.info(Config.class.getName() + "RANK_RPC_AMOUNT		 	 :" + id5.length);
+					_log.info(Config.class.getName() + "RANK_NICK_COLORS    		 :" + id6.length);
+					_log.info(Config.class.getName() + "RANK_TITLE_COLORS  		 :" + id7.length);
 				}
 				else if (id2.length > 0 && Integer.parseInt(id2[id2.length - 1]) != 0)
 				{
-					_log.log(Level.INFO, "[RankMinPoints]: Last value must equal 0! Example: ...,6,5,4,3,2,1,0");
+					_log.info(Config.class.getName() + "[RankMinPoints]: Last value must equal 0! Example: ...,6,5,4,3,2,1,0");
 				}
 				else
 				{
@@ -1930,7 +1914,7 @@ public final class Config
 						String[] valueSplit = value.split(",");
 						if (valueSplit.length != 2)
 						{
-							_log.log(Level.WARNING, StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", value, "\""));
+							_log.warning(Config.class.getName() + StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", value, "\""));
 						}
 						else
 						{
@@ -1942,7 +1926,7 @@ public final class Config
 							{
 								if (!value.isEmpty())
 								{
-									_log.log(Level.WARNING, StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+									_log.warning(Config.class.getName() + StringUtil.concat("[ComboKillLocalAreaMessages]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
 								}
 							}
 						}
@@ -1961,7 +1945,7 @@ public final class Config
 						String[] valueSplit = value.split(",");
 						if (valueSplit.length != 2)
 						{
-							_log.log(Level.WARNING, StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", value, "\""));
+							_log.warning(Config.class.getName() + StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", value, "\""));
 						}
 						else
 						{
@@ -1973,7 +1957,7 @@ public final class Config
 							{
 								if (!value.isEmpty())
 								{
-									_log.log(Level.WARNING, StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+									_log.warning(Config.class.getName() + StringUtil.concat("[ComboKillGlobalAreaMessages]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
 								}
 							}
 						}
@@ -2003,7 +1987,7 @@ public final class Config
 						String[] valueSplit = value.split(",");
 						if (valueSplit.length != 2)
 						{
-							_log.log(Level.WARNING, StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", value, "\""));
+							_log.warning(Config.class.getName() + StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", value, "\""));
 						}
 						else
 						{
@@ -2015,7 +1999,7 @@ public final class Config
 							{
 								if (!value.isEmpty())
 								{
-									_log.log(Level.WARNING, StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+									_log.warning(Config.class.getName() + StringUtil.concat("[ComboKillRankPointsRatio]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
 								}
 							}
 						}
@@ -2041,7 +2025,7 @@ public final class Config
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, e.getMessage());
+						_log.warning(Config.class.getName() + e.getMessage());
 					}
 					i++;
 				}
@@ -2059,7 +2043,7 @@ public final class Config
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, e.getMessage());
+						_log.warning(Config.class.getName() + e.getMessage());
 					}
 					i++;
 				}
@@ -2098,7 +2082,7 @@ public final class Config
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, e.getMessage());
+						_log.warning(Config.class.getName() + e.getMessage());
 					}
 					i++;
 				}
@@ -2115,7 +2099,7 @@ public final class Config
 						String[] valueSplit = value.split(",");
 						if (valueSplit.length != 2)
 						{
-							_log.log(Level.WARNING, StringUtil.concat("[RankPointsBonusZonesIds]: invalid config property -> \"", value, "\""));
+							_log.warning(Config.class.getName() + StringUtil.concat("[RankPointsBonusZonesIds]: invalid config property -> \"", value, "\""));
 						}
 						else
 						{
@@ -2127,7 +2111,7 @@ public final class Config
 							{
 								if (!value.isEmpty())
 								{
-									_log.log(Level.WARNING, StringUtil.concat("[RankPointsBonusZonesIds]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
+									_log.warning(Config.class.getName() + StringUtil.concat("[RankPointsBonusZonesIds]: invalid config property -> \"", valueSplit[0], "\"", valueSplit[1]));
 								}
 							}
 						}
@@ -2150,7 +2134,7 @@ public final class Config
 			PVP_TABLE_UPDATE_INTERVAL = (Integer.parseInt(RankSettings.getProperty("PvpTableUpdateInterval", "1")) * 60000);
 			if (PVP_TABLE_UPDATE_INTERVAL < 1)
 			{
-				_log.log(Level.WARNING, StringUtil.concat("[PvpTableUpdateInterval]: invalid config property -> \"", Long.toString(PVP_TABLE_UPDATE_INTERVAL), "\""));
+				_log.warning(Config.class.getName() + StringUtil.concat("[PvpTableUpdateInterval]: invalid config property -> \"", Long.toString(PVP_TABLE_UPDATE_INTERVAL), "\""));
 				PVP_TABLE_UPDATE_INTERVAL = 60000;
 			}
 			RPC_TABLE_FORCE_UPDATE_ENABLED = Boolean.parseBoolean(RankSettings.getProperty("RpcTableForceUpdate", "true"));
@@ -2168,7 +2152,7 @@ public final class Config
 						String[] hm = value.split(":");
 						if (hm.length != 2)	// hm table length
 						{
-							_log.log(Level.WARNING, StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\""));
+							_log.warning(Config.class.getName() + StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\""));
 						}
 						else
 						{
@@ -2180,7 +2164,7 @@ public final class Config
 
 								if (m_s.length() != 2)
 								{
-									_log.log(Level.WARNING, StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\" minutes format incorrect [hh:mm]"));
+									_log.warning(Config.class.getName() + StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\" minutes format incorrect [hh:mm]"));
 									break;
 								}
 
@@ -2204,7 +2188,7 @@ public final class Config
 
 								if (h < 0 || m < 0 || h > 24 || m > 59)
 								{
-									_log.log(Level.WARNING, StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\" minutes format incorrect [hh:mm]"));
+									_log.warning(Config.class.getName() + StringUtil.concat("[TopTableUpdateTimes]: invalid config property -> \"", value, "\" minutes format incorrect [hh:mm]"));
 									break;
 								}
 
@@ -2281,7 +2265,7 @@ public final class Config
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.WARNING, "Config: Failed to Load " + CHAT_FILTER_FILE + " File.");
+					_log.warning(Config.class.getName() + ": Config: Failed to Load " + CHAT_FILTER_FILE + " File.");
 					if (Config.DEVELOPER)
 					{
 						e.printStackTrace();
@@ -2305,7 +2289,7 @@ public final class Config
 					String skillSplit[] = skill.split(",");
 					if (skillSplit.length != 2)
 					{
-						_log.log(Level.WARNING, "[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills " + skill);
+						_log.warning(Config.class.getName() + ": [Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills " + skill);
 						continue;
 					}
 					try
@@ -2318,7 +2302,7 @@ public final class Config
 					}
 					if (!skill.equals(""))
 					{
-						_log.log(Level.WARNING, "[Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills " + skillSplit[0] + " " + skillSplit[1]);
+						_log.warning(Config.class.getName() + ": [Clan System]: invalid config property in Mods/L2JHellas.ini -> ClanSkills " + skillSplit[0] + " " + skillSplit[1]);
 					}
 				}
 			}
@@ -2329,14 +2313,13 @@ public final class Config
 			 * Automation System
 			 */
 			Properties autoSettings = new Properties();
-			final File auto = new File(MOD_AUTOMATION_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(auto))
+			try (InputStream is = new FileInputStream(new File(MOD_AUTOMATION_CONFIG_FILE)))
 			{
 				autoSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + MOD_AUTOMATION_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + MOD_AUTOMATION_CONFIG_FILE + " settings!");
 			}
 			ALLOW_SERVER_RESTART_COMMAND = Boolean.parseBoolean(autoSettings.getProperty("AllowServerRestartCommand", "False"));
 			VOTES_NEEDED_FOR_RESTART = Integer.parseInt(autoSettings.getProperty("VotesNeededForRestart", "20"));
@@ -2364,18 +2347,18 @@ public final class Config
 			MINUTES_AFK_PLAYERS = Integer.parseInt(autoSettings.getProperty("AntiAfkMinutes", "20"));
 			ALLOW_PRIVATE_ANTI_BOT = Boolean.valueOf(autoSettings.getProperty("AllowPrivateAntiBot", "False"));
 			ENCHANT_BOT_CHANCE = Integer.parseInt(autoSettings.getProperty("PrivateBotChance", "15"));			
+
 			/**
 			 * Smart CB
 			 */
 			Properties smartCBSettings = new Properties();
-			final File smartcb = new File(MOD_SMART_CB_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(smartcb))
+			try (InputStream is = new FileInputStream(new File(MOD_SMART_CB_CONFIG_FILE)))
 			{
 				smartCBSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + MOD_SMART_CB_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + MOD_SMART_CB_CONFIG_FILE + " settings!");
 			}
 			TOP_PLAYER_ROW_HEIGHT = Integer.parseInt(smartCBSettings.getProperty("TopPlayerRowHeight", "19"));
 			TOP_PLAYER_RESULTS = Integer.parseInt(smartCBSettings.getProperty("TopPlayerResults", "20"));
@@ -2403,14 +2386,13 @@ public final class Config
 			 * Custom Npc
 			 */
 			Properties CustomNpcSettings = new Properties();
-			final File CustomNpc = new File(MOD_CUSTOM_NPC_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(CustomNpc))
+			try (InputStream is = new FileInputStream(new File(MOD_CUSTOM_NPC_CONFIG_FILE)))
 			{
 				CustomNpcSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + MOD_CUSTOM_NPC_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + MOD_CUSTOM_NPC_CONFIG_FILE + " settings!");
 			}
 			ENABLE_CACHE_INFO = Boolean.parseBoolean(CustomNpcSettings.getProperty("EnableCacheInfo", "False"));
 			SHOW_NPC_CREST = Boolean.parseBoolean(CustomNpcSettings.getProperty("ShowNpcCrest", "False"));
@@ -2445,14 +2427,13 @@ public final class Config
 			 * Olympiad
 			 */
 			Properties OlySettings = new Properties();
-			final File Oly = new File(OLYMPIAD_FILE);
-			try (InputStream is = new FileInputStream(Oly))
+			try (InputStream is = new FileInputStream(new File(OLYMPIAD_FILE)))
 			{
 				OlySettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + OLYMPIAD_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + OLYMPIAD_FILE + " settings!");
 			}
 			
 			ALT_OLY_START_TIME = Integer.parseInt(OlySettings.getProperty("AltOlyStartTime", "18"));
@@ -2493,14 +2474,13 @@ public final class Config
 			 * Geodata
 			 */
 			Properties geoSettings = new Properties();
-			final File geo = new File(GEO_FILE);
-			try (InputStream is = new FileInputStream(geo))
+			try (InputStream is = new FileInputStream(new File(GEO_FILE)))
 			{
 				geoSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + GEO_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + GEO_FILE + " settings!");
 			}
 			ACCEPT_GEOEDITOR_CONN = Boolean.parseBoolean(geoSettings.getProperty("AcceptGeoeditorConn", "False"));
 			COORD_SYNCHRONIZE = Integer.parseInt(geoSettings.getProperty("CoordSynchronize", "-1"));
@@ -2513,14 +2493,13 @@ public final class Config
 			 * Options
 			 */
 			Properties optionsSettings = new Properties();
-			final File Option = new File(OPTIONS_FILE);
-			try (InputStream is = new FileInputStream(Option))
+			try (InputStream is = new FileInputStream(new File(OPTIONS_FILE)))
 			{
 				optionsSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + OPTIONS_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + OPTIONS_FILE + " settings!");
 			}
 			ZONE_TOWN = Integer.parseInt(optionsSettings.getProperty("ZoneTown", "0"));
 			DEFAULT_GLOBAL_CHAT = optionsSettings.getProperty("GlobalChat", "GLOBAL");
@@ -2598,14 +2577,13 @@ public final class Config
 			 * Other
 			 */
 			Properties otherSettings = new Properties();
-			final File other = new File(OTHER_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(other))
+			try (InputStream is = new FileInputStream(new File(OTHER_CONFIG_FILE)))
 			{
 				otherSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + OTHER_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + OTHER_CONFIG_FILE + " settings!");
 			}
 			STARTING_ADENA = Integer.parseInt(otherSettings.getProperty("StartingAdena", "100"));
 			STARTING_ANCIENT = Integer.parseInt(otherSettings.getProperty("StartingAncientAdena", "100"));
@@ -2687,14 +2665,13 @@ public final class Config
 			 * Event ZODIAC
 			 */
 			Properties EventZodiacSettings = new Properties();
-			final File eventZodiac = new File(EVENT_ZODIAC_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventZodiac))
+			try (InputStream is = new FileInputStream(new File(EVENT_ZODIAC_CONFIG_FILE)))
 			{
 				EventZodiacSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_ZODIAC_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_ZODIAC_CONFIG_FILE + " settings!");
 			}
 			ZODIAC_ENABLE = Boolean.parseBoolean(EventZodiacSettings.getProperty("Zodiac", "true"));
 			ZODIAC_REWARD = Integer.parseInt(EventZodiacSettings.getProperty("ZodiadReward", "3470"));
@@ -2709,14 +2686,13 @@ public final class Config
 			 * Event TVT
 			 */
 			Properties EventTVTSettings = new Properties();
-			final File eventTVT = new File(EVENT_TVT_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventTVT))
+			try (InputStream is = new FileInputStream(new File(EVENT_TVT_CONFIG_FILE)))
 			{
 				EventTVTSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_TVT_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_TVT_CONFIG_FILE + " settings!");
 			}
 			TVT_ALLOW_AUTOEVENT = Boolean.parseBoolean(EventTVTSettings.getProperty("TvTAutomatedEvent", "true"));
 			TVT_EVENT_TIMES= EventTVTSettings.getProperty("TvTStartUpTimes", "17:00,18:00,19:00");
@@ -2752,14 +2728,13 @@ public final class Config
 			 * Event HITMAN
 			 */
 			Properties EventHITMANSettings = new Properties();
-			final File eventHITMAN = new File(EVENT_HITMAN_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventHITMAN))
+			try (InputStream is = new FileInputStream(new File(EVENT_HITMAN_CONFIG_FILE)))
 			{
 				EventHITMANSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_HITMAN_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_HITMAN_CONFIG_FILE + " settings!");
 			}
 			ENABLE_HITMAN_EVENT = Boolean.parseBoolean(EventHITMANSettings.getProperty("EnableHitmanEvent", "False"));
 			HITMAN_TAKE_KARMA = Boolean.parseBoolean(EventHITMANSettings.getProperty("HitmansTakekarma", "True"));
@@ -2769,14 +2744,13 @@ public final class Config
 			 * Event DM
 			 */
 			Properties EventDMSettings = new Properties();
-			final File eventDM = new File(EVENT_DM_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventDM))
+			try (InputStream is = new FileInputStream(new File(EVENT_DM_CONFIG_FILE)))
 			{
 				EventDMSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_DM_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_DM_CONFIG_FILE + " settings!");
 			}
 			DM_ALLOW_INTERFERENCE = Boolean.parseBoolean(EventDMSettings.getProperty("DMAllowInterference", "false"));
 			DM_ALLOW_POTIONS = Boolean.parseBoolean(EventDMSettings.getProperty("DMAllowPotions", "false"));
@@ -2793,14 +2767,13 @@ public final class Config
 			 * Event CTF
 			 */
 			Properties EventCTFSettings = new Properties();
-			final File eventCTF = new File(EVENT_CTF_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventCTF))
+			try (InputStream is = new FileInputStream(new File(EVENT_CTF_CONFIG_FILE)))
 			{
 				EventCTFSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_CTF_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_CTF_CONFIG_FILE + " settings!");
 			}
 			ALLOW_CTF_AUTOEVENT = Boolean.parseBoolean(EventCTFSettings.getProperty("CTFAutomatedEvent", "true"));
 			CTF_EVENT_TIMES= EventCTFSettings.getProperty("CTFStartUpTimes", "17:00,18:00,19:00");
@@ -2824,32 +2797,31 @@ public final class Config
 			 * Event RAID
 			 */
 			Properties EventRAIDSettings = new Properties();
-			final File eventRAID = new File(EVENT_RAID_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventRAID))
+			try (InputStream is = new FileInputStream(new File(EVENT_RAID_CONFIG_FILE)))
 			{
 				EventRAIDSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_RAID_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_RAID_CONFIG_FILE + " settings!");
 			}
 			RAID_SYSTEM_ENABLED = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidEnginesEnabled", "false"));
 			RAID_SYSTEM_GIVE_BUFFS = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidGiveBuffs", "true"));
 			RAID_SYSTEM_RESURRECT_PLAYER = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidResurrectPlayer", "true"));
 			RAID_SYSTEM_MAX_EVENTS = Integer.parseInt(EventRAIDSettings.getProperty("RaidMaxNumEvents", "3"));
 			RAID_SYSTEM_FIGHT_TIME = Integer.parseInt(EventRAIDSettings.getProperty("RaidSystemFightTime", "60"));
+
 			/**
 			 * Event WEDDING
 			 */
 			Properties EventWEDDINGSettings = new Properties();
-			final File eventWEDDING = new File(EVENT_WEDDING_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(eventWEDDING))
+			try (InputStream is = new FileInputStream(new File(EVENT_WEDDING_CONFIG_FILE)))
 			{
 				EventWEDDINGSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + EVENT_WEDDING_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_WEDDING_CONFIG_FILE + " settings!");
 			}
 			MOD_ALLOW_WEDDING = Boolean.valueOf(EventWEDDINGSettings.getProperty("AllowWedding", "False"));
 			MOD_WEDDING_PRICE = Integer.parseInt(EventWEDDINGSettings.getProperty("WeddingPrice", "250000000"));
@@ -2867,14 +2839,13 @@ public final class Config
 			 * Rates
 			 */
 			Properties ratesSettings = new Properties();
-			final File rates = new File(RATES_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(rates))
+			try (InputStream is = new FileInputStream(new File(RATES_CONFIG_FILE)))
 			{
 				ratesSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + RATES_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + RATES_CONFIG_FILE + " settings!");
 			}
 			// Premium Service
 			USE_PREMIUMSERVICE = Boolean.parseBoolean(ratesSettings.getProperty("UsePremiumServices", "False"));
@@ -2972,7 +2943,7 @@ public final class Config
 					String[] enchantSplit = enchant.split(",");
 					if (enchantSplit.length != 2)
 					{
-						_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
 					}
 					else
 					{
@@ -2984,7 +2955,7 @@ public final class Config
 						{
 							if (!enchant.isEmpty())
 							{
-								_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
 							}
 						}
 					}
@@ -2997,7 +2968,7 @@ public final class Config
 					String[] enchantSplit = enchant.split(",");
 					if (enchantSplit.length != 2)
 					{
-						_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
 					}
 					else
 					{
@@ -3009,7 +2980,7 @@ public final class Config
 						{
 							if (!enchant.isEmpty())
 							{
-								_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
 							}
 						}
 					}
@@ -3022,7 +2993,7 @@ public final class Config
 					String[] enchantSplit = enchant.split(",");
 					if (enchantSplit.length != 2)
 					{
-						_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
 					}
 					else
 					{
@@ -3034,7 +3005,7 @@ public final class Config
 						{
 							if (!enchant.isEmpty())
 							{
-								_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
 							}
 						}
 					}
@@ -3047,7 +3018,7 @@ public final class Config
 					String[] enchantSplit = enchant.split(",");
 					if (enchantSplit.length != 2)
 					{
-						_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
 					}
 					else
 					{
@@ -3059,7 +3030,7 @@ public final class Config
 						{
 							if (!enchant.isEmpty())
 							{
-								_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
 							}
 						}
 					}
@@ -3072,7 +3043,7 @@ public final class Config
 					String[] enchantSplit = enchant.split(",");
 					if (enchantSplit.length != 2)
 					{
-						_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
 					}
 					else
 					{
@@ -3084,7 +3055,7 @@ public final class Config
 						{
 							if (!enchant.isEmpty())
 							{
-								_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
 							}
 						}
 					}
@@ -3097,7 +3068,7 @@ public final class Config
 					String[] enchantSplit = enchant.split(",");
 					if (enchantSplit.length != 2)
 					{
-						_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
+						_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchant, "\""));
 					}
 					else
 					{
@@ -3109,7 +3080,7 @@ public final class Config
 						{
 							if (!enchant.isEmpty())
 							{
-								_log.warning(StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
+								_log.warning(Config.class.getName() + StringUtil.concat("[CustomEnchantSystem]: invalid config property -> EnchantList \"", enchantSplit[0], "\"", enchantSplit[1]));
 							}
 						}
 					}
@@ -3120,14 +3091,13 @@ public final class Config
 			 * GrandBoss
 			 */
 			Properties grandbossSettings = new Properties();
-			final File gb = new File(GRANDBOSS_CONFIG_FILE);
-			try (InputStream is = new FileInputStream(gb))
+			try (InputStream is = new FileInputStream(new File(GRANDBOSS_CONFIG_FILE)))
 			{
 				grandbossSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + GRANDBOSS_CONFIG_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + GRANDBOSS_CONFIG_FILE + " settings!");
 			}
 			Antharas_Wait_Time = Integer.parseInt(grandbossSettings.getProperty("AntharasWaitTime", "10"));
 			if (Antharas_Wait_Time < 3 || Antharas_Wait_Time > 60)
@@ -3217,14 +3187,13 @@ public final class Config
 			 * Seven Signs
 			 */
 			Properties SevenSettings = new Properties();
-			final File seven = new File(SEVENSIGNS_FILE);
-			try (InputStream is = new FileInputStream(seven))
+			try (InputStream is = new FileInputStream(new File(SEVENSIGNS_FILE)))
 			{
 				SevenSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + SEVENSIGNS_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + SEVENSIGNS_FILE + " settings!");
 			}
 			ALT_GAME_REQUIRE_CASTLE_DAWN = Boolean.parseBoolean(SevenSettings.getProperty("AltRequireCastleForDawn", "False"));
 			ALT_GAME_REQUIRE_CLAN_CASTLE = Boolean.parseBoolean(SevenSettings.getProperty("AltRequireClanCastle", "False"));
@@ -3243,14 +3212,13 @@ public final class Config
 			 * Server
 			 */
 			Properties serverSettings = new Properties();
-			final File server = new File(CONFIGURATION_FILE);
-			try (InputStream is = new FileInputStream(server))
+			try (InputStream is = new FileInputStream(new File(CONFIGURATION_FILE)))
 			{
 				serverSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + CONFIGURATION_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + CONFIGURATION_FILE + " settings!");
 			}
 			// Dev's Config
 			DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
@@ -3294,14 +3262,13 @@ public final class Config
 			 * GameServer IP
 			 */
 			Properties gsIpSettings = new Properties();
-			final File gs = new File(GS_IP);
-			try (InputStream is = new FileInputStream(gs))
+			try (InputStream is = new FileInputStream(new File(GS_IP)))
 			{
 				gsIpSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + GS_IP + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + GS_IP + " settings!");
 			}
 			// Dev's Config
 			EXTERNAL_HOSTNAME = gsIpSettings.getProperty("ExternalHostname", "*");
@@ -3315,19 +3282,17 @@ public final class Config
 			 * HexID
 			 */
 			Properties hexidSettings = new Properties();
-			final File hex = new File(HEXID_FILE);
-			try (InputStream is = new FileInputStream(hex))
+			try (InputStream is = new FileInputStream(new File(HEXID_FILE)))
 			{
 				hexidSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + HEXID_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + HEXID_FILE + " settings!");
 			}
 			SERVER_ID = Integer.parseInt(hexidSettings.getProperty("ServerID"));
 			HEX_ID = new BigInteger(hexidSettings.getProperty("HexID"), 16).toByteArray();
-
-			_log.log(Level.INFO, "Configuration Files Loaded.");
+			_log.info(Config.class.getName() + "Configuration Files Loaded.");
 		}
 		else if (Server.serverMode == Server.MODE_LOGINSERVER)
 		{
@@ -3335,14 +3300,13 @@ public final class Config
 			 * Login Server
 			 */
 			Properties serverSettings = new Properties();
-			final File serv = new File(LOGIN_CONFIGURATION_FILE);
-			try (InputStream is = new FileInputStream(serv))
+			try (InputStream is = new FileInputStream(new File(LOGIN_CONFIGURATION_FILE)))
 			{
 				serverSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + LOGIN_CONFIGURATION_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + LOGIN_CONFIGURATION_FILE + " settings!");
 			}
 			ASSERT = Boolean.parseBoolean(serverSettings.getProperty("Assert", "False"));
 			ACCEPT_NEW_GAMESERVER = Boolean.parseBoolean(serverSettings.getProperty("AcceptNewGameServer", "True"));
@@ -3369,14 +3333,13 @@ public final class Config
 			 * LoginServer IP
 			 */
 			Properties lsIpSettings = new Properties();
-			final File lsip = new File(LS_IP);
-			try (InputStream is = new FileInputStream(lsip))
+			try (InputStream is = new FileInputStream(new File(LS_IP)))
 			{
 				lsIpSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + LS_IP + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + LS_IP + " settings!");
 			}
 			GAME_SERVER_LOGIN_HOST = lsIpSettings.getProperty("LoginHostname", "127.0.0.1");
 			GAME_SERVER_LOGIN_PORT = Integer.parseInt(lsIpSettings.getProperty("LoginPort", "9014"));
@@ -3389,19 +3352,17 @@ public final class Config
 			 * Server Version
 			 */
 			Properties versionSettings = new Properties();
-			final File version = new File(SERVER_VERSION_FILE);
-			try (InputStream is = new FileInputStream(version))
+			try (InputStream is = new FileInputStream(new File(SERVER_VERSION_FILE)))
 			{
 				versionSettings.load(is);
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "Error while loading " + SERVER_VERSION_FILE + " settings!", e);
+				_log.severe(Config.class.getName() + ": Error while loading " + SERVER_VERSION_FILE + " settings!");
 			}
 			SERVER_VERSION = versionSettings.getProperty("version", "Unsupported Custom Version.");
 			SERVER_BUILD_DATE = versionSettings.getProperty("builddate", "Undefined Date.");
-			
-			_log.log(Level.INFO, "Configuration Files Loaded.");
+			_log.info(Config.class.getName() + "Configuration Files Loaded.");
 		}
 		else
 		{
@@ -4158,7 +4119,7 @@ public final class Config
 				}
 				catch (Exception e)
 				{
-					_log.log(Level.WARNING, "", e);
+					_log.warning(Config.class.getName() + ": Grandboss configuration error");
 					return false;
 				}
 		}
@@ -4238,7 +4199,7 @@ public final class Config
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Config: Failed to save hex id to " + fileName + " File.");
+			_log.warning(Config.class.getName() + ": Config: Failed to save hex id to " + fileName + " File.");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -4269,11 +4230,7 @@ public final class Config
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Config: Failed to Load " + FILTER_FILE + " File." + e);
-			if (Config.DEVELOPER)
-			{
-				e.printStackTrace();
-			}
+			_log.warning(Config.class.getName() + ": Config: Failed to Load " + FILTER_FILE + " File.");
 		}
 	}
 
@@ -4305,7 +4262,7 @@ public final class Config
 			valueSplit = value.split(",");
 			if (valueSplit.length != 2)
 			{
-				_log.warning(StringUtil.concat("parseItemsList[Config.load()]: invalid entry -> \"", valueSplit[0], "\", should be itemId,itemNumber"));
+				_log.warning(Config.class.getName() + StringUtil.concat("parseItemsList[Config.load()]: invalid entry -> \"", valueSplit[0], "\", should be itemId,itemNumber"));
 				return null;
 			}
 			
@@ -4316,7 +4273,7 @@ public final class Config
 			}
 			catch (NumberFormatException e)
 			{
-				_log.warning(StringUtil.concat("parseItemsList[Config.load()]: invalid itemId -> \"", valueSplit[0], "\""));
+				_log.warning(Config.class.getName() + StringUtil.concat("parseItemsList[Config.load()]: invalid itemId -> \"", valueSplit[0], "\""));
 				return null;
 			}
 			
@@ -4326,7 +4283,7 @@ public final class Config
 			}
 			catch (NumberFormatException e)
 			{
-				_log.warning(StringUtil.concat("parseItemsList[Config.load()]: invalid item number -> \"", valueSplit[1], "\""));
+				_log.warning(Config.class.getName() + StringUtil.concat("parseItemsList[Config.load()]: invalid item number -> \"", valueSplit[1], "\""));
 				return null;
 			}
 			i++;

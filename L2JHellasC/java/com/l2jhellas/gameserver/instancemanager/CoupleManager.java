@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -71,15 +70,13 @@ public class CoupleManager
 
 			statement.close();
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + getCouples().size() + " couples.");
+			_log.info(CoupleManager.class.getSimpleName() + ": Loaded: " + getCouples().size() + " couples.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": CoupleManager.load(): " + e);
+			_log.warning(CoupleManager.class.getName() + ": CoupleManager.load(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

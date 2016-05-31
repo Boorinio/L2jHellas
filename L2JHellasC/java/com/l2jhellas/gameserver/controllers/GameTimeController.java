@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -208,7 +207,7 @@ public class GameTimeController
 			if (!_timer.isAlive())
 			{
 				String time = (new SimpleDateFormat("HH:mm:ss")).format(new Date());
-				_log.log(Level.WARNING, getClass().getName() + ": " + time + " TimerThread stop with following error. restart it.");
+				_log.warning(GameTimeController.class.getName() + ": " + time + " TimerThread stop with following error. restart it.");
 				if (_timer._error != null)
 					_timer._error.printStackTrace();
 

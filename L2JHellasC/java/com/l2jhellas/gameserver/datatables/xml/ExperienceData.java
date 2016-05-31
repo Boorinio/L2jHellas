@@ -49,7 +49,7 @@ public class ExperienceData
 		final File xml = new File(PackRoot.DATAPACK_ROOT, "data/xml/experience.xml");
 		if (!xml.exists())
 		{
-			_log.warning(getClass().getSimpleName() + ": experience.xml not found!");
+			_log.warning(ExperienceData.class.getName() + ": experience.xml not found!");
 			return;
 		}
 
@@ -63,7 +63,7 @@ public class ExperienceData
 		}
 		catch (Exception e)
 		{
-			_log.warning("Could not parse experience.xml: " + e.getMessage());
+			_log.warning(ExperienceData.class.getName() + ": Could not parse experience.xml: ");
 			return;
 		}
 
@@ -114,7 +114,7 @@ public class ExperienceData
 		return SingletonHolder._instance;
 	}
 
-	@SuppressWarnings("synthetic-access")
+	
 	private static class SingletonHolder
 	{
 		protected static final ExperienceData _instance = new ExperienceData();

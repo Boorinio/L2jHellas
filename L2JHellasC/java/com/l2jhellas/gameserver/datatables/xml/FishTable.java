@@ -23,6 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.FishData;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.XMLDocumentFactory;
@@ -70,10 +71,12 @@ public class FishTable
 		}
 		catch (Exception e)
 		{
-			_log.warning("FishTable: Error while creating table" + e);
+			_log.warning(FishTable.class.getName() + ": Error while creating table");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		
-		_log.info("FishTable: Loaded " + _fishes.size() + " fishes.");
+		_log.info(FishTable.class.getName() + ": Loaded " + _fishes.size() + " fishes.");
 	}
 	
 	public static FishData getFish(int lvl, int type, int group)
@@ -90,7 +93,7 @@ public class FishTable
 		
 		if (result.isEmpty())
 		{
-			_log.warning("Couldn't find any fish with lvl: " + lvl + " and type: " + type);
+			_log.warning(FishTable.class.getSimpleName() + ": FishTable: Couldn't find any fish with lvl: " + lvl + " and type: " + type);
 			return null;
 		}
 		

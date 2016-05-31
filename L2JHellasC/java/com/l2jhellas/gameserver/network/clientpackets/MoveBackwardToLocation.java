@@ -23,14 +23,13 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
-@SuppressWarnings("unused")
+
 public class MoveBackwardToLocation extends L2GameClientPacket
 {
 	// cdddddd
@@ -45,6 +44,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 	// For geodata
 	private int _curX;
 	private int _curY;
+	@SuppressWarnings("unused")
 	private int _curZ;
 
 	public TaskPriority getPriority()

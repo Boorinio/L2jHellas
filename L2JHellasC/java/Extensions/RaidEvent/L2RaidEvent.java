@@ -17,6 +17,7 @@ package Extensions.RaidEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -197,7 +198,7 @@ public class L2RaidEvent
 			return;
 		}
 		if (Config.DEBUG)
-			_log.warning("RaidEngine [setCoords]: Players: " + _locX + ", " + _locY + ", " + _locZ);
+			_log.warning(L2RaidEvent.class.getName() + ": RaidEngine [setCoords]: Players: " + _locX + ", " + _locY + ", " + _locZ);
 
 		setInEvent(_player);
 
@@ -245,7 +246,7 @@ public class L2RaidEvent
 		if (_eventType != 1 && _eventType != 2 && _eventType != 3)
 		{
 			player.sendMessage("Debug: Error in The event type [Function: setInEvent]");
-			_log.warning("Event Manager: Error! Event not defined! [Function setInEvent]");
+			_log.warning(L2RaidEvent.class.getName() + ": Event Manager: Error! Event not defined! [Function setInEvent]");
 			return;
 		}
 		for (L2PcInstance member : _participatingPlayers)
@@ -537,7 +538,7 @@ public class L2RaidEvent
 				}
 				catch (Exception e)
 				{
-					_log.warning("L2EventManager: Exception Upon MULTIPLE NPC SPAWN.");
+					_log.warning(L2RaidEvent.class.getSimpleName() + ": L2EventManager: Exception Upon MULTIPLE NPC SPAWN.");
 					e.printStackTrace();
 				}
 			}
@@ -569,7 +570,7 @@ public class L2RaidEvent
 			}
 			catch (Exception e)
 			{
-				_log.warning("L2EventManager: Exception Upon SINGLE NPC SPAWN.");
+				_log.warning(L2RaidEvent.class.getSimpleName() + ": L2EventManager: Exception Upon SINGLE NPC SPAWN.");
 				e.printStackTrace();
 			}
 			setState(EventState.PARTICIPATING);
@@ -591,7 +592,7 @@ public class L2RaidEvent
 		}
 		else
 		{
-			_log.warning("L2EventManager: Exception Upon NPC UNSPAWN.");
+			_log.warning(L2RaidEvent.class.getSimpleName() + ": L2EventManager: Exception Upon NPC UNSPAWN.");
 		}
 	}
 
@@ -864,7 +865,7 @@ public class L2RaidEvent
 			eventMob.deleteMe();
 			L2EventManagerInstance._currentEvents -= 1;
 		}
-		_log.warning("Raid Engines: All the Members from the Event are now dead or Have Left The event. Event Finished.");
+		_log.warning(L2RaidEvent.class.getSimpleName() + ": Raid Engines: All the Members from the Event are now dead or Have Left The event. Event Finished.");
 	}
 
 	/**
@@ -890,9 +891,11 @@ public class L2RaidEvent
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.severe("Error While loading Raids prizes." + e);
+			_log.severe("Error While loading Raids prizes.");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1055,9 +1058,11 @@ public class L2RaidEvent
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.severe("Error While loading Raids Spawn Positions." + e);
+			_log.severe("Error While loading Raids Spawn Positions.");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 }

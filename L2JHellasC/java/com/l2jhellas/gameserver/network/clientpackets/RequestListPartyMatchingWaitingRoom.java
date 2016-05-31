@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
+
 /**
  * Format: (ch)<BR>
  * this is just a trigger : no data
@@ -34,7 +36,8 @@ public class RequestListPartyMatchingWaitingRoom extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// TODO
-		System.out.println("C5: RequestListPartyMatchingWaitingRoom");
+		if (Config.DEBUG)
+			_log.config(RequestListPartyMatchingWaitingRoom.class.getName() + ": C5: RequestListPartyMatchingWaitingRoom");
 	}
 
 	@Override

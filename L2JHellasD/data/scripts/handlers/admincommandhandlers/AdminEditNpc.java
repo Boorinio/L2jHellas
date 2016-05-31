@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -181,11 +180,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": admin_edit_drop parements error: " + command);
+						_log.warning(AdminEditNpc.class.getName() + ": admin_edit_drop parements error: " + command);
 						if (Config.DEVELOPER)
-						{
 							e.printStackTrace();
-						}
 					}
 				}
 				else
@@ -236,11 +233,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": admin_add_drop parements error: " + command);
+						_log.warning(AdminEditNpc.class.getName() + ": admin_add_drop parements error: " + command);
 						if (Config.DEVELOPER)
-						{
 							e.printStackTrace();
-						}
 					}
 				}
 				else
@@ -649,11 +644,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not store trade list" + e);
+			_log.warning(AdminEditNpc.class.getName() + ": could not store trade list");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -666,11 +659,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not update trade list" + e);
+			_log.warning(AdminEditNpc.class.getName() + ": could not update trade list");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -683,11 +674,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not delete trade list" + e);
+			_log.warning(AdminEditNpc.class.getName() + ": could not delete trade list");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -703,13 +692,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				order = rs.getInt("order");
 			}
 		}
-		catch (SQLException esql)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not order find trade list" + esql);
+			_log.warning(AdminEditNpc.class.getName() + ": could not order find trade list");
 			if (Config.DEVELOPER)
-			{
-				esql.printStackTrace();
-			}
+				e.printStackTrace();
 		}
 		return order;
 	}
@@ -906,11 +893,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error saving new npc value: " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Error saving new npc value: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 
 		NpcData.getInstance().saveNpc(newNpcData);
@@ -991,13 +976,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				activeChar.sendPacket(adminReply);
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not edit drop data: " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": could not edit drop data: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -1040,13 +1023,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 			
 			showNpcDropList(activeChar, npcId);
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not update Npc/Mob Data " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not update Npc/Mob Data ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -1089,13 +1070,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				showNpcDropList(activeChar, npcId);
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not delete Npc/Mob Data " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not delete Npc/Mob Data ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -1129,13 +1108,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not reload Npc/Mob drop Data " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not reload Npc/Mob drop Data ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -1266,13 +1243,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				activeChar.sendPacket(adminReply);
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not show npc skills" + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not show npc skills");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -1320,13 +1295,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 			}
 
 		}
-		catch(Exception e)
+		catch(SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not update npc skill edit " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not update npc skill edit ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -1356,13 +1329,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				}
 			}
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not reload npc skill list  " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not reload npc skill list  ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -1423,13 +1394,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 			adminReply.setHtml(replyMSG.toString());
 			activeChar.sendPacket(adminReply);
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not insert npc skill data " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not insert npc skill data ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -1447,13 +1416,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				reLoadNpcSkillList(npcId);
 			}
 		}
-		catch(Exception e)
+		catch(SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not delete npc skill data " + e);
+			_log.warning(AdminEditNpc.class.getName() + ": Could not delete npc skill data ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 }

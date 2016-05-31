@@ -19,7 +19,6 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -160,7 +159,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
 	{
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ".changeIntention(" + intention + ", " + arg0 + ", " + arg1 + ")");
+			_log.config(L2SiegeGuardAI.class.getName() + ".changeIntention(" + intention + ", " + arg0 + ", " + arg1 + ")");
 		((L2Attackable) _actor).setIsReturningToSpawnPoint(false);
 
 		if (intention == AI_INTENTION_IDLE /* || intention == AI_INTENTION_ACTIVE */) // active becomes idle if only a summon is present
@@ -314,7 +313,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 		}
 		catch (NullPointerException e)
 		{
-			// _log.warning("AttackableAI: Attack target is NULL.");
+			_log.warning(L2SiegeGuardAI.class.getName() + "-> AttackableAI: Attack target is NULL.");
 			_actor.setTarget(null);
 			setIntention(AI_INTENTION_IDLE, null, null);
 			return;
@@ -512,7 +511,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	private void thinkAttack()
 	{
 		if (Config.DEBUG)
-			_log.log(Level.CONFIG, getClass().getName() + ".thinkAttack(); timeout=" + (_attackTimeout - GameTimeController.getGameTicks()));
+			_log.config(L2SiegeGuardAI.class.getName() + ".thinkAttack(); timeout=" + (_attackTimeout - GameTimeController.getGameTicks()));
 
 		if (_attackTimeout < GameTimeController.getGameTicks())
 		{

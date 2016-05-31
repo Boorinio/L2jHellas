@@ -96,7 +96,7 @@ class EffectSignet extends L2Effect
 
 		if (skill == null)
 		{
-			_log.warning("EffectSignet: Could not get the tigger effect " + ((L2SkillMagicOnGround) getSkill()).triggerEffectId);
+			_log.warning(EffectSignet.class.getName() + ": EffectSignet: Could not get the tigger effect " + ((L2SkillMagicOnGround) getSkill()).triggerEffectId);
 			onExit();
 			return false;
 		}

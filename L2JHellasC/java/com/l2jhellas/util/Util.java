@@ -111,13 +111,13 @@ public final class Util
 		int slen = print.length();
 		if (slen > maxlength)
 		{
-			System.out.println(print);
+			_log.info(print);
 			return;
 		}
 		int i;
 		for (i = 0; i < (maxlength - slen); i++)
 			print = "=" + print;
-		System.out.println(print);
+		_log.info(print);
 	}
 
 	public static String capitalizeWords(String str)

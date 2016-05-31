@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -68,16 +67,14 @@ public class PcColorTable
 				psDel.close();
 			}
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _pcColors.size() + " and " + deleteNames.size() + " expired deleted!");
+			_log.info(PcColorTable.class.getSimpleName() + ": Loaded " + _pcColors.size() + " and " + deleteNames.size() + " expired deleted!");
 			deleteNames.clear();
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while loading data from DB!" + e);
+			_log.warning(PcColorTable.class.getName() + ": Error while loading data from DB!");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -149,11 +146,9 @@ public class PcColorTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error while add " + charName + "'s color to DB!" + e);
+			_log.warning(PcColorTable.class.getName() + ": Error while add " + charName + "'s color to DB!");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -182,11 +177,9 @@ public class PcColorTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "PcColorTable: Error while delete " + charName + "'s color from DB!" + e);
+			_log.warning(PcColorTable.class.getSimpleName() + ": PcColorTable: Error while delete " + charName + "'s color from DB!");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 			return false;
 		}
 		return true;

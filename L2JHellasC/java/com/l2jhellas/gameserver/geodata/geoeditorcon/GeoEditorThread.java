@@ -19,7 +19,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -116,19 +115,15 @@ public class GeoEditorThread extends Thread
 		}
 		catch (SocketException e)
 		{
+			_log.warning(GeoEditorThread.class.getName() + ": GeoEditor disconnected. ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
-			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. " + e);
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + e);
+			_log.warning(GeoEditorThread.class.getName());
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		finally
 		{
@@ -171,16 +166,16 @@ public class GeoEditorThread extends Thread
 			{
 				e.printStackTrace();
 			}
-			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. " + e);
+			_log.warning(GeoEditorThread.class.getName() + ": GeoEditor disconnected. ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			_working = false;
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + e);
+			_log.warning(GeoEditorThread.class.getName());
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 			try
 			{
 				_geSocket.close();
@@ -218,7 +213,7 @@ public class GeoEditorThread extends Thread
 		}
 		catch (SocketException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": GeoEditor disconnected. ", e);
+			_log.warning(GeoEditorThread.class.getName() + ": GeoEditor disconnected. ");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -227,11 +222,9 @@ public class GeoEditorThread extends Thread
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + e);
+			_log.warning(GeoEditorThread.class.getName());
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 			try
 			{
 				_geSocket.close();
@@ -239,9 +232,7 @@ public class GeoEditorThread extends Thread
 			catch (Exception ex)
 			{
 				if (Config.DEVELOPER)
-				{
 					ex.printStackTrace();
-				}
 			}
 			_working = false;
 		}

@@ -47,8 +47,9 @@ public class GameServerRegister
 		}
 		catch (Exception e)
 		{
-			System.out.println("FATAL: Failed loading GameServerTable. Reason: " + e.getMessage());
-			e.printStackTrace();
+			System.out.println("FATAL: Failed loading GameServerTable. Reason: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 			System.exit(1);
 		}
 		GameServerTable gameServerTable = GameServerTable.getInstance();
@@ -136,7 +137,9 @@ public class GameServerRegister
 		}
 		catch (SQLException e)
 		{
-			System.out.println("SQL error while cleaning registered servers: " + e);
+			System.out.println("SQL error while cleaning registered servers: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 }

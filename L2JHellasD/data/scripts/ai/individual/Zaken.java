@@ -99,7 +99,9 @@ public class Zaken extends AbstractNpcAI
     				            }
     				            catch (Throwable e)
     				            {
-    				            	log.warning("Cannot close door ID: 21240006 " + e);
+    				            	_log.warning(Zaken.class.getName() + ": Cannot close door ID: 21240006 ");
+    				    			if (Config.DEVELOPER)
+    				    				e.printStackTrace();
     				            }
     						}
     					},300000L);
@@ -107,7 +109,9 @@ public class Zaken extends AbstractNpcAI
                 }
                 catch (Throwable e)
                 {
-                	log.warning("Cannot open door ID: 21240006 " + e);
+                	_log.warning(Zaken.class.getName() + ": Cannot open door ID: 21240006 ");
+        			if (Config.DEVELOPER)
+        				e.printStackTrace();
                 }
     		}
         },2000L, 600000L);
@@ -152,7 +156,7 @@ public class Zaken extends AbstractNpcAI
     {
     	if (npc == null)
     	{
-    		log.warning("Zaken AI failed to load, missing Zaken in grandboss_data.sql");
+    		_log.warning(Zaken.class.getName() + ": Zaken AI failed to load, missing Zaken in grandboss_data.sql");
     		return;
     	}
         GrandBossManager.addBoss(npc);
@@ -167,7 +171,7 @@ public class Zaken extends AbstractNpcAI
         _quest2 = 3;
         if (_Zone == null)
         {
-        	log.warning("Zaken AI failed to load, missing zone for Zaken");
+        	_log.warning(Zaken.class.getName() + ": Zaken AI failed to load, missing zone for Zaken");
         	return;
         }
         if (_Zone.isInsideZone(npc))

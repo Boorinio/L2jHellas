@@ -171,7 +171,7 @@ public final class L2WarehouseInstance extends L2NpcInstance
 		{
 			// Something went wrong!
 			if (Config.DEBUG)
-				_log.warning("Error retrieving a target object for char " + player.getName() + " - using freight.");
+				_log.warning(L2WarehouseInstance.class.getName() + ": Error retrieving a target object for char " + player.getName() + " - using freight.");
 			return;
 		}
 

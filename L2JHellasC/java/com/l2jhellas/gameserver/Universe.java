@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
@@ -85,6 +84,7 @@ public class Universe implements java.io.Serializable
 		protected int _y;
 		protected int _z;
 
+		
 		@SuppressWarnings("unused")
 		public Position(int x, int y, int z, int flag)
 		{
@@ -103,8 +103,8 @@ public class Universe implements java.io.Serializable
 			_flag = 0;
 		}
 
+		
 		@SuppressWarnings("unused")
-		@Deprecated
 		public L2CharPosition l2CP()
 		{
 			return new L2CharPosition(_x, _y, _z, 0);
@@ -251,11 +251,11 @@ public class Universe implements java.io.Serializable
 				_coordList.add(new Coord(x, y, z));
 			}
 			r.close();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + (_coordList.size() - initialSize) + " additional nodes loaded from text file.");
+			_log.info(Universe.class.getSimpleName() + ": " + (_coordList.size() - initialSize) + " additional nodes loaded from text file.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not read text file universe.txt");
+			_log.warning(Universe.class.getName() + ": could not read text file universe.txt");
 		}
 	}
 
@@ -294,7 +294,9 @@ public class Universe implements java.io.Serializable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": cannot create universe.png: " + e);
+			_log.warning(Universe.class.getName() + ": cannot create universe.png: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -325,17 +327,15 @@ public class Universe implements java.io.Serializable
 			loadHexFiles();
 			loadFinFiles();
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + _coordList.size() + " map vertices loaded in total.");
+			_log.info(Universe.class.getSimpleName() + ": " + _coordList.size() + " map vertices loaded in total.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not load bin,hex,fin files." + e);
+			_log.warning(Universe.class.getName() + ": Could not load bin,hex,fin files.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
-		_log.log(Level.INFO, getClass().getName() + ": Total: " + total);
+		_log.info(Universe.class.getName() + ": Total: " + total);
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class Universe implements java.io.Serializable
 
 			data.close(); // Close the stream.
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + newMap.size() + " map vertices loaded from file " + file.getName());
+			_log.info(Universe.class.getSimpleName() + ": " + newMap.size() + " map vertices loaded from file " + file.getName());
 			_coordList.addAll(newMap);
 		}
 	}
@@ -386,7 +386,7 @@ public class Universe implements java.io.Serializable
 			}
 			data.close(); // Close the stream.
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + newMap.size() + " map vertices loaded from file " + file.getName());
+			_log.info(Universe.class.getSimpleName() + ": " + newMap.size() + " map vertices loaded from file " + file.getName());
 			_coordList.addAll(newMap);
 		}
 	}
@@ -414,7 +414,7 @@ public class Universe implements java.io.Serializable
 			// Read in an object. It should be a vector of scribbles
 
 			TreeSet<Position> temp = (TreeSet<Position>) in.readObject();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": " + temp.size() + " map vertices loaded from file " + file.getName());
+			_log.info(Universe.class.getSimpleName() + ": " + temp.size() + " map vertices loaded from file " + file.getName());
 			in.close(); // Close the stream.
 			for (Position p : temp)
 				_coordList.add(new Coord(p._x, p._y, p._z));
@@ -438,7 +438,7 @@ public class Universe implements java.io.Serializable
 		_coordList = new LinkedList<Coord>();
 		int size = oldMap.size();
 		dump(oldMap, true);
-		_log.log(Level.INFO, getClass().getSimpleName() + "Map : Dumped " + size + " vertices.");
+		_log.info(Universe.class.getSimpleName() + "Map : Dumped " + size + " vertices.");
 	}
 
 	public int size()
@@ -461,7 +461,7 @@ public class Universe implements java.io.Serializable
 			int count = _map.size();
 
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getSimpleName() + ": Size of dump: " + count);
+				_log.config(Universe.class.getSimpleName() + ": Size of dump: " + count);
 
 			data.writeInt(count);
 
@@ -479,15 +479,13 @@ public class Universe implements java.io.Serializable
 			}
 			data.flush();
 			data.close();
-			_log.log(Level.INFO, getClass().getSimpleName() + " Map saved to: " + "data/universe" + pad + ".fin");
+			_log.info(Universe.class.getSimpleName() + " Map saved to: " + "data/universe" + pad + ".fin");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.INFO, getClass().getSimpleName() + " Could not dump file." + e);
+			_log.info(Universe.class.getSimpleName() + " Could not dump file.");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

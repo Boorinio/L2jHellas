@@ -154,6 +154,7 @@ public class PetStat extends SummonStat
 		return (int) calcStat(Stats.MAX_MP, getActiveChar().getPetData().getPetMaxMP(), null, null);
 	}
 
+	
 	@SuppressWarnings("incomplete-switch")
 	@Override
 	public int getMAtk(L2Character target, L2Skill skill)

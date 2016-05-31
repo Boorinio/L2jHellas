@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -143,7 +142,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " DM Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
+			_log.warning(DM.class.getSimpleName() + ":  DM Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
 		}
 	}
 
@@ -484,7 +483,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " Exception: DM.loadData(): " + e.getMessage());
+			_log.warning(DM.class.getSimpleName() + ":  Exception: DM.loadData(): " + e.getMessage());
 		}
 	}
 
@@ -519,7 +518,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " Exception: DM.saveData(): " + e.getMessage());
+			_log.warning(DM.class.getSimpleName() + ":  Exception: DM.saveData(): " + e.getMessage());
 		}
 	}
 
@@ -578,7 +577,7 @@ public class DM
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " DM Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
+			_log.warning(DM.class.getSimpleName() + ":  DM Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
 		}
 	}
 

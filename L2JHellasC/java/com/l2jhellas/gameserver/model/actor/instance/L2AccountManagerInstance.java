@@ -231,7 +231,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 				if (st.hasMoreTokens())
 				{
 					ans = st.nextToken();
-					_log.warning("2 "+ans +" "+ acc+ " " + cha);
+					_log.warning(L2AccountManagerInstance.class.getSimpleName() + ": 2 "+ans +" "+ acc+ " " + cha);
 				}
 				else
 				{
@@ -1103,7 +1103,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not update the password of account: " + activeChar.getAccountName());
+			_log.warning(L2AccountManagerInstance.class.getSimpleName() + ": could not update the password of account: " + activeChar.getAccountName());
 		}
 		return true;
 	}
@@ -1130,7 +1130,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not select answer fields from characters to reset pass for " + activeChar.getAccountName());
+			_log.warning(L2AccountManagerInstance.class.getSimpleName() + ": could not select answer fields from characters to reset pass for " + activeChar.getAccountName());
 		}
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -1182,7 +1182,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not update the password of account: " + activeChar.getAccountName());
+			_log.warning(L2AccountManagerInstance.class.getSimpleName() + ": could not update the password of account: " + activeChar.getAccountName());
 		}
 		return true;
 	}
@@ -1211,7 +1211,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not update the answer of account: " + activeChar.getAccountName());
+			_log.warning(L2AccountManagerInstance.class.getSimpleName() + ": could not update the answer of account: " + activeChar.getAccountName());
 		}
 		return true;
 	}
@@ -1240,7 +1240,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not update the email of account: " + activeChar.getAccountName());
+			_log.warning(L2AccountManagerInstance.class.getSimpleName() + ": could not update the email of account: " + activeChar.getAccountName());
 		}
 		return true;
 	}

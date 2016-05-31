@@ -72,7 +72,7 @@ public abstract class DocumentParser
 	{
 		if (!xmlFilter.accept(f))
 		{
-			_log.warning(getClass().getSimpleName() + ": Could not parse " + f.getName() + " is not a file or it doesn't exist!");
+			_log.warning(DocumentParser.class.getName() + ": Could not parse " + f.getName() + " is not a file or it doesn't exist!");
 			return;
 		}
 		
@@ -91,7 +91,7 @@ public abstract class DocumentParser
 		}
 		catch (Exception e)
 		{
-			_log.warning(getClass().getSimpleName() + ": Could not parse " + f.getName() + " file: " + e.getMessage());
+			_log.warning(DocumentParser.class.getName() + ": Could not parse " + f.getName() + " file: " + e.getMessage());
 			return;
 		}
 		parseDocument();
@@ -157,7 +157,7 @@ public abstract class DocumentParser
 	{
 		if (!dir.exists())
 		{
-			_log.warning(getClass().getSimpleName() + ": Folder " + dir.getAbsolutePath() + " doesn't exist!");
+			_log.warning(DocumentParser.class.getName() + ": Folder " + dir.getAbsolutePath() + " doesn't exist!");
 			return false;
 		}
 		

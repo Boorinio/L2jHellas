@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.w3c.dom.NamedNodeMap;
@@ -112,9 +111,9 @@ public class AdminData extends DocumentParser
 	public void load()
 	{
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/accessLevels.xml"));
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _accessLevels.size() + " Access Levels.");
+		_log.info(AdminData.class.getSimpleName() + ": Loaded: " + _accessLevels.size() + " Access Levels.");
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/adminCommands.xml"));
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded: " + _adminCommandAccessRights.size() + " Access Commands.");
+		_log.info(AdminData.class.getSimpleName() + ": Loaded: " + _adminCommandAccessRights.size() + " Access Commands.");
 	}
 
 	public void reload()
@@ -325,7 +324,7 @@ public class AdminData extends DocumentParser
 		}
 	}
 
-	@SuppressWarnings("synthetic-access")
+	
 	private static class SingletonHolder
 	{
 		protected static final AdminData _instance = new AdminData();

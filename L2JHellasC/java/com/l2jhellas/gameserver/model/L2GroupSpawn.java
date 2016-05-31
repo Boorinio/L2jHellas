@@ -99,7 +99,7 @@ public class L2GroupSpawn extends L2Spawn
 		}
 		catch (Exception e)
 		{
-			_log.warning("L2GroupSpawn NPC class not found: " + e);
+			_log.warning(L2GroupSpawn.class.getName() + ": NPC class not found: " + e);
 			return null;
 		}
 	}

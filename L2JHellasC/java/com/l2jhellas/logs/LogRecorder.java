@@ -30,35 +30,21 @@ public class LogRecorder
 
 	public static final void add(String text, String cat)
 	{
-		/*
-		 * Logger _log = logs.get(cat);
-		 * if(_log == null)
-		 * {
-		 * _log = Logger.getLogger(cat);
-		 * logs.put(cat, _log);
-		 * }
-		 */
-
-		String date = (new SimpleDateFormat("yy.MM.dd H:mm:ss")).format(new Date());
+		final String date = (new SimpleDateFormat("yy.MM.dd H:mm:ss")).format(new Date());
 
 		new File("log/game").mkdirs();
 
-		try
+		try (FileWriter save = new FileWriter(new File("log/game/" + (cat != null ? cat : "_all") + ".txt"), true))
 		{
-			File file = new File("log/game/" + (cat != null ? cat : "_all") + ".txt");
-			// file.getAbsolutePath().mkdirs();
-			FileWriter save = new FileWriter(file, true);
 			String out = "[" + date + "] Character: " + text + "\r\n"; // "+char_name()+"
 			save.write(out);
 			save.flush();
-			save.close();
-			save = null;
-			file = null;
 		}
 		catch (IOException e)
 		{
-			_log.warning("saving chat log failed: " + e);
-			e.printStackTrace();
+			_log.warning(LogRecorder.class.getSimpleName() + ": saving chat log failed: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 
 		if (cat != null)
@@ -70,33 +56,20 @@ public class LogRecorder
 	@Deprecated
 	public static final void addEvent(L2PcInstance pc, String text)
 	{
-		String date = (new SimpleDateFormat("yy.MM.dd H:mm:ss")).format(new Date());
-		String filedate = (new SimpleDateFormat("yyMMdd_H")).format(new Date());
+		final String date = (new SimpleDateFormat("yy.MM.dd H:mm:ss")).format(new Date());
+		final String filedate = (new SimpleDateFormat("yyMMdd_H")).format(new Date());
 
 		new File("log/game").mkdirs();
-		File file = new File("log/game/actions_" + filedate + ".txt");
-		FileWriter save = null;
-
-		try
+		try (FileWriter save = new FileWriter(new File("log/game/actions_" + filedate + ".txt"), true))
 		{
-			save = new FileWriter(file, true);
 			String out = "[" + date + "] '<" + pc.getName() + ">': " + text + "\r\n";
 			save.write(out);
 		}
 		catch (IOException e)
 		{
-			_log.warning("saving actions log failed: " + e);
-			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				save.close();
-			}
-			catch (Exception e1)
-			{
-			}
+			_log.warning(LogRecorder.class.getSimpleName() + ": saving actions log failed: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

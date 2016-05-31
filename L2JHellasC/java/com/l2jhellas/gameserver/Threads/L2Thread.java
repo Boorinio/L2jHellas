@@ -20,7 +20,6 @@ import java.lang.management.MonitorInfo;
 import java.lang.management.ThreadInfo;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -80,7 +79,7 @@ public abstract class L2Thread extends Thread
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " Thread state " + e.getMessage(), e);
+			_log.warning(L2Thread.class.getName() + " Thread state " + e.getMessage());
 		}
 	}
 

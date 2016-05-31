@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -117,7 +116,7 @@ public class L2Spawn
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "", e);
+				_log.warning(L2Spawn.class.getSimpleName() + ": ");
 			}
 
 			_scheduledCount--;
@@ -147,6 +146,7 @@ public class L2Spawn
 	 * @param mobTemplate
 	 *        The L2NpcTemplate to link to this L2Spawn
 	 */
+	
 	@SuppressWarnings("rawtypes")
 	public L2Spawn(L2NpcTemplate mobTemplate) throws SecurityException, ClassNotFoundException, NoSuchMethodException
 	{
@@ -481,7 +481,7 @@ public class L2Spawn
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "NPC " + _template.npcId + " class not found", e);
+			_log.warning(L2Spawn.class.getSimpleName() + ": NPC " + _template.npcId + " class not found");
 		}
 		return mob;
 	}
@@ -604,7 +604,7 @@ public class L2Spawn
 	public void setRespawnDelay(int i)
 	{
 		if (i < 0)
-			_log.warning("respawn delay is negative for spawnId:" + _id);
+			_log.warning(L2Spawn.class.getName() + ": respawn delay is negative for spawnId:" + _id);
 
 		if (i < 10)
 			i = 10;

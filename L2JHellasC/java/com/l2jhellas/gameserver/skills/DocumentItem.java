@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -118,7 +117,7 @@ final class DocumentItem extends DocumentBase
 		Item item;
 		if ((item = _itemData.get(_currentItem.id)) == null)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": No SQL data for Item ID: " + itemId + " - name: " + itemName);
+			_log.warning(DocumentItem.class.getName() + ": No SQL data for Item ID: " + itemId + " - name: " + itemName);
 		}
 		_currentItem.set = item.set;
 		_currentItem.type = item.type;
@@ -155,7 +154,7 @@ final class DocumentItem extends DocumentBase
 		else if (_currentItem.type instanceof L2EtcItemType)
 			_currentItem.item = new L2EtcItem((L2EtcItemType) _currentItem.type, _currentItem.set);
 		else
-			_log.log(Level.WARNING, getClass().getName() + ": Unknown item type " + _currentItem.type);
+			_log.warning(DocumentItem.class.getName() + ": Unknown item type " + _currentItem.type);
 	}
 
 	/**

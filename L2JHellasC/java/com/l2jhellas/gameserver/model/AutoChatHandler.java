@@ -98,15 +98,13 @@ public class AutoChatHandler implements SpawnListener
 
 			statement.close();
 
-			_log.log(Level.INFO, getClass().getSimpleName() + ":  Loaded " + numLoaded + " chat group(s) from the database.");
+			_log.info(AutoChatHandler.class.getSimpleName() + ":  Loaded " + numLoaded + " chat group(s) from the database.");
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ":  Could not restore chat data: " + e);
+			_log.warning(AutoChatHandler.class.getName() + ":  Could not restore chat data: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -217,7 +215,7 @@ public class AutoChatHandler implements SpawnListener
 
 		if (Config.DEBUG)
 		{
-			_log.log(Level.CONFIG, getClass().getName() + ": Removed auto chat for NPC ID " + chatInst.getNPCId());
+			_log.config(AutoChatHandler.class.getName() + ": Removed auto chat for NPC ID " + chatInst.getNPCId());
 		}
 
 		return true;
@@ -317,7 +315,7 @@ public class AutoChatHandler implements SpawnListener
 
 			if (Config.DEBUG)
 			{
-				_log.log(Level.CONFIG, getClass().getName() + ": Registered auto chat for NPC ID " + _npcId + " (Global Chat = " + _globalChat + ").");
+				_log.config(AutoChatHandler.class.getName() + ": Registered auto chat for NPC ID " + _npcId + " (Global Chat = " + _globalChat + ").");
 			}
 
 			setActive(true);
@@ -617,7 +615,7 @@ public class AutoChatHandler implements SpawnListener
 
 				if (Config.DEBUG)
 				{
-					_log.log(Level.INFO, getClass().getName() + ":  Chat definition added for NPC ID " + _npcInstance.getNpcId() + " (Object ID = " + _npcInstance.getObjectId() + ").");
+					_log.info(AutoChatHandler.class.getName() + ":  Chat definition added for NPC ID " + _npcInstance.getNpcId() + " (Object ID = " + _npcInstance.getObjectId() + ").");
 				}
 
 				// If global chat isn't enabled for the parent instance,
@@ -628,6 +626,7 @@ public class AutoChatHandler implements SpawnListener
 				}
 			}
 
+			
 			@SuppressWarnings("unused")
 			protected AutoChatDefinition(AutoChatInstance chatInst, L2Npc npcInst)
 			{
@@ -737,7 +736,7 @@ public class AutoChatHandler implements SpawnListener
 
 					if (chatDef == null)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": Auto chat definition is NULL for NPC ID " + _npcId + ".");
+						_log.warning(AutoChatHandler.class.getName() + ": Auto chat definition is NULL for NPC ID " + _npcId + ".");
 						return;
 					}
 
@@ -749,7 +748,7 @@ public class AutoChatHandler implements SpawnListener
 
 				if (Config.DEBUG)
 				{
-					_log.log(Level.INFO, getClass().getName() + ": Running auto chat for " + chatDefinitions.length + " instances of NPC ID " + _npcId + "." + " (Global Chat = " + chatInst.isGlobal() + ")");
+					_log.info(AutoChatHandler.class.getName() + ": Running auto chat for " + chatDefinitions.length + " instances of NPC ID " + _npcId + "." + " (Global Chat = " + chatInst.isGlobal() + ")");
 				}
 
 				for (AutoChatDefinition chatDef : chatDefinitions)
@@ -873,11 +872,9 @@ public class AutoChatHandler implements SpawnListener
 					}
 					catch (Exception e)
 					{
-						_log.log(Level.WARNING, getClass().getName() + ": Something did wrong." + e);
+						_log.warning(AutoChatHandler.class.getName() + ": Something did wrong.");
 						if (Config.DEVELOPER)
-						{
 							e.printStackTrace();
-						}
 						return;
 					}
 				}

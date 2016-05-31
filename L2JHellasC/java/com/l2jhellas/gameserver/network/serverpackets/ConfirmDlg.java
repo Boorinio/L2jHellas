@@ -20,13 +20,15 @@ import java.util.Vector;
  * @author Dezmond_snz
  *         Format: cdddsdd
  */
-@SuppressWarnings("unused")
+
 public class ConfirmDlg extends L2GameServerPacket
 {
 	private static final String _S__ED_CONFIRMDLG = "[S] ed ConfirmDlg";
+	@SuppressWarnings("unused")
 	private int _requestId;
     private int _messageId;
     private int _skillLvL = 1;
+	@SuppressWarnings("unused")
 	private String _name;
     private static final int TYPE_ZONE_NAME = 7;
     private static final int TYPE_SKILL_NAME = 4;

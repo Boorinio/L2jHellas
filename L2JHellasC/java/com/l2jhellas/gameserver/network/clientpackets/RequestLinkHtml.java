@@ -44,7 +44,7 @@ public final class RequestLinkHtml extends L2GameClientPacket
 
 		if (_link.contains("..") || !_link.contains(".htm"))
 		{
-			_log.warning("[RequestLinkHtml] hack? link contains prohibited characters: '" + _link + "', skipped.");
+			_log.warning(RequestLinkHtml.class.getName() + ": [RequestLinkHtml] hack? link contains prohibited characters: '" + _link + "', skipped.");
 			return;
 		}
 

@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -66,7 +65,7 @@ public class Territory
 			Integer terr = row[0];
 			if (terr == null)
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Null territory!");
+				_log.warning(Territory.class.getName() + ": Null territory!");
 				continue;
 			}
 
@@ -114,7 +113,7 @@ public class Territory
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Error in query '" + query + "':", e);
+			_log.warning(Territory.class.getSimpleName() + ": Error in query '" + query + "':");
 		}
 		if (Config.DEBUG)
 			_log.fine("Get all rows in query '" + query + "' in " + (System.currentTimeMillis() - start) + "ms");

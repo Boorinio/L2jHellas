@@ -215,7 +215,7 @@ public final class QuestState
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not delete char quest:", e);
+			_log.warning(QuestState.class.getSimpleName() + ": could not delete char quest:");
 		}
 	}
 	
@@ -265,7 +265,7 @@ public final class QuestState
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, _player.getName() + ", " + _quest.getName() + " cond [" + value + "] is not an integer. Value stored, but no packet was sent: " + e.getMessage(), e);
+				_log.warning(QuestState.class.getName() + ": " + _player.getName() + ", " + _quest.getName() + " cond [" + value + "] is not an integer. Value stored, but no packet was sent: " + e.getMessage());
 			}
 		}
 	}
@@ -434,7 +434,7 @@ public final class QuestState
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not insert char quest:", e);
+			_log.warning(QuestState.class.getSimpleName() + ": could not insert char quest:");
 		}
 	}
 	
@@ -455,7 +455,7 @@ public final class QuestState
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not delete char quest:", e);
+			_log.warning(QuestState.class.getSimpleName() + ": could not delete char quest:");
 		}
 	}
 	

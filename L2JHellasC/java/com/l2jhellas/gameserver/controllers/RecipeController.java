@@ -199,6 +199,7 @@ public class RecipeController
 		protected double _manaRequired;
 		protected int _price;
 		protected int _totalItems;
+		
 		@SuppressWarnings("unused")
 		protected int _materialsRefPrice;
 		protected int _delay;
@@ -333,14 +334,14 @@ public class RecipeController
 
 			if (_player == null || _target == null)
 			{
-				_log.warning("player or target == null (disconnected?), aborting" + _target + _player);
+				_log.warning(RecipeController.class.getName() + ": player or target == null (disconnected?), aborting" + _target + _player);
 				abort();
 				return;
 			}
 
 			if (_player.isOnline() == 0 || _target.isOnline() == 0)
 			{
-				_log.warning("player or target is not online, aborting " + _target + _player);
+				_log.warning(RecipeController.class.getName() + ": player or target is not online, aborting " + _target + _player);
 				abort();
 				return;
 			}

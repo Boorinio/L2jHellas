@@ -20,13 +20,7 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
 public class Gui extends JFrame
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
 	static L2PcInstance pc;
 	static JPanel panel = new JPanel();
 	static JPanel panel2 = new JPanel();

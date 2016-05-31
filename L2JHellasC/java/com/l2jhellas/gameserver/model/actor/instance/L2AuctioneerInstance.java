@@ -208,7 +208,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					}
 					else
 					{
-						_log.warning("Auctioneer Auction null for AuctionId : " + auctionId);
+						_log.warning(L2AuctioneerInstance.class.getName() + ": Auctioneer Auction null for AuctionId : " + auctionId);
 					}
 					player.sendPacket(html);
 				}
@@ -398,7 +398,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					}
 					else
 					{
-						_log.warning("Auctioneer Auction null for AuctionBiddedAt : " + player.getClan().getAuctionBiddedAt());
+						_log.warning(L2AuctioneerInstance.class.getName() + ": Auctioneer Auction null for AuctionBiddedAt : " + player.getClan().getAuctionBiddedAt());
 					}
 					player.sendPacket(html);
 					return;
@@ -429,7 +429,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					}
 					else
 					{
-						_log.warning("Auctioneer Auction null for hasHideout : " + player.getClan().hasHideout());
+						_log.warning(L2AuctioneerInstance.class.getName() + ": Auctioneer Auction null for hasHideout : " + player.getClan().hasHideout());
 					}
 					player.sendPacket(html);
 					return;
@@ -452,7 +452,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 						html.replace("%objectId%", String.valueOf(getObjectId()));
 					}
 					else
-						_log.warning("Clan Hall ID NULL : " + ItemId + " Can be caused by concurent write in ClanHallManager");
+						_log.warning(L2AuctioneerInstance.class.getName() + ": Clan Hall ID NULL : " + ItemId + " Can be caused by concurent write in ClanHallManager");
 					player.sendPacket(html);
 					return;
 				}
@@ -556,7 +556,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					}
 					else
 					{
-						_log.warning("Auctioneer Auction null for AuctionBiddedAt : " + player.getClan().getAuctionBiddedAt());
+						_log.warning(L2AuctioneerInstance.class.getName() + ": Auctioneer Auction null for AuctionBiddedAt : " + player.getClan().getAuctionBiddedAt());
 					}
 					player.sendPacket(html);
 				}

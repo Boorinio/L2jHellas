@@ -15,6 +15,7 @@
 package com.l2jhellas.loginserver;
 
 import java.nio.ByteBuffer;
+import java.util.logging.Logger;
 
 import com.l2jhellas.loginserver.L2LoginClient.LoginClientState;
 import com.l2jhellas.loginserver.clientpackets.AuthGameGuard;
@@ -31,6 +32,7 @@ import com.l2jhellas.mmocore.network.ReceivablePacket;
  */
 public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 {
+	private static final Logger _log = Logger.getLogger(L2LoginPacketHandler.class.getName());
 	@Override
 	public ReceivablePacket<L2LoginClient> handlePacket(ByteBuffer buf, L2LoginClient client)
 	{
@@ -81,6 +83,6 @@ public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 
 	private void debugOpcode(int opcode, LoginClientState state)
 	{
-		System.out.println("Unknown Opcode: " + opcode + " for state: " + state.name());
+		_log.warning(L2LoginPacketHandler.class.getName() + ": Unknown Opcode: " + opcode + " for state: " + state.name());
 	}
 }

@@ -49,8 +49,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
-import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.Quest;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
@@ -2133,13 +2133,11 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		}
 	}
 	
-	@SuppressWarnings("null")
+	
 	private void AggroReconsider()
 	{
 		
 		L2Attackable actor = (L2Attackable) _actor;
-		L2Character MostHate = ((L2Attackable) _actor).getMostHated();
-		
 		if (actor.getHateList() != null)
 		{
 			
@@ -2165,8 +2163,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				{
 					continue;
 				}
-				if (MostHate != null)
-					actor.addDamageHate(obj, actor.getHating(MostHate), actor.getHating(MostHate));
+				if (((L2Attackable) _actor).getMostHated() != null)
+					actor.addDamageHate(obj, actor.getHating(((L2Attackable) _actor).getMostHated()), actor.getHating(((L2Attackable) _actor).getMostHated()));
 				else
 					actor.addDamageHate(obj, 2000, 2000);
 				_actor.setTarget(obj);
@@ -2186,12 +2184,12 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 					obj = (L2Character) target;
 				else
 					continue;
-				if (obj == null || !GeoData.getInstance().canSeeTarget(_actor, obj) || obj.isDead() || obj != MostHate || obj == _actor)
+				if (obj == null || !GeoData.getInstance().canSeeTarget(_actor, obj) || obj.isDead() || obj != ((L2Attackable) _actor).getMostHated() || obj == _actor)
 					continue;
 				if (obj instanceof L2PcInstance)
 				{
-					if (MostHate != null || !MostHate.isDead())
-						actor.addDamageHate(obj, actor.getHating(MostHate), actor.getHating(MostHate));
+					if (((L2Attackable) _actor).getMostHated() != null || !((L2Attackable) _actor).getMostHated().isDead())
+						actor.addDamageHate(obj, actor.getHating(((L2Attackable) _actor).getMostHated()), actor.getHating(((L2Attackable) _actor).getMostHated()));
 					else
 						actor.addDamageHate(obj, 2000, 2000);
 					_actor.setTarget(obj);
@@ -2202,8 +2200,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				{
 					if (((L2Attackable) _actor).getEnemyClan() != null && (((L2Attackable) _actor).getEnemyClan().equals(((L2Attackable) obj).getClan())))
 					{
-						if (MostHate != null)
-							actor.addDamageHate(obj, actor.getHating(MostHate), actor.getHating(MostHate));
+						if (((L2Attackable) _actor).getMostHated() != null)
+							actor.addDamageHate(obj, actor.getHating(((L2Attackable) _actor).getMostHated()), actor.getHating(((L2Attackable) _actor).getMostHated()));
 						else
 							actor.addDamageHate(obj, 2000, 2000);
 						_actor.setTarget(obj);
@@ -2214,8 +2212,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 							continue;
 						else
 						{
-							if (MostHate != null)
-								actor.addDamageHate(obj, actor.getHating(MostHate), actor.getHating(MostHate));
+							if (((L2Attackable) _actor).getMostHated() != null)
+								actor.addDamageHate(obj, actor.getHating(((L2Attackable) _actor).getMostHated()), actor.getHating(((L2Attackable) _actor).getMostHated()));
 							else
 								actor.addDamageHate(obj, 2000, 2000);
 							_actor.setTarget(obj);
@@ -2225,8 +2223,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				}
 				else if (obj instanceof L2Summon)
 				{
-					if (MostHate != null)
-						actor.addDamageHate(obj, actor.getHating(MostHate), actor.getHating(MostHate));
+					if (((L2Attackable) _actor).getMostHated() != null)
+						actor.addDamageHate(obj, actor.getHating(((L2Attackable) _actor).getMostHated()), actor.getHating(((L2Attackable) _actor).getMostHated()));
 					else
 						actor.addDamageHate(obj, 2000, 2000);
 					_actor.setTarget(obj);

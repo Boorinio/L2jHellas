@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -79,11 +78,9 @@ public class ForumsBBSManager extends BaseBBSManager
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": data error on Forum (root): " + e);
+			_log.warning(ForumsBBSManager.class.getName() + ": data error on Forum (root): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -117,6 +114,7 @@ public class ForumsBBSManager extends BaseBBSManager
 		return forum;
 	}
 
+	
 	@SuppressWarnings("unused")
 	public int getANewID()
 	{

@@ -1127,7 +1127,9 @@ public final class L2ItemInstance extends L2Object
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not restore item " + objectId + " from DB:", e);
+			_log.severe(L2ItemInstance.class.getName() + ": Could not restore item " + objectId + " from DB:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		return inst;
 	}
@@ -1211,7 +1213,9 @@ public final class L2ItemInstance extends L2Object
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not update item " + getObjectId() + " in DB: Reason: " + "Duplicate itemId");
+			_log.severe(L2ItemInstance.class.getName() + ": Could not update item " + getObjectId() + " in DB: Reason: " + "Duplicate itemId");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1247,7 +1251,9 @@ public final class L2ItemInstance extends L2Object
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not insert item " + getObjectId() + " into DB: Reason: " + "Duplicate itemId");
+			_log.severe(L2ItemInstance.class.getName() + ": Could not insert item " + getObjectId() + " into DB: Reason: " + "Duplicate itemId");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -1276,7 +1282,9 @@ public final class L2ItemInstance extends L2Object
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Could not delete item " + getObjectId() + " in DB:", e);
+			_log.severe(L2ItemInstance.class.getName() + ": Could not delete item " + getObjectId() + " in DB:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

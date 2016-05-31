@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.geodata.geoeditorcon;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -49,16 +48,13 @@ public class GeoEditorListener extends Thread
 		}
 		catch (IOException e)
 		{
-			if (Config.DEBUG)
-			{
+			_log.severe(GeoEditorListener.class.getName() + ": Error creating geoeditor listener! ");
+			if (Config.DEVELOPER)
 				e.printStackTrace();
-			}
-
-			_log.log(Level.SEVERE, "Error creating geoeditor listener! ", e);
 			System.exit(1);
 		}
 		start();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Initialized.");
+		_log.info(GeoEditorListener.class.getSimpleName() + ": Initialized.");
 	}
 
 	public GeoEditorThread getThread()
@@ -82,11 +78,11 @@ public class GeoEditorListener extends Thread
 			{
 				if (_geoEditor != null && _geoEditor.isWorking())
 				{
-					_log.log(Level.WARNING, "Geoeditor already connected!");
+					_log.warning(GeoEditorListener.class.getSimpleName() + ": Geoeditor already connected!");
 					connection.close();
 					continue;
 				}
-				_log.log(Level.INFO, getClass().getSimpleName() + ": Received geoeditor connection from: " + connection.getInetAddress().getHostAddress());
+				_log.info(GeoEditorListener.class.getSimpleName() + ": Received geoeditor connection from: " + connection.getInetAddress().getHostAddress());
 				_geoEditor = new GeoEditorThread(connection);
 				_geoEditor.start();
 			}
@@ -97,7 +93,7 @@ public class GeoEditorListener extends Thread
 			{
 				e.printStackTrace();
 			}
-			_log.log(Level.WARNING, "GeoEditorListener: ", e);
+			_log.warning(GeoEditorListener.class.getSimpleName() + ": GeoEditorListener: ");
 		}
 		finally
 		{
@@ -107,13 +103,13 @@ public class GeoEditorListener extends Thread
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "GeoEditorListener: " + e.getMessage(), e);
+				_log.warning(GeoEditorListener.class.getSimpleName() + ": GeoEditorListener: " + e.getMessage());
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();
 				}
 			}
-			_log.log(Level.WARNING, "GeoEditorListener Closed!");
+			_log.warning(GeoEditorListener.class.getSimpleName() + ": GeoEditorListener Closed!");
 		}
 	}
 }

@@ -17,9 +17,9 @@ package com.l2jhellas.gameserver.model.entity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
@@ -200,7 +200,9 @@ public class Duel
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "", e);
+				_log.severe(ScheduleDuelTask.class.getName() + ": error.");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}
@@ -241,7 +243,9 @@ public class Duel
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "", e);
+				_log.severe(ScheduleStartDuelTask.class.getName() + ": error.");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}
@@ -266,7 +270,9 @@ public class Duel
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.SEVERE, "", e);
+				_log.severe(ScheduleEndDuelTask.class.getName() + ": error.");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}
@@ -939,7 +945,7 @@ public class Duel
 		else
 		{
 			if (player != _playerA && player != _playerB)
-				_log.warning("Error in onPlayerDefeat(): player is not part of this 1vs1 duel");
+				_log.warning(Duel.class.getName() + ": Error in onPlayerDefeat(): player is not part of this 1vs1 duel");
 			
 			if (_playerA == player)
 				_playerB.setDuelState(DUELSTATE_WINNER);

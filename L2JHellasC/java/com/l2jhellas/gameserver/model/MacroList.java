@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.L2Macro.L2MacroCmd;
@@ -144,7 +143,7 @@ public class MacroList
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not store macro:", e);
+			_log.warning(MacroList.class.getSimpleName() + ": could not store macro:");
 		}
 	}
 
@@ -163,7 +162,7 @@ public class MacroList
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not delete macro:", e);
+			_log.warning(MacroList.class.getSimpleName() + ": could not delete macro:");
 		}
 	}
 
@@ -207,7 +206,7 @@ public class MacroList
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not store shortcuts:", e);
+			_log.warning(MacroList.class.getSimpleName() + ": could not store shortcuts:");
 		}
 	}
 }

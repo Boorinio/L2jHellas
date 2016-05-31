@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -414,7 +413,9 @@ public abstract class L2Skill
 				}
 				catch (Throwable t)
 				{
-					_log.log(Level.SEVERE, "Bad class " + cls + " to learn skill", t);
+					_log.severe(L2Skill.class.getName() + ": Bad class " + cls + " to learn skill");
+					if (Config.DEVELOPER)
+						t.printStackTrace();
 				}
 			}
 		}
@@ -437,7 +438,9 @@ public abstract class L2Skill
 				}
 				catch (Throwable t)
 				{
-					_log.log(Level.SEVERE, "Bad teacher id " + npcid + " to teach skill", t);
+					_log.severe(L2Skill.class.getName() + ": Bad teacher id " + npcid + " to teach skill");
+					if (Config.DEVELOPER)
+						t.printStackTrace();
 				}
 			}
 		}
@@ -1137,7 +1140,7 @@ public abstract class L2Skill
 	 * @param activeChar
 	 *        The L2Character who use the skill
 	 */
-	@SuppressWarnings("incomplete-switch")
+	
 	public final L2Object[] getTargetList(L2Character activeChar, boolean onlyFirst)
 	{
 		List<L2Character> targetList = new ArrayList<L2Character>();
@@ -1190,6 +1193,9 @@ public abstract class L2Skill
 					case GIVE_SP:
 						canTargetSelf = true;
 					break;
+					default:
+						canTargetSelf = false;
+						break;
 				}
 
 				// Check for null target or any other invalid target

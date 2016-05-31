@@ -148,7 +148,9 @@ public final class Logout extends L2GameClientPacket
 		}
 		catch (Exception e)
 		{
-			_log.warning("could not restore friend data:" + e);
+			_log.warning(Logout.class.getName() + ": could not restore friend data:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 

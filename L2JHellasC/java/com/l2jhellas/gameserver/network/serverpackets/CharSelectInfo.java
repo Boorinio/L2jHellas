@@ -17,10 +17,12 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.CharSelectInfoPackage;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -31,8 +33,6 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class CharSelectInfo extends L2GameServerPacket
 {
 	private static Logger _log = Logger.getLogger(CharSelectInfo.class.getName());
-
-	// d SdSddddddddddffddddddddddddddddddddddddddddddddddddddddddddddffd
 	private static final String _S__1F_CHARSELECTINFO = "[S] 1F CharSelectInfo";
 	private final String _loginName;
 	private final int _sessionId;
@@ -188,7 +188,7 @@ public class CharSelectInfo extends L2GameServerPacket
 
 	private CharSelectInfoPackage[] loadCharacterSelectInfo()
 	{
-		CharSelectInfoPackage charInfopackage;
+		CharSelectInfoPackage charInfopackage = null;
 		List<CharSelectInfoPackage> characterList = new ArrayList<CharSelectInfoPackage>();
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -199,7 +199,15 @@ public class CharSelectInfo extends L2GameServerPacket
 
 			while (charList.next())// fills the package
 			{
-				charInfopackage = restoreChar(charList);
+				try
+				{
+					charInfopackage = restoreChar(charList);
+				}
+				catch (Exception e)
+				{
+					if (Config.DEVELOPER)
+						e.printStackTrace();
+				}
 				if (charInfopackage != null)
 					characterList.add(charInfopackage);
 			}
@@ -209,9 +217,11 @@ public class CharSelectInfo extends L2GameServerPacket
 
 			return characterList.toArray(new CharSelectInfoPackage[characterList.size()]);
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Could not restore char info: " + e);
+			_log.warning(CharSelectInfo.class.getName() + ": Could not restore char info: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		return new CharSelectInfoPackage[0];
 	}
@@ -236,9 +246,11 @@ public class CharSelectInfo extends L2GameServerPacket
 			statement.close();
 
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Could not restore char subclass info: " + e);
+			_log.warning(CharSelectInfo.class.getName() + ": Could not restore char subclass info: ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -313,9 +325,11 @@ public class CharSelectInfo extends L2GameServerPacket
 				result.close();
 				statement.close();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				_log.warning("Could not restore augmentation info: " + e);
+				_log.warning(CharSelectInfo.class.getName() + ": Could not restore augmentation info: ");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 

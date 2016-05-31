@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -73,7 +72,7 @@ public class LevelUpData
 		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/lvl_up_data.xml");
 		if (!f.exists())
 		{
-			_log.log(Level.WARNING, "lvl_up_data.xml could not be loaded: file not found");
+			_log.warning(LevelUpData.class.getSimpleName() + ": lvl_up_data.xml could not be loaded: file not found");
 			return;
 		}
 		try
@@ -122,19 +121,19 @@ public class LevelUpData
 			}
 			lvlDat = null;
 
-			_log.log(Level.WARNING, "LevelUpData: Loaded " + _lvlTable.size() + " character level up templates.");
+			_log.warning(LevelUpData.class.getSimpleName() + ": LevelUpData: Loaded " + _lvlTable.size() + " character level up templates.");
 		}
 		catch (SAXException e)
 		{
-			_log.log(Level.WARNING, "Error while creating table", e);
+			_log.warning(LevelUpData.class.getSimpleName() + ": Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.WARNING, "Error while creating table", e);
+			_log.warning(LevelUpData.class.getSimpleName() + ": Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.log(Level.WARNING, "Error while creating table", e);
+			_log.warning(LevelUpData.class.getSimpleName() + ": Error while creating table");
 		}
 	}
 

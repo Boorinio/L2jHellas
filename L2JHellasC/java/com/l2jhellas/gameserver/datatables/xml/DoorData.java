@@ -21,7 +21,6 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,7 +42,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class DoorData
 {
-	protected static final Logger _log = Logger.getLogger(DoorData.class.getName());
+	protected static Logger _log = Logger.getLogger(DoorData.class.getName());
 
 	private Map<Integer, L2DoorInstance> _staticItems;
 
@@ -86,7 +85,7 @@ public class DoorData
 		File file = new File(PackRoot.DATAPACK_ROOT, "data/xml/doors.xml");
 		if (!file.exists())
 		{
-			_log.warning("doors.xml is missing in data folder.");
+			_log.warning(DoorData.class.getName() + ": doors.xml is missing in data folder.");
 			return;
 		}
 		try
@@ -119,11 +118,11 @@ public class DoorData
 							boolean unlockable = Boolean.valueOf(d.getAttributes().getNamedItem("unlockable").getNodeValue());
 							boolean autoOpen = Boolean.valueOf(d.getAttributes().getNamedItem("autoOpen").getNodeValue());
 							if (rangeXMin > rangeXMax)
-								_log.warning("DoorTable: Error on rangeX min/max, ID:" + id);
+								_log.warning(DoorData.class.getName() + ": DoorTable: Error on rangeX min/max, ID:" + id);
 							if (rangeYMin > rangeYMax)
-								_log.warning("DoorTable: Error on rangeY min/max, ID:" + id);
+								_log.warning(DoorData.class.getName() + ": DoorTable: Error on rangeY min/max, ID:" + id);
 							if (rangeZMin > rangeZMax)
-								_log.warning("DoorTable: Error on rangeZ min/max, ID:" + id);
+								_log.warning(DoorData.class.getName() + ": DoorTable: Error on rangeZ min/max, ID:" + id);
 
 							int collisionRadius; // (max) radius for movement checks
 							if ((rangeXMax - rangeXMin) > (rangeYMax - rangeYMin))
@@ -180,7 +179,7 @@ public class DoorData
 							}
 							catch (Exception e)
 							{
-								_log.warning("Error in door data, ID:" + id);
+								_log.warning(DoorData.class.getName() + ": Error in door data, ID:" + id);
 							}
 							door.setCurrentHpMp(door.getMaxHp(), door.getMaxMp());
 							door.setOpen(autoOpen);
@@ -203,15 +202,15 @@ public class DoorData
 		}
 		catch (SAXException e)
 		{
-			_log.warning("DoorTable: Error while creating table");
+			_log.warning(DoorData.class.getName() + ": DoorTable: Error while creating table");
 		}
 		catch (IOException e)
 		{
-			_log.warning("DoorTable: Error while creating table");
+			_log.warning(DoorData.class.getName() + ": DoorTable: Error while creating table");
 		}
 		catch (ParserConfigurationException e)
 		{
-			_log.warning("DoorTable: Error while creating table");
+			_log.warning(DoorData.class.getName() + ": DoorTable: Error while creating table");
 		}
 	}
 
@@ -251,17 +250,17 @@ public class DoorData
 
 		if (rangeXMin > rangeXMax)
 		{
-			_log.warning("Error in door data, ID:" + id);
+			_log.warning(DoorData.class.getSimpleName() + ": Error in door data, ID:" + id);
 		}
 
 		if (rangeYMin > rangeYMax)
 		{
-			_log.warning("Error in door data, ID:" + id);
+			_log.warning(DoorData.class.getSimpleName() + ": Error in door data, ID:" + id);
 		}
 
 		if (rangeZMin > rangeZMax)
 		{
-			_log.warning("Error in door data, ID:" + id);
+			_log.warning(DoorData.class.getSimpleName() + ": Error in door data, ID:" + id);
 		}
 
 		int collisionRadius;
@@ -328,7 +327,7 @@ public class DoorData
 		}
 		catch (Exception e)
 		{
-			_log.warning("Error in door data, ID:" + id);
+			_log.warning(DoorData.class.getSimpleName() + ": Error in door data, ID:" + id);
 		}
 		door.setCurrentHpMp(door.getMaxHp(), door.getMaxMp());
 		door.setOpen(autoOpen);
@@ -479,7 +478,7 @@ public class DoorData
 		}
 		catch (NullPointerException e)
 		{
-			_log.log(Level.WARNING, "There are errors in your Doors.xml file.", e);
+			_log.warning(DoorData.class.getSimpleName() + ": There are errors in your Doors.xml file.");
 		}
 	}
 }

@@ -14,7 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -72,7 +71,7 @@ public class AdminUnblockIp implements IAdminCommandHandler
 
 	private boolean unblockIp(String ipAddress, L2PcInstance activeChar)
 	{
-		_log.log(Level.WARNING, getClass().getSimpleName() + ": Banned IP:" + ipAddress + " removed by GM " + activeChar.getName());
+		_log.warning(AdminUnblockIp.class.getSimpleName() + ": Banned IP:" + ipAddress + " removed by GM " + activeChar.getName());
 		return true;
 	}
 }

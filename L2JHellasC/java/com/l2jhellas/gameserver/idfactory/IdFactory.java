@@ -18,7 +18,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -120,17 +119,15 @@ public abstract class IdFactory
 		{
 			Statement s2 = con.createStatement();
 			s2.executeUpdate("UPDATE characters SET online=0");
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Updated characters online status.");
+			_log.info(IdFactory.class.getSimpleName() + ": Updated characters online status.");
 
 			s2.close();
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": could not update character status " + e);
+			_log.warning(IdFactory.class.getName() + ": could not update character status ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -183,15 +180,13 @@ public abstract class IdFactory
 			cleanCount += stmt.executeUpdate("DELETE FROM posts WHERE posts.post_forum_id NOT IN (SELECT forum_id FROM forums);");
 
 			stmt.close();
-			_log.log(Level.INFO, getClass().getSimpleName() + ": Cleaned " + cleanCount + " elements from database.");
+			_log.info(IdFactory.class.getSimpleName() + ": Cleaned " + cleanCount + " elements from database.");
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Could not Clean up database " + e);
+			_log.warning(IdFactory.class.getName() + ": Could not Clean up database ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -213,7 +208,7 @@ public abstract class IdFactory
 			catch (SQLException e)
 			{
 				if(Config.DEBUG)
-				_log.log(Level.WARNING, getClass().getSimpleName() + ": Table could not dropped. (does not exists)");
+				_log.warning(IdFactory.class.getSimpleName() + ": Table could not dropped. (does not exists)");
 				if (Config.DEVELOPER)
 				{
 					e.printStackTrace();

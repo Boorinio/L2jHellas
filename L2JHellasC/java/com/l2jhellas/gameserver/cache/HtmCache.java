@@ -18,10 +18,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.util.UnicodeReader;
 import com.l2jhellas.util.filters.file.HtmFilter;
 
@@ -89,7 +91,6 @@ public class HtmCache
 			{
 				StringBuilder sb = new StringBuilder();
 				String line;
-				
 				while ((line = br.readLine()) != null)
 					sb.append(line).append('\n');
 				
@@ -99,9 +100,11 @@ public class HtmCache
 				_htmCache.put(file.getPath().replace("\\", "/").hashCode(), content);
 				return content;
 			}
-			catch (Exception e)
+			catch (IOException e)
 			{
-				_log.warning("HtmCache: problem with loading file " + e);
+				_log.warning(HtmCache.class.getSimpleName() + ": HtmCache: problem with loading file");
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 		
@@ -146,7 +149,7 @@ public class HtmCache
 		if (content == null)
 		{
 			content = "<html><body>My html is missing:<br>" + filename + "</body></html>";
-			_log.warning("HtmCache: " + filename + " is missing.");
+			_log.warning(HtmCache.class.getName() + ": HtmCache: " + filename + " is missing.");
 		}
 		
 		return content;

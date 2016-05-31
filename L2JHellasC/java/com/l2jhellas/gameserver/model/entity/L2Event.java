@@ -18,11 +18,14 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -37,6 +40,7 @@ import com.l2jhellas.util.EventData;
 
 public class L2Event
 {
+	private static final Logger _log = Logger.getLogger(L2Event.class.getName());
 	public static String eventName = "";
 	public static int teamsNumber = 0;
 	public static final HashMap<Integer, String> names = new HashMap<Integer, String>();
@@ -125,13 +129,9 @@ public class L2Event
 
 	public static void showEventHtml(L2PcInstance player, String objectid)
 	{
-		try
+		try (BufferedReader inbr = new BufferedReader(new InputStreamReader(new DataInputStream(new BufferedInputStream(new FileInputStream("data/events/" + eventName))))))
 		{
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
-			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("data/events/" + eventName)));
-			BufferedReader inbr = new BufferedReader(new InputStreamReader(in));
-
 			StringBuilder replyMSG = new StringBuilder("<html><body>");
 			replyMSG.append("<center><font color=\"LEVEL\">" + eventName + "</font><font color=\"FF0000\"> bY " + inbr.readLine() + "</font></center><br>");
 
@@ -145,9 +145,11 @@ public class L2Event
 			player.sendPacket(adminReply);
 			inbr.close();
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
-			System.out.println(e);
+			_log.warning(L2Event.class.getSimpleName() + ": failed to read line data/events/" + eventName);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -185,7 +187,9 @@ public class L2Event
 		}
 		catch (Exception e)
 		{
-			System.out.println(e);
+			_log.warning(L2Event.class.getSimpleName() + ": failed to spawn npcid:" + npcid);
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -232,7 +236,9 @@ public class L2Event
 		}
 		catch (Exception e)
 		{
-			System.out.println("error when signing in the event:" + e);
+			_log.warning(L2Event.class.getSimpleName() + ": error when signing in the event:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -253,6 +259,9 @@ public class L2Event
 		}
 		catch (Exception e)
 		{
+			_log.warning(L2Event.class.getSimpleName() + ": error when signing in the event:");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -272,6 +281,9 @@ public class L2Event
 		}
 		catch (Exception e)
 		{
+			_log.warning(L2Event.class.getSimpleName() + ": error when restore and teleport character");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 }

@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -65,11 +64,9 @@ public class PolymporphTable
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Error loading DB " + e);
+			_log.warning(PolymporphTable.class.getName() + ": Error loading DB ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -111,7 +108,7 @@ public class PolymporphTable
 			L2MaxPolyModel poly = new L2MaxPolyModel(set);
 			_map.put(poly.getNpcId(), poly);// xD
 		}
-		_log.log(Level.INFO, getClass().getSimpleName() + ": Loaded " + _map.size() + " npc to pc entries.");
+		_log.info(PolymporphTable.class.getSimpleName() + ": Loaded " + _map.size() + " npc to pc entries.");
 	}
 
 	public L2MaxPolyModel getModelForID(int key)

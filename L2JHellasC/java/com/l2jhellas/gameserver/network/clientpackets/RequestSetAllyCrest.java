@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -83,7 +82,7 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
 
 			if (!remove && !CrestCache.saveCrest(CrestType.ALLY, newId, _data))
 			{
-				_log.log(Level.WARNING, "Error saving crest for ally " + leaderclan.getAllyName() + " [" + leaderclan.getAllyId() + "]");
+				_log.warning(RequestSetAllyCrest.class.getSimpleName() + ": Error saving crest for ally " + leaderclan.getAllyName() + " [" + leaderclan.getAllyId() + "]");
 				return;
 			}
 
@@ -97,7 +96,7 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
 			}
 			catch (SQLException e)
 			{
-				_log.log(Level.WARNING, getClass().getName() + " Could not update the ally crest id:" + e.getMessage());
+				_log.warning(RequestSetAllyCrest.class.getName() + " Could not update the ally crest id:" + e.getMessage());
 				if (Config.DEVELOPER)
 					e.printStackTrace();
 			}

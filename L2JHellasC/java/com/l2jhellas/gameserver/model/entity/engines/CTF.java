@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -104,7 +103,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception: " + e.getStackTrace());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception: " + e.getStackTrace());
 		}
 	}
 
@@ -184,7 +183,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF.restoreFlags() Error:" + e.toString());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF.restoreFlags() Error:" + e.toString());
 		}
 	}
 
@@ -375,7 +374,7 @@ public class CTF
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, " CTF Engine[spawnAllFlags()]: exception: " + e.getStackTrace());
+				_log.warning(CTF.class.getSimpleName() + ":  CTF Engine[spawnAllFlags()]: exception: " + e.getStackTrace());
 			}
 		}
 	}
@@ -436,7 +435,7 @@ public class CTF
 		}
 		catch (Throwable t)
 		{
-			_log.log(Level.WARNING, " CTF Engine[unspawnAllFlags()]: exception: " + t.getStackTrace());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Engine[unspawnAllFlags()]: exception: " + t.getStackTrace());
 		}
 	}
 
@@ -477,7 +476,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF Engine[spawnFlag(" + teamName + ")]: exception: " + e.getStackTrace());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Engine[spawnFlag(" + teamName + ")]: exception: " + e.getStackTrace());
 		}
 	}
 
@@ -815,7 +814,7 @@ public class CTF
 	{
 		if (!startJoinOk())
 		{
-			_log.log(Level.WARNING, " Event not setted propertly.");
+			_log.warning(CTF.class.getSimpleName() + ":  Event not setted propertly.");
 			if (Config.DEBUG)
 				_log.fine("CTF Engine[startJoin(startJoinOk() = false");
 			return;
@@ -895,7 +894,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Engine[spawnEventNpc(" + activeChar.getName() + ")]: exception: " + e.getMessage());
 		}
 	}
 
@@ -928,7 +927,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF Engine[spawnEventNpc(exception: " + e.getMessage());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Engine[spawnEventNpc(exception: " + e.getMessage());
 		}
 	}
 
@@ -1418,93 +1417,93 @@ public class CTF
 
 	public static void dumpData()
 	{
-		_log.log(Level.WARNING, " ");
-		_log.log(Level.WARNING, " ");
+		_log.warning(CTF.class.getSimpleName() + ":  ");
+		_log.warning(CTF.class.getSimpleName() + ":  ");
 
 		if (!_joining && !_teleport && !_started)
 		{
-			_log.log(Level.WARNING, " <<---------------------------------->>");
-			_log.log(Level.WARNING, " >> CTF Engine infos dump (INACTIVE) <<");
-			_log.log(Level.WARNING, " <<--^----^^-----^----^^------^^----->>");
+			_log.warning(CTF.class.getSimpleName() + ":  <<---------------------------------->>");
+			_log.warning(CTF.class.getSimpleName() + ":  >> CTF Engine infos dump (INACTIVE) <<");
+			_log.warning(CTF.class.getSimpleName() + ":  <<--^----^^-----^----^^------^^----->>");
 		}
 		else if (_joining && !_teleport && !_started)
 		{
-			_log.log(Level.WARNING, " <<--------------------------------->>");
-			_log.log(Level.WARNING, " >> CTF Engine infos dump (JOINING) <<");
-			_log.log(Level.WARNING, " <<--^----^^-----^----^^------^----->>");
+			_log.warning(CTF.class.getSimpleName() + ":  <<--------------------------------->>");
+			_log.warning(CTF.class.getSimpleName() + ":  >> CTF Engine infos dump (JOINING) <<");
+			_log.warning(CTF.class.getSimpleName() + ":  <<--^----^^-----^----^^------^----->>");
 		}
 		else if (!_joining && _teleport && !_started)
 		{
-			_log.log(Level.WARNING, " <<---------------------------------->>");
-			_log.log(Level.WARNING, " >> CTF Engine infos dump (TELEPORT) <<");
-			_log.log(Level.WARNING, " <<--^----^^-----^----^^------^^----->>");
+			_log.warning(CTF.class.getSimpleName() + ":  <<---------------------------------->>");
+			_log.warning(CTF.class.getSimpleName() + ":  >> CTF Engine infos dump (TELEPORT) <<");
+			_log.warning(CTF.class.getSimpleName() + ":  <<--^----^^-----^----^^------^^----->>");
 		}
 		else if (!_joining && !_teleport && _started)
 		{
-			_log.log(Level.WARNING, " <<--------------------------------->>");
-			_log.log(Level.WARNING, " >> CTF Engine infos dump (STARTED) <<");
-			_log.log(Level.WARNING, " <<--^----^^-----^----^^------^----->>");
+			_log.warning(CTF.class.getSimpleName() + ":  <<--------------------------------->>");
+			_log.warning(CTF.class.getSimpleName() + ":  >> CTF Engine infos dump (STARTED) <<");
+			_log.warning(CTF.class.getSimpleName() + ":  <<--^----^^-----^----^^------^----->>");
 		}
 
-		_log.log(Level.WARNING, " Name: " + _eventName);
-		_log.log(Level.WARNING, " Desc: " + _eventDesc);
-		_log.log(Level.WARNING, " Join location: " + _joiningLocationName);
-		_log.log(Level.WARNING, " Min lvl: " + _minlvl);
-		_log.log(Level.WARNING, " Max lvl: " + _maxlvl);
-		_log.log(Level.WARNING, " ");
-		_log.log(Level.WARNING, " ##########################");
-		_log.log(Level.WARNING, " # _teams(Vector<String>) #");
-		_log.log(Level.WARNING, " ##########################");
+		_log.warning(CTF.class.getSimpleName() + ":  Name: " + _eventName);
+		_log.warning(CTF.class.getSimpleName() + ":  Desc: " + _eventDesc);
+		_log.warning(CTF.class.getSimpleName() + ":  Join location: " + _joiningLocationName);
+		_log.warning(CTF.class.getSimpleName() + ":  Min lvl: " + _minlvl);
+		_log.warning(CTF.class.getSimpleName() + ":  Max lvl: " + _maxlvl);
+		_log.warning(CTF.class.getSimpleName() + ":  ");
+		_log.warning(CTF.class.getSimpleName() + ":  ##########################");
+		_log.warning(CTF.class.getSimpleName() + ":  # _teams(Vector<String>) #");
+		_log.warning(CTF.class.getSimpleName() + ":  ##########################");
 
 		for (String team : _teams)
-			_log.warning(team + " Flags Taken :" + _teamPointsCount.get(_teams.indexOf(team)));
+			_log.warning(CTF.class.getSimpleName() + ": " + team + " Flags Taken :" + _teamPointsCount.get(_teams.indexOf(team)));
 
 		if (Config.CTF_EVEN_TEAMS.equals("SHUFFLE"))
 		{
-			_log.log(Level.WARNING, " ");
-			_log.log(Level.WARNING, " #########################################");
-			_log.log(Level.WARNING, " # _playersShuffle(Vector<L2PcInstance>) #");
-			_log.log(Level.WARNING, " #########################################");
+			_log.warning(CTF.class.getSimpleName() + ":  ");
+			_log.warning(CTF.class.getSimpleName() + ":  #########################################");
+			_log.warning(CTF.class.getSimpleName() + ":  # _playersShuffle(Vector<L2PcInstance>) #");
+			_log.warning(CTF.class.getSimpleName() + ":  #########################################");
 
 			for (L2PcInstance player : _playersShuffle)
 			{
 				if (player != null)
-					_log.log(Level.WARNING, " Name: " + player.getName());
+					_log.warning(CTF.class.getSimpleName() + ":  Name: " + player.getName());
 			}
 		}
 
-		_log.log(Level.WARNING, " ");
-		_log.log(Level.WARNING, " ##################################");
-		_log.log(Level.WARNING, " # _players(Vector<L2PcInstance>) #");
-		_log.log(Level.WARNING, " ##################################");
+		_log.warning(CTF.class.getSimpleName() + ":  ");
+		_log.warning(CTF.class.getSimpleName() + ":  ##################################");
+		_log.warning(CTF.class.getSimpleName() + ":  # _players(Vector<L2PcInstance>) #");
+		_log.warning(CTF.class.getSimpleName() + ":  ##################################");
 
 		for (L2PcInstance player : _players)
 		{
 			if (player != null)
-				_log.log(Level.WARNING, " Name: " + player.getName() + "   Team: " + player._teamNameCTF + "  Flags :" + player._countCTFflags);
+				_log.warning(CTF.class.getSimpleName() + ":  Name: " + player.getName() + "   Team: " + player._teamNameCTF + "  Flags :" + player._countCTFflags);
 		}
 
-		_log.log(Level.WARNING, " ");
-		_log.log(Level.WARNING, " #####################################################################");
-		_log.log(Level.WARNING, " # _savePlayers(Vector<String>) and _savePlayerTeams(Vector<String>) #");
-		_log.log(Level.WARNING, " #####################################################################");
+		_log.warning(CTF.class.getSimpleName() + ":  ");
+		_log.warning(CTF.class.getSimpleName() + ":  #####################################################################");
+		_log.warning(CTF.class.getSimpleName() + ":  # _savePlayers(Vector<String>) and _savePlayerTeams(Vector<String>) #");
+		_log.warning(CTF.class.getSimpleName() + ":  #####################################################################");
 
 		for (String player : _savePlayers)
-			_log.log(Level.WARNING, " Name: " + player + "	Team: " + _savePlayerTeams.get(_savePlayers.indexOf(player)));
+			_log.warning(CTF.class.getSimpleName() + ":  Name: " + player + "	Team: " + _savePlayerTeams.get(_savePlayers.indexOf(player)));
 
-		_log.log(Level.WARNING, " ");
-		_log.log(Level.WARNING, " ");
-		_log.log(Level.WARNING, " **********==CTF==************");
-		_log.log(Level.WARNING, " CTF._teamPointsCount:" + _teamPointsCount.toString());
-		_log.log(Level.WARNING, " CTF._flagIds:" + _flagIds.toString());
-		_log.log(Level.WARNING, " CTF._flagSpawns:" + _flagSpawns.toString());
-		_log.log(Level.WARNING, " CTF._throneSpawns:" + _throneSpawns.toString());
-		_log.log(Level.WARNING, " CTF._flagsTaken:" + _flagsTaken.toString());
-		_log.log(Level.WARNING, " CTF._flagsX:" + _flagsX.toString());
-		_log.log(Level.WARNING, " CTF._flagsY:" + _flagsY.toString());
-		_log.log(Level.WARNING, " CTF._flagsZ:" + _flagsZ.toString());
-		_log.log(Level.WARNING, " ************EOF**************");
-		_log.log(Level.WARNING, " ");
+		_log.warning(CTF.class.getSimpleName() + ":  ");
+		_log.warning(CTF.class.getSimpleName() + ":  ");
+		_log.warning(CTF.class.getSimpleName() + ":  **********==CTF==************");
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._teamPointsCount:" + _teamPointsCount.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._flagIds:" + _flagIds.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._flagSpawns:" + _flagSpawns.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._throneSpawns:" + _throneSpawns.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._flagsTaken:" + _flagsTaken.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._flagsX:" + _flagsX.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._flagsY:" + _flagsY.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  CTF._flagsZ:" + _flagsZ.toString());
+		_log.warning(CTF.class.getSimpleName() + ":  ************EOF**************");
+		_log.warning(CTF.class.getSimpleName() + ":  ");
 	}
 
 	public static void loadData()
@@ -1622,7 +1621,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " Exception: CTF.loadData(): " + e.getMessage());
+			_log.warning(CTF.class.getSimpleName() + ":  Exception: CTF.loadData(): " + e.getMessage());
 		}
 	}
 
@@ -1683,7 +1682,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " Exception: CTF.saveData(): " + e.getMessage());
+			_log.warning(CTF.class.getSimpleName() + ":  Exception: CTF.saveData(): " + e.getMessage());
 		}
 	}
 
@@ -1790,7 +1789,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Engine[showEventHtlm(" + eventPlayer.getName() + ", " + objectId + ")]: exception" + e.getMessage());
 		}
 	}
 
@@ -1835,7 +1834,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF Engine exception: " + e.getMessage());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Engine exception: " + e.getMessage());
 			return;
 		}
 	}
@@ -1906,7 +1905,7 @@ public class CTF
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, " CTF Siege Engine exception: " + e.getMessage());
+			_log.warning(CTF.class.getSimpleName() + ":  CTF Siege Engine exception: " + e.getMessage());
 		}
 
 		if (Config.CTF_EVEN_TEAMS.equals("NO"))
@@ -2032,7 +2031,7 @@ public class CTF
 
 	public static void cleanCTF()
 	{
-		_log.log(Level.WARNING, " CTF : Cleaning players.");
+		_log.warning(CTF.class.getSimpleName() + ":  CTF : Cleaning players.");
 		for (L2PcInstance player : _players)
 		{
 			if (player != null)
@@ -2056,7 +2055,7 @@ public class CTF
 					player._inEventCTF = false;
 			}
 		}
-		_log.log(Level.WARNING, " CTF : Cleaning teams and flags.");
+		_log.warning(CTF.class.getSimpleName() + ":  CTF : Cleaning teams and flags.");
 		for (String team : _teams)
 		{
 			int index = _teams.indexOf(team);
@@ -2076,8 +2075,8 @@ public class CTF
 		_flagSpawns = new Vector<L2Spawn>();
 		_flagsTaken = new Vector<Boolean>();
 		_teamPlayersCount = new Vector<Integer>();
-		_log.log(Level.WARNING, " Cleaning CTF done.");
-		_log.log(Level.WARNING, " Loading new data from MySql");
+		_log.warning(CTF.class.getSimpleName() + ":  Cleaning CTF done.");
+		_log.warning(CTF.class.getSimpleName() + ":  Loading new data from MySql");
 		loadData();
 	}
 
@@ -2119,7 +2118,7 @@ public class CTF
 							}
 							catch (SQLException se)
 							{
-								_log.log(Level.WARNING, " CTF Engine exception: " + se.getMessage());
+								_log.warning(CTF.class.getSimpleName() + ":  CTF Engine exception: " + se.getMessage());
 							}
 						}
 					}

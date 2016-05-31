@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -192,12 +191,12 @@ public class Olympiad
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Olympiad System: Error loading olympiad data from database: ", e);
+			_log.warning(Olympiad.class.getSimpleName() + ": Olympiad System: Error loading olympiad data from database: ");
 		}
 		
 		if (!loaded)
 		{
-			_log.log(Level.INFO, "Olympiad System: failed to load data from database, default values are used.");
+			_log.info(Olympiad.class.getSimpleName() + "Olympiad System: failed to load data from database, default values are used.");
 			
 			_currentCycle = 1;
 			_period = 0;
@@ -229,7 +228,7 @@ public class Olympiad
 				}
 				break;
 			default:
-				_log.warning("Olympiad System: something went wrong loading period: " + _period);
+				_log.warning(Olympiad.class.getName() + "System: something went wrong loading period: " + _period);
 				return;
 		}
 		
@@ -259,7 +258,7 @@ public class Olympiad
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Olympiad System: Error loading noblesse data from database: ", e);
+			_log.warning(Olympiad.class.getSimpleName() + ": Olympiad System: Error loading noblesse data from database: ");
 		}
 		
 		synchronized (this)
@@ -312,7 +311,7 @@ public class Olympiad
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Olympiad System: Error loading noblesse data from database for Ranking: ", e);
+			_log.warning(Olympiad.class.getSimpleName() + ": Olympiad System: Error loading noblesse data from database for Ranking: ");
 		}
 		
 		int rank1 = (int) Math.round(tmpPlace.size() * 0.01);
@@ -440,7 +439,7 @@ public class Olympiad
 				_inCompPeriod = true;
 				
 				Announcements.getInstance().announceToAll(SystemMessage.getSystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_HAS_STARTED));
-				_log.info("Olympiad System: Olympiad game started.");
+				_log.info("Olympiad Systemgame started.");
 				
 				_gameManager = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(OlympiadGameManager.getInstance(), 30000, 30000);
 				if (Config.ALT_OLY_ANNOUNCE_GAMES)
@@ -469,7 +468,7 @@ public class Olympiad
 						
 						_inCompPeriod = false;
 						Announcements.getInstance().announceToAll(SystemMessage.getSystemMessage(SystemMessageId.THE_OLYMPIAD_GAME_HAS_ENDED));
-						_log.info("Olympiad System: Olympiad game ended.");
+						_log.info("Olympiad Systemgame ended.");
 						
 						while (OlympiadGameManager.getInstance().isBattleStarted()) // cleared in game manager
 						{
@@ -686,7 +685,9 @@ public class Olympiad
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, "Olympiad System: Failed to save noblesse data to database: ", e);
+			_log.severe(Olympiad.class.getName() + ": Failed to save noblesse data to database");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	
@@ -717,7 +718,9 @@ public class Olympiad
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, "Olympiad System: Failed to save olympiad data to database: ", e);
+			_log.severe(Olympiad.class.getName() + ": Failed to save olympiad data to database");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	
@@ -734,7 +737,9 @@ public class Olympiad
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, "Olympiad System: Failed to update monthly noblese data: ", e);
+			_log.severe(Olympiad.class.getName() + ": Failed to update monthly noblese data");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	
@@ -781,7 +786,7 @@ public class Olympiad
 		}
 		catch (SQLException e)
 		{
-			_log.warning("Olympiad System: Couldnt load heros from DB");
+			_log.warning(Olympiad.class.getName() + "System: Couldnt load heros from DB");
 		}
 	}
 	
@@ -802,7 +807,7 @@ public class Olympiad
 		}
 		catch (SQLException e)
 		{
-			_log.warning("Olympiad System: Couldn't load olympiad leaders from DB!");
+			_log.warning(Olympiad.class.getName() + "System: Couldn't load olympiad leaders from DB!");
 		}
 		return names;
 	}
@@ -870,7 +875,7 @@ public class Olympiad
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Could not load last olympiad points:", e);
+			_log.warning(Olympiad.class.getSimpleName() + ": Could not load last olympiad points:");
 		}
 		return result;
 	}
@@ -909,7 +914,7 @@ public class Olympiad
 		}
 		catch (SQLException e)
 		{
-			_log.warning("Olympiad System: Couldn't delete nobles from DB!");
+			_log.warning(Olympiad.class.getName() + "System: Couldn't delete nobles from DB!");
 		}
 		_nobles.clear();
 	}

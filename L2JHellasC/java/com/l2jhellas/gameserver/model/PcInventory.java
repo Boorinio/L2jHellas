@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
@@ -625,7 +624,7 @@ public class PcInventory extends Inventory
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "could not restore inventory:", e);
+			_log.warning(PcInventory.class.getSimpleName() + ": could not restore inventory:");
 		}
 		return paperdoll;
 	}

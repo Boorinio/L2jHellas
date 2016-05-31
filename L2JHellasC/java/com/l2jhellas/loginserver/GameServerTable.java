@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javolution.io.UTF8StreamReader;
@@ -87,13 +86,13 @@ public class GameServerTable
 	public GameServerTable() throws SQLException, NoSuchAlgorithmException, InvalidAlgorithmParameterException
 	{
 		loadServerNames();
-		_log.log(Level.INFO, getClass().getSimpleName() + " Loaded " + _serverNames.size() + " Server Names.");
+		_log.info(GameServerTable.class.getSimpleName() + " Loaded " + _serverNames.size() + " Server Names.");
 
 		loadRegisteredGameServers();
-		_log.log(Level.INFO, getClass().getSimpleName() + " Loaded " + _gameServerTable.size() + " registered Game Servers.");
+		_log.info(GameServerTable.class.getSimpleName() + " Loaded " + _gameServerTable.size() + " registered Game Servers.");
 
 		loadRSAKeys();
-		_log.log(Level.INFO, getClass().getSimpleName() + " Cached " + _keyPairs.length + " RSA keys for Game Server communication.");
+		_log.info(GameServerTable.class.getSimpleName() + " Cached " + _keyPairs.length + " RSA keys for Game Server communication.");
 	}
 
 	private void loadRSAKeys() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException
@@ -139,11 +138,9 @@ public class GameServerTable
 		}
 		catch (FileNotFoundException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " ServerName.xml could not be loaded: file not found" + e);
+			_log.warning(GameServerTable.class.getName() + " ServerName.xml could not be loaded: file not found");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		catch (XMLStreamException xppe)
 		{
@@ -169,9 +166,11 @@ public class GameServerTable
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " cant select any game server(s) from database. " + e.getMessage());
+			_log.warning(GameServerTable.class.getName() + " cant select any game server(s) from database. ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
@@ -241,11 +240,9 @@ public class GameServerTable
 		}
 		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + " SQL error while saving gameserver: " + e);
+			_log.warning(GameServerTable.class.getName() + " SQL error while saving gameserver: ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

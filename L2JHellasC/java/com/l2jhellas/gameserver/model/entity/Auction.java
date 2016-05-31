@@ -17,10 +17,10 @@ package com.l2jhellas.gameserver.model.entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -158,12 +158,9 @@ public class Auction
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-
-			statement = con.prepareStatement("SELECT * FROM auction WHERE id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM auction WHERE id=?");
 			statement.setInt(1, getId());
-			rs = statement.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
 			while (rs.next())
 			{
@@ -181,13 +178,11 @@ public class Auction
 			statement.close();
 			loadBid();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: Auction.load(): " + e);
+			_log.warning(Auction.class.getName() + ": Exception: Auction.load(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -196,12 +191,9 @@ public class Auction
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-
-			statement = con.prepareStatement("SELECT bidderId, bidderName, maxBid, clan_name, time_bid FROM auction_bid WHERE auctionId=? ORDER BY maxBid DESC");
+			PreparedStatement statement = con.prepareStatement("SELECT bidderId, bidderName, maxBid, clan_name, time_bid FROM auction_bid WHERE auctionId=? ORDER BY maxBid DESC");
 			statement.setInt(1, getId());
-			rs = statement.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
 			while (rs.next())
 			{
@@ -216,13 +208,11 @@ public class Auction
 
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.WARNING, getClass().getName() + ": Exception: Auction.loadBid(): " + e);
+			_log.warning(Auction.class.getName() + ": Exception: Auction.loadBid(): ");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -255,16 +245,13 @@ public class Auction
 			statement.setLong(1, _endDate);
 			statement.setInt(2, _id);
 			statement.execute();
-
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Exception: saveAuctionDate(): " + e.getMessage(), e);
+			_log.severe(Auction.class.getName() + ": Auction.saveAuctionDate()");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -352,13 +339,11 @@ public class Auction
 			}
 			bidder.sendMessage("You have bidded successfully");
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, "Exception: Auction.updateInDB(L2PcInstance bidder, int bid): " + e.getMessage());
+			_log.severe(Auction.class.getName() + ": Auction.updateInDB(L2PcInstance bidder, int bid)");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -367,21 +352,16 @@ public class Auction
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-
-			statement = con.prepareStatement("DELETE FROM auction_bid WHERE auctionId=?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM auction_bid WHERE auctionId=?");
 			statement.setInt(1, getId());
 			statement.execute();
-
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Exception: Auction.deleteFromDB(): " + e.getMessage(), e);
+			_log.severe(Auction.class.getName() + ": Exception: Auction.removeBids()");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		for (Bidder b : _bidders.values())
 		{
@@ -403,19 +383,16 @@ public class Auction
 		AuctionManager.getInstance().getAuctions().remove(this);
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			statement = con.prepareStatement("DELETE FROM auction WHERE itemId=?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM auction WHERE itemId=?");
 			statement.setInt(1, _itemId);
 			statement.execute();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Exception: Auction.deleteFromDB(): " + e.getMessage(), e);
+			_log.severe(Auction.class.getName() + ": Exception: Auction.deleteFromDB()");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 
@@ -463,22 +440,17 @@ public class Auction
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-
-			statement = con.prepareStatement("DELETE FROM auction_bid WHERE auctionId=? AND bidderId=?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM auction_bid WHERE auctionId=? AND bidderId=?");
 			statement.setInt(1, getId());
 			statement.setInt(2, bidder);
 			statement.execute();
-
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Exception: Auction.cancelBid(String bidder): " + e.getMessage(), e);
+			_log.severe(Auction.class.getName() + ": Exception: Auction.cancelBid(String bidder)");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		returnItem(_bidders.get(bidder).getClanName(), 57, _bidders.get(bidder).getBid(), true);
 		ClanTable.getInstance().getClanByName(_bidders.get(bidder).getClanName()).setAuctionBiddedAt(0, true);
@@ -518,13 +490,11 @@ public class Auction
 			statement.close();
 			loadBid();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.log(Level.SEVERE, getClass().getName() + ": Exception: Auction.load(): " + e.getMessage(), e);
+			_log.severe(Auction.class.getName() + ": Exception: Auction.load()");
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 	}
 

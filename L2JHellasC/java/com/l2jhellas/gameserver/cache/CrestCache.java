@@ -23,7 +23,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.PackRoot;
@@ -106,7 +105,7 @@ public class CrestCache
 			}
 			catch (Exception e)
 			{
-				_log.log(Level.WARNING, "Problem with loading crest bmp file: " + file, e);
+				_log.warning(CrestCache.class.getSimpleName() + ": Problem with loading crest bmp file: " + file);
 			}
 		}
 		
@@ -144,7 +143,7 @@ public class CrestCache
 				}
 				catch (SQLException e)
 				{
-					_log.log(Level.WARNING, "Could not update the crest id:", e);
+					_log.warning(CrestCache.class.getSimpleName() + ": Could not update the crest id:");
 				}
 				
 				clan.setCrestId(newId);
@@ -182,7 +181,7 @@ public class CrestCache
 		
 		File crestFile = new File(CRESTS_DIR + crestDirPrefix + id + ".bmp");
 		if (!crestFile.delete())
-			_log.log(Level.WARNING, "CrestCache: Failed to delete " + crestDirPrefix + id + ".bmp");
+			_log.warning(CrestCache.class.getSimpleName() + ": CrestCache: Failed to delete " + crestDirPrefix + id + ".bmp");
 	}
 	
 	public static boolean saveCrest(CrestType crestType, int newId, byte[] data)
@@ -198,7 +197,7 @@ public class CrestCache
 		}
 		catch (IOException e)
 		{
-			_log.log(Level.INFO, "Error saving pledge crest" + crestFile + ":", e);
+			_log.info(CrestCache.class.getName() + "Error saving pledge crest" + crestFile + ":");
 			return false;
 		}
 	}

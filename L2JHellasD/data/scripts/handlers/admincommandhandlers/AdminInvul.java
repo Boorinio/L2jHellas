@@ -14,7 +14,6 @@
  */
 package handlers.admincommandhandlers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -65,14 +64,14 @@ public class AdminInvul implements IAdminCommandHandler
 			activeChar.setIsInvul(false);
 			text = activeChar.getName() + " is now mortal";
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Gm removed invul mode from character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
+				_log.config(AdminInvul.class.getName() + ": Gm removed invul mode from character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
 		}
 		else
 		{
 			activeChar.setIsInvul(true);
 			text = activeChar.getName() + " is now invulnerable";
 			if (Config.DEBUG)
-				_log.log(Level.CONFIG, getClass().getName() + ": Gm activated invul mode for character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
+				_log.config(AdminInvul.class.getName() + ": Gm activated invul mode for character " + activeChar.getName() + "(" + activeChar.getObjectId() + ")");
 		}
 		activeChar.sendMessage(text);
 	}

@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeReceiveWarList;
 
@@ -25,7 +26,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeReceiveWarList;
 public final class RequestPledgeWarList extends L2GameClientPacket
 {
 	private static final String _C__D0_1E_REQUESTPLEDGEWARLIST = "[C] D0:1E RequestPledgeWarList";
-	@SuppressWarnings("unused")
 	private int _unk1;
 	private int _tab;
 
@@ -39,8 +39,11 @@ public final class RequestPledgeWarList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// System.out.println("C5: RequestPledgeWarList d:"+_unk1);
-		// System.out.println("C5: RequestPledgeWarList d:"+_tab);
+		if (Config.DEBUG)
+		{
+			_log.config(RequestPledgeWarList.class.getName() + ": C5: RequestPledgeWarList d:"+_unk1);
+			_log.config(RequestPledgeWarList.class.getName() + ": C5: RequestPledgeWarList d:"+_tab);
+		}
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;

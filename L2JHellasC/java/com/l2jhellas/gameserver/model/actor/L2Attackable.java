@@ -789,7 +789,9 @@ public class L2Attackable extends L2Npc
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "", e);
+			_log.severe(L2Attackable.class.getName() + ": Exception: doDie");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 		
 		return true;
@@ -1128,7 +1130,9 @@ public class L2Attackable extends L2Npc
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "", e);
+			_log.severe(L2Attackable.class.getName() + ": Exception: calculateRewards");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 	
@@ -1806,7 +1810,7 @@ public class L2Attackable extends L2Npc
 					break;
 			}
 			else
-				_log.log(Level.SEVERE, "Item doesn't exist so cannot be dropped. Item ID: " + item.getItemId());
+				_log.warning(L2Attackable.class.getName() + ": Item doesn't exist so cannot be dropped. Item ID: " + item.getItemId());
 		}
 		return ditem;
 	}
@@ -2524,7 +2528,7 @@ private boolean _canReturnToSpawnPoint = true;
 							}
 							catch (NumberFormatException nfe)
 							{
-								_log.log(Level.WARNING, getClass().getName() + ": An attempt to identify a soul crystal failed, verify the names have not changed in etcitem table." + nfe);
+								_log.warning(L2Attackable.class.getName() + ": An attempt to identify a soul crystal failed, verify the names have not changed in etcitem table." + nfe);
 								
 								player.sendMessage("There has been an error handling your soul crystal. Please notify your server admin.");
 								

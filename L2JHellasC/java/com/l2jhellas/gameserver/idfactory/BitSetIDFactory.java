@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.idfactory;
 
 import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -48,7 +47,7 @@ public class BitSetIDFactory extends IdFactory
 		super();
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new BitSetCapacityCheck(), 30000, 30000);
 		initialize();
-		_log.log(Level.INFO, getClass().getSimpleName() + ": " + _freeIds.size() + " id's available.");
+		_log.info(BitSetIDFactory.class.getSimpleName() + ": " + _freeIds.size() + " id's available.");
 	}
 
 	public synchronized void initialize()
@@ -64,7 +63,7 @@ public class BitSetIDFactory extends IdFactory
 				int objectID = usedObjectId - FIRST_OID;
 				if (objectID < 0)
 				{
-					_log.log(Level.WARNING, getClass().getName() + ": Object ID " + usedObjectId + " in DB is less than minimum ID of " + FIRST_OID);
+					_log.warning(BitSetIDFactory.class.getName() + ": Object ID " + usedObjectId + " in DB is less than minimum ID of " + FIRST_OID);
 					continue;
 				}
 				_freeIds.set(usedObjectId - FIRST_OID);
@@ -77,7 +76,7 @@ public class BitSetIDFactory extends IdFactory
 		catch (Exception e)
 		{
 			_initialized = false;
-			_log.log(Level.WARNING, getClass().getName() + ": BitSet ID Factory could not be initialized correctly" + e);
+			_log.warning(BitSetIDFactory.class.getName() + ": BitSet ID Factory could not be initialized correctly");
 			if (Config.DEVELOPER)
 			{
 				e.printStackTrace();
@@ -94,7 +93,7 @@ public class BitSetIDFactory extends IdFactory
 			_freeIdCount.incrementAndGet();
 		}
 		else
-			_log.log(Level.WARNING, getClass().getName() + ": BitSet ID Factory: release objectID " + objectID + " failed (< " + FIRST_OID + ")");
+			_log.warning(BitSetIDFactory.class.getName() + ": BitSet ID Factory: release objectID " + objectID + " failed (< " + FIRST_OID + ")");
 	}
 
 	@Override
@@ -118,7 +117,7 @@ public class BitSetIDFactory extends IdFactory
 			}
 			else
 			{
-				_log.log(Level.WARNING, getClass().getName() + ": Ran out of valid Id's.");
+				_log.warning(BitSetIDFactory.class.getName() + ": Ran out of valid Id's.");
 			}
 		}
 

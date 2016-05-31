@@ -15,7 +15,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Extensions.Balancer.Balancer;
@@ -93,14 +92,14 @@ public final class RequestBypassToServer extends L2GameClientPacket
 						activeChar.sendMessage("The command " + command.substring(6) + " doesn't exist.");
 					}
 
-					_log.warning("No handler registered for admin command '" + command + "'");
+					_log.warning(RequestBypassToServer.class.getName() + ": No handler registered for admin command '" + command + "'");
 					return;
 				}
 
 				if (!AdminData.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access rights to use this command.");
-					_log.warning(activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
+					_log.warning(RequestBypassToServer.class.getName() + ": "+activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
 					return;
 				}
 
@@ -239,8 +238,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
-					_log.log(Level.SEVERE, e.getMessage(), e);
+					_log.warning(RequestBypassToServer.class.getName() + ": could not send message");
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 				}
 			}
 			else if (_command.startsWith("delMsg"))
@@ -259,8 +259,9 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				}
 				catch (Exception e)
 				{
-					e.printStackTrace();
-					_log.log(Level.SEVERE, e.getMessage(), e);
+					_log.warning(RequestBypassToServer.class.getName() + ": could not delete message");
+					if (Config.DEVELOPER)
+						e.printStackTrace();
 				}
 
 			}
@@ -569,7 +570,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.WARNING, "Bad RequestBypassToServer: ", e);
+			_log.warning(RequestBypassToServer.class.getSimpleName() + ": Bad RequestBypassToServer: ");
 		}
 	}
 

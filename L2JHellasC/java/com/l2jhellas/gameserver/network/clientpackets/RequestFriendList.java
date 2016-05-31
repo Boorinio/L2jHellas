@@ -17,8 +17,10 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -62,19 +64,11 @@ public final class RequestFriendList extends L2GameClientPacket
 				String friendName = rset.getString("friend_name");
 				friend = L2World.getInstance().getPlayer(friendName);
 
-				if (friend == null)
-				{
-					// (Currently: Offline)
+				if (friend == null)	// (Currently: Offline)
 					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_OFFLINE);
-					sm.addString(friendName);
-				}
-				else
-				{
-					// (Currently: Online)
+				else // (Currently: Online)
 					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ONLINE);
-					sm.addString(friendName);
-				}
-
+				sm.addString(friendName);
 				activeChar.sendPacket(sm);
 			}
 
@@ -84,9 +78,11 @@ public final class RequestFriendList extends L2GameClientPacket
 			rset.close();
 			statement.close();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			_log.warning("Error in /friendlist for " + activeChar + ": " + e);
+			_log.warning(RequestFriendList.class.getName() + ": Error in /friendlist for " + activeChar + ": ");
+			if (Config.DEVELOPER)
+				e.printStackTrace();
 		}
 	}
 
