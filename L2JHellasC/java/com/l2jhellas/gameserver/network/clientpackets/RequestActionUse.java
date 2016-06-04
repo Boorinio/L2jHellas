@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -29,11 +28,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.ChairSit;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopManageList;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -83,31 +80,8 @@ public final class RequestActionUse extends L2GameClientPacket
 		switch (_actionId)
 		{
 			case 0:
-				if (activeChar.getMountType() != 0)
-					break;
-
-				if ((target != null)
-/** @formatter:off */
-					&& !activeChar.isSitting()
-					&& target instanceof L2StaticObjectInstance
-					&& (((L2StaticObjectInstance)target).getType() == 1)
-					&& (CastleManager.getInstance().getCastle(target) != null)
-					&& activeChar.isInsideRadius(target, L2StaticObjectInstance.INTERACTION_DISTANCE, false, false)
-					/** @formatter:on */
-				)
-				{
-					ChairSit cs = new ChairSit(activeChar, ((L2StaticObjectInstance) target).getStaticObjectId());
-					activeChar.sendPacket(cs);
-					activeChar.sitDown();
-					activeChar.broadcastPacket(cs);
-					break;
-				}
-
-				if (activeChar.isSitting())
-					activeChar.standUp();
-				else
-					activeChar.sitDown();
-
+				if(activeChar.getMountType() == 0)
+				activeChar.SitStand(target);				
 				if (Config.DEBUG)
 					_log.fine("new wait type: " + (activeChar.isSitting() ? "SITTING" : "STANDING"));
 
@@ -320,6 +294,11 @@ public final class RequestActionUse extends L2GameClientPacket
 				useSkill(4138);
 			break;
 			case 41: // Wild Hog Cannon - Attack
+				if (!(target instanceof L2DoorInstance))
+				{
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+					return;
+				}
 				useSkill(4230);
 			break;
 			case 42: // Kai the Cat - Self Damage Shield
@@ -382,7 +361,16 @@ public final class RequestActionUse extends L2GameClientPacket
 			break;
 			case 52: // unsummon
 				if ((pet != null) && pet instanceof L2SummonInstance)
+				{
+				if (pet.isDead())
+					activeChar.sendPacket(SystemMessageId.DEAD_PET_CANNOT_BE_RETURNED);
+				else if (pet.isOutOfControl())
+					activeChar.sendPacket(SystemMessageId.PET_REFUSING_ORDER);
+				else if (pet.isAttackingNow() || pet.isInCombat())
+					activeChar.sendPacket(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE);
+				else			
 					pet.unSummon(activeChar);
+				}
 			break;
 			case 53: // move to target
 				if ((target != null) && (pet != null) && (pet != target) && !pet.isMovementDisabled())

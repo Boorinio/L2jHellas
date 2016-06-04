@@ -34,12 +34,12 @@ import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
-import com.l2jhellas.gameserver.instancemanager.TownManager;
 import com.l2jhellas.gameserver.instancemanager.games.Lottery;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2DropCategory;
@@ -949,26 +949,23 @@ public class L2Npc extends L2Character
 	public final Castle getCastle()
 	{
 		// Get castle this NPC belongs to (excluding L2Attackable)
-		if (_castleIndex < 0)
-		{
-			TownManager.getInstance();
-			L2TownZone town = TownManager.getTown(getX(), getY(), getZ());
-
-			if (town != null)
-				_castleIndex = CastleManager.getInstance().getCastleIndex(town.getTaxById());
-
-			if (_castleIndex < 0)
-			{
-				_castleIndex = CastleManager.getInstance().findNearestCastleIndex(this);
-			}
-			else
-				_isInTown = true; // Npc was spawned in town
-		}
-
-		if (_castleIndex < 0)
-			return null;
-
-		return CastleManager.getInstance().getCastles().get(_castleIndex);
+				if (_castleIndex < 0)
+				{
+					L2TownZone town = MapRegionTable.getTown(getX(), getY(), getZ());
+					
+					if (town != null)
+						_castleIndex = CastleManager.getInstance().getCastleIndex(town.getTaxById());
+					
+					if (_castleIndex < 0)
+						_castleIndex = CastleManager.getInstance().findNearestCastleIndex(this);
+					else
+						_isInTown = true; // Npc was spawned in town
+				}
+				
+				if (_castleIndex < 0)
+					return null;
+				
+				return CastleManager.getInstance().getCastles().get(_castleIndex);
 	}
 
 	public final boolean getIsInTown()

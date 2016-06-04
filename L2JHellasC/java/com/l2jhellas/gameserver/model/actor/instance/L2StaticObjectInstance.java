@@ -41,7 +41,7 @@ public class L2StaticObjectInstance extends L2Object
 	private int _x;
 	private int _y;
 	private String _texture;
-
+	private boolean _isBusy;
 	/**
 	 * @return Returns the StaticObjectId.
 	 */
@@ -151,5 +151,15 @@ public class L2StaticObjectInstance extends L2Object
 	public boolean isAutoAttackable(L2Character attacker)
 	{
 		return false;
+	}
+
+	public boolean isBusy()
+	{
+		return _isBusy;
+	}
+	
+	public void setBusy(boolean busy)
+	{
+		_isBusy = busy;
 	}
 }

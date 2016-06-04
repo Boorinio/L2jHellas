@@ -117,6 +117,24 @@ public final class CharacterCreate extends L2GameClientPacket
 			return;
 		}
 
+		if (_face > 2 || _face < 0)
+		{
+			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			return;
+		}
+		
+		if (_hairStyle < 0 || (_sex == 0 && _hairStyle > 4) || (_sex != 0 && _hairStyle > 6))
+		{
+			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			return;
+		}
+		
+		if (_hairColor > 3 || _hairColor < 0)
+		{
+			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			return;
+		}
+		
 		if (Config.DEBUG)
 		{
 			_log.fine("charname: " + _name + " classId: " + _classId);

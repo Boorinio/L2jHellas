@@ -231,7 +231,7 @@ public class Siege
 	// Castle setting
 	private List<L2ArtefactInstance> _artifacts = new ArrayList<L2ArtefactInstance>();
 	private List<L2ControlTowerInstance> _controlTowers = new ArrayList<L2ControlTowerInstance>();
-	private final Castle[] _castle;
+	private final Castle _castle;
 	private boolean _isInProgress = false;
 	private boolean _isNormalSide = true; // true = Atk is Atk, false = Atk is Def
 	protected boolean _isRegistrationOver = false;
@@ -239,7 +239,7 @@ public class Siege
 	private SiegeGuardManager _siegeGuardManager;
 	protected Calendar _siegeRegistrationEndDate;
 
-	public Siege(Castle[] castle)
+	public Siege(Castle castle)
 	{
 		_castle = castle;
 		_siegeGuardManager = new SiegeGuardManager(getCastle());
@@ -1369,9 +1369,7 @@ public class Siege
 
 	public final Castle getCastle()
 	{
-		if ((_castle == null) || (_castle.length <= 0))
-			return null;
-		return _castle[0];
+		return _castle;
 	}
 
 	public final L2SiegeClan getDefenderClan(L2Clan clan)

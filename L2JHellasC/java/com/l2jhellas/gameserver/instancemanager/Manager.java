@@ -19,7 +19,6 @@ public class Manager
 	public static void reloadAll()
 	{
 		ZoneManager.getInstance().reload();
-		TownManager.getInstance();
 		ItemsOnGroundManager.getInstance().reload();
 		FishingZoneManager.getInstance();	
 		AuctionManager.getInstance().reload();

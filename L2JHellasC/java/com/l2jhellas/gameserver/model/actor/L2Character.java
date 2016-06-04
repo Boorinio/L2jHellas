@@ -45,7 +45,6 @@ import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
-import com.l2jhellas.gameserver.instancemanager.TownManager;
 import com.l2jhellas.gameserver.model.ChanceSkillList;
 import com.l2jhellas.gameserver.model.CharEffectList;
 import com.l2jhellas.gameserver.model.ForceBuff;
@@ -5316,10 +5315,10 @@ public abstract class L2Character extends L2Object
 		}
 		if (attacker instanceof L2Character)
 		{
-			return (TownManager.getTown(target.getX(), target.getY(), target.getZ()) != null || ((L2Character) attacker).isInsideZone(ZoneId.PEACE));
+			return (MapRegionTable.getTown(target.getX(), target.getY(), target.getZ()) != null || ((L2Character) attacker).isInsideZone(ZoneId.PEACE));
 		}
 		
-		return (TownManager.getTown(target.getX(), target.getY(), target.getZ()) != null || TownManager.getTown(attacker.getX(), attacker.getY(), attacker.getZ()) != null);
+		return (MapRegionTable.getTown(target.getX(), target.getY(), target.getZ()) != null || MapRegionTable.getTown(attacker.getX(), attacker.getY(), attacker.getZ()) != null);
 	}
 	
 	/**

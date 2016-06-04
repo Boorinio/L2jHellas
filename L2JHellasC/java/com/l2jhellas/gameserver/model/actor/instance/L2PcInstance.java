@@ -164,6 +164,7 @@ import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.ChairSit;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeWaitType;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ConfirmDlg;
@@ -639,15 +640,16 @@ public final class L2PcInstance extends L2Playable
 	/** Premium Service */
 	private void createPSdb()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement(INSERT_PREMIUMSERVICE))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
+			PreparedStatement statement = con.prepareStatement(INSERT_PREMIUMSERVICE);
 			statement.setString(1, _accountName);
 			statement.setInt(2, 0);
 			statement.setLong(3, 0);
 			statement.setInt(4, 0);
 			statement.setLong(5, 0);
 			statement.executeUpdate();
+			statement.close();
 		}
 		catch (SQLException e)
 		{
@@ -661,13 +663,14 @@ public final class L2PcInstance extends L2Playable
 	
 	private static void PStimeOver(String account)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
+			PreparedStatement statement = con.prepareStatement(UPDATE_PREMIUMSERVICE);
 			statement.setInt(1, 0);
 			statement.setLong(2, 0);
 			statement.setString(3, account);
 			statement.execute();
+			statement.close();
 		}
 		catch (SQLException e)
 		{
@@ -680,17 +683,16 @@ public final class L2PcInstance extends L2Playable
 	private static void restorePremServiceData(L2PcInstance player, String account)
 	{
 		boolean sucess = false;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement(RESTORE_PREMIUMSERVICE))
+		if (Config.USE_PREMIUMSERVICE)
 		{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement(RESTORE_PREMIUMSERVICE);
 			statement.setString(1, account);
 			try (ResultSet rset = statement.executeQuery())
 			{
 				while (rset.next())
 				{
-					sucess = true;
-					if (Config.USE_PREMIUMSERVICE)
-					{
 						if (rset.getLong("enddate") <= System.currentTimeMillis())
 						{
 							PStimeOver(account);
@@ -699,12 +701,14 @@ public final class L2PcInstance extends L2Playable
 						else
 						{
 							player.setPremiumService(rset.getInt("premium_service"));
+							sucess = true;
 						}
-					}
-					else
-					{
-						player.setPremiumService(0);
-					}
+				}
+				
+				if (sucess == false)
+				{
+					player.createPSdb();
+					player.setPremiumService(0);
 				}
 			}
 		}
@@ -714,7 +718,8 @@ public final class L2PcInstance extends L2Playable
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-		if (sucess == false)
+		}
+		else
 		{
 			player.createPSdb();
 			player.setPremiumService(0);
@@ -2166,13 +2171,14 @@ public final class L2PcInstance extends L2Playable
 	{
 		if (Config.ALT_RECOMMEND)
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-					PreparedStatement statement = con.prepareStatement(ADD_CHAR_RECOM))
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
+				PreparedStatement statement = con.prepareStatement(ADD_CHAR_RECOM);
 				try (ResultSet rset = statement.executeQuery())
 				{
 					statement.setInt(1, getObjectId());
 					statement.setInt(2, target.getObjectId());
+					statement.close();
 				}
 			}
 			catch (SQLException e)
@@ -7153,8 +7159,10 @@ public final class L2PcInstance extends L2Playable
 			statement.setInt(31, getAppearance().getSex() ? 1 : 0);
 			statement.setDouble(32, 1/* getMovementMultiplier() */);
 			statement.setDouble(33, 1/* getAttackSpeedMultiplier() */);
-			statement.setDouble(34, getTemplate().collisionRadius/* getCollisionRadius() */);
-			statement.setDouble(35, getTemplate().collisionHeight/* getCollisionHeight() */);
+
+			statement.setDouble(34, getTemplate().getCollisionRadius(getAppearance().getSex())/* getCollisionRadius() */);
+			statement.setDouble(35, getTemplate().getCollisionHeight(getAppearance().getSex())/* getCollisionHeight() */);
+
 			statement.setLong(36, getExp());
 			statement.setInt(37, getSp());
 			statement.setInt(38, getKarma());
@@ -7205,17 +7213,16 @@ public final class L2PcInstance extends L2Playable
 	private static L2PcInstance restore(int objectId)
 	{
 		L2PcInstance player = null;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement(RESTORE_CHARACTER))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve the L2PcInstance from the characters table of the database
-			
+			PreparedStatement statement = con.prepareStatement(RESTORE_CHARACTER);
 			statement.setInt(1, objectId);
-			try (ResultSet rset = statement.executeQuery())
-			{
-				double currentCp = 0;
-				double currentHp = 0;
-				double currentMp = 0;
+			ResultSet rset = statement.executeQuery();
+
+			double currentCp = 0;
+			double currentHp = 0;
+			double currentMp = 0;
 				
 				while (rset.next())
 				{
@@ -7413,9 +7420,11 @@ public final class L2PcInstance extends L2Playable
 				{
 					player.getPet().setOwner(player);
 				}
-			}
 			// Update the overloaded status of the L2PcInstance
 			player.refreshOverloaded();
+			
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -7495,6 +7504,8 @@ public final class L2PcInstance extends L2Playable
 				player.getSubClasses().put(subClass.getClassIndex(), subClass);
 			}
 			
+			
+			rset.close();
 			statement.close();
 		}
 		catch (SQLException e)
@@ -7665,10 +7676,9 @@ public final class L2PcInstance extends L2Playable
 			int sp = getStat().getSp();
 			_classIndex = currentClassIndex;
 			
-			PreparedStatement statement;
+			PreparedStatement statement = con.prepareStatement(UPDATE_CHARACTER);
 			
 			// Update base class
-			statement = con.prepareStatement(UPDATE_CHARACTER);
 			statement.setInt(1, level);
 			statement.setInt(2, getMaxHp());
 			statement.setDouble(3, getCurrentHp());
@@ -7857,7 +7867,7 @@ public final class L2PcInstance extends L2Playable
 					statement.close();
 				}
 			}
-			
+			statement.close();
 			ReuseTimeStamps.clear();
 		}
 		catch (SQLException e)
@@ -8025,12 +8035,10 @@ public final class L2PcInstance extends L2Playable
 		}
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement;
-			
+		{		
 			if (oldSkill != null && newSkill != null)
 			{
-				statement = con.prepareStatement(UPDATE_CHARACTER_SKILL_LEVEL);
+				PreparedStatement statement = con.prepareStatement(UPDATE_CHARACTER_SKILL_LEVEL);
 				statement.setInt(1, newSkill.getLevel());
 				statement.setInt(2, oldSkill.getId());
 				statement.setInt(3, getObjectId());
@@ -8040,7 +8048,7 @@ public final class L2PcInstance extends L2Playable
 			}
 			else if (newSkill != null)
 			{
-				statement = con.prepareStatement(ADD_NEW_SKILL);
+				PreparedStatement statement = con.prepareStatement(ADD_NEW_SKILL);
 				statement.setInt(1, getObjectId());
 				statement.setInt(2, newSkill.getId());
 				statement.setInt(3, newSkill.getLevel());
@@ -8196,15 +8204,15 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void restoreEffects()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement(RESTORE_SKILL_SAVE))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			
+			PreparedStatement statement = con.prepareStatement(RESTORE_SKILL_SAVE);
 			statement.setInt(1, getObjectId());
 			statement.setInt(2, getClassIndex());
 			statement.setInt(3, 0);
-			try (ResultSet rset = statement.executeQuery())
-			{
+			ResultSet rset = statement.executeQuery();
+
 				while (rset.next())
 				{
 					int effectCount = rset.getInt("effect_count");
@@ -8245,7 +8253,14 @@ public final class L2PcInstance extends L2Playable
 						}
 					}
 				}
-			}
+				rset.close();
+				statement.close();
+				
+				statement = con.prepareStatement(DELETE_SKILL_SAVE);
+				statement.setInt(1, getObjectId());
+				statement.setInt(2, getClassIndex());
+				statement.executeUpdate();
+				statement.close();
 		}
 		catch (Exception e)
 		{
@@ -9135,7 +9150,7 @@ public final class L2PcInstance extends L2Playable
 				// Calculate the distance between the L2PcInstance and the target
 				if (sklTargetType == L2SkillTargetType.TARGET_SIGNET_GROUND)
 				{
-					if (!isInsideRadius(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), skill.getCastRange() + getTemplate().collisionRadius, false, false))
+					if (!isInsideRadius(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), skill.getCastRange() + getTemplate().getCollisionRadius(getAppearance().getSex()), false, false))
 					{
 						// Send a System Message to the caster
 						sendPacket(SystemMessageId.TARGET_TOO_FAR);
@@ -9145,7 +9160,7 @@ public final class L2PcInstance extends L2Playable
 						return;
 					}
 				}
-				else if (skill.getCastRange() > 0 && !isInsideRadius(target, skill.getCastRange() + getTemplate().collisionRadius, false, false))
+				else if (skill.getCastRange() > 0 && !isInsideRadius(target, skill.getCastRange() + getTemplate().getCollisionRadius(getAppearance().getSex()), false, false))
 				{
 					// Send a System Message to the caster
 					sendPacket(SystemMessageId.TARGET_TOO_FAR);
@@ -14607,6 +14622,8 @@ public final class L2PcInstance extends L2Playable
 			{
 				flag = rset.getInt("hasVotedTop");
 			}
+			rset.close();
+			statement.close();
 			if (flag == 1)
 			{
 				setTop(true);
@@ -14633,7 +14650,8 @@ public final class L2PcInstance extends L2Playable
 			{
 				flag = rset.getInt("hasVotedHop");
 			}
-
+			rset.close();
+			statement.close();
 			if (flag == 1)
 			{
 				setHop(true);
@@ -15156,4 +15174,35 @@ public final class L2PcInstance extends L2Playable
 	
 	boolean clanWarKill = false;
 	boolean playerKill = false;
+	
+	public void SitStand(final L2Object target)
+	{
+
+		final boolean isTh = target!=null && target instanceof L2StaticObjectInstance && ((L2StaticObjectInstance) target).getType() == 1;
+		final boolean ThroneIsBusy = isTh && ((L2StaticObjectInstance) target).isBusy();		
+		
+		if(isSitting())
+		{
+			if (getMountObjectID() != 0)
+			{
+				final L2Object obj = L2World.getInstance().findObject(getMountObjectID());
+				((L2StaticObjectInstance) obj).setBusy(false);
+				
+				setMountObjectID(0);
+			}
+			
+			standUp();
+		}
+		else
+		{
+			sitDown();
+			
+			if (isTh && !ThroneIsBusy && isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false))
+			{
+				((L2StaticObjectInstance) target).setBusy(true);
+				setMountObjectID(target.getObjectId());
+				broadcastPacket(new ChairSit(this, ((L2StaticObjectInstance) target).getStaticObjectId()));
+			}
+		}
+	}
 }

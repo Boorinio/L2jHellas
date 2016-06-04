@@ -42,10 +42,11 @@ public class PackageToList extends L2GameServerPacket
 	{
 		writeC(0xC2);
 		writeD(_players.size());
-		for (int objId : _players.keySet())
+		
+		for (Map.Entry<Integer, String> player : _players.entrySet())
 		{
-			writeD(objId); // you told me char id, i guess this was object id?
-			writeS(_players.get(objId));
+			writeD(player.getKey());//id
+			writeS(player.getValue());
 		}
 	}
 

@@ -54,8 +54,8 @@ public class L2PcTemplate extends L2CharTemplate
 		classId = ClassId.values()[set.getInteger("classId")];
 		race = Race.values()[set.getInteger("raceId")];
 		className = set.getString("className");
-		_currentCollisionRadius = set.getInteger("collision_radius");
-		_currentCollisionHeight = set.getInteger("collision_height");
+		_currentCollisionRadius = set.getInteger("collision_radiusf");
+		_currentCollisionHeight = set.getInteger("collision_heightf");
 
 		spawnX = set.getInteger("spawnX");
 		spawnY = set.getInteger("spawnY");
@@ -81,26 +81,19 @@ public class L2PcTemplate extends L2CharTemplate
 		if (item != null)
 			_items.add(item);
 	}
-	
-	/**
-	 * @return
-	 */
-	public double getCollisionRadius()
+
+	@Override
+	public int getCollisionRadius(boolean sex)
 	{
-		return _currentCollisionRadius;
+		return (int) ((sex) ? _currentCollisionRadius : collisionRadius);
 	}
-	
-	/**
-	 * @return
-	 */
-	public double getCollisionHeight()
+
+	@Override
+	public int getCollisionHeight(boolean sex)
 	{
-		return _currentCollisionHeight;
+		return (int) ((sex) ? _currentCollisionHeight : collisionHeight);
 	}
-	
-	/**
-	 * @return itemIds of all the starter equipment
-	 */
+
 	public L2Item[] getItems()
 	{
 		return _items.toArray(new L2Item[_items.size()]);

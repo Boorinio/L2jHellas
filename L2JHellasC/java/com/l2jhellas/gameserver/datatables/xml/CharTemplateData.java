@@ -112,6 +112,9 @@ public class CharTemplateData
 
 									double COL_R = Double.valueOf(t.getAttributes().getNamedItem("m_col_r").getNodeValue());
 									double COL_H = Double.valueOf(t.getAttributes().getNamedItem("m_col_h").getNodeValue());
+									
+									double COL_RF = Double.valueOf(t.getAttributes().getNamedItem("f_col_r").getNodeValue());
+									double COL_HF = Double.valueOf(t.getAttributes().getNamedItem("f_col_h").getNodeValue());
 									for (Node h = t.getFirstChild(); h != null; h = h.getNextSibling())
 									{
 										if (h.getNodeName().equalsIgnoreCase("lvlup"))
@@ -167,6 +170,10 @@ public class CharTemplateData
 													}
 													set.set("collision_radius", COL_R);
 													set.set("collision_height", COL_H);
+													
+													set.set("collision_radiusf", COL_RF);
+													set.set("collision_heightf", COL_HF);
+													
 													set.set("baseHpMax", HPBASE);
 													set.set("lvlHpAdd", HPADD);
 													set.set("lvlHpMod", HPMOD);

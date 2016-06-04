@@ -3223,6 +3223,7 @@ public final class Config
 			// Dev's Config
 			DEBUG = Boolean.parseBoolean(serverSettings.getProperty("Debug", "False"));
 			DEBUG_LOGGER = Boolean.parseBoolean(serverSettings.getProperty("DebugLogger", "False"));
+			DEVELOPER = Boolean.parseBoolean(serverSettings.getProperty("Developer", "False"));
 			ALT_DEV_NO_SPAWNS = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoSpawns", "False"));
 			ALT_DEV_NO_SCRIPT = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoScripts", "False"));
 			ALT_DEV_NO_RB = Boolean.parseBoolean(serverSettings.getProperty("AltDevNoRaidbosses", "False"));
@@ -3270,13 +3271,15 @@ public final class Config
 			{
 				_log.severe(Config.class.getName() + ": Error while loading " + GS_IP + " settings!");
 			}
-			// Dev's Config
+			// Dev's Config	
 			EXTERNAL_HOSTNAME = gsIpSettings.getProperty("ExternalHostname", "*");
 			INTERNAL_HOSTNAME = gsIpSettings.getProperty("InternalHostname", "*");
 			GAME_SERVER_LOGIN_HOST = gsIpSettings.getProperty("LoginHost", "127.0.0.1");
 			GAMESERVER_HOSTNAME = gsIpSettings.getProperty("GameserverHostname");
 			PORT_GAME = Integer.parseInt(gsIpSettings.getProperty("GameserverPort", "7777"));
 			GAME_SERVER_LOGIN_PORT = Integer.parseInt(gsIpSettings.getProperty("LoginPort", "9014"));
+			
+		
 
 			/**
 			 * HexID

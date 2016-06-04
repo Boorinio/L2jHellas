@@ -162,4 +162,24 @@ public class L2CharTemplate
 		collisionHeight    = set.getInteger("collision_height");
 		/** @formatter:on */
 	}
+	
+	public int getCollisionRadius()
+	{
+		return getCollisionRadius(false);
+	}
+
+	public int getCollisionRadius(boolean sex)
+	{
+		return (int) collisionRadius;
+	}
+	
+	public int getCollisionHeight()
+	{
+		return getCollisionHeight(false);
+	}
+
+	protected int getCollisionHeight(boolean sex)
+	{
+		return (int) collisionHeight;
+	}
 }

@@ -656,10 +656,8 @@ public class Castle
 	public final Siege getSiege()
 	{
 		if (_siege == null)
-			_siege = new Siege(new Castle[]
-			{
-				this
-			});
+			_siege = new Siege(this);
+		
 		return _siege;
 	}
 

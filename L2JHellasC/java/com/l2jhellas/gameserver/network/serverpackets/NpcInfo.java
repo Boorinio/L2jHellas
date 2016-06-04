@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.instancemanager.TownManager;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -93,7 +93,7 @@ public final class NpcInfo extends L2GameServerPacket
 				_y = cha.getY();
 				_z = cha.getZ();
 				L2TownZone Town;
-				Town = TownManager.getTown(_x, _y, _z);
+				Town = MapRegionTable.getTown(_x, _y, _z);
 				if (Town != null)
 				{
 					int townId = Town.getTownId();

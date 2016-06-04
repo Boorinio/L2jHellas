@@ -99,7 +99,6 @@ import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeReward;
-import com.l2jhellas.gameserver.instancemanager.TownManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
@@ -237,7 +236,6 @@ public class GameServer
 
 		Util.printSection("Zone");
 		ZoneManager.getInstance();
-		TownManager.getInstance();
 		Util.printSection("Castles");
 		CastleManager.getInstance();
 		SiegeManager.getInstance();
