@@ -70,6 +70,7 @@ import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
+import com.l2jhellas.gameserver.datatables.xml.SoulCrystalsTable;
 import com.l2jhellas.gameserver.datatables.xml.StaticObjData;
 import com.l2jhellas.gameserver.datatables.xml.SummonItemsData;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
@@ -104,6 +105,8 @@ import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.engines.EventHandlerCtf;
 import com.l2jhellas.gameserver.model.entity.engines.EventHandlerTvT;
@@ -116,8 +119,12 @@ import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
-import com.l2jhellas.gameserver.taskmanager.KnownListUpdateTaskManager;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
+import com.l2jhellas.gameserver.vehicles.BoatGiranTalking;
+import com.l2jhellas.gameserver.vehicles.BoatGludinRune;
+import com.l2jhellas.gameserver.vehicles.BoatInnadrilTour;
+import com.l2jhellas.gameserver.vehicles.BoatRunePrimeval;
+import com.l2jhellas.gameserver.vehicles.BoatTalkingGludin;
 import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
 import com.l2jhellas.shield.antibot.AntiAfk;
@@ -163,7 +170,7 @@ public class GameServer
 		Announcements.getInstance();
 		AutoAnnouncementHandler.getInstance();
 		AutoSpawnHandler.getInstance();
-		DayNightSpawnManager.getInstance().notifyChangeMode();
+		DayNightSpawnManager.getInstance();
 		AutoChatHandler.getInstance();
 		Universe.getInstance();
 		FloodProtector.getInstance();
@@ -196,6 +203,7 @@ public class GameServer
 		{
 			FishTable.getInstance();
 		}
+		SoulCrystalsTable.load();
 
 		Util.printSection("Npc");
 		NpcData.getInstance();
@@ -218,6 +226,8 @@ public class GameServer
 		HennaData.getInstance();
 		HelperBuffData.getInstance();
 		BuffTemplateTable.getInstance();
+		PartyMatchWaitingList.getInstance();
+		PartyMatchRoomList.getInstance();
 
 		Util.printSection("Geodata");
 		GeoData.getInstance();
@@ -259,7 +269,7 @@ public class GameServer
 		MercTicketManager.getInstance();
 		PetitionManager.getInstance();
 		CursedWeaponsManager.getInstance();
-		FourSepulchersManager.getInstance();
+		FourSepulchersManager.getInstance().init();
 		PetData.getInstance().loadPetsData();
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 		{
@@ -274,11 +284,19 @@ public class GameServer
 			ItemsAutoDestroy.getInstance();
 		}
 		DoorData.getInstance();
-		BoatManager.getInstance();
+		
+		if (Config.ALLOW_BOAT)
+		{
+			BoatManager.getInstance();
+			BoatGiranTalking.load();
+			BoatGludinRune.load();
+			BoatInnadrilTour.load();
+			BoatRunePrimeval.load();
+			BoatTalkingGludin.load();
+		}
 
 		Util.printSection("Tasks");
 		TaskManager.getInstance();
-		KnownListUpdateTaskManager.getInstance();
 
 		Util.printSection("Manor");
 		L2Manor.getInstance();

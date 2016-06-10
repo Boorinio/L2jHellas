@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -206,7 +207,7 @@ public final class L2WorldRegion
 					mob.clearAggroList();
 					mob.getKnownList().removeAllKnownObjects();
 
-					mob.getAI().setIntention(com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE);
+					mob.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 
 					// stop the ai tasks
 					((L2AttackableAI) mob.getAI()).stopAITask();
@@ -344,11 +345,11 @@ public final class L2WorldRegion
 
 		if (object == null)
 			return;
-		_visibleObjects.put(object.getObjectId(),object);
+		_visibleObjects.putIfAbsent(object.getObjectId(),object);
 
 		if (object instanceof L2Playable)
 		{
-			_allPlayable.put(object.getObjectId(),(L2Playable) object);
+			_allPlayable.putIfAbsent(object.getObjectId(),(L2Playable) object);
 
 			// if this is the first player to enter the region, activate self & neighbors
 			if ((_allPlayable.size() == 1) && (!Config.GRIDS_ALWAYS_ON))

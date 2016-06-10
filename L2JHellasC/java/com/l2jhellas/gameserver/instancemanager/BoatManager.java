@@ -14,12 +14,10 @@
  */
 package com.l2jhellas.gameserver.instancemanager;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
@@ -42,22 +40,16 @@ public class BoatManager
 	
 	public static final int BOAT_BROADCAST_RADIUS = 20000;
 
-	private static BoatManager _instance;
 	public static final BoatManager getInstance()
 	{
-		if( _instance == null)
-		 _instance = new BoatManager();
-		return _instance;
+		return SingletonHolder._instance;
 	}
-
-	private Map<Integer, L2BoatInstance> _staticItems = new HashMap<Integer, L2BoatInstance>();
 
 	public boolean _initialized;
 
 	public BoatManager()
 	{
-		for (int i = 0; i < _docksBusy.length; i++)
-			_docksBusy[i] = false;
+
 	}
 	
 	/**
@@ -66,9 +58,6 @@ public class BoatManager
 	 */
 	public L2BoatInstance getNewBoat(int boatId, int x, int y, int z, int heading)
 	{
-		if (!Config.ALLOW_BOAT)
-			return null;
-
 		StatsSet npcDat = new StatsSet();
 		npcDat.set("npcId", boatId);
 		npcDat.set("level", 0);
@@ -140,13 +129,7 @@ public class BoatManager
 	 */
 	public void dockShip(int h, boolean value)
 	{
-		try
-		{
-			_docksBusy[h] = value;
-		}
-		catch (ArrayIndexOutOfBoundsException e)
-		{
-		}
+		_docksBusy[h] = value;
 	}
 	
 	/**
@@ -156,14 +139,7 @@ public class BoatManager
 	 */
 	public boolean dockBusy(int h)
 	{
-		try
-		{
-			return _docksBusy[h];
-		}
-		catch (ArrayIndexOutOfBoundsException e)
-		{
-			return false;
-		}
+		return _docksBusy[h];
 	}
 	/**
 	 * Broadcast one packet in both path points
@@ -173,15 +149,10 @@ public class BoatManager
 	 */
 	public void broadcastPacket(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket packet)
 	{
-		double dx, dy;
-		final Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers().values();
-		for (L2PcInstance player : players)
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			if (player == null)
-				continue;
-			
-			dx = (double) player.getX() - point1.x;
-			dy = (double) player.getY() - point1.y;
+			double dx = (double) player.getX() - point1.x;
+			double dy = (double) player.getY() - point1.y;
 			
 			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 				player.sendPacket(packet);
@@ -204,15 +175,10 @@ public class BoatManager
 	 */
 	public void broadcastPackets(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket... packets)
 	{
-		double dx, dy;
-		final Collection<L2PcInstance> players = L2World.getInstance().getAllPlayers().values();
-		for (L2PcInstance player : players)
+		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			if (player == null)
-				continue;
-			
-			dx = (double) player.getX() - point1.x;
-			dy = (double) player.getY() - point1.y;
+			double dx = (double) player.getX() - point1.x;
+			double dy = (double) player.getY() - point1.y;
 			
 			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 			{
@@ -230,16 +196,9 @@ public class BoatManager
 			}
 		}
 	}
-	/**
-	 * @param boatId
-	 * @return
-	 */
-	public L2BoatInstance GetBoat(int boatId)
+	
+	private static class SingletonHolder
 	{
-		if (_staticItems == null)
-		{
-			_staticItems = new HashMap<Integer, L2BoatInstance>();
-		}
-		return _staticItems.get(boatId);
-	}		
+		protected static final BoatManager _instance = new BoatManager();
+	}
 }

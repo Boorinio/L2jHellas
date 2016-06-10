@@ -315,7 +315,7 @@ public class FourSepulchersManager
 				SpawnTable.getInstance().addNewSpawn(spawnDat, false);
 				spawnDat.doSpawn();
 				spawnDat.startRespawn();
-				_log.info(FourSepulchersManager.class.getSimpleName() + ": spawned TEST TEXT MISSING.");
+				_log.info(FourSepulchersManager.class.getSimpleName() +" Spawned " + spawnDat.getTemplate().getName());
 			}
 			catch (SecurityException e)
 			{
@@ -1517,12 +1517,12 @@ public class FourSepulchersManager
 			{
 				if (temp == null)
 				{
-					_log.warning(FourSepulchersManager.class.getName() + ": managerSay(): manager is null.");
+					_log.warning(FourSepulchersManager.class.getName() + ": Something goes wrong with managers!");
 					continue;
 				}
 				if (!(temp.getLastSpawn() instanceof L2SepulcherNpcInstance))
 				{
-					_log.warning(FourSepulchersManager.class.getName() + ": managerSay(): manager is not Sepulcher instance.");
+					_log.warning(FourSepulchersManager.class.getName()+":Something goes wrong with "+temp.getTemplate().getName());
 					continue;
 				}
 				// hall not used right now, so its manager will not tell you
@@ -1543,12 +1543,12 @@ public class FourSepulchersManager
 			{
 				if (temp == null)
 				{
-					_log.warning(FourSepulchersManager.class.getName() + ": Something goes wrong in managerSay()...");
+					_log.warning(FourSepulchersManager.class.getName() + ": Something goes wrong with managers!");
 					continue;
 				}
 				if (!(temp.getLastSpawn() instanceof L2SepulcherNpcInstance))
 				{
-					_log.warning(FourSepulchersManager.class.getName() + ": Something goes wrong in managerSay()...");
+					_log.warning(FourSepulchersManager.class.getName()+":Something goes wrong with "+temp.getTemplate().getName());
 					continue;
 				}
 				((L2SepulcherNpcInstance) temp.getLastSpawn()).sayInShout(msg1);

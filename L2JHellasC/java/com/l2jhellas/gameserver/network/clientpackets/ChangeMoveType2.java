@@ -31,13 +31,17 @@ public final class ChangeMoveType2 extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
-		if (_typeRun)
-			player.setRunning();
-		else
-			player.setWalking();
+		
+		if(!player.isDead())
+		{
+			if (_typeRun)
+				player.setRunning();
+			else
+				player.setWalking();
+		}
 	}
 
 	@Override

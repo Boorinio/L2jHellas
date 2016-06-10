@@ -81,7 +81,7 @@ public final class RequestActionUse extends L2GameClientPacket
 		{
 			case 0:
 				if(activeChar.getMountType() == 0)
-				activeChar.SitStand(target);				
+				activeChar.SitStand(target,activeChar.isSitting());		
 				if (Config.DEBUG)
 					_log.fine("new wait type: " + (activeChar.isSitting() ? "SITTING" : "STANDING"));
 
@@ -91,9 +91,6 @@ public final class RequestActionUse extends L2GameClientPacket
 					activeChar.setWalking();
 				else
 					activeChar.setRunning();
-
-				if (Config.DEBUG)
-					_log.fine("new move type: " + (activeChar.isRunning() ? "RUNNING" : "WALKIN"));
 			break;
 			case 15:
 			case 21: // pet follow/stop

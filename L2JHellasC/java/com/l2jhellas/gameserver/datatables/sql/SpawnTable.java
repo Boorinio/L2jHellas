@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -142,8 +141,7 @@ public class SpawnTable
 		_log.info(SpawnTable.class.getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
 
 		if (Config.DEBUG)
-			_log.log(Level.FINE, getClass().getName() + ": Spawning completed, total number of NPCs in the world: " + _npcSpawnCount);
-
+			_log.info(SpawnTable.class.getSimpleName() + ": Spawning completed, total number of NPCs in the world: " + _npcSpawnCount);
 	}
 
 	public L2Spawn getTemplate(int id)

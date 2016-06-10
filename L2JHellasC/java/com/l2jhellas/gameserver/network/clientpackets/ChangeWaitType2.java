@@ -14,12 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.instancemanager.CastleManager;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.ChairSit;
 
 public final class ChangeWaitType2 extends L2GameClientPacket
 {
@@ -35,39 +31,17 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
-		L2Object target = player.getTarget();
-		if (getClient() != null && player != null)
+		final L2PcInstance player = getClient().getActiveChar();
+		if (player == null)
+			return;
+		
+		if (player.isDead() || player.getMountType() != 0 || player.isOutOfControl()) // prevent sit/stand if you riding-outOFControl-dead
 		{
-			if (player.isOutOfControl())
-			{
-				player.sendPacket(ActionFailed.STATIC_PACKET);
-				return;
-			}
-
-			if (player.getMountType() != 0) // prevent sit/stand if you riding
-				return;
-
-			if ((target != null)
-/** @formatter:off */
-					&& !player.isSitting()
-					&& target instanceof L2StaticObjectInstance
-					&& (((L2StaticObjectInstance)target).getType() == 1)
-					&& (CastleManager.getInstance().getCastle(target) != null)
-					&& player.isInsideRadius(target, L2StaticObjectInstance.INTERACTION_DISTANCE, false, false)
-					/** @formatter:on */
-			)
-			{
-				ChairSit cs = new ChairSit(player, ((L2StaticObjectInstance) target).getStaticObjectId());
-				player.sendPacket(cs);
-				player.sitDown();
-				player.broadcastPacket(cs);
-			}
-			if (_typeStand)
-				player.standUp();
-			else
-				player.sitDown();
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
 		}
+		
+		player.SitStand(player.getTarget(), _typeStand);
 	}
 
 	@Override

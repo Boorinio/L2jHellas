@@ -21,7 +21,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.util.Util;
 
 public class ObjectKnownList
@@ -58,7 +60,7 @@ public class ObjectKnownList
 		if (!Util.checkIfInRange(getDistanceToWatchObject(object), getActiveObject(), object, true))
 			return false;
 
-		return (getKnownObjects().put(object.getObjectId(), object) == null);
+		return (getKnownObjects().putIfAbsent(object.getObjectId(), object) == null);
 	}
 
 	public final boolean knowsObject(L2Object object)
@@ -79,6 +81,44 @@ public class ObjectKnownList
 		return (getKnownObjects().remove(object.getObjectId()) != null);
 	}
 
+	
+	public final synchronized void updateKnownObjects()
+	{
+		if (getActiveObject() instanceof L2Character)
+		{
+			findCloseObjects();
+			forgetObjects();
+		}
+	}
+	
+	private final void findCloseObjects()
+	{
+			Collection<L2Object> objects = L2World.getVisibleObjects(getActiveObject(),2000);
+			final boolean isActiveObjectPlayable = getActiveObject() instanceof L2Playable;
+			
+			if (objects == null)
+				return;
+			
+			for (final L2Object object : objects)
+			{
+				if (object == null || !object.isVisible())
+					continue;
+				
+				// Try to add object to active object's known objects
+				// L2PlayableInstance sees everything
+				addKnownObject(object);
+				
+				// Try to add active object to object's known objects
+				// Only if object is a L2Character and active object is a L2PlayableInstance
+				if (object instanceof L2Character && isActiveObjectPlayable)
+				{
+					object.getKnownList().addKnownObject(getActiveObject());
+				}
+			}
+			
+			objects = null;
+	}
+	
 	/**
 	 * Remove object from known list, which are beyond distance to forget.
 	 */

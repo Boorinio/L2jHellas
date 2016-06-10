@@ -27,7 +27,6 @@ public class Manager
 		ClanHallManager.getInstance().reload();
 		CoupleManager.getInstance().reload();
 		CursedWeaponsManager.reload();
-		DayNightSpawnManager.getInstance().reload();
 		DimensionalRiftManager.getInstance().reload();
 		DuelManager.getInstance();	
 		FourSepulchersManager.getInstance();

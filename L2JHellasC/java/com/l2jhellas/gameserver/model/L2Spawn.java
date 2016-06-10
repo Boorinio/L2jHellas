@@ -116,7 +116,7 @@ public class L2Spawn
 			}
 			catch (Exception e)
 			{
-				_log.warning(L2Spawn.class.getSimpleName() + ": ");
+				_log.warning(L2Spawn.class.getSimpleName() + ": "+e);
 			}
 
 			_scheduledCount--;

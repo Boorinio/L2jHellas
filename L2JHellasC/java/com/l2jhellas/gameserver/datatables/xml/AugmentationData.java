@@ -102,9 +102,12 @@ public class AugmentationData
 		// Use size*4: since there's 4 blocks of stat-data with equivalent size
 		_log.info(AugmentationData.class.getSimpleName() + "Augment: Loaded " + _augmentationStats[0].size() * 4 + " augmentation stats.");
 
+		if(Config.DEBUG)
+		{
 		for (int i = 1; i <= 10; i++)
 		{
 			_log.info(AugmentationData.class.getSimpleName() + "Augment: Loaded " + _blueSkills.get(i).size() + " blue, " + _purpleSkills.get(i).size() + " purple and " + _redSkills.get(i).size() + " red skills for lifeStoneLevel " + i);
+		}
 		}
 	}
 

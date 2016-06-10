@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor.knownlist;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -26,6 +27,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ChairSit;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;
 import com.l2jhellas.gameserver.network.serverpackets.DoorInfo;
@@ -161,6 +163,7 @@ public class PcKnownList extends PlayableKnownList
 					return false;
 				
 				L2PcInstance otherPlayer = (L2PcInstance) object;
+				
 				if (otherPlayer.isInBoat())
 				{
 					otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getPosition().getWorldPosition());
@@ -178,6 +181,13 @@ public class PcKnownList extends PlayableKnownList
 						getActiveChar().sendPacket(new RelationChanged(otherPlayer, relation, getActiveChar().isAutoAttackable(otherPlayer)));
 				}
 
+				if (otherPlayer.isSeated())
+				{
+					final L2Object throne = L2World.getInstance().findObject(otherPlayer.getMountObjectID());
+					if (throne instanceof L2StaticObjectInstance)
+						getActiveChar().sendPacket(new ChairSit(otherPlayer, ((L2StaticObjectInstance)throne).getStaticObjectId()));
+				}
+				
 				if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL)
 					getActiveChar().sendPacket(new PrivateStoreMsgSell(otherPlayer));
 				else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_BUY)

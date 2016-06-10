@@ -19,6 +19,7 @@ import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -45,6 +46,23 @@ public final class RequestRestart extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
+				
+		if (player.getActiveEnchantItem() != null)
+			return;
+
+		if (player.isInBoat())
+		{
+			player.sendPacket(SystemMessageId.NO_RESTART_HERE);
+			sendPacket(RestartResponse.valueOf(false));
+			return;
+		}
+		
+		if (player.isInsideZone(ZoneId.NO_RESTART))
+		{
+			player.sendPacket(SystemMessageId.NO_RESTART_HERE);
+			sendPacket(RestartResponse.valueOf(false));
+			return;
+		}
 		if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 		{
 			player.sendMessage("You can't logout in olympiad mode.");
@@ -134,7 +152,7 @@ public final class RequestRestart extends L2GameClientPacket
 		// return the client to the authed status
 		client.setState(GameClientState.AUTHED);
 
-		sendPacket(new RestartResponse());
+		sendPacket(RestartResponse.valueOf(true));
 		// send char list
 		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		sendPacket(cl);

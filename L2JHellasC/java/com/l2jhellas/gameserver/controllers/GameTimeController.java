@@ -237,6 +237,7 @@ public class GameTimeController
 			{
 				try
 				{
+					cha.getKnownList().updateKnownObjects();
 					cha.getKnownList().refreshInfos();
 					cha.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
 				}

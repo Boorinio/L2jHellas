@@ -11869,6 +11869,12 @@ public final class L2PcInstance extends L2Playable
 			// ClanTable.getInstance().getClan(getClanId()).broadcastToOnlineMembers(new PledgeShowMemberListAdd(this));
 		}
 		
+		if (isSeated())
+		{
+			final L2Object obj = L2World.getInstance().findObject(getMountObjectID());
+			((L2StaticObjectInstance) obj).setBusy(false);
+		}
+		
 		for (L2PcInstance player : _snoopedPlayer)
 		{
 			player.removeSnooper(this);
@@ -15083,6 +15089,7 @@ public final class L2PcInstance extends L2Playable
 			if (wh instanceof L2WarehouseInstance)
 			{
 				sendMessage("You cannot enchant near warehouse.");
+				cancellEnchant();
 				return false;
 			}
 		}
@@ -15175,13 +15182,13 @@ public final class L2PcInstance extends L2Playable
 	boolean clanWarKill = false;
 	boolean playerKill = false;
 	
-	public void SitStand(final L2Object target)
+	public void SitStand(final L2Object target,boolean sitting)
 	{
 
 		final boolean isTh = target!=null && target instanceof L2StaticObjectInstance && ((L2StaticObjectInstance) target).getType() == 1;
 		final boolean ThroneIsBusy = isTh && ((L2StaticObjectInstance) target).isBusy();		
 		
-		if(isSitting())
+		if(sitting)
 		{
 			if (getMountObjectID() != 0)
 			{

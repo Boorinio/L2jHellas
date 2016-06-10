@@ -497,9 +497,11 @@ public class MasterHandler
 			}
 		}
 		
+		_log.info("============"+MasterHandler.class.getSimpleName()+"==============");
 		for (IHandler<?, ?> loadInstance : _loadInstances)
 		{
-			_log.info(MasterHandler.class.getSimpleName()+ ":  Loaded " + loadInstance.size() + " Handlers.");
+			_log.info(loadInstance.getClass().getSimpleName() + ": Loaded " + loadInstance.size() + " Handlers.");
 		}
+		_log.info("=======================================");
 	}
 }

@@ -53,6 +53,13 @@ public final class Logout extends L2GameClientPacket
 		if (player == null)
 			return;
 
+		if (player.isInBoat())
+		{
+			player.sendPacket(SystemMessageId.NO_LOGOUT_HERE);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		if (AttackStanceTaskManager.getInstance().isInAttackStance(player))
 		{
 			if (Config.DEBUG)
