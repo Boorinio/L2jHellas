@@ -60,7 +60,7 @@ public class ObjectKnownList
 		if (!Util.checkIfInRange(getDistanceToWatchObject(object), getActiveObject(), object, true))
 			return false;
 
-		return (getKnownObjects().putIfAbsent(object.getObjectId(), object) == null);
+		return (getKnownObjects().put(object.getObjectId(), object) == null);
 	}
 
 	public final boolean knowsObject(L2Object object)

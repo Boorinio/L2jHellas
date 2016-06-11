@@ -61,8 +61,8 @@ public class CharKnownList extends ObjectKnownList
 		
 		if (object instanceof L2PcInstance)
 		{
-			getKnownPlayers().putIfAbsent(object.getObjectId(), (L2PcInstance) object);
-			getKnownRelations().putIfAbsent(object.getObjectId(), -1);
+			getKnownPlayers().put(object.getObjectId(), (L2PcInstance) object);
+			getKnownRelations().put(object.getObjectId(), -1);
 		}
 		return true;
 	}
