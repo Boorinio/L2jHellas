@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.network.gameserverpackets;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,7 +30,7 @@ public class PlayerInGame extends GameServerBasePacket
 		writeS(player);
 	}
 
-	public PlayerInGame(ArrayList<String> players)
+	public PlayerInGame(List<String> players)
 	{
 		writeC(0x02);
 		writeH(players.size());

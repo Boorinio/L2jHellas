@@ -52,14 +52,20 @@ public class L2CastleZone extends L2SpawnZone
 	protected void onEnter(L2Character character)
 	{
 		if (getCastle() != null)
+		{
 			character.setInsideZone(ZoneId.CASTLE, true);
+		}
+		
+		
 	}
 	
 	@Override
 	protected void onExit(L2Character character)
 	{
 		if (getCastle() != null)
+		{
 			character.setInsideZone(ZoneId.CASTLE, false);
+		}
 	}
 	
 	@Override
@@ -151,4 +157,17 @@ public class L2CastleZone extends L2SpawnZone
 			}
 		}
 	}
+
+	//test
+	//public boolean isActive()
+	//{
+	//	return true;
+	//}
+	
+	//only in siege
+	//public boolean isActive()
+	//{
+		//return getCastle().getSiege().getIsInProgress();
+	//}
+
 }

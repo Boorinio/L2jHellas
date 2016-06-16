@@ -39,11 +39,6 @@ public final class RankLoader
 	public static void load()
 	{
 		log.log(Level.INFO, "> Initializing Rank PvP System (" + RANK_PVP_SYSTEM_VERSION + "):");
-		if (!Config.RANK_PVP_SYSTEM_ENABLED)
-		{
-			log.log(Level.INFO, " - Rank PvP System: Disabled");
-			return;
-		}
 
 		// initializing system
 		PvpTable.getInstance();

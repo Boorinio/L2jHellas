@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.network;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.sql.Connection;
@@ -22,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantLock;
@@ -38,6 +38,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
+import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.mmocore.network.MMOClient;
@@ -97,7 +98,9 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		crypt = new GameCrypt();
 		_autoSaveInDB = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new AutoSaveTask(), 300000L, 900000L);
 	}
-
+	
+    private L2GameServerPacket _aditionalClosePacket;
+ 
 	public byte[] enableCrypt()
 	{
 		byte[] key = BlowFishKeygen.getRandomKey();
@@ -380,7 +383,25 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 
 	public L2PcInstance loadCharFromDisk(int charslot)
 	{
-		L2PcInstance character = L2PcInstance.load(getObjectIdForSlot(charslot));
+		
+		final int objId = getObjectIdForSlot(charslot);
+		if (objId < 0)
+			return null;
+		
+		L2PcInstance character = L2World.getInstance().getPlayer(objId);
+		if (character != null)
+		{
+			// double login exploit prevention
+			_log.severe("Attempt of double login: " + character.getName() + "(" + objId + ") " + getAccountName());
+			if (character.getClient() != null)
+				character.getClient().closeNow();
+			else
+				character.deleteMe();
+			
+			return null;
+		}
+		
+		character = L2PcInstance.load(getObjectIdForSlot(charslot));
 
 		if (character != null)
 		{
@@ -415,11 +436,27 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		}
 	}
 
-	public void close(L2GameServerPacket gsp)
-	{
-		getConnection().close(gsp);
-	}
-
+	 public void close(L2GameServerPacket gsp)
+	 {
+	  
+	  if (getConnection() == null)
+	  {
+	   return; 
+	  }
+	  if (_aditionalClosePacket != null)
+	  {
+	   getConnection().close(new L2GameServerPacket[]
+	   {
+	    _aditionalClosePacket,
+	    gsp
+	   });
+	  }
+	  else
+	  {
+	   
+	   getConnection().close(gsp);
+	  }
+	 }
 	/**
 	 * @param charslot
 	 * @return
@@ -454,20 +491,31 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 			// server is closing
 		}
 	}
-
+	
 	public void closeNow()
-	{
-		try
-		{
-			super.getConnection().close();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		cleanMe(true);
+	{	  
+		 _isDetached = true; // prevents more packets execution
+		  close(ServerClose.STATIC_PACKET);
+		  synchronized (this)
+		  {
+		   if (_cleanupTask != null)
+		   {
+		    cancelCleanup();
+		   }
+		   _cleanupTask = ThreadPoolManager.getInstance().scheduleGeneral(new CleanupTask(), 0); // instant
+		  }
 	}
-
+	
+	private boolean cancelCleanup()
+	 {
+	  final Future<?> task = _cleanupTask;
+	  if (task != null)
+	  {
+	   _cleanupTask = null;
+	   return task.cancel(true);
+	  }
+	  return false;
+	 }
 	/**
 	 * Produces the best possible string representation of this client.
 	 */
@@ -625,5 +673,8 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	{
 		return _isAuthedGG;
 	}
-		
+	 public void setAditionalClosePacket(L2GameServerPacket aditionalClosePacket)
+	 {
+	  _aditionalClosePacket = aditionalClosePacket;
+	 }
 }

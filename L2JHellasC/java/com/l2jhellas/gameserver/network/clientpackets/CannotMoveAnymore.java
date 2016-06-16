@@ -14,9 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -25,7 +22,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 
 public final class CannotMoveAnymore extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(CannotMoveAnymore.class.getName());
 	private static final String _C__36_STOPMOVE = "[C] 36 CannotMoveAnymore";
 
 	private int _x;
@@ -45,32 +41,15 @@ public final class CannotMoveAnymore extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2Character player = getClient().getActiveChar();
+		final L2Character player = getClient().getActiveChar();
 		if (player == null)
 			return;
-
-		if (Config.DEBUG)
-			_log.fine("client: x:" + _x + " y:" + _y + " z:" + _z + " server x:" + player.getX() + " y:" + player.getY() + " z:" + player.getZ());
-		if (player.getAI() != null)
-		{
+		
+		if (player.hasAI())
 			player.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED_BLOCKED, new L2CharPosition(_x, _y, _z, _heading));
-		}
+		
 		if (player instanceof L2PcInstance && ((L2PcInstance) player).getParty() != null)
 			((L2PcInstance) player).getParty().broadcastToPartyMembers(((L2PcInstance) player), new PartyMemberPosition( player.getParty()));
-
-		// player.stopMove();
-		//
-		// if (Config.DEBUG)
-		// _log.fine("client: x:"+_x+" y:"+_y+" z:"+_z+
-		// " server x:"+player.getX()+" y:"+player.getZ()+" z:"+player.getZ());
-		// StopMove smwl = new StopMove(player);
-		// getClient().getActiveChar().sendPacket(smwl);
-		// getClient().getActiveChar().broadcastPacket(smwl);
-		//
-		// StopRotation sr = new StopRotation(getClient().getActiveChar(),
-		// _heading);
-		// getClient().getActiveChar().sendPacket(sr);
-		// getClient().getActiveChar().broadcastPacket(sr);
 	}
 
 	@Override

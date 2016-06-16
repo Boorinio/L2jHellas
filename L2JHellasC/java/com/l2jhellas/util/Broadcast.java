@@ -15,10 +15,10 @@
 package com.l2jhellas.util;
 
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
+import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
@@ -178,13 +178,15 @@ public final class Broadcast
 	 */
 	public static void toAllPlayersInRegion(L2WorldRegion region, L2GameServerPacket... packets)
 	{
-		for (L2Playable playable : region.getVisiblePlayable().values())
+		for (L2Object object : region.getVisibleObjects().values())
 		{
-			if (playable instanceof L2PcInstance)
-			{
+		if (object instanceof L2PcInstance)
+		{
+			final L2PcInstance player = (L2PcInstance) object;
+			
 				for (L2GameServerPacket packet : packets)
-					playable.sendPacket(packet);
-			}
+					player.sendPacket(packet);
+		}
 		}
 	}
 	

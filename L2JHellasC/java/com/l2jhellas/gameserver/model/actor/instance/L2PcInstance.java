@@ -208,6 +208,7 @@ import com.l2jhellas.gameserver.network.serverpackets.RecipeShopSellList;
 import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SendTradeDone;
+import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
 import com.l2jhellas.gameserver.network.serverpackets.SignsSky;
@@ -4437,12 +4438,19 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void closeNetConnection()
 	{
-		if (_client != null)
+		L2GameClient client = _client;
+		if (client != null)
 		{
-			_client.close(new LeaveWorld());
-			L2World.getInstance().removeFromAllPlayers(this);
-			L2World.getInstance().removeObject(this);
-		}
+			if (client.isDetached())
+				client.cleanMe(true);
+			else
+			{
+				if (!client.getConnection().isClosed())
+				{
+					client.close(ServerClose.STATIC_PACKET);
+				}
+			}
+		}	
 	}
 	
 	public Point3D getCurrentSkillWorldPosition()

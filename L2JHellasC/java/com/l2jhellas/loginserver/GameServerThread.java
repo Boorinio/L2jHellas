@@ -25,11 +25,11 @@ import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javolution.util.FastSet;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
@@ -69,8 +69,7 @@ public class GameServerThread extends Thread
 	private GameServerInfo _gsi;
 
 	/** Authed Clients on a GameServer */
-	private final Set<String> _accountsOnGameServer = new FastSet<String>();
-
+	private final Set<String> _accountsOnGameServer = new HashSet<>();
 	private String _connectionIPAddress;
 
 	@Override
@@ -441,16 +440,8 @@ public class GameServerThread extends Thread
 
 	private void forceClose(int reason)
 	{
-		LoginServerFail lsf = new LoginServerFail(reason);
-		try
-		{
-			sendPacket(lsf);
-		}
-		catch (IOException e)
-		{
-			_log.finer("GameServerThread: Failed kicking banned server. Reason: " + e.getMessage());
-		}
-
+		sendPacket(new LoginServerFail(reason));
+		
 		try
 		{
 			_connection.close();
@@ -594,39 +585,33 @@ public class GameServerThread extends Thread
 
 	/**
 	 * @param sl
-	 * @throws IOException
 	 */
-	private void sendPacket(ServerBasePacket sl) throws IOException
+	private void sendPacket(ServerBasePacket sl)
 	{
-		byte[] data = sl.getContent();
-		NewCrypt.appendChecksum(data);
-		if (Config.DEBUG)
+		try
 		{
-			_log.finest("[S] " + sl.getClass().getSimpleName() + ":\n" + Util.printData(data, 0));
+			byte[] data = sl.getContent();
+			NewCrypt.appendChecksum(data);
+			data = _blowfish.crypt(data);
+			
+			int len = data.length + 2;
+			synchronized (_out)
+			{
+				_out.write(len & 0xff);
+				_out.write(len >> 8 & 0xff);
+				_out.write(data);
+				_out.flush();
+			}
 		}
-		data = _blowfish.crypt(data);
-
-		int len = data.length + 2;
-		synchronized (_out)
+		catch (IOException e)
 		{
-			_out.write(len & 0xff);
-			_out.write(len >> 8 & 0xff);
-			_out.write(data);
-			_out.flush();
+			_log.severe("IOException while sending packet " + sl.getClass().getSimpleName() + ".");
 		}
 	}
 
 	public void kickPlayer(String account)
 	{
-		KickPlayer kp = new KickPlayer(account);
-		try
-		{
-			sendPacket(kp);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		sendPacket(new KickPlayer(account));
 	}
 
 	/**

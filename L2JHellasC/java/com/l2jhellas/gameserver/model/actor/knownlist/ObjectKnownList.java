@@ -154,6 +154,29 @@ public class ObjectKnownList
 		return _knownObjects;
 	}
 	
+	/**
+	 * Return the known list of given object type.
+	 * @param <A> : Object type must be instance of {@link L2Object}.
+	 * @param type : Class specifying object type.
+	 * @return List<A> : Known list of given object type.
+	 */
+	@SuppressWarnings("unchecked")
+	public final <A> List<A> getKnownType(Class<A> type)
+	{
+		// create result list
+		List<A> result = new ArrayList<>();
+		
+		// for all objects in known list
+		for (L2Object obj : _knownObjects.values())
+		{
+			// object type is correct, add to the list
+			if (type.isAssignableFrom(obj.getClass()))
+				result.add((A) obj);
+		}
+		
+		// return result
+		return result;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public final <A> Collection<A> getKnownTypeInRadius(Class<A> type, int radius)

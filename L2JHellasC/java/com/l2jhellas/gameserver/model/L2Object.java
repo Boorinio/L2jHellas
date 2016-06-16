@@ -436,7 +436,12 @@ public abstract class L2Object
 			}
 		}
 	}
-
+	
+	public int getHeading()
+	{
+		return getPosition().getHeading();
+	}
+	
 	@Override
 	public String toString()
 	{

@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.loginserver.loginserverpackets;
 
-import java.io.IOException;
-
 import com.l2jhellas.loginserver.serverpackets.ServerBasePacket;
 
 /**
@@ -30,7 +28,7 @@ public class KickPlayer extends ServerBasePacket
 	}
 
 	@Override
-	public byte[] getContent() throws IOException
+	public byte[] getContent() 
 	{
 		return getBytes();
 	}

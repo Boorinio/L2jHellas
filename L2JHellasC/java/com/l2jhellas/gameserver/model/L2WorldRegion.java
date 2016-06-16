@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -30,6 +31,7 @@ import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.type.L2DerbyTrackZone;
 import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
@@ -40,7 +42,6 @@ public final class L2WorldRegion
 	private static Logger _log = Logger.getLogger(L2WorldRegion.class.getName());
 
 	private final Map<Integer, L2Object> _visibleObjects = new ConcurrentHashMap<>();
-	private final Map<Integer, L2Playable> _allPlayable = new ConcurrentHashMap<>();
 	
 	private final List<L2WorldRegion> _surroundingRegions = new ArrayList<>();
 	
@@ -48,6 +49,7 @@ public final class L2WorldRegion
 	private Boolean _active = false;
 	private ScheduledFuture<?> _neighborsTask = null;
 	private final List<L2ZoneType> _zones = new ArrayList<>();
+	private AtomicInteger _players = new AtomicInteger();
 
 	public L2WorldRegion(int pTileX, int pTileY)
 	{
@@ -57,10 +59,7 @@ public final class L2WorldRegion
 		_tileY = pTileY;
 
 		// default a newly initialized region to inactive, unless always on is specified
-		if (Config.GRIDS_ALWAYS_ON)
-			_active = true;
-		else
-			_active = false;
+		_active = Config.GRIDS_ALWAYS_ON;
 	}
 
 	public void addZone(L2ZoneType zone)
@@ -205,6 +204,7 @@ public final class L2WorldRegion
 					mob.stopAllEffects();
 
 					mob.clearAggroList();
+					mob.getAttackByList().clear();
 					mob.getKnownList().removeAllKnownObjects();
 
 					mob.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
@@ -255,18 +255,19 @@ public final class L2WorldRegion
 	public Boolean areNeighborsEmpty()
 	{
 		// if this region is occupied, return false.
-		if (isActive() && (_allPlayable.size() > 0))
+		if (getPlayersCount() != 0)
 			return false;
 
 		// if any one of the neighbors is occupied, return false
 		for (L2WorldRegion neighbor : _surroundingRegions)
-			if (neighbor.isActive() && (neighbor._allPlayable.size() > 0))
+			if (neighbor.getPlayersCount() != 0)
 				return false;
 
 		// in all other cases, return true.
 		return true;
 	}
 
+	
 	/**
 	 * this function turns this region's AI and geodata on or off
 	 * 
@@ -340,19 +341,21 @@ public final class L2WorldRegion
 	 */
 	public void addVisibleObject(L2Object object)
 	{
+		if (object == null)
+			return;
+		
 		if (Config.ASSERT)
 			assert object.getWorldRegion() == this;
 
-		if (object == null)
-			return;
 		_visibleObjects.putIfAbsent(object.getObjectId(),object);
 
+		if (object instanceof L2PcInstance)
+				_players.incrementAndGet();
+		
 		if (object instanceof L2Playable)
 		{
-			_allPlayable.putIfAbsent(object.getObjectId(),(L2Playable) object);
-
 			// if this is the first player to enter the region, activate self & neighbors
-			if ((_allPlayable.size() == 1) && (!Config.GRIDS_ALWAYS_ON))
+			if (!isActive() && (!Config.GRIDS_ALWAYS_ON))
 				startActivation();
 		}
 	}
@@ -365,18 +368,20 @@ public final class L2WorldRegion
 	 */
 	public void removeVisibleObject(L2Object object)
 	{
+		if (object == null)
+			return;
+		
 		if (Config.ASSERT)
 			assert object.getWorldRegion() == this || object.getWorldRegion() == null;
 
-		if (object == null)
-			return;
 		_visibleObjects.remove(object);
 
+		if (object instanceof L2PcInstance)
+			_players.decrementAndGet();
+		
 		if (object instanceof L2Playable)
 		{
-			_allPlayable.remove((L2Playable) object);
-
-			if ((_allPlayable.size() == 0) && (!Config.GRIDS_ALWAYS_ON))
+			if (areNeighborsEmpty() && !Config.GRIDS_ALWAYS_ON)
 				startDeactivation();
 		}
 	}
@@ -428,8 +433,8 @@ public final class L2WorldRegion
 		}
 	}
 	
-	public Map<Integer, L2Playable> getVisiblePlayable()
-	{
-		return _allPlayable;
-	}
+ 	public int getPlayersCount()
+ 	{
+		return _players.get();
+ 	}
 }

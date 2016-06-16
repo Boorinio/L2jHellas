@@ -4149,7 +4149,7 @@ public abstract class L2Character extends L2Object
 	 * @param offset
 	 *        The size of the interaction area of the L2Character targeted
 	 */
-	protected void moveToLocation(int x, int y, int z, int offset)
+	public void moveToLocation(int x, int y, int z, int offset)
 	{
 		// Get the Move Speed of the L2Charcater
 		float speed = getStat().getMoveSpeed();
@@ -4160,6 +4160,9 @@ public abstract class L2Character extends L2Object
 		final int curX = super.getX();
 		final int curY = super.getY();
 		final int curZ = super.getZ();
+		
+		if (isAttackingNow() && this instanceof L2Attackable)
+			  breakAttack();
 		
 		// Calculate distance (dx,dy) between current position and destination
 		// compared to dz

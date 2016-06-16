@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Calendar;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -322,8 +323,7 @@ public class GameServer
 		{
 			_log.info(GameServer.class.getSimpleName() + ": Scripts are disabled by Config.");
 		}
-
-
+		
 		Util.printSection("Customs");
 		AchievementsManager.getInstance();
 		PcColorTable.getInstance();
@@ -333,7 +333,12 @@ public class GameServer
 		if (Config.ALLOW_HOPZONE_VOTE_REWARD)
 			VoteRewardHopzone.LoadHopZone();
 		// Rank System.
-		RankLoader.load();
+		
+		if (Config.RANK_PVP_SYSTEM_ENABLED)
+			RankLoader.load();
+		else
+			_log.log(Level.INFO, " - Rank PvP System: Disabled");
+		
 
 		if (Config.ZODIAC_ENABLE)
 		{

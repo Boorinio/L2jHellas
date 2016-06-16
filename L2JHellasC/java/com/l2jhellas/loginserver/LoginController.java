@@ -36,9 +36,6 @@ import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 
-import javolution.util.FastCollection.Record;
-import javolution.util.FastSet;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
@@ -63,10 +60,7 @@ public class LoginController
 	private static LoginController _instance;
 
 	/** Time before kicking the client if he didnt logged yet */
-	private final static int LOGIN_TIMEOUT = 60 * 1000;
-
-	/** Clients that are on the LS but arent assocated with a account yet */
-	protected FastSet<L2LoginClient> _clients = new FastSet<L2LoginClient>();
+	public final static int LOGIN_TIMEOUT = 60 * 1000;
 
 	/** Authed Clients on LoginServer */
 	protected Map<String, L2LoginClient> _loginServerClients = new ConcurrentHashMap<>();
@@ -162,22 +156,6 @@ public class LoginController
 		return _blowfishKeys[(int) (Math.random() * BLOWFISH_KEYS)];
 	}
 
-	public void addLoginClient(L2LoginClient client)
-	{
-		synchronized (_clients)
-		{
-			_clients.add(client);
-		}
-	}
-
-	public void removeLoginClient(L2LoginClient client)
-	{
-		synchronized (_clients)
-		{
-			_clients.remove(client);
-		}
-	}
-
 	public SessionKey assignSessionKeyToClient(String account, L2LoginClient client)
 	{
 		SessionKey key;
@@ -189,6 +167,9 @@ public class LoginController
 
 	public void removeAuthedLoginClient(String account)
 	{
+		if (account == null)
+			return;
+		
 		_loginServerClients.remove(account);
 	}
 
@@ -226,9 +207,6 @@ public class LoginController
 					{
 						_loginServerClients.put(account, client);
 						ret = AuthLoginResult.AUTH_SUCCESS;
-
-						// remove him from the non-authed list
-						removeLoginClient(client);
 					}
 				}
 			}
@@ -759,19 +737,8 @@ public class LoginController
 		@Override
 		public void run()
 		{
-			for (;;)
+			while (!isInterrupted())
 			{
-				synchronized (_clients)
-				{
-					for (Record e = _clients.head(), end = _clients.tail(); (e = e.getNext()) != end;)
-					{
-						L2LoginClient client = _clients.valueOf(e);
-						
-						if ((client.getConnectionStartTime() + LOGIN_TIMEOUT) < System.currentTimeMillis())
-							client.close(LoginFailReason.REASON_ACCESS_FAILED);
-					}
-				}
-
 				for (L2LoginClient client : _loginServerClients.values())
 				{
 					if (client == null)
@@ -783,11 +750,12 @@ public class LoginController
 
 				try
 				{
-					wait(2 * LOGIN_TIMEOUT);
+					Thread.sleep(LOGIN_TIMEOUT / 2);
 				}
 				catch (InterruptedException e)
 				{
 					e.printStackTrace();
+					return;
 				}
 			}
 		}

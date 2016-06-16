@@ -77,6 +77,9 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 			_log.warning(L2GameClientPacket.class.getName() + ": Client: " + getClient().toString() + " - Failed running: " + getType() + " - l2jhellas Server Version: " + Config.SERVER_VERSION);
 			if (Config.DEVELOPER)
 				t.printStackTrace();
+			
+			if (this instanceof EnterWorld)
+				getClient().closeNow();
 		}
 	}
 

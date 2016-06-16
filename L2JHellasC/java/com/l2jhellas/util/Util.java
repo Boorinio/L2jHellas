@@ -31,6 +31,7 @@ import java.util.regex.PatternSyntaxException;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -654,5 +655,46 @@ public final class Util
 		
 		return false;
 	}
+
+	public static int max(int value1, int value2, int... values)
+	{
+		int max = Math.max(value1, value2);
+		for (int value : values)
+		{
+			if (max < value)
+			{
+				max = value;
+			}
+		}
+		return max;
+	}
+
+	public static double getAngleDifference(L2Object obj, L2Object src)
+	{
+		double diff = Util.calculateAngleFrom(src, obj) - Util.convertHeadingToDegree(src.getHeading());
+		
+		while (diff > +180)
+			diff -= 360;
+		
+		while (diff < -180)
+			diff += 360;
+		
+		return Math.abs(diff);
+	}
+
+	public final static int calculateNormalHeading(int x1, int y1, int x2, int y2)
+	{
+		final double distance = calculateDistance(x1, y1, x2, y2);
+		return calculateHeadingFrom((x2 - x1) / distance, (y2 - y1) / distance);
+	}
+
+	public final static double calculateDistance(Location loc, Location loc2)
+	{
+		return calculateDistance(loc.getX(), loc.getY(), 0, loc2.getX(), loc2.getY(), 0, false);
+	}
 	
+	public final static double calculateDistance(int x1, int y1, int x2, int y2)
+	{
+		return calculateDistance(x1, y1, 0, x2, y2, 0, false);
+	}	
 }

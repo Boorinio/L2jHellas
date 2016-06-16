@@ -2260,7 +2260,7 @@ public class L2Attackable extends L2Npc
 				ThreadPoolManager.getInstance().scheduleGeneral(this, 10000); // 10sec
 		}
 	}
-	
+
 	public void returnHome()
 	{
 		clearAggroList();
@@ -2318,7 +2318,7 @@ public class L2Attackable extends L2Npc
 	}
 	
 	@Override
-	protected void moveToLocation(int x, int y, int z, int offset)
+	public void moveToLocation(int x, int y, int z, int offset)
 	{
 		if (isAttackingNow())
 			return;
