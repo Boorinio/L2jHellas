@@ -57,9 +57,9 @@ public class Q644_GraveRobberAnnihilation extends Quest
 	// NPC
 	private static final int KARUDA = 32017;
 	
-	public Q644_GraveRobberAnnihilation(int questId, String name, String descr)
+	public Q644_GraveRobberAnnihilation()
 	{
-		super(questId, name, descr);
+		super(644, qn, "Grave Robber Annihilation");
 		
 		setItemsIds(GOODS);
 		
@@ -154,6 +154,6 @@ public class Q644_GraveRobberAnnihilation extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q644_GraveRobberAnnihilation(644, qn, "Grave Robber Annihilation");
+		new Q644_GraveRobberAnnihilation();
 	}
 }

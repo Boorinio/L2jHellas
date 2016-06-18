@@ -45,9 +45,9 @@ public class Q660_AidingTheFloranVillage extends Quest
 	private static final int SCROLL_WEAPON = 955;
 	private static final int SCROLL_ARMOR = 956;
 	
-	public Q660_AidingTheFloranVillage(int questId, String name, String descr)
+	public Q660_AidingTheFloranVillage()
 	{
-		super(questId, name, descr);
+		super(660, qn, "Aiding the Floran Village");
 		
 		setItemsIds(WATCHING_EYES, LIZARDMEN_SCALE, GOLEM_SHARD);
 		
@@ -290,6 +290,6 @@ public class Q660_AidingTheFloranVillage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q660_AidingTheFloranVillage(660, qn, "Aiding the Floran Village");
+		new Q660_AidingTheFloranVillage();
 	}
 }

@@ -43,9 +43,9 @@ public class Q412_PathToADarkWizard extends Quest
 	private static final int Annika = 30418;
 	private static final int Arkenia = 30419;
 	
-	public Q412_PathToADarkWizard(int questId, String name, String descr)
+	public Q412_PathToADarkWizard()
 	{
-		super(questId, name, descr);
+		super(412, qn, "Path to a Dark Wizard");
 		
 		setItemsIds(SeedOfAnger, SeedOfDespair, SeedOfHorror, SeedOfLunacy, FamilyRemains, VarikasLiquor, KneeBone, HeartOfLunacy, LuckyKey, Candle, HubScent);
 		
@@ -255,6 +255,6 @@ public class Q412_PathToADarkWizard extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q412_PathToADarkWizard(412, qn, "Path to a Dark Wizard");
+		new Q412_PathToADarkWizard();
 	}
 }

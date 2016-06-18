@@ -34,9 +34,9 @@ public class Q381_LetsBecomeARoyalMember extends Quest
 	// Reward
 	private static final int ROYAL_MEMBERSHIP = 5898;
 	
-	public Q381_LetsBecomeARoyalMember(int questId, String name, String descr)
+	public Q381_LetsBecomeARoyalMember()
 	{
-		super(questId, name, descr);
+		super(381, qn, "Lets Become a Royal Member!");
 		
 		setItemsIds(KAILS_COIN, GOLDEN_CLOVER_COIN);
 		
@@ -149,6 +149,6 @@ public class Q381_LetsBecomeARoyalMember extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q381_LetsBecomeARoyalMember(381, qn, "Lets Become a Royal Member!");
+		new Q381_LetsBecomeARoyalMember();
 	}
 }

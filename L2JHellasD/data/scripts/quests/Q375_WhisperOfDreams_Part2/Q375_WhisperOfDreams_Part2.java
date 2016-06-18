@@ -42,9 +42,9 @@ public class Q375_WhisperOfDreams_Part2 extends Quest
 		5352
 	};
 	
-	public Q375_WhisperOfDreams_Part2(int questId, String name, String descr)
+	public Q375_WhisperOfDreams_Part2()
 	{
-		super(questId, name, descr);
+		super(375, qn, "Whisper of Dreams, Part 2");
 		
 		setItemsIds(KARIK_HORN, CAVE_HOWLER_SKULL);
 		
@@ -148,6 +148,6 @@ public class Q375_WhisperOfDreams_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q375_WhisperOfDreams_Part2(375, qn, "Whisper of Dreams, Part 2");
+		new Q375_WhisperOfDreams_Part2();
 	}
 }

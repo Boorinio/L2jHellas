@@ -54,9 +54,9 @@ public class Q367_ElectrifyingRecharge extends Quest
 	// Mobs
 	private static final int CATHEROK = 21035;
 	
-	public Q367_ElectrifyingRecharge(int questId, String name, String descr)
+	public Q367_ElectrifyingRecharge()
 	{
-		super(questId, name, descr);
+		super(367, qn, "Electrifying Recharge!");
 		
 		setItemsIds(LORAINS_LAMP, T_L1, T_L2, T_L3, T_L4, T_L5);
 		
@@ -192,6 +192,6 @@ public class Q367_ElectrifyingRecharge extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q367_ElectrifyingRecharge(367, qn, "Electrifying Recharge!");
+		new Q367_ElectrifyingRecharge();
 	}
 }

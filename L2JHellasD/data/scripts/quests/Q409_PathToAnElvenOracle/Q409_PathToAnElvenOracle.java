@@ -39,9 +39,9 @@ public class Q409_PathToAnElvenOracle extends Quest
 	private static final int Allana = 30424;
 	private static final int Perrin = 30428;
 	
-	public Q409_PathToAnElvenOracle(int questId, String name, String descr)
+	public Q409_PathToAnElvenOracle()
 	{
-		super(questId, name, descr);
+		super(409, qn, "Path to an Elven Oracle");
 		
 		setItemsIds(CrystalMedallion, SwindlersMoney, AllanasDiary, LizardCaptainOrder, HalfofDiary, TamilsNecklace);
 		
@@ -218,6 +218,6 @@ public class Q409_PathToAnElvenOracle extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q409_PathToAnElvenOracle(409, qn, "Path to an Elven Oracle");
+		new Q409_PathToAnElvenOracle();
 	}
 }

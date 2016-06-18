@@ -29,9 +29,9 @@ public class Q643_RiseAndFallOfTheElrokiTribe extends Quest
 	// Items
 	private static final int BONES = 8776;
 	
-	public Q643_RiseAndFallOfTheElrokiTribe(int questId, String name, String descr)
+	public Q643_RiseAndFallOfTheElrokiTribe()
 	{
-		super(questId, name, descr);
+		super(643, qn, "Rise and Fall of the Elroki Tribe");
 		
 		setItemsIds(BONES);
 		
@@ -133,6 +133,6 @@ public class Q643_RiseAndFallOfTheElrokiTribe extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q643_RiseAndFallOfTheElrokiTribe(643, qn, "Rise and Fall of the Elroki Tribe");
+		new Q643_RiseAndFallOfTheElrokiTribe();
 	}
 }

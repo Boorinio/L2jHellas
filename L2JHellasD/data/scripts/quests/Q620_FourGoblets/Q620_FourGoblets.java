@@ -64,9 +64,9 @@ public class Q620_FourGoblets extends Quest
 		7580
 	};
 	
-	public Q620_FourGoblets(int questId, String name, String descr)
+	public Q620_FourGoblets()
 	{
-		super(questId, name, descr);
+		super(620, qn, "Four Goblets");
 		
 		setItemsIds(SEALED_BOX, USED_PASS, GOBLET_1, GOBLET_2, GOBLET_3, GOBLET_4);
 		
@@ -489,6 +489,6 @@ public class Q620_FourGoblets extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q620_FourGoblets(620, qn, "Four Goblets");
+		new Q620_FourGoblets();
 	}
 }

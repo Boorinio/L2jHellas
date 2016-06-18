@@ -27,9 +27,9 @@ public class Q368_TrespassingIntoTheSacredArea extends Quest
 	// Item
 	private static final int FANG = 5881;
 	
-	public Q368_TrespassingIntoTheSacredArea(int questId, String name, String descr)
+	public Q368_TrespassingIntoTheSacredArea()
 	{
-		super(questId, name, descr);
+		super(368, qn, "Trespassing into the Sacred Area");
 		
 		setItemsIds(FANG);
 		
@@ -114,6 +114,6 @@ public class Q368_TrespassingIntoTheSacredArea extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q368_TrespassingIntoTheSacredArea(368, qn, "Trespassing into the Sacred Area");
+		new Q368_TrespassingIntoTheSacredArea();
 	}
 }

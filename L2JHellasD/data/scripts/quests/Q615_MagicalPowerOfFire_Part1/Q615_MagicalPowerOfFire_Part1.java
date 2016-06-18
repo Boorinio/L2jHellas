@@ -33,9 +33,9 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 	private static final int RED_TOTEM = 7243;
 	private static final int DIVINE_STONE = 7081;
 	
-	public Q615_MagicalPowerOfFire_Part1(int questId, String name, String descr)
+	public Q615_MagicalPowerOfFire_Part1()
 	{
-		super(questId, name, descr);
+		super(615, qn, "Magical Power of Fire - Part 1");
 		
 		setItemsIds(STOLEN_RED_TOTEM);
 		
@@ -186,6 +186,6 @@ public class Q615_MagicalPowerOfFire_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q615_MagicalPowerOfFire_Part1(615, qn, "Magical Power of Fire - Part 1");
+		new Q615_MagicalPowerOfFire_Part1();
 	}
 }

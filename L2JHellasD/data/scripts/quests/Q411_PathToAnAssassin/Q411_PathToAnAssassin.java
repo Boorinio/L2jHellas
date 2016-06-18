@@ -39,9 +39,9 @@ public class Q411_PathToAnAssassin extends Quest
 	private static final int Arkenia = 30419;
 	private static final int Leikan = 30382;
 	
-	public Q411_PathToAnAssassin(int questId, String name, String descr)
+	public Q411_PathToAnAssassin()
 	{
-		super(questId, name, descr);
+		super(411, qn, "Path to an Assassin");
 		
 		setItemsIds(ShilensCall, ArkeniasLetter, LeikansNote, Molars, ShilenTears, ArkeniasReccomend);
 		
@@ -221,6 +221,6 @@ public class Q411_PathToAnAssassin extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q411_PathToAnAssassin(411, qn, "Path to an Assassin");
+		new Q411_PathToAnAssassin();
 	}
 }

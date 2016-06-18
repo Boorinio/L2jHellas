@@ -28,9 +28,9 @@ public class Q612_WarWithKetraOrcs extends Quest
 	private static final int Seed = 7187;
 	private static final int Molar = 7234;
 	
-	public Q612_WarWithKetraOrcs(int questId, String name, String descr)
+	public Q612_WarWithKetraOrcs()
 	{
-		super(questId, name, descr);
+		super(612, qn, "War with Ketra Orcs");
 		
 		setItemsIds(Molar);
 		
@@ -107,6 +107,6 @@ public class Q612_WarWithKetraOrcs extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q612_WarWithKetraOrcs(612, qn, "War with Ketra Orcs");
+		new Q612_WarWithKetraOrcs();
 	}
 }

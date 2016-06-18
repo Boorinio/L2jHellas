@@ -31,9 +31,9 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 	// Reward
 	private static final int MARK = 8067;
 	
-	public Q637_ThroughTheGateOnceMore(int questId, String name, String descr)
+	public Q637_ThroughTheGateOnceMore()
 	{
-		super(questId, name, descr);
+		super(637, qn, "Through the Gate Once More");
 		
 		setItemsIds(NECRO_HEART);
 		
@@ -138,6 +138,6 @@ public class Q637_ThroughTheGateOnceMore extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q637_ThroughTheGateOnceMore(637, qn, "Through the Gate Once More");
+		new Q637_ThroughTheGateOnceMore();
 	}
 }

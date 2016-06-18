@@ -43,9 +43,9 @@ public class Q647_InfluxOfMachines extends Quest
 		4972
 	};
 	
-	public Q647_InfluxOfMachines(int questId, String name, String descr)
+	public Q647_InfluxOfMachines()
 	{
-		super(questId, name, descr);
+		super(647, qn, "Influx of Machines");
 		
 		setItemsIds(DESTROYED_GOLEM_SHARD);
 		
@@ -140,6 +140,6 @@ public class Q647_InfluxOfMachines extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q647_InfluxOfMachines(647, qn, "Influx of Machines");
+		new Q647_InfluxOfMachines();
 	}
 }

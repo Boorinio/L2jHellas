@@ -108,9 +108,9 @@ public class Q385_YokeOfThePast extends Quest
 		Chance.put(21255, 860000);
 	}
 	
-	public Q385_YokeOfThePast(int questId, String name, String descr)
+	public Q385_YokeOfThePast()
 	{
-		super(questId, name, descr);
+		super(385, qn, "Yoke of the Past");
 		
 		setItemsIds(ANCIENT_SCROLL);
 		
@@ -198,6 +198,6 @@ public class Q385_YokeOfThePast extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q385_YokeOfThePast(385, qn, "Yoke of the Past");
+		new Q385_YokeOfThePast();
 	}
 }

@@ -41,9 +41,9 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q610_MagicalPowerOfWater_Part2(int questId, String name, String descr)
+	public Q610_MagicalPowerOfWater_Part2()
 	{
-		super(questId, name, descr);
+		super(610, qn, "Magical Power of Water - Part 2");
 		
 		setItemsIds(ICE_HEART_OF_ASHUTAR);
 		
@@ -265,6 +265,6 @@ public class Q610_MagicalPowerOfWater_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q610_MagicalPowerOfWater_Part2(610, qn, "Magical Power of Water - Part 2");
+		new Q610_MagicalPowerOfWater_Part2();
 	}
 }

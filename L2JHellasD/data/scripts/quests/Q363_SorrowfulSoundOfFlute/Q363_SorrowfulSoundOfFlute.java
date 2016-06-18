@@ -38,9 +38,9 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 	// Reward
 	private static final int THEME_OF_SOLITUDE = 4420;
 	
-	public Q363_SorrowfulSoundOfFlute(int questId, String name, String descr)
+	public Q363_SorrowfulSoundOfFlute()
 	{
-		super(questId, name, descr);
+		super(363, qn, "Sorrowful Sound of Flute");
 		
 		setItemsIds(NANARINS_FLUTE, BLACK_BEER, CLOTHES);
 		
@@ -174,6 +174,6 @@ public class Q363_SorrowfulSoundOfFlute extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q363_SorrowfulSoundOfFlute(363, qn, "Sorrowful Sound of Flute");
+		new Q363_SorrowfulSoundOfFlute();
 	}
 }

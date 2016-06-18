@@ -28,9 +28,9 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 	// Item
 	private static final int TOTEM = 8068;
 	
-	public Q638_SeekersOfTheHolyGrail(int questId, String name, String descr)
+	public Q638_SeekersOfTheHolyGrail()
 	{
-		super(questId, name, descr);
+		super(638, qn, "Seekers of the Holy Grail");
 		
 		setItemsIds(TOTEM);
 		
@@ -124,6 +124,6 @@ public class Q638_SeekersOfTheHolyGrail extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q638_SeekersOfTheHolyGrail(638, qn, "Seekers of the Holy Grail");
+		new Q638_SeekersOfTheHolyGrail();
 	}
 }

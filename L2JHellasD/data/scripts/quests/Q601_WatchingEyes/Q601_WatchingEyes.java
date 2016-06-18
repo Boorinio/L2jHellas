@@ -50,9 +50,9 @@ public class Q601_WatchingEyes extends Quest
 		}
 	};
 	
-	public Q601_WatchingEyes(int questId, String name, String descr)
+	public Q601_WatchingEyes()
 	{
-		super(questId, name, descr);
+		super(601, qn, "Watching Eyes");
 		
 		setItemsIds(ProofOfAvenger);
 		
@@ -158,6 +158,6 @@ public class Q601_WatchingEyes extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q601_WatchingEyes(601, qn, "Watching Eyes");
+		new Q601_WatchingEyes();
 	}
 }

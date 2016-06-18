@@ -26,9 +26,9 @@ public class Q608_SlayTheEnemyCommander extends Quest
 	private static final int Wisdom_Totem = 7220;
 	private static final int Ketra_Alliance_Four = 7214;
 	
-	public Q608_SlayTheEnemyCommander(int questId, String name, String descr)
+	public Q608_SlayTheEnemyCommander()
 	{
-		super(questId, name, descr);
+		super(608, qn, "Slay the enemy commander!");
 		
 		setItemsIds(Mos_Head);
 		
@@ -136,6 +136,6 @@ public class Q608_SlayTheEnemyCommander extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q608_SlayTheEnemyCommander(608, qn, "Slay the enemy commander!");
+		new Q608_SlayTheEnemyCommander();
 	}
 }

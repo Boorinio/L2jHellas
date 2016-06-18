@@ -54,9 +54,9 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q604_DaimonTheWhiteEyed_Part2(int questId, String name, String descr)
+	public Q604_DaimonTheWhiteEyed_Part2()
 	{
-		super(questId, name, descr);
+		super(604, qn, "Daimon The White-Eyed - Part 2");
 		
 		setItemsIds(SUMMON_CRYSTAL, ESSENCE_OF_DAIMON);
 		
@@ -277,6 +277,6 @@ public class Q604_DaimonTheWhiteEyed_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q604_DaimonTheWhiteEyed_Part2(604, qn, "Daimon The White-Eyed - Part 2");
+		new Q604_DaimonTheWhiteEyed_Part2();
 	}
 }

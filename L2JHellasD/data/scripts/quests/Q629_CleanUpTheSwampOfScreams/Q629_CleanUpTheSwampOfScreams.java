@@ -73,9 +73,9 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 		}
 	};
 	
-	public Q629_CleanUpTheSwampOfScreams(int questId, String name, String descr)
+	public Q629_CleanUpTheSwampOfScreams()
 	{
-		super(questId, name, descr);
+		super(629, qn, "Clean up the Swamp of Screams");
 		
 		setItemsIds(CLAWS, COIN);
 		
@@ -182,6 +182,6 @@ public class Q629_CleanUpTheSwampOfScreams extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q629_CleanUpTheSwampOfScreams(629, qn, "Clean up the Swamp of Screams");
+		new Q629_CleanUpTheSwampOfScreams();
 	}
 }

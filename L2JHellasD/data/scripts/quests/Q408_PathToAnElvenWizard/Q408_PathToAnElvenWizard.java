@@ -47,9 +47,9 @@ public class Q408_PathToAnElvenWizard extends Quest
 	private static final int Thalia = 30371;
 	private static final int Northwind = 30423;
 	
-	public Q408_PathToAnElvenWizard(int questId, String name, String descr)
+	public Q408_PathToAnElvenWizard()
 	{
-		super(questId, name, descr);
+		super(408, qn, "Path to an Elven Wizard");
 		
 		setItemsIds(RosellasLetter, RedDown, MagicalPowersRuby, PureAquamarine, AppetizingApple, GoldenLeaves, ImmortalLove, Amethyst, NobilityAmethyst, FertilityPeridot, CharmOfGrain, SapOfTheMotherTree, LuckyPotpourri);
 		
@@ -290,6 +290,6 @@ public class Q408_PathToAnElvenWizard extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q408_PathToAnElvenWizard(408, qn, "Path to an Elven Wizard");
+		new Q408_PathToAnElvenWizard();
 	}
 }

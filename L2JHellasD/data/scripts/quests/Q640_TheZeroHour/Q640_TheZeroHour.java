@@ -77,9 +77,9 @@ public class Q640_TheZeroHour extends Quest
 		}
 	};
 	
-	public Q640_TheZeroHour(int questId, String name, String descr)
+	public Q640_TheZeroHour()
 	{
-		super(questId, name, descr);
+		super(640, qn, "The Zero Hour");
 		
 		setItemsIds(FANG);
 		
@@ -184,6 +184,6 @@ public class Q640_TheZeroHour extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q640_TheZeroHour(640, qn, "The Zero Hour");
+		new Q640_TheZeroHour();
 	}
 }

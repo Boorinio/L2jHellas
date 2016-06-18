@@ -95,9 +95,9 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 		}
 	};
 	
-	public Q376_ExplorationOfTheGiantsCave_Part1(int questId, String name, String descr)
+	public Q376_ExplorationOfTheGiantsCave_Part1()
 	{
-		super(questId, name, descr);
+		super(376, qn, "Exploration of the Giants' Cave, Part 1");
 		
 		setItemsIds(DICTIONARY_BASIC, MYSTERIOUS_BOOK);
 		
@@ -247,6 +247,6 @@ public class Q376_ExplorationOfTheGiantsCave_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q376_ExplorationOfTheGiantsCave_Part1(376, qn, "Exploration of the Giants' Cave, Part 1");
+		new Q376_ExplorationOfTheGiantsCave_Part1();
 	}
 }

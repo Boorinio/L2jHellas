@@ -42,9 +42,9 @@ public class Q410_PathToAPalusKnight extends Quest
 	private static final int ArachnidTracker = 20043;
 	private static final int Lycan = 20049;
 	
-	public Q410_PathToAPalusKnight(int questId, String name, String descr)
+	public Q410_PathToAPalusKnight()
 	{
-		super(questId, name, descr);
+		super(410, qn, "Path to a Palus Knight");
 		
 		setItemsIds(PalusTalisman, LycanthropeSkull, VirgilsLetter, MorteTalisman, PredatorCarapace, TrimdenSilk, CoffinOfEternalRest);
 		
@@ -216,6 +216,6 @@ public class Q410_PathToAPalusKnight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q410_PathToAPalusKnight(410, qn, "Path to a Palus Knight");
+		new Q410_PathToAPalusKnight();
 	}
 }

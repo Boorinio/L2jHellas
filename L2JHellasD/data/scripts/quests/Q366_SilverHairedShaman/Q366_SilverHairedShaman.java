@@ -27,9 +27,9 @@ public class Q366_SilverHairedShaman extends Quest
 	// Item
 	private static final int HAIR = 5874;
 	
-	public Q366_SilverHairedShaman(int questId, String name, String descr)
+	public Q366_SilverHairedShaman()
 	{
-		super(questId, name, descr);
+		super(366, qn, "Silver Haired Shaman");
 		
 		setItemsIds(HAIR);
 		
@@ -114,6 +114,6 @@ public class Q366_SilverHairedShaman extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q366_SilverHairedShaman(366, qn, "Silver Haired Shaman");
+		new Q366_SilverHairedShaman();
 	}
 }

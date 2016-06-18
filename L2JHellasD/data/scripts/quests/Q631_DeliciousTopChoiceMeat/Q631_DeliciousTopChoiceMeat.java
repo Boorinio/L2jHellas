@@ -57,9 +57,9 @@ public class Q631_DeliciousTopChoiceMeat extends Quest
 		}
 	};
 	
-	public Q631_DeliciousTopChoiceMeat(int questId, String name, String descr)
+	public Q631_DeliciousTopChoiceMeat()
 	{
-		super(questId, name, descr);
+		super(631, qn, "Delicious Top Choice Meat");
 		
 		setItemsIds(TOP_QUALITY_MEAT);
 		
@@ -172,6 +172,6 @@ public class Q631_DeliciousTopChoiceMeat extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q631_DeliciousTopChoiceMeat(631, qn, "Delicious Top Choice Meat");
+		new Q631_DeliciousTopChoiceMeat();
 	}
 }

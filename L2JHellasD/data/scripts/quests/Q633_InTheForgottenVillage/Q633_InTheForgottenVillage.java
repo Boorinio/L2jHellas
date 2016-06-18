@@ -66,9 +66,9 @@ public class Q633_InTheForgottenVillage extends Quest
 		UNDEADS.put(21601, 411000); // Requiem Behemoth
 	}
 	
-	public Q633_InTheForgottenVillage(int questId, String name, String descr)
+	public Q633_InTheForgottenVillage()
 	{
-		super(questId, name, descr);
+		super(633, qn, "In the Forgotten Village");
 		
 		setItemsIds(RIB_BONE, ZOMBIE_LIVER);
 		
@@ -180,6 +180,6 @@ public class Q633_InTheForgottenVillage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q633_InTheForgottenVillage(633, qn, "In the Forgotten Village");
+		new Q633_InTheForgottenVillage();
 	}
 }

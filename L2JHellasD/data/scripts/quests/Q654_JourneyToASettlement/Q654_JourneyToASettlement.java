@@ -15,9 +15,9 @@ public class Q654_JourneyToASettlement extends Quest
 	// Reward
 	private static final int FORCE_FIELD_REMOVAL_SCROLL = 8073;
 	
-	public Q654_JourneyToASettlement(int questId, String name, String descr)
+	public Q654_JourneyToASettlement()
 	{
-		super(questId, name, descr);
+		super(654, qn, "Journey to a Settlement");
 		
 		setItemsIds(ANTELOPE_SKIN);
 		
@@ -106,6 +106,6 @@ public class Q654_JourneyToASettlement extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q654_JourneyToASettlement(654, qn, "Journey to a Settlement");
+		new Q654_JourneyToASettlement();
 	}
 }

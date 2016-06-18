@@ -31,9 +31,9 @@ public class Q362_BardsMandolin extends Quest
 	private static final int GALION = 30958;
 	private static final int WOODROW = 30837;
 	
-	public Q362_BardsMandolin(int questId, String name, String descr)
+	public Q362_BardsMandolin()
 	{
-		super(questId, name, descr);
+		super(362, qn, "Bard's Mandolin");
 		
 		setItemsIds(SWAN_FLUTE, SWAN_LETTER);
 		
@@ -152,6 +152,6 @@ public class Q362_BardsMandolin extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q362_BardsMandolin(362, qn, "Bard's Mandolin");
+		new Q362_BardsMandolin();
 	}
 }

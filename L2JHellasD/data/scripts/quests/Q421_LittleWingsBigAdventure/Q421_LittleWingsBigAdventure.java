@@ -46,9 +46,9 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	// Item
 	private static final int FAIRY_LEAF = 4325;
 	
-	public Q421_LittleWingsBigAdventure(int questId, String name, String descr)
+	public Q421_LittleWingsBigAdventure()
 	{
-		super(questId, name, descr);
+		super(421, qn, "Little Wing's Big Adventure");
 		
 		setItemsIds(FAIRY_LEAF);
 		
@@ -304,6 +304,6 @@ public class Q421_LittleWingsBigAdventure extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q421_LittleWingsBigAdventure(421, qn, "Little Wing's Big Adventure");
+		new Q421_LittleWingsBigAdventure();
 	}
 }

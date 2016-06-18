@@ -122,9 +122,9 @@ public class Q508_AClansReputation extends Quest
 		}
 	};
 	
-	public Q508_AClansReputation(int questId, String name, String descr)
+	public Q508_AClansReputation()
 	{
-		super(questId, name, descr);
+		super(508, qn, "A Clan's Reputation");
 		
 		setItemsIds(THEMIS_SCALE, NUCLEUS_OF_HEKATON_PRIME, TIPHON_SHARD, GLAKIS_NUCLEUS, RAHHAS_FANG, NUCLEUS_OF_FLAMESTONE_GIANT);
 		
@@ -245,6 +245,6 @@ public class Q508_AClansReputation extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q508_AClansReputation(508, qn, "A Clan's Reputation");
+		new Q508_AClansReputation();
 	}
 }

@@ -38,9 +38,9 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 	private static final int CLOUDY_BEAST = 21096;
 	private static final int YOUNG_ARANEID = 21097;
 	
-	public Q661_MakingTheHarvestGroundsSafe(int questId, String name, String descr)
+	public Q661_MakingTheHarvestGroundsSafe()
 	{
-		super(questId, name, descr);
+		super(661, qn, "Making the Harvest Grounds Safe");
 		
 		setItemsIds(STING_OF_GIANT_PB, CLOUDY_GEM, TALON_OF_YA);
 		
@@ -147,6 +147,6 @@ public class Q661_MakingTheHarvestGroundsSafe extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q661_MakingTheHarvestGroundsSafe(661, qn, "Making the Harvest Grounds Safe");
+		new Q661_MakingTheHarvestGroundsSafe();
 	}
 }

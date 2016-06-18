@@ -88,9 +88,9 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 	
 	private static final int Molar = 7234;
 	
-	public Q611_AllianceWithVarkaSilenos(int questId, String name, String descr)
+	public Q611_AllianceWithVarkaSilenos()
 	{
-		super(questId, name, descr);
+		super(611, qn, "Alliance with Varka Silenos");
 		
 		setItemsIds(Ketra_Badge_Soldier, Ketra_Badge_Officer, Ketra_Badge_Captain);
 		
@@ -409,6 +409,6 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q611_AllianceWithVarkaSilenos(611, qn, "Alliance with Varka Silenos");
+		new Q611_AllianceWithVarkaSilenos();
 	}
 }

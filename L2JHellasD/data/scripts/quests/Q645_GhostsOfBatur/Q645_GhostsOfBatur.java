@@ -57,9 +57,9 @@ public class Q645_GhostsOfBatur extends Quest
 		}
 	};
 	
-	public Q645_GhostsOfBatur(int questId, String name, String descr)
+	public Q645_GhostsOfBatur()
 	{
-		super(questId, name, descr);
+		super(645, qn, "Ghosts Of Batur");
 		
 		addStartNpc(KARUDA);
 		addTalkId(KARUDA);
@@ -157,6 +157,6 @@ public class Q645_GhostsOfBatur extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q645_GhostsOfBatur(645, qn, "Ghosts Of Batur");
+		new Q645_GhostsOfBatur();
 	}
 }

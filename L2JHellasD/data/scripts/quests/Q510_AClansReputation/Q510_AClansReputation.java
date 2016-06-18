@@ -34,9 +34,9 @@ public class Q510_AClansReputation extends Quest
 	// Reward
 	private static final int CLAN_POINTS_REWARD = 50; // Quantity of points
 	
-	public Q510_AClansReputation(int questId, String name, String descr)
+	public Q510_AClansReputation()
 	{
-		super(questId, name, descr);
+		super(510, qn, "A Clan's Reputation");
 		
 		setItemsIds(Claw);
 		
@@ -134,6 +134,6 @@ public class Q510_AClansReputation extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q510_AClansReputation(510, qn, "A Clan's Reputation");
+		new Q510_AClansReputation();
 	}
 }

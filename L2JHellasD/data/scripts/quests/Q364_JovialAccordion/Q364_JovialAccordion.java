@@ -25,9 +25,9 @@ public class Q364_JovialAccordion extends Quest
 	private static final int STOLEN_CLOTHES = 4322;
 	private static final int ECHO = 4421;
 	
-	public Q364_JovialAccordion(int questId, String name, String descr)
+	public Q364_JovialAccordion()
 	{
-		super(questId, name, descr);
+		super(364, qn, "Jovial Accordion");
 		
 		setItemsIds(KEY_1, KEY_2, STOLEN_BEER, STOLEN_CLOTHES);
 		
@@ -203,6 +203,6 @@ public class Q364_JovialAccordion extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q364_JovialAccordion(364, qn, "Jovial Accordion");
+		new Q364_JovialAccordion();
 	}
 }

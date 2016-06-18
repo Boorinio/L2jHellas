@@ -32,9 +32,9 @@ public class Q650_ABrokenDream extends Quest
 	private static final int CREWMAN = 22027;
 	private static final int VAGABOND = 22028;
 	
-	public Q650_ABrokenDream(int questId, String name, String descr)
+	public Q650_ABrokenDream()
 	{
-		super(questId, name, descr);
+		super(650, qn, "A Broken Dream");
 		
 		setItemsIds(DREAM_FRAGMENT);
 		
@@ -118,6 +118,6 @@ public class Q650_ABrokenDream extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q650_ABrokenDream(650, qn, "A Broken Dream");
+		new Q650_ABrokenDream();
 	}
 }

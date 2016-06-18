@@ -109,9 +109,9 @@ public class Q509_TheClansPrestige extends Quest
 		}
 	};
 	
-	public Q509_TheClansPrestige(int questId, String name, String descr)
+	public Q509_TheClansPrestige()
 	{
-		super(questId, name, descr);
+		super(509, qn, "The Clan's Prestige");
 		
 		setItemsIds(DAIMONS_EYES, HESTIAS_FAIRY_STONE, NUCLEUS_OF_LESSER_GOLEM, FALSTON_FANG, SHAIDS_TALON);
 		
@@ -232,6 +232,6 @@ public class Q509_TheClansPrestige extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q509_TheClansPrestige(509, qn, "The Clan's Prestige");
+		new Q509_TheClansPrestige();
 	}
 }

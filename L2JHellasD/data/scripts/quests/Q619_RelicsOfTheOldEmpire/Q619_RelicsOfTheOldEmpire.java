@@ -44,9 +44,9 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 		7580
 	};
 	
-	public Q619_RelicsOfTheOldEmpire(int questId, String name, String descr)
+	public Q619_RelicsOfTheOldEmpire()
 	{
-		super(questId, name, descr);
+		super(619, qn, "Relics of the Old Empire");
 		
 		setItemsIds(RELICS);
 		
@@ -148,6 +148,6 @@ public class Q619_RelicsOfTheOldEmpire extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q619_RelicsOfTheOldEmpire(619, qn, "Relics of the Old Empire");
+		new Q619_RelicsOfTheOldEmpire();
 	}
 }

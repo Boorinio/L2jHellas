@@ -35,9 +35,9 @@ public class Q371_ShriekOfGhosts extends Quest
 	private static final int HALLATE_KNIGHT = 20820;
 	private static final int HALLATE_COMMANDER = 20824;
 	
-	public Q371_ShriekOfGhosts(int questId, String name, String descr)
+	public Q371_ShriekOfGhosts()
 	{
-		super(questId, name, descr);
+		super(371, qn, "Shriek of Ghosts");
 		
 		setItemsIds(URN, PORCELAIN);
 		
@@ -202,6 +202,6 @@ public class Q371_ShriekOfGhosts extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q371_ShriekOfGhosts(371, qn, "Shriek of Ghosts");
+		new Q371_ShriekOfGhosts();
 	}
 }

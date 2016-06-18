@@ -27,9 +27,9 @@ public class Q432_BirthdayPartySong extends Quest
 	// Item
 	private static final int RED_CRYSTAL = 7541;
 	
-	public Q432_BirthdayPartySong(int questId, String name, String descr)
+	public Q432_BirthdayPartySong()
 	{
-		super(questId, name, descr);
+		super(432, qn, "Birthday Party Song");
 		
 		setItemsIds(RED_CRYSTAL);
 		
@@ -116,6 +116,6 @@ public class Q432_BirthdayPartySong extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q432_BirthdayPartySong(432, qn, "Birthday Party Song");
+		new Q432_BirthdayPartySong();
 	}
 }

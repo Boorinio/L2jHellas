@@ -68,9 +68,9 @@ public class Q627_HeartInSearchOfPower extends Quest
 		});
 	}
 	
-	public Q627_HeartInSearchOfPower(int questId, String name, String descr)
+	public Q627_HeartInSearchOfPower()
 	{
-		super(questId, name, descr);
+		super(627, qn, "Heart in Search of Power");
 		
 		setItemsIds(BEAD_OF_OBEDIENCE);
 		
@@ -205,6 +205,6 @@ public class Q627_HeartInSearchOfPower extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q627_HeartInSearchOfPower(627, qn, "Heart in Search of Power");
+		new Q627_HeartInSearchOfPower();
 	}
 }

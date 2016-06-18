@@ -61,9 +61,9 @@ public class Q415_PathToAMonk extends Quest
 	private static final int Aren = 32056;
 	private static final int Moira = 31979;
 	
-	public Q415_PathToAMonk(int questId, String name, String descr)
+	public Q415_PathToAMonk()
 	{
-		super(questId, name, descr);
+		super(415, qn, "Path to a Monk");
 		
 		setItemsIds(Pomegranate, LeatherPouch1, LeatherPouch2, LeatherPouch3, LeatherPouchFull1, LeatherPouchFull2, LeatherPouchFull3, KashaBearClaw, KashaBladeSpiderTalon, ScarletSalamanderScale, FierySpiritScroll, RosheeksLetter, GantakisRecommendation, Fig, LeatherPouch4, LeatherPouchFull4, VukuOrcTusk, RatmanFang, LangkLizardmanTeeth, FelimLizardmanTeeth, IronWillScroll, TorukusLetter, KashaSpidersTeeth, HornOfBaarDreVanul);
 		
@@ -442,6 +442,6 @@ public class Q415_PathToAMonk extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q415_PathToAMonk(415, qn, "Path to a Monk");
+		new Q415_PathToAMonk();
 	}
 }

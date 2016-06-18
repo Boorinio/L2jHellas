@@ -201,9 +201,9 @@ public class Q384_WarehouseKeepersPastime extends Quest
 	// Samurai Longsword
 	};
 	
-	public Q384_WarehouseKeepersPastime(int questId, String name, String descr)
+	public Q384_WarehouseKeepersPastime()
 	{
-		super(questId, name, descr);
+		super(384, qn, "Warehouse Keeper's Pastime");
 		
 		setItemsIds(MEDAL);
 		
@@ -418,6 +418,6 @@ public class Q384_WarehouseKeepersPastime extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q384_WarehouseKeepersPastime(384, qn, "Warehouse Keeper's Pastime");
+		new Q384_WarehouseKeepersPastime();
 	}
 }

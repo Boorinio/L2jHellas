@@ -30,9 +30,9 @@ public class Q431_WeddingMarch extends Quest
 	// Reward
 	private static final int WEDDING_ECHO_CRYSTAL = 7062;
 	
-	public Q431_WeddingMarch(int questId, String name, String descr)
+	public Q431_WeddingMarch()
 	{
-		super(questId, name, descr);
+		super(431, qn, "Wedding March");
 		
 		setItemsIds(SILVER_CRYSTAL);
 		
@@ -126,6 +126,6 @@ public class Q431_WeddingMarch extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q431_WeddingMarch(431, qn, "Wedding March");
+		new Q431_WeddingMarch();
 	}
 }

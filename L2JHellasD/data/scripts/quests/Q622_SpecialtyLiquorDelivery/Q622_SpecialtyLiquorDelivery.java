@@ -45,9 +45,9 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 		6851
 	};
 	
-	public Q622_SpecialtyLiquorDelivery(int questId, String name, String descr)
+	public Q622_SpecialtyLiquorDelivery()
 	{
-		super(questId, name, descr);
+		super(622, qn, "Specialty Liquor Delivery");
 		
 		setItemsIds(DRINK, FEE);
 		
@@ -207,6 +207,6 @@ public class Q622_SpecialtyLiquorDelivery extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q622_SpecialtyLiquorDelivery(622, qn, "Specialty Liquor Delivery");
+		new Q622_SpecialtyLiquorDelivery();
 	}
 }

@@ -27,9 +27,9 @@ public class Q649_ALooterAndARailroadMan extends Quest
 	// NPC
 	private static final int OBI = 32052;
 	
-	public Q649_ALooterAndARailroadMan(int questId, String name, String descr)
+	public Q649_ALooterAndARailroadMan()
 	{
-		super(questId, name, descr);
+		super(649, qn, "A Looter and a Railroad Man");
 		
 		setItemsIds(THIEF_GUILD_MARK);
 		
@@ -114,6 +114,6 @@ public class Q649_ALooterAndARailroadMan extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q649_ALooterAndARailroadMan(649, qn, "A Looter and a Railroad Man");
+		new Q649_ALooterAndARailroadMan();
 	}
 }

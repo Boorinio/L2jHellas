@@ -35,9 +35,9 @@ public class Q623_TheFinestFood extends Quest
 	private static final int BUFFALO = 21315;
 	private static final int ANTELOPE = 21318;
 	
-	public Q623_TheFinestFood(int questId, String name, String descr)
+	public Q623_TheFinestFood()
 	{
-		super(questId, name, descr);
+		super(623, qn, "The Finest Food");
 		
 		setItemsIds(LEAF, MEAT, HORN);
 		
@@ -193,6 +193,6 @@ public class Q623_TheFinestFood extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q623_TheFinestFood(623, qn, "The Finest Food");
+		new Q623_TheFinestFood();
 	}
 }

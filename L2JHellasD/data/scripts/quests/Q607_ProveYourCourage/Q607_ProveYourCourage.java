@@ -28,9 +28,9 @@ public class Q607_ProveYourCourage extends Quest
 	private static final int Valor_Totem = 7219;
 	private static final int Ketra_Alliance_Three = 7213;
 	
-	public Q607_ProveYourCourage(int questId, String name, String descr)
+	public Q607_ProveYourCourage()
 	{
-		super(questId, name, descr);
+		super(607, qn, "Prove your courage!");
 		
 		setItemsIds(Shadith_Head);
 		
@@ -138,6 +138,6 @@ public class Q607_ProveYourCourage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q607_ProveYourCourage(607, qn, "Prove your courage!");
+		new Q607_ProveYourCourage();
 	}
 }

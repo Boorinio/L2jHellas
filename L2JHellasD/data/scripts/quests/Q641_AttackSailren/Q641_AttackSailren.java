@@ -33,9 +33,9 @@ public final class Q641_AttackSailren extends Quest
 	private static final int GAZKH_FRAGMENT = 8782;
 	private static final int GAZKH = 8784;
 	
-	public Q641_AttackSailren(int questId, String name, String descr)
+	public Q641_AttackSailren()
 	{
-		super(questId, name, descr);
+		super(641, qn, "Attack Sailren!");
 		
 		setItemsIds(GAZKH_FRAGMENT);
 		
@@ -135,6 +135,6 @@ public final class Q641_AttackSailren extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q641_AttackSailren(641, qn, "Attack Sailren!");
+		new Q641_AttackSailren();
 	}
 }

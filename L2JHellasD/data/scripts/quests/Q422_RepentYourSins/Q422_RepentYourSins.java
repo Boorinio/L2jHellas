@@ -51,9 +51,9 @@ public class Q422_RepentYourSins extends Quest
 	private static final int JOAN = 30718;
 	private static final int PUSHKIN = 30300;
 	
-	public Q422_RepentYourSins(int questId, String name, String descr)
+	public Q422_RepentYourSins()
 	{
-		super(questId, name, descr);
+		super(422, qn, "Repent Your Sins");
 		
 		setItemsIds(SCAVENGER_WERERAT_SKULL, TUREK_WARHOUND_TAIL, TYRANT_KINGPIN_HEART, TRISALIM_TARANTULAS_VENOM_SAC, MANUAL_OF_MANACLES, PENITENTS_MANACLES, QITEM_PENITENTS_MANACLES);
 		
@@ -412,6 +412,6 @@ public class Q422_RepentYourSins extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q422_RepentYourSins(422, qn, "Repent Your Sins");
+		new Q422_RepentYourSins();
 	}
 }

@@ -49,9 +49,9 @@ public class Q628_HuntOfTheGoldenRamMercenaryForce extends Quest
 		chances.put(21517, 370000);
 	}
 	
-	public Q628_HuntOfTheGoldenRamMercenaryForce(int questId, String name, String descr)
+	public Q628_HuntOfTheGoldenRamMercenaryForce()
 	{
-		super(questId, name, descr);
+		super(628, qn, "Hunt of the Golden Ram Mercenary Force");
 		
 		setItemsIds(CHITIN, CHITIN2, RECRUIT, SOLDIER);
 		
@@ -186,6 +186,6 @@ public class Q628_HuntOfTheGoldenRamMercenaryForce extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q628_HuntOfTheGoldenRamMercenaryForce(628, qn, "Hunt of the Golden Ram Mercenary Force");
+		new Q628_HuntOfTheGoldenRamMercenaryForce();
 	}
 }

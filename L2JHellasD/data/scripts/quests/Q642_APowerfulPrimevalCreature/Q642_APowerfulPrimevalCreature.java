@@ -44,9 +44,9 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 		8710
 	};
 	
-	public Q642_APowerfulPrimevalCreature(int questId, String name, String descr)
+	public Q642_APowerfulPrimevalCreature()
 	{
-		super(questId, name, descr);
+		super(642, qn, "A Powerful Primeval Creature");
 		
 		setItemsIds(DINOSAUR_TISSUE, DINOSAUR_EGG);
 		
@@ -170,6 +170,6 @@ public class Q642_APowerfulPrimevalCreature extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q642_APowerfulPrimevalCreature(642, qn, "A Powerful Primeval Creature");
+		new Q642_APowerfulPrimevalCreature();
 	}
 }

@@ -58,9 +58,9 @@ public class Q402_PathToAHumanKnight extends Quest
 	private static final int SirAaronTanford = 30653;
 	private static final int SirCollinWindawood = 30311;
 	
-	public Q402_PathToAHumanKnight(int questId, String name, String descr)
+	public Q402_PathToAHumanKnight()
 	{
-		super(questId, name, descr);
+		super(402, qn, "Path to a Human Knight");
 		
 		setItemsIds(MarkOfEsquire, CoinOfLords1, CoinOfLords2, CoinOfLords3, CoinOfLords4, CoinOfLords5, CoinOfLords6, GludioGuardsMark1, BugbearNecklace, EinhasadChurchMark1, EinhasadCrucifix, GludioGuardsMark2, SpiderLeg, EinhasadChurchMark2, LizardmanTotem, GludioGuardsMark3, GiantSpiderHusk, EinhasadChurchMark3, LizardmanTotem, GludioGuardsMark3, GiantSpiderHusk, EinhasadChurchMark3, HorribleSkull);
 		
@@ -382,6 +382,6 @@ public class Q402_PathToAHumanKnight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q402_PathToAHumanKnight(402, qn, "Path to a Human Knight");
+		new Q402_PathToAHumanKnight();
 	}
 }

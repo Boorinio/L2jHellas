@@ -34,9 +34,9 @@ public class Q382_KailsMagicCoin extends Quest
 	private final static int GOLD_GOLEM = 5962;
 	private final static int BLOOD_DRAGON = 5963;
 	
-	public Q382_KailsMagicCoin(int questId, String name, String descr)
+	public Q382_KailsMagicCoin()
 	{
-		super(questId, name, descr);
+		super(382, qn, "Kail's Magic Coin");
 		
 		setItemsIds(SILVER_BASILISK, GOLD_GOLEM, BLOOD_DRAGON);
 		
@@ -117,6 +117,6 @@ public class Q382_KailsMagicCoin extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q382_KailsMagicCoin(382, qn, "Kail's Magic Coin");
+		new Q382_KailsMagicCoin();
 	}
 }

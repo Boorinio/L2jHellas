@@ -43,9 +43,9 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q616_MagicalPowerOfFire_Part2(int questId, String name, String descr)
+	public Q616_MagicalPowerOfFire_Part2()
 	{
-		super(questId, name, descr);
+		super(616, qn, "Magical Power of Fire - Part 2");
 		
 		setItemsIds(FIRE_HEART_OF_NASTRON);
 		
@@ -268,6 +268,6 @@ public class Q616_MagicalPowerOfFire_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q616_MagicalPowerOfFire_Part2(616, qn, "Magical Power of Fire - Part 2");
+		new Q616_MagicalPowerOfFire_Part2();
 	}
 }

@@ -80,9 +80,9 @@ public class Q617_GatherTheFlames extends Quest
 		7580
 	};
 	
-	public Q617_GatherTheFlames(int questId, String name, String descr)
+	public Q617_GatherTheFlames()
 	{
-		super(questId, name, descr);
+		super(617, qn, "Gather the Flames");
 		
 		setItemsIds(TORCH);
 		
@@ -220,6 +220,6 @@ public class Q617_GatherTheFlames extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q617_GatherTheFlames(617, qn, "Gather the Flames");
+		new Q617_GatherTheFlames();
 	}
 }

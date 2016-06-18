@@ -68,9 +68,9 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 	// Tallum Stockings, 6, 15550 adena
 	};
 	
-	public Q374_WhisperOfDreams_Part1(int questId, String name, String descr)
+	public Q374_WhisperOfDreams_Part1()
 	{
-		super(questId, name, descr);
+		super(374, qn, "Whisper of Dreams, Part 1");
 		
 		setItemsIds(DEATH_WAVE_LIGHT, CAVE_BEAST_TOOTH, SEALED_MYSTERIOUS_STONE, MYSTERIOUS_STONE);
 		
@@ -227,6 +227,6 @@ public class Q374_WhisperOfDreams_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q374_WhisperOfDreams_Part1(374, qn, "Whisper of Dreams, Part 1");
+		new Q374_WhisperOfDreams_Part1();
 	}
 }

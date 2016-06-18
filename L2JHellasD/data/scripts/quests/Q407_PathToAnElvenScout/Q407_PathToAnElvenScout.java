@@ -44,9 +44,9 @@ public class Q407_PathToAnElvenScout extends Quest
 	private static final int Moretti = 30337;
 	private static final int Prias = 30426;
 	
-	public Q407_PathToAnElvenScout(int questId, String name, String descr)
+	public Q407_PathToAnElvenScout()
 	{
-		super(questId, name, descr);
+		super(407, qn, "Path to an Elven Scout");
 		
 		setItemsIds(ReisasLetter, PriasLetter1, PriasLetter2, PriasLetter3, PriasLetter4, MorettisHerb, MorettisLetter, PriasLetter, HonoraryGuard, RustedKey);
 		
@@ -251,6 +251,6 @@ public class Q407_PathToAnElvenScout extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q407_PathToAnElvenScout(407, qn, "Path to an Elven Scout");
+		new Q407_PathToAnElvenScout();
 	}
 }

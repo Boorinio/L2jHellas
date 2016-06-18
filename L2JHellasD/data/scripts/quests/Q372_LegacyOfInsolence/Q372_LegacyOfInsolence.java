@@ -280,9 +280,9 @@ public class Q372_LegacyOfInsolence extends Quest
 		}
 	};
 	
-	public Q372_LegacyOfInsolence(int questId, String name, String descr)
+	public Q372_LegacyOfInsolence()
 	{
-		super(questId, name, descr);
+		super(372, qn, "Legacy of Insolence");
 		
 		addStartNpc(WALDERAL);
 		addTalkId(WALDERAL, PATRIN, HOLLY, CLAUDIA, DESMOND);
@@ -442,6 +442,6 @@ public class Q372_LegacyOfInsolence extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q372_LegacyOfInsolence(372, qn, "Legacy of Insolence");
+		new Q372_LegacyOfInsolence();
 	}
 }

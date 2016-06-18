@@ -50,9 +50,9 @@ public class Q369_CollectorOfJewels extends Quest
 		DROPLIST_FLARE.put(20749, 85);
 	}
 	
-	public Q369_CollectorOfJewels(int questId, String name, String descr)
+	public Q369_CollectorOfJewels()
 	{
-		super(questId, name, descr);
+		super(369, qn, "Collector of Jewels");
 		
 		setItemsIds(FLARE_SHARD, FREEZING_SHARD);
 		
@@ -208,6 +208,6 @@ public class Q369_CollectorOfJewels extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q369_CollectorOfJewels(369, qn, "Collector of Jewels");
+		new Q369_CollectorOfJewels();
 	}
 }

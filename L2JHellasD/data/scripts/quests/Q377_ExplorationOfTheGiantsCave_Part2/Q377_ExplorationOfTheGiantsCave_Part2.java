@@ -64,9 +64,9 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 		}
 	};
 	
-	public Q377_ExplorationOfTheGiantsCave_Part2(int questId, String name, String descr)
+	public Q377_ExplorationOfTheGiantsCave_Part2()
 	{
-		super(questId, name, descr);
+		super(377, qn, "Exploration of the Giants' Cave, Part 2");
 		
 		addStartNpc(31147); // Sobling
 		addTalkId(31147);
@@ -165,6 +165,6 @@ public class Q377_ExplorationOfTheGiantsCave_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q377_ExplorationOfTheGiantsCave_Part2(377, qn, "Exploration of the Giants' Cave, Part 2");
+		new Q377_ExplorationOfTheGiantsCave_Part2();
 	}
 }

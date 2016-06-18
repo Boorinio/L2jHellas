@@ -36,9 +36,9 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 	private static final int CRYSTAL = 7080;
 	private static final int SAUCE = 7205;
 	
-	public Q624_TheFinestIngredients_Part1(int questId, String name, String descr)
+	public Q624_TheFinestIngredients_Part1()
 	{
-		super(questId, name, descr);
+		super(624, qn, "The Finest Ingredients - Part 1");
 		
 		setItemsIds(TRUNK, FOOT, SPICE);
 		
@@ -157,6 +157,6 @@ public class Q624_TheFinestIngredients_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q624_TheFinestIngredients_Part1(624, qn, "The Finest Ingredients - Part 1");
+		new Q624_TheFinestIngredients_Part1();
 	}
 }

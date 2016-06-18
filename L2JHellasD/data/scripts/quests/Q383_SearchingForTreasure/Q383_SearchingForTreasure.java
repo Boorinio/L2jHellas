@@ -30,9 +30,9 @@ public class Q383_SearchingForTreasure extends Quest
 	private static final int PIRATES_TREASURE_MAP = 5915;
 	private static final int THIEF_KEY = 1661;
 	
-	public Q383_SearchingForTreasure(int questId, String name, String descr)
+	public Q383_SearchingForTreasure()
 	{
-		super(questId, name, descr);
+		super(383, qn, "Searching for Treasure");
 		
 		addStartNpc(ESPEN);
 		addTalkId(ESPEN, PIRATE_CHEST);
@@ -209,6 +209,6 @@ public class Q383_SearchingForTreasure extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q383_SearchingForTreasure(383, qn, "Searching for Treasure");
+		new Q383_SearchingForTreasure();
 	}
 }

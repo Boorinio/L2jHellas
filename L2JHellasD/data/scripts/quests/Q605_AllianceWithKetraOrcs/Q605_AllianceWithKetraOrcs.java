@@ -89,9 +89,9 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 	
 	private static final int Mane = 7233;
 	
-	public Q605_AllianceWithKetraOrcs(int questId, String name, String descr)
+	public Q605_AllianceWithKetraOrcs()
 	{
-		super(questId, name, descr);
+		super(605, qn, "Alliance with Ketra Orcs");
 		
 		setItemsIds(Varka_Badge_Soldier, Varka_Badge_Officer, Varka_Badge_Captain);
 		
@@ -412,6 +412,6 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q605_AllianceWithKetraOrcs(605, qn, "Alliance with Ketra Orcs");
+		new Q605_AllianceWithKetraOrcs();
 	}
 }

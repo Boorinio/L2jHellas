@@ -28,9 +28,9 @@ public class Q613_ProveYourCourage extends Quest
 	private static final int Valor_Feather = 7229;
 	private static final int Varka_Alliance_Three = 7223;
 	
-	public Q613_ProveYourCourage(int questId, String name, String descr)
+	public Q613_ProveYourCourage()
 	{
-		super(questId, name, descr);
+		super(613, qn, "Prove your courage!");
 		
 		setItemsIds(Hekaton_Head);
 		
@@ -138,6 +138,6 @@ public class Q613_ProveYourCourage extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q613_ProveYourCourage(613, qn, "Prove your courage!");
+		new Q613_ProveYourCourage();
 	}
 }

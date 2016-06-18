@@ -33,9 +33,9 @@ public class Q379_FantasyWine extends Quest
 	private static final int LEAF = 5893;
 	private static final int STONE = 5894;
 	
-	public Q379_FantasyWine(int questId, String name, String descr)
+	public Q379_FantasyWine()
 	{
-		super(questId, name, descr);
+		super(379, qn, "Fantasy Wine");
 		
 		setItemsIds(LEAF, STONE);
 		
@@ -176,6 +176,6 @@ public class Q379_FantasyWine extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q379_FantasyWine(379, qn, "Fantasy Wine");
+		new Q379_FantasyWine();
 	}
 }

@@ -62,9 +62,9 @@ public class Q653_WildMaiden extends Quest
 	// Current position
 	private int _currentPosition = 0;
 	
-	public Q653_WildMaiden(int questId, String name, String descr)
+	public Q653_WildMaiden()
 	{
-		super(questId, name, descr);
+		super(653, qn, "Wild Maiden");
 		
 		addStartNpc(SUKI);
 		addTalkId(SUKI, GALIBREDO);
@@ -158,6 +158,6 @@ public class Q653_WildMaiden extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q653_WildMaiden(653, qn, "Wild Maiden");
+		new Q653_WildMaiden();
 	}
 }

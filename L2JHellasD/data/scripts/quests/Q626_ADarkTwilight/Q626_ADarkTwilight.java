@@ -27,9 +27,9 @@ public class Q626_ADarkTwilight extends Quest
 	// NPC
 	private static final int HIERARCH = 31517;
 	
-	public Q626_ADarkTwilight(int questId, String name, String descr)
+	public Q626_ADarkTwilight()
 	{
-		super(questId, name, descr);
+		super(626, qn, "A Dark Twilight");
 		
 		setItemsIds(BLOOD_OF_SAINT);
 		
@@ -133,6 +133,6 @@ public class Q626_ADarkTwilight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q626_ADarkTwilight(626, qn, "A Dark Twilight");
+		new Q626_ADarkTwilight();
 	}
 }

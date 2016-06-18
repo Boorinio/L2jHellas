@@ -43,9 +43,9 @@ public class Q403_PathToARogue extends Quest
 	private static final int Bezique = 30379;
 	private static final int Neti = 30425;
 	
-	public Q403_PathToARogue(int questId, String name, String descr)
+	public Q403_PathToARogue()
 	{
-		super(questId, name, descr);
+		super(403, qn, "Path to a Rogue");
 		
 		setItemsIds(Letter, Bones, Horseshoe, Bill, StolenJewelry, StolenTomes, StolenRing, StolenNecklace, NetisBow, NetisDagger);
 		
@@ -228,6 +228,6 @@ public class Q403_PathToARogue extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q403_PathToARogue(403, qn, "Path to a Rogue");
+		new Q403_PathToARogue();
 	}
 }

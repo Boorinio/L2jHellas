@@ -33,9 +33,9 @@ public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 	private static final int BABBLING_WIND = 21024;
 	private static final int GIGGLING_WIND = 21025;
 	
-	public Q659_IdRatherBeCollectingFairyBreath(int questId, String name, String descr)
+	public Q659_IdRatherBeCollectingFairyBreath()
 	{
-		super(questId, name, descr);
+		super(659, qn, "I'd Rather Be Collecting Fairy Breath");
 		
 		setItemsIds(FAIRY_BREATH);
 		
@@ -124,6 +124,6 @@ public class Q659_IdRatherBeCollectingFairyBreath extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q659_IdRatherBeCollectingFairyBreath(659, qn, "I'd Rather Be Collecting Fairy Breath");
+		new Q659_IdRatherBeCollectingFairyBreath();
 	}
 }

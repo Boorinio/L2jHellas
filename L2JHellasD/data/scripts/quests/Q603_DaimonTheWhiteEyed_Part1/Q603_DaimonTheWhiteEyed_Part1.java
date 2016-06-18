@@ -39,9 +39,9 @@ public class Q603_DaimonTheWhiteEyed_Part1 extends Quest
 	private static final int BROKEN_CRYSTAL = 7191;
 	private static final int UNFINISHED_SUMMON_CRYSTAL = 7192;
 	
-	public Q603_DaimonTheWhiteEyed_Part1(int questId, String name, String descr)
+	public Q603_DaimonTheWhiteEyed_Part1()
 	{
-		super(questId, name, descr);
+		super(603, qn, "Daimon the White-Eyed - Part 1");
 		
 		setItemsIds(EVIL_SPIRIT_BEADS, BROKEN_CRYSTAL);
 		
@@ -219,6 +219,6 @@ public class Q603_DaimonTheWhiteEyed_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q603_DaimonTheWhiteEyed_Part1(603, qn, "Daimon the White-Eyed - Part 1");
+		new Q603_DaimonTheWhiteEyed_Part1();
 	}
 }

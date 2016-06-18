@@ -67,9 +67,9 @@ public class Q652_AnAgedExAdventurer extends Quest
 	// Current position
 	private int _currentPosition = 0;
 	
-	public Q652_AnAgedExAdventurer(int questId, String name, String descr)
+	public Q652_AnAgedExAdventurer()
 	{
-		super(questId, name, descr);
+		super(652, qn, "An Aged Ex-Adventurer");
 		
 		addStartNpc(TANTAN);
 		addTalkId(TANTAN, SARA);
@@ -171,6 +171,6 @@ public class Q652_AnAgedExAdventurer extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q652_AnAgedExAdventurer(652, qn, "An Aged Ex-Adventurer");
+		new Q652_AnAgedExAdventurer();
 	}
 }

@@ -31,9 +31,9 @@ public class Q636_TruthBeyondTheGate extends Quest
 	private static final int VISITOR_MARK = 8064;
 	private static final int FADED_VISITOR_MARK = 8065;
 	
-	public Q636_TruthBeyondTheGate(int questId, String name, String descr)
+	public Q636_TruthBeyondTheGate()
 	{
-		super(questId, name, descr);
+		super(636, qn, "The Truth Beyond the Gate");
 		
 		addStartNpc(ELIYAH);
 		addTalkId(ELIYAH, FLAURON);
@@ -122,6 +122,6 @@ public class Q636_TruthBeyondTheGate extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q636_TruthBeyondTheGate(636, qn, "The Truth Beyond the Gate");
+		new Q636_TruthBeyondTheGate();
 	}
 }

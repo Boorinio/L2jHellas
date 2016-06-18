@@ -52,9 +52,9 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	private static L2Npc _npc = null;
 	private static int _status = -1;
 	
-	public Q625_TheFinestIngredients_Part2(int questId, String name, String descr)
+	public Q625_TheFinestIngredients_Part2()
 	{
-		super(questId, name, descr);
+		super(625, qn, "The Finest Ingredients - Part 2");
 		
 		setItemsIds(FOOD_FOR_BUMBALUMP, SPECIAL_YETI_MEAT);
 		
@@ -275,6 +275,6 @@ public class Q625_TheFinestIngredients_Part2 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q625_TheFinestIngredients_Part2(625, qn, "The Finest Ingredients - Part 2");
+		new Q625_TheFinestIngredients_Part2();
 	}
 }

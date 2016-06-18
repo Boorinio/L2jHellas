@@ -48,9 +48,9 @@ public class Q405_PathToACleric extends Quest
 	// Reward
 	private static final int MarkofFate = 3172;
 	
-	public Q405_PathToACleric(int questId, String name, String descr)
+	public Q405_PathToACleric()
 	{
-		super(questId, name, descr);
+		super(405, qn, "Path to a Cleric");
 		
 		setItemsIds(FirstLetter, SimplonsBook, PragasBook, VivyansBook, MothersNecklace, MothersPendant, SecondLetter, LionelsBook, Certificate, Covenant);
 		
@@ -265,6 +265,6 @@ public class Q405_PathToACleric extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q405_PathToACleric(405, qn, "Path to a Cleric");
+		new Q405_PathToACleric();
 	}
 }

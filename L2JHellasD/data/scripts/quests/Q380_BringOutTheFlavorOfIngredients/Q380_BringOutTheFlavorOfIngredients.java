@@ -40,9 +40,9 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 	// Chance
 	private static final int REC_CHANCE = 55;
 	
-	public Q380_BringOutTheFlavorOfIngredients(int questId, String name, String descr)
+	public Q380_BringOutTheFlavorOfIngredients()
 	{
-		super(questId, name, descr);
+		super(380, qn, "Bring Out the Flavor of Ingredients!");
 		
 		setItemsIds(RITRONS_FRUIT, MOON_FACE_FLOWER, LEECH_FLUIDS);
 		
@@ -184,6 +184,6 @@ public class Q380_BringOutTheFlavorOfIngredients extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q380_BringOutTheFlavorOfIngredients(380, qn, "Bring Out the Flavor of Ingredients!");
+		new Q380_BringOutTheFlavorOfIngredients();
 	}
 }

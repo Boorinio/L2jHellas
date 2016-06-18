@@ -267,9 +267,9 @@ public class Q373_SupplierOfReagents extends Quest
 		}
 	};
 	
-	public Q373_SupplierOfReagents(int questId, String name, String descr)
+	public Q373_SupplierOfReagents()
 	{
-		super(questId, name, descr);
+		super(373, qn, "Supplier of Reagents");
 		
 		setItemsIds(MIXING_STONE, MIXING_MANUAL);
 		
@@ -436,6 +436,6 @@ public class Q373_SupplierOfReagents extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q373_SupplierOfReagents(373, qn, "Supplier of Reagents");
+		new Q373_SupplierOfReagents();
 	}
 }

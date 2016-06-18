@@ -37,9 +37,9 @@ public class Q406_PathToAnElvenKnight extends Quest
 	private static final int Sorius = 30327;
 	private static final int Kluto = 30317;
 	
-	public Q406_PathToAnElvenKnight(int questId, String name, String descr)
+	public Q406_PathToAnElvenKnight()
 	{
-		super(questId, name, descr);
+		super(406, qn, "Path to an Elven Knight");
 		
 		setItemsIds(SoriusLetter, KlutoBox, TopazPiece, EmeraldPiece, KlutosMemo);
 		
@@ -206,6 +206,6 @@ public class Q406_PathToAnElvenKnight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q406_PathToAnElvenKnight(406, qn, "Path to an Elven Knight");
+		new Q406_PathToAnElvenKnight();
 	}
 }

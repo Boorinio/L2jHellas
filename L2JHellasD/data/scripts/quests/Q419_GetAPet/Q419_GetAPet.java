@@ -50,9 +50,9 @@ public class Q419_GetAPet extends Quest
 	private static final int Metty = 30072;
 	private static final int Ellie = 30091;
 	
-	public Q419_GetAPet(int questId, String name, String descr)
+	public Q419_GetAPet()
 	{
-		super(questId, name, descr);
+		super(419, qn, "Get a Pet");
 		
 		setItemsIds(AnimalLoversList, AnimalSlayers1stList, AnimalSlayers2ndList, AnimalSlayers3rdList, AnimalSlayers4thList, AnimalSlayers5thList, BloodyFang, BloodyClaw, BloodyNail, BloodyKashaFang, BloodyTarantulaNail);
 		
@@ -317,6 +317,6 @@ public class Q419_GetAPet extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q419_GetAPet(419, qn, "Get a Pet");
+		new Q419_GetAPet();
 	}
 }

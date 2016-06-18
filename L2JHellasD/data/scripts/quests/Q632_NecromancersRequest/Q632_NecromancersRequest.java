@@ -60,9 +60,9 @@ public class Q632_NecromancersRequest extends Quest
 	private static final int VAMPIRE_HEART = 7542;
 	private static final int ZOMBIE_BRAIN = 7543;
 	
-	public Q632_NecromancersRequest(int questId, String name, String descr)
+	public Q632_NecromancersRequest()
 	{
-		super(questId, name, descr);
+		super(632, qn, "Necromancer's Request");
 		
 		setItemsIds(VAMPIRE_HEART, ZOMBIE_BRAIN);
 		
@@ -163,6 +163,6 @@ public class Q632_NecromancersRequest extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q632_NecromancersRequest(632, qn, "Necromancer's Request");
+		new Q632_NecromancersRequest();
 	}
 }

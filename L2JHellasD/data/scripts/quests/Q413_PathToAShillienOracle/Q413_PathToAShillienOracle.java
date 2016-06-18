@@ -41,9 +41,9 @@ public class Q413_PathToAShillienOracle extends Quest
 	private static final int Adonius = 30375;
 	private static final int Talbot = 30377;
 	
-	public Q413_PathToAShillienOracle(int questId, String name, String descr)
+	public Q413_PathToAShillienOracle()
 	{
-		super(questId, name, descr);
+		super(413, qn, "Path to a Shillien Oracle");
 		
 		setItemsIds(SidrasLetter, BlankSheet, BloodyRune, GarmielBook, PrayerofAdonius, PenitentsMark, AshenBones, AndarielBook);
 		
@@ -227,6 +227,6 @@ public class Q413_PathToAShillienOracle extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q413_PathToAShillienOracle(413, qn, "Path to a Shillien Oracle");
+		new Q413_PathToAShillienOracle();
 	}
 }

@@ -32,9 +32,9 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 	// Monster
 	private static final int ELROKI = 22214;
 	
-	public Q688_DefeatTheElrokianRaiders(int questId, String name, String descr)
+	public Q688_DefeatTheElrokianRaiders()
 	{
-		super(questId, name, descr);
+		super(688, qn, "Defeat the Elrokian Raiders!");
 		
 		setItemsIds(DINOSAUR_FANG_NECKLACE);
 		
@@ -138,6 +138,6 @@ public class Q688_DefeatTheElrokianRaiders extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q688_DefeatTheElrokianRaiders(688, qn, "Defeat the Elrokian Raiders!");
+		new Q688_DefeatTheElrokianRaiders();
 	}
 }

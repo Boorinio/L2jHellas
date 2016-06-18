@@ -24,9 +24,9 @@ public class Q634_InSearchOfFragmentsOfDimension extends Quest
 	// Items
 	private static final int DIMENSION_FRAGMENT = 7079;
 	
-	public Q634_InSearchOfFragmentsOfDimension(int questId, String name, String descr)
+	public Q634_InSearchOfFragmentsOfDimension()
 	{
-		super(questId, name, descr);
+		super(634, qn, "In Search of Fragments of Dimension");
 		
 		// Dimensional Gate Keepers.
 		for (int i = 31494; i < 31508; i++)
@@ -106,6 +106,6 @@ public class Q634_InSearchOfFragmentsOfDimension extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q634_InSearchOfFragmentsOfDimension(634, qn, "In Search of Fragments of Dimension");
+		new Q634_InSearchOfFragmentsOfDimension();
 	}
 }

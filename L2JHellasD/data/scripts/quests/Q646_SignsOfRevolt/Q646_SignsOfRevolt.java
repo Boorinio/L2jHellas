@@ -49,9 +49,9 @@ public class Q646_SignsOfRevolt extends Quest
 		}
 	};
 	
-	public Q646_SignsOfRevolt(int questId, String name, String descr)
+	public Q646_SignsOfRevolt()
 	{
-		super(questId, name, descr);
+		super(646, qn, "Signs Of Revolt");
 		
 		setItemsIds(CURSED_DOLL);
 		
@@ -144,6 +144,6 @@ public class Q646_SignsOfRevolt extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q646_SignsOfRevolt(646, qn, "Signs Of Revolt");
+		new Q646_SignsOfRevolt();
 	}
 }

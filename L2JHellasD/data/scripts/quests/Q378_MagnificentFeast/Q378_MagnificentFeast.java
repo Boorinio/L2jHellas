@@ -96,9 +96,9 @@ public class Q378_MagnificentFeast extends Quest
 		});
 	}
 	
-	public Q378_MagnificentFeast(int questId, String name, String descr)
+	public Q378_MagnificentFeast()
 	{
-		super(questId, name, descr);
+		super(378, qn, "Magnificent Feast");
 		
 		addStartNpc(RANSPO);
 		addTalkId(RANSPO);
@@ -270,6 +270,6 @@ public class Q378_MagnificentFeast extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q378_MagnificentFeast(378, qn, "Magnificent Feast");
+		new Q378_MagnificentFeast();
 	}
 }

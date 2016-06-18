@@ -28,9 +28,9 @@ public class Q606_WarWithVarkaSilenos extends Quest
 	private static final int Horn = 7186;
 	private static final int Mane = 7233;
 	
-	public Q606_WarWithVarkaSilenos(int questId, String name, String descr)
+	public Q606_WarWithVarkaSilenos()
 	{
-		super(questId, name, descr);
+		super(606, qn, "War with Varka Silenos");
 		
 		setItemsIds(Mane);
 		
@@ -107,6 +107,6 @@ public class Q606_WarWithVarkaSilenos extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q606_WarWithVarkaSilenos(606, qn, "War with Varka Silenos");
+		new Q606_WarWithVarkaSilenos();
 	}
 }

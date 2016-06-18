@@ -33,9 +33,9 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 	private static final int GREEN_TOTEM = 7238;
 	private static final int DIVINE_STONE = 7081;
 	
-	public Q609_MagicalPowerOfWater_Part1(int questId, String name, String descr)
+	public Q609_MagicalPowerOfWater_Part1()
 	{
-		super(questId, name, descr);
+		super(609, qn, "Magical Power of Water - Part 1");
 		
 		setItemsIds(STOLEN_GREEN_TOTEM);
 		
@@ -186,6 +186,6 @@ public class Q609_MagicalPowerOfWater_Part1 extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q609_MagicalPowerOfWater_Part1(609, qn, "Magical Power of Water - Part 1");
+		new Q609_MagicalPowerOfWater_Part1();
 	}
 }

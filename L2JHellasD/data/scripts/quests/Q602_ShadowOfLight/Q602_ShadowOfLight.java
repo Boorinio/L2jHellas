@@ -56,9 +56,9 @@ public class Q602_ShadowOfLight extends Quest
 		}
 	};
 	
-	public Q602_ShadowOfLight(int questId, String name, String descr)
+	public Q602_ShadowOfLight()
 	{
-		super(questId, name, descr);
+		super(602, qn, "Shadow of Light");
 		
 		setItemsIds(EYE_OF_DARKNESS);
 		
@@ -165,6 +165,6 @@ public class Q602_ShadowOfLight extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q602_ShadowOfLight(602, qn, "Shadow of Light");
+		new Q602_ShadowOfLight();
 	}
 }

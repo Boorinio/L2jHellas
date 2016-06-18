@@ -32,9 +32,9 @@ public class Q618_IntoTheFlame extends Quest
 	// Reward
 	private static final int FLOATING_STONE = 7267;
 	
-	public Q618_IntoTheFlame(int questId, String name, String descr)
+	public Q618_IntoTheFlame()
 	{
-		super(questId, name, descr);
+		super(618, qn, "Into The Flame");
 		
 		setItemsIds(VACUALITE_ORE, VACUALITE);
 		
@@ -156,6 +156,6 @@ public class Q618_IntoTheFlame extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q618_IntoTheFlame(618, qn, "Into The Flame");
+		new Q618_IntoTheFlame();
 	}
 }

@@ -44,9 +44,9 @@ public class Q621_EggDelivery extends Quest
 		6851
 	};
 	
-	public Q621_EggDelivery(int questId, String name, String descr)
+	public Q621_EggDelivery()
 	{
-		super(questId, name, descr);
+		super(621, qn, "Egg Delivery");
 		
 		setItemsIds(EGG, FEE);
 		
@@ -220,6 +220,6 @@ public class Q621_EggDelivery extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q621_EggDelivery(621, qn, "Egg Delivery");
+		new Q621_EggDelivery();
 	}
 }

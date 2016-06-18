@@ -40,9 +40,9 @@ public class Q401_PathToAWarrior extends Quest
 	private static final int Auron = 30010;
 	private static final int Simplon = 30253;
 	
-	public Q401_PathToAWarrior(int questId, String name, String descr)
+	public Q401_PathToAWarrior()
 	{
-		super(questId, name, descr);
+		super(401, qn, "Path to a Warrior");
 		
 		setItemsIds(AuronsLetter, WarriorGuildMark, RustedBronzeSword1, RustedBronzeSword2, RustedBronzeSword3, SimplonsLetter, PoisonSpiderLeg);
 		
@@ -208,6 +208,6 @@ public class Q401_PathToAWarrior extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q401_PathToAWarrior(401, qn, "Path to a Warrior");
+		new Q401_PathToAWarrior();
 	}
 }

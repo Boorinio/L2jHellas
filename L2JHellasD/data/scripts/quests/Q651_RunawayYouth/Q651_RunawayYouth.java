@@ -53,9 +53,9 @@ public class Q651_RunawayYouth extends Quest
 	// Current position
 	private int _currentPosition = 0;
 	
-	public Q651_RunawayYouth(int questId, String name, String descr)
+	public Q651_RunawayYouth()
 	{
-		super(questId, name, descr);
+		super(651, qn, "Runaway Youth");
 		
 		addStartNpc(IVAN);
 		addTalkId(IVAN, BATIDAE);
@@ -148,6 +148,6 @@ public class Q651_RunawayYouth extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q651_RunawayYouth(651, qn, "Runaway Youth");
+		new Q651_RunawayYouth();
 	}
 }

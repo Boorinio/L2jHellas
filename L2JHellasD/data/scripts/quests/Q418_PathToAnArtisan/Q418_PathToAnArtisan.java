@@ -46,9 +46,9 @@ public class Q418_PathToAnArtisan extends Quest
 	private static final int Lockirin = 30531;
 	private static final int Rydel = 31956;
 	
-	public Q418_PathToAnArtisan(int questId, String name, String descr)
+	public Q418_PathToAnArtisan()
 	{
-		super(questId, name, descr);
+		super(418, qn, "Path to an Artisan");
 		
 		setItemsIds(SilverasRing, FirstPassCertificate, SecondPassCertificate, BoogleRatmanTooth, BoogleRatmanLeadersTooth, KlutosLetter, FootprintOfThief, StolenSecretBox, SecretBox);
 		
@@ -297,6 +297,6 @@ public class Q418_PathToAnArtisan extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q418_PathToAnArtisan(418, qn, "Path to an Artisan");
+		new Q418_PathToAnArtisan();
 	}
 }

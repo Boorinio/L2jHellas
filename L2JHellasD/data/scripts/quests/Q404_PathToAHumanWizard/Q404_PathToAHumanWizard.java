@@ -48,9 +48,9 @@ public class Q404_PathToAHumanWizard extends Quest
 	private static final int WindSylph = 30412;
 	private static final int WaterUndine = 30413;
 	
-	public Q404_PathToAHumanWizard(int questId, String name, String descr)
+	public Q404_PathToAHumanWizard()
 	{
-		super(questId, name, descr);
+		super(404, qn, "Path to a Human Wizard");
 		
 		setItemsIds(MapOfLuster, KeyOfFlame, FlameEaring, Mirror, WindFeather, WindBangel, RamasDiary, SparklePebble, WaterNecklace, GoldCoin, RedSoil, EarthRing);
 		
@@ -275,6 +275,6 @@ public class Q404_PathToAHumanWizard extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q404_PathToAHumanWizard(404, qn, "Path to a Human Wizard");
+		new Q404_PathToAHumanWizard();
 	}
 }

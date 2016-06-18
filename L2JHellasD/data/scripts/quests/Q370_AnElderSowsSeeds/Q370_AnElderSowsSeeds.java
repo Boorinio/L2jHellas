@@ -31,9 +31,9 @@ public class Q370_AnElderSowsSeeds extends Quest
 	private static final int CHAPTER_OF_WIND = 5919;
 	private static final int CHAPTER_OF_EARTH = 5920;
 	
-	public Q370_AnElderSowsSeeds(int questId, String name, String descr)
+	public Q370_AnElderSowsSeeds()
 	{
-		super(questId, name, descr);
+		super(370, qn, "An Elder Sows Seeds");
 		
 		setItemsIds(SPELLBOOK_PAGE, CHAPTER_OF_FIRE, CHAPTER_OF_WATER, CHAPTER_OF_WIND, CHAPTER_OF_EARTH);
 		
@@ -122,6 +122,6 @@ public class Q370_AnElderSowsSeeds extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q370_AnElderSowsSeeds(370, qn, "An Elder Sows Seeds");
+		new Q370_AnElderSowsSeeds();
 	}
 }

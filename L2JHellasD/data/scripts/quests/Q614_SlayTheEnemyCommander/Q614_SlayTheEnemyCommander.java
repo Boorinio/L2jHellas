@@ -26,9 +26,9 @@ public class Q614_SlayTheEnemyCommander extends Quest
 	private static final int Wisdom_Feather = 7230;
 	private static final int Varka_Alliance_Four = 7224;
 	
-	public Q614_SlayTheEnemyCommander(int questId, String name, String descr)
+	public Q614_SlayTheEnemyCommander()
 	{
-		super(questId, name, descr);
+		super(614, qn, "Slay the enemy commander!");
 		
 		setItemsIds(Tayr_Head);
 		
@@ -136,6 +136,6 @@ public class Q614_SlayTheEnemyCommander extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q614_SlayTheEnemyCommander(614, qn, "Slay the enemy commander!");
+		new Q614_SlayTheEnemyCommander();
 	}
 }

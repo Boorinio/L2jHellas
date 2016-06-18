@@ -31,9 +31,9 @@ public class Q365_DevilsLegacy extends Quest
 	// Item
 	private static final int PIRATE_TREASURE_CHEST = 5873;
 	
-	public Q365_DevilsLegacy(int questId, String name, String descr)
+	public Q365_DevilsLegacy()
 	{
-		super(questId, name, descr);
+		super(365, qn, "Devil's Legacy");
 		
 		setItemsIds(PIRATE_TREASURE_CHEST);
 		
@@ -183,6 +183,6 @@ public class Q365_DevilsLegacy extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Q365_DevilsLegacy(365, qn, "Devil's Legacy");
+		new Q365_DevilsLegacy();
 	}
 }
