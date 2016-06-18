@@ -323,9 +323,9 @@ public class FirstClassChange extends Quest
 		32098
 	};
 	
-	public FirstClassChange(int questId, String name, String descr)
+	public FirstClassChange()
 	{
-		super(questId, name, descr);
+		super(-1, "FirstClassChange", "village_master");
 		addStartNpc(FIRSTCLASSNPCS);
 		addTalkId(FIRSTCLASSNPCS);
 	}
@@ -663,6 +663,6 @@ public class FirstClassChange extends Quest
 	
 	public static void main(String[] args)
 	{
-		new FirstClassChange(-1, "FirstClassChange", "village_master");
+		new FirstClassChange();
 	}
 }

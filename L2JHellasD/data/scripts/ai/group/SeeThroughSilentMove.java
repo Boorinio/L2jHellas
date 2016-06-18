@@ -26,9 +26,9 @@ public class SeeThroughSilentMove extends AbstractNpcAI
 {
 	private static final int[] MOBIDS = {18001,18002,22199,22215,22216,22217,29009,29010,29011,29012,29013};
 	
-	public SeeThroughSilentMove(int questId, String name, String descr)
+	public SeeThroughSilentMove()
 	{
-		super(name, descr);
+		super("SeeThroughSilentMove", "ai");
 		for (L2Spawn npc : SpawnTable.getInstance().getSpawnTable().values())
 			if (Util.contains(MOBIDS,npc.getNpcid()) && npc.getLastSpawn() != null && npc.getLastSpawn() instanceof L2Attackable)
 				((L2Attackable)npc.getLastSpawn()).seeThroughSilentMove(true);
@@ -46,6 +46,6 @@ public class SeeThroughSilentMove extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new SeeThroughSilentMove(-1, "SeeThroughSilentMove", "ai");
+		new SeeThroughSilentMove();
 	}
 }

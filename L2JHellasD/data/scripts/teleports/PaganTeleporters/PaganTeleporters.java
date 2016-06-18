@@ -26,9 +26,9 @@ public class PaganTeleporters extends Quest
 	private final static int VISITOR_MARK = 8064;
 	private final static int PAGAN_MARK = 8067;
 	
-	public PaganTeleporters(int questId, String name, String descr)
+	public PaganTeleporters()
 	{
-		super(questId, name, descr);
+		super(-1, "PaganTeleporters", "teleports");
 		
 		addStartNpc(32034, 32035, 32036, 32037, 32039, 32040);
 		addTalkId(32034, 32035, 32036, 32037, 32039, 32040);
@@ -109,6 +109,6 @@ public class PaganTeleporters extends Quest
 	
 	public static void main(String[] args)
 	{
-		new PaganTeleporters(-1, "PaganTeleporters", "teleports");
+		new PaganTeleporters();
 	}
 }

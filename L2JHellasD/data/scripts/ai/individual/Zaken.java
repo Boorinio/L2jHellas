@@ -75,9 +75,9 @@ public class Zaken extends AbstractNpcAI
 
 	private static L2BossZone _Zone;
 
-	public Zaken (String name, String descr)
+	public Zaken ()
 	{
-        super(name,descr);
+        super(Zaken.class.getSimpleName(), "ai/individual");
 
         // Zaken doors handling
         ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new Runnable() {
@@ -938,6 +938,6 @@ public class Zaken extends AbstractNpcAI
     public static void main(String[] args)
     {
     	// now call the constructor (starts up the ai)
-    	new Zaken(Zaken.class.getSimpleName(), "ai/individual");
+    	new Zaken();
     }
 }

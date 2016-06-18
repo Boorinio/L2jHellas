@@ -57,9 +57,9 @@ public class Sailren extends AbstractNpcAI
 	private final List<L2Npc> _mobs = new CopyOnWriteArrayList<L2Npc>();
 	private static long _timeTracker;
 	
-	public Sailren(String name, String descr)
+	public Sailren()
 	{
-		super(name, descr);
+		super(Sailren.class.getSimpleName(), "ai/individual");
 		
 		addAttackId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
 		addKillId(VELOCIRAPTOR, PTEROSAUR, TREX, SAILREN);
@@ -275,6 +275,6 @@ public class Sailren extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Sailren(Sailren.class.getSimpleName(), "ai/individual");
+		new Sailren();
 	}
 }

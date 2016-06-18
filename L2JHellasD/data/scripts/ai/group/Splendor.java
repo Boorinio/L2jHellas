@@ -31,9 +31,9 @@ public class Splendor extends AbstractNpcAI
 	private static boolean AlwaysSpawn;
 
 	private static HashMap<Integer, int[]> SplendorId = new HashMap<Integer, int[]>();
-	public Splendor(int questId, String name, String descr)
+	public Splendor()
 	{
-		super(name, descr);
+		super( "Splendor", "ai");
 
 		AlwaysSpawn = false;
 
@@ -101,7 +101,7 @@ public class Splendor extends AbstractNpcAI
 	}
 	public static void main(String[] args)
 	{
-		new Splendor(-1, "Splendor", "ai");
+		new Splendor();
 	}
 
 }

@@ -49,9 +49,9 @@ public class QueenAnt extends AbstractNpcAI
 	private static L2BossZone _Zone;
 	private static List<L2Attackable> _Minions = new ArrayList<L2Attackable>();
 
-	public QueenAnt(String name, String descr)
+	public QueenAnt()
 	{
-		super(name, descr);
+		super("Queen Ant", "ai/individual");
 		int[] mobs = {
 		QUEEN, LARVA, NURSE, GUARD, ROYAL
 		};
@@ -265,6 +265,6 @@ public class QueenAnt extends AbstractNpcAI
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new QueenAnt("Queen Ant", "ai/individual");
+		new QueenAnt();
 	}
 }

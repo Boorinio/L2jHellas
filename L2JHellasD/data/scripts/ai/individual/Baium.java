@@ -101,9 +101,9 @@ public class Baium extends AbstractNpcAI
 	private long _LastAttackVsBaiumTime = 0;
 	private final List<L2Npc> _Minions = new ArrayList<L2Npc>(5);
 	
-	public Baium(String name, String descr)
+	public Baium()
 	{
-		super(name, descr);
+		super(Baium.class.getSimpleName(), "ai/individual");
 		
 		int[] mob =
 		{
@@ -574,6 +574,6 @@ public class Baium extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Baium(Baium.class.getSimpleName(), "ai/individual");
+		new Baium();
 	}
 }

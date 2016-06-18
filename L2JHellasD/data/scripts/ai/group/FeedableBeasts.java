@@ -209,9 +209,9 @@ public class FeedableBeasts extends AbstractNpcAI
 		}
 	}
 	
-	public FeedableBeasts(String name, String descr)
+	public FeedableBeasts()
 	{
-		super(name, descr);
+		super(FeedableBeasts.class.getSimpleName(), "ai/group");
 		registerMobs(FEEDABLE_BEASTS, QuestEventType.ON_KILL, QuestEventType.ON_SKILL_SEE);
 		
 		GrowthCapableMob temp;
@@ -766,6 +766,6 @@ public class FeedableBeasts extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new FeedableBeasts(FeedableBeasts.class.getSimpleName(), "ai/group");
+		new FeedableBeasts();
 	}
 }

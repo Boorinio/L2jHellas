@@ -37,9 +37,9 @@ import com.l2jhellas.util.Util;
  */
 public final class L2AttackableAIScript extends Quest
 {
-	private L2AttackableAIScript(int questId, String name, String descr)
+	public L2AttackableAIScript()
 	{
-		super(questId, name, descr);
+		super(-1, "L2AttackableAIScript", "ai/group");
 	}
 	
 	@Override
@@ -157,7 +157,7 @@ public final class L2AttackableAIScript extends Quest
 	
 	public static void main(String[] args)
 	{
-		L2AttackableAIScript ai = new L2AttackableAIScript(-1, "L2AttackableAIScript", "ai/group");
+		L2AttackableAIScript ai = new L2AttackableAIScript();
 		
 		// register all mobs here...
 		for (L2NpcTemplate template : NpcData.getInstance().getAllNpcs())

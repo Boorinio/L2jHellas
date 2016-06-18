@@ -85,9 +85,9 @@ public class Orfen extends AbstractNpcAI
 	private static boolean _IsTeleported;
 	private static int _currentIndex;
 	
-	public Orfen(String name, String descr)
+	public Orfen()
 	{
-		super(name, descr);
+		super(Orfen.class.getSimpleName(), "ai/individual");
 		
 		addKillId(ORFEN);
 		addAttackId(ORFEN, RIBA_IREN);
@@ -303,6 +303,6 @@ public class Orfen extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Orfen(Orfen.class.getSimpleName(), "ai/individual");
+		new Orfen();
 	}
 }

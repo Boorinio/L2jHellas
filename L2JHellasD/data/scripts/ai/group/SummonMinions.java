@@ -46,9 +46,9 @@ public class SummonMinions extends AbstractNpcAI
 		MINIONS.put(21539, new int[]{21540}); // Wailing of Splendor
 	}
 			
-	public SummonMinions(String name, String descr)
+	public SummonMinions()
 	{
-		super(name, descr);
+		super(SummonMinions.class.getSimpleName(), "ai/group");
 		
 		for (int[] mini : MINIONS.values())
 		registerMobs(mini, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
@@ -83,6 +83,6 @@ public class SummonMinions extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new SummonMinions(SummonMinions.class.getSimpleName(), "ai/group");
+		new SummonMinions();
 	}
 }

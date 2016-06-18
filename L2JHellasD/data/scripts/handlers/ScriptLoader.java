@@ -296,14 +296,82 @@ import quests.Q659_IdRatherBeCollectingFairyBreath.Q659_IdRatherBeCollectingFair
 import quests.Q660_AidingTheFloranVillage.Q660_AidingTheFloranVillage;
 import quests.Q661_MakingTheHarvestGroundsSafe.Q661_MakingTheHarvestGroundsSafe;
 import quests.Q688_DefeatTheElrokianRaiders.Q688_DefeatTheElrokianRaiders;
+import teleports.ElrokiTeleporters.ElrokiTeleporters;
+import teleports.GatekeeperSpirit.GatekeeperSpirit;
+import teleports.GrandBossTeleporters.GrandBossTeleporters;
+import teleports.HuntingGroundsTeleport.HuntingGroundsTeleport;
+import teleports.NewbieTravelToken.NewbieTravelToken;
+import teleports.NoblesseTeleport.NoblesseTeleport;
+import teleports.OracleTeleport.OracleTeleport;
+import teleports.PaganTeleporters.PaganTeleporters;
+import teleports.RaceTrack.RaceTrack;
+import teleports.TeleportWithCharm.TeleportWithCharm;
+import teleports.ToIVortex.ToIVortex;
+import village_master.Alliance.Alliance;
+import village_master.Clan.Clan;
+import village_master.FirstClassChange.FirstClassChange;
+import ai.group.AncientEGG;
+import ai.group.CatsEyeBandit;
+import ai.group.Chests;
+import ai.group.DeluLizardmanSpecialAgent;
+import ai.group.DeluLizardmanSpecialCommander;
+import ai.group.FairyTrees;
+import ai.group.FeedableBeasts;
+import ai.group.FleeingNPCs;
+import ai.group.FrenzyOnAttack;
+import ai.group.FrozenLabyrinth;
+import ai.group.GatekeeperZombies;
+import ai.group.HotSpringDisease;
+import ai.group.KarulBugbear;
+import ai.group.L2AttackableAIScript;
+import ai.group.Monastery;
+import ai.group.OlMahumGeneral;
+import ai.group.PlainsOfDion;
+import ai.group.PolymorphingAngel;
+import ai.group.PolymorphingOnAttack;
+import ai.group.PrimevalIsle;
+import ai.group.RetreatOnAttack;
+import ai.group.ScarletStokateNoble;
+import ai.group.SearchingMaster;
+import ai.group.SeeThroughSilentMove;
+import ai.group.SpeakingNPCs;
+import ai.group.Splendor;
+import ai.group.StakatoNest;
+import ai.group.SummonMinions;
+import ai.group.TimakOrcSupplier;
+import ai.group.TimakOrcTroopLeader;
+import ai.group.TurekOrcFootman;
+import ai.group.TurekOrcOverlord;
+import ai.group.TurekOrcWarlord;
+import ai.group.VarkaKetraAlly;
+import ai.individual.Antharas;
+import ai.individual.Baium;
+import ai.individual.Core;
+import ai.individual.DrChaos;
+import ai.individual.FleeNpc;
+import ai.individual.Gordon;
+import ai.individual.Orfen;
+import ai.individual.QueenAnt;
+import ai.individual.Sailren;
+import ai.individual.Valakas;
+import ai.individual.Zaken;
+import custom.EchoCrystals.EchoCrystals;
+import custom.HeroCirclet.HeroCirclet;
+import custom.HeroWeapon.HeroWeapon;
+import custom.KetraOrcSupport.KetraOrcSupport;
+import custom.MissQueen.MissQueen;
+import custom.NpcLocationInfo.NpcLocationInfo;
+import custom.RaidbossInfo.RaidbossInfo;
+import custom.ShadowWeapon.ShadowWeapon;
+import custom.VarkaSilenosSupport.VarkaSilenosSupport;
 
 /**
  * @author AbsolutePower
  */
-public class QuestLoader
+public class ScriptLoader
 {
 	
-	private static final Logger _log = LoggerFactory.getLogger(QuestLoader.class);
+	private static final Logger _log = LoggerFactory.getLogger(ScriptLoader.class);
 	
 	
 	private static final Class<?>[] Quests =
@@ -583,7 +651,87 @@ public class QuestLoader
 		Q659_IdRatherBeCollectingFairyBreath.class,
 		Q660_AidingTheFloranVillage.class,
 		Q661_MakingTheHarvestGroundsSafe.class,
-		Q688_DefeatTheElrokianRaiders.class
+		Q688_DefeatTheElrokianRaiders.class,
+		
+		AncientEGG.class,
+		CatsEyeBandit.class,
+		Chests.class,
+		DeluLizardmanSpecialAgent.class,
+		DeluLizardmanSpecialCommander.class,
+		FairyTrees.class,
+		FeedableBeasts.class,
+		FleeingNPCs.class,
+		FrenzyOnAttack.class,
+		FrozenLabyrinth.class,
+		GatekeeperZombies.class,
+		HotSpringDisease.class,
+		KarulBugbear.class,
+		L2AttackableAIScript.class,
+		Monastery.class,
+		OlMahumGeneral.class,
+		PlainsOfDion.class,
+		PolymorphingAngel.class,
+		PolymorphingOnAttack.class,
+		PrimevalIsle.class,
+		RetreatOnAttack.class,
+		ScarletStokateNoble.class,
+		SearchingMaster.class,
+		SeeThroughSilentMove.class,
+		SpeakingNPCs.class,
+		Splendor.class,
+		StakatoNest.class,
+		SummonMinions.class,
+		TimakOrcSupplier.class,
+		TimakOrcTroopLeader.class,
+		TurekOrcFootman.class,
+		TurekOrcOverlord.class,
+		TurekOrcWarlord.class,
+		VarkaKetraAlly.class,
+		//customs
+		EchoCrystals.class,
+		HeroCirclet.class,
+		HeroWeapon.class,
+		KetraOrcSupport.class,
+		MissQueen.class,
+		NpcLocationInfo.class,
+		RaidbossInfo.class,
+		ShadowWeapon.class,
+		VarkaSilenosSupport.class,
+			
+		//teleports	
+		ElrokiTeleporters.class,
+		GatekeeperSpirit.class,
+		GrandBossTeleporters.class,
+		HuntingGroundsTeleport.class,
+		NewbieTravelToken.class,
+		NoblesseTeleport.class,
+		OracleTeleport.class,
+		PaganTeleporters.class,
+		RaceTrack.class,
+		TeleportWithCharm.class,
+		ToIVortex.class,
+		
+		//VilageMaster
+		Alliance.class,
+		Clan.class,
+		FirstClassChange.class,
+		
+		//bosses
+		Antharas.class,
+		Baium.class,
+		Core.class,
+		DrChaos.class,
+		FleeNpc.class,
+		Gordon.class,
+		// nor ready IceFairySirra.class,
+		Orfen.class,
+		QueenAnt.class,
+		Sailren.class,
+		Valakas.class,
+		Zaken.class
+
+
+
 	};
 	
 	public static void main(String[] args)
@@ -601,7 +749,7 @@ public class QuestLoader
 			}
 			catch (Exception e)
 			{
-				_log.error(QuestLoader.class.getSimpleName() + ": Failed loading " + _qs.getSimpleName() + ":", e);
+				_log.error(ScriptLoader.class.getSimpleName() + ": Failed loading " + _qs.getSimpleName() + ":", e);
 			}
 		}
 	}

@@ -48,9 +48,9 @@ public class IceFairySirra extends AbstractNpcAI
 	protected ArrayList<L2Npc> _allMobs = new ArrayList<L2Npc>();
 	protected Future<?> _onDeadEventTask = null;
 
-	public IceFairySirra(String name, String descr)
+	public IceFairySirra()
 	{
-		super(name, descr);
+		super(IceFairySirra.class.getSimpleName(), "ai/individual");
 		int[] mob =
 			{ STEWARD, 22100, 22102, 22104 };
 		registerMobs(mob);
@@ -379,6 +379,6 @@ public class IceFairySirra extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new IceFairySirra(IceFairySirra.class.getSimpleName(), "ai/individual");
+		new IceFairySirra();
 	}
 }

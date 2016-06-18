@@ -15,9 +15,10 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
-import javolution.util.FastSet;
+import java.util.Set;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -45,7 +46,7 @@ public class ProtectTheLdr
 	private static int leader2x = 86402, leader2y = 258733, leader2z = -11672;
 	private static int leader1x = 86417, leader1y = 257244, leader1z = -11672;
 	public static boolean ProtectisRunning = false, alaksokolies;
-	private static FastSet<L2Npc> _leaders = new FastSet<L2Npc>();
+	private static Set<L2Npc> _leaders = new HashSet<L2Npc>();
 	
 	public static void startevent()
 	{

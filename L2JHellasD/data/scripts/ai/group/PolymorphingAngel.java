@@ -37,9 +37,9 @@ public class PolymorphingAngel extends AbstractNpcAI
 		ANGELSPAWNS.put(21070, 21071);
 	}
 	
-	public PolymorphingAngel(String name, String descr)
+	public PolymorphingAngel()
 	{
-		super(name, descr);
+		super(PolymorphingAngel.class.getSimpleName(), "ai/group");
 		
 		for (int mob : ANGELSPAWNS.keySet())
 			addKillId(mob);
@@ -56,6 +56,6 @@ public class PolymorphingAngel extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new PolymorphingAngel(PolymorphingAngel.class.getSimpleName(), "ai/group");
+		new PolymorphingAngel();
 	}
 }

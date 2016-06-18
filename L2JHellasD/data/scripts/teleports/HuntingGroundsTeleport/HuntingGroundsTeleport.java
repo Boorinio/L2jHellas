@@ -63,9 +63,9 @@ public class HuntingGroundsTeleport extends Quest
 		31997
 	};
 	
-	public HuntingGroundsTeleport(int questId, String name, String descr)
+	public HuntingGroundsTeleport()
 	{
-		super(questId, name, descr);
+		super(-1, "HuntingGroundsTeleport", "teleports");
 		addStartNpc(PRIESTS);
 		addTalkId(PRIESTS);
 	}
@@ -144,6 +144,6 @@ public class HuntingGroundsTeleport extends Quest
 	
 	public static void main(String[] args)
 	{
-		new HuntingGroundsTeleport(-1, "HuntingGroundsTeleport", "teleports");
+		new HuntingGroundsTeleport();
 	}
 }

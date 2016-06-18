@@ -30,9 +30,9 @@ public class GatekeeperSpirit extends Quest
 	private final static int Lilith = 25283;
 	private final static int Anakim = 25286;
 	
-	public GatekeeperSpirit(int questId, String name, String descr)
+	public GatekeeperSpirit()
 	{
-		super(questId, name, descr);
+		super(-1, "GatekeeperSpirit", "teleports");
 		
 		addStartNpc(EnterGk);
 		addFirstTalkId(EnterGk);
@@ -100,6 +100,6 @@ public class GatekeeperSpirit extends Quest
 	
 	public static void main(String[] args)
 	{
-		new GatekeeperSpirit(-1, "GatekeeperSpirit", "teleports");
+		new GatekeeperSpirit();
 	}
 }

@@ -51,9 +51,9 @@ public class StakatoNest extends AbstractNpcAI
 	private static final int SpikedStakatoNurse2 = 22119;
 	private static final int SpikedStakatoBaby = 22120;
 	
-	public StakatoNest(String name, String descr)
+	public StakatoNest()
 	{
-		super(name, descr);
+		super(StakatoNest.class.getSimpleName(), "ai/group");
 		addAttackId(CannibalisticStakatoLeader1, CannibalisticStakatoLeader2);
 		addKillId(MaleSpikedStakato1, FemaleSpikedStakato, SpikedStakatoNurse1, SpikedStakatoBaby);
 	}
@@ -167,6 +167,6 @@ public class StakatoNest extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new StakatoNest(StakatoNest.class.getSimpleName(), "ai/group");
+		new StakatoNest();
 	}
 }

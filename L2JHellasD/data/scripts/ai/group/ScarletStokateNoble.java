@@ -27,9 +27,9 @@ public class ScarletStokateNoble extends AbstractNpcAI
 {
 	private static final int NPC[] = {21378,21652};
 	private static final int[] mobs ={20965,20966,20967,20968,20969,20970,20971,20972,20973};
-	public ScarletStokateNoble(int questId, String name, String descr)
+	public ScarletStokateNoble()
 	{
-		super(name, descr);
+		super("ScarletStokateNoble","ai");
 
 		addEventId(NPC[0], QuestEventType.ON_KILL);
 		
@@ -77,7 +77,7 @@ public class ScarletStokateNoble extends AbstractNpcAI
 
     public static void main(String[] args)
     {
-		new ScarletStokateNoble(-1,"ScarletStokateNoble","ai");
+		new ScarletStokateNoble();
     }
 
 }

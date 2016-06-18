@@ -60,9 +60,9 @@ public class NewbieTravelToken extends Quest
 	
 	private final static int TOKEN = 8542;
 	
-	public NewbieTravelToken(int questId, String name, String descr)
+	public NewbieTravelToken()
 	{
-		super(questId, name, descr);
+		super(-1, "NewbieTravelToken", "teleports");
 		
 		addStartNpc(30598, 30599, 30600, 30601, 30602);
 		addTalkId(30598, 30599, 30600, 30601, 30602);
@@ -113,6 +113,6 @@ public class NewbieTravelToken extends Quest
 	
 	public static void main(String[] args)
 	{
-		new NewbieTravelToken(-1, "NewbieTravelToken", "teleports");
+		new NewbieTravelToken();
 	}
 }

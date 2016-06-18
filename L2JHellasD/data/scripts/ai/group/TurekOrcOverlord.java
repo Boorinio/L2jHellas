@@ -28,9 +28,9 @@ public class TurekOrcOverlord extends AbstractNpcAI
 
 	private static boolean _FirstAttacked;
 
-	public TurekOrcOverlord( String name, String descr)
+	public TurekOrcOverlord()
 	{
-		super(name, descr);
+		super("TurekOrcOverlord", "ai");
 		int[] mobs = {TUREKO};
 		registerMobs(mobs);
 		_FirstAttacked = false;
@@ -67,6 +67,6 @@ public class TurekOrcOverlord extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new TurekOrcOverlord("TurekOrcOverlord", "ai");
+		new TurekOrcOverlord();
 	}
 }

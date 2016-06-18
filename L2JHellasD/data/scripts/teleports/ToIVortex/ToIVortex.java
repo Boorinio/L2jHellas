@@ -25,9 +25,9 @@ public class ToIVortex extends Quest
 	private static final int BLUE_STONE = 4402;
 	private static final int RED_STONE = 4403;
 	
-	public ToIVortex(int questId, String name, String descr)
+	public ToIVortex()
 	{
-		super(questId, name, descr);
+		super(-1, "ToIVortex", "teleports");
 		
 		addStartNpc(30952, 30953, 30954);
 		addTalkId(30952, 30953, 30954);
@@ -86,6 +86,6 @@ public class ToIVortex extends Quest
 	
 	public static void main(String[] args)
 	{
-		new ToIVortex(-1, "ToIVortex", "teleports");
+		new ToIVortex();
 	}
 }

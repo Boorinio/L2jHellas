@@ -20,9 +20,9 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 
 public class ElrokiTeleporters extends Quest
 {
-	public ElrokiTeleporters(int questId, String name, String descr)
+	public ElrokiTeleporters()
 	{
-		super(questId, name, descr);
+		super(-1, "ElrokiTeleporters", "teleports");
 		
 		addStartNpc(32111, 32112);
 		addTalkId(32111, 32112);
@@ -46,6 +46,6 @@ public class ElrokiTeleporters extends Quest
 	
 	public static void main(String[] args)
 	{
-		new ElrokiTeleporters(-1, "ElrokiTeleporters", "teleports");
+		new ElrokiTeleporters();
 	}
 }

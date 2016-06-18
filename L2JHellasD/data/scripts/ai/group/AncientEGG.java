@@ -24,9 +24,9 @@ public class AncientEGG extends AbstractNpcAI
 {
 	private final int EGG = 18344;
 
-	public AncientEGG(String name, String descr)
+	public AncientEGG()
 	{
-		super(name, descr);
+		super("AncientEGG", "ai");
 		addAttackId(EGG);
 	}
 
@@ -40,6 +40,6 @@ public class AncientEGG extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new AncientEGG("AncientEGG", "ai");
+		new AncientEGG();
 	}
 }

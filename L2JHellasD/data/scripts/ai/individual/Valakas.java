@@ -148,9 +148,9 @@ public class Valakas extends AbstractNpcAI
 	private long _timeTracker = 0; // Time tracker for last attack on Valakas.
 	private L2Playable _actualVictim; // Actual target of Valakas.
 	
-	public Valakas(String name, String descr)
+	public Valakas()
 	{
-		super(name, descr);
+		super(Valakas.class.getSimpleName(), "ai/individual");
 		
 		int[] mob =
 		{
@@ -515,6 +515,6 @@ public class Valakas extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Valakas(Valakas.class.getSimpleName(), "ai/individual");
+		new Valakas();
 	}
 }

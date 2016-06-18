@@ -215,9 +215,9 @@ public class OracleTeleport extends Quest
 		new Location(12837, -248483, -9579)
 	};
 	
-	public OracleTeleport(int questId, String name, String descr)
+	public OracleTeleport()
 	{
-		super(questId, name, descr);
+		super(-1, "OracleTeleport", "teleports");
 		
 		for (int posters : RIFT_POSTERS)
 		{
@@ -472,6 +472,6 @@ public class OracleTeleport extends Quest
 	
 	public static void main(String[] args)
 	{
-		new OracleTeleport(-1, "OracleTeleport", "teleports");
+		new OracleTeleport();
 	}
 }

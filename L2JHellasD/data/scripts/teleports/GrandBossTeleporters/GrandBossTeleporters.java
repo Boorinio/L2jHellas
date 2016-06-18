@@ -75,9 +75,9 @@ public class GrandBossTeleporters extends Quest
 	
 	private static int _valakasPlayersCount = 0;
 	
-	public GrandBossTeleporters(int questId, String name, String descr)
+	public GrandBossTeleporters()
 	{
-		super(questId, name, descr);
+		super(-1, qn, "teleports");
 		
 		addFirstTalkId(29055, 31862);
 		addStartNpc(13001, 29055, 31859, 31384, 31385, 31540, 31686, 31687, 31759, 31862, 32107, 32109);
@@ -317,6 +317,6 @@ public class GrandBossTeleporters extends Quest
 	
 	public static void main(String[] args)
 	{
-		new GrandBossTeleporters(-1, qn, "teleports");
+		new GrandBossTeleporters();
 	}
 }

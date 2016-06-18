@@ -27,9 +27,9 @@ public class DeluLizardmanSpecialAgent extends AbstractNpcAI
 
 	private static boolean _FirstAttacked;
 
-	public DeluLizardmanSpecialAgent(String name, String descr)
+	public DeluLizardmanSpecialAgent()
 	{
-		super(name, descr);
+		super("DeluLizardmanSpecialAgent", "ai");
 		int[] mobs = {LIZARDMAN};
 		registerMobs(mobs);
 		_FirstAttacked = false;
@@ -67,6 +67,6 @@ public class DeluLizardmanSpecialAgent extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new DeluLizardmanSpecialAgent("DeluLizardmanSpecialAgent", "ai");
+		new DeluLizardmanSpecialAgent();
 	}
 }

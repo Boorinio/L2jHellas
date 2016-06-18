@@ -36,9 +36,9 @@ public class SearchingMaster extends AbstractNpcAI
 		20973
 	};
 	
-	public SearchingMaster(String name, String descr)
+	public SearchingMaster()
 	{
-		super(name, descr);
+		super(SearchingMaster.class.getSimpleName(), "ai/group");
 		registerMobs(mobs, QuestEventType.ON_ATTACK);
 	}
 	
@@ -54,6 +54,6 @@ public class SearchingMaster extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new SearchingMaster(SearchingMaster.class.getSimpleName(), "ai/group");
+		new SearchingMaster();
 	}
 }

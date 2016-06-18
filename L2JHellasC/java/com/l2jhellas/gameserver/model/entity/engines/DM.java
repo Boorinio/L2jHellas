@@ -17,6 +17,8 @@ package com.l2jhellas.gameserver.model.entity.engines;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -45,8 +47,8 @@ public class DM
 {
 	private final static Logger _log = Logger.getLogger(DM.class.getName());
 	public static String _eventName = new String(), _eventDesc = new String(), _joiningLocationName = new String();
-	public static Vector<String> _savePlayers = new Vector<String>();
-	public static Vector<L2PcInstance> _players = new Vector<L2PcInstance>();
+	public static List<String> _savePlayers = new ArrayList<String>();
+	public static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
 	public static boolean _joining = false, _teleport = false, _started = false, _sitForced = false;
 	public static L2Spawn _npcSpawn;
 	public static L2PcInstance _topPlayer;

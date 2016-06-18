@@ -28,9 +28,9 @@ public class CatsEyeBandit extends AbstractNpcAI
 
 	private static boolean _FirstAttacked;
 
-	public CatsEyeBandit(String name, String descr)
+	public CatsEyeBandit()
 	{
-		super(name, descr);
+		super("CatsEyeBandit", "ai");
 		int[] mobs = {BANDIT};
 		registerMobs(mobs);
 		_FirstAttacked = false;
@@ -70,6 +70,6 @@ public class CatsEyeBandit extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new CatsEyeBandit("CatsEyeBandit", "ai");
+		new CatsEyeBandit();
 	}
 }

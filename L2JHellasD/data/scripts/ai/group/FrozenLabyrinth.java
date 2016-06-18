@@ -36,9 +36,9 @@ public final class FrozenLabyrinth extends AbstractNpcAI
 	private static final int LOST_BUFFALO = 22093;
 	private static final int FROST_BUFFALO = 22094;
 	
-	private FrozenLabyrinth(String name, String descr)
+	public FrozenLabyrinth()
 	{
-		super(name, descr);
+		super(FrozenLabyrinth.class.getSimpleName(), "ai/group");
 		addSkillSeeId(PRONGHORN, FROST_BUFFALO);
 	}
 	
@@ -69,6 +69,6 @@ public final class FrozenLabyrinth extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new FrozenLabyrinth(FrozenLabyrinth.class.getSimpleName(), "ai/group");
+		new FrozenLabyrinth();
 	}
 }

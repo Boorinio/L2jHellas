@@ -39,9 +39,9 @@ public class FleeingNPCs extends AbstractNpcAI
 		20432
 	};
 	
-	public FleeingNPCs(String name, String descr)
+	public FleeingNPCs()
 	{
-		super(name, descr);
+		super(FleeingNPCs.class.getSimpleName(), "ai/group");
 		
 		for (int element : _npcId)
 			addEventId(element, QuestEventType.ON_ATTACK);
@@ -69,6 +69,6 @@ public class FleeingNPCs extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new FleeingNPCs(FleeingNPCs.class.getSimpleName(), "ai/group");
+		new FleeingNPCs();
 	}
 }

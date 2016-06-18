@@ -27,9 +27,9 @@ public class KarulBugbear extends AbstractNpcAI
 
 	private static boolean _FirstAttacked;
 
-	public KarulBugbear(int questId, String name, String descr)
+	public KarulBugbear()
 	{
-		super(name, descr);
+		super("KarulBugbear", "ai");
 		int[] mobs = {KARUL};
 		registerMobs(mobs);
 		_FirstAttacked = false;
@@ -68,6 +68,6 @@ public class KarulBugbear extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new KarulBugbear(-1, "KarulBugbear", "ai");
+		new KarulBugbear();
 	}
 }

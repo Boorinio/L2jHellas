@@ -108,9 +108,9 @@ public class RaceTrack extends Quest
 		}
 	};
 	
-	public RaceTrack(int questId, String name, String descr)
+	public RaceTrack()
 	{
-		super(questId, name, descr);
+		super(-1, "RaceTrack", "teleports");
 		
 		addStartNpc(30320, 30256, 30059, 30080, 30899, 30177, 30848, 30233, 31320, 31275, 31964, 31210);
 		addTalkId(RACE_MANAGER, 30320, 30256, 30059, 30080, 30899, 30177, 30848, 30233, 31320, 31275, 31964, 31210);
@@ -140,6 +140,6 @@ public class RaceTrack extends Quest
 	
 	public static void main(String[] args)
 	{
-		new RaceTrack(-1, "RaceTrack", "teleports");
+		new RaceTrack();
 	}
 }

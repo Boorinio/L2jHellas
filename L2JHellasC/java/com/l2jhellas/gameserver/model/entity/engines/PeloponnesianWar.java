@@ -15,9 +15,9 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import javolution.util.FastSet;
+import java.util.Set;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -39,7 +39,7 @@ public class PeloponnesianWar
 	private static List<L2PcInstance> _participants = new ArrayList<L2PcInstance>();
 	private static List<L2PcInstance> _athenians = new ArrayList<L2PcInstance>();
 	private static List<L2PcInstance> _spartans = new ArrayList<L2PcInstance>();
-	private static FastSet<L2Npc> _protectors = new FastSet<L2Npc>();
+	private static Set<L2Npc> _protectors = new HashSet<L2Npc>();
 	private static int athenianx = 72923;
 	private static int atheniany = 142764;
 	private static int athenianz = -3773;

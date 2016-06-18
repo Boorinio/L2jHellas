@@ -313,7 +313,6 @@ public class GameServer
 		Hero.getInstance();
 
 		Util.printSection("Scripts");
-		QuestManager.getInstance();
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
 			L2ScriptEngineManager.getInstance().executeScriptList(new File("./data/scripts.cfg"));

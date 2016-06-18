@@ -49,9 +49,9 @@ public class Clan extends Quest
 		LEADER_REQUIRED.put("9000-15.htm", "9000-07-no.htm");
 	}
 	
-	public Clan(int questId, String name, String descr)
+	public Clan()
 	{
-		super(questId, name, descr);
+		super(-1, Clan.class.getSimpleName(), "village_master");
 		
 		addStartNpc(NPC);
 		addTalkId(NPC);
@@ -75,6 +75,6 @@ public class Clan extends Quest
 	
 	public static void main(String[] args)
 	{
-		new Clan(-1, Clan.class.getSimpleName(), "village_master");
+		new Clan();
 	}
 }

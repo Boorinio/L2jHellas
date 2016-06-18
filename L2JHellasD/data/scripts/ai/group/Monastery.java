@@ -44,9 +44,9 @@ public class Monastery extends AbstractNpcAI
 		22135
 	};
 	
-	public Monastery(String name, String descr)
+	public Monastery()
 	{
-		super(name, descr);
+		super(Monastery.class.getSimpleName(), "ai/group");
 		
 		registerMobs(mobs1, QuestEventType.ON_AGGRO_RANGE_ENTER, QuestEventType.ON_SPAWN, QuestEventType.ON_SPELL_FINISHED);
 		registerMobs(mobs2, QuestEventType.ON_SKILL_SEE);
@@ -139,6 +139,6 @@ public class Monastery extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Monastery(Monastery.class.getSimpleName(), "ai/group");
+		new Monastery();
 	}
 }

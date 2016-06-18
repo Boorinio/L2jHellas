@@ -27,9 +27,9 @@ public class TimakOrcSupplier extends AbstractNpcAI
 
 	private static boolean _FirstAttacked;
 
-	public TimakOrcSupplier(String name, String descr)
+	public TimakOrcSupplier()
 	{
-		super(name, descr);
+		super("TimakOrcSupplier", "ai");
 		int[] mobs = {TIMAKS};
 		registerMobs(mobs);
 		_FirstAttacked = false;
@@ -67,6 +67,6 @@ public class TimakOrcSupplier extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new TimakOrcSupplier("TimakOrcSupplier", "ai");
+		new TimakOrcSupplier();
 	}
 }

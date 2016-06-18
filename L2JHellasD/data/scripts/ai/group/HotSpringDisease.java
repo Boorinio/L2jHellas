@@ -56,9 +56,9 @@ public class HotSpringDisease extends AbstractNpcAI
 		}
 	};
 	
-	public HotSpringDisease(String name, String descr)
+	public HotSpringDisease()
 	{
-		super(name, descr);
+		super(HotSpringDisease.class.getSimpleName(), "ai/group");
 		registerMobs(MONSTERS_DISEASES[0], QuestEventType.ON_ATTACK_ACT);
 	}
 	
@@ -104,6 +104,6 @@ public class HotSpringDisease extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new HotSpringDisease(HotSpringDisease.class.getSimpleName(), "ai/group");
+		new HotSpringDisease();
 	}
 }

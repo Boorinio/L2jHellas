@@ -27,9 +27,9 @@ public class OlMahumGeneral extends AbstractNpcAI
 
 	private static boolean _FirstAttacked;
 
-	public OlMahumGeneral(String name, String descr)
+	public OlMahumGeneral()
 	{
-		super(name, descr);
+		super("OlMahumGeneral", "ai");
 		int[] mobs = {MAHUM};
 		registerMobs(mobs);
 		_FirstAttacked = false;
@@ -67,6 +67,6 @@ public class OlMahumGeneral extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new OlMahumGeneral("OlMahumGeneral", "ai");
+		new OlMahumGeneral();
 	}
 }

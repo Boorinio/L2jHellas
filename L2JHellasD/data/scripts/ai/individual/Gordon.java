@@ -323,9 +323,9 @@ public class Gordon extends AbstractNpcAI
 	private static boolean _isAttacked = false;
 	private static boolean _isSpawned = false;
 	
-	public Gordon(String name, String descr)
+	public Gordon()
 	{
-		super(name, descr);
+		super(Gordon.class.getSimpleName(), "ai/individual");
 		int[] mobs =
 		{
 			GORDON
@@ -491,6 +491,6 @@ public class Gordon extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Gordon(Gordon.class.getSimpleName(), "ai/individual");
+		new Gordon();
 	}
 }

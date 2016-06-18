@@ -18,7 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -57,22 +58,22 @@ public class CTF
 	private final static Logger _log = Logger.getLogger(CTF.class.getName());
 	private static int _FlagNPC = 35062, _FLAG_IN_HAND_ITEM_ID = 6718;
 	public static String _eventName = new String(), _eventDesc = new String(), _topTeam = new String(),
-			_joiningLocationName = new String();
-	public static Vector<String> _teams = new Vector<String>(), _savePlayers = new Vector<String>(),
-			_savePlayerTeams = new Vector<String>();
-	public static Vector<L2PcInstance> _players = new Vector<L2PcInstance>(),
-			_playersShuffle = new Vector<L2PcInstance>();
-	public static Vector<Integer> _teamPlayersCount = new Vector<Integer>(), _teamColors = new Vector<Integer>(),
-			_teamsX = new Vector<Integer>(), _teamsY = new Vector<Integer>(), _teamsZ = new Vector<Integer>();
+	_joiningLocationName = new String();
+	public static List<String> _teams = new ArrayList<String>(), _savePlayers = new ArrayList<String>(),
+			_savePlayerTeams = new ArrayList<String>();
+	public static List<L2PcInstance> _players = new ArrayList<L2PcInstance>(),
+			_playersShuffle = new ArrayList<L2PcInstance>();
+	public static List<Integer> _teamPlayersCount = new ArrayList<Integer>(), _teamColors = new ArrayList<Integer>(),
+			_teamsX = new ArrayList<Integer>(), _teamsY = new ArrayList<Integer>(), _teamsZ = new ArrayList<Integer>();
 	public static boolean _joining = false, _teleport = false, _started = false, _sitForced = false;
 	public static L2Spawn _npcSpawn;
 	public static int _npcId = 0, _npcX = 0, _npcY = 0, _npcZ = 0, _npcHeading = 0, _rewardId = 0, _rewardAmount = 0,
 			_minlvl = 0, _maxlvl = 0, _joinTime = 0, _eventTime = 0, _minPlayers = 0, _maxPlayers = 0;
-	public static Vector<Integer> _teamPointsCount = new Vector<Integer>();
-	public static Vector<Integer> _flagIds = new Vector<Integer>(), _flagsX = new Vector<Integer>(),
-			_flagsY = new Vector<Integer>(), _flagsZ = new Vector<Integer>();
-	public static Vector<L2Spawn> _flagSpawns = new Vector<L2Spawn>(), _throneSpawns = new Vector<L2Spawn>();
-	public static Vector<Boolean> _flagsTaken = new Vector<Boolean>();
+	public static List<Integer> _teamPointsCount = new ArrayList<Integer>();
+	public static List<Integer> _flagIds = new ArrayList<Integer>(), _flagsX = new ArrayList<Integer>(),
+			_flagsY = new ArrayList<Integer>(), _flagsZ = new ArrayList<Integer>();
+	public static List<L2Spawn> _flagSpawns = new ArrayList<L2Spawn>(), _throneSpawns = new ArrayList<L2Spawn>();
+	public static List<Boolean> _flagsTaken = new ArrayList<Boolean>();
 	public static int _topScore = 0, eventCenterX = 0, eventCenterY = 0, eventCenterZ = 0, eventOffset = 0;
 
 	public static void showFlagHtml(L2PcInstance eventPlayer, String objectId, String teamName)
@@ -109,7 +110,7 @@ public class CTF
 
 	public static void CheckRestoreFlags()
 	{
-		Vector<Integer> teamsTakenFlag = new Vector<Integer>();
+		List<Integer> teamsTakenFlag = new ArrayList<Integer>();
 		try
 		{
 			for (L2PcInstance player : _players)
@@ -431,7 +432,7 @@ public class CTF
 					SpawnTable.getInstance().deleteSpawn(_flagSpawns.get(index), true);
 				}
 			}
-			_throneSpawns.removeAllElements();
+			_throneSpawns.clear();
 		}
 		catch (Throwable t)
 		{
@@ -1221,7 +1222,7 @@ public class CTF
 		}
 		else if (Config.CTF_EVEN_TEAMS.equals("SHUFFLE"))
 		{
-			Vector<L2PcInstance> playersShuffleTemp = new Vector<L2PcInstance>();
+			List<L2PcInstance> playersShuffleTemp = new ArrayList<L2PcInstance>();
 			int loopCount = 0;
 
 			loopCount = _playersShuffle.size();
@@ -1512,25 +1513,25 @@ public class CTF
 		_eventDesc = new String();
 		_topTeam = new String();
 		_joiningLocationName = new String();
-		_teams = new Vector<String>();
-		_savePlayers = new Vector<String>();
-		_savePlayerTeams = new Vector<String>();
-		_players = new Vector<L2PcInstance>();
-		_playersShuffle = new Vector<L2PcInstance>();
-		_teamPlayersCount = new Vector<Integer>();
-		_teamPointsCount = new Vector<Integer>();
-		_teamColors = new Vector<Integer>();
-		_teamsX = new Vector<Integer>();
-		_teamsY = new Vector<Integer>();
-		_teamsZ = new Vector<Integer>();
+		_teams = new ArrayList<String>();
+		_savePlayers = new ArrayList<String>();
+		_savePlayerTeams = new ArrayList<String>();
+		_players = new ArrayList<L2PcInstance>();
+		_playersShuffle = new ArrayList<L2PcInstance>();
+		_teamPlayersCount = new ArrayList<Integer>();
+		_teamPointsCount = new ArrayList<Integer>();
+		_teamColors = new ArrayList<Integer>();
+		_teamsX = new ArrayList<Integer>();
+		_teamsY = new ArrayList<Integer>();
+		_teamsZ = new ArrayList<Integer>();
 
-		_throneSpawns = new Vector<L2Spawn>();
-		_flagSpawns = new Vector<L2Spawn>();
-		_flagsTaken = new Vector<Boolean>();
-		_flagIds = new Vector<Integer>();
-		_flagsX = new Vector<Integer>();
-		_flagsY = new Vector<Integer>();
-		_flagsZ = new Vector<Integer>();
+		_throneSpawns = new ArrayList<L2Spawn>();
+		_flagSpawns = new ArrayList<L2Spawn>();
+		_flagsTaken = new ArrayList<Boolean>();
+		_flagIds = new ArrayList<Integer>();
+		_flagsX = new ArrayList<Integer>();
+		_flagsY = new ArrayList<Integer>();
+		_flagsZ = new ArrayList<Integer>();
 
 		_joining = false;
 		_teleport = false;
@@ -1940,7 +1941,7 @@ public class CTF
 					countBefore = teamPlayerCount;
 			}
 
-			Vector<String> joinableTeams = new Vector<String>();
+			List<String> joinableTeams = new ArrayList<String>();
 
 			for (String team : _teams)
 			{
@@ -2067,14 +2068,14 @@ public class CTF
 		}
 		_topScore = 0;
 		_topTeam = new String();
-		_players = new Vector<L2PcInstance>();
-		_playersShuffle = new Vector<L2PcInstance>();
-		_savePlayers = new Vector<String>();
-		_savePlayerTeams = new Vector<String>();
-		_teamPointsCount = new Vector<Integer>();
-		_flagSpawns = new Vector<L2Spawn>();
-		_flagsTaken = new Vector<Boolean>();
-		_teamPlayersCount = new Vector<Integer>();
+		_players.clear();
+		_playersShuffle.clear();
+		_savePlayers.clear();
+		_savePlayerTeams.clear();
+		_teamPointsCount.clear();
+		_flagSpawns.clear();
+		_flagsTaken.clear();
+		_teamPlayersCount.clear();
 		_log.warning(CTF.class.getSimpleName() + ":  Cleaning CTF done.");
 		_log.warning(CTF.class.getSimpleName() + ":  Loading new data from MySql");
 		loadData();

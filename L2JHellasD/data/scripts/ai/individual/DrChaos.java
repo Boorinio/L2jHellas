@@ -36,9 +36,9 @@ public class DrChaos extends Quest
 	private static final int CHAOS_GOLEM = 25512;
 	private static boolean _IsGolemSpawned;
 
-	public DrChaos(int questId, String name, String descr)
+	public DrChaos()
 	{
-		super(questId, name, descr);
+		super(-1,"Doctor Chaos","ai");
 
 		addFirstTalkId(32033);
 		_IsGolemSpawned = false;
@@ -126,6 +126,6 @@ public class DrChaos extends Quest
 
     public static void main(String[] args)
     {
-    	new DrChaos(-1,"Doctor Chaos","ai");
+    	new DrChaos();
     }
 }

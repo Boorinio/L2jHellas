@@ -25,9 +25,9 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 
 public class VarkaKetraAlly extends AbstractNpcAI
 {
-	public VarkaKetraAlly(String name, String descr)
+	public VarkaKetraAlly()
 	{
-		super(name, descr);
+		super("Varka Ketra Ally", "ai");
 		int[] mobs =
 		{
 			// ketra mobs
@@ -153,6 +153,6 @@ public class VarkaKetraAlly extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new VarkaKetraAlly("Varka Ketra Ally", "ai");
+		new VarkaKetraAlly();
 	}
 }

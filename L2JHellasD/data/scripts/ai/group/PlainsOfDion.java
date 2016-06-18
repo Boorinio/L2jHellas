@@ -52,9 +52,9 @@ public final class PlainsOfDion extends AbstractNpcAI
 		"What are you looking at?"
 	};
 	
-	private PlainsOfDion(String name, String descr)
+	public PlainsOfDion()
 	{
-		super(name, descr);
+		super(PlainsOfDion.class.getSimpleName(), "ai/group");
 		addAttackId(MONSTERS);
 	}
 	
@@ -80,6 +80,6 @@ public final class PlainsOfDion extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new PlainsOfDion(PlainsOfDion.class.getSimpleName(), "ai/group");
+		new PlainsOfDion();
 	}
 }

@@ -150,9 +150,9 @@ public class PolymorphingOnAttack extends AbstractNpcAI
 		}
 	};
 		
-	public PolymorphingOnAttack(String name, String descr)
+	public PolymorphingOnAttack()
 	{
-		super(name, descr);
+		super(PolymorphingOnAttack.class.getSimpleName(), "ai/group");
 		for (int[] spawns : MOBSPAWNS.values())
 		registerMobs(spawns, QuestEventType.ON_ATTACK);
 	}
@@ -184,6 +184,6 @@ public class PolymorphingOnAttack extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new PolymorphingOnAttack(PolymorphingOnAttack.class.getSimpleName(), "ai/group");
+		new PolymorphingOnAttack();
 	}
 }

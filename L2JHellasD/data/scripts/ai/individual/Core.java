@@ -45,9 +45,9 @@ public class Core extends AbstractNpcAI
 	
 	List<L2Attackable> _minions = new CopyOnWriteArrayList<L2Attackable>();
 	
-	public Core(String name, String descr)
+	public Core()
 	{
-		super(name, descr);
+		super(Core.class.getSimpleName(), "ai/individual");
 		
 		addAttackId(CORE);
 		addKillId(CORE, DEATH_KNIGHT, DOOM_WRAITH, SUSCEPTOR);
@@ -197,6 +197,6 @@ public class Core extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Core(Core.class.getSimpleName(), "ai/individual");
+		new Core();
 	}
 }

@@ -46,9 +46,9 @@ public class FrenzyOnAttack extends AbstractNpcAI
 		"You won't take me down easily."
 	};
 	
-	public FrenzyOnAttack(String name, String descr)
+	public FrenzyOnAttack()
 	{
-		super(name, descr);
+		super(FrenzyOnAttack.class.getSimpleName(), "ai/group");
 		addAttackId(20270, 20495, 20588, 20778, 21116);
 	}
 	
@@ -67,6 +67,6 @@ public class FrenzyOnAttack extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new FrenzyOnAttack(FrenzyOnAttack.class.getSimpleName(), "ai/group");
+		new FrenzyOnAttack();
 	}
 }

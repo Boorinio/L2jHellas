@@ -58,9 +58,9 @@ public class PrimevalIsle extends AbstractNpcAI
 	private static final L2Skill ANESTHESIA = SkillTable.getInstance().getInfo(5085, 1);
 	private static final L2Skill POISON = SkillTable.getInstance().getInfo(5086, 1);
 	
-	public PrimevalIsle(String name, String descr)
+	public PrimevalIsle()
 	{
-		super(name, descr);
+		super(PrimevalIsle.class.getSimpleName(), "ai/group");
 		
 		for (L2Spawn npc : SpawnTable.getInstance().getSpawnTable().values())
 			if (Util.contains(MOBIDS, npc.getNpcid()) && npc.getLastSpawn() != null && npc.getLastSpawn() instanceof L2Attackable)
@@ -157,6 +157,6 @@ public class PrimevalIsle extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new PrimevalIsle(PrimevalIsle.class.getSimpleName(), "ai/group");
+		new PrimevalIsle();
 	}
 }

@@ -78,9 +78,9 @@ public class SpeakingNPCs extends AbstractNpcAI
 		27249
 	};
 	
-	public SpeakingNPCs(String name, String descr)
+	public SpeakingNPCs()
 	{
-		super(name, descr);
+		super(SpeakingNPCs.class.getSimpleName(), "ai/group");
 		registerMobs(NPC_IDS, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
 	}
 	
@@ -222,6 +222,6 @@ public class SpeakingNPCs extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new SpeakingNPCs(SpeakingNPCs.class.getSimpleName(), "ai/group");
+		new SpeakingNPCs();
 	}
 }

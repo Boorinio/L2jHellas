@@ -201,7 +201,23 @@
 
 	<!-- Version -->
 	<target name="Version" depends="Building Dirs" description="Get Changelog, Date, Version">
-		
+	       <exec dir="${basedir}" executable="svn" outputproperty="l2jhellas.changelog">
+           <arg value="log" />
+           <arg value="--stop-on-copy" />
+       </exec>
+       <tstamp>
+           <format property="build.tstamp" pattern="dd/MM/yyyy HH:mm" />
+       </tstamp>
+       <exec dir="." executable="svnversion" outputproperty="revision" failifexecutionfails="false">
+           <arg value="-c" />
+           <redirector>
+               <outputfilterchain>
+                   <tokenfilter>
+                       <replaceregex pattern="[0-9]+\:" replace="" />
+                   </tokenfilter>
+               </outputfilterchain>
+           </redirector>
+       </exec>  
 		
 		<concat destfile="${build.dist.game}/config/Version/L2J Hellas Version.ini">
 L2jHellas Project details:

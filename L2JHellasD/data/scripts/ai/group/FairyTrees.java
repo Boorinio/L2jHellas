@@ -29,9 +29,9 @@ public class FairyTrees extends AbstractNpcAI
 {
 	private static final int[] mobs = { 27185, 27186, 27187, 27188 };
 
-	public FairyTrees(String name, String descr)
+	public FairyTrees()
 	{
-		super(name, descr);
+		super("fairy_trees", "ai");
 		this.registerMobs(mobs);
 		super.addSpawnId(27189);
 	}
@@ -63,6 +63,6 @@ public class FairyTrees extends AbstractNpcAI
 
 	public static void main(String[] args)
 	{
-		new FairyTrees("fairy_trees", "ai");
+		new FairyTrees();
 	}
 }

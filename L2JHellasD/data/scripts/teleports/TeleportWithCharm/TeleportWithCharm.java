@@ -27,9 +27,9 @@ public class TeleportWithCharm extends Quest
 	private final static int ORC_GATEKEEPER_CHARM = 1658;
 	private final static int DWARF_GATEKEEPER_TOKEN = 1659;
 	
-	public TeleportWithCharm(int questId, String name, String descr)
+	public TeleportWithCharm()
 	{
-		super(questId, name, descr);
+		super(-1, "TeleportWithCharm", "teleports");
 		
 		addStartNpc(WHIRPY, TAMIL);
 		addTalkId(WHIRPY, TAMIL);
@@ -69,6 +69,6 @@ public class TeleportWithCharm extends Quest
 	
 	public static void main(String[] args)
 	{
-		new TeleportWithCharm(-1, "TeleportWithCharm", "teleports");
+		new TeleportWithCharm();
 	}
 }

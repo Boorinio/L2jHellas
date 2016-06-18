@@ -22,9 +22,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class GatekeeperZombies extends AbstractNpcAI
 {
-	public GatekeeperZombies(String name, String descr)
+	public GatekeeperZombies()
 	{
-		super(name, descr);
+		super(GatekeeperZombies.class.getSimpleName(), "ai/group");
 		addAggroRangeEnterId(22136);
 	}
 	
@@ -39,6 +39,6 @@ public class GatekeeperZombies extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new GatekeeperZombies(GatekeeperZombies.class.getSimpleName(), "ai/group");
+		new GatekeeperZombies();
 	}
 }

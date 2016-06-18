@@ -27,9 +27,9 @@ public class FleeNpc extends AbstractNpcAI
 {
 	private int[] _npcId = { 20432, 22228 ,18150,18151,18152,18153,18154,18155,18156,18157};
 
-	public FleeNpc(String name, String descr) 
+	public FleeNpc() 
 	{
-		super(name, descr);
+		super("FleeNpc", "Ai for Flee Npcs");
 
 		for( int i = 0; i < _npcId.length; i++ )
 		{
@@ -59,6 +59,6 @@ public class FleeNpc extends AbstractNpcAI
 	// Register the new Script at the Script System
 	public static void main(String[] args) 
 	{
-		new FleeNpc("FleeNpc", "Ai for Flee Npcs");
+		new FleeNpc();
 	}
 }

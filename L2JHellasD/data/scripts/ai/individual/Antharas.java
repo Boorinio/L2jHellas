@@ -48,9 +48,9 @@ public class Antharas extends AbstractNpcAI
 	private static L2BossZone _Zone;
 	
 	// Boss: Antharas
-	public Antharas(int id, String name, String descr)
+	public Antharas()
 	{
-		super(name, descr);
+		super("antharas", "ai");
 		int[] mob =
 		{
 			ANTHARAS
@@ -240,6 +240,6 @@ public class Antharas extends AbstractNpcAI
 	public static void main(String[] args)
 	{
 		// now call the constructor (starts up the ai)
-		new Antharas(-1, "antharas", "ai");
+		new Antharas();
 	}
 }

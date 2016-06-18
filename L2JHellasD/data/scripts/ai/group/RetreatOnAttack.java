@@ -59,9 +59,9 @@ public class RetreatOnAttack extends AbstractNpcAI
 		text.put(20500, new String[]{"Oh! How Strong!", "We shall see about that", "I'll definitely kill you next time"});
 	}
 
-	public RetreatOnAttack(int questId, String name, String descr)
+	public RetreatOnAttack()
 	{
-		super(name, descr);
+		super("RetreatOnAttack","ai");
 		for(int id : mobs.keySet())
 		{
 			addAttackId(id);
@@ -112,6 +112,6 @@ public class RetreatOnAttack extends AbstractNpcAI
     public static void main(String[] args)
     {
 		// now call the constructor (starts up the ai)
-		new RetreatOnAttack(-1,"RetreatOnAttack","ai");
+		new RetreatOnAttack();
     }
 }

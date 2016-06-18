@@ -115,11 +115,9 @@ public class L2VillageMasterInstance extends L2NpcInstance
 			if (cmdParams.isEmpty())
 				return;
 
-			if (!player.isClanLeader())
+			if (player.getClan() == null || !player.isClanLeader())
 			{
-				player.sendPacket(SystemMessageId.ONLY_CLAN_LEADER_CREATE_ALLIANCE);
-				html.setFile("data/html/villagemaster/AllyNo.htm");
-				player.sendPacket(html);				
+				player.sendPacket(SystemMessageId.ONLY_CLAN_LEADER_CREATE_ALLIANCE);				
 				return;
 			}
 			player.getClan().createAlly(player, cmdParams);

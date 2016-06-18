@@ -21,7 +21,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,18 +57,18 @@ public class TvT
 	public static String _eventDesc = "";
 	public static String _topTeam = "";
 	public static String _joiningLocationName = "";
-	public static Vector<String> _teams = new Vector<String>();
-	public static Vector<String> _savePlayers = new Vector<String>();
-	public static Vector<String> _savePlayerTeams = new Vector<String>();
+	public static List<String> _teams = new ArrayList<String>();
+	public static List<String> _savePlayers = new ArrayList<String>();
+	public static List<String> _savePlayerTeams = new ArrayList<String>();
 
-	public static Vector<L2PcInstance> _players = new Vector<L2PcInstance>();
-	public static Vector<L2PcInstance> _playersShuffle = new Vector<L2PcInstance>();
-	public static Vector<Integer> _teamPlayersCount = new Vector<Integer>();
-	public static Vector<Integer> _teamKillsCount = new Vector<Integer>();
-	public static Vector<Integer> _teamColors = new Vector<Integer>();
-	public static Vector<Integer> _teamsX = new Vector<Integer>();
-	public static Vector<Integer> _teamsY = new Vector<Integer>();
-	public static Vector<Integer> _teamsZ = new Vector<Integer>();
+	public static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
+	public static List<L2PcInstance> _playersShuffle = new ArrayList<L2PcInstance>();
+	public static List<Integer> _teamPlayersCount = new ArrayList<Integer>();
+	public static List<Integer> _teamKillsCount = new ArrayList<Integer>();
+	public static List<Integer> _teamColors = new ArrayList<Integer>();
+	public static List<Integer> _teamsX = new ArrayList<Integer>();
+	public static List<Integer> _teamsY = new ArrayList<Integer>();
+	public static List<Integer> _teamsZ = new ArrayList<Integer>();
 	public static boolean _joining = false;
 	public static boolean _teleport = false;
 	public static boolean _started = false;
@@ -731,7 +732,7 @@ public class TvT
 		}
 		else if (Config.TVT_EVEN_TEAMS.equals("SHUFFLE"))
 		{
-			Vector<L2PcInstance> playersShuffleTemp = new Vector<L2PcInstance>();
+			List<L2PcInstance> playersShuffleTemp = new ArrayList<L2PcInstance>();
 			int loopCount = 0;
 
 			loopCount = _playersShuffle.size();
@@ -1030,17 +1031,17 @@ public class TvT
 		_eventDesc = "";
 		_topTeam = "";
 		_joiningLocationName = "";
-		_teams = new Vector<String>();
-		_savePlayers = new Vector<String>();
-		_savePlayerTeams = new Vector<String>();
-		_players = new Vector<L2PcInstance>();
-		_playersShuffle = new Vector<L2PcInstance>();
-		_teamPlayersCount = new Vector<Integer>();
-		_teamKillsCount = new Vector<Integer>();
-		_teamColors = new Vector<Integer>();
-		_teamsX = new Vector<Integer>();
-		_teamsY = new Vector<Integer>();
-		_teamsZ = new Vector<Integer>();
+		_teams = new ArrayList<String>();
+		_savePlayers = new ArrayList<String>();
+		_savePlayerTeams = new ArrayList<String>();
+		_players = new ArrayList<L2PcInstance>();
+		_playersShuffle = new ArrayList<L2PcInstance>();
+		_teamPlayersCount = new ArrayList<Integer>();
+		_teamKillsCount = new ArrayList<Integer>();
+		_teamColors = new ArrayList<Integer>();
+		_teamsX = new ArrayList<Integer>();
+		_teamsY = new ArrayList<Integer>();
+		_teamsZ = new ArrayList<Integer>();
 		_joining = false;
 		_teleport = false;
 		_started = false;
@@ -1457,7 +1458,7 @@ public class TvT
 					countBefore = teamPlayerCount;
 			}
 
-			Vector<String> joinableTeams = new Vector<String>();
+			List<String> joinableTeams = new ArrayList<String>();
 
 			for (String team : _teams)
 			{
@@ -1581,10 +1582,10 @@ public class TvT
 
 		_topKills = 0;
 		_topTeam = "";
-		_players = new Vector<L2PcInstance>();
-		_playersShuffle = new Vector<L2PcInstance>();
-		_savePlayers = new Vector<String>();
-		_savePlayerTeams = new Vector<String>();
+		_players.clear();
+		_playersShuffle.clear();
+		_savePlayers.clear();
+		_savePlayerTeams.clear();
 		_log.info("Cleaning TvT done.");
 	}
 

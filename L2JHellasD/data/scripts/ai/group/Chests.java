@@ -101,9 +101,9 @@ public class Chests extends AbstractNpcAI
 		21822
 	};
 	
-	public Chests(String name, String descr)
+	public Chests()
 	{
-		super(name, descr);
+		super(Chests.class.getSimpleName(), "ai/group");
 		registerMobs(NPC_IDS, QuestEventType.ON_ATTACK, QuestEventType.ON_SKILL_SEE);
 	}
 	
@@ -187,6 +187,6 @@ public class Chests extends AbstractNpcAI
 	
 	public static void main(String[] args)
 	{
-		new Chests(Chests.class.getSimpleName(), "ai/group");
+		new Chests();
 	}
 }
