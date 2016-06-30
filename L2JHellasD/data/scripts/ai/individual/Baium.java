@@ -21,7 +21,7 @@ import ai.AbstractNpcAI;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -435,7 +435,7 @@ public class Baium extends AbstractNpcAI
 		{
 			if (obj instanceof L2PcInstance)
 			{
-				if (obj.isDead() || !(GeoData.getInstance().canSeeTarget(npc, obj)))
+				if (obj.isDead() || !(GeoEngine.canSeeTarget(npc, obj,false)))
 					continue;
 				
 				if (((L2PcInstance) obj).isGM() && ((L2PcInstance) obj).getAppearance().getInvisible())

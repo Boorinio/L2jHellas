@@ -86,10 +86,11 @@ public class Territory
 		try
 		{
 			query = L2DatabaseFactory.getInstance().prepQuerySelect(resultFields, usedTables, whereClause);
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-					PreparedStatement ps = con.prepareStatement(query);
-					ResultSet rs = ps.executeQuery())
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
+				PreparedStatement ps = con.prepareStatement(query);
+				ResultSet rs = ps.executeQuery();
+
 				int rows = 0;
 				while (rs.next())
 				{
@@ -109,6 +110,9 @@ public class Territory
 					}
 					row++;
 				}
+				
+				rs.close();
+				ps.close();
 			}
 		}
 		catch (Exception e)

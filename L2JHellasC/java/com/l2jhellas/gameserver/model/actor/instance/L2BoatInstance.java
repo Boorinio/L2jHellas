@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.ai.L2BoatAI;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
+import com.l2jhellas.gameserver.network.serverpackets.OnVehicleCheckLocation;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleDeparture;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleStarted;
@@ -29,6 +30,7 @@ import com.l2jhellas.gameserver.templates.L2CharTemplate;
 public class L2BoatInstance extends L2Vehicle
 {
 	protected static final Logger _logBoat = Logger.getLogger(L2BoatInstance.class.getName());
+	public float boatSpeed = getMoveSpeed();
 	
 	public L2BoatInstance(int objectId, L2CharTemplate template)
 	{
@@ -70,6 +72,12 @@ public class L2BoatInstance extends L2Vehicle
 		
 		broadcastPacket(new VehicleStarted(this, 0));
 		broadcastPacket(new VehicleInfo(this));
+	}
+	
+	public void updatePeopleInTheBoat(int x, int y, int z)
+	{
+		updatePosition((int)System.currentTimeMillis());
+		broadcastToPassengers(new OnVehicleCheckLocation(this, x, y, z));
 	}
 
 }

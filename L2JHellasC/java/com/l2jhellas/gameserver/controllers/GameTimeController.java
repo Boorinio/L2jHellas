@@ -25,6 +25,7 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 public class GameTimeController
 {
@@ -235,15 +236,8 @@ public class GameTimeController
 		{
 			for (L2Character cha : _ended)
 			{
-				try
-				{
-					cha.getKnownList().updateKnownObjects();
-					cha.getKnownList().refreshInfos();
-					cha.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
-				}
-				catch (NullPointerException e)
-				{
-				}
+				cha.getKnownList().refreshInfos(cha.isInsideZone(ZoneId.TOWN));
+				cha.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
 			}
 		}
 	}

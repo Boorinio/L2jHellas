@@ -1089,6 +1089,7 @@ public class TvT
 				_minPlayers = rs.getInt("minPlayers");
 				_maxPlayers = rs.getInt("maxPlayers");
 			}
+			rs.close();
 			statement.close();
 
 			int index = -1;
@@ -1114,6 +1115,7 @@ public class TvT
 					_teamColors.set(index, rs.getInt("teamColor"));
 				}
 				index++;
+				rs.close();
 				statement.close();
 			}
 		}

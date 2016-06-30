@@ -170,7 +170,6 @@ public class ShortCuts
 			PreparedStatement statement = con.prepareStatement("SELECT char_obj_id, slot, page, type, shortcut_id, level FROM character_shortcuts WHERE char_obj_id=? AND class_index=?");
 			statement.setInt(1, _owner.getObjectId());
 			statement.setInt(2, _owner.getClassIndex());
-
 			ResultSet rset = statement.executeQuery();
 
 			while (rset.next())

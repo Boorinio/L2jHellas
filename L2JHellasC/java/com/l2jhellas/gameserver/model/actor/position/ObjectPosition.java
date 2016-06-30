@@ -80,15 +80,23 @@ public class ObjectPosition
 	public final void setXYZInvisible(int x, int y, int z)
 	{
 		assert getWorldRegion() == null;
-		
-		if (x > L2World.WORLD_X_MAX)
-			x = L2World.WORLD_X_MAX - 5000;
-		if (x < L2World.WORLD_X_MIN)
-			x = L2World.WORLD_X_MIN + 5000;
-		if (y > L2World.WORLD_Y_MAX)
-			y = L2World.WORLD_Y_MAX - 5000;
-		if (y < L2World.WORLD_Y_MIN)
-			y = L2World.WORLD_Y_MIN + 5000;
+
+		if (x > L2World.MAP_MAX_X)
+		{
+			x = L2World.MAP_MAX_X - 5000;
+		}
+		if (x < L2World.MAP_MIN_X)
+		{
+			x = L2World.MAP_MIN_X + 5000;
+		}
+		if (y > L2World.MAP_MAX_Y)
+		{
+			y = L2World.MAP_MAX_Y - 5000;
+		}
+		if (y < L2World.MAP_MIN_Y)
+		{
+			y = L2World.MAP_MIN_Y + 5000;
+		}
 		
 		setWorldPosition(x, y, z);
 		getActiveObject().setIsVisible(false);

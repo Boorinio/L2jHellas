@@ -114,6 +114,9 @@ import com.l2jhellas.util.Rnd;
  */
 public class L2Npc extends L2Character
 {
+    public int pathfindCount = 0;
+    public int pathfindTime = 0;
+    
 	/** The interaction distance of the L2NpcInstance(is used as offset in MovetoLocation method) */
 	public static final int INTERACTION_DISTANCE = 150;
 

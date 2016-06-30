@@ -190,6 +190,7 @@ public class SiegeGuardManager
 					_log.warning(SiegeGuardManager.class.getName() + ": Missing npc data in npc table for id: " + rs.getInt("npcId"));
 				}
 			}
+			rs.close();
 			statement.close();
 		}
 		catch (Exception e1)

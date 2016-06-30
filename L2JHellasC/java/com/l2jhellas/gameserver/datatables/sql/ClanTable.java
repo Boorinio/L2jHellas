@@ -428,6 +428,7 @@ public class ClanTable
 				getClan(rset.getInt("clan1")).setEnemyClan(rset.getInt("clan2"));
 				getClan(rset.getInt("clan2")).setAttackerClan(rset.getInt("clan1"));
 			}
+			rset.close();
 			statement.close();
 		}
 		catch (Exception e)

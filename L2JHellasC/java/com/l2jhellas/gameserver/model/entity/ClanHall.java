@@ -484,10 +484,13 @@ public class ClanHall
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM clanhall_functions WHERE hall_id=?");
 			statement.setInt(1, getId());
 			ResultSet rs = statement.executeQuery();
+			
 			while (rs.next())
 			{
 				_functions.put(rs.getInt("type"), new ClanHallFunction(rs.getInt("type"), rs.getInt("lvl"), rs.getInt("lease"), 0, rs.getLong("rate"), rs.getLong("endTime")));
 			}
+			
+			rs.close();
 			statement.close();
 		}
 		catch (Exception e)

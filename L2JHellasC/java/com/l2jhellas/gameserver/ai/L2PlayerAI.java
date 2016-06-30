@@ -33,6 +33,7 @@ import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 
+
 public class L2PlayerAI extends L2CharacterAI
 {
 	protected static final Logger _log = Logger.getLogger(L2PlayerAI.class.getName());
@@ -302,7 +303,6 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onEvtArrivedRevalidate()
 	{
-		//_actor.getKnownList().refreshInfos();
 		super.onEvtArrivedRevalidate();
 	}
 }

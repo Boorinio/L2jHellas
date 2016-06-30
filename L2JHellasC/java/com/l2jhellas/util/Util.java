@@ -34,6 +34,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 
 /**
  * General Utility functions related to Game Server
@@ -697,4 +698,25 @@ public final class Util
 	{
 		return calculateDistance(x1, y1, 0, x2, y2, 0, false);
 	}	
+	
+	public static long gc(int i, int delay)
+	{
+		long freeMemBefore = MemoryWatchOptimize.getMemFree();
+		Runtime rt = Runtime.getRuntime();
+		rt.gc();
+		while(--i > 0)
+		{
+			try
+			{
+				Thread.sleep(delay);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			rt.gc();
+		}
+		rt.runFinalization();
+		return MemoryWatchOptimize.getMemFree() - freeMemBefore;
+	}
 }

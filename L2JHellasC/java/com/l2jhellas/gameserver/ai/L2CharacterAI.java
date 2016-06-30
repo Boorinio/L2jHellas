@@ -27,7 +27,7 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -1321,7 +1321,7 @@ public class L2CharacterAI extends AbstractAI
 				boolean cancast = true;
 				for (L2Character target : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
 				{
-					if (!GeoData.getInstance().canSeeTarget(_actor, target))
+					if (!GeoEngine.canSeeTarget(_actor, target,false))
 						continue;
 					if (target instanceof L2Attackable)
 					{
@@ -1350,7 +1350,7 @@ public class L2CharacterAI extends AbstractAI
 				boolean cancast = true;
 				for (L2Character target : getAttackTarget().getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
 				{
-					if (!GeoData.getInstance().canSeeTarget(_actor, target) || target == null)
+					if (!GeoEngine.canSeeTarget(_actor, target,false) || target == null)
 						continue;
 					if (target instanceof L2Attackable)
 					{
@@ -1374,7 +1374,7 @@ public class L2CharacterAI extends AbstractAI
 				boolean cancast = false;
 				for (L2Character target : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
 				{
-					if (!GeoData.getInstance().canSeeTarget(_actor, target))
+					if (!GeoEngine.canSeeTarget(_actor, target,false))
 						continue;
 					if (target instanceof L2Attackable)
 					{
@@ -1395,7 +1395,7 @@ public class L2CharacterAI extends AbstractAI
 				boolean cancast = true;
 				for (L2Character target : getAttackTarget().getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
 				{
-					if (!GeoData.getInstance().canSeeTarget(_actor, target))
+					if (!GeoEngine.canSeeTarget(_actor, target,false))
 						continue;
 					if (target instanceof L2Attackable)
 					{
@@ -1462,7 +1462,7 @@ public class L2CharacterAI extends AbstractAI
 			int ccount = 0;
 			for (L2Character target : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
 			{
-				if (!(target instanceof L2Attackable) || !GeoData.getInstance().canSeeTarget(_actor, target))
+				if (!(target instanceof L2Attackable) || !GeoEngine.canSeeTarget(_actor, target,false))
 				{
 					continue;
 				}

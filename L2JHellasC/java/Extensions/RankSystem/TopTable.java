@@ -266,6 +266,7 @@ public class TopTable
 					}
 
 					rset.close();
+					statement.close();
 
 					// add this killer on temporary top list:
 					tmpTopKillsTable.put(bestKiller, tf);
@@ -297,6 +298,7 @@ public class TopTable
 					}
 
 					rset.close();
+					statement.close();
 
 					// add this gatherer on top list:
 					tmpTopGatherersTable.put(bestGatherer, tf);

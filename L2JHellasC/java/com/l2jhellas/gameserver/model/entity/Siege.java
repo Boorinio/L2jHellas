@@ -1077,6 +1077,7 @@ public class Siege
 					addDefenderWaiting(rs.getInt("clan_id"));
 			}
 
+			rs.close();
 			statement.close();
 		}
 		catch (Exception e)

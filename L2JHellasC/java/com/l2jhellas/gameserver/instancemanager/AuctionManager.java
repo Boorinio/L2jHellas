@@ -106,6 +106,7 @@ public class AuctionManager
 			ResultSet rs = statement.executeQuery();
 			while (rs.next())
 				_auctions.add(new Auction(rs.getInt("id")));
+			rs.close();
 			statement.close();
 			_log.info(AuctionManager.class.getSimpleName() + ": Loaded: " + getAuctions().size() + " auction(s)");
 		}

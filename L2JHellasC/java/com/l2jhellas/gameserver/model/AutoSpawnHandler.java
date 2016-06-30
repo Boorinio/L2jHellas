@@ -136,9 +136,11 @@ public class AutoSpawnHandler
 				}
 
 				statement2.close();
+				rs2.close();
 			}
 
 			statement.close();
+			rs.close();
 			_log.info(AutoSpawnHandler.class.getSimpleName() + ": Loaded " + numLoaded + " spawn group(s) from the database.");
 		}
 		catch (Exception e)

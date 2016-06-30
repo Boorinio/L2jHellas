@@ -1991,4 +1991,12 @@ public final class Formulas
 
 		return Rnd.get(100) < target.calcStat(Stats.P_SKILL_EVASION, 0, null, skill);
 	}
+	
+	public static double calcFallDam(L2Character cha, int fallHeight)
+	{
+		if (fallHeight < 0)
+			return 0;
+		
+		return cha.calcStat(Stats.FALL_VULN, fallHeight * cha.getMaxHp() / 1000, null, null);
+	}
 }

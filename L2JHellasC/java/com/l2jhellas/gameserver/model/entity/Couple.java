@@ -61,6 +61,8 @@ public class Couple
 				_weddingDate = Calendar.getInstance();
 				_weddingDate.setTimeInMillis(rs.getLong("weddingDate"));
 			}
+			
+			rs.close();
 			statement.close();
 			this._maried = true;
 		}

@@ -122,11 +122,17 @@ import quests.Q216_TrialOfTheGuildsman.Q216_TrialOfTheGuildsman;
 import quests.Q217_TestimonyOfTrust.Q217_TestimonyOfTrust;
 import quests.Q218_TestimonyOfLife.Q218_TestimonyOfLife;
 import quests.Q219_TestimonyOfFate.Q219_TestimonyOfFate;
+import quests.Q220_TestimonyOfGlory.Q220_TestimonyOfGlory;
 import quests.Q222_TestOfTheDuelist.Q222_TestOfTheDuelist;
 import quests.Q223_TestOfTheChampion.Q223_TestOfTheChampion;
+import quests.Q224_TestOfSagittarius.Q224_TestOfSagittarius;
 import quests.Q225_TestOfTheSearcher.Q225_TestOfTheSearcher;
+import quests.Q226_TestOfTheHealer.Q226_TestOfTheHealer;
+import quests.Q228_TestOfMagus.Q228_TestOfMagus;
+import quests.Q230_TestOfTheSummoner.Q230_TestOfTheSummoner;
 import quests.Q231_TestOfTheMaestro.Q231_TestOfTheMaestro;
 import quests.Q232_TestOfTheLord.Q232_TestOfTheLord;
+import quests.Q233_TestOfTheWarSpirit.Q233_TestOfTheWarSpirit;
 import quests.Q234_FatesWhisper.Q234_FatesWhisper;
 import quests.Q235_MimirsElixir.Q235_MimirsElixir;
 import quests.Q241_PossessorOfAPreciousSoul.Q241_PossessorOfAPreciousSoul;
@@ -171,6 +177,7 @@ import quests.Q320_BonesTellTheFuture.Q320_BonesTellTheFuture;
 import quests.Q324_SweetestVenom.Q324_SweetestVenom;
 import quests.Q325_GrimCollector.Q325_GrimCollector;
 import quests.Q326_VanquishRemnants.Q326_VanquishRemnants;
+import quests.Q327_RecoverTheFarmland.Q327_RecoverTheFarmland;
 import quests.Q328_SenseForBusiness.Q328_SenseForBusiness;
 import quests.Q329_CuriosityOfADwarf.Q329_CuriosityOfADwarf;
 import quests.Q330_AdeptOfTaste.Q330_AdeptOfTaste;
@@ -231,9 +238,13 @@ import quests.Q410_PathToAPalusKnight.Q410_PathToAPalusKnight;
 import quests.Q411_PathToAnAssassin.Q411_PathToAnAssassin;
 import quests.Q412_PathToADarkWizard.Q412_PathToADarkWizard;
 import quests.Q413_PathToAShillienOracle.Q413_PathToAShillienOracle;
+import quests.Q414_PathToAnOrcRaider.Q414_PathToAnOrcRaider;
 import quests.Q415_PathToAMonk.Q415_PathToAMonk;
+import quests.Q416_PathToAnOrcShaman.Q416_PathToAnOrcShaman;
+import quests.Q417_PathToBecomeAScavenger.Q417_PathToBecomeAScavenger;
 import quests.Q418_PathToAnArtisan.Q418_PathToAnArtisan;
 import quests.Q419_GetAPet.Q419_GetAPet;
+import quests.Q420_LittleWing.Q420_LittleWing;
 import quests.Q421_LittleWingsBigAdventure.Q421_LittleWingsBigAdventure;
 import quests.Q422_RepentYourSins.Q422_RepentYourSins;
 import quests.Q426_QuestForFishingShot.Q426_QuestForFishingShot;
@@ -278,6 +289,7 @@ import quests.Q634_InSearchOfFragmentsOfDimension.Q634_InSearchOfFragmentsOfDime
 import quests.Q636_TruthBeyondTheGate.Q636_TruthBeyondTheGate;
 import quests.Q637_ThroughTheGateOnceMore.Q637_ThroughTheGateOnceMore;
 import quests.Q638_SeekersOfTheHolyGrail.Q638_SeekersOfTheHolyGrail;
+import quests.Q639_GuardiansOfTheHolyGrail.Q639_GuardiansOfTheHolyGrail;
 import quests.Q640_TheZeroHour.Q640_TheZeroHour;
 import quests.Q641_AttackSailren.Q641_AttackSailren;
 import quests.Q642_APowerfulPrimevalCreature.Q642_APowerfulPrimevalCreature;
@@ -295,6 +307,8 @@ import quests.Q654_JourneyToASettlement.Q654_JourneyToASettlement;
 import quests.Q659_IdRatherBeCollectingFairyBreath.Q659_IdRatherBeCollectingFairyBreath;
 import quests.Q660_AidingTheFloranVillage.Q660_AidingTheFloranVillage;
 import quests.Q661_MakingTheHarvestGroundsSafe.Q661_MakingTheHarvestGroundsSafe;
+import quests.Q662_AGameOfCards.Q662_AGameOfCards;
+import quests.Q663_SeductiveWhispers.Q663_SeductiveWhispers;
 import quests.Q688_DefeatTheElrokianRaiders.Q688_DefeatTheElrokianRaiders;
 import teleports.ElrokiTeleporters.ElrokiTeleporters;
 import teleports.GatekeeperSpirit.GatekeeperSpirit;
@@ -310,6 +324,7 @@ import teleports.ToIVortex.ToIVortex;
 import village_master.Alliance.Alliance;
 import village_master.Clan.Clan;
 import village_master.FirstClassChange.FirstClassChange;
+import village_master.SecondClassChange.SecondClassChange;
 import ai.group.AncientEGG;
 import ai.group.CatsEyeBandit;
 import ai.group.Chests;
@@ -478,11 +493,17 @@ public class ScriptLoader
 		Q217_TestimonyOfTrust.class,
 		Q218_TestimonyOfLife.class,
 		Q219_TestimonyOfFate.class,
+		Q220_TestimonyOfGlory.class,
 		Q222_TestOfTheDuelist.class,
 		Q223_TestOfTheChampion.class,
+		Q224_TestOfSagittarius.class,
 		Q225_TestOfTheSearcher.class,
+	    Q226_TestOfTheHealer.class,
+		Q228_TestOfMagus.class,
+		Q230_TestOfTheSummoner.class,
 		Q231_TestOfTheMaestro.class,
 		Q232_TestOfTheLord.class,
+		Q233_TestOfTheWarSpirit.class,
 		Q234_FatesWhisper.class,
 		Q235_MimirsElixir.class,
 		Q241_PossessorOfAPreciousSoul.class,
@@ -527,6 +548,7 @@ public class ScriptLoader
 		Q324_SweetestVenom.class,
 		Q325_GrimCollector.class,
 		Q326_VanquishRemnants.class,
+		Q327_RecoverTheFarmland.class,
 		Q328_SenseForBusiness.class,
 		Q329_CuriosityOfADwarf.class,
 		Q330_AdeptOfTaste.class,
@@ -587,9 +609,13 @@ public class ScriptLoader
 		Q411_PathToAnAssassin.class,
 		Q412_PathToADarkWizard.class,
 		Q413_PathToAShillienOracle.class,
+		Q414_PathToAnOrcRaider.class,
 		Q415_PathToAMonk.class,
+		Q416_PathToAnOrcShaman.class,
+		Q417_PathToBecomeAScavenger.class,
 		Q418_PathToAnArtisan.class,
 		Q419_GetAPet.class,
+		Q420_LittleWing.class,
 		Q421_LittleWingsBigAdventure.class,
 		Q422_RepentYourSins.class,
 		Q426_QuestForFishingShot.class,
@@ -634,6 +660,7 @@ public class ScriptLoader
 		Q636_TruthBeyondTheGate.class,
 		Q637_ThroughTheGateOnceMore.class,
 		Q638_SeekersOfTheHolyGrail.class,
+		Q639_GuardiansOfTheHolyGrail.class,
 		Q640_TheZeroHour.class,
 		Q641_AttackSailren.class,
 		Q642_APowerfulPrimevalCreature.class,
@@ -651,6 +678,8 @@ public class ScriptLoader
 		Q659_IdRatherBeCollectingFairyBreath.class,
 		Q660_AidingTheFloranVillage.class,
 		Q661_MakingTheHarvestGroundsSafe.class,
+		Q662_AGameOfCards.class,
+		Q663_SeductiveWhispers.class,
 		Q688_DefeatTheElrokianRaiders.class,
 		
 		AncientEGG.class,
@@ -715,6 +744,7 @@ public class ScriptLoader
 		Alliance.class,
 		Clan.class,
 		FirstClassChange.class,
+		SecondClassChange.class,
 		
 		//bosses
 		Antharas.class,

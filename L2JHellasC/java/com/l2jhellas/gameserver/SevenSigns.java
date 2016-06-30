@@ -717,62 +717,67 @@ public class SevenSigns
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (Statement statement = con.createStatement();
-					ResultSet rset = statement.executeQuery(SELECT_SS))
+			Statement statement = con.createStatement();
+			ResultSet rset = statement.executeQuery(SELECT_SS);
+
+			while (rset.next())
 			{
-				while (rset.next())
+				int charObjId = rset.getInt("char_obj_id");
+				
+				StatsSet sevenDat = new StatsSet();
+				sevenDat.set("char_obj_id", charObjId);
+				sevenDat.set("cabal", rset.getString("cabal"));
+				sevenDat.set("seal", rset.getInt("seal"));
+				sevenDat.set("red_stones", rset.getInt("red_stones"));
+				sevenDat.set("green_stones", rset.getInt("green_stones"));
+				sevenDat.set("blue_stones", rset.getInt("blue_stones"));
+				sevenDat.set("ancient_adena_amount", rset.getDouble("ancient_adena_amount"));
+				sevenDat.set("contribution_score", rset.getDouble("contribution_score"));
+				
+				if (Config.DEBUG)
 				{
-					int charObjId = rset.getInt("char_obj_id");
-	
-					StatsSet sevenDat = new StatsSet();
-					sevenDat.set("char_obj_id", charObjId);
-					sevenDat.set("cabal", rset.getString("cabal"));
-					sevenDat.set("seal", rset.getInt("seal"));
-					sevenDat.set("red_stones", rset.getInt("red_stones"));
-					sevenDat.set("green_stones", rset.getInt("green_stones"));
-					sevenDat.set("blue_stones", rset.getInt("blue_stones"));
-					sevenDat.set("ancient_adena_amount", rset.getDouble("ancient_adena_amount"));
-					sevenDat.set("contribution_score", rset.getDouble("contribution_score"));
-	
-					if (Config.DEBUG)
-					{
-						_log.config(SevenSigns.class.getName() + ": Loaded data from DB for char ID " + charObjId + " (" + sevenDat.getString("cabal") + ")");
-					}
-	
-					_signsPlayerData.put(charObjId, sevenDat);
+					_log.config(SevenSigns.class.getName() + ": Loaded data from DB for char ID " + charObjId + " (" + sevenDat.getString("cabal") + ")");
 				}
+	
+				_signsPlayerData.put(charObjId, sevenDat);
 			}
-			try (Statement statement1 = con.createStatement();
-					ResultSet rset = statement1.executeQuery(SELECT_SS_STATUS))
+			
+			rset.close();
+			statement.close();
+
+			Statement statement1 = con.createStatement();
+			ResultSet rset1 = statement1.executeQuery(SELECT_SS_STATUS);
+
+			while (rset1.next())
 			{
-				while (rset.next())
-				{
-					_currentCycle = rset.getInt("current_cycle");
-					_activePeriod = rset.getInt("active_period");
-					_previousWinner = rset.getInt("previous_winner");
-
-					_dawnStoneScore = rset.getDouble("dawn_stone_score");
-					_dawnFestivalScore = rset.getInt("dawn_festival_score");
-					_duskStoneScore = rset.getDouble("dusk_stone_score");
-					_duskFestivalScore = rset.getInt("dusk_festival_score");
-
-					_signsSealOwners.put(SEAL_AVARICE, rset.getInt("avarice_owner"));
-					_signsSealOwners.put(SEAL_GNOSIS, rset.getInt("gnosis_owner"));
-					_signsSealOwners.put(SEAL_STRIFE, rset.getInt("strife_owner"));
-
-					_signsDawnSealTotals.put(SEAL_AVARICE, rset.getInt("avarice_dawn_score"));
-					_signsDawnSealTotals.put(SEAL_GNOSIS, rset.getInt("gnosis_dawn_score"));
-					_signsDawnSealTotals.put(SEAL_STRIFE, rset.getInt("strife_dawn_score"));
-					_signsDuskSealTotals.put(SEAL_AVARICE, rset.getInt("avarice_dusk_score"));
-					_signsDuskSealTotals.put(SEAL_GNOSIS, rset.getInt("gnosis_dusk_score"));
-					_signsDuskSealTotals.put(SEAL_STRIFE, rset.getInt("strife_dusk_score"));
-				}
+				_currentCycle = rset1.getInt("current_cycle");
+				_activePeriod = rset1.getInt("active_period");
+				_previousWinner = rset1.getInt("previous_winner");
+				
+				_dawnStoneScore = rset1.getDouble("dawn_stone_score");
+				_dawnFestivalScore = rset1.getInt("dawn_festival_score");
+				_duskStoneScore = rset1.getDouble("dusk_stone_score");
+				_duskFestivalScore = rset1.getInt("dusk_festival_score");
+				
+				_signsSealOwners.put(SEAL_AVARICE, rset1.getInt("avarice_owner"));
+				_signsSealOwners.put(SEAL_GNOSIS, rset1.getInt("gnosis_owner"));
+				_signsSealOwners.put(SEAL_STRIFE, rset1.getInt("strife_owner"));
+				
+				_signsDawnSealTotals.put(SEAL_AVARICE, rset1.getInt("avarice_dawn_score"));
+				_signsDawnSealTotals.put(SEAL_GNOSIS, rset1.getInt("gnosis_dawn_score"));
+				_signsDawnSealTotals.put(SEAL_STRIFE, rset1.getInt("strife_dawn_score"));
+				_signsDuskSealTotals.put(SEAL_AVARICE, rset1.getInt("avarice_dusk_score"));
+				_signsDuskSealTotals.put(SEAL_GNOSIS, rset1.getInt("gnosis_dusk_score"));
+				_signsDuskSealTotals.put(SEAL_STRIFE, rset1.getInt("strife_dusk_score"));
 			}
-			try (PreparedStatement statement3 = con.prepareStatement(UPDATE_SS))
-			{
-				statement3.setInt(1, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-				statement3.execute();
-			}
+			
+			rset1.close();
+			statement1.close();
+
+			PreparedStatement statement3 = con.prepareStatement(UPDATE_SS);
+			statement3.setInt(1, Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+			statement3.execute();
+			statement3.close();
 		}
 		catch (SQLException e)
 		{

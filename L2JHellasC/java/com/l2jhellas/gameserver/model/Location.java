@@ -16,8 +16,7 @@ package com.l2jhellas.gameserver.model;
 
 public final class Location
 {
-	protected volatile int _x, _y, _z;
-	
+	public volatile int _x, _y, _z;
 	private int _heading;
 
 	public Location(int x, int y, int z)
@@ -62,6 +61,19 @@ public final class Location
 		_z = z;
 	}
 	
+    public Location world2geo()
+    {
+        _x = _x - L2World.MAP_MIN_X >> 4;
+        _y = _y - L2World.MAP_MIN_Y >> 4;
+        return this;
+    }
+
+    public Location geo2world()
+    {
+        _x = (_x << 4) + L2World.MAP_MIN_X + 8;
+        _y = (_y << 4) + L2World.MAP_MIN_Y + 8;
+        return this;
+    }
 	@Override
 	public String toString()
 	{
@@ -72,6 +84,28 @@ public final class Location
 	public int hashCode()
 	{
 		return _x ^ _y ^ _z;
+	}
+	
+	
+	public Location setH(int h)
+	{
+		this._heading = h;
+		return this;
+	}
+
+	public void set(int x, int y, int z, int h)
+	{
+		this._x = x;
+		this._y = y;
+		this._z = z;
+		this._heading = h;
+	}
+
+	public void set(int x, int y, int z)
+	{
+		this._x = x;
+		this._y = y;
+		this._z = z;
 	}
 	
 	@Override
@@ -91,4 +125,18 @@ public final class Location
 		return _x == x && _y == y && _z == z;
 	}
 	
+	@Override
+	public Location clone()
+	{
+		return new Location(_x, _y, _z, _heading);
+	}
+	
+	public double getDistance(Location location)
+	{
+		double dx = location.getX() - getX();
+		double dy = location.getY() - getY();
+		double dz = location.getZ() - getZ();
+
+		return Math.sqrt(dx * dx + dy * dy + dz * dz);
+	}
 }

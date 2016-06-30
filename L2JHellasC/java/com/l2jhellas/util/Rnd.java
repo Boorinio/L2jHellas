@@ -18,6 +18,8 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 
+import com.l2jhellas.gameserver.model.Location;
+
 /**
  * This class extends {@link java.util.Random} but do not compare and store atomically.<br>
  * Instead it`s using a simple volatile flag to ensure reading and storing the whole 64bit seed chunk.<br>
@@ -507,5 +509,14 @@ public final class Rnd
 			return null;
 		
 		return array[get(array.length)];
+	}
+	
+	public static Location coordsRandomize(int x, int y, int z, int heading, int radius_min, int radius_max)
+	{
+		if(radius_max == 0 || radius_max < radius_min)
+			return new Location(x, y, z, heading);
+		int radius = get(radius_min, radius_max);
+		double angle = rnd.nextDouble() * 2 * Math.PI;
+		return new Location((int) (x + radius * Math.cos(angle)), (int) (y + radius * Math.sin(angle)), z, heading);
 	}
 }

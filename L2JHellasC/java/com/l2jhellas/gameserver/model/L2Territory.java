@@ -173,6 +173,35 @@ public class L2Territory
 		return p;
 	}
 
+public int getXmax()
+{
+	return _xMax;
+}
+
+public int getXmin()
+{
+	return _xMin;
+}
+
+public int getYmax()
+{
+	return _yMax;
+}
+
+public int getYmin()
+{
+	return _yMin;
+}
+
+public int getZmax()
+{
+	return _zMax;
+}
+
+public int getZmin()
+{
+	return _zMin;
+}
 	public int getProcMax()
 	{
 		return _procMax;

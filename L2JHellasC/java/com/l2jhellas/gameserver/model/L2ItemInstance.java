@@ -1101,6 +1101,9 @@ public final class L2ItemInstance extends L2Object
 				}
 				else if (inst._mana > 0 && inst.getLocation() == ItemLocation.PAPERDOLL)
 					inst.scheduleConsumeManaTask();
+				
+				rs.close();
+				statement.close();
 			}
 			else
 			{
@@ -1210,7 +1213,9 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = true;
 			_storedInDb = true;
 			statement.close();
+			con.close();
 		}
+
 		catch (Exception e)
 		{
 			_log.severe(L2ItemInstance.class.getName() + ": Could not update item " + getObjectId() + " in DB: Reason: " + "Duplicate itemId");
@@ -1248,6 +1253,7 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = true;
 			_storedInDb = true;
 			statement.close();
+			con.close();
 		}
 		catch (Exception e)
 		{
@@ -1279,6 +1285,7 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = false;
 			_storedInDb = false;
 			statement.close();
+			con.close();
 		}
 		catch (Exception e)
 		{

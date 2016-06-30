@@ -454,7 +454,8 @@ public class Castle
 					_showNpcCrest = true;
 				
 			}
-
+			
+			rs.close();
 			statement.close();
 
 			_taxRate = _taxPercent / 100.0;
@@ -473,7 +474,8 @@ public class Castle
 				L2Clan clan = ClanTable.getInstance().getClan(getOwnerId());// Try to find clan instance
 				ThreadPoolManager.getInstance().scheduleGeneral(new CastleUpdater(clan, 1), 3600000);// Schedule owner tasks to start running
 			}
-
+			
+			rs.close();
 			statement.close();
 		}
 		catch (Exception e)
@@ -503,7 +505,7 @@ public class Castle
 				_doors.add(door);
 				DoorData.getInstance().putDoor(door);
 			}
-
+			rs.close();
 			statement.close();
 		}
 		catch (SQLException e)
@@ -527,7 +529,7 @@ public class Castle
 			{
 				upgradeDoor(rs.getInt("id"), rs.getInt("hp"), rs.getInt("pDef"), rs.getInt("mDef"));
 			}
-
+			rs.close();
 			statement.close();
 		}
 		catch (SQLException e)

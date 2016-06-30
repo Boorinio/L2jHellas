@@ -481,6 +481,7 @@ public class DM
 				_playerZ = rs.getInt("playerZ");
 
 			}
+			rs.close();
 			statement.close();
 		}
 		catch (Exception e)

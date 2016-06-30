@@ -168,6 +168,21 @@ public class CharKnownList extends ObjectKnownList
 
 		return result;
 	}
+	
+	public Collection<L2Character> getKnownMonstersInRadius(long radius)
+	{
+		ArrayList<L2Character> result = new ArrayList<L2Character>();
+
+		for (L2Object obj : getKnownObjects().values())
+		{
+            if (obj.isVisible() && obj instanceof L2MonsterInstance && Util.checkIfInRange((int) radius, getActiveChar(), obj, true))
+			{
+				result.add((L2MonsterInstance) obj);
+			}
+		}
+
+		return result;
+	}
 
 	public final Map<Integer, L2PcInstance> getKnownPlayers()
 	{
@@ -194,10 +209,23 @@ public class CharKnownList extends ObjectKnownList
 		return result;
 	}
 	
-	public void refreshInfos()
+	public void refreshInfos(boolean isInTown)
 	{
-		Collection<L2Object> objects = getKnownObjects().values();
-		for (L2Object object : objects)
+		if(isInTown)
+		{
+			updateKnownObjects(900);
+		    sendInfos(900);
+		}
+		else
+		{
+			updateKnownObjects(1900);
+		    sendInfos(1900);
+		}
+	}
+	
+	private void sendInfos(int radius)
+	{
+		for (L2Object object : getKnownTypeInRadius(L2Object.class,radius))
 		{
 			if (object instanceof L2PcInstance && ((L2PcInstance) object).inObserverMode() || !object.isVisible())
 				continue;

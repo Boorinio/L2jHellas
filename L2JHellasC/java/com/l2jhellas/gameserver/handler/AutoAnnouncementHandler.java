@@ -68,7 +68,7 @@ public class AutoAnnouncementHandler
 
 				registerGlobalAnnouncement(rs.getInt("id"), rs.getString("announcement"), rs.getLong("delay"));
 			}
-
+			rs.close();
 			statement.close();
 			_log.info(AutoAnnouncementHandler.class.getSimpleName() + ": Loaded " + numLoaded + " Auto Announcements.");
 		}
@@ -195,7 +195,7 @@ public class AutoAnnouncementHandler
 				if (rs.getInt("id") > nextId)
 					nextId = rs.getInt("id");
 			}
-
+			rs.close();
 			statement.close();
 
 			nextId++;

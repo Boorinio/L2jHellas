@@ -15,7 +15,6 @@
 package handlers.admincommandhandlers;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.geodata.GeoData;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -44,7 +43,7 @@ public class AdminGeodata implements IAdminCommandHandler
 		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
 		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
-		if (Config.GEODATA < 1)
+		if (!Config.GEODATA)
 		{
 			activeChar.sendMessage("Geo Engine is Turned Off!");
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
@@ -53,21 +52,21 @@ public class AdminGeodata implements IAdminCommandHandler
 
 		if (command.equals("admin_geo_z"))
 		{
-			activeChar.sendMessage("GeoEngine: Geo_Z = " + GeoData.getInstance().getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ()) + " Loc_Z = " + activeChar.getZ());
+			activeChar.sendMessage("GeoEngine: Geo_Z = " + GeoEngine.getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ()) + " Loc_Z = " + activeChar.getZ());
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.equals("admin_geo_type"))
 		{
-			short type = GeoData.getInstance().getType(activeChar.getX(), activeChar.getY());
+			short type = GeoEngine.getType(activeChar.getX(), activeChar.getY());
 			activeChar.sendMessage("GeoEngine: Geo_Type = " + type);
-			short height = GeoData.getInstance().getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+			int height = GeoEngine.getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			activeChar.sendMessage("GeoEngine: height = " + height);
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.equals("admin_geo_nswe"))
 		{
 			String result = "";
-			short nswe = GeoData.getInstance().getNSWE(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+			short nswe = GeoEngine.getNSWE(activeChar.getX(), activeChar.getY(), activeChar.getZ());
 			if ((nswe & 8) == 0)
 				result += " N";
 			if ((nswe & 4) == 0)
@@ -83,7 +82,7 @@ public class AdminGeodata implements IAdminCommandHandler
 		{
 			if (activeChar.getTarget() != null)
 			{
-				if (GeoData.getInstance().canSeeTargetDebug(activeChar, activeChar.getTarget()))
+				if (GeoEngine.canSeeTarget(activeChar, activeChar.getTarget(), false))
 					activeChar.sendMessage("GeoEngine: Can See Target");
 				else
 					activeChar.sendMessage("GeoEngine: Can't See Target");
@@ -97,7 +96,6 @@ public class AdminGeodata implements IAdminCommandHandler
 		{
 			activeChar.sendMessage("GeoEngine: Your current position: ");
 			activeChar.sendMessage(".... world coords: x: " + activeChar.getX() + " y: " + activeChar.getY() + " z: " + activeChar.getZ());
-			activeChar.sendMessage(".... geo position: " + GeoData.getInstance().geoPosition(activeChar.getX(), activeChar.getY()));
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
 		else if (command.startsWith("admin_geo_load"))
@@ -112,7 +110,7 @@ public class AdminGeodata implements IAdminCommandHandler
 					byte rx = Byte.parseByte(v[0]);
 					byte ry = Byte.parseByte(v[1]);
 
-					boolean result = GeoEngine.loadGeodataFile(rx, ry);
+					boolean result = GeoEngine.LoadGeodataFile(rx, ry);
 
 					if (result)
 						activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] loaded succesfuly");
@@ -126,7 +124,7 @@ public class AdminGeodata implements IAdminCommandHandler
 			}
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
-		else if (command.startsWith("admin_geo_unload"))
+		/*else if (command.startsWith("admin_geo_unload"))
 		{
 			String[] v = command.substring(17).split(" ");
 			if (v.length != 2)
@@ -138,8 +136,8 @@ public class AdminGeodata implements IAdminCommandHandler
 					byte rx = Byte.parseByte(v[0]);
 					byte ry = Byte.parseByte(v[1]);
 
-					GeoData.unloadGeodata(rx, ry);
-					activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] unloaded.");
+					//GeoEngine.unloadGeodata(rx, ry);
+					//activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] unloaded.");
 				}
 				catch (Exception e)
 				{
@@ -147,20 +145,20 @@ public class AdminGeodata implements IAdminCommandHandler
 				}
 			}
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
-		}
-		else if (command.startsWith("admin_geo_bug"))
+		}*/
+		/*else if (command.startsWith("admin_geo_bug"))
 		{
 			try
 			{
 				String comment = command.substring(14);
-				GeoData.getInstance().addGeoDataBug(activeChar, comment);
+				GeoEngine.addGeoDataBug(activeChar, comment);
 			}
 			catch (StringIndexOutOfBoundsException e)
 			{
 				activeChar.sendMessage("Usage: //admin_geo_bug you coments here");
 				AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 			}
-		}
+		}*/
 		return true;
 	}
 

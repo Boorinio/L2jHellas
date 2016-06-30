@@ -82,41 +82,40 @@ public class ObjectKnownList
 	}
 
 	
-	public final synchronized void updateKnownObjects()
+	public final synchronized void updateKnownObjects(int radius)
 	{
 		if (getActiveObject() instanceof L2Character)
 		{
-			findCloseObjects();
+			findCloseObjects(radius);
 			forgetObjects();
 		}
 	}
 	
-	private final void findCloseObjects()
+	private final void findCloseObjects(int radius)
 	{
-			Collection<L2Object> objects = L2World.getVisibleObjects(getActiveObject(),2000);
-			final boolean isActiveObjectPlayable = getActiveObject() instanceof L2Playable;
-			
-			if (objects == null)
-				return;
-			
-			for (final L2Object object : objects)
+		    //normal radius 2000
+		    Collection<L2Object> objects = L2World.getVisibleObjects(getActiveObject(),radius);
+		
+		    if(objects ==null)
+		    	return;
+		  
+			boolean isActiveObjectPlayable = getActiveObject() instanceof L2Playable;
+					  
+			for (L2Object object : objects)
 			{
-				if (object == null || !object.isVisible())
+				if ( !object.isVisible())
 					continue;
-				
-				// Try to add object to active object's known objects
-				// L2PlayableInstance sees everything
+
 				addKnownObject(object);
 				
 				// Try to add active object to object's known objects
 				// Only if object is a L2Character and active object is a L2PlayableInstance
 				if (object instanceof L2Character && isActiveObjectPlayable)
 				{
+					if(object != getActiveObject())
 					object.getKnownList().addKnownObject(getActiveObject());
 				}
 			}
-			
-			objects = null;
 	}
 	
 	/**
@@ -124,7 +123,6 @@ public class ObjectKnownList
 	 */
 	public final void forgetObjects()
 	{
-		// for all objects in known list
 		for (L2Object object : getKnownObjects().values())
 		{
 			// object is not visible or out of distance to forget, remove from known list
@@ -189,5 +187,5 @@ public class ObjectKnownList
 				result.add((A) obj);
 		}
 		return result;
-	}	
+	}		
 }

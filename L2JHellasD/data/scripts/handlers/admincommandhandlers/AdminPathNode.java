@@ -14,11 +14,7 @@
  */
 package handlers.admincommandhandlers;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
-import com.l2jhellas.gameserver.geodata.pathfinding.geonodes.GeoPathFinding;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class AdminPathNode implements IAdminCommandHandler
@@ -51,9 +47,9 @@ public class AdminPathNode implements IAdminCommandHandler
 		{
 
 		}
-		else if (command.equals("admin_find_path"))
+		/*else if (command.equals("admin_find_path"))
 		{
-			if (Config.GEODATA < 2)
+			if (C!onfig.GEODATA)
 			{
 				activeChar.sendMessage("PathFinding has not been enabled.");
 				return true;
@@ -77,7 +73,7 @@ public class AdminPathNode implements IAdminCommandHandler
 			}
 			else
 				activeChar.sendMessage("No Target!");
-		}
+		}*/
 		return true;
 	}
 

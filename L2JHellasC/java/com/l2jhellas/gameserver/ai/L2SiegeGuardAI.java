@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -138,7 +138,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 				return false;
 		}
 		// Los Check Here
-		return (_actor.isAutoAttackable(target) && GeoData.getInstance().canSeeTarget(_actor, target));
+		return (_actor.isAutoAttackable(target) && GeoEngine.canSeeTarget(_actor, target,false));
 
 	}
 
@@ -329,7 +329,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 			return;
 		}
 
-		if (!GeoData.getInstance().canSeeTarget(_actor, _attackTarget))
+		if (!GeoEngine.canSeeTarget(_actor, _attackTarget,false))
 		{
 			// Siege guards differ from normal mobs currently:
 			// If target cannot seen, don't attack any more
@@ -579,9 +579,9 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 			// Check if the L2Object is inside the Faction Range of the actor
 			if ((npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE || npc.getAI().getIntention() == CtrlIntention.AI_INTENTION_ACTIVE) && _actor.isInsideRadius(npc, npc.getFactionRange(), false, true) && npc.getTarget() == null && _attackTarget.isInsideRadius(npc, npc.getFactionRange(), false, true))
 			{
-				if (Config.GEODATA > 0)
+				if (Config.GEODATA)
 				{
-					if (GeoData.getInstance().canSeeTarget(npc, _attackTarget))
+					if (GeoEngine.canSeeTarget(npc, _attackTarget,false))
 						// Notify the L2Object AI with EVT_AGGRESSION
 						npc.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attackTarget, 1);
 				}

@@ -1582,6 +1582,7 @@ public class CTF
 				_minPlayers = rs.getInt("minPlayers");
 				_maxPlayers = rs.getInt("maxPlayers");
 			}
+			rs.close();
 			statement.close();
 
 			int index = -1;
@@ -1617,6 +1618,7 @@ public class CTF
 
 				}
 				index++;
+				rs.close();
 				statement.close();
 			}
 		}

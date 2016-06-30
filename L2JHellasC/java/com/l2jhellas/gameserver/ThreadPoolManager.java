@@ -228,7 +228,7 @@ public class ThreadPoolManager
 		};
 	}
 
-	private class PriorityThreadFactory implements ThreadFactory
+	public static class PriorityThreadFactory implements ThreadFactory
 	{
 		private final int _prio;
 		private final String _name;

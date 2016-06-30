@@ -501,7 +501,9 @@ public class L2AccountManagerInstance extends L2NpcInstance
 					{
 						answer = rset.getString("answer");
 					}
-
+					
+					rset.close();
+					statement.close();
 				}
 				catch (Exception e)
 				{
@@ -575,6 +577,9 @@ public class L2AccountManagerInstance extends L2NpcInstance
 				hasSubSec = rset.getInt("hasSubSec");
 			}
 
+			rset.close();
+			statement.close();
+			
 			if (hasSubSec == 1)
 				return true;
 			else if (hasSubSec == 0)
@@ -785,6 +790,9 @@ public class L2AccountManagerInstance extends L2NpcInstance
 			{
 				hasSubEmail = rset.getInt("hasSubEmail");
 			}
+			
+			rset.close();
+			statement.close();
 
 			if (hasSubEmail == 1)
 				return true;
@@ -895,7 +903,9 @@ public class L2AccountManagerInstance extends L2NpcInstance
 			{
 				code = rset.getInt("emailcode");
 			}
-
+			
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -919,6 +929,8 @@ public class L2AccountManagerInstance extends L2NpcInstance
 				code = rset.getInt("emailchangecode");
 			}
 
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -942,6 +954,8 @@ public class L2AccountManagerInstance extends L2NpcInstance
 				code = rset.getInt("emailchangecode");
 			}
 
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -965,6 +979,8 @@ public class L2AccountManagerInstance extends L2NpcInstance
 				code = rset.getInt("secCode");
 			}
 
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -1127,6 +1143,9 @@ public class L2AccountManagerInstance extends L2NpcInstance
 					return false;
 				}
 			}
+			
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -1145,6 +1164,8 @@ public class L2AccountManagerInstance extends L2NpcInstance
 				email = rset.getString("email");
 			}
 			
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -1260,6 +1281,8 @@ public class L2AccountManagerInstance extends L2NpcInstance
 				email = rset.getString("email");
 			}
 
+			rset.close();
+			statement.close();
 		}
 		catch (Exception e)
 		{

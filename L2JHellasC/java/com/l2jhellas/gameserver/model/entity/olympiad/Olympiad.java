@@ -802,8 +802,8 @@ public class Olympiad
 			while (rset.next())
 				names.add(rset.getString(CHAR_NAME));
 			
-			statement.close();
 			rset.close();
+			statement.close();
 		}
 		catch (SQLException e)
 		{

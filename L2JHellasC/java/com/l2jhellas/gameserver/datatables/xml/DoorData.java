@@ -32,7 +32,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.PackRoot;
-import com.l2jhellas.gameserver.geodata.pathfinding.PathNode;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
@@ -124,11 +123,6 @@ public class DoorData
 							if (rangeZMin > rangeZMax)
 								_log.warning(DoorData.class.getName() + ": DoorTable: Error on rangeZ min/max, ID:" + id);
 
-							int collisionRadius; // (max) radius for movement checks
-							if ((rangeXMax - rangeXMin) > (rangeYMax - rangeYMin))
-								collisionRadius = rangeYMax - rangeYMin;
-							else
-								collisionRadius = rangeXMax - rangeXMin;
 							StatsSet npcDat = new StatsSet();
 							npcDat.set("npcId", id);
 							npcDat.set("level", 0);
@@ -144,8 +138,8 @@ public class DoorData
 							npcDat.set("baseAccCombat", 38);
 							npcDat.set("baseEvasRate", 38);
 							npcDat.set("baseCritRate", 38);
-							npcDat.set("collision_radius", collisionRadius);
-							npcDat.set("collision_height", rangeZMax - rangeZMin);
+							npcDat.set("collision_radius", Math.max(50, Math.min(rangeXMax - rangeXMin, rangeYMax - rangeYMin)));
+							npcDat.set("collision_height", rangeZMax - rangeZMin & 0xfff0);
 							npcDat.set("sex", "male");
 							npcDat.set("type", "");
 							npcDat.set("baseAtkRange", 0);
@@ -184,7 +178,6 @@ public class DoorData
 							door.setCurrentHpMp(door.getMaxHp(), door.getMaxMp());
 							door.setOpen(autoOpen);
 							door.setXYZInvisible(x, y, z);
-
 							putDoor(door);
 							door.spawnMe(door.getX(), door.getY(), door.getZ());
 							ClanHall clanhall = ClanHallManager.getInstance().getNearbyClanHall(door.getX(), door.getY(), 500);
@@ -332,7 +325,6 @@ public class DoorData
 		door.setCurrentHpMp(door.getMaxHp(), door.getMaxMp());
 		door.setOpen(autoOpen);
 		door.setXYZInvisible(x, y, z);
-
 		return door;
 	}
 
@@ -378,12 +370,30 @@ public class DoorData
 		}
 	}
 
-	public boolean checkIfDoorsBetween(PathNode start, PathNode end)
+	private void onStart()
 	{
-		return checkIfDoorsBetween(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
+		try
+		{
+			getDoor(24190001).openMe();
+			getDoor(24190002).openMe();
+			getDoor(24190003).openMe();
+			getDoor(24190004).openMe();
+			getDoor(23180001).openMe();
+			getDoor(23180002).openMe();
+			getDoor(23180003).openMe();
+			getDoor(23180004).openMe();
+			getDoor(23180005).openMe();
+			getDoor(23180006).openMe();
+
+			checkAutoOpen();
+		}
+		catch (NullPointerException e)
+		{
+			_log.warning(DoorData.class.getSimpleName() + ": There are errors in your Doors.xml file.");
+		}
 	}
 
-	public boolean checkIfDoorsBetween(int x, int y, int z, int tx, int ty, int tz)
+	public int checkIfDoorsBetween(int x, int y, int z, int tx, int ty, int tz)
 	{
 		int region;
 		try
@@ -394,7 +404,7 @@ public class DoorData
 		{
 			e.printStackTrace();
 
-			return false;
+			return 0;
 		}
 
 		for (L2DoorInstance doorInst : getDoors())
@@ -450,35 +460,13 @@ public class DoorData
 						{
 
 							if (((fx >= px1 && fx <= px2) || (fx >= px2 && fx <= px1)) && ((fy >= py1 && fy <= py2) || (fy >= py2 && fy <= py1)) && ((fz >= pz1 && fz <= pz2) || (fz >= pz2 && fz <= pz1)))
-								return true; // Door between
+								return doorInst.getTemplate().getCollisionRadius(); // Door between
 						}
 					}
 				}
 			}
 		}
-		return false;
+		return 0;
 	}
 
-	private void onStart()
-	{
-		try
-		{
-			getDoor(24190001).openMe();
-			getDoor(24190002).openMe();
-			getDoor(24190003).openMe();
-			getDoor(24190004).openMe();
-			getDoor(23180001).openMe();
-			getDoor(23180002).openMe();
-			getDoor(23180003).openMe();
-			getDoor(23180004).openMe();
-			getDoor(23180005).openMe();
-			getDoor(23180006).openMe();
-
-			checkAutoOpen();
-		}
-		catch (NullPointerException e)
-		{
-			_log.warning(DoorData.class.getSimpleName() + ": There are errors in your Doors.xml file.");
-		}
-	}
 }

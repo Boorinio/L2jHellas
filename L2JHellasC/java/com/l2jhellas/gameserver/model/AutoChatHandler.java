@@ -93,9 +93,11 @@ public class AutoChatHandler implements SpawnListener
 
 				registerGlobalChat(rs.getInt("npcId"), chatTexts, rs.getLong("chatDelay"));
 
+				rs2.close();
 				statement2.close();
 			}
 
+			rs.close();
 			statement.close();
 
 			_log.info(AutoChatHandler.class.getSimpleName() + ":  Loaded " + numLoaded + " chat group(s) from the database.");

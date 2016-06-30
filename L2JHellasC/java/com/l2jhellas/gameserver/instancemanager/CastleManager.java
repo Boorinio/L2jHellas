@@ -102,7 +102,7 @@ public class CastleManager
 			{
 				getCastles().add(new Castle(rs.getInt("id")));
 			}
-
+			rs.close();
 			statement.close();
 
 			_log.info(CastleManager.class.getSimpleName() + ": Loaded: " + getCastles().size() + " castles.");

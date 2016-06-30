@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.model;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.effects.EffectForce;
@@ -80,7 +80,7 @@ public final class ForceBuff
 				if (!Util.checkIfInRange(_skillCastRange, _caster, _target, true))
 					delete();
 
-				if (!GeoData.getInstance().canSeeTarget(_caster, _target))
+				if (!GeoEngine.canSeeTarget(_caster, _target,false))
 					delete();
 			}
 			catch (Exception e)

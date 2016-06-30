@@ -21,6 +21,8 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
@@ -220,10 +222,6 @@ abstract class AbstractAI implements Ctrl
 	 */
 	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
 	{
-
-		if (Config.DEBUG)
-			_log.config(AbstractAI.class.getName() + ": changeIntention -> " + intention + " " + arg0 + " " + arg1);
-
 		_intention = intention;
 		_intentionArg0 = arg0;
 		_intentionArg1 = arg1;
@@ -277,11 +275,8 @@ abstract class AbstractAI implements Ctrl
 	@Override
 	public final void setIntention(CtrlIntention intention, Object arg0, Object arg1)
 	{
-		if (!_actor.isVisible() || !_actor.hasAI())
+		if (!_actor.isVisible())
 			return;
-
-		if (Config.DEBUG)
-			_log.config(AbstractAI.class.getName() + ": setIntention -> " + intention + " " + arg0 + " " + arg1);
 
 		// Stop the follow mode if necessary
 		if (intention != AI_INTENTION_FOLLOW && intention != AI_INTENTION_ATTACK)
@@ -371,15 +366,14 @@ abstract class AbstractAI implements Ctrl
 	 * @param arg1
 	 *        The second parameter of the Event (optional target)
 	 */
+	@SuppressWarnings("incomplete-switch")
 	@Override
-	
 	public final void notifyEvent(CtrlEvent evt, Object arg0, Object arg1)
 	{
-		if (!_actor.isVisible() || !_actor.hasAI())
+		if ((!_actor.isVisible() && !_actor.isTeleporting()) || !_actor.hasAI())
+		{
 			return;
-
-		if (Config.DEBUG)
-			_log.config(AbstractAI.class.getName() + ": notifyEvent -> " + evt + " " + arg0 + " " + arg1);
+		}
 
 		switch (evt)
 		{
@@ -408,16 +402,19 @@ abstract class AbstractAI implements Ctrl
 				onEvtMuted((L2Character) arg0);
 			break;
 			case EVT_READY_TO_ACT:
+				if (!_actor.isCastingNow())
 				onEvtReadyToAct();
 			break;
 			case EVT_USER_CMD:
 				onEvtUserCmd(arg0, arg1);
 			break;
 			case EVT_ARRIVED:
-				onEvtArrived();
+				if (!_actor.isCastingNow())
+					onEvtArrived();
 			break;
 			case EVT_ARRIVED_REVALIDATE:
-				onEvtArrivedRevalidate();
+				if (_actor.isMoving())
+					onEvtArrivedRevalidate();
 			break;
 			case EVT_ARRIVED_BLOCKED:
 				onEvtArrivedBlocked((L2CharPosition) arg0);
@@ -437,9 +434,6 @@ abstract class AbstractAI implements Ctrl
 			case EVT_FINISH_CASTING:
 				onEvtFinishCasting();
 			break;
-			default:
-				onEvtThink();
-				break;
 		}
 	}
 
@@ -539,7 +533,7 @@ abstract class AbstractAI implements Ctrl
 				else if (_actor.isOnGeodataPath())
 				{
 					// minimum time to calculate new route is 2 seconds
-					if (GameTimeController.getGameTicks() < (_moveToPawnTimeout + 10))
+					if (GameTimeController.getGameTicks() < (_moveToPawnTimeout + 15))
 						return;
 				}
 			}
@@ -551,13 +545,11 @@ abstract class AbstractAI implements Ctrl
 			_moveToPawnTimeout = GameTimeController.getGameTicks();
 			_moveToPawnTimeout += 1000 / GameTimeController.MILLIS_IN_TICK;
 
-			if (pawn == null || _accessor == null)
+			if (pawn == null)
 				return;
 
-			// Calculate movement data for a move to location action and add the actor to movingObjects of GameTimeController
-			_accessor.moveTo(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
-			
-
+			 _actor.moveToLocation(pawn.getX(),pawn.getY(),pawn.getZ(), offset);
+	
 			if (!_actor.isMoving())
 			{
 				_actor.sendPacket(ActionFailed.STATIC_PACKET);
@@ -600,11 +592,10 @@ abstract class AbstractAI implements Ctrl
 			_clientMovingToPawnOffset = 0;
 
 			// Calculate movement data for a move to location action and add the actor to movingObjects of GameTimeController
-			_accessor.moveTo(x, y, z);
-
+			_actor.moveToLocation(x, y, z, 0);
+			
 			// Send a Server->Client packet CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
-			CharMoveToLocation msg = new CharMoveToLocation(_actor);
-			_actor.broadcastPacket(msg);
+			_actor.broadcastPacket(new CharMoveToLocation(_actor));
 		}
 		else
 		{
@@ -649,9 +640,6 @@ abstract class AbstractAI implements Ctrl
 	 */
 	protected void clientStopMoving(L2CharPosition pos)
 	{
-		if (Config.DEBUG)
-			_log.config(AbstractAI.class.getName() + ": clientStopMoving();");
-
 		// Stop movement of the L2Character
 		if (_actor.isMoving())
 			_accessor.stopMove(pos);
@@ -782,7 +770,7 @@ abstract class AbstractAI implements Ctrl
 	 */
 	public void describeStateToPlayer(L2PcInstance player)
 	{
-		if (_clientMoving)
+		if (player !=null && _clientMoving)
 		{
 			if (_clientMovingToPawnOffset != 0 && _followTarget != null)
 			{

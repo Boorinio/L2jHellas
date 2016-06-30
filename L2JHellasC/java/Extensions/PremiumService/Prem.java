@@ -45,6 +45,7 @@ public class Prem
 					_end_pr_date = rset.getLong("enddate");
 				}
 			}
+			rset.close();
 			statement.close();
 		}
 		catch (SQLException e)

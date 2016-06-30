@@ -5,7 +5,7 @@ title L2J Hellas Game Server Console http://l2jhellas.info/
 
 REM -------------------------------------
 REM Default parameters for a basic server.
-java -Dfile.encoding=UTF-8 -Xmx768m -Xmn256m -Xmn256m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*; com.l2jhellas.gameserver.GameServer
+java -Dfile.encoding=UTF-8 -Xmx1536m -Xmn512m -Xmn512m -XX:SurvivorRatio=8 -Xnoclassgc -XX:+AggressiveOpts -cp ./../libs/*;l2jhellas.jar com.l2jhellas.gameserver.GameServer
 REM -------------------------------------
 REM If you have a big server and lots of memory,
 REM you could experiment for example with:

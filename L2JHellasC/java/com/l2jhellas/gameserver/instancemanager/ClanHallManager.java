@@ -103,6 +103,7 @@ public class ClanHallManager
 
 				}
 			}
+			rs.close();
 			statement.close();
 			_log.info(ClanHallManager.class.getSimpleName() + ": Loaded: " + getClanHalls().size() + " taken clan halls.");
 			_log.info(ClanHallManager.class.getSimpleName() + ": Loaded: " + getFreeClanHalls().size() + " free clan halls.");

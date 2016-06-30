@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 import Extensions.RankSystem.Rank;
 import Extensions.RankSystem.RankTable;
 
+import com.l2jhellas.gameserver.geodata.PathFindBuffers;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.shield.antiflood.FloodProtectorConfig;
 import com.l2jhellas.util.StringUtil;
@@ -104,6 +105,28 @@ public final class Config
 	private static final String LOGIN_CONFIGURATION_FILE = "./config/Network/LoginServer.ini";
 	private static final String LS_IP = "./config/Network/IPConfig/IPLoginServer.ini";
 
+    /** GeoData */
+    public static boolean GEODATA;
+	public static int GEO_X_FIRST, GEO_Y_FIRST, GEO_X_LAST, GEO_Y_LAST;
+    public static boolean ACCEPT_GEOEDITOR_CONN;
+    public static boolean CONTROL_HEIGHT_DAMAGE;
+    public static boolean PATH_CLEAN;
+    public static boolean ALLOW_DOORS;
+    public static boolean SIMPLE_PATHFIND_FOR_MOBS;
+    public static boolean ALLOW_FALL_FROM_WALLS;
+    public static int PATHFIND_BOOST;
+	public static boolean PATHFIND_DIAGONAL;
+	public static int PATHFIND_MAX_Z_DIFF;
+    public static int MAX_Z_DIFF;
+	public static int MIN_LAYER_HEIGHT;
+	public static double WEIGHT0;
+	public static double WEIGHT1;
+	public static double WEIGHT2;
+    public static boolean COMPACT_GEO;
+	public static int COORD_SYNCHRONIZE;
+	public static int GEOEDITOR_PORT;
+    
+    
 	//===============================================================================
 	//================================
 	// GameServer LoginServer Configs
@@ -735,16 +758,6 @@ public final class Config
 	public static boolean OLY_SAME_IP;
 	public static ArrayList<Integer> OLY_RESTRICTED_ITEMS_LIST = new ArrayList<Integer>();
 	/** new Olympiad  end*/
-
-	/**
-	 * Geodata Config File
-	 */
-	public static boolean ACCEPT_GEOEDITOR_CONN;
-	public static int COORD_SYNCHRONIZE;
-	public static int GEODATA;
-	public static boolean FORCE_GEODATA;
-	public static boolean GEODATA_CELLFINDING;
-	public static int GEOEDITOR_PORT;
 
 	/**
 	 * Options Config File
@@ -2482,13 +2495,31 @@ public final class Config
 			{
 				_log.severe(Config.class.getName() + ": Error while loading " + GEO_FILE + " settings!");
 			}
-			ACCEPT_GEOEDITOR_CONN = Boolean.parseBoolean(geoSettings.getProperty("AcceptGeoeditorConn", "False"));
-			COORD_SYNCHRONIZE = Integer.parseInt(geoSettings.getProperty("CoordSynchronize", "-1"));
-			GEODATA = Integer.parseInt(geoSettings.getProperty("GeoData", "0"));
-			FORCE_GEODATA = Boolean.parseBoolean(geoSettings.getProperty("ForceGeoData", "True"));
-			GEODATA_CELLFINDING = Boolean.parseBoolean(geoSettings.getProperty("GeoCellFinding", "False"));
-			GEOEDITOR_PORT = Integer.parseInt(geoSettings.getProperty("GeoPort", "2109"));
-
+			 GEODATA =  Boolean.parseBoolean(geoSettings.getProperty("GeoData", "false"));
+				GEO_X_FIRST = Integer.parseInt(geoSettings.getProperty("GeoFirstX", "15"));
+				GEO_Y_FIRST = Integer.parseInt(geoSettings.getProperty("GeoFirstY", "10"));
+				GEO_X_LAST = Integer.parseInt(geoSettings.getProperty("GeoLastX", "26"));
+				GEO_Y_LAST = Integer.parseInt(geoSettings.getProperty("GeoLastY", "26"));
+				
+                CONTROL_HEIGHT_DAMAGE       =  Boolean.parseBoolean(geoSettings.getProperty("ControlHeightDamage", "true"));
+				PATH_CLEAN =  Boolean.parseBoolean(geoSettings.getProperty("PathClean", "true"));
+				ALLOW_DOORS =  Boolean.parseBoolean(geoSettings.getProperty("AllowDoors", "false"));
+				SIMPLE_PATHFIND_FOR_MOBS =  Boolean.parseBoolean(geoSettings.getProperty("SimplePathFindForMobs", "true"));
+				ALLOW_FALL_FROM_WALLS =  Boolean.parseBoolean(geoSettings.getProperty("AllowFallFromWalls", "false"));
+				PATHFIND_BOOST = Integer.parseInt(geoSettings.getProperty("PathFindBoost", "2"));
+				PATHFIND_DIAGONAL = Boolean.parseBoolean(geoSettings.getProperty("PathFindDiagonal", "true"));
+				PATHFIND_MAX_Z_DIFF = Integer.parseInt(geoSettings.getProperty("PathFindMaxZDiff", "32"));
+				MAX_Z_DIFF = Integer.parseInt(geoSettings.getProperty("MaxZDiff", "64"));
+				MIN_LAYER_HEIGHT = Integer.parseInt(geoSettings.getProperty("MinLayerHeight", "64"));
+				WEIGHT0 = Double.parseDouble(geoSettings.getProperty("Weight0", "0.5"));
+				WEIGHT1 = Double.parseDouble(geoSettings.getProperty("Weight1", "2.0"));
+				WEIGHT2 = Double.parseDouble(geoSettings.getProperty("Weight2", "1.0"));
+				PathFindBuffers.initBuffers(geoSettings.getProperty("PathFindBuffers", "8x100;8x128;8x192;4x256;2x320;2x384;1x500"));
+				COMPACT_GEO =Boolean.parseBoolean(geoSettings.getProperty("CompactGeoData", "false"));
+				ACCEPT_GEOEDITOR_CONN = Boolean.parseBoolean(geoSettings.getProperty("AcceptGeoeditorConn", "False"));
+				GEOEDITOR_PORT = Integer.parseInt(geoSettings.getProperty("GeoPort", "2109"));
+				COORD_SYNCHRONIZE = Integer.parseInt(geoSettings.getProperty("CoordSynchronize", "-1"));
+				
 			/**
 			 * Options
 			 */

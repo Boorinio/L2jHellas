@@ -20,11 +20,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.logs.GMAudit;
 
-/**
- * @author Luno, Dezmond
- */
 public class AdminGeoEditor implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
@@ -38,9 +34,6 @@ public class AdminGeoEditor implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-
 		if (!Config.ACCEPT_GEOEDITOR_CONN)
 		{
 			activeChar.sendMessage("Server do not accepts geoeditor connections now.");

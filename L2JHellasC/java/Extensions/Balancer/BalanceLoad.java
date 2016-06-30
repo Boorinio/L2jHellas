@@ -74,14 +74,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT ev FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("ev");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT ev FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+		
+			if (rset.next())
+				i = rset.getInt("ev");
+			
+			rset.close();			
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -96,14 +98,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT acc FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("acc");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT acc FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+			
+			if (rset.next())
+				i = rset.getInt("acc");
+			
+			rset.close();		
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -118,14 +122,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT walk FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("walk");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT walk FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("walk");
+			
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -139,14 +145,16 @@ public class BalanceLoad
 	public static int loadPAtk(int classId)
 	{
 		int i = 0;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT patk FROM balance WHERE class_id=" + classId);)
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("patk");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT patk FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+			
+			if (rset.next())
+				i = rset.getInt("patk");
+			
+			rset.close();		
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -161,14 +169,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT matk FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("matk");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT matk FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("matk");
+			
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -183,14 +193,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT pdef FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("pdef");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT pdef FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("pdef");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -206,14 +218,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT mdef FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("mdef");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT mdef FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("mdef");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -229,14 +243,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT hp FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("hp");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT hp FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("hp");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -252,14 +268,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT cp FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("cp");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT cp FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("cp");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -275,14 +293,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT mp FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("mp");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT mp FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("mp");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -298,14 +318,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT matksp FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("matksp");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT matksp FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("matksp");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -321,14 +343,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT patksp FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("patksp");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT patksp FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("patksp");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -344,14 +368,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT critical FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("critical");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT critical FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("critical");
+			
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -367,14 +393,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT magiccritical FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("magiccritical");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT magiccritical FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("magiccritical");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -390,14 +418,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT walkspeed FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("walkspeed");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT walkspeed FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+			
+			if (rset.next())
+				i = rset.getInt("walkspeed");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -413,14 +443,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT matkrange FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("matkrange");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT matkrange FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("matkrange");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -436,14 +468,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT mreuserate FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("mreuserate");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT mreuserate FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("mreuserate");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -459,14 +493,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT preuserate FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("preuserate");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT preuserate FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("preuserate");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -482,14 +518,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT INT_ FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("INT_");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT INT_ FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("INT_");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -505,14 +543,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT MEN FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("MEN");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT MEN FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("MEN");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -528,14 +568,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT WIT FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("WIT");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT WIT FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("WIT");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -551,14 +593,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT CON FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("CON");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT CON FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("CON");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -574,14 +618,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT STR FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("STR");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT STR FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("STR");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{
@@ -597,14 +643,16 @@ public class BalanceLoad
 	{
 		int i = 0;
 
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stm = con.prepareStatement("SELECT DEX FROM balance WHERE class_id=" + classId))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (ResultSet rset = stm.executeQuery())
-			{
-				if (rset.next())
-					i = rset.getInt("DEX");
-			}
+			PreparedStatement stm = con.prepareStatement("SELECT DEX FROM balance WHERE class_id=" + classId);
+			ResultSet rset = stm.executeQuery();
+
+			if (rset.next())
+				i = rset.getInt("DEX");
+
+			rset.close();
+			stm.close();
 		}
 		catch (Exception e)
 		{

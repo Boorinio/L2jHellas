@@ -496,82 +496,67 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	
 	private static void autoEquip(final L2PcInstance player)
 	{
-		final ClassId HDagger =ClassId.adventurer;
-		final ClassId Sagi =ClassId.sagittarius;
-		final ClassId Duelist =ClassId.duelist;
-		final ClassId Tit =ClassId.titan;
-		final ClassId Nixas =ClassId.grandKhauatari;
-		final ClassId Paladin =ClassId.phoenixKnight;
-		final ClassId MSentinel =ClassId.moonlightSentinel;
-		final ClassId FSeeker =ClassId.fortuneSeeker;
-		final ClassId Maestro =ClassId.maestro;
-		final ClassId dreadnought =ClassId.dreadnought;
-		final ClassId hellKnight =ClassId.hellKnight;
-		final ClassId evaTemplar =ClassId.evaTemplar;
-		final ClassId swordMuse =ClassId.swordMuse;
-		final ClassId windRider =ClassId.windRider;
-		final ClassId shillienTemplar =ClassId.shillienTemplar;
-		final ClassId spectralDancer =ClassId.spectralDancer;
-		final ClassId ghostHunter =ClassId.ghostHunter;
-		final ClassId ghostSentinel =ClassId.ghostSentinel;
-
-		if(player.getClassId().equals(HDagger))
-			player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
-			
-		else if(player.getClassId().equals(Sagi))
-			player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
-			
-		else if(player.getClassId().isMage())
-			player.giveItems(false,false,true,false,false,false,false,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(Duelist))
-			player.giveItems(false,false,false,true,false,false,false,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(Tit))
-			player.giveItems(false,false,false,false,true,false,false,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(Nixas))
-			player.giveItems(false,false,false,false,false,true,false,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(Paladin))
-			player.giveItems(false,false,false,false,false,false,true,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(MSentinel))
-			player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(FSeeker))
-			player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
-		
-		else if(player.getClassId().equals(Maestro))
-			player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
-		
-		else if(player.getClassId().equals(dreadnought))
-			player.giveItems(false,false,false,false,false,false,false,false,true,false,false,false);
-		
-		else if(player.getClassId().equals(hellKnight))
-			player.giveItems(false,false,false,false,false,false,false,false,false,true,false,false);
-		
-		else if(player.getClassId().equals(evaTemplar))
-			player.giveItems(false,false,false,false,false,false,false,false,false,true,false,false);
-		
-		else if(player.getClassId().equals(swordMuse))			
-			player.giveItems(false,false,false,false,false,false,false,false,false,false,true,false);
-		
-		else if(player.getClassId().equals(windRider))			
-			player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(shillienTemplar))
-			player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
-				
-		else if(player.getClassId().equals(spectralDancer))
-			player.giveItems(false,false,false,false,false,false,false,false,false,false,false,true);
-		
-		else if(player.getClassId().equals(ghostHunter))
-			player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
-		
-		else if(player.getClassId().equals(ghostSentinel))
-			player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
-		
+		switch (player.getClassId())
+		{
+			case adventurer:
+				player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
+                break;
+			case sagittarius:
+				player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
+                break;
+			case duelist:
+				player.giveItems(false,false,false,true,false,false,false,false,false,false,false,false);
+				break;
+			case titan:			
+				player.giveItems(false,false,false,false,true,false,false,false,false,false,false,false);
+                break;
+			case grandKhauatari:
+				player.giveItems(false,false,false,false,false,true,false,false,false,false,false,false);
+                break;
+			case phoenixKnight:
+				player.giveItems(false,false,false,false,false,false,true,false,false,false,false,false);
+                break;
+			case moonlightSentinel:
+				player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
+                break;
+			case fortuneSeeker:
+				player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
+                break;
+			case maestro:
+				player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
+                break;
+			case dreadnought:
+				player.giveItems(false,false,false,false,false,false,false,false,true,false,false,false);
+                break;
+			case hellKnight:
+				player.giveItems(false,false,false,false,false,false,false,false,false,true,false,false);
+                break;
+			case evaTemplar:
+				player.giveItems(false,false,false,false,false,false,false,false,false,true,false,false);
+                break;
+			case swordMuse:
+				player.giveItems(false,false,false,false,false,false,false,false,false,false,true,false);
+                break;
+			case windRider:
+				player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
+			    break;
+			case shillienTemplar:
+				player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
+			    break;
+			case spectralDancer:
+				player.giveItems(false,false,false,false,false,false,false,false,false,false,false,true);
+			    break;
+			case ghostHunter:
+				player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
+			    break;
+			case ghostSentinel:
+				player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
+			     break;
+			default:
+				if(player.getClassId().isMage())
+					player.giveItems(false,false,true,false,false,false,false,false,false,false,false,false);
+		}	
+		player.sendPacket(new ActionFailed());
 	}
 	
 	private final void HtmlShow(L2PcInstance player)

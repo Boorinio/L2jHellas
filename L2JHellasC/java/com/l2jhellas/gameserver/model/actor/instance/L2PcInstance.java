@@ -76,7 +76,7 @@ import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -357,11 +357,17 @@ public final class L2PcInstance extends L2Playable
 			// cancel the recent fake-death protection instantly if the player
 			// attacks or casts spells
 			getPlayer().setRecentFakeDeath(false);
-			for (L2CubicInstance cubic : getCubics().values())
-				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
-				{
-					cubic.doAction(target);
-				}
+			
+			if(getCubics() != null)
+			{
+			     for (L2CubicInstance cubic : getCubics().values())
+			     {
+			       if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+			       {
+					   cubic.doAction(target);
+			       }
+			     }
+			}
 		}
 		
 		@Override
@@ -711,6 +717,9 @@ public final class L2PcInstance extends L2Playable
 					player.createPSdb();
 					player.setPremiumService(0);
 				}
+				
+				rset.close();
+				statement.close();
 			}
 		}
 		catch (SQLException e)
@@ -2179,6 +2188,7 @@ public final class L2PcInstance extends L2Playable
 				{
 					statement.setInt(1, getObjectId());
 					statement.setInt(2, target.getObjectId());
+					rset.close();
 					statement.close();
 				}
 			}
@@ -4595,9 +4605,9 @@ public final class L2PcInstance extends L2Playable
 					}
 					else
 					{
-						if (Config.GEODATA > 0)
+						if (Config.GEODATA)
 						{
-							if (GeoData.getInstance().canSeeTarget(player, this))
+							if (GeoEngine.canSeeTarget(player, this, player.isFlying()))
 							{
 								player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
 								player.onActionRequest();
@@ -4612,9 +4622,9 @@ public final class L2PcInstance extends L2Playable
 				}
 				else
 				{
-					if (Config.GEODATA > 0)
+					if (Config.GEODATA)
 					{
-						if (GeoData.getInstance().canSeeTarget(player, this))
+						if(GeoEngine.canSeeTarget(player, this, player.isFlying()))
 						{
 							player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
 						}
@@ -7407,7 +7417,9 @@ public final class L2PcInstance extends L2Playable
 								String charName = chars.getString("char_name");
 								player._chars.put(charId, charName);
 							}
+							chars.close();
 						}
+						stmt.close();
 					}
 				}
 			
@@ -7495,8 +7507,7 @@ public final class L2PcInstance extends L2Playable
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(RESTORE_CHAR_SUBCLASSES);
-			statement.setInt(1, player.getObjectId());
-			
+			statement.setInt(1, player.getObjectId());			
 			ResultSet rset = statement.executeQuery();
 			
 			while (rset.next())
@@ -7511,8 +7522,7 @@ public final class L2PcInstance extends L2Playable
 				// Enforce the correct indexing of _subClasses against their class indexes.
 				player.getSubClasses().put(subClass.getClassIndex(), subClass);
 			}
-			
-			
+						
 			rset.close();
 			statement.close();
 		}
@@ -8213,8 +8223,7 @@ public final class L2PcInstance extends L2Playable
 	public void restoreEffects()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			
+		{			
 			PreparedStatement statement = con.prepareStatement(RESTORE_SKILL_SAVE);
 			statement.setInt(1, getObjectId());
 			statement.setInt(2, getClassIndex());
@@ -9335,11 +9344,24 @@ public final class L2PcInstance extends L2Playable
 			}
 	    }
 		// GeoData Los Check here
-		if (skill.getCastRange() > 0 && !GeoData.getInstance().canSeeTarget(this, target))
+		if (skill.getCastRange() > 0)
 		{
-			sendPacket(SystemMessageId.CANT_SEE_TARGET);
-			sendPacket(ActionFailed.STATIC_PACKET);
-			return;
+			
+			if (sklTargetType == L2SkillTargetType.TARGET_GROUND)
+			{
+				if (!GeoEngine.canSeeCoord(this.getX(), this.getY(), this.getZ(), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), isFlying()))
+				{
+					sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
+					sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+			}
+			else if (!GeoEngine.canSeeTarget(this, target, isFlying()))
+			{
+				sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
+				sendPacket(ActionFailed.STATIC_PACKET);
+				return;
+			}			
 		}
 		
 		// If all conditions are checked, create a new SkillDat object and set the player _currentSkill
@@ -13508,11 +13530,12 @@ public final class L2PcInstance extends L2Playable
 					int a = rs.getInt("a" + i);
 					
 					if (!_completedAchievements.contains(i))
+					{
 						if (a == 1 || String.valueOf(a).startsWith("1"))
-						{
 							_completedAchievements.add(i);
-						}
+					}
 				}
+				rs.close();
 			}
 			else
 			{
@@ -13524,11 +13547,11 @@ public final class L2PcInstance extends L2Playable
 				}
 				
 				String s = "INSERT INTO achievements(" + values + ") VALUES (" + questionMarks + ")";
-				PreparedStatement insertStatement = con.prepareStatement(s);
-				
+				PreparedStatement insertStatement = con.prepareStatement(s);				
 				insertStatement.execute();
 				insertStatement.close();
 			}
+			statement.close();
 		}
 		catch (SQLException e)
 		{
@@ -13922,6 +13945,8 @@ public final class L2PcInstance extends L2Playable
 					results++;
 				}
 				
+				result.close();
+				statement.close();
 			}
 			catch (Exception e)
 			{
@@ -14220,8 +14245,6 @@ public final class L2PcInstance extends L2Playable
 		
 		if (dagger)
 		{
-			if (armorIdDagger.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdDagger)
 			{
@@ -14239,8 +14262,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (sagi)
 		{
-			if (armorIdSagi.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdSagi)
 			{
@@ -14258,8 +14279,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (mage)
 		{
-			if (armorIdMage.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdMage)
 			{
@@ -14277,8 +14296,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (duelist)
 		{
-			if (armorIdDuelist.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdDuelist)
 			{
@@ -14296,8 +14313,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (tit)
 		{
-			if (armorIdTit.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdTit)
 			{
@@ -14315,8 +14330,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (nixas)
 		{
-			if (armorIdNixas.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdNixas)
 			{
@@ -14334,8 +14347,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (paladin)
 		{
-			if (armorIdPaladin.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdPaladin)
 			{
@@ -14353,8 +14364,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (FSeeker)
 		{
-			if (armorIdFSeeker.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdFSeeker)
 			{
@@ -14372,8 +14381,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (dreadnought)
 		{
-			if (armorIddreadnought.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIddreadnought)
 			{
@@ -14391,8 +14398,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (HellKnight)
 		{
-			if (armorIdhellKnight.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdhellKnight)
 			{
@@ -14410,8 +14415,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (swordMuse)
 		{
-			if (armorIdswordMuse.length == 0)
-				return;
+
 			L2ItemInstance items = null;
 			for (int id : armorIdswordMuse)
 			{
@@ -14429,8 +14433,6 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (dancer)
 		{
-			if (armorIdDancer.length == 0)
-				return;
 			L2ItemInstance items = null;
 			for (int id : armorIdDancer)
 			{
@@ -15220,4 +15222,21 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 	}
+    
+	/*public void CalculateFalling(int height)
+	{
+		if(isDead() || isFlying())
+			return;
+		
+		int maxHp = getMaxHp();
+		int curHp = (int) getCurrentHp();
+		int damage = (int) calcStat(Stats.FALL_VULN, maxHp / 1000 * height, null, null);
+		
+		if(curHp - damage < 1)
+			setCurrentHp(1);
+		else
+			setCurrentHp(curHp - damage);
+		
+		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FALL_DAMAGE_S1).addNumber(damage));
+	}*/
 }

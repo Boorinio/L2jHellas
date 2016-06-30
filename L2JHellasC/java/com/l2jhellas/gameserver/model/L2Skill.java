@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -1292,7 +1292,7 @@ public abstract class L2Skill
 							continue;
 						if (src != null)
 						{
-							if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
+							if (!GeoEngine.canSeeTarget(activeChar, obj,false))
 								continue;
 							// check if both attacker and target are L2PcInstances and if they are in same party
 							if (obj instanceof L2PcInstance)
@@ -1384,7 +1384,7 @@ public abstract class L2Skill
 						continue;
 					target = (L2Character) obj;
 
-					if (!GeoData.getInstance().canSeeTarget(activeChar, target))
+					if (!GeoEngine.canSeeTarget(activeChar, target,false))
 						continue;
 
 					if (!target.isAlikeDead() && (target != activeChar))
@@ -1891,7 +1891,7 @@ public abstract class L2Skill
 						if (!Util.checkIfInRange(radius, target, obj, true))
 							continue;
 
-						if (!GeoData.getInstance().canSeeTarget(activeChar, obj))
+						if (!GeoEngine.canSeeTarget(activeChar, obj,false))
 							continue;
 
 						if (obj instanceof L2PcInstance && src != null)
@@ -2035,7 +2035,7 @@ public abstract class L2Skill
 						else
 							continue;
 
-						if (!GeoData.getInstance().canSeeTarget(activeChar, target))
+						if (!GeoEngine.canSeeTarget(activeChar, target,false))
 							continue;
 
 						if (!target.isAlikeDead()) // If target is not dead/fake death and not self
@@ -2103,7 +2103,7 @@ public abstract class L2Skill
 						if (obj == null)
 							continue;
 
-						if (!GeoData.getInstance().canSeeTarget(activeChar, target))
+						if (!GeoEngine.canSeeTarget(activeChar, target,false))
 							continue;
 
 						if (!target.isAlikeDead()) // If target is not dead/fake death and not self

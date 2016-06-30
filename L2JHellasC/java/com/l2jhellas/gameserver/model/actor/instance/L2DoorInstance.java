@@ -52,7 +52,7 @@ public class L2DoorInstance extends L2Character
 	/** The castle index in the array of L2Castle this L2NpcInstance belongs to */
 	private int _castleIndex = -2;
 	private int _mapRegion = -1;
-
+	
 	// when door is closed, the dimensions are
 	private int _rangeXMin = 0;
 	private int _rangeYMin = 0;
@@ -73,7 +73,7 @@ public class L2DoorInstance extends L2Character
 	private int _D = 0;
 	protected final int _doorId;
 	protected final String _name;
-	private boolean _open;
+	private boolean _open =false;
 	private final boolean _unlockable;
 
 	private ClanHall _clanHall;

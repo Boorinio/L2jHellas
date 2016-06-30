@@ -300,8 +300,8 @@ public class AchievementsManager
 					}
 				}
 			}
-			statement.close();
 			rs.close();
+			statement.close();
 		}
 		catch (SQLException e)
 		{

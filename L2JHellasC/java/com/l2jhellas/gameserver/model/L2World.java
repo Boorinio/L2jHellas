@@ -17,38 +17,39 @@ package com.l2jhellas.gameserver.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.util.Point3D;
 
 public final class L2World
 {
 	private static Logger _log = Logger.getLogger(L2World.class.getName());
 	
-	// Geodata min/max tiles
-	public static final int TILE_X_MIN = 16;
-	public static final int TILE_X_MAX = 26;
-	public static final int TILE_Y_MIN = 10;
-	public static final int TILE_Y_MAX = 25;
-	
-	// Map dimensions
-	public static final int TILE_SIZE = 32768;
-	public static final int WORLD_X_MIN = (TILE_X_MIN - 20) * TILE_SIZE;
-	public static final int WORLD_X_MAX = (TILE_X_MAX - 19) * TILE_SIZE;
-	public static final int WORLD_Y_MIN = (TILE_Y_MIN - 18) * TILE_SIZE;
-	public static final int WORLD_Y_MAX = (TILE_Y_MAX - 17) * TILE_SIZE;
-	
-	// Regions and offsets
-	private static final int REGION_SIZE = 4096;
-	private static final int REGIONS_X = (WORLD_X_MAX - WORLD_X_MIN) / REGION_SIZE;
-	private static final int REGIONS_Y = (WORLD_Y_MAX - WORLD_Y_MIN) / REGION_SIZE;
-	private static final int REGION_X_OFFSET = Math.abs(WORLD_X_MIN / REGION_SIZE);
-	private static final int REGION_Y_OFFSET = Math.abs(WORLD_Y_MIN / REGION_SIZE);
+	public static final int SHIFT_BY = 12;
+
+	/** Map dimensions */
+	public static final int MAP_MIN_X = 15 - 20 << 15;
+	public static final int MAP_MAX_X = (26 - 19 << 15) - 1;
+	public static final int MAP_MIN_Y = 10 - 18 << 15;
+	public static final int MAP_MAX_Y = (26 - 17 << 15) - 1;
+	public static final int MAP_MIN_Z = -32768;
+	public static final int MAP_MAX_Z = 32767;
+
+	public static final int WORLD_SIZE_X = Config.GEO_X_LAST - Config.GEO_X_FIRST + 1;
+	public static final int WORLD_SIZE_Y = Config.GEO_Y_LAST - Config.GEO_Y_FIRST + 1;
+	/** calculated offset used so top left region is 0,0 */
+	public static final int OFFSET_X = Math.abs(MAP_MIN_X >> SHIFT_BY);
+	public static final int OFFSET_Y = Math.abs(MAP_MIN_Y >> SHIFT_BY);
+
+	/** number of regions */
+	private static final int REGIONS_X = (MAP_MAX_X >> SHIFT_BY) + OFFSET_X;
+	private static final int REGIONS_Y = (MAP_MAX_Y >> SHIFT_BY) + OFFSET_Y;
 	
 	private final Map<Integer, L2PcInstance> _allPlayers = new ConcurrentHashMap<>();
 	private final Map<Integer, L2Object> _allObjects = new ConcurrentHashMap<>();
@@ -70,24 +71,15 @@ public final class L2World
 		return SingletonHolder._instance;
 	}
 	
-	/**
-	 * @param regionX
-	 * @return World X of given region X coordinate.
-	 */
-	public static final int getRegionX(int regionX)
+	public L2WorldRegion getRegion(Point3D point)
 	{
-		return (regionX - REGION_X_OFFSET) * REGION_SIZE;
+		return _worldRegions[(point.getX() >> SHIFT_BY) + OFFSET_X][(point.getY() >> SHIFT_BY) + OFFSET_Y];
 	}
-	
-	/**
-	 * @param regionY
-	 * @return World Y of given region Y coordinate.
-	 */
-	public static final int getRegionY(int regionY)
+
+	public L2WorldRegion getRegion(int x, int y)
 	{
-		return (regionY - REGION_Y_OFFSET) * REGION_SIZE;
+		return _worldRegions[(x >> SHIFT_BY) + OFFSET_X][(y >> SHIFT_BY) + OFFSET_Y];
 	}
-	
 	/**
 	 * Add L2Object object in _allObjects.
 	 * @param object The object to add.
@@ -360,7 +352,7 @@ public final class L2World
 	 * @param radius Radius of the circular area
 	 * @return all visible objects of the L2WorldRegions in the circular area (radius) centered on the object.
 	 */
-	public static List<L2Object> getVisibleObjects(L2Object object, int radius)
+	public static ArrayList<L2Object> getVisibleObjects(L2Object object, int radius)
 	{
 		if (object == null || !object.isVisible())
 			return new ArrayList<>();
@@ -369,8 +361,8 @@ public final class L2World
 		int y = object.getY();
 		int sqRadius = radius * radius;
 		
-		// Create an FastList in order to contain all visible L2Object
-		List<L2Object> result = new ArrayList<>();
+		// Create an ArrayList in order to contain all visible L2Object
+		ArrayList<L2Object> result = new ArrayList<>();
 		
 		// Go through the FastList of region
 		for (L2WorldRegion regi : object.getWorldRegion().getSurroundingRegions())
@@ -387,7 +379,7 @@ public final class L2World
 				double dx = x1 - x;
 				double dy = y1 - y;
 				
-				// If the visible object is inside the circular area add the object to the FastList result
+				// If the visible object is inside the circular area add the object to the ArrayList result
 				if (dx * dx + dy * dy < sqRadius)
 					result.add(_object);
 			}
@@ -403,11 +395,6 @@ public final class L2World
 	public L2WorldRegion getRegion(Location point)
 	{
 		return getRegion(point.getX(), point.getY());
-	}
-	
-	public L2WorldRegion getRegion(int x, int y)
-	{
-		return _worldRegions[(x - WORLD_X_MIN) / REGION_SIZE][(y - WORLD_Y_MIN) / REGION_SIZE];
 	}
 	
 	/**

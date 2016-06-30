@@ -16,7 +16,7 @@ package ai.group;
 
 import ai.AbstractNpcAI;
 
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
@@ -103,7 +103,7 @@ public class Monastery extends AbstractNpcAI
 	{
 		for (L2PcInstance target : npc.getKnownList().getKnownPlayers().values())
 		{
-			if (!target.isDead() && GeoData.getInstance().canSeeTarget(npc, target) && Util.checkIfInRange(npc.getAggroRange(), npc, target, true))
+			if (!target.isDead() && GeoEngine.canSeeTarget(npc, target,false) && Util.checkIfInRange(npc.getAggroRange(), npc, target, true))
 			{
 				if (target.getActiveWeaponInstance() != null && !npc.isInCombat() && npc.getTarget() == null)
 				{

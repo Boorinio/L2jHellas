@@ -870,7 +870,9 @@ public class L2Clan
 							}
 							member.initApprenticeAndSponsor(clanMembers.getInt("apprentice"), clanMembers.getInt("sponsor"));
 						}
+						clanMembers.close();
 					}
+					statement2.close();
 				}
 				catch (Exception e)
 				{
@@ -904,7 +906,6 @@ public class L2Clan
 			// Retrieve all skills of this L2PcInstance from the database
 			PreparedStatement statement = con.prepareStatement("SELECT skill_id,skill_level FROM clan_skills WHERE clan_id=?");
 			statement.setInt(1, getClanId());
-
 			ResultSet rset = statement.executeQuery();
 
 			// Go though the recordset of this SQL query
@@ -917,6 +918,8 @@ public class L2Clan
 				// Add the L2Skill object to the L2Clan _skills
 				_skills.put(skill.getId(), skill);
 			}
+			rset.close();
+			statement.close();
 		}
 		catch (SQLException e)
 		{
@@ -928,9 +931,9 @@ public class L2Clan
 
 	private void restoreNotice()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT enabled,notice FROM clan_notices WHERE clan_id=?"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())				
 		{
+			PreparedStatement statement = con.prepareStatement("SELECT enabled,notice FROM clan_notices WHERE clan_id=?");
 			statement.setInt(1, getClanId());
 			try (ResultSet noticeData = statement.executeQuery())
 			{
@@ -939,7 +942,9 @@ public class L2Clan
 					_noticeEnabled = noticeData.getBoolean("enabled");
 					_notice = noticeData.getString("notice");
 				}
+				noticeData.close();
 			}
+			statement.close();
 		}
 		catch (SQLException e)
 		{
@@ -1424,11 +1429,10 @@ public class L2Clan
 
 	private void restoreSubPledges()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT sub_pledge_id,name,leader_name FROM clan_subpledges WHERE clan_id=?"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve all subpledges of this clan from the database
-
+			PreparedStatement statement = con.prepareStatement("SELECT sub_pledge_id,name,leader_name FROM clan_subpledges WHERE clan_id=?");
 			statement.setInt(1, getClanId());
 			try (ResultSet rset = statement.executeQuery())
 			{
@@ -1441,7 +1445,9 @@ public class L2Clan
 					SubPledge pledge = new SubPledge(id, name, leaderName);
 					_subPledges.put(id, pledge);
 				}
+				rset.close();
 			}
+			statement.close();
 		}
 		catch (SQLException e)
 		{
@@ -1621,10 +1627,10 @@ public class L2Clan
 
 	private void restoreRankPrivs()
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT privs,rank,party FROM clan_privs WHERE clan_id=?"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve all skills of this L2PcInstance from the database
+			PreparedStatement statement = con.prepareStatement("SELECT privs,rank,party FROM clan_privs WHERE clan_id=?");
 			statement.setInt(1, getClanId());
 			// _log.warning(L2Clan.class.getName() + ": clanPrivs restore for ClanId : "+getClanId());
 			try (ResultSet rset = statement.executeQuery())
@@ -1642,7 +1648,9 @@ public class L2Clan
 					}
 					_privs.get(rank).setPrivs(privileges);
 				}
+				rset.close();
 			}
+			statement.close();
 		}
 		catch (SQLException e)
 		{

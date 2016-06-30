@@ -33,7 +33,8 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 public class L2NpcInstance extends L2Npc
 {
 	private final ClassId[] _classesToTeach;
-
+    public int pathfindCount = 0;
+    public int pathfindTime = 0;
 	public L2NpcInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);

@@ -75,9 +75,8 @@ import com.l2jhellas.gameserver.datatables.xml.SoulCrystalsTable;
 import com.l2jhellas.gameserver.datatables.xml.StaticObjData;
 import com.l2jhellas.gameserver.datatables.xml.SummonItemsData;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
-import com.l2jhellas.gameserver.geodata.GeoData;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
-import com.l2jhellas.gameserver.geodata.pathfinding.PathFinding;
 import com.l2jhellas.gameserver.handler.AutoAnnouncementHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
@@ -120,6 +119,7 @@ import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.gameserver.vehicles.BoatGiranTalking;
 import com.l2jhellas.gameserver.vehicles.BoatGludinRune;
@@ -147,7 +147,8 @@ public class GameServer
 	private final LoginServerThread _loginThread;
 	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
 	public Gui gui;
-
+	long freeMemBefore = 0;
+	private String optimizer = "";
 
 	public SelectorThread<L2GameClient> getSelectorThread()
 	{
@@ -231,11 +232,11 @@ public class GameServer
 		PartyMatchRoomList.getInstance();
 
 		Util.printSection("Geodata");
-		GeoData.getInstance();
-		if (Config.GEODATA == 2)
-		{
-			PathFinding.getInstance();
-		}
+		if (Config.GEODATA)
+			GeoEngine.loadGeo();
+		else
+		_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
+
 
 		Util.printSection("Economy");
 		TradeController.getInstance();
@@ -324,60 +325,10 @@ public class GameServer
 		}
 		
 		Util.printSection("Customs");
-		AchievementsManager.getInstance();
-		PcColorTable.getInstance();
-		PolymporphTable.getInstance();
-		if (Config.ALLOW_TOPZONE_VOTE_REWARD)
-			VoteRewardTopzone.LoadTopZone();
-		if (Config.ALLOW_HOPZONE_VOTE_REWARD)
-			VoteRewardHopzone.LoadHopZone();
-		// Rank System.
+		RunCustoms();
 		
-		if (Config.RANK_PVP_SYSTEM_ENABLED)
-			RankLoader.load();
-		else
-			_log.log(Level.INFO, " - Rank PvP System: Disabled");
+		RunOptimizer();
 		
-
-		if (Config.ZODIAC_ENABLE)
-		{
-			ZodiacMain.ZodiacIn();
-		}
-		if (Config.ALLOW_CTF_AUTOEVENT)
-		{
-			new EventHandlerCtf().startHandler();
-		}
-		if (Config.TVT_ALLOW_AUTOEVENT)
-		{
-			new EventHandlerTvT().startHandler();
-		}
-		BalanceLoad.LoadEm();
-		if (Config.ALLOW_SEQURITY_QUE)
-		{
-			AntiBot.getInstance();
-		}
-		if (Config.ALLOW_ANTI_AFK)
-		{
-			AntiAfk.getInstance();
-		}
-		if (Config.RESTART_BY_TIME_OF_DAY)
-		{
-			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Enabled.");
-			Restart.getInstance().StartCalculationOfNextRestartTime();
-		}
-		else
-		{
-			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Disabled.");
-		}
-		if (Config.MOD_ALLOW_WEDDING)
-		{
-			CoupleManager.getInstance();
-		}
-
-		IpCatcher.ipsLoad();
-		// run garbage collector
-		System.gc();
-
 		Util.printSection("Game Server Info");
 		if (Config.ENABLE_GUI)
 			gui = new Gui();
@@ -430,8 +381,74 @@ public class GameServer
 		Toolkit.getDefaultToolkit().beep();
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();
+		_log.info(optimizer);
 	}
 
+	private void RunOptimizer()
+	{
+		Util.gc(2, 100);
+		freeMemBefore = MemoryWatchOptimize.getMemFree();
+
+		Util.gc(2, 100);
+		optimizer = String.format("%s Optimized ~%d Mb of memory",optimizer, (MemoryWatchOptimize.getMemFree() - freeMemBefore) / 0x100000);
+	
+	}
+	
+	private void RunCustoms()
+	{
+		AchievementsManager.getInstance();
+		PcColorTable.getInstance();	
+		PolymporphTable.getInstance();
+		
+		if (Config.ALLOW_TOPZONE_VOTE_REWARD)
+			VoteRewardTopzone.LoadTopZone();
+		if (Config.ALLOW_HOPZONE_VOTE_REWARD)
+			VoteRewardHopzone.LoadHopZone();
+		
+		// Rank System.
+		if (Config.RANK_PVP_SYSTEM_ENABLED)
+			RankLoader.load();
+		else
+			_log.log(Level.INFO, " - Rank PvP System: Disabled");
+		
+
+		if (Config.ZODIAC_ENABLE)
+		{
+			ZodiacMain.ZodiacIn();
+		}
+		if (Config.ALLOW_CTF_AUTOEVENT)
+		{
+			new EventHandlerCtf().startHandler();
+		}
+		if (Config.TVT_ALLOW_AUTOEVENT)
+		{
+			new EventHandlerTvT().startHandler();
+		}
+		BalanceLoad.LoadEm();
+		if (Config.ALLOW_SEQURITY_QUE)
+		{
+			AntiBot.getInstance();
+		}
+		if (Config.ALLOW_ANTI_AFK)
+		{
+			AntiAfk.getInstance();
+		}
+		if (Config.RESTART_BY_TIME_OF_DAY)
+		{
+			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Enabled.");
+			Restart.getInstance().StartCalculationOfNextRestartTime();
+		}
+		else
+		{
+			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Disabled.");
+		}
+		if (Config.MOD_ALLOW_WEDDING)
+		{
+			CoupleManager.getInstance();
+		}
+		
+		IpCatcher.ipsLoad();
+	}
 	public static void main(String[] args) throws Exception
 	{
 		Server.serverMode = Server.MODE_GAMESERVER;

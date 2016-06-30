@@ -206,6 +206,7 @@ public class MercTicketManager
 						break;
 					}
 			}
+			rs.close();
 			statement.close();
 
 			_log.info(MercTicketManager.class.getSimpleName() + ": Loaded " + getDroppedTickets().size() + " Mercenary Tickets.");

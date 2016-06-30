@@ -184,6 +184,7 @@ public class Quest extends ManagedScript
 			PreparedStatement statement = con.prepareStatement(LOAD_QUEST_STATES);
 			statement.setInt(1, player.getObjectId());
 			ResultSet rs = statement.executeQuery();
+			
 			while (rs.next())
 			{
 				String questId = rs.getString("name");
@@ -203,12 +204,14 @@ public class Quest extends ManagedScript
 				
 				new QuestState(player, q, rs.getByte("value"));
 			}
+			
 			rs.close();
 			statement.close();
 			
 			statement = con.prepareStatement(LOAD_QUEST_VARIABLES);
 			statement.setInt(1, player.getObjectId());
 			rs = statement.executeQuery();
+			
 			while (rs.next())
 			{
 				String questId = rs.getString("name");
@@ -228,9 +231,9 @@ public class Quest extends ManagedScript
 				
 				qs.setInternal(rs.getString("var"), rs.getString("value"));
 			}
-			rs.close();
-			statement.close();
 			
+			rs.close();
+			statement.close();			
 			invalidQuest.close();
 		}
 		catch (Exception e)
@@ -1023,6 +1026,15 @@ public class Quest extends ManagedScript
 		return showResult(null, player, res);
 	}
 	
+
+	public String onDeath(L2Character killer, L2PcInstance player)
+	{
+		if (killer instanceof L2Npc)
+			return onAdvEvent("", (L2Npc) killer, player);
+			
+			return onAdvEvent("", null, player);
+	}
+		
 	public String onDeath(L2Character killer, L2Character victim, L2PcInstance player)
 	{
 		if (killer instanceof L2Npc)

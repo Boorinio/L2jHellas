@@ -183,15 +183,19 @@ public class SQLAccountManager
 		}
 		q = q.concat(" ORDER BY login ASC");
 		
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement statement = con.prepareStatement(q);
-			ResultSet rset = statement.executeQuery())
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
+			PreparedStatement statement = con.prepareStatement(q);
+			ResultSet rset = statement.executeQuery();
+
 			while (rset.next())
 			{
 				_log.info(SQLAccountManager.class.getName() + rset.getString("login") + " -> " + rset.getInt("access_level"));;
 				count++;
 			}
+			
+			rset.close();
+			statement.close();
 		}
 		cl.println("functListAccountDisplayed", count);
 	}
@@ -217,9 +221,9 @@ public class SQLAccountManager
 	
 	private static void changeAccountLevel(String account, String level) throws SQLException
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-			PreparedStatement ps1 = con.prepareStatement("SELECT COUNT(*) FROM accounts WHERE login=?;"))
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
+			PreparedStatement ps1 = con.prepareStatement("SELECT COUNT(*) FROM accounts WHERE login=?;");
 			ps1.setString(1, account);
 			try (ResultSet rs = ps1.executeQuery())
 			{
@@ -237,6 +241,7 @@ public class SQLAccountManager
 						ps2.setString(1, level);
 						ps2.setString(2, account);
 						ps2.executeUpdate();
+						ps2.close();
 					}
 					cl.println("functAccessLevelUpdated", account);
 				}
@@ -245,7 +250,9 @@ public class SQLAccountManager
 					// Not Exist
 					cl.println("functAccessLevelNotExist", account);
 				}
+				rs.close();
 			}
+			ps1.close();
 		}
 	}
 	
