@@ -21,9 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.util.Util;
 
 public class ObjectKnownList
@@ -79,43 +77,6 @@ public class ObjectKnownList
 		if (object == null)
 			return false;
 		return (getKnownObjects().remove(object.getObjectId()) != null);
-	}
-
-	
-	public final synchronized void updateKnownObjects(int radius)
-	{
-		if (getActiveObject() instanceof L2Character)
-		{
-			findCloseObjects(radius);
-			forgetObjects();
-		}
-	}
-	
-	private final void findCloseObjects(int radius)
-	{
-		    //normal radius 2000
-		    Collection<L2Object> objects = L2World.getVisibleObjects(getActiveObject(),radius);
-		
-		    if(objects ==null)
-		    	return;
-		  
-			boolean isActiveObjectPlayable = getActiveObject() instanceof L2Playable;
-					  
-			for (L2Object object : objects)
-			{
-				if ( !object.isVisible())
-					continue;
-
-				addKnownObject(object);
-				
-				// Try to add active object to object's known objects
-				// Only if object is a L2Character and active object is a L2PlayableInstance
-				if (object instanceof L2Character && isActiveObjectPlayable)
-				{
-					if(object != getActiveObject())
-					object.getKnownList().addKnownObject(getActiveObject());
-				}
-			}
 	}
 	
 	/**

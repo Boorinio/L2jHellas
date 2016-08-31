@@ -26,20 +26,31 @@
 			<effect count="4" name="HealOverTime" time="5" val="1.5" stackOrder="1.5" stackType="HpRecover" />
 		</for>
 	</skill>
+	
 	<skill id="2003" levels="1" name="Squash Seed">
 		<set name="target" val="TARGET_SELF" />
-		<set name="skillType" val="NOTDONE" />
-		<set name="operateType" val="OP_PASSIVE" />
-		<set name="castRange" val="-1" />
+		<set name="skillType" val="SPAWN" />
+		<set name="operateType" val="OP_ACTIVE" />
 		<set name="hitTime" val="1500" />
+		<set name="staticReuse" val="true" />
+		<set name="staticHitTime" val="true" />
+		<set name="reuseDelay" val="10000" />
+		<set name="npcId" val="12774" />
+		<set name="despawnDelay" val="120000" />
 	</skill>
+	
 	<skill id="2004" levels="1" name="Large Squash Seed">
 		<set name="target" val="TARGET_SELF" />
-		<set name="skillType" val="NOTDONE" />
-		<set name="operateType" val="OP_PASSIVE" />
-		<set name="castRange" val="-1" />
+		<set name="skillType" val="SPAWN" />
+		<set name="operateType" val="OP_ACTIVE" />
 		<set name="hitTime" val="1500" />
+		<set name="staticHitTime" val="true" />
+		<set name="staticReuse" val="true" />
+		<set name="reuseDelay" val="10000" />
+		<set name="npcId" val="12777" />
+		<set name="despawnDelay" val="120000" />
 	</skill>
+	
 	<skill id="2005" levels="1" name="Mana Drug">
 		<set name="power" val="200.0" />
 		<set name="target" val="TARGET_SELF" />

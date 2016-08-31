@@ -303,6 +303,7 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onEvtArrivedRevalidate()
 	{
+		//_actor.getKnownList().refreshInfos();
 		super.onEvtArrivedRevalidate();
 	}
 }

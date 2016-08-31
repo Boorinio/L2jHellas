@@ -160,6 +160,7 @@ public class VoteRewardHopzone
 				ie.printStackTrace();
 		}
 	}
+	
 	private static int getVotes()
 	{
 		try
@@ -174,7 +175,7 @@ public class VoteRewardHopzone
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				if (line.contains("no steal make love")||line.contains("no votes here")||line.contains("bang, you don't have votes")|| line.contains("la vita e bella"))
+				if (line.contains("Total Votes") || line.contains("no steal make love")||line.contains("no votes here")||line.contains("bang, you don't have votes")|| line.contains("la vita e bella"))
 				{
 					int votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
 					Gui.hopzone.setText("HopZone Votes: " + votes);

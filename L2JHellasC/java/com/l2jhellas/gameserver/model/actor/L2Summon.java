@@ -366,6 +366,7 @@ public abstract class L2Summon extends L2Playable
 
 	public void updateAndBroadcastStatus(int val)
 	{
+
 		getOwner().sendPacket(new PetInfo(this, 0));
 		getOwner().sendPacket(new PetStatusUpdate(this));
 		if (isVisible())
@@ -377,7 +378,7 @@ public abstract class L2Summon extends L2Playable
 		{
 			party.broadcastToPartyMembers(this.getOwner(),new PetStatusUpdate(this));
 		}
-		updateEffectIcons(true);
+		getOwner().updateEffectIcons();
 	}
 
 	public void broadcastNpcInfo(int val)
@@ -392,6 +393,7 @@ public abstract class L2Summon extends L2Playable
 					continue;
 				}
 				player.sendPacket(new NpcInfo(this, player));
+				player.updateEffectIcons();
 			}
 			catch (NullPointerException e)
 			{
@@ -606,7 +608,9 @@ public abstract class L2Summon extends L2Playable
 		// If a skill is currently being used
 		if (isCastingNow())
 			return;
-
+		
+		getOwner().setCurrentPetSkill(skill, forceUse, dontMove);
+		
 		// ************************************* Check Target *******************************************
 
 		// Get the target for the skill

@@ -474,7 +474,7 @@ public abstract class L2Character extends L2Object
 	public void teleToLocation(int x, int y, int z, boolean allowRandomOffset)
 	{
 		// Stop movement
-		stopMove(null, false);
+		stopMove(null);
 		abortAttack();
 		abortCast();
 		
@@ -562,9 +562,6 @@ public abstract class L2Character extends L2Object
 	 */
 	public void doAttack(L2Character target)
 	{
-		if (Config.DEBUG)
-			_log.fine(getName() + " doAttack: target=" + target);
-		
 		if (isAlikeDead() || target == null || (this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || !getKnownList().knowsObject(target) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == Duel.DUELSTATE_DEAD))
 		{
 			// If L2PcInstance is dead or the target is dead, the action is stopped
@@ -687,7 +684,7 @@ public abstract class L2Character extends L2Object
 				}
 				
 				// Verify if the bow can be use
-				if (_disableBowAttackEndTime <= GameTimeController.getGameTicks())
+				if (_disableBowAttackEndTime <= GameTimeController.getInstance().getGameTicks())
 				{
 					// Verify if L2PcInstance owns enough MP
 					int saMpConsume = (int) getStat().calcStat(Stats.MP_CONSUME, 0, null, null);
@@ -708,7 +705,7 @@ public abstract class L2Character extends L2Object
 					getStatus().reduceMp(mpConsume);
 					
 					// Set the period of bow non re-use
-					_disableBowAttackEndTime = 5 * GameTimeController.TICKS_PER_SECOND + GameTimeController.getGameTicks();
+					_disableBowAttackEndTime = 5 * GameTimeController.TICKS_PER_SECOND + GameTimeController.getInstance().getGameTicks();
 				}
 				else
 				{
@@ -733,7 +730,7 @@ public abstract class L2Character extends L2Object
 			}
 			else if (this instanceof L2Npc)
 			{
-				if (_disableBowAttackEndTime > GameTimeController.getGameTicks())
+				if (_disableBowAttackEndTime > GameTimeController.getInstance().getGameTicks())
 					return;
 			}
 		}
@@ -763,7 +760,7 @@ public abstract class L2Character extends L2Object
 		int timeAtk = calculateTimeBetweenAttacks(target, weaponItem);
 		// the hit is calculated to happen halfway to the animation - might need further tuning e.g. in bow case
 		int timeToHit = timeAtk / 2;
-		_attackEndTime = GameTimeController.getGameTicks();
+		_attackEndTime = GameTimeController.getInstance().getGameTicks();
 		_attackEndTime += (timeAtk / GameTimeController.MILLIS_IN_TICK);
 		_attackEndTime -= 1;
 		
@@ -817,14 +814,7 @@ public abstract class L2Character extends L2Object
 			abortAttack();
 		}
 		else
-		{
-			/*
-			 * ADDED BY nexus - 2006-08-17
-			 * 
-			 * As soon as we know that our hit landed, we must discharge any active soulshots.
-			 * This must be done so to avoid unwanted soulshot consumption.
-			 */
-			
+		{			
 			// If we didn't miss the hit, discharge the shoulshots, if any
 			if (this instanceof L2Summon && !(this instanceof L2PetInstance))
 				((L2Summon) this).setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
@@ -856,7 +846,7 @@ public abstract class L2Character extends L2Object
 		// Notify AI with EVT_READY_TO_ACT
 		ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), timeAtk + reuse);
 	}
-	
+
 	/**
 	 * Launch a Bow attack.<BR>
 	 * <BR>
@@ -918,7 +908,7 @@ public abstract class L2Character extends L2Object
 		ThreadPoolManager.getInstance().scheduleAi(new HitTask(target, damage1, crit1, miss1, attack.soulshot, shld1), sAtk);
 		
 		// Calculate and set the disable delay of the bow in function of the Attack Speed
-		_disableBowAttackEndTime = (sAtk + reuse) / GameTimeController.MILLIS_IN_TICK + GameTimeController.getGameTicks();
+		_disableBowAttackEndTime = (sAtk + reuse) / GameTimeController.MILLIS_IN_TICK + GameTimeController.getInstance().getGameTicks();
 		
 		// Add this hit to the Server-Client packet Attack
 		attack.addHit(target, damage1, miss1, crit1, shld1);
@@ -1387,8 +1377,8 @@ public abstract class L2Character extends L2Object
 		}
 		
 		// Set the _castEndTime and _castInterruptTim. +10 ticks for lag situations, will be reseted in onMagicFinalizer
-		_castEndTime = 10 + GameTimeController.getGameTicks() + (coolTime + hitTime) / GameTimeController.MILLIS_IN_TICK;
-		_castInterruptTime = -2 + GameTimeController.getGameTicks() + hitTime / GameTimeController.MILLIS_IN_TICK;
+		_castEndTime = 10 + GameTimeController.getInstance().getGameTicks() + (coolTime + hitTime) / GameTimeController.MILLIS_IN_TICK;
+		_castInterruptTime = -2 + GameTimeController.getInstance().getGameTicks() + hitTime / GameTimeController.MILLIS_IN_TICK;
 		
 		// Init the reuse time of the skill
 		int reuseDelay;
@@ -1833,7 +1823,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public boolean isAttackingDisabled()
 	{
-		return isImmobileUntilAttacked() || isStunned() || isSleeping() || _attackEndTime > GameTimeController.getGameTicks() || isFakeDeath() || isParalyzed();
+		return isImmobileUntilAttacked() || isStunned() || isSleeping() || _attackEndTime > GameTimeController.getInstance().getGameTicks() || isFakeDeath() || isParalyzed();
 	}
 	
 	public final Calculator[] getCalculators()
@@ -3787,7 +3777,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final boolean isCastingNow()
 	{
-		return _castEndTime > GameTimeController.getGameTicks();
+		return _castEndTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
 	/**
@@ -3796,7 +3786,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final boolean canAbortCast()
 	{
-		return _castInterruptTime > GameTimeController.getGameTicks();
+		return _castInterruptTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
 	/**
@@ -3805,7 +3795,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final boolean isAttackingNow()
 	{
-		return _attackEndTime > GameTimeController.getGameTicks();
+		return _attackEndTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
 	/**
@@ -3915,7 +3905,7 @@ public abstract class L2Character extends L2Object
 	 *        Nb of ticks since the server start
 	 * @return True if the movement is finished
 	 */
-	public boolean updatePosition(int gameTicks)
+	public boolean updatePosition()
 	{
 		// Get movement data
 		MoveData m = _move;
@@ -3937,6 +3927,8 @@ public abstract class L2Character extends L2Object
 			m._yAccurate = getY();
 		}
 
+		int gameTicks = GameTimeController.getInstance().getGameTicks();
+		
 		// Check if the position has already been calculated
 		if (m._moveTimestamp == gameTicks)
 			return false;
@@ -3962,7 +3954,7 @@ public abstract class L2Character extends L2Object
 			&& !isFlying()
 			&& !isInsideZone(ZoneId.WATER)
 			&& !m.disregardingGeodata
-			&& GameTimeController.getGameTicks() % 10 == 0 // once a second to reduce possible cpu load
+			&& GameTimeController.getInstance().getGameTicks() % 10 == 0 // once a second to reduce possible cpu load
 			//&& GeoData.getInstance().hasGeo(xPrev, yPrev)
 			&& !(this instanceof L2BoatInstance))
 		{
@@ -4038,7 +4030,22 @@ public abstract class L2Character extends L2Object
 		// Set the timer of last position update to now
 		m._moveTimestamp = gameTicks;
 
-		return (distFraction > 1);
+		if (distFraction > 1)
+		{
+			ThreadPoolManager.getInstance().executeAi(() ->
+			{
+				try
+				{
+					getAI().notifyEvent(CtrlEvent.EVT_ARRIVED);
+				}
+				catch (final Throwable e)
+				{
+				}
+			});
+			
+			return true;
+		}
+		return false;
 	}
 	
 	public void revalidateZone()
@@ -4062,11 +4069,6 @@ public abstract class L2Character extends L2Object
 	 */
 	public void stopMove(L2CharPosition pos)
 	{
-		stopMove(pos, true);
-	}
-	
-	public void stopMove(L2CharPosition pos, boolean updateKnownObjects)
-	{
 		// Delete movement data of the L2Character
 		_move = null;
 		
@@ -4084,12 +4086,6 @@ public abstract class L2Character extends L2Object
 				((L2PcInstance) this).revalidateZone(true);
 		}
 		broadcastPacket(new StopMove(this));
-		
-		if (updateKnownObjects)
-		{
-			getKnownList().refreshInfos(isInsideZone(ZoneId.TOWN));
-		}
-
 	}
 	
 	/**
@@ -4465,7 +4461,7 @@ public abstract class L2Character extends L2Object
 			_log.fine("dist:"+ distance +"speed:" + speed + " ttt:" + ticksToMove +
 			          " heading:" + getHeading());
 
-		m._moveStartTime = GameTimeController.getGameTicks();
+		m._moveStartTime = GameTimeController.getInstance().getGameTicks();
 
 		// Set the L2Character _move object to MoveData object
 		_move = m;
@@ -4566,7 +4562,7 @@ public abstract class L2Character extends L2Object
 		setHeading(calcHeading(m._xDestination, m._yDestination));
 		m._heading = 0; // initial value for coordinate sync
 
-		m._moveStartTime = GameTimeController.getGameTicks();
+		m._moveStartTime = GameTimeController.getInstance().getGameTicks();
 
 		if (Config.DEBUG) _log.fine("time to target:" + ticksToMove);
 
@@ -5982,19 +5978,11 @@ public abstract class L2Character extends L2Object
 			{
 				if (tgt instanceof L2Playable)
 				{
-					L2Character target = (L2Character) tgt;
+					if (skill.getSkillType() == L2SkillType.BUFF || skill.getSkillType() == L2SkillType.FUSION || skill.getSkillType() == L2SkillType.SEED)
+						((L2Character) tgt).sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(skill));
 					
-					if (skill.getSkillType() == L2SkillType.BUFF)
-					{
-						SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-						smsg.addSkillName(skill.getId());
-						target.sendPacket(smsg);
-					}
-					
-					if (this instanceof L2PcInstance && target instanceof L2Summon)
-					{
-						((L2Summon) target).updateAndBroadcastStatus(1);
-					}
+					if (this instanceof L2PcInstance && tgt instanceof L2Summon)
+						((L2Summon) tgt).updateAndBroadcastStatus(1);
 				}
 			}
 			

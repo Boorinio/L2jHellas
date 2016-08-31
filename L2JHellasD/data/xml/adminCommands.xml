@@ -325,6 +325,7 @@
 	<admin command="admin_kill_menu" accessLevel="7" />
 	<admin command="admin_ban_menu" accessLevel="7" />
 	<admin command="admin_unban_menu" accessLevel="7" />
+	<admin command="admin_goto" accessLevel="7" />
 
 	<!-- ADMIN MOB GROUP -->
 	<admin command="admin_mobmenu" accessLevel="7" />
@@ -505,16 +506,7 @@
 
 	<!-- ADMIN L2OFF -->
 	<admin command="admin_who" accessLevel="7" />
-
-	<!-- ADMIN WALKERS -->
-	<admin command="admin_walker_setmessage" accessLevel="7" />
-	<admin command="admin_walker_menu" accessLevel="7" />
-	<admin command="admin_walker_setnpc" accessLevel="7" />
-	<admin command="admin_walker_setpoint" accessLevel="7" />
-	<admin command="admin_walker_setmode" accessLevel="7" />
-	<admin command="admin_walker_addpoint" accessLevel="7" />
-	<admin command="admin_walker_createnpc" accessLevel="7" />
-		
+	
 	<!-- ADMIN PREMIUM -->
 	<admin command="admin_premium_menu" accessLevel="7" />
 	<admin command="admin_premium_add1" accessLevel="7" />

@@ -526,14 +526,14 @@ abstract class AbstractAI implements Ctrl
 			{
 				if (_clientMovingToPawnOffset == offset)
 				{
-					if (GameTimeController.getGameTicks() < _moveToPawnTimeout)
+					if (GameTimeController.getInstance().getGameTicks() < _moveToPawnTimeout)
 						return;
 					sendPacket = false;
 				}
 				else if (_actor.isOnGeodataPath())
 				{
 					// minimum time to calculate new route is 2 seconds
-					if (GameTimeController.getGameTicks() < (_moveToPawnTimeout + 15))
+					if (GameTimeController.getInstance().getGameTicks() < (_moveToPawnTimeout + 15))
 						return;
 				}
 			}
@@ -542,7 +542,7 @@ abstract class AbstractAI implements Ctrl
 			_clientMoving = true;
 			_clientMovingToPawnOffset = offset;
 			_target = pawn;
-			_moveToPawnTimeout = GameTimeController.getGameTicks();
+			_moveToPawnTimeout = GameTimeController.getInstance().getGameTicks();
 			_moveToPawnTimeout += 1000 / GameTimeController.MILLIS_IN_TICK;
 
 			if (pawn == null)
@@ -718,23 +718,19 @@ abstract class AbstractAI implements Ctrl
 	 * <BR>
 	 */
 	public void clientStopAutoAttack()
-	{
-		if (_actor instanceof L2Summon)
-		{
-			_actor.getActingPlayer().getAI().clientStopAutoAttack();
-			return;
-		}
-		
+	{	
 		if (_actor instanceof L2PcInstance)
 		{
 			if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor) && isAutoAttacking())
 				AttackStanceTaskManager.getInstance().add(_actor);
-		}
+		
+		}		
 		else if (isAutoAttacking())
 		{
 			_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
+			setAutoAttacking(false);
 		}
-		setAutoAttacking(false);
+		
 	}
 
 	/**

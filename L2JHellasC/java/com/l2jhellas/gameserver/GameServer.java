@@ -26,6 +26,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.script.ScriptException;
+
 import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
@@ -119,6 +121,7 @@ import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.gameserver.taskmanager.KnownListUpdateTaskManager;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.gameserver.vehicles.BoatGiranTalking;
@@ -167,6 +170,7 @@ public class GameServer
 		CrestCache.load();
 
 		Util.printSection("World");
+		GameTimeController.init();
 		L2World.getInstance();
 		MapRegionTable.getInstance();
 		Announcements.getInstance();
@@ -177,8 +181,7 @@ public class GameServer
 		Universe.getInstance();
 		FloodProtector.getInstance();
 		StaticObjData.load();
-		TeleportLocationData.getInstance();
-		GameTimeController.getInstance();
+		TeleportLocationData.getInstance();	
 		CharNameTable.getInstance();
 		DuelManager.getInstance();
 
@@ -316,13 +319,35 @@ public class GameServer
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
-			L2ScriptEngineManager.getInstance().executeScriptList(new File("./data/scripts.cfg"));
-			QuestManager.getInstance().report();
+				
+			final File cripts = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/ScriptLoader.java");
+			try
+			{
+				L2ScriptEngineManager.getInstance().executeScript(cripts);
+				QuestManager.getInstance().report();
+			}
+			catch (ScriptException e)
+			{
+				L2ScriptEngineManager.reportScriptFileError(cripts, e);				
+			}
+				
+			final File Master = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/MasterHandler.java");
+			try
+			{
+				L2ScriptEngineManager.getInstance().executeScript(Master);
+			}
+			catch (ScriptException e)
+			{
+				 L2ScriptEngineManager.reportScriptFileError(Master, e);				
+			}	
+
 		}
 		else
 		{
 			_log.info(GameServer.class.getSimpleName() + ": Scripts are disabled by Config.");
 		}
+		
+		KnownListUpdateTaskManager.getInstance();
 		
 		Util.printSection("Customs");
 		RunCustoms();

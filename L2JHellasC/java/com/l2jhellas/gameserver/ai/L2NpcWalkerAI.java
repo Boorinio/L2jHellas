@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
+import com.l2jhellas.gameserver.network.serverpackets.CharMoveToLocation;
 
 public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 {
@@ -60,10 +61,14 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 
 		if (!Config.ALLOW_NPC_WALKERS)
 			return;
-
+		
 		_route = NpcWalkerRoutesData.getInstance().getRouteForNpc(getActor().getNpcId());
 
-		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 0, 1000);
+		if (_route != null)
+		    ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
+		else
+			_log.warning(getClass().getSimpleName() + ": Missing route data for NpcID: " + _actor);
+		
 	}
 
 	@Override
@@ -97,8 +102,6 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	@Override
 	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
 	{
-		_log.warning(L2NpcWalkerAI.class.getSimpleName() + ": ID: " + getActor().getNpcId() + ": Blocked at rote position [" + _currentPos + "], coords: " + blocked_at_pos.x + ", " + blocked_at_pos.y + ", " + blocked_at_pos.z + ". Teleporting to next point");
-
 		int destinationX = _route.get(_currentPos).getMoveX();
 		int destinationY = _route.get(_currentPos).getMoveY();
 		int destinationZ = _route.get(_currentPos).getMoveZ();
@@ -173,6 +176,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		setWalkingToNextPoint(true);
 
 		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(destinationX, destinationY, destinationZ, 0));
+		getActor().broadcastPacket(new CharMoveToLocation(getActor()));
 	}
 
 	@Override

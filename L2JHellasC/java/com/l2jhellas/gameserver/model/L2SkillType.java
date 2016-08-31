@@ -26,6 +26,7 @@ import com.l2jhellas.gameserver.skills.l2skills.L2SkillMagicOnGround;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillSeed;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillSignet;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillSignetCasttime;
+import com.l2jhellas.gameserver.skills.l2skills.L2SkillSpawn;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillSummon;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -116,6 +117,8 @@ public enum L2SkillType
 	ERASE,
 	BETRAY,
 
+	SPAWN(L2SkillSpawn.class),
+	
 	// Cancel
 	CANCEL,
 	MAGE_BANE,

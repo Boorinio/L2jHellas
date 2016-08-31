@@ -76,7 +76,7 @@ public class L2BoatInstance extends L2Vehicle
 	
 	public void updatePeopleInTheBoat(int x, int y, int z)
 	{
-		updatePosition((int)System.currentTimeMillis());
+		updatePosition();
 		broadcastToPassengers(new OnVehicleCheckLocation(this, x, y, z));
 	}
 

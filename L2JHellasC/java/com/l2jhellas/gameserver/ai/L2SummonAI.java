@@ -54,14 +54,15 @@ public class L2SummonAI extends L2CharacterAI
 	{
 		if (checkTargetLostOrDead(getAttackTarget()))
 		{
-			setAttackTarget(null);
+			setTarget(null);
 			return;
 		}
+		
 		if (maybeMoveToPawn(getAttackTarget(), _actor.getPhysicalAttackRange()))
 			return;
+		
 		clientStopMoving(null);
-		_accessor.doAttack(getAttackTarget());
-		return;
+		_actor.doAttack(getAttackTarget());
 	}
 
 	private void thinkCast()
@@ -77,7 +78,7 @@ public class L2SummonAI extends L2CharacterAI
 		clientStopMoving(null);
 		summon.setFollowStatus(false);
 		setIntention(AI_INTENTION_IDLE);
-		_accessor.doCast(_skill);
+		_actor.doCast(_skill);
 		return;
 	}
 
@@ -96,21 +97,21 @@ public class L2SummonAI extends L2CharacterAI
 
 	private void thinkInteract()
 	{
-		if (_actor.isAllSkillsDisabled())
-			return;
 		if (checkTargetLost(getTarget()))
 			return;
+		
 		if (maybeMoveToPawn(getTarget(), 36))
 			return;
+		
 		setIntention(AI_INTENTION_IDLE);
-		return;
 	}
 
 	@Override
 	protected void onEvtThink()
 	{
-		if (_thinking || _actor.isAllSkillsDisabled())
+		if (_thinking || _actor.isCastingNow() || _actor.isAllSkillsDisabled())
 			return;
+		
 		_thinking = true;
 		try
 		{
@@ -127,5 +128,5 @@ public class L2SummonAI extends L2CharacterAI
 		{
 			_thinking = false;
 		}
-	}
+	}	
 }

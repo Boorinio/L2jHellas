@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -23,6 +22,7 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -35,6 +35,7 @@ import com.l2jhellas.gameserver.network.serverpackets.RecipeShopManageList;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.util.Util;
 
 public final class RequestActionUse extends L2GameClientPacket
 {
@@ -93,15 +94,50 @@ public final class RequestActionUse extends L2GameClientPacket
 					activeChar.setRunning();
 			break;
 			case 15:
-			case 21: // pet follow/stop
-				if ((pet != null) && !pet.isMovementDisabled() && !activeChar.isBetrayed())
-					pet.setFollowStatus(!pet.getFollowStatus());
-
-			break;
+			case 21:				
+				if (pet == null)
+					return;
+				
+				// You can't order anymore your pet to stop if distance is superior to 2000.
+				if (pet.getFollowStatus() && Util.calculateDistance(activeChar, pet, true) > 2000)
+					return;
+				
+				if (pet.isOutOfControl())
+				{
+					activeChar.sendPacket(SystemMessageId.PET_REFUSING_ORDER);
+					return;
+				}
+				pet.setFollowStatus(!pet.getFollowStatus());
+				break;
 			case 16:
 			case 22: // pet attack
-				if ((target != null) && (pet != null) && (pet != target) && !pet.isAttackingDisabled() && !activeChar.isBetrayed())
-				{
+				
+				if (!(target instanceof L2Character) || pet == null || pet == target || activeChar == target)
+					return;
+				
+				if (checkforsummons(NOATTACKACTION_SUMMONS, pet.getNpcId()))
+					return;
+				
+				    if (pet.isOutOfControl())
+				    {
+					    activeChar.sendPacket(SystemMessageId.PET_REFUSING_ORDER);
+				    	return;
+				    }
+				    
+					if (pet.isAttackingDisabled())
+					{
+						if (pet.getAttackEndTime() <= System.currentTimeMillis())
+							return;
+						
+						pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+					}
+					
+					if (pet instanceof L2PetInstance && (pet.getLevel() - activeChar.getLevel() > 20))
+					{
+						activeChar.sendPacket(SystemMessageId.PET_TOO_HIGH_TO_CONTROL);
+						return;
+					}
+					
 					if (activeChar.isInOlympiadMode() && !activeChar.isOlympiadStart())
 					{
 						// if L2PcInstance is in Olympiad and the match isn't already start, send a Server->Client packet ActionFailed
@@ -115,6 +151,8 @@ public final class RequestActionUse extends L2GameClientPacket
 						return;
 					}
 
+					pet.setTarget(target);
+					
 					if (target.isAutoAttackable(activeChar) || _ctrlPressed)
 					{
 						if (target instanceof L2DoorInstance)
@@ -126,7 +164,6 @@ public final class RequestActionUse extends L2GameClientPacket
 						else if (pet.getNpcId() != L2SiegeSummonInstance.SIEGE_GOLEM_ID)
 							pet.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 					}
-				}
 			break;
 			case 17:
 			case 23: // pet - cancel action
@@ -485,43 +522,45 @@ public final class RequestActionUse extends L2GameClientPacket
 	 */
 	private void useSkill(int skillId, L2Object target)
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
+		// No owner, or owner in shop mode.
+		if (activeChar == null || activeChar.isInStoreMode())
 			return;
-
-		L2Summon activeSummon = activeChar.getPet();
-
-		if (activeChar.getPrivateStoreType() != 0)
+		
+		final L2Summon activeSummon = activeChar.getPet();
+		if (activeSummon == null)
+			return;
+		
+		// Pet which is 20 levels higher than owner.
+		if (activeSummon instanceof L2PetInstance && activeSummon.getLevel() - activeChar.getLevel() > 20)
 		{
-			activeChar.sendMessage("Cannot use skills while trading");
+			activeChar.sendPacket(SystemMessageId.PET_TOO_HIGH_TO_CONTROL);
 			return;
 		}
-
-		if ((activeSummon != null) && !activeChar.isBetrayed())
+		
+		if (activeChar.isBetrayed())
+			return;
+		
+		// Out of control pet.
+		if (activeSummon.isOutOfControl())
 		{
-			Map<Integer, L2Skill> _skills = activeSummon.getTemplate().getSkills();
-
-			if (_skills == null)
-				return;
-
-			if (_skills.size() == 0)
-			{
-				activeChar.sendPacket(SystemMessageId.S1_PREPARED_FOR_REUSE);
-				return;
-			}
-
-			L2Skill skill = _skills.get(skillId);
-
-			if (skill == null)
-			{
-				if (Config.DEBUG)
-					_log.warning(RequestActionUse.class.getName() + ": Skill " + skillId + " missing from npcskills.sql for a summon id " + activeSummon.getNpcId());
-				return;
-			}
-
-			activeSummon.setTarget(target);
-			activeSummon.useMagic(skill, _ctrlPressed, _shiftPressed);
+			activeChar.sendPacket(SystemMessageId.PET_REFUSING_ORDER);
+			return;
 		}
+		
+		// Verify if the launched skill is mastered by the summon.
+		final L2Skill skill = activeSummon.getTemplate().getSkills().get(skillId);
+		
+		if (skill == null)
+			return;
+		
+		// Can't launch offensive skills on owner.
+		if (skill.isOffensive() && activeChar == target)
+			return;
+		
+		activeSummon.setTarget(target);
+		activeSummon.useMagic(skill, _ctrlPressed, _shiftPressed);
 	}
 
 	/*
@@ -538,6 +577,59 @@ public final class RequestActionUse extends L2GameClientPacket
 		useSkill(skillId, activeChar.getTarget());
 	}
 
+	private static final int[] NOATTACKACTION_SUMMONS =
+	{
+		12564,
+		12621,
+		14702,
+		14703,
+		14704,
+		14705,
+		14706,
+		14707,
+		14708,
+		14709,
+		14710,
+		14711,
+		14712,
+		14713,
+		14714,
+		14715,
+		14716,
+		14717,
+		14718,
+		14719,
+		14720,
+		14721,
+		14722,
+		14723,
+		14724,
+		14725,
+		14726,
+		14727,
+		14728,
+		14729,
+		14730,
+		14731,
+		14732,
+		14733,
+		14734,
+		14735,
+		14736
+	};
+	
+	public static boolean checkforsummons(int[] array, int obj)
+	{
+		if (array == null || array.length == 0)
+			return false;
+		
+		for (int element : array)
+			if (element == obj)
+				return true;
+		
+		return false;
+	}
+	
 	@Override
 	public String getType()
 	{

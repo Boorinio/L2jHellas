@@ -15,9 +15,9 @@
 package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -26,18 +26,13 @@ import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 
-/**
- * @author godson
- */
 public class DayNightSpawnManager
 {
 	private static Logger _log = Logger.getLogger(DayNightSpawnManager.class.getName());
 
-	private final List<L2Spawn> _dayCreatures;
-	private final List<L2Spawn> _nightCreatures;
-	private final Map<L2Spawn, L2RaidBossInstance> _bosses;
-
-	// private static int _currentState; // 0 = Day, 1 = Night
+	private final List<L2Spawn> _dayCreatures = new ArrayList<>();
+	private final List<L2Spawn> _nightCreatures = new ArrayList<>();
+	private final Map<L2Spawn, L2RaidBossInstance> _bosses = new ConcurrentHashMap<>();
 
 	public static DayNightSpawnManager getInstance()
 	{
@@ -47,13 +42,16 @@ public class DayNightSpawnManager
 	
 	private DayNightSpawnManager()
 	{
-		_dayCreatures = new ArrayList<>();
-		_nightCreatures = new ArrayList<>();
-		_bosses = new HashMap<>();
 		
-		notifyChangeMode();		
 	}
 
+	public DayNightSpawnManager trim()
+	{
+		((ArrayList<?>) _nightCreatures).trimToSize();
+		((ArrayList<?>) _dayCreatures).trimToSize();
+		return this;
+	}
+	
 	public void addDayCreature(L2Spawn spawnDat)
 	{
 		_dayCreatures.add(spawnDat);
@@ -155,7 +153,7 @@ public class DayNightSpawnManager
 	{
 		try
 		{
-			if (GameTimeController.getInstance().isNowNight())
+			if (GameTimeController.getInstance().isNight())
 				changeMode(1);
 			else
 				changeMode(0);
@@ -228,7 +226,7 @@ public class DayNightSpawnManager
 		if (_bosses.containsKey(spawnDat))
 			return _bosses.get(spawnDat);
 
-		if (GameTimeController.getInstance().isNowNight())
+		if (GameTimeController.getInstance().isNight())
 		{
 			L2RaidBossInstance raidboss = (L2RaidBossInstance) spawnDat.doSpawn();
 			_bosses.put(spawnDat, raidboss);

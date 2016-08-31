@@ -1034,7 +1034,7 @@ public final class L2ItemInstance extends L2Object
 			insertIntoDb();
 		}
 	}
-
+	
 	/**
 	 * Returns a L2ItemInstance stored in database from its objectID
 	 * 
@@ -1045,6 +1045,7 @@ public final class L2ItemInstance extends L2Object
 	public static L2ItemInstance restoreFromDb(int objectId)
 	{
 		L2ItemInstance inst = null;
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT owner_id, object_id, item_id, count, enchant_level, loc, loc_data, price_sell, price_buy, custom_type1, custom_type2, mana_left FROM items WHERE object_id = ?");
@@ -1130,10 +1131,11 @@ public final class L2ItemInstance extends L2Object
 		}
 		catch (Exception e)
 		{
+
 			_log.severe(L2ItemInstance.class.getName() + ": Could not restore item " + objectId + " from DB:");
 			if (Config.DEVELOPER)
 				e.printStackTrace();
-		}
+		}		
 		return inst;
 	}
 
@@ -1213,7 +1215,6 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = true;
 			_storedInDb = true;
 			statement.close();
-			con.close();
 		}
 
 		catch (Exception e)
@@ -1253,7 +1254,6 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = true;
 			_storedInDb = true;
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{
@@ -1285,7 +1285,6 @@ public final class L2ItemInstance extends L2Object
 			_existsInDb = false;
 			_storedInDb = false;
 			statement.close();
-			con.close();
 		}
 		catch (Exception e)
 		{

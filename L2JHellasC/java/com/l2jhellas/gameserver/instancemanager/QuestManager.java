@@ -15,10 +15,11 @@
 package com.l2jhellas.gameserver.instancemanager;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import javax.script.ScriptException;
 
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
@@ -151,11 +152,9 @@ public class QuestManager extends ScriptManager<Quest>
 
 	public void reloadAllQuests()
 	{
-		_log.info("QuestManager: Reloading scripts.");
+		_log.info("QuestManager: Reloading quests.");
 		
 		// Load all quests again.
-		try
-		{
 			for (Quest quest : _quests)
 			{
 				if (quest != null)
@@ -165,12 +164,15 @@ public class QuestManager extends ScriptManager<Quest>
 			// Clear the quest list.
 			_quests.clear();
 			
-			L2ScriptEngineManager.getInstance().executeScriptList(new File("./data/scripts.cfg"));	
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+			final File file = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/ScriptLoader.java");
+			try
+			{
+				L2ScriptEngineManager.getInstance().executeScript(file);
+			}
+			catch (ScriptException e)
+			{
+			    L2ScriptEngineManager.reportScriptFileError(file, e);				
+			}		
 		
 	}
 }

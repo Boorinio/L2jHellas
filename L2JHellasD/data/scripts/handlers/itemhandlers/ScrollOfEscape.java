@@ -136,7 +136,7 @@ public class ScrollOfEscape implements IItemHandler
 		EscapeFinalizer ef = new EscapeFinalizer(activeChar, itemId);
 		// continue execution later
 		activeChar.setSkillCast(ThreadPoolManager.getInstance().scheduleEffect(ef, skill.getHitTime()));
-		activeChar.setSkillCastEndTime(10 + GameTimeController.getGameTicks() + skill.getHitTime() / GameTimeController.MILLIS_IN_TICK);
+		activeChar.setSkillCastEndTime(10 + GameTimeController.getInstance().getGameTicks() + skill.getHitTime() / GameTimeController.MILLIS_IN_TICK);
 	}
 
 	static class EscapeFinalizer implements Runnable

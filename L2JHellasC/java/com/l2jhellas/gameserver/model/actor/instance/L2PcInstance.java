@@ -1202,7 +1202,7 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 		
-		if (getClan() != null && target.getClan() != null)
+		if (getClan() != null && target instanceof L2PcInstance && target.getClan() != null)
 		{
 			if (target.getPledgeType() != L2Clan.SUBUNIT_ACADEMY && target.getClan().isAtWarWith(getClan().getClanId()))
 			{
@@ -3855,7 +3855,7 @@ public final class L2PcInstance extends L2Playable
 				item.setLastChange(L2ItemInstance.MODIFIED);
 				
 				// could do also without saving, but let's save approx 1 of 10
-				if (GameTimeController.getGameTicks() % 10 == 0)
+				if (GameTimeController.getInstance().getGameTicks() % 10 == 0)
 				{
 					item.updateDatabase();
 				}
@@ -4411,9 +4411,9 @@ public final class L2PcInstance extends L2Playable
 	{
 		if (Config.DEBUG && (protect || (_protectEndTime > 0)))
 		{
-			_log.config(L2PcInstance.class.getName() + getName() + ": Protection " + (protect ? "ON " + (GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND) : "OFF") + " (currently " + GameTimeController.getGameTicks() + ")");
+			_log.config(L2PcInstance.class.getName() + getName() + ": Protection " + (protect ? "ON " + (GameTimeController.getInstance().getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND) : "OFF") + " (currently " + GameTimeController.getInstance().getGameTicks() + ")");
 		}
-		_protectEndTime = protect ? GameTimeController.getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND : 0;
+		_protectEndTime = protect ? GameTimeController.getInstance().getGameTicks() + Config.PLAYER_SPAWN_PROTECTION * GameTimeController.TICKS_PER_SECOND : 0;
 		
 	}
 	
@@ -4422,12 +4422,12 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void setRecentFakeDeath(boolean protect)
 	{
-		_recentFakeDeathEndTime = protect ? GameTimeController.getGameTicks() * GameTimeController.TICKS_PER_SECOND : 0;
+		_recentFakeDeathEndTime = protect ? GameTimeController.getInstance().getGameTicks() * GameTimeController.TICKS_PER_SECOND : 0;
 	}
 	
 	public boolean isRecentFakeDeath()
 	{
-		return _recentFakeDeathEndTime > GameTimeController.getGameTicks();
+		return _recentFakeDeathEndTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
 	/**
@@ -6434,7 +6434,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public boolean isProcessingRequest()
 	{
-		return _activeRequester != null || _requestExpireTime > GameTimeController.getGameTicks();
+		return _activeRequester != null || _requestExpireTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
 	/**
@@ -6442,7 +6442,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public boolean isProcessingTransaction()
 	{
-		return _activeRequester != null || _activeTradeList != null || _requestExpireTime > GameTimeController.getGameTicks();
+		return _activeRequester != null || _activeTradeList != null || _requestExpireTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
 	/**
@@ -6450,7 +6450,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void onTransactionRequest(L2PcInstance partner)
 	{
-		_requestExpireTime = GameTimeController.getGameTicks() + REQUEST_TIMEOUT * GameTimeController.TICKS_PER_SECOND;
+		_requestExpireTime = GameTimeController.getInstance().getGameTicks() + REQUEST_TIMEOUT * GameTimeController.TICKS_PER_SECOND;
 		partner.setActiveRequester(this);
 	}
 	
@@ -6528,7 +6528,7 @@ public final class L2PcInstance extends L2Playable
 	
 	public boolean isRequestExpired()
 	{
-		return !(_requestExpireTime > GameTimeController.getGameTicks());
+		return !(_requestExpireTime > GameTimeController.getInstance().getGameTicks());
 	}
 	
 	public void onTradeFinish(boolean successfull)
@@ -6888,7 +6888,7 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public boolean isInvul()
 	{
-		return (_isInvul || (_isTeleporting || _protectEndTime > GameTimeController.getGameTicks()));
+		return (_isInvul || (_isTeleporting || _protectEndTime > GameTimeController.getInstance().getGameTicks()));
 	}
 
 	/**
@@ -11337,63 +11337,7 @@ public final class L2PcInstance extends L2Playable
 		if (!inObserverMode())
 			broadcastUserInfo();
 	}
-	
-	@Override
-	public final boolean updatePosition(int gameTicks)
-	{
-		// Disables custom movement for L2PCInstance when Old Synchronization is selected
-		if (Config.COORD_SYNCHRONIZE == -1)
-			return super.updatePosition(gameTicks);
 		
-		// Get movement data
-		MoveData m = _move;
-		
-		if (_move == null)
-			return true;
-		
-		if (!isVisible())
-		{
-			_move = null;
-			return true;
-		}
-		
-		// Check if the position has alreday be calculated
-		if (m._moveTimestamp == 0)
-		{
-			m._moveTimestamp = m._moveStartTime;
-		}
-		
-		// Check if the position has alreday be calculated
-		if (m._moveTimestamp == gameTicks)
-			return false;
-		
-		double dx = m._xDestination - getX();
-		double dy = m._yDestination - getY();
-		double dz = m._zDestination - getZ();
-		int distPassed = (int) getStat().getMoveSpeed() * (gameTicks - m._moveTimestamp) / GameTimeController.TICKS_PER_SECOND;
-		double distFraction = (distPassed) / Math.sqrt(dx * dx + dy * dy + dz * dz);
-		if (Config.DEBUG)
-			_log.config(L2PcInstance.class.getName() + ": Move Ticks:" + (gameTicks - m._moveTimestamp) + ", distPassed:" + distPassed + ", distFraction:" + distFraction);
-		
-		if (distFraction > 1)
-		{
-			// Set the position of the L2Character to the destination
-			super.setXYZ(m._xDestination, m._yDestination, m._zDestination);
-		}
-		else
-		{
-			// Set the position of the L2Character to estimated after parcial move
-			super.setXYZ(getX() + (int) (dx * distFraction + 0.5), getY() + (int) (dy * distFraction + 0.5), getZ() + (int) (dz * distFraction));
-		}
-		
-		// Set the timer of last position update to now
-		m._moveTimestamp = gameTicks;
-		
-		revalidateZone(false);
-		
-		return (distFraction > 1);
-	}
-	
 	public void setLastClientPosition(int x, int y, int z)
 	{
 		_lastClientPosition.setXYZ(x, y, z);
@@ -11406,7 +11350,7 @@ public final class L2PcInstance extends L2Playable
 	
 	public boolean isSpawnProtected()
 	{
-		return this._protectEndTime > GameTimeController.getGameTicks();
+		return this._protectEndTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
 	public int getLastClientDistance(int x, int y, int z)

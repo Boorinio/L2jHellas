@@ -162,7 +162,7 @@ public abstract class L2Vehicle extends L2Character
 						if (distance > 1) // vertical movement heading check
 							setHeading(Util.calculateHeadingFrom(getX(), getY(), point.x, point.y));
 						
-						m._moveStartTime = GameTimeController.getGameTicks();
+						m._moveStartTime = GameTimeController.getInstance().getGameTicks();
 						_move = m;
 						
 						GameTimeController.getInstance().registerMovingObject(this);
@@ -320,9 +320,9 @@ public abstract class L2Vehicle extends L2Character
 	}
 	
 	@Override
-	public boolean updatePosition(int gameTicks)
+	public boolean updatePosition()
 	{
-		final boolean result = super.updatePosition(gameTicks);
+		final boolean result = super.updatePosition();
 		
 		for (L2PcInstance player : _passengers)
 		{

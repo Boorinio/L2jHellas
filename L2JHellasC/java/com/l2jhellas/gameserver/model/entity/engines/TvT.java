@@ -929,7 +929,7 @@ public class TvT
 			{
 				if (_sitForced)
 				{
-					player.stopMove(null, false);
+					player.stopMove(null);
 					player.abortAttack();
 					player.abortCast();
 

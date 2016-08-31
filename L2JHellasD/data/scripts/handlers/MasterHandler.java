@@ -79,7 +79,6 @@ import handlers.admincommandhandlers.AdminTeleport;
 import handlers.admincommandhandlers.AdminTest;
 import handlers.admincommandhandlers.AdminTvTEngine;
 import handlers.admincommandhandlers.AdminUnblockIp;
-import handlers.admincommandhandlers.AdminWalker;
 import handlers.admincommandhandlers.AdminWho;
 import handlers.admincommandhandlers.AdminZone;
 import handlers.chathandlers.ChatAll;
@@ -305,7 +304,6 @@ public class MasterHandler
 			AdminTest.class,
 			AdminTvTEngine.class,
 			AdminUnblockIp.class,
-			AdminWalker.class,
 			AdminZone.class,
 			AdminWho.class,
 		},

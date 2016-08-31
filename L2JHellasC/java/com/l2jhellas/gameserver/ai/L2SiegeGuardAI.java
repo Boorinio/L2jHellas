@@ -216,7 +216,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	protected void onIntentionAttack(L2Character target)
 	{
 		// Calculate the attack timeout
-		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getInstance().getGameTicks();
 
 		// Manage the Attack Intention : Stop current Attack (if necessary), Start a new Attack and Launch Think Event
 		// if (_actor.getTarget() != null)
@@ -449,7 +449,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 			if (hated != _attackTarget)
 				_attackTarget = hated;
 
-			_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+			_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getInstance().getGameTicks();
 
 			// check for close combat skills && heal/buff skills
 			if (!_actor.isMuted() && Rnd.nextInt(100) <= 5)
@@ -511,9 +511,9 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	private void thinkAttack()
 	{
 		if (Config.DEBUG)
-			_log.config(L2SiegeGuardAI.class.getName() + ".thinkAttack(); timeout=" + (_attackTimeout - GameTimeController.getGameTicks()));
+			_log.config(L2SiegeGuardAI.class.getName() + ".thinkAttack(); timeout=" + (_attackTimeout - GameTimeController.getInstance().getGameTicks()));
 
-		if (_attackTimeout < GameTimeController.getGameTicks())
+		if (_attackTimeout < GameTimeController.getInstance().getGameTicks())
 		{
 			// Check if the actor is running
 			if (_actor.isRunning())
@@ -522,12 +522,12 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 				_actor.setWalking();
 
 				// Calculate a new attack timeout
-				_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+				_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getInstance().getGameTicks();
 			}
 		}
 
 		// Check if target is dead or if timeout is expired to stop this attack
-		if (_attackTarget == null || _attackTarget.isAlikeDead() || _attackTimeout < GameTimeController.getGameTicks())
+		if (_attackTarget == null || _attackTarget.isAlikeDead() || _attackTimeout < GameTimeController.getInstance().getGameTicks())
 		{
 			// Stop hating this target after the attack timeout or if target is dead
 			if (_attackTarget != null)
@@ -644,7 +644,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 	protected void onEvtAttacked(L2Character attacker)
 	{
 		// Calculate the attack timeout
-		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getGameTicks();
+		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getInstance().getGameTicks();
 
 		// Set the _globalAggro to 0 to permit attack even just after spawn
 		if (_globalAggro < 0)

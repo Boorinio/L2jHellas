@@ -121,10 +121,6 @@ public class SpawnTable
 							_highestId = spawnDat.getId();
 					}
 				}
-				else
-				{
-					_log.warning(SpawnTable.class.getName() + ": Data missing in NPC table for ID: " + rset.getInt("npc_templateid") + ".");
-				}
 			}
 			rset.close();
 			statement.close();

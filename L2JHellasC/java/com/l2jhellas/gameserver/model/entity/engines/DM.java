@@ -350,7 +350,7 @@ public class DM
 			{
 				if (_sitForced)
 				{
-					player.stopMove(null, false);
+					player.stopMove(null);
 					player.abortAttack();
 					player.abortCast();
 

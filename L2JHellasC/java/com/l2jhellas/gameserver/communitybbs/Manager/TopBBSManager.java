@@ -161,7 +161,7 @@ public class TopBBSManager extends BaseBBSManager
 
 	public String getServerRunTime()
 	{
-		int timeSeconds = (GameTimeController.getGameTicks() - 36000) / 10;
+		int timeSeconds = (GameTimeController.getInstance().getGameTicks() - 36000) / 10;
 		String timeResult = "";
 		if (timeSeconds >= 86400)
 			timeResult = Integer.toString(timeSeconds / 86400) + " Days " + Integer.toString((timeSeconds % 86400) / 3600) + " hours";

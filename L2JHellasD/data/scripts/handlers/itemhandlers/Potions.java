@@ -131,7 +131,7 @@ public class Potions implements IItemHandler
 		{
 		// MANA POTIONS
 			case 726: // mana drug, xml: 2003
-				res = usePotion(activeChar, 2003, 1); // configurable through xml
+				res = usePotion(activeChar, 2005, 1); // configurable through xml
 			break;
 			case 728: // mana_potion, xml: 2005
 				res = usePotion(activeChar, 2005, 1);

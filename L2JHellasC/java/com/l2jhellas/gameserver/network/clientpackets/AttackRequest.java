@@ -48,6 +48,15 @@ public final class AttackRequest extends L2GameClientPacket
 		
 		if (activeChar == null)
 			return;
+			
+		if (activeChar.isSpawnProtected())
+			activeChar.setProtection(false);
+		
+		if(_objectId==0)
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		
 		if (activeChar.inObserverMode())
 		{
@@ -55,10 +64,7 @@ public final class AttackRequest extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
-		if (activeChar.isSpawnProtected())
-			activeChar.setProtection(false);
-		
+	
 		// avoid using expensive operations if not needed
 		final L2Object target;
 		if (activeChar.getTargetId() == _objectId)
@@ -68,7 +74,6 @@ public final class AttackRequest extends L2GameClientPacket
 		
 		if (target == null)
 		{
-			activeChar.getKnownList().removeKnownObject(target);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}

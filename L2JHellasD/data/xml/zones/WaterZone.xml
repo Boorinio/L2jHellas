@@ -1,6 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<list>
+<list enabled="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/zones.xsd">
 	<!-- Water Zones -->
+	<zone name="11_23_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-294912" Y="163839" />
+		<node X="-262144" Y="196607" />
+	</zone>
+	<zone name="11_24_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-294912" Y="196607" />
+		<node X="-262144" Y="229375" />
+	</zone>
+	<zone name="11_25_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-294912" Y="229375" />
+		<node X="-262144" Y="262143" />
+	</zone>
+	<zone name="11_26_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-294912" Y="262144" />
+		<node X="-262144" Y="294912" />
+	</zone>
+	<zone name="12_23_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-262144" Y="163839" />
+		<node X="-229376" Y="196607" />
+	</zone>
+	<zone name="12_24_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-262144" Y="196607" />
+		<node X="-229376" Y="229375" />
+	</zone>
+	<zone name="12_25_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-262144" Y="229375" />
+		<node X="-229376" Y="262143" />
+	</zone>
+	<zone name="12_26_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-262144" Y="262144" />
+		<node X="-229376" Y="294912" />
+	</zone>
+	<zone name="13_23_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-229376" Y="163839" />
+		<node X="-196608" Y="196607" />
+	</zone>
+	<zone name="13_24_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-229376" Y="223231" />
+		<node X="-196608" Y="229375" />
+	</zone>
+	<zone name="13_24_water2" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-229376" Y="200447" />
+		<node X="-225024" Y="223231" />
+	</zone>
+	<zone name="13_24_water3" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-229376" Y="196607" />
+		<node X="-196608" Y="200447" />
+	</zone>
+	<zone name="13_24_water4" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-206336" Y="200447" />
+		<node X="-196608" Y="204287" />
+	</zone>
+	<zone name="13_24_water5" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-225024" Y="200447" />
+		<node X="-217344" Y="207871" />
+	</zone>
+	<zone name="13_24_water6" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-219648" Y="215039" />
+		<node X="-213248" Y="223231" />
+	</zone>
+	<zone name="13_25_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-229376" Y="229375" />
+		<node X="-196608" Y="262143" />
+	</zone>
+	<zone name="13_26_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-229376" Y="262144" />
+		<node X="-196608" Y="294912" />
+	</zone>
+	<zone name="14_23_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-196608" Y="163839" />
+		<node X="-163840" Y="196607" />
+	</zone>
+	<zone name="14_24_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-193152" Y="196607" />
+		<node X="-168960" Y="202239" />
+	</zone>
+	<zone name="14_24_water2" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-168960" Y="196607" />
+		<node X="-163840" Y="229375" />
+	</zone>
+	<zone name="14_24_water3" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-196608" Y="222975" />
+		<node X="-179584" Y="229375" />
+	</zone>
+	<zone name="14_24_water4" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-179584" Y="224767" />
+		<node X="-168960" Y="229375" />
+	</zone>
+	<zone name="14_24_water5" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-186880" Y="218111" />
+		<node X="-179584" Y="222975" />
+	</zone>
+	<zone name="14_24_water6" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-196608" Y="196607" />
+		<node X="-193152" Y="203775" />
+	</zone>
+	<zone name="14_25_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-196608" Y="229375" />
+		<node X="-163840" Y="262143" />
+	</zone>
+	<zone name="14_25_water2" type="WaterZone" shape="Cuboid" minZ="-2192" maxZ="-144">
+		<node X="-187152" Y="240401" />
+		<node X="-183376" Y="245393" />
+	</zone>
+	<zone name="14_25_water3" type="WaterZone" shape="Cuboid" minZ="-2192" maxZ="-144">
+		<node X="-183376" Y="241768" />
+		<node X="-182032" Y="244872" />
+	</zone>
+	<zone name="14_25_water4" type="WaterZone" shape="Cuboid" minZ="-2192" maxZ="-144">
+		<node X="-183376" Y="240968" />
+		<node X="-182799" Y="241768" />
+	</zone>
+	<zone name="14_26_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="-196608" Y="262144" />
+		<node X="-163840" Y="294912" />
+	</zone>
 	<zone name="15_23_water1" type="WaterZone" shape="Cuboid" minZ="-4784" maxZ="-3784">
 		<node X="-163840" Y="163839" />
 		<node X="-131072" Y="196607" />
@@ -238,12 +354,72 @@
 		<node X="-32768" Y="-98304" />
 	</zone>
 	<zone name="18_15_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
-		<node X="-65536" Y="-98304" />
-		<node X="-32768" Y="-65536" />
+		<node X="-65535" Y="-98304" />
+		<node X="-32767" Y="-65536" />
+	</zone>
+	<zone name="18_15_water2" type="WaterZone" shape="Cuboid" minZ="-3500" maxZ="-3200">
+		<node X="-56956" Y="-70888" />
+		<node X="-55556" Y="-68104" />
+	</zone>
+	<zone name="18_15_water3" type="WaterZone" shape="Cuboid" minZ="-3500" maxZ="-3200">
+		<node X="-50556" Y="-70888" />
+		<node X="-49604" Y="-68104" />
+	</zone>
+	<zone name="18_15_water4" type="WaterZone" shape="Cuboid" minZ="-3500" maxZ="-3200">
+		<node X="-56380" Y="-72024" />
+		<node X="-50116" Y="-70888" />
+	</zone>
+	<zone name="18_15_water5" type="WaterZone" shape="Cuboid" minZ="-3500" maxZ="-3200">
+		<node X="-56380" Y="-68104" />
+		<node X="-50012" Y="-67112" />
+	</zone>
+	<zone name="18_15_water6" type="WaterZone" shape="Cuboid" minZ="-3108" maxZ="-3008">
+		<node X="-59454" Y="-68630" />
+		<node X="-58034" Y="-67530" />
 	</zone>
 	<zone name="18_16_water1" type="WaterZone" shape="Cuboid" minZ="-4780" maxZ="-3780">
 		<node X="-65536" Y="-65536" />
 		<node X="-32768" Y="-32768" />
+	</zone>
+	<zone name="18_16_water2" type="WaterZone" shape="Cuboid" minZ="-2069" maxZ="-2066">
+		<node X="-61172" Y="-58276" />
+		<node X="-58317" Y="-55532" />
+	</zone>
+	<zone name="18_16_water3" type="WaterZone" shape="Cuboid" minZ="-2086" maxZ="-2062">
+		<node X="-61684" Y="-59972" />
+		<node X="-60556" Y="-59196" />
+	</zone>
+	<zone name="18_16_water4" type="WaterZone" shape="Cuboid" minZ="-2301" maxZ="-2151">
+		<node X="-60960" Y="-54879" />
+		<node X="-58432" Y="-53379" />
+	</zone>
+	<zone name="18_16_water5" type="WaterZone" shape="Cuboid" minZ="-2893" maxZ="-2843">
+		<node X="-50599" Y="-54912" />
+		<node X="-50143" Y="-53444" />
+	</zone>
+	<zone name="18_16_water6" type="WaterZone" shape="Cuboid" minZ="-2893" maxZ="-2843">
+		<node X="-50143" Y="-55029" />
+		<node X="-49277" Y="-53305" />
+	</zone>
+	<zone name="18_16_water7" type="WaterZone" shape="Cuboid" minZ="-2894" maxZ="-2844">
+		<node X="-49277" Y="-54781" />
+		<node X="-49019" Y="-53569" />
+	</zone>
+	<zone name="18_16_water8" type="WaterZone" shape="Cuboid" minZ="-2893" maxZ="-2843">
+		<node X="-51168" Y="-55433" />
+		<node X="-50910" Y="-55117" />
+	</zone>
+	<zone name="18_16_water9" type="WaterZone" shape="Cuboid" minZ="-2893" maxZ="-2843">
+		<node X="-50186" Y="-56004" />
+		<node X="-49832" Y="-55784" />
+	</zone>
+	<zone name="18_16_water10" type="WaterZone" shape="Cuboid" minZ="-2893" maxZ="-2843">
+		<node X="-51206" Y="-53249" />
+		<node X="-50916" Y="-52869" />
+	</zone>
+	<zone name="18_16_water11" type="WaterZone" shape="Cuboid" minZ="-2893" maxZ="-2843">
+		<node X="-50199" Y="-52553" />
+		<node X="-49797" Y="-52333" />
 	</zone>
 	<zone name="18_17_water1" type="WaterZone" shape="Cuboid" minZ="-4780" maxZ="-3780">
 		<node X="-65536" Y="-32768" />
@@ -477,6 +653,14 @@
 		<node X="-32767" Y="229376" />
 		<node X="0" Y="262144" />
 	</zone>
+	<zone name="19_25_water3" type="WaterZone" shape="Cuboid" minZ="-3604" maxZ="-3348">
+		<node X="-21948" Y="250556" />
+		<node X="-19460" Y="251252" />
+	</zone>
+	<zone name="19_26_water1" type="WaterZone" shape="Cuboid" minZ="-4780" maxZ="-3780">
+		<node X="-32768" Y="262144" />
+		<node X="0" Y="294912" />
+	</zone>
 	<zone name="20_11_water1" type="WaterZone" shape="Cuboid" minZ="-4780" maxZ="-3780">
 		<node X="0" Y="-229375" />
 		<node X="32768" Y="-196607" />
@@ -543,7 +727,23 @@
 	</zone>
 	<zone name="20_25_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
 		<node X="0" Y="229376" />
+		<node X="32768" Y="243712" />
+	</zone>
+	<zone name="20_25_water2" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="25600" Y="243712" />
 		<node X="32768" Y="262144" />
+	</zone>
+	<zone name="20_25_water3" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
+		<node X="0" Y="254464" />
+		<node X="25600" Y="262144" />
+	</zone>
+	<zone name="20_25_water4" type="WaterZone" shape="Cuboid" minZ="-2416" maxZ="-2141">
+		<node X="4991" Y="248304" />
+		<node X="9599" Y="253680" />
+	</zone>
+	<zone name="20_26_water1" type="WaterZone" shape="Cuboid" minZ="-4780" maxZ="-3780">
+		<node X="0" Y="262144" />
+		<node X="32768" Y="294912" />
 	</zone>
 	<zone name="21_10_water1" type="WaterZone" shape="Cuboid" minZ="-4780" maxZ="-3780">
 		<node X="32768" Y="-262143" />
@@ -654,8 +854,8 @@
 		<node X="65536" Y="229376" />
 	</zone>
 	<zone name="21_25_water1" type="WaterZone" shape="Cuboid" minZ="-4780" maxZ="-3780">
-		<node X="32768" Y="229376" />
-		<node X="65536" Y="262144" />
+		<node X="32768" Y="229379" />
+		<node X="65536" Y="262147" />
 	</zone>
 	<zone name="22_11_water1" type="WaterZone" shape="Cuboid" minZ="-4779" maxZ="-3779">
 		<node X="65536" Y="-229375" />

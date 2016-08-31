@@ -2474,13 +2474,17 @@ public class L2Npc extends L2Character
 		final L2WorldRegion region = getWorldRegion();
 		
 		if (region != null)
-			region.removeFromZones(this);		
-
+		{
+			region.removeFromZones(this);	
+		}
+		
 		decayMe();
 		// Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI
 		getKnownList().removeAllKnownObjects();
 		// Remove L2Object object from _allObjects of L2World
 		L2World.getInstance().removeObject(this);
+		
+		
 		
 		super.deleteMe();				
 	}

@@ -71,10 +71,11 @@ public class AdminTeleport implements IAdminCommandHandler
 		"admin_goup",
 		"admin_godown",
 		"admin_tele",
+		"admin_goto",
 		"admin_teleto",
 		"admin_instant_move",
 		"admin_sendhome"
-	};/** @formatter:on */
+	};
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -150,6 +151,27 @@ public class AdminTeleport implements IAdminCommandHandler
 		{
 			activeChar._exploring = !activeChar._exploring;
 			activeChar.explore();
+		}
+		else if (command.startsWith("admin_goto"))
+		{
+			StringTokenizer st = new StringTokenizer(command);
+			
+			if(st!=null)
+			{
+			if (st.countTokens() > 1)
+			{
+				st.nextToken();
+				String plyr = st.nextToken();
+				L2PcInstance player = L2World.getInstance().getPlayer(plyr);
+				if (player == null)
+				{
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+					return false;
+				}
+				
+				teleportToCharacter(activeChar, player);
+			}
+			}
 		}
 		else if (command.startsWith("admin_walk"))
 		{

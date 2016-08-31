@@ -14,33 +14,37 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
 
-/**
- * Format: (ch) dd
- * 
- * @author -Wooden-
- */
+import com.l2jhellas.gameserver.model.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
+
 public class RequestDismissPartyRoom extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestDismissPartyRoom.class.getName());
 	private static final String _C__D0_02_REQUESTDISMISSPARTYROOM = "[C] D0:02 RequestDismissPartyRoom";
-	private int _data1;
-	private int _data2;
+	private int _roomid;
 
 	@Override
 	protected void readImpl()
 	{
-		_data1 = readD();
-		_data2 = readD();
+		_roomid = readD();
 	}
 
 	@Override
 	protected void runImpl()
 	{
-		// TODO
-		_log.info("This packet is not well known : RequestDismissPartyRoom");
-		_log.info("Data received: d:" + _data1 + " d:" + _data2);
+		final L2PcInstance activeChar = getClient().getActiveChar();
+				
+		if (activeChar == null)
+			return;
+				
+		PartyMatchRoom room = PartyMatchRoomList.getInstance().getRoom(_roomid);
+				
+		if (room == null)
+			return;
+				
+		PartyMatchRoomList.getInstance().deleteRoom(_roomid);
 	}
 
 	@Override

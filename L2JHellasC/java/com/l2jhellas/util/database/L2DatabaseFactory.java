@@ -20,14 +20,11 @@ import java.util.logging.Logger;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 import com.l2jhellas.Config;
-import com.l2jhellas.Server;
-import com.l2jhellas.gameserver.ThreadPoolManager;
 
 public class L2DatabaseFactory
 {
 	private static final Logger _log = Logger.getLogger(L2DatabaseFactory.class.getName());
 
-	private static L2DatabaseFactory _instance;
 	private BoneCPDataSource _source;
 	private int database_partition_count = 3;
 	private int database_timeout = 10;
@@ -39,27 +36,19 @@ public class L2DatabaseFactory
 			if (Config.DATABASE_MAX_CONNECTIONS < 10)
 			{
 				Config.DATABASE_MAX_CONNECTIONS = 10;
-				if(Config.DEBUG)
-				_log.warning(getClass().getSimpleName() + ": at least " + Config.DATABASE_MAX_CONNECTIONS + " db connections are required.");
 			}
 
 			if (database_partition_count > 4)
 			{
 				database_partition_count = 4;
-				if(Config.DEBUG)
-				_log.warning(L2DatabaseFactory.class.getSimpleName() + ": max {} db connections partitions. " + database_partition_count);
 			}
 
 			if (Config.DATABASE_MAX_CONNECTIONS * database_partition_count > 200)
 			{
-				if(Config.DEBUG)
-				{
-				_log.warning(L2DatabaseFactory.class.getSimpleName() + ": Max Connections > 60.");
-				_log.warning(L2DatabaseFactory.class.getSimpleName() + ": -> Using Partition 2 and Connection 30");
-				}
 				Config.DATABASE_MAX_CONNECTIONS = 50;
 				database_partition_count = 4;
 			}
+			
 			_source = new BoneCPDataSource();
 			
 			_source.getConfig().setDefaultAutoCommit(true);
@@ -91,9 +80,7 @@ public class L2DatabaseFactory
 		}
 		catch (Exception e)
 		{
-			_log.severe(L2DatabaseFactory.class.getSimpleName() + ": Failed to init database connections: ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			_log.severe(L2DatabaseFactory.class.getSimpleName() + ": Failed to init database connections: "+e);
 		}
 	}
 
@@ -119,10 +106,7 @@ public class L2DatabaseFactory
 
 	public static L2DatabaseFactory getInstance()
 	{
-		if (_instance == null)
-			_instance = new L2DatabaseFactory();
-
-		return _instance;
+		return SingletonHolder._instance;
 	}
 
 	/**
@@ -138,8 +122,6 @@ public class L2DatabaseFactory
 			try
 			{
 				con = _source.getConnection();
-				if (Server.serverMode == Server.MODE_GAMESERVER)
-					ThreadPoolManager.getInstance().scheduleGeneral(new ConnectionCloser(con, new RuntimeException()), 60000);
 			}
 			catch (SQLException e)
 			{
@@ -151,33 +133,6 @@ public class L2DatabaseFactory
 		return con;
 	}
 
-	private static class ConnectionCloser implements Runnable
-	{
-		private final Connection c;
-		private final RuntimeException exp;
-
-		public ConnectionCloser(Connection con, RuntimeException e)
-		{
-			c = con;
-			exp = e;
-		}
-
-		@Override
-		public void run()
-		{
-			try
-			{
-				//just remove this until the refactor
-				if (!c.isClosed() && c != null)
-					_log.warning(L2DatabaseFactory.class.getSimpleName() + ": Unclosed connection! Trace: " + exp.getStackTrace()[1] + exp);
-			}
-			catch (SQLException e)
-			{
-				if (Config.DEVELOPER)
-					e.printStackTrace();
-			}
-		}
-	}
 
 	public int getBusyConnectionCount()
 	{
@@ -196,5 +151,22 @@ public class L2DatabaseFactory
 		String mySqlTop1 = " Limit 1 ";
 		String query = "SELECT " + fields + " FROM " + tableName + " WHERE " + whereClause + mySqlTop1;
 		return query;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final L2DatabaseFactory _instance;
+		
+		static
+		{
+			try
+			{
+				_instance = new L2DatabaseFactory();
+			}
+			catch (Exception e)
+			{
+				throw new ExceptionInInitializerError(e);
+			}
+		}
 	}
 }

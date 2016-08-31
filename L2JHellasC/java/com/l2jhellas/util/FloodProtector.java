@@ -109,9 +109,9 @@ public class FloodProtector
 		Entry<Integer, Integer[]> entry = _floodClient.getEntry(playerObjId);
 		Integer[] value = entry.getValue();
 
-		if (value[action] < GameTimeController.getGameTicks())
+		if (value[action] < GameTimeController.getInstance().getGameTicks())
 		{
-			value[action] = GameTimeController.getGameTicks() + REUSEDELAY[action];
+			value[action] = GameTimeController.getInstance().getGameTicks() + REUSEDELAY[action];
 			entry.setValue(value);
 			return true;
 		}

@@ -121,7 +121,7 @@ public class L2Party
 	public void setPendingInvitation(boolean val)
 	{
 		_pendingInvitation = val;
-		_pendingInviteTimeout = GameTimeController.getGameTicks() + L2PcInstance.REQUEST_TIMEOUT * GameTimeController.TICKS_PER_SECOND;
+		_pendingInviteTimeout = GameTimeController.getInstance().getGameTicks() + L2PcInstance.REQUEST_TIMEOUT * GameTimeController.TICKS_PER_SECOND;
 	}
 	
 	/**
@@ -131,7 +131,7 @@ public class L2Party
 	 */
 	public boolean isInvitationRequestExpired()
 	{
-		return !(_pendingInviteTimeout > GameTimeController.getGameTicks());
+		return !(_pendingInviteTimeout > GameTimeController.getInstance().getGameTicks());
 	}
 	
 	/**

@@ -52,8 +52,15 @@ public final class Action extends L2GameClientPacket
 		
 		// Get the current L2PcInstance of the player
 		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
+		
+		if(_objectId==0)
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		
 		if (activeChar.inObserverMode())
 		{
@@ -63,12 +70,12 @@ public final class Action extends L2GameClientPacket
 		}
 		
 		// If the player is the requester of a transaction
-		if (activeChar.getActiveRequester() != null)
+		if (activeChar.getActiveRequester() != null || activeChar.isOutOfControl())
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
+			
 		// If requested object doesn't exist
 		final L2Object obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : L2World.getInstance().findObject(_objectId);
 		if (obj == null)
@@ -76,13 +83,7 @@ public final class Action extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
-		if (!activeChar.isGM() && activeChar.isOutOfControl())
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
+
 		switch (_actionId)
 		{
 			case 0:

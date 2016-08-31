@@ -2144,10 +2144,8 @@ public abstract class L2Skill
 
 	public final L2Object getFirstOfTargetList(L2Character activeChar)
 	{
-		L2Object[] targets;
-
-		targets = getTargetList(activeChar, true);
-
+		L2Object[] targets = getTargetList(activeChar, true);
+		
 		if (targets == null || targets.length == 0)
 			return null;
 		else
