@@ -221,6 +221,8 @@ import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.TargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.TitleUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.TradePressOtherOk;
+import com.l2jhellas.gameserver.network.serverpackets.TradePressOwnOk;
 import com.l2jhellas.gameserver.network.serverpackets.TradeStart;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
@@ -4576,30 +4578,9 @@ public final class L2PcInstance extends L2Playable
 				// Check if this L2PcInstance is autoAttackable
 				if (isAutoAttackable(player) || (player._inEventTvT && TvT._started) || (player._inEventCTF && CTF._started) || (player._inEventDM && DM._started) && !isGM())
 				{
-					if (Config.ALLOW_CHAR_KILL_PROTECT)
-					{
-						Siege siege = SiegeManager.getInstance().getSiege(player);
-						if ((siege != null && siege.getIsInProgress()))
-						{
-							if (player.getLevel() - ((L2Character) player.getTarget()).getLevel() > 20 || ((L2Character) player.getTarget()).getLevel() - player.getLevel() > 20)
-							{
-								player.sendMessage("You can only hit players within your grade.");
-								player.sendPacket(ActionFailed.STATIC_PACKET);
-							}
-							
-						}
-					}
-					if (Config.ALT_PLAYER_PROTECTION)
-					{
-						if (player.getLevel() > Config.ALT_PLAYER_PROTECTION_LEVEL && ((L2Character) player.getTarget()).getLevel() > Config.ALT_PLAYER_PROTECTION_LEVEL && !player.isInOlympiadMode())
-						{
-							player.sendMessage("You can't hit a player that is lower level from you.");
-							player.sendPacket(ActionFailed.STATIC_PACKET);
-						}
-					}
 					// Player with lvl < 21 can't attack a cursed weapon holder
 					// And a cursed weapon holder can't attack players with lvl < 21
-					else if ((isCursedWeaponEquiped() && player.getLevel() < 21) || (player.isCursedWeaponEquiped() && getLevel() < 21))
+				    if ((isCursedWeaponEquiped() && player.getLevel() < 21) || (player.isCursedWeaponEquiped() && getLevel() < 21))
 					{
 						player.sendPacket(ActionFailed.STATIC_PACKET);
 					}
@@ -4613,7 +4594,7 @@ public final class L2PcInstance extends L2Playable
 								player.onActionRequest();
 							}
 						}
-						else
+						else if (GeoEngine.canSeeTarget(player, this))
 						{
 							player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
 							player.onActionRequest();
@@ -4629,7 +4610,7 @@ public final class L2PcInstance extends L2Playable
 							player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
 						}
 					}
-					else
+					else if (GeoEngine.canSeeTarget(player, this))
 					{
 						player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
 					}
@@ -5245,7 +5226,7 @@ public final class L2PcInstance extends L2Playable
 				addItem("Pickup", target, null, true);
 				
 				// Like L2OFF Auto-Equip arrows if player has a bow and player picks up arrows.
-				if (target.getItem() != null && target.getItem().getItemType() == L2EtcItemType.ARROW && getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND).getItemType() == L2WeaponType.BOW)
+				if (target.getItem() != null && target.getItem().getItemType() == L2EtcItemType.ARROW && getActiveWeaponInstance() !=null && getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND).getItemType() == L2WeaponType.BOW)
 					checkAndEquipArrows();
 			}
 		}
@@ -5967,61 +5948,53 @@ public final class L2PcInstance extends L2Playable
 			return;
 		
 		// If in Arena, do nothing
-		if (isInsideZone(ZoneId.PVP) || targetPlayer.isInsideZone(ZoneId.PVP))
+		if (isInsideZone(ZoneId.PVP) && targetPlayer.isInsideZone(ZoneId.PVP))
 		{
-			if ((getSiegeState() > 0) && (targetPlayer.getSiegeState() > 0) && (getSiegeState() != targetPlayer.getSiegeState()))
+			// Until the zone was a siege zone. Check also if victim was a player. Randomers aren't counted.
+			if (target instanceof L2PcInstance && getSiegeState() > 0 && targetPlayer.getSiegeState() > 0 && getSiegeState() != targetPlayer.getSiegeState())
 			{
+				// Now check clan relations.
 				final L2Clan killerClan = getClan();
-				final L2Clan targetClan = targetPlayer.getClan();
-				if ((killerClan != null) && (targetClan != null))
-				{
+				if (killerClan != null)
 					killerClan.addSiegeKill();
+				
+				final L2Clan targetClan = targetPlayer.getClan();
+				if (targetClan != null)
 					targetClan.addSiegeDeath();
-				}
 			}
 			return;
 		}
-		else
+		
+		// Check if it's pvp (cases : regular, wars, victim is PKer)
+		if (checkIfPvP(target) || (targetPlayer.getClan() != null && getClan() != null && getClan().isAtWarWith(targetPlayer.getClanId()) && targetPlayer.getClan().isAtWarWith(getClanId()) && targetPlayer.getPledgeType() != L2Clan.SUBUNIT_ACADEMY && getPledgeType() != L2Clan.SUBUNIT_ACADEMY) || (targetPlayer.getKarma() > 0 && Config.KARMA_AWARD_PK_KILL))
 		{
-			// check about wars
-			if (targetPlayer.getClan() != null && getClan() != null)
+			if (target instanceof L2PcInstance)
 			{
-				if (getClan().isAtWarWith(targetPlayer.getClanId()))
+				// Add PvP point to attacker.
+				increasePvpKills();
+
+				if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
 				{
-					if (targetPlayer.getClan().isAtWarWith(getClanId()))
-					{
-						// 'Both way war' -> 'PvP Kill'
-						increasePvpKills();
-						
-						if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
-						{
-							Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
-						}
-						return;
-					}
+					Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
 				}
 			}
-			
-			// 'No war' or 'One way war' -> 'Normal PK'
-			if (targetPlayer.getKarma() > 0) // Target player has karma
-			{
-				if (Config.KARMA_AWARD_PK_KILL)
-				{
-					increasePvpKills();
-					if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
-					{
-						Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
-					}
-				}
-			}
-			else if (targetPlayer.getPvpFlag() == 0) // Target player doesn't have karma
+		}
+		// Otherwise, killer is considered as a PKer.
+		else if (targetPlayer.getKarma() == 0 && targetPlayer.getPvpFlag() == 0)
+		{
+			// PK Points are increased only if you kill a player.
+			if (target instanceof L2PcInstance)
 			{
 				increasePkKillsAndKarma(targetPlayer.getLevel());
+				
 				if (target instanceof L2PcInstance && Config.ANNOUNCE_PK_KILL)
 				{
 					Announcements.getInstance().announceToAll("Player " + this.getName() + " has assassinated Player " + target.getName());
 				}
 			}
+			
+			// Send UserInfo packet to attacker with its Karma and PK Counter
+			sendPacket(new UserInfo(this));
 		}
 	}
 	
@@ -6032,11 +6005,9 @@ public final class L2PcInstance extends L2Playable
 	{
 		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
-		// Rank PvP System by Masterio
-		if(!Config.RANK_PVP_SYSTEM_ENABLED || (Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_COUNTER_FOR_ALTT_ENABLED))
-		{
-			setPvpKills(getPvpKills() + 1);
-		}
+
+		setPvpKills(getPvpKills() + 1);
+		
 		if (Config.PVPEXPSP_SYSTEM)
 		{
 			addExpAndSp(Config.ADD_EXP, Config.ADD_SP);
@@ -6141,21 +6112,12 @@ public final class L2PcInstance extends L2Playable
 		{
 			newKarma = Integer.MAX_VALUE - getKarma();
 		}
+
+		setPkKills(getPkKills() + 1);
+		setKarma(getKarma() + newKarma);
+		updatePkColor(getPkKills());
+		broadcastUserInfo();
 		
-		// Add karma to attacker and increase its PK counter
-		if (Config.DEFAULT_PK_SYSTEM)
-		{
-			setPkKills(getPkKills() + 1);
-			setKarma(getKarma() + newKarma);
-			updatePkColor(getPkKills());
-			broadcastUserInfo();
-		}
-		if (Config.CUSTOM_PK_SYSTEM)
-		{
-			setPvpKills(getPvpKills() + 1);
-			updatePvPColor(getPvpKills());
-			broadcastUserInfo();
-		}
 		if (Config.ALLOW_PK_REWARD)
 		{
 			// Item Reward system
@@ -6499,17 +6461,16 @@ public final class L2PcInstance extends L2Playable
 		_activeTradeList = new TradeList(this);
 		_activeTradeList.setPartner(partner);
 		
-		SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.BEGIN_TRADE_WITH_S1);
-		msg.addString(partner.getName());
-		sendPacket(msg);
+		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.BEGIN_TRADE_WITH_S1).addString(partner.getName()));
 		sendPacket(new TradeStart(this));
 	}
 	
 	public void onTradeConfirm(L2PcInstance partner)
 	{
-		SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.S1_CONFIRMED_TRADE);
-		msg.addString(partner.getName());
-		sendPacket(msg);
+		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_CONFIRMED_TRADE).addString(partner.getName()));
+		
+		partner.sendPacket(TradePressOwnOk.STATIC_PACKET);
+		sendPacket(TradePressOtherOk.STATIC_PACKET);
 	}
 	
 	public void onTradeCancel(L2PcInstance partner)
@@ -13603,7 +13564,6 @@ public final class L2PcInstance extends L2Playable
 		
 		// restore info about chat ban
 		checkBanChat(false);
-		
 
 		final L2Clan clan = this.getClan();
 		
@@ -15031,6 +14991,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		setActiveEnchantItem(null);
 		sendPacket(EnchantResult.CANCELLED);
+		sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 	}
 	
 	public boolean canEnchant()
@@ -15076,9 +15037,9 @@ public final class L2PcInstance extends L2Playable
 			return false;
 		}
 		
-		if (getActiveWarehouse() != null ||getActiveTradeList() != null)
+		if ( getActiveTradeList() != null)
 		{
-			sendMessage("You can't enchant items when you got active warehouse or active trade.");
+			sendMessage("You can't enchant items while trading.");
 			cancellEnchant();
 			return false;
 		}	
@@ -15147,11 +15108,9 @@ public final class L2PcInstance extends L2Playable
 			if (getMountObjectID() != 0)
 			{
 				final L2Object obj = L2World.getInstance().findObject(getMountObjectID());
-				((L2StaticObjectInstance) obj).setBusy(false);
-				
+				((L2StaticObjectInstance) obj).setBusy(false);				
 				setMountObjectID(0);
-			}
-			
+			}		
 			standUp();
 		}
 		else
@@ -15167,6 +15126,82 @@ public final class L2PcInstance extends L2Playable
 		}
 	}
     
+	
+	public boolean canRequestTrade(L2PcInstance target)
+	{
+		
+		if (target == null || !getKnownList().getKnownType(L2PcInstance.class).contains(target) || target.equals(this))
+		{
+			sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
+			return false;
+		}
+		
+		if (!getAccessLevel().allowTransaction())
+		{
+			sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			return false;
+		}
+				
+		if (target.isInFunEvent() || isInFunEvent())
+        {
+			sendMessage("You or your target cannot trade during events.");
+			return false;
+        }
+		
+		if (target.isInOlympiadMode() || isInOlympiadMode())
+		{
+			sendMessage("You or your target cannot trade during Olympiad.");
+			return false;
+		}
+		
+		// Alt game - Karma punishment
+		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && (getKarma() > 0 || target.getKarma() > 0))
+		{
+			sendMessage("You cannot trade in a chaotic state.");
+			return false;
+		}
+		
+		if (isInStoreMode() || target.isInStoreMode())
+		{
+			sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
+			return false;
+		}
+		
+		if (isProcessingTransaction())
+		{
+			sendPacket(SystemMessageId.ALREADY_TRADING);
+			return false;
+		}
+		
+		if (target.isProcessingRequest() || target.isProcessingTransaction())
+		{
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER).addPcName(target);
+			sendPacket(sm);
+			return false;
+		}
+		
+		if (target.getTradeRefusal())
+		{
+			sendMessage("Your target is in trade refusal mode.");
+			return false;
+		}
+		
+		if (BlockList.isBlocked(target, this))
+		{
+			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_ADDED_YOU_TO_IGNORE_LIST).addPcName(target);
+			sendPacket(sm);
+			return false;
+		}
+		
+		if (Util.calculateDistance(this, target, true) > L2Npc.INTERACTION_DISTANCE)
+		{
+			sendPacket(SystemMessageId.TARGET_TOO_FAR);
+			return false;
+		}
+		
+		return true;
+		
+	}
 	/*public void CalculateFalling(int height)
 	{
 		if(isDead() || isFlying())

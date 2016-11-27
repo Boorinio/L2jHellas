@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SendTradeDone;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
@@ -36,46 +35,33 @@ public final class AnswerTradeRequest extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
-		L2PcInstance player2 = player.getActiveRequester();
-		if (player == null || player2 == null)
+		final L2PcInstance player = getClient().getActiveChar();
+		
+		if (player == null)
 			return;
+		
 		if (!player.getAccessLevel().allowTransaction())
 		{
-			player.sendMessage("Transactions are disabled for your Access Level.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
 		}
-
-		L2PcInstance partner = player.getActiveRequester();
-		if ((partner == null) || (L2World.getInstance().findObject(partner.getObjectId()) == null))
+		
+		final L2PcInstance partner = player.getActiveRequester();
+		
+		if (partner == null || L2World.getInstance().getPlayer(partner.getObjectId()) == null)
 		{
 			// Trade partner not found, cancel trade
 			player.sendPacket(new SendTradeDone(0));
-			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
-			player.sendPacket(msg);
+			player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			player.setActiveRequester(null);
-			player.setAllowTrade(true);
-			partner.setAllowTrade(true);
-			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
-		if ((_response == 1) && !partner.isRequestExpired())
-		{
+		
+		if (_response == 1 && !partner.isRequestExpired())
 			player.startTrade(partner);
-			partner.setAllowTrade(true);
-			player.setAllowTrade(true);
-		}
 		else
-		{
-			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.S1_DENIED_TRADE_REQUEST);
-			msg.addString(player.getName());
-			partner.sendPacket(msg);
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			player.setAllowTrade(true);
-		}
-
+			partner.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DENIED_TRADE_REQUEST).addPcName(player));
+		
 		// Clears requesting status
 		player.setActiveRequester(null);
 		partner.onTransactionResponse();

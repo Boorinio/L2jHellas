@@ -174,8 +174,6 @@ public final class Config
 	public static boolean ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE;
 	public static boolean ALT_GAME_FREE_TELEPORT;
 	public static boolean ALT_RECOMMEND;
-	public static boolean ALT_PLAYER_PROTECTION;
-	public static int ALT_PLAYER_PROTECTION_LEVEL;
 	public static boolean IS_CRAFTING_ENABLED;
 	public static int DWARF_RECIPE_LIMIT;
 	public static int COMMON_RECIPE_LIMIT;
@@ -407,8 +405,6 @@ public final class Config
 	public static boolean ALLOW_PK_REWARD;
 	public static int PK_REWARD_ITEM;
 	public static int PK_REWARD_COUNT;
-	public static boolean DEFAULT_PK_SYSTEM;
-	public static boolean CUSTOM_PK_SYSTEM;
 	public static int KARMA_MIN_KARMA;
 	public static int KARMA_MAX_KARMA;
 	public static int KARMA_XP_DIVIDER;
@@ -490,9 +486,7 @@ public final class Config
 	public static boolean USE_SAY_FILTER;
 	public static String CHAT_FILTER_CHARS;
 	public static String CHAT_FILTER_PUNISHMENT;
-	public static boolean ENABLE_SAY_SOCIAL_ACTIONS;
 	public static ArrayList<String> FILTER_LIST = new ArrayList<String>();
-	public static boolean ALLOW_CHAR_KILL_PROTECT;
 	public static int DUEL_COORD_X;
 	public static int DUEL_COORD_Y;
 	public static int DUEL_COORD_Z;
@@ -1318,10 +1312,8 @@ public final class Config
 			ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE = Boolean.valueOf(altSettings.getProperty("AltKarmaPlayerCanUseWareHouse", "True"));
 			ALT_GAME_FREE_TELEPORT = Boolean.parseBoolean(altSettings.getProperty("AltFreeTeleporting", "False"));
 			ALT_RECOMMEND = Boolean.parseBoolean(altSettings.getProperty("AltRecommend", "False"));
-			ALT_PLAYER_PROTECTION = Boolean.parseBoolean(altSettings.getProperty("AltPlayerProtection", "False"));
-			ALT_PLAYER_PROTECTION_LEVEL = Integer.parseInt(altSettings.getProperty("AltPlayerProtectionLevel", "25"));
-			//crafting
 			
+			//crafting
 			IS_CRAFTING_ENABLED = Boolean.parseBoolean(altSettings.getProperty("CraftingEnabled", "True"));
 			DWARF_RECIPE_LIMIT = Integer.parseInt(altSettings.getProperty("DwarfRecipeLimit", "50"));
 			COMMON_RECIPE_LIMIT = Integer.parseInt(altSettings.getProperty("CommonRecipeLimit", "50"));
@@ -1651,8 +1643,6 @@ public final class Config
 			ALLOW_PK_REWARD = Boolean.parseBoolean(PvPSettings.getProperty("AllowPkRewardSystem", "False"));
 			PK_REWARD_ITEM = Integer.parseInt(PvPSettings.getProperty("PkRewardItem", "57"));
 			PK_REWARD_COUNT = Integer.parseInt(PvPSettings.getProperty("PkRewardAmount", "1"));
-			DEFAULT_PK_SYSTEM = Boolean.parseBoolean(PvPSettings.getProperty("UseDefaultSystem", "True"));
-			CUSTOM_PK_SYSTEM = Boolean.parseBoolean(PvPSettings.getProperty("UseCustomSystem", "False"));
 			KARMA_MIN_KARMA = Integer.parseInt(PvPSettings.getProperty("MinKarma", "240"));
 			KARMA_MAX_KARMA = Integer.parseInt(PvPSettings.getProperty("MaxKarma", "10000"));
 			KARMA_XP_DIVIDER = Integer.parseInt(PvPSettings.getProperty("XPDivider", "260"));
@@ -1751,8 +1741,6 @@ public final class Config
 			CHAT_FILTER_PUNISHMENT = L2JHellasSettings.getProperty("ChatFilterPunishment", "off");
 			CHAT_FILTER_PUNISHMENT_PARAM1 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam1", "1"));
 			CHAT_FILTER_PUNISHMENT_PARAM2 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam2", "1"));
-			ENABLE_SAY_SOCIAL_ACTIONS = Boolean.valueOf(L2JHellasSettings.getProperty("SocialActions", "False"));
-			ALLOW_CHAR_KILL_PROTECT = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowLowLvlProtect", "False"));
 			DUEL_COORD_X = Integer.parseInt(L2JHellasSettings.getProperty("DuelCoordinateX", "149319"));
 			DUEL_COORD_Y = Integer.parseInt(L2JHellasSettings.getProperty("DuelCoordinateY", "46710"));
 			DUEL_COORD_Z = Integer.parseInt(L2JHellasSettings.getProperty("DuelCoordinateZ", "-3413"));

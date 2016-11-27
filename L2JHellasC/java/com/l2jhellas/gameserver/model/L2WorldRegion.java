@@ -347,7 +347,7 @@ public final class L2WorldRegion
 		if (Config.ASSERT)
 			assert object.getWorldRegion() == this;
 
-		_visibleObjects.putIfAbsent(object.getObjectId(),object);
+		_visibleObjects.put(object.getObjectId(),object);
 
 		if (object instanceof L2PcInstance)
 				_players.incrementAndGet();
@@ -355,7 +355,7 @@ public final class L2WorldRegion
 		if (object instanceof L2Playable)
 		{
 			// if this is the first player to enter the region, activate self & neighbors
-			if (!isActive() && (!Config.GRIDS_ALWAYS_ON))
+			if (!isActive())
 				startActivation();
 		}
 	}
@@ -381,7 +381,7 @@ public final class L2WorldRegion
 		
 		if (object instanceof L2Playable)
 		{
-			if (areNeighborsEmpty() && !Config.GRIDS_ALWAYS_ON)
+			if (areNeighborsEmpty())
 				startDeactivation();
 		}
 	}

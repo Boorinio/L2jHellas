@@ -795,32 +795,16 @@
 		</cond>
 	</skill>
 	<skill id="30" levels="37" name="Backstab" enchantLevels1="30" enchantLevels2="30">
-		<table name="#enchantMagicLvl"> 76 76 76 77 77 77 78 78 78 79 79 79 80 80 80 81 81
-			81 82 82 82 83 83 83 84 84 84 85 85 85
-		</table>
-		<table name="#mpConsume"> 60 62 64 64 66 68 70 72 74 76 78 80 82 82 84 87 89
-			91 93 95 97 99 101 101 103 105 107 109 111 113 115 116 118 120 122
-			123 125
-		</table>
-		<table name="#ench2MpConsume"> 110 109 108 108 107 106 105 104 104 103 102 101 100
-			99 99 98 97 96 95 95 94 93 92 91 90 90 89 88 87 86
-		</table>
-		<table name="#power"> 1107 1176 1249 1325 1405 1488 1574 1664 1757 1853
-			1953 2057 2164 2274 2388 2505 2625 2748 2875 3004 3136 3217 3408 3548
-			3690 3834 3980 4127 4275 4425 4575 4726 4878 5029 5180 5330
-			5479
-		</table>
-		<table name="#ench1Power"> 5493 5506 5520 5534 5547 5561 5575 5588 5602 5616
-			5629 5643 5657 5670 5684 5698 5711 5725 5738 5752 5766 5779 5793 5802
-			5820 5834 5848 5861 5875 5889
-		</table>
-		<table name="#magicLvl"> 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54
-			55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
-		</table>
-		<enchant1 name="power" val="#ench1Power" />
-		<enchant2 name="mpConsume" val="#ench2MpConsume" />
-		<enchant1 name="magicLvl" val="#enchantMagicLvl" />
-		<enchant2 name="magicLvl" val="#enchantMagicLvl" />
+		<table name="#enchantMagicLvl"> 76 76 76 77 77 77 78 78 78 79 79 79 80 80 80 81 81 81 82 82 82 82 83 83 83 84 84 85 85 85 </table>
+		<table name="#mpConsume"> 60 62 64 64 66 68 70 72 74 76 78 80 82 82 84 87 89 91 93 95 97 99 101 101 103 105 107 109 111 113 115 116 118 120 122 123 125 </table>
+		<table name="#ench2MpConsume"> 110 109 108 108 107 106 105 104 104 103 102 101 100 99 99 98 97 96 95 95 94 93 92 91 90 90 89 88 87 86 </table>
+		<table name="#power"> 1107 1176 1249 1325 1405 1488 1574 1664 1757 1853 1953 2057 2164 2274 2388 2505 2625 2748 2875 3004 3136 3217 3408 3548 3690 3834 3980 4127 4275 4425 4575 4726 4878 5029 5180 5330 5479 </table>
+		<table name="#ench1Power"> 5493 5506 5520 5534 5547 5561 5575 5588 5602 5616 5629 5643 5657 5670 5684 5698 5711 5725 5738 5752 5766 5779 5793 5802 5820 5834 5848 5861 5875 5889 </table>
+		<table name="#magicLvl"> 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 </table>
+		<enchant1 name="magicLvl" val="#enchantMagicLvl"/>
+		<enchant1 name="power" val="#ench1Power"/>
+		<enchant2 name="magicLvl" val="#enchantMagicLvl"/>
+		<enchant2 name="mpConsume" val="#ench2MpConsume"/>	
 		<set name="mpConsume" val="#mpConsume" />
 		<set name="magicLvl" val="#magicLvl" />
 		<set name="power" val="#power" />
@@ -830,13 +814,13 @@
 		<set name="coolTime" val="720" />
 		<set name="skillType" val="BLOW" />
 		<set name="baseCritRate" val="15" />
-		<set name="lethal1" val="4" />
+		<set name="lethal1" val="7" />
 		<set name="dmgDirectlyToHp" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="castRange" val="40" />
 		<set name="effectRange" val="400" />
 		<set name="SSBoost" val="1.5" />
-		<set name="condition" val="8" />
+		<set name="condition" val="24" />
 		<cond msg="Dagger required.">
 			<using kind="Dagger" />
 		</cond>

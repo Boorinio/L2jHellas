@@ -14,16 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.BlockList;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SendTradeRequest;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.util.Util;
 
 public final class TradeRequest extends L2GameClientPacket
 {
@@ -40,187 +35,19 @@ public final class TradeRequest extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
-		if (player == null)
-			return;
-
-		if (!player.getAccessLevel().allowTransaction())
-        {
-            player.sendMessage("Transactions are disable for your Access Level.");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-
-		L2Object target = L2World.getInstance().findObject(_objectId);
-		if ((target == null) || !player.getKnownList().knowsObject(target) || !(target instanceof L2PcInstance) || (target.getObjectId() == player.getObjectId()))
-		{
-			player.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		L2PcInstance partner = (L2PcInstance) target;
-
-		if (partner.isInOlympiadMode() || player.isInOlympiadMode())
-		{
-			player.sendMessage("You or your target cant request trade in Olympiad mode.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
+		final L2PcInstance player = getClient().getActiveChar();
 		
-		if (player.getActiveEnchantItem() != null || player.getActiveWarehouse() != null || partner.getActiveEnchantItem() != null || partner.getActiveWarehouse() !=null)
-		{
-			player.sendMessage("You can't trade items if you or your partner enchanting or got active warehouse.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
+		if (player == null || _objectId == 0)
 			return;
-		}
 		
-		if (partner.isStunned())
-        {
-            player.sendMessage("You can't Request a Trade when partner Stunned");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.isConfused())
-        {
-            player.sendMessage("You can't Request a Trade when partner Confused");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.isCastingNow())
-        {
-            player.sendMessage("You can't Request a Trade when partner Casting Now");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.isInDuel())
-        {
-            player.sendMessage("You can't Request a Trade when partner in Duel");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.isInFunEvent())
-        {
-            player.sendMessage("You can't Request a Trade when partner in Event");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.getActiveEnchantItem() != null)
-        {
-            player.sendMessage("You can't Request a Trade when partner Enchanting");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.isParalyzed())
-        {
-            player.sendMessage("You can't Request a Trade when partner is Paralyzed");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.inObserverMode())
-        {
-            player.sendMessage("You can't Request a Trade when partner in Observation Mode");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.isAttackingNow())
-        {
-            player.sendMessage("You can't Request a Trade when partner Attacking Now");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-        if (player.getDistanceSq(partner) > 22500) // 150
-        {
-            player.sendPacket(SystemMessageId.TARGET_TOO_FAR);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-        // Alt game - Karma punishment
-        if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && (player.getKarma() > 0 || partner.getKarma() > 0))
-        {
-            player.sendMessage("Chaotic players can't use Trade.");
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-        if (player.getPrivateStoreType() != 0 || partner.getPrivateStoreType() != 0)
-        {
-            player.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
+		final L2PcInstance target = L2World.getInstance().getPlayer(_objectId);
 
-		// Alt game - Karma punishment
-		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && ((player.getKarma() > 0) || (partner.getKarma() > 0)))
+		if(player.canRequestTrade(target))
 		{
-			player.sendMessage("Chaotic players can't use Trade.");
-			return;
+		   player.onTransactionRequest(target);
+		   target.sendPacket(new SendTradeRequest(player.getObjectId()));
+		   player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE).addPcName(target));
 		}
-		if (!Config.ALLOW_LOW_LEVEL_TRADE)
-        {
-            if (player.getLevel() < 76 && partner.getLevel() >= 76 || partner.getLevel() < 76 || player.getLevel() >= 76)
-            {
-                player.sendMessage("You Cannot Trade a Lower Level Character");
-                player.sendPacket(ActionFailed.STATIC_PACKET);
-                return;
-            }
-        }
-		if (player.isProcessingTransaction())
-        {
-            if (Config.DEBUG)
-            {
-                _log.fine("Already trading with someone");
-            }
-
-            player.sendPacket(SystemMessageId.ALREADY_TRADING);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.isProcessingRequest() || partner.isProcessingTransaction())
-        {
-            if (Config.DEBUG)
-            {
-                _log.info("Transaction already in progress.");
-            }
-
-            SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
-            sm.addString(partner.getName());
-            player.sendPacket(sm);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		
-		if (Util.calculateDistance(player, partner, true) > 150)
-        {
-            SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.TARGET_TOO_FAR);
-            player.sendPacket(sm);
-            player.sendPacket(ActionFailed.STATIC_PACKET);
-            return;
-        }
-		if (partner.getTradeRefusal())
-		{
-			player.sendMessage("Target is in trade refusal mode.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		if (BlockList.isBlocked(partner, player))
-		{
-			player.sendMessage("Target has added you in his/her blocklist.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-
-		if (partner.getAllowTrade() == false)
-		{
-			player.sendMessage("Target is not allowed to receive more than one trade request at the same time.");
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		partner.setAllowTrade(false);
-		player.setAllowTrade(false);
-		player.onTransactionRequest(partner);
-		partner.sendPacket(new SendTradeRequest(player.getObjectId()));
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.REQUEST_S1_FOR_TRADE);
-		sm.addString(partner.getName());
-		player.sendPacket(sm);
 	}
 
 	@Override

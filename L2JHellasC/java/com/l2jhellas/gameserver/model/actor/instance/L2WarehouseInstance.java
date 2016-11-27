@@ -21,6 +21,7 @@ import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.PcFreight;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.PackageToList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseDepositList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
@@ -59,8 +60,6 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			return;
 		}
 
-		if (Config.DEBUG)
-			_log.fine("Showing stored items");
 		player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.PRIVATE));
 	}
 
@@ -69,9 +68,6 @@ public final class L2WarehouseInstance extends L2NpcInstance
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		player.setActiveWarehouse(player.getWarehouse());
 		player.tempInvetoryDisable();
-		if (Config.DEBUG)
-			_log.fine("Showing items to deposit");
-
 		player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.PRIVATE));
 	}
 
@@ -86,9 +82,6 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			{
 				player.setActiveWarehouse(player.getClan().getWarehouse());
 				player.tempInvetoryDisable();
-				if (Config.DEBUG)
-					_log.fine("Showing items to deposit - clan");
-
 				WareHouseDepositList dl = new WareHouseDepositList(player, WareHouseDepositList.CLAN);
 				player.sendPacket(dl);
 			}
@@ -110,8 +103,6 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			else
 			{
 				player.setActiveWarehouse(player.getClan().getWarehouse());
-				if (Config.DEBUG)
-					_log.fine("Showing items to deposit - clan");
 				player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN));
 			}
 		}
@@ -120,9 +111,6 @@ public final class L2WarehouseInstance extends L2NpcInstance
 	private void showWithdrawWindowFreight(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
-		if (Config.DEBUG)
-			_log.fine("Showing freightened items");
-
 		PcFreight freight = player.getFreight();
 
 		if (freight != null)
@@ -157,9 +145,6 @@ public final class L2WarehouseInstance extends L2NpcInstance
 				return;
 			}
 			player.sendPacket(new PackageToList(chars));
-
-			if (Config.DEBUG)
-				_log.fine("Showing destination chars to freight - char src: " + player.getName());
 		}
 	}
 
@@ -169,9 +154,6 @@ public final class L2WarehouseInstance extends L2NpcInstance
 		L2PcInstance destChar = L2PcInstance.load(obj_Id);
 		if (destChar == null)
 		{
-			// Something went wrong!
-			if (Config.DEBUG)
-				_log.warning(L2WarehouseInstance.class.getName() + ": Error retrieving a target object for char " + player.getName() + " - using freight.");
 			return;
 		}
 
@@ -188,37 +170,24 @@ public final class L2WarehouseInstance extends L2NpcInstance
 		player.tempInvetoryDisable();
 		destChar.deleteMe();
 
-		if (Config.DEBUG)
-			_log.fine("Showing items to freight");
 		player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.FREIGHT));
 	}
 
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
-	{
-		
-		// Little check to prevent enchant exploit
-		if (player.getActiveEnchantItem() != null || player.getActiveTradeList()!=null)
+	{		
+		if (player.isProcessingTransaction())
 		{
-			_log.info("Player " + player.getName() + " trying to use enchant or trade exploit, ban this player!");
-			player.closeNetConnection();
+			player.sendPacket(SystemMessageId.ALREADY_TRADING);
 			return;
 		}
 		
-		if (player.getPrivateStoreType() != 0)
+		if (player.getActiveEnchantItem() != null)
 		{
-			player.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
+			player.setActiveEnchantItem(null);
+			player.sendPacket(EnchantResult.CANCELLED);
+			player.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 		}
-		
-		if (player.isInStoreMode())
-		{
-			player.sendPacket(SystemMessageId.ITEMS_UNAVAILABLE_FOR_STORE_MANUFACTURE);
-			player.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
 
 		if (command.startsWith("WithdrawP"))
 		{

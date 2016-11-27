@@ -230,7 +230,7 @@ public final class L2World
 					tmp.closeNetConnection();
 					return;
 				}
-				_allPlayers.putIfAbsent(player.getObjectId(), player);
+				_allPlayers.put(player.getObjectId(), player);
 			}
 		}
 		

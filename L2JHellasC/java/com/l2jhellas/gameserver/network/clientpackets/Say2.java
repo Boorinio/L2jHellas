@@ -33,7 +33,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.PunishLevel;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -127,7 +126,6 @@ public final class Say2 extends L2GameClientPacket
 			return;
 		}
 		
-
 		if (_text.isEmpty())
 		{
 			_log.warning(Say2.class.getName() + ": " + activeChar.getName() + ": sending empty text. Possible packet hack.");
@@ -135,6 +133,7 @@ public final class Say2 extends L2GameClientPacket
 			activeChar.closeNetConnection();
 			return;
 		}
+		
 		if (_text.length() > Config.MAX_CHAT_LENGTH)
 		{
 			_log.info("Say2: Msg Type = '" + _type + "' Text length more than " + Config.MAX_CHAT_LENGTH + " truncate them.");
@@ -147,7 +146,7 @@ public final class Say2 extends L2GameClientPacket
 			Util.handleIllegalPlayerAction(activeChar, "Client Emulator Detect: " + activeChar.getName() + " is using L2Walker.", Config.DEFAULT_PUNISH);
 			return;
 		}
-		
+	    
 		// Say Filter implementation
 		if (Config.USE_SAY_FILTER)
 			checkText(activeChar);
@@ -197,51 +196,6 @@ public final class Say2 extends L2GameClientPacket
 
 			_logChat.log(record);
 		}
-
-		if (Config.ENABLE_SAY_SOCIAL_ACTIONS)
-		{/** @formatter:off */
-			if (!activeChar.isAlikeDead()
-					|| !activeChar.isDead()
-					|| !activeChar.isFakeDeath()
-					|| !activeChar.isInCraftMode()
-					|| !activeChar.isMoving()
-					|| !activeChar.isRunning()
-					|| !activeChar.isAttackingNow()
-					|| !activeChar.isCastingNow())
-			{
-				if (_text.contains("hello")
-						|| _text.contains("hey")
-			    		|| _text.contains("aloha")
-			    		|| _text.contains("alo")
-			    		|| _text.contains("ciao")
-			    		|| _text.contains("geia")
-			            || _text.contains("hi"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 2),2000);
-				
-				if (_text.equalsIgnoreCase("lol")
-						|| _text.contains("haha")
-			            || _text.contains("xaxa")
-			            || _text.contains("ghgh")
-			            || _text.contains("jaja"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 10),2000);
-
-				if (_text.equalsIgnoreCase("yes")
-			            || _text.contains("si")
-			            || _text.contains("nai")
-			            || _text.contains("entaksei")
-			            || _text.contains("ok")
-			            || _text.contains("yep"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 6),2000);
-
-				if (_text.contains("no")
-			            || _text.contains("nop")
-			            || _text.contains("oxi")
-			            || _text.contains("nope"))
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 5),2000);
-			}
-		}/** @formatter:on */
-		
-		// CreatureSay cs = new CreatureSay(activeChar.getObjectId(),_type, activeChar.getName(), _text);
 
 		L2Object saymode = activeChar.getSayMode();
 		if (saymode != null)

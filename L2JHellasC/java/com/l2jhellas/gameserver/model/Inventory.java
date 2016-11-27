@@ -1405,16 +1405,16 @@ public abstract class Inventory extends ItemContainer
 				
 				if (L2World.getInstance().findObject(inv.getInt("object_id")) != null)
 				{
-					getOwner().getActingPlayer().sendMessage("Dup not allowed!");
-					_log.warning(Inventory.class.getSimpleName() + ": Item: " + item.getObjectId() + " Has Duplied on World And Cannot be Load");
+					_log.warning(Inventory.class.getSimpleName() + ": Item: " + item.getObjectId() + " Has duplied on world and cannot be load");
 					L2World.getInstance().removeObject(item);
 					continue;				
 				}
-
+				
 				if (getOwner() instanceof L2PcInstance)
 				{
 					L2PcInstance player = (L2PcInstance) getOwner();
 
+					
 					if (!player.isGM())
 					{
 						if (!player.isHero())
