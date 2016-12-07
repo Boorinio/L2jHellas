@@ -17,8 +17,9 @@ package com.l2jhellas.gameserver.datatables.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -38,7 +39,7 @@ public class PcColorTable
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			Vector<String> deleteNames = new Vector<String>();
+			List<String> deleteNames = new ArrayList<String>();
 			PreparedStatement ps = con.prepareStatement("SELECT * FROM character_colors");
 			ResultSet rs = ps.executeQuery();
 

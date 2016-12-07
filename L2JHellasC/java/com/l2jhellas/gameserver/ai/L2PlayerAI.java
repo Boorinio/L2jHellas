@@ -190,7 +190,9 @@ public class L2PlayerAI extends L2CharacterAI
 		if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
 			return;
 
+		clientStopMoving(null);
 		_accessor.doAttack(target);
+		
 		return;
 	}
 

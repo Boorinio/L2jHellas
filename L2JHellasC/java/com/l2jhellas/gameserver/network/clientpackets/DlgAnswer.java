@@ -14,58 +14,76 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
 /**
  * @author Dezmond_snz
- *         Format: cddd
+ * @ Rework AbsolutePower
  */
 public final class DlgAnswer extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(DlgAnswer.class.getName());
 	private static final String _C__C5_DLGANSWER = "[C] C5 DlgAnswer";
-	private int _messageId, _answer, _unk;
+	
+	private int _messageId;
+	private int _answer;
+	private int _reqId;
 
 	@Override
 	protected void readImpl()
 	{
 		_messageId = readD();
 		_answer = readD();
-		_unk = readD();
+		_reqId = readD();
 	}
 
 	@Override
 	public void runImpl()
 	{
-		final L2PcInstance player = getClient().getActiveChar();
+	  final L2PcInstance player = getClient().getActiveChar();
 		
-		if(player==null)
-			return;
-		
-		if (Config.DEBUG)
-			_log.fine(getType() + ": Answer acepted. Message ID " + _messageId + ", asnwer " + _answer + ", unknown field " + _unk);
-
-		if (_messageId == SystemMessageId.RESSURECTION_REQUEST_BY_S1.getId())
-			player.reviveAnswer(_answer);
-		else if (_messageId == SystemMessageId.WOULD_YOU_LIKE_TO_OPEN_THE_GATE.getId())
-			player.gatesAnswer(_answer, 1);
-		else if (_messageId == SystemMessageId.WOULD_YOU_LIKE_TO_CLOSE_THE_GATE.getId())
-			player.gatesAnswer(_answer, 0);
-		else if (_messageId == 614 && player.awaitingAnswer && Config.MOD_ALLOW_WEDDING)
+	if(player!=null)
+	{	
+		switch (_messageId)
 		{
-			player.EngageAnswer(_answer);
-			player.awaitingAnswer = false;
+			//RESSURECTION
+			case 1510:
+			case 332:
+				player.reviveAnswer(_answer);
+				break;	
+			//Summon tp request
+			case 1842:
+				player.teleportAnswer(_answer, _reqId);
+				break;
+			//OPEN_GATE
+			case 1140:
+				player.gatesAnswer(_answer, 1);
+				break;
+			//CLOSE_GATE
+			case 1141:
+				player.gatesAnswer(_answer, 0);
+				break;	
+			//WEDDING 
+			case 1983:
+			case 614:
+				if (player.awaitingAnswer && Config.MOD_ALLOW_WEDDING)
+				{
+					player.EngageAnswer(_answer);
+					player.awaitingAnswer = false;
+				}
+				if (L2EventManagerInstance._awaitingplayers.contains(player))
+				{
+					player.setRaidAnswear(_answer);
+					L2EventManagerInstance._awaitingplayers.remove(player);
+				}
+				break;	
+			default:
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+				break;
 		}
-		else if (_messageId == 614 && L2EventManagerInstance._awaitingplayers.contains(player))
-		{
-			player.setRaidAnswear(_answer);
-			L2EventManagerInstance._awaitingplayers.remove(player);
-		}
+	  }
 	}
 
 	@Override

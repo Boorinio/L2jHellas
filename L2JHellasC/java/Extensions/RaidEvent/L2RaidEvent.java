@@ -18,7 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -120,16 +121,16 @@ public class L2RaidEvent
 	 * Vector Created to add Single/Party/Clan Players onto the event.
 	 * TODO: Use this vector also to add another kind of event --> free Event with any player that may want to participate.
 	 */
-	public static Vector<L2PcInstance> _participatingPlayers = new Vector<L2PcInstance>();
+	public static List<L2PcInstance> _participatingPlayers = new ArrayList<L2PcInstance>();
 
 	/**
 	 * Players from whom we're waiting for an answer in order to know it they want to join the event.
 	 */
-	public static Vector<L2PcInstance> _awaitingplayers = new Vector<L2PcInstance>();
+	public static List<L2PcInstance> _awaitingplayers = new ArrayList<L2PcInstance>();
 	/**
 	 * Vector Created to track all the Event Mobs and Delete them if needed.
 	 */
-	public static Vector<L2Npc> _eventMobList = new Vector<L2Npc>();
+	public static List<L2Npc> _eventMobList = new ArrayList<L2Npc>();
 
 	/** The state of the Event<br> */
 	private static EventState _state = EventState.INACTIVE;
@@ -165,7 +166,7 @@ public class L2RaidEvent
 	 * @param participatingPlayers
 	 *        --> Players Enrolled in the Event.
 	 */
-	public L2RaidEvent(L2PcInstance player, int type, int points, int npcId, int npcAm, int bufflist, int rewardLevel, L2Object effector, Vector<L2PcInstance> participatingPlayers)
+	public L2RaidEvent(L2PcInstance player, int type, int points, int npcId, int npcAm, int bufflist, int rewardLevel, L2Object effector, List<L2PcInstance> participatingPlayers)
 	{
 		// Define the actual coordinates of the Player.
 		_player = player;

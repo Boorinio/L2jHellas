@@ -96,6 +96,7 @@ public final class UseItem extends L2GameClientPacket
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_PICKUP_OR_USE_ITEM_WHILE_TRADING);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			activeChar.cancelActiveTrade();
 			return;
 		}
 		

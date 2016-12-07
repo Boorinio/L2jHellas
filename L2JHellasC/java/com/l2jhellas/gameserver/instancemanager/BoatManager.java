@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2World;
@@ -29,8 +28,6 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class BoatManager
 {
-	protected static final Logger _log = Logger.getLogger(BoatManager.class.getName());
-
 	private final Map<Integer, L2BoatInstance> _boats = new HashMap<>();
 	private final boolean[] _docksBusy = new boolean[3];
 	
@@ -102,8 +99,10 @@ public class BoatManager
 		npcDat.set("basePDef", 100);
 		npcDat.set("baseMDef", 100);
 		
-		L2CharTemplate template = new L2CharTemplate(npcDat);
+
+		L2CharTemplate template = new L2CharTemplate(npcDat);	
 		L2BoatInstance boat = new L2BoatInstance(IdFactory.getInstance().getNextId(), template);
+
 		
 		_boats.put(boat.getObjectId(), boat);
 		

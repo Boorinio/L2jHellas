@@ -7239,4 +7239,14 @@ public abstract class L2Character extends L2Object
 	{
 		return (int) (Math.atan2(getY() - y_dest, getX() - x_dest) * HEADINGS_IN_PI) + 32768;
 	}
+	
+
+	/**
+	 * Exits all buffs effects of the skills with "removedOnDamage" set. Called on decreasing HP and mana burn.
+	 * @param awake
+	 */
+	public final void stopEffectsOnDamage(boolean awake)
+	{
+		_effects.stopEffectsOnDamage(awake);
+	}
 }

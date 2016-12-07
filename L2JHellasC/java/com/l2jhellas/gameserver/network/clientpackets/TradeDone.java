@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 
 public final class TradeDone extends L2GameClientPacket
 {
@@ -77,16 +76,12 @@ public final class TradeDone extends L2GameClientPacket
 		
 		if (owner.getActiveEnchantItem() != null)
 		{
-			owner.setActiveEnchantItem(null);
-			owner.sendPacket(EnchantResult.CANCELLED);
-			owner.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
+			owner.cancellEnchant();
 		}
 		
 		if (partner.getActiveEnchantItem() != null)
 		{
-			partner.setActiveEnchantItem(null);
-			partner.sendPacket(EnchantResult.CANCELLED);
-			partner.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
+			partner.cancellEnchant();
 		}
 		
 		trade.confirm();

@@ -14,7 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
+import com.l2jhellas.gameserver.model.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ExClosePartyRoom;
 
 /**
  * Format (ch) dd
@@ -23,23 +27,44 @@ import java.util.logging.Logger;
  */
 public final class RequestWithdrawPartyRoom extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestWithdrawPartyRoom.class.getName());
 	private static final String _C__D0_02_REQUESTWITHDRAWPARTYROOM = "[C] D0:02 RequestWithdrawPartyRoom";
-	private int _data1;
-	private int _data2;
+	
+	private int _roomid;
+	//@SuppressWarnings("unused")
+	//private int _unk1;
 
 	@Override
 	protected void readImpl()
 	{
-		_data1 = readD();
-		_data2 = readD();
+		_roomid = readD();
+		//_unk1 = readD();
 	}
 
 	@Override
 	protected void runImpl()
 	{
-		_log.info("This packet is not well known : RequestWithdrawPartyRoom");
-		_log.info("Data received: d:" + _data1 + " d:" + _data2);
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
+		if (activeChar == null)
+			return;
+		
+		final PartyMatchRoom room = PartyMatchRoomList.getInstance().getRoom(_roomid);
+		
+		if (room == null || room.getId() != _roomid )
+			return;	
+		
+		if ((activeChar.isInParty() && room.getOwner().isInParty()) && (activeChar.getParty().getPartyLeaderOID() == room.getOwner().getParty().getPartyLeaderOID()))
+		{
+		}
+		else
+		{
+			room.deleteMember(activeChar);
+			activeChar.setPartyRoom(0);
+			activeChar.broadcastUserInfo();
+			
+			activeChar.sendPacket(ExClosePartyRoom.STATIC_PACKET);
+			activeChar.sendPacket(SystemMessageId.PARTY_ROOM_EXITED);
+		}
 	}
 
 	@Override

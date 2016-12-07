@@ -174,7 +174,7 @@ public enum ClassId
     tyrant(0x30, false, Race.orc, orcMonk),
 
     /** The orc mage. */
-    orcMage(0x31, false, Race.orc, null),
+    orcMage(0x31, true, Race.orc, null),
 
     /** The orc shaman. */
     orcShaman(0x32, true, Race.orc, orcMage),

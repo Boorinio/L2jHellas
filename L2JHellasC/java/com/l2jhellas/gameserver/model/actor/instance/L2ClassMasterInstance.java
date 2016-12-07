@@ -271,11 +271,11 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 
 			player.broadcastPacket(new MagicSkillUse(player, player, 5103, 1, 1000, 0));
 
-			HtmlShow(player);
-			
-			checks(player);
+			HtmlShow(player);						
 			
 			checkAutoEq(player,newJobLevel);
+			
+			checks(player);
 		}
 		else
 		{
@@ -494,71 +494,6 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		player.broadcastUserInfo();
 	}
 	
-	private static void autoEquip(final L2PcInstance player)
-	{
-		switch (player.getClassId())
-		{
-			case adventurer:
-				player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
-                break;
-			case sagittarius:
-				player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
-                break;
-			case duelist:
-				player.giveItems(false,false,false,true,false,false,false,false,false,false,false,false);
-				break;
-			case titan:			
-				player.giveItems(false,false,false,false,true,false,false,false,false,false,false,false);
-                break;
-			case grandKhauatari:
-				player.giveItems(false,false,false,false,false,true,false,false,false,false,false,false);
-                break;
-			case phoenixKnight:
-				player.giveItems(false,false,false,false,false,false,true,false,false,false,false,false);
-                break;
-			case moonlightSentinel:
-				player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
-                break;
-			case fortuneSeeker:
-				player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
-                break;
-			case maestro:
-				player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
-                break;
-			case dreadnought:
-				player.giveItems(false,false,false,false,false,false,false,false,true,false,false,false);
-                break;
-			case hellKnight:
-				player.giveItems(false,false,false,false,false,false,false,false,false,true,false,false);
-                break;
-			case evaTemplar:
-				player.giveItems(false,false,false,false,false,false,false,false,false,true,false,false);
-                break;
-			case swordMuse:
-				player.giveItems(false,false,false,false,false,false,false,false,false,false,true,false);
-                break;
-			case windRider:
-				player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
-			    break;
-			case shillienTemplar:
-				player.giveItems(false,false,false,false,false,false,false,true,false,false,false,false);
-			    break;
-			case spectralDancer:
-				player.giveItems(false,false,false,false,false,false,false,false,false,false,false,true);
-			    break;
-			case ghostHunter:
-				player.giveItems(true,false,false,false,false,false,false,false,false,false,false,false);
-			    break;
-			case ghostSentinel:
-				player.giveItems(false,true,false,false,false,false,false,false,false,false,false,false);
-			     break;
-			default:
-				if(player.getClassId().isMage())
-					player.giveItems(false,false,true,false,false,false,false,false,false,false,false,false);
-		}	
-		player.sendPacket(new ActionFailed());
-	}
-	
 	private final void HtmlShow(L2PcInstance player)
 	{
 		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -574,61 +509,70 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	private final void checks(L2PcInstance player)
 	{
 		if (!Config.ALLOW_ARCHERS_WEAR_HEAVY)
-		{
-			/** @formatter:off */
-			if (player.getClassId().getId() == 9 ||
-					player.getClassId().getId() == 92 ||
-					player.getClassId().getId() == 24 ||
-					player.getClassId().getId() == 102 ||
-        			player.getClassId().getId() == 37 ||
-        			player.getClassId().getId() == 109)
-			{/** @formatter:on */
-				L2ItemInstance armor = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
-				if (armor != null)
-				{
-					L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(armor.getItem().getBodyPart());
-					InventoryUpdate iu = new InventoryUpdate();
-					for (L2ItemInstance element : unequipped)
-						iu.addModifiedItem(element);
-					sendPacket(iu);
-				}
-			}
+		{		
+			switch (player.getClassId().getId())
+			{			
+				case 9:
+				case 24:
+				case 37:
+				case 92:
+				case 102:
+				case 109:
+					final L2ItemInstance armor = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
+					if (armor != null)
+					{
+						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(armor.getItem().getBodyPart());
+						InventoryUpdate iu = new InventoryUpdate();
+						
+						for (L2ItemInstance element : unequipped)
+						{
+							iu.addModifiedItem(element);
+						}
+					}
+				break;		
+			}				
 		}
 		if (!Config.ALLOW_DAGGERS_WEAR_HEAVY)
-		{/** @formatter:off */
-			if (player.getClassId().getId() == 93 ||
-					player.getClassId().getId() == 108 ||
-					player.getClassId().getId() == 101 ||
-					player.getClassId().getId() == 8 ||
-					player.getClassId().getId() == 23 ||
-					player.getClassId().getId() == 36)
-			{/** @formatter:on */
-				L2ItemInstance chest = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
-				if (chest != null)
-				{
-					L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(chest.getItem().getBodyPart());
-					InventoryUpdate iu = new InventoryUpdate();
-					for (L2ItemInstance element : unequipped)
-						iu.addModifiedItem(element);
-					sendPacket(iu);
-				}
-				L2ItemInstance legs = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS);
-				if (legs != null)
-				{
-					L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(legs.getItem().getBodyPart());
-					InventoryUpdate iu = new InventoryUpdate();
-					for (L2ItemInstance element : unequipped)
-						iu.addModifiedItem(element);
-					sendPacket(iu);
-				}
-			}
+		{
+			switch (player.getClassId().getId())
+			{			
+				case 8:
+				case 23:
+				case 36:
+				case 93:
+				case 101:
+				case 108:
+					final L2ItemInstance chest = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
+					if (chest != null)
+					{
+						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(chest.getItem().getBodyPart());
+						InventoryUpdate iu = new InventoryUpdate();
+						for (L2ItemInstance element : unequipped)
+						{
+							iu.addModifiedItem(element);
+						}
+						sendPacket(iu);
+					}
+					final L2ItemInstance legs = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS);
+					if (legs != null)
+					{
+						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(legs.getItem().getBodyPart());
+						InventoryUpdate iu = new InventoryUpdate();
+						for (L2ItemInstance element : unequipped)
+						{
+							iu.addModifiedItem(element);
+						}
+						sendPacket(iu);
+					}
+				break;		
+			}							
 		}
 	}
 	
 	private final void checkAutoEq(L2PcInstance player,int newJobLevel)
 	{	
 		if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel == 4 && !player.isSubClassActive())
-              autoEquip(player);
+			player.giveClassItems(player.getClassId());
 	}
 	
 	/**

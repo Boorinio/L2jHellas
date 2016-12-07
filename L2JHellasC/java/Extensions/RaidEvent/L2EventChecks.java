@@ -14,7 +14,7 @@
  */
 package Extensions.RaidEvent;
 
-import java.util.Vector;
+import java.util.List;
 
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -49,7 +49,7 @@ public class L2EventChecks
 	 *        --> Minimum allowed People Required to participate.
 	 * @return --> True for Eligible Players and False for UnEligible Players.
 	 */
-	public static boolean checkPlayer(L2PcInstance player, int eventType, int points, int minPeople, Vector<L2PcInstance> _eventPlayers)
+	public static boolean checkPlayer(L2PcInstance player, int eventType, int points, int minPeople, List<L2PcInstance> _eventPlayers)
 	{
 		int eventPoints = 0;
 		// Let's avoid NPEs
@@ -150,7 +150,7 @@ public class L2EventChecks
 	 * notifyOfBadRequestor --> Tell the members of the Clan/Party that the
 	 * player is already inscribed in another event.
 	 */
-	private static void notifyBadRequestor(L2PcInstance player, String badRequestor, int type, Vector<L2PcInstance> _eventPlayers)
+	private static void notifyBadRequestor(L2PcInstance player, String badRequestor, int type, List<L2PcInstance> _eventPlayers)
 	{
 		if (type == 2)
 		{

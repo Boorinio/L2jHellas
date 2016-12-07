@@ -56,7 +56,8 @@ public final class RequestDropItem extends L2GameClientPacket
 	protected void runImpl()
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		
+		if ((activeChar == null) || activeChar.isDead())
 			return;
 
 		// Flood protect drop to avoid packet lag
@@ -121,6 +122,11 @@ public final class RequestDropItem extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
 			return;
 		}
+		
+		if (activeChar.isFlying())
+		{
+			return;
+		}
 
 		// Cannot discard item that the skill is consumming
 		if (activeChar.isCastingNow())
@@ -161,17 +167,17 @@ public final class RequestDropItem extends L2GameClientPacket
 		{
 			L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(item.getLocationSlot());
 			InventoryUpdate iu = new InventoryUpdate();
-			for (int i = 0; i < unequiped.length; i++)
+			for (L2ItemInstance itm : unequiped)
 			{
-				activeChar.checkSSMatch(null, unequiped[i]);
-
-				iu.addModifiedItem(unequiped[i]);
+				activeChar.checkSSMatch(null, itm);
+				iu.addModifiedItem(itm);
 			}
+			
 			activeChar.sendPacket(iu);
 			activeChar.broadcastUserInfo();
 
 			ItemList il = new ItemList(activeChar, true);
-			activeChar.sendPacket(il);
+			activeChar.sendPacket(il);			
 		}
 
 		L2ItemInstance dropedItem = activeChar.dropItem("Drop", _objectId, _count, _x, _y, _z, null, false);

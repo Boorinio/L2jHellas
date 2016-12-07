@@ -14,7 +14,8 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dezmond_snz
@@ -36,8 +37,8 @@ public class ConfirmDlg extends L2GameServerPacket
     private static final int TYPE_NPC_NAME = 2;
     private static final int TYPE_NUMBER = 1;
     private static final int TYPE_TEXT = 0;
-	private Vector<Integer> _types = new Vector<Integer>();
-	private Vector<Object> _values = new Vector<Object>();
+	private List<Integer> _types = new ArrayList<Integer>();
+	private List<Object> _values = new ArrayList<Object>();
 	private int _time = 0;
 	private int _requesterId = 0;
 

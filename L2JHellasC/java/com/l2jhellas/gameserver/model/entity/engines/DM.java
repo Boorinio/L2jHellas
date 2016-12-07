@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -432,8 +431,8 @@ public class DM
 		_eventName = new String();
 		_eventDesc = new String();
 		_joiningLocationName = new String();
-		_savePlayers = new Vector<String>();
-		_players = new Vector<L2PcInstance>();
+		_savePlayers = new ArrayList<String>();
+		_players = new ArrayList<L2PcInstance>();
 		_topPlayer = null;
 		_npcSpawn = null;
 		_joining = false;
@@ -660,7 +659,7 @@ public class DM
 			removePlayer(player);
 		}
 
-		_savePlayers = new Vector<String>();
+		_savePlayers = new ArrayList<String>();
 		_topPlayer = null;
 		_npcSpawn = null;
 		_joining = false;
@@ -668,7 +667,7 @@ public class DM
 		_started = false;
 		_sitForced = false;
 		_topKills = 0;
-		_players = new Vector<L2PcInstance>();
+		_players = new ArrayList<L2PcInstance>();
 
 	}
 

@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import Extensions.RaidEvent.L2EventChecks;
 
@@ -34,9 +34,9 @@ public class L2EventManagerInstance extends L2Npc
 	/** Number of Current Events */
 	public static int _currentEvents = 0;
 	/** Players from which we're waiting an answer */
-	public static Vector<L2PcInstance> _awaitingplayers = new Vector<L2PcInstance>();
+	public static List<L2PcInstance> _awaitingplayers = new ArrayList<L2PcInstance>();
 	/** Players that will finally get inside the Event */
-	public static Vector<L2PcInstance> _finalPlayers = new Vector<L2PcInstance>();
+	public static List<L2PcInstance> _finalPlayers = new ArrayList<L2PcInstance>();
 
 	public L2EventManagerInstance(int objectId, L2NpcTemplate template)
 	{
@@ -53,7 +53,7 @@ public class L2EventManagerInstance extends L2Npc
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken();
-		_finalPlayers = new Vector<L2PcInstance>();
+		_finalPlayers = new ArrayList<L2PcInstance>();
 
 		if (actualCommand.equalsIgnoreCase("iEvent"))
 		{

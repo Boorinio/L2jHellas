@@ -12,7 +12,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
@@ -40,9 +41,9 @@ public class L2NpcBufferInstance extends L2Npc
 	{
 		private Boolean _buffing = false;
 		private L2NpcBufferInstance _me = null;
-		private final Vector<L2PcInstance> _playerInstances = new Vector<L2PcInstance>();
-		private final Vector<Integer> _skillIds = new Vector<Integer>();
-		private final Vector<Integer> _skillLevels = new Vector<Integer>();
+		private final List<L2PcInstance> _playerInstances = new ArrayList<L2PcInstance>();
+		private final List<Integer> _skillIds = new ArrayList<Integer>();
+		private final List<Integer> _skillLevels = new ArrayList<Integer>();
 		private ScheduledFuture<?> _task = null;
 
 		public BuffTask(L2NpcBufferInstance me)

@@ -59,6 +59,9 @@ public class RequestAquireSkill extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
+		if (_id <= 0 || _level <= 0)
+			return;
+		
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
@@ -75,14 +78,16 @@ public class RequestAquireSkill extends L2GameClientPacket
 		if (!Config.ALT_GAME_SKILL_LEARN)
 			player.setSkillLearningClassId(player.getClassId());
 
-		if (player.getSkillLevel(_id) >= _level)
+		L2Skill skill = SkillTable.getInstance().getInfo(_id, _level);
+		
+		if(skill==null)
+			return;
+		
+		if (!canLearn(player, skill))
 		{
-			// already knows the skill with this level
 			return;
 		}
-
-		L2Skill skill = SkillTable.getInstance().getInfo(_id, _level);
-
+		
 		int counts = 0;
 		int _requiredSp = 10000000;
 
@@ -299,9 +304,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 		// update all the shortcuts to this skill
 		if (_level > 1)
 		{
-			L2ShortCut[] allShortCuts = player.getAllShortCuts();
-
-			for (L2ShortCut sc : allShortCuts)
+			for (L2ShortCut sc : player.getAllShortCuts())
 			{
 				if (sc.getId() == _id && sc.getType() == L2ShortCut.TYPE_SKILL)
 				{
@@ -324,6 +327,24 @@ public class RequestAquireSkill extends L2GameClientPacket
 		}
 	}
 
+	private boolean canLearn(L2PcInstance player, L2Skill skill)
+	{
+		final int prevSkillLevel = player.getSkillLevel(_id);	
+		
+		if (prevSkillLevel >= _level)
+		{
+			return false;
+		}
+		
+		if ((_level != 1) && (prevSkillLevel != (_level - 1)))
+		{
+			Util.handleIllegalPlayerAction(player, "Player " + player.getName() + " is requesting skill Id: " + _id + " level " + _level + " without knowing it's previous level!", Config.DEFAULT_PUNISH);
+			return false;
+		}
+	
+		return true;
+	}
+	
 	@Override
 	public String getType()
 	{

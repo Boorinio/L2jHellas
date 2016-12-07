@@ -14,7 +14,8 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -26,20 +27,21 @@ import com.l2jhellas.gameserver.network.serverpackets.RadarControl;
 public final class L2Radar
 {
 	private final L2PcInstance _player;
-	private final Vector<RadarMarker> _markers;
+	private final List<RadarMarker> _markers;
 
 	public L2Radar(L2PcInstance player)
 	{
 		_player = player;
-		_markers = new Vector<RadarMarker>();
+		_markers = new ArrayList<RadarMarker>();
 	}
 
 	// Add a marker to player's radar
 	public void addMarker(int x, int y, int z)
 	{
 		RadarMarker newMarker = new RadarMarker(x, y, z);
-
+		
 		_markers.add(newMarker);
+		_player.sendPacket(new RadarControl(2, 2, x, y, z));
 		_player.sendPacket(new RadarControl(0, 1, x, y, z));
 	}
 
@@ -47,7 +49,7 @@ public final class L2Radar
 	public void removeMarker(int x, int y, int z)
 	{
 		RadarMarker newMarker = new RadarMarker(x, y, z);
-
+		
 		_markers.remove(newMarker);
 		_player.sendPacket(new RadarControl(1, 1, x, y, z));
 	}
@@ -58,13 +60,14 @@ public final class L2Radar
 		for (RadarMarker tempMarker : _markers)
 			_player.sendPacket(new RadarControl(1, tempMarker._type, tempMarker._x, tempMarker._y, tempMarker._z));
 
-		_markers.removeAllElements();
+		_markers.clear();
 	}
 
 	public void loadMarkers()
 	{
-		// TODO: Need method to re-send radar markers after load/teleport/death
-		// etc.
+		_player.sendPacket(new RadarControl(2, 2, _player.getX(), _player.getY(), _player.getZ()));
+		for (RadarMarker tempMarker : _markers)
+			_player.sendPacket(new RadarControl(0, 1, tempMarker._x, tempMarker._y, tempMarker._z));
 	}
 
 	public class RadarMarker

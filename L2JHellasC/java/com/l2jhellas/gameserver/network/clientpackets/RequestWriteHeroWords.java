@@ -14,6 +14,10 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.entity.Hero;
+
+
 /**
  * Format chS<BR>
  * c (id) 0xD0<BR>
@@ -25,7 +29,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 public final class RequestWriteHeroWords extends L2GameClientPacket
 {
 	private static final String _C__FE_0C_REQUESTWRITEHEROWORDS = "[C] D0:0C RequestWriteHeroWords";
-	@SuppressWarnings("unused")
 	private String _heroWords;
 
 	/**
@@ -41,7 +44,15 @@ public final class RequestWriteHeroWords extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-
+		final L2PcInstance player = getClient().getActiveChar();
+		
+		if (player == null || !player.isHero())
+			return;
+		
+		if (_heroWords == null || _heroWords.length() > 300)
+			return;
+		
+		Hero.getInstance().setHeroMessage(player, _heroWords);
 	}
 
 	@Override
