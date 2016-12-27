@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
@@ -67,7 +67,7 @@ public class ExShowSeedSetting extends L2GameServerPacket
 	{
 		_manorId = manorId;
 		Castle c = CastleManager.getInstance().getCastleById(_manorId);
-		ArrayList<Integer> seeds = L2Manor.getInstance().getSeedsForCastle(_manorId);
+		List<Integer> seeds = L2Manor.getInstance().getSeedsForCastle(_manorId);
 		_count = seeds.size();
 		_seedData = new int[_count * 12];
 		int i = 0;

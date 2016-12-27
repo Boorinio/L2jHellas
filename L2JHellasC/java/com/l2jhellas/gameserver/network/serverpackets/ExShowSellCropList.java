@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -62,7 +63,7 @@ public class ExShowSellCropList extends L2GameServerPacket
 		_castleCrops = new HashMap<Integer, CropProcure>();
 		_cropsItems = new HashMap<Integer, L2ItemInstance>();
 
-		ArrayList<Integer> allCrops = L2Manor.getInstance().getAllCrops();
+		List<Integer> allCrops = L2Manor.getInstance().getAllCrops();
 		for (int cropId : allCrops)
 		{
 			L2ItemInstance item = player.getInventory().getItemByItemId(cropId);

@@ -30,16 +30,19 @@ public class Ride extends L2GameServerPacket
 		_bRide = action; // 1 for mount ; 2 for dismount
 		_rideClassID = rideClassId + 1000000; // npcID
 
-		if (rideClassId == 12526 || // wind strider
-		rideClassId == 12527 || // star strider
-		rideClassId == 12528) // twilight strider
+		switch (rideClassId)
 		{
-			_rideType = 1; // 1 for Strider ; 2 for wyvern
-		}
-		else if (rideClassId == 12621) // wyvern
-		{
-			_rideType = 2; // 1 for Strider ; 2 for wyvern
-		}
+			// Striders
+			case 12526:
+			case 12527: 
+			case 12528:
+				_rideType = 1;
+				break;
+			// Wyvern
+			case 12621:
+				_rideType = 2;
+				break;
+		}	
 	}
 
 	@Override

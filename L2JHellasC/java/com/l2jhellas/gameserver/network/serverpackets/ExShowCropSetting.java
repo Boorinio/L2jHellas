@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
@@ -69,7 +69,7 @@ public class ExShowCropSetting extends L2GameServerPacket
 	{
 		_manorId = manorId;
 		Castle c = CastleManager.getInstance().getCastleById(_manorId);
-		ArrayList<Integer> crops = L2Manor.getInstance().getCropsForCastle(_manorId);
+		List<Integer> crops = L2Manor.getInstance().getCropsForCastle(_manorId);
 		_count = crops.size();
 		_cropData = new int[_count * 14];
 		int i = 0;

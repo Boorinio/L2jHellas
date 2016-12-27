@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
@@ -551,7 +552,7 @@ public class CastleManorManager
 	private ArrayList<SeedProduction> getNewSeedsList(int castleId)
 	{
 		ArrayList<SeedProduction> seeds = new ArrayList<SeedProduction>();
-		ArrayList<Integer> seedsIds = L2Manor.getInstance().getSeedsForCastle(castleId);
+		List<Integer> seedsIds = L2Manor.getInstance().getSeedsForCastle(castleId);
 		for (int sd : seedsIds)
 		{
 			seeds.add(new SeedProduction(sd));
@@ -562,7 +563,7 @@ public class CastleManorManager
 	private ArrayList<CropProcure> getNewCropsList(int castleId)
 	{
 		ArrayList<CropProcure> crops = new ArrayList<CropProcure>();
-		ArrayList<Integer> cropsIds = L2Manor.getInstance().getCropsForCastle(castleId);
+		List<Integer> cropsIds = L2Manor.getInstance().getCropsForCastle(castleId);
 		for (int cr : cropsIds)
 		{
 			crops.add(new CropProcure(cr));

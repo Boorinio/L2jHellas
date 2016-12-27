@@ -45,7 +45,8 @@ public class EnterWorld extends L2GameClientPacket
 			getClient().closeNow();
 			return;
 		}	
-		activeChar.EnterWolrd();	
+		
+		activeChar.EnterWolrd();
 	}
 
 	@Override
