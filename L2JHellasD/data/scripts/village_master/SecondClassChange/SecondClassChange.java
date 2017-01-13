@@ -17,9 +17,6 @@ package village_master.SecondClassChange;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;

@@ -17,6 +17,7 @@ package handlers.usercommandhandlers;
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
@@ -36,7 +37,18 @@ public class OlympiadStat implements IUserCommandHandler
 		if (id != COMMAND_IDS[0])
 			return false;
 
-		SystemMessage sm = SystemMessage.sendString("Your current record for this Grand Olympiad is " + Olympiad.getInstance().getCompetitionDone(activeChar.getObjectId()) + " match(s) played. You have earned " + Olympiad.getInstance().getNoblePoints(activeChar.getObjectId()) + " Olympiad Point(s)");
+		if (!activeChar.isNoble())
+		{
+			activeChar.sendPacket(SystemMessageId.NOBLESSE_ONLY);
+			return false;
+		}
+		
+		int nobleObjId = activeChar.getObjectId();
+		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THE_CURRENT_RECORD_FOR_THIS_OLYMPIAD_SESSION_IS_S1_MATCHES_S2_WINS_S3_DEFEATS_YOU_HAVE_EARNED_S4_OLYMPIAD_POINTS);
+		sm.addNumber(Olympiad.getInstance().getCompetitionDone(nobleObjId));
+		sm.addNumber(Olympiad.getInstance().getCompetitionWon(nobleObjId));
+		sm.addNumber(Olympiad.getInstance().getCompetitionLost(nobleObjId));
+		sm.addNumber(Olympiad.getInstance().getNoblePoints(nobleObjId));
 		activeChar.sendPacket(sm);
 		return true;
 	}

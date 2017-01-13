@@ -889,8 +889,8 @@ public abstract class Inventory extends ItemContainer
 	public int getSlotFromItem(L2ItemInstance item)
 	{
 		int slot = -1;
-		int location = item.getEquipSlot();
-
+		int location = item.getLocationSlot();
+		
 		switch (location)
 		{
 			case PAPERDOLL_UNDER:
@@ -948,7 +948,7 @@ public abstract class Inventory extends ItemContainer
 				slot = L2Item.SLOT_LR_HAND;
 			break;
 		}
-
+		
 		return slot;
 	}
 
@@ -959,12 +959,12 @@ public abstract class Inventory extends ItemContainer
 	 *        : int designating the slot of the paperdoll
 	 * @return L2ItemInstance[] : list of changes
 	 */
-	public synchronized L2ItemInstance[] unEquipItemInBodySlotAndRecord(int slot)
+	public synchronized L2ItemInstance[] unEquipItemInBodySlotAndRecord(L2ItemInstance item)
 	{
 		Inventory.ChangeRecorder recorder = newRecorder();
 		try
 		{
-			unEquipItemInBodySlot(slot);
+			unEquipItemInBodySlot(getSlotFromItem(item));
 			if (getOwner() instanceof L2PcInstance)
 				((L2PcInstance) getOwner()).refreshExpertisePenalty();
 		}

@@ -150,34 +150,32 @@ public final class Calculator
 	}
 
 	/**
-	 * Remove each Func with the specified owner of the Calculator.<BR>
-	 * <BR>
+	 * Remove each Func with the specified owner of the Calculator.
+	 * @param owner
+	 * @return a list containing all left stats.
 	 */
 	public synchronized List<Stats> removeOwner(Object owner)
 	{
-		Func[] funcs = _functions;
-		List<Stats> modifiedStats = new ArrayList<Stats>();
-
-		for (int i = 0; i < funcs.length; i++)
+		List<Stats> modifiedStats = new ArrayList<>();
+		
+		for (Func func : _functions)
 		{
-			if (funcs[i].funcOwner == owner)
+			if (func.funcOwner == owner)
 			{
-				modifiedStats.add(funcs[i].stat);
-				removeFunc(funcs[i]);
+				modifiedStats.add(func.stat);
+				removeFunc(func);
 			}
 		}
 		return modifiedStats;
 	}
-
+	
 	/**
-	 * Run each Func of the Calculator.<BR>
-	 * <BR>
+	 * Run each Func of the Calculator.
+	 * @param env
 	 */
 	public void calc(Env env)
 	{
-		Func[] funcs = _functions;
-
-		for (int i = 0; i < funcs.length; i++)
-			funcs[i].calc(env);
+		for (Func func : _functions)
+			func.calc(env);
 	}
 }

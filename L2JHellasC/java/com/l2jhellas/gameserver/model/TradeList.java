@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2Item;
 
 /**
@@ -326,22 +325,24 @@ public class TradeList
 
 		L2ItemInstance item = (L2ItemInstance) o;
 
-		if (!(item.isTradeable() || getOwner().isGM()) || item.getItemType() == L2EtcItemType.QUEST)
+		if (!item.isTradeable() || item.isQuestItem())
 			return null;
-
-		if (count > item.getCount())
+		
+		if (count <= 0 || count > item.getCount())
 			return null;
 
 		if (!item.isStackable() && count > 1)
-		{
-			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
 			return null;
-		}
+		
+		if ((Integer.MAX_VALUE / count) < price)
+			return null;
+		
 		for (TradeItem checkitem : _items)
 		{
 			if (checkitem.getObjectId() == objectId)
 				return null;
 		}
+		
 		TradeItem titem = new TradeItem(item, count, price);
 		_items.add(titem);
 
@@ -376,15 +377,18 @@ public class TradeList
 			return null;
 		}
 
-		if (!item.isTradeable() || item.getItemType() == L2EtcItemType.QUEST)
+		if (!item.isTradeable() || item.isQuestItem())
 			return null;
-
+		
 		if (!item.isStackable() && count > 1)
 		{
 			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to add non-stackable item to TradeList with count > 1!");
 			return null;
 		}
 
+		if ((Integer.MAX_VALUE / count) < price)
+			return null;
+		
 		TradeItem titem = new TradeItem(item, count, price);
 		_items.add(titem);
 

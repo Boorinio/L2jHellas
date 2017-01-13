@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
-import com.l2jhellas.gameserver.Universe;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -44,7 +43,7 @@ public class ValidatePosition extends L2GameClientPacket
 	private int _z;
 	private int _heading;
 	@SuppressWarnings("unused")
-	private int _data;
+	private int _boatObjId;
 
 	@Override
 	protected void readImpl()
@@ -53,7 +52,7 @@ public class ValidatePosition extends L2GameClientPacket
 		_y  = readD();
 		_z  = readD();
 		_heading  = readD();
-		_data  = readD();
+		_boatObjId  = readD();
 	}
 
 	@Override
@@ -63,6 +62,13 @@ public class ValidatePosition extends L2GameClientPacket
 		
 		if (activeChar == null || activeChar.isTeleporting()) 
 			return;
+
+		if ((activeChar.getX() == 0) && (activeChar.getY() == 0) && (activeChar.getZ() == 0))
+		{
+			tsekarepos(activeChar);
+			return;
+		}
+		
 		if (Config.COORD_SYNCHRONIZE > 0)
 		{
 			activeChar.setClientX(_x);
@@ -167,10 +173,6 @@ public class ValidatePosition extends L2GameClientPacket
 			{
 				_log.fine("client pos: "+ _x + " "+ _y + " "+ _z +" head "+ _heading);
 				_log.fine("server pos: "+ realX + " "+realY+ " "+realZ +" head "+activeChar.getHeading());
-			}
-			if (Config.ACTIVATE_POSITION_RECORDER && !activeChar.isFlying() && Universe.getInstance().shouldLog(activeChar.getObjectId()))
-			{
-				Universe.getInstance().registerHeight(realX, realY, _z);
 			}
 			if (Config.DEVELOPER)
 			{

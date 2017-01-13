@@ -37,7 +37,6 @@ import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -78,9 +77,11 @@ public class CursedWeapon
 
 	public void endOfLife()
 	{
+		L2ItemInstance item = _player.getInventory().getItemByItemId( _itemId);
+
 		if (_isActivated)
 		{
-			if (_player != null && _player.isOnline() == 1)
+			if (item != null && _player != null && _player.isOnline() == 1)
 			{
 				// Remove from player
 				_log.info(CursedWeapon.class.getSimpleName() + ": " + _name + " being removed online.");
@@ -92,8 +93,9 @@ public class CursedWeapon
 				_player.setCursedWeaponEquipedId(0);
 				removeSkill();
 
+
 				// Remove
-				_player.getInventory().unEquipItemInBodySlotAndRecord(L2Item.SLOT_LR_HAND);
+				_player.getInventory().unEquipItemInBodySlotAndRecord(item);
 				_player.store();
 
 				// Destroy

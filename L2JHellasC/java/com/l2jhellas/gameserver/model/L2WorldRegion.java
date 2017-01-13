@@ -44,22 +44,21 @@ public final class L2WorldRegion
 	private final Map<Integer, L2Object> _visibleObjects = new ConcurrentHashMap<>();
 	
 	private final List<L2WorldRegion> _surroundingRegions = new ArrayList<>();
-	
-	private final int _tileX, _tileY;
-	private Boolean _active = false;
-	private ScheduledFuture<?> _neighborsTask = null;
 	private final List<L2ZoneType> _zones = new ArrayList<>();
+	
+	private final int _tileX;
+	private final int _tileY;
+	
+	private Boolean _active = Config.GRIDS_ALWAYS_ON;
+	
+	private ScheduledFuture<?> _neighborsTask = null;
+
 	private AtomicInteger _players = new AtomicInteger();
 
 	public L2WorldRegion(int pTileX, int pTileY)
 	{
-		//_surroundingRegions.add(this); //done in L2World.initRegions()
-
 		_tileX = pTileX;
-		_tileY = pTileY;
-
-		// default a newly initialized region to inactive, unless always on is specified
-		_active = Config.GRIDS_ALWAYS_ON;
+		_tileY = pTileY;		
 	}
 
 	public void addZone(L2ZoneType zone)
@@ -111,43 +110,25 @@ public final class L2WorldRegion
 	public void revalidateZones(L2Character character)
 	{
 		// do NOT update the world region while the character is still in the process of teleporting
-		// Once the teleport is COMPLETED, revalidation occurs safely, at that time.
-
 		if (character.isTeleporting())
 			return;
-
-		for (L2ZoneType z : getZones())
-		{
-			if (z != null)
-				z.revalidateInZone(character);
-		}
+		
+		_zones.forEach(z -> z.revalidateInZone(character));
 	}
 
 	public void removeFromZones(L2Character character)
 	{
-		for (L2ZoneType z : getZones())
-		{
-			if (z != null)
-				z.removeCharacter(character);
-		}
+		_zones.forEach(z -> z.removeCharacter(character));
 	}
 
 	public void onDeath(L2Character character)
 	{
-		for (L2ZoneType z : getZones())
-		{
-			if (z != null)
-				z.onDieInside(character);
-		}
+		_zones.stream().filter(z -> z.isCharacterInZone(character)).forEach(z -> z.onDieInside(character));
 	}
 
 	public void onRevive(L2Character character)
 	{
-		for (L2ZoneType z : getZones())
-		{
-			if (z != null)
-				z.onReviveInside(character);
-		}
+		_zones.stream().filter(z -> z.isCharacterInZone(character)).forEach(z -> z.onReviveInside(character));
 	}
 
 	/** Task of AI notification */
@@ -184,14 +165,12 @@ public final class L2WorldRegion
 
 	private void switchAI(Boolean isOn)
 	{
-		int c = 0;
 		if (!isOn)
 		{
 			for (L2Object o : _visibleObjects.values())
 			{
 				if (o instanceof L2Attackable)
 				{
-					c++;
 					L2Attackable mob = (L2Attackable) o;
 
 					// Set target to null and cancel Attack or Cast
@@ -218,7 +197,6 @@ public final class L2WorldRegion
 					//mob.getStatus().stopHpMpRegeneration();
 				}
 			}
-			_log.fine(c + " mobs were turned off");
 		}
 		else
 		{
@@ -226,21 +204,13 @@ public final class L2WorldRegion
 			{
 				if (o instanceof L2Attackable)
 				{
-					c++;
-					// Start HP/MP/CP Regeneration task
 					((L2Attackable) o).getStatus().startHpMpRegeneration();
-
-					// start the ai
-					//((L2AttackableAI) mob.getAI()).startAITask();
 				}
 				else if (o instanceof L2Npc)
 				{
-					// Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it
-					// L2Monsterinstance/L2Attackable socials are handled by AI (TODO: check the instances)
 					((L2Npc) o).startRandomAnimationTimer();
 				}
 			}
-			_log.fine(c + " mobs were turned on");
 		}
 
 	}
@@ -254,14 +224,11 @@ public final class L2WorldRegion
 	// returns true if the above condition is met.
 	public Boolean areNeighborsEmpty()
 	{
-		// if this region is occupied, return false.
-		if (getPlayersCount() != 0)
-			return false;
-
-		// if any one of the neighbors is occupied, return false
 		for (L2WorldRegion neighbor : _surroundingRegions)
+		{
 			if (neighbor.getPlayersCount() != 0)
 				return false;
+		}
 
 		// in all other cases, return true.
 		return true;

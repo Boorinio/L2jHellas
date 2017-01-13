@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.gameserverpackets.BlowFishKey;

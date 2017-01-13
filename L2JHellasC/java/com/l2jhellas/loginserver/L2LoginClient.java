@@ -20,8 +20,6 @@ import java.nio.ByteBuffer;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.logging.Logger;
 
-
-
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.serverpackets.L2LoginServerPacket;
 import com.l2jhellas.loginserver.serverpackets.LoginFail;

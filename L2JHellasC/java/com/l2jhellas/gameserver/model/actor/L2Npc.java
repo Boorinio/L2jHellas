@@ -1149,11 +1149,11 @@ public class L2Npc extends L2Character
 				{
 					case 1:
 						player.sendPacket(SystemMessageId.SELECT_THE_ITEM_TO_BE_AUGMENTED);
-						player.sendPacket(new ExShowVariationMakeWindow(player, this));
+						player.sendPacket(ExShowVariationMakeWindow.STATIC_PACKET);
 					break;
 					case 2:
 						player.sendPacket(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION);
-						player.sendPacket(new ExShowVariationCancelWindow(player, this));
+						player.sendPacket(ExShowVariationCancelWindow.STATIC_PACKET);
 					break;
 				}
 			}

@@ -24,9 +24,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import javolution.util.FastList;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class GeoEditorThread extends Thread
 {

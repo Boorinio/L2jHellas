@@ -613,7 +613,7 @@ public final class QuestState
 		// Disarm item, if equipped.
 		if (item.isEquipped())
 		{
-			L2ItemInstance[] unequiped = _player.getInventory().unEquipItemInBodySlotAndRecord(item.getItem().getBodyPart());
+			L2ItemInstance[] unequiped = _player.getInventory().unEquipItemInBodySlotAndRecord(item);
 			InventoryUpdate iu = new InventoryUpdate();
 			for (L2ItemInstance itm : unequiped)
 				iu.addModifiedItem(itm);

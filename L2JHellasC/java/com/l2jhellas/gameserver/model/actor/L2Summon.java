@@ -369,6 +369,8 @@ public abstract class L2Summon extends L2Playable
 
 		getOwner().sendPacket(new PetInfo(this, 0));
 		getOwner().sendPacket(new PetStatusUpdate(this));
+		updateEffectIcons(true);
+		
 		if (isVisible())
 		{
 			broadcastNpcInfo(val);
@@ -378,7 +380,7 @@ public abstract class L2Summon extends L2Playable
 		{
 			party.broadcastToPartyMembers(this.getOwner(),new PetStatusUpdate(this));
 		}
-		getOwner().updateEffectIcons();
+		
 	}
 
 	public void broadcastNpcInfo(int val)
@@ -393,7 +395,6 @@ public abstract class L2Summon extends L2Playable
 					continue;
 				}
 				player.sendPacket(new NpcInfo(this, player));
-				player.updateEffectIcons();
 			}
 			catch (NullPointerException e)
 			{

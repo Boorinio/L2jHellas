@@ -14,9 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 /**
  * Format: ch<BR>
  * Trigger packet
@@ -25,16 +22,14 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class ExShowVariationCancelWindow extends L2GameServerPacket
 {
+	public static final ExShowVariationCancelWindow STATIC_PACKET = new ExShowVariationCancelWindow();
 	private static final String _S__FE_51_EXSHOWVARIATIONCANCELWINDOW = "[S] FE:51 ExShowVariationCancelWindow";
 
 	boolean _safety = true;
 
-	public ExShowVariationCancelWindow(L2PcInstance player, L2Npc npc)
+	public ExShowVariationCancelWindow()
 	{
-		if (player == null)
-			_safety = false;
-		if (npc == null)
-			_safety = false;
+
 	}
 
 	@Override

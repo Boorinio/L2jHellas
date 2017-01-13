@@ -14,9 +14,12 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.model.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.PartyMatchRoomList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.ExManagePartyRoomMember;
 import com.l2jhellas.gameserver.network.serverpackets.JoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
@@ -64,6 +67,44 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 					}
 				}
 				player.joinParty(requestor.getParty());
+				
+				if (requestor.isInPartyMatchRoom() && player.isInPartyMatchRoom())
+				{
+					final PartyMatchRoomList list = PartyMatchRoomList.getInstance();
+					if (list != null && (list.getPlayerRoomId(requestor) == list.getPlayerRoomId(player)))
+					{
+						final PartyMatchRoom room = list.getPlayerRoom(requestor);
+						if (room != null)
+						{
+							final ExManagePartyRoomMember packet = new ExManagePartyRoomMember(player, room, 1);
+							for (L2PcInstance member : room.getPartyMembers())
+							{
+								if (member != null)
+									member.sendPacket(packet);
+							}
+						}
+					}
+				}
+				else if (requestor.isInPartyMatchRoom() && !player.isInPartyMatchRoom())
+				{
+					final PartyMatchRoomList list = PartyMatchRoomList.getInstance();
+					if (list != null)
+					{
+						final PartyMatchRoom room = list.getPlayerRoom(requestor);
+						if (room != null)
+						{
+							room.addMember(player);
+							ExManagePartyRoomMember packet = new ExManagePartyRoomMember(player, room, 1);
+							for (L2PcInstance member : room.getPartyMembers())
+							{
+								if (member != null)
+									member.sendPacket(packet);
+							}
+							player.setPartyRoom(room.getId());
+							player.broadcastUserInfo();
+						}
+					}
+				}
 			}
 			else
 			{

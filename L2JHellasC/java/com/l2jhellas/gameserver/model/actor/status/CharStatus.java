@@ -15,7 +15,7 @@
 package com.l2jhellas.gameserver.model.actor.status;
 
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
@@ -44,7 +44,7 @@ public class CharStatus
 	private double _currentMp = 0; // Current MP of the L2Character
 
 	/** Array containing all clients that need to be notified about hp/mp updates of the L2Character */
-	private Set<L2Character> _StatusListener;
+	private final Set<L2Character> _StatusListener = ConcurrentHashMap.newKeySet();
 
 	private Future<?> _regTask;
 	private byte _flagsRegenActive = 0;
@@ -78,11 +78,8 @@ public class CharStatus
 	{
 		if (object == getActiveChar())
 			return;
-
-		synchronized (getStatusListener())
-		{
-			getStatusListener().add(object);
-		}
+		
+		_StatusListener.add(object);
 	}
 
 	public final void reduceCp(int value)
@@ -226,8 +223,6 @@ public class CharStatus
 
 			// first die (and calculate rewards), if currentHp < 0,
 			// then overhit may be calculated
-			if (Config.DEBUG)
-				_log.fine("char is dead.");
 
 			// Start the doDie process
 			getActiveChar().doDie(attacker);
@@ -272,10 +267,7 @@ public class CharStatus
 	 */
 	public final void removeStatusListener(L2Character object)
 	{
-		synchronized (getStatusListener())
-		{
-			getStatusListener().remove(object);
-		}
+		_StatusListener.remove(object);
 	}
 
 	/**
@@ -290,9 +282,6 @@ public class CharStatus
 	{
 		if (_regTask == null && !getActiveChar().isDead())
 		{
-			if (Config.DEBUG)
-				_log.fine("HP/MP/CP regen started");
-
 			// Get the Regeneration periode
 			int period = Formulas.getInstance().getRegeneratePeriod(getActiveChar());
 
@@ -313,9 +302,6 @@ public class CharStatus
 	{
 		if (_regTask != null)
 		{
-			if (Config.DEBUG)
-				_log.fine("HP/MP/CP regen stop");
-
 			// Stop the HP/MP/CP Regeneration task
 			_regTask.cancel(false);
 			_regTask = null;
@@ -485,8 +471,6 @@ public class CharStatus
 	 */
 	public final Set<L2Character> getStatusListener()
 	{
-		if (_StatusListener == null)
-			_StatusListener = new CopyOnWriteArraySet<L2Character>();
 		return _StatusListener;
 	}
 

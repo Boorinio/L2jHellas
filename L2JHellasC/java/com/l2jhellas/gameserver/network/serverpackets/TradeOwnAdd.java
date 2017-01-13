@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.TradeList;
+import com.l2jhellas.gameserver.model.TradeList.TradeItem;
 
 /**
  * @author Yme
@@ -22,9 +22,9 @@ import com.l2jhellas.gameserver.model.TradeList;
 public class TradeOwnAdd extends L2GameServerPacket
 {
 	private static final String _S__30_TRADEOWNADD = "[S] 20 TradeOwnAdd";
-	private final TradeList.TradeItem _item;
+	private final TradeItem _item;
 
-	public TradeOwnAdd(TradeList.TradeItem item)
+	public TradeOwnAdd(TradeItem item)
 	{
 		_item = item;
 	}
@@ -33,20 +33,19 @@ public class TradeOwnAdd extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x20);
-
-		writeH(1);// item count
-
-		writeH(_item.getItem().getType1());// item type1
+		
+		writeH(1); // item count
+		
+		writeH(_item.getItem().getType1()); // item type1
 		writeD(_item.getObjectId());
 		writeD(_item.getItem().getItemId());
 		writeD(_item.getCount());
-		writeH(_item.getItem().getType2());// item type2
-		writeH(0x00);// ?
-		// slot 0006-lr.ear 0008-neck 0030-lr.finger 0040-head 0080-?? 0100-l.hand 0200-gloves 0400-chest 0800-pants 1000-feet 2000-?? 4000-r.hand 8000-r.hand
-		writeD(_item.getItem().getBodyPart());
-		// enchant level
-		writeH(_item.getEnchant());
-		writeH(0x00);// ?
+		writeH(_item.getItem().getType2()); // item type2
+		writeH(0x00); // ?
+		
+		writeD(_item.getItem().getBodyPart()); // slot
+		writeH(_item.getEnchant()); // enchant level
+		writeH(0x00); // ?
 		writeH(0x00);
 	}
 

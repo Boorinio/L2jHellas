@@ -521,7 +521,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 					final L2ItemInstance armor = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 					if (armor != null)
 					{
-						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(armor.getItem().getBodyPart());
+						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(armor);
 						InventoryUpdate iu = new InventoryUpdate();
 						
 						for (L2ItemInstance element : unequipped)
@@ -545,7 +545,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 					final L2ItemInstance chest = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST);
 					if (chest != null)
 					{
-						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(chest.getItem().getBodyPart());
+						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(chest);
 						InventoryUpdate iu = new InventoryUpdate();
 						for (L2ItemInstance element : unequipped)
 						{
@@ -556,7 +556,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 					final L2ItemInstance legs = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS);
 					if (legs != null)
 					{
-						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(legs.getItem().getBodyPart());
+						L2ItemInstance[] unequipped = player.getInventory().unEquipItemInBodySlotAndRecord(legs);
 						InventoryUpdate iu = new InventoryUpdate();
 						for (L2ItemInstance element : unequipped)
 						{

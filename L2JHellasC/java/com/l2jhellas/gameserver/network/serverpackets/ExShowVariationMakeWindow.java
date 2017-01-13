@@ -14,10 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-
 /**
  * Format: ch<BR>
  * Trigger packet
@@ -26,19 +22,11 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
  */
 public class ExShowVariationMakeWindow extends L2GameServerPacket
 {
+	public static final ExShowVariationMakeWindow STATIC_PACKET = new ExShowVariationMakeWindow();
 	private static final String _S__FE_50_EXSHOWVARIATIONMAKEWINDOW = "[S] FE:50 ExShowVariationMakeWindow";
 
-	boolean _safety = true;
-
-	public ExShowVariationMakeWindow(L2PcInstance player, L2Npc npc)
+	public ExShowVariationMakeWindow()
 	{
-		if (player == null)
-			_safety = false;
-		if (npc == null)
-			_safety = false;
-
-		if (_safety)
-			player.sendPacket(SystemMessageId.SELECT_THE_ITEM_FROM_WHICH_YOU_WISH_TO_REMOVE_AUGMENTATION);
 	}
 
 	@Override

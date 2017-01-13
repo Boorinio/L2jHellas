@@ -382,11 +382,10 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public int getLocationSlot()
 	{
-		if (Config.ASSERT)
-			assert _loc == ItemLocation.PAPERDOLL || _loc == ItemLocation.PET_EQUIP || _loc == ItemLocation.FREIGHT || _loc == ItemLocation.INVENTORY;
+		assert (_loc == ItemLocation.PAPERDOLL) || (_loc == ItemLocation.PET_EQUIP) || (_loc == ItemLocation.INVENTORY) || (_loc == ItemLocation.FREIGHT);
 		return _locData;
 	}
-
+	
 	/**
 	 * Returns the slot where the item is stored
 	 * 

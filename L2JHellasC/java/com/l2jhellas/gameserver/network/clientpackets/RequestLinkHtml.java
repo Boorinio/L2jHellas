@@ -42,12 +42,17 @@ public final class RequestLinkHtml extends L2GameClientPacket
 		if (actor == null)
 			return;
 
+		if (_link.isEmpty())
+		{
+			_log.warning("Player " + actor.getName() + " sent empty html link!");
+			return;
+		}
+		
 		if (_link.contains("..") || !_link.contains(".htm"))
 		{
 			_log.warning(RequestLinkHtml.class.getName() + ": [RequestLinkHtml] hack? link contains prohibited characters: '" + _link + "', skipped.");
 			return;
 		}
-
 		NpcHtmlMessage msg = new NpcHtmlMessage(0);
 		msg.setFile(_link);
 

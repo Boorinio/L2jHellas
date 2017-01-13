@@ -14,13 +14,16 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
+import com.l2jhellas.gameserver.model.TradeList.TradeItem;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.TradeOtherAdd;
 import com.l2jhellas.gameserver.network.serverpackets.TradeOwnAdd;
+import com.l2jhellas.gameserver.network.serverpackets.TradeUpdateItems;
 
 public final class AddTradeItem extends L2GameClientPacket
 {
@@ -29,7 +32,7 @@ public final class AddTradeItem extends L2GameClientPacket
 	protected int _tradeId;
 	private int _objectId;
 	private int _count;
-
+	
 	public AddTradeItem()
 	{
 	}
@@ -50,9 +53,10 @@ public final class AddTradeItem extends L2GameClientPacket
 			return;
 
 		TradeList trade = player.getActiveTradeList();
+		
 		if (trade == null)
 			return;
-
+	
 		if ((trade.getPartner() == null) || (L2World.getInstance().findObject(trade.getPartner().getObjectId()) == null))
 		{
 			// Trade partner not found, cancel trade
@@ -69,17 +73,43 @@ public final class AddTradeItem extends L2GameClientPacket
 			return;
 		}
 
+		if (trade.isConfirmed() || trade.getPartner().getActiveTradeList().isConfirmed())
+		{
+			player.sendPacket(SystemMessageId.CANNOT_ADJUST_ITEMS_AFTER_TRADE_CONFIRMED);
+			return;
+		}
+		
 		if (!player.validateItemManipulation(_objectId, "trade"))
 		{
 			player.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 			return;
 		}
 
-		TradeList.TradeItem item = trade.addItem(_objectId, _count);
-		if (item != null)
+		final L2ItemInstance item = player.getInventory().getItemByObjectId(_objectId);
+		
+		if (item == null || _count <= 0)
 		{
-			player.sendPacket(new TradeOwnAdd(item));
-			trade.getPartner().sendPacket(new TradeOtherAdd(item));
+			player.sendPacket(SystemMessageId.INCORRECT_ITEM_COUNT);
+			return;
+		}
+		
+		if (item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+		{
+			player.sendPacket(SystemMessageId.NOTHING_HAPPENED);
+			return;
+		}
+		
+        if (_count > item.getCount())
+            _count = item.getCount();
+        
+
+		final TradeItem tradeitem = trade.addItem(item.getObjectId(), _count);
+			
+		if (tradeitem != null)
+		{	       
+			player.sendPacket(new TradeOwnAdd(tradeitem));
+			player.sendPacket(new TradeUpdateItems(tradeitem,item.getCount()-_count));
+			trade.getPartner().sendPacket(new TradeOtherAdd(tradeitem));
 		}
 	}
 

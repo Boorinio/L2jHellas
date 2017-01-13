@@ -37,7 +37,7 @@ public class Escape implements IUserCommandHandler
 	@Override
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
-		if (activeChar.isCastingNow() || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isInOlympiadMode())
+		if (activeChar.isCastingNow()|| activeChar.isSitting()  || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isInOlympiadMode())
 			return false;
 
 		int unstuckTimer = (activeChar.isGM() ? 5000 : Config.UNSTUCK_INTERVAL * 1000);

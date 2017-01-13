@@ -132,11 +132,7 @@ public class Shutdown extends Thread
 			TimeCounter tc1 = new TimeCounter();
 			
 			Util.printSection("Under " + MODE_TEXT[_shutdownMode] + " process");
-			
-			if (Config.ACTIVATE_POSITION_RECORDER)
-			{
-				Universe.getInstance().implode(true);
-			}
+
 			// disconnect players
 			try
 			{

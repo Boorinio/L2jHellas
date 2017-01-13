@@ -82,7 +82,7 @@ public class RequestUnEquipItem extends L2GameClientPacket
 			item.getAugmentation().removeBoni(activeChar);
 		}
 
-		L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInBodySlotAndRecord(_slot);
+		L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInBodySlotAndRecord(item);
 
 		// show the update in the inventory
 		InventoryUpdate iu = new InventoryUpdate();

@@ -169,6 +169,13 @@ public class GameServer
 		HtmCache.getInstance();
 		CrestCache.load();
 
+
+		Util.printSection("Geodata");
+		if (Config.GEODATA)
+			GeoEngine.loadGeo();
+		else
+		_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
+
 		Util.printSection("World");
 		GameTimeController.init();
 		L2World.getInstance();
@@ -178,7 +185,6 @@ public class GameServer
 		AutoSpawnHandler.getInstance();
 		DayNightSpawnManager.getInstance();
 		AutoChatHandler.getInstance();
-		Universe.getInstance();
 		FloodProtector.getInstance();
 		StaticObjData.load();
 		TeleportLocationData.getInstance();	
@@ -233,13 +239,6 @@ public class GameServer
 		BuffTemplateTable.getInstance();
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
-
-		Util.printSection("Geodata");
-		if (Config.GEODATA)
-			GeoEngine.loadGeo();
-		else
-		_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
-
 
 		Util.printSection("Economy");
 		TradeController.getInstance();

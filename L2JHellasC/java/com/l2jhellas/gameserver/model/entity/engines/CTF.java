@@ -287,7 +287,7 @@ public class CTF
 		player._haveFlagCTF = false;
 		if (wpn != null)
 		{
-			L2ItemInstance[] unequiped = player.getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
+			L2ItemInstance[] unequiped = player.getInventory().unEquipItemInBodySlotAndRecord(wpn);
 			player.getInventory().destroyItemByItemId("", CTF._FLAG_IN_HAND_ITEM_ID, 1, player, null);
 			InventoryUpdate iu = new InventoryUpdate();
 			for (L2ItemInstance element : unequiped)

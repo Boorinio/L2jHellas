@@ -17,9 +17,6 @@ package com.l2jhellas.gameserver.skills.effects;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;

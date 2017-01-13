@@ -26,6 +26,7 @@ import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.L2ClanMember;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.ClassType;
@@ -43,7 +44,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
 
@@ -57,10 +57,6 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		super(objectId, template);
 	}
 	
-	final int[] slots =
-	{
-	L2Item.SLOT_LR_HAND, L2Item.SLOT_R_HAND, L2Item.SLOT_L_HAND, L2Item.SLOT_GLOVES, L2Item.SLOT_HEAD, L2Item.SLOT_FEET, L2Item.SLOT_LEGS, L2Item.SLOT_FULL_ARMOR, L2Item.SLOT_R_EAR, L2Item.SLOT_L_EAR, L2Item.SLOT_NECK, L2Item.SLOT_R_FINGER, L2Item.SLOT_L_FINGER
-	};
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -1111,10 +1107,12 @@ public class L2VillageMasterInstance extends L2NpcInstance
 	{
 		if (player.getActiveWeaponInstance() != null || player.getActiveChestArmorItem() != null)
 		{
-			for (int slot : slots)
+			for (L2ItemInstance items : player.getInventory().getItems())
 			{
-				player.getInventory().unEquipItemInBodySlotAndRecord(slot);
+				if(items.isEquipped())
+				player.getInventory().unEquipItemInBodySlotAndRecord(items);
 			}
+			
 			player.getInventory().reloadEquippedItems();
 			player.sendPacket(new InventoryUpdate());
 			player.sendPacket(new ItemList(player, false));

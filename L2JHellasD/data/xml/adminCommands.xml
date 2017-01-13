@@ -474,7 +474,6 @@
 	<admin command="admin_teleport_character" accessLevel="7" />
 	<admin command="admin_recall" accessLevel="7" />
 	<admin command="admin_walk" accessLevel="7" />
-	<admin command="admin_explore" accessLevel="7" />
 	<admin command="teleportto" accessLevel="7" />
 	<admin command="recall" accessLevel="7" />
 	<admin command="admin_recall_npc" accessLevel="7" />

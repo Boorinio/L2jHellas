@@ -52,7 +52,6 @@ import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.Universe;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2PlayerAI;
@@ -96,7 +95,6 @@ import com.l2jhellas.gameserver.model.ForceBuff;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.ItemContainer;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -1380,49 +1378,6 @@ public final class L2PcInstance extends L2Playable
 		
 		return _ai;
 	}
-	
-	/**
-	 * Calculate a destination to explore the area and set the AI Intension to AI_INTENTION_MOVE_TO.<BR>
-	 */
-	public void explore()
-	{
-		if (!_exploring)
-			return;
-		
-		if (getMountType() == 2)
-			return;
-		
-		// Calculate the destination point (random)
-		
-		int x = getX() + Rnd.nextInt(6000) - 3000;
-		int y = getY() + Rnd.nextInt(6000) - 3000;
-		
-		if (x > Universe.MAX_X)
-		{
-			x = Universe.MAX_X;
-		}
-		if (x < Universe.MIN_X)
-		{
-			x = Universe.MIN_X;
-		}
-		if (y > Universe.MAX_Y)
-		{
-			y = Universe.MAX_Y;
-		}
-		if (y < Universe.MIN_Y)
-		{
-			y = Universe.MIN_Y;
-		}
-		
-		int z = getZ();
-		
-		L2CharPosition pos = new L2CharPosition(x, y, z, 0);
-		
-		// Set the AI Intention to AI_INTENTION_MOVE_TO
-		getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, pos);
-		
-	}
-	
 	/**
 	 * Return the Level of the L2PcInstance.
 	 */
@@ -2180,26 +2135,19 @@ public final class L2PcInstance extends L2Playable
 	
 	public void giveRecom(L2PcInstance target)
 	{
-		if (Config.ALT_RECOMMEND)
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-			{
-				PreparedStatement statement = con.prepareStatement(ADD_CHAR_RECOM);
-				try (ResultSet rset = statement.executeQuery())
-				{
-					statement.setInt(1, getObjectId());
-					statement.setInt(2, target.getObjectId());
-					rset.close();
-					statement.close();
-				}
-			}
-			catch (SQLException e)
-			{
-				_log.warning(L2PcInstance.class.getName() + ": could not update char recommendations:");
-				if (Config.DEVELOPER)
-					e.printStackTrace();
-			}
+			PreparedStatement statement = con.prepareStatement(ADD_CHAR_RECOM);
+			statement.setInt(1, getObjectId());
+			statement.setInt(2, target.getObjectId());
+			statement.execute();
+			statement.close();
 		}
+		catch (Exception e)
+		{
+			_log.warning("Could not update char recommendations: " + e);
+		}
+		
 		target.incRecomHave();
 		decRecomLeft();
 		_recomChars.add(target.getObjectId());
@@ -2831,7 +2779,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public boolean isCastleLord(int castleId)
 	{
-		L2Clan clan = getClan();
+		final L2Clan clan = getClan();
 		
 		// player has clan and is the clan leader, check the castle info
 		if ((clan != null) && (clan.getLeader().getPlayerInstance() == this))
@@ -2839,7 +2787,7 @@ public final class L2PcInstance extends L2Playable
 			// if the clan has a castle and it is actually the queried castle,
 			// return true
 			Castle castle = CastleManager.getInstance().getCastleByOwner(clan);
-			if ((castle != null) && (castle == CastleManager.getInstance().getCastleById(castleId)))
+			if ((castle != null) && castle.getCastleId() == castleId)
 				return true;
 		}
 		
@@ -6742,7 +6690,7 @@ public final class L2PcInstance extends L2Playable
 				wpn.getAugmentation().removeBoni(this);
 			}
 			
-			L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(wpn.getItem().getBodyPart());
+			L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(wpn);
 			InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
 			{
@@ -6779,7 +6727,7 @@ public final class L2PcInstance extends L2Playable
 			if (sld.isWear())
 				return false;
 			
-			L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(sld.getItem().getBodyPart());
+			L2ItemInstance[] unequiped = getInventory().unEquipItemInBodySlotAndRecord(sld);
 			InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
 			{
@@ -7529,10 +7477,7 @@ public final class L2PcInstance extends L2Playable
 		restoreHenna();
 		
 		// Retrieve from the database all recom data of this L2PcInstance and add to _recomChars.
-		if (Config.ALT_RECOMMEND)
-		{
-			restoreRecom();
-		}
+		restoreRecom();
 		
 		// Retrieve from the database the recipe book of this L2PcInstance.
 		if (!isSubClassActive())
@@ -11059,25 +11004,20 @@ public final class L2PcInstance extends L2Playable
 	
 	public void restartRecom()
 	{
-		if (Config.ALT_RECOMMEND)
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-			{
-				PreparedStatement statement = con.prepareStatement(DELETE_CHAR_RECOMS);
-				statement.setInt(1, getObjectId());
-				statement.execute();
-				statement.close();
-				
-				_recomChars.clear();
-			}
-			catch (Exception e)
-			{
-				_log.warning(L2PcInstance.class.getName() + ": could not clear char recommendations: ");
-				if (Config.DEVELOPER)
-					e.printStackTrace();
-			}
+			PreparedStatement statement = con.prepareStatement(DELETE_CHAR_RECOMS);
+			statement.setInt(1, getObjectId());
+			statement.execute();
+			statement.close();
+			
+			_recomChars.clear();
 		}
-		
+		catch (Exception e)
+		{
+			_log.warning("could not clear char recommendations: " + e);
+		}
+
 		if (getStat().getLevel() < 20)
 		{
 			_recomLeft = 3;
@@ -11093,17 +11033,15 @@ public final class L2PcInstance extends L2Playable
 			_recomLeft = 9;
 			_recomHave -= 3;
 		}
+		
 		if (_recomHave < 0)
-		{
 			_recomHave = 0;
-		}
 		
 		// If we have to update last update time, but it's now before 13, we should set it to yesterday
 		Calendar update = Calendar.getInstance();
 		if (update.get(Calendar.HOUR_OF_DAY) < 13)
-		{
 			update.add(Calendar.DAY_OF_MONTH, -1);
-		}
+		
 		update.set(Calendar.HOUR_OF_DAY, 13);
 		_lastRecomUpdate = update.getTimeInMillis();
 	}
@@ -14025,8 +13963,7 @@ public final class L2PcInstance extends L2Playable
 				sm.addItemName(item.getItemId());
 			}
 			sendPacket(sm);
-			final int slot = getInventory().getSlotFromItem(item);
-			items = getInventory().unEquipItemInBodySlotAndRecord(slot);		
+			items = getInventory().unEquipItemInBodySlotAndRecord(item);		
 			WeddingSKillCheck(item,false);
 			
 			if(item.getItemType().equals(L2WeaponType.BOW))
