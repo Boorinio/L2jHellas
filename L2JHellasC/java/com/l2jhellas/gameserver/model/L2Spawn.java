@@ -506,8 +506,11 @@ public class L2Spawn
 			// Set the calculated position of the L2NpcInstance
 			newlocx = p[0];
 			newlocy = p[1];
-			newlocz = GeoEngine.getHeight(newlocx,newlocy,getLocz()); 
-			
+			if (Config.GEODATA )
+				newlocz = GeoEngine.getHeight(newlocx,newlocy,getLocz());
+			else
+				newlocz = getLocz();
+						
 		}
 		else
 		{
@@ -520,21 +523,12 @@ public class L2Spawn
 				newlocz = getLocz();
 		}
 
-		for (L2Effect f : mob.getAllEffects())
-		{
-			if (f != null)
-				mob.removeEffect(f);
-		}
-		// Set the heading of the L2NpcInstance (random heading if not defined)
-		if (getHeading() == -1)
-		{
-			mob.setHeading(Rnd.nextInt(61794));
-		}
-		else
-		{
-			mob.setHeading(getHeading());
-		}
-
+		if (Math.abs(newlocz - getLocz()) > 200)
+			newlocz = getLocz();
+		
+		mob.stopAllEffects();
+		mob.setHeading(getHeading() < 0 ? Rnd.get(65536) : getHeading());
+		
 		// setting up champion mobs
 		if (((mob instanceof L2MonsterInstance && !(mob instanceof L2RaidBossInstance)) || (mob instanceof L2RaidBossInstance && Config.CHAMPION_BOSS)) && Config.CHAMPION_FREQUENCY > 0 && !mob.getTemplate().isQuestMonster() && mob.getLevel() >= Config.CHAMPION_MIN_LEVEL && mob.getLevel() <= Config.CHAMPION_MAX_LEVEL)
 		{
@@ -548,6 +542,7 @@ public class L2Spawn
 		{
 			mob.setChampion(false);
 		}
+		
 		// Set the HP and MP of the L2NpcInstance to the max
 		mob.setCurrentHpMp(mob.getMaxHp(), mob.getMaxMp());
 		// Reset decay info
@@ -562,9 +557,6 @@ public class L2Spawn
 		L2Spawn.notifyNpcSpawned(mob);
 
 		_lastSpawn = mob;
-
-		if (Config.DEBUG)
-			_log.finest("spawned Mob ID: " + _template.npcId + " ,at: " + mob.getX() + " x, " + mob.getY() + " y, " + mob.getZ() + " z");
 
 		// Increase the current number of L2NpcInstance managed by this L2Spawn
 		_currentCount++;

@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.TradeOtherAdd;
 import com.l2jhellas.gameserver.network.serverpackets.TradeOwnAdd;
 import com.l2jhellas.gameserver.network.serverpackets.TradeUpdateItems;
@@ -59,9 +58,7 @@ public final class AddTradeItem extends L2GameClientPacket
 	
 		if ((trade.getPartner() == null) || (L2World.getInstance().findObject(trade.getPartner().getObjectId()) == null))
 		{
-			// Trade partner not found, cancel trade
-			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
-			player.sendPacket(msg);
+			player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			player.cancelActiveTrade();
 			return;
 		}
@@ -108,7 +105,7 @@ public final class AddTradeItem extends L2GameClientPacket
 		if (tradeitem != null)
 		{	       
 			player.sendPacket(new TradeOwnAdd(tradeitem));
-			player.sendPacket(new TradeUpdateItems(tradeitem,item.getCount()-_count));
+			player.sendPacket(new TradeUpdateItems(tradeitem,item.getCount()-tradeitem.getCount()));
 			trade.getPartner().sendPacket(new TradeOtherAdd(tradeitem));
 		}
 	}
