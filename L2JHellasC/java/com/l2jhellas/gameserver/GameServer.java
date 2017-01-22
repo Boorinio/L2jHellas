@@ -26,8 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import javax.script.ScriptException;
-
 import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
@@ -117,7 +115,8 @@ import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
-import com.l2jhellas.gameserver.scripting.L2ScriptEngineManager;
+import com.l2jhellas.gameserver.scrips.loaders.MasterHandler;
+import com.l2jhellas.gameserver.scrips.loaders.ScriptLoader;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -318,28 +317,10 @@ public class GameServer
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
+		   ScriptLoader.getInstance();
+		   QuestManager.getInstance().report();
+		   MasterHandler.getInstance();		
 				
-			final File cripts = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/ScriptLoader.java");
-			try
-			{
-				L2ScriptEngineManager.getInstance().executeScript(cripts);
-				QuestManager.getInstance().report();
-			}
-			catch (ScriptException e)
-			{
-				L2ScriptEngineManager.reportScriptFileError(cripts, e);				
-			}
-				
-			final File Master = new File(L2ScriptEngineManager.SCRIPT_FOLDER, "handlers/MasterHandler.java");
-			try
-			{
-				L2ScriptEngineManager.getInstance().executeScript(Master);
-			}
-			catch (ScriptException e)
-			{
-				 L2ScriptEngineManager.reportScriptFileError(Master, e);				
-			}	
-
 		}
 		else
 		{
@@ -519,10 +500,6 @@ public class GameServer
 		Config.load();
 
 		Util.printSection("Script Engine");
-		if (!Config.ALT_DEV_NO_SCRIPT)
-		{
-			L2ScriptEngineManager.getInstance();
-		}
 
 		Util.printSection("General Info");
 		Util.printGeneralSystemInfo();

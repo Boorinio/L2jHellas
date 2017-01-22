@@ -44,8 +44,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.scripting.ManagedScript;
-import com.l2jhellas.gameserver.scripting.ScriptManager;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
@@ -54,7 +52,7 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 /**
  * @author Luis Arias
  */
-public class Quest extends ManagedScript
+public class Quest 
 {
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
 		
@@ -69,7 +67,7 @@ public class Quest extends ManagedScript
 	public static final byte STATE_STARTED = 1;
 	public static final byte STATE_COMPLETED = 2;
 	
-	private final Map<Integer, List<QuestTimer>> _eventTimers = new ConcurrentHashMap<Integer, List<QuestTimer>>();
+	private final Map<Integer, List<QuestTimer>> _eventTimers = new ConcurrentHashMap<>();
 	
 	private final int _id;
 	private final String _name;
@@ -90,6 +88,7 @@ public class Quest extends ManagedScript
 		_descr = descr;
 		_onEnterWorld = false;
 
+		if(_id >0)
 		QuestManager.getInstance().addQuest(Quest.this);
 	}
 	
@@ -115,7 +114,6 @@ public class Quest extends ManagedScript
 	 * Return name of the quest.
 	 * @return String
 	 */
-	@Override
 	public String getName()
 	{
 		return _name;
@@ -732,9 +730,9 @@ public class Quest extends ManagedScript
 		{
 			NpcHtmlMessage npcReply = new NpcHtmlMessage(npc == null ? 0 : npc.getNpcId());
 			if (isRealQuest())
-				npcReply.setFile("./data/scripts/quests/" + getName() + "/" + result);
+				npcReply.setFile("./data/html/scripts/quests/" + getName() + "/" + result);
 			else
-				npcReply.setFile("./data/scripts/" + getDescr() + "/" + getName() + "/" + result);
+				npcReply.setFile("./data/html/scripts/" + getDescr() + "/" + getName() + "/" + result);
 			
 			if (npc != null)
 				npcReply.replace("%objectId%", npc.getName());
@@ -767,7 +765,7 @@ public class Quest extends ManagedScript
 	 */
 	public boolean showError(L2PcInstance player, Throwable e)
 	{
-		_log.warning(Quest.class.getName() + ": " + getScriptFile().getAbsolutePath());
+		_log.warning(Quest.class.getName());
 		
 		if (e.getMessage() == null)
 			e.printStackTrace();
@@ -791,9 +789,9 @@ public class Quest extends ManagedScript
 	public String getHtmlText(String fileName)
 	{
 		if (isRealQuest())
-			return HtmCache.getInstance().getHtmForce("./data/scripts/quests/" + getName() + "/" + fileName);
+			return HtmCache.getInstance().getHtmForce("./data/html/scripts/quests/" + getName() + "/" + fileName);
 		
-		return HtmCache.getInstance().getHtmForce("./data/scripts/" + getDescr() + "/" + getName() + "/" + fileName);
+		return HtmCache.getInstance().getHtmForce("./data/html/scripts/" + getDescr() + "/" + getName() + "/" + fileName);
 	}
 	
 	/**
@@ -1435,44 +1433,6 @@ public class Quest extends ManagedScript
 	public String onTalk(L2Npc npc, L2PcInstance talker)
 	{
 		return null;
-	}
-	
-	@Override
-	public ScriptManager<?> getScriptManager()
-	{
-		return QuestManager.getInstance();
-	}
-	
-	@Override
-	public void setActive(boolean status)
-	{
-	}
-	
-	@Override
-	public boolean reload()
-	{
-		unload();
-		return super.reload();
-	}
-	
-	@Override
-	public boolean unload()
-	{
-		return unload(true);
-	}
-	
-	public boolean unload(boolean removeFromList)
-	{
-		for (List<QuestTimer> timers : _eventTimers.values())
-			for (QuestTimer timer : timers)
-				timer.cancel();
-		
-		_eventTimers.clear();
-		
-		if (removeFromList)
-			return QuestManager.getInstance().removeQuest(this);
-		
-		return true;
 	}
 	
 	@Override

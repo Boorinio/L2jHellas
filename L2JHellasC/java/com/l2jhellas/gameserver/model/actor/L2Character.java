@@ -430,8 +430,7 @@ public abstract class L2Character extends L2Object
 		// Send the Server->Client packet StatusUpdate with current HP and MP
 		for (L2Character temp : getStatus().getStatusListener())
 		{
-			if (temp != null)
-				temp.sendPacket(su);
+			temp.sendPacket(su);
 		}
 	}
 	

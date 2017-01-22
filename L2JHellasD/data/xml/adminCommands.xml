@@ -382,10 +382,6 @@
 	<admin command="admin_transform_menu" accessLevel="7" />
 	<admin command="admin_untransform_menu" accessLevel="7" />
 
-	<!-- ADMIN QUEST -->
-	<admin command="admin_quest_reload" accessLevel="7" />
-	<admin command="admin_script_load" accessLevel="7" />
-	
 	<!-- ADMIN REPAIR CHAR -->
 	<admin command="admin_repair" accessLevel="7" />
 
