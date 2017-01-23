@@ -153,11 +153,12 @@ public final class RequestRestartPoint extends L2GameClientPacket
 						break;
 					}
 				}
-				// Stand up and teleport, proof dvp video.
-				activeChar.setIsIn7sDungeon(false);
-				activeChar.setIsPendingRevive(true);
+
+				activeChar.setIsIn7sDungeon(false);					
 				activeChar.teleToLocation(loc, true);
 				
+				if (activeChar.isDead())
+					activeChar.doRevive();				
 			}
 			catch (Throwable e)
 			{
@@ -240,7 +241,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 			return;
 		}
 		
-		ThreadPoolManager.getInstance().scheduleGeneral(new DeathTask(activeChar), 1);
+		new DeathTask(activeChar).run();
 	}
 	
 	@Override

@@ -74,6 +74,7 @@ import com.l2jhellas.gameserver.scrips.quests.ai.invidual.DrChaos;
 import com.l2jhellas.gameserver.scrips.quests.ai.invidual.FleeNpc;
 import com.l2jhellas.gameserver.scrips.quests.ai.invidual.Frintezza;
 import com.l2jhellas.gameserver.scrips.quests.ai.invidual.Gordon;
+import com.l2jhellas.gameserver.scrips.quests.ai.invidual.IceFairySirra;
 import com.l2jhellas.gameserver.scrips.quests.ai.invidual.Orfen;
 import com.l2jhellas.gameserver.scrips.quests.ai.invidual.QueenAnt;
 import com.l2jhellas.gameserver.scrips.quests.ai.invidual.Sailren;
@@ -481,7 +482,7 @@ public class ScriptLoader
 		FleeNpc.class,
 		Frintezza.class,
 		Gordon.class,
-		// nor ready IceFairySirra.class,
+		IceFairySirra.class,
 		Orfen.class,
 		QueenAnt.class,
 		Sailren.class,

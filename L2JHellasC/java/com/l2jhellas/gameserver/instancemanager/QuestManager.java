@@ -33,6 +33,7 @@ public class QuestManager
 
 	public QuestManager()
 	{
+		
 	}
 
 	public void addQuest(Quest quest)

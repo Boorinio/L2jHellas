@@ -23,13 +23,14 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
-import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
+import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
@@ -42,7 +43,7 @@ public class IceFairySirra extends AbstractNpcAI
 	private static final Logger _log = Logger.getLogger(IceFairySirra.class.getName());
 	private static final int STEWARD = 32029;
 	private static final int SILVER_HEMOCYTE = 8057;
-	private static L2BossZone _freyasZone;
+	L2ZoneType _Zone;
 	private static L2PcInstance _player = null;
 	protected ArrayList<L2Npc> _allMobs = new ArrayList<L2Npc>();
 	protected Future<?> _onDeadEventTask = null;
@@ -61,12 +62,7 @@ public class IceFairySirra extends AbstractNpcAI
 
 	public void init()
 	{
-		_freyasZone = GrandBossManager.getInstance().getZone(105546, -127892, -2768);
-		if (_freyasZone == null)
-		{
-			_log.warning(IceFairySirra.class.getName() + ": IceFairySirraManager: Failed to load zone");
-			return;
-		}
+		_Zone = ZoneManager.getInstance().getZoneById(110016);
 
 		L2Npc steward = findTemplate(STEWARD);
 		if (steward != null)
@@ -197,13 +193,8 @@ public class IceFairySirra extends AbstractNpcAI
 			for (L2PcInstance pc : player.getParty().getPartyMembers())
 			{
 				pc.teleToLocation(113533, -126159, -3488, false);
-				if (_freyasZone == null)
-				{
-					_log.warning(IceFairySirra.class.getName() + ": Failed to load zone");
-					cleanUp();
-					return;
-				}
-				_freyasZone.allowPlayerEntry(pc, 2103);
+
+				((L2BossZone) _Zone).allowPlayerEntry(pc, 2103);
 			}
 		}
 		else
@@ -227,11 +218,13 @@ public class IceFairySirra extends AbstractNpcAI
 	{
 		int[][] mobs =
 			{
-				{ 29060, 105546, -127892, -2768 },
-				{ 29056, 102779, -125920, -2840 },
-				{ 22100, 111719, -126646, -2992 },
-				{ 22102, 109509, -128946, -3216 },
-				{ 22104, 109680, -125756, -3136 } };
+				{ 29060, 102722-50, -127892-50, -2768+30 },
+				{ 29056, 102722, -127892, -2768 },
+				{ 22100, 102722+50, -127892+50, -2768+30 },
+				{ 22102, 102722-100, -127892-100, -2768+30 },
+				{ 22104, 102722+100, -127892+100, -2768+30 }
+			};
+		
 		L2Spawn spawnDat;
 		L2NpcTemplate template;
 		try
@@ -337,7 +330,7 @@ public class IceFairySirra extends AbstractNpcAI
 		}
 		else if (event.equalsIgnoreCase("start"))
 		{
-			if (_freyasZone == null)
+			if (_Zone == null)
 			{
 				_log.warning(IceFairySirra.class.getName() + ": Failed to load zone");
 				cleanUp();

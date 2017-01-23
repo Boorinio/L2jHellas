@@ -88,8 +88,10 @@ public class Quest
 		_descr = descr;
 		_onEnterWorld = false;
 
-		if(_id >0)
-		QuestManager.getInstance().addQuest(Quest.this);
+		if(isRealQuest())
+		{
+		   QuestManager.getInstance().addQuest(Quest.this);
+		}
 	}
 	
 	/**
