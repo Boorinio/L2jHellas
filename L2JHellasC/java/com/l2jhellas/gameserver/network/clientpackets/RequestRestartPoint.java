@@ -155,10 +155,11 @@ public final class RequestRestartPoint extends L2GameClientPacket
 				}
 
 				activeChar.setIsIn7sDungeon(false);					
-				activeChar.teleToLocation(loc, true);
 				
 				if (activeChar.isDead())
-					activeChar.doRevive();				
+					activeChar.doRevive();	
+				
+				activeChar.teleToLocation(loc, true);
 			}
 			catch (Throwable e)
 			{
