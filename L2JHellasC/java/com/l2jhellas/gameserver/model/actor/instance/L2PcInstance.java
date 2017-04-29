@@ -55,6 +55,8 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2PlayerAI;
+import com.l2jhellas.gameserver.audio.Music;
+import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.cache.WarehouseCache;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
@@ -208,6 +210,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SendTradeDone;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
+import com.l2jhellas.gameserver.network.serverpackets.ShortCutRegister;
 import com.l2jhellas.gameserver.network.serverpackets.SignsSky;
 import com.l2jhellas.gameserver.network.serverpackets.SkillCoolTime;
 import com.l2jhellas.gameserver.network.serverpackets.SkillList;
@@ -5495,8 +5498,7 @@ public final class L2PcInstance extends L2Playable
 				{
 					if (!(pk._teamNameTvT.equals(_teamNameTvT)))
 					{
-						PlaySound ps;
-						ps = new PlaySound(0, "ItemSound.quest_itemget", 1, getObjectId(), getX(), getY(), getZ());
+						PlaySound ps = Sound.ITEMSOUND_QUEST_ITEMGET.getPacket();
 						_countTvTdies++;
 						pk._countTvTkills++;
 						pk.setTitle("Kills: " + pk._countTvTkills);
@@ -10413,31 +10415,33 @@ public final class L2PcInstance extends L2Playable
 	{
 		return (_alliedVarkaKetra > 0);
 	}
-	
+
 	public void sendSkillList()
 	{
-		sendSkillList(this);
-	}
-	
-	public void sendSkillList(L2PcInstance player)
-	{
 		SkillList sl = new SkillList();
-		if (player != null)
-		{
-			for (L2Skill s : player.getAllSkills())
+		boolean isDisabled = false;
+
+			for (L2Skill s : getAllSkills())
 			{
-				if (s == null)
-				{
+				if (s.getId() > 9000 && s.getId() < 9007)
 					continue;
-				}
-				if (s.getId() > 9000)
+
+				if(this.isWearingFormalWear())
+					isDisabled = true;
+				
+				sl.addSkill(s.getId(), s.getLevel(), s.isPassive(),isDisabled);
+				
+				for (L2ShortCut sc : getAllShortCuts())
 				{
-					continue; // Fake skills to change base stats
+					if (sc.getId() == s.getId() && sc.getType() == L2ShortCut.TYPE_SKILL)
+					 {
+						L2ShortCut Nsc = new L2ShortCut(sc.getSlot(), sc.getPage(), L2ShortCut.TYPE_SKILL, s.getId(), s.getLevel(), 1);
+						sendPacket(new ShortCutRegister(Nsc));
+						registerShortCut(Nsc);
+					 }
 				}
-				sl.addSkill(s.getId(), s.getLevel(), s.isPassive());
 			}
-		}
-		sendPacket(sl);
+			sendPacket(sl);	
 	}
 	
 	/**
@@ -11801,7 +11805,10 @@ public final class L2PcInstance extends L2Playable
 		sendPacket(SystemMessageId.CAST_LINE_AND_START_FISHING);
 		
 		broadcastPacket(new ExFishingStart(this, _fish.getType(_lure.isNightLure()), loc, _lure.isNightLure()));
-		sendPacket(new PlaySound(1, "SF_P_01", 0, 0, 0, 0, 0));
+
+		PlaySound ps = Music.SF_P_01.getPacket();
+		sendPacket(ps);
+		
 		StartLookingForFishTask();
 	}
 	

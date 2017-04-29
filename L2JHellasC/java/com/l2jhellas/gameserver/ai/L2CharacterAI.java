@@ -41,6 +41,7 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -967,7 +968,15 @@ public class L2CharacterAI extends AbstractAI
 			}
 			
 			if (_actor.isMovementDisabled())
+			{
+				if (getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
+				{
+					setIntention(CtrlIntention.AI_INTENTION_IDLE);
+				    _actor.sendPacket(ActionFailed.STATIC_PACKET);
+				}
+				
 				return true;
+			}
 			
 			// If not running, set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2PcInstance
 			if (!_actor.isRunning() && !(this instanceof L2PlayerAI))

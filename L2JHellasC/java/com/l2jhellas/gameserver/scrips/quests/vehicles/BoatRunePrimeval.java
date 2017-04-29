@@ -1,30 +1,34 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2016 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.scrips.quests.vehicles;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 
 /**
  * @author DS
@@ -32,7 +36,8 @@ import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 public class BoatRunePrimeval implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatRunePrimeval.class.getName());
-	
+	private static final L2BoatInstance _boat = BoatManager.getInstance().getNewBoat(5, 34381, -37680, -3610, 40785);
+
 	// Time: 239s
 	private static final VehiclePathPoint[] RUNE_TO_PRIMEVAL =
 	{
@@ -69,8 +74,7 @@ public class BoatRunePrimeval implements Runnable
 	};
 	
 	private static final VehiclePathPoint PRIMEVAL_DOCK = RUNE_TO_PRIMEVAL[RUNE_TO_PRIMEVAL.length - 1];
-	
-	private final L2BoatInstance _boat;
+
 	private int _cycle = 0;
 	private int _shoutCount = 0;
 	
@@ -82,13 +86,9 @@ public class BoatRunePrimeval implements Runnable
 	private final CreatureSay LEAVING_PRIMEVAL;
 	private final CreatureSay BUSY_RUNE;
 	
-	private final PlaySound RUNE_SOUND;
-	private final PlaySound PRIMEVAL_SOUND;
-	
-	public BoatRunePrimeval(L2BoatInstance boat)
+	public BoatRunePrimeval()
 	{
-		_boat = boat;
-		
+
 		ARRIVED_AT_RUNE = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.ARRIVED_AT_RUNE);
 		ARRIVED_AT_RUNE_2 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_FOR_PRIMEVAL_3_MINUTES);
 		LEAVING_RUNE = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_RUNE_FOR_PRIMEVAL_NOW);
@@ -96,9 +96,6 @@ public class BoatRunePrimeval implements Runnable
 		ARRIVED_AT_PRIMEVAL_2 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_FOR_RUNE_3_MINUTES);
 		LEAVING_PRIMEVAL = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_PRIMEVAL_FOR_RUNE_NOW);
 		BUSY_RUNE = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_PRIMEVAL_TO_RUNE_DELAYED);
-		
-		RUNE_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), RUNE_DOCK[0].x, RUNE_DOCK[0].y, RUNE_DOCK[0].z);
-		PRIMEVAL_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), PRIMEVAL_DOCK.x, PRIMEVAL_DOCK.y, PRIMEVAL_DOCK.z);
 	}
 	
 	@Override
@@ -110,16 +107,16 @@ public class BoatRunePrimeval implements Runnable
 			{
 				case 0:
 					BoatManager.getInstance().dockShip(BoatManager.RUNE_HARBOR, false);
-					BoatManager.getInstance().broadcastPackets(RUNE_DOCK[0], PRIMEVAL_DOCK, LEAVING_RUNE, RUNE_SOUND);
+					BoatManager.getInstance().broadcastPackets(RUNE_DOCK[0], PRIMEVAL_DOCK, LEAVING_RUNE, Sound.ITEMSOUND_SHIP_ARRIVAL_DEPARTURE.withObject(_boat));
 					_boat.payForRide(8925, 1, 34513, -38009, -3640);
 					_boat.executePath(RUNE_TO_PRIMEVAL);
 					break;
 				case 1:
-					BoatManager.getInstance().broadcastPackets(PRIMEVAL_DOCK, RUNE_DOCK[0], ARRIVED_AT_PRIMEVAL, ARRIVED_AT_PRIMEVAL_2, PRIMEVAL_SOUND);
+					BoatManager.getInstance().broadcastPackets(PRIMEVAL_DOCK, RUNE_DOCK[0], ARRIVED_AT_PRIMEVAL, ARRIVED_AT_PRIMEVAL_2, Sound.ITEMSOUND_SHIP_ARRIVAL_DEPARTURE.withObject(_boat));
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 180000);
 					break;
 				case 2:
-					BoatManager.getInstance().broadcastPackets(PRIMEVAL_DOCK, RUNE_DOCK[0], LEAVING_PRIMEVAL, PRIMEVAL_SOUND);
+					BoatManager.getInstance().broadcastPackets(PRIMEVAL_DOCK, RUNE_DOCK[0], LEAVING_PRIMEVAL, Sound.ITEMSOUND_SHIP_ARRIVAL_DEPARTURE.withObject(_boat));
 					_boat.payForRide(8924, 1, 10447, -24982, -3664);
 					_boat.executePath(PRIMEVAL_TO_RUNE);
 					break;
@@ -127,43 +124,46 @@ public class BoatRunePrimeval implements Runnable
 					if (BoatManager.getInstance().dockBusy(BoatManager.RUNE_HARBOR))
 					{
 						if (_shoutCount == 0)
+						{
 							BoatManager.getInstance().broadcastPacket(RUNE_DOCK[0], PRIMEVAL_DOCK, BUSY_RUNE);
+						}
 						
 						_shoutCount++;
 						if (_shoutCount > 35)
+						{
 							_shoutCount = 0;
+						}
 						
 						ThreadPoolManager.getInstance().scheduleGeneral(this, 5000);
 						return;
 					}
-					BoatManager.getInstance().dockShip(BoatManager.RUNE_HARBOR, true);
 					_boat.executePath(RUNE_DOCK);
 					break;
 				case 4:
-					BoatManager.getInstance().broadcastPackets(RUNE_DOCK[0], PRIMEVAL_DOCK, ARRIVED_AT_RUNE, ARRIVED_AT_RUNE_2, RUNE_SOUND);
+					BoatManager.getInstance().dockShip(BoatManager.RUNE_HARBOR, true);
+					BoatManager.getInstance().broadcastPackets(RUNE_DOCK[0], PRIMEVAL_DOCK, ARRIVED_AT_RUNE, ARRIVED_AT_RUNE_2, Sound.ITEMSOUND_SHIP_ARRIVAL_DEPARTURE.withObject(_boat));
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 180000);
 					break;
 			}
 			_shoutCount = 0;
 			_cycle++;
 			if (_cycle > 4)
+			{
 				_cycle = 0;
+			}
 		}
 		catch (Exception e)
 		{
-			_log.warning(BoatRunePrimeval.class.getName() + ": error");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			_log.log(Level.WARNING, e.getMessage());
 		}
 	}
 	
 	public static void main(String[] args)
 	{
-		final L2BoatInstance boat = BoatManager.getInstance().getNewBoat(5, 34381, -37680, -3610, 40785);
-		if (boat != null)
+		if (_boat != null)
 		{
-			boat.registerEngine(new BoatRunePrimeval(boat));
-			boat.runEngine(180000);
+			_boat.registerEngine(new BoatRunePrimeval());
+			_boat.runEngine(180000);
 			BoatManager.getInstance().dockShip(BoatManager.RUNE_HARBOR, true);
 		}
 	}

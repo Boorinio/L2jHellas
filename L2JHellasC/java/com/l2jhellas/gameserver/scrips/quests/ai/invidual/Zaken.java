@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -31,7 +32,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
@@ -160,7 +160,8 @@ public class Zaken extends AbstractNpcAI
     	}
         GrandBossManager.addBoss(npc);
 
-        npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+        npc.broadcastPacket(Music.BS01_A_7000.getPacket());
+        
         _ai0 = 0;
         _ai1 = npc.getX();
         _ai2 = npc.getY();
@@ -761,8 +762,8 @@ public class Zaken extends AbstractNpcAI
         int npcId = npc.getNpcId();
         if (npcId == ZAKEN)
         {
-            npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
-            GrandBossManager.setBossStatus(ZAKEN,DEAD);
+        	npc.broadcastPacket(Music.BS02_D_7000.getPacket());
+        	GrandBossManager.setBossStatus(ZAKEN,DEAD);
             //time is 36hour	+/- 17hour
             long respawnTime = Config.Interval_Of_Zaken_Spawn + Rnd.get(Config.Random_Of_Zaken_Spawn);
             startQuestTimer("zaken_unlock", respawnTime, null, null,false);

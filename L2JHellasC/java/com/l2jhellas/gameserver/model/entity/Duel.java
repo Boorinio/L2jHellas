@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -200,7 +201,6 @@ public class Duel
 			}
 			catch (Exception e)
 			{
-				_log.severe(ScheduleDuelTask.class.getName() + ": error.");
 				if (Config.DEVELOPER)
 					e.printStackTrace();
 			}
@@ -243,7 +243,6 @@ public class Duel
 			}
 			catch (Exception e)
 			{
-				_log.severe(ScheduleStartDuelTask.class.getName() + ": error.");
 				if (Config.DEVELOPER)
 					e.printStackTrace();
 			}
@@ -270,7 +269,6 @@ public class Duel
 			}
 			catch (Exception e)
 			{
-				_log.severe(ScheduleEndDuelTask.class.getName() + ": error.");
 				if (Config.DEVELOPER)
 					e.printStackTrace();
 			}
@@ -410,7 +408,7 @@ public class Duel
 		}
 		
 		// play sound
-		PlaySound ps = new PlaySound(1, "B04_S01", 0, 0, 0, 0, 0);
+		PlaySound ps = Music.B04_S01.getPacket();
 		broadcastToTeam1(ps);
 		broadcastToTeam2(ps);
 		

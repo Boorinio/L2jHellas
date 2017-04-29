@@ -123,11 +123,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.KnownListUpdateTaskManager;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
-import com.l2jhellas.gameserver.vehicles.BoatGiranTalking;
-import com.l2jhellas.gameserver.vehicles.BoatGludinRune;
-import com.l2jhellas.gameserver.vehicles.BoatInnadrilTour;
-import com.l2jhellas.gameserver.vehicles.BoatRunePrimeval;
-import com.l2jhellas.gameserver.vehicles.BoatTalkingGludin;
 import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
 import com.l2jhellas.shield.antibot.AntiAfk;
@@ -287,17 +282,12 @@ public class GameServer
 			ItemsAutoDestroy.getInstance();
 		}
 		DoorData.getInstance();
-		
+
 		if (Config.ALLOW_BOAT)
 		{
 			BoatManager.getInstance();
-			BoatGiranTalking.load();
-			BoatGludinRune.load();
-			BoatInnadrilTour.load();
-			BoatRunePrimeval.load();
-			BoatTalkingGludin.load();
 		}
-
+		
 		Util.printSection("Tasks");
 		TaskManager.getInstance();
 

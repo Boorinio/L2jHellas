@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Format: (ch) d[d]
@@ -24,9 +24,9 @@ import java.util.List;
 public class ExCursedWeaponList extends L2GameServerPacket
 {
 	private static final String _S__FE_45_EXCURSEDWEAPONLIST = "[S] FE:45 ExCursedWeaponList";
-	private final List<Integer> _cursedWeaponIds;
+	private final Set<Integer> _cursedWeaponIds;
 
-	public ExCursedWeaponList(List<Integer> cursedWeaponIds)
+	public ExCursedWeaponList(Set<Integer> cursedWeaponIds)
 	{
 		_cursedWeaponIds = cursedWeaponIds;
 	}
@@ -36,12 +36,11 @@ public class ExCursedWeaponList extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x45);
-
+		
 		writeD(_cursedWeaponIds.size());
-		for (Integer i : _cursedWeaponIds)
-		{
-			writeD(i.intValue());
-		}
+		
+		for (int id : _cursedWeaponIds)
+			writeD(id);
 	}
 
 	@Override

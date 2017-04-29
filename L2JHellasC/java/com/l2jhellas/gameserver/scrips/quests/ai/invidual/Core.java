@@ -18,12 +18,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
@@ -88,7 +88,7 @@ public class Core extends AbstractNpcAI
 	public void spawnBoss(L2GrandBossInstance npc)
 	{
 		GrandBossManager.addBoss(npc);
-		npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		npc.broadcastPacket(Music.BS01_A_10000.getPacket());
 		
 		// Spawn minions
 		L2Attackable mob;
@@ -166,7 +166,7 @@ public class Core extends AbstractNpcAI
 	{
 		if (npc.getNpcId() == CORE)
 		{
-			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+			npc.broadcastPacket(Music.BS02_D_10000.getPacket());
 			npc.broadcastNpcSay("A fatal error has occurred.");
 			npc.broadcastNpcSay("System is being shut down...");
 			npc.broadcastNpcSay("......");

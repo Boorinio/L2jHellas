@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.handlers.itemhandlers;
 
+import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -91,8 +92,9 @@ public class PaganKeys implements IItemHandler
 						// SystemMessage(SystemMessage.FAILED_TO_UNLOCK_DOOR));
 						activeChar.sendMessage("You failed to open Anterooms Door.");
 						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13),900);
-						PlaySound playSound = new PlaySound("interfacesound.system_close_01");
-						activeChar.sendPacket(playSound);
+						
+						PlaySound _snd = Sound.INTERFACESOUND_CHARSTAT_CLOSE.getPacket();
+						activeChar.sendPacket(_snd);
 					}
 				}
 				else
@@ -114,8 +116,8 @@ public class PaganKeys implements IItemHandler
 					{
 						activeChar.sendMessage("You failed to open Altar Entrance.");
 						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
-						PlaySound playSound = new PlaySound("interfacesound.system_close_01");
-						activeChar.sendPacket(playSound);
+						PlaySound _snd = Sound.INTERFACESOUND_CHARSTAT_CLOSE.getPacket();
+						activeChar.sendPacket(_snd);
 					}
 				}
 				else
@@ -137,8 +139,8 @@ public class PaganKeys implements IItemHandler
 					{
 						activeChar.sendMessage("You failed to open Door of Darkness.");
 						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
-						PlaySound playSound = new PlaySound("interfacesound.system_close_01");
-						activeChar.sendPacket(playSound);
+						PlaySound _snd = Sound.INTERFACESOUND_CHARSTAT_CLOSE.getPacket();
+						activeChar.sendPacket(_snd);
 					}
 				}
 				else

@@ -44,10 +44,15 @@ public final class RequestJoinSiege extends L2GameClientPacket
 		L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
+		
 		if (!activeChar.isClanLeader())
+		{
+			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
+		}
 
-		Castle castle = CastleManager.getInstance().getCastleById(_castleId);
+		final Castle castle = CastleManager.getInstance().getCastleById(_castleId);
+		
 		if (castle == null)
 			return;
 

@@ -183,4 +183,14 @@ public abstract class AbstractNpcAI extends Quest
 	{
 		attack(npc, playable, 0);
 	}
+	
+	public static int getRandom(int max)
+	{
+		return Rnd.get(max);
+	}
+	
+	public static int getRandom(int min, int max)
+	{
+		return Rnd.get(min, max);
+	}
 }

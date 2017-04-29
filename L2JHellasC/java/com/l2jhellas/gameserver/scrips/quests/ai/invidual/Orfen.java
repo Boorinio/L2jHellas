@@ -16,6 +16,7 @@ package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -27,7 +28,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
@@ -250,7 +250,7 @@ public class Orfen extends AbstractNpcAI
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		npc.broadcastPacket(Music.BS02_D_7000.getPacket());
 		GrandBossManager.setBossStatus(ORFEN, DEAD);
 		
 		long respawnTime = (long) Config.Interval_Of_Orfen_Spawn + Rnd.get(-Config.Random_Of_Orfen_Spawn, Config.Random_Of_Orfen_Spawn);
@@ -293,7 +293,7 @@ public class Orfen extends AbstractNpcAI
 	private void spawnBoss(L2GrandBossInstance npc)
 	{
 		GrandBossManager.addBoss(npc);
-		npc.broadcastPacket(new PlaySound(1, "BS01_A", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		npc.broadcastPacket(Music.BS01_A_7000.getPacket());
 		startQuestTimer("check_orfen_pos", 60000, npc, null, true);
 		
 		// start monitoring Orfen's inactivity

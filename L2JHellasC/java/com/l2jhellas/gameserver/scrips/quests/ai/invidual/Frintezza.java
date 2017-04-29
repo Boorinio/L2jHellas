@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CommandChannel;
@@ -1003,7 +1004,10 @@ public class Frintezza extends AbstractNpcAI
 			if (npc.isDead())
 			{
 				_OnMorph = 1;
-				_Zone.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+				
+				PlaySound ps = Music.BS01_D_10000.getPacket();
+				
+				_Zone.broadcastPacket(ps);
 
 				startQuestTimer("attack_stop", 0, frintezza, null,false);
 				startQuestTimer("stop_pc", 0, npc, null,false);

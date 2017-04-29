@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
@@ -513,8 +514,11 @@ public class CTF
 						_player.broadcastUserInfo();
 						removeFlagFromPlayer(_player);
 						_teamPointsCount.set(indexOwn, teamPointsCount(team) + 1);
-						_player.broadcastPacket(new PlaySound(0, "ItemSound.quest_finish", 1, _player.getObjectId(), _player.getX(), _player.getY(), _player.getZ()));
+						
+						PlaySound ps = Sound.ITEMSOUND_QUEST_FINISH.getPacket();	
+						_player.broadcastPacket(ps);
 						_player.broadcastUserInfo();
+						
 						AnnounceToPlayers(false, _eventName + "(CTF): " + _player.getName() + " scores for " + _player._teamNameCTF + ".");
 					}
 				}

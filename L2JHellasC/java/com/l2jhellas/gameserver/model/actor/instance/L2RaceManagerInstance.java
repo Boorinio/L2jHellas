@@ -20,6 +20,8 @@ import java.util.List;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.MonsterRace;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.audio.Music;
+import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -214,10 +216,13 @@ public class L2RaceManagerInstance extends L2Npc
 		if (_state == STARTING_RACE)
 		{
 			// state++;
-			PlaySound SRace = new PlaySound(1, "S_Race", 0, 0, 0, 0, 0);
-			broadcast(SRace);
-			PlaySound SRace2 = new PlaySound(0, "ItemSound2.race_start", 1, 121209259, 12125, 182487, -3559);
-			broadcast(SRace2);
+			
+			PlaySound SRACE1 = Music.S_RACE.getPacket();
+			broadcast(SRACE1);
+
+			PlaySound SRACE2 = Sound.ITEMSOUND2_RACE_START.getPacket();
+			broadcast(SRACE2);
+			
 			_packet = new MonRaceInfo(_codes[1][0], _codes[1][1], race.getMonsters(), race.getSpeeds());
 			sendMonsterInfo();
 			

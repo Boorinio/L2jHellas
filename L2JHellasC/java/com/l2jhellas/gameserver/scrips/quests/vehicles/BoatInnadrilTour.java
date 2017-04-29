@@ -1,30 +1,34 @@
 /*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
+ * Copyright (C) 2004-2016 L2J DataPack
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This file is part of L2J DataPack.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * L2J DataPack is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * L2J DataPack is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.l2jhellas.gameserver.scrips.quests.vehicles;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 
 /**
  * @author DS
@@ -32,7 +36,8 @@ import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 public class BoatInnadrilTour implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatInnadrilTour.class.getName());
-	
+	private static final L2BoatInstance _boat = BoatManager.getInstance().getNewBoat(4, 111264, 226240, -3610, 32768);
+
 	// Time: 1867s
 	private static final VehiclePathPoint[] TOUR =
 	{
@@ -71,8 +76,7 @@ public class BoatInnadrilTour implements Runnable
 	};
 	
 	private static final VehiclePathPoint DOCK = TOUR[TOUR.length - 1];
-	
-	private final L2BoatInstance _boat;
+
 	private int _cycle = 0;
 	
 	private final CreatureSay ARRIVED_AT_INNADRIL;
@@ -87,12 +91,8 @@ public class BoatInnadrilTour implements Runnable
 	private final CreatureSay ARRIVAL5;
 	private final CreatureSay ARRIVAL1;
 	
-	private final PlaySound INNADRIL_SOUND;
-	
-	public BoatInnadrilTour(L2BoatInstance boat)
+	public BoatInnadrilTour()
 	{
-		_boat = boat;
-		
 		ARRIVED_AT_INNADRIL = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_ANCHOR_10_MINUTES);
 		LEAVE_INNADRIL5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_LEAVE_IN_5_MINUTES);
 		LEAVE_INNADRIL1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_LEAVE_IN_1_MINUTE);
@@ -104,8 +104,6 @@ public class BoatInnadrilTour implements Runnable
 		ARRIVAL10 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_ARRIVE_10_MINUTES);
 		ARRIVAL5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_ARRIVE_5_MINUTES);
 		ARRIVAL1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_ARRIVE_1_MINUTE);
-		
-		INNADRIL_SOUND = new PlaySound(0, "itemsound.ship_arrival_departure", 1, _boat.getObjectId(), DOCK.x, DOCK.y, DOCK.z);
 	}
 	
 	@Override
@@ -128,7 +126,7 @@ public class BoatInnadrilTour implements Runnable
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 20000);
 					break;
 				case 3:
-					BoatManager.getInstance().broadcastPackets(DOCK, DOCK, LEAVING_INNADRIL, INNADRIL_SOUND);
+					BoatManager.getInstance().broadcastPackets(DOCK, DOCK, LEAVING_INNADRIL, Sound.ITEMSOUND_SHIP_ARRIVAL_DEPARTURE.withObject(_boat));
 					_boat.payForRide(0, 1, 107092, 219098, -3952);
 					_boat.executePath(TOUR);
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 650000);
@@ -153,29 +151,28 @@ public class BoatInnadrilTour implements Runnable
 					BoatManager.getInstance().broadcastPacket(DOCK, DOCK, ARRIVAL1);
 					break;
 				case 9:
-					BoatManager.getInstance().broadcastPackets(DOCK, DOCK, ARRIVED_AT_INNADRIL, INNADRIL_SOUND);
+					BoatManager.getInstance().broadcastPackets(DOCK, DOCK, ARRIVED_AT_INNADRIL, Sound.ITEMSOUND_SHIP_ARRIVAL_DEPARTURE.withObject(_boat));
 					ThreadPoolManager.getInstance().scheduleGeneral(this, 300000);
 					break;
 			}
 			_cycle++;
 			if (_cycle > 9)
+			{
 				_cycle = 0;
+			}
 		}
 		catch (Exception e)
 		{
-			_log.warning(BoatInnadrilTour.class.getName() + ": error");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			_log.log(Level.WARNING, e.getMessage());
 		}
 	}
 	
 	public static void main(String[] args)
 	{
-		final L2BoatInstance boat = BoatManager.getInstance().getNewBoat(4, 111264, 226240, -3610, 32768);
-		if (boat != null)
+		if (_boat != null)
 		{
-			boat.registerEngine(new BoatInnadrilTour(boat));
-			boat.runEngine(180000);
+			_boat.registerEngine(new BoatInnadrilTour());
+			_boat.runEngine(180000);
 		}
 	}
 }

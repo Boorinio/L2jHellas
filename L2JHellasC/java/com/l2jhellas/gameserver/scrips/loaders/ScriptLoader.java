@@ -21,6 +21,7 @@ package com.l2jhellas.gameserver.scrips.loaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.scrips.quests.*;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.EchoCrystals;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.HeroCirclet;
@@ -96,6 +97,11 @@ import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.Alliance;
 import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.Clan;
 import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.FirstClassChange;
 import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.SecondClassChange;
+import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatGiranTalking;
+import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatGludinRune;
+import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatInnadrilTour;
+import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatRunePrimeval;
+import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatTalkingGludin;
 
 /**
  * @author AbsolutePower
@@ -488,9 +494,14 @@ public class ScriptLoader
 		Sailren.class,
 		Valakas.class,
 		VanHalter.class,
-		Zaken.class
+		Zaken.class,
 
-
+		BoatManager.class,
+		BoatGiranTalking.class,
+		BoatGludinRune.class,
+		BoatInnadrilTour.class,
+		BoatRunePrimeval.class,
+		BoatTalkingGludin.class
 
 	};
 	

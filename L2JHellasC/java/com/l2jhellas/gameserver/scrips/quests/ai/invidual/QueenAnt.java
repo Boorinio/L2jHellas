@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -100,7 +99,6 @@ public class QueenAnt extends AbstractNpcAI
 			_Zone.movePlayersTo(-23808, 182368, -5600);
 		GrandBossManager.addBoss(npc);
 		startQuestTimer("action", 10000, npc, null, true);
-		npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 		// Spawn minions
 		addSpawn(LARVA, -21600, 179482, -5846, Rnd.get(360), false, 0,false).setIsRaidMinion(true);
 		addSpawn(NURSE, -22000, 179482, -5846, 0, false, 0,false).setIsRaidMinion(true);
@@ -233,7 +231,6 @@ public class QueenAnt extends AbstractNpcAI
 		int npcId = npc.getNpcId();
 		if (npcId == QUEEN)
 		{
-			npc.broadcastPacket(new PlaySound(1, "BS02_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
 			GrandBossManager.setBossStatus(QUEEN, DEAD);
 			// time is 36hour +/- 17hour
 			long respawnTime = Config.Interval_Of_QueenAnt_Spawn + Rnd.get(Config.Random_Of_QueenAnt_Spawn);

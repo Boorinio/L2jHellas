@@ -859,7 +859,8 @@ public final class QuestState
 	 */
 	public void playSound(String sound)
 	{
-		_player.sendPacket(new PlaySound(sound));
+		PlaySound _snd = PlaySound.createSound(sound);
+		_player.sendPacket(_snd);
 	}
 	
 	public void showQuestionMark(int number)
@@ -869,7 +870,8 @@ public final class QuestState
 	
 	public void playTutorialVoice(String voice)
 	{
-		_player.sendPacket(new PlaySound(2, voice, 0, 0, _player.getX(), _player.getY(), _player.getZ()));
+		PlaySound _snd = PlaySound.createVoice(voice);
+		_player.sendPacket(_snd);
 	}
 	
 	public void showTutorialHTML(String html)

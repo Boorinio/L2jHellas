@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -24,7 +25,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.Earthquake;
-import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.StatsSet;
@@ -116,7 +116,7 @@ public class Antharas extends AbstractNpcAI
 				npc.teleToLocation(185452, 114835, -8221);
 				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(181911, 114835, -7678, 0));
 				this.startQuestTimer("antharas_has_arrived", 2000, npc, null, true);
-				npc.broadcastPacket(new PlaySound(1, "BS02_A", 1, npc.getObjectId(), 185452, 114835, -8221));
+				npc.broadcastPacket(Music.BS02_A_10000.getPacket());
 				GrandBossManager.setBossStatus(ANTHARAS, FIGHTING);
 			}
 			else if (event.equalsIgnoreCase("camera_1"))
@@ -222,8 +222,8 @@ public class Antharas extends AbstractNpcAI
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
 		if (npc.getNpcId() == ANTHARAS)
-		{
-			npc.broadcastPacket(new PlaySound(1, "BS01_D", 1, npc.getObjectId(), npc.getX(), npc.getY(), npc.getZ()));
+		{		
+			npc.broadcastPacket(Music.BS01_D_10000.getPacket());
 			this.startQuestTimer("spawn_cubes", 10000, npc, null,false);
 			GrandBossManager.setBossStatus(ANTHARAS, DEAD);
 			long respawnTime = (Config.Interval_Of_Antharas_Spawn + Rnd.get(Config.Random_Of_Antharas_Spawn)* 3600000);

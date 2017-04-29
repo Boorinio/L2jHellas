@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Manor;
@@ -98,7 +99,9 @@ public class Sow implements ISkillHandler
 			SystemMessage sm = null;
 			if (calcSuccess())
 			{
-				_activeChar.sendPacket(new PlaySound("Itemsound.quest_itemget"));
+				PlaySound ps = Sound.ITEMSOUND_QUEST_ITEMGET.getPacket();
+				_activeChar.sendPacket(ps);
+
 				_target.setSeeded(_activeChar);
 				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SEED_WAS_SUCCESSFULLY_SOWN);
 			}

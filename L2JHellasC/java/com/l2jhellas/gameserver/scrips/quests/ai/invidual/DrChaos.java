@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 import java.util.Map;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -104,7 +105,9 @@ public class DrChaos extends Quest
 	          L2Npc golem = addSpawn(CHAOS_GOLEM,94640,-112496,-3336,0,false,0,false);
 	          _IsGolemSpawned = true;
 	          startQuestTimer("6",1000,golem,player,false);
-	          player.sendPacket(new PlaySound(1,"Rm03_A",0,0,0,0,0));
+	          
+	          PlaySound _snd = Music.RM03_A.getPacket();
+	          player.sendPacket(_snd);
 	       }
 	    }
 	    else if (event.equalsIgnoreCase("6"))

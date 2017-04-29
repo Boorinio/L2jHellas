@@ -431,9 +431,9 @@ public class L2Party
 				else
 				{
 					// Swap party members
-					L2PcInstance temp;
+					L2PcInstance temp = getLeader();
 					int p1 = getPartyMembers().indexOf(player);
-					temp = getLeader();
+					
 					getPartyMembers().set(0, getPartyMembers().get(p1));
 					getPartyMembers().set(p1, temp);
 					
@@ -444,6 +444,12 @@ public class L2Party
 					{
 						_commandChannel.setChannelLeader(getLeader());
 						_commandChannel.broadcastToChannelMembers(SystemMessage.getSystemMessage(SystemMessageId.COMMAND_CHANNEL_LEADER_NOW_S1).addPcName(_commandChannel.getChannelLeader()));
+					}
+					
+					if (player.isInPartyMatchRoom())
+					{
+						PartyMatchRoom room = PartyMatchRoomList.getInstance().getPlayerRoom(player);
+						room.changeLeader(player);
 					}
 				}
 			}

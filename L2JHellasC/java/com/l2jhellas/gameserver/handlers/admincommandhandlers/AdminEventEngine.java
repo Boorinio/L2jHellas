@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -347,10 +348,10 @@ public class AdminEventEngine implements IAdminCommandHandler
 
 			muestraNpcConInfoAPlayers(activeChar, L2Event.id);
 
-			PlaySound _snd = new PlaySound(1, "B03_F", 0, 0, 0, 0, 0);
+			PlaySound _snd = Music.B03_F.getPacket();
 			activeChar.sendPacket(_snd);
 			activeChar.broadcastPacket(_snd);
-
+			
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 
 			StringBuilder replyMSG = new StringBuilder("<html><body>");
