@@ -20,9 +20,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameServer;
@@ -38,8 +35,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class RegionBBSManager extends BaseBBSManager
 {
-	private static Logger _logChat = Logger.getLogger("chat");
-
 	private RegionBBSManager()
 	{
 	}
@@ -210,16 +205,6 @@ public class RegionBBSManager extends BaseBBSManager
 					return;
 				}
 
-				if (Config.LOG_CHAT)
-				{
-					LogRecord record = new LogRecord(Level.INFO, ar3);
-					record.setLoggerName("chat");
-					record.setParameters(new Object[]
-					{
-					"TELL", "[" + activeChar.getName() + " to " + receiver.getName() + "]"
-					});
-					_logChat.log(record);
-				}
 				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), Say2.TELL, activeChar.getName(), ar3);
 				if (receiver != null && !BlockList.isBlocked(receiver, activeChar))
 				{

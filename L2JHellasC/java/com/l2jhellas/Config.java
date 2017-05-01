@@ -814,8 +814,6 @@ public final class Config
 	public static boolean GM_EDIT;
 	public static boolean ONLY_GM_ITEMS_FREE;
 	public static boolean RAID_DISABLE_CURSE;
-	public static boolean LOG_CHAT;
-	public static boolean LOG_ITEMS;
 	public static boolean GMAUDIT;
 	public static String COMMUNITY_TYPE;
 	public static String BBS_DEFAULT;
@@ -2574,8 +2572,6 @@ public final class Config
 			GM_EDIT = Boolean.valueOf(optionsSettings.getProperty("GMEdit", "False"));
 			ONLY_GM_ITEMS_FREE = Boolean.valueOf(optionsSettings.getProperty("OnlyGMItemsFree", "True"));
 			RAID_DISABLE_CURSE = Boolean.parseBoolean(optionsSettings.getProperty("DisableRaidCurse", "False"));
-			LOG_CHAT = Boolean.valueOf(optionsSettings.getProperty("LogChat", "False"));
-			LOG_ITEMS = Boolean.valueOf(optionsSettings.getProperty("LogItems", "False"));
 			GMAUDIT = Boolean.valueOf(optionsSettings.getProperty("GMAudit", "False"));
 			COMMUNITY_TYPE = optionsSettings.getProperty("CommunityType", "old").toLowerCase();
 			BBS_DEFAULT = optionsSettings.getProperty("BBSDefault", "_bbshome");

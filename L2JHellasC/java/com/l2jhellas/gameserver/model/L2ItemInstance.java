@@ -18,8 +18,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -47,7 +45,6 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public final class L2ItemInstance extends L2Object
 {
 	private static final Logger _log = Logger.getLogger(L2ItemInstance.class.getName());
-	private static final Logger _logItems = Logger.getLogger("item");
 
 	/** Enumeration of locations for item */
 	public static enum ItemLocation
@@ -203,17 +200,6 @@ public final class L2ItemInstance extends L2Object
 	public void setOwnerId(String process, int owner_id, L2PcInstance creator, L2Object reference)
 	{
 		setOwnerId(owner_id);
-
-		if (Config.LOG_ITEMS)
-		{
-			LogRecord record = new LogRecord(Level.INFO, "CHANGE:" + process);
-			record.setLoggerName("item");
-			record.setParameters(new Object[]
-			{
-			this, creator, reference
-			});
-			_logItems.log(record);
-		}
 	}
 
 	/**
@@ -311,17 +297,6 @@ public final class L2ItemInstance extends L2Object
 		if (_count < 0)
 			_count = 0;
 		_storedInDb = false;
-
-		if (Config.LOG_ITEMS)
-		{
-			LogRecord record = new LogRecord(Level.INFO, "CHANGE:" + process);
-			record.setLoggerName("item");
-			record.setParameters(new Object[]
-			{
-			this, creator, reference
-			});
-			_logItems.log(record);
-		}
 	}
 
 	// No logging (function designed for shots only)

@@ -16,12 +16,10 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.FriendList;
@@ -70,23 +68,18 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 					statement.setString(6, requestor.getName());
 					statement.execute();
 					statement.close();
-					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
-					requestor.sendPacket(msg);
-
-					// Player added to your friendlist
-					msg = SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS);
-					msg.addString(player.getName());
-					requestor.sendPacket(msg);
-
-					// has joined as friend.
-					msg = SystemMessage.getSystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND);
-					msg.addString(requestor.getName());
-					player.sendPacket(msg);
-					msg = null;
-
-					// Send notifications for both player in order to show them online
-					player.sendPacket(new FriendList(player));
+									
+					requestor.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_INVITING_FRIEND);
+					
+					requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ADDED_TO_FRIENDS).addCharName(player));
+					requestor.getFriendList().add(player.getObjectId());
+					
+					player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_JOINED_AS_FRIEND).addCharName(requestor));
+					player.getFriendList().add(requestor.getObjectId());
+					
 					requestor.sendPacket(new FriendList(requestor));
+					player.sendPacket(new FriendList(player));
+					
 
 				}
 				catch (SQLException e)
@@ -105,41 +98,6 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 
 			player.setActiveRequester(null);
 			requestor.onTransactionResponse();
-		}
-	}
-
-	public void notifyFriends(L2PcInstance cha)
-	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement;
-			statement = con.prepareStatement("SELECT friend_name FROM character_friends WHERE char_id=?");
-			statement.setInt(1, cha.getObjectId());
-			ResultSet rset = statement.executeQuery();
-
-			L2PcInstance friend;
-			String friendName;
-
-			while (rset.next())
-			{
-				friendName = rset.getString("friend_name");
-
-				friend = L2World.getInstance().getPlayer(friendName);
-
-				if (friend != null) // friend logged in.
-				{
-					friend.sendPacket(new FriendList(friend));
-				}
-			}
-
-			rset.close();
-			statement.close();
-		}
-		catch (SQLException e)
-		{
-			_log.warning(RequestAnswerFriendInvite.class.getName() + ": could not restore friend data:");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
 		}
 	}
 

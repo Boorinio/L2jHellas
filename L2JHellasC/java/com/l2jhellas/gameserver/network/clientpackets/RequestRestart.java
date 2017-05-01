@@ -159,7 +159,6 @@ public final class RequestRestart extends L2GameClientPacket
 		client.setCharSelection(cl.getCharInfo());
 
 		RegionBBSManager.getInstance().changeCommunityBoard();
-		
 	}
 
 	@Override

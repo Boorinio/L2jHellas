@@ -14,11 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -32,7 +28,6 @@ import com.l2jhellas.gameserver.network.serverpackets.FriendRecvMsg;
  */
 public final class RequestSendFriendMsg extends L2GameClientPacket
 {
-	private static Logger _logChat = Logger.getLogger("chat");
 	private static final String _C__CC_REQUESTSENDMSG = "[C] CC RequestSendMsg";
 
 	private String _message;
@@ -48,26 +43,21 @@ public final class RequestSendFriendMsg extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		if ((_message == null) || _message.isEmpty() || (_message.length() > 300))
+			return;
+		
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
 
-		L2PcInstance targetPlayer = L2World.getInstance().getPlayer(_reciever);
-		if (targetPlayer == null)
+
+		final L2PcInstance targetPlayer = L2World.getInstance().getPlayer(_reciever);
+		
+		if ((targetPlayer == null) || !targetPlayer.getFriendList().contains(activeChar.getObjectId()))
 		{
 			activeChar.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			return;
-		}
-		if (Config.LOG_CHAT)
-		{
-			LogRecord record = new LogRecord(Level.INFO, _message);
-			record.setLoggerName("chat");
-			record.setParameters(new Object[]
-			{
-			"PRIV_MSG", "[" + activeChar.getName() + " to " + _reciever + "]"
-			});
-
-			_logChat.log(record);
 		}
 
 		FriendRecvMsg frm = new FriendRecvMsg(activeChar.getName(), _reciever, _message);

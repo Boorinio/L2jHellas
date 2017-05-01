@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -53,7 +52,6 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class ItemTable
 {
 	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
-	private static Logger _logItems = Logger.getLogger("item");
 
 	private static final Map<String, Integer> _materials = new HashMap<String, Integer>();
 	private static final Map<String, Integer> _crystalTypes = new HashMap<String, Integer>();
@@ -823,17 +821,6 @@ public class ItemTable
 			item.setCount(count);
 		}
 
-		if (Config.LOG_ITEMS)
-		{
-			LogRecord record = new LogRecord(Level.INFO, "CREATE:" + process);
-			record.setLoggerName("item");
-			record.setParameters(new Object[]
-			{
-			item, actor, reference
-			});
-			_logItems.log(record);
-		}
-
 		return item;
 	}
 
@@ -885,17 +872,6 @@ public class ItemTable
 
 			L2World.getInstance().removeObject(item);
 			IdFactory.getInstance().releaseId(item.getObjectId());
-
-			if (Config.LOG_ITEMS)
-			{
-				LogRecord record = new LogRecord(Level.INFO, "DELETE:" + process);
-				record.setLoggerName("item");
-				record.setParameters(new Object[]
-				{
-				item, actor, reference
-				});
-				_logItems.log(record);
-			}
 
 			// if it's a pet control item, delete the pet as well
 			if (PetData.isPetItem(item.getItemId()))

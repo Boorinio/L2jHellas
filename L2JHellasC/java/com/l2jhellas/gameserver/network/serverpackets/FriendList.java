@@ -14,16 +14,12 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
  * Support for "Chat with Friends" dialog.<BR>
@@ -42,70 +38,47 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
  */
 public class FriendList extends L2GameServerPacket
 {
-	private static Logger _log = Logger.getLogger(FriendList.class.getName());
 	private static final String _S__FA_FRIENDLIST = "[S] FA FriendList";
-
-	private final L2PcInstance _activeChar;
-
-	public FriendList(L2PcInstance character)
+	private final List<FriendInfo> _info;
+	
+	private static class FriendInfo
 	{
-		_activeChar = character;
+		int _objId;
+		String _name;
+		boolean _online;
+		
+		public FriendInfo(int objId, String name, boolean online)
+		{
+			_objId = objId;
+			_name = name;
+			_online = online;
+		}
 	}
-
+	
+	public FriendList(L2PcInstance player)
+	{
+		_info = new ArrayList<>(player.getFriendList().size());
+		
+		for (int objId : player.getFriendList())
+		{
+			final String name = CharNameTable.getInstance().getNameById(objId);
+			final L2PcInstance player1 = L2World.getInstance().getPlayer(objId);
+			
+			_info.add(new FriendInfo(objId, name, (player1 != null && player1.isOnline()==1)));
+		}
+	}
+	
 	@Override
 	protected final void writeImpl()
 	{
-		if (_activeChar == null)
-			return;
-
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		writeC(0xfa);
+		writeD(_info.size());
+		for (FriendInfo info : _info)
 		{
-			String sqlQuery = "SELECT friend_id, friend_name FROM character_friends WHERE char_id=" + _activeChar.getObjectId() + " ORDER BY friend_name ASC";
-
-			PreparedStatement statement = con.prepareStatement(sqlQuery);
-			ResultSet rset = statement.executeQuery(sqlQuery);
-
-			// Obtain the total number of friend entries for this player.
-			rset.last();
-
-			if (rset.getRow() > 0)
-			{
-				writeC(0xfa);
-				writeH(rset.getRow());
-
-				rset.beforeFirst();
-
-				while (rset.next())
-				{
-					int friendId = rset.getInt("friend_id");
-					String friendName = rset.getString("friend_name");
-
-					if (friendId == _activeChar.getObjectId())
-						continue;
-
-					L2PcInstance friend = L2World.getInstance().getPlayer(friendName);
-
-					writeH(0); // ??
-					writeD(friendId);
-					writeS(friendName);
-
-					if (friend == null)
-						writeD(0); // offline
-					else
-						writeD(1); // online
-
-					writeH(0); // ??
-				}
-			}
-
-			rset.close();
-			statement.close();
-		}
-		catch (SQLException e)
-		{
-			_log.warning(FriendList.class.getName() + ": Error found in " + _activeChar.getName() + "'s FriendList: ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			writeD(info._objId);
+			writeS(info._name);
+			writeD(info._online ? 0x01 : 0x00);
+			writeD(info._online ? info._objId : 0x00);
 		}
 	}
 

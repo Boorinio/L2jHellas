@@ -34,6 +34,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Extensions.IpCatcher;
@@ -913,7 +914,7 @@ public final class L2PcInstance extends L2Playable
 	/** new race ticket **/
 	private final int _race[] = new int[2];
 	
-	private final BlockList _blockList = new BlockList();
+	private final BlockList _blockList = new BlockList(this);
 	
 	private int _team = 0;
 	
@@ -1097,6 +1098,9 @@ public final class L2PcInstance extends L2Playable
 			return (getSkill() != null) ? getSkill().getId() : -1;
 		}
 	}
+	
+	
+	private final List<Integer> _friendList = new ArrayList<>();
 	
 	/**
 	 * Create a new L2PcInstance and add it in the characters table of the database.<BR>
@@ -7353,6 +7357,7 @@ public final class L2PcInstance extends L2Playable
 				}
 			// Update the overloaded status of the L2PcInstance
 			player.refreshOverloaded();
+			player.restoreFriendList();
 			
 			rset.close();
 			statement.close();
@@ -11765,6 +11770,10 @@ public final class L2PcInstance extends L2Playable
 		// Remove L2Object object from _allObjects of L2World
 		L2World.getInstance().removeObject(this);
 		L2World.getInstance().removeFromAllPlayers(this);	
+
+		notifyFriends(false);
+		getBlockList().playerLogout();
+		
 		}
 		catch (Exception e)
 		{
@@ -13883,7 +13892,7 @@ public final class L2PcInstance extends L2Playable
 		// add char to online characters
 		setOnlineStatus(true);
 
-		notifyFriends();
+		notifyFriends(true);
 
 		if (DimensionalRiftManager.getInstance().checkIfInRiftZone(getX(), getY(), getZ(), false))
 			DimensionalRiftManager.getInstance().teleportToWaitingRoom(this);
@@ -14439,40 +14448,18 @@ public final class L2PcInstance extends L2Playable
 	/**
 	 * @param activeChar
 	 */
-	private void notifyFriends()
+	private void notifyFriends(boolean login)
 	{
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		for (int id : _friendList)
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT friend_name FROM character_friends WHERE char_id=?");
-			statement.setInt(1, getObjectId());
-			ResultSet rset = statement.executeQuery();
-
-			L2PcInstance friend;
-			String friendName;
-
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FRIEND_S1_HAS_LOGGED_IN);
-			sm.addString(getName());
-
-			while (rset.next())
+			L2PcInstance friend = L2World.getInstance().getPlayer(id);
+			if (friend != null)
 			{
-				friendName = rset.getString("friend_name");
-
-				friend = L2World.getInstance().getPlayer(friendName);
-
-				if (friend != null) // friend logged in.
-				{
-					friend.sendPacket(new FriendList(friend));
-					friend.sendPacket(sm);
-				}
+				friend.sendPacket(new FriendList(friend));
+				
+				if (login)
+					friend.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FRIEND_S1_HAS_LOGGED_IN).addCharName(this));
 			}
-			sm = null;
-
-			rset.close();
-			statement.close();
-		}
-		catch (Exception e)
-		{
-			_log.warning(L2PcInstance.class.getName() + ": Could not restore friend data");
 		}
 	}
 
@@ -15184,6 +15171,40 @@ public final class L2PcInstance extends L2Playable
 		
 		return true;
 		
+	}
+	
+	public List<Integer> getFriendList()
+	{
+		return _friendList;
+	}
+	
+	private void restoreFriendList()
+	{
+		_friendList.clear();
+		
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement statement = con.prepareStatement("SELECT friend_id FROM character_friends WHERE char_id = ?");
+			statement.setInt(1, getObjectId());
+			ResultSet rset = statement.executeQuery();
+			
+			int friendId;
+			while (rset.next())
+			{
+				friendId = rset.getInt("friend_id");
+				if (friendId == getObjectId())
+					continue;
+				
+				_friendList.add(friendId);
+			}
+			
+			rset.close();
+			statement.close();
+		}
+		catch (Exception e)
+		{
+			_log.log(Level.WARNING, "Error found in " + getName() + "'s friendlist: " + e.getMessage(), e);
+		}
 	}
 	/*public void CalculateFalling(int height)
 	{

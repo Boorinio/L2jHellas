@@ -14,22 +14,15 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Logger;
-
+import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AskJoinFriend;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.util.Util;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class RequestFriendInvite extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestFriendInvite.class.getName());
 	private static final String _C__5E_REQUESTFRIENDINVITE = "[C] 5E RequestFriendInvite";
 
 	private String _name;
@@ -43,71 +36,58 @@ public final class RequestFriendInvite extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		SystemMessage sm;
-		L2PcInstance activeChar = getClient().getActiveChar();
-
+		if(_name == null || _name.isEmpty())
+			return;
+		
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance friend = L2World.getInstance().getPlayer(_name);
+		
 		if (activeChar == null)
 			return;
-
-		L2PcInstance friend = L2World.getInstance().getPlayer(_name);
-		_name = Util.capitalizeFirst(_name); // FIXME: is it right to capitalize a nickname?
-
-		if (friend == null)
+		
+		// can't use friend invite for locating invisible characters
+		if (friend == null || friend.isOnline()==0 || friend.getAppearance().getInvisible())
 		{
 			// Target is not found in the game.
-			sm = SystemMessage.getSystemMessage(SystemMessageId.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
-			activeChar.sendPacket(sm);
-			sm = null;
+			activeChar.sendPacket(SystemMessageId.THE_USER_YOU_REQUESTED_IS_NOT_IN_GAME);
 			return;
 		}
-		else if (friend == activeChar)
+		
+		if (friend == activeChar)
 		{
 			// You cannot add yourself to your own friend list.
-			sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST);
-			activeChar.sendPacket(sm);
-			sm = null;
+			activeChar.sendPacket(SystemMessageId.YOU_CANNOT_ADD_YOURSELF_TO_OWN_FRIEND_LIST);
 			return;
 		}
-
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		
+		if (BlockList.isBlocked(activeChar, friend))
 		{
-			PreparedStatement statement = con.prepareStatement("SELECT char_id FROM character_friends WHERE char_id=? AND friend_id=?");
-			statement.setInt(1, activeChar.getObjectId());
-			statement.setInt(2, friend.getObjectId());
-			ResultSet rset = statement.executeQuery();
-
-			if (rset.next())
-			{
-				// Player already is in your friendlist
-				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_IN_FRIENDS_LIST);
-				sm.addString(_name);
-			}
-			else
-			{
-				if (!friend.isProcessingRequest())
-				{
-					// requets to become friend
-					activeChar.onTransactionRequest(friend);
-					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_REQUESTED_TO_BECOME_FRIENDS);
-					sm.addString(_name);
-					AskJoinFriend ajf = new AskJoinFriend(activeChar.getName());
-					friend.sendPacket(ajf);
-				}
-				else
-				{
-					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER);
-				}
-			}
-
-			friend.sendPacket(sm);
-			sm = null;
-			rset.close();
-			statement.close();
+			activeChar.sendMessage("You have blocked " + _name + ".");
+			return;
 		}
-		catch (Exception e)
+		
+		if (BlockList.isBlocked(friend, activeChar))
 		{
-			_log.warning(RequestFriendInvite.class.getSimpleName() + ": could not add friend objectid: ");
+			activeChar.sendMessage("You are in " + _name + "'s block list.");
+			return;
 		}
+		
+		if (activeChar.getFriendList().contains(friend.getObjectId()))
+		{
+			// Player already is in your friendlist
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_IN_FRIENDS_LIST).addString(_name));
+			return;
+		}
+		
+		if (!friend.isProcessingRequest())
+		{
+			// request to become friend
+			activeChar.onTransactionRequest(friend);
+			friend.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_REQUESTED_TO_BECOME_FRIENDS).addCharName(activeChar));
+			friend.sendPacket(new AskJoinFriend(activeChar.getName()));
+		}
+		else
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER).addString(_name));
 	}
 
 	@Override

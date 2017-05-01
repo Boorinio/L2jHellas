@@ -97,8 +97,6 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 		crypt = new GameCrypt();
 		_autoSaveInDB = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new AutoSaveTask(), 300000L, 900000L);
 	}
-	
-    private L2GameServerPacket _aditionalClosePacket;
  
 	public byte[] enableCrypt()
 	{
@@ -437,24 +435,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 
 	 public void close(L2GameServerPacket gsp)
 	 {
-	  
-	  if (getConnection() == null)
-	  {
-	   return; 
-	  }
-	  if (_aditionalClosePacket != null)
-	  {
-	   getConnection().close(new L2GameServerPacket[]
-	   {
-	    _aditionalClosePacket,
-	    gsp
-	   });
-	  }
-	  else
-	  {
-	   
 	   getConnection().close(gsp);
-	  }
 	 }
 	/**
 	 * @param charslot
@@ -672,8 +653,4 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>>
 	{
 		return _isAuthedGG;
 	}
-	 public void setAditionalClosePacket(L2GameServerPacket aditionalClosePacket)
-	 {
-	  _aditionalClosePacket = aditionalClosePacket;
-	 }
 }

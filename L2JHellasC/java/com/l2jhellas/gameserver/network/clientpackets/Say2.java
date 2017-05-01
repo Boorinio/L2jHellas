@@ -20,8 +20,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -40,7 +38,6 @@ public final class Say2 extends L2GameClientPacket
 {
 	private static final String _C__38_SAY2 = "[C] 38 Say2";
 	private static Logger _log = Logger.getLogger(Say2.class.getName());
-	private static Logger _logChat = Logger.getLogger("chat");
 
 	public final static int ALL = 0;
 	public final static int SHOUT = 1; // !
@@ -177,25 +174,6 @@ public final class Say2 extends L2GameClientPacket
 
 		if (_type == PETITION_PLAYER && activeChar.isGM())
 			_type = PETITION_GM;
-
-		if (Config.LOG_CHAT)
-		{
-			LogRecord record = new LogRecord(Level.INFO, _text);
-			record.setLoggerName("chat");
-
-			if (_type == TELL)
-				record.setParameters(new Object[]
-				{
-				CHAT_NAMES[_type], "[" + activeChar.getName() + " to " + _target + "]"
-				});
-			else
-				record.setParameters(new Object[]
-				{
-				CHAT_NAMES[_type], "[" + activeChar.getName() + "]"
-				});
-
-			_logChat.log(record);
-		}
 
 		L2Object saymode = activeChar.getSayMode();
 		if (saymode != null)

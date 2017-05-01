@@ -54,6 +54,7 @@ import com.l2jhellas.gameserver.network.loginserverpackets.KickPlayer;
 import com.l2jhellas.gameserver.network.loginserverpackets.LoginServerFail;
 import com.l2jhellas.gameserver.network.loginserverpackets.PlayerAuthResponse;
 import com.l2jhellas.gameserver.network.serverpackets.AuthLoginFail;
+import com.l2jhellas.gameserver.network.serverpackets.AuthLoginFail.FailReason;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Rnd;
@@ -310,7 +311,7 @@ public class LoginServerThread extends Thread
 								else
 								{
 									_log.warning("Session key is not correct. closing connection");
-									wcToRemove.gameClient.getConnection().sendPacket(new AuthLoginFail(1));
+									wcToRemove.gameClient.getConnection().sendPacket(new AuthLoginFail(FailReason.SYSTEM_ERROR_LOGIN_LATER));
 									wcToRemove.gameClient.closeNow();
 								}
 								_waitingClients.remove(wcToRemove);
@@ -449,11 +450,13 @@ public class LoginServerThread extends Thread
 
 	 public void doKickPlayer(String account)
 	 {
-	  if (_accountsInGameServer.get(account) != null)
-	  {
-	   _accountsInGameServer.get(account).setAditionalClosePacket(new SystemMessage(SystemMessageId.ANOTHER_LOGIN_WITH_ACCOUNT));
-	   _accountsInGameServer.get(account).closeNow();
-	  }
+		 
+			final L2GameClient client = _accountsInGameServer.get(account);
+			if (client != null)
+			{
+				client.sendPacket(new SystemMessage(SystemMessageId.ANOTHER_LOGIN_WITH_ACCOUNT));
+				client.closeNow();
+			}
 	 }
 	 
 	public static byte[] generateHex(int size)

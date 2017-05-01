@@ -16,12 +16,14 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.FriendList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -41,71 +43,45 @@ public final class RequestFriendDel extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		SystemMessage sm;
-		L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null)
+		if(_name == null || _name.isEmpty())
 			return;
-
+		
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance friend = L2World.getInstance().getPlayer(_name);
+		
+		if (activeChar == null  || friend == null)
+			return;
+		
+		final int friendid = CharNameTable.getInstance().getIdByName(_name);
+		
+		
+		if (friendid == -1 || !activeChar.getFriendList().contains(friendid))
+		{
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_NOT_ON_YOUR_FRIENDS_LIST).addString(_name));
+			return;
+		}
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			L2PcInstance friend = L2World.getInstance().getPlayer(_name);
-			PreparedStatement statement;
-			ResultSet rset;
-			if (friend != null)
-			{
-				statement = con.prepareStatement("SELECT friend_id FROM character_friends WHERE char_id=? AND friend_id=?");
-				statement.setInt(1, activeChar.getObjectId());
-				statement.setInt(2, friend.getObjectId());
-				rset = statement.executeQuery();
-				if (!rset.next())
-				{
-					statement.close();
-					// Player is not in your friendlist
-					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_NOT_ON_YOUR_FRIENDS_LIST);
-					sm.addString(_name);
-					activeChar.sendPacket(sm);
-					sm = null;
-					return;
-				}
-			}
-			else
-			{
-				// FIXME: Nightwolf check this selection
-				statement = con.prepareStatement("SELECT friend_id FROM character_friends, characters WHERE char_id=? AND friend_id=obj_id AND char_name=?");
-				statement.setInt(1, activeChar.getObjectId());
-				statement.setString(2, _name);
-				rset = statement.executeQuery();
-				if (!rset.next())
-				{
-					statement.close();
-					// Player is not in your friendlist
-					sm = SystemMessage.getSystemMessage(SystemMessageId.S1_NOT_ON_YOUR_FRIENDS_LIST);
-					sm.addString(_name);
-					activeChar.sendPacket(sm);
-					sm = null;
-					return;
-				}
-			}
-
-			int objectId = rset.getInt("friend_id");
-			rset.close();
-			statement.close();
-
-			statement = con.prepareStatement("DELETE FROM character_friends WHERE char_id=? AND friend_id=?");
+			PreparedStatement statement = con.prepareStatement("DELETE FROM character_friends WHERE (char_id = ? AND friend_id = ?) OR (char_id = ? AND friend_id = ?)");
 			statement.setInt(1, activeChar.getObjectId());
-			statement.setInt(2, objectId);
+			statement.setInt(2, friendid);
+			statement.setInt(3, friendid);
+			statement.setInt(4, activeChar.getObjectId());
 			statement.execute();
-			// Player deleted from your friendlist
-			sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_BEEN_DELETED_FROM_YOUR_FRIENDS_LIST);
-			sm.addString(_name);
-			activeChar.sendPacket(sm);
-			sm = null;
-
 			statement.close();
+
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_BEEN_DELETED_FROM_YOUR_FRIENDS_LIST).addString(_name));
+			
+			activeChar.getFriendList().remove(Integer.valueOf(friendid));
+			activeChar.sendPacket(new FriendList(activeChar));
+			
+			friend.getFriendList().remove(Integer.valueOf(activeChar.getObjectId()));
+			friend.sendPacket(new FriendList(friend)); 
 		}
 		catch (Exception e)
 		{
-			_log.warning(RequestFriendDel.class.getSimpleName() + ": could not del friend objectid: ");
+			_log.log(Level.WARNING, "could not delete friend objectid: ", e);
 		}
 	}
 
