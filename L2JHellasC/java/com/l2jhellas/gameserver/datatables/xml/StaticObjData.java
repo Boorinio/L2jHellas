@@ -30,7 +30,6 @@ public class StaticObjData
 	
 	public static void load()
 	{
-		int count = 0;
 		try
 		{
 			File f = new File("./data/xml/static_objects.xml");
@@ -49,8 +48,6 @@ public class StaticObjData
 					obj.setXYZ(Integer.valueOf(node.getNamedItem("x").getNodeValue()), Integer.valueOf(node.getNamedItem("y").getNodeValue()), Integer.valueOf(node.getNamedItem("z").getNodeValue()));
 					obj.setMap(node.getNamedItem("texture").getNodeValue(), Integer.valueOf(node.getNamedItem("map_x").getNodeValue()), Integer.valueOf(node.getNamedItem("map_y").getNodeValue()));
 					obj.spawnMe();
-					
-					count++;
 				}
 			}
 		}
@@ -60,6 +57,6 @@ public class StaticObjData
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-		_log.info(StaticObjData.class.getSimpleName() + ": Loaded " + count + " templates.");
+		_log.info(StaticObjData.class.getSimpleName() + ": Loaded!");
 	}
 }

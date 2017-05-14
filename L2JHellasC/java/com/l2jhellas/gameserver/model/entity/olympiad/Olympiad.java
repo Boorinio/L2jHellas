@@ -46,9 +46,10 @@ public class Olympiad
 {
 	protected static final Logger _log = Logger.getLogger(Olympiad.class.getName());
 	
-	private static Map<Integer, StatsSet> _nobles;
-	protected static List<StatsSet> _heroesToBe;
-	private static Map<Integer,Integer> _noblesRank;
+	private static final Map<Integer, StatsSet> _nobles = new HashMap<>();
+	private static final Map<Integer, Integer> _noblesRank = new HashMap<>();
+	
+	protected static final List<StatsSet> _heroesToBe = new ArrayList<>();
 	
 	public static final String OLYMPIAD_HTML_PATH = "data/html/olympiad/";
 	
@@ -168,8 +169,6 @@ public class Olympiad
 	
 	private void load()
 	{
-		_nobles = new HashMap<>();
-		
 		boolean loaded = false;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -757,9 +756,7 @@ public class Olympiad
 					continue;
 			}
 		}
-		
-		_heroesToBe = new ArrayList<>();
-		
+
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(OLYMPIAD_GET_HEROS);

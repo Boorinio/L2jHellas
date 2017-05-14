@@ -15,7 +15,8 @@
 package com.l2jhellas.util;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -32,18 +33,17 @@ public class MinionList
 	private static Logger _log = Logger.getLogger(MinionList.class.getName());
 	
 	protected final L2MonsterInstance _master;
-	private final List<L2MonsterInstance> _minionReferences;
+	private final Set<L2MonsterInstance> _minionReferences = ConcurrentHashMap.newKeySet();
 	
 	public MinionList(L2MonsterInstance master)
 	{
 		_master = master;
-		_minionReferences = new CopyOnWriteArrayList<>();
 	}
 	
 	/**
 	 * @return list of the spawned (alive) minions.
 	 */
-	public List<L2MonsterInstance> getSpawnedMinions()
+	public Set<L2MonsterInstance> getSpawnedMinions()
 	{
 		return _minionReferences;
 	}

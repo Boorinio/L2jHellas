@@ -59,7 +59,7 @@ public class CastleStatus
 						long someLong = result2.getLong("siegeDate");
 						int tax = result2.getInt("taxPercent");
 						Date anotherDate = new Date(someLong);
-						String DATE_FORMAT = "dd-MMM-yyyy HH:mm";
+						String DATE_FORMAT = "dd-MM-yyyy HH:mm";
 						SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
 						addCastleToList(name, owner, level, tax, sdf.format(anotherDate));

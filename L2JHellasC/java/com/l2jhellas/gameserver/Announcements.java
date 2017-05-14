@@ -28,13 +28,13 @@ import java.util.logging.Logger;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.Broadcast;
 
 public class Announcements
 {
@@ -178,35 +178,18 @@ public class Announcements
 	// Colored Announcements 8D
 	public void gameAnnounceToAll(String text)
 	{
-		CreatureSay cs = new CreatureSay(0, 18, "", "Announcements: " + text);
-
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
-		{
-			if (player != null)
-				if (player.isOnline() != 0)
-					player.sendPacket(cs);
-		}
-
-		cs = null;
+		announceToAll(text);
 	}
 
 	public void announceToAll(String text)
 	{
-		CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", text);
-
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
-		{
-			player.sendPacket(cs);
-		}
+		Broadcast.announceToOnlinePlayers(text);
 	}
 
 	public void announceToAll(SystemMessage sm)
 	{
 
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
-		{
-			player.sendPacket(sm);
-		}
+		Broadcast.toAllOnlinePlayers(sm);
 	}
 
 	// Method fo handling announcements from admin
@@ -216,7 +199,7 @@ public class Announcements
 		{
 			// Announce string to everyone on server
 			String text = command.substring(lengthToTrim);
-			Announcements.getInstance().announceToAll(text);
+			announceToAll(text);
 		}
 		// No body cares!
 		catch (StringIndexOutOfBoundsException e)

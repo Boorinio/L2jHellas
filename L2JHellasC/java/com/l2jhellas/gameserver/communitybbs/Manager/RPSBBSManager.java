@@ -19,9 +19,7 @@ import java.util.logging.Logger;
 
 import Extensions.RankSystem.RPSHtmlCommunityBoard;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
 /**
  * @author Masterio
@@ -33,8 +31,6 @@ public class RPSBBSManager extends BaseBBSManager
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
-		if (Config.RANK_PVP_SYSTEM_ENABLED && Config.TOP_LIST_ENABLED)
-		{
 			if (command.startsWith("_bbsrps:"))
 			{
 				int page = 0;
@@ -50,19 +46,6 @@ public class RPSBBSManager extends BaseBBSManager
 
 				separateAndSend(RPSHtmlCommunityBoard.getPage(activeChar, page), activeChar);
 			}
-		}
-		else if (Config.RANK_PVP_SYSTEM_ENABLED && !Config.TOP_LIST_ENABLED)
-		{
-			ShowBoard sb = null;
-
-			sb = new ShowBoard("<html><body><br><br><center>Community Board Top List is disabled in config file</center><br><br></body></html>", "101");
-
-			activeChar.sendPacket(sb);
-			activeChar.sendPacket(new ShowBoard(null, "102"));
-			activeChar.sendPacket(new ShowBoard(null, "103"));
-
-			sb = null;
-		}
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import com.l2jhellas.gameserver.datatables.xml.MultisellData;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
 public class CommunityBoard
 {
@@ -178,14 +178,7 @@ public class CommunityBoard
 			}
 			else if(command.startsWith("_bbsrps"))
 			{ 
-				RPSBBSManager.getInstance().parsecmd(command, activeChar);
-			}
-			else
-			{
-				ShowBoard sb = new ShowBoard("<html><body><br><br><center>the command: " + command + " is not implemented yet</center><br><br></body></html>", "101");
-				activeChar.sendPacket(sb);
-				activeChar.sendPacket(new ShowBoard(null, "102"));
-				activeChar.sendPacket(new ShowBoard(null, "103"));
+				   RPSBBSManager.getInstance().parsecmd(command, activeChar);
 			}
 		}
 		else if (Config.COMMUNITY_TYPE.equals("old"))
@@ -196,6 +189,8 @@ public class CommunityBoard
 		{
 			activeChar.sendPacket(SystemMessageId.CB_OFFLINE);
 		}
+		
+		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
 	/**
@@ -231,24 +226,10 @@ public class CommunityBoard
 			{
 				ClanBBSManager.getInstance().parsewrite(arg1, arg2, arg3, arg4, arg5, activeChar);
 			}
-			else
-			{
-				ShowBoard sb = new ShowBoard("<html><body><br><br><center>the command: " + url + " is not implemented yet.</center><br><br></body></html>", "101");
-				activeChar.sendPacket(sb);
-				activeChar.sendPacket(new ShowBoard(null, "102"));
-				activeChar.sendPacket(new ShowBoard(null, "103"));
-			}
 		}
 		else if (Config.COMMUNITY_TYPE.equals("old"))
 		{
 			RegionBBSManager.getInstance().parsewrite(arg1, arg2, arg3, arg4, arg5, activeChar);
-		}
-		else
-		{
-			ShowBoard sb = new ShowBoard("<html><body><br><br><center>The Community board is currently disabled.</center><br><br></body></html>", "101");
-			activeChar.sendPacket(sb);
-			activeChar.sendPacket(new ShowBoard(null, "102"));
-			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
 }

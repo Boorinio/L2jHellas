@@ -6332,7 +6332,7 @@ public abstract class L2Character extends L2Object
 		}
 		catch (Exception e)
 		{
-			_log.warning(L2Character.class.getSimpleName() + ": ");
+			_log.warning(L2Character.class.getSimpleName() + " callSkill() failed on skill id: "+ skill.getId() + e);
 		}
 	}
 	

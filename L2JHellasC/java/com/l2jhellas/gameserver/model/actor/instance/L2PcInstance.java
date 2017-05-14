@@ -217,6 +217,7 @@ import com.l2jhellas.gameserver.network.serverpackets.SkillCoolTime;
 import com.l2jhellas.gameserver.network.serverpackets.SkillList;
 import com.l2jhellas.gameserver.network.serverpackets.Snoop;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
+import com.l2jhellas.gameserver.network.serverpackets.StaticObject;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -2252,57 +2253,52 @@ public final class L2PcInstance extends L2Playable
 		return _curWeightPenalty;
 	}
 	
-	/**
-	 * Update the overloaded status of the L2PcInstance.
-	 */
 	public void refreshOverloaded()
 	{
 		int maxLoad = getMaxLoad();
 		if (maxLoad > 0)
 		{
-			int weightproc = getCurrentLoad() * 1000 / maxLoad;
+			long weightproc = getCurrentLoad() * 1000L / maxLoad;
 			int newWeightPenalty;
 			if (Config.DISABLE_WEIGHT_PENALTY || _dietMode)
 			{
 				newWeightPenalty = 0;
 				super.removeSkill(getKnownSkill(4270));
+				
+				sendPacket(new UserInfo(this));
 				sendPacket(new EtcStatusUpdate(this));
-				Broadcast.toKnownPlayers(this, new CharInfo(this));
+				broadcastUserInfo();
 			}
 			else
 			{
-				setIsOverloaded(getCurrentLoad() > maxLoad);
-				newWeightPenalty = 0;
-				if (weightproc > 500 && weightproc < 666)
-				{
+				if (weightproc < 500 || _dietMode)
+					newWeightPenalty = 0;
+				else if (weightproc < 666)
 					newWeightPenalty = 1;
-				}
-				else if (weightproc > 500 && weightproc < 800)
-				{
+				else if (weightproc < 800)
 					newWeightPenalty = 2;
-				}
-				else if (weightproc > 500 && weightproc < 1000)
-				{
+				else if (weightproc < 1000)
 					newWeightPenalty = 3;
-				}
-				else if (weightproc > 500 && weightproc > 1000)
-				{
+				else
 					newWeightPenalty = 4;
-				}
+				
 				if (_curWeightPenalty != newWeightPenalty)
 				{
 					_curWeightPenalty = newWeightPenalty;
 					if (newWeightPenalty > 0)
 					{
 						super.addSkill(SkillTable.getInstance().getInfo(4270, newWeightPenalty));
+						setIsOverloaded(getCurrentLoad() > maxLoad);
 					}
 					else
 					{
 						super.removeSkill(getKnownSkill(4270));
+						setIsOverloaded(false);
 					}
 					
+					sendPacket(new UserInfo(this));
 					sendPacket(new EtcStatusUpdate(this));
-					Broadcast.toKnownPlayers(this, new CharInfo(this));
+					broadcastUserInfo();
 				}
 			}
 		}
@@ -2344,6 +2340,7 @@ public final class L2PcInstance extends L2Playable
 				super.removeSkill(getKnownSkill(4267));
 			}
 			
+			sendSkillList();
 			sendPacket(new EtcStatusUpdate(this));
 		}
 	}
@@ -5018,7 +5015,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	protected void doPickupItem(L2Object object)
 	{
-		if (isAlikeDead() || isFakeDeath())
+		if (isAlikeDead() || !isVisible())
 			return;
 		
 		// Set the AI Intention to AI_INTENTION_IDLE
@@ -5033,17 +5030,9 @@ public final class L2PcInstance extends L2Playable
 		}
 		
 		L2ItemInstance target = (L2ItemInstance) object;
-		
-		// Send a Server->Client packet ActionFailed to this L2PcInstance
+
 		sendPacket(ActionFailed.STATIC_PACKET);
-		
-		// Send a Server->Client packet StopMove to this L2PcInstance
-		StopMove sm = new StopMove(getObjectId(), getX(), getY(), getZ(), getHeading());
-		if (Config.DEBUG)
-		{
-			_log.fine("pickup pos: " + target.getX() + " " + target.getY() + " " + target.getZ());
-		}
-		sendPacket(sm);
+		sendPacket(new StopMove(this));
 		
 		synchronized (target)
 		{
@@ -5063,6 +5052,12 @@ public final class L2PcInstance extends L2Playable
 				return;
 			}
 			
+			if (!getInventory().validateWeight(target.getCount() * target.getItem().getWeight()))
+			{
+				sendPacket(SystemMessage.getSystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
+				return;
+			}
+			
 			if (((isInParty() && getParty().getLootDistribution() == L2Party.ITEM_LOOTER) || !isInParty()) && !_inventory.validateCapacity(target))
 			{
 				sendPacket(ActionFailed.STATIC_PACKET);
@@ -5076,6 +5071,12 @@ public final class L2PcInstance extends L2Playable
 				SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.FAILED_TO_PICKUP_S1);
 				smsg.addItemName(target.getItemId());
 				sendPacket(smsg);
+				return;
+			}
+			
+			if (getActiveTradeList() != null)
+			{
+				sendPacket(SystemMessageId.CANNOT_PICKUP_OR_USE_ITEM_WHILE_TRADING);
 				return;
 			}
 			
@@ -5134,12 +5135,6 @@ public final class L2PcInstance extends L2Playable
 		// Cursed Weapons are not distributed
 		else if (CursedWeaponsManager.getInstance().isCursed(target.getItemId()))
 		{
-			/*
-			 * Lineage2.com: When a player that controls Akamanah acquires Zariche,
-			 * the newly-ACQUIRED_S1_S2 Zariche automatically disappeared,
-			 * and the equipped Akamanah's level increases by 1.
-			 * The same rules also apply in the opposite instance.
-			 */
 			addItem("Pickup", target, null, true);
 		}
 		else
@@ -5246,8 +5241,14 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 		
+		// Verify if it's a static object.
+		if (newTarget instanceof L2StaticObjectInstance)
+		{
+			sendPacket(new MyTargetSelected(newTarget.getObjectId(), 0));
+			sendPacket(new StaticObject((L2StaticObjectInstance) newTarget));
+		}	
 		// Add the L2PcInstance to the _statusListener of the new target if it's a L2Character
-		if (newTarget != null && newTarget instanceof L2Character)
+		else if (newTarget != null && newTarget instanceof L2Character)
 		{
 			((L2Character) newTarget).addStatusListener(this);
 			TargetSelected my = new TargetSelected(getObjectId(), newTarget.getObjectId(), getX(), getY(), getZ());
@@ -7348,6 +7349,11 @@ public final class L2PcInstance extends L2Playable
 				player.setCurrentCp(currentCp);
 				player.setCurrentHp(currentHp);
 				player.setCurrentMp(currentMp);
+				
+				if (currentHp < 0.5)
+				{
+					player.stopHpMpRegeneration();
+				}
 				
 				// Restore pet if exists in the world
 				player.setPet(L2World.getInstance().getPet(player.getObjectId()));
@@ -13850,6 +13856,7 @@ public final class L2PcInstance extends L2Playable
 		Quest.playerEnter(this);
 		loadTutorial();
 
+		recalcHennaStats();
 		
 		sendSkillList();
 		sendPacket(new SkillCoolTime(this));
