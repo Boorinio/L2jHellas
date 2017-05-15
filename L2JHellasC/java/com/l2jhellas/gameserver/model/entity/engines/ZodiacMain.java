@@ -54,7 +54,6 @@ public class ZodiacMain
 			public void run()
 			{
 				startVoting();
-				_log.info(ZodiacMain.class.getSimpleName() + ": Zodiac Engine Started.");
 			}
 		}, 60 * 1000 * Config.INITIAL_START);
 	}
@@ -64,10 +63,12 @@ public class ZodiacMain
 		
 		if (EventsZodiacAreRunning())
 		{
-			Announcements.getInstance().announceToAll("An other event of zodiac engine is running. The zodiac engine will start when the event is completed.");
+			Announcements.getInstance().announceToAll("Another event of zodiac engine is running. The zodiac engine will start when the event is completed.");	
 			voting = false;
 			return;
 		}
+		
+		_log.info(ZodiacMain.class.getSimpleName() + ": Zodiac Event Engine Started.");
 		
 		voting = true;
 		for (L2PcInstance players : L2World.getInstance().getAllPlayers().values())
@@ -111,7 +112,7 @@ public class ZodiacMain
 				DaChallenge.StartEvent();
 			break;
 			default:
-				Announcements.getInstance().announceToAll("No votes event canceled.Next vote in " + Config.BETWEEN_EVENTS + " Minutes!");
+				Announcements.getInstance().announceToAll("Not enough votes. The event is canceled. Next event starts in " + Config.BETWEEN_EVENTS + " Minutes!");
 			break;
 		
 		}
@@ -331,22 +332,22 @@ public class ZodiacMain
 		
 		if (player.isinZodiac)
 		{
-			player.sendMessage("You are Already in Zodiac.");
+			player.sendMessage("You are Already participating in a Zodiac Event.");
 			return false;
 		}
 		if (!ZodiacRegisterActive)
 		{
-			player.sendMessage("Zodiac's Registrations are offline!");
+			player.sendMessage("Zodiac's Registration is offline!");
 			return false;
 		}
 		if (player.getLevel() < 76)
 		{
-			player.sendMessage("You are lower than 76 level.");
+			player.sendMessage("You are lower than 76 levels.");
 			return false;
 		}
 		if (player.isInJail())
 		{
-			player.sendMessage("You are in jail...daah");
+			player.sendMessage("You are in jail. You cannot participate in events.");
 			return false;
 		}
 		if (player.isInOlympiadMode())

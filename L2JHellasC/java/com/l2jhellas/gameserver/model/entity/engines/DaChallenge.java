@@ -88,7 +88,7 @@ public class DaChallenge
 		int i;
 		for (i = 0; i < 40; i++)
 		{
-			_RoomMobs.add(addSpawn(36009, 174105 + Rnd.get(-300, +300), -76113 + Rnd.get(-300, +300), -5109));
+			_RoomMobs.add(addSpawn(36009, 174105 + Rnd.get(-60, +60), -76113 + Rnd.get(-60, +60), -5109));
 		}
 		_RoomMobs.add(addSpawn(36010, 174069, -79936, -5109));
 		RoomCount = 0;
@@ -170,11 +170,11 @@ public class DaChallenge
 		RoomCount = 0;
 		for (i = 0; i < 40; i++)
 		{
-			_RoomMobs.add(addSpawn(36011, 174136 + Rnd.get(-300, +300), -81636 + Rnd.get(-300, +300), -5125));
+			_RoomMobs.add(addSpawn(36011, 174136 + Rnd.get(-60, +60), -81636 + Rnd.get(-60, +60), -5125));
 		}
 		for (L2PcInstance player : _Participants)
 		{
-			player.sendPacket(new ExShowScreenMessage("Guard1 is Dead the door will open in 10 seconds!", 4500, SMPOS.TOP_CENTER, true));
+			player.sendPacket(new ExShowScreenMessage("Guard1 is Dead. The door will open in 10 seconds!", 4500, SMPOS.TOP_CENTER, true));
 		}
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{

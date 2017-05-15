@@ -59,7 +59,7 @@ public class ProtectTheLdr
 		waitSecs(minutes / 2 * 60);
 		ZodiacMain.ZodiacRegisterActive = false;
 		ProtectisRunning = true;
-		Announcements.getInstance().announceToAll("Registrations are now over!");
+		Announcements.getInstance().announceToAll("Registration are now over!");
 		shufflePlayers();
 		teleportplayers();
 		L2Npc spawn1 = null;
@@ -73,7 +73,7 @@ public class ProtectTheLdr
 	
 	public static void team1wins()
 	{
-		Announcements.getInstance().announceToAll("Team 1 won team's 2 leader is dead!");
+		Announcements.getInstance().announceToAll("Team 1 won! The leader of team 2 is dead!");
 		for (L2PcInstance member : _Team1)
 		{
 			
@@ -85,7 +85,7 @@ public class ProtectTheLdr
 	
 	public static void team2wins()
 	{
-		Announcements.getInstance().announceToAll("Team 2 won team's 1 leader is dead!");
+		Announcements.getInstance().announceToAll("Team 2 won! The leader of team 1 is dead!");
 		for (L2PcInstance member : _Team2)
 		{
 			

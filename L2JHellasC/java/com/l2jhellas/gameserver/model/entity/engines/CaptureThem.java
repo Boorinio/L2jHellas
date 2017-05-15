@@ -154,7 +154,7 @@ public class CaptureThem
 		if (MostPointsPlayer != null)
 		{
 			MostPointsPlayer.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, MostPointsPlayer, true);
-			Announcements.getInstance().announceToAll("Winner of the event " + MostPointsPlayer + " With " + MostPoints + " Points!");
+			Announcements.getInstance().announceToAll("Winner of the event is " + MostPointsPlayer + " With " + MostPoints + " Points!");
 		}
 		for (L2PcInstance players : _players)
 		{

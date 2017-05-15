@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -77,15 +78,13 @@ abstract class AbstractAI implements Ctrl
 					setIntention(AI_INTENTION_IDLE);
 					return;
 				}
+				
 				if (!_actor.isInsideRadius(_followTarget, _range, true, false))
 				{
-					if (!_actor.isInsideRadius(_followTarget, 3000, true, false))
-					{
-						stopFollow();
-						setIntention(AI_INTENTION_IDLE);
-						return;
-					}
-					moveToPawn(_followTarget, _range);
+					if(GeoEngine.canMoveToCoord(_actor.getX(), _actor.getY(), _actor.getZ(),_followTarget.getX(), _followTarget.getY(), _followTarget.getZ()))
+						moveToPawn(_followTarget, _range);
+					else
+						moveTo(_followTarget.getX(), _followTarget.getY(), _followTarget.getZ());
 				}
 			}
 			catch (Throwable t)

@@ -414,6 +414,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	{
 		L2Attackable npc = (L2Attackable) _actor;
 		
+		// If this is a flag, then it remains in the same location.
+		if(_actor.getObjectId() ==36006)
+			return;
+		
 		// Update every 1s the _globalAggro counter to come close to 0
 		if (_globalAggro != 0)
 		{
@@ -1815,10 +1819,13 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		if (dist > range || !GeoEngine.canSeeTarget(_actor, getAttackTarget(),false))
 		{
 			if (getAttackTarget().isMoving())
-				range -= 100;
-			if (range < 5)
-				range = 5;
-			moveToPawn(getAttackTarget(), range);
+				range -= 30;
+			
+			if (!GeoEngine.canMoveToCoord(_actor.getX(), _actor.getY(), _actor.getZ(), getAttackTarget().getX(), getAttackTarget().getY(), getAttackTarget().getZ()))
+				moveTo(getAttackTarget().getX(), getAttackTarget().getY(), getAttackTarget().getZ());
+			else
+			    moveToPawn(getAttackTarget(), Math.max(range, 5));
+
 			return;
 			
 		}

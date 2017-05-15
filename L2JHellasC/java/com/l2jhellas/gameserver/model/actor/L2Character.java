@@ -1192,6 +1192,14 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 		
+		if (this instanceof L2PcInstance)
+		{
+			L2PcInstance player = (L2PcInstance) this;
+	
+			if (player.getTarget() != null && player.getTarget() == player && skill.getSkillType() == L2SkillType.CHARGEDAM)
+				  return;	
+		}
+		
 		// Can't use Hero and resurrect skills during Olympiad
 		if (this instanceof L2PcInstance && ((L2PcInstance) this).isInOlympiadMode() && (skill.isHeroSkill() || skill.getSkillType() == L2SkillType.RESURRECT))
 		{

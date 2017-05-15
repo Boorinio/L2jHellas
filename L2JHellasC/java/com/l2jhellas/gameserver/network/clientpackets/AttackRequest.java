@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
@@ -76,6 +77,17 @@ public final class AttackRequest extends L2GameClientPacket
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
+		
+		if (target instanceof L2PcInstance)
+		{
+			final L2PcInstance ptar = (L2PcInstance)activeChar.getTarget();
+			
+			if(ptar.isInsideZone(ZoneId.PEACE))
+			{
+				activeChar.sendPacket(new ActionFailed());
+				return;
+			}			
 		}
 		
 		// Like L2OFF

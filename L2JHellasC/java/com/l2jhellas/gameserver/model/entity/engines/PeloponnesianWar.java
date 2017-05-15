@@ -102,15 +102,14 @@ public class PeloponnesianWar
 		}
 		if(_participants.size()<2)
 		{
-			Announcements.getInstance().announceToAll("Event canceled due to low player count.");
+			Announcements.getInstance().announceToAll("Event canceled due to lack of participation.");
 			cleanthemess();
 			return;
 		}
 		spawnProtectors();
 		teleportplayers();
 		Announcements.getInstance().announceToAll("Civil War round started!");
-		Announcements.getInstance().announceToAll("You have 3 minutes the one who survive will face the opponent race!!");
-		waitSecs(180);
+		Announcements.getInstance().announceToAll("You have 3 minutes to fight! The one who survives will face the opponent race!!");		waitSecs(180);
 		for (L2PcInstance finals : _athenians)
 		{
 			if (finals.isinZodiac)
@@ -123,8 +122,7 @@ public class PeloponnesianWar
 		}
 		if (countA > 1)
 		{
-			Announcements.getInstance().announceToAll("Athenians cheated and tried to send more than two players Spartans won!");
-			reward(false);
+			Announcements.getInstance().announceToAll("Athenians cheated and tried to send more than two players. Spartans won!");			reward(false);
 		}
 		else if (countS > 1)
 		{
@@ -134,7 +132,7 @@ public class PeloponnesianWar
 		else
 		{
 			finalround();
-			Announcements.getInstance().announceToAll("Spartan and Athenian representative have 2 minutes to face each other");
+			Announcements.getInstance().announceToAll("Spartans and Athenians representative have 2 minutes to face each other");
 			waitSecs(120);
 			checkwhowon();
 		}
@@ -219,8 +217,7 @@ public class PeloponnesianWar
 		{
 			if (athenian.isinZodiac)
 			{
-				athenian.sendMessage("You are the best athenian you will face the best spartan");
-				athenian.setTitle("FinalAthenian");
+				athenian.sendMessage("You are the best of the Athenians. You will now face the best of the Spartans.");				athenian.setTitle("FinalAthenian");
 				athenian.setCurrentHp(athenian.getMaxHp());
 				athenian.setCurrentMp(athenian.getMaxMp());
 				athenian.setCurrentCp(athenian.getMaxCp());
@@ -232,8 +229,7 @@ public class PeloponnesianWar
 		{
 			if (spartan.isinZodiac)
 			{
-				spartan.sendMessage("You are the best spartan you will face the best athenian");
-				spartan.setTitle("FinalSpartan");
+				spartan.sendMessage("You are the best of the Spartans. You will now face the best of the Athenians.");				spartan.setTitle("FinalSpartan");
 				spartan.setCurrentHp(spartan.getMaxHp());
 				spartan.setCurrentMp(spartan.getMaxMp());
 				spartan.setCurrentCp(spartan.getMaxCp());

@@ -164,7 +164,7 @@ public class CastleWars
 	
 	public static void defendersWin()
 	{
-		Announcements.getInstance().announceToAll("Defenders Won the event they protected the flags!");
+		Announcements.getInstance().announceToAll("The Defending side Won the event! They successfully protected the flags!");
 		for (L2PcInstance defender : _defenders)
 		{
 			if(defender!=null)
@@ -237,7 +237,7 @@ public class CastleWars
 	
 	public static void attackersWin()
 	{
-		Announcements.getInstance().announceToAll("Attackers Won the event they killed all the flags!");
+		Announcements.getInstance().announceToAll(" The Attacking side Won the event! They successfully eliminated the flags!!");
 		for (L2PcInstance attacker : _attackers)
 		{
 			attacker.sendMessage("Congratulations! Here is a reward for your effort!");

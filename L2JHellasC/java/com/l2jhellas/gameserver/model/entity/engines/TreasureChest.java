@@ -43,7 +43,7 @@ public class TreasureChest
 		if (_players != null)
 			startevent();
 		else
-			Announcements.getInstance().announceToAll("Event was cancelled cause no one registered!");
+			Announcements.getInstance().announceToAll("Event was cancelled due to lack of participation!");
 
 	}
 
@@ -63,7 +63,7 @@ public class TreasureChest
 		LuckyChest = Rnd.get(39);
 		for (i = 0; i < 40; i++)
 		{
-			npcs = addSpawn(18286, x + Rnd.get(-750, +750), y + Rnd.get(-750, +750), z);
+			npcs = addSpawn(18286, x + Rnd.get(-500, +500), y + Rnd.get(-500, +500), z);
 			_Npcs.add(npcs);
 		}
 	}
