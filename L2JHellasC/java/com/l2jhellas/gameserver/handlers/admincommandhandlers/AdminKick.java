@@ -48,7 +48,7 @@ public class AdminKick implements IAdminCommandHandler
 				if (plyr != null)
 				{
 					plyr.sendPacket(new LeaveWorld());
-					plyr.closeNetConnection();
+					plyr.closeNetConnection(false);
 					activeChar.sendMessage("You kicked " + plyr.getName() + " from the game.");
 					RegionBBSManager.getInstance().changeCommunityBoard();
 				}
@@ -63,7 +63,7 @@ public class AdminKick implements IAdminCommandHandler
 				{
 					counter++;
 					player.sendPacket(new LeaveWorld());
-					player.closeNetConnection();
+					player.closeNetConnection(false);
 					RegionBBSManager.getInstance().changeCommunityBoard();
 				}
 			}

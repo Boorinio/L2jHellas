@@ -111,7 +111,7 @@ public class L2CastleWarehouseInstance extends L2NpcInstance
 		if (player.getActiveEnchantItem() != null)
 		{
 			_log.info("Player " + player.getName() + " trying to use enchant exploit, ban this player!");
-			player.closeNetConnection();
+			player.closeNetConnection(true);
 			return;
 		}
 

@@ -523,7 +523,6 @@ public class Shutdown extends Thread
 					client.close(ServerClose.STATIC_PACKET);
 					client.setActiveChar(null);
 					player.setClient(null);
-					player.closeNetConnection();
 				}
 				player.deleteMe();
 			}

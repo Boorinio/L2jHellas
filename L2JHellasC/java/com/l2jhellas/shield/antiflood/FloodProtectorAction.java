@@ -135,7 +135,7 @@ public final class FloodProtectorAction
 	 */
 	private void kickPlayer()
 	{
-		_player.closeNetConnection();
+		_player.closeNetConnection(false);
 		_log.warning(FloodProtectorAction.class.getName() + ": " + StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Account [", _player.getAccountName(), "] kicked for flooding [char ", _player.getName(), "]"));
 	}
 
@@ -146,7 +146,7 @@ public final class FloodProtectorAction
 	{
 		_player.setAccountAccesslevel(-100);
 		_log.warning(FloodProtectorAction.class.getName() + ": " + StringUtil.concat(_config.FLOOD_PROTECTOR_TYPE, ": Account [", _player.getAccountName(), "] banned for flooding [char ", _player.getName(), "] ", _config.PUNISHMENT_TIME <= 0 ? "forever" : "for " + _config.PUNISHMENT_TIME + " mins"));
-		_player.closeNetConnection();
+		_player.closeNetConnection(true);
 	}
 
 	/**

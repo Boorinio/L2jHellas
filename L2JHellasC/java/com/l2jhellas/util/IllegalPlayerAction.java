@@ -74,12 +74,12 @@ public final class IllegalPlayerAction implements Runnable
 			case PUNISH_BROADCAST:
 				return;
 			case PUNISH_KICK:
-				_actor.closeNetConnection();
+				_actor.closeNetConnection(false);
 			break;
 			case PUNISH_KICKBAN:
 				_actor.setAccessLevel(-100);
 				_actor.setAccountAccesslevel(-100);
-				_actor.closeNetConnection();
+				_actor.closeNetConnection(true);
 			break;
 			case PUNISH_JAIL:
 				_actor.setInJail(true, Config.DEFAULT_PUNISH_PARAM);

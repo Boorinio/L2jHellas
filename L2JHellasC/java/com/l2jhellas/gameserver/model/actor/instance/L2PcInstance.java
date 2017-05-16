@@ -36,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Extensions.IpCatcher;
 import Extensions.OnEnter;
@@ -4399,7 +4401,7 @@ public final class L2PcInstance extends L2Playable
 	/**
 	 * Close the active connection with the client.
 	 */
-	public void closeNetConnection()
+	public void closeNetConnection(boolean close)
 	{
 		L2GameClient client = _client;
 		if (client != null)
@@ -4410,7 +4412,10 @@ public final class L2PcInstance extends L2Playable
 			{
 				if (!client.getConnection().isClosed())
 				{
-					client.close(ServerClose.STATIC_PACKET);
+					if (close)
+						client.close(new LeaveWorld());
+					else
+						client.close(ServerClose.STATIC_PACKET);
 				}
 			}
 		}	
@@ -11744,10 +11749,7 @@ public final class L2PcInstance extends L2Playable
 		// Remove all L2Object from _knownObjects and _knownPlayer of the
 		// L2Character then cancel Attak or Cast and notify AI
 			getKnownList().removeAllKnownObjects();
-		
-		// Close the connection with the client
-		closeNetConnection();
-		
+
 		// remove from flood protector
 		FloodProtector.getInstance().removePlayer(getObjectId());
 		
@@ -13511,7 +13513,7 @@ public final class L2PcInstance extends L2Playable
 		final IpCatcher ipc = new IpCatcher();
 		
 		if (ipc.isCatched(this))
-			closeNetConnection();
+			closeNetConnection(true);
 
 		if (isDead())
 		{
@@ -13753,7 +13755,7 @@ public final class L2PcInstance extends L2Playable
 				{
 					player.sendMessage("I'm sorry, but multibox is not allowed here.");
 					player.sendPacket(new LeaveWorld());
-					closeNetConnection();
+					closeNetConnection(true);
 					_log.warning(L2PcInstance.class.getName() + ": Character " + getName() + " with IP " + ip + " kicked for multibox.");
 				}
 			}
@@ -15229,4 +15231,13 @@ public final class L2PcInstance extends L2Playable
 		
 		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FALL_DAMAGE_S1).addNumber(damage));
 	}*/
+	
+	//check for space
+	public boolean gotInvalidTitle(String title)
+	{	
+	    Pattern pat = Pattern.compile("\\s");
+	    Matcher match = pat.matcher(title);
+	   
+	    return  match.find();	
+	}
 }

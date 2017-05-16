@@ -167,7 +167,7 @@ public class AdminMenu implements IAdminCommandHandler
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				if (plyr != null)
 				{
-					plyr.closeNetConnection();
+					plyr.closeNetConnection(false);
 					sm.addString("You kicked " + plyr.getName() + " from the game.");
 				}
 				else
@@ -186,7 +186,7 @@ public class AdminMenu implements IAdminCommandHandler
 				L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 				if (plyr != null)
 				{
-					plyr.closeNetConnection();
+					plyr.closeNetConnection(false);
 				}
 				setAccountAccessLevel(player, activeChar, -100);
 			}

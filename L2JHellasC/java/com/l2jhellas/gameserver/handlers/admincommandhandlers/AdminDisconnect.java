@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.logs.GMAudit;
 
@@ -84,13 +83,9 @@ public class AdminDisconnect implements IAdminCommandHandler
 
 			_log.warning(AdminDisconnect.class.getSimpleName() + ": " + player.getName() + " kicked from server.");
 
-			// Logout Character
-			LeaveWorld ql = new LeaveWorld();
-			player.sendPacket(ql);
-
 			RegionBBSManager.getInstance().changeCommunityBoard();
 
-			player.closeNetConnection();
+			player.closeNetConnection(true);
 		}
 	}
 }

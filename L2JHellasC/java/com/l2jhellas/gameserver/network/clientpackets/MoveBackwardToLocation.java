@@ -90,7 +90,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 				finally
 				{
 					Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " trying to use L2Walker!", IllegalPlayerAction.PUNISH_KICK);
-					activeChar.closeNetConnection();
+					activeChar.closeNetConnection(false);
 				}
 			}
 		}

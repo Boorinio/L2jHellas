@@ -50,7 +50,7 @@ public class AntiAfk
 			if (player.botx == player.getX() && player.boty == player.getY() && player.botz == player.getZ() && !player.isGM())
 			{
 				player.sendMessage("BB bot or afk player!");
-				player.closeNetConnection();
+				player.closeNetConnection(true);
 			}
 		}
 		waitSecs(60 * Config.MINUTES_AFK_PLAYERS);

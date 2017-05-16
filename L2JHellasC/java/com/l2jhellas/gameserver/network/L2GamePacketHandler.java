@@ -97,7 +97,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				{
 					AdminData.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got kicked.");
 					client.getActiveChar().sendMessage("You are will be kicked for unknown packet flooding, GM informed.");
-					client.getActiveChar().closeNetConnection();
+					client.getActiveChar().closeNetConnection(false);
 				}
 			break;
 			case (3):
@@ -107,7 +107,7 @@ public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, 
 				{
 					AdminData.getInstance().broadcastMessageToGMs("Player " + client.getActiveChar().toString() + " flooding unknown packets and got banned.");
 					client.getActiveChar().sendMessage("You are banned for unknown packet flooding, GM informed.");
-					client.getActiveChar().closeNetConnection();
+					client.getActiveChar().closeNetConnection(false);
 				}
 			break;
 		}

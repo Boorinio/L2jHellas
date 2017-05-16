@@ -348,7 +348,7 @@ public final class UseItem extends L2GameClientPacket
 			if (!activeChar.isGM() && (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_WEAPON) || (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_ARMOR) || (item.getEnchantLevel() > Config.ENCHANT_MAX_ALLOWED_JEWELRY))
 			{
 				activeChar.sendMessage("You have been kicked for using an item overenchanted!");
-				activeChar.closeNetConnection();
+				activeChar.closeNetConnection(false);
 				return;
 			}
 			switch (item.getItem().getBodyPart())
@@ -361,7 +361,7 @@ public final class UseItem extends L2GameClientPacket
 					{
 						activeChar.setAccountAccesslevel(-100); // ban
 						activeChar.sendMessage("You have been banned for using an item wich is over enchanted!"); // message
-						activeChar.closeNetConnection(); // kick
+						activeChar.closeNetConnection(false); // kick
 						return;
 					}
 					
@@ -395,7 +395,7 @@ public final class UseItem extends L2GameClientPacket
 					{
 						activeChar.setAccountAccesslevel(-100); // ban
 						activeChar.sendMessage("You have been banned for using an item wich is over enchanted!"); // message
-						activeChar.closeNetConnection(); // kick
+						activeChar.closeNetConnection(false); // kick
 						return;
 					}
 					break;
@@ -410,7 +410,7 @@ public final class UseItem extends L2GameClientPacket
 					{
 						activeChar.setAccountAccesslevel(-100); // ban
 						activeChar.sendMessage("You have been banned for using an item wich is over enchanted!"); // message
-						activeChar.closeNetConnection(); // kick
+						activeChar.closeNetConnection(false); // kick
 						return;
 					}
 					break;

@@ -226,8 +226,8 @@ public final class L2World
 					_allPlayers.remove(player.getObjectId());
 					_allPlayers.remove(tmp.getObjectId());
 					
-					player.closeNetConnection();
-					tmp.closeNetConnection();
+					player.closeNetConnection(true);
+					tmp.closeNetConnection(true);
 					return;
 				}
 				_allPlayers.put(player.getObjectId(), player);

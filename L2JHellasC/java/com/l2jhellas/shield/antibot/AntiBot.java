@@ -62,7 +62,7 @@ public class AntiBot
 			if (!player.PassedProt && !player.isGM())
 			{
 				player.sendMessage("BB bot or afk player!");
-				player.closeNetConnection();
+				player.closeNetConnection(true);
 			}
 		}
 		isvoting = false;
